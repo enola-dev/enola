@@ -8,6 +8,8 @@
 
 1. OPEN
 
+1. Set-up CI and CD push to https://github.com/vorburger/enola/releases
+
 1. Set-up https://github.com/igorshubovych/markdownlint-cli for docs/, perhaps using https://magefile.org ? Or... dogfood, `be valid`?!
 
 1. Set-up https://github.com/github/super-linter, as in https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/.github/workflows/linter.yaml
