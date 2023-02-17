@@ -2,7 +2,7 @@
 
 1. K8s MVP Proto
 
-1. Bazel or Gradle? Try out Bazel for Proto & Java... but timebox it?
+1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions)
 
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
