@@ -4,10 +4,14 @@ Enola 🕵🏾‍♀️ [Kubernetes](https://github.com/vorburger/LearningKubern
 adds support for the [Kubernetes Resource Model](https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/docs/krm.md) (KRM)
 to [Enola Core](../core.md).
 
-Here's how to use it, assuming you have [access to an installed Kubernetes cluster](https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/docs/install.md) and have [the `kubectl` CLI](https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/docs/fun/kubecli.md) working locally (with a valid `~/.kube/config`).
+Here's how to use it:
 
-First, [download an Enola Release](https://github.com/vorburger/enola/releases) and unpack and install it.
+1. Have [access to an installed Kubernetes cluster](https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/docs/install.md) and have [the `kubectl` CLI](https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/docs/fun/kubecli.md) working locally, with a valid `~/.kube/config`.
 
-Now try the following:
+2. [Install Bazelisk](https://github.com/bazelbuild/bazelisk#installation)
 
-_TODO Run the dogfooding [demo.md](demo.md) executable Playbook, and insert it here, with its captured output!_
+3. `git clone` this repo
+
+4. `bazelisk run //...`
+
+<!-- _TODO Run the dogfooding [demo.md](demo.md) executable Playbook, and insert it here, with its captured output!_ -->

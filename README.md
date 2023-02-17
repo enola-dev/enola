@@ -7,7 +7,7 @@ investigate the root causes of complex production issues.
 
 Enola has a _model_ of an organization's IT landscape,
 offering a _"single pane of glass"_ (SPOG) view of it.
-This mimicks the _"picture in the head"_ that knowledgeable senior engineers
+This mimics the _"picture in the head"_ that knowledgeable senior engineers
 typically have of systems, their relations, failure modes, etc. All too often
 these are incompletely fully captured by tooling.  Teams often do
 have e.g. related documents, [Playbooks](docs/playbook.md), various ad-hoc scripts etc.
