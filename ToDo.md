@@ -1,5 +1,10 @@
 # Enola 🕵🏾‍♀️ ToDo
 
+1. Bazel and/or Gradle?
+   - Bazel with VSC with Red Hat's Java extension seems a PITA, due to https://github.com/bazelbuild/vscode-bazel/issues/281.
+   - https://github.com/georgewfraser/java-language-server looks promising, but https://github.com/georgewfraser/java-language-server/issues?q=author%3Avorburger+
+   - Bazel and Gradle is PITA to keep in-sync? Maybe simplest, for now?
+
 1. K8s MVP Proto
 
 1. OPEN
@@ -7,11 +12,6 @@
 1. gEnola
 
 1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions)
-
-1. Bazel and/or Gradle?
-   - Bazel with VSC seems a PITA, due to https://github.com/bazelbuild/vscode-bazel/issues/281.
-   - Try https://github.com/georgewfraser/java-language-server#usage ?
-   - Bazel and Gradle is PITA to keep in-sync.
 
 1. Set-up CI
 
