@@ -1,0 +1,14 @@
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
+bazel_dep(name = "rules_jvm_external", version = "4.5")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+
+maven.install(
+    artifacts = [
+        "io.kubernetes:client-java:17.0.1",
+    ],
+    fetch_sources = True,
+    lock_file = "//:maven_install.json",
+)
+
+use_repo(maven, "maven", "unpinned_maven")

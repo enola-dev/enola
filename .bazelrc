@@ -1,0 +1,3 @@
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
+
+common --enable_bzlmod
