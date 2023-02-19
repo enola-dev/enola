@@ -3,7 +3,8 @@
 1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md)?! Or Gradle, after all?
 
 1. K8s MVP Proto
-
+   - `ownerReferences`
+ 
 1. OPEN
 
 1. gEnola
