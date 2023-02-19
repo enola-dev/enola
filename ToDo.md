@@ -23,6 +23,8 @@
 
 1. Set-up https://github.com/github/super-linter, as in https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/.github/workflows/linter.yaml
 
+1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to docs/ during build
+
 1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx?)
 
 1. Set-up CD push to https://github.com/vorburger/enola/releases

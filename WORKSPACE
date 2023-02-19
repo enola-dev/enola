@@ -1,5 +1,4 @@
 # https://rules-proto-grpc.com/en/latest/#installation
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -21,8 +20,12 @@ rules_proto_dependencies()
 
 rules_proto_toolchains()
 
-# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
+# https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
+load("@rules_proto_grpc//doc:repositories.bzl", rules_proto_grpc_doc_repos = "doc_repos")
 
+rules_proto_grpc_doc_repos()
+
+# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
 load("@rules_proto_grpc//buf:repositories.bzl", rules_proto_grpc_buf_repos = "buf_repos")
 
 rules_proto_grpc_buf_repos()

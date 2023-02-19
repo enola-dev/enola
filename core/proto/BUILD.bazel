@@ -1,3 +1,21 @@
+# https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
+proto_library(
+    name = "core_proto",
+    srcs = ["enola-core.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+# https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
+load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
+
+doc_markdown_compile(
+    name = "core_proto_doc",
+    protos = ["core_proto"],
+)
+
 # https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
 load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 
@@ -8,15 +26,5 @@ buf_proto_lint_test(
     use_rules = [
         "DEFAULT",
         "COMMENTS",
-    ],
-)
-
-# https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
-proto_library(
-    name = "core_proto",
-    srcs = ["enola-core.proto"],
-    deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:timestamp_proto",
     ],
 )
