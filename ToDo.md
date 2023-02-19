@@ -12,6 +12,10 @@
 
 1. Set-up CI
 
+1. [google-java-format](https://github.com/google/google-java-format)
+   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
+   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
+
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
 1. Set-up https://github.com/igorshubovych/markdownlint-cli for docs/, perhaps using https://magefile.org ? Or... dogfood, `be valid`?!
