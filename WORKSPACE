@@ -20,3 +20,9 @@ load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_
 rules_proto_dependencies()
 
 rules_proto_toolchains()
+
+# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
+
+load("@rules_proto_grpc//buf:repositories.bzl", rules_proto_grpc_buf_repos = "buf_repos")
+
+rules_proto_grpc_buf_repos()
