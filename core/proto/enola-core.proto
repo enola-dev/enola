@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package dev.enola.core.v1;
+package dev.enola.core;
 
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.proto";
@@ -10,11 +10,31 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 enum Status {
-  STATUS_UNSPECIFIED = 0;
+  STATUS_UNSPECIFIED     = 0;
+  STATUS_OK              = 200;
+  STATUS_OK_BUT_DEGRADED = 300;
+  STATUS_NOK_DEPENDENCY  = 502;
+  STATUS_NOK_ITSELF      = 503;
+}
+
+message URI {
+  oneof oneof {
+    string text  = 1;
+    Parts struct = 2;
+  }
+  message Parts {
+    string scheme = 1;
+    string authority = 2;
+    repeated NameValue query = 3;
+  }
+  message NameValue {
+    string name = 1;
+    string value = 2;
+  }
 }
 
 message GetRequest {
-  string uri = 1;
+  URI uri = 1;
 
   // google.protobuf.Timestamp ts = 2;
   // google.protobuf.Timestamp start = 2;
@@ -22,7 +42,7 @@ message GetRequest {
   // google.protobuf.Duration granularity = 4;
 }
 message GetResponse {
-  string uri = 1;
+  URI uri = 1;
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
   repeated string dependsOn = 4;
