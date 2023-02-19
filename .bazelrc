@@ -10,5 +10,6 @@ build --java_runtime_version=remotejdk_11
 test --test_output=errors
 
 # Quiet!
-common --ui_event_filters=warning,-info,-debug,-stdout,-stderr
 # common --noshow_progress
+common --ui_event_filters=warning,-info,-debug,stdout,stderr
+# Beware, -stdout breaks IDE integrations!
