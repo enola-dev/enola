@@ -7,6 +7,7 @@ java_binary(
     deps = [
         "@maven//:io_kubernetes_client_java",
         "@maven//:io_kubernetes_client_java_api",
+        "@maven//:io_kubernetes_client_java_proto",
         "@maven//:org_slf4j_slf4j_simple",
     ],
 )
