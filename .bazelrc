@@ -11,5 +11,5 @@ test --test_output=errors
 
 # Quiet!
 # common --noshow_progress
-common --ui_event_filters=warning,-info,-debug,stdout,stderr
+common --ui_event_filters=error,warning,-info,-debug,stdout,stderr
 # Beware, -stdout breaks IDE integrations!

@@ -1,0 +1,8 @@
+proto_library(
+    name = "core_proto",
+    srcs = ["enola-core.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
