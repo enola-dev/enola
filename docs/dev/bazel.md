@@ -1,5 +1,9 @@
 # Bazel
 
+## IDE
+
+See https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md
+
 ## Update Existing Maven dependencies
 
 As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#outdated-artifacts :
@@ -14,4 +18,4 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 1. `b run @unpinned_maven//:pin`
 
-PS: Use `query "@maven//:*"` to see all targets.
+PS: Use `b query "@maven//:*"` to see all targets.
