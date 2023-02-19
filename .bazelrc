@@ -1,4 +1,14 @@
-# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
+# https://bazel.build/run/bazelrc
 
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 common --enable_bzlmod
+
+# https://bazel.build/docs/user-manual#java_runtime_version
 build --java_runtime_version=remotejdk_11
+
+# https://bazel.build/reference/command-line-reference#flag--test_output
+test --test_output=errors
+
+# Quiet!
+common --ui_event_filters=warning,-info,-debug,-stdout,-stderr
+# common --noshow_progress
