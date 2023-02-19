@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package dev.enola.core.v1;
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.core.proto";
+option java_multiple_files = true;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+}
+
+message GetRequest {
+  string uri = 1;
+
+  // google.protobuf.Timestamp ts = 2;
+  // google.protobuf.Timestamp start = 2;
+  // google.protobuf.Timestamp end = 3;
+  // google.protobuf.Duration granularity = 4;
+}
+message GetResponse {
+  string uri = 1;
+  google.protobuf.Timestamp ts = 2;
+  Status status = 3;
+  repeated string dependsOn = 4;
+  string isOwnedBy = 5;
+  google.protobuf.Any details = 6;
+}
+
+service Enola {
+  rpc Get(GetRequest) returns (GetResponse) {}
+}
