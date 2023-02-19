@@ -1,10 +1,6 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. Bazel and/or Gradle?
-   - Bazel with VSC with Red Hat's Java extension seems a PITA, due to https://github.com/bazelbuild/vscode-bazel/issues/281.
-   - https://github.com/georgewfraser/java-language-server looks promising, but https://github.com/georgewfraser/java-language-server/issues?q=author%3Avorburger+
-   - https://github.com/salesforce/bazel-eclipse/issues/450 blocks Eclipse instead of VSC
-   - Bazel and Gradle is PITA to keep in-sync? Maybe simplest, for now?
+1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md)?! Or Gradle, after all?
 
 1. K8s MVP Proto
 
