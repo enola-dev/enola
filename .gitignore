@@ -1,4 +1,12 @@
-bazel-bin
-bazel-enola
-bazel-out
-bazel-testlogs
+# JDT
+bin/
+
+# Bazel
+bazel-*
+
+# Gradle
+build/
+.gradle
+
+# IntelliJ
+.ijwb/
