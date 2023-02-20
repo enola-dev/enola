@@ -4,7 +4,7 @@
 
 1. K8s MVP Proto
    - `ownerReferences`
- 
+
 1. OPEN
 
 1. gEnola
@@ -25,7 +25,7 @@
 
 1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to docs/ during build
 
-1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx?)
+1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx? [Docusaurus](https://docusaurus.io)?)
 
 1. Set-up CD push to https://github.com/vorburger/enola/releases
 

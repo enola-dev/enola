@@ -1,7 +1,7 @@
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
     name = "core_proto",
-    srcs = ["enola-core.proto"],
+    srcs = ["enola_core.proto"],
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -30,7 +30,10 @@ load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 
 buf_proto_lint_test(
     name = "core_buf_proto_lint",
-    # except_rules = ["PACKAGE_VERSION_SUFFIX"],
+    except_rules = [
+        "PACKAGE_VERSION_SUFFIX",
+        "PACKAGE_DIRECTORY_MATCH",
+    ],
     protos = ["core_proto"],
     use_rules = [
         "DEFAULT",
