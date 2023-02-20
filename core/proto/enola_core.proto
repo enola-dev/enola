@@ -17,7 +17,6 @@ enum Status {
   STATUS_NOK_ITSELF      = 503;
 }
 
-// TODO Rename URI to ID, and document accordingly...
 // ID of an object known to Enola.
 // In text (string) form, it "looks" like an RFC-* Uniform Resource Identifier (URI, not URN),
 // but this is just because humans are used to things looking like this, and we want
@@ -37,7 +36,7 @@ enum Status {
 // Note that IDs are not "unique", and 2 different IDs may refer to the same underlying object; for example:
 // * k8s:pod?name=echoserver-6dfb6c7764-45gvk&...
 // * k8s:pod?uid=561f1bec-f768-4c5b-b96e-37306d7f2f8a&...
-message URI {
+message ID {
   oneof oneof {
     string text  = 1;
     Parts parts  = 2;
@@ -54,7 +53,7 @@ message URI {
 }
 
 message GetRequest {
-  URI uri = 1;
+  ID id = 1;
 
   // google.protobuf.Timestamp ts = 2;
   // google.protobuf.Timestamp start = 2;
@@ -62,7 +61,7 @@ message GetRequest {
   // google.protobuf.Duration granularity = 4;
 }
 message GetResponse {
-  URI uri = 1;
+  ID id = 1;
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
   repeated string depends_on = 4;
@@ -70,18 +69,18 @@ message GetResponse {
   google.protobuf.Any proto = 6;
 }
 
-message QueryURIRequest {
+message QueryAvailableEntitiesRequest {
   // Parts can be empty;
   // if no scheme, returns all schemes;
   // if scheme but not no entity, returns all entities of the scheme;
   // if scheme and entity, returns all available query parameter names (without values).
-  URI.Parts uri_parts = 1;
+  ID.Parts id_parts = 1;
 }
-message QueryURIResponse {
-  repeated URI uris = 1;
+message QueryAvailableEntitiesResponse {
+  repeated ID id = 1;
 }
 
 service EnolaService {
   rpc Get(GetRequest) returns (GetResponse) {}
-  rpc QueryURI(QueryURIRequest) returns (QueryURIResponse) {}
+  rpc QueryAvailableEntities(QueryAvailableEntitiesRequest) returns (QueryAvailableEntitiesResponse) {}
 }
