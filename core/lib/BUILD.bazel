@@ -7,3 +7,12 @@ java_library(
         "//core/proto:core_proto_java_library",
     ],
 )
+
+[java_test(
+    name = name[:-len(".java")],
+    srcs = [name],
+    resources = glob(["src/test/resources/**/*"]),
+    deps = [":lib_java"],
+) for name in glob([
+    "src/test/java/**/*Test.java",
+])]
