@@ -40,7 +40,7 @@ enum Status {
 // We permit RPC clients to specify the ID in either (oneof) string text or "broken down" parts form.
 // This is simply for dev convenience in UX such as CLI or Web UIs, and to avoid the proliferation of incompatible parsers.
 // The implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or "demo:foo?bad=a&bad=b".
-// The string text oneof form is NOT "decoded" (incl. un-quoted) at all, simply "split" as-is.
+// The string text oneof form is NOT "decoded" like un-escaped (incl. un-quoted) at all, simply "split".
 message ID {
   oneof oneof {
     string text  = 1;
@@ -61,13 +61,16 @@ message GetRequest {
   // google.protobuf.Timestamp end = 3;
   // google.protobuf.Duration granularity = 4;
 }
+// TODO Rename/refactor this to Entity (as-in https://en.wikipedia.org/wiki/Entity)
 message GetResponse {
   ID id = 1;
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
-  repeated string depends_on = 4;
-  string is_owned_by = 5;
-  google.protobuf.Any proto = 6;
+  google.protobuf.Any proto = 7;
+
+  // TODO Generalize this, as a map<enum Relationship, string> relationship?
+  repeated string depends_on = 14;
+  string is_owned_by = 15;
 }
 
 message QueryAvailableEntitiesRequest {

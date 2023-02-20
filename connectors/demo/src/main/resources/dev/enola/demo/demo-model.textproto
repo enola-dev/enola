@@ -5,4 +5,8 @@
 Model {
   test: "hello, world"
   bad: 123
+
+  entity {
+    id: ""
+  }
 }
