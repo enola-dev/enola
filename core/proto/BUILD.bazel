@@ -11,10 +11,7 @@ proto_library(
 proto_library(
     name = "model_proto",
     srcs = ["dev/enola/core/proto/enola_model.proto"],
-    deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
+    deps = [],
 )
 
 # https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library

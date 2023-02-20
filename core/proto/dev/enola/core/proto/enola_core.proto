@@ -64,6 +64,23 @@ message Entity {
   string is_owned_by = 15;
 }
 
+message GetEntityRequest {
+  ID id = 1;
+}
+message GetEntityResponse {
+  Entity entity = 1;
+}
+// TODO Later have an RPC for a time series XRequest, and XResponse with repeated Entity?
+//   google.protobuf.Timestamp ts = 2;
+//   google.protobuf.Timestamp start = 2;
+//   google.protobuf.Timestamp end = 3;
+//   google.protobuf.Duration granularity = 4;
+
+service EnolaService {
+  rpc GetEntity(GetEntityRequest) returns (GetEntityResponse) {}
+}
+
+// TODO Log isn't actually used, just yet...
 message Log {
   oneof oneof {
     string url  = 1;
@@ -101,31 +118,3 @@ message Log {
   }
 }
 
-message GetRequest {
-  ID id = 1;
-}
-message GetResponse {
-  Entity entity = 1;
-}
-
-// TODO Later have an RPC for a time series XRequest, and XResponse with repeated Entity?
-//   google.protobuf.Timestamp ts = 2;
-//   google.protobuf.Timestamp start = 2;
-//   google.protobuf.Timestamp end = 3;
-//   google.protobuf.Duration granularity = 4;
-
-message QueryAvailableEntitiesRequest {
-  // Parts can be empty;
-  // if no scheme, returns all schemes;
-  // if scheme but not no entity, returns all entities of the scheme;
-  // if scheme and entity, returns all available query parameter names (without values).
-  ID.Parts id_parts = 1;
-}
-message QueryAvailableEntitiesResponse {
-  repeated ID id = 1;
-}
-
-service EnolaService {
-  rpc Get(GetRequest) returns (GetResponse) {}
-  rpc QueryAvailableEntities(QueryAvailableEntitiesRequest) returns (QueryAvailableEntitiesResponse) {}
-}

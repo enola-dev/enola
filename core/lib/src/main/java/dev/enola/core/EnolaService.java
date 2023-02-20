@@ -1,11 +1,8 @@
 package dev.enola.core;
 
-import dev.enola.core.proto.GetRequest;
-import dev.enola.core.proto.GetResponse;
-import dev.enola.core.proto.QueryAvailableEntitiesRequest;
-import dev.enola.core.proto.QueryAvailableEntitiesResponse;
+import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.GetEntityResponse;
 
 public interface EnolaService {
-    GetResponse get(GetRequest r);
-    QueryAvailableEntitiesResponse queryAvailableEntities(QueryAvailableEntitiesRequest r);
+    GetEntityResponse getEntity(GetEntityRequest r);
 }

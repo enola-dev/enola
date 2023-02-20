@@ -6,9 +6,6 @@ option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 
-import "google/protobuf/any.proto";
-import "google/protobuf/timestamp.proto";
-
 message Model {
   // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
   string scheme = 1;
@@ -19,6 +16,9 @@ message Model {
 
 // Kind of an Entity, as in message Entity.
 message EntityKind {
+  // Scheme, as above. It's normally omitted in *-model.textproto, but filled-in by the reader.
+  string scheme = 31;
+
   // Fixed machine readable ID, as in ID#parts.entity; in lower case and without any spaces.
   // (This is the ID of a kind of entity, not of an individual instance of such an entity; that one is message ID.)
   string id = 1;
@@ -36,7 +36,7 @@ message EntityKind {
   string doc_url = 5;
 
   // The fully qualified (with package) name of the (root) Protocol Buffer Message type in Entity#proto.
-  string proto_message = 13;
+  string proto_fqn = 13;
 
   // TODO param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use.
 
@@ -51,7 +51,7 @@ message EntityKind {
 }
 
 message Parameter {
-  // No name or id here - that's the Entity.param map key.
+  // No name or id field here - that's the Entity.param map key.
 
   // Reference to another Entity, if any.
   // As an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template.
@@ -60,4 +60,14 @@ message Parameter {
   // Like ID, the template does not have (percentage) encoded or escaped or quoted.
   // Optional; if empty, the parameter doesn't reference any (known, modeled) other entity.
   string ref_id_template = 2;
+}
+
+message GetEntityKindsRequest { }
+// Clients would typically cache this.
+message GetEntityKindsResponse {
+  repeated EntityKind model = 1;
+}
+
+service ModelService {
+  rpc GetEntityKinds(GetEntityKindsRequest) returns (GetEntityKindsResponse) {}
 }
