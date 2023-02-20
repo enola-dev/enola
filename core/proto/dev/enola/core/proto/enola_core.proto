@@ -49,11 +49,7 @@ message ID {
   message Parts {
     string scheme = 1;
     string entity = 2;
-    repeated NameValue query = 3;
-  }
-  message NameValue {
-    string name = 1;
-    string value = 2;
+    map<string, string> query = 3;
   }
 }
 

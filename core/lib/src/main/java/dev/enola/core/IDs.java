@@ -52,17 +52,15 @@ public final class IDs {
                 if (nameValue.length > 2) {
                     throw new IllegalArgumentException(s + " ID URI ?query has name/value with more than 1 '=' sign: " + pair);
                 }
-                if (nameValue.length > 1) {
+                if (nameValue.length > 0) {
                     if (queryParameterNames.contains(nameValue[0]))
                         throw new IllegalArgumentException(s + " ID URI ?query has duplicate names: " + query);
                     queryParameterNames.add(nameValue[0]);
-
-                    ID.NameValue.Builder nameValueBuilder = ID.NameValue.newBuilder();
-                    nameValueBuilder.setName(nameValue[0]);
-                    if (nameValue.length == 2) {
-                        nameValueBuilder.setValue(nameValue[1]);
-                    }
-                    builder.addQuery(nameValueBuilder);
+                }
+                if (nameValue.length == 2) {
+                    builder.putQuery(nameValue[0], nameValue[1]);
+                } else { // nameValue.length == 1
+                    builder.putQuery(nameValue[0], null);
                 }
             });
         }
@@ -95,8 +93,8 @@ public final class IDs {
         if (parts.getQueryCount() > 0)
             sb.append('?');
 
-        sb.append(AMPERSAND_JOINER.join( parts.getQueryList().stream().map(pair -> {
-            StringBuilder pairSB = new StringBuilder(pair.getName());
+        sb.append(AMPERSAND_JOINER.join( parts.getQueryMap().entrySet().stream().map(pair -> {
+            StringBuilder pairSB = new StringBuilder(pair.getKey());
             if (pair.getValue() != null) {
                 pairSB.append('=');
                 pairSB.append(pair.getValue());
