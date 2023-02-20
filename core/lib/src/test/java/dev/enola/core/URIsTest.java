@@ -12,6 +12,6 @@ public class URIsTest {
     public void testURI() {
         assertThrows(IllegalArgumentException.class, () -> URIs.from("demo"));
         assertThrows(IllegalArgumentException.class, () -> URIs.from("demo:"));
-        assertThat(URIs.from("demo:foo")).isEqualTo(URI.newBuilder().setParts(URI.Parts.newBuilder().setScheme("demo").setAuthority("foo")).build());
+        assertThat(URIs.from("demo:foo")).isEqualTo(URI.newBuilder().setParts(URI.Parts.newBuilder().setScheme("demo").setEntity("foo")).build());
     }
 }

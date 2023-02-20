@@ -24,7 +24,7 @@ message URI {
   }
   message Parts {
     string scheme = 1;
-    string authority = 2;
+    string entity = 2;
     repeated NameValue query = 3;
   }
   message NameValue {
