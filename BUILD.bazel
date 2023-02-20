@@ -12,7 +12,6 @@ shellcheck_test(
         exclude = [
             "bazel-bin/**",
             "bazel-out/**",
-            "bazel-enola/bazel-out/**",
         ],
     ),
     tags = ["lint"],
