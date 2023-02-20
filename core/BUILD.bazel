@@ -1,0 +1,9 @@
+load("@rules_java//java:defs.bzl", "java_library")
+
+java_library(
+    name = "enola",
+    srcs = glob(["src/main/java/**/*.java"]),
+    deps = [
+        "//core/proto:core_proto_java_library",
+    ],
+)
