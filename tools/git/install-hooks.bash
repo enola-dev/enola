@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-DIR="$(realpath $(dirname $0))"
+DIR=$(realpath "$(dirname "$0")")
 
-cp $DIR/hooks/* $DIR/../../.git/hooks/
+cp -v "$DIR/hooks/"* "$DIR/../../.git/hooks/"

@@ -52,3 +52,15 @@ load("@maven//:compat.bzl", "compat_repositories")
 compat_repositories()
 
 grpc_java_repositories()
+
+# https://github.com/aignas/rules_shellcheck
+http_archive(
+    name = "com_github_aignas_rules_shellcheck",
+    sha256 = "",
+    strip_prefix = "rules_shellcheck-0.1.1",
+    url = "https://github.com/aignas/rules_shellcheck/archive/refs/tags/v0.1.1.tar.gz",
+)
+
+load("@com_github_aignas_rules_shellcheck//:deps.bzl", "shellcheck_dependencies")
+
+shellcheck_dependencies()
