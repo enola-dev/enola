@@ -5,7 +5,11 @@ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 
 maven.install(
     artifacts = [
+        # "com.google.guava:guava:31.1-jre",
         "io.kubernetes:client-java:17.0.1",
+        # "io.netty:netty-transport:4.1.89.Final",
+        # "io.netty:netty-resolver:4.1.89.Final",
+        # "org.apache.tomcat:tomcat-annotations-api:10.1.5",
         "org.slf4j:slf4j-simple:2.0.6",
     ],
     fetch_sources = True,
