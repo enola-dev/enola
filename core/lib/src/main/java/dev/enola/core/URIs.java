@@ -2,6 +2,7 @@ package dev.enola.core;
 
 import dev.enola.core.proto.URI;
 
+// TODO Rename to IDs
 public final class URIs {
     private URIs() { }
 
@@ -14,7 +15,14 @@ public final class URIs {
         }
         builder.setScheme(uri.getScheme());
 
-        // TODO uri.getAuthority() == null && ?
+        if (uri.getAuthority() != null) {
+            throw new IllegalArgumentException(s + " URI cannot have an //authority: " + uri);
+        }
+
+        if (uri.getFragment() != null) {
+            throw new IllegalArgumentException(s + " URI cannot have an #fragment: " + uri);
+        }
+
         if (uri.getSchemeSpecificPart() == null) {
             throw new IllegalArgumentException(s + " URI has no authority: " + uri);
         }
