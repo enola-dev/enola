@@ -4,6 +4,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.TextFormat;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class TextProtoValidator {
 
     private final ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
 
-    public Message validate(URL url, Message.Builder builder) {
+    public MessageOrBuilder validate(URL url, Message.Builder builder) {
         try {
             try (InputStream is = Resources.asByteSource(url).openStream()) {
                 try (InputStreamReader readable = new InputStreamReader(is, Charsets.UTF_8)) {

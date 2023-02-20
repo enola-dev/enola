@@ -10,5 +10,52 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 message Model {
-  string test = 1;
+  // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
+  string scheme = 1;
+
+  // List of entities kinds of this model.
+  repeated EntityKind entity = 2;
+}
+
+// Kind of an Entity, as in message Entity.
+message EntityKind {
+  // Fixed machine readable ID, as in ID#parts.entity; in lower case and without any spaces.
+  // (This is the ID of a kind of entity, not of an individual instance of such an entity; that one is message ID.)
+  string id = 1;
+
+  // Human readable name ("title") of entity, may be several words, any case, and can be changed.
+  string name = 2;
+
+  // The Emoji shown as prefix to the name in UIs, if there is no logo.
+  string emoji = 3;
+
+  // Logo (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it).
+  string logo_url = 4;
+
+  // Documentation description (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it).
+  string doc_url = 5;
+
+  // The fully qualified (with package) name of the (root) Protocol Buffer Message type in Entity#proto.
+  string proto_message = 13;
+
+  // TODO param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use.
+
+  // Parameters, as map. The string keys here match ID.parts.query's.
+  map<string, Parameter> param = 15;
+
+  // TODO Describe Status?
+
+  // TODO Generalize Entity#depends_on & #is_owned_by
+}
+
+message Parameter {
+  // No name or id here - that's the Entity.param map key.
+
+  // Reference to another Entity, if any.
+  // As an ID URI RFC 6570 Template; see https://en.wikipedia.org/wiki/URI_Template.
+  // The Model#scheme: MUST be included in the template, as it's fairly common to reference entities across models.
+  // The available variables are all of the entities' parameters (but nothing else; TODO context?).
+  // Like ID, the template does not have (percentage) encoded or escaped or quoted.
+  // Optional; if empty, the parameter doesn't reference any (known, modeled) other entity.
+  string ref_id_template = 2;
 }
