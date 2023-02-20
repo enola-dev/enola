@@ -13,12 +13,12 @@ public class IDsTest {
     ID proto1text = ID.newBuilder().setText(uri1).build();
 
     String uri2 = "k8s:pod?network=prod&context=demo&namespace=test&name=hello";
+    // TODO(vorburger) Replace this with an inline .textproto by using (TBD) class TextProtos
     ID proto2 = ID.newBuilder().setParts(ID.Parts.newBuilder().setScheme("k8s").setEntity("pod")
-            .addQuery(ID.NameValue.newBuilder().setName("network").setValue("prod"))
-            .addQuery(ID.NameValue.newBuilder().setName("context").setValue("demo"))
-            .addQuery(ID.NameValue.newBuilder().setName("namespace").setValue("test"))
-            .addQuery(ID.NameValue.newBuilder().setName("name").setValue("hello"))
-    ).build();
+                    .putQuery("network", "prod")
+                    .putQuery("context", "demo")
+                    .putQuery("namespace", "test")
+                    .putQuery("name", "hello")).build();
 
     @Test
     public void testParts() {
