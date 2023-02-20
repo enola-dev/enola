@@ -1,18 +1,18 @@
 package dev.enola.core;
 
-import dev.enola.core.proto.URI;
+import dev.enola.core.proto.ID;
 import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
-public class URIsTest {
+public class IDsTest {
     @Test
-    public void testURI() {
+    public void testID() {
         // Good
-        assertThat(URIs.from("demo:foo")).isEqualTo(URI.newBuilder().setParts(URI.Parts.newBuilder().setScheme("demo").setEntity("foo")).build());
+        assertThat(IDs.from("demo:foo")).isEqualTo(ID.newBuilder().setParts(ID.Parts.newBuilder().setScheme("demo").setEntity("foo")).build());
         // TODO Use https://truth.dev/protobufs.html to assert object
-        assertThat(URIs.from("k8s:pod?network=prod&context=demo&namespace=test&name=hello")).isNotNull();
+        assertThat(IDs.from("k8s:pod?network=prod&context=demo&namespace=test&name=hello")).isNotNull();
 
         // Bad
         badEnolaID("|");                 // Illegal Character
@@ -25,6 +25,6 @@ public class URIsTest {
     }
 
     private void badEnolaID(String id) {
-        assertThrows(IllegalArgumentException.class, () -> URIs.from(id));
+        assertThrows(IllegalArgumentException.class, () -> IDs.from(id));
     }
 }
