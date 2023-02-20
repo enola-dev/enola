@@ -14,6 +14,7 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":lib_java",
+        "//core/proto:core_proto_java_library",
         "@maven//:com_google_truth_truth",
     ],
 ) for name in glob([
