@@ -1,0 +1,8 @@
+# https://protobuf.dev/reference/protobuf/textformat-spec/
+# proto-file: dev/enola/core/enola_model.proto
+# proto-message: Model
+
+Model {
+  test: "hello, world"
+  bad: 123
+}

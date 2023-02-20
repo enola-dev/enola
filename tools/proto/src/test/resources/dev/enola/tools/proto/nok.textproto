@@ -1,0 +1,6 @@
+# proto-file: google/protobuf/timestamp.proto
+# proto-message: Timestamp
+
+seconds: 123
+nanos: 456
+bad: xyz
