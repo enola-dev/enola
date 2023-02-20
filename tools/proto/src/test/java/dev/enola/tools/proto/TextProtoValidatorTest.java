@@ -17,6 +17,7 @@ public class TextProtoValidatorTest {
         assertThat(new TextProtoValidator().validate(getResource("dev/enola/tools/proto/ok.textproto"), Timestamp.newBuilder())).isNull();
 
         // NOK
-        assertThrows(IllegalArgumentException.class, () -> new TextProtoValidator().validate(getResource("dev/enola/tools/proto/nok.textproto"), Timestamp.newBuilder()));
+        assertThat(assertThrows(IllegalArgumentException.class, () -> new TextProtoValidator().validate(getResource("dev/enola/tools/proto/nok.textproto"), Timestamp.newBuilder())))
+                .hasCauseThat().hasMessageThat().contains("google.protobuf.Timestamp.bad");
     }
 }
