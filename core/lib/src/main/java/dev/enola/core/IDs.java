@@ -2,6 +2,7 @@ package dev.enola.core;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.IDOrBuilder;
@@ -86,13 +87,16 @@ public final class IDs {
             throw new IllegalArgumentException("ID proto is empty and has neither text nor parts oneof");
         }
         ID.Parts parts = id.getParts();
+        if (Strings.isNullOrEmpty(parts.getScheme()))
+            throw new IllegalArgumentException("ID proto has no scheme: " + id);
         StringBuffer sb = new StringBuffer(parts.getScheme());
         sb.append(':');
-        if (parts.getEntity() != null)
-            sb.append(parts.getEntity());
+        if (Strings.isNullOrEmpty(parts.getEntity()))
+            throw new IllegalArgumentException("ID proto has no entity: " + id);
+        sb.append(parts.getEntity());
+
         if (parts.getQueryCount() > 0)
             sb.append('?');
-
         sb.append(AMPERSAND_JOINER.join( parts.getQueryMap().entrySet().stream().map(pair -> {
             StringBuilder pairSB = new StringBuilder(pair.getKey());
             if (pair.getValue() != null) {
