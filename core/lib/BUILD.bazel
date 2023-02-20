@@ -5,6 +5,7 @@ java_library(
     srcs = glob(["src/main/java/**/*.java"]),
     deps = [
         "//core/proto:core_proto_java_library",
+        "@maven//:com_google_guava_guava",
     ],
 )
 
