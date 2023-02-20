@@ -30,6 +30,7 @@ load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 
 buf_proto_lint_test(
     name = "core_buf_proto_lint",
+    size = "small",
     except_rules = [
         "PACKAGE_VERSION_SUFFIX",
         "PACKAGE_DIRECTORY_MATCH",
