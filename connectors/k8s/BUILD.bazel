@@ -1,7 +1,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 
 java_binary(
-    name = "bek",
+    name = "enola-k8s",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.k8s.Bek",
     deps = [

@@ -8,13 +8,25 @@ proto_library(
     ],
 )
 
+proto_library(
+    name = "model_proto",
+    srcs = ["enola_model.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
 # https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
 load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
 
 java_proto_library(
     name = "core_proto_java_library",
     protos = ["core_proto"],
-    visibility = ["//core/lib:__pkg__"],
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core/lib:__pkg__",
+    ],
 )
 
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
@@ -22,7 +34,10 @@ load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
 doc_markdown_compile(
     name = "core_proto_doc",
-    protos = ["core_proto"],
+    protos = [
+        "core_proto",
+        "model_proto",
+    ],
 )
 
 # https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
@@ -35,7 +50,10 @@ buf_proto_lint_test(
         "PACKAGE_VERSION_SUFFIX",
         "PACKAGE_DIRECTORY_MATCH",
     ],
-    protos = ["core_proto"],
+    protos = [
+        "core_proto",
+        "model_proto",
+    ],
     use_rules = [
         "DEFAULT",
         "COMMENTS",

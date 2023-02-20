@@ -1,0 +1,18 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "enola-demo",
+    srcs = glob(["src/main/java/**/*.java"]),
+    main_class = "dev.enola.demo.CLI",
+    resources = glob(["src/main/resources/**/*"]),
+    deps = [
+        "//core/lib:lib_java",
+        "//core/proto:core_proto_java_library",
+        "@maven//:org_slf4j_slf4j_simple",
+    ],
+)
+
+# TODO validate demo.textproto against enola_model.proto (and perhaps some additional constraints?)
+# java_test(
+#    name = "model_test",
+# )
