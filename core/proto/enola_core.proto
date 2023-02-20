@@ -50,6 +50,18 @@ message GetResponse {
   google.protobuf.Any proto = 6;
 }
 
+message QueryURIRequest {
+  // Parts can be empty;
+  // if no scheme, returns all schemes;
+  // if scheme but not no entity, returns all entities of the scheme;
+  // if scheme and entity, returns all available query parameter names (without values).
+  URI.Parts uri_parts = 1;
+}
+message QueryURIResponse {
+  repeated URI uris = 1;
+}
+
 service EnolaService {
   rpc Get(GetRequest) returns (GetResponse) {}
+  rpc QueryURI(QueryURIRequest) returns (QueryURIResponse) {}
 }

@@ -7,15 +7,18 @@ public final class URIs {
 
     public static URI from(String s) {
         java.net.URI uri = java.net.URI.create(s);
+        URI.Parts.Builder builder = URI.Parts.newBuilder();
+
         if (uri.getScheme() == null) {
             throw new IllegalArgumentException(s + " URI has no scheme: " + uri);
         }
-        if (uri.getAuthority() == null && uri.getSchemeSpecificPart() == null) {
+        builder.setScheme(uri.getScheme());
+
+        // TODO uri.getAuthority() == null && ?
+        if (uri.getSchemeSpecificPart() == null) {
             throw new IllegalArgumentException(s + " URI has no authority: " + uri);
         }
-        URI.Parts.Builder builder = URI.Parts.newBuilder().setScheme(uri.getScheme());
-        if (uri.getSchemeSpecificPart() != null)
-            builder.setEntity(uri.getSchemeSpecificPart());
+        builder.setEntity(uri.getSchemeSpecificPart());
 
         return URI.newBuilder().setParts(builder).build();
     }
