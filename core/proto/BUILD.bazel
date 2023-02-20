@@ -1,7 +1,7 @@
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
     name = "core_proto",
-    srcs = ["enola_core.proto"],
+    srcs = ["dev/enola/core/proto/enola_core.proto"],
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -10,7 +10,7 @@ proto_library(
 
 proto_library(
     name = "model_proto",
-    srcs = ["enola_model.proto"],
+    srcs = ["dev/enola/core/proto/enola_model.proto"],
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
