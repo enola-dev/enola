@@ -8,6 +8,14 @@ proto_library(
     ],
 )
 
+# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
+load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
+
+java_proto_library(
+    name = "core_proto_java_grpc",
+    protos = ["core_proto"],
+)
+
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
 load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
