@@ -12,4 +12,5 @@ test --test_output=errors
 # Quiet!
 # common --noshow_progress
 common --ui_event_filters=error,warning,-info,-debug,stdout,stderr
+# FYI -info hides output of tools such as core_buf_proto_lint (TODO how-to show only that, if failure?)
 # Beware, -stdout breaks IDE integrations!

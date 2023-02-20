@@ -45,11 +45,11 @@ message GetResponse {
   URI uri = 1;
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
-  repeated string dependsOn = 4;
-  string isOwnedBy = 5;
-  google.protobuf.Any details = 6;
+  repeated string depends_on = 4;
+  string is_owned_by = 5;
+  google.protobuf.Any proto = 6;
 }
 
-service Enola {
+service EnolaService {
   rpc Get(GetRequest) returns (GetResponse) {}
 }
