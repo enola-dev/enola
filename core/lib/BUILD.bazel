@@ -10,6 +10,7 @@ java_library(
 
 [java_test(
     name = name[:-len(".java")],
+    size = "small",
     srcs = [name],
     resources = glob(["src/test/resources/**/*"]),
     deps = [
