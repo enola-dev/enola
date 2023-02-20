@@ -12,7 +12,10 @@ java_library(
     name = name[:-len(".java")],
     srcs = [name],
     resources = glob(["src/test/resources/**/*"]),
-    deps = [":lib_java"],
+    deps = [
+        ":lib_java",
+        "@maven//:com_google_truth_truth",
+    ],
 ) for name in glob([
     "src/test/java/**/*Test.java",
 ])]
