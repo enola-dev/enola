@@ -1,15 +1,19 @@
 package dev.enola.core;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import dev.enola.core.proto.ID;
+import dev.enola.core.proto.IDOrBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public final class IDs {
     private IDs() { }
 
+    private final static Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
     private final static Splitter AMPERSAND_SPLITTER = Splitter.on('&').omitEmptyStrings().trimResults();
     private final static Splitter EQUALSIGN_SPLITTER = Splitter.on('=').omitEmptyStrings().trimResults();
 
@@ -66,13 +70,40 @@ public final class IDs {
         return ID.newBuilder().setParts(builder).build();
     }
 
-    public static ID struct(ID id) {
+    public static ID.Parts parts(ID id) {
         if (id.hasParts()) {
-            return id;
+            return id.getParts();
         }
         if (!id.hasText()) {
             throw new IllegalArgumentException("ID proto is empty and has neither text nor parts oneof");
         }
-        return from(id.getText());
+        return from(id.getText()).getParts();
+    }
+
+    public static String toString(ID id) {
+        if (id.hasText()) {
+            return id.getText();
+        }
+        if (!id.hasParts()) {
+            throw new IllegalArgumentException("ID proto is empty and has neither text nor parts oneof");
+        }
+        ID.Parts parts = id.getParts();
+        StringBuffer sb = new StringBuffer(parts.getScheme());
+        sb.append(':');
+        if (parts.getEntity() != null)
+            sb.append(parts.getEntity());
+        if (parts.getQueryCount() > 0)
+            sb.append('?');
+
+        sb.append(AMPERSAND_JOINER.join( parts.getQueryList().stream().map(pair -> {
+            StringBuilder pairSB = new StringBuilder(pair.getName());
+            if (pair.getValue() != null) {
+                pairSB.append('=');
+                pairSB.append(pair.getValue());
+            }
+            return pairSB.toString();
+        }).iterator()));
+
+        return sb.toString();
     }
 }
