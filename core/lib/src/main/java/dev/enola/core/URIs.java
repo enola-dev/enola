@@ -15,7 +15,7 @@ public final class URIs {
         }
         URI.Parts.Builder builder = URI.Parts.newBuilder().setScheme(uri.getScheme());
         if (uri.getSchemeSpecificPart() != null)
-            builder.setAuthority(uri.getSchemeSpecificPart());
+            builder.setEntity(uri.getSchemeSpecificPart());
 
         return URI.newBuilder().setParts(builder).build();
     }
