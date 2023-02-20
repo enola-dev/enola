@@ -20,7 +20,7 @@ enum Status {
 message URI {
   oneof oneof {
     string text  = 1;
-    Parts struct = 2;
+    Parts parts  = 2;
   }
   message Parts {
     string scheme = 1;
