@@ -3,6 +3,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 java_library(
     name = "lib_java",
     srcs = glob(["src/main/java/**/*.java"]),
+    visibility = ["//connectors:__subpackages__"],
     deps = [
         "//core/proto:core_proto_java_library",
         "@maven//:com_google_guava_guava",
