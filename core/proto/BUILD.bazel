@@ -12,8 +12,9 @@ proto_library(
 load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
 
 java_proto_library(
-    name = "core_proto_java_grpc",
+    name = "core_proto_java_library",
     protos = ["core_proto"],
+    visibility = ["//core:__pkg__"],
 )
 
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
