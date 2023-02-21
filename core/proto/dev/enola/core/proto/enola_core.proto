@@ -57,13 +57,16 @@ message Entity {
   ID id = 1;
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
-  // URL Links to additional information on other systems. Key is EntityKind#url.key, value is (typically absolute) URL.
-  map<string,string> url = 6;
-  google.protobuf.Any proto = 7;
 
-  // TODO Generalize this, as a map<enum Relationship, ID> relationship?
-  repeated string depends_on = 14;
-  string is_owned_by = 15;
+  // Related entities, in Enola.
+  // Key is EntityKind#related.key (modeled by EntityRelationship), value is an ID.
+  map<string, ID> related = 5;
+
+  // URL Links to additional information on other systems.
+  // Key is EntityKind#url.key (modeled by WebLink), value is (typically absolute) URL.
+  map<string,string> url = 6;
+
+  google.protobuf.Any proto = 7;
 }
 
 message GetEntityRequest {

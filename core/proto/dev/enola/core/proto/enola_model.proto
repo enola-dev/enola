@@ -36,41 +36,64 @@ message EntityKind {
   string doc_url = 5;
 
   // The fully qualified (with package) name of the (root) Protocol Buffer Message type in Entity#proto.
-  string proto_fqn = 13;
+  string proto_fqn = 12;
 
   // TODO param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use.
 
   // Parameters, as map. The string keys here match Entity#id.parts.query's.
-  map<string, Parameter> query = 14;
+  map<string, Parameter> query = 13;
 
-  // Links, as map. The string keys here match Entity#links's.
-  map<string, Link> url = 15;
+  map<string, EntityRelationship> related = 14;
+
+  // URL links to web pages, as map. The string keys here match Entity#links's.
+  // These are informational and destined to be displayed to a human on a UI, but not "machine readable" for interpretation.
+  map<string, WebLink> url = 15;
 
   // TODO Describe detailed meaning of Status for this kind of Entity?
-
-  // TODO Generalize Entity#depends_on & #is_owned_by
 }
 
+// Entity#param map model; it's key is the same as this in EntityKind#query, the value is the query parameter value.
 message Parameter {
-  // No name or id field here - that's the Entity.param map key.
-
-  // Reference to another Entity, if any.
-  // As an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template.
+  // Template to generate ID reference to another Entity,
+  // as an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template.
   // The Model#scheme: MUST be included in the template, as it's fairly common to reference entities across models.
-  // The available variables are all of the entities' ID query parameters (but nothing else; TODO context?).
+  // The available variables are all of the entities' ID query.* parameters (but nothing else; TODO context?).
   // Like ID, the template does not have (percentage) encoded or escaped or quoted.
   // Optional; if empty, the parameter doesn't reference any (known, modeled) other entity.
-  string ref_id_template = 2;
+  string ref_id_template = 4;
 }
 
-message Link {
-  // No name or id field here - that's the Entity.url map key.
+// Entity#related map model; it's key is the same as this in EntityKind#related, the value is an ID as URI.
+message EntityRelationship {
+
+  // Human readable label, may be shown on a UI.
+  string label = 2;
+  // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
+  string description = 3;
+
+  // Template to generate ID reference to another Entity, as above.
+  string rel_id_template = 4;
+
+  // This entity "depends" on that related entity. If that one Status is NOK, then so is this one.
+  bool depends_on = 5;
+
+  // TODO Not sure how useful this is as-is...
+  bool owned_by = 6;
+}
+
+// Entity#url map model; it's key is the same as this in EntityKind#url, the value is a URL.
+message WebLink {
+
+  // Human readable label, may be shown on a UI.
+  string label = 2;
+  // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
+  string description = 3;
 
   // URI template (as above), to create URL.
-  // The available variables are the query parameters, as well as a special proto.* which allows
+  // The available variables are the query.* parameters, as well as a special proto.* which allows
   // to declaratively create links out of the Any proto (instead of coding link generation in the service;
   // which is always still also possible).
-  string url_template = 2;
+  string url_template = 4;
 }
 
 message GetEntityKindsRequest { }
