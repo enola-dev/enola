@@ -23,8 +23,8 @@ message EntityKind {
   // (This is the ID of a kind of entity, not of an individual instance of such an entity; that one is message ID.)
   string id = 1;
 
-  // Human readable name ("title") of entity, may be several words, any case, and can be changed.
-  string name = 2;
+  // Human readable label of entity, may be several words, any case, and can be changed.
+  string label = 2;
 
   // The Emoji shown as prefix to the name in UIs, if there is no logo.
   string emoji = 3;
