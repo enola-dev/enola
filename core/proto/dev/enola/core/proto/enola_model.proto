@@ -40,14 +40,15 @@ message EntityKind {
 
   // TODO param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use.
 
-  // Parameters, as map. The string keys here match ID.parts.query's.
-  map<string, Parameter> param = 15;
+  // Parameters, as map. The string keys here match Entity#id.parts.query's.
+  map<string, Parameter> query = 14;
+
+  // Links, as map. The string keys here match Entity#links's.
+  map<string, Link> url = 15;
 
   // TODO Describe detailed meaning of Status for this kind of Entity?
 
   // TODO Generalize Entity#depends_on & #is_owned_by
-
-  // TODO URI templates to declaratively create links out of the Any proto (instead of coding it, which is always still also possible)
 }
 
 message Parameter {
@@ -56,10 +57,20 @@ message Parameter {
   // Reference to another Entity, if any.
   // As an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template.
   // The Model#scheme: MUST be included in the template, as it's fairly common to reference entities across models.
-  // The available variables are all of the entities' parameters (but nothing else; TODO context?).
+  // The available variables are all of the entities' ID query parameters (but nothing else; TODO context?).
   // Like ID, the template does not have (percentage) encoded or escaped or quoted.
   // Optional; if empty, the parameter doesn't reference any (known, modeled) other entity.
   string ref_id_template = 2;
+}
+
+message Link {
+  // No name or id field here - that's the Entity.url map key.
+
+  // URI template (as above), to create URL.
+  // The available variables are the query parameters, as well as a special proto.* which allows
+  // to declaratively create links out of the Any proto (instead of coding link generation in the service;
+  // which is always still also possible).
+  string url_template = 2;
 }
 
 message GetEntityKindsRequest { }

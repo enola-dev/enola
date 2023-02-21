@@ -18,6 +18,9 @@ public class TextProtoValidator {
 
     private final ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
 
+    // TODO scan for proto-file and proto-message headers
+    // TODO support proto-import?
+
     public MessageOrBuilder validate(URL url, Message.Builder builder) {
         try {
             try (InputStream is = Resources.asByteSource(url).openStream()) {
