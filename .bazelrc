@@ -1,0 +1,20 @@
+# https://bazel.build/run/bazelrc
+
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
+common --enable_bzlmod
+
+# https://bazel.build/docs/user-manual#java_runtime_version
+build --java_runtime_version=remotejdk_11
+
+# https://github.com/bazelbuild/intellij/issues/1169
+build --incompatible_strict_action_env
+run --incompatible_strict_action_env
+
+# https://bazel.build/reference/command-line-reference#flag--test_output
+test --test_output=errors
+
+# Quiet!
+# common --noshow_progress
+common --ui_event_filters=error,warning,info,-debug,stdout,stderr
+# FYI -info also hides :( output from tests and tools such as core_buf_proto_lint (TODO how-to show only that, if failure?)
+# Beware, -stdout breaks IDE integrations!
