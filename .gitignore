@@ -1,0 +1,12 @@
+# JDT
+bin/
+
+# Bazel
+bazel-*
+
+# Gradle
+build/
+.gradle
+
+# IntelliJ
+.ijwb/
