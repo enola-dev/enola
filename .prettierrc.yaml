@@ -20,7 +20,7 @@ bracketSpacing: true
 proseWrap: always
 quoteProps: as-needed
 semi: false
-singleAttributePerLine: true
+singleAttributePerLine: false
+single-attribute-per-line: false
 singleQuote: false
 trailingComma: "es5"
-# Note that printWidth, useTabs, tabWidth, endOfLine is read from .editorconfig by Prettier

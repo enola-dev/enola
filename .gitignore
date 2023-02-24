@@ -22,3 +22,6 @@ site/
 
 # asciinema, used in demo/**
 *.cast
+
+# Node.JS
+node_modules/

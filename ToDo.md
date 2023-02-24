@@ -44,6 +44,11 @@
      - https://marp.app
      - https://gist.github.com/johnloy/27dd124ad40e210e91c70dd1c24ac8c8
 
+1. UI Enhancements
+   - Search should be more in the middle
+   - Icon should be vertically aligned in the middle
+   - Footer
+
 1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
    See https://squidfunk.github.io/mkdocs-material/reference/images/
    With https://squidfunk.github.io/mkdocs-material/reference/grids/
