@@ -1,5 +1,13 @@
 # Enola 🕵🏾‍♀️ ToDo
 
+1. Set-up CI
+
+1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions) to 11
+
+1. [google-java-format](https://github.com/google/google-java-format)
+   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
+   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
+
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
 1. CLI with PicoCLI for `enola-demo be OK foo:a`
@@ -18,14 +26,6 @@
 
 1. gEnola
 
-1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions)
-
-1. Set-up CI
-
-1. [google-java-format](https://github.com/google/google-java-format)
-   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
-   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
-
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
 1. Set-up https://github.com/igorshubovych/markdownlint-cli for docs/, perhaps using https://magefile.org ? Or... dogfood, `be valid`?!
@@ -35,3 +35,5 @@
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
 1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md)?!
+
+1. Consider switching from Java 11 to Java 19
