@@ -15,7 +15,8 @@ public class Bek {
         Configuration.setDefaultApiClient(client);
 
         ProtoClient pc = new ProtoClient(client);
-        ObjectOrStatus<V1.PodList> list = pc.list(V1.PodList.newBuilder(), "/api/v1/namespaces/default/pods");
+        ObjectOrStatus<V1.PodList> list =
+                pc.list(V1.PodList.newBuilder(), "/api/v1/namespaces/default/pods");
 
         if (list.object.getItemsCount() > 0) {
             V1.Pod p = list.object.getItems(0);
