@@ -11,8 +11,6 @@ To locally build, work on and contribute to this project, you need to:
        git clone https://github.com/vorburger/enola.git
        cd enola
 
-       tools/git/install-hooks.bash
-
 1. Run the tests:
 
        ./test.bash
