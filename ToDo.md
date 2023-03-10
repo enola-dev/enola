@@ -1,12 +1,6 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. [google-java-format](https://github.com/google/google-java-format)
-   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
-   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
-
 1. https://github.com/bazelbuild/rules_license
-
-1. https://pre-commit.com (and https://pre-commit.ci ?)
 
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
@@ -30,7 +24,10 @@
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
-1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md)?!
+1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md) in VSC instead IJ?!
+1. [`google-java-format`](https://github.com/google/google-java-format) with VSC:
+   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
+   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
 1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
 
