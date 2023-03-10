@@ -6,6 +6,8 @@
    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
    - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
+1. https://github.com/bazelbuild/rules_license
+
 1. https://pre-commit.com (and https://pre-commit.ci ?)
 
 1. Implement QueryAvailableEntities, based on the model
