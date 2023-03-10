@@ -1,6 +1,6 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions) to 11.
+1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions) to 11
 
 1. [google-java-format](https://github.com/google/google-java-format)
    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
