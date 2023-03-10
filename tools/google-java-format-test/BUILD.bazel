@@ -1,0 +1,28 @@
+# java_library(
+#    name = "google-java-format-library",
+#    srcs = glob(["src/main/java/**/*.java"]),
+#    visibility = ["//:__subpackages__"],
+#    deps = [
+#        "@maven//:com_google_googlejavaformat_google_java_format",
+#        "@maven//:junit_junit",
+#    ],
+# )
+
+java_test(
+    name = "GoogleJavaFormatTest",
+    srcs = glob(["src/test/java/**/*Test.java"]),
+    deps = [
+        "@maven//:com_google_googlejavaformat_google_java_format",
+        # "@maven//:junit_junit",
+    ],
+)
+
+# java_binary(
+#    name = "google-java-format-binary",
+#    main_class = "dev.enola.tools.format.GoogleJavaFormatTest",
+#    # srcs = glob(["src/main/java/**/*.java"]),
+#    visibility = ["//:__subpackages__"],
+#    runtime_deps = [
+#        ":google-java-format-library",
+#    ],
+# )
