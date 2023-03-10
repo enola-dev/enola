@@ -26,3 +26,9 @@ repos:
     rev: 2.7.1
     hooks:
       - id: editorconfig-checker
+
+  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+    rev: 54f7f7c5cb9501110b928f2a98faa8024142f8d7
+    hooks:
+      - id: pretty-format-java
+        args: [--autofix, --aosp]
