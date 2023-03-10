@@ -9,7 +9,8 @@ public abstract class AbstractProtoTest {
         this.pathToResourceOnClasspath = pathToResourceOnClasspath;
     }
 
-    @Test public void testTextProtoValidation() {
+    @Test
+    public void testTextProtoValidation() {
         // TODO Implement, using TextProtoValidator!
     }
 }
