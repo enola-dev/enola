@@ -11,3 +11,6 @@ build/
 # IntelliJ
 .ijwb/
 .idea/
+
+# Python Virtual Environment (venv, created by ./test.bash)
+.venv/
