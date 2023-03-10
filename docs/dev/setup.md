@@ -16,3 +16,6 @@ To locally build, work on and contribute to this project, you need to:
        ./test.bash
 
 You can now [read more about Bazel's use in this project](bazel.md).
+
+`./update.bash` automatically updates this project's external ("third-party") dependencies.
+It should be regularly (manually) run by the active maintainers of this project.
