@@ -26,4 +26,9 @@ jobs:
           path: .venv/
           key: ${{ runner.os }}-venv-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-venv-
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: ${{ runner.os }}-cache-
       - run: ./test.bash
