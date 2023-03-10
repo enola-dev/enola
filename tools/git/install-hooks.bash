@@ -3,4 +3,6 @@ set -euo pipefail
 
 DIR=$(realpath "$(dirname "$0")")
 
-cp -v "$DIR/hooks/"* "$DIR/../../.git/hooks/"
+if ! [ -e "$DIR/../../.git/hooks/pre-commit" ]; then
+  cp -v "$DIR/hooks/"* "$DIR/../../.git/hooks/"
+fi
