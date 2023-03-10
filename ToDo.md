@@ -1,6 +1,6 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. [google-java-format](https://github.com/google/google-java-format)
+1. [google-java-format](https://github.com/google/google-java-format)!
    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
    - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
