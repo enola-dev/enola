@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-tools/git/install-hooks.bash
-
 # TODO build, not just test! (Because test targets may well not dependend on every build target.)
 bazelisk test //...
 
@@ -29,3 +27,8 @@ fi
 pre-commit run
 
 # TODO mdlint *.md (ideally as Bazel sh_test, like shellcheck)
+
+# This makes sure that this test.bash will run as a pre-commit hook
+# NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
+# (And because our own venv etc. stuff above is better for the "first touch" contributor experience.)
+tools/git/install-hooks.bash
