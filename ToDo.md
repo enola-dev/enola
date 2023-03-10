@@ -1,12 +1,12 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. Set-up CI
-
 1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions) to 11
 
 1. [google-java-format](https://github.com/google/google-java-format)
    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
    - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
+
+1. https://pre-commit.com (and https://pre-commit.ci ?)
 
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
@@ -16,15 +16,11 @@
 1. K8s MVP Proto
    - `ownerReferences`
 
-1. OPEN
-
 1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to docs/ during build
 
 1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx? [Docusaurus](https://docusaurus.io)?)
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
-
-1. gEnola
 
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
@@ -35,5 +31,7 @@
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
 1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md)?!
+
+1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
 
 1. Consider switching from Java 11 to Java 19
