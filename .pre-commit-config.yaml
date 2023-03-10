@@ -34,3 +34,13 @@ repos:
         args: [--autofix, --aosp]
       - id: pretty-format-yaml
         args: [--autofix, --indent, '4', --offset, '2']
+
+  # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md#setup-and-usage-via-bazel-not-supported-on-windows
+  - repo: https://github.com/keith/pre-commit-buildifier
+    rev: 6.0.0
+    hooks:
+      - id: buildifier
+        args: &args
+          - --warnings=all
+      - id: buildifier-lint
+        args: *args
