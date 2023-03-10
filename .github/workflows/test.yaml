@@ -12,4 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
       - run: ./test.bash
