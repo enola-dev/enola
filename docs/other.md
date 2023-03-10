@@ -1,6 +1,7 @@
 # Other Tools
 
-Enola 🕵🏾‍♀️ is not an Observability / Monitoring _(Application Performance Management, APM)_ tool. There are already many great ones, e.g. Prometheus, [Thanos](https://thanos.io), etc.
+Enola 🕵🏾‍♀️ is not an Observability / Monitoring _(Application Performance Management, APM)_ tool. There are already
+many great ones, e.g. Prometheus, [Thanos](https://thanos.io), etc.
 On the contrary, Enola is often set-up to integrate with and read data from existing monitoring tools,
 if available.
 

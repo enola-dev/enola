@@ -21,7 +21,7 @@ entity {
   query { key: "foo", value: { ref_id_template: "demo:foo?name={query.foo}" } }
   related { key: "one", value: { label: "Primary Baz", rel_id_template: "demo:baz?uuid={proto.something.id}", depends_on: true } }
   related { key: "two", value: { label: "Secondary Baz", rel_id_template: "demo:baz?uuid={proto.otherthing.id}" } }
-  url { key: "wiki", value: { label: "Wikipedia", description: "founded by Jimmy Wales", url_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"} }
+  url { key: "wiki", value: { label: "Wikipedia", description: "founded by Jimmy Wales", url_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}" } }
 }
 entity {
   id: "baz"

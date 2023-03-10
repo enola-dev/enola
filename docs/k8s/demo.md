@@ -24,7 +24,8 @@ using the `be` CLI tool's `TARGET-STATE ENTITY ID` syntax.
        be stopped k8s/cluster ctx=enola-demo
 
 The fun thing is that Enola understands all the intrinsic relationships between everything we have illustrated above.
-You can therefore do the following, which will do exactly the same as what we just did step by step but instead in one go,
+You can therefore do the following, which will do exactly the same as what we just did step by step but instead in one
+go,
 based on the [index.be.textproto](index.be.textproto):
 
     be available

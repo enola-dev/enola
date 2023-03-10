@@ -10,11 +10,11 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 enum Status {
-  STATUS_UNSPECIFIED     = 0;
-  STATUS_OK              = 200;
+  STATUS_UNSPECIFIED = 0;
+  STATUS_OK = 200;
   STATUS_OK_BUT_DEGRADED = 300;
-  STATUS_NOK_DEPENDENCY  = 502;
-  STATUS_NOK_ITSELF      = 503;
+  STATUS_NOK_DEPENDENCY = 502;
+  STATUS_NOK_ITSELF = 503;
 }
 
 // ID of an object known to Enola.
@@ -43,8 +43,8 @@ enum Status {
 // The string text oneof form is NOT "decoded" like un-escaped (incl. un-quoted) at all, simply "split".
 message ID {
   oneof oneof {
-    string text  = 1;
-    Parts parts  = 2;
+    string text = 1;
+    Parts parts = 2;
   }
   message Parts {
     string scheme = 1;
@@ -64,7 +64,7 @@ message Entity {
 
   // URL Links to additional information on other systems.
   // Key is EntityKind#url.key (modeled by WebLink), value is (typically absolute) URL.
-  map<string,string> url = 6;
+  map<string, string> url = 6;
 
   google.protobuf.Any proto = 7;
 }
@@ -88,7 +88,7 @@ service EnolaService {
 // TODO Log isn't actually used, just yet...
 message Log {
   oneof oneof {
-    string url  = 1;
+    string url = 1;
     Inline inline = 2;
   }
   message Inline {
@@ -107,19 +107,18 @@ message Log {
     // Debug or trace information.
     SEVERITY_DEBUG = 100;
     //  Routine information, such as ongoing status or performance.
-    SEVERITY_INFO	= 200;
+    SEVERITY_INFO = 200;
     // Normal but significant events, such as start up, shut down, or a configuration change.
-    SEVERITY_NOTICE	= 300;
+    SEVERITY_NOTICE = 300;
     // Warning events might cause problems.
-    SEVERITY_WARNING= 400;
+    SEVERITY_WARNING = 400;
     // Error events are likely to cause problems.
-    SEVERITY_ERROR= 500;
+    SEVERITY_ERROR = 500;
     // Critical events cause more severe problems or outages.
-    SEVERITY_CRITICAL	= 600;
+    SEVERITY_CRITICAL = 600;
     // A person must take an action immediately.
     SEVERITY_ALERT = 700;
     // One or more systems are unusable.
     SEVERITY_EMERGENCY = 800;
   }
 }
-

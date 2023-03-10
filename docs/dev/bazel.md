@@ -24,9 +24,12 @@ PS: Use `b query "@maven//:*"` to see all targets.
 
 ## GitHub Action Cache
 
-The `.github/workflows/test.yaml` uses the https://github.com/actions/cache to speed up the Continuous Integration (CI) builds of PRs on GitHub.
+The `.github/workflows/test.yaml` uses the https://github.com/actions/cache to speed up the Continuous Integration (CI)
+builds of PRs on GitHub.
 
-It is **normal** and intentional that every time Bazel `BUILD` etc. files are changed this cache is _entirely_ invalidated, and thus a longer "full build" runs. PRs which do not change dependencies will still build noticeably faster.
+It is **normal** and intentional that every time Bazel `BUILD` etc. files are changed this cache is _entirely_
+invalidated, and thus a longer "full build" runs. PRs which do not change dependencies will still build noticeably
+faster.
 
 If you are surprised and it seems to you that this cache does not work, because you noticed that the
 re-build of the `main` branch after the merge of a GitHub Pull Request (PR) which changed dependencies
@@ -35,6 +38,7 @@ does not re-use the cache from the PR, this is also **expected** and not a bug.
 It **WILL** work and speed up future PRs (provided there are no changes to dependencies again).
 
 [GitHub's documentation](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#restrictions-for-accessing-a-cache)
-explains why this is so; TL;DR: a PR build can use the cache from a `main` build, but a `main` build will not use a PR's cache.
+explains why this is so; TL;DR: a PR build can use the cache from a `main` build, but a `main` build will not use a PR's
+cache.
 
 https://github.com/actions/cache/pull/575/files has some related discussion.

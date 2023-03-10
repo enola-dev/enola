@@ -96,7 +96,7 @@ message WebLink {
   string url_template = 4;
 }
 
-message GetEntityKindsRequest { }
+message GetEntityKindsRequest {}
 // Clients would typically cache this.
 message GetEntityKindsResponse {
   repeated EntityKind model = 1;

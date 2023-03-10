@@ -6,9 +6,13 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/223
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
-  "cSpell.words": ["Enola"],
+  "cSpell.words": [
+    "Enola"
+  ],
   // https://github.com/bazelbuild/vscode-bazel/issues/281
-  "java.project.sourcePaths": ["k8s/src/main/java"],
+  "java.project.sourcePaths": [
+    "k8s/src/main/java"
+  ],
   // https://github.com/salesforce/bazel-vscode#installation
   "java.import.bazel.enabled": true,
   "java.import.maven.enabled": false

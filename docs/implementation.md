@@ -4,12 +4,14 @@
 
 The project is _"polyglot"_ (cool with using multiple programming languages).
 
-We follow a _"[UNIX philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)"_-inspired approach to modularity among the subsystems and within their code.
+We follow a _"[UNIX philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)"_-inspired approach to modularity among
+the subsystems and within their code.
 
 We do not think it's necessarily all that bad to "shell out" (exec) to invoke existing CLI tools,
 if this can significantly accelerate required integrations, or simplify authentication & authorization security.
 But such tools such produce output in some machine readable structured text format (such as JSON, YAML, TextProto)
-or even a well-known binary format (such as Protocol Buffers binary serialization), not formatted text output intended for humans.
+or even a well-known binary format (such as Protocol Buffers binary serialization), not formatted text output intended
+for humans.
 
 ## Java
 

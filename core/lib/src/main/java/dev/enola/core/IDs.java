@@ -5,18 +5,17 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.IDOrBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public final class IDs {
-    private IDs() { }
-
     private final static Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
     private final static Splitter AMPERSAND_SPLITTER = Splitter.on('&').omitEmptyStrings().trimResults();
     private final static Splitter EQUALSIGN_SPLITTER = Splitter.on('=').omitEmptyStrings().trimResults();
+
+    private IDs() {
+    }
 
     public static ID from(String s) {
         java.net.URI uri = java.net.URI.create(s);
@@ -47,7 +46,7 @@ public final class IDs {
             builder.setEntity(entity);
 
             Set<String> queryParameterNames = new HashSet<>();
-            String query = path.substring(idx+1);
+            String query = path.substring(idx + 1);
             AMPERSAND_SPLITTER.split(query).forEach(pair -> {
                 String[] nameValue = Iterables.toArray(EQUALSIGN_SPLITTER.split(pair), String.class);
                 if (nameValue.length > 2) {
@@ -97,7 +96,7 @@ public final class IDs {
 
         if (parts.getQueryCount() > 0)
             sb.append('?');
-        sb.append(AMPERSAND_JOINER.join( parts.getQueryMap().entrySet().stream().map(pair -> {
+        sb.append(AMPERSAND_JOINER.join(parts.getQueryMap().entrySet().stream().map(pair -> {
             StringBuilder pairSB = new StringBuilder(pair.getKey());
             if (pair.getValue() != null) {
                 pairSB.append('=');

@@ -1,4 +1,7 @@
 {
-  "recommendations": ["bazelbuild.vscode-bazel", "salesforce.bazel-vscode"]
+  "recommendations": [
+    "bazelbuild.vscode-bazel",
+    "salesforce.bazel-vscode"
+  ]
   // NOT "georgewfraser.vscode-javac", see https://github.com/bazelbuild/vscode-bazel/issues/281
 }

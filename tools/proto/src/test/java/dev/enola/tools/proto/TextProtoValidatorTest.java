@@ -1,6 +1,5 @@
 package dev.enola.tools.proto;
 
-import com.google.common.io.Resources;
 import com.google.protobuf.Timestamp;
 import org.junit.Test;
 
@@ -10,7 +9,8 @@ import static org.junit.Assert.assertThrows;
 
 // TODO(vorburger) Upstream this!
 public class TextProtoValidatorTest {
-    @Test public void testValidation() {
+    @Test
+    public void testValidation() {
         // OK
         // TODO(vorburger) Should not require Timestamp.newBuilder(), but proto-file + proto-message
         // TODO(vorburger) Should not return null, but Timestamp instance, which needs to be asserted for equalsTo.
