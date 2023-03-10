@@ -10,7 +10,7 @@ fi
 bazelisk test //...
 
 # Check if https://pre-commit.com is available (and try to install it not)
-if ! [ -x "$(command -v pre-commit)" ]; then
+if ! [ -e "./.venv/bin/pre-commit" ]; then
   echo "https://pre-commit.com is not available..."
 
   if ! [ -x "$(command -v python3)" ]; then
