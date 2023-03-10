@@ -1,0 +1,15 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+# NB: When adding new hooks, or making changes to existing hooks configuration,
+# run `pre-commit run --all-files` one time, to run the hooks against all of the existing files!
+# (Because regular pre-commit will only run on the changed files.)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
