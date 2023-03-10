@@ -24,6 +24,8 @@
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for
    QueryParameter#ref_id_template
 
+1. https://github.com/google/bazel-common ?
+
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
 1. Set-up https://github.com/igorshubovych/markdownlint-cli for docs/, perhaps using https://magefile.org ? Or...

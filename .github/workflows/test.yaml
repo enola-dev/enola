@@ -2,16 +2,20 @@ name: "Test"
 
 on:
   push:
-    branches: [ main, private ]
+    branches: [main, private]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ main, private ]
+    branches: [main, private]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: axel-op/googlejavaformat-action@v3
+        # TODO It would be better for local reproducibility if google-java-format ran through Bazel...
+        with:
+          args: "--set-exit-if-changed"
       - uses: actions/cache@v3
         with:
           # https://github.com/actions/cache/pull/575/files
