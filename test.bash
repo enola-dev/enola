@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! [ -x "$(command -v bazelisk)" ]; then
+    echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
+    exit 255
+fi
+
 # TODO build, not just test! (Because test targets may well not dependend on every build target.)
 bazelisk test //...
 
