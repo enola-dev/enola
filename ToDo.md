@@ -1,7 +1,5 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. Settle [the Java version to use](https://bazel.build/docs/bazel-and-java#java-versions) to 11.
-
 1. [google-java-format](https://github.com/google/google-java-format)
    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
    - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
@@ -36,4 +34,4 @@
 
 1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
 
-1. Consider switching from Java 11 to Java 19
+1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
