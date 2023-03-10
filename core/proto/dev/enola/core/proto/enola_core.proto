@@ -122,4 +122,3 @@ message Log {
     SEVERITY_EMERGENCY = 800;
   }
 }
-
