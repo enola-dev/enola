@@ -19,6 +19,11 @@ jobs:
             ~/.cache/bazel
             ~/.cache/bazelisk
             /private/var/tmp/_bazel_runner/
-          key: ${{ runner.os }}-bazel-${{ steps.cache-key.outputs.uniq }}-${{ hashFiles('WORKSPACE', '.bazelrc', '.bazelversion', 'BUILD', 'BUILD.bazel', '**/BUILD', '**/BUILD.bazel', 'MODULE', 'MODULE.bazel', 'maven_install.json', 'bazel/dependencies.bzl', 'bazel/repositories.bzl') }}
-          restore-keys: ${{ runner.os }}-bazel-${{ steps.cache-key.outputs.uniq }}-
+          key: ${{ runner.os }}-bazel-${{ hashFiles('WORKSPACE', '.bazelrc', '.bazelversion', 'BUILD', 'BUILD.bazel', '**/BUILD', '**/BUILD.bazel', 'MODULE', 'MODULE.bazel', 'maven_install.json', 'bazel/dependencies.bzl', 'bazel/repositories.bzl') }}
+          restore-keys: ${{ runner.os }}-bazel-
+      - uses: actions/cache@v3
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-venv-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: ${{ runner.os }}-venv-
       - run: ./test.bash
