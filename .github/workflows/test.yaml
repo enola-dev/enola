@@ -19,7 +19,6 @@ jobs:
             ~/.cache/bazel
             ~/.cache/bazelisk
             /private/var/tmp/_bazel_runner/
-            .venv/
-          key: ${{ runner.os }}-bazel-${{ steps.cache-key.outputs.uniq }}-${{ hashFiles('.venv/**', 'WORKSPACE', '.bazelrc', '.bazelversion', 'BUILD', 'BUILD.bazel', '**/BUILD', '**/BUILD.bazel', 'MODULE', 'MODULE.bazel', 'maven_install.json', 'bazel/dependencies.bzl', 'bazel/repositories.bzl') }}
+          key: ${{ runner.os }}-bazel-${{ steps.cache-key.outputs.uniq }}-${{ hashFiles('WORKSPACE', '.bazelrc', '.bazelversion', 'BUILD', 'BUILD.bazel', '**/BUILD', '**/BUILD.bazel', 'MODULE', 'MODULE.bazel', 'maven_install.json', 'bazel/dependencies.bzl', 'bazel/repositories.bzl') }}
           restore-keys: ${{ runner.os }}-bazel-${{ steps.cache-key.outputs.uniq }}-
       - run: ./test.bash
