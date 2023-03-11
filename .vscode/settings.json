@@ -6,7 +6,33 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/223
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
+
   "cSpell.words": ["Enola"],
+
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  // https://code.visualstudio.com/docs/languages/html#_auto-update-tags
+  "editor.linkedEditing": true,
+
+  // see docs/dev/style.md
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "[textproto]": {
+    "editor.defaultFormatter": "seaube.clangformat"
+  },
+
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "markdown.validate.fileLinks.enabled": "error",
+  "markdown.validate.enabled": true,
+  "markdown.validate.fragmentLinks.enabled": "error",
+  "markdown.validate.fileLinks.markdownFragmentLinks": "error",
+
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
   // https://github.com/bazelbuild/vscode-bazel/issues/281
   "java.project.sourcePaths": ["k8s/src/main/java"],
   // https://github.com/salesforce/bazel-vscode#installation
