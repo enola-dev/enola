@@ -57,3 +57,10 @@ repos:
     rev: 2.7.1
     hooks:
       - id: editorconfig-checker
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.6
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.8.4

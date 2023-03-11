@@ -1,6 +1,6 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. MD format 80 columnns pre-commit... with Prettier?
+1. MD format 80 columnns pre-commit... with Prettier? Or mdlint?
    Then change `.editorconfig` from `max_line_length = unset` to 80.
 
 1. https://github.com/yoheimuta/protolint
@@ -14,7 +14,8 @@
 1. CLI completion - hard or trivial?
 
 1. K8s MVP Proto
-   - `ownerReferences`
+
+    - `ownerReferences`
 
 1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to docs/ during build
 
@@ -30,10 +31,12 @@
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
+1. https://plugins.jetbrains.com/plugin/10456-prettier ? Or no longer needed, with VSC?
 1. [Bazel Java IDE support](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md) in VSC instead IJ?!
 1. [`google-java-format`](https://github.com/google/google-java-format) with VSC:
-   - https://www.sethvargo.com/using-google-java-format-with-vs-code/
-   - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
+
+    - https://www.sethvargo.com/using-google-java-format-with-vs-code/
+    - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
 1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
 
