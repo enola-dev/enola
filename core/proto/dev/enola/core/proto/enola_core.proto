@@ -10,41 +10,51 @@ import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 enum Status {
-  STATUS_UNSPECIFIED     = 0;
-  STATUS_OK              = 200;
+  STATUS_UNSPECIFIED = 0;
+  STATUS_OK = 200;
   STATUS_OK_BUT_DEGRADED = 300;
-  STATUS_NOK_DEPENDENCY  = 502;
-  STATUS_NOK_ITSELF      = 503;
+  STATUS_NOK_DEPENDENCY = 502;
+  STATUS_NOK_ITSELF = 503;
 }
 
 // ID of an object known to Enola.
-// In text (string) form, it "looks" like an RFC 2396 Uniform Resource Identifier (URI, not URN),
-// but this is just we want some "standard"-like format which humans are used to seeing.
-// The real syntax is actually simpler and quite a bit more restricted,
-// see https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax:
+// In text (string) form, it "looks" like an RFC 2396 Uniform Resource
+// Identifier (URI, not URN), but this is just we want some "standard"-like
+// format which humans are used to seeing. The real syntax is actually simpler
+// and quite a bit more restricted, see
+// https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax:
 //
-// * The "scheme" is just a "namespace" in Enola, which typically aligns with RPC Service implementations.
-// * The "authority" (//...) is not used (and IDs with them are rejected; see IDsTest.java).
-// * The "path" is not actually a path, but just a name of a kind of entity within that scheme. It can contain slashes, but they are not interpreted.
-// * The "query" (?...) is used to identify a specific entity (with a name or UUID or whatever; specific to each entity).
-// * The "fragment" (#...) is not used (and IDs with them are rejected; see IDsTest.java).
+// * The "scheme" is just a "namespace" in Enola, which typically aligns with
+// RPC Service implementations.
+// * The "authority" (//...) is not used (and IDs with them are rejected; see
+// IDsTest.java).
+// * The "path" is not actually a path, but just a name of a kind of entity
+// within that scheme. It can contain slashes, but they are not interpreted.
+// * The "query" (?...) is used to identify a specific entity (with a name or
+// UUID or whatever; specific to each entity).
+// * The "fragment" (#...) is not used (and IDs with them are rejected; see
+// IDsTest.java).
 //
-// Things like a "cluster" or a "rack" or whatever "hierarchies" an entity may have are, by convention,
-// not part of the entity (path), but represented as part of the query; for example:
+// Things like a "cluster" or a "rack" or whatever "hierarchies" an entity may
+// have are, by convention, not part of the entity (path), but represented as
+// part of the query; for example:
 // * k8s:pod?network=prod&context=demo&namespace=test&name=hello
 //
-// Note that IDs are not "unique", and 2 different IDs may refer to the same underlying object; for example:
+// Note that IDs are not "unique", and 2 different IDs may refer to the same
+// underlying object; for example:
 // * k8s:pod?name=echoserver-6dfb6c7764-45gvk&...
 // * k8s:pod?uid=561f1bec-f768-4c5b-b96e-37306d7f2f8a&...
 //
-// We permit RPC clients to specify the ID in either (oneof) string text or "broken down" parts form.
-// This is simply for dev convenience in UX such as CLI or Web UIs, and to avoid the proliferation of incompatible parsers.
-// The implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or "demo:foo?bad=a&bad=b".
-// The string text oneof form is NOT "decoded" like un-escaped (incl. un-quoted) at all, simply "split".
+// We permit RPC clients to specify the ID in either (oneof) string text or
+// "broken down" parts form. This is simply for dev convenience in UX such as
+// CLI or Web UIs, and to avoid the proliferation of incompatible parsers. The
+// implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or
+// "demo:foo?bad=a&bad=b". The string text oneof form is NOT "decoded" like
+// un-escaped (incl. un-quoted) at all, simply "split".
 message ID {
   oneof oneof {
-    string text  = 1;
-    Parts parts  = 2;
+    string text = 1;
+    Parts parts = 2;
   }
   message Parts {
     string scheme = 1;
@@ -59,12 +69,14 @@ message Entity {
   Status status = 3;
 
   // Related entities, in Enola.
-  // Key is EntityKind#related.key (modeled by EntityRelationship), value is an ID.
+  // Key is EntityKind#related.key (modeled by EntityRelationship), value is an
+  // ID.
   map<string, ID> related = 5;
 
   // URL Links to additional information on other systems.
-  // Key is EntityKind#url.key (modeled by WebLink), value is (typically absolute) URL.
-  map<string,string> url = 6;
+  // Key is EntityKind#url.key (modeled by WebLink), value is (typically
+  // absolute) URL.
+  map<string, string> url = 6;
 
   google.protobuf.Any proto = 7;
 }
@@ -75,7 +87,8 @@ message GetEntityRequest {
 message GetEntityResponse {
   Entity entity = 1;
 }
-// TODO Later have an RPC for a time series XRequest, and XResponse with repeated Entity?
+// TODO Later have an RPC for a time series XRequest, and XResponse with
+// repeated Entity?
 //   google.protobuf.Timestamp ts = 2;
 //   google.protobuf.Timestamp start = 2;
 //   google.protobuf.Timestamp end = 3;
@@ -88,7 +101,7 @@ service EnolaService {
 // TODO Log isn't actually used, just yet...
 message Log {
   oneof oneof {
-    string url  = 1;
+    string url = 1;
     Inline inline = 2;
   }
   message Inline {
@@ -99,23 +112,26 @@ message Log {
     Severity severity = 2;
     string text = 3;
   }
-  // Inspired by https://cloud.google.com/service-infrastructure/docs/service-control/reference/rpc/google.logging.type,
-  // but could be extended here, as there is no real direct connection between this and GCP logging.
+  // Inspired by
+  // https://cloud.google.com/service-infrastructure/docs/service-control/reference/rpc/google.logging.type,
+  // but could be extended here, as there is no real direct connection between
+  // this and GCP logging.
   enum Severity {
     // The log entry has no assigned severity level.
     SEVERITY_UNSPECIFIED = 0;
     // Debug or trace information.
     SEVERITY_DEBUG = 100;
     //  Routine information, such as ongoing status or performance.
-    SEVERITY_INFO	= 200;
-    // Normal but significant events, such as start up, shut down, or a configuration change.
-    SEVERITY_NOTICE	= 300;
+    SEVERITY_INFO = 200;
+    // Normal but significant events, such as start up, shut down, or a
+    // configuration change.
+    SEVERITY_NOTICE = 300;
     // Warning events might cause problems.
-    SEVERITY_WARNING= 400;
+    SEVERITY_WARNING = 400;
     // Error events are likely to cause problems.
-    SEVERITY_ERROR= 500;
+    SEVERITY_ERROR = 500;
     // Critical events cause more severe problems or outages.
-    SEVERITY_CRITICAL	= 600;
+    SEVERITY_CRITICAL = 600;
     // A person must take an action immediately.
     SEVERITY_ALERT = 700;
     // One or more systems are unusable.

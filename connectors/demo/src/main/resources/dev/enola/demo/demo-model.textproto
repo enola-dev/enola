@@ -9,7 +9,10 @@ entity {
   emoji: "💂"
   doc_url: "demo-model.md#foo"
   proto_fqn: "dev.enola.demo.Foo"
-  query { key: "name", value: { } }
+  query {
+    key: "name",
+    value: {}
+  }
 }
 entity {
   id: "bar"
@@ -17,13 +20,43 @@ entity {
   emoji: "👩‍🎤"
   doc_url: "demo-model.md#bar"
   proto_fqn: "dev.enola.demo.Bar"
-  query { key: "name", value: { } }
-  query { key: "foo", value: { ref_id_template: "demo:foo?name={query.foo}" } }
-  related { key: "one", value: { label: "Primary Baz", rel_id_template: "demo:baz?uuid={proto.something.id}", depends_on: true } }
-  related { key: "two", value: { label: "Secondary Baz", rel_id_template: "demo:baz?uuid={proto.otherthing.id}" } }
-  url { key: "wiki", value: { label: "Wikipedia", description: "founded by Jimmy Wales", url_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"} }
+  query {
+    key: "name",
+    value: {}
+  }
+  query {
+    key: "foo",
+    value: { ref_id_template: "demo:foo?name={query.foo}" }
+  }
+  related {
+    key: "one",
+    value: {
+      label: "Primary Baz",
+      rel_id_template: "demo:baz?uuid={proto.something.id}",
+      depends_on: true
+    }
+  }
+  related {
+    key: "two",
+    value: {
+      label: "Secondary Baz",
+      rel_id_template: "demo:baz?uuid={proto.otherthing.id}"
+    }
+  }
+  url {
+    key: "wiki",
+    value: {
+      label: "Wikipedia",
+      description: "founded by Jimmy Wales",
+      url_template: "https://en.wikipedia.org/w/"
+                    "index.php?fulltext=Search&search={name}"
+    }
+  }
 }
 entity {
   id: "baz"
-  query { key: "uuid", value: { } }
+  query {
+    key: "uuid",
+    value: {}
+  }
 }
