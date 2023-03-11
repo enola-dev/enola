@@ -20,8 +20,7 @@ jobs:
             ~/.cache/bazelisk
             /private/var/tmp/_bazel_runner/
           key: >
-            ${{ runner.os }}-bazel-${{ hashFiles('WORKSPACE', '.bazelrc', '.bazelversion', '**/BUILD.bazel',
-            'MODULE.bazel', 'maven_install.json') }}
+            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE.bazel', 'MODULE.bazel') }}
           restore-keys: ${{ runner.os }}-bazel-
       - uses: actions/cache@v3
         with:
