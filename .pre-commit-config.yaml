@@ -34,6 +34,10 @@ repos:
         # In the mean-time, it's possible to manually clang-format -i the.textproto
         files: \.(proto|textproto)$
 
+  # Alternative: https://github.com/dustinsand/pre-commit-jvm/ now that
+  # https://github.com/dustinsand/pre-commit-jvm/issues/8 is fixed, but that requires
+  # https://get-coursier.io to be installed as a pre-req, which seems overkill just
+  # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: 54f7f7c5cb9501110b928f2a98faa8024142f8d7
     hooks:
