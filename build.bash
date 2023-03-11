@@ -16,18 +16,38 @@
 # limitations under the License.
 
 set -euo pipefail
-DIR=$(realpath "$(dirname "$0")")
 
+if ! [ -d ./.venv/ ]; then
+  python3 -m venv .venv
+fi
 # shellcheck disable=SC1091
-source "$DIR/../.venv/bin/activate"
+source .venv/bin/activate
 
-if ! [ -e "$DIR/../.venv/lib64/python3.11/site-packages/mkdocs" ]; then
+if ! [ -e .venv/lib64/python3.11/site-packages/mkdocs ]; then
   pip install mkdocs-material==9.1.2 \
               mkdocs-git-revision-date-localized-plugin==1.2.0 \
               mkdocs-git-committers-plugin-2==1.1.1
 fi
 
-mkdocs build -f "$DIR/../mkdocs.yaml"
-cd "$DIR/../site/"
+if ! git update-index --refresh >/dev/null; then
+  git status
+  echo "Build only works if there are no git Changes not staged for commit! Abort."
+  exit 255
+fi
+
+cleanup() {
+  cd ..
+  git restore docs/
+}
+trap cleanup EXIT
+
+# TODO Replace https://github.com/vorburger/enola/blob/private with https://github.com/enola-dev/enola/blob/main
+rpl -R -x.md ../.. https://github.com/vorburger/enola/blob/private docs/
+
+bazelisk build //...
+
+mkdocs build --strict --config-file mkdocs.yaml
+
+cd site/
 xdg-open http://localhost:8000
 python3 -m http.server
