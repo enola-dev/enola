@@ -27,8 +27,6 @@
 
     - `ownerReferences`
 
-1. docs/README.md
-1. Fix `style.md` links to `.editorconfig` etc. directly to GitHub
 1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to site/ during docs/build.bash
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
