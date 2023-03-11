@@ -1,0 +1,43 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = true
+
+[*.md]
+indent_size = unset
+# TODO Change to 80, once an automatically formatting pre-commit is set-up!
+max_line_length = unset
+
+[*.proto]
+indent_size = 2
+tab_width = 2
+
+[*.textproto]
+indent_size = unset
+tab_width = unset
+
+[*.bash]
+indent_size = 2
+tab_width = 2
+
+[*.json]
+indent_size = 2
+
+[maven_install.json]
+generated_code = true
+indent_size = 4
+max_line_length = unset
+
+[*.yaml]
+indent_size = 2
+
+# Note that https://github.com/editorconfig-checker/editorconfig-checker
+# which https://github.com/editorconfig-checker/editorconfig-checker.python
+# uses does not understand e.g. [{*.yaml,*.yml}] but only single ones.

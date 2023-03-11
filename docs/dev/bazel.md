@@ -1,9 +1,5 @@
 # Bazel
 
-## IDE
-
-See https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md
-
 ## Maven dependencies
 
 ### Update Existing Maven dependencies

@@ -1,0 +1,6 @@
+---
+Language: TextProto
+BasedOnStyle: google
+---
+Language: Proto
+BasedOnStyle: google
