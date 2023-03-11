@@ -4,9 +4,6 @@
 1. VSC License Header plugin
 1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright
 
-1. https://github.com/yoheimuta/protolint
-1. https://github.com/plexsystems/vscode-protolint
-
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
 1. CLI with PicoCLI for `enola-demo be OK foo:a`

@@ -45,6 +45,11 @@ repos:
     hooks:
       - id: markdownlint-cli2
 
+  - repo: https://github.com/yoheimuta/protolint
+    rev: v0.43.1
+    hooks:
+      - id: protolint
+
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 6.0.0
