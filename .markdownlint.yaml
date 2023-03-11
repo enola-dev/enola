@@ -1,0 +1,27 @@
+# https://github.com/DavidAnson/markdownlint#optionsconfig
+# https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
+
+default: true
+
+MD013:
+  # Must match .editorconfig [*.md] max_line_length
+  # This 4096 means "unlimited" (unset) - essentially https://github.com/DavidAnson/markdownlint/issues/298.
+  # Until https://github.com/DavidAnson/markdownlint/issues/535 is available,
+  # it's not feasilbe to set this - just too PITA, while writing docs.
+  line_length: 4096
+  ignore_code_blocks: true
+  strict: false
+  stern: false
+
+# Allow headings ending in '!'
+MD026:
+  punctuation: ",;:。，；："
+
+# Bare URL are OK
+MD034: false
+
+# https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md#md046---code-block-style
+# style: "indented" prevents setting code block language
+# style: "fenced" enforces ``` and thus prevents indenting, which is nicer to read in raw ASCII where possible
+# style: "consistent" prevents mixing indenting (without code block language) and fenced with code block language.
+MD046: false

@@ -1,8 +1,5 @@
 # Enola 🕵🏾‍♀️ ToDo
 
-1. MD format 80 columnns pre-commit... with Prettier? Or mdlint?
-   Then change `.editorconfig` from `max_line_length = unset` to 80.
-
 1. https://github.com/bazelbuild/rules_license
 1. VSC License Header plugin
 1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright
@@ -25,11 +22,9 @@
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
 
+1. https://unifiedjs.com ?
+
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
-
-1. Set-up https://github.com/igorshubovych/markdownlint-cli for docs/, perhaps using https://magefile.org ? Or... dogfood, `be valid`?!
-
-1. Set-up https://github.com/github/super-linter, as in https://github.com/vorburger/LearningKubernetes-CodeLabs/blob/develop/.github/workflows/linter.yaml
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
