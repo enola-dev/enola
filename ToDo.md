@@ -1,5 +1,11 @@
 # Enola 🕵🏾‍♀️ ToDo
 
+1. MD format 80 columnns pre-commit... with Prettier?
+   Then change `.editorconfig` from `max_line_length = unset` to 80.
+
+1. https://github.com/yoheimuta/protolint
+1. https://github.com/plexsystems/vscode-protolint
+
 1. https://github.com/bazelbuild/rules_license
 
 1. Implement QueryAvailableEntities, based on the model

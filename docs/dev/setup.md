@@ -11,11 +11,12 @@ To locally build, work on and contribute to this project, you need to:
        git clone https://github.com/vorburger/enola.git
        cd enola
 
-1. Run the tests:
+1. Build everything and run the tests:
 
        ./test.bash
 
-You can now [read more about Bazel's use in this project](bazel.md).
+You can now [read more about Bazel's use in this project](bazel.md),
+and then [set up your favorite IDE](ide.md).
 
-`./update.bash` automatically updates this project's external ("third-party") dependencies.
+PS: `./update.bash` automatically updates this project's external ("third-party") dependencies.
 It should be regularly (manually) run by the active maintainers of this project.

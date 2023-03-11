@@ -18,14 +18,21 @@ repos:
       - id: check-symlinks
       - id: check-vcs-permalinks
       - id: check-yaml
+        args: [--allow-multiple-documents]
       - id: destroyed-symlinks
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
-  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.1
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v15.0.7
     hooks:
-      - id: editorconfig-checker
+      - id: clang-format
+        # clang-format can also do e.g. *.java and *.json but we only want proto
+        # and textproto - which doesn't actually work yet; TODO bump version after a
+        # release which includes https://github.com/pre-commit/identify/pull/373
+        # and https://github.com/pre-commit/mirrors-clang-format/pull/22.
+        # In the mean-time, it's possible to manually clang-format -i the.textproto
+        files: \.(proto|textproto)$
 
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
     rev: 54f7f7c5cb9501110b928f2a98faa8024142f8d7
@@ -35,7 +42,7 @@ repos:
       - id: pretty-format-yaml
         args: [--autofix, --indent, '4', --offset, '2']
 
-  # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md#setup-and-usage-via-bazel-not-supported-on-windows
+  # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 6.0.0
     hooks:
@@ -44,3 +51,9 @@ repos:
           - --warnings=all
       - id: buildifier-lint
         args: *args
+
+  # https://editorconfig.org check should run AFTER all of the formatters (above)
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.7.1
+    hooks:
+      - id: editorconfig-checker

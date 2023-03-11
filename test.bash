@@ -2,7 +2,8 @@
 set -euo pipefail
 
 if ! [ -x "$(command -v bazelisk)" ]; then
-    echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
+    echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
+    echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
     exit 255
 fi
 

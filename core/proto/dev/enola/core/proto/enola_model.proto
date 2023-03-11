@@ -16,29 +16,36 @@ message Model {
 
 // Kind of an Entity, as in message Entity.
 message EntityKind {
-  // Scheme, as above. It's normally omitted in *-model.textproto, but filled-in by the reader.
+  // Scheme, as above. It's normally omitted in *-model.textproto, but filled-in
+  // by the reader.
   string scheme = 31;
 
-  // Fixed machine readable ID, as in ID#parts.entity; in lower case and without any spaces.
-  // (This is the ID of a kind of entity, not of an individual instance of such an entity; that one is message ID.)
+  // Fixed machine readable ID, as in ID#parts.entity; in lower case and without
+  // any spaces. (This is the ID of a kind of entity, not of an individual
+  // instance of such an entity; that one is message ID.)
   string id = 1;
 
-  // Human readable label of entity, may be several words, any case, and can be changed.
+  // Human readable label of entity, may be several words, any case, and can be
+  // changed.
   string label = 2;
 
   // The Emoji shown as prefix to the name in UIs, if there is no logo.
   string emoji = 3;
 
-  // Logo (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it).
+  // Logo (as URL; either absolute, or URL relative to the model's textproto
+  // file location - from where a UI will serve it).
   string logo_url = 4;
 
-  // Documentation description (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it).
+  // Documentation description (as URL; either absolute, or URL relative to the
+  // model's textproto file location - from where a UI will serve it).
   string doc_url = 5;
 
-  // The fully qualified (with package) name of the (root) Protocol Buffer Message type in Entity#proto.
+  // The fully qualified (with package) name of the (root) Protocol Buffer
+  // Message type in Entity#proto.
   string proto_fqn = 12;
 
-  // TODO param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use.
+  // TODO param_parent, to allow grouping common ones, just during declaration
+  // in textproto, but inlined for use.
 
   // Parameters, as map. The string keys here match Entity#id.parts.query's.
   map<string, Parameter> query = 13;
@@ -46,26 +53,30 @@ message EntityKind {
   map<string, EntityRelationship> related = 14;
 
   // URL links to web pages, as map. The string keys here match Entity#links's.
-  // These are informational and destined to be displayed to a human on a UI, but not "machine readable" for interpretation.
+  // These are informational and destined to be displayed to a human on a UI,
+  // but not "machine readable" for interpretation.
   map<string, WebLink> url = 15;
 
   // TODO Describe detailed meaning of Status for this kind of Entity?
 }
 
-// Entity#param map model; it's key is the same as this in EntityKind#query, the value is the query parameter value.
+// Entity#param map model; it's key is the same as this in EntityKind#query, the
+// value is the query parameter value.
 message Parameter {
   // Template to generate ID reference to another Entity,
-  // as an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template.
-  // The Model#scheme: MUST be included in the template, as it's fairly common to reference entities across models.
-  // The available variables are all of the entities' ID query.* parameters (but nothing else; TODO context?).
-  // Like ID, the template does not have (percentage) encoded or escaped or quoted.
-  // Optional; if empty, the parameter doesn't reference any (known, modeled) other entity.
+  // as an ID URI Template (RFC 6570); see
+  // https://en.wikipedia.org/wiki/URI_Template. The Model#scheme: MUST be
+  // included in the template, as it's fairly common to reference entities
+  // across models. The available variables are all of the entities' ID query.*
+  // parameters (but nothing else; TODO context?). Like ID, the template does
+  // not have (percentage) encoded or escaped or quoted. Optional; if empty, the
+  // parameter doesn't reference any (known, modeled) other entity.
   string ref_id_template = 4;
 }
 
-// Entity#related map model; it's key is the same as this in EntityKind#related, the value is an ID as URI.
+// Entity#related map model; it's key is the same as this in EntityKind#related,
+// the value is an ID as URI.
 message EntityRelationship {
-
   // Human readable label, may be shown on a UI.
   string label = 2;
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
@@ -74,29 +85,31 @@ message EntityRelationship {
   // Template to generate ID reference to another Entity, as above.
   string rel_id_template = 4;
 
-  // This entity "depends" on that related entity. If that one Status is NOK, then so is this one.
+  // This entity "depends" on that related entity. If that one Status is NOK,
+  // then so is this one.
   bool depends_on = 5;
 
   // TODO Not sure how useful this is as-is...
   bool owned_by = 6;
 }
 
-// Entity#url map model; it's key is the same as this in EntityKind#url, the value is a URL.
+// Entity#url map model; it's key is the same as this in EntityKind#url, the
+// value is a URL.
 message WebLink {
-
   // Human readable label, may be shown on a UI.
   string label = 2;
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
 
   // URI template (as above), to create URL.
-  // The available variables are the query.* parameters, as well as a special proto.* which allows
-  // to declaratively create links out of the Any proto (instead of coding link generation in the service;
-  // which is always still also possible).
+  // The available variables are the query.* parameters, as well as a special
+  // proto.* which allows to declaratively create links out of the Any proto
+  // (instead of coding link generation in the service; which is always still
+  // also possible).
   string url_template = 4;
 }
 
-message GetEntityKindsRequest { }
+message GetEntityKindsRequest {}
 // Clients would typically cache this.
 message GetEntityKindsResponse {
   repeated EntityKind model = 1;
