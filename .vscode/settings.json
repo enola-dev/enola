@@ -37,5 +37,17 @@
   "java.project.sourcePaths": ["k8s/src/main/java"],
   // https://github.com/salesforce/bazel-vscode#installation
   "java.import.bazel.enabled": true,
-  "java.import.maven.enabled": false
+  "java.import.maven.enabled": false,
+
+  // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
+  "yaml.schemas": {
+    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yaml"
+  },
+  "yaml.customTags": [
+    "!ENV scalar",
+    "!ENV sequence",
+    "tag:yaml.org,2002:python/name:materialx.emoji.to_svg",
+    "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
+    "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
+  ]
 }

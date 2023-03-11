@@ -40,15 +40,16 @@ Eclipse is not actively supported by this project as an IDE. We recommend using 
 
 * [protolint](https://github.com/plexsystems/vscode-protolint), which requires `protolint`:
 
-      go install github.com/yoheimuta/protolint/cmd/protolint@latest
+        go install github.com/yoheimuta/protolint/cmd/protolint@latest
 
 * For `*.proto` & `*.textproto`:
-  * [proto3](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
-  * [TextProto](https://marketplace.visualstudio.com/items?itemName=thejustinwalsh.textproto-grammer)
-  * [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat), which requires `clang-package`:
 
-        sudo apt get install clang-format
-        # sudo dnf install clang-format
+      * [proto3](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
+      * [TextProto](https://marketplace.visualstudio.com/items?itemName=thejustinwalsh.textproto-grammer)
+      * [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat), which requires `clang-package`:
+
+            sudo apt get install clang-format
+            # sudo dnf install clang-format
 
 ## JetBrains IntelliJ IDEA
 

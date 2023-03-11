@@ -16,6 +16,9 @@
     limitations under the License.
 -->
 
-# Demo
+# Maintenance
 
-TODO Doc!
+`./update.bash` automatically updates this project's external ("third-party") dependencies.
+It should be regularly (manually) run by the active maintainers of this project.
+
+TODO Set up Renovate Bot!
