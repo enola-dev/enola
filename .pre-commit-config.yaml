@@ -40,6 +40,11 @@ repos:
       - id: pretty-format-java
         args: [--autofix, --aosp]
 
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.6.0
+    hooks:
+      - id: markdownlint-cli2
+
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 6.0.0
@@ -50,15 +55,15 @@ repos:
       - id: buildifier-lint
         args: *args
 
-  # https://editorconfig.org check should run AFTER all of the formatters (above)
-  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.1
-    hooks:
-      - id: editorconfig-checker
-
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.0.0-alpha.6
     hooks:
       - id: prettier
         additional_dependencies:
           - prettier@2.8.4
+
+  # https://editorconfig.org check should run AFTER all of the formatters (above)
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.7.1
+    hooks:
+      - id: editorconfig-checker
