@@ -8,9 +8,10 @@ This project automatically formats and checks ("lints") the style of its source 
 * [Buildifier](https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md) for `BUILD.bazel`
 * [Markdownlint](https://github.com/DavidAnson/markdownlint) for `*.md`
 * [Prettier](https://prettier.io) for YAML & JSON & HTML & CSS & JS & TS
+* [ShellCheck](https://www.shellcheck.net) for `*.bash`
 * _**TODO** for ASL License Headers_
 
-There are [pre-commit.com](https://pre-commit.com) hooks for each of these tools configured in [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml).
+There are [pre-commit.com](https://pre-commit.com) hooks for each of these tools configured in [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml). (Only ShellCheck is directly invoked by Bazel.)
 
 Run the [`./test.bash`](../../test.bash) script during local development to reformat changed files and re-run all tests affected by a change.
 
