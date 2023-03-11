@@ -33,6 +33,10 @@ indent_size = 2
 [*.yaml]
 indent_size = 2
 
+[LICENSE-header.txt]
+# https://github.com/Lucas-C/pre-commit-hooks/issues/70
+insert_final_newline = false
+
 # Generated Code is ignored
 # Keep in sync with .prettierignore
 [maven_install.json]
