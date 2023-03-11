@@ -8,8 +8,20 @@ MD013:
   # This 4096 means "unlimited" (unset) - essentially https://github.com/DavidAnson/markdownlint/issues/298.
   # Until https://github.com/DavidAnson/markdownlint/issues/535 is available,
   # it's not feasilbe to set this - just too PITA, while writing docs.
+  #
+  # One possible avenue to enable fixing automatic reflow formatting could be
+  # to enable Prettier to format MD (by removing *.md from .prettierignore).
+  # This ALMOST works, but in Prettier v2.8.4 just has some issues:
+  #   A. Breaks code blocks inside 1. 1. 1. OL; see https://github.com/prettier/prettier/issues/13175
+  #   B. Replaces '*' with '-' for UL; not my preference, but is likely intentional,
+  #      given https://prettier.io/docs/en/option-philosophy.html.
+  #   C. It over-indents '-' causing MD030; see https://github.com/prettier/prettier/issues/5299
+  #      and https://github.com/prettier/prettier/pull/5306 or https://github.com/prettier/prettier/pull/13987 ?
+  # Another avenue would be to look into a different MD formatter than Prettier,
+  # perhaps remark directly ... but that seems a bit overkill, for now.
   line_length: 4096
-  ignore_code_blocks: true
+  code_blocks: true
+  code_block_line_length: 4096
   strict: false
   stern: false
 
