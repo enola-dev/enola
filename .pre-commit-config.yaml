@@ -39,8 +39,6 @@ repos:
     hooks:
       - id: pretty-format-java
         args: [--autofix, --aosp]
-      - id: pretty-format-yaml
-        args: [--autofix, --indent, '4', --offset, '2']
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
