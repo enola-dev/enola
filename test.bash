@@ -7,8 +7,13 @@ if ! [ -x "$(command -v bazelisk)" ]; then
     exit 255
 fi
 
-# TODO build, not just test! (Because test targets may well not dependend on every build target.)
-bazelisk test //...
+# https://github.com/bazelbuild/bazel/issues/4257
+# https://bazel.build/reference/command-line-reference#flag--build_tests_only
+echo $ b test //...
+bazelisk test --nobuild_tests_only //...
+echo
+echo $ b build //...
+bazelisk build //...
 
 # Check if https://pre-commit.com is available (and try to install it not)
 if ! [ -e "./.venv/bin/pre-commit" ]; then
@@ -30,6 +35,8 @@ else
   source ./.venv/bin/activate
 fi
 
+echo
+echo $ pre-commit run
 pre-commit run
 
 # This makes sure that this test.bash will run as a pre-commit hook
