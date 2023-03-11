@@ -4,9 +4,10 @@ This project automatically formats and checks ("lints") the style of its source 
 
 * [EditorConfig](https://editorconfig.org) for all files, configured in an [`.editorconfig`](../../.editorconfig)
 * [Google Java Style](https://google.github.io/styleguide/javaguide.html) with [`google-java-format`](https://github.com/google/google-java-format) for `*.java`
-* [`clang-format`](https://clang.llvm.org/docs/ClangFormat.html) for `*.proto` and `*.textproto`
+* [protolint](https://github.com/yoheimuta/protolint) for `*.proto` semantics
+* [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for `*.proto` and `*.textproto` format
 * [Buildifier](https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md) for `BUILD.bazel`
-* [DavidAnson/Markdownlint](https://github.com/DavidAnson/markdownlint) for `*.md` _(NB: DavidAnson/Markdownlint is not to be confused with [markdownlint/markdownlint](https://github.com/markdownlint/markdownlint) which which was originally the inspiration for DavidAnson/Markdownlint but is separate and now has slightly different configuration.)_
+* [DavidAnson/Markdownlint](https://github.com/DavidAnson/markdownlint)[^1] for `*.md`
 * [Prettier](https://prettier.io) for YAML & JSON & HTML & CSS & JS & TS
 * [ShellCheck](https://www.shellcheck.net) for `*.bash`
 * _**TODO** for ASL License Headers_
@@ -20,3 +21,5 @@ Run the [`./test.bash`](../../test.bash) script during local development to refo
 Contributions by Pull Requests on GitHub are tested with the same `./test.bash` which is launched by [this GitHub Action](../../.github/workflows/test.yaml).
 
 In-IDE, the [plugins listed on our IDE page](ide.md) can be used.
+
+[^1]: DavidAnson/Markdownlint is not to be confused with [markdownlint/markdownlint](https://github.com/markdownlint/markdownlint) which which was originally the inspiration for DavidAnson/Markdownlint but is separate and now has slightly different configuration.

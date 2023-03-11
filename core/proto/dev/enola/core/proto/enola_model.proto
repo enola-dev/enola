@@ -11,7 +11,7 @@ message Model {
   string scheme = 1;
 
   // List of entities kinds of this model.
-  repeated EntityKind entity = 2;
+  repeated EntityKind entities = 2;
 }
 
 // Kind of an Entity, as in message Entity.
@@ -87,10 +87,10 @@ message EntityRelationship {
 
   // This entity "depends" on that related entity. If that one Status is NOK,
   // then so is this one.
-  bool depends_on = 5;
+  bool depends = 5;
 
   // TODO Not sure how useful this is as-is...
-  bool owned_by = 6;
+  bool owned = 6;
 }
 
 // Entity#url map model; it's key is the same as this in EntityKind#url, the
@@ -109,10 +109,13 @@ message WebLink {
   string url_template = 4;
 }
 
-message GetEntityKindsRequest {}
+message GetEntityKindsRequest {
+  // TODO Filter
+}
+
 // Clients would typically cache this.
 message GetEntityKindsResponse {
-  repeated EntityKind model = 1;
+  repeated EntityKind models = 1;
 }
 
 service ModelService {
