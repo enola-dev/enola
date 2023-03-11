@@ -3,10 +3,12 @@
 1. MD format 80 columnns pre-commit... with Prettier? Or mdlint?
    Then change `.editorconfig` from `max_line_length = unset` to 80.
 
+1. https://github.com/bazelbuild/rules_license
+1. VSC License Header plugin
+1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright
+
 1. https://github.com/yoheimuta/protolint
 1. https://github.com/plexsystems/vscode-protolint
-
-1. https://github.com/bazelbuild/rules_license
 
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
