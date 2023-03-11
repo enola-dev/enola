@@ -1,1 +1,6 @@
+# Generated Code is ignored
+# Keep in sync with .editorconfig
 /maven_install.json
+
+# Markdown is formatted by markdownlint not Prettier (see docs/dev/style.md)
+*.md
