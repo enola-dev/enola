@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# https://squidfunk.github.io/mkdocs-material/creating-your-site/
+# https://www.mkdocs.org/user-guide/configuration/
+
+site_name: Enola.dev
+site_url: https://www.enola.dev
+repo_url: https://github.com/enola-dev/enola
+edit_uri: blob/main/docs/
+copyright: Copyright &copy; 2023 The Enola <https://enola.dev> Authors
+
+# TODO
+#nav:
+#  - Home: index.md
+#  - Developers: dev/bazel.md
+
+theme:
+  logo: images/enola-293_293-transparent.png
+  favicon: images/enola-293_293-transparent.png
+  name: material
+  features:
+    - content.action.edit
+    - navigation.footer
+    - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.path
+    - navigation.indexes
+    - navigation.top
+    # - navigation.sections
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - search.suggest
+    - search.share
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      accent: lime
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+
+markdown_extensions:
+  - footnotes
+  - tables
+  - smarty
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - git-revision-date-localized:
+  # TODO This will only work when https://github.com/enola-dev/enola is live
+  # - git-committers:
+  #     repository: enola-dev/enola
+  #     branch: main

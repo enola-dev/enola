@@ -19,6 +19,11 @@
 
 default: true
 
+MD007:
+  indent: 6
+  start_indented: false
+  # start_indent: 2
+
 MD013:
   # Must match .editorconfig [*.md] max_line_length
   # This 4096 means "unlimited" (unset) - essentially https://github.com/DavidAnson/markdownlint/issues/298.
