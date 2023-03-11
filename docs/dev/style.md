@@ -26,7 +26,7 @@ This project automatically formats and checks ("lints") the style of its source 
 * [clang-format](https://clang.llvm.org/docs/ClangFormat.html) for `*.proto` and `*.textproto` format
 * [Buildifier](https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md) for `BUILD.bazel`
 * [DavidAnson/Markdownlint](https://github.com/DavidAnson/markdownlint)[^1] for `*.md`
-* [Prettier](https://prettier.io) for YAML & JSON & HTML & CSS & JS & TS
+* [Prettier](https://prettier.io) for YAML & JSON & HTML & CSS & JS & TS (but not MD)
 * [ShellCheck](https://www.shellcheck.net) for `*.bash`
 * [Lucas-C/pre-commit-hooks](https://github.com/Lucas-C/pre-commit-hooks) to add missing license headers
 

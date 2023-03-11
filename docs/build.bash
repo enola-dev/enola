@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
 # Copyright 2023 The Enola <https://enola.dev> Authors
@@ -14,23 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://github.com/aignas/rules_shellcheck
-load("@com_github_aignas_rules_shellcheck//:def.bzl", "shellcheck_test")
+set -euo pipefail
+DIR=$(realpath "$(dirname "$0")")
 
-shellcheck_test(
-    name = "shellcheck_test",
-    size = "small",
-    data = glob(
-        [
-            "**/*.bash",
-            "**/*.sh",
-        ],
-        exclude = [
-            "bazel-bin/**",
-            "bazel-out/**",
-            "site/**",
-            ".venv/**",
-        ],
-    ),
-    tags = ["lint"],
-)
+# shellcheck disable=SC1091
+source "$DIR/../.venv/bin/activate"
+
+if ! [ -e "$DIR/../.venv/lib64/python3.11/site-packages/mkdocs" ]; then
+  pip install mkdocs-material==9.1.2 \
+              mkdocs-git-revision-date-localized-plugin==1.2.0 \
+              mkdocs-git-committers-plugin-2==1.1.1
+fi
+
+mkdocs build -f "$DIR/../mkdocs.yaml"
+cd "$DIR/../site/"
+xdg-open http://localhost:8000
+python3 -m http.server

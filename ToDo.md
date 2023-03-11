@@ -27,13 +27,17 @@
 
     - `ownerReferences`
 
-1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to docs/ during build
-
-1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx? [Docusaurus](https://docusaurus.io)?)
+1. docs/README.md
+1. Fix `style.md` links to `.editorconfig` etc. directly to GitHub
+1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to site/ during docs/build.bash
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
 
-1. Put screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint's)
+1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint's)
+   See https://squidfunk.github.io/mkdocs-material/reference/images/
+   With https://squidfunk.github.io/mkdocs-material/reference/grids/
+
+1. Convert `shellcheck` from a Bazel to a pre-commit check?
 
 1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
 
@@ -43,6 +47,8 @@
 1. https://unifiedjs.com ?
 
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
+
+1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
@@ -58,3 +64,5 @@
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
 
 1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright ?
+
+1. Markdown linkchecker
