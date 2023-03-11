@@ -12,7 +12,7 @@ trim_trailing_whitespace = true
 
 [*.md]
 indent_size = unset
-# TODO Change to 80, once an automatically formatting pre-commit is set-up!
+# See, and must match, the .markdownlint.yaml MD013: line_length
 max_line_length = unset
 
 [*.proto]
