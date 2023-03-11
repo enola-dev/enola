@@ -1,8 +1,22 @@
-# Enola 🕵🏾‍♀️ ToDo
+<!--
+    SPDX-License-Identifier: Apache-2.0
 
-1. https://github.com/bazelbuild/rules_license
-1. VSC License Header plugin
-1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright
+    Copyright 2023 The Enola <https://enola.dev> Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+# Enola 🕵🏾‍♀️ ToDo
 
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
@@ -18,6 +32,13 @@
 1. Generate manual site from `docs/` using some MD to static HTML generator (Jekyl? [Hugo](https://gohugo.io)? MkDocs? Sphinx? [Docusaurus](https://docusaurus.io)?)
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
+
+1. Put screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint's)
+
+1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
+
+1. Enforce https://www.conventionalcommits.org-like git commit messages starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
+   using either https://github.com/jorisroovers/gitlint or https://github.com/commitizen-tools/commitizen.
 
 1. https://unifiedjs.com ?
 
@@ -35,3 +56,5 @@
 1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
 
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
+
+1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright ?
