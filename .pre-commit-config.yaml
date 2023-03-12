@@ -92,6 +92,11 @@ repos:
         # In the mean-time, it's possible to manually clang-format -i the.textproto
         files: \.(proto|textproto)$
 
+  - repo: https://github.com/yoheimuta/protolint
+    rev: v0.43.1
+    hooks:
+      - id: protolint
+
   # Alternative: https://github.com/dustinsand/pre-commit-jvm/ now that
   # https://github.com/dustinsand/pre-commit-jvm/issues/8 is fixed, but that requires
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
@@ -109,10 +114,12 @@ repos:
     hooks:
       - id: markdownlint-cli2
 
-  - repo: https://github.com/yoheimuta/protolint
-    rev: v0.43.1
+  # Until https://github.com/DavidAnson/markdownlint/issues/586
+  - repo: https://github.com/tcort/markdown-link-check
+    rev: v3.10.3
     hooks:
-      - id: protolint
+      - id: markdown-link-check
+        args: [--quiet]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
