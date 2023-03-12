@@ -40,6 +40,6 @@ knowledge in this particular language ecosystem.
 The fact that the core was initially written in Java is very much
 considered an "implementation detail" which should not "leak" to
 end-users of [the core library](core.md) and its packaging in Editions,
-such as for [Kubernetes](k8s/index.md).
+such as for [Kubernetes](../k8s/index.md).
 
-GraalVM native image builds are one way to hide Java installlation etc.
+GraalVM native image builds are one way to hide Java installation etc.

@@ -18,6 +18,8 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. docs: `serve.bash` with `mkdocs server` AND Bazel "watch" (?) to rebuild Proto MD on change of `.proto`
+
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
 1. CLI with PicoCLI for `enola-demo be OK foo:a`

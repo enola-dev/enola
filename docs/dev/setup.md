@@ -20,7 +20,7 @@
 
 To locally build, work on and contribute to this project, you need to:
 
-1. Install some pre-requisites, including [Bazelisk](https://github.com/bazelbuild/bazelisk):
+1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk):
 
         go install github.com/bazelbuild/bazelisk@latest
 
@@ -32,10 +32,3 @@ To locally build, work on and contribute to this project, you need to:
 1. Build everything and run the tests:
 
         ./test.bash
-
-You can now read more about:
-
-* [Bazel's use in this project](bazel.md),
-* [the coding format convention style](style.md),
-* [how to set up your favorite IDE](ide.md),
-* [maintenance](maintenance.md).
