@@ -18,6 +18,15 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. Enforce https://www.conventionalcommits.org like git commit messages
+   starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
+   using https://github.com/jorisroovers/gitlint
+
+1. https://github.com/tcort/markdown-link-check/ via pre-commit as shown e.g. on https://github.com/pre-commit/pre-commit/issues/2687
+   (And contribute a PR to the project to illustrate how to use it on the README.)
+
+1. Replace `shellcheck` with a pre-commit check instead of running it in Bazel
+1. Abandon `build.bash` by running script as a `sh_test` in Bazel with `docs/**` + `mkdocs.yaml` as (only) `srcs`
 1. docs: `serve.bash` with `mkdocs server` AND Bazel "watch" (?) to rebuild Proto MD on change of `.proto`
 
 1. Implement QueryAvailableEntities, based on the model
@@ -35,12 +44,7 @@
    See https://squidfunk.github.io/mkdocs-material/reference/images/
    With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
-1. Convert `shellcheck` from a Bazel to a pre-commit check?
-
 1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
-
-1. Enforce https://www.conventionalcommits.org-like git commit messages starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
-   using either https://github.com/jorisroovers/gitlint or https://github.com/commitizen-tools/commitizen.
 
 1. https://unifiedjs.com ?
 
@@ -63,4 +67,4 @@
 
 1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright ?
 
-1. Markdown linkchecker
+1. https://github.com/textlint/textlint with https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule
