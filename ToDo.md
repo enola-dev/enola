@@ -22,9 +22,6 @@
    starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
    using https://github.com/jorisroovers/gitlint
 
-1. https://github.com/tcort/markdown-link-check/ via pre-commit as shown e.g. on https://github.com/pre-commit/pre-commit/issues/2687
-   (And contribute a PR to the project to illustrate how to use it on the README.)
-
 1. Replace `shellcheck` with a pre-commit check instead of running it in Bazel
 1. Abandon `build.bash` by running script as a `sh_test` in Bazel with `docs/**` + `mkdocs.yaml` as (only) `srcs`
 1. docs: `serve.bash` with `mkdocs server` AND Bazel "watch" (?) to rebuild Proto MD on change of `.proto`
@@ -40,7 +37,7 @@
 
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
 
-1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint's)
+1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
    See https://squidfunk.github.io/mkdocs-material/reference/images/
    With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
@@ -61,7 +58,7 @@
     - https://www.sethvargo.com/using-google-java-format-with-vs-code/
     - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
-1. [Dependabot](https://github.com//dependabot-core/issues/2196), or Renovate
+1. [Dependabot](https://github.com/dependabot/dependabot-core/issues/2196), or Renovate
 
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
 
