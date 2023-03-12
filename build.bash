@@ -39,7 +39,7 @@ DIR=$(pwd)
 cleanup() {
   cd "$DIR"
   git restore docs/
-  rm -rf docs/proto
+  rm -rf docs/dev/proto
 }
 trap cleanup EXIT
 
@@ -47,8 +47,12 @@ trap cleanup EXIT
 rpl -R -x.md ../.. https://github.com/vorburger/enola/blob/private docs/
 
 bazelisk build //...
-mkdir -p docs/proto/
-cp bazel-bin/core/proto/core_proto_doc/core_proto_doc.md docs/proto/
+mkdir -p docs/dev/proto/
+cp bazel-bin/core/proto/core_proto_doc/core_proto_doc.md docs/dev/proto/
 
 mkdocs build --strict --config-file mkdocs.yaml
-mkdocs serve --strict --config-file mkdocs.yaml
+cleanup
+
+cd site/
+xdg-open http://localhost:8000
+python3 -m http.server
