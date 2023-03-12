@@ -41,7 +41,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: .venv/
-          key: ${{ runner.os }}-venv-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
       - uses: actions/cache@v3
         with:
