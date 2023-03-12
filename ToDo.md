@@ -27,8 +27,6 @@
 
     - `ownerReferences`
 
-1. Copy bazel-bin/core/proto/core_proto_doc/core_proto_doc.md to site/ during docs/build.bash
-
 1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
 
 1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint's)
