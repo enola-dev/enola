@@ -45,7 +45,7 @@ if ! [ -e "./.venv/bin/pre-commit" ]; then
   fi
   # shellcheck disable=SC1091
   source ./.venv/bin/activate
-  pip install pre-commit
+  pip install -r requirements.txt
 else
   # shellcheck disable=SC1091
   source ./.venv/bin/activate

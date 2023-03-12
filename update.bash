@@ -17,11 +17,20 @@
 
 set -euox pipefail
 
-# See docs/dev/bazel.md
-bazelisk run @maven//:outdated
+# See docs/dev/dependencies.md
 
+# TODO How-to automagically update dependencies.txt if PyPI has newer versions? (pip-tools & requirements.in?)
+
+# Update .pre-commit-config.yaml
 # shellcheck disable=SC1091
 source ./.venv/bin/activate
 pre-commit autoupdate
 pre-commit clean
 pre-commit gc
+pre-commit run --all-files
+
+# Update Bazel's Maven dependencies MODULE.bazel (and maven_install.json)
+# https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#outdated-artifacts
+# Note that this doesn't actually update, just prints if *YOU* (manually) can.
+bazelisk run @maven//:outdated
+echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"

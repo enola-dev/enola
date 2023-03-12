@@ -36,7 +36,7 @@ nav:
       - Code Conventions: dev/style.md
       - Protocol Buffer API: dev/proto/core_proto_doc.md
       - Bazel: dev/bazel.md
-      - Maintenance: dev/maintenance.md
+      - Dependencies: dev/dependencies.md
   - Kubernetes:
       - Introduction: k8s/index.md
       - Demo: k8s/demo.md

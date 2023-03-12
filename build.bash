@@ -24,9 +24,7 @@ fi
 source .venv/bin/activate
 
 if ! [ -e .venv/lib64/python3.11/site-packages/mkdocs ]; then
-  pip install mkdocs-material==9.1.2 \
-              mkdocs-git-revision-date-localized-plugin==1.2.0 \
-              mkdocs-git-committers-plugin-2==1.1.1
+  pip install -r requirements.txt
 fi
 
 if ! git update-index --refresh >/dev/null; then
