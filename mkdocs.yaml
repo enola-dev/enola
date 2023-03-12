@@ -24,9 +24,25 @@ edit_uri: blob/main/docs/
 copyright: Copyright &copy; 2023 The Enola <https://enola.dev> Authors
 
 # TODO
-#nav:
-#  - Home: index.md
-#  - Developers: dev/bazel.md
+nav:
+  - Introduction: index.md
+  - Concepts:
+      - Core: concepts/core.md
+      - Singularity: concepts/singularity.md
+  - Developers:
+      - Set-Up: dev/setup.md
+      - IDE: dev/ide.md
+      - Architecture: concepts/implementation.md
+      - Code Conventions: dev/style.md
+      - Protocol Buffer API: dev/proto/core_proto_doc.md
+      - Bazel: dev/bazel.md
+      - Maintenance: dev/maintenance.md
+  - Kubernetes:
+      - Introduction: k8s/index.md
+      - Demo: k8s/demo.md
+  - Appendix:
+      - Playbooks: concepts/playbook.md
+      - Comparison: concepts/other.md
 
 theme:
   logo: images/enola-293_293-transparent.png
@@ -39,7 +55,6 @@ theme:
     - navigation.tracking
     - navigation.expand
     - navigation.path
-    - navigation.indexes
     - navigation.top
     # - navigation.sections
     # - navigation.tabs
@@ -74,8 +89,9 @@ markdown_extensions:
 plugins:
   - search
   - git-revision-date-localized:
+      strict: false
       exclude:
-        - proto/*
+        - dev/proto/*
   # TODO This will only work when https://github.com/enola-dev/enola is live
   # - git-committers:
   #     repository: enola-dev/enola
