@@ -74,6 +74,8 @@ markdown_extensions:
 plugins:
   - search
   - git-revision-date-localized:
+      exclude:
+        - proto/*
   # TODO This will only work when https://github.com/enola-dev/enola is live
   # - git-committers:
   #     repository: enola-dev/enola
