@@ -43,6 +43,8 @@
 
 1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
+1. https://github.com/google/flogger/tree/master/grpc/src/main/java/com/google/common/flogger/grpc ?
+
 1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
 
 1. https://unifiedjs.com ?
@@ -61,3 +63,5 @@
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
 
 1. https://github.com/textlint/textlint with https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule
+
+1. `dev.enola.common.io.mediatype` adapter for https://tika.apache.org/2.7.0/api/org/apache/tika/detect/Detector.html
