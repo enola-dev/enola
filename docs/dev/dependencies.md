@@ -29,12 +29,13 @@ It should be regularly (manually) run by maintainers of this project.
 
 ## Runtime Dependencies
 
-* [`MODULE.bazel`](../../MODULE.bazel) contains the Java Maven Group, Artifact & Versions (GAV)
+* [`MODULE.bazel`](../../MODULE.bazel) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)
 
 ## Build-time (only) Dependencies
 
 * [`.bazelversion`](../../.bazelversion) has the Bazel version itself
-* [`WORKSPACE.bazel`](../../WORKSPACE.bazel) contains `http_archive` of Bazel rules
+* [`WORKSPACE.bazel`](../../WORKSPACE.bazel) contains versioned `http_archive` of Bazel rules
+* [`MODULE.bazel`](../../MODULE.bazel) contains `bazel_dep` versions
 * [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml) contains the versions of various `pre-commit` hooks used to enforce [the Code Styles](style.md)
 * [`requirements.txt`](../../requirements.txt) contains versions of Python packages used as build tools
 
