@@ -41,7 +41,7 @@ insert_final_newline = false
 # Keep in sync with .prettierignore
 [maven_install.json]
 generated_code = true
-indent_size = 4
+indent_size = unset
 max_line_length = unset
 
 # Note that https://github.com/editorconfig-checker/editorconfig-checker
