@@ -18,6 +18,8 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. Write tests for dev.enola.common.io `Resource` implementations
+
 1. Enforce https://www.conventionalcommits.org like git commit messages
    starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
    using https://github.com/jorisroovers/gitlint
