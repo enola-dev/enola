@@ -28,7 +28,7 @@
 
 As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#updating-maven_installjson :
 
-1. Edit `MODULE.bazel`
+1. Edit `MODULE.bazel` [dependencies](dependencies.md)
 
 1. `b run @unpinned_maven//:pin`
 
