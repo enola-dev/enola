@@ -41,8 +41,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# TODO Replace https://github.com/vorburger/enola/blob/private with https://github.com/enola-dev/enola/blob/main
-rpl -R -x.md ../.. https://github.com/vorburger/enola/blob/private docs/
+rpl -R -x.md ../.. https://github.com/enola-dev/enola/blob/main docs/
 
 bazelisk build //...
 mkdir -p docs/dev/proto/

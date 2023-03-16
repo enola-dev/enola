@@ -26,7 +26,7 @@ To locally build, work on and contribute to this project, you need to:
 
 1. Get the source code, and install its Git Hoooks:
 
-        git clone https://github.com/vorburger/enola.git
+        git clone https://github.com/enola-dev/enola.git
         cd enola
 
 1. Build everything and run the tests:

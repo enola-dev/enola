@@ -16,19 +16,14 @@
     limitations under the License.
 -->
 
-# Enola 🕵🏾‍♀️
+# Enola.dev 🕵🏾‍♀️ [![Test](https://github.com/enola-dev/enola/actions/workflows/test.yaml/badge.svg)](https://github.com/enola-dev/enola/actions/workflows/test.yaml) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%E2%9C%85-grey)](https://conventionalcommits.org)
 
-Enola is a troubleshooting tool.
+Enola is a Graph-based analytics system for exploring relationships between common objects.
 
-## Contributing
-
-See [`CONTRIBUTING`](docs/contributing.md) for details.
-
-## License
-
-See [`LICENSE`](LICENSE) for details.
-
-## Disclaimer
+1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ -->
+1. [Developer Set-Up for Local Build](docs/dev/setup.md)
+1. See [`LICENSE`](LICENSE) & [Contribute](docs/contributing.md)!
+<!-- TODO 1. [Read documentation](docs/index.md) -->
 
 This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
