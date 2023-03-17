@@ -24,7 +24,7 @@ To locally build, work on and contribute to this project, you need to:
 
         go install github.com/bazelbuild/bazelisk@latest
 
-1. Get the source code, and install its Git Hoooks:
+1. Get the source code:
 
         git clone https://github.com/enola-dev/enola.git
         cd enola
@@ -32,3 +32,12 @@ To locally build, work on and contribute to this project, you need to:
 1. Build everything and run the tests:
 
         ./test.bash
+
+When tests are successful locally, a `.git/hooks/pre-commit` is installed.
+
+You can now read more about:
+
+* [Code Style](style.md)
+* [IDE Support](ide.md)
+* [Dependencies](dependencies.md)
+* [Bazel](bazel.md)
