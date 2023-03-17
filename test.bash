@@ -58,4 +58,6 @@ pre-commit run
 # This makes sure that this test.bash will run as a pre-commit hook
 # NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
 # (And because our own venv etc. stuff above is better for the "first touch" contributor experience.)
+# This is intentionally only done here at the END of successfully running the tests above,
+# because only if we reach here we now that everything above actually works well locally.
 tools/git/install-hooks.bash

@@ -33,8 +33,8 @@ or even a well-known binary format (such as Protocol Buffers binary serializatio
 
 The initial implementation of [the Core](core.md) is in Java.
 
-The only reason the initial author (and BDFL) of the project chose Java
-was that this allowed him to be most productive, because of his vast prior
+The only reason the initial author of the project chose Java
+was that this allowed him to be most productive, because of his prior
 knowledge in this particular language ecosystem.
 
 The fact that the core was initially written in Java is very much

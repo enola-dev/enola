@@ -56,6 +56,7 @@ repos:
       - id: insert-license
         files: \.java$
         args:
+          - --no-extra-eol
           - --comment-style
           - /*| *| */
           - --license-filepath
@@ -113,6 +114,7 @@ repos:
     rev: v0.6.0
     hooks:
       - id: markdownlint-cli2
+        exclude: ^.github/
 
   # Until https://github.com/DavidAnson/markdownlint/issues/586
   - repo: https://github.com/tcort/markdown-link-check

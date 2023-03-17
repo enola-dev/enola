@@ -41,13 +41,13 @@
    See https://squidfunk.github.io/mkdocs-material/reference/images/
    With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
+1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
+
 1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
 
 1. https://unifiedjs.com ?
 
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
-
-1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
@@ -58,10 +58,6 @@
     - https://www.sethvargo.com/using-google-java-format-with-vs-code/
     - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
-1. [Dependabot](https://github.com/dependabot/dependabot-core/issues/2196), or Renovate
-
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
-
-1. https://gerrit-review.googlesource.com/Documentation/dev-intellij.html#_copyright ?
 
 1. https://github.com/textlint/textlint with https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule
