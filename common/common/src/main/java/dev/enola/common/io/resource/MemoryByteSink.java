@@ -17,28 +17,23 @@
  */
 package dev.enola.common.io.resource;
 
-import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
-
 import com.google.common.io.ByteSink;
-import com.google.common.io.CharSink;
-import com.google.common.net.MediaType;
 
-import java.net.URI;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
-public interface WritableResource {
+// Intentionally package local (for now)
+class MemoryByteSink extends ByteSink {
 
-    URI uri();
+    private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-    MediaType mediaType();
+    @Override
+    public OutputStream openStream() throws IOException {
+        return baos;
+    }
 
-    ByteSink byteSink();
-
-    default CharSink charSink() {
-        return byteSink()
-                .asCharSink(
-                        mediaType()
-                                .charset()
-                                .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
+    public byte[] toByteArray() {
+        return baos.toByteArray();
     }
 }

@@ -17,59 +17,50 @@
  */
 package dev.enola.common.io.resource;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
-import com.google.common.io.MoreFiles;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.MediaTypeDetector;
-
 import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
+import java.util.Objects;
 
-public class FileResource implements Resource {
+public class MemoryResource implements Resource {
 
-    private static final MediaTypeDetector mtd = new MediaTypeDetector();
+    private final URI uri;
+    private final MediaType mediaType;
+    private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
-    private final Path path;
-    private final Charset charset;
-    private final OpenOption[] openOptions;
-
-    public FileResource(Path path, OpenOption... openOptions) {
-        this(path, Charsets.UTF_8, openOptions);
-    }
-
-    public FileResource(Path path, Charset charset, OpenOption... openOptions) {
-        this.path = path;
-        this.charset = charset;
-        this.openOptions = openOptions;
+    public MemoryResource(MediaType mediaType) {
+        this.uri = URI.create("memory:" + Integer.toHexString(hashCode()));
+        this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
     }
 
     @Override
     public URI uri() {
-        return path.toUri();
+        return uri;
     }
 
     @Override
     public MediaType mediaType() {
-        return mtd.detect(null, charset.name(), uri());
+        return mediaType;
     }
 
     @Override
     public ByteSink byteSink() {
-        return MoreFiles.asByteSink(path, openOptions);
+        return memoryByteSink;
     }
 
     @Override
     public ByteSource byteSource() {
-        return MoreFiles.asByteSource(path, openOptions);
+        return new MemoryByteSource(memoryByteSink.toByteArray());
     }
 
     @Override
     public String toString() {
-        return "FileResource{path=" + path + ", charset=" + charset + '}';
+        return "MemoryResource{mediaType="
+                + mediaType
+                + '}'
+                + "@"
+                + Integer.toHexString(hashCode());
     }
 }

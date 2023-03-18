@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
+
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
@@ -33,7 +35,11 @@ public interface ReadableResource {
 
     default CharSource charSource() {
         return byteSource()
-                .asCharSource(mediaType().charset().toJavaUtil().orElseThrow(SPI.MISSING_CHARSET));
+                .asCharSource(
+                        mediaType()
+                                .charset()
+                                .toJavaUtil()
+                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
