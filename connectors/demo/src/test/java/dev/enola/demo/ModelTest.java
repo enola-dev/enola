@@ -17,10 +17,11 @@
  */
 package dev.enola.demo;
 
-import dev.enola.tools.proto.AbstractProtoTest;
+import dev.enola.common.protobuf.AbstractProtoTest;
+import dev.enola.core.proto.Model;
 
 public class ModelTest extends AbstractProtoTest {
     public ModelTest() {
-        super("dev/enola/demo/demo-model.textproto");
+        super("dev/enola/demo/demo-model.textproto", Model.newBuilder());
     }
 }

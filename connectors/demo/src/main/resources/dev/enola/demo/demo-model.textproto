@@ -19,7 +19,7 @@
 # proto-message: Model
 
 scheme: "demo"
-entity {
+entities {
   id: "foo"
   label: "Fo-o"
   emoji: "💂"
@@ -30,7 +30,7 @@ entity {
     value: {}
   }
 }
-entity {
+entities {
   id: "bar"
   label: "Bar (not Bard)"
   emoji: "👩‍🎤"
@@ -49,7 +49,7 @@ entity {
     value: {
       label: "Primary Baz",
       rel_id_template: "demo:baz?uuid={proto.something.id}",
-      depends_on: true
+      depends: true
     }
   }
   related {
@@ -69,7 +69,7 @@ entity {
     }
   }
 }
-entity {
+entities {
   id: "baz"
   query {
     key: "uuid",

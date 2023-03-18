@@ -15,9 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.tools.proto;
+package dev.enola.common.protobuf;
 
-import static com.google.common.io.Resources.getResource;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -26,34 +25,34 @@ import com.google.protobuf.Timestamp;
 
 import org.junit.Test;
 
-// TODO(vorburger) Upstream this!
-public class TextProtoValidatorTest {
+import java.io.IOException;
+
+public class ProtoIOTest extends AbstractProtoTest {
+    public ProtoIOTest() {
+        super("ok.textproto", Timestamp.newBuilder());
+    }
+
     @Test
-    public void testValidation() {
+    public void testValidation() throws IOException {
         // OK
-        // TODO(vorburger) Should not require Timestamp.newBuilder(), but proto-file + proto-message
-        // TODO(vorburger) Should not return null, but Timestamp instance, which needs to be
-        // asserted
-        // for equalsTo.
-        assertThat(
-                        new TextProtoValidator()
-                                .validate(
-                                        getResource("dev/enola/tools/proto/ok.textproto"),
-                                        Timestamp.newBuilder()))
-                .isNull();
+        Timestamp timestamp =
+                new ProtoIO()
+                        .merge(classpath("ok.textproto"), Timestamp.newBuilder(), Timestamp.class);
+        assertThat(timestamp)
+                .isEqualTo(Timestamp.newBuilder().setSeconds(123).setNanos(456).build());
 
         // NOK
         assertThat(
                         assertThrows(
-                                IllegalArgumentException.class,
+                                ProtoIO.TextParseException.class,
                                 () ->
-                                        new TextProtoValidator()
-                                                .validate(
-                                                        getResource(
-                                                                "dev/enola/tools/proto/nok.textproto"),
+                                        new ProtoIO()
+                                                .merge(
+                                                        classpath("nok.textproto"),
                                                         Timestamp.newBuilder())))
-                .hasCauseThat()
                 .hasMessageThat()
                 .contains("google.protobuf.Timestamp.bad");
+
+        // new ProtoIO().merge(classpath("nok.textproto"), Timestamp.newBuilder());
     }
 }

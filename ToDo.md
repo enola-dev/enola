@@ -31,6 +31,8 @@
 1. CLI with PicoCLI for `enola-demo be OK foo:a`
 1. CLI completion - hard or trivial?
 
+1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
+
 1. K8s MVP Proto
 
     - `ownerReferences`
