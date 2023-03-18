@@ -22,7 +22,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.function.CheckedSupplier;
 import dev.enola.common.io.resource.URIs;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
@@ -47,11 +46,9 @@ public class MediaTypeDetector {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     public static final MediaType DEFAULT = MediaType.OCTET_STREAM;
 
-    public MediaType detect(
-            String contentType,
-            String contentEncoding,
-            URI uri,
-            CheckedSupplier<InputStream, IOException> inputStreamSupplier) {
+    public MediaType detect(String contentType, String contentEncoding, URI uri
+            // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
+            ) {
         var mediaType = DEFAULT;
         // java.net.URLConnection returns "content/unknown" when there is no content-type header
         if ("content/unknown".equals(contentType)) {

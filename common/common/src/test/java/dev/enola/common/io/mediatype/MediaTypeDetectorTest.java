@@ -35,28 +35,27 @@ public class MediaTypeDetectorTest {
 
     @Test
     public void testDetect() {
-        assertThat(md.detect(null, null, null, null)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("content/unknown", null, null, null)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("application/test", null, null, null))
+        assertThat(md.detect(null, null, null)).isEqualTo(OCTET_STREAM);
+        assertThat(md.detect("content/unknown", null, null)).isEqualTo(OCTET_STREAM);
+        assertThat(md.detect("application/test", null, null))
                 .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("application/test-alternative", null, null, null))
+        assertThat(md.detect("application/test-alternative", null, null))
                 .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("text/plain", "ascii", null, null))
+        assertThat(md.detect("text/plain", "ascii", null))
                 .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(Charsets.US_ASCII));
 
-        assertThat(md.detect("application/octet-stream", null, URI.create("hello.txt"), null))
+        assertThat(md.detect("application/octet-stream", null, URI.create("hello.txt")))
                 .isEqualTo(OCTET_STREAM);
 
-        assertThat(md.detect(null, null, new File("hello.txt").toURI(), null))
+        assertThat(md.detect(null, null, new File("hello.txt").toURI()))
                 .isEqualTo(PLAIN_TEXT_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.json").toURI(), null))
-                .isEqualTo(JSON_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.proto").toURI(), null))
+        assertThat(md.detect(null, null, new File("hello.json").toURI())).isEqualTo(JSON_UTF_8);
+        assertThat(md.detect(null, null, new File("hello.proto").toURI()))
                 .isEqualTo(ProtobufMediaTypes.PROTO_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.textproto").toURI(), null))
+        assertThat(md.detect(null, null, new File("hello.textproto").toURI()))
                 .isEqualTo(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
 
         // Assert.assertThrows()
-        md.detect(null, null, URI.create("bad-URI-without-scheme"), null);
+        md.detect(null, null, URI.create("bad-URI-without-scheme"));
     }
 }

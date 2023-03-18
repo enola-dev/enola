@@ -55,7 +55,7 @@ public class FileResource implements Resource {
 
     @Override
     public MediaType mediaType() {
-        return mtd.detect(null, null, uri(), null);
+        return mtd.detect(null, null, uri());
     }
 
     @Override
