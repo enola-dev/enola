@@ -35,8 +35,8 @@ java_binary(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":enola-demo",
+        "//common/protobuf",
         "//core/proto:core_proto_java_library",
-        "//tools/proto",
         "@maven//:com_google_truth_truth",
     ],
 ) for name in glob([

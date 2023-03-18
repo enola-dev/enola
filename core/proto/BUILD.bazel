@@ -43,7 +43,10 @@ proto_library(
 
 java_proto_library(
     name = "core_proto_java_library",
-    protos = ["core_proto"],
+    protos = [
+        "core_proto",
+        "model_proto",
+    ],
     visibility = [
         "//connectors:__subpackages__",
         "//core/lib:__pkg__",

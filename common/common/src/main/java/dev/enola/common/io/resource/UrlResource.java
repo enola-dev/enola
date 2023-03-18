@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.*;
 
 public class UrlResource implements ReadableResource {
@@ -61,7 +62,7 @@ public class UrlResource implements ReadableResource {
             return mtd.detect(
                     contentTypeFromServer, encodingFromServer, uri, () -> fc.getInputStream());
         } catch (IOException e) {
-            return MediaTypeDetector.DEFAULT;
+            throw new UncheckedIOException(e);
         } finally {
             if (c instanceof HttpURLConnection) {
                 ((HttpURLConnection) c).disconnect();
