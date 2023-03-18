@@ -28,4 +28,4 @@ Use Security Advisories on GitHub for reporting suspected security vulnerabiliti
 
 The project's maintainers aim to respond within 1 week.
 
-See [Code of Conduct](docs/code-of-conduct.md) for Conflict Resolution.
+See [Code of Conduct](code-of-conduct.md) for Conflict Resolution.
