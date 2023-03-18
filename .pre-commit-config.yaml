@@ -104,12 +104,10 @@ repos:
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
   # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    # TODO change to v2.8.0 after https://github.com/macisamuele/language-formatters-pre-commit-hooks/issues/150
-    # Note https://github.com/pre-commit/pre-commit/issues/2811
-    rev: 54f7f7c5cb9501110b928f2a98faa8024142f8d7
+    rev: v2.8.0
     hooks:
       - id: pretty-format-java
-        args: [--autofix, --aosp]
+        args: [--autofix, --aosp, --google-java-formatter-version=1.16.0]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.6.0
@@ -119,7 +117,7 @@ repos:
 
   # Until https://github.com/DavidAnson/markdownlint/issues/586
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.10.3
+    rev: v3.11.0
     hooks:
       - id: markdown-link-check
         args: [--quiet]
