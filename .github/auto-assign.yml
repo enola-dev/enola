@@ -6,7 +6,7 @@ addAssignees: author
 
 # A list of reviewers to be added to PRs (GitHub user  name)
 reviewers:
-    - vorburger
+  - vorburger
 
 # A number of reviewers added to the PR
 # Set 0 to add all the reviewers (default: 0)
@@ -14,7 +14,7 @@ numberOfReviewers: 1
 
 # A list of assignees, overrides reviewers if set
 assignees:
-    - vorburger
+  - vorburger
 
 # A number of assignees to add to the PRs
 # Set to 0 to add all of the assignees.
@@ -23,4 +23,4 @@ numberOfAssignees: 0
 
 # A list of keywords to be skipped the process if PR's title include it
 skipKeywords:
-    - wip
+  - wip

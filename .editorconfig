@@ -33,6 +33,12 @@ indent_size = 2
 [*.yaml]
 indent_size = 2
 
+[*.yml]
+indent_size = 2
+
+[LICENSE]
+indent_size = unset
+
 [LICENSE-header.txt]
 # https://github.com/Lucas-C/pre-commit-hooks/issues/70
 insert_final_newline = false
