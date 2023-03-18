@@ -60,7 +60,7 @@ public class UrlResource implements ReadableResource {
 
             final var fc = c;
             return mtd.detect(
-                    contentTypeFromServer, encodingFromServer, uri, () -> fc.getInputStream());
+                    contentTypeFromServer, encodingFromServer, uri /*, () -> fc.getInputStream()*/);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } finally {
