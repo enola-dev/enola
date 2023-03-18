@@ -24,6 +24,7 @@ java_library(
         "//common/common",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:junit_junit",
     ],
 )
@@ -35,6 +36,7 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":protobuf",
+        "//common/common",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
     ],

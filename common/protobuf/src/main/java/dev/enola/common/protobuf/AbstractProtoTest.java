@@ -40,7 +40,7 @@ public abstract class AbstractProtoTest {
     @Test
     public void testProto() throws IOException {
         // TODO new ProtoIO().merge(resource, DynamicMessage.newBuilder(descriptor));
-        new ProtoIO().merge(resource, builder);
+        new ProtoIO().read(resource, builder);
     }
 
     protected ReadableResource classpath(String pathToResourceOnClasspath) {

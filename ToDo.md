@@ -33,6 +33,8 @@
 
 1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
 
+1. Add support for writing and reading `ProtobufMediaTypes.PROTOBUF_YAML_UTF_8` - easy, given that _YAML is JSON?_
+
 1. K8s MVP Proto
 
     - `ownerReferences`

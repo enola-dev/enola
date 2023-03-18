@@ -74,4 +74,9 @@ public class UrlResource implements ReadableResource {
     public ByteSource byteSource() {
         return Resources.asByteSource(url);
     }
+
+    @Override
+    public String toString() {
+        return "UrlResource{uri=" + uri + '}';
+    }
 }

@@ -17,15 +17,19 @@
  */
 package dev.enola.common.io.resource;
 
+import java.net.URI;
 import java.util.function.Supplier;
 
-public final class SPI {
+// Intentionally package local
+final class SPI {
 
-    public static final Supplier<IllegalStateException> MISSING_CHARSET =
-            () ->
-                    new IllegalStateException(
-                            "mediaType() must have a charset() - specify it as *Resource"
-                                    + " constructor argument?");
+    static Supplier<IllegalStateException> missingCharsetExceptionSupplier(URI uri) {
+        return () ->
+                new IllegalStateException(
+                        uri
+                                + " mediaType() must have a charset() - specify it as *Resource"
+                                + " constructor argument?");
+    }
 
     private SPI() {}
 }
