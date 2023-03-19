@@ -41,13 +41,13 @@ enum Status {
 // https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax:
 //
 // * The "scheme" is just a "namespace" in Enola, which typically aligns with
-// RPC Service implementations.
+// "Connector" module RPC service implementations.
 // * The "authority" (//...) is not used (and IDs with them are rejected; see
 // IDsTest.java).
 // * The "path" is not actually a path, but just a name of a kind of entity
-// within that scheme. It can contain slashes, but they are not interpreted.
-// * The "query" (?...) is used to identify a specific entity (with a name or
-// UUID or whatever; specific to each entity).
+// within that scheme. It cannot contain slashes.
+// * The "query" (?...) is used to identify a specific entity (with one or
+// several names or UUID or whatever; specific to each entity).
 // * The "fragment" (#...) is not used (and IDs with them are rejected; see
 // IDsTest.java).
 //
@@ -55,18 +55,6 @@ enum Status {
 // have are, by convention, not part of the entity (path), but represented as
 // part of the query; for example:
 // * k8s:pod?network=prod&context=demo&namespace=test&name=hello
-//
-// Note that IDs are not "unique", and 2 different IDs may refer to the same
-// underlying object; for example:
-// * k8s:pod?name=echoserver-6dfb6c7764-45gvk&...
-// * k8s:pod?uid=561f1bec-f768-4c5b-b96e-37306d7f2f8a&...
-//
-// We permit RPC clients to specify the ID in either (oneof) string text or
-// "broken down" parts form. This is simply for dev convenience in UX such as
-// CLI or Web UIs, and to avoid the proliferation of incompatible parsers. The
-// implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or
-// "demo:foo?bad=a&bad=b". The string text oneof form is NOT "decoded" like
-// un-escaped (incl. un-quoted) at all, simply "split".
 message ID {
   oneof oneof {
     string text = 1;
@@ -84,25 +72,45 @@ message Entity {
   google.protobuf.Timestamp ts = 2;
   Status status = 3;
 
-  // Related entities, in Enola.
-  // Key is EntityKind#related.key (modeled by EntityRelationship), value is an
-  // ID.
+  // Related Enola Entities.
+  // Intended for consumption by both machines as well as humans.
+  // Key is EntityKind#related.key (modeled by EntityRelationship), value is ID.
   map<string, ID> related = 5;
 
-  // URL Links to additional information on other systems.
-  // Key is EntityKind#url.key (modeled by WebLink), value is (typically
-  // absolute) URL.
-  map<string, string> url = 6;
+  // HTTP URL hypertext references to additional information on other systems.
+  // Intended for human consumption, only.
+  // Key is EntityKind#href.key (modeled by WebLink), value is an absolute URL.
+  map<string, string> href = 6;
 
-  google.protobuf.Any proto = 7;
+  // URIs linked to this entity.
+  // Often "back-end" state information,
+  // used e.g. to determine an Entity's status, etc.
+  // Intended primarily for consumption by machines.
+  // These can be requested to be "inlined" in responses.
+  // Key is EntityKind#link.key (modeled by Datalink), value is an URI.
+  // This URI may well be specific to the respective schema connector.
+  map<string, string> link = 7;
 }
 
 message GetEntityRequest {
   ID id = 1;
+
+  // Request to inline Entity#link, by the same string key as used there.
+  // (Conceptually inspired by e.g. GraphQL architecture.)
+  repeated string inline_links = 2;
 }
 message GetEntityResponse {
   Entity entity = 1;
+
+  repeated InlineLinkData data = 2;
+  message InlineLinkData {
+    oneof oneof {
+      google.protobuf.Any protos = 1;
+      string json = 2;
+    }
+  }
 }
+
 // TODO Later have an RPC for a time series XRequest, and XResponse with
 // repeated Entity?
 //   google.protobuf.Timestamp ts = 2;

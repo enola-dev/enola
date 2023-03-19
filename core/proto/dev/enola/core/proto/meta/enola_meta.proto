@@ -36,10 +36,10 @@ message EntityKind {
   // by the reader.
   string scheme = 31;
 
-  // Fixed machine readable ID, as in ID#parts.entity; in lower case and without
-  // any spaces. (This is the ID of a kind of entity, not of an individual
-  // instance of such an entity; that one is message ID.)
-  string id = 1;
+  // Fixed machine readable Name, as in ID#parts.entityKind; in lower case and
+  // without any spaces. (This is the ID of a kind of entity, not of an
+  // individual instance of such an entity; that one is message ID.)
+  string name = 1;
 
   // Human readable label of entity, may be several words, any case, and can be
   // changed.
@@ -56,28 +56,23 @@ message EntityKind {
   // model's textproto file location - from where a UI will serve it).
   string doc_url = 5;
 
-  // The fully qualified (with package) name of the (root) Protocol Buffer
-  // Message type in Entity#proto.
-  string proto_fqn = 12;
-
-  // TODO param_parent, to allow grouping common ones, just during declaration
-  // in textproto, but inlined for use.
-
-  // Parameters, as map. The string keys here match Entity#id.parts.query's.
-  map<string, Parameter> query = 13;
+  // ID Segments, as map. The values of this will be Entity#id.segments.
+  map<string, Parameter> segments = 13;
 
   map<string, EntityRelationship> related = 14;
 
   // URL links to web pages, as map. The string keys here match Entity#links's.
   // These are informational and destined to be displayed to a human on a UI,
   // but not "machine readable" for interpretation.
-  map<string, WebLink> url = 15;
+  map<string, WebLink> href = 15;
 
-  // TODO Describe detailed meaning of Status for this kind of Entity?
+  map<string, DataLink> link = 16;
+
+  // TODO Describe detailed "state machine"
+  // TODO Build cool visualization of said state machine as fancy diagram
 }
 
-// Entity#param map model; it's key is the same as this in EntityKind#query, the
-// value is the query parameter value.
+// Entity ID model for EntityKind#id.segements.
 message Parameter {
   // Template to generate ID reference to another Entity,
   // as an ID URI Template (RFC 6570); see
@@ -101,12 +96,16 @@ message EntityRelationship {
   // Template to generate ID reference to another Entity, as above.
   string rel_id_template = 4;
 
+  // TODO Come up with something more general than below...
+  // Maybe k8s-like map<string,string> labels? Very open, also
+  // useful e.g. to declare Mermaid diagram relationship types!
+
   // This entity "depends" on that related entity. If that one Status is NOK,
   // then so is this one.
-  bool depends = 5;
+  // bool depends = 5;
 
   // TODO Not sure how useful this is as-is...
-  bool owned = 6;
+  // bool owned = 6;
 }
 
 // Entity#url map model; it's key is the same as this in EntityKind#url, the
@@ -124,6 +123,35 @@ message WebLink {
   // also possible).
   string url_template = 4;
 }
+
+message DataLink {
+  // Human readable label, may be shown on a UI.
+  string label = 2;
+  // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
+  string description = 3;
+
+  // URI template.
+  string uri_template = 4;
+
+  enum Kind {
+    KIND_UNSPECIFIED = 0;
+    KIND_PROTOBUF = 1;
+    KIND_JSON = 2;
+  }
+  Kind kind = 5;
+
+  // The fully qualified (with package) name of the (root) Protocol Buffer
+  // Message.
+  // TODO But is this actually needed? Who would consume it? For what? I think
+  // this will end up just being hard-coded in connectors...
+  // TODO If yes, is there a better type than string for this in
+  // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto
+  // via import "google/protobuf/descriptor.proto"
+  // string proto_fqn = 6;
+}
+
+// TODO Remove the following - and have EntityKind *BE* an Entity that's itself
+// available through the EnolaService?!
 
 message GetEntityKindsRequest {
   // TODO Filter

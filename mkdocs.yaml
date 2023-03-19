@@ -28,6 +28,7 @@ nav:
   - Introduction: index.md
   - Concepts:
       - Core: concepts/core.md
+      - Architecture Diagrams: concepts/core-arch.md
       - Singularity: concepts/singularity.md
   - Developers:
       - Set-Up: dev/setup.md
@@ -88,6 +89,16 @@ markdown_extensions:
   - smarty
   - toc:
       permalink: true
+  # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  # https://squidfunk.github.io/mkdocs-material/reference/diagrams/
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 plugins:
   - search

@@ -35,11 +35,11 @@ The initial implementation of [the Core](core.md) is in Java.
 
 The only reason the initial author of the project chose Java
 was that this allowed him to be most productive, because of his prior
-knowledge in this particular language ecosystem.
+knowledge in this particular programming language's ecosystem.
 
 The fact that the core was initially written in Java is very much
 considered an "implementation detail" which should not "leak" to
 end-users of [the core library](core.md) and its packaging in Editions,
-such as for [Kubernetes](../k8s/index.md).
+such as for [Kubernetes](../k8s/index.md), and its API clients.
 
 GraalVM native image builds are one way to hide Java installation etc.

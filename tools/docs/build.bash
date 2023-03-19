@@ -33,6 +33,7 @@ cleanup() {
   cd "$DIR"
   git restore docs/
   rm -rf docs/dev/proto
+  trap - EXIT
 }
 trap cleanup EXIT
 
