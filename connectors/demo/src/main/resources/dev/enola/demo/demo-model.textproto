@@ -20,27 +20,25 @@
 
 scheme: "demo"
 entities {
-  id: "foo"
+  name: "foo"
   label: "Fo-o"
   emoji: "💂"
   doc_url: "demo-model.md#foo"
-  proto_fqn: "dev.enola.demo.Foo"
-  query {
+  segments {
     key: "name",
     value: {}
   }
 }
 entities {
-  id: "bar"
+  name: "bar"
   label: "Bar (not Bard)"
   emoji: "👩‍🎤"
   doc_url: "demo-model.md#bar"
-  proto_fqn: "dev.enola.demo.Bar"
-  query {
+  segments {
     key: "name",
     value: {}
   }
-  query {
+  segments {
     key: "foo",
     value: { ref_id_template: "demo:foo?name={query.foo}" }
   }
@@ -49,7 +47,6 @@ entities {
     value: {
       label: "Primary Baz",
       rel_id_template: "demo:baz?uuid={proto.something.id}",
-      depends: true
     }
   }
   related {
@@ -59,7 +56,7 @@ entities {
       rel_id_template: "demo:baz?uuid={proto.otherthing.id}"
     }
   }
-  url {
+  href {
     key: "wiki",
     value: {
       label: "Wikipedia",
@@ -70,8 +67,8 @@ entities {
   }
 }
 entities {
-  id: "baz"
-  query {
+  name: "baz"
+  segments {
     key: "uuid",
     value: {}
   }
