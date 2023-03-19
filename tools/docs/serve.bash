@@ -17,39 +17,10 @@
 
 set -euo pipefail
 
-if ! [ -d ./.venv/ ]; then
-  python3 -m venv .venv
-fi
 # shellcheck disable=SC1091
 source .venv/bin/activate
 
-if ! [ -e .venv/lib64/python3.11/site-packages/mkdocs ]; then
-  pip install -r requirements.txt
-fi
-
-if ! git update-index --refresh >/dev/null; then
-  git status
-  echo "Build only works if there are no git Changes not staged for commit! Abort."
-  exit 255
-fi
-
-DIR=$(pwd)
-cleanup() {
-  cd "$DIR"
-  git restore docs/
-  rm -rf docs/dev/proto
-}
-trap cleanup EXIT
-
-rpl -R -x.md ../.. https://github.com/enola-dev/enola/blob/main docs/
-
-bazelisk build //...
-mkdir -p docs/dev/proto/
-cp bazel-bin/core/proto/core_proto_doc/core_proto_doc.md docs/dev/proto/
-
-mkdocs build --strict --config-file mkdocs.yaml
-cleanup
-
-cd site/
 xdg-open http://localhost:8000
-python3 -m http.server
+
+# NOT --strict, because that will fail, without the 'rpl' magic which build.bash does!
+mkdocs serve --config-file mkdocs.yaml

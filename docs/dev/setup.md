@@ -35,6 +35,9 @@ To locally build, work on and contribute to this project, you need to:
 
 When tests are successful locally, a `.git/hooks/pre-commit` is installed.
 
+To work on documentation, launch `tools/docs/serve.bash` for hot reloading live refresh which is great while writing
+(even though it has some limitations), and `tools/docs/build.bash` for generating the "real" (full) static `site/`.
+
 You can now read more about:
 
 * [Code Style](style.md)

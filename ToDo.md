@@ -23,8 +23,6 @@
    using https://github.com/jorisroovers/gitlint
 
 1. Replace `shellcheck` with a pre-commit check instead of running it in Bazel
-1. Abandon `build.bash` by running script as a `sh_test` in Bazel with `docs/**` + `mkdocs.yaml` as (only) `srcs`
-1. docs: `serve.bash` with `mkdocs server` AND Bazel "watch" (?) to rebuild Proto MD on change of `.proto`
 
 1. Implement QueryAvailableEntities, based on the model
 1. connectors/demo/ with test to illustrate the Service to get IDs
@@ -45,6 +43,7 @@
    See https://squidfunk.github.io/mkdocs-material/reference/images/
    With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
+1. Publish Site
 1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
 1. https://github.com/google/flogger/tree/master/grpc/src/main/java/com/google/common/flogger/grpc ?
@@ -64,8 +63,12 @@
     - https://www.sethvargo.com/using-google-java-format-with-vs-code/
     - https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance
 
+1. docs: Make `tools/docs/serve.bash` use [`ibazel`](https://github.com/bazelbuild/bazel-watcher) to rebuild Proto MD on change of `.proto`
+
 1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
 
 1. https://github.com/textlint/textlint with https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule
 
 1. `dev.enola.common.io.mediatype` adapter for https://tika.apache.org/2.7.0/api/org/apache/tika/detect/Detector.html
+
+1. [Run `mkdocs build` instead of in `build.bash` as a `sh_test` in Bazel with `docs/**` + `mkdocs.yaml` as (only) `srcs`](https://github.com/enola-dev/enola/compare/main...vorburger:enola:mkdocs_build_test) - fix weird problems
