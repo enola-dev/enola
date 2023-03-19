@@ -75,7 +75,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(md|html)$
-        exclude: ^.github/
+        exclude: ^.github|docs/blog/posts/
         args:
           - --comment-style
           - "<!--|   |-->"
