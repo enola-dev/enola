@@ -17,11 +17,20 @@
  */
 package dev.enola.demo;
 
-import dev.enola.common.protobuf.AbstractProtoTest;
+import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.meta.proto.MetaModel;
+import dev.enola.core.proto.Entity;
 
-public class ModelTest extends AbstractProtoTest {
-    public ModelTest() {
-        super("dev/enola/demo/demo-model.textproto", MetaModel.newBuilder());
+import org.junit.Test;
+
+import java.io.IOException;
+
+public class ModelTest {
+
+    @Test
+    public void testTextprotos() throws IOException {
+        ProtoIO.check("dev/enola/demo/demo-model.textproto", MetaModel.newBuilder());
+        ProtoIO.check("dev/enola/demo/foo-abc.textproto", Entity.newBuilder());
+        ProtoIO.check("dev/enola/demo/bar-abc-def.textproto", Entity.newBuilder());
     }
 }

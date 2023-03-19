@@ -15,8 +15,8 @@
 # limitations under the License.
 
 # https://protobuf.dev/reference/protobuf/textformat-spec/
-# proto-file: dev/enola/core/enola_model.proto
-# proto-message: Model
+# proto-file: dev/enola/core/meta/enola_meta.proto
+# proto-message: MetaModel
 
 scheme: "demo"
 entities {
@@ -35,12 +35,13 @@ entities {
   emoji: "👩‍🎤"
   doc_url: "demo-model.md#bar"
   segments {
-    key: "name",
-    value: {}
+    key: "foo",
+    # TODO Is may actually not be required - it can always be automatically derived?
+    value: { ref_id_template: "demo:foo?name={query.foo}" }
   }
   segments {
-    key: "foo",
-    value: { ref_id_template: "demo:foo?name={query.foo}" }
+    key: "name",
+    value: {}
   }
   related {
     key: "one",
