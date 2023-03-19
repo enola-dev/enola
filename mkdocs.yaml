@@ -37,12 +37,15 @@ nav:
       - Protocol Buffer API: dev/proto/core_proto_doc.md
       - Bazel: dev/bazel.md
       - Dependencies: dev/dependencies.md
+      - Contributor Guide: contributing.md
+      - Code of Conduct: code-of-conduct.md
   - Kubernetes:
       - Introduction: k8s/index.md
       - Demo: k8s/demo.md
   - Appendix:
       - Playbooks: concepts/playbook.md
       - Comparison: concepts/other.md
+      - Security Policy: SECURITY.md
 
 theme:
   logo: images/enola-293_293-transparent.png

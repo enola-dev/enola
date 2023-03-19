@@ -20,7 +20,7 @@
 
 Enola is a tool which helps IT ⛑️ Sysadmins,
 [Site Reliability Engineers](https://en.wikipedia.org/wiki/Site_reliability_engineering)
-(see [Google's SRE page](https://sre.google)), _samideanaj adminopsions_ to
+(see [Google's SRE page](https://sre.google)), and other _samideanaj adminopsions_ to
 document their systems and relationships to increase visibility (knowledge management)
 and investigate the root causes of complex production issues (troubleshoot)
 to operate them reliably with efficiency.
