@@ -17,10 +17,14 @@
  */
 package dev.enola.common.protobuf;
 
-import com.google.protobuf.*;
+import com.google.protobuf.ExtensionRegistry;
+import com.google.protobuf.Message;
 import com.google.protobuf.Message.Builder;
+import com.google.protobuf.TextFormat;
+import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.util.JsonFormat;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
@@ -89,6 +93,14 @@ public class ProtoIO {
     public <M extends Message> M read(
             ReadableResource resource, Builder builder, Class<M> messageClass) throws IOException {
         return (M) read(resource, builder).build();
+    }
+
+    // Shortcut intended for unit tests
+    public static void check(String pathToResourceOnClasspath, Message.Builder builder)
+            throws IOException {
+        ReadableResource resource = new ClasspathResource(pathToResourceOnClasspath);
+        // TODO new ProtoIO().merge(resource, DynamicMessage.newBuilder(descriptor));
+        new ProtoIO().read(resource, builder);
     }
 
     public static class TextParseException extends TextFormat.ParseException {

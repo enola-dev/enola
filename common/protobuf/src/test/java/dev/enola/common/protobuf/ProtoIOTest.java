@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThrows;
 import com.google.common.net.MediaType;
 import com.google.protobuf.Timestamp;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 
 import org.junit.Test;
@@ -43,7 +44,10 @@ public class ProtoIOTest extends AbstractProtoTest {
     public void testReadGoodTextproto() throws IOException {
         Timestamp timestamp =
                 new ProtoIO()
-                        .read(classpath("ok.textproto"), Timestamp.newBuilder(), Timestamp.class);
+                        .read(
+                                new ClasspathResource("ok.textproto"),
+                                Timestamp.newBuilder(),
+                                Timestamp.class);
         assertThat(timestamp).isEqualTo(TIMESTAMP);
     }
 
@@ -93,7 +97,7 @@ public class ProtoIOTest extends AbstractProtoTest {
                                 () ->
                                         new ProtoIO()
                                                 .read(
-                                                        classpath("nok.textproto"),
+                                                        new ClasspathResource("nok.textproto"),
                                                         Timestamp.newBuilder())))
                 .hasMessageThat()
                 .contains("google.protobuf.Timestamp.bad");

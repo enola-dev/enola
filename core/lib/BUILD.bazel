@@ -15,13 +15,87 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
+load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
+
+# https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
+load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
+
+# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
+load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
+
+# https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
+proto_library(
+    name = "core_proto",
+    srcs = ["src/main/java/dev/enola/core/enola_core.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "meta_proto",
+    srcs = ["src/main/java/dev/enola/core/meta/enola_meta.proto"],
+    deps = [],
+)
+
+proto_library(
+    name = "util_proto",
+    srcs = ["src/main/java/dev/enola/core/util/enola_util.proto"],
+    deps = [
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+java_proto_library(
+    name = "core_proto_java_library",
+    protos = [
+        "core_proto",
+        "meta_proto",
+        "util_proto",
+    ],
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core/lib:__pkg__",
+    ],
+)
+
+doc_markdown_compile(
+    name = "core_proto_doc",
+    protos = [
+        "core_proto",
+        "meta_proto",
+        "util_proto",
+    ],
+)
+
+buf_proto_lint_test(
+    name = "core_buf_proto_lint",
+    size = "small",
+    except_rules = [
+        "PACKAGE_VERSION_SUFFIX",
+        "PACKAGE_DIRECTORY_MATCH",
+    ],
+    protos = [
+        "core_proto",
+        "meta_proto",
+        "util_proto",
+    ],
+    use_rules = [
+        "DEFAULT",
+        "COMMENTS",
+    ],
+)
 
 java_library(
     name = "lib_java",
     srcs = glob(["src/main/java/**/*.java"]),
     visibility = ["//connectors:__subpackages__"],
     deps = [
-        "//core/proto:core_proto_java_library",
+        ":core_proto_java_library",
         "@maven//:com_google_guava_guava",
     ],
 )
@@ -32,8 +106,8 @@ java_library(
     srcs = [name],
     resources = glob(["src/test/resources/**/*"]),
     deps = [
+        ":core_proto_java_library",
         ":lib_java",
-        "//core/proto:core_proto_java_library",
         "@maven//:com_google_truth_truth",
     ],
 ) for name in glob([

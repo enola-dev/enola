@@ -22,8 +22,8 @@ java_binary(
     main_class = "dev.enola.demo.CLI",
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        "//core/lib:core_proto_java_library",
         "//core/lib:lib_java",
-        "//core/proto:core_proto_java_library",
         "@maven//:org_slf4j_slf4j_simple",
     ],
 )
@@ -36,7 +36,7 @@ java_binary(
     deps = [
         ":enola-demo",
         "//common/protobuf",
-        "//core/proto:core_proto_java_library",
+        "//core/lib:core_proto_java_library",
         "@maven//:com_google_truth_truth",
     ],
 ) for name in glob([

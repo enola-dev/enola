@@ -15,25 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.io.resource;
 
-import com.google.protobuf.Message;
+import com.google.common.io.Resources;
 
-import org.junit.Test;
+import java.net.MalformedURLException;
 
-import java.io.IOException;
-
-public abstract class AbstractProtoTest {
-    private final String pathToResourceOnClasspath;
-    private final Message.Builder builder;
-
-    public AbstractProtoTest(String pathToResourceOnClasspath, Message.Builder builder) {
-        this.pathToResourceOnClasspath = pathToResourceOnClasspath;
-        this.builder = builder;
-    }
-
-    @Test
-    public void testProto() throws IOException {
-        ProtoIO.check(pathToResourceOnClasspath, builder);
+public class ClasspathResource extends UrlResource {
+    public ClasspathResource(String pathToResourceOnClasspath) throws MalformedURLException {
+        super(Resources.getResource(pathToResourceOnClasspath));
     }
 }
