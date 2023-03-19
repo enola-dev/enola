@@ -1,0 +1,66 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// Copyright 2023 The Enola <https://enola.dev> Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package dev.enola.core.util;
+
+import "google/protobuf/timestamp.proto";
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.core.util.proto";
+option java_multiple_files = true;
+
+// TODO Log isn't actually used, just yet...
+message Log {
+  oneof oneof {
+    string url = 1;
+    Inline inline = 2;
+  }
+  message Inline {
+    repeated Entry entries = 1;
+  }
+  message Entry {
+    google.protobuf.Timestamp ts = 1;
+    Severity severity = 2;
+    string text = 3;
+  }
+  // Inspired by
+  // https://cloud.google.com/service-infrastructure/docs/service-control/reference/rpc/google.logging.type,
+  // but could be extended here, as there is no real direct connection between
+  // this and GCP logging.
+  enum Severity {
+    // The log entry has no assigned severity level.
+    SEVERITY_UNSPECIFIED = 0;
+    // Debug or trace information.
+    SEVERITY_DEBUG = 100;
+    //  Routine information, such as ongoing status or performance.
+    SEVERITY_INFO = 200;
+    // Normal but significant events, such as start up, shut down, or a
+    // configuration change.
+    SEVERITY_NOTICE = 300;
+    // Warning events might cause problems.
+    SEVERITY_WARNING = 400;
+    // Error events are likely to cause problems.
+    SEVERITY_ERROR = 500;
+    // Critical events cause more severe problems or outages.
+    SEVERITY_CRITICAL = 600;
+    // A person must take an action immediately.
+    SEVERITY_ALERT = 700;
+    // One or more systems are unusable.
+    SEVERITY_EMERGENCY = 800;
+  }
+}
