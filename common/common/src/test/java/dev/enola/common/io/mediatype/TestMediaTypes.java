@@ -34,4 +34,9 @@ public class TestMediaTypes implements MediaTypeProvider {
         return ImmutableMap.of(
                 TEST, Sets.newHashSet(MediaType.create("application", "test-alternative")));
     }
+
+    @Override
+    public Map<String, MediaType> extensionsToTypes() {
+        return null;
+    }
 }

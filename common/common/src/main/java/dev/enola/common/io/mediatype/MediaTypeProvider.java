@@ -24,4 +24,6 @@ import java.util.Set;
 
 public interface MediaTypeProvider {
     Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
+
+    Map<String, MediaType> extensionsToTypes();
 }

@@ -18,19 +18,12 @@
 # proto-file: dev/enola/core/enola_core.proto
 # proto-message: Entity
 
+# TODO Merge this with foo-abc.textproto into 1 single file
+
 id {
-  parts {
-    scheme: "demo"
-    entity: "bar"
-    query: {
-      key: "foo"
-      value: "abc"
-    }
-    query: {
-      key: "name"
-      value: "def"
-    }
-  }
+  ns: "demo"
+  entity: "bar"
+  paths: ["abc", "def"]
 }
 href {
   key: "wiki"
@@ -39,14 +32,8 @@ href {
 related {
   key: "one"
   value: {
-    parts {
-      scheme: "demo"
-      entity: "baz"
-      query: {
-        key: "uuid"
-        value: "uvw"
-      }
-    }
-
+    ns: "demo"
+    entity: "baz"
+    paths: "uvw"
   }
 }

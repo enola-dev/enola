@@ -25,52 +25,61 @@ option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 
-enum Status {
-  STATUS_UNSPECIFIED = 0;
-  STATUS_OK = 200;
-  STATUS_OK_BUT_DEGRADED = 300;
-  STATUS_NOK_DEPENDENCY = 502;
-  STATUS_NOK_ITSELF = 503;
+// TODO Think this through better...
+// enum Status {
+//   STATUS_UNSPECIFIED = 0;
+//   STATUS_OK = 200;
+//   STATUS_OK_BUT_DEGRADED = 300;
+//   STATUS_NOK_DEPENDENCY = 502;
+//   STATUS_NOK_ITSELF = 503;
+// }
+
+// ID of an Entity known to Enola, fully qualified.
+// Can be formatted to and parsed from several different string text forms,
+// see class dev.enola.core.IDs.
+message ID {
+  // Namespace.
+  // Serves to distinguish same entity names (below).
+  // This is optional if in your use of Enola you avoid name conflicts.
+  // It's like in C# or "package" in Java or Go or the xmlns: from XML Schema,
+  // or whatever the hell confusing thing ;) that Python is doing about this.
+  // Validated to only contain [a-z0-9_.] characters, so it's safe in URLs.
+  // By convention can contain '.' for sub-namespacing, but does not have to.
+  // The namespace of an Entity is always the same as its EntityKind.
+  string ns = 1;
+
+  // Entity Kind Name.
+  // This is mandatory and thus always present.
+  // This refers to an EntityKind and not an individual Entity, despite the
+  // name. (In practice this is just shorter and clearer for people to
+  // understand.) Validated to only contain [a-z0-9_] characters, so it's safe
+  // in URLs.
+  string entity = 2;
+
+  // Path.
+  // This is mandatory and thus always present with at least 1 element.
+  // Think of this as what would typically uniquely identify this entity IRL;
+  // e.g. a "hostname" or some UUID or a S/N or whatever is its "primary key".
+  // Validated to only contain [a-z0-9_-.] characters, so it's safe in URLs.
+  // (This restriction could in theory be relaxed, if there was a strong need
+  // to support it; as long as sufficient test coverage is added for correct
+  // encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.)
+  // Multiple "segments" are supports for "composed keys", for example a
+  // network/context/namespace/name kind of format.
+  // TODO If needed, maybe (later) oneof map<string, string> for multi??
+  repeated string paths = 3;
 }
 
-// ID of an object known to Enola.
-// In text (string) form, it "looks" like an RFC 2396 Uniform Resource
-// Identifier (URI, not URN), but this is just we want some "standard"-like
-// format which humans are used to seeing. The real syntax is actually simpler
-// and quite a bit more restricted, see
-// https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax:
-//
-// * The "scheme" is just a "namespace" in Enola, which typically aligns with
-// "Connector" module RPC service implementations.
-// * The "authority" (//...) is not used (and IDs with them are rejected; see
-// IDsTest.java).
-// * The "path" is not actually a path, but just a name of a kind of entity
-// within that scheme. It cannot contain slashes.
-// * The "query" (?...) is used to identify a specific entity (with one or
-// several names or UUID or whatever; specific to each entity).
-// * The "fragment" (#...) is not used (and IDs with them are rejected; see
-// IDsTest.java).
-//
-// Things like a "cluster" or a "rack" or whatever "hierarchies" an entity may
-// have are, by convention, not part of the entity (path), but represented as
-// part of the query; for example:
-// * k8s:pod?network=prod&context=demo&namespace=test&name=hello
-message ID {
-  oneof oneof {
-    string text = 1;
-    Parts parts = 2;
-  }
-  message Parts {
-    string scheme = 1;
-    string entity = 2;
-    map<string, string> query = 3;
-  }
+// This is useful e.g. for *.textproto files to contain more than 1 Entity.
+// It is inspired by how a YAML file can contain multiple --- root objects.
+message Entities {
+  repeated Entity entities = 1;
 }
 
 message Entity {
   ID id = 1;
   google.protobuf.Timestamp ts = 2;
-  Status status = 3;
+  // TODO Status status = 3;
 
   // Related Enola Entities.
   // Intended for consumption by both machines as well as humans.

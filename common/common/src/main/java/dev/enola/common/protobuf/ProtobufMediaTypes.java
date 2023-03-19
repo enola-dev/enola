@@ -72,4 +72,17 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
                         MediaType.create("application", "x-protobuf"),
                         MediaType.create("application", "vnd.google.protobuf")));
     }
+
+    @Override
+    public Map<String, MediaType> extensionsToTypes() {
+        return ImmutableMap.of(
+                "proto",
+                ProtobufMediaTypes.PROTO_UTF_8,
+                // TODO This parameter isn't actually used for anything... yet.
+                "proto.bin",
+                ProtobufMediaTypes.PROTOBUF_BINARY.withParameter(
+                        "proto-message", "google.protobuf.FileDescriptorSet"),
+                "textproto",
+                ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+    }
 }
