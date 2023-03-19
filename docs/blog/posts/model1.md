@@ -12,7 +12,7 @@ tags:
 
 Hello,
 
-I've [made good progress](https://github.com/enola-dev/enola/compare/0f2da74...6def72b666f590cecf3efaa5a27ee7a0122b01d0) over this weekend, with 18 commits on   with 2,583 additions and 382 deletions since the last update.
+I've [made good progress](https://github.com/enola-dev/enola/compare/0f2da74...6def72b666f590cecf3efaa5a27ee7a0122b01d0) over this weekend, with 18 commits with 2,583 additions and 382 deletions since the last update.
 
 The [Core model](https://github.com/enola-dev/enola/blob/6def72b666f590cecf3efaa5a27ee7a0122b01d0/core/lib/src/main/java/dev/enola/core/enola_core.proto) (and [metamodel](https://github.com/enola-dev/enola/blob/6def72b666f590cecf3efaa5a27ee7a0122b01d0/core/lib/src/main/java/dev/enola/core/meta/enola_meta.proto)) look better now, and there are [some very early first Entity demo models for illustration here](https://github.com/enola-dev/enola/tree/6def72b666f590cecf3efaa5a27ee7a0122b01d0/connectors/demo/src/main/resources/dev/enola/demo).
 

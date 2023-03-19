@@ -39,7 +39,8 @@ proto_library(
 proto_library(
     name = "meta_proto",
     srcs = ["src/main/java/dev/enola/core/meta/enola_meta.proto"],
-    deps = [],
+    # TODO ??? strip_import_prefix = "core/lib/src/main/java/",
+    deps = [":core_proto"],
 )
 
 proto_library(

@@ -18,6 +18,8 @@
 package dev.enola.common.io.resource;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public interface ResourceProvider {
 
@@ -26,4 +28,30 @@ public interface ResourceProvider {
     WritableResource getWritableResource(URI uri);
 
     Resource getResource(URI uri);
+
+    // -------------------------------------------
+
+    default ReadableResource getReadableResource(URL url) {
+        try {
+            return getReadableResource(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
+        }
+    }
+
+    default WritableResource getWritableResource(URL url) {
+        try {
+            return getWritableResource(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
+        }
+    }
+
+    default Resource getResource(URL url) {
+        try {
+            return getResource(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
+        }
+    }
 }

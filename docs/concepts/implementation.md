@@ -20,7 +20,9 @@
 
 ## Architecture
 
-The project is _"polyglot"_ (cool with using multiple programming languages).
+This project is _"polyglot"_ (cool with using multiple programming languages).
+
+Connectors written in https://www.emojicode.org are actively being worked on.
 
 We follow a _"[UNIX philosophy](https://en.wikipedia.org/wiki/Unix_philosophy)"_-inspired approach to modularity among the subsystems and within their code.
 

@@ -16,32 +16,33 @@
 
 # https://protobuf.dev/reference/protobuf/textformat-spec/
 # proto-file: dev/enola/core/meta/enola_meta.proto
-# proto-message: MetaModel
+# proto-message: EntityKinds
 
-scheme: "demo"
-entities {
-  name: "foo"
+kinds {
+  id: {
+    ns: "demo"
+    entity: "foo"
+    paths: "name"
+  }
   label: "Fo-o"
   emoji: "💂"
   doc_url: "demo-model.md#foo"
-  segments {
-    key: "name",
-    value: {}
-  }
 }
-entities {
-  name: "bar"
+kinds {
+  id: {
+    ns: "demo"
+    entity: "bar"
+    paths: ["foo", "name"]
+  }
   label: "Bar (not Bard)"
   emoji: "👩‍🎤"
   doc_url: "demo-model.md#bar"
-  segments {
+  related {
     key: "foo",
-    # TODO Is may actually not be required - it can always be automatically derived?
-    value: { ref_id_template: "demo:foo?name={query.foo}" }
-  }
-  segments {
-    key: "name",
-    value: {}
+    value: {
+      label: "Primary Baz",
+      rel_id_template: "demo:baz?uuid={proto.something.id}",
+    }
   }
   related {
     key: "one",
@@ -67,10 +68,10 @@ entities {
     }
   }
 }
-entities {
-  name: "baz"
-  segments {
-    key: "uuid",
-    value: {}
+kinds {
+  id: {
+    ns: "demo"
+    entity: "baz"
+    paths: "uuid"
   }
 }

@@ -18,7 +18,7 @@
 package dev.enola.demo;
 
 import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.core.meta.proto.MetaModel;
+import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
 
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class ModelTest {
 
     @Test
     public void testTextprotos() throws IOException {
-        ProtoIO.check("dev/enola/demo/demo-model.textproto", MetaModel.newBuilder());
+        ProtoIO.check("dev/enola/demo/demo-model.textproto", EntityKinds.newBuilder());
         ProtoIO.check("dev/enola/demo/foo-abc.textproto", Entity.newBuilder());
         ProtoIO.check("dev/enola/demo/bar-abc-def.textproto", Entity.newBuilder());
     }

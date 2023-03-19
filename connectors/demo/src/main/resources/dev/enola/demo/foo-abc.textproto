@@ -18,13 +18,10 @@
 # proto-file: dev/enola/core/enola_core.proto
 # proto-message: Entity
 
+# TODO Merge this with bar-abc-def.textproto into 1 single file
+
 id {
-  parts {
-    scheme: "demo"
-    entity: "foo"
-    query: {
-      key: "name"
-      value: "abc"
-    }
-  }
+  ns: "demo"
+  entity: "foo"
+  paths: "abc"
 }

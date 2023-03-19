@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class MediaTypeDetector {
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-    public static final MediaType DEFAULT = MediaType.OCTET_STREAM;
+    public static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
 
     public MediaType detect(String contentType, String contentEncoding, URI uri
             // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
@@ -93,11 +93,12 @@ public class MediaTypeDetector {
     }
 
     // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
+    // with test coverage via TestMediaTypes
     private final Map<String, MediaType> extensionMap =
-            ImmutableMap.of(
-                    "json", MediaType.JSON_UTF_8.withoutParameters(),
-                    "proto", ProtobufMediaTypes.PROTO_UTF_8,
-                    "textproto", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+            ImmutableMap.<String, MediaType>builder()
+                    .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
+                    .putAll(new ProtobufMediaTypes().extensionsToTypes())
+                    .build();
 
     private final FromURI fromExtensionMap =
             uri -> {
