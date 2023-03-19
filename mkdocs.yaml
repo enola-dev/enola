@@ -23,8 +23,8 @@ repo_url: https://github.com/enola-dev/enola
 edit_uri: blob/main/docs/
 copyright: Copyright &copy; 2023 The Enola <https://enola.dev> Authors
 
-# TODO
 nav:
+  - News (Blog): blog/index.md
   - Introduction: index.md
   - Concepts:
       - Core: concepts/core.md
@@ -106,7 +106,14 @@ plugins:
       strict: false
       exclude:
         - dev/proto/*
-  # TODO This will only work when https://github.com/enola-dev/enola is live
+
+  # TODO Activate the following plugin once I will pay $15/month for
+  # https://squidfunk.github.io/mkdocs-material/insiders/
+
+  # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/?h=git#document-contributors
   # - git-committers:
   #     repository: enola-dev/enola
   #     branch: main
+
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/
+  # - blog

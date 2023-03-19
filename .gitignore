@@ -16,4 +16,6 @@ build/
 .venv/
 
 # mkdocs
+# incl. e.g. .cache/plugin/git-committers/page-authors.json
 site/
+.cache/
