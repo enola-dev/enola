@@ -16,13 +16,13 @@
 
 syntax = "proto3";
 
-package dev.enola.core;
+package dev.enola.core.meta;
 
 option java_string_check_utf8 = true;
-option java_package = "dev.enola.core.proto";
+option java_package = "dev.enola.core.meta.proto";
 option java_multiple_files = true;
 
-message Model {
+message MetaModel {
   // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
   string scheme = 1;
 

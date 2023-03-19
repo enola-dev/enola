@@ -18,10 +18,10 @@
 package dev.enola.demo;
 
 import dev.enola.common.protobuf.AbstractProtoTest;
-import dev.enola.core.proto.Model;
+import dev.enola.core.meta.proto.MetaModel;
 
 public class ModelTest extends AbstractProtoTest {
     public ModelTest() {
-        super("dev/enola/demo/demo-model.textproto", Model.newBuilder());
+        super("dev/enola/demo/demo-model.textproto", MetaModel.newBuilder());
     }
 }
