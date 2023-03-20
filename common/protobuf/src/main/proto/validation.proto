@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package dev.enola.validation;
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.common.validation";
+option java_multiple_files = true;
+
+message Validations {
+  repeated Validation validations = 1;
+}
+
+message Validation {
+  // As in https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/field_mask.proto
+  string path = 1;
+  string error = 2;
+}

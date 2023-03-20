@@ -101,5 +101,9 @@ public class ClasspathUrlResourceTest {
                 PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
                 Optional.of(Charsets.UTF_8),
                 "🕵🏾‍♀️\n");
+
+        checkBinary("test.md", OCTET_STREAM, 19);
+        var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
+        assertThat(resource.charSource().read()).isEqualTo("# Markdown\n\n❤️\n");
     }
 }

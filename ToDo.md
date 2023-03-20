@@ -18,6 +18,9 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. `MarkdownGenerator.java` add Mermaid (like in `demo-model-docgen.md`)
+1. `MarkdownGenerator.java` https://github.com/google/closure-templates/issues/1300 ?
+
 1. Enforce https://www.conventionalcommits.org like git commit messages
    starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
    using https://github.com/jorisroovers/gitlint

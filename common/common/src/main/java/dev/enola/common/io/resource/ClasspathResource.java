@@ -18,11 +18,21 @@
 package dev.enola.common.io.resource;
 
 import com.google.common.io.Resources;
+import com.google.common.net.MediaType;
 
-import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 
 public class ClasspathResource extends UrlResource {
-    public ClasspathResource(String pathToResourceOnClasspath) throws MalformedURLException {
-        super(Resources.getResource(pathToResourceOnClasspath));
+
+    public ClasspathResource(String path, MediaType mediaType) {
+        super(Resources.getResource(path), mediaType);
+    }
+
+    public ClasspathResource(String path, Charset charset) {
+        super(Resources.getResource(path), charset);
+    }
+
+    public ClasspathResource(String path) {
+        super(Resources.getResource(path));
     }
 }

@@ -59,6 +59,8 @@ Until Bazel integration in VSC is available, use IJ for Java coding, with:
 
 * [Google Java Format](https://plugins.jetbrains.com/plugin/8527-google-java-format)
 
+* [Bamboo Soy](https://plugins.jetbrains.com/plugin/9841-bamboo-soy) for `*.soy` templates
+
 ## Other
 
 Some [people prefer coding using 🙊](https://en.wikipedia.org/wiki/Editor_war) `hexedit` or one its derivatives 😈 such as `vi` or `emacs`.

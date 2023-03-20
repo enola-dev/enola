@@ -16,12 +16,38 @@
 
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
+# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
+load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
+
+proto_library(
+    name = "validation_proto",
+    srcs = ["src/main/proto/validation.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+    ],
+)
+
+java_proto_library(
+    name = "validation_proto_java_library",
+    protos = [
+        "validation_proto",
+    ],
+    visibility = [
+    ],
+)
+
 java_library(
     name = "protobuf",
     srcs = glob(["src/main/java/**/*.java"]),
-    visibility = ["//connectors:__subpackages__"],
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+    ],
     deps = [
+        ":validation_proto_java_library",
         "//common/common",
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

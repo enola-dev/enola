@@ -26,6 +26,7 @@ import dev.enola.common.io.mediatype.MediaTypeDetector;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.*;
+import java.nio.charset.Charset;
 
 public class UrlResource implements ReadableResource {
 
@@ -33,9 +34,25 @@ public class UrlResource implements ReadableResource {
 
     private final URL url;
     private final URI uri;
+    private final MediaType mediaType;
+    private final Charset charset;
 
     public UrlResource(URL url) {
+        this(url, null, null, null);
+    }
+
+    public UrlResource(URL url, MediaType mediaType) {
+        this(url, mediaType, null, null);
+    }
+
+    public UrlResource(URL url, Charset charset) {
+        this(url, null, charset, null);
+    }
+
+    private UrlResource(URL url, MediaType mediaType, Charset charset, Void unused) {
         this.url = url;
+        this.mediaType = mediaType;
+        this.charset = charset;
         try {
             this.uri = url.toURI();
         } catch (URISyntaxException e) {
@@ -50,6 +67,8 @@ public class UrlResource implements ReadableResource {
 
     @Override
     public MediaType mediaType() {
+        if (mediaType != null) return mediaType;
+
         // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
@@ -57,6 +76,10 @@ public class UrlResource implements ReadableResource {
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
             var contentTypeFromServer = c.getContentType();
             var encodingFromServer = c.getContentEncoding();
+
+            if (encodingFromServer == null && charset != null) {
+                encodingFromServer = charset.name();
+            }
 
             final var fc = c;
             return mtd.detect(

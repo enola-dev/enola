@@ -60,7 +60,7 @@ java_proto_library(
     ],
     visibility = [
         "//connectors:__subpackages__",
-        "//core/lib:__pkg__",
+        "//core:__subpackages__",
     ],
 )
 
@@ -94,7 +94,13 @@ buf_proto_lint_test(
 java_library(
     name = "lib_java",
     srcs = glob(["src/main/java/**/*.java"]),
-    visibility = ["//connectors:__subpackages__"],
+    # NB: /java/ not /resources/ for the *.proto!
+    # TODO Required for https://github.com/google/closure-templates/issues/1300 or not?
+    # resources = glob(["src/main/java/**/*.proto"]),
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+    ],
     deps = [
         ":core_proto_java_library",
         "@maven//:com_google_guava_guava",

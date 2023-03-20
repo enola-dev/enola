@@ -108,7 +108,7 @@ message Link {
   // proto.* which allows to declaratively create links out of the Any proto
   // (instead of coding link generation in the service; which is always still
   // also possible).
-  string url_template = 4;
+  string uri_template = 4;
 
   /*
     TODO Consider if we should declare what to expect at the link?
