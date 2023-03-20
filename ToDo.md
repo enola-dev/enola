@@ -20,21 +20,14 @@
 
 ## High Priority (Next Features)
 
-1. `bat` in `docs/use/library/script` auto-scroll PAGER, e.g. https://unix.stackexchange.com/a/77645
-
-1. YAML https://github.com/enola-dev/enola/pull/58
-
 1. Write a demo model (in YAML) as an example with doc which illustrates
+   (with `bat` in `docs/use/library/script` auto-scroll PAGER, e.g. https://unix.stackexchange.com/a/77645 ?)
 
 1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
 
-1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
-   See https://squidfunk.github.io/mkdocs-material/reference/images/
-   With https://squidfunk.github.io/mkdocs-material/reference/grids/
-
 1. Implement a `FileStoreAspect` and use it in `EnolaServiceProvider`
    with test coverage in `EntityServiceProviderTest`
-   for https://github.com/enola-dev/enola/issues/72; incl. doc about it.
+   for https://github.com/enola-dev/enola/issues/72; incl. demo+doc about it.
 
 1. https://github.com/google/closure-templates/issues/1300 for Web UI?
 
@@ -53,6 +46,10 @@
      - https://revealjs.com
      - https://marp.app
      - https://gist.github.com/johnloy/27dd124ad40e210e91c70dd1c24ac8c8
+
+1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
+   See https://squidfunk.github.io/mkdocs-material/reference/images/
+   With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 ---
 

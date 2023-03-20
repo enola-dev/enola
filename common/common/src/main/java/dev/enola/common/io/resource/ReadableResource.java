@@ -24,6 +24,7 @@ import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 
 public interface ReadableResource {
 
@@ -40,6 +41,10 @@ public interface ReadableResource {
                                 .charset()
                                 .toJavaUtil()
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
+    }
+
+    default CharSource charSource(Charset defaultCharset) {
+        return byteSource().asCharSource(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()

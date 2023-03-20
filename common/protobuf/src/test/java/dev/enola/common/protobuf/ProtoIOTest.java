@@ -86,7 +86,8 @@ public class ProtoIOTest extends AbstractProtoTest {
     @Test
     public void testWriteUnknown() throws IOException {
         MemoryResource resource = new MemoryResource(MediaType.ANY_TYPE);
-        assertThrows(IllegalStateException.class, () -> new ProtoIO().write(TIMESTAMP, resource));
+        assertThrows(
+                IllegalArgumentException.class, () -> new ProtoIO().write(TIMESTAMP, resource));
     }
 
     @Test

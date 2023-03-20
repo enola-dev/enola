@@ -20,10 +20,12 @@ package dev.enola.common.io.mediatype;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
+
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
-
-import dev.enola.common.protobuf.ProtobufMediaTypes;
 
 import org.junit.Test;
 
@@ -50,10 +52,11 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect(null, null, new File("hello.txt").toURI()))
                 .isEqualTo(PLAIN_TEXT_UTF_8);
         assertThat(md.detect(null, null, new File("hello.json").toURI())).isEqualTo(JSON_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.proto").toURI()))
-                .isEqualTo(ProtobufMediaTypes.PROTO_UTF_8);
+        assertThat(md.detect(null, null, new File("hello.yaml").toURI())).isEqualTo(YAML_UTF_8);
+
+        assertThat(md.detect(null, null, new File("hello.proto").toURI())).isEqualTo(PROTO_UTF_8);
         assertThat(md.detect(null, null, new File("hello.textproto").toURI()))
-                .isEqualTo(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+                .isEqualTo(PROTOBUF_TEXTPROTO_UTF_8);
 
         // Assert.assertThrows()
         md.detect(null, null, URI.create("bad-URI-without-scheme"));

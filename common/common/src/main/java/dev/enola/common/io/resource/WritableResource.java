@@ -24,6 +24,7 @@ import com.google.common.io.CharSink;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 
 public interface WritableResource {
 
@@ -40,5 +41,9 @@ public interface WritableResource {
                                 .charset()
                                 .toJavaUtil()
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
+    }
+
+    default CharSink charSink(Charset defaultCharset) {
+        return byteSink().asCharSink(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }
 }
