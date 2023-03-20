@@ -19,11 +19,7 @@
 # proto-message: EntityKinds
 
 kinds {
-  id: {
-    ns: "demo"
-    entity: "foo"
-    paths: "name"
-  }
+  id: { ns: "demo" entity: "foo" paths: "name" }
   label: "Fo-o"
   emoji: "💂"
   doc_url: "demo-model.md#foo"
@@ -32,9 +28,9 @@ kinds {
   id: {
     ns: "demo"
     entity: "bar"
-    paths: ["foo", "name"]
+    paths: [ "foo", "name" ]
   }
-  label: "Bar (not Bard)"
+  label: "FUBAR?"
   emoji: "👩‍🎤"
   doc_url: "demo-model.md#bar"
   related {
@@ -42,27 +38,22 @@ kinds {
     value: {
       label: "Foo link",
       description: "This is the 'parent' Foo."
-      id: {
-        entity: "foo"
-      }
+      id: { entity: "foo" }
     }
   }
   related {
     key: "one",
     value: {
       label: "Primary Baz",
-      id: {
-        entity: "baz"
-      }
+      id: { entity: "baz" }
     }
   }
   related {
     key: "two",
     value: {
       label: "Secondary Baz",
-      id: {
-        entity: "baz"
-      }
+      description: "There is always moar to relate to!",
+      id: { entity: "baz" }
     }
   }
   link {
@@ -70,14 +61,16 @@ kinds {
     value: {
       label: "Wikipedia",
       description: "founded by Jimmy Wales",
-      url_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"
+      uri_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"
+    }
+  }
+  link {
+    key: "zzz"
+    value: {
+      label: "Backend"
+      description: "Linked Data in another system"
+      uri_template: "localhost:50051"  # TODO ???
     }
   }
 }
-kinds {
-  id: {
-    ns: "demo"
-    entity: "baz"
-    paths: "uuid"
-  }
-}
+kinds { id: { ns: "demo" entity: "baz" paths: "uuid" } }

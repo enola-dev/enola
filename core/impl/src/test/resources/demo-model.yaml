@@ -23,7 +23,7 @@ entities:
     doc_url: demo-model.md#foo
 
   - name: bar
-    parent: foo
+    # TODO parent: foo
     id: name
     label: Bar (not Bard)
     emoji: 👩‍🎤
@@ -43,3 +43,12 @@ entities:
         label: Wikipedia
         description: founded by Jimmy Wales
         url_template: https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}
+
+    link:
+      - key: zzz
+        label: Backend
+        description: Linked Data in another system
+        kind: KIND_PROTOBUF
+
+  - name: baz
+    id: uuid

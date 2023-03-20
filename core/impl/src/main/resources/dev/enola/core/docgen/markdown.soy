@@ -1,0 +1,23 @@
+{namespace dev.enola.markdown}
+
+// TODO This is not yet used, see comment in MarkdownDocGenerator.java
+
+import {ID} from 'dev/enola/core/enola_core.proto';
+
+{template helloWorld}
+    Hello world!
+{/template}
+
+{template package}
+    {@param package: ID}
+    {@param kinds: list<string>}
+
+    # {$package}
+
+    {for $kind in $kinds}
+        ## {$kind}
+    {/for}
+
+    ---
+    _This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_
+{/template}

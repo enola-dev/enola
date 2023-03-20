@@ -26,6 +26,8 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 
 // TODO Think this through better...
+// TODO This is likely to change into a something more extensible...
+// TODO Backed with a description of state machine describing transitions!
 // enum Status {
 //   STATUS_UNSPECIFIED = 0;
 //   STATUS_OK = 200;

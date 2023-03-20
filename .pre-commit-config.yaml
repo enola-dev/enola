@@ -75,7 +75,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(md|html)$
-        exclude: ^.github|docs/blog/posts/
+        exclude: ^.github|src/test/resources/|docs/blog/posts/
         args:
           - --comment-style
           - "<!--|   |-->"
@@ -114,13 +114,14 @@ repos:
     rev: v0.6.0
     hooks:
       - id: markdownlint-cli2
-        exclude: ^.github/
+        exclude: (^.github/|src/test/resources/)
 
-  # Until https://github.com/DavidAnson/markdownlint/issues/586
+    # Until https://github.com/DavidAnson/markdownlint/issues/586
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.11.0
     hooks:
       - id: markdown-link-check
+        exclude: src/test/resources/
         args: [--quiet]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
