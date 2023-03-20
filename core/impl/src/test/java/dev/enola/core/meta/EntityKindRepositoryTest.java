@@ -76,7 +76,7 @@ public class EntityKindRepositoryTest {
     }
 
     @Test
-    public void testLoad() throws ValidationException, IOException {
+    public void testLoadTextproto() throws ValidationException, IOException {
         r.load(new ClasspathResource("demo-model.textproto"));
         assertThat(r.listID())
                 .containsExactly(
@@ -84,5 +84,13 @@ public class EntityKindRepositoryTest {
                         IDs.parse("demo.bar/foo/name"),
                         IDs.parse("demo.baz/uuid"));
         assertThat(r.list()).hasSize(3);
+    }
+
+    @Test
+    public void testLoadYAML() throws ValidationException, IOException {
+        r.load(new ClasspathResource("demo-model.yaml"));
+        assertThat(r.listID())
+                .containsExactly(IDs.parse("demo.foo/name"), IDs.parse("demo.bar/foo/name"));
+        assertThat(r.list()).hasSize(2);
     }
 }

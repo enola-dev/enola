@@ -17,34 +17,24 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_library(
-    name = "impl",
+    name = "yamljson",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
-    visibility = ["//cli:__subpackages__"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        "//common/common",
-        "//common/protobuf",
-        "//common/protobuf:validation_proto_java_library",
-        "//core/lib:core_proto_java_library",
-        "//core/lib:lib_java",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_template_soy",
+        "@maven//:org_snakeyaml_snakeyaml_engine",
     ],
 )
 
 [java_test(
     name = name[:-len(".java")],
     size = "small",
-    srcs = [name],
+    srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":impl",
-        "//common/common",
-        "//common/protobuf",
-        "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
-        "//core/lib:core_proto_java_library",
-        "//core/lib:lib_java",
+        ":yamljson",
         "@maven//:com_google_truth_truth",
     ],
 ) for name in glob([

@@ -25,19 +25,27 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-class StringResource implements ReadableResource {
+public class StringResource implements ReadableResource {
 
     static final String SCHEME = "string";
 
-    private static final MediaType MEDIA_TYPE = MediaType.PLAIN_TEXT_UTF_8;
-
     private final String string;
+    private final MediaType mediaType;
     private final URI uri;
 
-    StringResource(String s) {
-        this.string = Objects.requireNonNull(s);
+    public StringResource(String text) {
+        this(text, MediaType.PLAIN_TEXT_UTF_8);
+    }
+
+    public StringResource(String text, MediaType mediaType) {
+        this.string = Objects.requireNonNull(text, "text");
+        this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
+        if (!mediaType.charset().isPresent()) {
+            throw new IllegalArgumentException(
+                    "MediaType is missing required charset: " + mediaType);
+        }
         try {
-            if (!s.isEmpty()) {
+            if (!text.isEmpty()) {
                 this.uri = new URI(SCHEME, string, null);
             } else {
                 this.uri = EmptyResource.INSTANCE.uri();
@@ -45,7 +53,7 @@ class StringResource implements ReadableResource {
 
         } catch (URISyntaxException e) {
             // This should never happen, if the escaping above is correct...
-            throw new IllegalArgumentException("String is invalid in URI: " + s, e);
+            throw new IllegalArgumentException("String is invalid in URI: " + text, e);
         }
     }
 
@@ -56,12 +64,12 @@ class StringResource implements ReadableResource {
 
     @Override
     public MediaType mediaType() {
-        return MEDIA_TYPE;
+        return mediaType;
     }
 
     @Override
     public ByteSource byteSource() {
-        return charSource().asByteSource(MEDIA_TYPE.charset().get());
+        return charSource().asByteSource(mediaType().charset().get());
     }
 
     @Override
@@ -71,6 +79,6 @@ class StringResource implements ReadableResource {
 
     @Override
     public String toString() {
-        return "StringResource{uri=" + uri() + '}';
+        return "StringResource{uri=" + uri() + ", mediaType=" + mediaType() + "}";
     }
 }

@@ -46,6 +46,61 @@ public class MediaTypeDetector {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     public static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
 
+    private static final Set<String> fileSystemProviderSchemes =
+            FileSystemProvider.installedProviders().stream()
+                    .map(p -> p.getScheme().toLowerCase())
+                    .filter(scheme -> !scheme.equals("jar"))
+                    .collect(Collectors.toSet());
+
+    private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
+    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
+    // with test coverage via TestMediaTypes
+    private final Map<String, MediaType> extensionMap =
+            ImmutableMap.<String, MediaType>builder()
+                    .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
+                    .putAll(new ProtobufMediaTypes().extensionsToTypes())
+                    .putAll(new YamlMediaType().extensionsToTypes())
+                    .build();
+    private final FromURI fromExtensionMap =
+            uri -> {
+                var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
+                return Optional.ofNullable(extensionMap.get(ext));
+            };
+
+    private final FromURI probeFileContentType =
+            uri -> {
+                // This doesn't support
+                if (uri.getScheme() != null
+                        && ("file".equalsIgnoreCase(uri.getScheme())
+                                || fileSystemProviderSchemes.contains(
+                                        uri.getScheme().toLowerCase()))) {
+                    var path = Paths.get(uri);
+                    try {
+                        var contentType = Files.probeContentType(path);
+                        if (contentType != null) {
+                            return Optional.of(MediaType.parse(contentType));
+                        }
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                }
+                return Optional.empty();
+            };
+
+    private final FromURI fileNameMap =
+            uri -> {
+                var contentTypeFromFileName =
+                        contentTypeMap.getContentTypeFor(URIs.getFilename(uri));
+                if (contentTypeFromFileName != null) {
+                    return Optional.of(MediaType.parse(contentTypeFromFileName));
+                }
+                return Optional.empty();
+            };
+
+    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
+    private final List<FromURI> providers =
+            ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
+
     public MediaType detect(String contentType, String contentEncoding, URI uri
             // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
             ) {
@@ -91,60 +146,4 @@ public class MediaTypeDetector {
         /** This will reset the InputStream after peeking at it! */
         Optional<MediaType> from(InputStream inputStream);
     }
-
-    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
-    // with test coverage via TestMediaTypes
-    private final Map<String, MediaType> extensionMap =
-            ImmutableMap.<String, MediaType>builder()
-                    .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
-                    .putAll(new ProtobufMediaTypes().extensionsToTypes())
-                    .build();
-
-    private final FromURI fromExtensionMap =
-            uri -> {
-                var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
-                return Optional.ofNullable(extensionMap.get(ext));
-            };
-
-    private static final Set<String> fileSystemProviderSchemes =
-            FileSystemProvider.installedProviders().stream()
-                    .map(p -> p.getScheme().toLowerCase())
-                    .filter(scheme -> !scheme.equals("jar"))
-                    .collect(Collectors.toSet());
-
-    private final FromURI probeFileContentType =
-            uri -> {
-                // This doesn't support
-                if (uri.getScheme() != null
-                        && ("file".equalsIgnoreCase(uri.getScheme())
-                                || fileSystemProviderSchemes.contains(
-                                        uri.getScheme().toLowerCase()))) {
-                    var path = Paths.get(uri);
-                    try {
-                        var contentType = Files.probeContentType(path);
-                        if (contentType != null) {
-                            return Optional.of(MediaType.parse(contentType));
-                        }
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                }
-                return Optional.empty();
-            };
-
-    private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
-
-    private final FromURI fileNameMap =
-            uri -> {
-                var contentTypeFromFileName =
-                        contentTypeMap.getContentTypeFor(URIs.getFilename(uri));
-                if (contentTypeFromFileName != null) {
-                    return Optional.of(MediaType.parse(contentTypeFromFileName));
-                }
-                return Optional.empty();
-            };
-
-    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
-    private final List<FromURI> providers =
-            ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
 }

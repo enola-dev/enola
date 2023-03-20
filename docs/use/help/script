@@ -2,7 +2,7 @@
 
 enola --help
 
-echo "Each subscommand has its own --help..."
+# 🦮 Each subscommand has its own --help...
 
 enola help list-kinds
 
@@ -12,4 +12,4 @@ enola help get
 
 enola help list
 
-sleep ${SLEEP:-7}
+sleep "${SLEEP:-7}"

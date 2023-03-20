@@ -33,6 +33,18 @@ public final class MediaTypes {
 
     private final Map<MediaType, MediaType> alternatives;
 
+    private MediaTypes(MediaTypeProvider... providers) {
+        this.alternatives = createAlternatives(providers);
+    }
+
+    private MediaTypes(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
+        this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
+    }
+
+    private MediaTypes() {
+        this(ServiceLoader.load(MediaTypeProvider.class).stream());
+    }
+
     /**
      * Improved version of {@link MediaType#parse(String)} which also invokes {@link
      * #normalize(MediaType)}.
@@ -47,6 +59,14 @@ public final class MediaTypes {
         return INSTANCE.alternatives
                 .getOrDefault(mediaType.withoutParameters(), mediaType)
                 .withParameters(mediaType.parameters());
+    }
+
+    public static boolean normalizedNoParamsEquals(MediaType actual, MediaType... expecteds) {
+        for (var expected : expecteds) {
+            if (normalize(actual).withoutParameters().equals(expected.withoutParameters()))
+                return true;
+        }
+        return false;
     }
 
     private Map<MediaType, MediaType> createAlternatives(MediaTypeProvider[] providers) {
@@ -65,17 +85,5 @@ public final class MediaTypes {
                                                                                 mediaType
                                                                                         .withoutParameters()))));
         return map.build();
-    }
-
-    private MediaTypes(MediaTypeProvider... providers) {
-        this.alternatives = createAlternatives(providers);
-    }
-
-    private MediaTypes(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
-        this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
-    }
-
-    private MediaTypes() {
-        this(ServiceLoader.load(MediaTypeProvider.class).stream());
     }
 }
