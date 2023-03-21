@@ -40,31 +40,37 @@ kinds {
   related {
     key: "foo",
     value: {
-      label: "Primary Baz",
-      rel_id_template: "demo:baz?uuid={proto.something.id}",
+      label: "Foo link",
+      description: "This is the 'parent' Foo."
+      id: {
+        entity: "foo"
+      }
     }
   }
   related {
     key: "one",
     value: {
       label: "Primary Baz",
-      rel_id_template: "demo:baz?uuid={proto.something.id}",
+      id: {
+        entity: "baz"
+      }
     }
   }
   related {
     key: "two",
     value: {
       label: "Secondary Baz",
-      rel_id_template: "demo:baz?uuid={proto.otherthing.id}"
+      id: {
+        entity: "baz"
+      }
     }
   }
-  href {
+  link {
     key: "wiki",
     value: {
       label: "Wikipedia",
       description: "founded by Jimmy Wales",
-      url_template: "https://en.wikipedia.org/w/"
-                    "index.php?fulltext=Search&search={name}"
+      url_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"
     }
   }
 }

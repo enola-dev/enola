@@ -25,7 +25,7 @@ id {
   entity: "bar"
   paths: ["abc", "def"]
 }
-href {
+link {
   key: "wiki"
   value: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={def}"
 }
