@@ -23,73 +23,64 @@ These _logical models_ are [implemented](implementation.md) and further document
 
 ## Entity (Model)
 
-As UML-like class diagram (without any implication of OOP class implementation):
+As an UML-like class diagram:
 
 ``` mermaid
 classDiagram
   direction RL
   class ID{
-    String scheme
-    String entityKind
-    String[] segments
+    String ns
+    String entity
+    String[] path
   }
   class Entity{
-    ID id
     Timestamp ts
-    Map~String,String~ href
-    Map~String,String~ link
+    Map~String,String~ links
   }
   Entity *-- ID : id
   Entity "1" --> "*" Entity : related
   EntityKind "*" <|-- "1" Entity : IS A
 ```
 
+<!--
 Alternatively the same model but as an Entity Relationship (ER) -like diagram,
-for those of you finding this notation more familiar (again without
-any implication of e.g. any RDBMS persistence implementation):
+for those of you finding this notation more familiar  (without implying e.g. any RDBMS-based persistence implementation):
 
 ``` mermaid
 erDiagram
   Entity{
-    String id
+    ID id
     Timestamp ts
-    Map~String,String~ href
-    Map~String,String~ link
+    Map~String,String~ links
   }
   Entity ||..o{ Entity : related
   EntityKind ||--|{ Entity : IS-A
 ```
+-->
 
 ## Entity Type (Meta Model)
 
 ``` mermaid
 classDiagram
+  class ID{
+    String ns
+    String entity
+  }
   class EntityKind{
-    string scheme
-    string name
     string label
     string emoji
     string logo_url
     string doc_url
   }
-  EntityKind *-- Parameter : segments
+  EntityKind *-- ID : id
+  EntityRelationship *-- ID : id
   EntityKind *-- EntityRelationship : related
-  EntityKind *-- WebLink : href
-  EntityKind *-- DataLink : link
-  class Parameter{
-    string ref_id_template
-  }
+  EntityKind *-- Link : link
   class EntityRelationship{
     string label
     string description
-    string rel_id_template
   }
-  class WebLink{
-    string label
-    string description
-    string url_template
-  }
-  class DataLink{
+  class Link{
     string label
     string description
     string uri_template
