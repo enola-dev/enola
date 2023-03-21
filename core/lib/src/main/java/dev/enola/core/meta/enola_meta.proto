@@ -65,85 +65,63 @@ message EntityKind {
 
   map<string, EntityRelationship> related = 14;
 
-  // URL links to web pages, as map. The string keys here match Entity#links's.
-  // These are informational and destined to be displayed to a human on a UI,
-  // but not "machine readable" for interpretation.
-  map<string, WebLink> href = 15;
-
-  map<string, DataLink> link = 16;
+  // URL links, as map. The string keys here match Entity#links's.
+  map<string, Link> link = 15;
 
   // TODO Describe detailed "state machine"
   // TODO Build cool visualization of said state machine as fancy diagram
 }
 
-// Entity ID model for EntityKind#id.segements.
-message Parameter {
-  // Template to generate ID reference to another Entity,
-  // as an ID URI Template (RFC 6570); see
-  // https://en.wikipedia.org/wiki/URI_Template. The Model#scheme: MUST be
-  // included in the template, as it's fairly common to reference entities
-  // across models. The available variables are all of the entities' ID query.*
-  // parameters (but nothing else; TODO context?). Like ID, the template does
-  // not have (percentage) encoded or escaped or quoted. Optional; if empty, the
-  // parameter doesn't reference any (known, modeled) other entity.
-  string ref_id_template = 4;
-}
-
-// Entity#related map model; it's key is the same as this in EntityKind#related,
-// the value is an ID as URI.
+// Entity#related map model; its key is the same as this in EntityKind#related.
 message EntityRelationship {
   // Human readable label, may be shown on a UI.
   string label = 2;
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
 
-  // Template to generate ID reference to another Entity, as above.
-  string rel_id_template = 4;
+  // ID reference to another Entity.
+  // Path is empty and set per Entity by connector service implementations.
+  ID id = 4;
 
   // TODO Come up with something more general than below...
-  // Maybe k8s-like map<string,string> labels? Very open, also
+  // Maybe k8s-like message Labels { map<string,string> labels? Very open, also
   // useful e.g. to declare Mermaid diagram relationship types!
 
+  // TODO Not sure how useful this is as-is...
   // This entity "depends" on that related entity. If that one Status is NOK,
   // then so is this one.
   // bool depends = 5;
-
-  // TODO Not sure how useful this is as-is...
   // bool owned = 6;
 }
 
-// Entity#url map model; it's key is the same as this in EntityKind#url, the
-// value is a URL.
-message WebLink {
+// Entity#link map model; its key is the same as this in EntityKind#link.
+message Link {
   // Human readable label, may be shown on a UI.
   string label = 2;
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
 
-  // URI template (as above), to create URL.
+  // URI template, to create URL.
+  // As an ID URI Template (RFC 6570); see
+  // https://en.wikipedia.org/wiki/URI_Template.
   // The available variables are the query.* parameters, as well as a special
   // proto.* which allows to declaratively create links out of the Any proto
   // (instead of coding link generation in the service; which is always still
   // also possible).
   string url_template = 4;
-}
 
-message DataLink {
-  // Human readable label, may be shown on a UI.
-  string label = 2;
-  // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
-  string description = 3;
+  /*
+    TODO Consider if we should declare what to expect at the link?
 
-  // URI template.
-  string uri_template = 4;
+    string media_type = 5;
 
-  enum Kind {
-    KIND_UNSPECIFIED = 0;
-    KIND_PROTOBUF = 1;
-    KIND_JSON = 2;
-  }
-  Kind kind = 5;
-
+    enum Kind {
+      KIND_UNSPECIFIED = 0;
+      KIND_PROTOBUF = 1;
+      KIND_JSON = 2;
+    }
+    Kind kind = 5;
+  */
   // The fully qualified (with package) name of the (root) Protocol Buffer
   // Message.
   // TODO But is this actually needed? Who would consume it? For what? I think

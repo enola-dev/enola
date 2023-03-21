@@ -86,18 +86,19 @@ message Entity {
   // Key is EntityKind#related.key (modeled by EntityRelationship), value is ID.
   map<string, ID> related = 5;
 
-  // HTTP URL hypertext references to additional information on other systems.
-  // Intended for human consumption, only.
-  // Key is EntityKind#href.key (modeled by WebLink), value is an absolute URL.
-  map<string, string> href = 6;
-
-  // URIs linked to this entity.
-  // Often "back-end" state information,
-  // used e.g. to determine an Entity's status, etc.
-  // Intended primarily for consumption by machines.
+  // URIs linked to this entity providing additional information about it on
+  // other systems.
+  //
+  // Key is EntityKind#link.key, value is an URI, often pointing to "back-end"
+  // state information, used e.g. to determine an Entity's status, etc.
+  //
+  // If http[s]: then these are informational and destined to be displayed to a
+  // human on a UI, but not "machine readable" for interpretation. Any other URI
+  // scheme is intended to be (only) machine readable and up to the client to
+  // interpret. This URI may well be specific to the respective schema
+  // connector.
+  //
   // These can be requested to be "inlined" in responses.
-  // Key is EntityKind#link.key (modeled by Datalink), value is an URI.
-  // This URI may well be specific to the respective schema connector.
   map<string, string> link = 7;
 }
 
