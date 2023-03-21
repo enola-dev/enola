@@ -20,7 +20,7 @@
 
 Enola is a Graph-based analytics system for exploring relationships between common objects.
 
-1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ -->
+1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ --> and ⭐ project!
 1. [Developer Set-Up for Local Build](docs/dev/setup.md)
 1. See [`LICENSE`](LICENSE) & [Contribute](docs/contributing.md)!
 <!-- TODO 1. [Read documentation](docs/index.md) -->
