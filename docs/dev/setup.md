@@ -20,6 +20,16 @@
 
 To locally build, work on and contribute to this project, you need to:
 
+1. Install Java Development Kit (JDK) [version 11.0](../../.bazelrc).
+   There are different Java (like Linux) "distributions" (all based on OpenJDK).
+   The easiest way to install one of them is typically to use your OS' package manager:
+
+       sudo apt-get install openjdk-11-jdk openjdk-11-doc openjdk-11-source
+
+   An alternative is to use e.g. [the SDKMAN!](https://sdkman.io)
+   If you work on several projects using different Java versions,
+   then we recommend [using the great jEnv](https://www.jenv.be).
+
 1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk):
 
         go install github.com/bazelbuild/bazelisk@latest
