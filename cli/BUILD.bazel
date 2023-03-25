@@ -20,11 +20,26 @@ java_binary(
     name = "cli",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.cli.CLI",
-    #resources = glob(["src/main/resources/**/*"]),
     deps = [
-        #"//common/common",
-        #"//core/lib:core_proto_java_library",
-        #"//core/lib:lib_java",
+        "//core/impl",
+        # "//core/lib:core_proto_java_library",
+        # "//core/lib:lib_java",
+        # "//common/common",
+        "@maven//:info_picocli_picocli",
         # "@maven//:org_slf4j_slf4j_simple",
     ],
 )
+
+[java_test(
+    name = name[:-len(".java")],
+    size = "small",
+    srcs = glob(["src/test/java/**/*.java"]),
+    resources = glob(["src/test/resources/**/*"]),
+    deps = [
+        ":cli",
+        "@maven//:com_google_truth_truth",
+        "@maven//:info_picocli_picocli",
+    ],
+) for name in glob([
+    "src/test/java/**/*Test.java",
+])]

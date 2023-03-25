@@ -20,7 +20,7 @@ java_library(
     name = "impl",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
-    visibility = ["//connectors:__subpackages__"],
+    visibility = ["//cli:__subpackages__"],
     deps = [
         "//common/common",
         "//common/protobuf",
