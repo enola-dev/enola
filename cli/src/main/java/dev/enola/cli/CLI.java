@@ -17,63 +17,70 @@
  */
 package dev.enola.cli;
 
-import static picocli.CommandLine.ScopeType.INHERIT;
-
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
-@Command(
-        name = "enola",
-        mixinStandardHelpOptions = true,
-        showDefaultValues = true,
-        description = "https://enola.dev",
-        versionProvider = VersionProvider.class,
-        subcommands = DocGen.class)
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
+
 public class CLI {
 
-    @Option(
-            names = {"--verbose", "-v"},
-            scope = INHERIT,
-            description = {
-                "Specify multiple -v options to increase verbosity. For example, `-v -v -v` or"
-                        + " `-vvv`"
-            })
-    boolean[] verbosity = {};
+    private final String[] args;
+    private final CommandLine commandLine;
+    private StringWriter out;
+    private StringWriter err;
 
-    static int exec(String[] args) {
-        return new CommandLine(new CLI())
-                // .registerConverter(Locale.class, new LocaleConverter())
-                .setExecutionExceptionHandler(new QuietExecutionExceptionHandler())
-                .execute(args);
+    private Integer exitCode;
+
+    public CLI(String[] args, CommandLine commandLine) {
+        this.commandLine = commandLine;
+        this.args = args;
     }
 
-    public static void main(String[] args) {
-        System.exit(exec(args));
+    public CLI setOut(PrintWriter out) {
+        commandLine.setOut(out);
+        return this;
     }
 
-    private static class QuietExecutionExceptionHandler
-            implements CommandLine.IExecutionExceptionHandler {
-        @Override
-        public int handleExecutionException(
-                Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult)
-                throws Exception {
-            if (parseResult.hasMatchedOption('v')) {
-                cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
-            } else {
-                Throwable e = ex;
-                while (e != null) {
-                    cmd.getErr().println(cmd.getColorScheme().errorText(e.getMessage()));
-                    e = e.getCause();
-                    if (e != null) {
-                        cmd.getErr().print("caused by: ");
-                    }
-                }
-            }
-            cmd.getErr().flush();
-            return cmd.getExitCodeExceptionMapper() != null
-                    ? cmd.getExitCodeExceptionMapper().getExitCode(ex)
-                    : cmd.getCommandSpec().exitCodeOnExecutionException();
+    public CLI setErr(PrintWriter err) {
+        commandLine.setErr(err);
+        return this;
+    }
+
+    public void setOutAndErrStrings() {
+        out = new StringWriter();
+        setOut(new PrintWriter(out));
+
+        err = new StringWriter();
+        setErr(new PrintWriter(err));
+    }
+
+    public String getOutString() {
+        commandLine.getOut().flush();
+        out.flush();
+        return out.toString();
+    }
+
+    public String getErrString() {
+        commandLine.getErr().flush();
+        err.flush();
+        return err.toString();
+    }
+
+    public int execute() {
+        this.exitCode = commandLine.execute(args);
+        return exitCode;
+    }
+
+    public int exitCode() {
+        if (exitCode == null) {
+            throw new IllegalStateException("Must execute() first!");
         }
+        return exitCode;
+    }
+
+    @Override
+    public String toString() {
+        return "CLI{" + "args=" + Arrays.toString(args) + ", exitCode=" + exitCode + '}';
     }
 }

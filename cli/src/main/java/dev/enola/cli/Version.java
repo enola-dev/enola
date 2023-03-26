@@ -17,23 +17,22 @@
  */
 package dev.enola.cli;
 
-import picocli.CommandLine.Command;
+import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.ParentCommand;
 import picocli.CommandLine.Spec;
 
 import java.util.concurrent.Callable;
 
-@Command(name = "docgen", description = "Generate Markdown Documentation")
-public class DocGen implements Callable<Integer> {
+@CommandLine.Command(name = "version", description = "Show CLI version (same as --version)")
+public class Version implements Callable<Integer> {
 
-    @ParentCommand Enola enola;
+    // TODO For some reason this doesn't work...
 
     @Spec CommandSpec spec;
 
     @Override
     public Integer call() throws Exception {
-        spec.commandLine().getOut().println("hi");
-        return 17;
+        spec.commandLine().printVersionHelp(spec.commandLine().getOut());
+        return 0;
     }
 }

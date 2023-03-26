@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-bazelisk build //cli:cli
+bazelisk build //cli/...
 echo
 echo
-./bazel-bin/cli/cli $@
+./bazel-bin/cli/enola "$@"

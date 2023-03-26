@@ -17,45 +17,41 @@
  */
 package dev.enola.cli;
 
-import static com.google.common.truth.Truth.assertThat;
+import static dev.enola.cli.CommandLineSubject.assertThat;
+import static dev.enola.cli.Enola.cli;
 
 import org.junit.Test;
 
-public class CLITest {
-
-    // TODO assert output
-    // with https://truth.dev/extension.html for
-    // https://picocli.info/#_black_box_and_white_box_testing
+public class EnolaTest {
 
     // TODO testVerbose()
 
     @Test
     public void testNoArguments() {
-        assertThat(CLI.exec(new String[] {})).isEqualTo(2);
-        // TODO withOutput().startsWith("Missing required subcommand")
+        assertThat(cli()).hasExitCode(2).err().startsWith("Missing required subcommand");
     }
 
     @Test
     public void testBadArgument() {
-        assertThat(CLI.exec(new String[] {"-bad"})).isEqualTo(2);
-        // TODO withOutput().startsWith("Unknown option: '-b'");
+        assertThat(cli("--bad")).hasExitCode(2).err().startsWith("Unknown option: '--bad'");
     }
 
     @Test
     public void testHelp() {
-        assertThat(CLI.exec(new String[] {"-h"})).isEqualTo(0);
-        assertThat(CLI.exec(new String[] {"--help"})).isEqualTo(0);
-        // TODO withOutput().startsWith("Usage: enola [-hVv] [COMMAND]")
+        assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv] [COMMAND]");
+        assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv] [COMMAND]");
     }
 
     @Test
     public void testVersion() {
-        assertThat(CLI.exec(new String[] {"-V"})).isEqualTo(0);
-        assertThat(CLI.exec(new String[] {"--version"})).isEqualTo(0);
+        assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
+        assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
+        // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
     }
 
     @Test
     public void testDocGen() {
-        assertThat(CLI.exec(new String[] {"docgen"})).isEqualTo(17);
+        assertThat(cli("docgen")).hasExitCode(17).out().isEqualTo("hi\n");
+        // TODO Assert that docgen actually did work...
     }
 }
