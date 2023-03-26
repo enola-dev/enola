@@ -17,6 +17,7 @@
  */
 package dev.enola.common.protobuf;
 
+import com.google.common.net.MediaType;
 import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.Message;
 import com.google.protobuf.Message.Builder;
@@ -67,21 +68,21 @@ public class ProtoIO {
     }
 
     public <B extends Builder> B read(ReadableResource resource, B builder) throws IOException {
-        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(resource.mediaType())) {
+        MediaType mediaType = resource.mediaType();
+        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(mediaType)) {
             try (InputStream is = resource.byteSource().openBufferedStream()) {
                 builder.mergeFrom(is, extensionRegistry);
             }
         } else {
             try (Reader reader = resource.charSource().openBufferedStream()) {
-                if (resource.mediaType()
-                        .is(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8.withoutParameters())) {
+                if (mediaType.is(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8.withoutParameters())) {
                     TextFormat.getParser().merge(reader, extensionRegistry, builder);
-                } else if (resource.mediaType()
-                        .is(ProtobufMediaTypes.PROTOBUF_JSON_UTF_8.withoutParameters())) {
+                } else if (mediaType.is(
+                        ProtobufMediaTypes.PROTOBUF_JSON_UTF_8.withoutParameters())) {
                     JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
                 } else {
                     throw new IllegalArgumentException(
-                            "TODO Implement for missing mediaType: " + resource);
+                            mediaType + " unknown mediaType for URI: " + resource);
                 }
             } catch (TextFormat.ParseException e) {
                 throw new TextParseException(resource.uri(), e);

@@ -21,13 +21,11 @@ java_binary(
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.cli.Enola",
     deps = [
+        "//common/common",
         "//core/impl",
-        # "//core/lib:core_proto_java_library",
-        # "//core/lib:lib_java",
-        # "//common/common",
-        "@maven//:info_picocli_picocli",
         "@maven//:com_google_guava_guava",
-        # "@maven//:org_slf4j_slf4j_simple",
+        "@maven//:info_picocli_picocli",
+        # TODO Logging from CLI? "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 

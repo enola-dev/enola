@@ -69,6 +69,8 @@ public class CLI {
 
     public int execute() {
         this.exitCode = commandLine.execute(args);
+        commandLine.getOut().flush();
+        commandLine.getErr().flush();
         return exitCode;
     }
 
