@@ -27,7 +27,7 @@ id {
 }
 link {
   key: "wiki"
-  value: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={def}"
+  value: "https://en.wikipedia.org/w/index.php?fulltext=Search&search=def"
 }
 related {
   key: "one"
