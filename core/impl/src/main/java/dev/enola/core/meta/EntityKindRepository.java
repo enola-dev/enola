@@ -1,3 +1,20 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2023 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package dev.enola.core.meta;
 
 import dev.enola.common.io.resource.ReadableResource;
@@ -40,7 +57,7 @@ public class EntityKindRepository {
 
     public void load(ReadableResource resource) throws IOException, ValidationException {
         var kinds = new ProtoIO().read(resource, EntityKinds.newBuilder()).build();
-        for (var kind: kinds.getKindsList()) {
+        for (var kind : kinds.getKindsList()) {
             put(kind);
         }
     }
@@ -53,7 +70,12 @@ public class EntityKindRepository {
 
     public Collection<ID> listID() {
         var ids = new ArrayList<ID>();
-        map.values().forEach(innerMap -> innerMap.values().stream().map(EntityKind::getId).forEach(ids::add));
+        map.values()
+                .forEach(
+                        innerMap ->
+                                innerMap.values().stream()
+                                        .map(EntityKind::getId)
+                                        .forEach(ids::add));
         return ids;
     }
 }
