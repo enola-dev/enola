@@ -32,12 +32,21 @@ import java.io.PrintWriter;
         name = "enola",
         mixinStandardHelpOptions = true,
         showDefaultValues = true,
+        synopsisSubcommandLabel = "COMMAND",
         description = Enola.DESCRIPTION,
         versionProvider = VersionProvider.class,
         subcommands = {HelpCommand.class, DocGen.class /* TODO , Version.class */})
 public class Enola {
 
     static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
+
+    @Option(
+            names = {"--model"},
+            scope = INHERIT,
+            description = "URI to EntityKinds") // TODO , required = true
+    // TODO Use an URI instead of String, with Converter
+    // TODO Support completion for available URI pre-fixes
+    String model;
 
     @Option(
             names = {"--verbose", "-v"},

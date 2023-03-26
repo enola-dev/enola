@@ -18,6 +18,10 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. Fix mediaType from extension so that e.g. this will work:
+
+       ./enola -v --model=https://raw.githubusercontent.com/enola-dev/enola/main/core/impl/src/test/resources/demo-model.textproto docge
+
 1. `MarkdownGenerator.java` add Mermaid (like in `demo-model-docgen.md`)
 1. `MarkdownGenerator.java` https://github.com/google/closure-templates/issues/1300 ?
 
