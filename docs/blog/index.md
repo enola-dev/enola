@@ -20,5 +20,6 @@
 
 These are also posted to [the Enola.dev Announcements Google Group](https://groups.google.com/g/enoladev-announcements) - please click **_Join_** on it!
 
+* 2023-03-26: [DocGen v0.1](posts/docgen1.md)
 * 2023-03-19: [First Model](posts/model1.md)
 * 2023-03-17: [Repo Created](posts/git-repo-created.md)
