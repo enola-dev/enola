@@ -51,6 +51,8 @@
 
 1. https://github.com/google/flogger/tree/master/grpc/src/main/java/com/google/common/flogger/grpc ?
 
+1. Upstream `CommandLineSubject` to Picocli?
+
 1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
 
 1. https://unifiedjs.com ?
