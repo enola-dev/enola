@@ -17,6 +17,7 @@
 
 set -euo pipefail
 
+# Same also in the ./enola script:
 if ! [ -x "$(command -v bazelisk)" ]; then
     echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
     echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
