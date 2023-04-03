@@ -17,7 +17,16 @@
 
 set -euo pipefail
 
+# This launch script should work whatever the current working directory is;
+# for both sub-directories of the project, as well as if it's anywhere else.
+# (This is handy e.g. when invoking it on models files that are stored outside of this project.)
+
+CWD=$(pwd)
+ROOT="$(realpath "$(dirname "$0")")"
+cd "$ROOT"
 bazelisk build //cli/...
 echo
 echo
-"$(realpath "$(dirname "$0")")"/bazel-bin/cli/enola "$@"
+
+cd "$CWD"
+"$ROOT"/bazel-bin/cli/enola "$@"
