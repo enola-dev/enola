@@ -20,4 +20,4 @@ set -euo pipefail
 bazelisk build //cli/...
 echo
 echo
-./bazel-bin/cli/enola "$@"
+"$(realpath "$(dirname "$0")")"/bazel-bin/cli/enola "$@"
