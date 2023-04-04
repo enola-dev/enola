@@ -17,20 +17,17 @@
  */
 package dev.enola.common.io.resource;
 
-import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
-public class StringResourceTest {
+public class ErrorResourceTest {
     @Test
-    public void testStringResource() throws IOException, URISyntaxException {
-        var r = new StringResource("hello, world");
-        assertThat(r.charSource().read()).isEqualTo("hello, world");
-
-        assertThat(new StringResource("").byteSource().size()).isEqualTo(0);
-        assertThat(new StringResource("").charSource().length()).isEqualTo(0);
+    public void testErrors() {
+        var e = ErrorResource.INSTANCE;
+        assertThrows(IOException.class, () -> e.byteSink().write(new byte[3]));
+        assertThrows(IOException.class, () -> e.byteSource().read());
     }
 }

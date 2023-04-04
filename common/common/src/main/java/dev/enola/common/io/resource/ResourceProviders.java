@@ -53,7 +53,7 @@ public class ResourceProviders implements ResourceProvider {
             return new ReadableButNotWritableResource(
                     new StringResource(uri.getSchemeSpecificPart()));
         } else if (uri.getScheme().startsWith(EmptyResource.SCHEME)) {
-            return new ReadableButNotWritableResource(new EmptyResource());
+            return new ReadableButNotWritableResource(EmptyResource.INSTANCE);
         } else if (uri.getScheme().startsWith(NullResource.SCHEME)) {
             return NullResource.INSTANCE;
         } else if (uri.getScheme().startsWith(ErrorResource.SCHEME)) {

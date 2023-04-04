@@ -24,11 +24,16 @@ import com.google.common.net.MediaType;
 import java.net.URI;
 
 public class EmptyResource implements ReadableResource {
+
+    public static final EmptyResource INSTANCE = new EmptyResource();
+
     public static final String SCHEME = "empty";
 
     private static final URI EMPTY_URI = URI.create("empty:-");
 
     private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
+
+    private EmptyResource() {}
 
     @Override
     public URI uri() {
