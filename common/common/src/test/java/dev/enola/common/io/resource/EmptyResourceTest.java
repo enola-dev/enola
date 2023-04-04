@@ -26,7 +26,7 @@ import java.io.IOException;
 public class EmptyResourceTest {
     @Test
     public void testEmptyResource() throws IOException {
-        var e = new EmptyResource();
+        var e = EmptyResource.INSTANCE;
         assertThat(e.byteSource().isEmpty()).isTrue();
         assertThat(e.charSource().isEmpty()).isTrue();
         assertThat(e.mediaType()).isNotNull();

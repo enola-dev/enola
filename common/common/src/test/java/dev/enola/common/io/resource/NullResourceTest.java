@@ -22,15 +22,20 @@ import static com.google.common.truth.Truth.assertThat;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 
-public class StringResourceTest {
+public class NullResourceTest {
     @Test
-    public void testStringResource() throws IOException, URISyntaxException {
-        var r = new StringResource("hello, world");
-        assertThat(r.charSource().read()).isEqualTo("hello, world");
+    public <is> void testNullResource() throws IOException {
+        var e = NullResource.INSTANCE;
+        assertThat(e.byteSource().isEmpty()).isFalse();
+        assertThat(e.mediaType()).isNotNull();
+        assertThat(e.uri()).isNotNull();
 
-        assertThat(new StringResource("").byteSource().size()).isEqualTo(0);
-        assertThat(new StringResource("").charSource().length()).isEqualTo(0);
+        try (InputStream is = e.byteSource().openStream()) {
+            assertThat(is.read()).isEqualTo(0);
+        }
+
+        e.byteSink().write(new byte[3]);
     }
 }

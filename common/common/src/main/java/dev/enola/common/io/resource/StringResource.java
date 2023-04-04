@@ -40,7 +40,7 @@ public class StringResource implements ReadableResource {
             if (!s.isEmpty()) {
                 this.uri = new URI(SCHEME, string, null);
             } else {
-                this.uri = new EmptyResource().uri();
+                this.uri = EmptyResource.INSTANCE.uri();
             }
 
         } catch (URISyntaxException e) {
