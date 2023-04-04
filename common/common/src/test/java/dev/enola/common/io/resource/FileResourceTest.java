@@ -29,9 +29,8 @@ import java.nio.file.Files;
 public class FileResourceTest {
     @Test
     public void testWriteRead() throws IOException {
-        var r =
-                new FileResource(
-                        Files.createTempFile("FileResourceTest", ".json").toAbsolutePath());
+        var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
+        var r = new FileResource(t);
         assertThat(r.uri().toString()).endsWith(".json");
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
         r.charSink().write("hello, world");
