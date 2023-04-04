@@ -53,8 +53,8 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testNoSchemeIsRelativeFile() throws IOException {
-        check(FileResource.class, URI.create("relative.txt"));
+    public void testRelativeFile() throws IOException {
+        check(FileResource.class, URI.create("file:relative.txt"));
     }
 
     @Test
@@ -71,6 +71,13 @@ public class ResourceProvidersTest {
     @Test
     public void testError() {
         check(ErrorResource.class, ErrorResource.INSTANCE.uri());
+    }
+
+    @Test
+    public void testNoScheme() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new ResourceProviders().getResource(URI.create("test")));
     }
 
     @Test

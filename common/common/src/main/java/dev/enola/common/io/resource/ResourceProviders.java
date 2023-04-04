@@ -46,10 +46,14 @@ public class ResourceProviders implements ResourceProvider {
     @Override
     public Resource getResource(URI uri) {
         if (Strings.isNullOrEmpty(uri.getScheme())) {
-            // Intentional, because this is convenient e.g. for CLI args:
-            return new FileResource(Path.of(uri.toString(), ""));
+            throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if (uri.getScheme().startsWith("file")) {
-            return new FileResource(Path.of(uri));
+            if (uri.getSchemeSpecificPart().contains("/")) {
+                return new FileResource(Path.of(uri));
+            } else {
+                // This is for relative file URIs, like file:hello.txt
+                return new FileResource(Path.of(uri.toString(), ""));
+            }
         } else if (uri.getScheme().startsWith(StringResource.SCHEME)) {
             return new ReadableButNotWritableResource(
                     new StringResource(uri.getSchemeSpecificPart()));
