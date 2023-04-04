@@ -30,8 +30,22 @@ To locally build, work on and contribute to this project, you need to:
    If you work on several projects using different Java versions,
    then we recommend [using the great jEnv](https://www.jenv.be).
 
-1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk):
+1. Install C/C++ etc. (it's required by the
+   [Proto rule for Bazel](https://github.com/bazelbuild/rules_proto)), e.g. do:
 
+       sudo apt-get install build-essential
+
+1. Install [Python venv](https://docs.python.org/3/library/venv.html)
+   (it's used by the presubmit and docs site generation), e.g. with:
+
+       sudo apt-get install python3-venv
+
+1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk) (NOT Bazel),
+   on a (recent enough...) Debian/Ubuntu [with Go](https://go.dev/doc/install)
+   e.g. like this (or some more manual equivalent):
+
+        sudo apt update
+        sudo apt install golang-go
         go install github.com/bazelbuild/bazelisk@latest
 
 1. Get the source code:
