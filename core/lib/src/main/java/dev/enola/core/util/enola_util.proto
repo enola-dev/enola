@@ -24,6 +24,16 @@ option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.util.proto";
 option java_multiple_files = true;
 
+// TODO Make an example/demo where this is used as an Any in data!
+// TODO Back this with a description of state machine transitions!
+// enum Status {
+//   STATUS_UNSPECIFIED = 0;
+//   STATUS_OK = 200;
+//   STATUS_OK_BUT_DEGRADED = 300;
+//   STATUS_NOK_DEPENDENCY = 502;
+//   STATUS_NOK_ITSELF = 503;
+// }
+
 // TODO Log isn't actually used, just yet...
 message Log {
   oneof oneof {
