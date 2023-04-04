@@ -1,6 +1,29 @@
 # Models
 
-## 👩‍🎤 `demo.bar` (FUBAR?)
+``` mermaid
+classDiagram
+  direction RL
+  class Bar{
+    🆔 foo
+    🆔 name
+    🔗 wiki
+    🔗 zzz
+  }
+  link Bar "#demo.bar"
+  Bar -- Foo : foo
+  Bar -- Baz : one
+  Bar -- Baz : two
+  class Baz{
+    🆔 uuid
+  }
+  link Baz "#demo.baz"
+  class Foo{
+    🆔 name
+  }
+  link Foo "#demo.foo"
+```
+
+## 👩‍🎤 `demo.bar` (FUBAR?) <a name="demo.bar"></a>
 
 * foo
 * name
@@ -9,20 +32,20 @@
 
 ### Related Entities
 
-* `foo` _Foo link_ ⇒ [foo](#foo) (This is the 'parent' Foo.)
-* `one` _Primary Baz_ ⇒ [baz](#baz)
-* `two` _Secondary Baz_ ⇒ [baz](#baz) (There is always moar to relate to!)
+* `foo` _Foo link_ ⇒ [foo](#demo.foo) (This is the 'parent' Foo.)
+* `one` _Primary Baz_ ⇒ [baz](#demo.baz)
+* `two` _Secondary Baz_ ⇒ [baz](#demo.baz) (There is always moar to relate to!)
 
 ### Links
 
 * `wiki` _Wikipedia_ ⇝ <https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}> (founded by Jimmy Wales)
 * `zzz` _Backend_ ⇝ <localhost:50051> (Linked Data in another system)
 
-## `demo.baz`
+## `demo.baz` <a name="demo.baz"></a>
 
 * uuid
 
-## 💂 `demo.foo` (Fo-o)
+## 💂 `demo.foo` (Fo-o) <a name="demo.foo"></a>
 
 * name
 
