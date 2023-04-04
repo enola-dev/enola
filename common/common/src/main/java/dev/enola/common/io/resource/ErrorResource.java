@@ -26,10 +26,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
-public class ErrorResource implements Resource {
-    public static final ErrorResource INSTANCE = new ErrorResource();
+class ErrorResource implements Resource {
+    static final ErrorResource INSTANCE = new ErrorResource();
 
-    public static final String SCHEME = "error";
+    static final String SCHEME = "error";
 
     private static final URI ERROR_URI = URI.create("error:-");
 

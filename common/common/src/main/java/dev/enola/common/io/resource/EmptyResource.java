@@ -23,11 +23,11 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 
-public class EmptyResource implements ReadableResource {
+class EmptyResource implements ReadableResource {
 
-    public static final EmptyResource INSTANCE = new EmptyResource();
+    static final EmptyResource INSTANCE = new EmptyResource();
 
-    public static final String SCHEME = "empty";
+    static final String SCHEME = "empty";
 
     private static final URI EMPTY_URI = URI.create("empty:-");
 
