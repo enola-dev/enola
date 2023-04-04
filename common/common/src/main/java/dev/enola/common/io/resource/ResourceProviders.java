@@ -48,11 +48,11 @@ public class ResourceProviders implements ResourceProvider {
         if (Strings.isNullOrEmpty(uri.getScheme())) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if (uri.getScheme().startsWith("file")) {
-            if (uri.getSchemeSpecificPart().contains("/")) {
+            if (uri.getSchemeSpecificPart().startsWith("/")) {
                 return new FileResource(Path.of(uri));
             } else {
                 // This is for relative file URIs, like file:hello.txt
-                return new FileResource(Path.of(uri.toString(), ""));
+                return new FileResource(Path.of(uri.getSchemeSpecificPart(), ""));
             }
         } else if (uri.getScheme().startsWith(StringResource.SCHEME)) {
             return new ReadableButNotWritableResource(
