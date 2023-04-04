@@ -56,6 +56,8 @@ Eclipse is not actively supported by this project as an IDE. We recommend using 
 Until Bazel integration in VSC is available, use IJ for Java coding, with:
 
 * [Bazel](https://plugins.jetbrains.com/plugin/8609-bazel-for-intellij) from [ij.bazel.build](https://ij.bazel.build)
+  (You [have to manually change](https://github.com/bazelbuild/intellij/issues/4693) the
+  _Bazel Binary Location_ from the default `bazel` to `bazelisk`.)
 
 * [Google Java Format](https://plugins.jetbrains.com/plugin/8527-google-java-format)
 
