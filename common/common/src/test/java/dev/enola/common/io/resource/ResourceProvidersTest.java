@@ -21,15 +21,20 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import com.google.common.io.Files;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
 public class ResourceProvidersTest {
 
-    private void check(Class expected, URI uri) {
+    private static final byte[] BYTES = new byte[] {1, 2, 3};
+
+    private void check(Class<?> expected, URI uri) {
         assertThat(new ResourceProviders().getResource(uri)).isInstanceOf(expected);
     }
 
@@ -44,17 +49,31 @@ public class ResourceProvidersTest {
         assertThat(r.byteSource().isEmpty()).isTrue();
     }
 
+    private void checkFile(File file, URI uri) throws IOException {
+        check(FileResource.class, uri);
+        Files.asByteSink(file).write(BYTES);
+        byte[] bytes = new ResourceProviders().getResource(uri).byteSource().read();
+        assertThat(bytes).isEqualTo(BYTES);
+    }
+
     @Test
     public void testFile() throws IOException {
         check(FileResource.class, URI.create("file:///dev/null"));
 
         var r = new ResourceProviders().getResource(URI.create("file:///dev/null"));
         assertThat(r.byteSource().isEmpty()).isTrue();
+
+        var f = new File("absolute").getAbsoluteFile();
+        checkFile(f, f.toURI());
     }
 
     @Test
     public void testRelativeFile() throws IOException {
-        check(FileResource.class, URI.create("file:relative.txt"));
+        checkFile(new File("relative"), URI.create("file:relative"));
+
+        var f = new File("folder/relative");
+        f.getParentFile().mkdir();
+        checkFile(f, URI.create("file:folder/relative"));
     }
 
     @Test
