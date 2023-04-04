@@ -27,11 +27,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
-public class NullResource implements Resource {
+class NullResource implements Resource {
 
-    public static final NullResource INSTANCE = new NullResource();
+    static final NullResource INSTANCE = new NullResource();
 
-    public static final String SCHEME = "null";
+    static final String SCHEME = "null";
 
     private static final URI NULL_URI = URI.create("null:-");
     private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;

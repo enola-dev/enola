@@ -25,16 +25,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-public class StringResource implements ReadableResource {
+class StringResource implements ReadableResource {
 
-    public static final String SCHEME = "string";
+    static final String SCHEME = "string";
 
     private static final MediaType MEDIA_TYPE = MediaType.PLAIN_TEXT_UTF_8;
 
     private final String string;
     private final URI uri;
 
-    public StringResource(String s) {
+    StringResource(String s) {
         this.string = Objects.requireNonNull(s);
         try {
             if (!s.isEmpty()) {
