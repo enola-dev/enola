@@ -50,7 +50,7 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
         // renderer.setData(data).renderText(md).assertDone();
 
         md.append("# Models\n");
-        // TODO ``` mermaid like in demo-model-docgen.md
+        renderMermaid(kinds, md);
         for (var ek : kinds.list()) {
             render(ek, md);
         }
@@ -60,15 +60,65 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
                         + " [Enola.dev](https://www.enola.dev)_\n");
     }
 
-    private void render(EntityKind ek, Appendable md) throws IOException {
+    private void renderMermaid(EntityKindRepository kinds, Appendable md) throws IOException {
+        md.append("\n``` mermaid\nclassDiagram\n  direction RL\n");
+        for (var ek : kinds.list()) {
+            renderMermaidEntity(ek, md);
+        }
+        md.append("```\n");
+    }
+
+    private void renderMermaidEntity(EntityKind ek, Appendable md) throws IOException {
         ID idWithoutPathArguments = ID.newBuilder(ek.getId()).clearPaths().build();
+        String fqn = IDs.toPath(idWithoutPathArguments);
+        String name = StringUtil.capitalize(idWithoutPathArguments.getEntity());
         List<String> pathArguments =
                 ek.getId().getPathsList().stream().collect(Collectors.toList());
+
+        // This is kinda wrong... but "good enough" for v1; see
+        // https://github.com/enola-dev/enola/issues/74. Later, we'll
+        // https://github.com/enola-dev/enola/issues/89.
+        md.append("  class " + name + "{\n");
+        for (var pathArgument : pathArguments) {
+            // Unicode for https://emojipedia.org/id-button/
+            md.append("    \uD83C\uDD94 " + pathArgument + "\n");
+        }
+        for (var linkKey : ek.getLinkMap().keySet()) {
+            // Unicode for https://emojipedia.org/link/
+            md.append("    \uD83D\uDD17 " + linkKey + "\n");
+        }
+        // TODO Verbs? Like "drain()" etc.
+        md.append("  }\n");
+
+        md.append("  link " + name + " \"#" + fqn + "\"\n");
+
+        for (var related : ek.getRelatedMap().entrySet()) {
+            var key = related.getKey();
+            var id = related.getValue().getId();
+            // TODO Permit other kind of relationships, read from tags in Model; e.g. *-- instead --
+            // https://github.com/enola-dev/enola/issues/91
+            md.append(
+                    "  "
+                            + name
+                            + " -- "
+                            + StringUtil.capitalize(id.getEntity())
+                            + " : "
+                            + key
+                            + "\n");
+        }
+    }
+
+    private void render(EntityKind ek, Appendable md) throws IOException {
+        ID idWithoutPathArguments = ID.newBuilder(ek.getId()).clearPaths().build();
+        String fqn = IDs.toPath(idWithoutPathArguments);
+        List<String> pathArguments =
+                ek.getId().getPathsList().stream().collect(Collectors.toList());
+
         md.append("\n## ");
         if (!Strings.isNullOrEmpty(ek.getEmoji())) {
             md.append(ek.getEmoji() + " ");
         }
-        md.append("`" + IDs.toPath(idWithoutPathArguments) + "`");
+        md.append("`" + fqn + "`");
         if (!Strings.isNullOrEmpty(ek.getLabel())) {
             md.append(" (" + ek.getLabel() + ")");
         }
@@ -76,6 +126,7 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
             // TODO How / where to format the logo? Maybe just put it on a new line, AFTER heading?
             md.append("![Logo](" + ek.getLogoUrl() + ")");
         }
+        md.append(" <a name=\"" + fqn + "\"></a>");
         md.append("\n\n");
         for (var pathArgument : pathArguments) {
             md.append("* " + pathArgument + "\n");
@@ -94,8 +145,16 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
                 var description = related.getValue().getDescription();
                 var id = related.getValue().getId();
                 var idPath = IDs.toPath(id);
-                // TODO Link to #anchor won't work as-is with Emoji...
-                md.append("* `" + key + "` _" + label + "_ ⇒ [" + idPath + "](#" + idPath + ")");
+                md.append(
+                        "* `"
+                                + key
+                                + "` _"
+                                + label
+                                + "_ ⇒ ["
+                                + id.getEntity()
+                                + "](#"
+                                + idPath
+                                + ")");
                 if (!Strings.isNullOrEmpty(description)) {
                     md.append(" (" + description + ")");
                 }

@@ -38,14 +38,14 @@ kinds {
     value: {
       label: "Foo link",
       description: "This is the 'parent' Foo."
-      id: { entity: "foo" }
+      id: { ns: "demo" entity: "foo" }
     }
   }
   related {
     key: "one",
     value: {
       label: "Primary Baz",
-      id: { entity: "baz" }
+      id: { ns: "demo" entity: "baz" }
     }
   }
   related {
@@ -53,7 +53,7 @@ kinds {
     value: {
       label: "Secondary Baz",
       description: "There is always moar to relate to!",
-      id: { entity: "baz" }
+      id: { ns: "demo" entity: "baz" }
     }
   }
   link {
