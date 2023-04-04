@@ -53,8 +53,9 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    @Ignore // TODO Implement me ASAP!
-    public void testNoSchemeIsRelativeFile() {}
+    public void testNoSchemeIsRelativeFile() throws IOException {
+        check(FileResource.class, URI.create("relative.txt"));
+    }
 
     @Test
     @Ignore // TODO Implement me, with a local test HTTP server...

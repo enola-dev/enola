@@ -46,7 +46,8 @@ public class ResourceProviders implements ResourceProvider {
     @Override
     public Resource getResource(URI uri) {
         if (Strings.isNullOrEmpty(uri.getScheme())) {
-            throw new IllegalArgumentException("URI is missing a scheme: " + uri);
+            // Intentional, because this is convenient e.g. for CLI args:
+            return new FileResource(Path.of(uri.toString(), ""));
         } else if (uri.getScheme().startsWith("file")) {
             return new FileResource(Path.of(uri));
         } else if (uri.getScheme().startsWith(StringResource.SCHEME)) {

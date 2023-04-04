@@ -83,7 +83,8 @@ public class Enola {
             } else {
                 Throwable e = ex;
                 while (e != null) {
-                    cmd.getErr().println(cmd.getColorScheme().errorText(e.getMessage()));
+                    var msg = e.getClass().getSimpleName() + ": " + e.getMessage();
+                    cmd.getErr().println(cmd.getColorScheme().errorText(msg));
                     e = e.getCause();
                     if (e != null) {
                         cmd.getErr().print("caused by: ");
