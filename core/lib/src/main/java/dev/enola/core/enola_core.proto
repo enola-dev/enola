@@ -25,17 +25,6 @@ option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 
-// TODO Think this through better...
-// TODO This is likely to change into a something more extensible...
-// TODO Backed with a description of state machine describing transitions!
-// enum Status {
-//   STATUS_UNSPECIFIED = 0;
-//   STATUS_OK = 200;
-//   STATUS_OK_BUT_DEGRADED = 300;
-//   STATUS_NOK_DEPENDENCY = 502;
-//   STATUS_NOK_ITSELF = 503;
-// }
-
 // ID of an Entity known to Enola, fully qualified.
 // Can be formatted to and parsed from several different string text forms,
 // see class dev.enola.core.IDs.
@@ -81,7 +70,6 @@ message Entities {
 message Entity {
   ID id = 1;
   google.protobuf.Timestamp ts = 2;
-  // TODO Status status = 3;
 
   // Related Enola Entities.
   // Intended for consumption by both machines as well as humans.
@@ -102,6 +90,9 @@ message Entity {
   //
   // These can be requested to be "inlined" in responses.
   map<string, string> link = 7;
+
+  // Data about the Entity, in machine readable form, as Any protobuf.
+  map<string, google.protobuf.Any> data = 9;
 }
 
 message GetEntityRequest {

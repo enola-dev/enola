@@ -63,10 +63,17 @@ message EntityKind {
   // model's textproto file location - from where a UI will serve it).
   string doc_url = 5;
 
+  // Description of related Entities.
+  // The string keys here match Entity#related's.
   map<string, EntityRelationship> related = 14;
 
-  // URL links, as map. The string keys here match Entity#links's.
+  // Description of URL links.
+  // The string keys here match Entity#links's.
   map<string, Link> link = 15;
+
+  // Description of data about the Entity, in machine readable form.
+  // The string keys here match Entity#data's.
+  map<string, Data> data = 16;
 
   // TODO Describe detailed "state machine"
   // TODO Build cool visualization of said state machine as fancy diagram
@@ -76,6 +83,7 @@ message EntityKind {
 message EntityRelationship {
   // Human readable label, may be shown on a UI.
   string label = 2;
+
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
 
@@ -98,6 +106,7 @@ message EntityRelationship {
 message Link {
   // Human readable label, may be shown on a UI.
   string label = 2;
+
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
 
@@ -122,14 +131,18 @@ message Link {
     }
     Kind kind = 5;
   */
-  // The fully qualified (with package) name of the (root) Protocol Buffer
-  // Message.
-  // TODO But is this actually needed? Who would consume it? For what? I think
-  // this will end up just being hard-coded in connectors...
-  // TODO If yes, is there a better type than string for this in
-  // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto
-  // via import "google/protobuf/descriptor.proto"
-  // string proto_fqn = 6;
+}
+
+message Data {
+  // Human readable label, may be shown on a UI.
+  string label = 2;
+
+  // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
+  string description = 3;
+
+  // The fully qualified name of the (root) Protocol Buffer Message; see
+  // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto
+  string type_url = 6;
 }
 
 // TODO Remove the following - and have EntityKind *BE* an Entity that's itself
