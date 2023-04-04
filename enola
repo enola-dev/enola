@@ -37,8 +37,8 @@ fi
 
 cd "$ROOT"
 "$BZL" build //cli/...
-echo
-echo
+echo >&2
+echo >&2
 
 cd "$CWD"
 "$ROOT"/bazel-bin/cli/enola "$@"
