@@ -46,36 +46,39 @@ public class ResourceProviders implements ResourceProvider {
 
     @Override
     public Resource getResource(URI uri) {
-        if (Strings.isNullOrEmpty(uri.getScheme())) {
+        String scheme = uri.getScheme();
+        if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
-        } else if (uri.getScheme().startsWith("file")) {
+        } else if (scheme.startsWith("file")) {
             if (uri.getSchemeSpecificPart().startsWith("/")) {
                 return new FileResource(Path.of(uri));
             } else {
                 // This is for relative file URIs, like file:hello.txt
                 return new FileResource(Path.of(uri.getSchemeSpecificPart(), ""));
             }
-        } else if (uri.getScheme().startsWith(StringResource.SCHEME)) {
+        } else if (scheme.startsWith(StringResource.SCHEME)) {
             return new ReadableButNotWritableResource(
                     new StringResource(uri.getSchemeSpecificPart()));
-        } else if (uri.getScheme().startsWith(EmptyResource.SCHEME)) {
+        } else if (scheme.startsWith(EmptyResource.SCHEME)) {
             return new ReadableButNotWritableResource(EmptyResource.INSTANCE);
-        } else if (uri.getScheme().startsWith(NullResource.SCHEME)) {
+        } else if (scheme.startsWith(NullResource.SCHEME)) {
             return NullResource.INSTANCE;
-        } else if (uri.getScheme().startsWith(ErrorResource.SCHEME)) {
+        } else if (scheme.startsWith(ErrorResource.SCHEME)) {
             return ErrorResource.INSTANCE;
-        } else if (uri.getScheme().startsWith("http")) {
+        } else if (scheme.startsWith("http")) {
             try {
                 // TODO Replace UrlResource with alternative, when implemented
                 return new ReadableButNotWritableResource(new UrlResource(uri.toURL()));
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Malformed URI is not valid URL" + uri, e);
             }
-        } else if (uri.getScheme().startsWith("fd")) {
+        } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
+            return new ReadableButNotWritableResource(
+                    new ClasspathResource(uri.getSchemeSpecificPart()));
+        } else if (scheme.startsWith("fd")) {
             return new FileDescriptorResource(uri);
         }
-        throw new IllegalArgumentException(
-                "Unknown URI scheme '" + uri.getScheme() + "' in: " + uri);
+        throw new IllegalArgumentException("Unknown URI scheme '" + scheme + "' in: " + uri);
     }
 
     private static class ReadableButNotWritableResource extends DelegatingReadableResource

@@ -83,10 +83,17 @@ public class ResourceProvidersTest {
     public void testHTTP() {}
 
     @Test
+    public void testClasspath() throws IOException {
+        var uri = URI.create(ClasspathResource.SCHEME + ":test-emoji.txt");
+        var emoji = new ResourceProviders().getReadableResource(uri).charSource().read();
+        assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
+    }
+
+    @Test
     public void testString() throws IOException {
         var uri = URI.create(StringResource.SCHEME + ":hello");
-        assertThat(new ResourceProviders().getReadableResource(uri).charSource().read())
-                .isEqualTo("hello");
+        var hello = new ResourceProviders().getReadableResource(uri).charSource().read();
+        assertThat(hello).isEqualTo("hello");
     }
 
     @Test
