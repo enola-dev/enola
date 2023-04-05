@@ -21,6 +21,7 @@ import static picocli.CommandLine.ScopeType.INHERIT;
 
 import com.google.common.base.Charsets;
 
+import picocli.AutoComplete;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
@@ -35,7 +36,11 @@ import java.io.PrintWriter;
         synopsisSubcommandLabel = "COMMAND",
         description = Enola.DESCRIPTION,
         versionProvider = VersionProvider.class,
-        subcommands = {HelpCommand.class, DocGen.class /* TODO , Version.class */})
+        subcommands = {
+            HelpCommand.class,
+            AutoComplete.GenerateCompletion.class,
+            DocGen.class /* TODO , Version.class */
+        })
 public class Enola {
 
     static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
