@@ -23,13 +23,11 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
 
-import javax.annotation.Nullable;
-
 public final class CommandLineSubject extends Subject {
 
     private final CLI actual;
 
-    public static CommandLineSubject assertThat(@Nullable CLI actual) {
+    public static CommandLineSubject assertThat(CLI actual) {
         var subject = commandLines();
         actual.setOutAndErrStrings();
         actual.execute();

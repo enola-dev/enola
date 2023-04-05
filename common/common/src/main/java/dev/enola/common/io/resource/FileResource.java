@@ -29,6 +29,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class FileResource implements Resource {
 
@@ -45,7 +46,7 @@ public class FileResource implements Resource {
     public FileResource(Path path, Charset charset, OpenOption... openOptions) {
         this.path = path;
         this.charset = charset;
-        this.openOptions = openOptions;
+        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
     }
 
     @Override

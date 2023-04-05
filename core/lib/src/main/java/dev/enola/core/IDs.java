@@ -17,7 +17,6 @@
  */
 package dev.enola.core;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 import dev.enola.core.proto.ID;
@@ -43,7 +42,7 @@ public final class IDs {
 
     private static final String URI_SCHEME = "enola";
 
-    private static final Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
+    // private static final Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
 
     private static final Splitter SLASH_SPLITTER =
             Splitter.on('/').omitEmptyStrings().trimResults();

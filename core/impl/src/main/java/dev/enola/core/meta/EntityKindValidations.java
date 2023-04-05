@@ -39,6 +39,6 @@ public class EntityKindValidations {
                 // TODO Validate that paths all match regexp as per enola_core.proto
             };
 
-    public static MessageValidators INSTANCE =
+    public static final MessageValidators INSTANCE =
             new MessageValidators().register(id, ID.getDescriptor());
 }
