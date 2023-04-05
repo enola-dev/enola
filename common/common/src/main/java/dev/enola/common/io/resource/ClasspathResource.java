@@ -24,6 +24,8 @@ import java.nio.charset.Charset;
 
 public class ClasspathResource extends UrlResource {
 
+    public static final String SCHEME = "classpath";
+
     public ClasspathResource(String path, MediaType mediaType) {
         super(Resources.getResource(path), mediaType);
     }
