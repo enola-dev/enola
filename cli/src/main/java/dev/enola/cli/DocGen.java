@@ -21,6 +21,7 @@ import com.google.common.base.Strings;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.docgen.MarkdownDocGenerator;
+import dev.enola.core.docgen.Options;
 import dev.enola.core.meta.EntityKindRepository;
 
 import picocli.CommandLine;
@@ -37,10 +38,15 @@ public class DocGen implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"--output", "-o"},
-            scope = CommandLine.ScopeType.INHERIT,
             defaultValue = "fd:1?charset=UTF-8", // = FileDescriptorResource.OUT
             description = "URI of where to write generated documentation")
     URI output;
+
+    @CommandLine.Option(
+            names = {"--diagram", "-d"},
+            defaultValue = "Mermaid",
+            description = "Type of diagrams to generate")
+    Options.DiagramType diagram;
 
     @ParentCommand Enola enola;
 
@@ -58,9 +64,12 @@ public class DocGen implements Callable<Integer> {
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
 
+        var options = new Options();
+        options.diagram = diagram;
+
         var resource = new ResourceProviders().getWritableResource(output);
         try (var writer = resource.charSink().openBufferedStream()) {
-            new MarkdownDocGenerator().render(ekr, writer);
+            new MarkdownDocGenerator(options).render(ekr, writer);
         }
         return 0;
     }

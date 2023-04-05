@@ -38,7 +38,7 @@ public class MarkdownDocGeneratorTest {
         repository.load(new ClasspathResource("demo-model.textproto"));
 
         StringBuilder sb = new StringBuilder();
-        new MarkdownDocGenerator().render(repository, sb);
+        new MarkdownDocGenerator(new Options()).render(repository, sb);
         var got = sb.toString();
 
         var expected =

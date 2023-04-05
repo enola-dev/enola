@@ -43,7 +43,7 @@ public class Enola {
     @Option(
             names = {"--model"},
             scope = INHERIT,
-            description = "URI to EntityKinds") // TODO , required = true
+            description = "URI to EntityKinds (e.g. file:model.yaml)") // TODO , required = true
     // TODO Use an URI instead of String, with Converter
     // TODO Support completion for available URI pre-fixes
     String model;
@@ -61,6 +61,7 @@ public class Enola {
         return new CLI(
                 args,
                 new CommandLine(new Enola())
+                        .setCaseInsensitiveEnumValuesAllowed(true)
                         // .registerConverter(Locale.class, new LocaleConverter())
                         .setExecutionExceptionHandler(new QuietExecutionExceptionHandler()));
     }

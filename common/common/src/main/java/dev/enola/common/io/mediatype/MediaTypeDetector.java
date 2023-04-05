@@ -106,6 +106,12 @@ public class MediaTypeDetector {
                 return Optional.ofNullable(extensionMap.get(ext));
             };
 
+    private static final Set<String> fileSystemProviderSchemes =
+            FileSystemProvider.installedProviders().stream()
+                    .map(p -> p.getScheme().toLowerCase())
+                    .filter(scheme -> !scheme.equals("jar"))
+                    .collect(Collectors.toSet());
+
     private final FromURI probeFileContentType =
             uri -> {
                 // This doesn't support
@@ -126,11 +132,7 @@ public class MediaTypeDetector {
                 return Optional.empty();
             };
 
-    private static final Set<String> fileSystemProviderSchemes =
-            FileSystemProvider.installedProviders().stream()
-                    .map(p -> p.getScheme().toLowerCase())
-                    .filter(scheme -> !scheme.equals("jar"))
-                    .collect(Collectors.toSet());
+    private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     private final FromURI fileNameMap =
             uri -> {
@@ -141,8 +143,6 @@ public class MediaTypeDetector {
                 }
                 return Optional.empty();
             };
-
-    private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
     // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
     private final List<FromURI> providers =

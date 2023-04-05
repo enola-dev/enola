@@ -34,7 +34,7 @@ public class CLI {
 
     public CLI(String[] args, CommandLine commandLine) {
         this.commandLine = commandLine;
-        this.args = args;
+        this.args = Arrays.copyOf(args, args.length);
     }
 
     public CLI setOut(PrintWriter out) {
