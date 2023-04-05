@@ -20,9 +20,7 @@ package dev.enola.common.io.resource;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
-
 import dev.enola.common.io.mediatype.MediaTypeDetector;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.*;
@@ -30,76 +28,76 @@ import java.nio.charset.Charset;
 
 public class UrlResource implements ReadableResource {
 
-    private static final MediaTypeDetector mtd = new MediaTypeDetector();
+  private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
-    private final URL url;
-    private final URI uri;
-    private final MediaType mediaType;
-    private final Charset charset;
+  private final URL url;
+  private final URI uri;
+  private final MediaType mediaType;
+  private final Charset charset;
 
-    public UrlResource(URL url) {
-        this(url, null, null, null);
+  public UrlResource(URL url) {
+    this(url, null, null, null);
+  }
+
+  public UrlResource(URL url, MediaType mediaType) {
+    this(url, mediaType, null, null);
+  }
+
+  public UrlResource(URL url, Charset charset) {
+    this(url, null, charset, null);
+  }
+
+  private UrlResource(URL url, MediaType mediaType, Charset charset, Void unused) {
+    this.url = url;
+    this.mediaType = mediaType;
+    this.charset = charset;
+    try {
+      this.uri = url.toURI();
+    } catch (URISyntaxException e) {
+      throw new IllegalArgumentException("Invalid URL: " + url, e);
     }
+  }
 
-    public UrlResource(URL url, MediaType mediaType) {
-        this(url, mediaType, null, null);
+  @Override
+  public URI uri() {
+    return uri;
+  }
+
+  @Override
+  public MediaType mediaType() {
+    if (mediaType != null) return mediaType;
+
+    // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
+    URLConnection c = null;
+    try {
+      c = url.openConnection();
+      // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
+      var contentTypeFromServer = c.getContentType();
+      var encodingFromServer = c.getContentEncoding();
+
+      if (encodingFromServer == null && charset != null) {
+        encodingFromServer = charset.name();
+      }
+
+      final var fc = c;
+      return mtd.detect(
+          contentTypeFromServer, encodingFromServer, uri /*, () -> fc.getInputStream()*/);
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    } finally {
+      if (c instanceof HttpURLConnection) {
+        ((HttpURLConnection) c).disconnect();
+      }
     }
+  }
 
-    public UrlResource(URL url, Charset charset) {
-        this(url, null, charset, null);
-    }
+  @Override
+  public ByteSource byteSource() {
+    return Resources.asByteSource(url);
+  }
 
-    private UrlResource(URL url, MediaType mediaType, Charset charset, Void unused) {
-        this.url = url;
-        this.mediaType = mediaType;
-        this.charset = charset;
-        try {
-            this.uri = url.toURI();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid URL: " + url, e);
-        }
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        if (mediaType != null) return mediaType;
-
-        // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
-        URLConnection c = null;
-        try {
-            c = url.openConnection();
-            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
-            var contentTypeFromServer = c.getContentType();
-            var encodingFromServer = c.getContentEncoding();
-
-            if (encodingFromServer == null && charset != null) {
-                encodingFromServer = charset.name();
-            }
-
-            final var fc = c;
-            return mtd.detect(
-                    contentTypeFromServer, encodingFromServer, uri /*, () -> fc.getInputStream()*/);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        } finally {
-            if (c instanceof HttpURLConnection) {
-                ((HttpURLConnection) c).disconnect();
-            }
-        }
-    }
-
-    @Override
-    public ByteSource byteSource() {
-        return Resources.asByteSource(url);
-    }
-
-    @Override
-    public String toString() {
-        return "UrlResource{uri=" + uri + '}';
-    }
+  @Override
+  public String toString() {
+    return "UrlResource{uri=" + uri + '}';
+  }
 }

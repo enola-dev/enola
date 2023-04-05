@@ -20,90 +20,86 @@ package dev.enola.common.io.resource;
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
-
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
-
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
-
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Optional;
+import org.junit.Test;
 
 public class ClasspathUrlResourceTest {
 
-    private ReadableResource check(
-            String name, MediaType expectedMediaType, Optional<Charset> expectedCharset)
-            throws IOException {
-        var resource = new UrlResource(Resources.getResource(name));
-        assertThat(resource.mediaType()).isEqualTo(expectedMediaType);
-        assertThat(resource.mediaType().charset().toJavaUtil()).isEqualTo(expectedCharset);
-        return resource;
-    }
+  private ReadableResource check(
+      String name, MediaType expectedMediaType, Optional<Charset> expectedCharset)
+      throws IOException {
+    var resource = new UrlResource(Resources.getResource(name));
+    assertThat(resource.mediaType()).isEqualTo(expectedMediaType);
+    assertThat(resource.mediaType().charset().toJavaUtil()).isEqualTo(expectedCharset);
+    return resource;
+  }
 
-    protected void checkText(
-            String name,
-            MediaType expectedMediaType,
-            Optional<Charset> expectedCharset,
-            String expectedContent)
-            throws IOException {
-        var resource = check(name, expectedMediaType, expectedCharset);
-        assertThat(resource.charSource().read()).isEqualTo(expectedContent);
-    }
+  protected void checkText(
+      String name,
+      MediaType expectedMediaType,
+      Optional<Charset> expectedCharset,
+      String expectedContent)
+      throws IOException {
+    var resource = check(name, expectedMediaType, expectedCharset);
+    assertThat(resource.charSource().read()).isEqualTo(expectedContent);
+  }
 
-    protected void checkText(
-            String name,
-            MediaType expectedMediaType,
-            Optional<Charset> expectedCharset,
-            long expectedSize)
-            throws IOException {
-        var resource = check(name, expectedMediaType, expectedCharset);
-        assertThat(resource.byteSource().size()).isEqualTo(expectedSize);
-    }
+  protected void checkText(
+      String name,
+      MediaType expectedMediaType,
+      Optional<Charset> expectedCharset,
+      long expectedSize)
+      throws IOException {
+    var resource = check(name, expectedMediaType, expectedCharset);
+    assertThat(resource.byteSource().size()).isEqualTo(expectedSize);
+  }
 
-    protected void checkBinary(String name, MediaType expectedMediaType, long expectedSize)
-            throws IOException {
-        var resource = check(name, expectedMediaType, Optional.empty());
-        assertThat(resource.byteSource().size()).isEqualTo(expectedSize);
-        assertThrows(IllegalStateException.class, () -> resource.charSource());
-    }
+  protected void checkBinary(String name, MediaType expectedMediaType, long expectedSize)
+      throws IOException {
+    var resource = check(name, expectedMediaType, Optional.empty());
+    assertThat(resource.byteSource().size()).isEqualTo(expectedSize);
+    assertThrows(IllegalStateException.class, () -> resource.charSource());
+  }
 
-    @Test
-    public void testResources() throws IOException {
-        checkBinary("empty", OCTET_STREAM, 0);
-        checkBinary("test-random-binary", OCTET_STREAM, 7);
+  @Test
+  public void testResources() throws IOException {
+    checkBinary("empty", OCTET_STREAM, 0);
+    checkBinary("test-random-binary", OCTET_STREAM, 7);
 
-        checkBinary("empty.png", PNG, 0);
-        checkBinary("test.png", PNG, 3435);
+    checkBinary("empty.png", PNG, 0);
+    checkBinary("test.png", PNG, 3435);
 
-        checkText("test.json", JSON_UTF_8, Optional.of(UTF_8), "{}\n");
-        checkText("test.proto", PROTO_UTF_8, Optional.of(UTF_8), 744);
-        checkText("test.textproto", PROTOBUF_TEXTPROTO_UTF_8, Optional.of(UTF_8), 748);
+    checkText("test.json", JSON_UTF_8, Optional.of(UTF_8), "{}\n");
+    checkText("test.proto", PROTO_UTF_8, Optional.of(UTF_8), 744);
+    checkText("test.textproto", PROTOBUF_TEXTPROTO_UTF_8, Optional.of(UTF_8), 748);
 
-        checkText(
-                "test-hello-ascii.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
-                "hello, world\n");
-        checkText(
-                "test-french.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
-                "Ça va?\n");
-        checkText(
-                "test-emoji.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
-                "🕵🏾‍♀️\n");
+    checkText(
+        "test-hello-ascii.txt",
+        PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
+        Optional.of(Charsets.UTF_8),
+        "hello, world\n");
+    checkText(
+        "test-french.txt",
+        PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
+        Optional.of(Charsets.UTF_8),
+        "Ça va?\n");
+    checkText(
+        "test-emoji.txt",
+        PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
+        Optional.of(Charsets.UTF_8),
+        "🕵🏾‍♀️\n");
 
-        checkBinary("test.md", OCTET_STREAM, 19);
-        var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
-        assertThat(resource.charSource().read()).isEqualTo("# Markdown\n\n❤️\n");
-    }
+    checkBinary("test.md", OCTET_STREAM, 19);
+    var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
+    assertThat(resource.charSource().read()).isEqualTo("# Markdown\n\n❤️\n");
+  }
 }

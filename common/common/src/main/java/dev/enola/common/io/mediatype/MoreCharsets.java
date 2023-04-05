@@ -25,14 +25,14 @@ import java.nio.charset.Charset;
  */
 public final class MoreCharsets {
 
-    // TODO with & without BOM byote order mark... see
-    // https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html
+  // TODO with & without BOM byote order mark... see
+  // https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html
 
-    public static final Charset UTF_32BE = Charset.forName("UTF-32BE");
-    ;
+  public static final Charset UTF_32BE = Charset.forName("UTF-32BE");
+  ;
 
-    public static final Charset UTF_32LE = Charset.forName("UTF_32LE");
-    ;
+  public static final Charset UTF_32LE = Charset.forName("UTF_32LE");
+  ;
 
-    private MoreCharsets() {}
+  private MoreCharsets() {}
 }

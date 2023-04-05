@@ -25,36 +25,36 @@ import org.junit.Test;
 
 public class EnolaTest {
 
-    // TODO testVerbose()
+  // TODO testVerbose()
 
-    @Test
-    public void testNoArguments() {
-        assertThat(cli()).hasExitCode(2).err().startsWith("Missing required subcommand");
-    }
+  @Test
+  public void testNoArguments() {
+    assertThat(cli()).hasExitCode(2).err().startsWith("Missing required subcommand");
+  }
 
-    @Test
-    public void testBadArgument() {
-        assertThat(cli("--bad")).hasExitCode(2).err().startsWith("Unknown option: '--bad'");
-    }
+  @Test
+  public void testBadArgument() {
+    assertThat(cli("--bad")).hasExitCode(2).err().startsWith("Unknown option: '--bad'");
+  }
 
-    @Test
-    public void testHelp() {
-        assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
-        assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
-    }
+  @Test
+  public void testHelp() {
+    assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
+    assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
+  }
 
-    @Test
-    public void testVersion() {
-        assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
-        assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
-        // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
-    }
+  @Test
+  public void testVersion() {
+    assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
+    assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
+    // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
+  }
 
-    @Test
-    @Ignore // TODO Implement... must extract demo-model.textproto, or support classpath: URI scheme
-    // in ResourceProviders
-    public void testDocGen() {
-        assertThat(cli("docgen")).hasExitCode(0).out().isEqualTo("hi\n");
-        // TODO Assert that docgen actually did work...
-    }
+  @Test
+  @Ignore // TODO Implement... must extract demo-model.textproto, or support classpath: URI scheme
+  // in ResourceProviders
+  public void testDocGen() {
+    assertThat(cli("docgen")).hasExitCode(0).out().isEqualTo("hi\n");
+    // TODO Assert that docgen actually did work...
+  }
 }

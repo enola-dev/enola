@@ -18,7 +18,6 @@
 package dev.enola.common.io.resource;
 
 import com.google.common.io.ByteSource;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,14 +25,14 @@ import java.io.InputStream;
 // Intentionally package local (for now)
 class MemoryByteSource extends ByteSource {
 
-    private final ByteArrayInputStream bais;
+  private final ByteArrayInputStream bais;
 
-    public MemoryByteSource(byte[] bytes) {
-        this.bais = new ByteArrayInputStream(bytes);
-    }
+  public MemoryByteSource(byte[] bytes) {
+    this.bais = new ByteArrayInputStream(bytes);
+  }
 
-    @Override
-    public InputStream openStream() throws IOException {
-        return bais;
-    }
+  @Override
+  public InputStream openStream() throws IOException {
+    return bais;
+  }
 }

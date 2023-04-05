@@ -22,39 +22,38 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
-
 import javax.annotation.Nullable;
 
 public final class CommandLineSubject extends Subject {
 
-    private final CLI actual;
+  private final CLI actual;
 
-    public static CommandLineSubject assertThat(@Nullable CLI actual) {
-        var subject = commandLines();
-        actual.setOutAndErrStrings();
-        actual.execute();
-        return assertAbout(subject).that(actual);
-    }
+  public static CommandLineSubject assertThat(@Nullable CLI actual) {
+    var subject = commandLines();
+    actual.setOutAndErrStrings();
+    actual.execute();
+    return assertAbout(subject).that(actual);
+  }
 
-    public static Factory<CommandLineSubject, CLI> commandLines() {
-        return CommandLineSubject::new;
-    }
+  public static Factory<CommandLineSubject, CLI> commandLines() {
+    return CommandLineSubject::new;
+  }
 
-    protected CommandLineSubject(FailureMetadata metadata, CLI actual) {
-        super(metadata, actual);
-        this.actual = actual;
-    }
+  protected CommandLineSubject(FailureMetadata metadata, CLI actual) {
+    super(metadata, actual);
+    this.actual = actual;
+  }
 
-    public CommandLineSubject hasExitCode(int exitCode) {
-        check("exitCode()").that(actual.exitCode()).isEqualTo(exitCode);
-        return this;
-    }
+  public CommandLineSubject hasExitCode(int exitCode) {
+    check("exitCode()").that(actual.exitCode()).isEqualTo(exitCode);
+    return this;
+  }
 
-    public StringSubject out() {
-        return check("out()").that(actual.getOutString());
-    }
+  public StringSubject out() {
+    return check("out()").that(actual.getOutString());
+  }
 
-    public StringSubject err() {
-        return check("err()").that(actual.getErrString());
-    }
+  public StringSubject err() {
+    return check("err()").that(actual.getErrString());
+  }
 }

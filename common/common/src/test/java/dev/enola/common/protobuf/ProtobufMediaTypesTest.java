@@ -19,17 +19,15 @@ package dev.enola.common.protobuf;
 
 import static com.google.common.net.MediaType.create;
 import static com.google.common.truth.Truth.assertThat;
-
 import static dev.enola.common.io.mediatype.MediaTypes.normalize;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_BINARY;
 
 import org.junit.Test;
 
 public class ProtobufMediaTypesTest {
-    @Test
-    public void testProtobufMediaTypesAlternatives() {
-        assertThat(normalize(create("application", "vnd.google.protobuf")))
-                .isEqualTo(PROTOBUF_BINARY);
-        assertThat(normalize(create("application", "x-protobuf"))).isEqualTo(PROTOBUF_BINARY);
-    }
+  @Test
+  public void testProtobufMediaTypesAlternatives() {
+    assertThat(normalize(create("application", "vnd.google.protobuf"))).isEqualTo(PROTOBUF_BINARY);
+    assertThat(normalize(create("application", "x-protobuf"))).isEqualTo(PROTOBUF_BINARY);
+  }
 }

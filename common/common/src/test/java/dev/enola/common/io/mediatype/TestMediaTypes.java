@@ -20,23 +20,22 @@ package dev.enola.common.io.mediatype;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
-
 import java.util.Map;
 import java.util.Set;
 
 // TODO @AutoService(MediaTypeProvider.class)
 public class TestMediaTypes implements MediaTypeProvider {
 
-    public static final MediaType TEST = MediaType.create("application", "test");
+  public static final MediaType TEST = MediaType.create("application", "test");
 
-    @Override
-    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return ImmutableMap.of(
-                TEST, Sets.newHashSet(MediaType.create("application", "test-alternative")));
-    }
+  @Override
+  public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+    return ImmutableMap.of(
+        TEST, Sets.newHashSet(MediaType.create("application", "test-alternative")));
+  }
 
-    @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return null;
-    }
+  @Override
+  public Map<String, MediaType> extensionsToTypes() {
+    return null;
+  }
 }

@@ -20,81 +20,77 @@ package dev.enola.cli;
 import static picocli.CommandLine.ScopeType.INHERIT;
 
 import com.google.common.base.Charsets;
-
+import java.io.PrintWriter;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Option;
 
-import java.io.PrintWriter;
-
 @Command(
-        name = "enola",
-        mixinStandardHelpOptions = true,
-        showDefaultValues = true,
-        synopsisSubcommandLabel = "COMMAND",
-        description = Enola.DESCRIPTION,
-        versionProvider = VersionProvider.class,
-        subcommands = {HelpCommand.class, DocGen.class /* TODO , Version.class */})
+    name = "enola",
+    mixinStandardHelpOptions = true,
+    showDefaultValues = true,
+    synopsisSubcommandLabel = "COMMAND",
+    description = Enola.DESCRIPTION,
+    versionProvider = VersionProvider.class,
+    subcommands = {HelpCommand.class, DocGen.class /* TODO , Version.class */})
 public class Enola {
 
-    static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
+  static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
 
-    @Option(
-            names = {"--model"},
-            scope = INHERIT,
-            description = "URI to EntityKinds") // TODO , required = true
-    // TODO Use an URI instead of String, with Converter
-    // TODO Support completion for available URI pre-fixes
-    String model;
+  @Option(
+      names = {"--model"},
+      scope = INHERIT,
+      description = "URI to EntityKinds") // TODO , required = true
+  // TODO Use an URI instead of String, with Converter
+  // TODO Support completion for available URI pre-fixes
+  String model;
 
-    @Option(
-            names = {"--verbose", "-v"},
-            scope = INHERIT,
-            description = {
-                "Specify multiple -v options to increase verbosity. For example, `-v -v -v` or"
-                        + " `-vvv`"
-            })
-    boolean[] verbosity = {};
+  @Option(
+      names = {"--verbose", "-v"},
+      scope = INHERIT,
+      description = {
+        "Specify multiple -v options to increase verbosity. For example, `-v -v -v` or" + " `-vvv`"
+      })
+  boolean[] verbosity = {};
 
-    static CLI cli(String... args) {
-        return new CLI(
-                args,
-                new CommandLine(new Enola())
-                        // .registerConverter(Locale.class, new LocaleConverter())
-                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler()));
-    }
+  static CLI cli(String... args) {
+    return new CLI(
+        args,
+        new CommandLine(new Enola())
+            // .registerConverter(Locale.class, new LocaleConverter())
+            .setExecutionExceptionHandler(new QuietExecutionExceptionHandler()));
+  }
 
-    public static void main(String[] args) {
-        // TODO What is the correct way to determine the encoding of the terminal?!
-        var out = new PrintWriter(System.out, true, Charsets.US_ASCII);
-        var err = new PrintWriter(System.err, true, Charsets.US_ASCII);
-        System.exit(cli(args).setOut(out).setErr(err).execute());
-    }
+  public static void main(String[] args) {
+    // TODO What is the correct way to determine the encoding of the terminal?!
+    var out = new PrintWriter(System.out, true, Charsets.US_ASCII);
+    var err = new PrintWriter(System.err, true, Charsets.US_ASCII);
+    System.exit(cli(args).setOut(out).setErr(err).execute());
+  }
 
-    private static class QuietExecutionExceptionHandler
-            implements CommandLine.IExecutionExceptionHandler {
-        @Override
-        public int handleExecutionException(
-                Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult)
-                throws Exception {
-            if (parseResult.hasMatchedOption('v')) {
-                cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
-            } else {
-                Throwable e = ex;
-                while (e != null) {
-                    var msg = e.getClass().getSimpleName() + ": " + e.getMessage();
-                    cmd.getErr().println(cmd.getColorScheme().errorText(msg));
-                    e = e.getCause();
-                    if (e != null) {
-                        cmd.getErr().print("caused by: ");
-                    }
-                }
-            }
-            cmd.getErr().flush();
-            return cmd.getExitCodeExceptionMapper() != null
-                    ? cmd.getExitCodeExceptionMapper().getExitCode(ex)
-                    : cmd.getCommandSpec().exitCodeOnExecutionException();
+  private static class QuietExecutionExceptionHandler
+      implements CommandLine.IExecutionExceptionHandler {
+    @Override
+    public int handleExecutionException(
+        Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult) throws Exception {
+      if (parseResult.hasMatchedOption('v')) {
+        cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
+      } else {
+        Throwable e = ex;
+        while (e != null) {
+          var msg = e.getClass().getSimpleName() + ": " + e.getMessage();
+          cmd.getErr().println(cmd.getColorScheme().errorText(msg));
+          e = e.getCause();
+          if (e != null) {
+            cmd.getErr().print("caused by: ");
+          }
         }
+      }
+      cmd.getErr().flush();
+      return cmd.getExitCodeExceptionMapper() != null
+          ? cmd.getExitCodeExceptionMapper().getExitCode(ex)
+          : cmd.getCommandSpec().exitCodeOnExecutionException();
     }
+  }
 }

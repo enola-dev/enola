@@ -22,23 +22,19 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 import com.google.common.net.MediaType;
-
 import java.net.URI;
 
 public interface WritableResource {
 
-    URI uri();
+  URI uri();
 
-    MediaType mediaType();
+  MediaType mediaType();
 
-    ByteSink byteSink();
+  ByteSink byteSink();
 
-    default CharSink charSink() {
-        return byteSink()
-                .asCharSink(
-                        mediaType()
-                                .charset()
-                                .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
-    }
+  default CharSink charSink() {
+    return byteSink()
+        .asCharSink(
+            mediaType().charset().toJavaUtil().orElseThrow(missingCharsetExceptionSupplier(uri())));
+  }
 }

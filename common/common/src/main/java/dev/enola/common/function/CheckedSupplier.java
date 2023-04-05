@@ -20,5 +20,5 @@ package dev.enola.common.function;
 // https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
 @FunctionalInterface
 public interface CheckedSupplier<T, E extends Exception> {
-    T get() throws E;
+  T get() throws E;
 }

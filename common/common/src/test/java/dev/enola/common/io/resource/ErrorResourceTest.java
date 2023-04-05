@@ -19,15 +19,14 @@ package dev.enola.common.io.resource;
 
 import static org.junit.Assert.assertThrows;
 
+import java.io.IOException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class ErrorResourceTest {
-    @Test
-    public void testErrors() {
-        var e = ErrorResource.INSTANCE;
-        assertThrows(IOException.class, () -> e.byteSink().write(new byte[3]));
-        assertThrows(IOException.class, () -> e.byteSource().read());
-    }
+  @Test
+  public void testErrors() {
+    var e = ErrorResource.INSTANCE;
+    assertThrows(IOException.class, () -> e.byteSink().write(new byte[3]));
+    assertThrows(IOException.class, () -> e.byteSource().read());
+  }
 }

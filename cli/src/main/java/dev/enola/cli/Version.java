@@ -17,22 +17,21 @@
  */
 package dev.enola.cli;
 
+import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Spec;
 
-import java.util.concurrent.Callable;
-
 @CommandLine.Command(name = "version", description = "Show CLI version (same as --version)")
 public class Version implements Callable<Integer> {
 
-    // TODO For some reason this doesn't work...
+  // TODO For some reason this doesn't work...
 
-    @Spec CommandSpec spec;
+  @Spec CommandSpec spec;
 
-    @Override
-    public Integer call() throws Exception {
-        spec.commandLine().printVersionHelp(spec.commandLine().getOut());
-        return 0;
-    }
+  @Override
+  public Integer call() throws Exception {
+    spec.commandLine().printVersionHelp(spec.commandLine().getOut());
+    return 0;
+  }
 }

@@ -22,25 +22,21 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
-
 import java.net.URI;
 
 public interface ReadableResource {
 
-    URI uri();
+  URI uri();
 
-    MediaType mediaType();
+  MediaType mediaType();
 
-    ByteSource byteSource();
+  ByteSource byteSource();
 
-    default CharSource charSource() {
-        return byteSource()
-                .asCharSource(
-                        mediaType()
-                                .charset()
-                                .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
-    }
+  default CharSource charSource() {
+    return byteSource()
+        .asCharSource(
+            mediaType().charset().toJavaUtil().orElseThrow(missingCharsetExceptionSupplier(uri())));
+  }
 
-    // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
+  // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
 }

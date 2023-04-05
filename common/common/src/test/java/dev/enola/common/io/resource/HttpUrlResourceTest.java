@@ -21,11 +21,11 @@ import org.junit.Test;
 
 public class HttpUrlResourceTest {
 
-    // TODO Implement, using
-    // https://docs.oracle.com/en/java/javase/17/docs/api/jdk.httpserver/module-summary.html ?
+  // TODO Implement, using
+  // https://docs.oracle.com/en/java/javase/17/docs/api/jdk.httpserver/module-summary.html ?
 
-    // Test that an URL can return MediaType HTML without have a .htm file extension
+  // Test that an URL can return MediaType HTML without have a .htm file extension
 
-    @Test
-    public void testTODO() {}
+  @Test
+  public void testTODO() {}
 }

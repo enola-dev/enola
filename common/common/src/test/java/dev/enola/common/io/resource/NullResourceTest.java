@@ -19,23 +19,22 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
-
 import java.io.IOException;
 import java.io.InputStream;
+import org.junit.Test;
 
 public class NullResourceTest {
-    @Test
-    public <is> void testNullResource() throws IOException {
-        var e = NullResource.INSTANCE;
-        assertThat(e.byteSource().isEmpty()).isFalse();
-        assertThat(e.mediaType()).isNotNull();
-        assertThat(e.uri()).isNotNull();
+  @Test
+  public <is> void testNullResource() throws IOException {
+    var e = NullResource.INSTANCE;
+    assertThat(e.byteSource().isEmpty()).isFalse();
+    assertThat(e.mediaType()).isNotNull();
+    assertThat(e.uri()).isNotNull();
 
-        try (InputStream is = e.byteSource().openStream()) {
-            assertThat(is.read()).isEqualTo(0);
-        }
-
-        e.byteSink().write(new byte[3]);
+    try (InputStream is = e.byteSource().openStream()) {
+      assertThat(is.read()).isEqualTo(0);
     }
+
+    e.byteSink().write(new byte[3]);
+  }
 }

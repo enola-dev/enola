@@ -20,35 +20,32 @@ package dev.enola.core.docgen;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import com.google.common.base.Charsets;
-
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
-
-import org.junit.Test;
-
 import java.io.File;
 import java.io.IOException;
+import org.junit.Test;
 
 public class MarkdownDocGeneratorTest {
-    @Test
-    public void testDocgen() throws IOException, ValidationException {
-        EntityKindRepository repository = new EntityKindRepository();
-        repository.load(new ClasspathResource("demo-model.textproto"));
+  @Test
+  public void testDocgen() throws IOException, ValidationException {
+    EntityKindRepository repository = new EntityKindRepository();
+    repository.load(new ClasspathResource("demo-model.textproto"));
 
-        StringBuilder sb = new StringBuilder();
-        new MarkdownDocGenerator().render(repository, sb);
-        var got = sb.toString();
+    StringBuilder sb = new StringBuilder();
+    new MarkdownDocGenerator().render(repository, sb);
+    var got = sb.toString();
 
-        var expected =
-                new ClasspathResource("demo-model-docgen.md", Charsets.UTF_8).charSource().read();
-        if (!got.equals(expected)) {
-            // NOT System.getProperty("java.io.tmpdir")
-            File tmp = new File("/tmp");
-            var gotFile = new File(tmp, "MarkdownDocGeneratorTest-got.md");
-            new FileResource(gotFile.toPath()).charSink().write(got);
-            assertWithMessage(gotFile.toString()).that(got).isEqualTo(expected);
-        }
+    var expected =
+        new ClasspathResource("demo-model-docgen.md", Charsets.UTF_8).charSource().read();
+    if (!got.equals(expected)) {
+      // NOT System.getProperty("java.io.tmpdir")
+      File tmp = new File("/tmp");
+      var gotFile = new File(tmp, "MarkdownDocGeneratorTest-got.md");
+      new FileResource(gotFile.toPath()).charSink().write(got);
+      assertWithMessage(gotFile.toString()).that(got).isEqualTo(expected);
     }
+  }
 }

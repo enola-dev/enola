@@ -20,47 +20,42 @@ package dev.enola.common.io.resource;
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
-
 import java.net.URI;
 import java.util.Objects;
 
 public class MemoryResource implements Resource {
 
-    private final URI uri;
-    private final MediaType mediaType;
-    private final MemoryByteSink memoryByteSink = new MemoryByteSink();
+  private final URI uri;
+  private final MediaType mediaType;
+  private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
-    public MemoryResource(MediaType mediaType) {
-        this.uri = URI.create("memory:" + Integer.toHexString(hashCode()));
-        this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
-    }
+  public MemoryResource(MediaType mediaType) {
+    this.uri = URI.create("memory:" + Integer.toHexString(hashCode()));
+    this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
+  }
 
-    @Override
-    public URI uri() {
-        return uri;
-    }
+  @Override
+  public URI uri() {
+    return uri;
+  }
 
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
-    }
+  @Override
+  public MediaType mediaType() {
+    return mediaType;
+  }
 
-    @Override
-    public ByteSink byteSink() {
-        return memoryByteSink;
-    }
+  @Override
+  public ByteSink byteSink() {
+    return memoryByteSink;
+  }
 
-    @Override
-    public ByteSource byteSource() {
-        return new MemoryByteSource(memoryByteSink.toByteArray());
-    }
+  @Override
+  public ByteSource byteSource() {
+    return new MemoryByteSource(memoryByteSink.toByteArray());
+  }
 
-    @Override
-    public String toString() {
-        return "MemoryResource{mediaType="
-                + mediaType
-                + '}'
-                + "@"
-                + Integer.toHexString(hashCode());
-    }
+  @Override
+  public String toString() {
+    return "MemoryResource{mediaType=" + mediaType + '}' + "@" + Integer.toHexString(hashCode());
+  }
 }

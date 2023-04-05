@@ -19,20 +19,19 @@ package dev.enola.common.io.resource;
 
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
-
 import java.nio.charset.Charset;
 
 public class ClasspathResource extends UrlResource {
 
-    public ClasspathResource(String path, MediaType mediaType) {
-        super(Resources.getResource(path), mediaType);
-    }
+  public ClasspathResource(String path, MediaType mediaType) {
+    super(Resources.getResource(path), mediaType);
+  }
 
-    public ClasspathResource(String path, Charset charset) {
-        super(Resources.getResource(path), charset);
-    }
+  public ClasspathResource(String path, Charset charset) {
+    super(Resources.getResource(path), charset);
+  }
 
-    public ClasspathResource(String path) {
-        super(Resources.getResource(path));
-    }
+  public ClasspathResource(String path) {
+    super(Resources.getResource(path));
+  }
 }

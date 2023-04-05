@@ -17,72 +17,71 @@
  */
 package dev.enola.cli;
 
-import picocli.CommandLine;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import picocli.CommandLine;
 
 public class CLI {
 
-    private final String[] args;
-    private final CommandLine commandLine;
-    private StringWriter out;
-    private StringWriter err;
+  private final String[] args;
+  private final CommandLine commandLine;
+  private StringWriter out;
+  private StringWriter err;
 
-    private Integer exitCode;
+  private Integer exitCode;
 
-    public CLI(String[] args, CommandLine commandLine) {
-        this.commandLine = commandLine;
-        this.args = args;
+  public CLI(String[] args, CommandLine commandLine) {
+    this.commandLine = commandLine;
+    this.args = args;
+  }
+
+  public CLI setOut(PrintWriter out) {
+    commandLine.setOut(out);
+    return this;
+  }
+
+  public CLI setErr(PrintWriter err) {
+    commandLine.setErr(err);
+    return this;
+  }
+
+  public void setOutAndErrStrings() {
+    out = new StringWriter();
+    setOut(new PrintWriter(out));
+
+    err = new StringWriter();
+    setErr(new PrintWriter(err));
+  }
+
+  public String getOutString() {
+    commandLine.getOut().flush();
+    out.flush();
+    return out.toString();
+  }
+
+  public String getErrString() {
+    commandLine.getErr().flush();
+    err.flush();
+    return err.toString();
+  }
+
+  public int execute() {
+    this.exitCode = commandLine.execute(args);
+    commandLine.getOut().flush();
+    commandLine.getErr().flush();
+    return exitCode;
+  }
+
+  public int exitCode() {
+    if (exitCode == null) {
+      throw new IllegalStateException("Must execute() first!");
     }
+    return exitCode;
+  }
 
-    public CLI setOut(PrintWriter out) {
-        commandLine.setOut(out);
-        return this;
-    }
-
-    public CLI setErr(PrintWriter err) {
-        commandLine.setErr(err);
-        return this;
-    }
-
-    public void setOutAndErrStrings() {
-        out = new StringWriter();
-        setOut(new PrintWriter(out));
-
-        err = new StringWriter();
-        setErr(new PrintWriter(err));
-    }
-
-    public String getOutString() {
-        commandLine.getOut().flush();
-        out.flush();
-        return out.toString();
-    }
-
-    public String getErrString() {
-        commandLine.getErr().flush();
-        err.flush();
-        return err.toString();
-    }
-
-    public int execute() {
-        this.exitCode = commandLine.execute(args);
-        commandLine.getOut().flush();
-        commandLine.getErr().flush();
-        return exitCode;
-    }
-
-    public int exitCode() {
-        if (exitCode == null) {
-            throw new IllegalStateException("Must execute() first!");
-        }
-        return exitCode;
-    }
-
-    @Override
-    public String toString() {
-        return "CLI{" + "args=" + Arrays.toString(args) + ", exitCode=" + exitCode + '}';
-    }
+  @Override
+  public String toString() {
+    return "CLI{" + "args=" + Arrays.toString(args) + ", exitCode=" + exitCode + '}';
+  }
 }

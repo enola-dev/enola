@@ -23,13 +23,13 @@ import java.util.function.Supplier;
 // Intentionally package local
 final class SPI {
 
-    static Supplier<IllegalStateException> missingCharsetExceptionSupplier(URI uri) {
-        return () ->
-                new IllegalStateException(
-                        uri
-                                + " mediaType() must have a charset() - specify it as *Resource"
-                                + " constructor argument?");
-    }
+  static Supplier<IllegalStateException> missingCharsetExceptionSupplier(URI uri) {
+    return () ->
+        new IllegalStateException(
+            uri
+                + " mediaType() must have a charset() - specify it as *Resource"
+                + " constructor argument?");
+  }
 
-    private SPI() {}
+  private SPI() {}
 }

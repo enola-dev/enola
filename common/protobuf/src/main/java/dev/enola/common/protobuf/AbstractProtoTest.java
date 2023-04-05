@@ -18,22 +18,20 @@
 package dev.enola.common.protobuf;
 
 import com.google.protobuf.Message;
-
+import java.io.IOException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public abstract class AbstractProtoTest {
-    private final String pathToResourceOnClasspath;
-    private final Message.Builder builder;
+  private final String pathToResourceOnClasspath;
+  private final Message.Builder builder;
 
-    public AbstractProtoTest(String pathToResourceOnClasspath, Message.Builder builder) {
-        this.pathToResourceOnClasspath = pathToResourceOnClasspath;
-        this.builder = builder;
-    }
+  public AbstractProtoTest(String pathToResourceOnClasspath, Message.Builder builder) {
+    this.pathToResourceOnClasspath = pathToResourceOnClasspath;
+    this.builder = builder;
+  }
 
-    @Test
-    public void testProto() throws IOException {
-        ProtoIO.check(pathToResourceOnClasspath, builder);
-    }
+  @Test
+  public void testProto() throws IOException {
+    ProtoIO.check(pathToResourceOnClasspath, builder);
+  }
 }

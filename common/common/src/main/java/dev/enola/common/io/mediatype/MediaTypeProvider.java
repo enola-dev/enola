@@ -18,12 +18,11 @@
 package dev.enola.common.io.mediatype;
 
 import com.google.common.net.MediaType;
-
 import java.util.Map;
 import java.util.Set;
 
 public interface MediaTypeProvider {
-    Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
+  Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
 
-    Map<String, MediaType> extensionsToTypes();
+  Map<String, MediaType> extensionsToTypes();
 }

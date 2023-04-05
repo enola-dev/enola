@@ -20,20 +20,18 @@ package dev.enola.common.io.resource;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.net.MediaType;
-
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
+import org.junit.Test;
 
 public class FileResourceTest {
-    @Test
-    public void testWriteRead() throws IOException {
-        var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
-        var r = new FileResource(t);
-        assertThat(r.uri().toString()).endsWith(".json");
-        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
-        r.charSink().write("hello, world");
-        assertThat(r.charSource().read()).isEqualTo("hello, world");
-    }
+  @Test
+  public void testWriteRead() throws IOException {
+    var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
+    var r = new FileResource(t);
+    assertThat(r.uri().toString()).endsWith(".json");
+    assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+    r.charSink().write("hello, world");
+    assertThat(r.charSource().read()).isEqualTo("hello, world");
+  }
 }

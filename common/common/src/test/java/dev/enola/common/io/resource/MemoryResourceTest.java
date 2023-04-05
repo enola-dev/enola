@@ -18,33 +18,30 @@
 package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
-
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.net.MediaType;
-
+import java.io.IOException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class MemoryResourceTest {
-    private static final byte[] BYTES = new byte[] {1, 2, 3};
-    private static final String TEXT = "hello, world";
+  private static final byte[] BYTES = new byte[] {1, 2, 3};
+  private static final String TEXT = "hello, world";
 
-    @Test
-    public void testBinaryMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(MediaType.OCTET_STREAM);
-        resource.byteSink().write(BYTES);
-        assertThat(resource.byteSource().read()).isEqualTo(BYTES);
+  @Test
+  public void testBinaryMemoryResource() throws IOException {
+    MemoryResource resource = new MemoryResource(MediaType.OCTET_STREAM);
+    resource.byteSink().write(BYTES);
+    assertThat(resource.byteSource().read()).isEqualTo(BYTES);
 
-        assertThrows(IllegalStateException.class, () -> resource.charSink());
-        assertThrows(IllegalStateException.class, () -> resource.charSource());
-    }
+    assertThrows(IllegalStateException.class, () -> resource.charSink());
+    assertThrows(IllegalStateException.class, () -> resource.charSource());
+  }
 
-    @Test
-    public void testTextMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(MediaType.PLAIN_TEXT_UTF_8);
-        resource.charSink().write(TEXT);
-        assertThat(resource.charSource().read()).isEqualTo(TEXT);
-    }
+  @Test
+  public void testTextMemoryResource() throws IOException {
+    MemoryResource resource = new MemoryResource(MediaType.PLAIN_TEXT_UTF_8);
+    resource.charSink().write(TEXT);
+    assertThat(resource.charSource().read()).isEqualTo(TEXT);
+  }
 }

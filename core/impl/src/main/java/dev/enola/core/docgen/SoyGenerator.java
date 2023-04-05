@@ -22,32 +22,30 @@ import com.google.protobuf.Descriptors;
 import com.google.template.soy.SoyFileSet;
 import com.google.template.soy.jbcsrc.api.SoySauce;
 import com.google.template.soy.parseinfo.TemplateName;
-
 import dev.enola.common.io.resource.ClasspathResource;
-
 import java.util.Collections;
 
 class SoyGenerator {
 
-    protected final SoySauce.Renderer renderer;
+  protected final SoySauce.Renderer renderer;
 
-    public SoyGenerator(String classpathResource, String template) {
-        // TODO Refactor this... it's an ugly initial hack!
-        // var core_proto = new ClasspathResource("dev/enola/core/enola_core.proto",
-        // MediaType.PLAIN_TEXT_UTF_8);
-        var soy = new ClasspathResource(classpathResource, MediaType.PLAIN_TEXT_UTF_8);
-        var sfs =
-                SoyFileSet.builder()
-                        .add(soy.charSource(), soy.uri().toString())
-                        // .add(core_proto.charSource(), core_proto.uri().toString())
-                        .addProtoDescriptors(protoDescriptors())
-                        .build();
-        var tofu = sfs.compileToTofu();
-        var sauce = sfs.compileTemplates();
-        renderer = sauce.renderTemplate(TemplateName.of(template));
-    }
+  public SoyGenerator(String classpathResource, String template) {
+    // TODO Refactor this... it's an ugly initial hack!
+    // var core_proto = new ClasspathResource("dev/enola/core/enola_core.proto",
+    // MediaType.PLAIN_TEXT_UTF_8);
+    var soy = new ClasspathResource(classpathResource, MediaType.PLAIN_TEXT_UTF_8);
+    var sfs =
+        SoyFileSet.builder()
+            .add(soy.charSource(), soy.uri().toString())
+            // .add(core_proto.charSource(), core_proto.uri().toString())
+            .addProtoDescriptors(protoDescriptors())
+            .build();
+    var tofu = sfs.compileToTofu();
+    var sauce = sfs.compileTemplates();
+    renderer = sauce.renderTemplate(TemplateName.of(template));
+  }
 
-    protected Iterable<? extends Descriptors.GenericDescriptor> protoDescriptors() {
-        return Collections.emptySet();
-    }
+  protected Iterable<? extends Descriptors.GenericDescriptor> protoDescriptors() {
+    return Collections.emptySet();
+  }
 }

@@ -18,43 +18,39 @@
 package dev.enola.cli;
 
 import com.google.common.base.Strings;
-
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.EntityKindRepository;
-
+import java.net.URI;
+import java.util.concurrent.Callable;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.ParentCommand;
 import picocli.CommandLine.Spec;
 
-import java.net.URI;
-import java.util.concurrent.Callable;
-
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen implements Callable<Integer> {
 
-    @ParentCommand Enola enola;
+  @ParentCommand Enola enola;
 
-    @Spec CommandSpec spec;
+  @Spec CommandSpec spec;
 
-    @Override
-    public Integer call() throws Exception {
-        var model = enola.model;
-        if (Strings.isNullOrEmpty(model)) {
-            throw new CommandLine.ParameterException(
-                    spec.commandLine(), "Missing --model argument");
-        }
-        var modelResource = new ResourceProviders().getReadableResource(URI.create(model));
-
-        var ekr = new EntityKindRepository();
-        ekr.load(modelResource);
-
-        // TODO replace getOut() with --output which defaults to PrintWriterResource but supports
-        // URI
-        new MarkdownDocGenerator().render(ekr, spec.commandLine().getOut());
-
-        return 0;
+  @Override
+  public Integer call() throws Exception {
+    var model = enola.model;
+    if (Strings.isNullOrEmpty(model)) {
+      throw new CommandLine.ParameterException(spec.commandLine(), "Missing --model argument");
     }
+    var modelResource = new ResourceProviders().getReadableResource(URI.create(model));
+
+    var ekr = new EntityKindRepository();
+    ekr.load(modelResource);
+
+    // TODO replace getOut() with --output which defaults to PrintWriterResource but supports
+    // URI
+    new MarkdownDocGenerator().render(ekr, spec.commandLine().getOut());
+
+    return 0;
+  }
 }

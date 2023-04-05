@@ -20,38 +20,37 @@ package dev.enola.common.io.resource;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
-
 import java.net.URI;
 
 class EmptyResource implements ReadableResource {
 
-    static final EmptyResource INSTANCE = new EmptyResource();
+  static final EmptyResource INSTANCE = new EmptyResource();
 
-    static final String SCHEME = "empty";
+  static final String SCHEME = "empty";
 
-    private static final URI EMPTY_URI = URI.create("empty:-");
+  private static final URI EMPTY_URI = URI.create("empty:-");
 
-    private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
+  private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
 
-    private EmptyResource() {}
+  private EmptyResource() {}
 
-    @Override
-    public URI uri() {
-        return EMPTY_URI;
-    }
+  @Override
+  public URI uri() {
+    return EMPTY_URI;
+  }
 
-    @Override
-    public MediaType mediaType() {
-        return MEDIA_TYPE;
-    }
+  @Override
+  public MediaType mediaType() {
+    return MEDIA_TYPE;
+  }
 
-    @Override
-    public ByteSource byteSource() {
-        return ByteSource.empty();
-    }
+  @Override
+  public ByteSource byteSource() {
+    return ByteSource.empty();
+  }
 
-    @Override
-    public CharSource charSource() {
-        return CharSource.empty();
-    }
+  @Override
+  public CharSource charSource() {
+    return CharSource.empty();
+  }
 }

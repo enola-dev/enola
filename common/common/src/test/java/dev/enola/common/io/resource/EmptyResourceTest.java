@@ -19,17 +19,16 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import java.io.IOException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class EmptyResourceTest {
-    @Test
-    public void testEmptyResource() throws IOException {
-        var e = EmptyResource.INSTANCE;
-        assertThat(e.byteSource().isEmpty()).isTrue();
-        assertThat(e.charSource().isEmpty()).isTrue();
-        assertThat(e.mediaType()).isNotNull();
-        assertThat(e.uri()).isNotNull();
-    }
+  @Test
+  public void testEmptyResource() throws IOException {
+    var e = EmptyResource.INSTANCE;
+    assertThat(e.byteSource().isEmpty()).isTrue();
+    assertThat(e.charSource().isEmpty()).isTrue();
+    assertThat(e.mediaType()).isNotNull();
+    assertThat(e.uri()).isNotNull();
+  }
 }

@@ -18,7 +18,6 @@
 package dev.enola.common.io.resource;
 
 import com.google.common.io.ByteSink;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,14 +25,14 @@ import java.io.OutputStream;
 // Intentionally package local (for now)
 class MemoryByteSink extends ByteSink {
 
-    private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-    @Override
-    public OutputStream openStream() throws IOException {
-        return baos;
-    }
+  @Override
+  public OutputStream openStream() throws IOException {
+    return baos;
+  }
 
-    public byte[] toByteArray() {
-        return baos.toByteArray();
-    }
+  public byte[] toByteArray() {
+    return baos.toByteArray();
+  }
 }

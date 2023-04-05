@@ -22,5 +22,5 @@ import com.google.protobuf.MessageOrBuilder;
 @FunctionalInterface
 public interface MessageValidator<T extends MessageOrBuilder> {
 
-    void validate(T m, MessageValidators.Result.Builder r);
+  void validate(T m, MessageValidators.Result.Builder r);
 }
