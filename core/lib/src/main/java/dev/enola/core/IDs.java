@@ -47,10 +47,6 @@ public final class IDs {
 
     private static final Splitter SLASH_SPLITTER =
             Splitter.on('/').omitEmptyStrings().trimResults();
-    private static final Splitter AMPERSAND_SPLITTER =
-            Splitter.on('&').omitEmptyStrings().trimResults();
-    private static final Splitter EQUALSIGN_SPLITTER =
-            Splitter.on('=').omitEmptyStrings().trimResults();
 
     public static ID parse(String s) {
         if (s.startsWith(URI_SCHEME)) {
@@ -163,35 +159,7 @@ public final class IDs {
                 String entity = path.substring(0, idx);
                 builder.setEntity(entity);
 
-                Map<String, String> map = new HashMap<>();
-                Set<String> queryParameterNames = new HashSet<>();
-                String query = path.substring(idx + 1);
-                AMPERSAND_SPLITTER
-                        .split(query)
-                        .forEach(
-                                pair -> {
-                                    String[] nameValue =
-                                            Iterables.toArray(
-                                                    EQUALSIGN_SPLITTER.split(pair), String.class);
-                                    if (nameValue.length > 2) {
-                                        throw new IllegalArgumentException(
-                                                s
-                                                        + " ID URI ?query has name/value with more than"
-                                                        + " 1 '=' sign: "
-                                                        + pair);
-                                    }
-                                    if (nameValue.length > 0) {
-                                        if (queryParameterNames.contains(nameValue[0]))
-                                            throw new IllegalArgumentException(
-                                                    s + " ID URI ?query has duplicate names: " + query);
-                                        queryParameterNames.add(nameValue[0]);
-                                    }
-                                    if (nameValue.length == 2) {
-                                        map.put(nameValue[0], nameValue[1]);
-                                    } else { // nameValue.length == 1
-                                        map.put(nameValue[0], null);
-                                    }
-                                });
+                Map<String, String> map = IDs.getQueryMap(uri);
             }
 
             // TODO builder.setSegments(i, segment)

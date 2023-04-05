@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 class NullResource implements Resource {
 
@@ -34,7 +35,8 @@ class NullResource implements Resource {
     static final String SCHEME = "null";
 
     private static final URI NULL_URI = URI.create("null:-");
-    private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
+    private static final MediaType MEDIA_TYPE =
+            MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8);
 
     private NullResource() {}
 

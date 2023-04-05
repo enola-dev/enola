@@ -35,6 +35,13 @@ import java.util.concurrent.Callable;
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen implements Callable<Integer> {
 
+    @CommandLine.Option(
+            names = {"--output", "-o"},
+            scope = CommandLine.ScopeType.INHERIT,
+            defaultValue = "fd:1?charset=UTF-8", // = FileDescriptorResource.OUT
+            description = "URI of where to write generated documentation")
+    URI output;
+
     @ParentCommand Enola enola;
 
     @Spec CommandSpec spec;
@@ -51,10 +58,10 @@ public class DocGen implements Callable<Integer> {
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
 
-        // TODO replace getOut() with --output which defaults to PrintWriterResource but supports
-        // URI
-        new MarkdownDocGenerator().render(ekr, spec.commandLine().getOut());
-
+        var resource = new ResourceProviders().getWritableResource(output);
+        try (var writer = resource.charSink().openBufferedStream()) {
+            new MarkdownDocGenerator().render(ekr, writer);
+        }
         return 0;
     }
 }
