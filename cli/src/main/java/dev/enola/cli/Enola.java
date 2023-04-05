@@ -19,15 +19,11 @@ package dev.enola.cli;
 
 import static picocli.CommandLine.ScopeType.INHERIT;
 
-import com.google.common.base.Charsets;
-
 import picocli.AutoComplete;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Option;
-
-import java.io.PrintWriter;
 
 @Command(
         name = "enola",
@@ -72,10 +68,7 @@ public class Enola {
     }
 
     public static void main(String[] args) {
-        // TODO What is the correct way to determine the encoding of the terminal?!
-        var out = new PrintWriter(System.out, true, Charsets.US_ASCII);
-        var err = new PrintWriter(System.err, true, Charsets.US_ASCII);
-        System.exit(cli(args).setOut(out).setErr(err).execute());
+        System.exit(cli(args).execute());
     }
 
     private static class QuietExecutionExceptionHandler
