@@ -68,4 +68,9 @@ class StringResource implements ReadableResource {
     public CharSource charSource() {
         return CharSource.wrap(string);
     }
+
+    @Override
+    public String toString() {
+        return "StringResource{uri=" + uri() + '}';
+    }
 }

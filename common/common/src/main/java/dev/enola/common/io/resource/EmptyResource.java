@@ -54,4 +54,9 @@ class EmptyResource implements ReadableResource {
     public CharSource charSource() {
         return CharSource.empty();
     }
+
+    @Override
+    public String toString() {
+        return "EmptyResource{uri=" + uri() + '}';
+    }
 }

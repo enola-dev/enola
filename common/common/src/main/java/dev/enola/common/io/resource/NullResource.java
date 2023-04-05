@@ -58,6 +58,11 @@ class NullResource implements Resource {
         return NullByteSource.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "NullResource{uri=" + uri() + '}';
+    }
+
     // TODO https://github.com/google/guava/issues/2011
     private static final class NullByteSink extends ByteSink {
         public static final ByteSink INSTANCE = new NullByteSink();
