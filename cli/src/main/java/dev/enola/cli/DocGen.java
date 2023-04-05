@@ -31,10 +31,9 @@ import picocli.CommandLine.ParentCommand;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
-import java.util.concurrent.Callable;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
-public class DocGen implements Callable<Integer> {
+public class DocGen implements CheckedRunnable {
 
     @CommandLine.Option(
             names = {"--output", "-o"},
@@ -53,7 +52,7 @@ public class DocGen implements Callable<Integer> {
     @Spec CommandSpec spec;
 
     @Override
-    public Integer call() throws Exception {
+    public void run() throws Exception {
         var model = enola.model;
         if (Strings.isNullOrEmpty(model)) {
             throw new CommandLine.ParameterException(
@@ -71,6 +70,5 @@ public class DocGen implements Callable<Integer> {
         try (var writer = resource.charSink().openBufferedStream()) {
             new MarkdownDocGenerator(options).render(ekr, writer);
         }
-        return 0;
     }
 }

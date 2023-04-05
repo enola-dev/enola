@@ -37,9 +37,9 @@ import java.io.PrintWriter;
         description = Enola.DESCRIPTION,
         versionProvider = VersionProvider.class,
         subcommands = {
-            HelpCommand.class,
+            HelpCommand.class, // TODO , Version.class
             AutoComplete.GenerateCompletion.class,
-            DocGen.class /* TODO , Version.class */
+            DocGen.class
         })
 public class Enola {
 
