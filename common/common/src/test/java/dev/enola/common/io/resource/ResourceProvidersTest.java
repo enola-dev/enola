@@ -39,8 +39,10 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testNull() {
-        check(NullResource.class, NullResource.INSTANCE.uri());
+    public void testNull() throws IOException {
+        var uri = NullResource.INSTANCE.uri();
+        check(NullResource.class, uri);
+        new ResourceProviders().getResource(uri).charSink().write("hi");
     }
 
     @Test
@@ -85,6 +87,14 @@ public class ResourceProvidersTest {
         var uri = URI.create(StringResource.SCHEME + ":hello");
         assertThat(new ResourceProviders().getReadableResource(uri).charSource().read())
                 .isEqualTo("hello");
+    }
+
+    @Test
+    public void testSTDOUT() throws IOException {
+        new ResourceProviders()
+                .getResource(URI.create("fd:1?charset=UTF-8"))
+                .charSink()
+                .write("hi");
     }
 
     @Test

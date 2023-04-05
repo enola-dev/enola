@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.io.Resources;
 import com.google.common.truth.Truth;
 
@@ -28,53 +30,67 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class URIsTest {
+
+    @Test
+    public void testGetQueryMap() throws URISyntaxException {
+        assertThat(URIs.getQueryMap(null)).isEmpty();
+        assertThat(URIs.getQueryMap(URI.create(""))).isEmpty();
+        assertThat(URIs.getQueryMap(URI.create("http://www.vorburger.ch"))).isEmpty();
+        assertThat(URIs.getQueryMap(URI.create("http://google.com?q=michi#fragment")))
+                .containsExactly("q", "michi");
+        assertThat(URIs.getQueryMap(URI.create("fd:1?charset=ASCII")))
+                .containsExactly("charset", "ASCII");
+        assertThat(URIs.getQueryMap(URI.create("fd:1?charset=ASCII#fragment")))
+                .containsExactly("charset", "ASCII");
+    }
+
     @Test
     public void testGetFilename() throws URISyntaxException {
         // Files
-        assertThat(URI.create(""), "");
-        assertThat(new File("test.txt").toURI(), "test.txt");
-        assertThat(new File("/test.txt").toURI(), "test.txt");
-        assertThat(new File("/home/test.txt").toURI(), "test.txt");
-        assertThat(new File("/").toURI(), "");
-        assertThat(new File("directory").toURI(), "directory");
-        assertThat(new File("/directory").toURI(), "directory");
-        assertThat(new File("/directory/").toURI(), "directory");
-        assertThat(new File(".").toURI(), "");
-        assertThat(new File(".").getAbsoluteFile().toURI(), "");
-        assertThat(new File("./").toURI(), "");
-        assertThat(new File("./").getAbsoluteFile().toURI(), "");
+        assertName(URI.create(""), "");
+        assertName(new File("test.txt").toURI(), "test.txt");
+        assertName(new File("/test.txt").toURI(), "test.txt");
+        assertName(new File("/home/test.txt").toURI(), "test.txt");
+        assertName(new File("/").toURI(), "");
+        assertName(new File("directory").toURI(), "directory");
+        assertName(new File("/directory").toURI(), "directory");
+        assertName(new File("/directory/").toURI(), "directory");
+        assertName(new File(".").toURI(), "");
+        assertName(new File(".").getAbsoluteFile().toURI(), "");
+        assertName(new File("./").toURI(), "");
+        assertName(new File("./").getAbsoluteFile().toURI(), "");
 
         // Windows Files
         // TODO assertThat(new File("C:\\WINDOWS\\logo.bmp").toURI(), "logo.bmp");
 
         // HTTP
-        assertThat(URI.create("http://www.vorburger.ch"), "");
-        assertThat(URI.create("https://www.vorburger.ch"), "");
-        assertThat(URI.create("https://www.vorburger.ch/"), "");
-        assertThat(URI.create("https://www.vorburger.ch/index.html"), "index.html");
-        assertThat(URI.create("https://www.vorburger.ch/index.html#toot"), "index.html");
-        assertThat(URI.create("https://www.vorburger.ch/index.html?search=1998"), "index.html");
-        assertThat(URI.create("https://www.vorburger.ch/projects/"), "");
-        assertThat(
+        assertName(URI.create("http://www.vorburger.ch"), "");
+        assertName(URI.create("https://www.vorburger.ch"), "");
+        assertName(URI.create("https://www.vorburger.ch/"), "");
+        assertName(URI.create("https://www.vorburger.ch/index.html"), "index.html");
+        assertName(URI.create("https://www.vorburger.ch/index.html#toot"), "index.html");
+        assertName(URI.create("https://www.vorburger.ch/index.html?search=1998"), "index.html");
+        assertName(URI.create("https://www.vorburger.ch/projects/"), "");
+        assertName(
                 URI.create("https://www.vorburger.ch/projects/coc/coc_src.html"), "coc_src.html");
-        assertThat(URI.create("https://www.vorburger.ch/space%20file"), "space file");
+        assertName(URI.create("https://www.vorburger.ch/space%20file"), "space file");
 
         // Classpath Resources
-        assertThat(Resources.getResource("empty").toURI(), "empty");
-        assertThat(
+        assertName(Resources.getResource("empty").toURI(), "empty");
+        assertName(
                 Resources.getResource(
                                 "META-INF/services/dev.enola.common.io.mediatype.MediaTypeProvider")
                         .toURI(),
                 "dev.enola.common.io.mediatype.MediaTypeProvider");
 
         // No schema - this is correct!
-        assertThat(URI.create("test.txt"), "");
-        assertThat(URI.create(""), "");
+        assertName(URI.create("test.txt"), "");
+        assertName(URI.create(""), "");
 
         Assert.assertThrows(NullPointerException.class, () -> URI.create(null));
     }
 
-    private void assertThat(URI uri, String expectedFilename) {
+    private void assertName(URI uri, String expectedFilename) {
         Truth.assertThat(URIs.getFilename(uri)).isEqualTo(expectedFilename);
     }
 }

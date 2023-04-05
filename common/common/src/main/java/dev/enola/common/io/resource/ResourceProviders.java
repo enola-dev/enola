@@ -26,7 +26,8 @@ import java.nio.file.Path;
 
 public class ResourceProviders implements ResourceProvider {
 
-    // TODO ResourceProvidersTest coverage missing!
+    // TODO Add support for ?charset=... to all resources
+    // (see how it's done in FileDescriptorResource)
 
     // This is hard-coded to the ResourceProvider implementations
     // in this package, for now.  TODO Later, read ResourceProvider
@@ -70,6 +71,8 @@ public class ResourceProviders implements ResourceProvider {
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Malformed URI is not valid URL" + uri, e);
             }
+        } else if (uri.getScheme().startsWith("fd")) {
+            return new FileDescriptorResource(uri);
         }
         throw new IllegalArgumentException(
                 "Unknown URI scheme '" + uri.getScheme() + "' in: " + uri);
