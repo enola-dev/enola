@@ -57,6 +57,11 @@ class ErrorResource implements Resource {
         return ErrorByteSource.INSTANCE;
     }
 
+    @Override
+    public String toString() {
+        return "ErrorResource{uri=" + uri() + '}';
+    }
+
     private static final class ErrorByteSink extends ByteSink {
         public static final ByteSink INSTANCE = new ErrorByteSink();
 
