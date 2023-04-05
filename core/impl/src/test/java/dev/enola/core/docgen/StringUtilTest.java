@@ -18,17 +18,18 @@
 package dev.enola.core.docgen;
 
 import static com.google.common.truth.Truth.assertThat;
+
 import static dev.enola.core.docgen.StringUtil.capitalize;
 
 import org.junit.Test;
 
 public class StringUtilTest {
-  @Test
-  public void testCapitalize() {
-    assertThat(capitalize(null)).isNull();
-    assertThat(capitalize("")).isEmpty();
-    assertThat(capitalize("a")).isEqualTo("A");
-    assertThat(capitalize("ab")).isEqualTo("Ab");
-    assertThat(capitalize("abc")).isEqualTo("Abc");
-  }
+    @Test
+    public void testCapitalize() {
+        assertThat(capitalize(null)).isNull();
+        assertThat(capitalize("")).isEmpty();
+        assertThat(capitalize("a")).isEqualTo("A");
+        assertThat(capitalize("ab")).isEqualTo("Ab");
+        assertThat(capitalize("abc")).isEqualTo("Abc");
+    }
 }
