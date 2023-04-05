@@ -8,6 +8,3 @@ name = "java"
 
 [[analyzers]]
 name = "shell"
-
-[[transformers]]
-name = "google-java-format"
