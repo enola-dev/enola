@@ -20,8 +20,14 @@ package dev.enola.cli;
 import static dev.enola.cli.CommandLineSubject.assertThat;
 import static dev.enola.cli.Enola.cli;
 
-import org.junit.Ignore;
+import com.google.common.net.MediaType;
+import com.google.common.truth.Truth;
+
+import dev.enola.common.io.resource.MemoryResourcePool;
+
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class EnolaTest {
 
@@ -51,10 +57,20 @@ public class EnolaTest {
     }
 
     @Test
-    @Ignore // TODO Implement... must extract demo-model.textproto, or support classpath: URI scheme
-    // in ResourceProviders
-    public void testDocGen() {
-        assertThat(cli("docgen")).hasExitCode(0).out().isEqualTo("hi\n");
-        // TODO Assert that docgen actually did work...
+    public void testDocGen() throws IOException {
+        try (var r = MemoryResourcePool.create(MediaType.PLAIN_TEXT_UTF_8)) {
+            var exec =
+                    cli(
+                            "-v",
+                            "docgen",
+                            "--model",
+                            "classpath:cli-test-model.textproto",
+                            "--output",
+                            r.uri().toString());
+            assertThat(exec).err().isEmpty();
+            assertThat(exec).hasExitCode(0).out().isEmpty();
+            Truth.assertThat(r.charSource().read())
+                    .endsWith("generated with ❤️ by [Enola.dev](https://www.enola.dev)_\n");
+        }
     }
 }

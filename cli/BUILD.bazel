@@ -36,6 +36,7 @@ java_binary(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":enola",
+        "//common/common",
         "//core/impl",
         "@maven//:com_google_truth_truth",
         "@maven//:info_picocli_picocli",
