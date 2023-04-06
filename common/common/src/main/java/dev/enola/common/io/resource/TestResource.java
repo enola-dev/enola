@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class TestResource extends MemoryResource implements CloseableResource {
 
-    private static final String SCHEME = "memory";
+    private static final String SCHEME = "test";
 
     private static final Map<Long, TestResource> pool = new HashMap<>();
     private static final AtomicLong counter = new AtomicLong();
