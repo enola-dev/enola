@@ -17,8 +17,6 @@
  */
 package dev.enola.cli;
 
-import com.google.common.base.Strings;
-
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.docgen.MarkdownDocGenerator;
 import dev.enola.core.docgen.Options;
@@ -54,11 +52,11 @@ public class DocGen implements CheckedRunnable {
     @Override
     public void run() throws Exception {
         var model = enola.model;
-        if (Strings.isNullOrEmpty(model)) {
+        if (model == null) {
             throw new CommandLine.ParameterException(
                     spec.commandLine(), "Missing --model argument");
         }
-        var modelResource = new ResourceProviders().getReadableResource(URI.create(model));
+        var modelResource = new ResourceProviders().getReadableResource(model);
 
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
