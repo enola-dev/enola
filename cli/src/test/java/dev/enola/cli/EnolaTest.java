@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 import com.google.common.truth.Truth;
 
 import dev.enola.common.io.resource.MemoryResourcePool;
+import dev.enola.core.docgen.MarkdownDocGenerator;
 
 import org.junit.Test;
 
@@ -69,8 +70,7 @@ public class EnolaTest {
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
             assertThat(exec).hasExitCode(0).out().isEmpty();
-            Truth.assertThat(r.charSource().read())
-                    .endsWith("generated with ❤️ by [Enola.dev](https://www.enola.dev)_\n");
+            Truth.assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
         }
     }
 }

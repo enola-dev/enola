@@ -17,19 +17,29 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.core.meta.EntityKindRepository;
+
 import picocli.CommandLine;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
 
-@CommandLine.Command(name = "version", description = "Show CLI version (same as --version)")
-public class Version implements CheckedRunnable {
+import java.net.URI;
 
-    // TODO For some reason this doesn't work...
+public abstract class CommandWithModel implements CheckedRunnable {
 
-    @Spec CommandSpec spec;
+    @CommandLine.Option(
+            names = {"--model"},
+            required = true,
+            description = "URI to EntityKinds (e.g. file:model.yaml)")
+    private URI model;
 
     @Override
-    public void run() throws Exception {
-        spec.commandLine().printVersionHelp(spec.commandLine().getOut());
+    public final void run() throws Exception {
+        var modelResource = new ResourceProviders().getReadableResource(model);
+        var ekr = new EntityKindRepository();
+        ekr.load(modelResource);
+
+        run(ekr);
     }
+
+    protected abstract void run(EntityKindRepository ekr) throws Exception;
 }
