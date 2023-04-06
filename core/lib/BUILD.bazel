@@ -59,6 +59,7 @@ java_proto_library(
         "util_proto",
     ],
     visibility = [
+        "//cli:__subpackages__",
         "//connectors:__subpackages__",
         "//core:__subpackages__",
     ],
@@ -98,6 +99,7 @@ java_library(
     # TODO Required for https://github.com/google/closure-templates/issues/1300 or not?
     # resources = glob(["src/main/java/**/*.proto"]),
     visibility = [
+        "//cli:__subpackages__",
         "//connectors:__subpackages__",
         "//core:__subpackages__",
     ],

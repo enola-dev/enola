@@ -36,7 +36,7 @@ class MermaidGenerator {
     }
 
     private static void renderMermaidEntity(EntityKind ek, Appendable md) throws IOException {
-        ID idWithoutPathArguments = ID.newBuilder(ek.getId()).clearPaths().build();
+        ID idWithoutPathArguments = IDs.withoutPath(ek.getId());
         String fqn = IDs.toPath(idWithoutPathArguments);
         String name = StringUtil.capitalize(idWithoutPathArguments.getEntity());
         List<String> pathArguments =

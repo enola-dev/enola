@@ -19,6 +19,9 @@ package dev.enola.core;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.core.IDs.isEmpty;
+import static dev.enola.core.IDs.withoutPath;
+
 import static org.junit.Assert.assertThrows;
 
 import dev.enola.core.proto.ID;
@@ -98,5 +101,32 @@ public class IDsTest {
 
     private void badEnolaID(String id) {
         assertThrows(IllegalArgumentException.class, () -> IDs.parse(id));
+    }
+
+    @Test
+    public void testWithoutPath() {
+        assertThat(withoutPath(null)).isNull();
+        assertThat(withoutPath(ID.getDefaultInstance())).isEqualTo(ID.getDefaultInstance());
+
+        var nsAndName = ID.newBuilder().setNs("foo").setEntity("bar").build();
+        assertThat(withoutPath(nsAndName)).isSameInstanceAs(nsAndName);
+
+        var withPath = ID.newBuilder(nsAndName).addPaths("name").addPaths("uuid").build();
+        assertThat(withoutPath(withPath)).isEqualTo(nsAndName);
+    }
+
+    @Test
+    public void testIsEmpty() {
+        assertThat(isEmpty(ID.getDefaultInstance())).isTrue();
+        assertThat(isEmpty(ID.newBuilder().build())).isTrue();
+
+        var onlyNS = ID.newBuilder().setNs("foo").build();
+        assertThat(isEmpty(onlyNS)).isFalse();
+
+        var nsAndName = ID.newBuilder().setNs("foo").setEntity("bar").build();
+        assertThat(isEmpty(nsAndName)).isFalse();
+
+        var withPath = ID.newBuilder(nsAndName).addPaths("name").build();
+        assertThat(isEmpty(withPath)).isFalse();
     }
 }

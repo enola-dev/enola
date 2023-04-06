@@ -17,6 +17,8 @@
  */
 package dev.enola.core;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.google.common.base.Splitter;
 
 import dev.enola.core.proto.ID;
@@ -38,14 +40,13 @@ import java.net.URISyntaxException;
  */
 public final class IDs {
 
-    private IDs() {}
-
     private static final String URI_SCHEME = "enola";
+    private static final Splitter SLASH_SPLITTER =
+            Splitter.on('/').omitEmptyStrings().trimResults();
 
     // private static final Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
 
-    private static final Splitter SLASH_SPLITTER =
-            Splitter.on('/').omitEmptyStrings().trimResults();
+    private IDs() {}
 
     public static ID parse(String s) {
         if (s.startsWith(URI_SCHEME)) {
@@ -196,4 +197,16 @@ public final class IDs {
             return sb.toString();
         }
     */
+
+    public static ID withoutPath(ID id) {
+        if (id == null) return null;
+        if (id.getPathsCount() == 0) return id;
+        return ID.newBuilder(id).clearPaths().build();
+    }
+
+    public static boolean isEmpty(ID id) {
+        return isNullOrEmpty(id.getNs())
+                && isNullOrEmpty(id.getEntity())
+                && id.getPathsCount() == 0;
+    }
 }

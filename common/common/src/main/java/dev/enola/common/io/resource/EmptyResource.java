@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 import java.net.URI;
 
 class EmptyResource implements ReadableResource {
+    // TODO Perhaps rename this to VoidResource with void:/ URI?
 
     static final EmptyResource INSTANCE = new EmptyResource();
 

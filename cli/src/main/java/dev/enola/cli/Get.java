@@ -17,19 +17,24 @@
  */
 package dev.enola.cli;
 
+import dev.enola.core.EnolaService;
+import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.ID;
+
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
 
-@Command(name = "version", description = "Show CLI version (same as --version)")
-public class Version implements CheckedRunnable {
-
-    // TODO For some reason this doesn't work...
-
-    @Spec CommandSpec spec;
+@Command(name = "get", description = "Get Entity")
+public class Get extends CommandWithEntityID {
 
     @Override
-    public void run() throws Exception {
-        spec.commandLine().printVersionHelp(spec.commandLine().getOut());
+    protected void run(EntityKindRepository ekr, EnolaService service, ID id) throws Exception {
+        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var response = service.getEntity(request);
+        var entity = response.getEntity();
+
+        // TODO Allow formatting it as JSON or YAML, via Resource!
+        // TODO What else do we do with the Entity?!
+        out.println(entity);
     }
 }

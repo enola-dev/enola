@@ -22,6 +22,8 @@ java_binary(
     main_class = "dev.enola.cli.Enola",
     deps = [
         "//common/common",
+        "//core/lib:core_proto_java_library",
+        "//core/lib:lib_java",
         "//core/impl",
         "@maven//:com_google_guava_guava",
         "@maven//:info_picocli_picocli",

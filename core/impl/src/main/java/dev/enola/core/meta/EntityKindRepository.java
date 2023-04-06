@@ -47,7 +47,7 @@ public class EntityKindRepository {
         map.computeIfAbsent(id.getNs(), s -> new TreeMap<>()).put(id.getEntity(), entityKind);
     }
 
-    public synchronized EntityKind get(ID id) {
+    public EntityKind get(ID id) {
         var subMap = map.get(id.getNs());
         if (subMap == null) {
             throw new IllegalArgumentException(id + " unknown: " + map);

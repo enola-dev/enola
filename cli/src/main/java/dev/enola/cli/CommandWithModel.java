@@ -20,13 +20,19 @@ package dev.enola.cli;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.meta.EntityKindRepository;
 
-import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Spec;
 
+import java.io.PrintWriter;
 import java.net.URI;
 
 public abstract class CommandWithModel implements CheckedRunnable {
 
-    @CommandLine.Option(
+    protected PrintWriter out;
+    @Spec CommandSpec spec;
+
+    @Option(
             names = {"--model"},
             required = true,
             description = "URI to EntityKinds (e.g. file:model.yaml)")
@@ -34,6 +40,8 @@ public abstract class CommandWithModel implements CheckedRunnable {
 
     @Override
     public final void run() throws Exception {
+        out = spec.commandLine().getOut();
+
         var modelResource = new ResourceProviders().getReadableResource(model);
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
