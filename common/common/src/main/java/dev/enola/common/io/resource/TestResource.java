@@ -19,45 +19,52 @@ package dev.enola.common.io.resource;
 
 import com.google.common.net.MediaType;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class MemoryResourcePool {
+public class TestResource extends MemoryResource implements CloseableResource {
 
-    private static final Map<Long, CloseableMemoryResource> pool = new HashMap<>();
+    private static final String SCHEME = "test";
+
+    private static final Map<Long, TestResource> pool = new HashMap<>();
     private static final AtomicLong counter = new AtomicLong();
+    private final long id;
 
-    public static CloseableMemoryResource create(MediaType mediaType) {
+    private TestResource(MediaType mediaType, URI uri, long id) {
+        super(mediaType, uri);
+        this.id = id;
+    }
+
+    public static CloseableResource create(MediaType mediaType) {
         var id = counter.get();
-        var r = new CloseableMemoryResource(mediaType, URI.create("memory:" + id), id);
+        var r = new TestResource(mediaType, URI.create(SCHEME + ":" + id), id);
         pool.put(id, r);
         return r;
     }
 
-    public static Resource get(String id) {
-        var i = Long.parseLong(id);
-        var r = pool.get(i);
-        if (r == null) {
-            throw new IllegalStateException("MemoryResourcePool already closed? #" + id);
-        }
-        return r;
+    @Override
+    public void close() throws IOException {
+        pool.remove(id);
     }
 
-    public static class CloseableMemoryResource extends MemoryResource implements Closeable {
-        private final long id;
-
-        CloseableMemoryResource(MediaType mediaType, URI uri, long id) {
-            super(mediaType, uri);
-            this.id = id;
+    public static class Provider implements ResourceProviderSPI {
+        @Override
+        public String scheme() {
+            return SCHEME;
         }
 
         @Override
-        public void close() throws IOException {
-            pool.remove(id);
+        public Resource getResourceImplementation(URI uri) {
+            var id = uri.getSchemeSpecificPart();
+            var i = Long.parseLong(id);
+            var r = pool.get(i);
+            if (r == null) {
+                throw new IllegalStateException("MemoryResourcePool already closed? #" + id);
+            }
+            return r;
         }
     }
 }

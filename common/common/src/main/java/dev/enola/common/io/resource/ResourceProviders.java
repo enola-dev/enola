@@ -33,16 +33,7 @@ public class ResourceProviders implements ResourceProvider {
     // in this package, for now.  TODO Later, read ResourceProvider
     // implementations from the classpath via ServiceLoader, and
     // try each of them, based on a rank.
-
-    @Override
-    public ReadableResource getReadableResource(URI uri) {
-        return getResource(uri);
-    }
-
-    @Override
-    public WritableResource getWritableResource(URI uri) {
-        return getResource(uri);
-    }
+    ResourceProviderSPI testResourceProvider = new TestResource.Provider();
 
     @Override
     public Resource getResource(URI uri) {
@@ -77,8 +68,8 @@ public class ResourceProviders implements ResourceProvider {
                     new ClasspathResource(uri.getSchemeSpecificPart()));
         } else if (scheme.startsWith("fd")) {
             return new FileDescriptorResource(uri);
-        } else if (scheme.startsWith("memory")) {
-            return MemoryResourcePool.get(uri.getSchemeSpecificPart());
+        } else if (scheme.startsWith(testResourceProvider.scheme())) {
+            return testResourceProvider.getResource(uri);
         }
         throw new IllegalArgumentException("Unknown URI scheme '" + scheme + "' in: " + uri);
     }
