@@ -30,6 +30,10 @@ import java.util.stream.Collectors;
 
 public class MarkdownDocGenerator { // TODO extends SoyGenerator {
 
+    public static final String FOOTER =
+            "_This model documentation was generated with ❤️ by"
+                    + " [Enola.dev](https://www.enola.dev)_\n";
+
     private final Options options;
 
     // Using Protobufs in https://github.com/google/closure-templates (AKA "Soy"
@@ -63,9 +67,7 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
             render(ek, md);
         }
         md.append("\n---\n");
-        md.append(
-                "_This model documentation was generated with ❤️ by"
-                        + " [Enola.dev](https://www.enola.dev)_\n");
+        md.append(FOOTER);
     }
 
     private void render(EntityKind ek, Appendable md) throws IOException {

@@ -28,13 +28,7 @@ import picocli.CommandLine.Command;
 import java.net.URI;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
-public class DocGen implements CheckedRunnable {
-
-    @CommandLine.Option(
-            names = {"--model"},
-            required = true,
-            description = "URI to EntityKinds (e.g. file:model.yaml)")
-    URI model;
+public class DocGen extends CommandWithModel {
 
     @CommandLine.Option(
             names = {"--output", "-o"},
@@ -51,12 +45,7 @@ public class DocGen implements CheckedRunnable {
     Options.DiagramType diagram;
 
     @Override
-    public void run() throws Exception {
-        var modelResource = new ResourceProviders().getReadableResource(model);
-
-        var ekr = new EntityKindRepository();
-        ekr.load(modelResource);
-
+    public void run(EntityKindRepository ekr) throws Exception {
         var options = new Options();
         options.diagram = diagram;
 
