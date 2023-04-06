@@ -26,14 +26,14 @@ option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.meta.proto";
 option java_multiple_files = true;
 
-message MetaModelPackage {
-  // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
-  // TODO Enable this, with validation that entities don't have it, and
-  // "complete" it on read string package = 1;
+// message MetaModelPackage {
+// Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
+// TODO Enable this, with validation that entities don't have it, and
+// "complete" it on read string package = 1;
 
-  // List of entities kinds of this model.
-  repeated EntityKind entities = 2;
-}
+// List of entities kinds of this model.
+// repeated EntityKind entities = 2;
+// }
 
 message EntityKinds {
   repeated EntityKind kinds = 1;

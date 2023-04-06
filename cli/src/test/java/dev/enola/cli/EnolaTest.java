@@ -73,4 +73,32 @@ public class EnolaTest {
             Truth.assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
         }
     }
+
+    @Test
+    public void testListKind() {
+        var exec = cli("-v", "list-kinds", "--model", "classpath:cli-test-model.textproto");
+        assertThat(exec).err().isEmpty();
+        assertThat(exec).hasExitCode(0).out().isEqualTo("test.foobar/name\n");
+    }
+
+    @Test
+    public void testGet() {
+        var exec =
+                cli(
+                        "-v",
+                        "get",
+                        "--model",
+                        "classpath:cli-test-model.textproto",
+                        "test.foobar/helo");
+        assertThat(exec).err().isEmpty();
+        assertThat(exec)
+                .hasExitCode(0)
+                .out()
+                .isEqualTo(
+                        "id {\n"
+                                + "  ns: \"test\"\n"
+                                + "  entity: \"foobar\"\n"
+                                + "  paths: \"helo\"\n"
+                                + "}\n\n");
+    }
 }

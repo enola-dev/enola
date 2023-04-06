@@ -25,7 +25,8 @@
 1. `MarkdownGenerator.java` add Mermaid (like in `demo-model-docgen.md`)
 1. `MarkdownGenerator.java` https://github.com/google/closure-templates/issues/1300 ?
 
-1. Enforce https://www.conventionalcommits.org like git commit messages
+1. https://github.com/enola-dev/enola/issues/102 :
+   Enforce https://www.conventionalcommits.org like git commit messages
    starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
    using https://github.com/jorisroovers/gitlint
 
@@ -82,11 +83,18 @@
 
 1. [Run `mkdocs build` instead of in `build.bash` as a `sh_test` in Bazel with `docs/**` + `mkdocs.yaml` as (only) `srcs`](https://github.com/enola-dev/enola/compare/main...vorburger:enola:mkdocs_build_test) - fix weird problems
 
-1. Proto design: Is this a real requirement, or can we forget about this: _"Note that IDs are not "unique", and 2 different IDs may refer to the same underlying object; for example: `k8s:pod?name=echoserver-6dfb6c7764-45gvk&...` and `k8s:pod?uid=561f1bec-f768-4c5b-b96e-37306d7f2f8a&...`"_
+1. Proto design: Is this a real requirement, or can we forget about this: _"Note that IDs are not "unique", and 2
+   different IDs may refer to the same underlying object; for example: `k8s:pod?name=echoserver-6dfb6c7764-45gvk&...`
+   and `k8s:pod?uid=561f1bec-f768-4c5b-b96e-37306d7f2f8a&...`"_
 
-1. Proto design: Should `EntityKind` have a _"param_parent, to allow grouping common ones, just during declaration in textproto, but inlined for use."_ or shall we forget about that?
+1. Proto design: Should `EntityKind` have a _"param_parent, to allow grouping common ones, just during declaration in
+   textproto, but inlined for use."_ or shall we forget about that?
 
-1. Proto design: Should we permit RPC clients to _"specify the ID in either (oneof)string text or "broken down" parts form. This is simply for dev convenience in UX such as CLI or Web UIs, and to avoid the proliferation of incompatible parsers. The implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or "demo:foo?bad=a&bad=b". The string text oneof form is NOT "decoded" like un-escaped (incl. un-quoted) at all, simply "split" ... ? There was `IDsTest.java` and `IDs.java` code related to this which I removed on 2023-03-19:_
+1. Proto design: Should we permit RPC clients to _"specify the ID in either (oneof)string text or "broken down" parts
+   form. This is simply for dev convenience in UX such as CLI or Web UIs, and to avoid the proliferation of incompatible
+   parsers. The implementation validates the text, and rejects e.g. "demo:foo?bad=a=b" or "demo:foo?bad=a&bad=b". The
+   string text oneof form is NOT "decoded" like un-escaped (incl. un-quoted) at all, simply "split" ... ? There
+   was `IDsTest.java` and `IDs.java` code related to this which I removed on 2023-03-19:_
 
        message ID {
            oneof oneof {

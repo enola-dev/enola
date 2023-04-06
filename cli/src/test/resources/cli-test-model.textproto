@@ -19,6 +19,6 @@
 # proto-message: EntityKinds
 
 kinds {
-  id: { ns: "test" entity: "test" paths: "uuid" }
+  id: { ns: "test" entity: "foobar" paths: "name" }
   emoji: "💂"
 }

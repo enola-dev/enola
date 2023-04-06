@@ -35,7 +35,10 @@ import picocli.CommandLine.Option;
         subcommands = {
             HelpCommand.class, // TODO , Version.class
             AutoComplete.GenerateCompletion.class,
-            DocGen.class
+            DocGen.class,
+            ListKinds.class,
+            List.class,
+            Get.class
         })
 public class Enola {
 

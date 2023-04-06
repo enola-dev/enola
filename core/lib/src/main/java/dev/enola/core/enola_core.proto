@@ -100,22 +100,25 @@ message GetEntityRequest {
 
   // Request to inline Entity#link, by the same string key as used there.
   // (Conceptually inspired by e.g. GraphQL architecture.)
-  repeated string inline_links = 2;
+  // TODO repeated string inline_links = 2;
 }
 message GetEntityResponse {
   Entity entity = 1;
 
-  repeated InlineLinkData data = 2;
-  message InlineLinkData {
-    oneof oneof {
-      google.protobuf.Any protos = 1;
-      string json = 2;
-    }
-  }
+  /*
+    TODO Think this through & implement it...
+
+    repeated InlineLinkData data = 2;
+    message InlineLinkData {
+      oneof oneof {
+        google.protobuf.Any protos = 1;
+        string json = 2;
+      }
+    } */
 }
 
-// TODO Later have an RPC for a time series XRequest, and XResponse with
-// repeated Entity?
+// TODO rpc watch(), for a time series WatchRequest/Response with repeated
+// Entity?
 //   google.protobuf.Timestamp ts = 2;
 //   google.protobuf.Timestamp start = 2;
 //   google.protobuf.Timestamp end = 3;
