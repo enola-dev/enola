@@ -77,6 +77,8 @@ public class ResourceProviders implements ResourceProvider {
                     new ClasspathResource(uri.getSchemeSpecificPart()));
         } else if (scheme.startsWith("fd")) {
             return new FileDescriptorResource(uri);
+        } else if (scheme.startsWith("memory")) {
+            return MemoryResourcePool.get(uri.getSchemeSpecificPart());
         }
         throw new IllegalArgumentException("Unknown URI scheme '" + scheme + "' in: " + uri);
     }

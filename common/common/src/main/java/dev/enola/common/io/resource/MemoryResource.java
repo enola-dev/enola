@@ -17,12 +17,13 @@
  */
 package dev.enola.common.io.resource;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
-import java.util.Objects;
 
 public class MemoryResource implements Resource {
 
@@ -30,9 +31,14 @@ public class MemoryResource implements Resource {
     private final MediaType mediaType;
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
+    protected MemoryResource(MediaType mediaType, URI uri) {
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType = requireNonNull(mediaType, "mediaType");
+    }
+
     public MemoryResource(MediaType mediaType) {
         this.uri = URI.create("memory:" + Integer.toHexString(hashCode()));
-        this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
+        this.mediaType = requireNonNull(mediaType, "mediaType");
     }
 
     @Override
