@@ -24,9 +24,6 @@ import dev.enola.core.meta.EntityKindRepository;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.ParentCommand;
-import picocli.CommandLine.Spec;
 
 import java.net.URI;
 
@@ -34,28 +31,27 @@ import java.net.URI;
 public class DocGen implements CheckedRunnable {
 
     @CommandLine.Option(
+            names = {"--model"},
+            required = true,
+            description = "URI to EntityKinds (e.g. file:model.yaml)")
+    URI model;
+
+    @CommandLine.Option(
             names = {"--output", "-o"},
+            required = true,
             defaultValue = "fd:1?charset=UTF-8", // = FileDescriptorResource.OUT
             description = "URI of where to write generated documentation")
     URI output;
 
     @CommandLine.Option(
             names = {"--diagram", "-d"},
+            required = true,
             defaultValue = "Mermaid",
             description = "Type of diagrams to generate")
     Options.DiagramType diagram;
 
-    @ParentCommand Enola enola;
-
-    @Spec CommandSpec spec;
-
     @Override
     public void run() throws Exception {
-        var model = enola.model;
-        if (model == null) {
-            throw new CommandLine.ParameterException(
-                    spec.commandLine(), "Missing --model argument");
-        }
         var modelResource = new ResourceProviders().getReadableResource(model);
 
         var ekr = new EntityKindRepository();
