@@ -26,11 +26,7 @@ import java.util.Map;
 
 class EnolaServiceRegistry implements EnolaService {
 
-    private final Map<ID, EnolaService> registry;
-
-    public EnolaServiceRegistry() {
-        registry = new HashMap<>();
-    }
+    private final Map<ID, EnolaService> registry = new HashMap<>();
 
     public void register(ID id, EnolaService service) {
         var lookup = IDs.withoutPath(id);

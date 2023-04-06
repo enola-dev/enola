@@ -37,7 +37,7 @@ public class EntityKindRepository {
 
     private final Map<String, Map<String, EntityKind>> map = new TreeMap<>();
 
-    public synchronized void put(EntityKind entityKind) throws ValidationException {
+    public synchronized EntityKindRepository put(EntityKind entityKind) throws ValidationException {
         v.validate(entityKind).throwIt();
         // TODO This should eventually not be required anymore!
         // (Validation should "recurse into" messages by itself, later.)
@@ -45,6 +45,7 @@ public class EntityKindRepository {
 
         var id = entityKind.getId();
         map.computeIfAbsent(id.getNs(), s -> new TreeMap<>()).put(id.getEntity(), entityKind);
+        return this;
     }
 
     public EntityKind get(ID id) {
