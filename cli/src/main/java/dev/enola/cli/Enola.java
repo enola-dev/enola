@@ -25,6 +25,8 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Option;
 
+import java.net.URI;
+
 @Command(
         name = "enola",
         mixinStandardHelpOptions = true,
@@ -45,9 +47,7 @@ public class Enola {
             names = {"--model"},
             scope = INHERIT,
             description = "URI to EntityKinds (e.g. file:model.yaml)") // TODO , required = true
-    // TODO Use an URI instead of String, with Converter
-    // TODO Support completion for available URI pre-fixes
-    String model;
+    URI model;
 
     @Option(
             names = {"--verbose", "-v"},
