@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.io.Files;
+import com.google.common.net.MediaType;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -102,6 +103,16 @@ public class ResourceProvidersTest {
                 .getResource(URI.create("fd:1?charset=UTF-8"))
                 .charSink()
                 .write("hi");
+    }
+
+    @Test
+    public void testMemory() throws IOException {
+        try (var r = MemoryResourcePool.create(MediaType.PLAIN_TEXT_UTF_8)) {
+            r.charSink().write("hi");
+            var uri = r.uri();
+            var text = new ResourceProviders().getResource(uri).charSource().read();
+            assertThat(text).isEqualTo("hi");
+        }
     }
 
     @Test
