@@ -21,13 +21,25 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * Resource Provider.
+ *
+ * <p>This is the primary interface to use (and e.g. @Inject) in clients of the <i>Resource
+ * Framework</i>.
+ *
+ * @see dev.enola.common.io.resource
+ */
 public interface ResourceProvider {
 
-    ReadableResource getReadableResource(URI uri);
-
-    WritableResource getWritableResource(URI uri);
-
     Resource getResource(URI uri);
+
+    default ReadableResource getReadableResource(URI uri) {
+        return getResource(uri);
+    }
+
+    default WritableResource getWritableResource(URI uri) {
+        return getResource(uri);
+    }
 
     // -------------------------------------------
 

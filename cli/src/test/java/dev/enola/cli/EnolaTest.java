@@ -23,7 +23,7 @@ import static dev.enola.cli.Enola.cli;
 import com.google.common.net.MediaType;
 import com.google.common.truth.Truth;
 
-import dev.enola.common.io.resource.MemoryResourcePool;
+import dev.enola.common.io.resource.TestResource;
 import dev.enola.core.docgen.MarkdownDocGenerator;
 
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class EnolaTest {
 
     @Test
     public void testDocGen() throws IOException {
-        try (var r = MemoryResourcePool.create(MediaType.PLAIN_TEXT_UTF_8)) {
+        try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             var exec =
                     cli(
                             "-v",

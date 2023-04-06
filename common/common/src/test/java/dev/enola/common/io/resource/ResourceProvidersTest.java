@@ -107,7 +107,7 @@ public class ResourceProvidersTest {
 
     @Test
     public void testMemory() throws IOException {
-        try (var r = MemoryResourcePool.create(MediaType.PLAIN_TEXT_UTF_8)) {
+        try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             r.charSink().write("hi");
             var uri = r.uri();
             var text = new ResourceProviders().getResource(uri).charSource().read();
