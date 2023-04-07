@@ -18,12 +18,17 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
+1. https://github.com/google/closure-templates/issues/1300 ?
+
+1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
+
+1. https://github.com/google/closure-templates/issues/1300 ?
+
 1. Fix mediaType from extension so that e.g. this will work:
 
-       ./enola -v --model=https://raw.githubusercontent.com/enola-dev/enola/main/core/impl/src/test/resources/demo-model.textproto docge
+       ./enola -v --model=https://raw.githubusercontent.com/enola-dev/enola/main/core/impl/src/test/resources/demo-model.textproto docgen
 
-1. `MarkdownGenerator.java` add Mermaid (like in `demo-model-docgen.md`)
-1. `MarkdownGenerator.java` https://github.com/google/closure-templates/issues/1300 ?
+1. Add support for writing and reading `ProtobufMediaTypes.PROTOBUF_YAML_UTF_8` - easy, given that _YAML is JSON?_
 
 1. https://github.com/enola-dev/enola/issues/102 :
    Enforce https://www.conventionalcommits.org like git commit messages
@@ -39,17 +44,9 @@
 
 1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
 
-1. Add support for writing and reading `ProtobufMediaTypes.PROTOBUF_YAML_UTF_8` - easy, given that _YAML is JSON?_
-
-1. K8s MVP Proto
-
-    - `ownerReferences`
-
-1. Read [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570) and integrate https://github.com/fge/uri-template for QueryParameter#ref_id_template
-
-1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
-   See https://squidfunk.github.io/mkdocs-material/reference/images/
-   With https://squidfunk.github.io/mkdocs-material/reference/grids/
+x1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
+See https://squidfunk.github.io/mkdocs-material/reference/images/
+With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 1. Publish Site
 1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
@@ -58,11 +55,7 @@
 
 1. Upstream `CommandLineSubject` to Picocli?
 
-1. Use GitHub Projects & Roadmap to create The Plan, and use Trello-like Kanban board view with ToDo, WIP, Done.
-
 1. https://unifiedjs.com ?
-
-1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 

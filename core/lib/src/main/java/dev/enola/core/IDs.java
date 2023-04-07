@@ -20,12 +20,14 @@ package dev.enola.core;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableMap;
 
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.IDOrBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 /**
  * ID formatting and parsing functions. {@link ID} can be formatted to and parsed from the following
@@ -197,6 +199,19 @@ public final class IDs {
             return sb.toString();
         }
     */
+
+    public static Map<String, String> pathMap(ID kindID, ID entityID) {
+        if (entityID.getPathsCount() != kindID.getPathsCount()) {
+            throw new IllegalArgumentException(
+                    "Entity ID=" + entityID + "; EntityKind ID=" + kindID);
+        }
+        var n = kindID.getPathsCount();
+        var builder = ImmutableMap.<String, String>builderWithExpectedSize(n);
+        for (int i = 0; i < n; i++) {
+            builder.put(kindID.getPaths(i), entityID.getPaths(i));
+        }
+        return builder.build();
+    }
 
     public static ID withoutPath(ID id) {
         if (id == null) return null;

@@ -27,6 +27,7 @@ maven.install(
         "com.google.protobuf:protobuf-java-util:3.22.0",
         "com.google.template:soy:2022-10-26",
         "info.picocli:picocli:4.7.1",
+        "com.github.java-json-tools:uri-template:0.10",
         # kubernetes:client-java also depends on protobuf, version may need to be upgraded together
         "io.kubernetes:client-java:18.0.0",
         "org.slf4j:slf4j-simple:2.0.7",
