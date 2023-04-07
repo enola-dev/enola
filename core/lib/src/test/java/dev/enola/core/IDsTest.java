@@ -19,8 +19,8 @@ package dev.enola.core;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.core.IDs.isEmpty;
-import static dev.enola.core.IDs.withoutPath;
+import static dev.enola.core.IDs.*;
+import static dev.enola.core.proto.ID.newBuilder;
 
 import static org.junit.Assert.assertThrows;
 
@@ -128,5 +128,33 @@ public class IDsTest {
 
         var withPath = ID.newBuilder(nsAndName).addPaths("name").build();
         assertThat(isEmpty(withPath)).isFalse();
+    }
+
+    @Test
+    public void testPathMap1() {
+        var ekID = newBuilder().addPaths("name").build();
+        var eID = newBuilder().addPaths("abc").build();
+        assertThat(pathMap(ekID, eID)).containsExactly("name", "abc");
+    }
+
+    @Test
+    public void testPathMap2() {
+        var ekID = newBuilder().addPaths("cluster").addPaths("uuid").build();
+        var eID = newBuilder().addPaths("xyz").addPaths("123").build();
+        assertThat(pathMap(ekID, eID)).containsExactly("cluster", "xyz", "uuid", "123");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPathMapMismatchKind() {
+        var ekID = newBuilder().addPaths("cluster").addPaths("uuid").build();
+        var eID = newBuilder().addPaths("xyz").build();
+        pathMap(ekID, eID);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPathMapMismatchEntity() {
+        var ekID = newBuilder().addPaths("cluster").build();
+        var eID = newBuilder().addPaths("xyz").addPaths("123").build();
+        pathMap(ekID, eID);
     }
 }

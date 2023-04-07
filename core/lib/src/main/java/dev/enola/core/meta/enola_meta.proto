@@ -113,7 +113,7 @@ message Link {
   // URI template, to create URL.
   // As an ID URI Template (RFC 6570); see
   // https://en.wikipedia.org/wiki/URI_Template.
-  // The available variables are the query.* parameters, as well as a special
+  // The available variables are the ID's path parameters, as well as a special
   // proto.* which allows to declaratively create links out of the Any proto
   // (instead of coding link generation in the service; which is always still
   // also possible).

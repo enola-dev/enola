@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.meta.proto.Link;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 
@@ -30,20 +31,24 @@ import org.junit.Test;
 public class EntityServiceProviderTest {
 
     @Test
-    public void testEnolaServiceProvider() throws ValidationException {
-        var kid = ID.newBuilder().setNs("test").setEntity("foobar").addPaths("name").build();
-        var kind = EntityKind.newBuilder().setId(kid).build();
+    public void testEnolaServiceProvider() throws ValidationException, EnolaException {
+        var template = "https://www.google.com/search?q={path.name}+dog&sclient=img";
+        var kid = ID.newBuilder().setNs("test").setEntity("dog").addPaths("name").build();
+        var href = Link.newBuilder().setUriTemplate(template).build();
+        var kind = EntityKind.newBuilder().setId(kid).putLink("image", href).build();
         var ekr = new EntityKindRepository().put(kind);
         var service = new EnolaServiceProvider().get(ekr);
 
-        var eid = ID.newBuilder(kid).clearPaths().addPaths("hello").build();
+        var eid = ID.newBuilder(kid).clearPaths().addPaths("kind-charles").build();
         var request = GetEntityRequest.newBuilder().setId(eid).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
 
         assertThat(entity.getId()).isEqualTo(eid);
 
-        // TODO test URI Template Aspect
+        assertThat(entity.getLinkMap().get("image"))
+                .isEqualTo("https://www.google.com/search?q=kind-charles+dog&sclient=img");
+
         // TODO test File Store Aspect
     }
 }

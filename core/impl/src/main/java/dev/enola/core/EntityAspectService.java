@@ -40,7 +40,7 @@ class EntityAspectService implements EnolaService {
     }
 
     @Override
-    public GetEntityResponse getEntity(GetEntityRequest r) {
+    public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
         var entity = Entity.newBuilder();
         entity.setId(r.getId());
 

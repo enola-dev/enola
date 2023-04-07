@@ -20,7 +20,7 @@ package dev.enola.core;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
-interface EntityAspect {
+public interface EntityAspect {
 
-    void augment(Entity.Builder entity, EntityKind entityKind);
+    void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException;
 }

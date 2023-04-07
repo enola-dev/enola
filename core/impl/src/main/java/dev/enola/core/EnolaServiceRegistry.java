@@ -38,7 +38,7 @@ class EnolaServiceRegistry implements EnolaService {
     }
 
     @Override
-    public GetEntityResponse getEntity(GetEntityRequest r) {
+    public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
         var lookup = IDs.withoutPath(r.getId());
         var delegate = registry.get(lookup);
         if (delegate == null) {

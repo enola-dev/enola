@@ -17,17 +17,19 @@
  */
 package dev.enola.core;
 
+import dev.enola.common.protobuf.ValidationException;
+import dev.enola.core.aspects.UriTemplateAspect;
 import dev.enola.core.meta.EntityKindRepository;
 
 public class EnolaServiceProvider {
 
-    public EnolaService get(EntityKindRepository ekr) {
+    public EnolaService get(EntityKindRepository ekr) throws ValidationException {
         var r = new EnolaServiceRegistry();
         for (var ek : ekr.list()) {
             var s = new EntityAspectService(ek);
 
             // TODO s.add(fileStoreAspect);
-            // TODO s.add(uriTemplateAspect);
+            s.add(new UriTemplateAspect(ek));
 
             r.register(ek.getId(), s);
         }
