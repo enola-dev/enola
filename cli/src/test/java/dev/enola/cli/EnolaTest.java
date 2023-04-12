@@ -24,7 +24,7 @@ import com.google.common.net.MediaType;
 import com.google.common.truth.Truth;
 
 import dev.enola.common.io.resource.TestResource;
-import dev.enola.core.docgen.MarkdownDocGenerator;
+import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 
 import org.junit.Test;
 

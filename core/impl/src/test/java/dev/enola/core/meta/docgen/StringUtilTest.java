@@ -15,14 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.docgen;
+package dev.enola.core.meta.docgen;
 
-public class Options {
-    public DiagramType diagram = DiagramType.Mermaid;
+import static com.google.common.truth.Truth.assertThat;
 
-    public enum DiagramType {
-        Mermaid,
-        Graphviz,
-        None
+import static dev.enola.core.meta.docgen.StringUtil.capitalize;
+
+import org.junit.Test;
+
+public class StringUtilTest {
+    @Test
+    public void testCapitalize() {
+        assertThat(capitalize(null)).isNull();
+        assertThat(capitalize("")).isEmpty();
+        assertThat(capitalize("a")).isEqualTo("A");
+        assertThat(capitalize("ab")).isEqualTo("Ab");
+        assertThat(capitalize("abc")).isEqualTo("Abc");
     }
 }

@@ -15,21 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.docgen;
+package dev.enola.core.meta.docgen;
 
-import static com.google.common.truth.Truth.assertThat;
+public class StringUtil {
 
-import static dev.enola.core.docgen.StringUtil.capitalize;
+    public static String capitalize(String string) {
+        if (string == null) {
+            return null;
+        }
+        if (string.isEmpty()) {
+            return string;
+        }
+        if (string.length() == 1) {
+            return string.toUpperCase();
+        }
 
-import org.junit.Test;
-
-public class StringUtilTest {
-    @Test
-    public void testCapitalize() {
-        assertThat(capitalize(null)).isNull();
-        assertThat(capitalize("")).isEmpty();
-        assertThat(capitalize("a")).isEqualTo("A");
-        assertThat(capitalize("ab")).isEqualTo("Ab");
-        assertThat(capitalize("abc")).isEqualTo("Abc");
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
 }

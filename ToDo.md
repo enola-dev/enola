@@ -18,11 +18,31 @@
 
 # Enola 🕵🏾‍♀️ ToDo
 
-1. https://github.com/google/closure-templates/issues/1300 ?
+## High Priority (Next Features)
+
+1. YAML https://github.com/enola-dev/enola/pull/58
+
+1. Write a demo model (in YAML) as an example with doc which illustrates
+
+1. Implement a `FileStoreAspect` and use it in `EnolaServiceProvider`
+   with test coverage in `EntityServiceProviderTest`
+   for https://github.com/enola-dev/enola/issues/72; incl. doc about it.
+
+1. https://github.com/google/closure-templates/issues/1300 for Web UI?
+
+1. Connector with remote gRPC
+
+1. `connectors/demo/` with test to illustrate the Service to get IDs
+
+1. Publish Site
+
+---
+
+## Low Priority / Nice To Have
+
+1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
 1. LinuxMachine MVP; incl. dmsg Kernel Log analyzer, https://github.com/prometheus/node_exporter reader, etc.
-
-1. https://github.com/google/closure-templates/issues/1300 ?
 
 1. Fix mediaType from extension so that e.g. this will work:
 
@@ -37,19 +57,13 @@
 
 1. Replace `shellcheck` with a pre-commit check instead of running it in Bazel
 
-1. Implement QueryAvailableEntities, based on the model
-1. connectors/demo/ with test to illustrate the Service to get IDs
-1. CLI with PicoCLI for `enola-demo be OK foo:a`
 1. CLI completion - hard or trivial?
 
 1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
 
-x1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
-See https://squidfunk.github.io/mkdocs-material/reference/images/
-With https://squidfunk.github.io/mkdocs-material/reference/grids/
-
-1. Publish Site
-1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
+1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
+   See https://squidfunk.github.io/mkdocs-material/reference/images/
+   With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 1. https://github.com/google/flogger/tree/master/grpc/src/main/java/com/google/common/flogger/grpc ?
 
