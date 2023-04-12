@@ -18,9 +18,9 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.core.docgen.MarkdownDocGenerator;
-import dev.enola.core.docgen.Options;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.docgen.MarkdownDocGenerator;
+import dev.enola.core.meta.docgen.Options;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;

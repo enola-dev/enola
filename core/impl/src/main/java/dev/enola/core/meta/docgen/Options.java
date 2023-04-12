@@ -15,21 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.docgen;
+package dev.enola.core.meta.docgen;
 
-public class StringUtil {
+public class Options {
+    public DiagramType diagram = DiagramType.Mermaid;
 
-    public static String capitalize(String string) {
-        if (string == null) {
-            return null;
-        }
-        if (string.isEmpty()) {
-            return string;
-        }
-        if (string.length() == 1) {
-            return string.toUpperCase();
-        }
-
-        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    public enum DiagramType {
+        Mermaid,
+        Graphviz,
+        None
     }
 }
