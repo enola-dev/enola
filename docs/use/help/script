@@ -1,0 +1,15 @@
+# 💁🏾 `--help` prints usage information, as usual...
+
+enola --help
+
+echo "Each subscommand has its own --help..."
+
+enola help list-kinds
+
+enola help docgen
+
+enola help get
+
+enola help list
+
+sleep ${SLEEP:-7}

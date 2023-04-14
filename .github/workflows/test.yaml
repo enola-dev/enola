@@ -32,8 +32,8 @@ jobs:
         with:
           # https://github.com/actions/cache/pull/575/files
           path: |
-            ~/.cache/bazel
-            ~/.cache/bazelisk
+            ~/.cache/bazel/
+            ~/.cache/bazelisk/
             /private/var/tmp/_bazel_runner/
           key: >
             ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE.bazel', 'MODULE.bazel') }}
@@ -45,7 +45,12 @@ jobs:
           restore-keys: ${{ runner.os }}-venv-
       - uses: actions/cache@v3
         with:
-          path: ~/.cache/pre-commit
+          path: ~/.cache/pre-commit/
           key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
+      - uses: actions/cache@v3
+        with:
+          path: .cache/demo/
+          key: ${{ runner.os }}-cache-demo-${{ hashFiles('demo/test.bash', 'demo/build.bash') }}
+          restore-keys: ${{ runner.os }}-cache-demo-
       - run: ./test.bash

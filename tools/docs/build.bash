@@ -43,6 +43,8 @@ bazelisk build //...
 mkdir -p docs/dev/proto/
 cp bazel-bin/core/proto/core_proto_doc/core_proto_doc.md docs/dev/proto/
 
+find docs/use -maxdepth 1 -not -path docs/use -type d -exec tools/demo/build.bash {} \;
+
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
 cleanup

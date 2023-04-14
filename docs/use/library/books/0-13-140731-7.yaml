@@ -1,0 +1,11 @@
+id:
+  ns: demo
+  entity: book
+  paths: 0-13-140731-7
+# TODO ts: 2003
+data:
+  authors:
+    - Sameer Tyagi
+    - Michael Vorburger
+    - Keiron McCannon
+    - Heiko Bobzin

@@ -16,11 +16,17 @@
     limitations under the License.
 -->
 
-# Using Enola.dev
+# Help
 
-The project does not yet publish releases. For now, just do (once) a [Developer Set-Up for Local Build](../dev/setup.md),
-and then use this project by launching the `enola` CLI tool via the [`./enola`](../../enola) script.
+This is how to print usage instructions showing all available subcommands,
+and then the help specific to each of those subcommands.
 
-<!-- TODO There are plans to build a server with Web UI later. -->
+## Screencast (Asciinema)
 
-The following chapters demonstrate different usage scenarios with recorded demos.
+![Demo](script.svg)
+
+## Scenario
+
+```shell
+{% include "script.output" %}
+```
