@@ -19,3 +19,6 @@ build/
 # incl. e.g. .cache/plugin/git-committers/page-authors.json
 site/
 .cache/
+
+# asciinema, used in demo/**
+*.cast

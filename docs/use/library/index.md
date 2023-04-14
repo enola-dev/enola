@@ -16,11 +16,28 @@
     limitations under the License.
 -->
 
-# Using Enola.dev
+# Library Demo
 
-The project does not yet publish releases. For now, just do (once) a [Developer Set-Up for Local Build](../dev/setup.md),
-and then use this project by launching the `enola` CLI tool via the [`./enola`](../../enola) script.
+## Screencast (Asciinema)
 
-<!-- TODO There are plans to build a server with Web UI later. -->
+![Demo](script.svg)
 
-The following chapters demonstrate different usage scenarios with recorded demos.
+## Scenario
+
+```shell
+{% include "script.output" %}
+```
+
+## Files
+
+### model.textproto
+
+```yaml
+{% include "model.textproto" %}
+```
+
+### books/0-13-140731-7.yaml
+
+```yaml
+{% include "books/0-13-140731-7.yaml" %}
+```

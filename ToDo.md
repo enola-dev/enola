@@ -20,9 +20,17 @@
 
 ## High Priority (Next Features)
 
+1. `bat` in `docs/use/library/script` auto-scroll PAGER, e.g. https://unix.stackexchange.com/a/77645
+
 1. YAML https://github.com/enola-dev/enola/pull/58
 
 1. Write a demo model (in YAML) as an example with doc which illustrates
+
+1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
+
+1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
+   See https://squidfunk.github.io/mkdocs-material/reference/images/
+   With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 1. Implement a `FileStoreAspect` and use it in `EnolaServiceProvider`
    with test coverage in `EntityServiceProviderTest`
@@ -36,9 +44,21 @@
 
 1. Publish Site
 
+1. Create Tutorial Slides!
+   - Write using https://github.com/maaslalani/slides
+   - Record ^^^ them for docs/use/intro/*.gif using https://github.com/charmbracelet/vhs/tree/main/examples/slides
+   - Or use https://github.com/d0c-s4vage/lookatme
+   - Or (and?!) use a HTML, not TUI + GIF, one like:
+     - https://sli.dev
+     - https://revealjs.com
+     - https://marp.app
+     - https://gist.github.com/johnloy/27dd124ad40e210e91c70dd1c24ac8c8
+
 ---
 
 ## Low Priority / Nice To Have
+
+1. Icon based on some Status `data` from Connector; e.g. 📗 / 📘 / 📙 / 📕
 
 1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/
 
@@ -60,10 +80,6 @@
 1. CLI completion - hard or trivial?
 
 1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
-
-1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
-   See https://squidfunk.github.io/mkdocs-material/reference/images/
-   With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 1. https://github.com/google/flogger/tree/master/grpc/src/main/java/com/google/common/flogger/grpc ?
 

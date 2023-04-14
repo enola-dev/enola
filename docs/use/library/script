@@ -1,0 +1,5 @@
+bat -P model.textproto
+
+enola --help
+
+sleep ${SLEEP:-7}

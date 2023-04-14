@@ -1,0 +1,85 @@
+🎥 Begin recording - script
+❯ bat -P model.textproto
+───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       │ File: model.textproto
+───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   1   │ # SPDX-License-Identifier: Apache-2.0
+   2   │ #
+   3   │ # Copyright 2023 The Enola <https://enola.dev> Authors
+   4   │ #
+   5   │ # Licensed under the Apache License, Version 2.0 (the "License");
+   6   │ # you may not use this file except in compliance with the License.
+   7   │ # You may obtain a copy of the License at
+   8   │ #
+   9   │ #     https://www.apache.org/licenses/LICENSE-2.0
+  10   │ #
+  11   │ # Unless required by applicable law or agreed to in writing, software
+  12   │ # distributed under the License is distributed on an "AS IS" BASIS,
+  13   │ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  14   │ # See the License for the specific language governing permissions and
+  15   │ # limitations under the License.
+  16   │
+  17   │ # https://protobuf.dev/reference/protobuf/textformat-spec/
+  18   │ # proto-file: dev/enola/core/meta/enola_meta.proto
+  19   │ # proto-message: EntityKinds
+  20   │
+  21   │ # TODO ns: "demo"
+  22   │
+  23   │ kinds {
+  24   │   id: { ns: "demo" entity: "book_kind" paths: "isbn" }
+  25   │   label: "Book (Kind)"
+  26   │   emoji: "📗"
+  27   │   link {
+  28   │     key: "google",
+  29   │     value: {
+  30   │       label: "Google Book Search",
+  31   │       uri_template: "https://www.google.com/search?tbm=bks&q={path.isbn}"
+  32   │     }
+  33   │   }
+  34   │ }
+  35   │
+  36   │ kinds {
+  37   │   id: { ns: "demo" entity: "library" paths: "id" }
+  38   │   label: "Library"
+  39   │   description: "Building where one can go into to borrow books."
+  40   │   emoji: "📚"
+  41   │ }
+  42   │
+  43   │ kinds {
+  44   │   id: {
+  45   │     ns: "demo"
+  46   │     entity: "book"
+  47   │     paths: [ "library", "isbn", "copy" ]
+  48   │   }
+  49   │   label: "Book (Copy)"
+  50   │   emoji: "📖"
+  51   │   related {
+  52   │     key: "library",
+  53   │     value: { id: { ns: "demo" entity: "library" } }
+  54   │     uri_template: "enola:demo.library/{path.library}"
+  55   │   }
+  56   │   related {
+  57   │     key: "kind",
+  58   │     value: { id: { ns: "demo" entity: "book_kind" } }
+  59   │     uri_template: "enola:demo.book_kind/{path.isbn}"
+  60   │   }
+  61   │ }
+───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+❯ enola --help
+Usage: enola [-hVv] COMMAND
+https://enola.dev
+  -h, --help	  Show this help message and exit.
+  -v, --verbose	  Specify multiple -v options to increase verbosity. For
+		    example, `-v -v -v` or `-vvv`
+		    Default: []
+  -V, --version	  Print version information and exit.
+Commands:
+  help		       Display help information about the specified command.
+  generate-completion  Generate bash/zsh completion script for enola.
+  docgen	       Generate Markdown Documentation
+  list-kinds	       List known Entity Kinds
+  list		       List Entities
+  get		       Get Entity
+🎬 End recording - script
+(Powered by https://github.com/zechris/asciinema-rec_script )
