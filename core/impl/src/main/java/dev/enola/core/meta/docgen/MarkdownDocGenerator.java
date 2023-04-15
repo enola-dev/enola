@@ -60,8 +60,7 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
         if (options.diagram.equals(Options.DiagramType.Mermaid)) {
             MermaidGenerator.renderMermaid(kinds, md);
         } else if (options.diagram.equals(Options.DiagramType.Graphviz)) {
-            throw new UnsupportedOperationException(
-                    "TODO Please contribute https://github.com/enola-dev/enola/issues/97");
+            GraphvizGenerator.renderGraphviz(kinds, md);
         }
         for (var ek : kinds.list()) {
             render(ek, md);
