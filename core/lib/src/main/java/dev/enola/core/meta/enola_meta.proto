@@ -91,15 +91,8 @@ message EntityRelationship {
   // Path is empty and set per Entity by connector service implementations.
   ID id = 4;
 
-  // TODO Come up with something more general than below...
-  // Maybe k8s-like message Labels { map<string,string> labels? Very open, also
-  // useful e.g. to declare Mermaid diagram relationship types!
-
-  // TODO Not sure how useful this is as-is...
-  // This entity "depends" on that related entity. If that one Status is NOK,
-  // then so is this one.
-  // bool depends = 5;
-  // bool owned = 6;
+  // Tags.
+  map<string, string> tags = 5;
 }
 
 // Entity#link map model; its key is the same as this in EntityKind#link.
@@ -118,6 +111,9 @@ message Link {
   // (instead of coding link generation in the service; which is always still
   // also possible).
   string uri_template = 4;
+
+  // Tags.
+  map<string, string> tags = 5;
 
   /*
     TODO Consider if we should declare what to expect at the link?
@@ -139,6 +135,9 @@ message Data {
 
   // Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip.
   string description = 3;
+
+  // Tags.
+  map<string, string> tags = 5;
 
   // The fully qualified name of the (root) Protocol Buffer Message; see
   // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto
