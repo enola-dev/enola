@@ -14,7 +14,6 @@ kinds {
 kinds {
   id: { ns: "demo" entity: "library" paths: "id" }
   label: "Library"
-  description: "Building where one can go into to borrow books."
   emoji: "📚"
 }
 
@@ -29,11 +28,11 @@ kinds {
   related {
     key: "library",
     value: { id: { ns: "demo" entity: "library" } }
-    uri_template: "enola:demo.library/{path.library}"
+    # TODO uri_template: "enola:demo.library/{path.library}"
   }
   related {
     key: "kind",
     value: { id: { ns: "demo" entity: "book_kind" } }
-    uri_template: "enola:demo.book_kind/{path.isbn}"
+    # TODO uri_template: "enola:demo.book_kind/{path.isbn}"
   }
 }
