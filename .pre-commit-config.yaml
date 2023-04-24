@@ -115,14 +115,14 @@ repos:
     rev: v0.6.0
     hooks:
       - id: markdownlint-cli2
-        exclude: (^.github/|src/test/resources/)
+        exclude: (^.github/|src/test/resources/|docs/use/library/docgen.md)
 
     # Until https://github.com/DavidAnson/markdownlint/issues/586
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.11.0
     hooks:
       - id: markdown-link-check
-        exclude: src/test/resources/
+        exclude: (^src/test/resources/|docs/use/library/docgen.md)
         args: [--quiet]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
