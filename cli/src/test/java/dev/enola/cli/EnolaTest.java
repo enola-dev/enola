@@ -94,11 +94,10 @@ public class EnolaTest {
         assertThat(exec)
                 .hasExitCode(0)
                 .out()
-                .isEqualTo(
+                .startsWith(
                         "id {\n"
                                 + "  ns: \"test\"\n"
                                 + "  entity: \"foobar\"\n"
-                                + "  paths: \"helo\"\n"
-                                + "}\n\n");
+                                + "  paths: \"helo\"\n");
     }
 }

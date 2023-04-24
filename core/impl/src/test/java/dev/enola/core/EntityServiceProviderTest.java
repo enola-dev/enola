@@ -49,6 +49,8 @@ public class EntityServiceProviderTest {
         assertThat(entity.getLinkMap().get("image"))
                 .isEqualTo("https://www.google.com/search?q=kind-charles+dog&sclient=img");
 
+        assertThat(entity.getTs().getSeconds()).isGreaterThan(123);
+
         // TODO test File Store Aspect
     }
 }

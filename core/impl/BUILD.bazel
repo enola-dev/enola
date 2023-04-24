@@ -29,6 +29,7 @@ java_library(
         "//core/lib:lib_java",
         "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:com_google_template_soy",
     ],
 )

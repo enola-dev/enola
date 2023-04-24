@@ -18,6 +18,7 @@
 package dev.enola.core;
 
 import dev.enola.common.protobuf.ValidationException;
+import dev.enola.core.aspects.TimestampAspect;
 import dev.enola.core.aspects.UriTemplateAspect;
 import dev.enola.core.meta.EntityKindRepository;
 
@@ -30,6 +31,7 @@ public class EnolaServiceProvider {
 
             // TODO s.add(fileStoreAspect);
             s.add(new UriTemplateAspect(ek));
+            s.add(new TimestampAspect());
 
             r.register(ek.getId(), s);
         }
