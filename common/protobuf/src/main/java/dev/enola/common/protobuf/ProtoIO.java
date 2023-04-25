@@ -89,6 +89,7 @@ public class ProtoIO {
         }
     }
 
+    // TODO Refactor callers to not require returning B builder argument
     public <B extends Builder> B read(ReadableResource resource, B builder) throws IOException {
         MediaType mediaType = resource.mediaType();
         if (normalizedNoParamsEquals(mediaType, PROTOBUF_BINARY)) {
