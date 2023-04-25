@@ -17,10 +17,15 @@
  */
 package dev.enola.core;
 
+import static dev.enola.core.aspects.FilestoreRepositoryAspect.Format.YAML;
+
 import dev.enola.common.protobuf.ValidationException;
+import dev.enola.core.aspects.FilestoreRepositoryAspect;
 import dev.enola.core.aspects.TimestampAspect;
 import dev.enola.core.aspects.UriTemplateAspect;
 import dev.enola.core.meta.EntityKindRepository;
+
+import java.nio.file.Path;
 
 public class EnolaServiceProvider {
 
@@ -29,9 +34,13 @@ public class EnolaServiceProvider {
         for (var ek : ekr.list()) {
             var s = new EntityAspectService(ek);
 
-            // TODO s.add(fileStoreAspect);
+            // Order here matters!
+            // TODO Make the FilestoreRepositoryAspect conditional on connectors list in meta proto
+            // TODO Make '.' & Format configurable, probably through a Config proto
+            s.add(new FilestoreRepositoryAspect(Path.of("."), YAML));
             s.add(new UriTemplateAspect(ek));
             s.add(new TimestampAspect());
+            // TODO s.add(new ValidationAspect());
 
             r.register(ek.getId(), s);
         }

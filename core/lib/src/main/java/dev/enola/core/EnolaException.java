@@ -17,8 +17,14 @@
  */
 package dev.enola.core;
 
+import java.io.IOException;
+
 public class EnolaException extends Exception {
-    public EnolaException(Exception e) {
-        super(e);
+    public EnolaException(String msg, IOException cause) {
+        super(msg, cause);
+    }
+
+    public EnolaException(Exception cause) {
+        super(cause);
     }
 }
