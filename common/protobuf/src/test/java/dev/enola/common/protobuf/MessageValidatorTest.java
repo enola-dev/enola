@@ -25,8 +25,8 @@ import org.junit.Test;
 
 public class MessageValidatorTest {
 
-    MessageValidator<Timestamp> testValidator =
-            (ts, r) -> {
+    MessageValidator<Void, Timestamp> testValidator =
+            (ctx, ts, r) -> {
                 // TODO Make getting Descriptor simpler & shorter...
                 if (ts.getNanos() == 0)
                     r.add(
