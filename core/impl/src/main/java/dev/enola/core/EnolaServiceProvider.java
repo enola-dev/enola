@@ -23,6 +23,7 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.FilestoreRepositoryAspect;
 import dev.enola.core.aspects.TimestampAspect;
 import dev.enola.core.aspects.UriTemplateAspect;
+import dev.enola.core.aspects.ValidationAspect;
 import dev.enola.core.meta.EntityKindRepository;
 
 import java.nio.file.Path;
@@ -40,7 +41,7 @@ public class EnolaServiceProvider {
             s.add(new FilestoreRepositoryAspect(Path.of("."), YAML));
             s.add(new UriTemplateAspect(ek));
             s.add(new TimestampAspect());
-            // TODO s.add(new ValidationAspect());
+            s.add(new ValidationAspect());
 
             r.register(ek.getId(), s);
         }

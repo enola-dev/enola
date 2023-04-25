@@ -20,7 +20,7 @@ package dev.enola.common.protobuf;
 import com.google.protobuf.MessageOrBuilder;
 
 @FunctionalInterface
-public interface MessageValidator<T extends MessageOrBuilder> {
+public interface MessageValidator<C, T extends MessageOrBuilder> {
 
-    void validate(T m, MessageValidators.Result.Builder r);
+    void validate(C context, T m, MessageValidators.Result.Builder r);
 }

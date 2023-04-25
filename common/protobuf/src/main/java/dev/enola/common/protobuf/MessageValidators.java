@@ -28,28 +28,32 @@ import dev.enola.common.validation.Validations;
 import java.util.*;
 
 public class MessageValidators {
-    private final Map<Descriptors.Descriptor, List<MessageValidator<MessageOrBuilder>>> map =
-            new HashMap<>();
-
     private static final Result EMPTY = Result.newBuilder().build();
+    private final Map<Descriptors.Descriptor, List<MessageValidator<Object, MessageOrBuilder>>>
+            map = new HashMap<>();
 
     @CanIgnoreReturnValue
     public MessageValidators register(
-            MessageValidator<?> validator, Descriptors.Descriptor descriptor) {
+            MessageValidator<?, ?> validator, Descriptors.Descriptor descriptor) {
         map.computeIfAbsent(descriptor, descriptor1 -> new ArrayList<>())
-                .add((MessageValidator<MessageOrBuilder>) validator);
+                .add((MessageValidator<Object, MessageOrBuilder>) validator);
         return this;
     }
 
     @CheckReturnValue
     public Result validate(MessageOrBuilder message) {
+        return validate(null, message);
+    }
+
+    @CheckReturnValue
+    public Result validate(Object context, MessageOrBuilder message) {
         var validators = map.get(message.getDescriptorForType());
         if (validators == null) {
             return EMPTY;
         }
         var results = Result.newBuilder();
         for (var validator : validators) {
-            validator.validate(message, results);
+            validator.validate(context, message, results);
         }
         return results.build();
     }
@@ -59,6 +63,10 @@ public class MessageValidators {
 
         private Result(Validations proto) {
             this.proto = proto;
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
         }
 
         @CheckReturnValue
@@ -72,16 +80,12 @@ public class MessageValidators {
             }
         }
 
-        private static Builder newBuilder() {
-            return new Builder();
-        }
-
         public static class Builder {
             private final Validations.Builder result = Validations.newBuilder();
 
             private Builder() {}
 
-            Result build() {
+            public Result build() {
                 var proto = result.build();
                 return new Result(proto);
             }

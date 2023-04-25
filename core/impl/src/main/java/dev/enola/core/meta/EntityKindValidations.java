@@ -25,8 +25,8 @@ import dev.enola.core.proto.ID;
 
 public class EntityKindValidations {
 
-    private static MessageValidator<ID> id =
-            (m, r) -> {
+    private static final MessageValidator<Void, ID> id =
+            (ctx, m, r) -> {
                 // TODO Validate that NS matches regexp as per enola_core.proto
 
                 if (Strings.isNullOrEmpty(m.getEntity())) {
