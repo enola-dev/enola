@@ -38,7 +38,8 @@ import picocli.CommandLine.Option;
             DocGen.class,
             ListKinds.class,
             List.class,
-            Get.class
+            Get.class,
+            RosettaCommand.class,
         })
 public class Enola {
 

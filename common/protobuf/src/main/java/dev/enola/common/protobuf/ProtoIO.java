@@ -56,23 +56,26 @@ public class ProtoIO {
     }
 
     public void write(Message message, WritableResource resource) throws IOException {
-        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(resource.mediaType())) {
+        MediaType mediaType = resource.mediaType();
+        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(mediaType)) {
             try (OutputStream os = resource.byteSink().openBufferedStream()) {
                 message.writeTo(os);
             }
         } else {
             try (Writer writer = resource.charSink(UTF_8).openBufferedStream()) {
-                if (resource.mediaType().is(PROTOBUF_TEXTPROTO_UTF_8.withoutParameters())) {
+                if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     TextFormat.printer()
                             .escapingNonAscii(false)
                             .usingTypeRegistry(typeRegistry)
                             .print(message, writer);
-                } else if (resource.mediaType().is(PROTOBUF_JSON_UTF_8.withoutParameters())) {
+
+                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {
                     JsonFormat.printer()
                             .usingTypeRegistry(typeRegistry)
                             .omittingInsignificantWhitespace()
                             .appendTo(message, writer);
-                } else if (resource.mediaType().is(PROTOBUF_YAML_UTF_8.withoutParameters())) {
+
+                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
                     var sb = new StringBuffer();
                     JsonFormat.printer()
                             .usingTypeRegistry(typeRegistry)
@@ -81,6 +84,7 @@ public class ProtoIO {
                     var json = sb.toString();
                     var yaml = YamlJson.jsonToYaml(json);
                     writer.write(yaml);
+
                 } else {
                     throw new IllegalArgumentException(
                             "TODO Implement for missing mediaType: " + resource);
@@ -124,7 +128,7 @@ public class ProtoIO {
         return (M) read(resource, builder).build();
     }
 
-    // TODO Later this could be replaced by a more general Resource format conversion framework
+    // see also class Rosetta for a more general Resource format conversion framework
     public void convert(ReadableResource in, Builder builder, WritableResource out)
             throws IOException {
         read(in, builder);

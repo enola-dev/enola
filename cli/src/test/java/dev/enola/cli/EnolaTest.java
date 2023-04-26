@@ -17,11 +17,13 @@
  */
 package dev.enola.cli;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static dev.enola.cli.CommandLineSubject.assertThat;
 import static dev.enola.cli.Enola.cli;
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.net.MediaType;
-import com.google.common.truth.Truth;
 
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -70,7 +72,7 @@ public class EnolaTest {
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
             assertThat(exec).hasExitCode(0).out().isEmpty();
-            Truth.assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
+            assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
         }
     }
 
@@ -99,5 +101,24 @@ public class EnolaTest {
                                 + "  ns: \"test\"\n"
                                 + "  entity: \"foobar\"\n"
                                 + "  paths: \"helo\"\n");
+    }
+
+    @Test
+    public void testRosetta() throws IOException {
+        try (var r = TestResource.create(YAML_UTF_8)) {
+            var exec =
+                    cli(
+                            "-v",
+                            "rosetta",
+                            "--schema",
+                            "EntityKinds",
+                            "--in",
+                            "classpath:cli-test-model.textproto",
+                            "--out",
+                            r.uri().toString());
+            assertThat(exec).err().isEmpty();
+            assertThat(exec).hasExitCode(0).out().isEmpty();
+            assertThat(r.charSource().read()).startsWith("kinds:\n");
+        }
     }
 }
