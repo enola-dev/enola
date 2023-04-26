@@ -25,6 +25,7 @@ java_library(
         "//common/common",
         "//common/protobuf",
         "//common/protobuf:validation_proto_java_library",
+        "//common/yamljson",
         "//core/lib:core_proto_java_library",
         "//core/lib:lib_java",
         "@maven//:com_github_java_json_tools_uri_template",

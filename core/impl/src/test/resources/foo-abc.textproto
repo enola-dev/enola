@@ -18,8 +18,6 @@
 # proto-file: dev/enola/core/enola_core.proto
 # proto-message: Entity
 
-# TODO Merge this with bar-abc-def.textproto into 1 single file
-
 id {
   ns: "demo"
   entity: "foo"
