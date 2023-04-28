@@ -61,8 +61,10 @@ message ID {
   repeated string paths = 3;
 }
 
-// This is useful e.g. for *.textproto files to contain more than 1 Entity.
-// It is inspired by how a YAML file can contain multiple --- root objects.
+// TODO Remove this again? Cauz FilestoreRepositoryAspect will only every read
+// single Entity... This is useful e.g. for *.textproto files to contain more
+// than 1 Entity. It is inspired by how a YAML file can contain multiple ---
+// root objects.
 message Entities {
   repeated Entity entities = 1;
 }

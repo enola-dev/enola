@@ -23,8 +23,9 @@ load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
 load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
+# https://rules-proto-grpc.com/en/latest/lang/java.html#java-grpc-library
 # https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
-load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
+load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library", "java_proto_library")
 
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
@@ -34,6 +35,12 @@ proto_library(
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
+)
+
+proto_library(
+    name = "connector_proto",
+    srcs = ["src/main/java/dev/enola/core/connector/enola_connector.proto"],
+    deps = [":core_proto"],
 )
 
 proto_library(
@@ -52,8 +59,9 @@ proto_library(
 )
 
 java_proto_library(
-    name = "core_proto_java_library",
+    name = "core_java_proto",
     protos = [
+        "connector_proto",
         "core_proto",
         "meta_proto",
         "util_proto",
@@ -65,9 +73,22 @@ java_proto_library(
     ],
 )
 
+java_grpc_library(
+    name = "core_java_grpc",
+    protos = [
+        "connector_proto",
+        "core_proto",
+    ],
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+    ],
+)
+
 doc_markdown_compile(
     name = "core_proto_doc",
     protos = [
+        "connector_proto",
         "core_proto",
         "meta_proto",
         "util_proto",
@@ -82,6 +103,7 @@ buf_proto_lint_test(
         "PACKAGE_DIRECTORY_MATCH",
     ],
     protos = [
+        "connector_proto",
         "core_proto",
         "meta_proto",
         "util_proto",
@@ -104,7 +126,7 @@ java_library(
         "//core:__subpackages__",
     ],
     deps = [
-        ":core_proto_java_library",
+        ":core_java_proto",
         "@maven//:com_google_guava_guava",
     ],
 )
@@ -115,7 +137,7 @@ java_library(
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":core_proto_java_library",
+        ":core_java_proto",
         ":lib_java",
         "@maven//:com_google_truth_truth",
     ],
