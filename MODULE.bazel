@@ -21,23 +21,23 @@ bazel_dep(name = "rules_jvm_external", version = "5.1")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
-        "org.snakeyaml:snakeyaml-engine:2.6",
-        # Due to https://github.com/rules-proto-grpc/rules_proto_grpc/issues/256 :-(
-        # without https://github.com/grpc/grpc-java/blob/f0614e5a76538607436d600a77f79d15da75d3fe/netty/BUILD.bazel
-        # but inspired by https://github.com/grpc/grpc-java#download
+        # Google
+        "com.google.guava:guava:31.1-jre",
+        "com.google.truth:truth:1.1.3",
+        "com.google.template:soy:2022-10-26",
+        # Protobuf
+        "com.google.protobuf:protobuf-java:3.22.0",
+        "com.google.protobuf:protobuf-java-util:3.22.0",
+        # gRPC
         "com.google.api.grpc:proto-google-common-protos:2.17.0",
         "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
-        # Not gRPC related anymore from here on...
-        "com.google.guava:guava:31.1-jre",
-        "com.google.truth:truth:1.1.3",
-        "com.google.protobuf:protobuf-java:3.22.0",
-        "com.google.protobuf:protobuf-java-util:3.22.0",
-        "com.google.template:soy:2022-10-26",
-        "info.picocli:picocli:4.7.1",
-        "com.github.java-json-tools:uri-template:0.10",
-        # kubernetes:client-java also depends on protobuf, version may need to be upgraded together
+        # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.0",
+        # Other
+        "com.github.java-json-tools:uri-template:0.10",
+        "info.picocli:picocli:4.7.1",
+        "org.snakeyaml:snakeyaml-engine:2.6",
         "org.slf4j:slf4j-simple:2.0.7",
     ],
     fetch_sources = True,
