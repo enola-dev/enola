@@ -25,8 +25,6 @@ This project, like any software, stands on the shoulders of giants, and depends 
 [`./update.bash`](../../update.bash) shows some of and where possible automatically updates these dependencies.
 It should be regularly (manually) run by maintainers of this project.
 
-**TODO** _Set up Renovate Bot!_
-
 ## Runtime Dependencies
 
 * [`MODULE.bazel`](../../MODULE.bazel) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)

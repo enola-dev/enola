@@ -15,8 +15,7 @@
 # limitations under the License.
 
 # proto-file: google/protobuf/timestamp.proto
-# TODO Should proto-message include the package, so google.protobuf.Timestamp? Or support both with and without?
-# proto-message: Timestamp
+# TODO Should proto-message include the package, so google.protobuf.Timestamp?
+# Or support both with and without? proto-message: Timestamp
 
-seconds: 123
-nanos: 456
+seconds: 123 nanos: 456
