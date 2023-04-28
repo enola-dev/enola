@@ -17,14 +17,19 @@
  */
 package dev.enola.demo;
 
-import dev.enola.core.EnolaService;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.connector.proto.AugmentRequest;
+import dev.enola.core.connector.proto.AugmentResponse;
+import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 
-public class DemoService implements EnolaService {
+import io.grpc.stub.StreamObserver;
 
+public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase {
     @Override
-    public GetEntityResponse getEntity(GetEntityRequest r) {
-        throw new IllegalStateException("TODO");
+    public void augment(AugmentRequest request, StreamObserver<AugmentResponse> responseObserver) {
+        var entity = request.getEntity().toBuilder();
+        entity.putLink("link1", "http://www.vorburger.ch");
+        var response = AugmentResponse.newBuilder().setEntity(entity).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

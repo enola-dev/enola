@@ -20,6 +20,9 @@ package dev.enola.core;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
+/**
+ * API for in-process "connectors". This is the internal equivalent of the gRPC ConnectorService.
+ */
 public interface EntityAspect {
 
     void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException;

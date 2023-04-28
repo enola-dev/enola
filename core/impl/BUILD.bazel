@@ -26,12 +26,14 @@ java_library(
         "//common/protobuf",
         "//common/protobuf:validation_proto_java_library",
         "//common/yamljson",
-        "//core/lib:core_proto_java_library",
+        "//core/lib:core_java_grpc",
+        "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:com_google_template_soy",
+        "@maven//:io_grpc_grpc_api",
     ],
 )
 
@@ -40,12 +42,16 @@ java_library(
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
+    runtime_deps = [
+        "@maven//:io_grpc_grpc_netty",
+    ],
     deps = [
         ":impl",
         "//common/common",
         "//common/protobuf",
         "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
-        "//core/lib:core_proto_java_library",
+        "//connectors/demo",
+        "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "@maven//:com_google_truth_truth",
     ],

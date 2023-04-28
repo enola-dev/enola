@@ -18,8 +18,6 @@ syntax = "proto3";
 
 package dev.enola.core.meta;
 
-// TODO Fix this fucking monorepo mess!
-// import "dev/enola/core/enola_core.proto";
 import "core/lib/src/main/java/dev/enola/core/enola_core.proto";
 
 option java_string_check_utf8 = true;
@@ -148,15 +146,19 @@ message Data {
 
 message Connector {
   oneof type {
-    // For testing.
+    // Always fails with this error message (for testing, only).
     string error = 1;
 
-    // Java class name for in-process connectors on the Java classpath.
+    // Java class name for in-process connector on the Java classpath.
     string java_class = 2;
 
     // TODO java_guice lookup?
 
-    // TODO gRPC!
+    // Invokes remote connector via gRPC.
+    // The "connection string" here is a target endpoint in hostname:port
+    // format. (It's NOT an URI, so there is no scheme:// nor any /path/ or
+    // #fragment.)
+    string grpc = 5;
   }
 }
 

@@ -65,7 +65,9 @@ public class EnolaServiceProvider {
 
                         // TODO JAVA_GUICE Registry lookup?
 
-                        // TODO GRPC Support, for remote!
+                    case GRPC:
+                        s.add(new GrpcAspect(c.getGrpc()));
+                        break;
 
                     case TYPE_NOT_SET:
                         // TODO Full ValidationException instead of IllegalArgumentException

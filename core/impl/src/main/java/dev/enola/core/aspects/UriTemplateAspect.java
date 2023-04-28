@@ -17,6 +17,8 @@
  */
 package dev.enola.core.aspects;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.github.fge.uritemplate.URITemplate;
 import com.github.fge.uritemplate.URITemplateException;
 import com.github.fge.uritemplate.URITemplateParseException;
@@ -43,7 +45,10 @@ public class UriTemplateAspect implements EntityAspect {
         for (var entry : entityKind.getLinkMap().entrySet()) {
             var key = entry.getKey();
             try {
-                mapBuilder.put(key, new URITemplate(entry.getValue().getUriTemplate()));
+                var template = entry.getValue().getUriTemplate();
+                if (!isNullOrEmpty(template)) {
+                    mapBuilder.put(key, new URITemplate(template));
+                }
             } catch (URITemplateParseException e) {
                 var v1 =
                         Validation.newBuilder()
@@ -67,8 +72,11 @@ public class UriTemplateAspect implements EntityAspect {
             }
             VariableMap variables = variablesBuilder.freeze();
             try {
-                var uri = templates.get(key).toString(variables);
-                entity.putLink(key, uri);
+                var template = templates.get(key);
+                if (template != null) {
+                    var uri = template.toString(variables);
+                    entity.putLink(key, uri);
+                }
             } catch (URITemplateException e) {
                 // TODO Add "context", e.g. which key for which Entity ID failed?
                 throw new EnolaException(e);
