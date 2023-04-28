@@ -52,23 +52,32 @@ class GraphvizGenerator {
 
         md.append("  \"" + name + "\"[\n");
         md.append("    fillcolor=\"#88ff0022\"\n");
-        md.append("    label=<<table border=\"0\" cellborder=\"1\" cellspacing=\"0\" cellpadding=\"3\">\n");
+        md.append(
+                "    label=<<table border=\"0\" cellborder=\"1\" cellspacing=\"0\""
+                        + " cellpadding=\"3\">\n");
         md.append("        <tr> <td port=\"name\" sides=\"ltr\"> <b>" + name + "</b></td> </tr>\n");
         // TODO add description
-        //md.append("<tr> <td port="description" sides="ltr"> <b>"+name+"</b></td> </tr>")
+        // md.append("<tr> <td port="description" sides="ltr"> <b>"+name+"</b></td> </tr>")
 
         for (var pathArgument : pathArguments) {
             // TODO hardcoded emoji
-            md.append("        <tr> <td port=\"" + pathArgument
-                     + "\" align=\"left\"><br align=\"left\"/>"
-                     + "&#129409;" + pathArgument
-                     + "<br align=\"left\"/></td> </tr>\n");
+            md.append(
+                    "        <tr> <td port=\""
+                            + pathArgument
+                            + "\" align=\"left\"><br align=\"left\"/>"
+                            + "&#129409;"
+                            + pathArgument
+                            + "<br align=\"left\"/></td> </tr>\n");
         }
         for (var linkKey : ek.getLinkMap().keySet()) {
             // TODO hardcoded emoji
-            md.append("        <tr> <td port=\""
-            + linkKey + "\" align=\"left\"><br align=\"left\"/>"
-            + "&#129409;" + linkKey + "<br align=\"left\"/></td> </tr>\n");
+            md.append(
+                    "        <tr> <td port=\""
+                            + linkKey
+                            + "\" align=\"left\"><br align=\"left\"/>"
+                            + "&#129409;"
+                            + linkKey
+                            + "<br align=\"left\"/></td> </tr>\n");
         }
         md.append("    </table>>\n");
         md.append("    shape=plain\n");
@@ -79,10 +88,18 @@ class GraphvizGenerator {
             var id = related.getValue().getId();
             md.append(
                     "    "
-                            + "\"" + name + "\":\"" + key + "\""
+                            + "\""
+                            + name
+                            + "\":\""
+                            + key
+                            + "\""
                             + " -> "
-                            + "\"" + StringUtil.capitalize(id.getEntity()) + "\":name"
-                            + "[dir=forward label=\""+key+ "\" color=\"#00440088\"];"
+                            + "\""
+                            + StringUtil.capitalize(id.getEntity())
+                            + "\":name"
+                            + "[dir=forward label=\""
+                            + key
+                            + "\" color=\"#00440088\"];"
                             + "\n");
         }
     }

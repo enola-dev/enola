@@ -18,8 +18,4 @@
 # proto-file: dev/enola/core/enola_core.proto
 # proto-message: Entity
 
-id {
-  ns: "demo"
-  entity: "foo"
-  paths: "abc"
-}
+id { ns: "demo" entity: "foo" paths: "abc" }
