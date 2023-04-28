@@ -28,7 +28,7 @@ class EnolaServiceRegistry implements EnolaService {
 
     private final Map<ID, EnolaService> registry = new HashMap<>();
 
-    public void register(ID id, EnolaService service) {
+    public synchronized void register(ID id, EnolaService service) {
         var lookup = IDs.withoutPath(id);
         var existing = registry.get(lookup);
         if (existing != null) {

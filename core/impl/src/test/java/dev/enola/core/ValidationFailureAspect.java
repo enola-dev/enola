@@ -17,18 +17,15 @@
  */
 package dev.enola.core;
 
-import java.io.IOException;
+import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.proto.Entity;
 
-public class EnolaException extends Exception {
-    public EnolaException(String msg) {
-        super(msg);
-    }
-
-    public EnolaException(String msg, IOException cause) {
-        super(msg, cause);
-    }
-
-    public EnolaException(Exception cause) {
-        super(cause);
+public class ValidationFailureAspect implements EntityAspect {
+    @Override
+    public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
+        // NB: The "unknown" LINK is *not* declared in the EntityType,
+        // ergo the EntityServiceProviderTest#testEntityValidation()
+        // will fail, because ValidationAspect will detect mismatch.
+        entity.putLink("unknown", "http://www.vorburger.ch");
     }
 }

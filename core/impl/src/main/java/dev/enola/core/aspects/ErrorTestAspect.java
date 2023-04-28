@@ -15,20 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.core.aspects;
 
-import java.io.IOException;
+import dev.enola.core.EnolaException;
+import dev.enola.core.EntityAspect;
+import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.proto.Entity;
 
-public class EnolaException extends Exception {
-    public EnolaException(String msg) {
-        super(msg);
+public class ErrorTestAspect implements EntityAspect {
+    private final String message;
+
+    public ErrorTestAspect(String message) {
+        this.message = message;
     }
 
-    public EnolaException(String msg, IOException cause) {
-        super(msg, cause);
-    }
-
-    public EnolaException(Exception cause) {
-        super(cause);
+    @Override
+    public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
+        throw new EnolaException(message);
     }
 }
