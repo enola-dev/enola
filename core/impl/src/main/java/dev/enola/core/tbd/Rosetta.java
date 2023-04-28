@@ -32,7 +32,6 @@ import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.yamljson.YamlJson;
 import dev.enola.core.meta.proto.EntityKinds;
-import dev.enola.core.proto.Entities;
 import dev.enola.core.proto.Entity;
 
 import java.io.IOException;
@@ -86,8 +85,6 @@ public class Rosetta {
         switch (protoFQN) {
             case "dev.enola.core.Entity":
                 return Entity.getDescriptor();
-            case "dev.enola.core.Entities":
-                return Entities.getDescriptor();
             case "dev.enola.core.meta.EntityKinds":
                 return EntityKinds.getDescriptor();
         }
