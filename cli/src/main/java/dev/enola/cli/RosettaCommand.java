@@ -40,19 +40,19 @@ public class RosettaCommand implements CheckedRunnable {
             names = {"--schema"},
             required = false,
             description = "Schema; optional for YAML <=> JSON, required if --in is *.textproto")
-    private Schema schema;
+    Schema schema;
 
     @CommandLine.Option(
             names = {"--in"},
             required = true,
             description = "URI to Input (e.g. file:model.json)")
-    private URI in;
+    URI in;
 
     @CommandLine.Option(
             names = {"--out"},
             required = true,
             description = "URI to Output (e.g. file:model.yaml)")
-    private URI out;
+    URI out;
 
     @Override
     public void run() throws Exception {

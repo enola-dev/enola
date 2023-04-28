@@ -75,6 +75,8 @@ message EntityKind {
   // The string keys here match Entity#data's.
   map<string, Data> data = 16;
 
+  repeated Connector connectors = 20;
+
   // TODO Describe detailed "state machine"
   // TODO Build cool visualization of said state machine as fancy diagram
 }
@@ -142,6 +144,20 @@ message Data {
   // The fully qualified name of the (root) Protocol Buffer Message; see
   // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto
   string type_url = 6;
+}
+
+message Connector {
+  oneof type {
+    // For testing.
+    string error = 1;
+
+    // Java class name for in-process connectors on the Java classpath.
+    string java_class = 2;
+
+    // TODO java_guice lookup?
+
+    // TODO gRPC!
+  }
 }
 
 // TODO Remove the following - and have EntityKind *BE* an Entity that's itself
