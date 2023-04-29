@@ -117,9 +117,6 @@ buf_proto_lint_test(
 java_library(
     name = "lib_java",
     srcs = glob(["src/main/java/**/*.java"]),
-    # NB: /java/ not /resources/ for the *.proto!
-    # TODO Required for https://github.com/google/closure-templates/issues/1300 or not?
-    # resources = glob(["src/main/java/**/*.proto"]),
     visibility = [
         "//cli:__subpackages__",
         "//connectors:__subpackages__",

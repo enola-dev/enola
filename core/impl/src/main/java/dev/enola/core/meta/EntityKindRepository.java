@@ -56,11 +56,13 @@ public class EntityKindRepository {
         return subMap.get(id.getEntity());
     }
 
-    public void load(ReadableResource resource) throws IOException, ValidationException {
+    public EntityKindRepository load(ReadableResource resource)
+            throws IOException, ValidationException {
         var kinds = new ProtoIO().read(resource, EntityKinds.newBuilder()).build();
         for (var kind : kinds.getKindsList()) {
             put(kind);
         }
+        return this;
     }
 
     public Collection<EntityKind> list() {
