@@ -78,6 +78,22 @@ compat_repositories()
 
 grpc_java_repositories()
 
+# https://github.com/bazelbuild/rules_closure/#setup
+# TODO This is only useful after https://github.com/bazelbuild/rules_closure/issues/225
+#http_archive(
+#    name = "io_bazel_rules_closure",
+#    sha256 = "9498e57368efb82b985db1ed426a767cbf1ba0398fd7aed632fc3908654e1b1e",
+#    strip_prefix = "rules_closure-0.12.0",
+#    urls = [
+#        "https://mirror.bazel.build/github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
+#        "https://github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
+#    ],
+#)
+
+# load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
+# rules_closure_dependencies()
+# rules_closure_toolchains()
+
 # https://github.com/aignas/rules_shellcheck
 # TODO Replace with bazel_dep in MODULE.bazel, see https://github.com/aignas/rules_shellcheck/issues/16
 http_archive(

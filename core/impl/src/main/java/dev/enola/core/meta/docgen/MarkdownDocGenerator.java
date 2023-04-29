@@ -28,7 +28,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MarkdownDocGenerator { // TODO extends SoyGenerator {
+public class MarkdownDocGenerator {
+
+    // TODO Convert this to using the (currently un-used) markdown.soy
 
     public static final String FOOTER =
             "_This model documentation was generated with ❤️ by"
@@ -36,26 +38,11 @@ public class MarkdownDocGenerator { // TODO extends SoyGenerator {
 
     private final Options options;
 
-    // Using Protobufs in https://github.com/google/closure-templates (AKA "Soy"
-    // was not straightforward, see https://github.com/google/closure-templates/issues/1300.
-    // For now, this is therefore implemented with a sweet good old big fat StringBuffer#append()
-    // TODO Possibly (re)convert this to using the (currently un-used) markdown.soy maybe later.
-
     public MarkdownDocGenerator(Options options) {
-        // super("dev/enola/core/docgen/markdown.soy", "dev.enola.markdown.package");
         this.options = options;
     }
-    /*
-        @Override
-        protected Iterable<? extends Descriptors.GenericDescriptor> protoDescriptors() {
-            return ImmutableSet.of(ID.getDescriptor());
-        }
-    */
-    public void render(EntityKindRepository kinds, Appendable md) throws IOException {
-        // Map<String, ?> data = ImmutableMap.of("package", "test", "kinds",
-        // kinds.list().stream().map(ek -> ek.getId()).collect(Collectors.toSet()));
-        // renderer.setData(data).renderText(md).assertDone();
 
+    public void render(EntityKindRepository kinds, Appendable md) throws IOException {
         md.append("# Models\n");
         if (options.diagram.equals(Options.DiagramType.Mermaid)) {
             MermaidGenerator.renderMermaid(kinds, md);

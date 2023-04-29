@@ -20,18 +20,15 @@
 
 ## High Priority (Next Features)
 
-1. Write a demo model (in YAML) as an example with doc which illustrates
-   (with `bat` in `docs/use/library/script` auto-scroll PAGER, e.g. https://unix.stackexchange.com/a/77645 ?)
+1. Write Web UI MVP (now that Soy templates work)
 
 1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
 
-1. Implement a `FileStoreAspect` and use it in `EnolaServiceProvider`
-   with test coverage in `EntityServiceProviderTest`
-   for https://github.com/enola-dev/enola/issues/72; incl. demo+doc about it.
+1. Write `docs/use/rosetta`
 
-1. https://github.com/google/closure-templates/issues/1300 for Web UI?
+1. Convert Library demo model from TextProto to YAML using `enola rosetta`, and include that YAML on `docs/use/library` MD
 
-1. Connector with remote gRPC
+1. Write a `FilestoreRepositoryAspect` demo+doc for library
 
 1. `connectors/demo/` with test to illustrate the Service to get IDs
 
@@ -82,7 +79,7 @@
 
 1. Upstream `CommandLineSubject` to Picocli?
 
-1. https://unifiedjs.com ?
+1. unifiedjs.com ?
 
 1. Add to https://github.com/SquadcastHub/awesome-sre-tools
 
