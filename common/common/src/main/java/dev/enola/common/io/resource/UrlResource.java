@@ -73,9 +73,13 @@ public class UrlResource implements ReadableResource {
         URLConnection c = null;
         try {
             c = url.openConnection();
+            c.connect(); // MUST connect(), else failures are ignored!
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
             var contentTypeFromServer = c.getContentType();
             var encodingFromServer = c.getContentEncoding();
+
+            // TODO If encodingFromServer == null, try extracting from contentTypeFromServer
+            // https://stackoverflow.com/questions/3934251/urlconnection-does-not-get-the-charset
 
             if (encodingFromServer == null && charset != null) {
                 encodingFromServer = charset.name();
