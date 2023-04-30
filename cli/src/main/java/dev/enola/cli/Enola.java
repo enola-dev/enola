@@ -40,6 +40,7 @@ import picocli.CommandLine.Option;
             List.class,
             Get.class,
             RosettaCommand.class,
+            ServerCommand.class,
         })
 public class Enola {
 

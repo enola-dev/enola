@@ -14,36 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_java//java:defs.bzl", "java_library")
 
-java_binary(
-    name = "enola",
+java_library(
+    name = "api",
     srcs = glob(["src/main/java/**/*.java"]),
-    main_class = "dev.enola.cli.Enola",
+    visibility = [
+        "//web:__subpackages__",
+    ],
     deps = [
         "//common/common",
-        "//core/lib:core_java_proto",
-        "//core/lib:lib_java",
-        "//core/impl",
-        "//web/sun",
         "@maven//:com_google_guava_guava",
-        "@maven//:info_picocli_picocli",
-        # TODO Logging from CLI? "@maven//:org_slf4j_slf4j_simple",
     ],
 )
-
-[java_test(
-    name = name[:-len(".java")],
-    size = "small",
-    srcs = glob(["src/test/java/**/*.java"]),
-    resources = glob(["src/test/resources/**/*"]),
-    deps = [
-        ":enola",
-        "//common/common",
-        "//core/impl",
-        "@maven//:com_google_truth_truth",
-        "@maven//:info_picocli_picocli",
-    ],
-) for name in glob([
-    "src/test/java/**/*Test.java",
-])]
