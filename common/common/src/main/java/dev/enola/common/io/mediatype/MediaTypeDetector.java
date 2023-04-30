@@ -49,22 +49,36 @@ public class MediaTypeDetector {
     private static final Set<String> fileSystemProviderSchemes =
             FileSystemProvider.installedProviders().stream()
                     .map(p -> p.getScheme().toLowerCase())
-                    .filter(scheme -> !scheme.equals("jar"))
+                    .filter(scheme -> !"jar".equals(scheme))
                     .collect(Collectors.toSet());
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
+
     // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
     // with test coverage via TestMediaTypes
     private final Map<String, MediaType> extensionMap =
             ImmutableMap.<String, MediaType>builder()
                     .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
+                    .putAll(ImmutableMap.of("css", MediaType.CSS_UTF_8.withoutParameters()))
+                    .putAll(ImmutableMap.of("js", MediaType.JAVASCRIPT_UTF_8.withoutParameters()))
                     .putAll(new ProtobufMediaTypes().extensionsToTypes())
                     .putAll(new YamlMediaType().extensionsToTypes())
                     .build();
+
     private final FromURI fromExtensionMap =
             uri -> {
                 var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
                 return Optional.ofNullable(extensionMap.get(ext));
+            };
+
+    private final FromURI fileNameMap =
+            uri -> {
+                var contentTypeFromFileName =
+                        contentTypeMap.getContentTypeFor(URIs.getFilename(uri));
+                if (contentTypeFromFileName != null) {
+                    return Optional.of(MediaType.parse(contentTypeFromFileName));
+                }
+                return Optional.empty();
             };
 
     private final FromURI probeFileContentType =
@@ -83,16 +97,6 @@ public class MediaTypeDetector {
                     } catch (IOException e) {
                         throw new UncheckedIOException(e);
                     }
-                }
-                return Optional.empty();
-            };
-
-    private final FromURI fileNameMap =
-            uri -> {
-                var contentTypeFromFileName =
-                        contentTypeMap.getContentTypeFor(URIs.getFilename(uri));
-                if (contentTypeFromFileName != null) {
-                    return Optional.of(MediaType.parse(contentTypeFromFileName));
                 }
                 return Optional.empty();
             };

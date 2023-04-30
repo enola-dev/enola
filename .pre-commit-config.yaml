@@ -46,7 +46,7 @@ repos:
     rev: v1.5.1
     hooks:
       - id: insert-license
-        files: \.(proto)$
+        files: \.(proto|soy)$
         args:
           - --comment-style
           - "//"

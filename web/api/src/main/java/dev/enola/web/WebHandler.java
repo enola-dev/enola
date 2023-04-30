@@ -23,6 +23,11 @@ import dev.enola.common.io.resource.ReadableResource;
 
 import java.net.URI;
 
+/**
+ * Handler for Web Request.
+ *
+ * @see WebServer
+ */
 public interface WebHandler {
 
     ListenableFuture<ReadableResource> get(URI uri);
