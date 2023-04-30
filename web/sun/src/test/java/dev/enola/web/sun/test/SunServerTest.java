@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.web.StaticWebHandler;
 import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
@@ -44,21 +45,29 @@ public class SunServerTest {
 
         var hello = new StringResource("hello, world", MediaType.PLAIN_TEXT_UTF_8);
         server.register("/hello", uri -> immediateFuture(hello));
+
+        server.register("/abc/xyz/", new StaticWebHandler("/abc/xyz/", "static"));
+
         server.start();
         return server;
     }
 
     @Test
     public void testHello() throws IOException {
-        var server = start();
+        try (var server = start()) {
+            var prefix = "http://localhost:" + server.getInetAddress().getPort();
+            var rp = new ResourceProviders();
 
-        var rp = new ResourceProviders();
-        // NOK with IPv6 :( var uri = URI.create("http://" + server.getInetAddress() + "/hello");
-        var uri = URI.create("http://localhost:" + server.getInetAddress().getPort() + "/hello");
-        var response = rp.getResource(uri);
-        assertThat(response.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
-        assertThat(response.charSource().read()).isEqualTo("hello, world");
+            // IPv6 NOK :( var uri = URI.create("http://" + server.getInetAddress() + "/hello");
+            var uri1 = URI.create(prefix + "/hello");
+            var response1 = rp.getResource(uri1);
+            assertThat(response1.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
+            assertThat(response1.charSource().read()).isEqualTo("hello, world");
 
-        server.stop();
+            var uri2 = URI.create(prefix + "/abc/xyz/hello.txt");
+            var response2 = rp.getResource(uri2);
+            assertThat(response2.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
+            assertThat(response2.charSource().read()).isEqualTo("hi, you\n");
+        }
     }
 }

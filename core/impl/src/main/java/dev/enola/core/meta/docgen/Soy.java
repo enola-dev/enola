@@ -35,29 +35,6 @@ public class Soy {
     // But must first contribute https://github.com/bazelbuild/rules_closure/issues/225;
     // this won't work without that.
 
-    public static class Builder {
-        SoyFileSet.Builder sfsb = SoyFileSet.builder();
-
-        Builder addSoy(ReadableResource r) {
-            sfsb.add(r.charSource(), r.uri().toString());
-            return this;
-        }
-
-        Builder addSoy(String classpath) {
-            addSoy(new ClasspathResource(classpath, MediaType.PLAIN_TEXT_UTF_8));
-            return this;
-        }
-
-        Builder addProto(Descriptors.GenericDescriptor... descriptors) {
-            sfsb.addProtoDescriptors(descriptors);
-            return this;
-        }
-
-        Soy build() {
-            return new Soy(sfsb.build());
-        }
-    }
-
     private final SoyFileSet sfs;
     private final SoySauce sauce;
 
@@ -68,5 +45,28 @@ public class Soy {
 
     public SoySauce.Renderer newRenderer(String templateName, Map<String, ?> params) {
         return sauce.renderTemplate(TemplateName.of(templateName)).setData(params);
+    }
+
+    public static class Builder {
+        SoyFileSet.Builder sfsb = SoyFileSet.builder();
+
+        Builder addSoy(ReadableResource r) {
+            sfsb.add(r.charSource(), r.uri().toString());
+            return this;
+        }
+
+        public Builder addSoy(String classpath) {
+            addSoy(new ClasspathResource(classpath, MediaType.PLAIN_TEXT_UTF_8));
+            return this;
+        }
+
+        public Builder addProto(Descriptors.GenericDescriptor... descriptors) {
+            sfsb.addProtoDescriptors(descriptors);
+            return this;
+        }
+
+        public Soy build() {
+            return new Soy(sfsb.build());
+        }
     }
 }

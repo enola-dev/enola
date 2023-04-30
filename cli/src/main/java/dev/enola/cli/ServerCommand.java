@@ -17,19 +17,18 @@
  */
 package dev.enola.cli;
 
-import static com.google.common.util.concurrent.Futures.immediateFuture;
-
-import com.google.common.net.MediaType;
-
-import dev.enola.common.io.resource.StringResource;
+import dev.enola.core.EnolaService;
+import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.web.sun.SunServer;
+import dev.enola.web.ui.UI;
 
 import picocli.CommandLine;
 
 import java.net.InetSocketAddress;
 
 @CommandLine.Command(name = "server", description = "Start HTTP Server")
-public class ServerCommand implements CheckedRunnable {
+public class ServerCommand extends CommandWithModel {
 
     @CommandLine.Option(
             names = {"--httpPort"},
@@ -38,12 +37,12 @@ public class ServerCommand implements CheckedRunnable {
     int port;
 
     @Override
-    public void run() throws Exception {
+    protected void run(EntityKindRepository ekr) throws Exception {
+        EnolaService service = new EnolaServiceProvider().get(ekr);
         var server = new SunServer(new InetSocketAddress(port));
-        var hello = new StringResource("hello, world", MediaType.PLAIN_TEXT_UTF_8);
-        server.register("/hello", uri -> immediateFuture(hello));
+        new UI(service).register(server);
         server.start();
-        System.out.println("Open http://localhost:9999/hello ...");
+        System.out.println("Open http://localhost:" + port + "/ui ...");
         Thread.currentThread().join();
     }
 }

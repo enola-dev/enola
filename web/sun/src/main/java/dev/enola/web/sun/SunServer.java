@@ -31,6 +31,7 @@ import dev.enola.web.WebServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 public class SunServer implements WebServer {
 
@@ -38,7 +39,7 @@ public class SunServer implements WebServer {
 
     public SunServer(InetSocketAddress address) throws IOException {
         this.sun = HttpServer.create(requireNonNull(address, "InetSocketAddress"), 0);
-        // TODO? this.sun.setExecutor(Executors.newCachedThreadPool());
+        this.sun.setExecutor(Executors.newCachedThreadPool());
     }
 
     @Override
@@ -57,7 +58,7 @@ public class SunServer implements WebServer {
     }
 
     @Override
-    public void stop() {
+    public void close() {
         sun.stop(3);
     }
 
@@ -82,6 +83,10 @@ public class SunServer implements WebServer {
                     exchange.close();
                 } catch (ExecutionException | InterruptedException e) {
                     throw new IOException("Failed HTTP GET: " + uri, e);
+                } catch (Throwable t) {
+                    // Without this, exceptions through by WebHandler are "lost"
+                    // TODO Add SLF4j as Logging API?
+                    t.printStackTrace();
                 }
             } else {
                 throw new IOException(
