@@ -55,9 +55,8 @@ message ID {
   // (This restriction could in theory be relaxed, if there was a strong need
   // to support it; as long as sufficient test coverage is added for correct
   // encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.)
-  // Multiple "segments" are supports for "composed keys", for example a
-  // network/context/namespace/name kind of format.
-  // TODO If needed, maybe (later) oneof map<string, string> for multi??
+  // Multiple "segments" are supported for "composed keys", for example a
+  // network/context/namespace/name kind of ID.
   repeated string paths = 3;
 }
 

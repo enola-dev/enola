@@ -58,15 +58,18 @@ public class EntityServiceProviderTest {
 
     @Test
     public void testUriTemplate() throws ValidationException, EnolaException, IOException {
-        var template = "https://www.google.com/search?q={path.name}+dog&sclient=img";
         var kid = ID.newBuilder().setNs("test").setEntity("dog").addPaths("name").build();
+        var template = "https://www.google.com/search?q={path.name}+dog&sclient=img";
         var href = Link.newBuilder().setUriTemplate(template).build();
-        var rel1 = EntityRelationship.newBuilder().setLabel("test").build();
+        var rel1 = EntityRelationship.newBuilder().build();
+        var tid = ID.newBuilder().setNs("test").setEntity("cat").addPaths("{path.name}").build();
+        var rel2 = EntityRelationship.newBuilder().setId(tid).build();
         var kind =
                 EntityKind.newBuilder()
                         .setId(kid)
                         .putLink("image", href)
                         .putRelated("rel1", rel1)
+                        .putRelated("rel2", rel2)
                         .build();
         var ekr = new EntityKindRepository().put(kind);
         var service = new EnolaServiceProvider().get(ekr);
@@ -87,6 +90,10 @@ public class EntityServiceProviderTest {
                 .isEqualTo("https://www.google.com/search?q=king-charles+dog&sclient=img");
 
         assertThat(entity.getRelatedOrThrow("rel1").getEntity()).isEqualTo("cat");
+
+        assertThat(entity.getRelatedOrThrow("rel2").getNs()).isEqualTo("test");
+        assertThat(entity.getRelatedOrThrow("rel2").getEntity()).isEqualTo("cat");
+        assertThat(entity.getRelatedOrThrow("rel2").getPathsList()).containsExactly("king-charles");
     }
 
     @Test

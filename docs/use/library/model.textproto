@@ -27,12 +27,10 @@ kinds {
   emoji: "📖"
   related {
     key: "library",
-    value: { id: { ns: "demo" entity: "library" } }
-    # TODO uri_template: "enola:demo.library/{path.library}"
+    value: { id: { ns: "demo" entity: "library" paths: "{path.library}" } }
   }
   related {
     key: "kind",
-    value: { id: { ns: "demo" entity: "book_kind" } }
-    # TODO uri_template: "enola:demo.book_kind/{path.isbn}"
+    value: { id: { ns: "demo" entity: "book_kind" paths: "{path.isbn}" } }
   }
 }

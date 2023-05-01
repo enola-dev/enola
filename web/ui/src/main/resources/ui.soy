@@ -25,6 +25,11 @@ import {Entity} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
     {$id.ns}.{$id.entity}{for $element in $id.pathsList}/{$element}{/for}
 {/template}
 
+{template idHref kind="uri"}
+    {@param id: ID}
+    /ui/entity/{$id.ns}.{$id.entity}{for $element in $id.pathsList}/{$element}{/for}
+{/template}
+
 {template entity}
     {@param e: Entity}
 
@@ -40,7 +45,8 @@ import {Entity} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
     <!-- TODO Only if $e.relatedMap.size() > 0 ... -->
     <h2>Related</h2>
     <ul>{for $related in $e.relatedMap.entries()}
-        <li><a href="/ui/entity/{$related.value}">{$related.key}</a></li>
+        <!-- The follow format (roughly) matches dev.enola.core.IDs#toPath -->
+        <li><a href="{idHref(id: $related.value)}">{$related.key}</a></li>
     {/for}</ul>
 
     <!-- TODO Only if $e.linkMap.size() > 0 ... -->

@@ -24,7 +24,7 @@ import java.net.InetSocketAddress;
  * this API could be based on e.g. the <tt>com.sun.net.httpserver.HttpServer</tt>, or <i>Netty</i>,
  * or <i>Jetty</i> or <i>Tomcat</i> or <i>Vert.x</i> - or any other similar such HTTP framework.
  * Please note that there may well also be non-open source implementations which map this API to
- * some proprietary in-house web frameworks.
+ * some proprietary in-house Web Application Frameworks.
  */
 public interface WebServer extends AutoCloseable {
 

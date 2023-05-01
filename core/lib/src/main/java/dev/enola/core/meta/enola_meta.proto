@@ -88,7 +88,9 @@ message EntityRelationship {
   string description = 3;
 
   // ID reference to another Entity.
-  // Path is empty and set per Entity by connector service implementations.
+  // This ID's ns/entity/paths fields can contain a template, like
+  // Link#uri_template. Alternatively, this can be left empty, and set by
+  // connectors.
   ID id = 4;
 
   // Tags.
