@@ -17,11 +17,14 @@
  */
 package dev.enola.core.meta;
 
+import static com.google.common.base.Charsets.UTF_8;
+import static com.google.common.io.FileWriteMode.APPEND;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.proto.EntityKind;
@@ -30,6 +33,7 @@ import dev.enola.core.proto.ID;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class EntityKindRepositoryTest {
 
@@ -92,5 +96,28 @@ public class EntityKindRepositoryTest {
         assertThat(r.listID())
                 .containsExactly(IDs.parse("demo.foo/name"), IDs.parse("demo.bar/foo/name"));
         assertThat(r.list()).hasSize(2);
+    }
+
+    @Test
+    public void testReLoad() throws ValidationException, IOException {
+        var cpr = new ClasspathResource("demo-model.yaml");
+        var temp = Files.createTempFile("EntityKindRepositoryTest-", "-testReLoad.yaml");
+        var fr = new FileResource(temp, cpr.mediaType().charset().get());
+        try {
+            cpr.byteSource().copyTo(fr.byteSink());
+            r.load(fr);
+
+            var id = ID.newBuilder().setNs("demo").setEntity("bar").build();
+            var ek = r.get(id);
+            ek.getLinkOrThrow("wiki");
+
+            com.google.common.io.Files.asCharSink(temp.toFile(), UTF_8, APPEND)
+                    .write("      newone:\n" + "        label: newone\n");
+            ek = r.get(id);
+            ek.getLinkOrThrow("newone");
+
+        } finally {
+            temp.toFile().delete();
+        }
     }
 }

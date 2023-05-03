@@ -25,11 +25,15 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class FileResource implements Resource {
 
@@ -67,6 +71,15 @@ public class FileResource implements Resource {
     @Override
     public ByteSource byteSource() {
         return MoreFiles.asByteSource(path, openOptions);
+    }
+
+    @Override
+    public Optional<Instant> lastModifiedIfKnown() {
+        try {
+            return Optional.of(Files.getLastModifiedTime(path).toInstant());
+        } catch (IOException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

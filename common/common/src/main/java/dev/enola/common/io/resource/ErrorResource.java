@@ -26,8 +26,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
-class ErrorResource implements Resource {
-    static final ErrorResource INSTANCE = new ErrorResource();
+public class ErrorResource implements Resource {
+    public static final ErrorResource INSTANCE = new ErrorResource();
 
     static final String SCHEME = "error";
 
