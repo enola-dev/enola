@@ -17,6 +17,7 @@
  */
 package dev.enola.core.meta;
 
+import dev.enola.common.io.resource.ErrorResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.MessageValidators;
 import dev.enola.common.protobuf.ProtoIO;
@@ -26,23 +27,34 @@ import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.ID;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class EntityKindRepository {
 
-    private final MessageValidators v = EntityKindValidations.INSTANCE;
+    private static final MessageValidators v = EntityKindValidations.INSTANCE;
+    private final Map<String, Map<String, CachedEntityKind>> map = new TreeMap<>();
 
-    private final Map<String, Map<String, EntityKind>> map = new TreeMap<>();
-
-    public synchronized EntityKindRepository put(EntityKind entityKind) throws ValidationException {
+    public EntityKindRepository put(EntityKind entityKind) throws ValidationException {
         v.validate(entityKind).throwIt();
         // TODO This should eventually not be required anymore!
         // (Validation should "recurse into" messages by itself, later.)
         v.validate(entityKind.getId()).throwIt();
 
-        var id = entityKind.getId();
-        map.computeIfAbsent(id.getNs(), s -> new TreeMap<>()).put(id.getEntity(), entityKind);
+        put(entityKind, ErrorResource.INSTANCE, Optional.empty());
         return this;
+    }
+
+    private synchronized void put(
+            EntityKind entityKind, ReadableResource resource, Optional<Instant> lastModified)
+            throws ValidationException {
+        var id = entityKind.getId();
+        map.computeIfAbsent(id.getNs(), s -> new TreeMap<>())
+                .put(id.getEntity(), new CachedEntityKind(entityKind, resource, lastModified));
     }
 
     public Optional<EntityKind> getOptional(ID id) {
@@ -50,7 +62,33 @@ public class EntityKindRepository {
         if (subMap == null) {
             return Optional.empty();
         }
-        return Optional.ofNullable(subMap.get(id.getEntity()));
+        final var cachedEntityKind = subMap.get(id.getEntity());
+        if (cachedEntityKind == null) {
+            return Optional.empty();
+        }
+        final EntityKind[] finalEntityKind = new EntityKind[] {cachedEntityKind.entityKind};
+        cachedEntityKind.lastModified.ifPresent(
+                originalLastModified -> {
+                    cachedEntityKind
+                            .resource
+                            .lastModifiedIfKnown()
+                            .ifPresent(
+                                    currentLastModified -> {
+                                        if (currentLastModified.isAfter(originalLastModified)) {
+                                            try {
+                                                load(cachedEntityKind.resource);
+                                                finalEntityKind[0] =
+                                                        subMap.get(id.getEntity()).entityKind;
+                                            } catch (IOException | ValidationException e) {
+                                                throw new IllegalStateException(
+                                                        "Reload failed: "
+                                                                + cachedEntityKind.resource.uri(),
+                                                        e);
+                                            }
+                                        }
+                                    });
+                });
+        return Optional.of(finalEntityKind[0]);
     }
 
     public EntityKind get(ID id) {
@@ -60,9 +98,10 @@ public class EntityKindRepository {
 
     public EntityKindRepository load(ReadableResource resource)
             throws IOException, ValidationException {
+        var lastModified = resource.lastModifiedIfKnown();
         var kinds = new ProtoIO().read(resource, EntityKinds.newBuilder()).build();
         for (var kind : kinds.getKindsList()) {
-            put(kind);
+            put(kind, resource, lastModified);
         }
         return this;
     }
@@ -80,7 +119,12 @@ public class EntityKindRepository {
 
     public Collection<EntityKind> list() {
         var eks = new ArrayList<EntityKind>();
-        map.values().forEach(innerMap -> innerMap.values().stream().forEach(eks::add));
+        map.values()
+                .forEach(
+                        innerMap ->
+                                innerMap.values().stream()
+                                        .map(CachedEntityKind::entityKind)
+                                        .forEach(eks::add));
         return eks;
     }
 
@@ -90,8 +134,26 @@ public class EntityKindRepository {
                 .forEach(
                         innerMap ->
                                 innerMap.values().stream()
+                                        .map(CachedEntityKind::entityKind)
                                         .map(EntityKind::getId)
                                         .forEach(ids::add));
         return ids;
+    }
+
+    private static final class CachedEntityKind {
+        final EntityKind entityKind;
+        final ReadableResource resource;
+        final Optional<Instant> lastModified;
+
+        CachedEntityKind(
+                EntityKind entityKind, ReadableResource resource, Optional<Instant> lastModified) {
+            this.entityKind = entityKind;
+            this.resource = resource;
+            this.lastModified = lastModified;
+        }
+
+        EntityKind entityKind() {
+            return entityKind;
+        }
     }
 }
