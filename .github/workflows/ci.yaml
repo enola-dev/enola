@@ -14,21 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Test
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+name: CI
 
 on:
   push:
-    branches: [main, private]
+    branches: [main]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [main, private]
+    branches: [main]
+
+# Cancel any in-progress job or run if there is a newer commit
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        # https://github.com/awalsh128/cache-apt-pkgs-action
+
+        # https://github.com/awalsh128/cache-apt-pkgs-action reduces ~31s to ~2s!
       - uses: awalsh128/cache-apt-pkgs-action@v1.3.0
         with:
           # https://github.com/sharkdp/bat (used in some docs/use/**/script)
@@ -37,7 +45,9 @@ jobs:
           version: 1.0
         # https://github.com/sharkdp/bat/issues/982
       - run: sudo ln -s /usr/bin/batcat /usr/local/bin/bat
-      - uses: actions/cache@v3
+
+      - name: Cache Bazel
+        uses: actions/cache@v3
         with:
           # https://github.com/actions/cache/pull/575/files
           path: |
@@ -47,19 +57,58 @@ jobs:
           key: >
             ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE.bazel', 'MODULE.bazel') }}
           restore-keys: ${{ runner.os }}-bazel-
-      - uses: actions/cache@v3
+      - name: Cache Python
+        uses: actions/cache@v3
         with:
           path: .venv/
           key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
-      - uses: actions/cache@v3
+      - name: Cache Pre-Commit
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit/
           key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
-      - uses: actions/cache@v3
+      - name: Cache Demo
+        uses: actions/cache@v3
         with:
           path: .cache/demo/
           key: ${{ runner.os }}-cache-demo-${{ hashFiles('demo/test.bash', 'demo/build.bash') }}
           restore-keys: ${{ runner.os }}-cache-demo-
+
       - run: ./test.bash
+
+      # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
+      - name: Build Docs Site
+        run: ./tools/docs/build.bash
+
+      # The following steps deploy site/ (using GitHub Pages)
+      # to https://enola-dev.github.io = https://docs.enola.dev
+
+      - name: Setup Pages
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/configure-pages@v3
+
+      - name: Upload site/ directory as GitHub Pages artifact
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "site/"
+
+  deploy:
+    needs: build
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+    # Sets required permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # https://github.com/actions/deploy-pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

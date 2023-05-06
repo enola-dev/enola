@@ -32,9 +32,9 @@ echo
 echo $ b build //...
 bazelisk build //...
 
-# TODO Replace with docs/use/**/BUILD files, so that demo tests only run if inputs change
-# Note use of xargs instead of find -exec \; for error handling, see https://apple.stackexchange.com/a/49047
-find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | xargs -n 1 -0 tools/demo/test.bash
+echo
+echo $ tools/demo/run.bash
+tools/demo/run.bash
 
 # Check if https://pre-commit.com is available (and try to install it not)
 if ! [ -e "./.venv/bin/pre-commit" ]; then
@@ -50,11 +50,17 @@ if ! [ -e "./.venv/bin/pre-commit" ]; then
   fi
   # shellcheck disable=SC1091
   source ./.venv/bin/activate
-  pip install -r requirements.txt
 else
   # shellcheck disable=SC1091
   source ./.venv/bin/activate
 fi
+
+# We need to pip install "every time" (and not just e.g. inside the if above),
+# because otherwise changes to requirements.txt don't lead to updates locally and on CI.
+# TODO Is there a way to only run pip install "if requirements.txt changed"? With Bazel?!
+echo
+echo $ pip install -r requirements.txt
+pip install -r requirements.txt
 
 echo
 echo $ pre-commit run
