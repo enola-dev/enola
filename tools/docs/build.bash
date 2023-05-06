@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-# This script assumes that ../../test.bash already ran once to set up things!
+# This script assumes that ../../test.bash already ran, to set up tools, and build!
 
 # shellcheck disable=SC1091
 source .venv/bin/activate
@@ -37,18 +37,15 @@ cleanup() {
 }
 trap cleanup EXIT
 
-rpl -R -x.md ../.. https://github.com/enola-dev/enola/blob/main docs/
+# Use sed instead of (ancient) rpl!
+find docs/ -type f -name "*.md" -print0 \
+  | xargs -n 1 -0 sed -i 's|\.\./\.\.|https://github.com/enola-dev/enola/blob/main|g'
 
-bazelisk build //...
 mkdir -p docs/dev/proto/
-cp bazel-bin/core/proto/core_proto_doc/core_proto_doc.md docs/dev/proto/
+cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/
 
-find docs/use -maxdepth 1 -not -path docs/use -type d -exec tools/demo/build.bash {} \;
+tools/demo/run.bash
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
 cleanup
-
-cd site/
-xdg-open http://localhost:8000
-python3 -m http.server
