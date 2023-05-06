@@ -16,22 +16,13 @@
     limitations under the License.
 -->
 
-# Library Model
+# Web Server
 
-## model.textproto
+<!-- This intentionally does not use ```bash because the server "hangs" -->
 
-```yaml
-{% include "model.textproto" %}
-```
-<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
+    $ ./enola server --model file:docs/use/library/model.textproto --httpPort=8080
+    Open http://localhost:8080/ui ...
 
-## List Kinds
-
-```bash cd .././.././..
-$ ./enola list-kinds --model file:docs/use/library/model.textproto
-...
-```
-
-## Screencast (Asciinema)
-
-![Demo](script.svg)
+You can now open e.g. <http://localhost:8080/ui/entity/demo.book/ABC/0-13-140731-7/1>
+to view this `demo.book` _Entity._ When you click on the _Related_ `kind` you will
+see its `demo.book_kind`, where you can click e.g. on its `google` _Link._

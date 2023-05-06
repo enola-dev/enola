@@ -125,6 +125,7 @@ public class ExecMD {
         } else expectFailure = false;
 
         String fullCommand;
+        script.append(":CWD=$(pwd)\n");
         if (!preamble.trim().isEmpty()) {
             script.append(":");
             script.append(preamble);
@@ -135,6 +136,8 @@ public class ExecMD {
             fullCommand = command;
         }
         script.append(command);
+        script.append("\n");
+        script.append(":cd $CWD\n");
         script.append("\n\n");
 
         // TODO Allow current hard-coded timeout to be configured in MD preamble, or CLI option?

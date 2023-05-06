@@ -17,6 +17,8 @@
  */
 package dev.enola.common.markdown.exec;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -32,27 +34,27 @@ public class ExecMDTest {
     public void testEcho() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash\n$ echo hi\nIGNORED\n```");
         assertEquals("# Test\n```bash\n$ echo hi\nhi\n```\n", r.markdown);
-        assertEquals("echo hi\n\n\nsleep ${SLEEP:-7}\n", r.script);
+        assertThat(r.script).contains("echo hi");
     }
 
     @Test
     public void testFalse() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash $?\n$ false\n```");
         assertEquals("# Test\n```bash\n$ false\n```\n", r.markdown);
-        assertEquals("false\n\n\nsleep ${SLEEP:-7}\n", r.script);
+        assertThat(r.script).contains("false");
     }
 
     @Test
     public void testPreambleInit() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash MSG=hi\n$ echo $MSG\n```");
         assertEquals("# Test\n```bash\n$ echo $MSG\nhi\n```\n", r.markdown);
-        assertEquals(":MSG=hi\necho $MSG\n\n\nsleep ${SLEEP:-7}\n", r.script);
+        assertThat(r.script).contains(":MSG=hi\necho $MSG");
     }
 
     @Test
     public void testMultiline() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "```bash\n$ echo \\\n  Hi\n```");
         assertEquals("```bash\n$ echo \\\n  Hi\nHi\n```\n", r.markdown);
-        assertEquals("echo \\\n  Hi\n\n\nsleep ${SLEEP:-7}\n", r.script);
+        assertThat(r.script).contains("echo \\\n  Hi");
     }
 }

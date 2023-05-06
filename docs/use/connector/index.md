@@ -16,22 +16,18 @@
     limitations under the License.
 -->
 
-# Library Model
+# Connectors
 
-## model.textproto
+_TODO Document how this works... start with the enum in the schema?_
 
-```yaml
-{% include "model.textproto" %}
-```
-<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
+## File System Repository
 
-## List Kinds
+_TODO Document! This is useful for testing, and for "fixed" entities._
 
-```bash cd .././.././..
-$ ./enola list-kinds --model file:docs/use/library/model.textproto
-...
-```
+## gRPC
 
-## Screencast (Asciinema)
+_TODO Document!_
 
-![Demo](script.svg)
+## Java
+
+_TODO Document!_

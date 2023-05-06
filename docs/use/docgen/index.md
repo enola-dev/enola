@@ -16,22 +16,15 @@
     limitations under the License.
 -->
 
-# Library Model
+# DocGen
 
-## model.textproto
-
-```yaml
-{% include "model.textproto" %}
-```
-<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
-
-## List Kinds
+We can generate nice Markdown documentation for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or Graphwiz format.
 
 ```bash cd .././.././..
-$ ./enola list-kinds --model file:docs/use/library/model.textproto
+$ ./enola docgen --model file:docs/use/library/model.textproto --diagram=mermaid >docs/use/docgen/docgen.md
 ...
 ```
 
-## Screencast (Asciinema)
+## docgen.md
 
-![Demo](script.svg)
+{% include "docgen.md" %}

@@ -16,22 +16,23 @@
     limitations under the License.
 -->
 
-# Library Model
+# Get Entity
 
-## model.textproto
-
-```yaml
-{% include "model.textproto" %}
-```
-<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
-
-## List Kinds
-
-```bash cd .././.././..
-$ ./enola list-kinds --model file:docs/use/library/model.textproto
-...
-```
+`enola get` will retrieve an _entity_ from its [connectors](../connector/index.md).
 
 ## Screencast (Asciinema)
 
 ![Demo](script.svg)
+
+## Enola Get
+
+```bash cd .././.././..
+$ ./enola get --model file:docs/use/library/model.textproto demo.book/ABC/0-13-140731-7/1 | bat -l textpb --decorations never
+...
+```
+
+### books/0-13-140731-7.yaml
+
+```yaml
+{% include "../library/books/0-13-140731-7.yaml" %}
+```
