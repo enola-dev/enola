@@ -30,7 +30,7 @@ offering a _"single pane of glass"_ (SPOG) view of it.
 This mimics the _"picture in the head"_ that knowledgeable senior engineers
 typically have of systems, their relations, failure modes, etc. All too often
 these are incompletely fully captured by existing mechanisms. Teams often do
-have e.g. related documents, [Playbooks](concepts/playbook.md), various ad-hoc scripts etc.
+have e.g. related documents, Playbooks, various ad-hoc scripts etc.
 This tool can bring them all together, fully integrated. An organization can
 do this incrementally over time, improving with each incident
 ([until 🔮](concepts/singularity.md)).
