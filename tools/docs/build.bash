@@ -44,7 +44,10 @@ find docs/ -type f -name "*.md" -print0 \
 mkdir -p docs/dev/proto/
 cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/
 
-tools/demo/run.bash
+if ! [ -x "$(command -v svg-term)" ]; then
+  npm install -g svg-term-cli
+fi
+tools/demo/for-each.bash tools/demo/build.bash
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml

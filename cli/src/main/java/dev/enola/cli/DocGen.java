@@ -41,7 +41,8 @@ public class DocGen extends CommandWithModel {
             names = {"--diagram", "-d"},
             required = true,
             defaultValue = "Mermaid",
-            description = "Type of diagrams to generate")
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Type of diagrams to generate (${COMPLETION-CANDIDATES})")
     Options.DiagramType diagram;
 
     @Override

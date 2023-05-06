@@ -25,8 +25,10 @@ and then the help specific to each of those subcommands.
 
 ![Demo](script.svg)
 
+<!-- TODO https://github.com/asciinema/asciinema/issues/548
 ## Scenario
 
 ```shell
-{% include "script.output" %}
+{ % include "script.output" %}
 ```
+-->
