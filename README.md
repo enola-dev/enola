@@ -20,11 +20,10 @@
 
 Enola is a Graph-based analytics system for exploring relationships between common objects.
 
-1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ --> and ⭐ project and now [Use It!](docs/use/index.md)
-1. [Developer Set-Up for Local Build](docs/dev/setup.md)
-1. See [`LICENSE`](LICENSE) & [Contribute](docs/contributing.md)!
-<!-- TODO 1. [Read documentation](docs/index.md) -->
+1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ --> and please ⭐ on GitHub
+1. Read the [user guide](https://docs.enola.dev/use/) documentation
+1. See [developer](https://docs.enola.dev/dev/setup/) docs and [Contribute](https://docs.enola.dev/contributing/)!
 
 This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
-merchantability, or fitness for a particular purpose.
+merchantability, or fitness for a particular purpose. ([`LICENSE`](LICENSE))

@@ -2,7 +2,7 @@
 
 enola --help
 
-# 🦮 Each subscommand has its own --help...
+# 🦮 Each subcommand has its own --help...
 
 enola help list-kinds
 
