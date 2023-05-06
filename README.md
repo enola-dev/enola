@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Enola.dev 🕵🏾‍♀️ [![Test](https://github.com/enola-dev/enola/actions/workflows/test.yaml/badge.svg)](https://github.com/enola-dev/enola/actions/workflows/test.yaml) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%E2%9C%85-grey)](https://conventionalcommits.org)
+# Enola.dev 🕵🏾‍♀️ [![CI](https://github.com/enola-dev/enola/actions/workflows/ci.yaml/badge.svg)](https://github.com/enola-dev/enola/actions/workflows/ci.yaml) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%E2%9C%85-grey)](https://conventionalcommits.org)
 
 Enola is a Graph-based analytics system for exploring relationships between common objects.
 
