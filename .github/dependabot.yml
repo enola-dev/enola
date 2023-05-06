@@ -4,7 +4,13 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: monday
+      time: "04:00"
+    open-pull-requests-limit: 99
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: monday
+      time: "04:00"
+    open-pull-requests-limit: 99
