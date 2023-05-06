@@ -39,7 +39,7 @@ It should be regularly (manually) run by maintainers of this project.
 
 ## GitHub Action Cache
 
-The [`.github/workflows/test.yaml`](../../.github/workflows/test.yaml) uses the
+The [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml) uses the
 https://github.com/actions/cache to
 This speeds up the Continuous Integration (CI) builds of PRs on GitHub.
 

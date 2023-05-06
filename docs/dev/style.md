@@ -36,7 +36,7 @@ Run the [`./test.bash`](../../test.bash) script during local development to refo
 
 `.git/hooks/pre-commit` will also run the `./test.bash` locally for each of your `git commit` after you locally install it using `tools/git/install-hooks.bash`.
 
-Contributions by Pull Requests on GitHub are tested with the same `./test.bash` which is launched by [this GitHub Action](../../.github/workflows/test.yaml).
+Contributions by Pull Requests on GitHub are tested with the same `./test.bash` which is launched by [this GitHub Action](../../.github/workflows/ci.yaml).
 
 In-IDE, the [plugins listed on our IDE page](ide.md) can be used.
 
