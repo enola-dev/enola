@@ -22,12 +22,13 @@
 
 ![Demo](script.svg)
 
+<!-- TODO https://github.com/asciinema/asciinema/issues/548
 ## Scenario
 
 ```shell
-{% include "script.output" %}
+{ % include "script.output" %}
 ```
-
+-->
 ## Files
 
 ### model.textproto

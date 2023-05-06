@@ -32,7 +32,7 @@ cd "$SCRIPT_DIR"
 VERSION=7303a5256f3fdd77586834be1e3679bc520b78ea
 URL=https://raw.githubusercontent.com/zechris/asciinema-rec_script/$VERSION/bin/asciinema-rec_script
 
-BIN="$TOOLS_DIR"/../../.cache/
+BIN="$TOOLS_DIR"/../../.cache/demo/
 mkdir -p "$BIN"
 if ! [ -f "$BIN"/asciinema-rec_script ]; then
   curl -o "$BIN"/asciinema-rec_script $URL
@@ -56,9 +56,11 @@ PATH="$TOOLS_DIR/../../bazel-bin/cli/:$PATH" \
 # is better than GIF with https://github.com/asciinema/agg
 svg-term --window --width 80 --height 25 --in "$SCRIPT_DIR"/script.cast --out "$SCRIPT_DIR"/script.svg
 
-# TODO https://github.com/zechris/asciinema-rec_script/issues/63 ?
-asciinema cat "$SCRIPT_DIR"/script.cast \
-  | perl -pe 's/\e([^\[\]]|\[.*?[a-zA-Z]|\].*?\a)//g' \
-  | col -b >"$SCRIPT_DIR"/script.output
+# TODO Replace this, see https://github.com/zechris/asciinema-rec_script/issues/63
+# NB: asciinema cat fails with "OSError: [Errno 6] No such device or address: '/dev/tty'"
+# on GitHub Actions, see https://github.com/asciinema/asciinema/issues/548
+# asciinema cat "$SCRIPT_DIR"/script.cast \
+#   | perl -pe 's/\e([^\[\]]|\[.*?[a-zA-Z]|\].*?\a)//g' \
+#   | col -b >"$SCRIPT_DIR"/script.output
 
 cd "$CWD"

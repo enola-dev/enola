@@ -63,6 +63,13 @@ jobs:
           path: .venv/
           key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
+      - name: Cache Node.js
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # -${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-npm
+          restore-keys: ${{ runner.os }}-npm
       - name: Cache Pre-Commit
         uses: actions/cache@v3
         with:
@@ -73,8 +80,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .cache/demo/
-          key: ${{ runner.os }}-cache-demo-${{ hashFiles('demo/test.bash', 'demo/build.bash') }}
-          restore-keys: ${{ runner.os }}-cache-demo-
+          key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
+          restore-keys: ${{ runner.os }}-demo-
 
       - run: ./test.bash
 

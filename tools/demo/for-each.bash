@@ -20,4 +20,4 @@ set -euo pipefail
 # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
 
 # Note use of xargs instead of find -exec \; for error handling, see https://apple.stackexchange.com/a/49047
-find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | xargs -n 1 -0 tools/demo/test.bash
+find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | xargs -n 1 -0 "$1"

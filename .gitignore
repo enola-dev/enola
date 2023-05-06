@@ -21,7 +21,10 @@ site/
 .cache/
 
 # asciinema, used in demo/**
-*.cast
+docs/use/**/*.cast
+docs/use/**/*.svg
+docs/use/**/*.output
+docs/use/library/docgen.md
 
 # Node.JS
 node_modules/

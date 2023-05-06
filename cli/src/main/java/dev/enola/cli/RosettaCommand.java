@@ -39,7 +39,9 @@ public class RosettaCommand implements CheckedRunnable {
     @CommandLine.Option(
             names = {"--schema"},
             required = false,
-            description = "Schema; optional for YAML <=> JSON, required if --in is *.textproto")
+            description =
+                    "Schema (${COMPLETION-CANDIDATES}); optional for YAML <=> JSON, required if"
+                            + " --in is *.textproto")
     Schema schema;
 
     @CommandLine.Option(
