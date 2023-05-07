@@ -17,13 +17,33 @@
  */
 package dev.enola.core.meta;
 
+import static dev.enola.core.IDs.toPath;
+
 import com.google.common.base.Strings;
 
 import dev.enola.common.protobuf.MessageValidator;
 import dev.enola.common.protobuf.MessageValidators;
+import dev.enola.core.IDs;
+import dev.enola.core.meta.proto.EntityKinds;
+import dev.enola.core.meta.proto.EntityKindsOrBuilder;
 import dev.enola.core.proto.ID;
 
 public class EntityKindValidations {
+
+    public static final MessageValidator<EntityKindRepository, EntityKindsOrBuilder> eksv =
+            (ekr, eks, r) -> {
+                for (var ek : eks.getKindsList()) {
+                    for (var er : ek.getRelatedMap().entrySet()) {
+                        var key = er.getKey();
+                        var id = er.getValue().getId();
+                        if (id == null) continue;
+                        if (ekr.getOptional(IDs.withoutPath(id)).isEmpty()) {
+                            var msg = toPath(ek.getId()) + "#related." + key + " = " + id;
+                            r.add(ID.getDescriptor(), msg);
+                        }
+                    }
+                }
+            };
 
     private static final MessageValidator<Void, ID> id =
             (ctx, m, r) -> {
@@ -40,5 +60,7 @@ public class EntityKindValidations {
             };
 
     public static final MessageValidators INSTANCE =
-            new MessageValidators().register(id, ID.getDescriptor());
+            new MessageValidators()
+                    .register(id, ID.getDescriptor())
+                    .register(eksv, EntityKinds.getDescriptor());
 }

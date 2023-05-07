@@ -45,6 +45,7 @@ public abstract class CommandWithModel implements CheckedRunnable {
         var modelResource = new ResourceProviders().getReadableResource(model);
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
+        ekr.validate();
 
         run(ekr);
     }

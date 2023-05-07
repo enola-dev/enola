@@ -23,4 +23,10 @@ import com.google.protobuf.MessageOrBuilder;
 public interface MessageValidator<C, T extends MessageOrBuilder> {
 
     void validate(C context, T m, MessageValidators.Result.Builder r);
+
+    default MessageValidators.Result validate(C context, T message) {
+        var results = MessageValidators.Result.newBuilder();
+        this.validate(context, message, results);
+        return results.build();
+    }
 }
