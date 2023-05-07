@@ -25,7 +25,8 @@ ENOLA="$TOOLS_DIR"/../../enola
 CWD=$(pwd)
 cd "$SCRIPT_DIR"
 
-"$ENOLA" execmd -i "$MD"
+echo ./enola execmd -i "$MD" ...
+"$ENOLA" -vvvvvvv execmd -i "$MD"
 
 # This script produces https://asciinema.org-like documentation from demo scripts!
 # It uses the great https://github.com/zechris/asciinema-rec_script to achieve this.
