@@ -25,7 +25,7 @@ docs/use/**/*.cast
 docs/use/**/script
 docs/use/**/*.svg
 docs/use/**/*.output
-docs/use/library/docgen.md
+docs/use/docgen/docgen.md
 
 # Node.JS
 node_modules/
