@@ -27,7 +27,7 @@
 ## Enola Get
 
 ```bash cd .././.././..
-$ ./enola get --model file:docs/use/library/model.textproto demo.book/ABC/0-13-140731-7/1 | bat -l textpb --decorations never
+$ ./enola get --model file:docs/use/library/model.textproto demo.book/ABC/0-13-140731-7/1
 ...
 ```
 
