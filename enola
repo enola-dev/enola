@@ -36,9 +36,12 @@ else
 fi
 
 cd "$ROOT"
-"$BZL" build //cli/...
-echo >&2
-echo >&2
-
-cd "$CWD"
-"$ROOT"/bazel-bin/cli/enola "$@"
+LOG=$(mktemp)
+if "$BZL" build --color=yes //cli/... >"$LOG" 2>&1 ; then
+  rm "$LOG"
+  cd "$CWD" && "$ROOT"/bazel-bin/cli/enola "$@"
+else
+  cat "$LOG" && echo >&2 && echo >&2
+  rm "$LOG"
+  cd "$CWD"
+fi

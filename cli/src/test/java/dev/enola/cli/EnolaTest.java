@@ -38,12 +38,12 @@ public class EnolaTest {
 
     @Test
     public void testNoArguments() {
-        assertThat(cli()).hasExitCode(2).err().startsWith("Missing required subcommand");
+        assertThat(cli()).hasExitCode(1).err().startsWith("Missing required subcommand");
     }
 
     @Test
     public void testBadArgument() {
-        assertThat(cli("--bad")).hasExitCode(2).err().startsWith("Unknown option: '--bad'");
+        assertThat(cli("--bad")).hasExitCode(1).err().startsWith("Unknown option: '--bad'");
     }
 
     @Test

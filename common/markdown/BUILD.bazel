@@ -14,23 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
-java_binary(
-    name = "enola",
+java_library(
+    name = "markdown",
     srcs = glob(["src/main/java/**/*.java"]),
-    main_class = "dev.enola.cli.Enola",
+    resources = glob(["src/main/resources/**/*"]),
+    visibility = ["//:__subpackages__"],
     deps = [
-        "//common/common",
-        "//common/markdown",
-        "//core/impl",
-        "//core/lib:core_java_proto",
-        "//core/lib:lib_java",
-        "//web/sun",
-        "//web/ui",
+        "@maven//:ch_vorburger_exec_exec",
         "@maven//:com_google_guava_guava",
-        "@maven//:info_picocli_picocli",
-        "@maven//:org_slf4j_slf4j_jdk14",
+        "@maven//:com_zaxxer_nuprocess",
     ],
 )
 
@@ -40,14 +34,9 @@ java_binary(
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":enola",
-        "//common/common",
-        "//common/markdown",
-        "//core/impl",
-        "//web/sun",
-        "//web/ui",
+        ":markdown",
         "@maven//:com_google_truth_truth",
-        "@maven//:info_picocli_picocli",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

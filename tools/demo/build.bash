@@ -18,10 +18,14 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(realpath "$1")
+MD=$(realpath "$SCRIPT_DIR/index.md")
 SCRIPT=$(realpath "$SCRIPT_DIR/script")
 TOOLS_DIR=$(realpath "$(dirname "$0")")
+ENOLA="$TOOLS_DIR"/../../enola
 CWD=$(pwd)
 cd "$SCRIPT_DIR"
+
+"$ENOLA" execmd -i "$MD"
 
 # This script produces https://asciinema.org-like documentation from demo scripts!
 # It uses the great https://github.com/zechris/asciinema-rec_script to achieve this.

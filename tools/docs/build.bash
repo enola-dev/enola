@@ -47,7 +47,9 @@ cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/
 if ! [ -x "$(command -v svg-term)" ]; then
   npm install -g svg-term-cli
 fi
-tools/demo/for-each.bash tools/demo/build.bash
+
+# TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
+find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | xargs -n 1 -0 tools/demo/build.bash
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml

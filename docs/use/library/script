@@ -1,7 +1,0 @@
-bat -P model.textproto
-
-enola list-kinds --model file:model.textproto
-
-enola docgen --model file:model.textproto --diagram mermaid >docgen.md
-
-sleep ${SLEEP:-7}

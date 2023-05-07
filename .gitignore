@@ -22,6 +22,7 @@ site/
 
 # asciinema, used in demo/**
 docs/use/**/*.cast
+docs/use/**/script
 docs/use/**/*.svg
 docs/use/**/*.output
 docs/use/library/docgen.md
