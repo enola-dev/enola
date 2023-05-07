@@ -17,13 +17,13 @@
  */
 package dev.enola.cli;
 
-import static picocli.CommandLine.ScopeType.INHERIT;
+import dev.enola.common.markdown.exec.MarkdownProcessingException;
 
 import picocli.AutoComplete;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.Option;
+import picocli.CommandLine.Mixin;
 
 @Command(
         name = "enola",
@@ -41,18 +41,13 @@ import picocli.CommandLine.Option;
             Get.class,
             RosettaCommand.class,
             ServerCommand.class,
+            ExecMdCommand.class
         })
 public class Enola {
 
     static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
 
-    @Option(
-            names = {"--verbose", "-v"},
-            scope = INHERIT,
-            description = {
-                "Specify multiple -v options to increase verbosity. For example, `-v -v -v` or"
-                        + " `-vvv`"
-            })
+    @Mixin LoggingMixin loggingMixin;
     boolean[] verbosity = {};
 
     static CLI cli(String... args) {
@@ -61,11 +56,26 @@ public class Enola {
                 new CommandLine(new Enola())
                         .setCaseInsensitiveEnumValuesAllowed(true)
                         // .registerConverter(Locale.class, new LocaleConverter())
+                        .setExecutionStrategy(LoggingMixin::executionStrategy)
+                        .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
                         .setExecutionExceptionHandler(new QuietExecutionExceptionHandler()));
     }
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
+    }
+
+    private static class KnownExitCodeExceptionMapper
+            implements CommandLine.IExitCodeExceptionMapper {
+
+        @Override
+        public int getExitCode(Throwable exception) {
+            if (exception instanceof MarkdownProcessingException) {
+                var exitCode = ((MarkdownProcessingException) exception).getLastExecExitCode();
+                if (exitCode != null) return exitCode;
+            }
+            return CommandLine.ExitCode.SOFTWARE;
+        }
     }
 
     private static class QuietExecutionExceptionHandler

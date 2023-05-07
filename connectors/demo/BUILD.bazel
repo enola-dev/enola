@@ -24,7 +24,6 @@ java_binary(
     # resources = glob(["src/main/resources/**/*"]),
     deps = [
         "//core/lib:core_java_grpc",
-        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -42,6 +41,7 @@ java_binary(
         "//core/lib:core_java_proto",
         "@maven//:com_google_truth_truth",
         "@maven//:io_grpc_grpc_api",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

@@ -32,10 +32,6 @@ echo
 echo $ b build //...
 bazelisk build //...
 
-echo
-echo $ tools/demo/for-each.bash tools/demo/test.bash
-tools/demo/for-each.bash tools/demo/test.bash
-
 # Check if https://pre-commit.com is available (and try to install it not)
 if ! [ -e "./.venv/bin/pre-commit" ]; then
   echo "https://pre-commit.com is not available..."

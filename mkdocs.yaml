@@ -30,6 +30,7 @@ nav:
       - Overview: use/index.md
       - Help: use/help/index.md
       - Library Demo: use/library/index.md
+      - ExecMD: use/execmd/index.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
