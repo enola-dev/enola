@@ -18,17 +18,83 @@
 
 # Help
 
-This is how to print usage instructions showing all available subcommands,
-and then the help specific to each of those subcommands.
-
 ## Screencast (Asciinema)
 
 ![Demo](script.svg)
 
-<!-- TODO https://github.com/asciinema/asciinema/issues/548
-## Scenario
+## Global Help
 
-```shell
-{ % include "script.output" %}
+Invoking the CLI without any arguments, or with `help` or `--help` shows the global help:
+
+```bash $? cd .././.././..
+$ ./enola
+...
 ```
--->
+
+Each sub-command's help can be shown either with `enola help SUBCOMMAND` or `enola SUBCOMMAND --help`.
+
+## ListKinds
+
+[Listing the Entity Kinds of a model](../library/index.md) has the following options:
+
+```bash $? cd .././.././..
+$ ./enola list-kinds --help
+...
+```
+
+## DocGen
+
+[Documentation Generation](../docgen/index.md) has the following options:
+
+```bash $? cd .././.././..
+$ ./enola docgen --help
+...
+```
+
+## Get
+
+[Get Entity](../get/index.md) has the following options:
+
+```bash $? cd .././.././..
+$ ./enola get --help
+...
+```
+
+## List
+
+```bash $? cd .././.././..
+$ ./enola list --help
+...
+```
+
+## Server
+
+[The built-in HTTP Web Server](../server/index.md) has the following options:
+
+```bash $? cd .././.././..
+$ ./enola server --help
+...
+```
+
+## ExecMD
+
+[Executable Markdown](../execmd/index.md) has the following options:
+
+```bash $? cd .././.././..
+$ ./enola execmd --help
+...
+```
+
+## Rosetta
+
+```bash $? cd .././.././..
+$ ./enola rosetta --help
+...
+```
+
+## Generate Completion
+
+```bash cd .././.././..
+$ ./enola generate-completion --help
+...
+```
