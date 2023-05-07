@@ -16,29 +16,22 @@
     limitations under the License.
 -->
 
-# Library Demo
+# Library Model
 
-## Screencast (Asciinema)
-
-![Demo](script.svg)
-
-<!-- TODO https://github.com/asciinema/asciinema/issues/548
-## Scenario
-
-```shell
-{ % include "script.output" %}
-```
--->
-## Files
-
-### model.textproto
+## model.textproto
 
 ```yaml
 {% include "model.textproto" %}
 ```
+<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
 
-### books/0-13-140731-7.yaml
+## List Kinds
 
-```yaml
-{% include "books/0-13-140731-7.yaml" %}
+```bash cd .././.././..
+$ ./enola list-kinds --model file:docs/use/library/model.textproto
+...
 ```
+
+## Screencast (Asciinema)
+
+![Demo](script.svg)
