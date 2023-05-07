@@ -36,16 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-        # https://github.com/awalsh128/cache-apt-pkgs-action reduces ~31s to ~2s!
-      - uses: awalsh128/cache-apt-pkgs-action@v1.3.0
-        with:
-          # https://github.com/sharkdp/bat (used in some docs/use/**/script)
-          packages: bat
-          # Increase version every time packages change!
-          version: 1.0
-        # https://github.com/sharkdp/bat/issues/982
-      - run: sudo ln -s /usr/bin/batcat /usr/local/bin/bat
-
       - name: Cache Bazel
         uses: actions/cache@v3
         with:
