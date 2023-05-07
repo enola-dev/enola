@@ -26,10 +26,7 @@ import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.ID;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class EntityKindRepository {
 
@@ -48,12 +45,17 @@ public class EntityKindRepository {
         return this;
     }
 
-    public EntityKind get(ID id) {
+    public Optional<EntityKind> getOptional(ID id) {
         var subMap = map.get(id.getNs());
         if (subMap == null) {
-            throw new IllegalArgumentException(id + " unknown: " + map);
+            return Optional.empty();
         }
-        return subMap.get(id.getEntity());
+        return Optional.ofNullable(subMap.get(id.getEntity()));
+    }
+
+    public EntityKind get(ID id) {
+        return getOptional(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + " unknown: " + map));
     }
 
     public EntityKindRepository load(ReadableResource resource)
@@ -63,6 +65,17 @@ public class EntityKindRepository {
             put(kind);
         }
         return this;
+    }
+
+    /**
+     * Validates consistency of all models and the references across all of their {@link
+     * #load(ReadableResource)}-ed resources.
+     */
+    public void validate() throws ValidationException {
+        var eks = EntityKinds.newBuilder();
+        list().forEach(ek -> eks.addKinds(ek));
+        EntityKindValidations.eksv.validate(this, eks);
+        v.validate(this, eks.build()).throwIt();
     }
 
     public Collection<EntityKind> list() {
