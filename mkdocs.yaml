@@ -29,8 +29,12 @@ nav:
   - Users:
       - Overview: use/index.md
       - Help: use/help/index.md
-      - Library Demo: use/library/index.md
+      - Library Demo Model: use/library/index.md
+      - DocGen: use/docgen/index.md
+      - Get Entity: use/get/index.md
+      - Server: use/server/index.md
       - ExecMD: use/execmd/index.md
+      # TODO - Rosetta: use/rosetta/index.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
@@ -59,6 +63,7 @@ theme:
   name: material
   features:
     - content.action.edit
+    - content.code.copy
     - navigation.footer
     - navigation.instant
     - navigation.tracking
@@ -97,7 +102,12 @@ markdown_extensions:
   # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
+  # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
+  - pymdownx.highlight:
+      # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#highlight
+      #anchor_linenums: true
+      #line_spans: __span
+      #pygments_lang_class: true
   # https://squidfunk.github.io/mkdocs-material/reference/diagrams/
   - pymdownx.superfences:
       custom_fences:
