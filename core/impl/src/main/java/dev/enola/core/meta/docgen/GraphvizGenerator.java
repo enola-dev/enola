@@ -59,22 +59,20 @@ class GraphvizGenerator {
         // md.append("<tr> <td port="description" sides="ltr"> <b>"+name+"</b></td> </tr>")
 
         for (var pathArgument : pathArguments) {
-            // TODO hardcoded emoji
             md.append(
                     "        <tr> <td port=\""
                             + pathArgument
                             + "\" align=\"left\"><br align=\"left\"/>"
-                            + "&#129409;"
+                            + "🆔"
                             + pathArgument
                             + "<br align=\"left\"/></td> </tr>\n");
         }
         for (var linkKey : ek.getLinkMap().keySet()) {
-            // TODO hardcoded emoji
             md.append(
                     "        <tr> <td port=\""
                             + linkKey
                             + "\" align=\"left\"><br align=\"left\"/>"
-                            + "&#129409;"
+                            + "🔗"
                             + linkKey
                             + "<br align=\"left\"/></td> </tr>\n");
         }
