@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
 
 class GraphvizGenerator {
     static void renderGraphviz(EntityKindRepository kinds, Appendable md) throws IOException {
-        md.append("```\n");
-        md.append("graphviz\n");
+        md.append("```dot\n");
         md.append("digraph {\n");
         md.append("  graph [fontname = \"Handlee\"];\n");
         md.append("  node [fontname = \"Handlee\"];\n");
