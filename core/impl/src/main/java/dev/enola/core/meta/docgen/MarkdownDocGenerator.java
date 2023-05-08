@@ -93,16 +93,11 @@ public class MarkdownDocGenerator {
                 var description = related.getValue().getDescription();
                 var id = related.getValue().getId();
                 var idPath = IDs.toPath(id);
-                md.append(
-                        "* `"
-                                + key
-                                + "` _"
-                                + label
-                                + "_ ⇒ ["
-                                + id.getEntity()
-                                + "](#"
-                                + idPath
-                                + ")");
+                md.append("* `" + key + "`");
+                if (!Strings.isNullOrEmpty(label)) {
+                    md.append(" _" + label + "_");
+                }
+                md.append(" ⇒ [" + id.getEntity() + "](#" + idPath + ")");
                 if (!Strings.isNullOrEmpty(description)) {
                     md.append(" (" + description + ")");
                 }
@@ -117,7 +112,11 @@ public class MarkdownDocGenerator {
                 var label = link.getValue().getLabel();
                 var description = link.getValue().getDescription();
                 var uri = link.getValue().getUriTemplate();
-                md.append("* `" + key + "` _" + label + "_ ⇝ <" + uri + ">");
+                md.append("* `" + key + "`");
+                if (!Strings.isNullOrEmpty(label)) {
+                    md.append(" _" + label + "_");
+                }
+                md.append(" ⇝ <" + uri + ">");
                 if (!Strings.isNullOrEmpty(description)) {
                     md.append(" (" + description + ")");
                 }
