@@ -115,6 +115,26 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
 
+extra:
+  analytics:
+    provider: google
+    property: G-W0WFEQPB8E
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/heart
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/heart-broken
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Please <a
+            href="https://github.com/enola-dev/enola/issues/new/?title=[Feedback]+{title}&body=On+{url},+...&labels=documentation"
+            target="_blank" rel="noopener">suggest how to improve this page</a>?
+
 plugins:
   - search
 
