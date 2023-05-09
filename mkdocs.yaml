@@ -132,7 +132,7 @@ extra:
           data: 0
           note: >-
             Thanks for your feedback! Please <a
-            href="https://github.com/enola-dev/enola/issues/new/?title=[Feedback]+{title}&body=On+{url},+...&labels=documentation"
+            href="https://github.com/enola-dev/enola/issues/new/?title=[Feedback]+{title}&body=On+https://docs.enola.dev{url},+...&labels=documentation"
             target="_blank" rel="noopener">suggest how to improve this page</a>?
 
 plugins:
