@@ -23,6 +23,8 @@ import ch.vorburger.exec.ManagedProcess;
 import ch.vorburger.exec.ManagedProcessBuilder;
 import ch.vorburger.exec.ManagedProcessException;
 
+import org.apache.commons.exec.Executor;
+
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -52,14 +54,15 @@ public class VorburgerExecRunner implements Runner {
         } catch (ManagedProcessException e) {
             // TODO FIXME This is very ugly!! Needs
             // https://github.com/vorburger/ch.vorburger.exec/issues/45
-            if (e.getMessage().contains("failed, exitValue=")) {
+            if (e.getMessage().contains("failed, exitValue=")
+                    && p.exitValue() != Executor.INVALID_EXITVALUE) {
                 exitCode = p.exitValue();
             } else {
                 throw e;
             }
+        } finally {
+            output.append(baos.toString(UTF_8));
         }
-
-        output.append(baos.toString(UTF_8));
 
         return exitCode;
     }
