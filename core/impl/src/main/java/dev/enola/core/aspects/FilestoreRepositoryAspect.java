@@ -17,6 +17,8 @@
  */
 package dev.enola.core.aspects;
 
+import static dev.enola.common.protobuf.Timestamps2.fromInstant;
+
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.ProtoIO;
@@ -52,6 +54,7 @@ public class FilestoreRepositoryAspect implements EntityAspect {
         ReadableResource resource = new FileResource(path);
         try {
             io.read(resource, entity);
+            resource.lastModifiedIfKnown().ifPresent(ts -> entity.setTs(fromInstant(ts)));
         } catch (IOException e) {
             throw new EnolaException("Failed to read: " + resource.uri(), e);
         }
