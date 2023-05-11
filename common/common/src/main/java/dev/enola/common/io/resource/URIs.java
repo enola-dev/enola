@@ -36,7 +36,7 @@ public final class URIs {
         var charset = getQueryMap(uri).get("charset");
         if (charset == null) {
             throw new IllegalArgumentException(
-                    "URI does not contain a &charset=... : " + uri.toString());
+                    "URI does not contain a ?charset=... : " + uri.toString());
         }
         return Charset.forName(charset);
     }
