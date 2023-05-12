@@ -16,28 +16,10 @@
     limitations under the License.
 -->
 
-# Get Entity
+# IGNORE!
 
-`enola get` will retrieve an _entity_ from its [connectors](../connector/index.md).
+THIS FILE WILL BE OVERWRITTEN WITH THE GENERATED
 
-## Screencast (Asciinema)
+bazel-bin/core/lib/core_proto_doc/core_proto_doc.md
 
-![Demo](script.svg)
-
-## Enola Get
-
-Get a `book` - note how the _related_ `kind` and `library` ID are set, based on the template
-[from the model](../library/index.md):
-
-```bash cd .././.././..
-$ ./enola get --model file:docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
-...
-```
-
-Get a `book_kind` - note how the `google` _link_ was set, based on the template
-[from the model](../library/index.md):
-
-```bash cd .././.././..
-$ ./enola get --model file:docs/use/library/model.yaml demo.book_kind/0-13-140731-7
-...
-```
+BY THE tools/docs/build.sh SCRIPT!

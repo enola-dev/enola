@@ -29,12 +29,14 @@ nav:
   - Users:
       - Overview: use/index.md
       - Help: use/help/index.md
-      - Library Demo Model: use/library/index.md
+      - Example Model: use/library/index.md
       - DocGen: use/docgen/index.md
+      # - List Entites:
       - Get Entity: use/get/index.md
+      - Connectors: use/connector/index.md
       - Server: use/server/index.md
+      - Rosetta: use/rosetta/index.md
       - ExecMD: use/execmd/index.md
-      # TODO - Rosetta: use/rosetta/index.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
@@ -44,7 +46,7 @@ nav:
       - IDE: dev/ide.md
       - Architecture: concepts/implementation.md
       - Code Conventions: dev/style.md
-      - Protocol Buffer API: dev/proto/core_proto_doc.md
+      - Protocol Buffer API: dev/proto/core.md
       - Bazel: dev/bazel.md
       - Dependencies: dev/dependencies.md
       - Contributor Guide: contributing.md

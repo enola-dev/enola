@@ -21,7 +21,7 @@
 We can generate nice Markdown documentation for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or Graphwiz format.
 
 ```bash cd .././.././..
-$ ./enola docgen --model file:docs/use/library/model.textproto --diagram=mermaid >docs/use/docgen/docgen.md
+$ ./enola docgen --model file:docs/use/library/model.yaml --diagram=mermaid >docs/use/docgen/docgen.md
 ...
 ```
 

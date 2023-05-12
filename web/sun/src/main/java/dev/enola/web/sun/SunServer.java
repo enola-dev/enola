@@ -28,12 +28,17 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
 public class SunServer implements WebServer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SunServer.class);
 
     private final HttpServer sun;
 
@@ -85,8 +90,7 @@ public class SunServer implements WebServer {
                     throw new IOException("Failed HTTP GET: " + uri, e);
                 } catch (Throwable t) {
                     // Without this, exceptions through by WebHandler are "lost"
-                    // TODO Add SLF4j as Logging API?
-                    t.printStackTrace();
+                    LOG.warn("URI {} handling failed", uri, t);
                 }
             } else {
                 throw new IOException(

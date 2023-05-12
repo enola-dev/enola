@@ -26,18 +26,24 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.EntityAspect;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.proto.Entity;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 public class FilestoreRepositoryAspect implements EntityAspect {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FilestoreRepositoryAspect.class);
+
     private final Path root;
-    private final Format format;
+    private final FileSystemRepository.Format format;
     private final ProtoIO io = new ProtoIO();
 
-    public FilestoreRepositoryAspect(Path root, Format format) {
+    public FilestoreRepositoryAspect(Path root, FileSystemRepository.Format format) {
         this.root = root.toAbsolutePath().normalize();
         this.format = format;
     }
@@ -45,11 +51,16 @@ public class FilestoreRepositoryAspect implements EntityAspect {
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
         var id = entity.getId();
-        var path = root.resolve(IDs.toPath(id) + "." + format.extension);
+        var path = root.resolve(IDs.toPath(id) + "." + getExtension(format));
 
         if (!path.toFile().exists()) {
+            LOG.info("No {}", path);
             return;
         }
+
+        // TODO https://github.com/enola-dev/enola/issues/75
+        // var any = Any.newBuilder().setTypeUrl(??? ... ???).build();
+        // entity.putData("authors", any);
 
         ReadableResource resource = new FileResource(path);
         try {
@@ -60,15 +71,15 @@ public class FilestoreRepositoryAspect implements EntityAspect {
         }
     }
 
-    public enum Format {
-        YAML("yaml"),
-        JSON("json"),
-        TEXTPB("textproto");
-
-        private final String extension;
-
-        Format(String extension) {
-            this.extension = extension;
+    private String getExtension(FileSystemRepository.Format format) {
+        switch (format) {
+            case FORMAT_TEXTPROTO:
+                return "textproto";
+            case FORMAT_YAML:
+                return "yaml";
+            case FORMAT_JSON:
+                return "json";
         }
+        throw new IllegalArgumentException("Unknown format: " + format);
     }
 }

@@ -1,0 +1,14 @@
+kinds:
+  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+    link:
+      google:
+        label: Google Book Search
+        uriTemplate: "https://www.google.com/search?tbm=bks&q={path.isbn}"
+    data:
+      authors:
+        label: Names of the authors of this book.
+    connectors:
+      - fs:
+          path: docs/use/connector/
+          # type_url: TODO https://github.com/enola-dev/enola/issues/75
+          format: FORMAT_YAML

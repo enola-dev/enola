@@ -1,0 +1,4 @@
+kinds:
+  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+    connectors:
+      - error: "Fail fast, then get up even faster, to continue running!"

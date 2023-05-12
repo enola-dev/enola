@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 public class ServerTest {
     @Test
     public void testServer() throws IOException, InterruptedException {
-        try (var server = new Server().start()) {
+        try (var server = new Server().start(0)) {
             var endpoint = "localhost:" + server.getPort();
             var credz = InsecureChannelCredentials.create();
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();

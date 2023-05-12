@@ -17,8 +17,6 @@
  */
 package dev.enola.core;
 
-import static dev.enola.core.aspects.FilestoreRepositoryAspect.Format.YAML;
-
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.*;
 import dev.enola.core.meta.EntityKindRepository;
@@ -65,6 +63,11 @@ public class EnolaServiceProvider {
 
                         // TODO JAVA_GUICE Registry lookup?
 
+                    case FS:
+                        var fs = c.getFs();
+                        s.add(new FilestoreRepositoryAspect(Path.of(fs.getPath()), fs.getFormat()));
+                        break;
+
                     case GRPC:
                         s.add(new GrpcAspect(c.getGrpc()));
                         break;
@@ -75,9 +78,7 @@ public class EnolaServiceProvider {
                                 "Connector Type not set in EntityKind: " + ek.getId());
                 }
             }
-            // TODO Make the FilestoreRepositoryAspect conditional on connectors list in meta proto
-            // TODO Make '.' & Format configurable, probably through a Config proto
-            s.add(new FilestoreRepositoryAspect(Path.of("."), YAML));
+
             s.add(new UriTemplateAspect(ek));
             s.add(new TimestampAspect());
             s.add(new ValidationAspect());
