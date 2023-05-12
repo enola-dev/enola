@@ -156,12 +156,26 @@ message Connector {
 
     // TODO java_guice lookup?
 
+    FileSystemRepository fs = 4;
+
     // Invokes remote connector via gRPC.
     // The "connection string" here is a target endpoint in hostname:port
     // format. (It's NOT an URI, so there is no scheme:// nor any /path/ or
     // #fragment.)
     string grpc = 5;
   }
+}
+
+message FileSystemRepository {
+  string path = 1;
+
+  enum Format {
+    FORMAT_UNSPECIFIED = 0;
+    FORMAT_TEXTPROTO = 1;
+    FORMAT_YAML = 2;
+    FORMAT_JSON = 3;
+  }
+  Format format = 2;
 }
 
 // TODO Remove the following - and have EntityKind *BE* an Entity that's itself

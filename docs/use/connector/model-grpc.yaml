@@ -1,0 +1,7 @@
+kinds:
+  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+    link:
+      link1:
+        label: Link without uriTemplate, will be set by connector
+    connectors:
+      - grpc: localhost:9090

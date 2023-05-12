@@ -37,6 +37,7 @@ java_library(
         "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:com_google_template_soy",
         "@maven//:io_grpc_grpc_api",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

@@ -87,6 +87,8 @@ $ ./enola execmd --help
 
 ## Rosetta
 
+[Rosetta](../rosetta/index.md) has the following options:
+
 ```bash $? cd .././.././..
 $ ./enola rosetta --help
 ...

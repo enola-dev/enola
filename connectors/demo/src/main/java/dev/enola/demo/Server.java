@@ -21,14 +21,27 @@ import io.grpc.ServerBuilder;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 public class Server implements Closeable {
 
     private io.grpc.Server server;
 
-    public Server start() throws IOException {
-        var builder = ServerBuilder.forPort(0);
+    public static void main(String[] args) throws IOException, InterruptedException {
+        var port = Integer.parseInt(args[0]);
+        var server = new Server().start(port);
+        System.out.println("Started Demo gRPC Server on localhost at port: " + port);
+
+        var pid = ProcessHandle.current().pid();
+        Files.writeString(Path.of("/tmp/ServerPID"), Long.toString(pid));
+        System.out.println(pid + " PID written to /tmp/ServerPID");
+        server.blockUntilShutdown();
+    }
+
+    public Server start(int port) throws IOException {
+        var builder = ServerBuilder.forPort(port);
         builder.addService(new DemoConnector());
         server = builder.build().start();
         return this;
@@ -63,9 +76,5 @@ public class Server implements Closeable {
         if (server != null) {
             server.awaitTermination();
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        new Server().start();
     }
 }

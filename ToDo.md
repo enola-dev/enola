@@ -22,37 +22,13 @@
 
 1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
 
-1. Write `docs/use/rosetta`
-
-1. Convert Library demo model from TextProto to YAML using `enola rosetta`, and include that YAML on `docs/use/library` MD
-
-1. Write a `FilestoreRepositoryAspect` demo+doc for library
-
-1. `connectors/demo/` with test to illustrate the Service to get IDs
-
-1. Publish Site
-
-1. Create Tutorial Slides!
-    - Write using https://github.com/maaslalani/slides
-    - Record ^^^ them for docs/use/intro/*.gif using https://github.com/charmbracelet/vhs/tree/main/examples/slides
-    - Or use https://github.com/d0c-s4vage/lookatme
-    - Or (and?!) use a HTML, not TUI + GIF, one like:
-        - https://sli.dev
-        - https://revealjs.com
-        - https://marp.app
-        - https://gist.github.com/johnloy/27dd124ad40e210e91c70dd1c24ac8c8
-
 1. It's ugly how 404.html and ui.soy duplicate the HTML "frame" - how-to re-use?
    https://github.com/google/closure-templates/blob/master/documentation/reference/template-types.md#how-do-you-pass-in-a-template
 
-1. UI Enhancements
+1. UI Enhancements of HTML
     - Search should be more in the middle
     - Icon should be vertically aligned in the middle
     - Footer
-
-1. Put MVP (!) screenshot image on README (and make README very short; like e.g. https://github.com/jorisroovers/gitlint)
-   See https://squidfunk.github.io/mkdocs-material/reference/images/
-   With https://squidfunk.github.io/mkdocs-material/reference/grids/
 
 ---
 

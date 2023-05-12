@@ -1,0 +1,4 @@
+kinds:
+  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+    connectors:
+      - java_class: dev.enola.core.aspects.ErrorTestAspect

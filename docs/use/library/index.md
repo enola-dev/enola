@@ -18,17 +18,20 @@
 
 # Library Model
 
-## model.textproto
+Enola's _Entities_ are modeled with _Entity Kinds,_ as described [in the architecture](../../concepts/core-arch.md).
+
+Different formats are supported, and can be converted using [Rosetta](../rosetta/index.md).
+
+## `model.yaml`
 
 ```yaml
-{% include "model.textproto" %}
+{% include "model.yaml" %}
 ```
-<!-- TODO Probably more clear if moved to separate new use/docgen section... -->
 
 ## List Kinds
 
 ```bash cd .././.././..
-$ ./enola list-kinds --model file:docs/use/library/model.textproto
+$ ./enola list-kinds --model file:docs/use/library/model.yaml
 ...
 ```
 

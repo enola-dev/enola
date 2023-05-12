@@ -25,6 +25,10 @@ import dev.enola.core.proto.Entity;
 public class ErrorTestAspect implements EntityAspect {
     private final String message;
 
+    public ErrorTestAspect() {
+        this("Failure is just a stepping stone to greatness.");
+    }
+
     public ErrorTestAspect(String message) {
         this.message = message;
     }

@@ -1,0 +1,27 @@
+kinds:
+  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+    label: Book (Kind)
+    emoji: 📗
+    link:
+      google:
+        label: Google Book Search
+        uriTemplate: "https://www.google.com/search?tbm=bks&q={path.isbn}"
+
+  - id: { ns: demo, entity: library, paths: [id] }
+    label: Library
+    emoji: 📚
+
+  - id: { ns: demo, entity: book, paths: [library, isbn, copy] }
+    label: Book (Copy)
+    emoji: 📖
+    related:
+      library:
+        id:
+          ns: demo
+          entity: library
+          paths: ["{path.library}"]
+      kind:
+        id:
+          ns: demo
+          entity: book_kind
+          paths: ["{path.isbn}"]

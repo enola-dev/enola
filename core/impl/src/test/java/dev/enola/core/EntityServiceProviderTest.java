@@ -19,15 +19,14 @@ package dev.enola.core;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.core.meta.proto.FileSystemRepository.Format.FORMAT_YAML;
+
 import static org.junit.Assert.assertThrows;
 
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.proto.Connector;
-import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.meta.proto.EntityRelationship;
-import dev.enola.core.meta.proto.Link;
+import dev.enola.core.meta.proto.*;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.demo.Server;
@@ -57,19 +56,24 @@ public class EntityServiceProviderTest {
     }
 
     @Test
-    public void testUriTemplate() throws ValidationException, EnolaException, IOException {
+    // TODO Separate tests for UriTemplate and FilestoreRepository
+    public void testUriTemplateAndFilestoreRepository()
+            throws ValidationException, EnolaException, IOException {
         var kid = ID.newBuilder().setNs("test").setEntity("dog").addPaths("name").build();
         var template = "https://www.google.com/search?q={path.name}+dog&sclient=img";
         var href = Link.newBuilder().setUriTemplate(template).build();
         var rel1 = EntityRelationship.newBuilder().build();
         var tid = ID.newBuilder().setNs("test").setEntity("cat").addPaths("{path.name}").build();
         var rel2 = EntityRelationship.newBuilder().setId(tid).build();
+        var fs = FileSystemRepository.newBuilder().setPath(".").setFormat(FORMAT_YAML).build();
+        var connector = Connector.newBuilder().setFs(fs).build();
         var kind =
                 EntityKind.newBuilder()
                         .setId(kid)
                         .putLink("image", href)
                         .putRelated("rel1", rel1)
                         .putRelated("rel2", rel2)
+                        .addConnectors(connector)
                         .build();
         var ekr = new EntityKindRepository().put(kind);
         var service = new EnolaServiceProvider().get(ekr);
@@ -128,7 +132,7 @@ public class EntityServiceProviderTest {
 
     @Test
     public void testGrpc() throws IOException, ValidationException, EnolaException {
-        try (var server = new Server().start()) {
+        try (var server = new Server().start(0)) {
             var kid = ID.newBuilder().setNs("test").setEntity("grpc").addPaths("name").build();
             var gc = Connector.newBuilder().setGrpc("localhost:" + server.getPort()).build();
             var link1 = Link.newBuilder().build();

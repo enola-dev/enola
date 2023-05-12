@@ -20,7 +20,7 @@
 
 <!-- This intentionally does not use ```bash because the server "hangs" -->
 
-    $ ./enola server --model file:docs/use/library/model.textproto --httpPort=8080
+    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080
     Open http://localhost:8080/ui ...
 
 You can now open e.g. <http://localhost:8080/ui/entity/demo.book/ABC/0-13-140731-7/1>

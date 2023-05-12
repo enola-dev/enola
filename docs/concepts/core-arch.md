@@ -18,8 +18,7 @@
 
 # Core's Architecture
 
-These _logical models_ are [implemented](implementation.md) and further documented in Protobuf messages.
-<!-- TODO Figure out how to add link without breaking markdown-link-check: [Protobuf messages](/dev/proto/core_proto_doc/). -->
+These _logical models_ are [implemented](implementation.md) and further documented in [Protobuf messages](../dev/proto/core.md).
 
 ## Entity (Model)
 
@@ -35,12 +34,14 @@ classDiagram
   }
   class Entity{
     Timestamp ts
-    Map~String,String~ links
+    Map~String|String~ links
   }
   Entity *-- ID : id
   Entity "1" --> "*" Entity : related
   EntityKind "*" <|-- "1" Entity : IS A
 ```
+
+<!-- TODO Use Map~String,String~ instead | when https://github.com/mermaid-js/mermaid-live-editor/issues/1223 is fixed? -->
 
 <!--
 Alternatively the same model but as an Entity Relationship (ER) -like diagram,
@@ -58,7 +59,7 @@ erDiagram
 ```
 -->
 
-## Entity Type (Meta Model)
+## Entity Kinds (Meta Model)
 
 ``` mermaid
 classDiagram

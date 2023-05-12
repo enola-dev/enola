@@ -32,7 +32,6 @@ DIR=$(pwd)
 cleanup() {
   cd "$DIR"
   git restore docs/
-  rm -rf docs/dev/proto
   trap - EXIT
 }
 trap cleanup EXIT
@@ -41,16 +40,18 @@ trap cleanup EXIT
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|\.\./\.\.|https://github.com/enola-dev/enola/blob/main|g'
 
-mkdir -p docs/dev/proto/
-cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/
+cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md
 
 if ! [ -x "$(command -v svg-term)" ]; then
   npm install -g svg-term-cli
 fi
 
+# shellcheck disable=SC2016
 # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
-find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | xargs -n 1 -0 tools/demo/build.bash
+find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | \
+  xargs -n 1 -0 sh -c 'tools/demo/build.bash $0 || exit 255'
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
+
 cleanup
