@@ -17,9 +17,15 @@
  */
 package dev.enola.web.sun;
 
+import static com.google.common.base.Charsets.UTF_8;
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
+
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.io.ByteSource;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -32,19 +38,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class SunServer implements WebServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(SunServer.class);
 
+    private static final Executor SERVER_EXECUTOR = Executors.newCachedThreadPool();
+    private static final Executor HANDLER_EXECUTOR = Executors.newSingleThreadExecutor();
+
     private final HttpServer sun;
 
     public SunServer(InetSocketAddress address) throws IOException {
         this.sun = HttpServer.create(requireNonNull(address, "InetSocketAddress"), 0);
-        this.sun.setExecutor(Executors.newCachedThreadPool());
+        this.sun.setExecutor(SERVER_EXECUTOR);
     }
 
     @Override
@@ -78,23 +88,53 @@ public class SunServer implements WebServer {
         public void handle(HttpExchange exchange) throws IOException {
             var uri = exchange.getRequestURI();
             if (exchange.getRequestMethod().equals("GET")) {
+                var callback = new HandlerCallback(exchange);
                 try {
-                    ReadableResource r = handler.get(uri).get();
-                    ByteSource byteSource = r.byteSource();
-                    // "content-type" instead of "Content-type" or "Content-Type" for HTTP/2.0
-                    exchange.getResponseHeaders().set("content-type", r.mediaType().toString());
-                    exchange.sendResponseHeaders(200, byteSource.sizeIfKnown().or(0L));
-                    byteSource.copyTo(exchange.getResponseBody());
-                    exchange.close();
-                } catch (ExecutionException | InterruptedException e) {
-                    throw new IOException("Failed HTTP GET: " + uri, e);
+                    ListenableFuture<ReadableResource> f = handler.get(uri);
+                    Futures.addCallback(f, callback, HANDLER_EXECUTOR);
                 } catch (Throwable t) {
-                    // Without this, exceptions through by WebHandler are "lost"
-                    LOG.warn("URI {} handling failed", uri, t);
+                    // Without this, exceptions thrown by the WebHandler are "lost"
+                    callback.onFailure(t);
                 }
             } else {
                 throw new IOException(
                         "Not implemented HTTP Method: " + exchange.getRequestMethod());
+            }
+        }
+    }
+
+    private static class HandlerCallback implements FutureCallback<ReadableResource> {
+        private final HttpExchange exchange;
+
+        public HandlerCallback(HttpExchange exchange) {
+            this.exchange = exchange;
+        }
+
+        @Override
+        public void onSuccess(ReadableResource r) {
+            try {
+                ByteSource byteSource = r.byteSource();
+                // "content-type" instead of "Content-type" or "Content-Type" for HTTP/2.0
+                exchange.getResponseHeaders().set("content-type", r.mediaType().toString());
+                exchange.sendResponseHeaders(200, byteSource.sizeIfKnown().or(0L));
+                byteSource.copyTo(exchange.getResponseBody());
+                exchange.close();
+            } catch (Throwable t) {
+                onFailure(t);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            LOG.warn("URI {} handling failed", exchange.getRequestURI(), throwable);
+            try {
+                exchange.getResponseHeaders().set("content-type", PLAIN_TEXT_UTF_8.toString());
+                exchange.sendResponseHeaders(500, 0);
+                var pw = new PrintWriter(exchange.getResponseBody(), true, UTF_8);
+                throwable.printStackTrace(pw);
+                exchange.close();
+            } catch (Throwable io) {
+                LOG.error("Error Page response failed", io);
             }
         }
     }
