@@ -122,7 +122,7 @@ repos:
     rev: v3.11.1
     hooks:
       - id: markdown-link-check
-        exclude: (^src/test/resources/|docs/use/docgen/docgen.md|docs/use/server/index.md)
+        exclude: (src/test/resources/|docs/use/docgen/docgen.md|docs/use/server/index.md)
         args: [--quiet, --config, .markdown-link-check.json]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md

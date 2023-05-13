@@ -22,6 +22,7 @@ import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.*;
+import dev.enola.core.meta.EntityAspectWithRepository;
 import dev.enola.core.meta.EntityKindRepository;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,6 +55,10 @@ public class EnolaServiceProvider {
                             var clazz = Class.forName(className);
                             var object = clazz.getDeclaredConstructor().newInstance();
                             EntityAspect connector = (EntityAspect) object;
+                            if (connector instanceof EntityAspectWithRepository) {
+                                ((EntityAspectWithRepository) connector)
+                                        .setEntityKindRepository(ekr);
+                            }
                             aspectsBuilder.add(connector);
                             break;
 

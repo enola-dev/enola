@@ -35,6 +35,6 @@ public class Get extends CommandWithEntityID {
         var response = service.getEntity(request);
         var entity = response.getEntity();
 
-        write(ek, entity);
+        write(entity);
     }
 }

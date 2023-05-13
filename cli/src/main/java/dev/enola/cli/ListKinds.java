@@ -22,6 +22,7 @@ import dev.enola.core.meta.EntityKindRepository;
 
 import picocli.CommandLine;
 
+@Deprecated // TODO Remove this, now that there is the (better) "list enola.entity_kind"
 @CommandLine.Command(name = "list-kinds", description = "List known Entity Kinds")
 public class ListKinds extends CommandWithModel {
     @Override

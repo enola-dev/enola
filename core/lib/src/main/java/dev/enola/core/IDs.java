@@ -43,6 +43,7 @@ import java.util.Map;
 public final class IDs {
 
     private static final String URI_SCHEME = "enola";
+    private static final String URI_SCHEME_COLON = URI_SCHEME + ':';
     private static final Splitter SLASH_SPLITTER =
             Splitter.on('/').omitEmptyStrings().trimResults();
 
@@ -51,10 +52,10 @@ public final class IDs {
     private IDs() {}
 
     public static ID parse(String s) {
-        if (s.startsWith(URI_SCHEME)) {
+        if (s.startsWith(URI_SCHEME_COLON)) {
             URI uri = URI.create(s);
             // return parseOur(uri.getSchemeSpecificPart());
-            return parseOur(s.substring(URI_SCHEME.length() + 1));
+            return parseOur(s.substring(URI_SCHEME_COLON.length()));
         } else {
             return parseOur(s);
         }

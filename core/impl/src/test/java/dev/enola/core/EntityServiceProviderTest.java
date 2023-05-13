@@ -18,6 +18,7 @@
 package dev.enola.core;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static dev.enola.core.meta.proto.FileSystemRepository.Format.FORMAT_YAML;
 
@@ -31,6 +32,7 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.*;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.demo.Server;
 
 import org.junit.Test;
@@ -147,5 +149,26 @@ public class EntityServiceProviderTest {
             var entity = service.getEntity(request).getEntity();
             assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
         }
+    }
+
+    @Test
+    public void testEntityKindInception() throws ValidationException, EnolaException {
+        var kid = ID.newBuilder().setNs("enola").setEntity("entity_kind").addPaths("name").build();
+
+        var ekr = new EntityKindRepository();
+        assertThat(ekr.listID()).containsExactly(kid);
+        var service = new EnolaServiceProvider().get(ekr);
+
+        var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
+
+        var getRequest = GetEntityRequest.newBuilder().setId(eid).build();
+        var getResponse = service.getEntity(getRequest);
+        assertWithMessage("data.schema")
+                .that(getResponse.getEntity().getDataOrThrow("schema"))
+                .isNotNull();
+
+        var listRequest = ListEntitiesRequest.newBuilder().setId(kid).build();
+        var listResponse = service.listEntities(listRequest);
+        assertThat(listResponse.getEntitiesList()).hasSize(1);
     }
 }
