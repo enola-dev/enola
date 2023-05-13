@@ -21,9 +21,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import ch.vorburger.exec.ManagedProcess;
 import ch.vorburger.exec.ManagedProcessBuilder;
-import ch.vorburger.exec.ManagedProcessException;
-
-import org.apache.commons.exec.Executor;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Path;
@@ -32,7 +29,12 @@ import java.util.List;
 
 public class VorburgerExecRunner implements Runner {
     @Override
-    public int exec(Path dir, List<String> command, Appendable output, Duration timeout)
+    public int exec(
+            boolean expectNonZeroExitCode,
+            Path dir,
+            List<String> command,
+            Appendable output,
+            Duration timeout)
             throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -46,24 +48,15 @@ public class VorburgerExecRunner implements Runner {
         for (var arg : command.subList(1, command.size())) {
             pb.addArgument(arg, false);
         }
+        if (expectNonZeroExitCode) {
+            pb.setIsSuccessExitValueChecker(exitValue -> exitValue != 0);
+        }
         ManagedProcess p = pb.build();
 
-        int exitCode;
         try {
-            exitCode = p.start().waitForExitMaxMs(timeout.toMillis());
-        } catch (ManagedProcessException e) {
-            // TODO FIXME This is very ugly!! Needs
-            // https://github.com/vorburger/ch.vorburger.exec/issues/45
-            if (e.getMessage().contains("failed, exitValue=")
-                    && p.exitValue() != Executor.INVALID_EXITVALUE) {
-                exitCode = p.exitValue();
-            } else {
-                throw e;
-            }
+            return p.start().waitForExitMaxMs(timeout.toMillis());
         } finally {
             output.append(baos.toString(UTF_8));
         }
-
-        return exitCode;
     }
 }

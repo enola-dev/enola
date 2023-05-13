@@ -35,7 +35,7 @@ maven.install(
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.0",
         # Other
-        "ch.vorburger.exec:exec:3.1.4",
+        "ch.vorburger.exec:exec:3.1.5",
         "com.github.java-json-tools:uri-template:0.10",
         "com.zaxxer:nuprocess:2.0.6",
         "info.picocli:picocli:4.7.1",

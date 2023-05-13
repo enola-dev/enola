@@ -32,7 +32,12 @@ import java.util.concurrent.TimeUnit;
 
 class NuProcessRunner implements Runner {
     @Override
-    public int exec(Path dir, List<String> command, Appendable output, Duration timeout)
+    public int exec(
+            boolean expectNonZeroExitCode,
+            Path dir,
+            List<String> command,
+            Appendable output,
+            Duration timeout)
             throws Exception {
         AppendingHandler handler = new AppendingHandler(output);
         NuProcessBuilder pb = new NuProcessBuilder(handler, command);

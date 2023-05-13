@@ -144,20 +144,10 @@ public class ExecMD {
         Duration timeout = Duration.ofSeconds(7);
 
         try {
-            var exitCode = runner.bash(dir, fullCommand, md, timeout);
-            if (exitCode != 0 && !expectFailure) {
-                throw new MarkdownProcessingException(
-                        exitCode
-                                + " exit code (use ```bash $? marker if that's expected): "
-                                + fullCommand);
-            }
-            if (exitCode == 0 && expectFailure) {
-                throw new MarkdownProcessingException(
-                        "exit code 0, but was expected to fail: " + fullCommand);
-            }
-
+            var exitCode = runner.bash(expectFailure, dir, fullCommand, md, timeout);
         } catch (Exception e) {
-            throw new MarkdownProcessingException("exec failed: " + fullCommand, e);
+            throw new MarkdownProcessingException(
+                    "exec failed (use ```bash $? marker if that's expected): " + fullCommand, e);
         }
     }
 
