@@ -29,10 +29,26 @@ import java.util.List;
  * href="https://github.com/zeroturnaround/zt-exec">zt-exec</a>.
  */
 interface Runner {
-    int exec(Path dir, List<String> command, Appendable output, Duration timeout) throws Exception;
+    int exec(
+            boolean expectNonZeroExitCode,
+            Path dir,
+            List<String> command,
+            Appendable output,
+            Duration timeout)
+            throws Exception;
 
-    default int bash(Path dir, String command, Appendable output, Duration timeout)
+    default int bash(
+            boolean expectNonZeroExitCode,
+            Path dir,
+            String command,
+            Appendable output,
+            Duration timeout)
             throws Exception {
-        return exec(dir, List.of("/usr/bin/env", "bash", "-c", command), output, timeout);
+        return exec(
+                expectNonZeroExitCode,
+                dir,
+                List.of("/usr/bin/env", "bash", "-c", command),
+                output,
+                timeout);
     }
 }

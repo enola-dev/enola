@@ -19,40 +19,40 @@ package dev.enola.common.markdown.exec;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import static java.nio.file.Path.of;
+import static java.time.Duration.ofSeconds;
 
-import java.nio.file.Path;
-import java.time.Duration;
+import org.junit.Test;
 
 public class RunnerTest {
 
     Runner runner = new VorburgerExecRunner(); // NuProcessRunner();
 
-    void check(String command, int expectedExitCode, String expectedOutput) throws Exception {
+    void check(String command, boolean expectNonZeroExitCode, String expectedOutput)
+            throws Exception {
         var sb = new StringBuffer();
-        var actualExitCode = runner.bash(Path.of("."), command, sb, Duration.ofSeconds(3));
+        var actualExitCode = runner.bash(expectNonZeroExitCode, of("."), command, sb, ofSeconds(3));
         assertEquals(expectedOutput, sb.toString());
-        assertEquals(expectedExitCode, actualExitCode);
+        assertEquals(expectNonZeroExitCode, actualExitCode != 0);
     }
 
     @Test
     public void testTrue() throws Exception {
-        check("true", 0, "");
+        check("true", false, "");
     }
 
     @Test
     public void testEcho() throws Exception {
-        check("echo hi", 0, "hi\n");
+        check("echo hi", false, "hi\n");
     }
 
     @Test
     public void testFalse() throws Exception {
-        check("false", 1, "");
+        check("false", true, "");
     }
 
     @Test
     public void testInexistantCommand() throws Exception {
-        int exitValue = 127; // or Integer.MIN_VALUE for NuProcess
-        check("does-not-exist", exitValue, "bash: line 1: does-not-exist: command not found\n");
+        check("does-not-exist", true, "bash: line 1: does-not-exist: command not found\n");
     }
 }
