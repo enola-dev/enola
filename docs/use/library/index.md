@@ -30,8 +30,17 @@ Different formats are supported, and can be converted using [Rosetta](../rosetta
 
 ## List Kinds
 
+You can query Enola for a list of known Entity Kind names:
+
 ```bash cd .././.././..
 $ ./enola list-kinds --model file:docs/use/library/model.yaml
+...
+```
+
+Because Entity Kinds are Entites themselves, you can also list them like this, with details:
+
+```bash cd .././.././..
+$ ./enola list --model file:docs/use/library/model.yaml --format=yaml enola.entity_kind
 ...
 ```
 

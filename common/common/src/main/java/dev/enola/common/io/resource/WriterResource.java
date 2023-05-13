@@ -27,6 +27,10 @@ import java.io.Writer;
 import java.net.URI;
 import java.nio.charset.Charset;
 
+/**
+ * A {@link WritableResource} which delegates to a {@link Writer}. The underlying Writer is
+ * intentionally never closed by this Resource's CharSink.
+ */
 public class WriterResource implements WritableResource {
     private final Writer writer;
     private final URI uri;

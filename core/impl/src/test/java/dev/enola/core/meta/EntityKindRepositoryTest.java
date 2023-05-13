@@ -42,8 +42,9 @@ public class EntityKindRepositoryTest {
 
     @Test
     public void testEmptyRepository() throws ValidationException {
-        assertThat(r.list()).isEmpty();
-        assertThat(r.listID()).isEmpty();
+        // Even an empty repository always has the built-in enola.entity_kind
+        assertThat(r.list()).hasSize(1);
+        assertThat(r.listID()).hasSize(1);
 
         var id = ID.newBuilder().setEntity("non-existant").build();
         assertThrows(IllegalArgumentException.class, () -> r.get(id));
@@ -56,8 +57,8 @@ public class EntityKindRepositoryTest {
 
         r.put(ek);
         assertThat(r.get(id)).isEqualTo(ek);
-        assertThat(r.listID()).containsExactly(id);
-        assertThat(r.list()).containsExactly(ek);
+        assertThat(r.listID()).contains(id);
+        assertThat(r.list()).contains(ek);
     }
 
     @Test
@@ -67,8 +68,8 @@ public class EntityKindRepositoryTest {
 
         r.put(ek);
         assertThat(r.get(id)).isEqualTo(ek);
-        assertThat(r.listID()).containsExactly(id);
-        assertThat(r.list()).containsExactly(ek);
+        assertThat(r.listID()).contains(id);
+        assertThat(r.list()).contains(ek);
     }
 
     @Test
@@ -84,19 +85,21 @@ public class EntityKindRepositoryTest {
     public void testLoadTextproto() throws ValidationException, IOException {
         r.load(new ClasspathResource("demo-model.textproto"));
         assertThat(r.listID())
-                .containsExactly(
+                .containsAtLeast(
                         IDs.parse("demo.foo/name"),
                         IDs.parse("demo.bar/foo/name"),
                         IDs.parse("demo.baz/uuid"));
-        assertThat(r.list()).hasSize(3);
+        // The 4th one is the built-in enola.entity_kind
+        assertThat(r.list()).hasSize(4);
     }
 
     @Test
     public void testLoadYAML() throws ValidationException, IOException {
         r.load(new ClasspathResource("demo-model.yaml"));
         assertThat(r.listID())
-                .containsExactly(IDs.parse("demo.foo/name"), IDs.parse("demo.bar/foo/name"));
-        assertThat(r.list()).hasSize(2);
+                .containsAtLeast(IDs.parse("demo.foo/name"), IDs.parse("demo.bar/foo/name"));
+        // The 3rd one is the built-in enola.entity_kind
+        assertThat(r.list()).hasSize(3);
     }
 
     @Test

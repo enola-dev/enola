@@ -39,6 +39,15 @@ public class EntityKindRepository {
     private static final MessageValidators v = EntityKindValidations.INSTANCE;
     private final Map<String, Map<String, CachedEntityKind>> map = new TreeMap<>();
 
+    public EntityKindRepository() {
+        try {
+            put(EntityKindAspect.ENTITY_KIND_ENTITY_KIND);
+        } catch (ValidationException e) {
+            // This cannot happen, because ENTITY_KIND_ENTITY_KIND is valid.
+            throw new IllegalStateException("BUG!", e);
+        }
+    }
+
     public EntityKindRepository put(EntityKind entityKind) throws ValidationException {
         var results = MessageValidators.Result.newBuilder();
         put(entityKind, ErrorResource.INSTANCE, Optional.empty(), results);
@@ -99,7 +108,8 @@ public class EntityKindRepository {
 
     public EntityKind get(ID id) {
         return getOptional(id)
-                .orElseThrow(() -> new IllegalArgumentException(id + " unknown: " + map));
+                .orElseThrow(
+                        () -> new IllegalArgumentException(id + " unknown; available are: " + map));
     }
 
     public EntityKindRepository load(ReadableResource resource)
@@ -143,7 +153,7 @@ public class EntityKindRepository {
         return eks;
     }
 
-    public Collection<ID> listID() {
+    public List<ID> listID() {
         var ids = new ArrayList<ID>();
         map.values()
                 .forEach(
@@ -169,6 +179,18 @@ public class EntityKindRepository {
 
         EntityKind entityKind() {
             return entityKind;
+        }
+
+        @Override
+        public String toString() {
+            return "CachedEntityKind{"
+                    + "entityKind="
+                    + entityKind
+                    + ", resource="
+                    + resource
+                    + ", lastModified="
+                    + lastModified
+                    + '}';
         }
     }
 }

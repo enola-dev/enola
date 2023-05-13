@@ -39,7 +39,9 @@ public class List extends CommandWithEntityID {
         var response = service.listEntities(request);
 
         for (var entity : response.getEntitiesList()) {
-            write(ek, entity);
+            write(entity);
+            out.println();
         }
+        out.flush();
     }
 }

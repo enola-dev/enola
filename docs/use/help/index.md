@@ -67,6 +67,8 @@ $ ./enola list --help
 ...
 ```
 
+Because Entity Kinds are Entites themselves, `list` [can also be used to see the models](../library/index.md##list-kinds).
+
 ## Server
 
 [The built-in HTTP Web Server](../server/index.md) has the following options:

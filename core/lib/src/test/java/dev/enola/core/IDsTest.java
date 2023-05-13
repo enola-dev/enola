@@ -157,4 +157,22 @@ public class IDsTest {
         var eID = newBuilder().addPaths("xyz").addPaths("123").build();
         pathMap(ekID, eID);
     }
+
+    @Test
+    public void testEnolaNamespace() {
+        var eid =
+                ID.newBuilder()
+                        .setNs("enola")
+                        .setEntity("entity_kind")
+                        .addPaths("enola.entity_kind")
+                        .build();
+
+        String metaID_URI = "enola:enola.entity_kind/enola.entity_kind";
+        var id1 = IDs.parse(metaID_URI);
+        assertThat(id1).isEqualTo(eid);
+
+        String metaID_our = "enola.entity_kind/enola.entity_kind";
+        var id2 = IDs.parse(metaID_our);
+        assertThat(id2).isEqualTo(eid);
+    }
 }

@@ -19,9 +19,14 @@ package dev.enola.common.io.resource;
 
 import com.google.common.io.CharSink;
 
+import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * A {@link CharSink} which delegates to a {@link Writer}. The underlying Writer is intentionally
+ * never closed (by this CharSink).
+ */
 // Intentionally package local (for now)
 class WriterCharSink extends CharSink {
     private final Writer writer;
@@ -32,6 +37,18 @@ class WriterCharSink extends CharSink {
 
     @Override
     public Writer openStream() throws IOException {
-        return writer;
+        return new NonClosingWriter(writer);
+    }
+
+    private static final class NonClosingWriter extends FilterWriter {
+
+        private NonClosingWriter(Writer delegate) {
+            super(delegate);
+        }
+
+        @Override
+        public void close() throws IOException {
+            // IGNORE!
+        }
     }
 }

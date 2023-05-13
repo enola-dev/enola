@@ -70,7 +70,7 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     protected abstract void run(
             EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id) throws Exception;
 
-    protected void write(EntityKind ek, Entity entity) throws IOException {
+    protected void write(Entity entity) throws IOException {
         new ProtoIO(typeRegistry).write(entity, resource);
     }
 }
