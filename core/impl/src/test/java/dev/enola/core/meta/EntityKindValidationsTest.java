@@ -29,7 +29,7 @@ import org.junit.Test;
 public class EntityKindValidationsTest {
 
     @Test
-    public void testValidateEntityKindWithBrokenRelated() throws ValidationException {
+    public void validateEntityKindWithBrokenRelated() {
         var ek1 = EntityKind.newBuilder();
         var ek1id = ID.newBuilder().setNs("test").setEntity("test");
         var ek1rel1id = ID.newBuilder().setNs("test").setEntity("bad");
@@ -38,7 +38,41 @@ public class EntityKindValidationsTest {
         ek1.setId(ek1id);
 
         var ekr = new EntityKindRepository();
-        ekr.put(ek1.build());
-        assertThrows(ValidationException.class, () -> ekr.validate());
+        assertThrows(
+                ValidationException.class,
+                () -> {
+                    ekr.put(ek1.build());
+                    ekr.validate();
+                });
+    }
+
+    @Test
+    public void validateIDs() throws ValidationException {
+        // Invalid NS
+        checkInvalidID(ID.newBuilder().setNs("n#k").setEntity("ok").build());
+        checkInvalidID(ID.newBuilder().setNs("NOK").setEntity("ok").build());
+        checkInvalidID(ID.newBuilder().setNs("näk").setEntity("ok").build());
+
+        // Invalid Entity
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("NOK").build());
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("näk").build());
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("n#k").build());
+
+        // Invalid Paths
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("ok").addPaths("NOK").build());
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("ok").addPaths("näk").build());
+        checkInvalidID(ID.newBuilder().setNs("ok").setEntity("ok").addPaths("n#k").build());
+    }
+
+    private void checkInvalidID(ID id) {
+        var ek1 = EntityKind.newBuilder();
+        ek1.setId(id);
+        var ekr = new EntityKindRepository();
+        assertThrows(
+                ValidationException.class,
+                () -> {
+                    ekr.put(ek1.build());
+                    ekr.validate();
+                });
     }
 }
