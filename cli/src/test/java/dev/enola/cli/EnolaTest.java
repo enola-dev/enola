@@ -34,7 +34,7 @@ import java.io.IOException;
 
 public class EnolaTest {
 
-    // TODO testVerbose()
+    // TODO testVerboseLogging - add logs
 
     @Test
     public void testNoArguments() {
@@ -120,5 +120,32 @@ public class EnolaTest {
             assertThat(exec).hasExitCode(0).out().isEmpty();
             assertThat(r.charSource().read()).startsWith("kinds:\n");
         }
+    }
+
+    @Test
+    public void testNoStacktraceWithoutVerbose() {
+        var exec = cli("docgen", "--model", "file:nonexistant.yaml");
+        assertThat(exec).out().isEmpty();
+        assertThat(exec).hasExitCode(1).err().isEqualTo("NoSuchFileException: nonexistant.yaml\n");
+    }
+
+    @Test
+    public void testStacktraceWithGlobalVerbose() {
+        var exec = cli("-v", "docgen", "--model", "file:nonexistant.yaml");
+        assertThat(exec).out().isEmpty();
+        assertThat(exec)
+                .hasExitCode(1)
+                .err()
+                .startsWith("java.nio.file.NoSuchFileException: nonexistant.yaml\n\tat ");
+    }
+
+    @Test
+    public void testStacktraceWithSubcommandVerbose() {
+        var exec = cli("docgen", "-v", "--model", "file:nonexistant.yaml");
+        assertThat(exec).out().isEmpty();
+        assertThat(exec)
+                .hasExitCode(1)
+                .err()
+                .startsWith("java.nio.file.NoSuchFileException: nonexistant.yaml\n\tat ");
     }
 }
