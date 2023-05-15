@@ -54,6 +54,7 @@ public class EntityKindValidations {
         }
     }
 
+    // Validates all "cross references" among EntityKinds
     public static final MessageValidator<EntityKindRepository, EntityKindsOrBuilder> eksv =
             (ekr, eks, r) -> {
                 for (var ek : eks.getKindsList()) {
@@ -62,7 +63,12 @@ public class EntityKindValidations {
                         var id = er.getValue().getId();
                         if (id == null) continue;
                         if (ekr.getOptional(IDs.withoutPath(id)).isEmpty()) {
-                            var msg = toPath(ek.getId()) + "#related." + key + " = " + id;
+                            var msg =
+                                    toPath(ek.getId())
+                                            + "#related."
+                                            + key
+                                            + " => UNKNOWN "
+                                            + IDs.toPath(id);
                             r.add(ID.getDescriptor(), msg);
                         }
                     }
@@ -74,7 +80,6 @@ public class EntityKindValidations {
                 check(id.getNs(), ID_NS_PATTERN, "ns", id, r);
 
                 if (Strings.isNullOrEmpty(id.getEntity())) {
-                    // TODO Simplify making fields required
                     r.add(ID.getDescriptor(), "mandatory");
                 } else {
                     check(id.getEntity(), ID_ENTITY_PATTERN, "entity", id, r);
