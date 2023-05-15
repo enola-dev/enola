@@ -51,14 +51,15 @@ public class Enola {
     boolean[] verbosity = {};
 
     static CLI cli(String... args) {
+        var enola = new Enola();
         return new CLI(
                 args,
-                new CommandLine(new Enola())
+                new CommandLine(enola)
                         .setCaseInsensitiveEnumValuesAllowed(true)
                         // .registerConverter(Locale.class, new LocaleConverter())
                         .setExecutionStrategy(LoggingMixin::executionStrategy)
                         .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
-                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler()));
+                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(enola)));
     }
 
     public static void main(String[] args) {
@@ -80,11 +81,18 @@ public class Enola {
 
     private static class QuietExecutionExceptionHandler
             implements CommandLine.IExecutionExceptionHandler {
+
+        private final Enola enola;
+
+        public QuietExecutionExceptionHandler(Enola enola) {
+            this.enola = enola;
+        }
+
         @Override
         public int handleExecutionException(
                 Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult)
                 throws Exception {
-            if (parseResult.hasMatchedOption('v')) {
+            if (enola.verbosity.length > 0) {
                 cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
             } else {
                 Throwable e = ex;
