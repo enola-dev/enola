@@ -34,12 +34,12 @@ kinds:
 
     related:
       one:
-        label: Primary Baz
-        # TODO? rel_id_template: demo:baz?uuid={proto.something.id}
+        label: Primary Foo
+        id: { ns: demo, entity: foo, paths: ["{paths.foo}"] }
 
       two:
-        label: Secondary Baz
-        # TODO? rel_id_template: demo:baz?uuid={proto.otherthing.id}
+        label: Secondary Foo
+        id: { ns: demo, entity: foo, paths: ["FIXED"] }
 
     link:
       wiki:

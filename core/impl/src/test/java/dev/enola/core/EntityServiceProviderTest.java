@@ -62,8 +62,8 @@ public class EntityServiceProviderTest {
         var kid = ID.newBuilder().setNs("test").setEntity("dog").addPaths("name").build();
         var template = "https://www.google.com/search?q={path.name}+dog&sclient=img";
         var href = Link.newBuilder().setUriTemplate(template).build();
-        var rel1 = EntityRelationship.newBuilder().build();
-        var tid = ID.newBuilder().setNs("test").setEntity("cat").addPaths("{path.name}").build();
+        var tid = ID.newBuilder().setNs("test").setEntity("dog").addPaths("{path.name}").build();
+        var rel1 = EntityRelationship.newBuilder().setId(tid).build();
         var rel2 = EntityRelationship.newBuilder().setId(tid).build();
         var fs = FileSystemRepository.newBuilder().setPath(".").setFormat(FORMAT_YAML).build();
         var connector = Connector.newBuilder().setFs(fs).build();
@@ -96,7 +96,7 @@ public class EntityServiceProviderTest {
         assertThat(entity.getRelatedOrThrow("rel1").getEntity()).isEqualTo("cat");
 
         assertThat(entity.getRelatedOrThrow("rel2").getNs()).isEqualTo("test");
-        assertThat(entity.getRelatedOrThrow("rel2").getEntity()).isEqualTo("cat");
+        assertThat(entity.getRelatedOrThrow("rel2").getEntity()).isEqualTo("dog");
         assertThat(entity.getRelatedOrThrow("rel2").getPathsList()).containsExactly("king-charles");
     }
 

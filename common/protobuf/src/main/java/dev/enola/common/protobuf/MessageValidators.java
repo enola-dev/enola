@@ -28,7 +28,6 @@ import dev.enola.common.validation.Validations;
 import java.util.*;
 
 public class MessageValidators {
-    private static final Result EMPTY = Result.newBuilder().build();
     private final Map<Descriptors.Descriptor, List<MessageValidator<Object, MessageOrBuilder>>>
             map = new HashMap<>();
 
@@ -42,19 +41,30 @@ public class MessageValidators {
 
     @CheckReturnValue
     public Result validate(MessageOrBuilder message) {
-        return validate(null, message);
+        var results = Result.newBuilder();
+        validate(null, message, results);
+        return results.build();
+    }
+
+    public void validate(MessageOrBuilder message, MessageValidators.Result.Builder r) {
+        validate(null, message, r);
+    }
+
+    public void validate(
+            Object context, MessageOrBuilder message, MessageValidators.Result.Builder results) {
+        var validators = map.get(message.getDescriptorForType());
+        if (validators == null) {
+            return;
+        }
+        for (var validator : validators) {
+            validator.validate(context, message, results);
+        }
     }
 
     @CheckReturnValue
     public Result validate(Object context, MessageOrBuilder message) {
-        var validators = map.get(message.getDescriptorForType());
-        if (validators == null) {
-            return EMPTY;
-        }
         var results = Result.newBuilder();
-        for (var validator : validators) {
-            validator.validate(context, message, results);
-        }
+        validate(context, message, results);
         return results.build();
     }
 

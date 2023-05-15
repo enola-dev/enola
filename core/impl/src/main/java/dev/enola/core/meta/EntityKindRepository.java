@@ -40,19 +40,24 @@ public class EntityKindRepository {
     private final Map<String, Map<String, CachedEntityKind>> map = new TreeMap<>();
 
     public EntityKindRepository put(EntityKind entityKind) throws ValidationException {
-        put(entityKind, ErrorResource.INSTANCE, Optional.empty());
+        var results = MessageValidators.Result.newBuilder();
+        put(entityKind, ErrorResource.INSTANCE, Optional.empty(), results);
+        validateFinal(results);
         return this;
     }
 
     private synchronized void put(
-            EntityKind entityKind, ReadableResource resource, Optional<Instant> lastModified)
+            EntityKind entityKind,
+            ReadableResource resource,
+            Optional<Instant> lastModified,
+            MessageValidators.Result.Builder r)
             throws ValidationException {
         var id = entityKind.getId();
 
         // TODO Separately validating ID first should eventually not be required anymore,
         // because Validation should "recurse into" messages by itself, later.
-        v.validate(id).throwIt();
-        v.validate(entityKind).throwIt();
+        v.validate(id, r);
+        v.validate(entityKind, r);
 
         map.computeIfAbsent(id.getNs(), s -> new TreeMap<>())
                 .put(id.getEntity(), new CachedEntityKind(entityKind, resource, lastModified));
@@ -99,22 +104,32 @@ public class EntityKindRepository {
 
     public EntityKindRepository load(ReadableResource resource)
             throws IOException, ValidationException {
-        var lastModified = resource.lastModifiedIfKnown();
-        var kinds = new ProtoIO().read(resource, EntityKinds.newBuilder()).build();
-        for (var kind : kinds.getKindsList()) {
-            put(kind, resource, lastModified);
+        return load(List.of(resource));
+    }
+
+    public EntityKindRepository load(Iterable<ReadableResource> resources)
+            throws IOException, ValidationException {
+        var results = MessageValidators.Result.newBuilder();
+        for (var resource : resources) {
+            var lastModified = resource.lastModifiedIfKnown();
+            var kinds = new ProtoIO().read(resource, EntityKinds.newBuilder()).build();
+            for (var kind : kinds.getKindsList()) {
+                put(kind, resource, lastModified, results);
+            }
         }
+        validateFinal(results);
         return this;
     }
 
     /**
-     * Validates consistency of all models and the references across all of their {@link
-     * #load(ReadableResource)}-ed resources.
+     * Final validation, for consistency of all models and the references across all of their {@link
+     * #load(ReadableResource)}-ed resources. Throws ValidationException if r has any problems.
      */
-    public void validate() throws ValidationException {
+    private void validateFinal(MessageValidators.Result.Builder r) throws ValidationException {
         var eks = EntityKinds.newBuilder();
         list().forEach(ek -> eks.addKinds(ek));
-        v.validate(this, eks).throwIt();
+        v.validate(this, eks, r);
+        r.build().throwIt();
     }
 
     public Collection<EntityKind> list() {
