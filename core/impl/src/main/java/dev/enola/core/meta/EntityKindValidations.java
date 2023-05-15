@@ -28,7 +28,31 @@ import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.meta.proto.EntityKindsOrBuilder;
 import dev.enola.core.proto.ID;
 
+import java.util.regex.Pattern;
+
 public class EntityKindValidations {
+
+    // Keep the following regular expressions in-sync with the doc on
+    // core/lib/src/main/java/dev/enola/core/enola_core.proto
+    // AKA https://docs.enola.dev/dev/proto/core/#id
+    private static final Pattern ID_NS_PATTERN = Pattern.compile("[a-z0-9_\\.]*");
+    private static final Pattern ID_ENTITY_PATTERN = Pattern.compile("[a-z0-9_]+");
+    private static final Pattern ID_PATHS_PATTERN = Pattern.compile("[a-z0-9_\\-\\.]+");
+
+    private static void check(
+            String text, Pattern pattern, String what, ID id, MessageValidators.Result.Builder r) {
+        if (!pattern.matcher(text).matches()) {
+            r.add(
+                    ID.getDescriptor(),
+                    IDs.toPath(id)
+                            + " "
+                            + what
+                            + "="
+                            + text
+                            + " does not match valid RegExp "
+                            + pattern.pattern());
+        }
+    }
 
     public static final MessageValidator<EntityKindRepository, EntityKindsOrBuilder> eksv =
             (ekr, eks, r) -> {
@@ -45,22 +69,24 @@ public class EntityKindValidations {
                 }
             };
 
-    private static final MessageValidator<Void, ID> id =
-            (ctx, m, r) -> {
-                // TODO Validate that NS matches regexp as per enola_core.proto
+    private static final MessageValidator<Void, ID> idv =
+            (ctx, id, r) -> {
+                check(id.getNs(), ID_NS_PATTERN, "ns", id, r);
 
-                if (Strings.isNullOrEmpty(m.getEntity())) {
+                if (Strings.isNullOrEmpty(id.getEntity())) {
                     // TODO Simplify making fields required
                     r.add(ID.getDescriptor(), "mandatory");
                 } else {
-                    // TODO Validate that entity name matches regexp as per enola_core.proto
+                    check(id.getEntity(), ID_ENTITY_PATTERN, "entity", id, r);
                 }
 
-                // TODO Validate that paths all match regexp as per enola_core.proto
+                for (String path : id.getPathsList()) {
+                    check(path, ID_PATHS_PATTERN, "path", id, r);
+                }
             };
 
     public static final MessageValidators INSTANCE =
             new MessageValidators()
-                    .register(id, ID.getDescriptor())
+                    .register(idv, ID.getDescriptor())
                     .register(eksv, EntityKinds.getDescriptor());
 }
