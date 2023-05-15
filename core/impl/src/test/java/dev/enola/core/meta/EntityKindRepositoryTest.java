@@ -50,7 +50,7 @@ public class EntityKindRepositoryTest {
 
     @Test
     public void testBasics() throws ValidationException {
-        var id = ID.newBuilder().setNs("testNS").setEntity("testEntity").build();
+        var id = ID.newBuilder().setNs("test").setEntity("test").build();
         var ek = EntityKind.newBuilder().setId(id).build();
 
         r.put(ek);
@@ -61,7 +61,7 @@ public class EntityKindRepositoryTest {
 
     @Test
     public void testEmptyNamespace() throws ValidationException {
-        var id = ID.newBuilder().setEntity("testEntity").build();
+        var id = ID.newBuilder().setEntity("test").build();
         var ek = EntityKind.newBuilder().setId(id).build();
 
         r.put(ek);
