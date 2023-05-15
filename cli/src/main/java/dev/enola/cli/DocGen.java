@@ -24,20 +24,21 @@ import dev.enola.core.meta.docgen.Options;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 import java.net.URI;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen extends CommandWithModel {
 
-    @CommandLine.Option(
+    @Option(
             names = {"--output", "-o"},
             required = true,
             defaultValue = "fd:1?charset=UTF-8", // = FileDescriptorResource.OUT
             description = "URI of where to write generated documentation")
     URI output;
 
-    @CommandLine.Option(
+    @Option(
             names = {"--diagram", "-d"},
             required = true,
             defaultValue = "Mermaid",
@@ -45,14 +46,25 @@ public class DocGen extends CommandWithModel {
             description = "Type of diagrams to generate (${COMPLETION-CANDIDATES})")
     Options.DiagramType diagram;
 
+    @Option(
+            names = {"--header", "-h"},
+            required = true,
+            defaultValue = "string:%23%20Models%0A",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "URI of Markdown header (e.g. file: or string:<URL-encoded> etc.)")
+    URI headerURI;
+
     @Override
     public void run(EntityKindRepository ekr) throws Exception {
         var options = new Options();
         options.diagram = diagram;
 
-        var resource = new ResourceProviders().getWritableResource(output);
+        var rp = new ResourceProviders();
+        var resource = rp.getWritableResource(output);
+        var header = rp.getReadableResource(headerURI).charSource().read();
+
         try (var writer = resource.charSink().openBufferedStream()) {
-            new MarkdownDocGenerator(options).render(ekr, writer);
+            new MarkdownDocGenerator(options).render(ekr, header, writer);
         }
     }
 }

@@ -55,6 +55,7 @@ public class Enola {
         return new CLI(
                 args,
                 new CommandLine(enola)
+                        .setUsageHelpAutoWidth(true)
                         .setCaseInsensitiveEnumValuesAllowed(true)
                         // .registerConverter(Locale.class, new LocaleConverter())
                         .setExecutionStrategy(LoggingMixin::executionStrategy)

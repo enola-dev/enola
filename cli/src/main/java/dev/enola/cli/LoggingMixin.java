@@ -78,8 +78,8 @@ public class LoggingMixin {
             names = {"--verbose", "-v"},
             scope = INHERIT,
             description = {
-                "Specify multiple -v options to increase verbosity. For example, `-v -v -v` or"
-                        + " `-vvv`"
+                "Error verbosity; specify multiple -v options to increase it; e.g. -v -v -v or"
+                        + " -vvv."
             })
     public void setVerbose(boolean[] verbosity) {
         var enola = (Enola) mixee.root().userObject();
