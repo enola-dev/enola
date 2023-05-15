@@ -40,11 +40,6 @@ public class EntityKindRepository {
     private final Map<String, Map<String, CachedEntityKind>> map = new TreeMap<>();
 
     public EntityKindRepository put(EntityKind entityKind) throws ValidationException {
-        v.validate(entityKind).throwIt();
-        // TODO This should eventually not be required anymore!
-        // (Validation should "recurse into" messages by itself, later.)
-        v.validate(entityKind.getId()).throwIt();
-
         put(entityKind, ErrorResource.INSTANCE, Optional.empty());
         return this;
     }
@@ -53,6 +48,12 @@ public class EntityKindRepository {
             EntityKind entityKind, ReadableResource resource, Optional<Instant> lastModified)
             throws ValidationException {
         var id = entityKind.getId();
+
+        // TODO Separately validating ID first should eventually not be required anymore,
+        // because Validation should "recurse into" messages by itself, later.
+        v.validate(id).throwIt();
+        v.validate(entityKind).throwIt();
+
         map.computeIfAbsent(id.getNs(), s -> new TreeMap<>())
                 .put(id.getEntity(), new CachedEntityKind(entityKind, resource, lastModified));
     }
@@ -113,8 +114,7 @@ public class EntityKindRepository {
     public void validate() throws ValidationException {
         var eks = EntityKinds.newBuilder();
         list().forEach(ek -> eks.addKinds(ek));
-        EntityKindValidations.eksv.validate(this, eks);
-        v.validate(this, eks.build()).throwIt();
+        v.validate(this, eks).throwIt();
     }
 
     public Collection<EntityKind> list() {
