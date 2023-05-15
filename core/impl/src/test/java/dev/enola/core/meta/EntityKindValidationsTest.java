@@ -38,12 +38,7 @@ public class EntityKindValidationsTest {
         ek1.setId(ek1id);
 
         var ekr = new EntityKindRepository();
-        assertThrows(
-                ValidationException.class,
-                () -> {
-                    ekr.put(ek1.build());
-                    ekr.validate();
-                });
+        assertThrows(ValidationException.class, () -> ekr.put(ek1.build()));
     }
 
     @Test
@@ -68,11 +63,6 @@ public class EntityKindValidationsTest {
         var ek1 = EntityKind.newBuilder();
         ek1.setId(id);
         var ekr = new EntityKindRepository();
-        assertThrows(
-                ValidationException.class,
-                () -> {
-                    ekr.put(ek1.build());
-                    ekr.validate();
-                });
+        assertThrows(ValidationException.class, () -> ekr.put(ek1.build()));
     }
 }
