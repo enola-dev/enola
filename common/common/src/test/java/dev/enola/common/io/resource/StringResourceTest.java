@@ -27,8 +27,11 @@ import java.net.URISyntaxException;
 public class StringResourceTest {
     @Test
     public void testStringResource() throws IOException, URISyntaxException {
-        var r = new StringResource("hello, world");
-        assertThat(r.charSource().read()).isEqualTo("hello, world");
+        var r1 = new StringResource("hello, world");
+        assertThat(r1.charSource().read()).isEqualTo("hello, world");
+
+        var r2 = new StringResource("# Models\n");
+        assertThat(r2.charSource().read()).isEqualTo("# Models\n");
 
         assertThat(new StringResource("").byteSource().size()).isEqualTo(0);
         assertThat(new StringResource("").charSource().length()).isEqualTo(0);

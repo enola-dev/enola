@@ -42,8 +42,9 @@ public class MarkdownDocGenerator {
         this.options = options;
     }
 
-    public void render(EntityKindRepository kinds, Appendable md) throws IOException {
-        md.append("# Models\n");
+    public void render(EntityKindRepository kinds, String header, Appendable md)
+            throws IOException {
+        md.append(header);
         if (options.diagram.equals(Options.DiagramType.Mermaid)) {
             MermaidGenerator.renderMermaid(kinds, md);
         } else if (options.diagram.equals(Options.DiagramType.Graphviz)) {
