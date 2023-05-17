@@ -34,4 +34,4 @@ see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
 There is also a REST API which returns JSON if you replace `ui` with `api` in the URL,
 so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
 
-The `--grpcPort` flag starts [the Enola gRPC API](../../dev/proto/core.md#enolaservice).
+The `--grpcPort` flag starts [the Enola gRPC API](.././../dev/proto/core#enolaservice).
