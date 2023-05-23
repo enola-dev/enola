@@ -24,7 +24,6 @@ java_library(
     deps = [
         "@maven//:ch_vorburger_exec_exec",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_zaxxer_nuprocess",
         "@maven//:org_apache_commons_commons_exec",
     ],
 )
