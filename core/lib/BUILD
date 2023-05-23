@@ -27,6 +27,20 @@ load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 # https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
 load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library", "java_proto_library")
 
+# https://rules-proto-grpc.com/en/latest/lang/go.html#go-proto-library
+load("@rules_proto_grpc//go:defs.bzl", "go_proto_library")
+
+go_proto_library(
+    name = "proto_go_proto",
+    # ? importpath = "github.com/rules-proto-grpc/rules_proto_grpc/example/proto",
+    protos = [
+        ":core_proto",
+        ":connector_proto",
+        ":meta_proto",
+        ":util_proto",
+    ],
+)
+
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
     name = "core_proto",
