@@ -1,0 +1,112 @@
+kinds {
+  id: { ns: "demo" entity: "work" paths: "isbn" }
+  label: "Book"
+  emoji: "💂"
+  #doc_url: "demo-model.md#foo"
+  connectors :{grpc:"localhost:8080"}
+  data {
+    key: "title"
+  }
+  related {
+    key: "author",
+    value: {
+      label: "Details about the author",
+      id: { ns: "demo" entity: "author" }
+    }
+  }
+  # data {
+  #   key:"isbn",
+  #   value: {
+  #     label: "isbn",
+  #     type_url: "dev.enola.core.util.String"
+  #   }
+  # }
+  related {
+    key: "copies",
+    value: {
+      label: "All the books that publish this work",
+      id: { ns: "demo" entity: "book" }
+    }
+  }
+  data {
+    key: "language",
+    value: {
+      label: "Language",
+      type_url: "dev.enola.core.util.String"
+    }
+  }
+  data {
+    key: "title",
+    value: {
+      label: "Title",
+      type_url: "dev.enola.core.util.String"
+    }
+  }
+  link {
+    key: "search",
+    value: {
+      label: "Search the internet for this work",
+      uri_template: ""
+    }
+  }
+
+  link {
+    key: "wikipedia",
+    value: {
+      label: "Open the wikipedia page for this work",
+      uri_template: ""
+    }
+  }
+}
+
+kinds {
+  id: {
+    ns: "demo"
+    entity: "author"
+    paths: [ "name" ]
+  }
+  connectors :{grpc:"localhost:8080"}
+
+  data {
+    key: "language",
+    value: {
+      label: "Language",
+      type_url: "dev.enola.core.util.String"
+    }
+  }
+
+  related {
+    key: "work",
+    value: {
+      label: "Works by this author",
+      id: { ns: "demo" entity: "work" }
+    }
+  }
+}
+
+kinds {
+  id: {
+    ns: "demo"
+    entity: "book"
+    paths: [ "book", "id" ]
+  }
+  label: "Book instance"
+  emoji: "👩‍🎤"
+  #doc_url: "demo-model.md#bar"
+  related {
+    key: "work",
+    value: {
+      label: "Details about this work",
+      description: ""
+      id: { ns: "demo" entity: "work" }
+    }
+  }
+
+  data {
+    key: "language",
+    value: {
+      label: "Language",
+      type_url: "dev.enola.core.util.String"
+    }
+  }
+}

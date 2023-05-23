@@ -17,42 +17,35 @@
 {namespace dev.enola.ui}
 
 // see https://github.com/google/closure-templates/issues/1300 re. path
-import {ID} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
-import {Entity} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
-
-{template id}
-    {@param id: ID}
-    {$id.ns}.{$id.entity}{for $element in $id.pathsList}/{$element}{/for}
-{/template}
-
-{template idHref kind="uri"}
-    {@param id: ID}
-    /ui/entity/{$id.ns}.{$id.entity}{for $element in $id.pathsList}/{$element}{/for}
-{/template}
+import {SingleEntityView} from 'web/view/src/main/java/dev/enola/web/enola_view.proto';
+import {ViewItem} from 'web/view/src/main/java/dev/enola/web/enola_view.proto';
 
 {template entity}
-    {@param e: Entity}
+    {@param sv: SingleEntityView}
 
-    <h1>{id(id: $e.id)}</h1>
+    <h1>{$sv.id}</h1>
+    <h2>{$sv.fullName}</h2>
     <!-- TODO Show <tt>EntityKind#label + #emoji (OR #logo_url ?)</tt> -->
-    <!-- TODO Function to format @ {$e.ts} using class Timestamps2 -->
+    //<!-- TODO Function to format @ {$e.ts} using class Timestamps2 -->
 
     <!-- TODO
     <span class="material-symbols-outlined"> unfold_more </span>
     <i>TODO Show (beginning of) <tt>EntityKind#doc_url</tt> here... (&hellip;)</i>
     -->
 
-    <!-- TODO Only if $e.relatedMap.size() > 0 ... -->
     <h2>Related</h2>
-    <ul>{for $related in $e.relatedMap.entries()}
-        <!-- The follow format (roughly) matches dev.enola.core.IDs#toPath -->
-        <li><a href="{idHref(id: $related.value)}">{$related.key}</a></li>
+    <ul>{for $related in $sv.relatedList}
+        <li><a href="{$related.ref}">{$related.value}</a></li>
     {/for}</ul>
 
-    <!-- TODO Only if $e.linkMap.size() > 0 ... -->
+    <h2>Properties</h2>
+    <ul>{for $data in $sv.dataList}
+        <li>{$data.getLabel()}:"{$data.getValue()}"</li>
+    {/for}</ul>
+
     <h2>Links</h2>
-    <ul>{for $link in $e.linkMap.entries()}
-        <li><a href="{$link.value}">{$link.key}</a></li>
+    <ul>{for $link in $sv.linkList}
+        <li><a href="{$link.ref}">{$link.label}</a></li>
     {/for}</ul>
 
     <!-- TODO Show <tt>data</tt>... how - as TextProto? -->
@@ -74,7 +67,7 @@ import {Entity} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
 {/template}
 
 {template page}
-    {@param e: Entity}
+    {@param sv: SingleEntityView}
     // TODO How-to? <!DOCTYPE html>
     <html>
     <head>
@@ -114,7 +107,7 @@ import {Entity} from 'core/lib/src/main/java/dev/enola/core/enola_core.proto';
         <div style="float: right; padding-top: 1em"><a href="#">name</a>: <input value="demo"/></div>
 
         <div style="float: let">
-            {entity(e: $e)}
+            {entity(sv: $sv)}
         </div>
     </div>
     </body>

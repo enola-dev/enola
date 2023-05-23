@@ -44,7 +44,7 @@ public class UiTest {
     public void testUi() throws IOException {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            new UI(new TestService()).register(server);
+            new UI(new TestService(), null).register(server);
             server.start();
             var rp = new ResourceProviders();
             var port = server.getInetAddress().getPort();

@@ -24,6 +24,9 @@ java_binary(
     # resources = glob(["src/main/resources/**/*"]),
     deps = [
         "//core/lib:core_java_grpc",
+        "//core/lib:core_java_proto",
+        "//core/lib:lib_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
     ],
 )
 
