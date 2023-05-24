@@ -31,9 +31,27 @@ message AugmentRequest {
 message AugmentResponse {
   dev.enola.core.Entity entity = 1;
 }
+
+// Request all the entities related via 'relationship' to 'kind' in 'scope'.
+// Example would be: list all the book copies (kind) from a specific library
+// (scope) that are currently borrowed.
+message ListRequest {
+  // The entityKind to be returned.
+  dev.enola.core.ID kind = 1;
+  // The related entity should be returned
+  dev.enola.core.ID scope = 2;
+  // The relevant relationship, by key, as in entityKind.related
+  string relationship = 3;
+}
+
+message ListResponse {
+  repeated dev.enola.core.Entity entity = 1;
+}
+
 // This is the external equivalent of the internal EntityAspect Java API.
 service ConnectorService {
   rpc Augment(AugmentRequest) returns (AugmentResponse) {}
+  rpc List(ListRequest) returns (ListResponse) {}
 }
 
 // TODO Think more about if a Connector can (should?) also implement

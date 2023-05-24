@@ -20,6 +20,7 @@ package dev.enola.demo;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.core.connector.proto.AugmentRequest;
+import dev.enola.core.connector.proto.ListRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 
 import io.grpc.Grpc;
@@ -40,10 +41,19 @@ public class ServerTest {
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
             var client = ConnectorServiceGrpc.newBlockingStub(channel);
 
-            var request = AugmentRequest.newBuilder().build();
-            var response = client.augment(request);
-            assertThat(response.getEntity().getLinkOrThrow("link1"))
+            var augmentRequest = AugmentRequest.newBuilder().build();
+            var augmentResponse = client.augment(augmentRequest);
+            assertThat(augmentResponse.getEntity().getLinkOrThrow("link1"))
                     .isEqualTo("http://www.vorburger.ch");
+
+            var listRequest = ListRequest.newBuilder().build();
+            var listResponse = client.list(listRequest);
+            assertThat(listResponse.getEntityList().size())
+                    .isEqualTo(2);
+            assertThat(listResponse.getEntityList().get(0).getLinkOrThrow("link1"))
+                    .isEqualTo("http://www.vorburger.ch");
+            assertThat(listResponse.getEntityList().get(1).getLinkOrThrow("link1"))
+                    .isEqualTo("http://www.vorburgerag.ch");
 
             channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
         }
