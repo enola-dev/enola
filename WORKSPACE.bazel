@@ -16,6 +16,27 @@
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# Keep gRPC version in sync with MODULE.bazel
+GRPC_JAVA_VERSION = "1.54.1"
+# https://github.com/grpc/grpc-java/
+# https://github.com/enola-dev/enola/issues/202
+# https://github.com/grpc/grpc-java/issues/10215
+# TODO replace with bazel_dep in MODULE.bazel
+# when https://github.com/bazelbuild/bazel-central-registry/issues/353
+# (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
+http_archive(
+    name = "io_grpc_grpc_java",
+    sha256 = "78bf175f9a8fa23cda724bbef52ad9d0d555cdd1122bcb06484b91174f931239",
+    strip_prefix = "grpc-java-%s" % GRPC_JAVA_VERSION,
+    url = "https://github.com/grpc/grpc-java/archive/v%s.zip" % GRPC_JAVA_VERSION,
+)
+load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS")
+
+# load("@io_grpc_grpc_java//:repositories.bzl", "grpc_java_repositories")
+# grpc_java_repositories()
+# load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+# protobuf_deps()
+
 # https://rules-proto-grpc.com/en/latest/#installation
 http_archive(
     name = "rules_proto_grpc",
@@ -46,16 +67,7 @@ load("@rules_proto_grpc//buf:repositories.bzl", rules_proto_grpc_buf_repos = "bu
 
 rules_proto_grpc_buf_repos()
 
-# https://rules-proto-grpc.com/en/latest/lang/java.html#java-grpc-library
-load("@rules_proto_grpc//java:repositories.bzl", rules_proto_grpc_java_repos = "java_repos")
-
-rules_proto_grpc_java_repos()
-
-load(
-    "@io_grpc_grpc_java//:repositories.bzl",
-    "IO_GRPC_GRPC_JAVA_ARTIFACTS",
-    "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS",
-)
+# https://github.com/grpc/grpc-java/blob/master/examples/WORKSPACE
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 # TODO Declare Maven dependencies in 1 single place, instead of both here as well as in maven.install() of MODULE.bazel

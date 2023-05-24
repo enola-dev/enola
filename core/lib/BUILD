@@ -16,9 +16,6 @@
 
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
-# TODO replace with bazel_dep in MODULE.bazel
-# when https://github.com/bazelbuild/bazel-central-registry/issues/353
-# (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
 # https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
