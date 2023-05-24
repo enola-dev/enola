@@ -40,6 +40,7 @@ java_binary(
     # resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":demo",
+        "//core/lib:lib_java",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "@maven//:com_google_truth_truth",

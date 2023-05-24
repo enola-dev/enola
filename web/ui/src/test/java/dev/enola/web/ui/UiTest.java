@@ -25,12 +25,16 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
+import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.FileResource;
+import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetEntityResponse;
 import dev.enola.core.proto.ID;
+import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
@@ -41,10 +45,12 @@ import java.time.Instant;
 
 public class UiTest {
     @Test
-    public void testUi() throws IOException {
+    public void testUi() throws IOException, ValidationException {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            new UI(new TestService(), null).register(server);
+            var ekr = new EntityKindRepository();
+            ekr.load(new ClasspathResource("demo-model.textproto"));
+            new UI(new TestService(), ekr).register(server);
             server.start();
             var rp = new ResourceProviders();
             var port = server.getInetAddress().getPort();
@@ -56,17 +62,17 @@ public class UiTest {
             assertThat(response1.charSource().read()).contains("Enola");
             assertThat(response1.charSource().read()).contains("404");
 
-            var uri2 = create(prefix + "/ui/entity/test.demo/123");
+            var uri2 = create(prefix + "/ui/entity/demo.foo/123");
             var response2 = rp.getResource(uri2);
             assertThat(response2.charSource().read()).contains("Enola");
-            assertThat(response2.charSource().read()).contains("test.demo/123");
+            assertThat(response2.charSource().read()).contains("demo.foo/123");
         }
     }
 
     private static class TestService implements EnolaService {
         @Override
         public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-            var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths("123");
+            var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("123");
             var now = Timestamps2.fromInstant(Instant.now());
             var entity = Entity.newBuilder().setId(id).setTs(now).build();
             return GetEntityResponse.newBuilder().setEntity(entity).build();

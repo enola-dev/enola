@@ -84,11 +84,14 @@ public class UI implements WebHandler {
     }
 
     private String getHTML(URI uri) throws EnolaException, IOException {
+        System.out.println("+++++++++++++++++++++++");
         var path = uri.getPath();
+        System.out.println("+++++++++++++++++++++++  " + path);
         // TODO implement the to-many relationship
         if (path.startsWith("/ui/entity/")) {
             var idString = path.substring("/ui/entity/".length());
             var id = IDs.parse(idString);
+        System.out.println("+++++++++++++++++++++++  " + id);
             return getEntityHTML(id);
         } else {
             // TODO Create HTML page “frame” from .soy, with body from another .soy
@@ -107,7 +110,11 @@ public class UI implements WebHandler {
         var request = GetEntityRequest.newBuilder().setId(id).build();
         var response = service.getEntity(request);
         Entity entity = response.getEntity();
+        System.out.println("+++++++++++++++++++++++ 11 " + id);
+
         EntityKind ek = ekr.getOptional(entity.getId()).get();
+        System.out.println("+++++++++++++++++++++++ 22 " + id);
+
         var singleEntityView = SingleEntityView.newBuilder();
         singleEntityView.setId(IDs.toPath(entity.getId()));
         singleEntityView.setKindName(entity.getId().getEntity());

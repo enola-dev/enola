@@ -37,12 +37,8 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
     public void augment(AugmentRequest request, StreamObserver<AugmentResponse> responseObserver) {
         var entity = request.getEntity().toBuilder();
 
-        //dev.enola.core.util
-        var s = Struct.newBuilder();
-        //s.update("k","v");
-
-
-        System.out.println(IDs.toPath(entity.getId()));
+        // these returned values match docs/user/library/model.textproto (and not the yaml version)
+        System.out.println("augment: " + IDs.toPath(entity.getId()));
         if (IDs.toPath(entity.getId()).equals("demo.work/8706-1000")) {
 
             Any any = Any.pack(EnolaString.newBuilder().setValue("En attendant Godot").build());
@@ -56,8 +52,7 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
 
             var id  = ID.newBuilder().setNs("demo").setEntity("author").addPaths("samuel_beckett").build();
             entity.putRelated("author", id);
-        }
-        if (IDs.toPath(entity.getId()).equals("demo.work/0-13-140731-7")) {
+        } else if (IDs.toPath(entity.getId()).equals("demo.work/0-13-140731-7")) {
 
             Any any = Any.pack(EnolaString.newBuilder().setValue("Core Java data objects").build());
             entity.putData("title", any);
@@ -67,20 +62,20 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
 
             var id  = ID.newBuilder().setNs("demo").setEntity("author").addPaths("michael_vorburger").build();
             entity.putRelated("author", id);
-        }
-        if (IDs.toPath(entity.getId()).equals("demo.author/samuel_beckett")) {
+        } else if (IDs.toPath(entity.getId()).equals("demo.author/samuel_beckett")) {
             Any any = Any.pack(EnolaString.newBuilder().setValue("French").build());
             entity.putData("language", any);
 
             var id  = ID.newBuilder().setNs("demo").setEntity("work").addPaths("samuel_beckett").build();
             entity.putRelated("work", id);
-        }
-        if (IDs.toPath(entity.getId()).equals("demo.author/michael_vorburger")) {
+        } else if (IDs.toPath(entity.getId()).equals("demo.author/michael_vorburger")) {
             Any any = Any.pack(EnolaString.newBuilder().setValue("French").build());
             entity.putData("language", any);
 
             var id  = ID.newBuilder().setNs("demo").setEntity("work").addPaths("michael_vorburger").build();
             entity.putRelated("work", id);
+        } else {
+            entity.putLink("link1", "http://www.vorburger.ch");
         }
 
         var response = AugmentResponse.newBuilder().setEntity(entity).build();

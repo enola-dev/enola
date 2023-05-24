@@ -45,6 +45,8 @@ java_library(
         "//common/protobuf",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//core/impl",
+
         "//web/api",
         "//web/sun",
         "@maven//:com_google_truth_truth",
