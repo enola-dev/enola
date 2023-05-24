@@ -14,11 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
-
-# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
+load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
 
 proto_library(
     name = "validation_proto",
@@ -30,11 +27,11 @@ proto_library(
 
 java_proto_library(
     name = "validation_proto_java_library",
-    protos = [
-        "validation_proto",
-    ],
     visibility = [
         "//core:__subpackages__",
+    ],
+    deps = [
+        "validation_proto",
     ],
 )
 

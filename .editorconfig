@@ -65,6 +65,9 @@ max_line_length = unset
 [mkdocs.yaml]
 max_line_length = unset
 
+[WORKSPACE.bazel]
+max_line_length = unset
+
 # Note that https://github.com/editorconfig-checker/editorconfig-checker
 # which https://github.com/editorconfig-checker/editorconfig-checker.python
 # uses does not understand e.g. [{*.yaml,*.yml}] but only single ones.
