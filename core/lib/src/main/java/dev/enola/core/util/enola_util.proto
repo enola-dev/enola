@@ -34,6 +34,10 @@ option java_multiple_files = true;
 //   STATUS_NOK_ITSELF = 503;
 // }
 
+message EnolaString {
+  string value = 1;
+}
+
 // TODO Log isn't actually used, just yet...
 message Log {
   oneof oneof {

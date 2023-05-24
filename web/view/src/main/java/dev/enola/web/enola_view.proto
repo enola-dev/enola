@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// Copyright 2023 The Enola <https://enola.dev> Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package dev.enola.view;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.view.proto";
+option java_multiple_files = true;
+
+message SingleEntityView {
+  string id = 1;
+  string kind_name = 2;
+  string full_name = 3;
+  repeated ViewItem data = 4;
+  repeated ViewItem related = 5;
+  repeated ViewItem link = 6;
+}
+
+message ViewItem {
+  string label = 1;
+  string ref = 2;
+  string value = 3;
+}

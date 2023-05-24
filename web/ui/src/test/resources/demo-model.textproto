@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# https://protobuf.dev/reference/protobuf/textformat-spec/
+# proto-file: dev/enola/core/meta/enola_meta.proto
+# proto-message: EntityKinds
+
+kinds {
+  id: { ns: "demo" entity: "foo" paths: "name" }
+  label: "Fo-o"
+  emoji: "💂"
+  doc_url: "demo-model.md#foo"
+}
+kinds {
+  id: {
+    ns: "demo"
+    entity: "bar"
+    paths: [ "foo", "name" ]
+  }
+  label: "FUBAR?"
+  emoji: "👩‍🎤"
+  doc_url: "demo-model.md#bar"
+  related {
+    key: "foo",
+    value: {
+      label: "Foo link",
+      description: "This is the 'parent' Foo."
+      id: { ns: "demo" entity: "foo" }
+    }
+  }
+  related {
+    key: "one",
+    value: {
+      label: "Primary Baz",
+      id: { ns: "demo" entity: "baz" }
+    }
+  }
+  related {
+    key: "two",
+    value: {
+      label: "Secondary Baz",
+      description: "There is always moar to relate to!",
+      id: { ns: "demo" entity: "baz" }
+    }
+  }
+  link {
+    key: "wiki",
+    value: {
+      label: "Wikipedia",
+      description: "founded by Jimmy Wales",
+      uri_template: "https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}"
+    }
+  }
+  link {
+    key: "zzz"
+    value: {
+      label: "Backend"
+      description: "Linked Data in another system"
+      uri_template: "localhost:50051"  # TODO ???
+    }
+  }
+}
+kinds { id: { ns: "demo" entity: "baz" paths: "uuid" } }

@@ -23,6 +23,7 @@ java_library(
     visibility = [
         "//cli:__subpackages__",
         "//web/ui:__pkg__",
+        "//web/view:__pkg__",
     ],
     deps = [
         "//common/common",

@@ -26,6 +26,7 @@ java_library(
     deps = [
         "//common/common",
         "//core/impl",  # TODO Move class Soy, avoid full impl dep
+        "//web/view:view_java_proto",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",
@@ -44,6 +45,8 @@ java_library(
         "//common/protobuf",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//core/impl",
+
         "//web/api",
         "//web/sun",
         "@maven//:com_google_truth_truth",

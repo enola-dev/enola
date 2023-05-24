@@ -2,6 +2,7 @@ kinds:
   - id: { ns: demo, entity: book_kind, paths: [isbn] }
     label: Book (Kind)
     emoji: 📗
+    connectors: [{grpc:http://localhost:8080}]
     link:
       google:
         label: Google Book Search

@@ -59,6 +59,16 @@ proto_library(
     ],
 )
 
+# proto_library(
+#     name = "view_proto",
+#     srcs = ["src/main/java/dev/enola/core/enola_view.proto"],
+#     deps = [
+#         "@com_google_protobuf//:any_proto",
+#         "@com_google_protobuf//:struct_proto",
+#         "@com_google_protobuf//:timestamp_proto",
+#     ],
+# )
+
 java_proto_library(
     name = "core_java_proto",
     protos = [
@@ -72,6 +82,7 @@ java_proto_library(
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/ui:__pkg__",
+        "//web/view:__pkg__",
     ],
 )
 
@@ -85,6 +96,7 @@ java_grpc_library(
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/ui:__pkg__",
+        "//web/view:__pkg__",
     ],
 )
 
@@ -125,6 +137,7 @@ java_library(
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/ui:__pkg__",
+        "//web/view:__pkg__",
     ],
     deps = [
         ":core_java_proto",
