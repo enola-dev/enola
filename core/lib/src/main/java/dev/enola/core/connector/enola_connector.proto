@@ -31,9 +31,22 @@ message AugmentRequest {
 message AugmentResponse {
   dev.enola.core.Entity entity = 1;
 }
+
+message ListRequest {
+  // the entityKind to be returned
+  dev.enola.core.ID kind = 1;
+  // the scope for which the entities should be returned
+  dev.enola.core.ID scope = 2;
+}
+
+message ListResponse {
+  repeated dev.enola.core.Entity entity = 1;
+}
+
 // This is the external equivalent of the internal EntityAspect Java API.
 service ConnectorService {
   rpc Augment(AugmentRequest) returns (AugmentResponse) {}
+  rpc List(ListRequest) returns (ListResponse) {}
 }
 
 // TODO Think more about if a Connector can (should?) also implement

@@ -19,6 +19,9 @@ package dev.enola.demo;
 
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.AugmentResponse;
+import dev.enola.core.connector.proto.ListRequest;
+import dev.enola.core.connector.proto.ListResponse;
+import dev.enola.core.proto.Entity;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 
 import io.grpc.stub.StreamObserver;
@@ -29,6 +32,15 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
         var entity = request.getEntity().toBuilder();
         entity.putLink("link1", "http://www.vorburger.ch");
         var response = AugmentResponse.newBuilder().setEntity(entity).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void list(ListRequest request, StreamObserver<ListResponse> responseObserver) {
+        var entity = Entity.newBuilder();
+        entity.putLink("link1", "http://www.vorburger.ch");
+        var response = ListResponse.newBuilder().addEntity(entity).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
