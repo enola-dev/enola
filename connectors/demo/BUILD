@@ -22,8 +22,14 @@ java_binary(
     main_class = "dev.enola.demo.Server",
     visibility = ["//core/impl:__subpackages__"],
     # resources = glob(["src/main/resources/**/*"]),
+    runtime_deps = [
+        "@maven//:io_grpc_grpc_netty",
+    ],
     deps = [
-        "//core/lib:core_java_grpc",
+        "//core/lib:connector_java_grpc",
+        "//core/lib:core_java_proto",
+        "@io_grpc_grpc_java//api",
+        "@io_grpc_grpc_java//stub",
     ],
 )
 
@@ -31,12 +37,13 @@ java_binary(
     name = name[:-len(".java")],
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
+    # resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
     ],
-    # resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":demo",
+        "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "@maven//:com_google_truth_truth",
