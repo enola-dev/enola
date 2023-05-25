@@ -21,6 +21,7 @@ bazel_dep(name = "rules_jvm_external", version = "5.1")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
+        "junit:junit:4.13.2",
         # Google
         "com.google.guava:guava:31.1-jre",
         "com.google.truth:truth:1.1.3",
