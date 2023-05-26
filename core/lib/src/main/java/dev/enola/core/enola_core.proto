@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package dev.enola.core;
 
-import "google/protobuf/any.proto";
+// import "google/protobuf/any.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -86,7 +86,8 @@ message Entity {
   map<string, string> link = 7;
 
   // Data about the Entity, in machine readable form, as Any protobuf.
-  // TODO replace Struct with Any, but that needs schemas... map<string, google.protobuf.Any> data = 9;
+  // TODO replace Struct with Any, but that needs schemas... map<string,
+  // google.protobuf.Any> data = 9;
   map<string, google.protobuf.Struct> data = 9;
 }
 

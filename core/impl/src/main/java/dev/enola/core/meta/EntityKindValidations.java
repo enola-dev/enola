@@ -61,7 +61,6 @@ public class EntityKindValidations {
                     for (var er : ek.getRelatedMap().entrySet()) {
                         var key = er.getKey();
                         var id = er.getValue().getId();
-                        if (id == null) continue;
                         if (ekr.getOptional(IDs.withoutPath(id)).isEmpty()) {
                             var msg =
                                     toPath(ek.getId())
