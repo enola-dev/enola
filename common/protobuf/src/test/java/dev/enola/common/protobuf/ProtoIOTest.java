@@ -31,7 +31,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class ProtoIOTest extends AbstractProtoTest {
+public class ProtoIOTest extends AbstractProtoTestBase {
 
     public static final Timestamp TIMESTAMP =
             Timestamp.newBuilder().setSeconds(123).setNanos(456).build();

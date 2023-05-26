@@ -51,7 +51,6 @@ java_library(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
-        "@maven//:junit_junit",
     ],
 )
 
