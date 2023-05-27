@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.meta.docgen;
+package dev.enola.web.ui;
 
 import com.google.common.net.MediaType;
 import com.google.protobuf.Descriptors;

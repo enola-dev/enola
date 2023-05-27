@@ -28,7 +28,6 @@ import dev.enola.common.io.resource.StringResource;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.IDs;
-import dev.enola.core.meta.docgen.Soy;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
