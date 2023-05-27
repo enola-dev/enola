@@ -41,7 +41,7 @@ java_library(
     visibility = [
         "//connectors:__subpackages__",
         "//core:__subpackages__",
-        "//web/ui:__pkg__",
+        "//web/ui-soy:__pkg__",
     ],
     deps = [
         ":validation_proto_java_library",
