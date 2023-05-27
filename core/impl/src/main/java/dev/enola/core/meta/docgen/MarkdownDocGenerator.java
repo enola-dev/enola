@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 
 public class MarkdownDocGenerator {
 
-    // TODO Convert this to using the (currently un-used) markdown.soy
-
     public static final String FOOTER =
             "_This model documentation was generated with ❤️ by"
                     + " [Enola.dev](https://www.enola.dev)_\n";

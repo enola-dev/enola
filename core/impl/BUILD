@@ -40,20 +40,10 @@ java_library(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
-        "@maven//:com_google_template_soy",
         "@maven//:io_grpc_grpc_api",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
-
-# TODO load("@io_bazel_rules_closure//closure:defs.bzl", "closure_java_template_library")
-# TODO This is only useful after https://github.com/bazelbuild/rules_closure/issues/225
-# closure_java_template_library(
-#    name = "soy",
-#    srcs = glob(["src/main/resources/**/*.soy"]),
-#    java_package = "dev.enola.core.meta.docgen",
-#    proto_deps = ["//core/lib:core_java_proto"],
-# )
 
 [java_test(
     name = name[:-len(".java")],
