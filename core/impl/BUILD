@@ -22,7 +22,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = [
         "//cli:__subpackages__",
-        "//web/ui:__pkg__",
+        "//web/ui-soy:__pkg__",
     ],
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
