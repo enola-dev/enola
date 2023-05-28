@@ -20,6 +20,7 @@ package dev.enola.cli;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.web.rest.RestAPI;
 import dev.enola.web.sun.SunServer;
 import dev.enola.web.ui.UI;
 
@@ -41,6 +42,7 @@ public class ServerCommand extends CommandWithModel {
         EnolaService service = new EnolaServiceProvider().get(ekr);
         var server = new SunServer(new InetSocketAddress(port));
         new UI(service).register(server);
+        new RestAPI(service).register(server);
         server.start();
         System.out.println("Open http://localhost:" + port + "/ui ...");
         Thread.currentThread().join();

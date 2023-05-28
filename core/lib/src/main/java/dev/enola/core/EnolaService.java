@@ -21,5 +21,6 @@ import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetEntityResponse;
 
 public interface EnolaService {
+    // TODO Replace this interface with its generated gRPC equivalent
     GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException;
 }

@@ -25,7 +25,6 @@ java_library(
     ],
     deps = [
         "//common/common",
-        "//core/impl",  # TODO Move class Soy, avoid full impl dep
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",
