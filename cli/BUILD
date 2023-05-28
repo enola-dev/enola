@@ -26,6 +26,7 @@ java_binary(
         "//core/impl",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//web/rest",
         "//web/sun",
         "//web/ui-soy",
         "@maven//:com_google_guava_guava",
