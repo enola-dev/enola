@@ -34,6 +34,9 @@
 
 ## Low Priority / Nice To Have
 
+1. Angular #tech
+   - ng e2e: Cypress? Nightwatch? Webdriver?
+
 1. Icon based on some Status `data` from Connector; e.g. 📗 / 📘 / 📙 / 📕
 
 1. https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/

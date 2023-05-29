@@ -33,3 +33,19 @@ docs/use/library/model.textproto
 
 # Node.JS
 node_modules/
+npm-debug.log
+yarn-error.log
+
+# Angular
+## Compiled output
+dist/
+tmp/
+out-tsc/
+## Miscellaneous
+**/.angular/cache/
+.sass-cache/
+connect.lock
+coverage/
+libpeerconnection.log
+testem.log
+typings/
