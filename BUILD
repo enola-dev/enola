@@ -31,6 +31,7 @@ shellcheck_test(
             "**/bazel-out/**",
             "site/**",
             ".venv/**",
+            "**/node_modules/**",
         ],
     ),
     tags = ["lint"],
