@@ -49,6 +49,7 @@ java_library(
     name = name[:-len(".java")],
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
+    javacopts = ["-Xep:IgnoredPureGetter:ERROR"],
     resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
