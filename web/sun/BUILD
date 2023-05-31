@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
+load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_library(
     name = "sun",
@@ -45,17 +45,3 @@ java_library(
 ) for name in glob([
     "src/test/java/**/*Test.java",
 ])]
-
-java_binary(
-    name = "demo",
-    srcs = glob(["src/test/java/**/*.java"]),
-    main_class = "dev.enola.web.sun.test.SunServerTest",
-    deps = [
-        ":sun",
-        "//common/common",
-        "//web/api",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
-    ],
-)
