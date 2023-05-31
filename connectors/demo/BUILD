@@ -33,8 +33,8 @@ java_binary(
     ],
 )
 
-[java_test(
-    name = name[:-len(".java")],
+java_test(
+    name = "ServerTest",
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
     # resources = glob(["src/test/resources/**/*"]),
@@ -52,6 +52,4 @@ java_binary(
         "@maven//:junit_junit",
         "@maven//:org_slf4j_slf4j_simple",
     ],
-) for name in glob([
-    "src/test/java/**/*Test.java",
-])]
+)
