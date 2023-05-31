@@ -28,8 +28,8 @@ java_binary(
     deps = [
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_proto",
-        "@io_grpc_grpc_java//api",
-        "@io_grpc_grpc_java//stub",
+        "@maven//:io_grpc_grpc_api",
+        "@maven//:io_grpc_grpc_stub",
     ],
 )
 
