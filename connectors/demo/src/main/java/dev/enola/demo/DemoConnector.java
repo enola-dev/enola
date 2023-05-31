@@ -38,10 +38,10 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
 
     @Override
     public void list(ListRequest request, StreamObserver<ListResponse> responseObserver) {
-        var entity = Entity.newBuilder();
-        entity.putLink("link1", "http://www.vorburger.ch");
-        var response = ListResponse.newBuilder().addEntity(entity).build();
-        responseObserver.onNext(response);
+        var response = ListResponse.newBuilder();
+        response.addEntity(Entity.newBuilder().putLink("link1", "http://www.vorburger.ch"));
+        response.addEntity(Entity.newBuilder().putLink("link1", "http://www.vorburgerag.ch"));
+        responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }
 }

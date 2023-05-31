@@ -49,11 +49,11 @@ public class ServerTest {
             var listRequest = ListRequest.newBuilder().build();
             var listResponse = client.list(listRequest);
             assertThat(listResponse.getEntityList().size())
-                    .isEqualTo(1);
+                    .isEqualTo(2);
             assertThat(listResponse.getEntityList().get(0).getLinkOrThrow("link1"))
                     .isEqualTo("http://www.vorburger.ch");
-
-
+            assertThat(listResponse.getEntityList().get(1).getLinkOrThrow("link1"))
+                    .isEqualTo("http://www.vorburgerag.ch");
 
             channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
         }
