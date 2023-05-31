@@ -35,6 +35,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 
+@SuppressWarnings("IgnoredPureGetter") // https://github.com/enola-dev/enola/issues/224
 public class EntityKindRepositoryTest {
 
     EntityKindRepository r = new EntityKindRepository();
