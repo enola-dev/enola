@@ -37,10 +37,6 @@ import java.net.URI;
 
 public class SunServerTest {
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(start().getInetAddress());
-    }
-
     static SunServer start() throws IOException {
         var addr = new InetSocketAddress(0);
         var server = new SunServer(addr);
