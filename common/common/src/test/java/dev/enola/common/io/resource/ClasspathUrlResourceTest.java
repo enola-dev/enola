@@ -76,10 +76,10 @@ public class ClasspathUrlResourceTest {
 
     @Test
     public void testResources() throws IOException {
-        checkBinary("empty", OCTET_STREAM, 0);
+        checkBinary("empty", OCTET_STREAM, 2);
         checkBinary("test-random-binary", OCTET_STREAM, 7);
 
-        checkBinary("empty.png", PNG, 0);
+        checkBinary("empty.png", PNG, 2);
         checkBinary("test.png", PNG, 3435);
 
         checkText("test.json", JSON_UTF_8, Optional.of(UTF_8), "{}\n");

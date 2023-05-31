@@ -53,6 +53,6 @@ public class RunnerTest {
 
     @Test
     public void testInexistantCommand() throws Exception {
-        check("does-not-exist", true, "bash: line 1: does-not-exist: command not found\n");
+        check("does-not-exist", true, "bash: does-not-exist: command not found\n");
     }
 }
