@@ -36,6 +36,7 @@ java_library(
     deps = [
         ":markdown",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
         "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([

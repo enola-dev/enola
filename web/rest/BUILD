@@ -47,7 +47,9 @@ java_library(
         "//core/lib:lib_java",
         "//web/api",
         "//web/sun",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

@@ -158,7 +158,9 @@ java_library(
     deps = [
         ":core_java_proto",
         ":lib_java",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

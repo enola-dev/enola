@@ -36,6 +36,7 @@ java_library(
     deps = [
         ":yamljson",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",
