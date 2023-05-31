@@ -63,8 +63,10 @@ java_library(
     deps = [
         ":protobuf",
         "//common/common",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

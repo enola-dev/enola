@@ -61,7 +61,9 @@ java_library(
         "//connectors/demo",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

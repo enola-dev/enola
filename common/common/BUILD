@@ -33,7 +33,9 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":common",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

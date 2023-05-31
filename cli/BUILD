@@ -47,8 +47,10 @@ java_binary(
         "//core/impl",
         "//web/sun",
         "//web/ui-soy",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
         "@maven//:info_picocli_picocli",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",
