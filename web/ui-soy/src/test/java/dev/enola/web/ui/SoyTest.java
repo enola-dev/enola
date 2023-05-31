@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.meta.docgen;
+package dev.enola.web.ui;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -46,7 +46,7 @@ public class SoyTest {
                         .addProto(ID.getDescriptor())
                         .build();
 
-        var ekr = new EntityKindRepository().load(new ClasspathResource("demo-model.yaml"));
+        var ekr = new EntityKindRepository().load(new ClasspathResource("test-model.yaml"));
         Map<String, ?> params =
                 ImmutableMap.of(
                         "package",

@@ -17,19 +17,31 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_library(
-    name = "sun",
+    name = "ui-soy",
     srcs = glob(["src/main/java/**/*.java"]),
+    resources = glob(["src/main/resources/**/*"]),
     visibility = [
         "//cli:__subpackages__",
-        "//web:__subpackages__",
     ],
     deps = [
         "//common/common",
+        "//core/lib:core_java_proto",
+        "//core/lib:lib_java",
         "//web/api",
         "@maven//:com_google_guava_guava",
-        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_template_soy",
     ],
 )
+
+# TODO load("@io_bazel_rules_closure//closure:defs.bzl", "closure_java_template_library")
+# TODO This is only useful after https://github.com/bazelbuild/rules_closure/issues/225
+# closure_java_template_library(
+#    name = "soy",
+#    srcs = glob(["src/main/resources/**/*.soy"]),
+#    java_package = "dev.enola.core.meta.docgen",
+#    proto_deps = ["//core/lib:core_java_proto"],
+# )
 
 [java_test(
     name = name[:-len(".java")],
@@ -37,9 +49,14 @@ java_library(
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":sun",
+        ":ui-soy",
         "//common/common",
+        "//common/protobuf",
+        "//core/impl",
+        "//core/lib:core_java_proto",
+        "//core/lib:lib_java",
         "//web/api",
+        "//web/sun",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",

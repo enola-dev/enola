@@ -18,6 +18,9 @@ run --incompatible_strict_action_env
 # https://bazel.build/reference/command-line-reference#flag--test_output
 test --test_output=errors
 
+# https://bazel.build/reference/command-line-reference#flag--explicit_java_test_deps
+test --explicit_java_test_deps
+
 # Quiet!
 # common --noshow_progress
 common --ui_event_filters=error,warning,info,-debug,stdout,stderr

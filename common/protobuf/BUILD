@@ -14,11 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
-
-# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
+load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_proto_grpc//java:defs.bzl", "java_proto_library")
 
 proto_library(
     name = "validation_proto",
@@ -30,11 +27,11 @@ proto_library(
 
 java_proto_library(
     name = "validation_proto_java_library",
-    protos = [
-        "validation_proto",
-    ],
     visibility = [
         "//core:__subpackages__",
+    ],
+    deps = [
+        "validation_proto",
     ],
 )
 
@@ -44,7 +41,8 @@ java_library(
     visibility = [
         "//connectors:__subpackages__",
         "//core:__subpackages__",
-        "//web/ui:__pkg__",
+        "//web/rest:__pkg__",
+        "//web/ui-soy:__pkg__",
     ],
     deps = [
         ":validation_proto_java_library",
@@ -54,7 +52,6 @@ java_library(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
-        "@maven//:junit_junit",
     ],
 )
 
@@ -66,8 +63,10 @@ java_library(
     deps = [
         ":protobuf",
         "//common/common",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

@@ -21,6 +21,7 @@ bazel_dep(name = "rules_jvm_external", version = "5.1")
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     artifacts = [
+        "junit:junit:4.13.2",
         # Google
         "com.google.guava:guava:31.1-jre",
         "com.google.truth:truth:1.1.3",
@@ -31,6 +32,7 @@ maven.install(
         # gRPC
         "com.google.api.grpc:proto-google-common-protos:2.17.0",
         "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
+        "io.grpc:grpc-stub:1.54.1",
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.0",

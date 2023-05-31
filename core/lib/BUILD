@@ -14,7 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
+# https://github.com/enola-dev/enola/issues/202
+# https://github.com/grpc/grpc-java/issues/10215
+# TODO replace with bazel_dep in MODULE.bazel
+# when https://github.com/bazelbuild/bazel-central-registry/issues/353
+# (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
+load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 # https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
@@ -22,10 +28,6 @@ load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
 load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
-
-# https://rules-proto-grpc.com/en/latest/lang/java.html#java-grpc-library
-# https://rules-proto-grpc.com/en/latest/lang/java.html#java-proto-library
-load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library", "java_proto_library")
 
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
@@ -61,31 +63,46 @@ proto_library(
 
 java_proto_library(
     name = "core_java_proto",
-    protos = [
+    visibility = [
+        "//cli:__subpackages__",
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+        "//web/rest:__pkg__",
+        "//web/ui-soy:__pkg__",
+    ],
+    deps = [
         "connector_proto",
         "core_proto",
         "meta_proto",
         "util_proto",
     ],
-    visibility = [
-        "//cli:__subpackages__",
-        "//connectors:__subpackages__",
-        "//core:__subpackages__",
-        "//web/ui:__pkg__",
-    ],
 )
 
 java_grpc_library(
     name = "core_java_grpc",
-    protos = [
-        "connector_proto",
+    srcs = [
         "core_proto",
     ],
     visibility = [
         "//connectors:__subpackages__",
         "//core:__subpackages__",
-        "//web/ui:__pkg__",
+        "//web/rest:__pkg__",
+        "//web/ui-soy:__pkg__",
     ],
+    deps = [":core_java_proto"],
+)
+
+java_grpc_library(
+    name = "connector_java_grpc",
+    srcs = [
+        "connector_proto",
+    ],
+    visibility = [
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+        "//web/ui-soy:__pkg__",
+    ],
+    deps = [":core_java_proto"],
 )
 
 doc_markdown_compile(
@@ -124,7 +141,8 @@ java_library(
         "//cli:__subpackages__",
         "//connectors:__subpackages__",
         "//core:__subpackages__",
-        "//web/ui:__pkg__",
+        "//web/rest:__pkg__",
+        "//web/ui-soy:__pkg__",
     ],
     deps = [
         ":core_java_proto",
@@ -140,7 +158,9 @@ java_library(
     deps = [
         ":core_java_proto",
         ":lib_java",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

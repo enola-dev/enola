@@ -17,7 +17,7 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_library(
-    name = "ui",
+    name = "rest",
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
     visibility = [
@@ -25,11 +25,12 @@ java_library(
     ],
     deps = [
         "//common/common",
-        "//core/impl",  # TODO Move class Soy, avoid full impl dep
+        "//common/protobuf",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
     ],
 )
 
@@ -39,14 +40,16 @@ java_library(
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":ui",
+        ":rest",
         "//common/common",
         "//common/protobuf",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",
         "//web/sun",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

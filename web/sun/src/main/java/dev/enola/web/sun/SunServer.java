@@ -43,6 +43,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+/** {@link WebServer} API implementation using {@link HttpServer} from com.sun. */
 public class SunServer implements WebServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(SunServer.class);

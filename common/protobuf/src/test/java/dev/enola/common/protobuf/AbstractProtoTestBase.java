@@ -23,11 +23,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public abstract class AbstractProtoTest {
+public abstract class AbstractProtoTestBase {
     private final String pathToResourceOnClasspath;
     private final Message.Builder builder;
 
-    public AbstractProtoTest(String pathToResourceOnClasspath, Message.Builder builder) {
+    public AbstractProtoTestBase(String pathToResourceOnClasspath, Message.Builder builder) {
         this.pathToResourceOnClasspath = pathToResourceOnClasspath;
         this.builder = builder;
     }
