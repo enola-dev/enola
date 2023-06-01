@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
 # TODO replace with bazel_dep in MODULE.bazel
@@ -165,3 +168,21 @@ java_library(
 ) for name in glob([
     "src/test/java/**/*Test.java",
 ])]
+
+go_proto_library(
+    name = "core_go_proto",
+    importpath = "dev/enola/core",
+    protos = [
+        ":connector_proto",
+        ":core_proto",
+        ":meta_proto",
+        ":util_proto",
+    ],
+    visibility = [
+        "//cli:__subpackages__",
+        "//connectors:__subpackages__",
+        "//core:__subpackages__",
+        "//web/rest:__pkg__",
+        "//web/ui-soy:__pkg__",
+    ],
+)
