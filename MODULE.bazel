@@ -51,7 +51,7 @@ use_repo(maven, "maven", "unpinned_maven")
 
 # https://github.com/bazelbuild/rules_go/blob/master/docs/go/core/bzlmod.md
 bazel_dep(name = "rules_go", version = "0.39.1", repo_name = "io_bazel_rules_go")
-bazel_dep(name = "gazelle", version = "0.30.0", repo_name = "bazel_gazelle")
+bazel_dep(name = "gazelle", version = "0.31.0", repo_name = "bazel_gazelle")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 
@@ -59,5 +59,5 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(
     goarch = "amd64",
     goos = "linux",
-    version = "1.20.3",
+    version = "1.20.4",
 )
