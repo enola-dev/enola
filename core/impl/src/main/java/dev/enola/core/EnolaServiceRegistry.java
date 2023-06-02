@@ -17,9 +17,7 @@
  */
 package dev.enola.core;
 
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
-import dev.enola.core.proto.ID;
+import dev.enola.core.proto.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +37,20 @@ class EnolaServiceRegistry implements EnolaService {
 
     @Override
     public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-        var lookup = IDs.withoutPath(r.getId());
+        return getDelegate(r.getId()).getEntity(r);
+    }
+
+    @Override
+    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
+        return getDelegate(r.getId()).listEntities(r);
+    }
+
+    private EnolaService getDelegate(ID id) {
+        var lookup = IDs.withoutPath(id);
         var delegate = registry.get(lookup);
         if (delegate == null) {
             throw new IllegalArgumentException("No Connector registered for: " + lookup);
         }
-        return delegate.getEntity(r);
+        return delegate;
     }
 }

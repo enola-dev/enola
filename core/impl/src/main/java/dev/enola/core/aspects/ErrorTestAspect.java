@@ -18,11 +18,11 @@
 package dev.enola.core.aspects;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.EntityAspect;
+import dev.enola.core.EntityAspectRepeater;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
-public class ErrorTestAspect implements EntityAspect {
+public class ErrorTestAspect implements EntityAspectRepeater {
     private final String message;
 
     public ErrorTestAspect() {

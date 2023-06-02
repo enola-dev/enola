@@ -40,11 +40,13 @@ public class ServerCommand extends CommandWithModel {
     @Override
     protected void run(EntityKindRepository ekr) throws Exception {
         EnolaService service = new EnolaServiceProvider().get(ekr);
+
         var server = new SunServer(new InetSocketAddress(port));
         new UI(service).register(server);
         new RestAPI(service).register(server);
         server.start();
         System.out.println("Open http://localhost:" + port + "/ui ...");
+
         Thread.currentThread().join();
     }
 }

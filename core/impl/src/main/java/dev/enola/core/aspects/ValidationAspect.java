@@ -23,7 +23,7 @@ import dev.enola.common.protobuf.MessageValidator;
 import dev.enola.common.protobuf.MessageValidators;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
-import dev.enola.core.EntityAspect;
+import dev.enola.core.EntityAspectRepeater;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.EntityOrBuilder;
@@ -31,7 +31,7 @@ import dev.enola.core.proto.EntityOrBuilder;
 import java.util.Set;
 
 public class ValidationAspect
-        implements EntityAspect, MessageValidator<EntityKind, EntityOrBuilder> {
+        implements EntityAspectRepeater, MessageValidator<EntityKind, EntityOrBuilder> {
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {

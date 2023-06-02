@@ -24,15 +24,20 @@ import dev.enola.core.proto.Entity;
 import java.util.List;
 
 /**
- * API for in-process "connectors". This is the internal equivalent of the gRPC ConnectorService.
+ * An {@link EntityAspect} which calls {@link EntityAspect#augment(Entity.Builder, EntityKind)} for
+ * each entity in its default {@link EntityAspect#list(ConnectorServiceListRequest, EntityKind,
+ * List)} implementation.
  */
-public interface EntityAspect {
-
-    void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException;
-
-    void list(
+public interface EntityAspectRepeater extends EntityAspect {
+    @Override
+    default void list(
             ConnectorServiceListRequest request,
             EntityKind entityKind,
             List<Entity.Builder> entities)
-            throws EnolaException;
+            throws EnolaException {
+
+        for (var entity : entities) {
+            augment(entity, entityKind);
+        }
+    }
 }

@@ -20,7 +20,7 @@ package dev.enola.core;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
-public class ValidationFailureAspect implements EntityAspect {
+public class ValidationFailureAspect implements EntityAspectRepeater {
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
         // NB: The "unknown" LINK is *not* declared in the EntityType,
