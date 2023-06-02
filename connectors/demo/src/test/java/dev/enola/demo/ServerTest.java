@@ -20,8 +20,8 @@ package dev.enola.demo;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.core.connector.proto.AugmentRequest;
-import dev.enola.core.connector.proto.ListRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
+import dev.enola.core.connector.proto.ListRequest;
 
 import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
@@ -48,12 +48,11 @@ public class ServerTest {
 
             var listRequest = ListRequest.newBuilder().build();
             var listResponse = client.list(listRequest);
-            assertThat(listResponse.getEntityList().size())
-                    .isEqualTo(2);
-            assertThat(listResponse.getEntityList().get(0).getLinkOrThrow("link1"))
+            assertThat(listResponse.getEntitiesList().size()).isEqualTo(2);
+            assertThat(listResponse.getEntitiesList().get(0).getLinkOrThrow("link1"))
                     .isEqualTo("http://www.vorburger.ch");
-            assertThat(listResponse.getEntityList().get(1).getLinkOrThrow("link1"))
-                    .isEqualTo("http://www.vorburgerag.ch");
+            assertThat(listResponse.getEntitiesList().get(1).getLinkOrThrow("link1"))
+                    .isEqualTo("https://enola.dev");
 
             channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
         }

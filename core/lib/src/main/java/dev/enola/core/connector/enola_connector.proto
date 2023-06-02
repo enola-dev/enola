@@ -26,33 +26,43 @@ option java_multiple_files = true;
 
 message AugmentRequest {
   dev.enola.core.Entity entity = 1;
+
   // Intentionally no EntityKind! It would be wasteful to resend it every time.
 }
 message AugmentResponse {
   dev.enola.core.Entity entity = 1;
 }
 
-// Request all the entities related via 'relationship' to 'kind' in 'scope'.
-// Example would be: list all the book copies (kind) from a specific library
-// (scope) that are currently borrowed.
+// Request for a list of entities.
+// For the https://docs.enola.dev/use/library/ example model, examples could be:
+//   A. Set 'kind' to 'book_kind', without the 'isbn' path - list all
+//   B. Set 'kind' to 'book', and the 'library' path - from a specific library
+// Note that for the example library model you would not use the related_filter,
+// as the only two related (the 'library' and the 'kind') are available in the
+// paths; but if it had any other related, one could filter one or several of
+// those.
 message ListRequest {
-  // The entityKind to be returned.
+  // The EntityKind to be returned.
   dev.enola.core.ID kind = 1;
-  // The related entity should be returned
-  dev.enola.core.ID scope = 2;
-  // The relevant relationship, by key, as in entityKind.related
-  string relationship = 3;
+
+  // Filters on related entities.
+  // The key is as in EntityKind or Entity's .related,
+  // and the value is the ("scope") related entity to filter on.
+  // If there is more than one, these are AND, not OR.
+  map<string, ID> related_filter = 2;
+
+  // TODO Add dataFilter? E.g. for all Books that are currently borrowed.
 }
 
 message ListResponse {
-  repeated dev.enola.core.Entity entity = 1;
+  repeated dev.enola.core.Entity entities = 1;
 }
 
-// This is the external equivalent of the internal EntityAspect Java API.
+// This is the API which Enola Connectors implement.
+// Enola Core calls this API for each of the listed connector of an EntityKind.
+// Enola clients (such as a CLI or UI) use the EnolaService, instead of this
+// directly. This is the gRPC equivalent of the internal EntityAspect Java API.
 service ConnectorService {
   rpc Augment(AugmentRequest) returns (AugmentResponse) {}
   rpc List(ListRequest) returns (ListResponse) {}
 }
-
-// TODO Think more about if a Connector can (should?) also implement
-// ModelService?
