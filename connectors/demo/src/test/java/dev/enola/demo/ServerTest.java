@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
-import dev.enola.core.connector.proto.ListRequest;
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 
 import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
@@ -46,7 +46,7 @@ public class ServerTest {
             assertThat(augmentResponse.getEntity().getLinkOrThrow("link1"))
                     .isEqualTo("http://www.vorburger.ch");
 
-            var listRequest = ListRequest.newBuilder().build();
+            var listRequest = ConnectorServiceListRequest.newBuilder().build();
             var listResponse = client.list(listRequest);
             assertThat(listResponse.getEntitiesList().size()).isEqualTo(2);
             assertThat(listResponse.getEntitiesList().get(0).getLinkOrThrow("link1"))

@@ -17,11 +17,7 @@
  */
 package dev.enola.demo;
 
-import dev.enola.core.connector.proto.AugmentRequest;
-import dev.enola.core.connector.proto.AugmentResponse;
-import dev.enola.core.connector.proto.ConnectorServiceGrpc;
-import dev.enola.core.connector.proto.ListRequest;
-import dev.enola.core.connector.proto.ListResponse;
+import dev.enola.core.connector.proto.*;
 import dev.enola.core.proto.Entity;
 
 import io.grpc.stub.StreamObserver;
@@ -37,8 +33,10 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
     }
 
     @Override
-    public void list(ListRequest request, StreamObserver<ListResponse> responseObserver) {
-        var response = ListResponse.newBuilder();
+    public void list(
+            ConnectorServiceListRequest request,
+            StreamObserver<ConnectorServiceListResponse> responseObserver) {
+        var response = ConnectorServiceListResponse.newBuilder();
         response.addEntities(Entity.newBuilder().putLink("link1", "http://www.vorburger.ch"));
         response.addEntities(Entity.newBuilder().putLink("link1", "https://enola.dev"));
         responseObserver.onNext(response.build());

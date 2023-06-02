@@ -25,15 +25,20 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EntityAspect;
 import dev.enola.core.IDs;
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.ID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class FilestoreRepositoryAspect implements EntityAspect {
 
@@ -68,6 +73,37 @@ public class FilestoreRepositoryAspect implements EntityAspect {
             resource.lastModifiedIfKnown().ifPresent(ts -> entity.setTs(fromInstant(ts)));
         } catch (IOException e) {
             throw new EnolaException("Failed to read: " + resource.uri(), e);
+        }
+    }
+
+    @Override
+    public void list(
+            ConnectorServiceListRequest request,
+            EntityKind entityKind,
+            List<Entity.Builder> entities)
+            throws EnolaException {
+
+        var id = request.getId();
+        var path = root.resolve(IDs.toPath(id));
+
+        if (!path.toFile().exists()) {
+            LOG.info("No {}", path);
+            return;
+        }
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            for (Path entityPath : stream) {
+                var newID =
+                        ID.newBuilder()
+                                .setNs(entityKind.getId().getNs())
+                                .setEntity(entityKind.getId().getEntity())
+                                // TODO .addAllPaths(...) !!
+                                .build();
+                var newEntity = Entity.newBuilder().setId(newID);
+                augment(newEntity, entityKind);
+            }
+        } catch (IOException e) {
+            throw new EnolaException("Failed to read " + path, e);
         }
     }
 

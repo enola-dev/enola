@@ -29,7 +29,7 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.common.validation.Validation;
 import dev.enola.common.validation.Validations;
 import dev.enola.core.EnolaException;
-import dev.enola.core.EntityAspect;
+import dev.enola.core.EntityAspectRepeater;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UriTemplateAspect implements EntityAspect {
+public class UriTemplateAspect implements EntityAspectRepeater {
 
     private final Map<String, URITemplate> linkTemplates;
     private final Map<String, IdTemplates> relatedTemplates;

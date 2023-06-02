@@ -27,10 +27,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
-import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
-import dev.enola.core.proto.ID;
+import dev.enola.core.proto.*;
 import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
@@ -70,6 +67,11 @@ public class UiTest {
             var now = Timestamps2.fromInstant(Instant.now());
             var entity = Entity.newBuilder().setId(id).setTs(now).build();
             return GetEntityResponse.newBuilder().setEntity(entity).build();
+        }
+
+        @Override
+        public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
+            return ListEntitiesResponse.newBuilder().build();
         }
     }
 }

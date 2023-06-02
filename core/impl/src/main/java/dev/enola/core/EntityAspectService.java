@@ -17,10 +17,9 @@
  */
 package dev.enola.core;
 
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.proto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +49,25 @@ class EntityAspectService implements EnolaService {
 
         var response = GetEntityResponse.newBuilder().setEntity(entity).build();
         return response;
+    }
+
+    @Override
+    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
+        var entities = new ArrayList<Entity.Builder>();
+        var connectorRequest =
+                ConnectorServiceListRequest.newBuilder()
+                        .setId(r.getId())
+                        .putAllRelatedFilter(r.getRelatedFilterMap())
+                        .build();
+
+        for (var aspect : registry) {
+            aspect.list(connectorRequest, entityKind, entities);
+        }
+
+        var responseBuilder = ListEntitiesResponse.newBuilder();
+        for (var entity : entities) {
+            responseBuilder.addEntities(entity);
+        }
+        return responseBuilder.build();
     }
 }

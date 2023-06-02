@@ -21,6 +21,7 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.EntityAspect;
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
@@ -30,6 +31,7 @@ import io.grpc.ManagedChannel;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class GrpcAspect implements Closeable, EntityAspect {
@@ -61,5 +63,18 @@ public class GrpcAspect implements Closeable, EntityAspect {
         var builder = response.getEntity().toBuilder();
         builder.clearId(); // required to avoid duplicating path (and also safer)
         entity.mergeFrom(builder.build());
+    }
+
+    @Override
+    public void list(
+            ConnectorServiceListRequest request,
+            EntityKind entityKind,
+            List<Entity.Builder> entities)
+            throws EnolaException {
+
+        var response = client.list(request);
+        for (var entity : response.getEntitiesList()) {
+            entities.add(entity.toBuilder());
+        }
     }
 }
