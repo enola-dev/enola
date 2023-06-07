@@ -22,6 +22,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = [
         "//cli:__subpackages__",
+        "//connectors:__subpackages__",  #  ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
         "//web/ui-soy:__pkg__",
     ],
     runtime_deps = [

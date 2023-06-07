@@ -20,8 +20,8 @@ java_binary(
     name = "demo",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.demo.Server",
+    resources = glob(["src/main/resources/**/*"]),
     visibility = ["//core/impl:__subpackages__"],
-    # resources = glob(["src/main/resources/**/*"]),
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
     ],
@@ -43,9 +43,13 @@ java_test(
     ],
     deps = [
         ":demo",
+        "//common/common",
+        "//common/protobuf",
+        "//core/impl",  # ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
+        "//core/lib:lib_java",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
         "@maven//:io_grpc_grpc_api",

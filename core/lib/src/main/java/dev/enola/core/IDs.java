@@ -203,7 +203,10 @@ public final class IDs {
     public static Map<String, String> pathMap(ID kindID, ID entityID) {
         if (entityID.getPathsCount() != kindID.getPathsCount()) {
             throw new IllegalArgumentException(
-                    "Entity ID=" + entityID + "; EntityKind ID=" + kindID);
+                    "Missing (or extra) paths! Entity ID="
+                            + entityID
+                            + "; EntityKind ID="
+                            + kindID);
         }
         var n = kindID.getPathsCount();
         var builder = ImmutableMap.<String, String>builderWithExpectedSize(n);
