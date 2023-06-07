@@ -19,12 +19,14 @@ package dev.enola.demo;
 
 import dev.enola.core.connector.proto.*;
 import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.ID;
 
 import io.grpc.stub.StreamObserver;
 
 public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase {
     @Override
     public void augment(AugmentRequest request, StreamObserver<AugmentResponse> responseObserver) {
+        // Note how for Augment (for Get) we do NOT need to set an ID!
         var entity = request.getEntity().toBuilder();
         entity.putLink("link1", "http://www.vorburger.ch");
         var response = AugmentResponse.newBuilder().setEntity(entity).build();
@@ -36,9 +38,13 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
     public void list(
             ConnectorServiceListRequest request,
             StreamObserver<ConnectorServiceListResponse> responseObserver) {
+        // Note how for List we DO need to set IDs!
         var response = ConnectorServiceListResponse.newBuilder();
-        response.addEntities(Entity.newBuilder().putLink("link1", "http://www.vorburger.ch"));
-        response.addEntities(Entity.newBuilder().putLink("link1", "https://enola.dev"));
+        var id1 = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
+        var id2 = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("world").build();
+        response.addEntities(
+                Entity.newBuilder().setId(id1).putLink("link1", "http://www.vorburger.ch"));
+        response.addEntities(Entity.newBuilder().setId(id2).putLink("link1", "https://enola.dev"));
         responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }

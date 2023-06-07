@@ -35,17 +35,19 @@ public class ServerCommand extends CommandWithModel {
             names = {"--httpPort"},
             required = true,
             description = "HTTP Port")
-    int port;
+    int httpPort;
+
+    // TODO gRPCPort ...
 
     @Override
     protected void run(EntityKindRepository ekr) throws Exception {
         EnolaService service = new EnolaServiceProvider().get(ekr);
 
-        var server = new SunServer(new InetSocketAddress(port));
+        var server = new SunServer(new InetSocketAddress(httpPort));
         new UI(service).register(server);
         new RestAPI(service).register(server);
         server.start();
-        System.out.println("Open http://localhost:" + port + "/ui ...");
+        System.out.println("Open http://localhost:" + httpPort + "/ui ...");
 
         Thread.currentThread().join();
     }

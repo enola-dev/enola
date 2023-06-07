@@ -19,6 +19,7 @@ package dev.enola.core.aspects;
 
 import dev.enola.core.EnolaException;
 import dev.enola.core.EntityAspect;
+import dev.enola.core.IDs;
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
@@ -72,8 +73,17 @@ public class GrpcAspect implements Closeable, EntityAspect {
             List<Entity.Builder> entities)
             throws EnolaException {
 
+        var requestedKindID = IDs.withoutPath(request.getId());
         var response = client.list(request);
         for (var entity : response.getEntitiesList()) {
+            var connectorResponseKindID = IDs.withoutPath(entity.getId());
+            if (!requestedKindID.equals(connectorResponseKindID)) {
+                throw new EnolaException(
+                        "Connector returned wrong Entity Kind; requested: "
+                                + requestedKindID
+                                + ", got: "
+                                + connectorResponseKindID);
+            }
             entities.add(entity.toBuilder());
         }
     }
