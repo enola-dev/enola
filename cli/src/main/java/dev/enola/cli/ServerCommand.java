@@ -19,6 +19,7 @@ package dev.enola.cli;
 
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.web.rest.RestAPI;
 import dev.enola.web.sun.SunServer;
@@ -37,18 +38,43 @@ public class ServerCommand extends CommandWithModel {
             description = "HTTP Port")
     int httpPort;
 
-    // TODO gRPCPort ...
+    @CommandLine.Option(
+            names = {"--grpcPort"},
+            required = false,
+            description = "gRPC API Port")
+    Integer grpcPort;
+
+    @CommandLine.Option(
+            names = {"--immediateExitOnlyForTest"},
+            defaultValue = "false",
+            hidden = true)
+    boolean immediateExitOnlyForTest;
 
     @Override
     protected void run(EntityKindRepository ekr) throws Exception {
         EnolaService service = new EnolaServiceProvider().get(ekr);
 
-        var server = new SunServer(new InetSocketAddress(httpPort));
-        new UI(service).register(server);
-        new RestAPI(service).register(server);
-        server.start();
-        System.out.println("Open http://localhost:" + httpPort + "/ui ...");
+        // gRPC API
+        if (grpcPort != null) {
+            var grpcServer = new EnolaGrpcServer(service);
+            grpcServer.start(grpcPort);
+            out.println("gRPC API server now available on port " + grpcServer.getPort());
+        }
 
-        Thread.currentThread().join();
+        // HTML UI + JSON REST API
+        var httpServer = new SunServer(new InetSocketAddress(httpPort));
+        new UI(service).register(httpServer);
+        new RestAPI(service).register(httpServer);
+        httpServer.start();
+        out.println(
+                "HTTP JSON REST API + HTML UI server started; open http:/"
+                        + httpServer.getInetAddress()
+                        + "/ui ...");
+
+        if (!immediateExitOnlyForTest) {
+            Thread.currentThread().join();
+        } else {
+            httpServer.close();
+        }
     }
 }

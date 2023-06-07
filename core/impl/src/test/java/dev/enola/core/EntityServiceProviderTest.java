@@ -131,7 +131,7 @@ public class EntityServiceProviderTest {
     }
 
     @Test
-    public void testGrpc() throws IOException, ValidationException, EnolaException {
+    public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
         try (var server = new Server().start(0)) {
             var kid = ID.newBuilder().setNs("test").setEntity("grpc").addPaths("name").build();
             var gc = Connector.newBuilder().setGrpc("localhost:" + server.getPort()).build();

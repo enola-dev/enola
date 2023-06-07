@@ -42,6 +42,7 @@ java_library(
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:io_grpc_grpc_api",
+        "@maven//:io_grpc_grpc_stub",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
@@ -60,10 +61,13 @@ java_library(
         "//common/protobuf",
         "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//connectors/demo",
+        "//core/lib:connector_java_grpc",
+        "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
+        "@maven//:io_grpc_grpc_api",
         "@maven//:junit_junit",
     ],
 ) for name in glob([
