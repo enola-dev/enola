@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Server implements Closeable {
 
+    // See also dev.enola.core.grpc.EnolaGrpcServer
+
     private io.grpc.Server server;
 
     public static void main(String[] args) throws IOException, InterruptedException {

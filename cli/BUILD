@@ -45,6 +45,7 @@ java_binary(
         "//common/common",
         "//common/markdown",
         "//core/impl",
+        "//web/rest",
         "//web/sun",
         "//web/ui-soy",
         "@maven//:com_google_guava_guava",
