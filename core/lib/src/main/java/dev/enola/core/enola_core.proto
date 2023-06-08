@@ -27,11 +27,12 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/core";
 
-// ID of an Entity known to Enola, fully qualified.
-// Can be formatted to and parsed from several different string text forms,
-// see class dev.enola.core.IDs.
-message ID {
-  // Namespace.
+
+// Kind
+// This is the fully qualified name of the entity kind.
+// Allows to reference any EntityKind by name
+message Kind {
+ // Namespace.
   // Serves to distinguish same entity names (below).
   // This is optional if in your use of Enola you avoid name conflicts.
   // It's like in C# or "package" in Java or Go or the xmlns: from XML Schema,
@@ -43,11 +44,19 @@ message ID {
 
   // Entity Kind Name.
   // This is mandatory and thus always present.
-  // This refers to an EntityKind and not an individual Entity, despite the
-  // name. (In practice this is just shorter and clearer for people to
-  // understand.) Validated to only contain [a-z0-9_] characters, so it's safe
+  // Accessing this field as Kind.Name makes it self explanatory.
+  // Validated to only contain [a-z0-9_] characters, so it's safe
   // in URLs.
-  string entity = 2;
+  string name = 2;
+ }
+
+// ID of an Entity known to Enola, fully qualified.
+// Can be formatted to and parsed from several different string text forms,
+// see class dev.enola.core.IDs.
+message ID {
+  // Kind
+  // This is the fully qualified name of the entity kind.
+  Kind kind = 1;
 
   // Path.
   // This is mandatory and thus always present with at least 1 element.
@@ -59,7 +68,7 @@ message ID {
   // encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.)
   // Multiple "segments" are supported for "composed keys", for example a
   // network/context/namespace/name kind of ID.
-  repeated string paths = 3;
+  repeated string paths = 2;
 }
 
 message Entity {
