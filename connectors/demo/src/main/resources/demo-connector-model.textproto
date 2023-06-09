@@ -23,5 +23,12 @@ kinds {
     key: "link1"
     value: { label: "Link to some UI" }
   }
-  connectors { grpc: "localhost:PORT" }
+  data {
+    key: "data1"
+    value: {
+      label: "Details"
+      type_url: "demo.enola.dev/dev.enola.demo.Something"
+    }
+  }
+  connectors { grpc: "localhost:9090" }
 }

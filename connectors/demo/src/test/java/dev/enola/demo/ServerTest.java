@@ -19,8 +19,8 @@ package dev.enola.demo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.common.io.resource.StringResource;
+import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -40,7 +40,6 @@ import io.grpc.ManagedChannel;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 public class ServerTest {
@@ -86,15 +85,13 @@ public class ServerTest {
     }
 
     private EnolaService createEnolaService(int port) throws ValidationException, IOException {
+        var sPort = Integer.toString(port);
+        var model =
+                new ReplacingResource(
+                        new ClasspathResource("demo-connector-model.textproto"), "9090", sPort);
         // As in dev.enola.cli.CommandWithModel + dev.enola.cli.CommandWithEntityID
-        var model = URI.create("classpath:demo-model.textproto");
-        var modelResourceTemplate = new ResourceProviders().getReadableResource(model);
-        var modelResourceText = modelResourceTemplate.charSource().read();
-        modelResourceText = modelResourceText.replace("PORT", Integer.toString(port));
-        var modelResource =
-                new StringResource(modelResourceText, modelResourceTemplate.mediaType());
         var ekr = new EntityKindRepository();
-        ekr.load(modelResource);
+        ekr.load(model);
         return new EnolaServiceProvider().get(ekr);
     }
 

@@ -23,7 +23,9 @@ import static dev.enola.core.meta.proto.FileSystemRepository.Format.FORMAT_YAML;
 
 import static org.junit.Assert.assertThrows;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
+import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.*;
@@ -133,16 +135,14 @@ public class EntityServiceProviderTest {
     @Test
     public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
         try (var server = new Server().start(0)) {
-            var kid = ID.newBuilder().setNs("test").setEntity("grpc").addPaths("name").build();
-            var gc = Connector.newBuilder().setGrpc("localhost:" + server.getPort()).build();
-            var link1 = Link.newBuilder().build();
-            var kindBuilder = EntityKind.newBuilder().setId(kid);
-            var kind = kindBuilder.putLink("link1", link1).addConnectors(gc).build();
-            var ekr = new EntityKindRepository().put(kind);
+            var port = Integer.toString(server.getPort());
+            var model =
+                    new ReplacingResource(
+                            new ClasspathResource("demo-connector-model.textproto"), "9090", port);
+            var ekr = new EntityKindRepository().load(model);
             var service = new EnolaServiceProvider().get(ekr);
 
-            var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
-            assertThat(eid.getPathsList()).containsExactly("whatever");
+            var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
             var request = GetEntityRequest.newBuilder().setId(eid).build();
             var entity = service.getEntity(request).getEntity();
             assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");

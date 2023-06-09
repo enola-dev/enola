@@ -15,22 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.common.io.resource;
+
+import static com.google.common.truth.Truth.assertThat;
+
+import org.junit.Test;
 
 import java.io.IOException;
 
-public class EnolaException extends Exception {
-    // TODO Remove, when EnolaService is replaced with EnolaGrpcService
-
-    public EnolaException(String msg) {
-        super(msg);
-    }
-
-    public EnolaException(String msg, IOException cause) {
-        super(msg, cause);
-    }
-
-    public EnolaException(Exception cause) {
-        super(cause);
+public class ReplacingResourceTest {
+    @Test
+    public void replace() throws IOException {
+        var r = new ReplacingResource(new StringResource("hello, XXX"), "XXX", "world");
+        assertThat(r.charSource().read()).isEqualTo("hello, world");
     }
 }

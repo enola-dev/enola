@@ -32,7 +32,7 @@ public class Server implements Closeable {
     private io.grpc.Server server;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        var port = Integer.parseInt(args[0]);
+        var port = args.length > 0 ? Integer.parseInt(args[0]) : 9090;
         var server = new Server().start(port);
         System.out.println("Started Demo gRPC Server on localhost at port: " + port);
 

@@ -61,6 +61,7 @@ java_library(
         "//common/protobuf",
         "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//connectors/demo",
+        "//connectors/demo:demo_java_proto",
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
