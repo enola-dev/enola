@@ -17,11 +17,17 @@
  */
 package dev.enola.demo;
 
+import com.google.protobuf.Any;
+import com.google.protobuf.util.Timestamps;
+
 import dev.enola.core.connector.proto.*;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.ID;
+import dev.enola.demo.proto.Something;
 
 import io.grpc.stub.StreamObserver;
+
+import java.util.Date;
 
 public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase {
     @Override
@@ -29,6 +35,16 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
         // Note how for Augment (for Get) we do NOT need to set an ID!
         var entity = request.getEntity().toBuilder();
         entity.putLink("link1", "http://www.vorburger.ch");
+
+        var invention = Timestamps.fromDate(new Date(2023, 5, 9));
+        var something =
+                Something.newBuilder()
+                        .setText("hello, world")
+                        .setNumber(123)
+                        .setTs(invention)
+                        .build();
+        entity.putData("data1", Any.pack(something, "demo.enola.dev/"));
+
         var response = AugmentResponse.newBuilder().setEntity(entity).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

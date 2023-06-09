@@ -17,6 +17,7 @@
  */
 package dev.enola.core.aspects;
 
+import com.google.protobuf.Any;
 import com.google.protobuf.Descriptors;
 
 import dev.enola.common.protobuf.MessageValidator;
@@ -24,10 +25,12 @@ import dev.enola.common.protobuf.MessageValidators;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EntityAspectRepeater;
+import dev.enola.core.meta.proto.Data;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.EntityOrBuilder;
 
+import java.util.Map;
 import java.util.Set;
 
 public class ValidationAspect
@@ -62,6 +65,27 @@ public class ValidationAspect
                 kind.getDataMap().keySet(),
                 entity.getDataMap().keySet(),
                 r);
+        vaidateDataTypeURL(kind.getDataMap(), entity.getDataMap(), r);
+    }
+
+    private void vaidateDataTypeURL(
+            Map<String, Data> kind, Map<String, Any> entity, MessageValidators.Result.Builder r) {
+        entity.forEach(
+                (key, any) -> {
+                    var data = kind.get(key);
+                    if (data != null) {
+                        if (!data.getTypeUrl().equals(any.getTypeUrl())) {
+                            r.add(
+                                    Entity.getDescriptor()
+                                            .findFieldByNumber(Entity.DATA_FIELD_NUMBER),
+                                    key
+                                            + " TypeUrl should be "
+                                            + data.getTypeUrl()
+                                            + " but is "
+                                            + any.getTypeUrl());
+                        }
+                    }
+                });
     }
 
     private void validateKeys(

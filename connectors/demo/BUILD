@@ -14,20 +14,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_java//java:defs.bzl", "java_binary", "java_proto_library", "java_test")
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "demo_proto",
+    srcs = ["src/main/java/dev/enola/demo/demo_data.proto"],
+    deps = [
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+java_proto_library(
+    name = "demo_java_proto",
+    # ONLY for tests:
+    visibility = ["//core/impl:__subpackages__"],
+    deps = [
+        "demo_proto",
+    ],
+)
 
 java_binary(
     name = "demo",
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.demo.Server",
     resources = glob(["src/main/resources/**/*"]),
+    # ONLY for tests:
     visibility = ["//core/impl:__subpackages__"],
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
     ],
     deps = [
+        ":demo_java_proto",
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_proto",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:io_grpc_grpc_api",
         "@maven//:io_grpc_grpc_stub",
     ],
@@ -43,6 +65,7 @@ java_binary(
     ],
     deps = [
         ":demo",
+        ":demo_java_proto",
         "//common/common",
         "//common/protobuf",
         "//core/impl",  # ONLY for test, NEVER for non-test Demo (or any other) Connector binary!

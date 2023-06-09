@@ -18,8 +18,7 @@ syntax = "proto3";
 
 package dev.enola.core;
 
-// import "google/protobuf/any.proto";
-import "google/protobuf/struct.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
@@ -86,10 +85,9 @@ message Entity {
   // These can be requested to be "inlined" in responses.
   map<string, string> link = 7;
 
-  // Data about the Entity, in machine readable form, as Any protobuf.
-  // TODO replace Struct with Any, but that needs schemas... map<string,
-  // google.protobuf.Any> data = 9;
-  map<string, google.protobuf.Struct> data = 9;
+  // Data about the Entity, in machine readable form.
+  // Key is EntityKind#data.key, value is an Any protobuf.
+  map<string, google.protobuf.Any> data = 9;
 }
 
 message GetEntityRequest {
