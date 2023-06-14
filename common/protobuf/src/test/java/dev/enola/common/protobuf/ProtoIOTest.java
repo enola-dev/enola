@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.net.MediaType;
+import com.google.protobuf.Any;
 import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -41,7 +42,7 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     }
 
     @Test
-    public void testReadGoodTextproto() throws IOException {
+    public void readGoodTextproto() throws IOException {
         Timestamp timestamp =
                 new ProtoIO()
                         .read(
@@ -52,7 +53,7 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     }
 
     @Test
-    public void testWriteReadTextProto() throws IOException {
+    public void writeReadTextProto() throws IOException {
         MemoryResource resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
         new ProtoIO().write(TIMESTAMP, resource);
         assertThat(resource.charSource().read()).isEqualTo("seconds: 123\nnanos: 456\n");
@@ -62,7 +63,7 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     }
 
     @Test
-    public void testWriteReadJSON() throws IOException {
+    public void writeReadJSON() throws IOException {
         MemoryResource resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_JSON_UTF_8);
         new ProtoIO().write(TIMESTAMP, resource);
         assertThat(resource.charSource().read()).isEqualTo("\"1970-01-01T00:02:03.000000456Z\"");
@@ -74,7 +75,7 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     // TODO Add support for ProtobufMediaTypes.PROTOBUF_YAML_UTF_8
 
     @Test
-    public void testWriteReadBinary() throws IOException {
+    public void writeReadBinary() throws IOException {
         MemoryResource resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_BINARY);
         new ProtoIO().write(TIMESTAMP, resource);
         assertThat(resource.byteSource().size()).isEqualTo(5);
@@ -84,14 +85,14 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     }
 
     @Test
-    public void testWriteUnknown() throws IOException {
+    public void writeUnknown() throws IOException {
         MemoryResource resource = new MemoryResource(MediaType.ANY_TYPE);
         assertThrows(
                 IllegalArgumentException.class, () -> new ProtoIO().write(TIMESTAMP, resource));
     }
 
     @Test
-    public void testReadBadTextproto() throws IOException {
+    public void readBadTextproto() throws IOException {
         assertThat(
                         assertThrows(
                                 ProtoIO.TextParseException.class,
@@ -104,5 +105,52 @@ public class ProtoIOTest extends AbstractProtoTestBase {
                 .contains("google.protobuf.Timestamp.bad");
 
         // new ProtoIO().merge(classpath("nok.textproto"), Timestamp.newBuilder());
+    }
+
+    @Test
+    public void writeReadAnyTextproto() throws IOException {
+        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var any = Any.pack(TIMESTAMP);
+        var textproto =
+                "[type.googleapis.com/google.protobuf.Timestamp] {\n"
+                        + "  seconds: 123\n"
+                        + "  nanos: 456\n"
+                        + "}\n";
+
+        var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+        io.write(any, resource);
+        assertThat(resource.charSource().read()).isEqualTo(textproto);
+
+        assertThat(io.read(resource, Any.newBuilder(), Any.class)).isEqualTo(any);
+    }
+
+    @Test
+    public void writeReadAnyJSON() throws IOException {
+        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var any = Any.pack(TIMESTAMP);
+        var json =
+                "{\"@type\":\"type.googleapis.com/google.protobuf.Timestamp\","
+                        + "\"value\":\"1970-01-01T00:02:03.000000456Z\"}";
+
+        var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_JSON_UTF_8);
+        io.write(any, resource);
+        assertThat(resource.charSource().read()).isEqualTo(json);
+
+        assertThat(io.read(resource, Any.newBuilder(), Any.class)).isEqualTo(any);
+    }
+
+    @Test
+    public void writeAnyYAML() throws IOException {
+        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var any = Any.pack(TIMESTAMP);
+        var yaml =
+                "{'@type': type.googleapis.com/google.protobuf.Timestamp, value:"
+                        + " '1970-01-01T00:02:03.000000456Z'}\n";
+
+        var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
+        io.write(any, resource);
+        assertThat(resource.charSource().read()).isEqualTo(yaml);
+
+        assertThat(io.read(resource, Any.newBuilder(), Any.class)).isEqualTo(any);
     }
 }
