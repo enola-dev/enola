@@ -149,7 +149,10 @@ java_library(
     ],
     deps = [
         ":core_java_proto",
+        "//common/common",
+        "//common/protobuf",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
     ],
 )
 

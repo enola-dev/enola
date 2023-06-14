@@ -19,6 +19,8 @@ package dev.enola.demo;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
@@ -32,6 +34,7 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.demo.proto.Something;
 
 import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
@@ -95,12 +98,18 @@ public class ServerTest {
         return new EnolaServiceProvider().get(ekr);
     }
 
-    private void checkEnolaGet(EnolaService enola) throws EnolaException {
+    private void checkEnolaGet(EnolaService enola)
+            throws EnolaException, InvalidProtocolBufferException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
         var request = GetEntityRequest.newBuilder().setId(id).build();
         var response = enola.getEntity(request);
         assertThat(response.getEntity().getLinkOrThrow("link1"))
                 .isEqualTo("http://www.vorburger.ch");
+
+        var any = response.getEntity().getDataOrThrow("data1");
+        var something = any.unpack(Something.class);
+        assertThat(something.getText()).isEqualTo("hello, world");
+        assertThat(something.getNumber()).isEqualTo(123);
     }
 
     private void checkEnolaList(EnolaService enola) throws EnolaException {

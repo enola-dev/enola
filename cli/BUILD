@@ -23,6 +23,7 @@ java_binary(
     deps = [
         "//common/common",
         "//common/markdown",
+        "//common/protobuf",
         "//core/impl",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",

@@ -17,24 +17,27 @@
  */
 package dev.enola.cli;
 
-import dev.enola.core.EnolaService;
-import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.ID;
+import com.google.common.net.MediaType;
 
-import picocli.CommandLine.Command;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 
-@Command(name = "get", description = "Get Entity")
-public class Get extends CommandWithEntityID {
+public enum Format {
+    TextProto,
 
-    @Override
-    protected void run(EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id)
-            throws Exception {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
+    YAML,
 
-        write(ek, entity);
+    JSON;
+
+    MediaType toMediaType() {
+        switch (this) {
+            case TextProto:
+                return ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+            case YAML:
+                return ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
+            case JSON:
+                return ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+            default:
+                throw new IllegalStateException();
+        }
     }
 }
