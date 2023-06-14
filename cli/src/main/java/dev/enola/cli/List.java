@@ -19,6 +19,7 @@ package dev.enola.cli;
 
 import dev.enola.core.EnolaService;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 
@@ -31,12 +32,14 @@ public class List extends CommandWithEntityID {
     // With path asks connector, and behavior is connector specific; FileRepoConnector appends a *
 
     @Override
-    protected void run(EntityKindRepository ekr, EnolaService service, ID id) throws Exception {
+    protected void run(EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id)
+            throws Exception {
         // TODO Add CLI support for related_filter
         var request = ListEntitiesRequest.newBuilder().setId(id).build();
         var response = service.listEntities(request);
+
         for (var entity : response.getEntitiesList()) {
-            out.println(entity);
+            write(ek, entity);
         }
     }
 }

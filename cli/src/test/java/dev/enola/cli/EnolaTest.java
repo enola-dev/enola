@@ -89,6 +89,8 @@ public class EnolaTest {
                 cli(
                         "-v",
                         "get",
+                        "--format",
+                        "TextProto",
                         "--model",
                         "classpath:cli-test-model.textproto",
                         "test.foobar/helo");

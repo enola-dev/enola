@@ -15,26 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.common.io.resource;
 
-import dev.enola.core.EnolaService;
-import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.ID;
+import com.google.common.io.CharSink;
 
-import picocli.CommandLine.Command;
+import java.io.IOException;
+import java.io.Writer;
 
-@Command(name = "get", description = "Get Entity")
-public class Get extends CommandWithEntityID {
+// Intentionally package local (for now)
+class WriterCharSink extends CharSink {
+    private final Writer writer;
+
+    public WriterCharSink(Writer writer) {
+        this.writer = writer;
+    }
 
     @Override
-    protected void run(EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id)
-            throws Exception {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
-
-        write(ek, entity);
+    public Writer openStream() throws IOException {
+        return writer;
     }
 }

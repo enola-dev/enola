@@ -17,20 +17,38 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.io.resource.WriterResource;
+import dev.enola.common.protobuf.DescriptorRegistry;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.EntityIO;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.ID;
 
 import picocli.CommandLine;
 
+import java.io.IOException;
+
 public abstract class CommandWithEntityID extends CommandWithModel {
+
+    @CommandLine.Option(
+            names = {"--format", "-f"},
+            required = true,
+            defaultValue = "YAML",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Output Format")
+    Format format;
 
     // TODO @Parameters(index = "0..*") List<String> ids;
     // TODO ID instead of String, with https://picocli.info/#_strongly_typed_everything
     @CommandLine.Parameters(index = "0", paramLabel = "id", description = "ID of Entity")
     String idString;
+
+    private WriterResource resource;
+    private DescriptorRegistry descriptorRegistry;
 
     @Override
     protected final void run(EntityKindRepository ekr) throws Exception {
@@ -40,9 +58,17 @@ public abstract class CommandWithEntityID extends CommandWithModel {
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!
 
-        run(ekr, service, id);
+        var ek = ekr.get(id);
+        resource = new WriterResource(out, format.toMediaType());
+        descriptorRegistry = null; // TODO !!!
+
+        run(ekr, service, ek, id);
     }
 
-    protected abstract void run(EntityKindRepository ekr, EnolaService service, ID id)
-            throws Exception;
+    protected abstract void run(
+            EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id) throws Exception;
+
+    protected void write(EntityKind ek, Entity entity) throws IOException {
+        new EntityIO(descriptorRegistry).write(ek, entity, resource);
+    }
 }
