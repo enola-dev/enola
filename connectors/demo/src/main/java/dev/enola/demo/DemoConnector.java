@@ -18,6 +18,7 @@
 package dev.enola.demo;
 
 import com.google.protobuf.Any;
+import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
 
 import dev.enola.core.connector.proto.*;
@@ -61,6 +62,21 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
         response.addEntities(
                 Entity.newBuilder().setId(id1).putLink("link1", "http://www.vorburger.ch"));
         response.addEntities(Entity.newBuilder().setId(id2).putLink("link1", "https://enola.dev"));
+        responseObserver.onNext(response.build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getDescriptors(
+            GetDescriptorsRequest request,
+            StreamObserver<GetDescriptorsResponse> responseObserver) {
+        var response = GetDescriptorsResponse.newBuilder();
+
+        // As per demo_data.proto
+        // See the documentation in enola_connector.proto's GetDescriptorsResponse
+        response.addProtos(Timestamp.getDescriptor().getFile().toProto());
+        response.addProtos(Something.getDescriptor().getFile().toProto());
+
         responseObserver.onNext(response.build());
         responseObserver.onCompleted();
     }

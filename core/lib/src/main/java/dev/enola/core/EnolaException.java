@@ -17,8 +17,6 @@
  */
 package dev.enola.core;
 
-import java.io.IOException;
-
 public class EnolaException extends Exception {
     // TODO Remove, when EnolaService is replaced with EnolaGrpcService
 
@@ -26,7 +24,7 @@ public class EnolaException extends Exception {
         super(msg);
     }
 
-    public EnolaException(String msg, IOException cause) {
+    public EnolaException(String msg, Exception cause) {
         super(msg, cause);
     }
 

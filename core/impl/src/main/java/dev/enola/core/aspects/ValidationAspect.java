@@ -65,10 +65,10 @@ public class ValidationAspect
                 kind.getDataMap().keySet(),
                 entity.getDataMap().keySet(),
                 r);
-        vaidateDataTypeURL(kind.getDataMap(), entity.getDataMap(), r);
+        validateDataTypeURL(kind.getDataMap(), entity.getDataMap(), r);
     }
 
-    private void vaidateDataTypeURL(
+    private void validateDataTypeURL(
             Map<String, Data> kind, Map<String, Any> entity, MessageValidators.Result.Builder r) {
         entity.forEach(
                 (key, any) -> {

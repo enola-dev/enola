@@ -3,5 +3,9 @@ kinds:
     link:
       link1:
         label: Link without uriTemplate, will be set by connector
+    data:
+      data1:
+        label: "Details"
+        type_url: "demo.enola.dev/dev.enola.demo.Something"
     connectors:
       - grpc: localhost:9090

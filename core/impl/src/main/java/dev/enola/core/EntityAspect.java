@@ -17,10 +17,13 @@
  */
 package dev.enola.core;
 
+import com.google.protobuf.Descriptors;
+
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,4 +38,8 @@ public interface EntityAspect {
             EntityKind entityKind,
             List<Entity.Builder> entities)
             throws EnolaException;
+
+    default List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
+        return Collections.emptyList();
+    }
 }

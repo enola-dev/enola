@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThrows;
 import com.google.common.net.MediaType;
 import com.google.protobuf.Any;
 import com.google.protobuf.Timestamp;
+import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
@@ -109,7 +110,8 @@ public class ProtoIOTest extends AbstractProtoTestBase {
 
     @Test
     public void writeReadAnyTextproto() throws IOException {
-        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var typeRegistry = TypeRegistry.newBuilder().add(Timestamp.getDescriptor()).build();
+        var io = new ProtoIO(typeRegistry);
         var any = Any.pack(TIMESTAMP);
         var textproto =
                 "[type.googleapis.com/google.protobuf.Timestamp] {\n"
@@ -126,7 +128,8 @@ public class ProtoIOTest extends AbstractProtoTestBase {
 
     @Test
     public void writeReadAnyJSON() throws IOException {
-        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var typeRegistry = TypeRegistry.newBuilder().add(Timestamp.getDescriptor()).build();
+        var io = new ProtoIO(typeRegistry);
         var any = Any.pack(TIMESTAMP);
         var json =
                 "{\"@type\":\"type.googleapis.com/google.protobuf.Timestamp\","
@@ -141,7 +144,8 @@ public class ProtoIOTest extends AbstractProtoTestBase {
 
     @Test
     public void writeAnyYAML() throws IOException {
-        var io = ProtoIO.newBuilder().add(Timestamp.getDescriptor()).build();
+        var typeRegistry = TypeRegistry.newBuilder().add(Timestamp.getDescriptor()).build();
+        var io = new ProtoIO(typeRegistry);
         var any = Any.pack(TIMESTAMP);
         var yaml =
                 "{'@type': type.googleapis.com/google.protobuf.Timestamp, value:"

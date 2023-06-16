@@ -17,11 +17,12 @@
  */
 package dev.enola.cli;
 
+import com.google.protobuf.TypeRegistry;
+
 import dev.enola.common.io.resource.WriterResource;
-import dev.enola.common.protobuf.DescriptorRegistry;
+import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
-import dev.enola.core.EntityIO;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
@@ -48,19 +49,20 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     String idString;
 
     private WriterResource resource;
-    private DescriptorRegistry descriptorRegistry;
+    private TypeRegistry typeRegistry;
 
     @Override
     protected final void run(EntityKindRepository ekr) throws Exception {
         // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
-        EnolaService service = new EnolaServiceProvider().get(ekr);
+        var esp = new EnolaServiceProvider();
+        EnolaService service = esp.get(ekr);
+        typeRegistry = esp.getTypeRegistry();
 
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!
 
         var ek = ekr.get(id);
         resource = new WriterResource(out, format.toMediaType());
-        descriptorRegistry = null; // TODO !!!
 
         run(ekr, service, ek, id);
     }
@@ -69,6 +71,6 @@ public abstract class CommandWithEntityID extends CommandWithModel {
             EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id) throws Exception;
 
     protected void write(EntityKind ek, Entity entity) throws IOException {
-        new EntityIO(descriptorRegistry).write(ek, entity, resource);
+        new ProtoIO(typeRegistry).write(entity, resource);
     }
 }
