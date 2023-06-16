@@ -68,6 +68,8 @@ $ ./enola get --model file:docs/use/connector/model-fs.yaml demo.book_kind/0-13-
 ...
 ```
 
+The File System Repository Connector [does not yet support the `Any` fields in `data`](https://github.com/enola-dev/enola/issues/238).
+
 ## gRPC
 
 This connector complements entities by invoking a [remote gRPC](https://grpc.io) microservice
@@ -87,7 +89,7 @@ $ ./demo-grpc.bash
 ...
 ```
 
-In addition to returning entities' themselves, gRPC Connectors also provide the Protocol Buffer
+In addition to returning entities themselves, gRPC Connectors also provide the Protocol Buffer
 schemas (as `FileDescriptorProto`) for the `Any` fields in `data` of the _EntityKind_ they handle.
 
 ## Error

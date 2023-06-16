@@ -29,4 +29,7 @@ message Something {
   string text = 1;
   int64 number = 2;
   google.protobuf.Timestamp ts = 3;
+
+  // TODO https://github.com/enola-dev/enola/issues/238
+  // repeated string names = 7;
 }

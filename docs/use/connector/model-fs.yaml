@@ -1,5 +1,5 @@
 kinds:
-  - id: { ns: demo, entity: book_kind, paths: [isbn] }
+  - id: { ns: demo, entity: book_kind, paths: [ isbn ] }
     link:
       google:
         label: Google Book Search
@@ -7,8 +7,11 @@ kinds:
     data:
       authors:
         label: Names of the authors of this book.
+        type_url: demo.enola.dev/dev.enola.demo.Something
     connectors:
       - fs:
           path: docs/use/connector/
-          # type_url: TODO https://github.com/enola-dev/enola/issues/75
+          # TODO https://github.com/enola-dev/enola/issues/238
+          # protos:
+          #   - ../../connectors/demo/src/main/java/dev/enola/demo/demo_data.proto
           format: FORMAT_YAML
