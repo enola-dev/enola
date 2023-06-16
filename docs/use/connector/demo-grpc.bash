@@ -29,6 +29,6 @@ set -x
 
 # TODO rm? while ! timeout 1 bash -c "echo > /dev/tcp/localhost/9090"; do sleep 1; done;
 
-"$ROOT"/enola get --model file:"$DEMO"/model-grpc.yaml demo.book_kind/0-13-140731-7
+"$ROOT"/enola get --model file:"$DEMO"/model-grpc.yaml --format yaml demo.book_kind/0-13-140731-7
 
 kill "$(cat /tmp/ServerPID)"

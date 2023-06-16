@@ -19,6 +19,8 @@ package dev.enola.core.aspects;
 
 import static dev.enola.common.protobuf.Timestamps2.fromInstant;
 
+import com.google.protobuf.TypeRegistry;
+
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.ProtoIO;
@@ -46,12 +48,22 @@ public class FilestoreRepositoryAspect implements EntityAspect {
 
     private final Path root;
     private final FileSystemRepository.Format format;
-    private final ProtoIO io = new ProtoIO();
+    private final ProtoIO io;
 
     public FilestoreRepositoryAspect(Path root, FileSystemRepository.Format format) {
         this.root = root.toAbsolutePath().normalize();
         this.format = format;
+
+        var typeRegistryBuilder = TypeRegistry.newBuilder();
+        // TODO https://github.com/enola-dev/enola/issues/238
+        // typeRegistryBuilder.add(descriptor); where descriptor is read from
+        // the proto files given in FileSystemRepository, loaded with square/wire.
+        this.io = new ProtoIO(typeRegistryBuilder.build());
     }
+
+    // TODO https://github.com/enola-dev/enola/issues/238 Implement @Override getDescriptors()
+    // using the same as above (but that above is for reading files, whereas this is required
+    // e.g. for the CLI to be able to print Any data fields.
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
@@ -62,10 +74,6 @@ public class FilestoreRepositoryAspect implements EntityAspect {
             LOG.info("No {}", path);
             return;
         }
-
-        // TODO https://github.com/enola-dev/enola/issues/75
-        // var any = Any.newBuilder().setTypeUrl(??? ... ???).build();
-        // entity.putData("authors", any);
 
         ReadableResource resource = new FileResource(path);
         try {
