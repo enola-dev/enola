@@ -46,13 +46,15 @@ proto_library(
 proto_library(
     name = "connector_proto",
     srcs = ["src/main/java/dev/enola/core/connector/enola_connector.proto"],
-    deps = [":core_proto"],
+    deps = [
+        ":core_proto",
+        "@com_google_protobuf//:descriptor_proto",
+    ],
 )
 
 proto_library(
     name = "meta_proto",
     srcs = ["src/main/java/dev/enola/core/meta/enola_meta.proto"],
-    # TODO ??? strip_import_prefix = "core/lib/src/main/java/",
     deps = [":core_proto"],
 )
 

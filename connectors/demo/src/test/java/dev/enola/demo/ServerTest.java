@@ -19,10 +19,13 @@ package dev.enola.demo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReplacingResource;
+import dev.enola.common.protobuf.ProtoIO;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -31,6 +34,7 @@ import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
@@ -46,6 +50,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class ServerTest {
+
+    private EntityKindRepository ekr;
+    private EnolaService enola;
+    private TypeRegistry typeRegistry;
+
     @Test
     public void bothConnectorDirectlyAndViaServer()
             throws IOException, InterruptedException, ValidationException, EnolaException {
@@ -62,7 +71,7 @@ public class ServerTest {
             checkConnectorList(client);
 
             // Test Demo Connector through invoking Enola Core
-            var enola = createEnolaService(port);
+            createEnolaService(port);
             checkEnolaGet(enola);
             checkEnolaList(enola);
 
@@ -87,29 +96,38 @@ public class ServerTest {
                 .isEqualTo("https://enola.dev");
     }
 
-    private EnolaService createEnolaService(int port) throws ValidationException, IOException {
+    private void createEnolaService(int port)
+            throws ValidationException, IOException, EnolaException {
         var sPort = Integer.toString(port);
         var model =
                 new ReplacingResource(
                         new ClasspathResource("demo-connector-model.textproto"), "9090", sPort);
         // As in dev.enola.cli.CommandWithModel + dev.enola.cli.CommandWithEntityID
-        var ekr = new EntityKindRepository();
+        ekr = new EntityKindRepository();
         ekr.load(model);
-        return new EnolaServiceProvider().get(ekr);
+
+        var esp = new EnolaServiceProvider();
+        enola = esp.get(ekr);
+        typeRegistry = esp.getTypeRegistry();
     }
 
-    private void checkEnolaGet(EnolaService enola)
-            throws EnolaException, InvalidProtocolBufferException {
+    private void checkEnolaGet(EnolaService enola) throws EnolaException, IOException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
         var request = GetEntityRequest.newBuilder().setId(id).build();
         var response = enola.getEntity(request);
-        assertThat(response.getEntity().getLinkOrThrow("link1"))
-                .isEqualTo("http://www.vorburger.ch");
+        Entity entity = response.getEntity();
+        assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
 
-        var any = response.getEntity().getDataOrThrow("data1");
+        var any = entity.getDataOrThrow("data1");
         var something = any.unpack(Something.class);
         assertThat(something.getText()).isEqualTo("hello, world");
         assertThat(something.getNumber()).isEqualTo(123);
+
+        var io = new ProtoIO(typeRegistry);
+        var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
+        var entityKind = ekr.get(ID.newBuilder().setNs("demo").setEntity("foo").build());
+        io.write(entity, resource);
+        assertThat(resource.charSource().read()).contains("text: 'hello, world'");
     }
 
     private void checkEnolaList(EnolaService enola) throws EnolaException {

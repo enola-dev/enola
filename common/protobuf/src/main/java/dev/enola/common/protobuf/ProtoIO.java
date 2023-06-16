@@ -24,9 +24,10 @@ import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.*;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.net.MediaType;
 import com.google.protobuf.*;
-import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.util.JsonFormat;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -57,6 +58,10 @@ public class ProtoIO {
                 TextFormat.Parser.newBuilder().setTypeRegistry(typeRegistry).build();
     }
 
+    public ProtoIO(TypeRegistry typeRegistry) {
+        this(ExtensionRegistry.getEmptyRegistry(), requireNonNull(typeRegistry, "typeRegistry"));
+    }
+
     public ProtoIO() {
         this(ExtensionRegistry.getEmptyRegistry(), TypeRegistry.newBuilder().build());
     }
@@ -67,10 +72,6 @@ public class ProtoIO {
         ReadableResource resource = new ClasspathResource(pathToResourceOnClasspath);
         // TODO new ProtoIO().merge(resource, DynamicMessage.newBuilder(descriptor));
         new ProtoIO().read(resource, builder);
-    }
-
-    public static ProtoIO.Builder newBuilder() {
-        return new Builder();
     }
 
     public void write(Message message, WritableResource resource) throws IOException {
@@ -164,21 +165,9 @@ public class ProtoIO {
             super(e.getLine(), e.getColumn(), uri.toString() + ":" + e.getMessage());
             this.uri = uri;
         }
-    }
 
-    public static class Builder {
-        private final ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
-        private final TypeRegistry.Builder typeRegistry = TypeRegistry.newBuilder();
-
-        private Builder() {}
-
-        public ProtoIO.Builder add(Descriptor descriptor) {
-            typeRegistry.add(descriptor);
-            return this;
-        }
-
-        public ProtoIO build() {
-            return new ProtoIO(extensionRegistry, typeRegistry.build());
+        public URI getUri() {
+            return uri;
         }
     }
 }

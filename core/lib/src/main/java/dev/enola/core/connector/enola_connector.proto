@@ -19,6 +19,7 @@ syntax = "proto3";
 package dev.enola.core.connector;
 
 import "core/lib/src/main/java/dev/enola/core/enola_core.proto";
+import "google/protobuf/descriptor.proto";
 
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.connector.proto";
@@ -44,6 +45,19 @@ message ConnectorServiceListResponse {
   repeated dev.enola.core.Entity entities = 1;
 }
 
+// No string type_url here, because a Connector simply returns everything.
+message GetDescriptorsRequest {
+  // Intentionally empty.
+}
+
+message GetDescriptorsResponse {
+  // This has to be in order of dependencies, so reverse import order.
+  // For example, for the connectors/demo's demo_data.proto which has an
+  // import "google/protobuf/timestamp.proto" this has to FIRST contain
+  // the Timestamp's and THEN the Something's FileDescriptorProto.
+  repeated google.protobuf.FileDescriptorProto protos = 1;
+}
+
 // This is the API which Enola Connectors implement.
 // Enola Core calls this API for each of the listed connector of an EntityKind.
 // Enola clients (such as a CLI or UI) use the EnolaService, instead of this
@@ -52,4 +66,5 @@ service ConnectorService {
   rpc Augment(AugmentRequest) returns (AugmentResponse) {}
   rpc List(ConnectorServiceListRequest) returns (ConnectorServiceListResponse) {
   }
+  rpc GetDescriptors(GetDescriptorsRequest) returns (GetDescriptorsResponse) {}
 }

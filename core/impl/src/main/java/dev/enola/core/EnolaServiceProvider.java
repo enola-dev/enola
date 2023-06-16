@@ -17,6 +17,9 @@
  */
 package dev.enola.core;
 
+import com.google.common.collect.ImmutableList;
+import com.google.protobuf.TypeRegistry;
+
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.*;
 import dev.enola.core.meta.EntityKindRepository;
@@ -26,10 +29,14 @@ import java.nio.file.Path;
 
 public class EnolaServiceProvider {
 
-    public EnolaService get(EntityKindRepository ekr) throws ValidationException {
-        var r = new EnolaServiceRegistry();
+    private TypeRegistry typeRegistry;
+
+    // TODO rename to getService
+    public EnolaService get(EntityKindRepository ekr) throws ValidationException, EnolaException {
+        var trb = TypeRegistry.newBuilder();
+        var sr = new EnolaServiceRegistry();
         for (var ek : ekr.list()) {
-            var s = new EntityAspectService(ek);
+            var aspectsBuilder = ImmutableList.<EntityAspect>builder();
 
             // The order in which we add Aspects (AKA Connectors) here matters, a lot!
             // First come the end users custom (and possibly remove...) connectors.
@@ -38,7 +45,7 @@ public class EnolaServiceProvider {
             for (var c : ek.getConnectorsList()) {
                 switch (c.getTypeCase()) {
                     case ERROR:
-                        s.add(new ErrorTestAspect(c.getError()));
+                        aspectsBuilder.add(new ErrorTestAspect(c.getError()));
                         break;
 
                     case JAVA_CLASS:
@@ -47,7 +54,7 @@ public class EnolaServiceProvider {
                             var clazz = Class.forName(className);
                             var object = clazz.getDeclaredConstructor().newInstance();
                             EntityAspect connector = (EntityAspect) object;
-                            s.add(connector);
+                            aspectsBuilder.add(connector);
                             break;
 
                         } catch (ClassNotFoundException
@@ -65,11 +72,13 @@ public class EnolaServiceProvider {
 
                     case FS:
                         var fs = c.getFs();
-                        s.add(new FilestoreRepositoryAspect(Path.of(fs.getPath()), fs.getFormat()));
+                        aspectsBuilder.add(
+                                new FilestoreRepositoryAspect(
+                                        Path.of(fs.getPath()), fs.getFormat()));
                         break;
 
                     case GRPC:
-                        s.add(new GrpcAspect(c.getGrpc()));
+                        aspectsBuilder.add(new GrpcAspect(c.getGrpc()));
                         break;
 
                     case TYPE_NOT_SET:
@@ -79,12 +88,31 @@ public class EnolaServiceProvider {
                 }
             }
 
-            s.add(new UriTemplateAspect(ek));
-            s.add(new TimestampAspect());
-            s.add(new ValidationAspect());
+            aspectsBuilder.add(new UriTemplateAspect(ek));
+            aspectsBuilder.add(new TimestampAspect());
+            aspectsBuilder.add(new ValidationAspect());
 
-            r.register(ek.getId(), s);
+            var aspects = aspectsBuilder.build();
+            var s = new EntityAspectService(ek, aspects);
+            sr.register(ek.getId(), s);
+
+            populateTypeRegistry(trb, aspects);
         }
-        return r;
+        this.typeRegistry = trb.build();
+        return sr;
+    }
+
+    public TypeRegistry getTypeRegistry() {
+        if (typeRegistry == null) {
+            throw new IllegalStateException("getTypeRegistry() must be called after get()");
+        }
+        return typeRegistry;
+    }
+
+    private void populateTypeRegistry(TypeRegistry.Builder trb, ImmutableList<EntityAspect> aspects)
+            throws EnolaException {
+        for (var aspect : aspects) {
+            trb.add(aspect.getDescriptors());
+        }
     }
 }

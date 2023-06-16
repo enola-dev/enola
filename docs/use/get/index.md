@@ -41,3 +41,6 @@ Get a `book_kind` - note how the `google` _link_ was set, based on the template
 $ ./enola get --model file:docs/use/library/model.yaml demo.book_kind/0-13-140731-7
 ...
 ```
+
+If the entity contains `data` fields, the `Any` protos are displayed correctly "unwrapped".
+This can be seen in [the gRPC Demo Connector](../connector/index.md#grpc).

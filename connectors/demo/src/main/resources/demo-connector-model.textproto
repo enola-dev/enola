@@ -17,6 +17,8 @@
 # proto-file: dev/enola/core/meta/enola_meta.proto
 # proto-message: EntityKinds
 
+# This file must kept in sync with docs/use/connector/model-grpc.yaml
+
 kinds {
   id: { ns: "demo" entity: "foo" paths: "name" }
   link {

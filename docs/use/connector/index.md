@@ -87,6 +87,9 @@ $ ./demo-grpc.bash
 ...
 ```
 
+In addition to returning entities' themselves, gRPC Connectors also provide the Protocol Buffer
+schemas (as `FileDescriptorProto`) for the `Any` fields in `data` of the _EntityKind_ they handle.
+
 ## Error
 
 This connector always triggers an error, and is only intended for testing; e.g.

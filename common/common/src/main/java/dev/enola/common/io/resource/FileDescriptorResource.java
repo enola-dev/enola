@@ -26,7 +26,7 @@ import java.net.URI;
 
 /**
  * Resource for URIs "fd:0?charset=ASCII" (STDIN), "fd:1?charset=UTF-8" (STDOUT),
- * "fd:2?charset=UTF-16BE" STDERR.
+ * "fd:2?charset=UTF-16BE" STDERR. Implementation uses {@link FileDescriptor}.
  */
 public class FileDescriptorResource implements Resource {
 
