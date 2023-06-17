@@ -43,6 +43,7 @@ java_library(
         "//core:__subpackages__",
         "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
     deps = [
         ":validation_proto_java_library",

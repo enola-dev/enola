@@ -72,6 +72,7 @@ java_proto_library(
         "//core:__subpackages__",
         "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
     deps = [
         "connector_proto",
@@ -91,6 +92,7 @@ java_grpc_library(
         "//core:__subpackages__",
         "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
     deps = [":core_java_proto"],
 )
@@ -104,6 +106,7 @@ java_grpc_library(
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
     deps = [":core_java_proto"],
 )
@@ -146,6 +149,7 @@ java_library(
         "//core:__subpackages__",
         "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
     deps = [
         ":core_java_proto",
@@ -184,5 +188,6 @@ go_proto_library(
         "//core:__subpackages__",
         "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
+        "//gui:__pkg__",
     ],
 )

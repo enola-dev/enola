@@ -77,6 +77,17 @@ message EntityKind {
 
   // TODO Describe detailed "state machine"
   // TODO Build cool visualization of said state machine as fancy diagram
+
+  repeated View views = 21;
+}
+
+message View {
+  string name = 1;
+  repeated Column columns = 2;
+}
+
+message Column {
+  string name = 1;
 }
 
 // Entity#related map model; its key is the same as this in EntityKind#related.

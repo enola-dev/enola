@@ -56,10 +56,10 @@ public class GrpcAspect implements Closeable, EntityAspect {
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
-        var request = AugmentRequest.newBuilder().setEntity(entity).build();
-        var response = client.augment(request);
-        var builder = response.getEntity().toBuilder();
-        builder.clearId(); // required to avoid duplicating path (and also safer)
-        entity.mergeFrom(builder.build());
+        // var request = AugmentRequest.newBuilder().setEntity(entity).build();
+        // var response = client.augment(request);
+        // var builder = response.getEntity().toBuilder();
+        // builder.clearId(); // required to avoid duplicating path (and also safer)
+        // entity.mergeFrom(builder.build());
     }
 }

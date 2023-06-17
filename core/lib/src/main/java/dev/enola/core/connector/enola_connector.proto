@@ -26,11 +26,16 @@ option java_multiple_files = true;
 
 message AugmentRequest {
   dev.enola.core.Entity entity = 1;
+  dev.enola.core.ID kind = 2;
+  dev.enola.core.ID scope = 3;
+  string relationship = 4;
   // Intentionally no EntityKind! It would be wasteful to resend it every time.
 }
 message AugmentResponse {
   dev.enola.core.Entity entity = 1;
+  repeated dev.enola.core.Entity entities = 2;
 }
+
 // This is the external equivalent of the internal EntityAspect Java API.
 service ConnectorService {
   rpc Augment(AugmentRequest) returns (AugmentResponse) {}

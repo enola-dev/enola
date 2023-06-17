@@ -89,7 +89,8 @@ message Entity {
   // Data about the Entity, in machine readable form, as Any protobuf.
   // TODO replace Struct with Any, but that needs schemas... map<string,
   // google.protobuf.Any> data = 9;
-  map<string, google.protobuf.Struct> data = 9;
+  //map<string, google.protobuf.Struct> data = 9;
+  map<string, string> data = 9;
 }
 
 message GetEntityRequest {
@@ -124,3 +125,4 @@ message GetEntityResponse {
 service EnolaService {
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse) {}
 }
+

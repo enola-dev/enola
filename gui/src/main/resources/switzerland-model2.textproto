@@ -1,0 +1,174 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# https://protobuf.dev/reference/protobuf/textformat-spec/
+# proto-file: dev/enola/core/meta/enola_meta.proto
+# proto-message: EntityKinds
+
+kinds {
+  id: { ns: "demo" entity: "country" paths: "name" }
+  label: "Country"
+
+  related {
+    key:"municipalities"
+    value {
+      label: "Municipalities",
+      id: { ns: "demo" entity: "municipality" }
+      tags: {key:"cardinality", value:"many"}
+    }
+  }
+  related {
+    key:"cantons"
+    value {
+      label: "Cantons",
+      id: { ns: "demo" entity: "canton" }
+      tags: {key:"cardinality", value:"many"}
+    }
+  }
+}
+
+kinds {
+  id: { ns: "demo" entity: "canton" paths: "name" }
+  label: "Canton"
+  data {
+    key:"code"
+    value {
+      label : "Code"
+    }
+  }
+  related {
+    key:"municipalities"
+    value {
+      label: "Municipalities",
+      id: { ns: "demo" entity: "municipality" }
+      tags: {key:"cardinality", value:"many"}
+    }
+  }
+  related {
+    key:"capital"
+    value {
+      label: "Capital",
+      id: { ns: "demo" entity: "municipality" }
+      tags: {key:"cardinality", value:"one"}
+    }
+  }
+  related {
+    key:"language"
+    value {
+      label: "Languages",
+      id: { ns: "demo" entity: "language" }
+      tags: {key:"cardinality", value:"many"}
+    }
+  }
+  related {
+    key:"country"
+    value {
+      label: "Country",
+      id: { ns: "demo" entity: "country" }
+      tags: {key:"cardinality", value:"one"}
+    }
+  }
+  link {
+    key: "wikipedia",
+    value: {
+      label: "Wikipedia",
+      uri_template: "https://en.wikipedia.org/wiki/Cantons_of_Switzerland"
+    }
+  }
+}
+
+
+kinds {
+  id: { ns: "demo" entity: "language" paths: "name" }
+}
+
+
+kinds {
+  id: { ns: "demo" entity: "municipality" paths: "name" }
+  label: "Municipality"
+  related {
+    key:"country"
+    value {
+      label: "Country",
+      id: { ns: "demo" entity: "country" }
+      tags: {key:"cardinality", value:"one"}
+    }
+  }
+  related {
+    key:"canton"
+    value {
+      label: "Canton",
+      id: { ns: "demo" entity: "canton" }
+      tags: {key:"cardinality", value:"one"}
+    }
+  }
+  related {
+    key:"language"
+    value {
+      label: "Languages",
+      id: { ns: "demo" entity: "language" }
+      tags: {key:"cardinality", value:"many"}
+    }
+  }
+  data {
+    key:"postal_code"
+    value {
+      label : "Post code"
+      tags:{key:"type", value:"integer"}
+    }
+  }
+  data {
+    key:"inhabitants"
+    value {
+      label : "Number of inhabitants"
+      tags:{key:"type", value:"integer"}
+      tags:{key:"aggregate", value:"sum"}
+    }
+  }
+  data {
+    key:"french"
+    value {
+      label : "French"
+    }
+  }
+  data {
+    key:"german"
+    value {
+      label : "German"
+    }
+  }
+  data {
+    key:"italian"
+    value {
+      label : "Italian"
+    }
+  }
+  data {
+    key:"rumantsch"
+    value {
+      label : "Rumantsch"
+    }
+  }
+
+
+  views {
+    name : "demography"
+    columns { name:"related.canton"}
+    columns { name:"data.inhabitants"}
+  }
+
+}
+
