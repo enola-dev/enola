@@ -24,6 +24,7 @@ import "google/protobuf/descriptor.proto";
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.connector.proto";
 option java_multiple_files = true;
+option go_package = "dev/enola/core/connector";
 
 message AugmentRequest {
   dev.enola.core.Entity entity = 1;

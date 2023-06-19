@@ -23,6 +23,7 @@ import "core/lib/src/main/java/dev/enola/core/enola_core.proto";
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.meta.proto";
 option java_multiple_files = true;
+option go_package = "dev/enola/core/meta";
 
 // message MetaModelPackage {
 // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.

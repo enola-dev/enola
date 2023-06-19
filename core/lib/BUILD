@@ -178,16 +178,30 @@ go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
     protos = [
-        ":connector_proto",
         ":core_proto",
-        ":meta_proto",
-        ":util_proto",
     ],
-    visibility = [
-        "//cli:__subpackages__",
-        "//connectors:__subpackages__",
-        "//core:__subpackages__",
-        "//web/rest:__pkg__",
-        "//web/ui-soy:__pkg__",
-    ],
+    visibility = [],
+)
+
+go_proto_library(
+    name = "connector_go_proto",
+    importpath = "dev/enola/core/connector",
+    proto = ":connector_proto",
+    visibility = [],
+    deps = [":core_go_proto"],
+)
+
+go_proto_library(
+    name = "meta_go_proto",
+    importpath = "dev/enola/core/meta",
+    proto = ":meta_proto",
+    visibility = [],
+    deps = [":core_go_proto"],
+)
+
+go_proto_library(
+    name = "util_go_proto",
+    importpath = "dev/enola/core/util",
+    proto = ":util_proto",
+    visibility = [],
 )
