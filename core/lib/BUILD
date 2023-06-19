@@ -177,9 +177,7 @@ java_library(
 go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
-    protos = [
-        ":core_proto",
-    ],
+    proto = ":core_proto",
     visibility = [],
 )
 
