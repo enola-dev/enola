@@ -177,14 +177,14 @@ java_library(
 go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
-    proto = ":core_proto",
+    protos = [":core_proto"],
     visibility = [],
 )
 
 go_proto_library(
     name = "connector_go_proto",
     importpath = "dev/enola/core/connector",
-    proto = ":connector_proto",
+    protos = [":connector_proto"],
     visibility = [],
     deps = [":core_go_proto"],
 )
@@ -192,7 +192,7 @@ go_proto_library(
 go_proto_library(
     name = "meta_go_proto",
     importpath = "dev/enola/core/meta",
-    proto = ":meta_proto",
+    protos = [":meta_proto"],
     visibility = [],
     deps = [":core_go_proto"],
 )
@@ -200,6 +200,6 @@ go_proto_library(
 go_proto_library(
     name = "util_go_proto",
     importpath = "dev/enola/core/util",
-    proto = ":util_proto",
+    protos = [":util_proto"],
     visibility = [],
 )
