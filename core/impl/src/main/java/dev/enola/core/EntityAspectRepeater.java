@@ -15,26 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.core;
 
-import dev.enola.core.EnolaService;
-import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.ID;
+import dev.enola.core.proto.Entity;
 
-import picocli.CommandLine.Command;
+import java.util.List;
 
-@Command(name = "get", description = "Get Entity")
-public class Get extends CommandWithEntityID {
-
+/**
+ * An {@link EntityAspect} which calls {@link EntityAspect#augment(Entity.Builder, EntityKind)} for
+ * each entity in its default {@link EntityAspect#list(ConnectorServiceListRequest, EntityKind,
+ * List)} implementation.
+ */
+public interface EntityAspectRepeater extends EntityAspect {
     @Override
-    protected void run(EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id)
-            throws Exception {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
+    default void list(
+            ConnectorServiceListRequest request,
+            EntityKind entityKind,
+            List<Entity.Builder> entities)
+            throws EnolaException {
 
-        write(entity);
+        for (var entity : entities) {
+            augment(entity, entityKind);
+        }
     }
 }

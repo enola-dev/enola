@@ -18,8 +18,7 @@ syntax = "proto3";
 
 package dev.enola.core;
 
-// import "google/protobuf/any.proto";
-import "google/protobuf/struct.proto";
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
@@ -86,13 +85,13 @@ message Entity {
   // These can be requested to be "inlined" in responses.
   map<string, string> link = 7;
 
-  // Data about the Entity, in machine readable form, as Any protobuf.
-  // TODO replace Struct with Any, but that needs schemas... map<string,
-  // google.protobuf.Any> data = 9;
-  map<string, google.protobuf.Struct> data = 9;
+  // Data about the Entity, in machine readable form.
+  // Key is EntityKind#data.key, value is an Any protobuf.
+  map<string, google.protobuf.Any> data = 9;
 }
 
 message GetEntityRequest {
+  // This ID has to have all of its 'path' fully set.
   ID id = 1;
 
   // Request to inline Entity#link, by the same string key as used there.
@@ -114,6 +113,31 @@ message GetEntityResponse {
     } */
 }
 
+// Request for a list of entities.
+// For the https://docs.enola.dev/use/library/ example model, examples could be:
+//   A. Set 'kind' to 'book_kind', without the 'isbn' path - list all
+//   B. Set 'kind' to 'book', and the 'library' path - from a specific library
+// Note that for the example library model you would not use the related_filter,
+// as the only two related (the 'library' and the 'kind') are available in the
+// paths; but if it had any other related, one could filter one or several of
+// those.
+message ListEntitiesRequest {
+  // The ID (with path) of the EntityKind to be returned.
+  dev.enola.core.ID id = 1;
+
+  // Filters on related entities.
+  // The key is as in EntityKind or Entity's .related,
+  // and the value is the ("scope") related entity to filter on.
+  // If there is more than one, these are AND, not OR.
+  map<string, ID> related_filter = 2;
+
+  // TODO Add dataFilter? E.g. for all Books that are currently borrowed.
+}
+
+message ListEntitiesResponse {
+  repeated dev.enola.core.Entity entities = 1;
+}
+
 // TODO rpc watch(), for a time series WatchRequest/Response with repeated
 // Entity?
 //   google.protobuf.Timestamp ts = 2;
@@ -121,6 +145,8 @@ message GetEntityResponse {
 //   google.protobuf.Timestamp end = 3;
 //   google.protobuf.Duration granularity = 4;
 
+// This is the API with which Enola clients (such as a CLI or UI) connect.
 service EnolaService {
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse) {}
+  rpc ListEntities(ListEntitiesRequest) returns (ListEntitiesResponse) {}
 }

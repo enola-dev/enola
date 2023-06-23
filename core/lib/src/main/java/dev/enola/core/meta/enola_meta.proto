@@ -23,6 +23,7 @@ import "core/lib/src/main/java/dev/enola/core/enola_core.proto";
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.meta.proto";
 option java_multiple_files = true;
+option go_package = "dev/enola/core/meta";
 
 // message MetaModelPackage {
 // Scheme, as-in ID.parts.scheme; in lower case and without any spaces.
@@ -176,6 +177,9 @@ message FileSystemRepository {
     FORMAT_JSON = 3;
   }
   Format format = 2;
+
+  // TODO https://github.com/enola-dev/enola/issues/238
+  // repeated string protos = 3;
 }
 
 // TODO Remove the following - and have EntityKind *BE* an Entity that's itself

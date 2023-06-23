@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
 # Copyright 2023 The Enola <https://enola.dev> Authors
@@ -15,20 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
+# proto-file: dev/enola/core/meta/enola_meta.proto
+# proto-message: EntityKinds
 
-DEMO="$(realpath "$(dirname "$0")")"
-ROOT="$DEMO"/../../..
+# This file must kept in sync with docs/use/connector/model-grpc.yaml
 
-bazelisk build //connectors/demo:demo_deploy.jar 2>/dev/null
-
-set -x
-
-# NOT bazelisk run //connectors/demo 9090 &
-"$ROOT"/bazel-bin/connectors/demo/demo --singlejar 9090 &
-
-# TODO rm? while ! timeout 1 bash -c "echo > /dev/tcp/localhost/9090"; do sleep 1; done;
-
-"$ROOT"/enola get --model file:"$DEMO"/model-grpc.yaml --format yaml demo.book_kind/0-13-140731-7
-
-kill "$(cat /tmp/ServerPID)"
+kinds {
+  id: { ns: "demo" entity: "foo" paths: "name" }
+  link {
+    key: "link1"
+    value: { label: "Link to some UI" }
+  }
+  data {
+    key: "data1"
+    value: {
+      label: "Details"
+      type_url: "demo.enola.dev/dev.enola.demo.Something"
+    }
+  }
+  connectors { grpc: "localhost:9090" }
+}

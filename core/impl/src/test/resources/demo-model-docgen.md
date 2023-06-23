@@ -21,6 +21,10 @@ classDiagram
     🆔 name
   }
   link Foo "#demo.foo"
+  class Entity_kind{
+    🆔 name
+  }
+  link Entity_kind "#enola.entity_kind"
 ```
 
 ## 👩‍🎤 `demo.bar` (FUBAR?) <a name="demo.bar"></a>
@@ -50,6 +54,12 @@ classDiagram
 * name
 
 [See documentation...](demo-model.md#foo)
+
+## 🕵🏾‍♀️ `enola.entity_kind` (Enola.dev Entity Kind) <a name="enola.entity_kind"></a>
+
+* name
+
+[See documentation...](https://docs.enola.dev/concepts/core-arch/)
 
 ---
 _This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

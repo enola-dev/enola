@@ -1,10 +1,10 @@
 link:
   google: http://www.vorburger.ch/corejdo/
-data:
-  authors:
-    # TODO https://github.com/enola-dev/enola/issues/75
-    authors:
-      - Sameer Tyagi
-      - Michael Vorburger
-      - Keiron McCannon
-      - Heiko Bobzin
+
+  # TODO https://github.com/enola-dev/enola/issues/238
+  # data:
+  #   authors: {'@type': demo.enola.dev/dev.enola.demo.Something, text: 'hello, world', names: ... }
+  #     - Sameer Tyagi
+  #     - Michael Vorburger
+  #     - Keiron McCannon
+  #     - Heiko Bobzin

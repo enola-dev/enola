@@ -23,6 +23,7 @@ java_binary(
     deps = [
         "//common/common",
         "//common/markdown",
+        "//common/protobuf",
         "//core/impl",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
@@ -30,6 +31,7 @@ java_binary(
         "//web/sun",
         "//web/ui-soy",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:info_picocli_picocli",
         "@maven//:org_slf4j_slf4j_jdk14",
     ],
@@ -45,6 +47,7 @@ java_binary(
         "//common/common",
         "//common/markdown",
         "//core/impl",
+        "//web/rest",
         "//web/sun",
         "//web/ui-soy",
         "@maven//:com_google_guava_guava",

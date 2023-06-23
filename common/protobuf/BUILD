@@ -39,6 +39,7 @@ java_library(
     name = "protobuf",
     srcs = glob(["src/main/java/**/*.java"]),
     visibility = [
+        "//cli:__pkg__",
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/rest:__pkg__",

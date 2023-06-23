@@ -46,13 +46,15 @@ proto_library(
 proto_library(
     name = "connector_proto",
     srcs = ["src/main/java/dev/enola/core/connector/enola_connector.proto"],
-    deps = [":core_proto"],
+    deps = [
+        ":core_proto",
+        "@com_google_protobuf//:descriptor_proto",
+    ],
 )
 
 proto_library(
     name = "meta_proto",
     srcs = ["src/main/java/dev/enola/core/meta/enola_meta.proto"],
-    # TODO ??? strip_import_prefix = "core/lib/src/main/java/",
     deps = [":core_proto"],
 )
 
@@ -149,7 +151,10 @@ java_library(
     ],
     deps = [
         ":core_java_proto",
+        "//common/common",
+        "//common/protobuf",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
     ],
 )
 
@@ -172,17 +177,29 @@ java_library(
 go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
-    protos = [
-        ":connector_proto",
-        ":core_proto",
-        ":meta_proto",
-        ":util_proto",
-    ],
-    visibility = [
-        "//cli:__subpackages__",
-        "//connectors:__subpackages__",
-        "//core:__subpackages__",
-        "//web/rest:__pkg__",
-        "//web/ui-soy:__pkg__",
-    ],
+    protos = [":core_proto"],
+    visibility = [],
+)
+
+go_proto_library(
+    name = "connector_go_proto",
+    importpath = "dev/enola/core/connector",
+    protos = [":connector_proto"],
+    visibility = [],
+    deps = [":core_go_proto"],
+)
+
+go_proto_library(
+    name = "meta_go_proto",
+    importpath = "dev/enola/core/meta",
+    protos = [":meta_proto"],
+    visibility = [],
+    deps = [":core_go_proto"],
+)
+
+go_proto_library(
+    name = "util_go_proto",
+    importpath = "dev/enola/core/util",
+    protos = [":util_proto"],
+    visibility = [],
 )

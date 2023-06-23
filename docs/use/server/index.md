@@ -18,10 +18,14 @@
 
 # Web Server
 
-<!-- This intentionally does not use ```bash because the server "hangs" -->
+<!-- This intentionally does not use ```bash because the server "hangs" ...
+     ... we COULD use --immediateExitOnlyForTest=true (as in EnolaTest),
+     but this would be confusing for readers. TODO: Add support to hide
+     CLI flags to Executable Markdown... ;-) -->
 
-    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080
-    Open http://localhost:8080/ui ...
+    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080 --grpcPort=9090
+    gRPC API server now available on port 9090
+    HTTP JSON REST API + HTML UI server started; open http://0:0:0:0:0:0:0:0:8080/ui ...
 
 You can now open e.g. <http://localhost:8080/ui/entity/demo.book/ABC/0-13-140731-7/1>
 to view this `demo.book` _Entity._ When you click on the _Related_ `kind` you will
@@ -29,3 +33,5 @@ see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
 
 There is also a REST API which returns JSON if you replace `ui` with `api` in the URL,
 so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
+
+The `--grpcPort` flag starts [the Enola gRPC API](.././../dev/proto/core#enolaservice).

@@ -15,20 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.cli;
 
-public class EnolaException extends Exception {
-    // TODO Remove, when EnolaService is replaced with EnolaGrpcService
+import com.google.common.net.MediaType;
 
-    public EnolaException(String msg) {
-        super(msg);
-    }
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 
-    public EnolaException(String msg, Exception cause) {
-        super(msg, cause);
-    }
+public enum Format {
+    TextProto,
 
-    public EnolaException(Exception cause) {
-        super(cause);
+    YAML,
+
+    JSON;
+
+    MediaType toMediaType() {
+        switch (this) {
+            case TextProto:
+                return ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+            case YAML:
+                return ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
+            case JSON:
+                return ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+            default:
+                throw new IllegalStateException();
+        }
     }
 }

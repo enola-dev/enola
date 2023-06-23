@@ -19,15 +19,15 @@ package dev.enola.core.aspects;
 
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
-import dev.enola.core.EntityAspect;
+import dev.enola.core.EntityAspectRepeater;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
 import java.time.Clock;
 import java.time.Instant;
 
-public class TimestampAspect implements EntityAspect {
-    private Clock clock = Clock.systemUTC();
+public class TimestampAspect implements EntityAspectRepeater {
+    private final Clock clock = Clock.systemUTC();
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {

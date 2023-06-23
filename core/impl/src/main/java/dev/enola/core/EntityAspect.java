@@ -17,8 +17,14 @@
  */
 package dev.enola.core;
 
+import com.google.protobuf.Descriptors;
+
+import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * API for in-process "connectors". This is the internal equivalent of the gRPC ConnectorService.
@@ -26,4 +32,14 @@ import dev.enola.core.proto.Entity;
 public interface EntityAspect {
 
     void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException;
+
+    void list(
+            ConnectorServiceListRequest request,
+            EntityKind entityKind,
+            List<Entity.Builder> entities)
+            throws EnolaException;
+
+    default List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
+        return Collections.emptyList();
+    }
 }

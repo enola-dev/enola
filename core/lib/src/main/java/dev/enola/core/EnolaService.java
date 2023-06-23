@@ -19,8 +19,13 @@ package dev.enola.core;
 
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.ListEntitiesResponse;
 
 public interface EnolaService {
-    // TODO Replace this interface with its generated gRPC equivalent
+    // TODO Merge this "local" API with the ("remote") dev.enola.core.grpc.EnolaGrpcService
+
     GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException;
+
+    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

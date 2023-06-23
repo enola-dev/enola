@@ -27,10 +27,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
-import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
-import dev.enola.core.proto.ID;
+import dev.enola.core.proto.*;
 import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
@@ -42,17 +39,27 @@ import java.time.Instant;
 public class RestTest {
 
     @Test
-    public void getEntity() throws IOException {
+    public void getAndList() throws IOException {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
+            // Setup
             new RestAPI(new TestService()).register(server);
             server.start();
             var rp = new ResourceProviders();
             var port = server.getInetAddress().getPort();
             var prefix = "http://localhost:" + port;
 
+            // Get
             var uri1 = create(prefix + "/api/entity/test.demo/123");
             var response1 = rp.getResource(uri1);
+            assertThat(response1.charSource().read())
+                    .startsWith(
+                            "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
+            assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+
+            // List
+            var uri2 = create(prefix + "/api/entities/test.demo");
+            var response2 = rp.getResource(uri2);
             assertThat(response1.charSource().read())
                     .startsWith(
                             "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
@@ -63,10 +70,21 @@ public class RestTest {
     private static class TestService implements EnolaService {
         @Override
         public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-            var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths("123");
+            return GetEntityResponse.newBuilder().setEntity(newEntity("123")).build();
+        }
+
+        @Override
+        public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
+            return ListEntitiesResponse.newBuilder()
+                    .addEntities(newEntity("123"))
+                    .addEntities(newEntity("456"))
+                    .build();
+        }
+
+        private Entity newEntity(String path) {
+            var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths(path);
             var now = Timestamps2.fromInstant(Instant.now());
-            var entity = Entity.newBuilder().setId(id).setTs(now).build();
-            return GetEntityResponse.newBuilder().setEntity(entity).build();
+            return Entity.newBuilder().setId(id).setTs(now).build();
         }
     }
 }

@@ -30,6 +30,7 @@ import dev.enola.core.EnolaService;
 import dev.enola.core.IDs;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
 
@@ -66,6 +67,10 @@ public class RestAPI implements WebHandler {
             var idString = path.substring("/api/entity/".length());
             var id = IDs.parse(idString);
             getEntityJSON(id, resource);
+        } else if (path.startsWith("/api/entities/")) {
+            var idString = path.substring("/api/entities/".length());
+            var id = IDs.parse(idString);
+            listEntityJSON(id, resource);
         } else {
             // TODO 404 instead 500 (needs API changes)
             throw new IllegalArgumentException("404 - Unknown URI!");
@@ -79,5 +84,14 @@ public class RestAPI implements WebHandler {
         var entity = response.getEntity();
 
         protoIO.write(entity, resource);
+    }
+
+    private void listEntityJSON(ID id, WritableResource resource)
+            throws EnolaException, IOException {
+        var request = ListEntitiesRequest.newBuilder().setId(id).build();
+        var response = service.listEntities(request);
+        for (var entity : response.getEntitiesList()) {
+            protoIO.write(entity, resource);
+        }
     }
 }

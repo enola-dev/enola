@@ -24,9 +24,10 @@ import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.*;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.net.MediaType;
 import com.google.protobuf.*;
-import com.google.protobuf.Message.Builder;
 import com.google.protobuf.util.JsonFormat;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -44,10 +45,28 @@ public class ProtoIO {
     // TODO scan for proto-file and proto-message headers to support DynamicMessage
     // TODO support proto-import?
 
-    private final ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
-    private final TypeRegistry typeRegistry = TypeRegistry.newBuilder().build();
+    private final ExtensionRegistry extensionRegistry;
+    private final TypeRegistry typeRegistry;
 
-    // Shortcut intended for unit tests
+    private final TextFormat.Parser textFormatParser;
+
+    private ProtoIO(ExtensionRegistry extensionRegistry, TypeRegistry typeRegistry) {
+        this.extensionRegistry = extensionRegistry;
+        this.typeRegistry = typeRegistry;
+
+        this.textFormatParser =
+                TextFormat.Parser.newBuilder().setTypeRegistry(typeRegistry).build();
+    }
+
+    public ProtoIO(TypeRegistry typeRegistry) {
+        this(ExtensionRegistry.getEmptyRegistry(), requireNonNull(typeRegistry, "typeRegistry"));
+    }
+
+    public ProtoIO() {
+        this(ExtensionRegistry.getEmptyRegistry(), TypeRegistry.newBuilder().build());
+    }
+
+    // Shortcut intended for unit tests. This uses an empty TypeRegistry.
     public static void check(String pathToResourceOnClasspath, Message.Builder builder)
             throws IOException {
         ReadableResource resource = new ClasspathResource(pathToResourceOnClasspath);
@@ -94,7 +113,8 @@ public class ProtoIO {
     }
 
     // TODO Refactor callers to not require returning B builder argument
-    public <B extends Builder> B read(ReadableResource resource, B builder) throws IOException {
+    public <B extends Message.Builder> B read(ReadableResource resource, B builder)
+            throws IOException {
         MediaType mediaType = resource.mediaType();
         if (normalizedNoParamsEquals(mediaType, PROTOBUF_BINARY)) {
             try (InputStream is = resource.byteSource().openBufferedStream()) {
@@ -103,7 +123,7 @@ public class ProtoIO {
         } else {
             try (Reader reader = resource.charSource(UTF_8).openBufferedStream()) {
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
-                    TextFormat.getParser().merge(reader, extensionRegistry, builder);
+                    textFormatParser.merge(reader, extensionRegistry, builder);
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {
                     JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
@@ -124,12 +144,13 @@ public class ProtoIO {
     }
 
     public <M extends Message> M read(
-            ReadableResource resource, Builder builder, Class<M> messageClass) throws IOException {
+            ReadableResource resource, Message.Builder builder, Class<M> messageClass)
+            throws IOException {
         return (M) read(resource, builder).build();
     }
 
     // see also class Rosetta for a more general Resource format conversion framework
-    public void convert(ReadableResource in, Builder builder, WritableResource out)
+    public void convert(ReadableResource in, Message.Builder builder, WritableResource out)
             throws IOException {
         read(in, builder);
         var built = builder.build();
@@ -143,6 +164,10 @@ public class ProtoIO {
         public TextParseException(URI uri, TextFormat.ParseException e) {
             super(e.getLine(), e.getColumn(), uri.toString() + ":" + e.getMessage());
             this.uri = uri;
+        }
+
+        public URI getUri() {
+            return uri;
         }
     }
 }

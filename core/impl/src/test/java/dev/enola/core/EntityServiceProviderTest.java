@@ -18,17 +18,21 @@
 package dev.enola.core;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static dev.enola.core.meta.proto.FileSystemRepository.Format.FORMAT_YAML;
 
 import static org.junit.Assert.assertThrows;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
+import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.*;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.demo.Server;
 
 import org.junit.Test;
@@ -131,21 +135,40 @@ public class EntityServiceProviderTest {
     }
 
     @Test
-    public void testGrpc() throws IOException, ValidationException, EnolaException {
+    public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
         try (var server = new Server().start(0)) {
-            var kid = ID.newBuilder().setNs("test").setEntity("grpc").addPaths("name").build();
-            var gc = Connector.newBuilder().setGrpc("localhost:" + server.getPort()).build();
-            var link1 = Link.newBuilder().build();
-            var kindBuilder = EntityKind.newBuilder().setId(kid);
-            var kind = kindBuilder.putLink("link1", link1).addConnectors(gc).build();
-            var ekr = new EntityKindRepository().put(kind);
+            var port = Integer.toString(server.getPort());
+            var model =
+                    new ReplacingResource(
+                            new ClasspathResource("demo-connector-model.textproto"), "9090", port);
+            var ekr = new EntityKindRepository().load(model);
             var service = new EnolaServiceProvider().get(ekr);
 
-            var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
-            assertThat(eid.getPathsList()).containsExactly("whatever");
+            var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
             var request = GetEntityRequest.newBuilder().setId(eid).build();
             var entity = service.getEntity(request).getEntity();
             assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
         }
+    }
+
+    @Test
+    public void testEntityKindInception() throws ValidationException, EnolaException {
+        var kid = ID.newBuilder().setNs("enola").setEntity("entity_kind").addPaths("name").build();
+
+        var ekr = new EntityKindRepository();
+        assertThat(ekr.listID()).containsExactly(kid);
+        var service = new EnolaServiceProvider().get(ekr);
+
+        var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
+
+        var getRequest = GetEntityRequest.newBuilder().setId(eid).build();
+        var getResponse = service.getEntity(getRequest);
+        assertWithMessage("data.schema")
+                .that(getResponse.getEntity().getDataOrThrow("schema"))
+                .isNotNull();
+
+        var listRequest = ListEntitiesRequest.newBuilder().setId(kid).build();
+        var listResponse = service.listEntities(listRequest);
+        assertThat(listResponse.getEntitiesList()).hasSize(1);
     }
 }
