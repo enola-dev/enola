@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/enola-dev/enola/ui-go/generated/dev/enola/core"
+	"dev/enola/core"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

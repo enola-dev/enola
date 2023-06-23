@@ -10,7 +10,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/enola-dev/enola/ui-go/generated/dev/enola/core"
+	"dev/enola/core"
 )
 
 const (
