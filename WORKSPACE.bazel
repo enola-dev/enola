@@ -74,14 +74,6 @@ compat_repositories()
 
 grpc_java_repositories()
 
-rules_proto_grpc_toolchains()
-
-rules_proto_grpc_repos()
-
-rules_proto_dependencies()
-
-rules_proto_toolchains()
-
 # https://rules-proto-grpc.com/en/latest/lang/go.html#go-proto-library
 # load("@rules_proto_grpc//:repositories.bzl", "bazel_gazelle", "io_bazel_rules_go")
 
