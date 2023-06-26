@@ -4,14 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"dev/enola/core"
+	enolagrpc "dev/enola/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 type client struct {
 	conn      *grpc.ClientConn
-	svcClient core.EnolaServiceClient
+	svcClient enolagrpc.EnolaServiceClient
 }
 
 func newClient(addr string) (*client, error) {
@@ -22,13 +22,13 @@ func newClient(addr string) (*client, error) {
 
 	return &client{
 		conn:      conn,
-		svcClient: core.NewEnolaServiceClient(conn),
+		svcClient: enolagrpc.NewEnolaServiceClient(conn),
 	}, nil
 }
 
-func (c *client) getEntity(ctx context.Context, id string) (*core.Entity, error) {
-	resp, err := c.svcClient.GetEntity(ctx, &core.GetEntityRequest{
-		Id: &core.ID{Entity: id},
+func (c *client) getEntity(ctx context.Context, id string) (*enolagrpc.Entity, error) {
+	resp, err := c.svcClient.GetEntity(ctx, &enolagrpc.GetEntityRequest{
+		Id: &enolagrpc.ID{Entity: id},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to call get entity endpoint: %w", err)

@@ -10,7 +10,7 @@ import (
 	"log"
 	"net/http"
 
-	"dev/enola/core"
+	enolagrpc "dev/enola/grpc"
 )
 
 const (
@@ -44,7 +44,7 @@ func run(addr, enolaAddr string) error {
 }
 
 type enolaClient interface {
-	getEntity(ctx context.Context, id string) (*core.Entity, error)
+	getEntity(ctx context.Context, id string) (*enolagrpc.Entity, error)
 	close() error
 }
 

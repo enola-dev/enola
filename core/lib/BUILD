@@ -32,6 +32,9 @@ load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
 load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
+# https://rules-proto-grpc.com/en/latest/lang/go.html#go-grpc-library
+load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library")
+
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
     name = "core_proto",
@@ -178,7 +181,7 @@ go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
     protos = [":core_proto"],
-    visibility = [],
+    visibility = ["//visibility:public"],
 )
 
 go_proto_library(
@@ -202,4 +205,11 @@ go_proto_library(
     importpath = "dev/enola/core/util",
     protos = [":util_proto"],
     visibility = [],
+)
+
+go_grpc_library(
+    name = "core_go_grpc",
+    importpath = "dev/enola/grpc",
+    protos = [":core_proto"],
+    visibility = ["//visibility:public"],
 )

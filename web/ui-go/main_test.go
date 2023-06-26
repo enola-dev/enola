@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/enola-dev/enola/ui-go/generated/dev/enola/core"
+	enolagrpc "dev/enola/grpc"
 )
 
 func TestHandler(t *testing.T) {
@@ -33,9 +33,9 @@ func TestHandler(t *testing.T) {
 
 type enolaClientStub struct{}
 
-func (e enolaClientStub) getEntity(_ context.Context, id string) (*core.Entity, error) {
-	return &core.Entity{
-		Id: &core.ID{Entity: id},
+func (e enolaClientStub) getEntity(_ context.Context, id string) (*enolagrpc.Entity, error) {
+	return &enolagrpc.Entity{
+		Id: &enolagrpc.ID{Entity: id},
 	}, nil
 }
 
