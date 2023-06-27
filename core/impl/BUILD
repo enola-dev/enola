@@ -40,7 +40,6 @@ java_library(
         "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:io_grpc_grpc_api",
         "@maven//:io_grpc_grpc_stub",
         "@maven//:org_slf4j_slf4j_api",
