@@ -10,7 +10,7 @@ lxml==4.9.3
 
 # Used by mkdocs.yaml#plugins.blog, see
 # https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/#+blog.post_readtime
-readtime==2.0.0
+readtime==3.0.0
 
 # https://asciinema.org
 asciinema==2.3.0
