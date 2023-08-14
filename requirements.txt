@@ -17,4 +17,4 @@ asciinema==2.3.0
 
 # https://github.com/mondeja/mkdocs-include-markdown-plugin (ASL)
 # Possible alternative: https://github.com/cmacmackin/markdown-include (GPL)
-mkdocs-include-markdown-plugin==4.0.4
+mkdocs-include-markdown-plugin==6.0.0
