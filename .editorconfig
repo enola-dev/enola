@@ -14,6 +14,9 @@ trim_trailing_whitespace = true
 indent_size = unset
 # See, and must match, the .markdownlint.yaml MD013: line_length
 max_line_length = unset
+# Trimming trailing whitespace could theoretically break MD which uses
+# them for <br>, but we don't do that in this project, so no need to:
+# trim_trailing_whitespace = false
 
 [*.proto]
 indent_size = 2
@@ -22,6 +25,13 @@ tab_width = 2
 [*.textproto]
 indent_size = unset
 tab_width = unset
+
+[*.ts]
+indent_size = 2
+quote_type = single
+
+[*.html]
+max_line_length = unset
 
 [enola]
 # The ./enola file is a Bash script (without *.bash extension)
@@ -66,6 +76,9 @@ max_line_length = unset
 max_line_length = unset
 
 [WORKSPACE.bazel]
+max_line_length = unset
+
+[package-lock.json]
 max_line_length = unset
 
 # Note that https://github.com/editorconfig-checker/editorconfig-checker

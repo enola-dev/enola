@@ -20,6 +20,11 @@
 
 ## High Priority (Next Features)
 
+1. Angular & Bazel
+   - `bazelisk build` ==> `ng build` and somehow make `dist/` available to `StaticWebHandler`
+   - `CHROME_BIN=/usr/bin/chromium-browser ng test --browsers ChromeHeadless --no-watch` in Bazel
+   - It must all work on CI...
+
 1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
 
 1. It's ugly how 404.html and ui.soy duplicate the HTML "frame" - how-to re-use?
@@ -33,6 +38,9 @@
 ---
 
 ## Low Priority / Nice To Have
+
+1. Angular #tech
+   - ng e2e: Cypress? Nightwatch? Webdriver?
 
 1. Icon based on some Status `data` from Connector; e.g. 📗 / 📘 / 📙 / 📕
 
