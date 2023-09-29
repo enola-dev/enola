@@ -25,7 +25,7 @@ maven.install(
         # Google
         "com.google.guava:guava:32.1.2-jre",
         "com.google.truth:truth:1.1.5",
-        "com.google.template:soy:2022-10-26",
+        "com.google.template:soy:2023-09-13",
         # Protobuf
         "com.google.protobuf:protobuf-java:3.22.0",
         "com.google.protobuf:protobuf-java-util:3.22.0",
