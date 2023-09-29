@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
@@ -35,31 +36,37 @@ import io.grpc.ManagedChannel;
 import org.junit.Test;
 
 public class EnolaGrpcServerTest {
+
     @Test
-    public void grpc() throws Exception {
-        var model = new ClasspathResource("demo-model.yaml");
-        var ekr = new EntityKindRepository().load(model);
-        var service = new EnolaServiceProvider().get(ekr);
-        try (var enolaServer = new EnolaGrpcServer(service).start(0)) {
+    public void remoting() throws Exception {
+        try (var enolaServer = new EnolaGrpcServer(service()).start(0)) {
             // similarly in dev.enola.demo.ServerTest
             var port = enolaServer.getPort();
             var endpoint = "localhost:" + port;
             var credz = InsecureChannelCredentials.create();
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
-            var client = EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
-
-            var id =
-                    ID.newBuilder()
-                            .setNs("demo")
-                            .setEntity("bar")
-                            .addPaths("a")
-                            .addPaths("b")
-                            .build();
-            var request = GetEntityRequest.newBuilder().setId(id).build();
-            var response = client.getEntity(request);
-            assertThat(response.getEntity().getLinkMap()).hasSize(1);
-
+            check(EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS));
             channel.shutdownNow().awaitTermination(3, SECONDS);
         }
+    }
+
+    @Test
+    public void inProcess() throws Exception {
+        try (var enolaServer = new EnolaGrpcInProcess(service())) {
+            check(enolaServer.getClient());
+        }
+    }
+
+    private EnolaService service() throws Exception {
+        var model = new ClasspathResource("demo-model.yaml");
+        var ekr = new EntityKindRepository().load(model);
+        return new EnolaServiceProvider().get(ekr);
+    }
+
+    private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client) {
+        var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
+        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var response = client.getEntity(request);
+        assertThat(response.getEntity().getLinkMap()).hasSize(1);
     }
 }
