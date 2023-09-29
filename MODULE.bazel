@@ -27,10 +27,10 @@ maven.install(
         "com.google.truth:truth:1.1.5",
         "com.google.template:soy:2023-09-13",
         # Protobuf
-        "com.google.protobuf:protobuf-java:3.22.0",
-        "com.google.protobuf:protobuf-java-util:3.22.0",
+        "com.google.protobuf:protobuf-java:4.0.0-rc-2",
+        "com.google.protobuf:protobuf-java-util:4.0.0-rc-2",
         # gRPC
-        "com.google.api.grpc:proto-google-common-protos:2.17.0",
+        "com.google.api.grpc:proto-google-common-protos:2.25.1",
         "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
         "io.grpc:grpc-stub:1.54.1",
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api

@@ -37,7 +37,7 @@ public class DemoConnector extends ConnectorServiceGrpc.ConnectorServiceImplBase
         var entity = request.getEntity().toBuilder();
         entity.putLink("link1", "http://www.vorburger.ch");
 
-        var invention = Timestamps.fromDate(new Date(2023, 5, 9));
+        var invention = Timestamps.fromMillis(new Date(2023, 5, 9).getTime());
         var something =
                 Something.newBuilder()
                         .setText("hello, world")
