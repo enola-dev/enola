@@ -31,8 +31,8 @@ maven.install(
         "com.google.protobuf:protobuf-java-util:3.22.0",
         # gRPC
         "com.google.api.grpc:proto-google-common-protos:2.17.0",
-        "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
-        "io.grpc:grpc-stub:1.54.1",
+        "io.grpc:grpc-netty:1.58.0",  # Alternative: grpc-netty-shaded
+        "io.grpc:grpc-stub:1.58.0",
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.0",
@@ -54,5 +54,4 @@ bazel_dep(name = "rules_go", version = "0.40.1", repo_name = "io_bazel_rules_go"
 bazel_dep(name = "gazelle", version = "0.31.1", repo_name = "bazel_gazelle")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-
 go_sdk.host(version = "1.20.4")
