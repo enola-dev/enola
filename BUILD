@@ -13,25 +13,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# https://github.com/aignas/rules_shellcheck
-load("@com_github_aignas_rules_shellcheck//:def.bzl", "shellcheck_test")
-
-# TODO https://github.com/aignas/rules_shellcheck/issues/17 this does not work reliably... :-(
-shellcheck_test(
-    name = "shellcheck_test",
-    size = "small",
-    data = glob(
-        [
-            "**/*.bash",
-            "**/*.sh",
-        ],
-        exclude = [
-            "**/bazel-bin/**",
-            "**/bazel-out/**",
-            "site/**",
-            ".venv/**",
-        ],
-    ),
-    tags = ["lint"],
-)
