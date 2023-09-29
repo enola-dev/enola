@@ -19,6 +19,14 @@
 bazel_dep(name = "rules_jvm_external", version = "5.3")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+
+# https://github.com/grpc/grpc-java/issues/10576
+maven.artifact(
+    artifact = "grpc-core",
+    exclusions = ["io.grpc:grpc-util"],
+    group = "io.grpc",
+    version = "1.58.0",  # Keep version in sync with below!
+)
 maven.install(
     artifacts = [
         "junit:junit:4.13.2",
@@ -31,8 +39,8 @@ maven.install(
         "com.google.protobuf:protobuf-java-util:4.0.0-rc-2",
         # gRPC
         "com.google.api.grpc:proto-google-common-protos:2.25.1",
-        "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
-        "io.grpc:grpc-stub:1.54.1",
+        "io.grpc:grpc-netty:1.58.0",  # Alternative: grpc-netty-shaded
+        "io.grpc:grpc-stub:1.58.0",  # Keep version in sync with above!
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.1",
