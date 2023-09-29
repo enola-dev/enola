@@ -2,7 +2,7 @@
 
 pre-commit==3.4.0
 mkdocs-material==9.1.18
-mkdocs-git-committers-plugin-2==1.1.2
+mkdocs-git-committers-plugin-2==1.2.0
 mkdocs-git-revision-date-localized-plugin==1.2.0
 
 # Used by mkdocs.yaml#plugins.git-committers
