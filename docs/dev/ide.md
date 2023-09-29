@@ -28,9 +28,11 @@ Eclipse is not actively supported by this project as an IDE. We recommend using 
 
 * [`.editorconfig`](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
 
-* [Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel)
-  but note that this is currently still very limited, and only syntax highlights `BUILD` files,
-  but does not provide Java, [see these related notes](https://github.com/vorburger/LearningBazel/blob/develop/ToDo.md).
+* For Bazel support:
+
+      * [VSC Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) for syntax highlighting, linting and formatting `BUILD` files
+
+      * [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). You may have to right-click on (the right "level" of) some folders to _Synchronize Projects with Bazel View_ to resolve weird initial problems like e.g. _Implicit super constructor Object() is undefined for default constructor. Must define an explicit constructor._ or _The import cannot be resolved._ or _cannot be resolved to a type_ or _The method is undefined for the type_ etc.
 
 * [google-java-format](https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance) TODO pick which one of the 8 to use 😸
 
@@ -51,9 +53,16 @@ Eclipse is not actively supported by this project as an IDE. We recommend using 
             sudo apt get install clang-format
             # sudo dnf install clang-format
 
-## JetBrains IntelliJ IDEA
+## Web IDE
 
-Until Bazel integration in VSC is available, use IJ for Java coding, with:
+In order to work on this project with a purely Web-based IDE, which is great to hack from e.g. a Tablet or Work Computer or some such setup,
+we recommend you use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at https://vscode.dev
+together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
+e.g. to a computer at home, or a VM in the Cloud.
+
+## JetBrains IntelliJ IDEA (IJ)
+
+IJ can be used as a complete alternative to VSC, or only for Java coding, with:
 
 * [Bazel](https://plugins.jetbrains.com/plugin/8609-bazel-for-intellij) from [ij.bazel.build](https://ij.bazel.build)
   (You [have to manually change](https://github.com/bazelbuild/intellij/issues/4693) the
@@ -69,4 +78,4 @@ Some [people prefer coding using 🙊](https://en.wikipedia.org/wiki/Editor_war)
 
 You can [just launch the `./test.bash` script to automatically format code](style.md) while coding locally when using other IDEs.
 
-Or contribute to this page to document how to set them up your favorite editor.
+Or contribute to this page to document how to set up your favorite editor.

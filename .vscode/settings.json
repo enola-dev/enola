@@ -7,7 +7,7 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
 
-  "cSpell.words": ["Enola"],
+  "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
 
   "editor.formatOnType": true,
   "editor.formatOnSave": true,
@@ -33,8 +33,6 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
-  // https://github.com/bazelbuild/vscode-bazel/issues/281
-  "java.project.sourcePaths": ["k8s/src/main/java"],
   // https://github.com/salesforce/bazel-vscode#installation
   "java.import.bazel.enabled": true,
   "java.import.maven.enabled": false,
@@ -57,10 +55,14 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/*.crswap": true,
     "**/.classpath": true,
     "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
+    "**/eclipse-bin/": true,
+    "**/eclipse-testbin/": true,
+    "**/.bazeltargets": true,
     ".cache": true,
     ".eclipse": true,
     ".git": true,
@@ -70,7 +72,19 @@
     "bazel-bin": true,
     "bazel-enola": true,
     "bazel-out": true,
-    "bazel-testlogs": true
+    "bazel-testlogs": true,
+    ".github": false,
+    ".vscode": false,
+    "cli": false,
+    "common": false,
+    "connectors": false,
+    "core": false,
+    "docs": false,
+    "site": false,
+    "tools": false,
+    "web": false
   },
-  "markdown.validate.ignoredLinks": ["../dev/proto/core#id"]
+  "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
+  "java.compile.nullAnalysis.mode": "automatic",
+  "bazel.projectview.open": false
 }
