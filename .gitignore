@@ -12,6 +12,9 @@ build/
 .ijwb/
 .idea/
 
+# Eclipse (including bazel-vscode-java)
+.eclipse/
+
 # Python Virtual Environment (venv, created by ./test.bash)
 .venv/
 

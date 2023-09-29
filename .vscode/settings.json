@@ -49,5 +49,27 @@
     "tag:yaml.org,2002:python/name:materialx.emoji.to_svg",
     "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
     "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
-  ]
+  ],
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.classpath": true,
+    "**/.factorypath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    ".cache": true,
+    ".eclipse": true,
+    ".git": true,
+    ".idea": true,
+    ".ijwb": true,
+    ".venv": true,
+    "bazel-bin": true,
+    "bazel-enola": true,
+    "bazel-out": true,
+    "bazel-testlogs": true
+  }
 }
