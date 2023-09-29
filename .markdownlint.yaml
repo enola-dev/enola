@@ -28,7 +28,7 @@ MD013:
   # Must match .editorconfig [*.md] max_line_length
   # This 4096 means "unlimited" (unset) - essentially https://github.com/DavidAnson/markdownlint/issues/298.
   # Until https://github.com/DavidAnson/markdownlint/issues/535 is available,
-  # it's not feasilbe to set this - just too PITA, while writing docs.
+  # it's not feasible to set this - just too PITA, while writing docs.
   #
   # One possible avenue to enable fixing automatic reflow formatting could be
   # to enable Prettier to format MD (by removing *.md from .prettierignore).
