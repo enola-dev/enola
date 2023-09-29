@@ -53,6 +53,7 @@ java_binary(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
         "@maven//:info_picocli_picocli",
+        "@maven//:io_github_classgraph_classgraph",
         "@maven//:junit_junit",
     ],
 ) for name in glob([

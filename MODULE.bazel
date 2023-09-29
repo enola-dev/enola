@@ -44,6 +44,7 @@ maven.install(
         "org.snakeyaml:snakeyaml-engine:2.7",
         "org.slf4j:slf4j-jdk14:2.0.9",
         "org.slf4j:slf4j-simple:2.0.9",
+        "io.github.classgraph:classgraph:4.8.162"
     ],
     fetch_sources = True,
     lock_file = "//:maven_install.json",
