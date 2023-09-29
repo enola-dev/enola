@@ -95,6 +95,7 @@ repos:
         # and https://github.com/pre-commit/mirrors-clang-format/pull/22.
         # In the mean-time, it's possible to manually clang-format -i the.textproto
         files: \.(proto|textproto)$
+        exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
 
   - repo: https://github.com/yoheimuta/protolint
     rev: v0.43.2
