@@ -23,8 +23,8 @@ maven.install(
     artifacts = [
         "junit:junit:4.13.2",
         # Google
-        "com.google.guava:guava:31.1-jre",
-        "com.google.truth:truth:1.1.3",
+        "com.google.guava:guava:32.1.2-jre",
+        "com.google.truth:truth:1.1.5",
         "com.google.template:soy:2022-10-26",
         # Protobuf
         "com.google.protobuf:protobuf-java:3.22.0",
@@ -35,14 +35,14 @@ maven.install(
         "io.grpc:grpc-stub:1.54.1",
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
-        "io.kubernetes:client-java:18.0.0",
+        "io.kubernetes:client-java:18.0.1",
         # Other
         "ch.vorburger.exec:exec:3.1.5",
         "com.github.java-json-tools:uri-template:0.10",
-        "info.picocli:picocli:4.7.1",
-        "org.snakeyaml:snakeyaml-engine:2.6",
-        "org.slf4j:slf4j-jdk14:2.0.7",
-        "org.slf4j:slf4j-simple:2.0.7",
+        "info.picocli:picocli:4.7.5",
+        "org.snakeyaml:snakeyaml-engine:2.7",
+        "org.slf4j:slf4j-jdk14:2.0.9",
+        "org.slf4j:slf4j-simple:2.0.9",
     ],
     fetch_sources = True,
     lock_file = "//:maven_install.json",
