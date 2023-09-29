@@ -19,6 +19,8 @@ package dev.enola.demo;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -47,7 +49,6 @@ import io.grpc.ManagedChannel;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class ServerTest {
 
@@ -64,7 +65,8 @@ public class ServerTest {
             var endpoint = "localhost:" + port;
             var credz = InsecureChannelCredentials.create();
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
-            var client = ConnectorServiceGrpc.newBlockingStub(channel);
+            var client =
+                    ConnectorServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
 
             // Test the Demo Connector directly
             checkConnectorAugment(client);
@@ -75,7 +77,7 @@ public class ServerTest {
             checkEnolaGet(enola);
             checkEnolaList(enola);
 
-            channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
+            channel.shutdownNow().awaitTermination(3, SECONDS);
         }
     }
 
