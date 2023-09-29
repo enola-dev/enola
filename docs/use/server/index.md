@@ -35,3 +35,5 @@ There is also a REST API which returns JSON if you replace `ui` with `api` in th
 so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
 
 The `--grpcPort` flag starts [the Enola gRPC API](.././../dev/proto/core#enolaservice).
+It can be called e.g. using a "generic" gRPC Client, such as [ktr0731's Evans](https://github.com/ktr0731/evans)
+or [asarkar's OkGRPC](https://github.com/asarkar/okgrpc).

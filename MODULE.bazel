@@ -33,6 +33,7 @@ maven.install(
         "com.google.api.grpc:proto-google-common-protos:2.25.1",
         "io.grpc:grpc-netty:1.54.1",  # Alternative: grpc-netty-shaded
         "io.grpc:grpc-stub:1.54.1",
+        "io.grpc:grpc-core:1.54.1",  # for inprocess
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:18.0.1",

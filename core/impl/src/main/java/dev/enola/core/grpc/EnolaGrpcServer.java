@@ -36,7 +36,7 @@ public class EnolaGrpcServer implements AutoCloseable {
 
     public EnolaGrpcServer start(int port) throws IOException {
         var builder = ServerBuilder.forPort(port);
-        builder.addService(new EnolaGrpcService(service));
+        builder.addService(new EnolaGrpcService(service)); // as in EnolaGrpcInProcess
         server = builder.build().start();
         return this;
     }
