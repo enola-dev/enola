@@ -55,7 +55,6 @@ load(
     "@io_grpc_grpc_java//:repositories.bzl",
     "IO_GRPC_GRPC_JAVA_ARTIFACTS",
     "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS",
-    "grpc_java_repositories",
 )
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
@@ -72,7 +71,6 @@ load("@maven//:compat.bzl", "compat_repositories")
 
 compat_repositories()
 
-
 # https://github.com/bazelbuild/rules_closure/#setup
 # TODO This is only useful after https://github.com/bazelbuild/rules_closure/issues/225
 #http_archive(
@@ -88,16 +86,3 @@ compat_repositories()
 # load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
 # rules_closure_dependencies()
 # rules_closure_toolchains()
-
-# https://github.com/aignas/rules_shellcheck
-# TODO Replace with bazel_dep in MODULE.bazel, see https://github.com/aignas/rules_shellcheck/issues/16
-http_archive(
-    name = "com_github_aignas_rules_shellcheck",
-    sha256 = "4e7cc56d344d0adfd20283f7ad8cb4fba822c0b15ce122665b00dd87a27a74b6",
-    strip_prefix = "rules_shellcheck-0.1.1",
-    url = "https://github.com/aignas/rules_shellcheck/archive/refs/tags/v0.1.1.tar.gz",
-)
-
-load("@com_github_aignas_rules_shellcheck//:deps.bzl", "shellcheck_dependencies")
-
-shellcheck_dependencies()

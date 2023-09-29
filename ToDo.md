@@ -51,8 +51,6 @@
    starting with feat/model/fix/build/docs/clean/format/refactor: and core/k8s/tools:
    using https://github.com/jorisroovers/gitlint
 
-1. Replace `shellcheck` with a pre-commit check instead of running it in Bazel
-
 1. CLI completion - hard or trivial?
 
 1. Move `common/common/src/[main|test]**/protobuf` to `common/protobuf` (requires ServiceLoader in `MediaTypeDetector`)
