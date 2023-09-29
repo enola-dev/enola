@@ -19,6 +19,8 @@ package dev.enola.core.grpc;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
@@ -32,8 +34,6 @@ import io.grpc.ManagedChannel;
 
 import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
-
 public class EnolaGrpcServerTest {
     @Test
     public void grpc() throws Exception {
@@ -46,7 +46,7 @@ public class EnolaGrpcServerTest {
             var endpoint = "localhost:" + port;
             var credz = InsecureChannelCredentials.create();
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
-            var client = EnolaServiceGrpc.newBlockingStub(channel);
+            var client = EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
 
             var id =
                     ID.newBuilder()
@@ -59,7 +59,7 @@ public class EnolaGrpcServerTest {
             var response = client.getEntity(request);
             assertThat(response.getEntity().getLinkMap()).hasSize(1);
 
-            channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
+            channel.shutdownNow().awaitTermination(3, SECONDS);
         }
     }
 }

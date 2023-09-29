@@ -17,6 +17,8 @@
  */
 package dev.enola.core.aspects;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import com.google.protobuf.Descriptors;
 
 import dev.enola.core.EnolaException;
@@ -37,7 +39,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class GrpcAspect implements Closeable, EntityAspect {
 
@@ -47,14 +48,14 @@ public class GrpcAspect implements Closeable, EntityAspect {
     public GrpcAspect(String endpoint) {
         var credz = InsecureChannelCredentials.create();
         channel = Grpc.newChannelBuilder(endpoint, credz).build();
-        client = ConnectorServiceGrpc.newBlockingStub(channel);
+        client = ConnectorServiceGrpc.newBlockingStub(channel).withDeadlineAfter(7, SECONDS);
     }
 
     @Override
     public void close() throws IOException {
         if (channel != null) {
             try {
-                channel.shutdownNow().awaitTermination(3, TimeUnit.SECONDS);
+                channel.shutdownNow().awaitTermination(3, SECONDS);
             } catch (InterruptedException e) {
                 // Ignore.
             }
