@@ -154,9 +154,10 @@ public class EntityServiceProviderTest {
     @Test
     public void testEntityKindInception() throws ValidationException, EnolaException {
         var kid = ID.newBuilder().setNs("enola").setEntity("entity_kind").addPaths("name").build();
+        var sid = ID.newBuilder().setNs("enola").setEntity("schema").addPaths("fqn").build();
 
         var ekr = new EntityKindRepository();
-        assertThat(ekr.listID()).containsExactly(kid);
+        assertThat(ekr.listID()).containsExactly(kid, sid);
         var service = new EnolaServiceProvider().get(ekr);
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
@@ -169,6 +170,6 @@ public class EntityServiceProviderTest {
 
         var listRequest = ListEntitiesRequest.newBuilder().setId(kid).build();
         var listResponse = service.listEntities(listRequest);
-        assertThat(listResponse.getEntitiesList()).hasSize(1);
+        assertThat(listResponse.getEntitiesList()).hasSize(2);
     }
 }

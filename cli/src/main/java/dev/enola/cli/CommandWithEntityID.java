@@ -17,12 +17,11 @@
  */
 package dev.enola.cli;
 
-import com.google.protobuf.TypeRegistry;
-
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
@@ -48,12 +47,12 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     String idString;
 
     private WriterResource resource;
-    private TypeRegistry typeRegistry;
+    private TypeRegistryWrapper typeRegistryWrapper;
 
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception {
-        typeRegistry = esp.getTypeRegistry();
+        typeRegistryWrapper = esp.getTypeRegistryWrapper();
 
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!
@@ -69,6 +68,6 @@ public abstract class CommandWithEntityID extends CommandWithModel {
             throws Exception;
 
     protected void write(Entity entity) throws IOException {
-        new ProtoIO(typeRegistry).write(entity, resource);
+        new ProtoIO(typeRegistryWrapper.get()).write(entity, resource);
     }
 }

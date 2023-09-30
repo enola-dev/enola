@@ -25,6 +25,10 @@ classDiagram
     🆔 name
   }
   link Entity_kind "#enola.entity_kind"
+  class Schema{
+    🆔 fqn
+  }
+  link Schema "#enola.schema"
 ```
 
 ## 👩‍🎤 `demo.bar` (FUBAR?) <a name="demo.bar"></a>
@@ -60,6 +64,12 @@ classDiagram
 * name
 
 [See documentation...](https://docs.enola.dev/concepts/core-arch/)
+
+## 💠 `enola.schema` (Schema (Proto) used in Enola Entity Data) <a name="enola.schema"></a>
+
+* fqn
+
+[See documentation...](https://docs.enola.dev/use/connector/#grpc)
 
 ---
 _This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

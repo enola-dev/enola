@@ -18,23 +18,24 @@
 package dev.enola.core;
 
 import com.google.common.collect.ImmutableList;
-import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.*;
 import dev.enola.core.meta.EntityAspectWithRepository;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.SchemaAspect;
+import dev.enola.core.meta.TypeRegistryWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 
 public class EnolaServiceProvider {
 
-    private TypeRegistry typeRegistry;
+    private TypeRegistryWrapper typeRegistry;
 
     // TODO rename to getService
     public EnolaService get(EntityKindRepository ekr) throws ValidationException, EnolaException {
-        var trb = TypeRegistry.newBuilder();
+        var trb = TypeRegistryWrapper.newBuilder();
         var sr = new EnolaServiceRegistry();
         for (var ek : ekr.list()) {
             var aspectsBuilder = ImmutableList.<EntityAspect>builder();
@@ -58,6 +59,9 @@ public class EnolaServiceProvider {
                             if (connector instanceof EntityAspectWithRepository) {
                                 ((EntityAspectWithRepository) connector)
                                         .setEntityKindRepository(ekr);
+                            }
+                            if (connector instanceof SchemaAspect) {
+                                ((SchemaAspect) connector).setESP(this);
                             }
                             aspectsBuilder.add(connector);
                             break;
@@ -101,23 +105,18 @@ public class EnolaServiceProvider {
             var s = new EntityAspectService(ek, aspects);
             sr.register(ek.getId(), s);
 
-            populateTypeRegistry(trb, aspects);
+            for (var aspect : aspects) {
+                trb.add(aspect.getDescriptors());
+            }
         }
         this.typeRegistry = trb.build();
         return sr;
     }
 
-    public TypeRegistry getTypeRegistry() {
+    public TypeRegistryWrapper getTypeRegistryWrapper() {
         if (typeRegistry == null) {
             throw new IllegalStateException("getTypeRegistry() must be called after get()");
         }
         return typeRegistry;
-    }
-
-    private void populateTypeRegistry(TypeRegistry.Builder trb, ImmutableList<EntityAspect> aspects)
-            throws EnolaException {
-        for (var aspect : aspects) {
-            trb.add(aspect.getDescriptors());
-        }
     }
 }

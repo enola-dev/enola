@@ -69,6 +69,7 @@ java_library(
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
         "@maven//:io_grpc_grpc_api",
         "@maven//:junit_junit",
