@@ -27,6 +27,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
+import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.proto.*;
 import dev.enola.web.sun.SunServer;
@@ -43,7 +44,8 @@ public class RestTest {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             // Setup
-            try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(new TestService(), false)) {
+            var esp = new EnolaServiceProvider();
+            try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new RestAPI(testGrpcService).register(server);
                 server.start();

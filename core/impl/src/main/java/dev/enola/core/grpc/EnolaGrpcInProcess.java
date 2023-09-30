@@ -24,6 +24,7 @@ import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 
 import dev.enola.common.concurrent.Executors;
 import dev.enola.core.EnolaService;
+import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc;
 
 import io.grpc.ManagedChannel;
@@ -51,7 +52,8 @@ public class EnolaGrpcInProcess implements ServiceProvider {
     private final ListeningScheduledExecutorService serverScheduledExecutor;
     private final ListeningScheduledExecutorService clientScheduledExecutor;
 
-    public EnolaGrpcInProcess(EnolaService service, boolean multithreaded) throws IOException {
+    public EnolaGrpcInProcess(EnolaServiceProvider esp, EnolaService service, boolean multithreaded)
+            throws IOException {
         this.service = service;
 
         if (multithreaded) {
@@ -73,7 +75,7 @@ public class EnolaGrpcInProcess implements ServiceProvider {
         var builder = InProcessServerBuilder.forName(uniqueName);
         builder.executor(serverExecutorService);
         builder.scheduledExecutorService(serverScheduledExecutor);
-        builder.addService(new EnolaGrpcService(service)); // as in EnolaGrpcServer
+        builder.addService(new EnolaGrpcService(esp, service)); // as in EnolaGrpcServer
         server = builder.build().start();
 
         InProcessChannelBuilder channelBuilder = InProcessChannelBuilder.forName(uniqueName);

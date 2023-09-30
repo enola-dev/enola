@@ -191,6 +191,15 @@ public class EnolaTest {
     }
 
     @Test
+    public void listSchemas() {
+        var exec = cli("-v", "list", "enola.schema", "--model", "empty:application/json");
+        assertThat(exec).err().isEmpty();
+        var out = assertThat(exec).hasExitCode(0).out();
+        out.contains("type.googleapis.com/google.protobuf.DescriptorProto");
+        out.contains("paths: [dev.enola.core.meta.EntityKind]");
+    }
+
+    @Test
     public void get() {
         var exec =
                 cli(

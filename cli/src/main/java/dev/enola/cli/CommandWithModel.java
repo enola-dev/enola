@@ -58,7 +58,7 @@ public abstract class CommandWithModel implements CheckedRunnable {
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
             esp = new EnolaServiceProvider();
-            grpc = new EnolaGrpcInProcess(esp.get(ekr), false); // direct, single-threaded!
+            grpc = new EnolaGrpcInProcess(esp, esp.get(ekr), false); // direct, single-threaded!
             service = grpc.get();
         } else if (group.server != null) {
             grpc = new EnolaGrpcClientProvider(group.server, false); // direct, single-threaded!

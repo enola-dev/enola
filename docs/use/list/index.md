@@ -53,6 +53,8 @@ $ ./enola list --model empty:application/json enola.entity_kind
 
 To get a list of only the names of Entity Kinds, just use e.g. [`yq`](https://github.com/mikefarah/yq).
 
+The `enola.schema` kind listed above is explained in [the Schema section](schema.md).
+
 ## Screencast (Asciinema)
 
 ![Demo](script.svg)

@@ -50,7 +50,7 @@ public class ServerCommand extends CommandWithModel {
 
         // gRPC API
         if (ports.grpcPort != null) {
-            grpcServer = new EnolaGrpcServer(esp.get(ekr));
+            grpcServer = new EnolaGrpcServer(esp, esp.get(ekr));
             grpcServer.start(ports.grpcPort);
             out.println("gRPC API server now available on port " + grpcServer.getPort());
         }

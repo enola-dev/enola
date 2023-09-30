@@ -42,7 +42,7 @@ public class SchemaAspectTest {
         var request = ListEntitiesRequest.newBuilder().setId(schemaKindID).build();
         var response = service.listEntities(request);
 
-        assertThat(response.getEntitiesList()).hasSize(52);
+        assertThat(response.getEntitiesList()).hasSize(38);
     }
 
     @Test

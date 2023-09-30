@@ -17,65 +17,101 @@
  */
 package dev.enola.core.meta;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.protobuf.DescriptorProtos.FileDescriptorSet;
 import com.google.protobuf.Descriptors;
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.DescriptorValidationException;
+import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.TypeRegistry;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+// TODO Optimization: This should allow clients like CLI to fetch as Map of Protos!
 public class TypeRegistryWrapper {
     private final TypeRegistry originalTypeRegistry;
-    private final ImmutableSet<String> names;
+    private final FileDescriptorSet fileDescriptorSet;
 
-    private TypeRegistryWrapper(TypeRegistry typeRegistry, ImmutableSet<String> names) {
+    private TypeRegistryWrapper(TypeRegistry typeRegistry, FileDescriptorSet fileDescriptorSet) {
         this.originalTypeRegistry = typeRegistry;
-        this.names = names;
+        this.fileDescriptorSet = fileDescriptorSet;
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
 
+    public static TypeRegistryWrapper from(FileDescriptorSet fileDescriptorSet)
+            throws DescriptorValidationException {
+        var builder = TypeRegistry.newBuilder();
+        for (var fileDescriptorProto : fileDescriptorSet.getFileList()) {
+            FileDescriptor[] dependencies = new FileDescriptor[0];
+            FileDescriptor fileDescriptor =
+                    FileDescriptor.buildFrom(fileDescriptorProto, dependencies, true);
+            builder.add(fileDescriptor.getMessageTypes());
+        }
+        return new TypeRegistryWrapper(builder.build(), fileDescriptorSet);
+    }
+
     public TypeRegistry get() {
         return originalTypeRegistry;
     }
 
-    public ImmutableSet<String> names() {
+    public FileDescriptorSet fileDescriptorSet() {
+        return fileDescriptorSet;
+    }
+
+    public List<String> names() {
+        var names = new ArrayList<String>();
+        for (var file : fileDescriptorSet().getFileList()) {
+            var pkg = file.hasPackage() ? file.getPackage() + "." : "";
+            names.ensureCapacity(file.getMessageTypeCount());
+            for (var message : file.getMessageTypeList()) {
+                names.add(pkg + message.getName());
+            }
+        }
         return names;
     }
 
+    public Descriptors.GenericDescriptor find(String name) {
+        var descriptor = get().find(name);
+        if (descriptor == null) {
+            throw new IllegalArgumentException("Proto unknown: " + name);
+        }
+        return descriptor;
+    }
+
     public static final class Builder {
-        private final TypeRegistry.Builder originalBuilder = TypeRegistry.newBuilder();
-        private final ImmutableSet.Builder<String> names = ImmutableSet.builder();
+        private final Set<String> files = new HashSet<>();
+        private final TypeRegistry.Builder typeRegistryBuilder = TypeRegistry.newBuilder();
+        private final FileDescriptorSet.Builder fileDescriptorBuilder =
+                FileDescriptorSet.newBuilder();
 
         private Builder() {}
 
-        public Builder add(List<Descriptors.Descriptor> descriptors) {
-            originalBuilder.add(descriptors);
-            for (Descriptors.Descriptor type : descriptors) {
+        public Builder add(Iterable<Descriptor> descriptors) {
+            for (Descriptor type : descriptors) {
+                typeRegistryBuilder.add(type);
                 addFile(type.getFile());
             }
             return this;
         }
 
-        private void addFile(Descriptors.FileDescriptor file) {
-            for (Descriptors.FileDescriptor dependency : file.getDependencies()) {
+        private void addFile(FileDescriptor file) {
+            if (!files.add(file.getFullName())) {
+                return;
+            }
+            for (FileDescriptor dependency : file.getDependencies()) {
                 addFile(dependency);
             }
-            for (Descriptors.Descriptor message : file.getMessageTypes()) {
-                addMessage(message);
-            }
-        }
-
-        private void addMessage(Descriptors.Descriptor message) {
-            for (Descriptors.Descriptor nestedType : message.getNestedTypes()) {
-                addMessage(nestedType);
-            }
-            names.add(message.getFullName());
+            fileDescriptorBuilder.addFile(file.toProto());
         }
 
         public TypeRegistryWrapper build() {
-            return new TypeRegistryWrapper(originalBuilder.build(), names.build());
+            return new TypeRegistryWrapper(
+                    typeRegistryBuilder.build(), fileDescriptorBuilder.build());
         }
     }
 }

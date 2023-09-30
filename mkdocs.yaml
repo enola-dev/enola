@@ -33,6 +33,7 @@ nav:
       - DocGen: use/docgen/index.md
       - Get Entity: use/get/index.md
       - List Entities: use/list/index.md
+      - List Schemas: use/list/schema.md
       - Connectors: use/connector/index.md
       - Server: use/server/index.md
       - Rosetta: use/rosetta/index.md
