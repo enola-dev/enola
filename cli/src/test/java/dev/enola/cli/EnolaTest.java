@@ -30,37 +30,35 @@ import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class EnolaTest {
 
     // TODO testVerboseLogging - add logs
 
     @Test
-    public void noArguments() {
+    public void noArguments() throws Exception {
         assertThat(cli()).hasExitCode(1).err().startsWith("Missing required subcommand");
     }
 
     @Test
-    public void badArgument() {
+    public void badArgument() throws Exception {
         assertThat(cli("--bad")).hasExitCode(1).err().startsWith("Unknown option: '--bad'");
     }
 
     @Test
-    public void help() {
+    public void help() throws Exception {
         assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
         assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
     }
 
     @Test
-    public void version() {
+    public void version() throws Exception {
         assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
         assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
         // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
     }
 
     @Test
-    public void docGen() throws IOException {
+    public void docGen() throws Exception {
         try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             var exec =
                     cli(
@@ -77,7 +75,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void listKind() {
+    public void listKind() throws Exception {
         var exec = cli("-v", "list-kinds", "--model", "classpath:cli-test-model.textproto");
         assertThat(exec).err().isEmpty();
         assertThat(exec)
@@ -87,7 +85,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void get() {
+    public void get() throws Exception {
         var exec =
                 cli(
                         "-v",
@@ -109,7 +107,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void serve() {
+    public void serve() throws Exception {
         var exec =
                 cli(
                         "-v",
@@ -117,14 +115,15 @@ public class EnolaTest {
                         "--model",
                         "classpath:cli-test-model.textproto",
                         "--httpPort=0",
-                        "--grpcPort=0",
-                        "--immediateExitOnlyForTest=true");
+                        "--grpcPort=0");
+        exec.executeAsync();
+        exec.close();
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0).out().startsWith("gRPC API server now available on port ");
     }
 
     @Test
-    public void rosetta() throws IOException {
+    public void rosetta() throws Exception {
         try (var r = TestResource.create(YAML_UTF_8)) {
             var exec =
                     cli(
@@ -143,14 +142,14 @@ public class EnolaTest {
     }
 
     @Test
-    public void noStacktraceWithoutVerbose() {
+    public void noStacktraceWithoutVerbose() throws Exception {
         var exec = cli("docgen", "--model", "file:nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec).hasExitCode(1).err().isEqualTo("NoSuchFileException: nonexistant.yaml\n");
     }
 
     @Test
-    public void stacktraceWithGlobalVerbose() {
+    public void stacktraceWithGlobalVerbose() throws Exception {
         var exec = cli("-v", "docgen", "--model", "file:nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)
@@ -160,7 +159,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void stacktraceWithSubcommandVerbose() {
+    public void stacktraceWithSubcommandVerbose() throws Exception {
         var exec = cli("docgen", "-v", "--model", "file:nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)

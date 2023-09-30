@@ -23,11 +23,19 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
 
+import java.util.concurrent.ExecutionException;
+
 public final class CommandLineSubject extends Subject {
 
     private final CLI actual;
 
-    public static CommandLineSubject assertThat(CLI actual) {
+    private CommandLineSubject(FailureMetadata metadata, CLI actual) {
+        super(metadata, actual);
+        this.actual = actual;
+    }
+
+    public static CommandLineSubject assertThat(CLI actual)
+            throws ExecutionException, InterruptedException {
         var subject = commandLines();
         actual.setOutAndErrStrings();
         actual.execute();
@@ -36,11 +44,6 @@ public final class CommandLineSubject extends Subject {
 
     public static Factory<CommandLineSubject, CLI> commandLines() {
         return CommandLineSubject::new;
-    }
-
-    protected CommandLineSubject(FailureMetadata metadata, CLI actual) {
-        super(metadata, actual);
-        this.actual = actual;
     }
 
     public CommandLineSubject hasExitCode(int exitCode) {
