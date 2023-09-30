@@ -20,7 +20,6 @@ package dev.enola.core.meta.docgen;
 import com.google.common.base.Strings;
 
 import dev.enola.core.IDs;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.ID;
 
@@ -40,7 +39,7 @@ public class MarkdownDocGenerator {
         this.options = options;
     }
 
-    public void render(EntityKindRepository kinds, String header, Appendable md)
+    public void render(Iterable<EntityKind> kinds, String header, Appendable md)
             throws IOException {
         md.append(header);
         if (options.diagram.equals(Options.DiagramType.Mermaid)) {
@@ -48,7 +47,7 @@ public class MarkdownDocGenerator {
         } else if (options.diagram.equals(Options.DiagramType.Graphviz)) {
             GraphvizGenerator.renderGraphviz(kinds, md);
         }
-        for (var ek : kinds.list()) {
+        for (var ek : kinds) {
             render(ek, md);
         }
         md.append("\n---\n");

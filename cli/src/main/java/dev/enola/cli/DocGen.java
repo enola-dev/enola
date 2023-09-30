@@ -21,13 +21,17 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.docgen.Options;
+import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen extends CommandWithModel {
@@ -58,6 +62,14 @@ public class DocGen extends CommandWithModel {
     @Override
     public void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
             throws Exception {
+
+        var eks = new ArrayList<EntityKind>();
+        var ekid = ID.newBuilder().setNs("enola").setEntity("entity_kind").build();
+        var response = service.listEntities(ListEntitiesRequest.newBuilder().setId(ekid).build());
+        for (var entity : response.getEntitiesList()) {
+            eks.add(entity.getDataOrThrow("schema").unpack(EntityKind.class));
+        }
+
         var options = new Options();
         options.diagram = diagram;
 
@@ -66,7 +78,7 @@ public class DocGen extends CommandWithModel {
         var header = rp.getReadableResource(headerURI).charSource().read();
 
         try (var writer = resource.charSink().openBufferedStream()) {
-            new MarkdownDocGenerator(options).render(ekr, header, writer);
+            new MarkdownDocGenerator(options).render(eks, header, writer);
         }
     }
 }
