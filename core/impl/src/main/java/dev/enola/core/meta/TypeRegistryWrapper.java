@@ -18,11 +18,11 @@
 package dev.enola.core.meta;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.TypeRegistry;
 
-import java.util.List;
-
+// TODO Optimization: This should allow clients like CLI to fetch as Map of Protos!
 public class TypeRegistryWrapper {
     private final TypeRegistry originalTypeRegistry;
     private final ImmutableSet<String> names;
@@ -44,18 +44,37 @@ public class TypeRegistryWrapper {
         return names;
     }
 
+    public Descriptors.GenericDescriptor find(String name) {
+        var descriptor = get().find(name);
+        if (descriptor == null) {
+            throw new IllegalArgumentException("Proto unknown: " + name);
+        }
+        return descriptor;
+    }
+
     public static final class Builder {
         private final TypeRegistry.Builder originalBuilder = TypeRegistry.newBuilder();
         private final ImmutableSet.Builder<String> names = ImmutableSet.builder();
 
         private Builder() {}
 
-        public Builder add(List<Descriptors.Descriptor> descriptors) {
-            originalBuilder.add(descriptors);
+        public Builder add(DescriptorProtos.DescriptorProto proto) {
+            // TODO THIS IS WRONG! FIXME. SEE https://stackoverflow.com/a/68688421/421602
+            add(DescriptorProtos.DescriptorProto.getDescriptor());
+            // add(proto.getDescriptorForType()); // same as ^^^
+            return this;
+        }
+
+        public Builder add(Iterable<Descriptors.Descriptor> descriptors) {
             for (Descriptors.Descriptor type : descriptors) {
-                addFile(type.getFile());
+                add(type);
             }
             return this;
+        }
+
+        private void add(Descriptors.Descriptor type) {
+            originalBuilder.add(type);
+            addFile(type.getFile());
         }
 
         private void addFile(Descriptors.FileDescriptor file) {

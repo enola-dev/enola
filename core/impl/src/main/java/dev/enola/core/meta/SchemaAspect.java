@@ -47,7 +47,7 @@ public class SchemaAspect implements EntityAspect {
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
         var name = entity.getId().getPaths(0);
-        var descriptor = esp.getTypeRegistryWrapper().get().find(name).toProto();
+        var descriptor = esp.getTypeRegistryWrapper().find(name).toProto();
         var any = pack(descriptor, "type.googleapis.com/");
         entity.putData("proto", any);
     }
