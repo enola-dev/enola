@@ -19,8 +19,6 @@ package dev.enola.core.grpc;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
@@ -28,10 +26,6 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
-
-import io.grpc.Grpc;
-import io.grpc.InsecureChannelCredentials;
-import io.grpc.ManagedChannel;
 
 import org.junit.Test;
 
@@ -43,17 +37,16 @@ public class EnolaGrpcServerTest {
             // similarly in dev.enola.demo.ServerTest
             var port = enolaServer.getPort();
             var endpoint = "localhost:" + port;
-            var credz = InsecureChannelCredentials.create();
-            ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
-            check(EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS));
-            channel.shutdownNow().awaitTermination(3, SECONDS);
+            try (var enolaClient = new EnolaGrpcClientProvider(endpoint)) {
+                check(enolaClient.get());
+            }
         }
     }
 
     @Test
     public void inProcess() throws Exception {
         try (var enolaServer = new EnolaGrpcInProcess(service())) {
-            check(enolaServer.getClient());
+            check(enolaServer.get());
         }
     }
 

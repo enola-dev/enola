@@ -17,6 +17,8 @@
  */
 package dev.enola.core.grpc;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import dev.enola.core.EnolaService;
 import dev.enola.core.proto.EnolaServiceGrpc;
 
@@ -28,7 +30,8 @@ import io.grpc.inprocess.InProcessServerBuilder;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class EnolaGrpcInProcess implements AutoCloseable {
+public class EnolaGrpcInProcess
+        implements AutoCloseable { // javax.inject.Provider<EnolaServiceGrpc.EnolaServiceBlockingStub>
 
     private final EnolaService service;
     private final Server server;
@@ -46,10 +49,10 @@ public class EnolaGrpcInProcess implements AutoCloseable {
         channelBuilder.directExecutor(); // as above
         channel = channelBuilder.build();
 
-        client = EnolaServiceGrpc.newBlockingStub(channel);
+        client = EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
     }
 
-    public EnolaServiceGrpc.EnolaServiceBlockingStub getClient() {
+    public EnolaServiceGrpc.EnolaServiceBlockingStub get() {
         return client;
     }
 

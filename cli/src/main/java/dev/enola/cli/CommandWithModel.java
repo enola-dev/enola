@@ -53,7 +53,7 @@ public abstract class CommandWithModel implements CheckedRunnable {
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
         esp = new EnolaServiceProvider();
-        service = new EnolaGrpcInProcess(esp.get(ekr)).getClient();
+        service = new EnolaGrpcInProcess(esp.get(ekr)).get();
 
         run(ekr, service);
     }

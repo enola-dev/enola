@@ -42,7 +42,7 @@ public class UiTest {
     public void testUi() throws IOException {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            var testGrpcService = new EnolaGrpcInProcess(new TestService()).getClient();
+            var testGrpcService = new EnolaGrpcInProcess(new TestService()).get();
             new UI(testGrpcService).register(server);
             server.start();
             var rp = new ResourceProviders();
