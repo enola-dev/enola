@@ -28,6 +28,7 @@ java_binary(
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//web/api",
         "//web/rest",
         "//web/sun",
         "//web/ui-soy",

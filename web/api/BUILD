@@ -20,6 +20,7 @@ java_library(
     name = "api",
     srcs = glob(["src/main/java/**/*.java"]),
     visibility = [
+        "//cli:__subpackages__",
         "//web:__subpackages__",
     ],
     deps = [

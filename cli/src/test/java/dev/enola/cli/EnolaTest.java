@@ -109,7 +109,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void serve() {
+    public void serveBothHttpAndGRPC() {
         var exec =
                 cli(
                         "-v",
@@ -120,7 +120,41 @@ public class EnolaTest {
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
         assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0).out().startsWith("gRPC API server now available on port ");
+        var out = assertThat(exec).hasExitCode(0).out();
+        out.startsWith("gRPC API server now available on port ");
+        out.contains("HTTP JSON REST API + HTML UI server started; open ");
+    }
+
+    @Test
+    public void serveOnlyHttp() {
+        var exec =
+                cli(
+                        "-v",
+                        "server",
+                        "--model",
+                        "classpath:cli-test-model.textproto",
+                        "--httpPort=0",
+                        "--immediateExitOnlyForTest=true");
+        assertThat(exec).err().isEmpty();
+        var out = assertThat(exec).hasExitCode(0).out();
+        out.startsWith("HTTP JSON REST API + HTML UI server started; open ");
+        out.doesNotContain("gRPC");
+    }
+
+    @Test
+    public void serveOnlyGrpc() {
+        var exec =
+                cli(
+                        "-v",
+                        "server",
+                        "--model",
+                        "classpath:cli-test-model.textproto",
+                        "--grpcPort=0",
+                        "--immediateExitOnlyForTest=true");
+        assertThat(exec).err().isEmpty();
+        var out = assertThat(exec).hasExitCode(0).out();
+        out.startsWith("gRPC API server now available on port ");
+        out.doesNotContain("HTML");
     }
 
     @Test
