@@ -33,15 +33,6 @@ $ ./enola
 
 Each sub-command's help can be shown either with `enola help SUBCOMMAND` or `enola SUBCOMMAND --help`.
 
-## ListKinds
-
-[Listing the Entity Kinds of a model](../library/index.md) has the following options:
-
-```bash $? cd .././.././..
-$ ./enola list-kinds --help
-...
-```
-
 ## DocGen
 
 [Documentation Generation](../docgen/index.md) has the following options:
@@ -67,7 +58,7 @@ $ ./enola list --help
 ...
 ```
 
-Because Entity Kinds are Entites themselves, `list` [can also be used to see the models](../library/index.md##list-kinds).
+Because Entity Kinds are Entites themselves, `list` [can also be used to see the models](../library/index.md#list-kinds).
 
 ## Server
 

@@ -36,7 +36,6 @@ import picocli.CommandLine.Mixin;
             HelpCommand.class, // TODO , Version.class
             AutoComplete.GenerateCompletion.class,
             DocGen.class,
-            ListKinds.class,
             List.class,
             Get.class,
             RosettaCommand.class,

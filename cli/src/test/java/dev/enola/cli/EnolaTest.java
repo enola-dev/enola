@@ -78,12 +78,17 @@ public class EnolaTest {
 
     @Test
     public void listKind() {
-        var exec = cli("-v", "list-kinds", "--model", "classpath:cli-test-model.textproto");
+        var exec =
+                cli(
+                        "-v",
+                        "list",
+                        "enola.entity_kind",
+                        "--model",
+                        "classpath:cli-test-model.textproto");
         assertThat(exec).err().isEmpty();
-        assertThat(exec)
-                .hasExitCode(0)
-                .out()
-                .isEqualTo("enola.entity_kind/name\ntest.foobar/name\n");
+        var out = assertThat(exec).hasExitCode(0).out();
+        out.contains("enola.entity_kind");
+        out.contains("test.foobar");
     }
 
     @Test
