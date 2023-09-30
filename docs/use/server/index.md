@@ -16,24 +16,47 @@
     limitations under the License.
 -->
 
-# Web Server
+# Web & gRPC Server
+
+## UI
 
 <!-- This intentionally does not use ```bash because the server "hangs" ...
      ... we COULD use --immediateExitOnlyForTest=true (as in EnolaTest),
      but this would be confusing for readers. TODO: Add support to hide
      CLI flags to Executable Markdown... ;-) -->
 
-    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080 --grpcPort=9090
-    gRPC API server now available on port 9090
+    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080
     HTTP JSON REST API + HTML UI server started; open http://0:0:0:0:0:0:0:0:8080/ui ...
 
 You can now open e.g. <http://localhost:8080/ui/entity/demo.book/ABC/0-13-140731-7/1>
 to view this `demo.book` _Entity._ When you click on the _Related_ `kind` you will
 see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
 
+## REST
+
 There is also a REST API which returns JSON if you replace `ui` with `api` in the URL,
 so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
 
+## gRPC
+
 The `--grpcPort` flag starts [the Enola gRPC API](.././../dev/proto/core#enolaservice).
 It can be called e.g. using a "generic" gRPC Client, such as [ktr0731's Evans](https://github.com/ktr0731/evans)
-or [asarkar's OkGRPC](https://github.com/asarkar/okgrpc).
+or [asarkar's OkGRPC](https://github.com/asarkar/okgrpc), or using the Enola CLI
+Client's `--server` flag, instead of passing a `--model` file, like so:
+
+    $ ./enola server --model file:docs/use/library/model.yaml --grpcPort=7070
+    gRPC API server now available on port 9090
+
+    $ ./enola -v get --server localhost:7070 demo.book/ABC/0-13-140731-7/1
+    ... TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD TBD ....
+
+<!-- TODO Make ^^^ actually work! It currently causes an NPE... next steps:
+      1. Add a built-in "aspect" for dev.enola.schema.proto, which can be LIST & GET
+      1. Change CLI to use that to populate the TypeRegistry
+      1. Clean up related code
+      1. Add real output above (manually)
+      1. Check it appears on https://docs.enola.dev/use/server/
+      1. Rebase and fix https://github.com/enola-dev/enola/pull/301, so that it's testable
+  -->
+
+<!-- TODO Make this Executable Markup... maybe using https://github.com/google/zx for process control? -->
