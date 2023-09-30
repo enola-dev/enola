@@ -49,6 +49,9 @@ public final class IDs {
 
     // private static final Joiner AMPERSAND_JOINER = Joiner.on('&').skipNulls();
 
+    private static final ID.Builder EK_ID_TEMPLATE =
+            ID.newBuilder().setNs("enola").setEntity("entity_kind");
+
     private IDs() {}
 
     public static ID parse(String s) {
@@ -95,13 +98,18 @@ public final class IDs {
         }
     }
 
-    public static String toPath(IDOrBuilder id) {
+    private static StringBuilder ekPath(IDOrBuilder id) {
         // TODO Validate ID components for valid characters etc, as per spec in its proto
         var sb = new StringBuilder(id.getNs());
         if (sb.length() > 0) {
             sb.append('.');
         }
         sb.append(id.getEntity());
+        return sb;
+    }
+
+    public static String toPath(IDOrBuilder id) {
+        var sb = ekPath(id);
         if (id.getPathsCount() > 0) {
             sb.append('/');
             for (int i = 0; i < id.getPathsCount(); i++) {
@@ -227,5 +235,9 @@ public final class IDs {
         return isNullOrEmpty(id.getNs())
                 && isNullOrEmpty(id.getEntity())
                 && id.getPathsCount() == 0;
+    }
+
+    public static ID.Builder entityKind(ID id) {
+        return EK_ID_TEMPLATE.clone().addPaths(ekPath(id).toString());
     }
 }
