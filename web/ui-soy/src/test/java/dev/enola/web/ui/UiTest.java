@@ -27,6 +27,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
+import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.proto.*;
 import dev.enola.web.sun.SunServer;
 
@@ -41,7 +42,8 @@ public class UiTest {
     public void testUi() throws IOException {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            new UI(new TestService()).register(server);
+            var testGrpcService = new EnolaGrpcInProcess(new TestService()).getClient();
+            new UI(testGrpcService).register(server);
             server.start();
             var rp = new ResourceProviders();
             var port = server.getInetAddress().getPort();

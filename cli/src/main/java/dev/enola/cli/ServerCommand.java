@@ -17,10 +17,9 @@
  */
 package dev.enola.cli;
 
-import dev.enola.core.EnolaService;
-import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.rest.RestAPI;
 import dev.enola.web.sun.SunServer;
 import dev.enola.web.ui.UI;
@@ -51,12 +50,12 @@ public class ServerCommand extends CommandWithModel {
     boolean immediateExitOnlyForTest;
 
     @Override
-    protected void run(EntityKindRepository ekr) throws Exception {
-        EnolaService service = new EnolaServiceProvider().get(ekr);
+    protected void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
+            throws Exception {
 
         // gRPC API
         if (grpcPort != null) {
-            var grpcServer = new EnolaGrpcServer(service);
+            var grpcServer = new EnolaGrpcServer(esp.get(ekr));
             grpcServer.start(grpcPort);
             out.println("gRPC API server now available on port " + grpcServer.getPort());
         }

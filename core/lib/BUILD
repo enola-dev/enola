@@ -89,6 +89,7 @@ java_grpc_library(
         "core_proto",
     ],
     visibility = [
+        "//cli:__subpackages__",
         "//connectors:__subpackages__",
         "//core:__subpackages__",
         "//web/rest:__pkg__",

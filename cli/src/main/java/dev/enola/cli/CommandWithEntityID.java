@@ -21,11 +21,10 @@ import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.core.EnolaService;
-import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.ID;
 
@@ -52,10 +51,8 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     private TypeRegistry typeRegistry;
 
     @Override
-    protected final void run(EntityKindRepository ekr) throws Exception {
-        // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
-        var esp = new EnolaServiceProvider();
-        EnolaService service = esp.get(ekr);
+    protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
+            throws Exception {
         typeRegistry = esp.getTypeRegistry();
 
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
@@ -68,7 +65,8 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     }
 
     protected abstract void run(
-            EntityKindRepository ekr, EnolaService service, EntityKind ek, ID id) throws Exception;
+            EntityKindRepository ekr, EnolaServiceBlockingStub service, EntityKind ek, ID id)
+            throws Exception;
 
     protected void write(Entity entity) throws IOException {
         new ProtoIO(typeRegistry).write(entity, resource);

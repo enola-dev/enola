@@ -26,8 +26,8 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.core.EnolaException;
-import dev.enola.core.EnolaService;
 import dev.enola.core.IDs;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
@@ -47,9 +47,9 @@ public class UI implements WebHandler {
                     .addProto(ID.getDescriptor(), Entity.getDescriptor())
                     .build();
 
-    private final EnolaService service;
+    private final EnolaServiceBlockingStub service;
 
-    public UI(EnolaService service) {
+    public UI(EnolaServiceBlockingStub service) {
         this.service = service;
     }
 

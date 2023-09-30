@@ -21,6 +21,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.docgen.Options;
+import dev.enola.core.proto.EnolaServiceGrpc;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -55,7 +56,8 @@ public class DocGen extends CommandWithModel {
     URI headerURI;
 
     @Override
-    public void run(EntityKindRepository ekr) throws Exception {
+    public void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
+            throws Exception {
         var options = new Options();
         options.diagram = diagram;
 
