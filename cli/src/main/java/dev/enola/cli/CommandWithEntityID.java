@@ -25,6 +25,7 @@ import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 
 import picocli.CommandLine;
@@ -57,14 +58,16 @@ public abstract class CommandWithEntityID extends CommandWithModel {
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!
 
-        var ek = ekr.get(id);
+        var request1 = GetEntityRequest.newBuilder().setId(IDs.entityKind(id)).build();
+        var response1 = service.getEntity(request1);
+        var ek = response1.getEntity().getDataOrThrow("schema").unpack(EntityKind.class);
+
         resource = new WriterResource(out, format.toMediaType());
 
-        run(ekr, service, ek, id);
+        run(service, ek, id);
     }
 
-    protected abstract void run(
-            EntityKindRepository ekr, EnolaServiceBlockingStub service, EntityKind ek, ID id)
+    protected abstract void run(EnolaServiceBlockingStub service, EntityKind ek, ID id)
             throws Exception;
 
     protected void write(Entity entity) throws IOException {
