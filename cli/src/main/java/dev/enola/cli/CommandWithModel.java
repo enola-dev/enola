@@ -18,7 +18,10 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -30,6 +33,7 @@ import java.net.URI;
 public abstract class CommandWithModel implements CheckedRunnable {
 
     protected PrintWriter out;
+    protected EnolaServiceProvider esp;
     @Spec CommandSpec spec;
 
     @Option(
@@ -38,16 +42,24 @@ public abstract class CommandWithModel implements CheckedRunnable {
             description = "URI to EntityKinds (e.g. file:model.yaml)")
     private URI model;
 
+    private EnolaServiceBlockingStub service;
+
     @Override
     public final void run() throws Exception {
         out = spec.commandLine().getOut();
 
+        // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
         var modelResource = new ResourceProviders().getReadableResource(model);
         var ekr = new EntityKindRepository();
         ekr.load(modelResource);
+        esp = new EnolaServiceProvider();
+        service = new EnolaGrpcInProcess(esp.get(ekr)).getClient();
 
-        run(ekr);
+        run(ekr, service);
     }
 
-    protected abstract void run(EntityKindRepository ekr) throws Exception;
+    // TODO Pass only the EnolaServiceBlockingStub through, remove the EntityKindRepository from
+    // here
+    protected abstract void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
+            throws Exception;
 }

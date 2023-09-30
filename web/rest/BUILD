@@ -26,6 +26,7 @@ java_library(
     deps = [
         "//common/common",
         "//common/protobuf",
+        "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",
@@ -43,6 +44,8 @@ java_library(
         ":rest",
         "//common/common",
         "//common/protobuf",
+        "//core/impl",  # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this
+        "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/api",

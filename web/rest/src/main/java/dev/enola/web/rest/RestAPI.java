@@ -26,8 +26,8 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaException;
-import dev.enola.core.EnolaService;
 import dev.enola.core.IDs;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
@@ -40,9 +40,9 @@ import java.net.URI;
 public class RestAPI implements WebHandler {
 
     private final ProtoIO protoIO = new ProtoIO();
-    private final EnolaService service;
+    private final EnolaServiceBlockingStub service;
 
-    public RestAPI(EnolaService service) {
+    public RestAPI(EnolaServiceBlockingStub service) {
         this.service = service;
     }
 

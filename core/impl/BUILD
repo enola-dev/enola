@@ -23,6 +23,8 @@ java_library(
     visibility = [
         "//cli:__subpackages__",
         "//connectors:__subpackages__",  #  ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
+        # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this:
+        "//web/rest:__pkg__",
         "//web/ui-soy:__pkg__",
     ],
     runtime_deps = [

@@ -25,6 +25,7 @@ java_binary(
         "//common/markdown",
         "//common/protobuf",
         "//core/impl",
+        "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "//web/rest",
