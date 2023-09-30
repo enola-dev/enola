@@ -27,18 +27,3 @@ Different formats are supported, and can be converted using [Rosetta](../rosetta
 ```yaml
 {% include "model.yaml" %}
 ```
-
-## List Kinds
-
-Because Entity Kinds are Entities themselves, you can also list them like this, with details:
-
-```bash cd .././.././..
-$ ./enola list --model file:docs/use/library/model.yaml --format=yaml enola.entity_kind
-...
-```
-
-In order to get a list of only the names of Entity Kinds, use e.g. [`yq`](https://github.com/mikefarah/yq).
-
-## Screencast (Asciinema)
-
-![Demo](script.svg)

@@ -53,6 +53,8 @@ $ ./enola get --help
 
 ## List
 
+[List Entities](../list/index.md) has the following options:
+
 ```bash $? cd .././.././..
 $ ./enola list --help
 ...
