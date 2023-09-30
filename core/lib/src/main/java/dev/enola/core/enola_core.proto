@@ -19,6 +19,7 @@ syntax = "proto3";
 package dev.enola.core;
 
 import "google/protobuf/any.proto";
+import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
@@ -139,6 +140,14 @@ message ListEntitiesResponse {
   repeated dev.enola.core.Entity entities = 1;
 }
 
+message GetFileDescriptorSetRequest {
+  // Intentionally empty (currently).
+}
+
+message GetFileDescriptorSetResponse {
+  google.protobuf.FileDescriptorSet protos = 1;
+}
+
 // TODO rpc watch(), for a time series WatchRequest/Response with repeated
 // Entity?
 //   google.protobuf.Timestamp ts = 2;
@@ -148,6 +157,8 @@ message ListEntitiesResponse {
 
 // This is the API with which Enola clients (such as a CLI or UI) connect.
 service EnolaService {
+  rpc GetFileDescriptorSet(GetFileDescriptorSetRequest)
+      returns (GetFileDescriptorSetResponse) {}
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse) {}
   rpc ListEntities(ListEntitiesRequest) returns (ListEntitiesResponse) {}
 }

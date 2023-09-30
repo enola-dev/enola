@@ -20,6 +20,9 @@ package dev.enola.core.grpc;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.protobuf.ValidationException;
+import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
@@ -29,11 +32,22 @@ import dev.enola.core.proto.ID;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class EnolaGrpcServerTest {
+
+    private final ReadableResource model = new ClasspathResource("demo-model.yaml");
+    private final EntityKindRepository ekr = new EntityKindRepository().load(model);
+    private final EnolaServiceProvider esp = new EnolaServiceProvider();
+    private final EnolaService service;
+
+    public EnolaGrpcServerTest() throws ValidationException, IOException, EnolaException {
+        service = esp.get(ekr);
+    }
 
     @Test
     public void remoting() throws Exception {
-        try (var enolaServer = new EnolaGrpcServer(service()).start(0)) {
+        try (var enolaServer = new EnolaGrpcServer(esp, service).start(0)) {
             // similarly in dev.enola.demo.ServerTest
             var port = enolaServer.getPort();
             var endpoint = "localhost:" + port;
@@ -45,15 +59,9 @@ public class EnolaGrpcServerTest {
 
     @Test
     public void inProcess() throws Exception {
-        try (var enolaServer = new EnolaGrpcInProcess(service(), false)) {
+        try (var enolaServer = new EnolaGrpcInProcess(esp, service, false)) {
             check(enolaServer.get());
         }
-    }
-
-    private EnolaService service() throws Exception {
-        var model = new ClasspathResource("demo-model.yaml");
-        var ekr = new EntityKindRepository().load(model);
-        return new EnolaServiceProvider().get(ekr);
     }
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client) {

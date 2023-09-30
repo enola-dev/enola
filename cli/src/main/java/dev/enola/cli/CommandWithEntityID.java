@@ -26,6 +26,7 @@ import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.ID;
 
 import picocli.CommandLine;
@@ -52,7 +53,10 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception {
-        typeRegistryWrapper = esp.getTypeRegistryWrapper();
+        var fds =
+                service.getFileDescriptorSet(GetFileDescriptorSetRequest.newBuilder().build())
+                        .getProtos();
+        typeRegistryWrapper = TypeRegistryWrapper.from(fds);
 
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!

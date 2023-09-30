@@ -21,6 +21,7 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 
 import dev.enola.common.concurrent.Executors;
 import dev.enola.core.EnolaService;
+import dev.enola.core.EnolaServiceProvider;
 
 import io.grpc.ServerBuilder;
 
@@ -37,10 +38,12 @@ public class EnolaGrpcServer implements AutoCloseable {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     private final EnolaService service;
+    private final EnolaServiceProvider esp;
     private io.grpc.Server server;
     private ListeningExecutorService executor;
 
-    public EnolaGrpcServer(EnolaService service) {
+    public EnolaGrpcServer(EnolaServiceProvider esp, EnolaService service) {
+        this.esp = esp;
         this.service = service;
     }
 
@@ -48,7 +51,7 @@ public class EnolaGrpcServer implements AutoCloseable {
         executor = Executors.newListeningCachedThreadPool("gRPC-Server", LOGGER);
         var builder = ServerBuilder.forPort(port);
         builder.executor(executor);
-        builder.addService(new EnolaGrpcService(service)); // as in EnolaGrpcInProcess
+        builder.addService(new EnolaGrpcService(esp, service)); // as in EnolaGrpcInProcess
         server = builder.build().start();
         return this;
     }

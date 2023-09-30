@@ -26,6 +26,7 @@ import com.google.protobuf.Descriptors;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.EntityAspect;
+import dev.enola.core.IDs;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
@@ -37,6 +38,7 @@ public class SchemaAspect implements EntityAspect {
 
     // Matching schema.textproto
     static final ID.Builder idBuilderTemplate = ID.newBuilder().setNs("enola").setEntity("schema");
+    private static final ID idKind = ID.newBuilder().setNs("enola").setEntity("schema").build();
 
     private EnolaServiceProvider esp;
 
@@ -47,7 +49,7 @@ public class SchemaAspect implements EntityAspect {
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
         var name = entity.getId().getPaths(0);
-        var descriptor = esp.getTypeRegistryWrapper().get().find(name).toProto();
+        var descriptor = esp.getTypeRegistryWrapper().find(name).toProto();
         var any = pack(descriptor, "type.googleapis.com/");
         entity.putData("proto", any);
     }
@@ -58,7 +60,8 @@ public class SchemaAspect implements EntityAspect {
             EntityKind entityKind,
             List<Entity.Builder> entities)
             throws EnolaException {
-        // TODO if (!IDs.withoutPath(request.getId()).equals(idBuilderTemplate)) return
+        if (!IDs.withoutPath(request.getId()).equals(idKind)) return;
+
         for (var name : esp.getTypeRegistryWrapper().names()) {
             var id = idBuilderTemplate.clone().addPaths(name);
             var newSchemaEntity = Entity.newBuilder().setId(id);
@@ -67,6 +70,7 @@ public class SchemaAspect implements EntityAspect {
         }
     }
 
+    @Override
     public List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
         return ImmutableList.of(DescriptorProtos.DescriptorProto.getDescriptor());
     }

@@ -19,16 +19,25 @@ package dev.enola.core.grpc;
 
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
-import dev.enola.core.proto.*;
+import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.proto.GetFileDescriptorSetRequest;
+import dev.enola.core.proto.GetFileDescriptorSetResponse;
+import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.ListEntitiesResponse;
 
 import io.grpc.stub.StreamObserver;
 
 public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
 
     private final EnolaService enola;
+    private final EnolaServiceProvider esp;
 
-    public EnolaGrpcService(EnolaService service) {
+    public EnolaGrpcService(EnolaServiceProvider esp, EnolaService service) {
         this.enola = service;
+        this.esp = esp;
     }
 
     @Override
@@ -53,5 +62,15 @@ public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
         } catch (EnolaException e) {
             responseObserver.onError(e);
         }
+    }
+
+    @Override
+    public void getFileDescriptorSet(
+            GetFileDescriptorSetRequest request,
+            io.grpc.stub.StreamObserver<GetFileDescriptorSetResponse> responseObserver) {
+        var fds = esp.getTypeRegistryWrapper().fileDescriptorSet();
+        var response = GetFileDescriptorSetResponse.newBuilder().setProtos(fds).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

@@ -38,6 +38,7 @@ proto_library(
     srcs = ["src/main/java/dev/enola/core/enola_core.proto"],
     deps = [
         "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:struct_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
