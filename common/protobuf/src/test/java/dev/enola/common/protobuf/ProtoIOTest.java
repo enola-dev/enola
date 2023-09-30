@@ -27,7 +27,9 @@ import com.google.protobuf.Timestamp;
 import com.google.protobuf.TypeRegistry;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.common.io.resource.ReadableResource;
 
 import org.junit.Test;
 
@@ -42,15 +44,37 @@ public class ProtoIOTest extends AbstractProtoTestBase {
         super("ok.textproto", Timestamp.newBuilder());
     }
 
+    private Timestamp readTimestamp(ReadableResource resource) throws IOException {
+        return new ProtoIO().read(resource, Timestamp.newBuilder(), Timestamp.class);
+    }
+
     @Test
     public void readGoodTextproto() throws IOException {
-        Timestamp timestamp =
-                new ProtoIO()
-                        .read(
-                                new ClasspathResource("ok.textproto"),
-                                Timestamp.newBuilder(),
-                                Timestamp.class);
-        assertThat(timestamp).isEqualTo(TIMESTAMP);
+        assertThat(readTimestamp(new ClasspathResource("ok.textproto"))).isEqualTo(TIMESTAMP);
+    }
+
+    @Test
+    public void readEmptyBinary() throws IOException {
+        var r = new EmptyResource(ProtobufMediaTypes.PROTOBUF_BINARY);
+        assertThat(readTimestamp(r)).isEqualTo(Timestamp.getDefaultInstance());
+    }
+
+    @Test
+    public void readEmptyTextproto() throws IOException {
+        var r = new EmptyResource(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+        assertThat(readTimestamp(r)).isEqualTo(Timestamp.getDefaultInstance());
+    }
+
+    @Test
+    public void readEmptyJSON() throws IOException {
+        var r = new EmptyResource(ProtobufMediaTypes.PROTOBUF_JSON_UTF_8);
+        assertThat(readTimestamp(r)).isEqualTo(Timestamp.getDefaultInstance());
+    }
+
+    @Test
+    public void readEmptyYAML() throws IOException {
+        var r = new EmptyResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
+        assertThat(readTimestamp(r)).isEqualTo(Timestamp.getDefaultInstance());
     }
 
     @Test
