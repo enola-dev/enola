@@ -22,15 +22,20 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class CLI {
+public class CLI implements AutoCloseable {
 
     private final String[] args;
     private final CommandLine commandLine;
     private StringWriter out;
     private StringWriter err;
 
-    private Integer exitCode;
+    private final AtomicReference<Optional<Integer>> exitCode = new AtomicReference<>();
 
     public CLI(String[] args, CommandLine commandLine) {
         this.commandLine = commandLine;
@@ -67,18 +72,33 @@ public class CLI {
         return err.toString();
     }
 
-    public int execute() {
-        this.exitCode = commandLine.execute(args);
-        commandLine.getOut().flush();
-        commandLine.getErr().flush();
-        return exitCode;
+    public Future<Integer> executeAsync() {
+        var executor = Executors.newSingleThreadExecutor();
+        return executor.submit(
+                () -> {
+                    var result = commandLine.execute(args);
+                    var optional = Optional.of(result);
+                    this.exitCode.set(optional);
+                    commandLine.getOut().flush();
+                    commandLine.getErr().flush();
+                    return exitCode.get().get();
+                });
+    }
+
+    public int execute() throws ExecutionException, InterruptedException {
+        return executeAsync().get();
     }
 
     public int exitCode() {
-        if (exitCode == null) {
+        if (exitCode.get().isEmpty()) {
             throw new IllegalStateException("Must execute() first!");
         }
-        return exitCode;
+        return exitCode.get().get();
+    }
+
+    @Override
+    public void close() throws Exception {
+        ((AutoCloseable) commandLine.getCommand()).close();
     }
 
     @Override

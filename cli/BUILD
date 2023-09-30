@@ -28,6 +28,7 @@ java_binary(
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//web/api",
         "//web/rest",
         "//web/sun",
         "//web/ui-soy",
@@ -48,6 +49,7 @@ java_binary(
         "//common/common",
         "//common/markdown",
         "//core/impl",
+        "//web/api",
         "//web/rest",
         "//web/sun",
         "//web/ui-soy",
@@ -56,6 +58,7 @@ java_binary(
         "@maven//:info_picocli_picocli",
         "@maven//:io_github_classgraph_classgraph",
         "@maven//:junit_junit",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

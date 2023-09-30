@@ -25,6 +25,8 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Mixin;
 
+import java.util.concurrent.ExecutionException;
+
 @Command(
         name = "enola",
         mixinStandardHelpOptions = true,
@@ -43,12 +45,15 @@ import picocli.CommandLine.Mixin;
             ServerCommand.class,
             ExecMdCommand.class
         })
-public class Enola {
+public class Enola implements AutoCloseable {
 
     static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
 
     @Mixin LoggingMixin loggingMixin;
     boolean[] verbosity = {};
+    @CommandLine.Spec CommandLine.Model.CommandSpec spec;
+
+    private AutoCloseable closeableSubCommand;
 
     static CLI cli(String... args) {
         var enola = new Enola();
@@ -63,8 +68,19 @@ public class Enola {
                         .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(enola)));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.exit(cli(args).execute());
+    }
+
+    public void setCloseableSubCommand(AutoCloseable closeableSubCommand) {
+        this.closeableSubCommand = closeableSubCommand;
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (closeableSubCommand != null) {
+            closeableSubCommand.close();
+        }
     }
 
     private static class KnownExitCodeExceptionMapper
