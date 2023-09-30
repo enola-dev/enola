@@ -44,7 +44,7 @@ public class RestTest {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             // Setup
-            var testGrpcService = new EnolaGrpcInProcess(new TestService()).getClient();
+            var testGrpcService = new EnolaGrpcInProcess(new TestService()).get();
             new RestAPI(testGrpcService).register(server);
             server.start();
             var rp = new ResourceProviders();
