@@ -24,7 +24,7 @@
 
 ![Demo](script.svg)
 
-## Enola Get
+## Get Book
 
 Get a `book` - note how the _related_ `kind` and `library` ID are set, based on the template
 [from the model](../library/index.md):
