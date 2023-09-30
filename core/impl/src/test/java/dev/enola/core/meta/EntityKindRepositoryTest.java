@@ -43,8 +43,8 @@ public class EntityKindRepositoryTest {
     @Test
     public void testEmptyRepository() throws ValidationException {
         // Even an empty repository always has the built-in enola.entity_kind
-        assertThat(r.list()).hasSize(1);
-        assertThat(r.listID()).hasSize(1);
+        assertThat(r.list()).hasSize(2);
+        assertThat(r.listID()).hasSize(2);
 
         var id = ID.newBuilder().setEntity("non-existant").build();
         assertThrows(IllegalArgumentException.class, () -> r.get(id));
@@ -90,7 +90,7 @@ public class EntityKindRepositoryTest {
                         IDs.parse("demo.bar/foo/name"),
                         IDs.parse("demo.baz/uuid"));
         // The 4th one is the built-in enola.entity_kind
-        assertThat(r.list()).hasSize(4);
+        assertThat(r.list()).hasSize(5);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class EntityKindRepositoryTest {
         assertThat(r.listID())
                 .containsAtLeast(IDs.parse("demo.foo/name"), IDs.parse("demo.bar/foo/name"));
         // The 3rd one is the built-in enola.entity_kind
-        assertThat(r.list()).hasSize(3);
+        assertThat(r.list()).hasSize(4);
     }
 
     @Test

@@ -17,6 +17,9 @@
  */
 package dev.enola.core.meta;
 
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ErrorResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.MessageValidators;
@@ -42,8 +45,13 @@ public class EntityKindRepository {
     public EntityKindRepository() {
         try {
             put(EntityKindAspect.ENTITY_KIND_ENTITY_KIND);
+            try {
+                load(new ClasspathResource("schema.textproto", PROTOBUF_TEXTPROTO_UTF_8));
+            } catch (IOException e) {
+                throw new IllegalStateException("Built-in ClasspathResource missing?!", e);
+            }
         } catch (ValidationException e) {
-            // This cannot happen, because ENTITY_KIND_ENTITY_KIND is valid.
+            // This cannot happen, because the built-in kinds are valid.
             throw new IllegalStateException("BUG!", e);
         }
     }

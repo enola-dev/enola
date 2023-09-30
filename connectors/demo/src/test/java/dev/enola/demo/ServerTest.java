@@ -21,8 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import com.google.protobuf.TypeRegistry;
-
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReplacingResource;
@@ -36,6 +34,7 @@ import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
@@ -54,7 +53,7 @@ public class ServerTest {
 
     private EntityKindRepository ekr;
     private EnolaService enola;
-    private TypeRegistry typeRegistry;
+    private TypeRegistryWrapper typeRegistryWrapper;
 
     @Test
     public void bothConnectorDirectlyAndViaServer()
@@ -110,7 +109,7 @@ public class ServerTest {
 
         var esp = new EnolaServiceProvider();
         enola = esp.get(ekr);
-        typeRegistry = esp.getTypeRegistry();
+        typeRegistryWrapper = esp.getTypeRegistryWrapper();
     }
 
     private void checkEnolaGet(EnolaService enola) throws EnolaException, IOException {
@@ -125,7 +124,7 @@ public class ServerTest {
         assertThat(something.getText()).isEqualTo("hello, world");
         assertThat(something.getNumber()).isEqualTo(123);
 
-        var io = new ProtoIO(typeRegistry);
+        var io = new ProtoIO(typeRegistryWrapper.get());
         var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
         var entityKind = ekr.get(ID.newBuilder().setNs("demo").setEntity("foo").build());
         io.write(entity, resource);

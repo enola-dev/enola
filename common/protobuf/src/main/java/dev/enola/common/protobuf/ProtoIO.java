@@ -131,7 +131,6 @@ public class ProtoIO {
                 builder.mergeFrom(is, extensionRegistry);
             }
         } else {
-            // TODO Use resource.mediaType().charset().or(UTF_8)
             try (Reader reader = resource.charSource(UTF_8).openBufferedStream()) {
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     textFormatParser.merge(reader, extensionRegistry, builder);
