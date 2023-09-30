@@ -18,7 +18,6 @@
 package dev.enola.core.meta.docgen;
 
 import dev.enola.core.IDs;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.ID;
 
@@ -27,9 +26,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class MermaidGenerator {
-    static void renderMermaid(EntityKindRepository kinds, Appendable md) throws IOException {
+    static void renderMermaid(Iterable<EntityKind> kinds, Appendable md) throws IOException {
         md.append("\n``` mermaid\nclassDiagram\n  direction RL\n");
-        for (var ek : kinds.list()) {
+        for (var ek : kinds) {
             renderMermaidEntity(ek, md);
         }
         md.append("```\n");

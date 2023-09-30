@@ -57,6 +57,7 @@ java_binary(
         "@maven//:info_picocli_picocli",
         "@maven//:io_github_classgraph_classgraph",
         "@maven//:junit_junit",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

@@ -18,7 +18,6 @@
 package dev.enola.core.meta.docgen;
 
 import dev.enola.core.IDs;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.ID;
 
@@ -27,13 +26,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class GraphvizGenerator {
-    static void renderGraphviz(EntityKindRepository kinds, Appendable md) throws IOException {
+    static void renderGraphviz(Iterable<EntityKind> kinds, Appendable md) throws IOException {
         md.append("```dot\n");
         md.append("digraph {\n");
         md.append("  graph [fontname = \"Handlee\"];\n");
         md.append("  node [fontname = \"Handlee\"];\n");
         md.append("  edge [fontname = \"Handlee\"];\n");
-        for (var ek : kinds.list()) {
+        for (var ek : kinds) {
             renderGraphvizEntity(ek, md);
         }
         md.append("}\n");
