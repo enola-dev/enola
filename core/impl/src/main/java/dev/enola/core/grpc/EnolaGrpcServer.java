@@ -22,6 +22,7 @@ import dev.enola.core.EnolaService;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class EnolaGrpcServer implements AutoCloseable {
 
@@ -46,7 +47,7 @@ public class EnolaGrpcServer implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
-        server.shutdown().awaitTermination();
+    public void close() throws InterruptedException {
+        server.shutdown().awaitTermination(7, TimeUnit.SECONDS);
     }
 }

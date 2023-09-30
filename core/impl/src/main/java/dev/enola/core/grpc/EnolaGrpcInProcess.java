@@ -17,8 +17,6 @@
  */
 package dev.enola.core.grpc;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import dev.enola.core.EnolaService;
 import dev.enola.core.proto.EnolaServiceGrpc;
 
@@ -49,7 +47,8 @@ public class EnolaGrpcInProcess
         channelBuilder.directExecutor(); // as above
         channel = channelBuilder.build();
 
-        client = EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
+        // .withDeadlineAfter(13, SECONDS) doesn't seem to work will with InProcessChannelBuilder?!
+        client = EnolaServiceGrpc.newBlockingStub(channel);
     }
 
     public EnolaServiceGrpc.EnolaServiceBlockingStub get() {

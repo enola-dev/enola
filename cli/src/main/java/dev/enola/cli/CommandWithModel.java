@@ -19,10 +19,12 @@ package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 
+import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
@@ -36,11 +38,8 @@ public abstract class CommandWithModel implements CheckedRunnable {
     protected EnolaServiceProvider esp;
     @Spec CommandSpec spec;
 
-    @Option(
-            names = {"--model"},
-            required = true,
-            description = "URI to EntityKinds (e.g. file:model.yaml)")
-    private URI model;
+    @ArgGroup(multiplicity = "1")
+    ModelOrServer group;
 
     private EnolaServiceBlockingStub service;
 
@@ -48,12 +47,19 @@ public abstract class CommandWithModel implements CheckedRunnable {
     public final void run() throws Exception {
         out = spec.commandLine().getOut();
 
+        // TODO Fix design; as-is, this may stay null if --server instead of --model is used
+        EntityKindRepository ekr = null;
+
         // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
-        var modelResource = new ResourceProviders().getReadableResource(model);
-        var ekr = new EntityKindRepository();
-        ekr.load(modelResource);
-        esp = new EnolaServiceProvider();
-        service = new EnolaGrpcInProcess(esp.get(ekr)).get();
+        if (group.model != null) {
+            var modelResource = new ResourceProviders().getReadableResource(group.model);
+            ekr = new EntityKindRepository();
+            ekr.load(modelResource);
+            esp = new EnolaServiceProvider();
+            service = new EnolaGrpcInProcess(esp.get(ekr)).get();
+        } else if (group.server != null) {
+            service = new EnolaGrpcClientProvider(group.server).get();
+        }
 
         run(ekr, service);
     }
@@ -62,4 +68,19 @@ public abstract class CommandWithModel implements CheckedRunnable {
     // here
     protected abstract void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception;
+
+    static class ModelOrServer {
+
+        @Option(
+                names = {"--model"},
+                required = true,
+                description = "URI to EntityKinds (e.g. file:model.yaml)")
+        private URI model;
+
+        @Option(
+                names = {"--server"},
+                required = true,
+                description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
+        private String server;
+    }
 }
