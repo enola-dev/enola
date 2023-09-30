@@ -21,29 +21,40 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.MediaTypes;
+
 import java.net.URI;
 
-class EmptyResource implements ReadableResource {
+public class EmptyResource implements ReadableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
-
-    static final EmptyResource INSTANCE = new EmptyResource();
 
     static final String SCHEME = "empty";
 
-    private static final URI EMPTY_URI = URI.create("empty:-");
+    private final MediaType mediaType;
 
-    private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
+    private final URI uri;
 
-    private EmptyResource() {}
+    public EmptyResource(MediaType mediaType) {
+        this.mediaType = mediaType;
+        this.uri = uri(this.mediaType);
+    }
+
+    public EmptyResource(String mediaType) {
+        this(MediaTypes.parse(mediaType));
+    }
+
+    public static URI uri(MediaType mediaType) {
+        return URI.create(SCHEME + ":" + mediaType.withoutParameters());
+    }
 
     @Override
     public URI uri() {
-        return EMPTY_URI;
+        return uri;
     }
 
     @Override
     public MediaType mediaType() {
-        return MEDIA_TYPE;
+        return mediaType;
     }
 
     @Override
@@ -58,6 +69,6 @@ class EmptyResource implements ReadableResource {
 
     @Override
     public String toString() {
-        return "EmptyResource{uri=" + uri() + '}';
+        return "EmptyResource{uri=" + uri() + ", mediaType=" + mediaType + "}";
     }
 }

@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.mediatype.YamlMediaType;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,10 +28,10 @@ import java.io.IOException;
 public class EmptyResourceTest {
     @Test
     public void testEmptyResource() throws IOException {
-        var e = EmptyResource.INSTANCE;
+        var e = new EmptyResource(YamlMediaType.YAML_UTF_8.toString());
         assertThat(e.byteSource().isEmpty()).isTrue();
         assertThat(e.charSource().isEmpty()).isTrue();
-        assertThat(e.mediaType()).isNotNull();
-        assertThat(e.uri()).isNotNull();
+        assertThat(e.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
+        assertThat(e.uri().toString()).isEqualTo("empty:application/yaml");
     }
 }
