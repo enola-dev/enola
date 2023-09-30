@@ -74,6 +74,16 @@ public class ProtoIO {
         new ProtoIO().read(resource, builder);
     }
 
+    private static boolean isEmpty(Reader reader) throws IOException {
+        if (!reader.markSupported()) {
+            throw new IllegalArgumentException("Reader !markSupported()");
+        }
+        reader.mark(3);
+        var first = reader.read();
+        reader.reset();
+        return first == -1;
+    }
+
     public void write(Message message, WritableResource resource) throws IOException {
         MediaType mediaType = resource.mediaType();
         if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(mediaType)) {
@@ -121,15 +131,20 @@ public class ProtoIO {
                 builder.mergeFrom(is, extensionRegistry);
             }
         } else {
+            // TODO Use resource.mediaType().charset().or(UTF_8)
             try (Reader reader = resource.charSource(UTF_8).openBufferedStream()) {
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     textFormatParser.merge(reader, extensionRegistry, builder);
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {
-                    JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
+                    if (!isEmpty(reader)) {
+                        JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
+                    }
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
                     var yaml = resource.charSource(UTF_8).read();
                     var json = YamlJson.yamlToJson(yaml);
-                    JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(json, builder);
+                    if (!json.isEmpty()) {
+                        JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(json, builder);
+                    }
                 } else {
                     throw new IllegalArgumentException(
                             mediaType + " unknown mediaType for URI: " + resource);
