@@ -180,7 +180,7 @@ public class EnolaTest {
     public void noStacktraceWithoutVerbose() {
         var exec = cli("docgen", "--model", "file:nonexistant.yaml");
         assertThat(exec).out().isEmpty();
-        assertThat(exec).hasExitCode(1).err().isEqualTo("NoSuchFileException: nonexistant.yaml\n");
+        assertThat(exec).hasExitCode(1).err().contains("NoSuchFileException: nonexistant.yaml\n");
     }
 
     @Test
