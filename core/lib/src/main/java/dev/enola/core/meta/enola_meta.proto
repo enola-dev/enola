@@ -181,19 +181,3 @@ message FileSystemRepository {
   // TODO https://github.com/enola-dev/enola/issues/238
   // repeated string protos = 3;
 }
-
-// TODO Remove the following - and have EntityKind *BE* an Entity that's itself
-// available through the EnolaService?!
-
-message GetEntityKindsRequest {
-  // TODO Filter
-}
-
-// Clients would typically cache this.
-message GetEntityKindsResponse {
-  repeated EntityKind models = 1;
-}
-
-service ModelService {
-  rpc GetEntityKinds(GetEntityKindsRequest) returns (GetEntityKindsResponse) {}
-}
