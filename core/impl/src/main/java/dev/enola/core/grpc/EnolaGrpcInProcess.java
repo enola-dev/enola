@@ -17,6 +17,9 @@
  */
 package dev.enola.core.grpc;
 
+import static dev.enola.common.concurrent.Executors.newListeningCachedThreadPool;
+import static dev.enola.common.concurrent.Executors.newListeningScheduledThreadPool;
+
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 
@@ -44,25 +47,35 @@ public class EnolaGrpcInProcess
     private final Server server;
     private final ManagedChannel channel;
     private final EnolaServiceGrpc.EnolaServiceBlockingStub client;
-    private final ListeningExecutorService executor;
-    private final ListeningScheduledExecutorService scheduledExecutor;
+    private final ListeningExecutorService serverExecutorService;
+    private final ListeningExecutorService clientExecutorService;
+    private final ListeningExecutorService clientOffloadExecutorService;
+    private final ListeningScheduledExecutorService serverScheduledExecutor;
+    private final ListeningScheduledExecutorService clientScheduledExecutor;
 
     public EnolaGrpcInProcess(EnolaService service) throws IOException {
         this.service = service;
 
-        executor = Executors.newListeningCachedThreadPool("gRPC-InProcess-Non_Scheduled", LOGGER);
-        scheduledExecutor =
-                Executors.newListeningScheduledThreadPool(16, "gRPC-InProcess-Scheduled", LOGGER);
+        serverExecutorService = newListeningCachedThreadPool("gRPC-InProcessServer", LOGGER);
+        serverScheduledExecutor =
+                newListeningScheduledThreadPool(2, "gRPC-InProcessServer-Scheduled", LOGGER);
+        clientExecutorService = newListeningCachedThreadPool("gRPC-InProcessClient", LOGGER);
+        clientOffloadExecutorService =
+                newListeningCachedThreadPool("gRPC-InProcessClient-Offload", LOGGER);
+        clientScheduledExecutor =
+                newListeningScheduledThreadPool(2, "gRPC-InProcessClient-Scheduled", LOGGER);
 
         var uniqueName = InProcessServerBuilder.generateName();
         var builder = InProcessServerBuilder.forName(uniqueName);
-        builder.executor(executor);
-        builder.scheduledExecutorService(scheduledExecutor);
+        builder.executor(serverExecutorService);
+        builder.scheduledExecutorService(serverScheduledExecutor);
         builder.addService(new EnolaGrpcService(service)); // as in EnolaGrpcServer
         server = builder.build().start();
 
         InProcessChannelBuilder channelBuilder = InProcessChannelBuilder.forName(uniqueName);
-        channelBuilder.directExecutor(); // as above
+        channelBuilder.executor(clientExecutorService);
+        channelBuilder.scheduledExecutorService(clientScheduledExecutor);
+        channelBuilder.offloadExecutor(clientOffloadExecutorService);
         channel = channelBuilder.build();
 
         // .withDeadlineAfter(13, SECONDS) doesn't seem to work will with InProcessChannelBuilder?!
@@ -90,7 +103,10 @@ public class EnolaGrpcInProcess
             server.shutdownNow();
         }
 
-        Executors.shutdownAndAwaitTermination(executor);
-        Executors.shutdownAndAwaitTermination(scheduledExecutor);
+        Executors.shutdownAndAwaitTermination(serverExecutorService);
+        Executors.shutdownAndAwaitTermination(serverScheduledExecutor);
+        Executors.shutdownAndAwaitTermination(clientExecutorService);
+        Executors.shutdownAndAwaitTermination(clientOffloadExecutorService);
+        Executors.shutdownAndAwaitTermination(clientScheduledExecutor);
     }
 }

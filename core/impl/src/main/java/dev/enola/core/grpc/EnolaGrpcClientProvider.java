@@ -42,7 +42,7 @@ public class EnolaGrpcClientProvider
     private final ListeningExecutorService offloadExecutor;
 
     public EnolaGrpcClientProvider(String endpoint) {
-        executor = Executors.newListeningCachedThreadPool("gRPC-Client-Non_Offload", LOGGER);
+        executor = Executors.newListeningCachedThreadPool("gRPC-Client", LOGGER);
         offloadExecutor = Executors.newListeningCachedThreadPool("gRPC-Client-Offload", LOGGER);
 
         var credz = InsecureChannelCredentials.create();
