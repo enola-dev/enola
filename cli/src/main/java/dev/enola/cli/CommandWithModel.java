@@ -30,12 +30,10 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
-import java.io.PrintWriter;
 import java.net.URI;
 
 public abstract class CommandWithModel implements CheckedRunnable {
 
-    protected PrintWriter out;
     protected EnolaServiceProvider esp;
     @Spec CommandSpec spec;
 
@@ -46,8 +44,6 @@ public abstract class CommandWithModel implements CheckedRunnable {
 
     @Override
     public final void run() throws Exception {
-        out = spec.commandLine().getOut();
-
         // TODO Fix design; as-is, this may stay null if --server instead of --model is used
         EntityKindRepository ekr = null;
 

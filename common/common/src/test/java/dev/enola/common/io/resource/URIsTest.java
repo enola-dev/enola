@@ -19,8 +19,12 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThat;
+
 import com.google.common.io.Resources;
-import com.google.common.truth.Truth;
+import com.google.common.net.MediaType;
+
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +32,8 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class URIsTest {
 
@@ -38,10 +44,46 @@ public class URIsTest {
         assertThat(URIs.getQueryMap(URI.create("http://www.vorburger.ch"))).isEmpty();
         assertThat(URIs.getQueryMap(URI.create("http://google.com?q=michi#fragment")))
                 .containsExactly("q", "michi");
+        assertThat(URIs.getQueryMap(URI.create("http://google.com?q=#fragment")))
+                .containsExactly("q", "");
         assertThat(URIs.getQueryMap(URI.create("fd:1?charset=ASCII")))
                 .containsExactly("charset", "ASCII");
         assertThat(URIs.getQueryMap(URI.create("fd:1?charset=ASCII#fragment")))
                 .containsExactly("charset", "ASCII");
+        assertThat(URIs.getQueryMap(URI.create("scheme:thing?ping=pong=pang#fragment")))
+                .containsExactly("ping", "pong=pang");
+    }
+
+    @Test
+    public void testHasNoMediaType() throws URISyntaxException {
+        assertThat(URIs.getMediaType(URI.create("scheme:something")))
+                .isEqualTo(MediaType.OCTET_STREAM.withCharset(Charset.defaultCharset()));
+    }
+
+    @Test
+    public void testGetMediaType() throws URISyntaxException {
+        var uri = URI.create("fd:1?something=else&mediaType=application/yaml;charset=utf-16be");
+        assertThat(URIs.getQueryMap(uri))
+                .containsExactly(
+                        "something", "else", "mediatype", "application/yaml;charset=utf-16be");
+        assertThat(URIs.getMediaType(uri))
+                .isEqualTo(YamlMediaType.YAML_UTF_8.withCharset(StandardCharsets.UTF_16BE));
+    }
+
+    @Test
+    public void testAddMediaType() throws URISyntaxException {
+        var mt1 = MediaType.GIF;
+        var uri1 = URIs.addMediaType(URI.create("scheme:something"), mt1);
+        var uri1expected = URI.create("scheme:something?mediaType=image%2Fgif");
+        assertThat(uri1).isEqualTo(uri1expected);
+        assertThat(URIs.getMediaType(uri1expected))
+                .isEqualTo(mt1.withCharset(Charset.defaultCharset()));
+
+        var mt2 = MediaType.PLAIN_TEXT_UTF_8;
+        var uri2 = URIs.addMediaType(URI.create("scheme:something"), mt2);
+        var uri2expected = URI.create("scheme:something?mediaType=text%2Fplain%3Bcharset%3Dutf-8");
+        assertThat(uri2).isEqualTo(uri2expected);
+        assertThat(URIs.getMediaType(uri2expected)).isEqualTo(mt2);
     }
 
     @Test
@@ -91,6 +133,20 @@ public class URIsTest {
     }
 
     private void assertName(URI uri, String expectedFilename) {
-        Truth.assertThat(URIs.getFilename(uri)).isEqualTo(expectedFilename);
+        assertThat(URIs.getFilename(uri)).isEqualTo(expectedFilename);
+    }
+
+    /** See {@link URIs#getPath(String)} */
+    @Test
+    public void testGetPath() {
+        var f = new File("/absolute/file?param=abc#anchor");
+        // NOK! assertThat(f.toURI().getPath()).isEqualTo("/absolute/file");
+        assertThat(URIs.getPath(f.toURI())).isEqualTo("/absolute/file");
+
+        assertThat(URI.create("file:/absolute/file").getPath()).isEqualTo("/absolute/file");
+        assertThat(URIs.getPath(URI.create("file:/absolute/file"))).isEqualTo("/absolute/file");
+
+        // NOK! assertThat(URI.create("file:relative/file").getPath()).isEqualTo("relative/file");
+        assertThat(URIs.getPath(URI.create("file:relative/file"))).isEqualTo("relative/file");
     }
 }

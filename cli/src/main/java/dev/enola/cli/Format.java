@@ -26,7 +26,9 @@ public enum Format {
 
     YAML,
 
-    JSON;
+    JSON,
+
+    BinaryPB;
 
     MediaType toMediaType() {
         switch (this) {
@@ -36,6 +38,8 @@ public enum Format {
                 return ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
             case JSON:
                 return ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+            case BinaryPB:
+                return ProtobufMediaTypes.PROTOBUF_BINARY;
             default:
                 throw new IllegalStateException();
         }

@@ -21,7 +21,8 @@
 Rosetta, inspired by
 [the Rosetta Stone](https://en.wikipedia.org/wiki/Rosetta_Stone), transforms
 between [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
-[`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) formats:
+[`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
+_[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats:
 
 ```bash cd .././.././..
 $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.json --schema=EntityKinds
@@ -46,3 +47,12 @@ The `model.textproto` file now contains:
 ```yaml
 {% include "../library/model.textproto" %}
 ```
+
+Lastly, for `binpb`:
+
+```bash cd .././.././..
+$ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.binpb --schema=EntityKinds
+...
+```
+
+The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._

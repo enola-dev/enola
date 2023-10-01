@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -35,14 +34,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
-public class DocGen extends CommandWithModel {
-
-    @Option(
-            names = {"--output", "-o"},
-            required = true,
-            defaultValue = "fd:1?charset=UTF-8", // = FileDescriptorResource.OUT
-            description = "URI of where to write generated documentation")
-    URI output;
+public class DocGen extends CommandWithModelAndOutput {
 
     @Option(
             names = {"--diagram", "-d"},
@@ -76,7 +68,6 @@ public class DocGen extends CommandWithModel {
         var options = new Options();
         options.diagram = diagram;
 
-        var rp = new ResourceProviders();
         var resource = rp.getWritableResource(output);
         var header = rp.getReadableResource(headerURI).charSource().read();
 

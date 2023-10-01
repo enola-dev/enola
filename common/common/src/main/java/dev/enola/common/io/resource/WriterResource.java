@@ -67,6 +67,7 @@ public class WriterResource implements WritableResource {
     public ByteSink byteSink() {
         // To implement, use class WriterOutputStream.java from
         // https://github.com/apache/commons-io/blob/master/src/main/java/org/apache/commons/io/output/
-        throw new UnsupportedOperationException("TODO Implement byteSink()");
+        throw new UnsupportedOperationException(
+                "TODO Implement byteSink(), or use e.g. --output file:something.ext");
     }
 }

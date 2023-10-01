@@ -39,12 +39,18 @@ public class SystemOutErrCapture implements AutoCloseable {
     private final ByteArrayOutputStream outBAOS = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errBAOS = new ByteArrayOutputStream();
 
+    private final PrintStream outBAOS_PS;
+    private final PrintStream errBAOS_PS;
+
     public SystemOutErrCapture() {
         originalOut = System.out;
         originalErr = System.err;
 
-        System.setOut(new PrintStream(outBAOS, true, CHARSET));
-        System.setErr(new PrintStream(errBAOS, true, CHARSET));
+        outBAOS_PS = new PrintStream(outBAOS, true, CHARSET);
+        errBAOS_PS = new PrintStream(errBAOS, true, CHARSET);
+
+        System.setOut(outBAOS_PS);
+        System.setErr(errBAOS_PS);
     }
 
     public String getSystemOut() {
@@ -56,13 +62,24 @@ public class SystemOutErrCapture implements AutoCloseable {
     }
 
     public void clear() {
+        System.setOut(originalOut);
+        System.setErr(originalErr);
+        dump();
         outBAOS.reset();
         errBAOS.reset();
+        System.setOut(outBAOS_PS);
+        System.setErr(errBAOS_PS);
     }
 
     @Override
     public void close() throws Exception {
         System.setOut(originalOut);
         System.setErr(originalErr);
+        dump();
+    }
+
+    private void dump() {
+        System.out.print(getSystemOut());
+        System.err.print(getSystemErr());
     }
 }

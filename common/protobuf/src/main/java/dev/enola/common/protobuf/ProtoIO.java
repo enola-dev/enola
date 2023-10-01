@@ -86,7 +86,7 @@ public class ProtoIO {
 
     public void write(Message message, WritableResource resource) throws IOException {
         MediaType mediaType = resource.mediaType();
-        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(mediaType)) {
+        if (ProtobufMediaTypes.PROTOBUF_BINARY.equals(mediaType.withoutParameters())) {
             try (OutputStream os = resource.byteSink().openBufferedStream()) {
                 message.writeTo(os);
             }
@@ -116,7 +116,10 @@ public class ProtoIO {
 
                 } else {
                     throw new IllegalArgumentException(
-                            "TODO Implement for missing mediaType: " + resource);
+                            "TODO Implement for missing mediaType: "
+                                    + mediaType
+                                    + " of URI: "
+                                    + resource.uri());
                 }
             }
         }

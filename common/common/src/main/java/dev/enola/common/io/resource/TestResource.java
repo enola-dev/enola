@@ -40,7 +40,8 @@ public class TestResource extends MemoryResource implements CloseableResource {
 
     public static CloseableResource create(MediaType mediaType) {
         var id = counter.get();
-        var r = new TestResource(mediaType, URI.create(SCHEME + ":" + id), id);
+        var uri = URI.create(SCHEME + ":" + id);
+        var r = new TestResource(mediaType, uri, id);
         pool.put(id, r);
         return r;
     }
@@ -48,6 +49,11 @@ public class TestResource extends MemoryResource implements CloseableResource {
     @Override
     public void close() throws IOException {
         pool.remove(id);
+    }
+
+    @Override
+    public String toString() {
+        return "TestResource{" + uri() + "}";
     }
 
     public static class Provider implements ResourceProviderSPI {
@@ -58,11 +64,11 @@ public class TestResource extends MemoryResource implements CloseableResource {
 
         @Override
         public Resource getResourceImplementation(URI uri) {
-            var id = uri.getSchemeSpecificPart();
+            var id = URIs.getPath(uri);
             var i = Long.parseLong(id);
             var r = pool.get(i);
             if (r == null) {
-                throw new IllegalStateException("MemoryResourcePool already closed? #" + id);
+                throw new IllegalStateException("TestResource already closed? URI=" + uri);
             }
             return r;
         }

@@ -19,6 +19,8 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThat;
+
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 
@@ -44,7 +46,9 @@ public class MediaTypesTest {
     @Test
     public void testNormalizeMediaTypesParseWithCharsetParameter() {
         var alternative = MediaTypes.parse("application/test-alternative");
-        assertThat(MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE)))
+        var alternativeWithCharset =
+                MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE));
+        assertThat(alternativeWithCharset)
                 .isEqualTo(TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE));
     }
 
@@ -54,5 +58,24 @@ public class MediaTypesTest {
         assertThat(MediaTypes.normalize(alternative)).isEqualTo(TestMediaTypes.TEST);
         assertThat(MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE)))
                 .isEqualTo(TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE));
+    }
+
+    @Test
+    public void testToString() {
+        var mediaType = TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE);
+        assertThat(mediaType.toString()).isEqualTo("application/test; charset=utf-16be");
+    }
+
+    @Test
+    public void testParseWithCharset() {
+        var expected = TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE);
+
+        // https://www.ietf.org/rfc/rfc2045.txt format:
+        assertThat(MediaTypes.parse("application/test-alternative; charset=utf-16be"))
+                .isEqualTo(expected);
+
+        // RFC-inspired format, but without that ugly space, works as well:
+        assertThat(MediaTypes.parse("application/test-alternative;charset=utf-16be"))
+                .isEqualTo(expected);
     }
 }

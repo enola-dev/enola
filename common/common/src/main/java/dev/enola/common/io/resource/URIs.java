@@ -19,32 +19,67 @@ package dev.enola.common.io.resource;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
+import com.google.common.net.MediaType;
+
+import dev.enola.common.io.mediatype.MediaTypes;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public final class URIs {
 
+    // URI Query Parameter Names
+    private static final String MEDIA_TYPE = "mediaType";
+    private static final String CHARSET = "charset";
+
     private static final Splitter AMPERSAND_SPLITTER =
             Splitter.on('&').omitEmptyStrings().trimResults();
-    private static final Splitter EQUALSIGN_SPLITTER =
-            Splitter.on('=').omitEmptyStrings().trimResults();
 
-    public static Charset getCharset(URI uri) {
-        var charset = getQueryMap(uri).get("charset");
-        if (charset == null) {
-            throw new IllegalArgumentException(
-                    "URI does not contain a ?charset=... : " + uri.toString());
+    public static final MediaType DEFAULT_MEDIA_TYPE = MediaType.OCTET_STREAM;
+
+    public static MediaType getMediaType(URI uri) {
+        MediaType mediaType;
+        var charsetParameter = getQueryMap(uri).get(CHARSET);
+        var mediaTypeParameter = getQueryMap(uri).get(MEDIA_TYPE.toLowerCase());
+        if (mediaTypeParameter == null) {
+            mediaType = DEFAULT_MEDIA_TYPE;
+        } else {
+            mediaType = MediaTypes.parse(mediaTypeParameter);
         }
-        return Charset.forName(charset);
+        if (charsetParameter != null) {
+            mediaType = mediaType.withCharset(Charset.forName(charsetParameter));
+        }
+        if (!mediaType.charset().isPresent()) {
+            mediaType = mediaType.withCharset(Charset.defaultCharset());
+        }
+        return mediaType;
     }
 
-    public static Map<String, String> getQueryMap(URI uri) {
+    public static URI addMediaType(URI uri, MediaType mediaType) {
+        return addQueryParameter(uri, MEDIA_TYPE, mediaType.toString().replace(" ", ""));
+    }
+
+    private static URI addQueryParameter(URI uri, String key, String value) {
+        if (uri.getQuery() != null && uri.getQuery().contains(key)) {
+            return uri;
+        } else if (uri.getQuery() == null) {
+            return URI.create(uri.toString() + "?" + key + "=" + encodeQueryParameterValue(value));
+        } else {
+            return URI.create(uri.toString() + "&" + key + "=" + encodeQueryParameterValue(value));
+        }
+    }
+
+    private static String encodeQueryParameterValue(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8).replace("+", "%20");
+    }
+
+    // package-local not public (for now)
+    static Map<String, String> getQueryMap(URI uri) {
         if (uri == null) return Collections.emptyMap();
         Map<String, String> map = new HashMap<>();
-        Set<String> queryParameterNames = new HashSet<>();
         String query = uri.getQuery();
         if (Strings.isNullOrEmpty(query)) {
             var part = uri.getSchemeSpecificPart();
@@ -62,34 +97,37 @@ public final class URIs {
             return Collections.emptyMap();
         }
         final String finalQuery = query;
-        AMPERSAND_SPLITTER
-                .split(query)
-                .forEach(
-                        pair -> {
-                            String[] nameValue =
-                                    Iterables.toArray(EQUALSIGN_SPLITTER.split(pair), String.class);
-                            if (nameValue.length > 2) {
-                                throw new IllegalArgumentException(
-                                        uri.toString()
-                                                + " ID URI ?query has name/value with more than"
-                                                + " 1 '=' sign: "
-                                                + pair);
-                            }
-                            if (nameValue.length > 0) {
-                                if (queryParameterNames.contains(nameValue[0]))
-                                    throw new IllegalArgumentException(
-                                            uri.toString()
-                                                    + " ID URI ?query has duplicate names: "
-                                                    + finalQuery);
-                                queryParameterNames.add(nameValue[0]);
-                            }
-                            if (nameValue.length == 2) {
-                                map.put(nameValue[0], nameValue[1]);
-                            } else { // nameValue.length == 1
-                                map.put(nameValue[0], null);
-                            }
-                        });
+        AMPERSAND_SPLITTER.split(query).forEach(queryParameter -> put(uri, queryParameter, map));
         return map;
+    }
+
+    private static void put(URI uri, String queryParameter, Map<String, String> map) {
+        var p = queryParameter.indexOf('=');
+        if (p == -1) {
+            map.put(queryParameter, null);
+        } else {
+            var key = queryParameter.substring(0, p);
+            if (map.containsKey(key))
+                throw new IllegalArgumentException(
+                        uri.toString() + " ID URI ?query has duplicate key");
+            var value = queryParameter.substring(p + 1);
+            map.put(key.toLowerCase(), value);
+        }
+    }
+
+    /**
+     * Get the "path"-like component of any URI. Similar to {@link URI#getPath()}, but also works
+     * e.g. for "non-standard" relative "file:hello.txt" URIs, and correctly chops off query
+     * arguments and fragments.
+     */
+    public static String getPath(URI uri) {
+        var ssp = uri.getSchemeSpecificPart();
+
+        var chop = ssp.indexOf('?', 0);
+        if (chop == -1) chop = ssp.indexOf('#', 0);
+        if (chop == -1) chop = ssp.length();
+
+        return ssp.substring(0, chop);
     }
 
     /**
@@ -105,6 +143,7 @@ public final class URIs {
         if (Strings.isNullOrEmpty(scheme)) {
             return "";
         }
+        // TODO This should probably use the (new) getPath()?
         if ("file".equals(scheme)) {
             if (uri.getPath().endsWith("/")) {
                 return "";

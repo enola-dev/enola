@@ -19,10 +19,14 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertThrows;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.net.MediaType;
+
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,6 +34,8 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class ResourceProvidersTest {
 
@@ -52,7 +58,29 @@ public class ResourceProvidersTest {
         assertThat(r.byteSource().isEmpty()).isTrue();
     }
 
-    private void checkFile(File file, URI uri) throws IOException {
+    @Test
+    public void testFileMediaType() {
+        Resource r;
+        var rp = new ResourceProviders();
+
+        r = rp.getResource(URI.create("file:test.yaml"));
+        assertThat(r.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
+
+        r = rp.getResource(URI.create("file:yamlisjson.yaml?mediaType=application/json"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+
+        r = rp.getResource(URI.create("file:noextension?mediaType=application/json"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+
+        r = rp.getResource(URI.create("file:noextension?charset=UTF-16BE"));
+        assertThat(r.mediaType())
+                .isEqualTo(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_16BE));
+
+        r = rp.getResource(URI.create("file:test.json?charset=UTF-16BE"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8.withCharset(Charsets.UTF_16BE));
+    }
+
+    private void checkReadFile(File file, URI uri) throws IOException {
         check(FileResource.class, uri);
         Files.asByteSink(file).write(BYTES);
         byte[] bytes = new ResourceProviders().getResource(uri).byteSource().read();
@@ -60,23 +88,51 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testFile() throws IOException {
+    public void testReadAbsoluteFile() throws IOException {
         check(FileResource.class, URI.create("file:///dev/null"));
 
         var r = new ResourceProviders().getResource(URI.create("file:///dev/null"));
         assertThat(r.byteSource().isEmpty()).isTrue();
 
         var f = new File("absolute").getAbsoluteFile();
-        checkFile(f, f.toURI());
+        checkReadFile(f, f.toURI());
     }
 
     @Test
-    public void testRelativeFile() throws IOException {
-        checkFile(new File("relative"), URI.create("file:relative"));
+    public void testReadRelativeFile() throws IOException {
+        checkReadFile(new File("relative"), URI.create("file:relative"));
 
         var f = new File("folder/relative");
         f.getParentFile().mkdir();
-        checkFile(f, URI.create("file:folder/relative"));
+        checkReadFile(f, URI.create("file:folder/relative"));
+    }
+
+    private void checkWriteFile(File f, Charset cs, URI uri) throws IOException {
+        var hello = "hello, world";
+
+        var mediaType = YamlMediaType.YAML_UTF_8.withCharset(cs);
+        var uriWithMT = URIs.addMediaType(uri, mediaType);
+        var resource = new ResourceProviders().getWritableResource(uriWithMT);
+        assertThat(resource.mediaType()).isEqualTo(mediaType);
+
+        resource.charSink(cs).write(hello);
+        String text = Files.asCharSource(f, cs).read();
+        assertThat(text).isEqualTo(hello);
+    }
+
+    @Test
+    public void testWriteAbsoluteFileMediaTypeEncoding() throws IOException {
+        var cs = StandardCharsets.UTF_16LE;
+        var f = new File("testWriteFileMediaTypeEncoding.txt").getAbsoluteFile();
+        checkWriteFile(f, cs, f.toURI());
+    }
+
+    @Test
+    public void testWriteRelativeFileMediaTypeEncoding() throws IOException {
+        var cs = StandardCharsets.UTF_16LE;
+        var f = new File("testWriteFileMediaTypeEncoding.txt");
+        checkWriteFile(f, cs, f.toURI());
+        checkWriteFile(f, cs, URI.create("file:relative"));
     }
 
     @Test
@@ -107,12 +163,24 @@ public class ResourceProvidersTest {
 
     @Test
     public void testMemory() throws IOException {
+        // Direct
         try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
-            r.charSink().write("hi");
-            var uri = r.uri();
-            var text = new ResourceProviders().getResource(uri).charSource().read();
-            assertThat(text).isEqualTo("hi");
+            checkMemory(r);
         }
+
+        // Indirect via factory and with fancy URI with ?mediaType= parameter
+        try (var r1 = TestResource.create(MediaType.JSON_UTF_8)) {
+            var r2 = new ResourceProviders().getResource(URI.create(r1.uri().toString()));
+            assertThat(r2.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+            checkMemory(r2);
+        }
+    }
+
+    private void checkMemory(Resource r) throws IOException {
+        r.charSink().write("hi");
+        var uri = r.uri();
+        var text = new ResourceProviders().getResource(uri).charSource().read();
+        assertThat(text).isEqualTo("hi");
     }
 
     @Test
