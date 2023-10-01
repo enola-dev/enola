@@ -40,17 +40,19 @@ public class LoggingMixin {
             case 0:
                 return Level.OFF;
             case 1:
-                return Level.SEVERE;
+                return Level.SEVERE; // AKA JUL ERROR
             case 2:
                 return Level.WARNING;
             case 3:
-                return Level.INFO;
+                return Level.CONFIG; // incl. JUL & SLF4j INFO
             case 4:
-                return Level.FINE;
+                return Level.FINE; // incl. SLF4j DEBUG
             case 5:
-                return Level.FINER;
+                return Level.FINER; // unchanged for SLF4j
+            case 6:
+                return Level.FINEST; // incl. SLF4j TRACE
         }
-        return Level.FINEST;
+        return Level.ALL;
     }
 
     public static int executionStrategy(CommandLine.ParseResult parseResult) {
@@ -71,7 +73,11 @@ public class LoggingMixin {
                 // "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$-6s %2$s %5$s%6$s%n"
                 );
 
-        Logger.getLogger("ch.vorburger.exec").setLevel(level);
+        // Root Logger, so for dev.enola.* but also e.g. ch.vorburger.exec or gRPC, etc.
+        var rootLogger = Logger.getLogger("");
+        rootLogger.setLevel(level);
+        // see https://stackoverflow.com/a/48455401/421602
+        rootLogger.getHandlers()[0].setLevel(level);
     }
 
     @Option(
