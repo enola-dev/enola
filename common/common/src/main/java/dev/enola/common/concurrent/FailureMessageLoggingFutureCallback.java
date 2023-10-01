@@ -9,11 +9,13 @@ package org.opendaylight.infrautils.utils.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.concurrent.CancellationException;
 import org.slf4j.Logger;
+
+import java.util.concurrent.CancellationException;
 
 /**
  * Failure logging future callback with a single String message.
+ *
  * @author Michael Vorburger.ch
  */
 // package-local not public (for the time being)
@@ -28,9 +30,15 @@ final class FailureMessageLoggingFutureCallback<V> extends FailureLoggingFutureC
     @Override
     public void onFailure(Throwable throwable) {
         if (throwable instanceof CancellationException) {
-            // CancellationException are (typically) no cause for alarm, and debug instead of error level is enough
-            // as these can happen during shutdown when we interrupt running threads, and should not pollute logs.
-            getLogger().debug("Future (eventually) failed with CancellationException: {}", message, throwable);
+            // CancellationException are (typically) no cause for alarm, and debug instead of error
+            // level is enough
+            // as these can happen during shutdown when we interrupt running threads, and should not
+            // pollute logs.
+            getLogger()
+                    .debug(
+                            "Future (eventually) failed with CancellationException: {}",
+                            message,
+                            throwable);
         } else {
             getLogger().error("Future (eventually) failed: {}", message, throwable);
         }

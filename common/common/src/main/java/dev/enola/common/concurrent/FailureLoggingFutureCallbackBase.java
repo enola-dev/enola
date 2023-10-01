@@ -10,6 +10,7 @@ package org.opendaylight.infrautils.utils.concurrent;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.util.concurrent.FutureCallback;
+
 import org.slf4j.Logger;
 
 /**
@@ -37,5 +38,4 @@ abstract class FailureLoggingFutureCallbackBase<V> implements FutureCallback<V> 
     protected Logger getLogger() {
         return logger;
     }
-
 }

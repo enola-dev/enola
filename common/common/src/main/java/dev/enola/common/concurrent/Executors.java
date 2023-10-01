@@ -10,17 +10,19 @@ package org.opendaylight.infrautils.utils.concurrent;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+
+import org.slf4j.Logger;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
 
 /**
  * Additional factory and utility methods for executors.
  *
- * <p>Use this instead of {@link java.util.concurrent.Executors}, because
- * it ensures that the returned Executor uses a {@link ThreadFactory} that is
- * named, has a logging UncaughtExceptionHandler, and returns (Guava's) ListenableFuture.
+ * <p>Use this instead of {@link java.util.concurrent.Executors}, because it ensures that the
+ * returned Executor uses a {@link ThreadFactory} that is named, has a logging
+ * UncaughtExceptionHandler, and returns (Guava's) ListenableFuture.
  */
 public final class Executors {
 
@@ -32,44 +34,52 @@ public final class Executors {
     }
 
     /**
-     * Creates a single thread executor with a {@link ThreadFactory} that uses
-     * the provided prefix for its thread names and logs uncaught exceptions
-     * with the specified {@link Logger}.
+     * Creates a single thread executor with a {@link ThreadFactory} that uses the provided prefix
+     * for its thread names and logs uncaught exceptions with the specified {@link Logger}.
      *
      * @param namePrefix Prefix for this executor thread names
      * @param logger Logger used to log uncaught exceptions
      * @return the newly created single-threaded Executor
      */
-    public static ListeningExecutorService newListeningSingleThreadExecutor(String namePrefix, Logger logger) {
-        return MoreExecutors.listeningDecorator(java.util.concurrent.Executors.newSingleThreadExecutor(
-            createThreadFactory(namePrefix, logger)));
+    public static ListeningExecutorService newListeningSingleThreadExecutor(
+            String namePrefix, Logger logger) {
+        return MoreExecutors.listeningDecorator(
+                java.util.concurrent.Executors.newSingleThreadExecutor(
+                        createThreadFactory(namePrefix, logger)));
     }
 
-    public static ListeningExecutorService newFixedThreadPool(int size, String namePrefix, Logger logger) {
-        return MoreExecutors.listeningDecorator(java.util.concurrent.Executors.newFixedThreadPool(size,
-            createThreadFactory(namePrefix, logger)));
+    public static ListeningExecutorService newFixedThreadPool(
+            int size, String namePrefix, Logger logger) {
+        return MoreExecutors.listeningDecorator(
+                java.util.concurrent.Executors.newFixedThreadPool(
+                        size, createThreadFactory(namePrefix, logger)));
     }
 
-    public static ListeningExecutorService newListeningCachedThreadPool(String namePrefix, Logger logger) {
-        return MoreExecutors.listeningDecorator(java.util.concurrent.Executors.newCachedThreadPool(
-            createThreadFactory(namePrefix, logger)));
+    public static ListeningExecutorService newListeningCachedThreadPool(
+            String namePrefix, Logger logger) {
+        return MoreExecutors.listeningDecorator(
+                java.util.concurrent.Executors.newCachedThreadPool(
+                        createThreadFactory(namePrefix, logger)));
     }
 
-    public static ListeningScheduledExecutorService newListeningSingleThreadScheduledExecutor(String namePrefix,
-            Logger logger) {
-        return MoreExecutors.listeningDecorator(java.util.concurrent.Executors.unconfigurableScheduledExecutorService(
-            java.util.concurrent.Executors.newSingleThreadScheduledExecutor(createThreadFactory(namePrefix, logger))));
+    public static ListeningScheduledExecutorService newListeningSingleThreadScheduledExecutor(
+            String namePrefix, Logger logger) {
+        return MoreExecutors.listeningDecorator(
+                java.util.concurrent.Executors.unconfigurableScheduledExecutorService(
+                        java.util.concurrent.Executors.newSingleThreadScheduledExecutor(
+                                createThreadFactory(namePrefix, logger))));
     }
 
-    public static ListeningScheduledExecutorService newListeningScheduledThreadPool(int corePoolSize, String namePrefix,
-            Logger logger) {
-        return MoreExecutors.listeningDecorator(java.util.concurrent.Executors.newScheduledThreadPool(corePoolSize,
-            createThreadFactory(namePrefix, logger)));
+    public static ListeningScheduledExecutorService newListeningScheduledThreadPool(
+            int corePoolSize, String namePrefix, Logger logger) {
+        return MoreExecutors.listeningDecorator(
+                java.util.concurrent.Executors.newScheduledThreadPool(
+                        corePoolSize, createThreadFactory(namePrefix, logger)));
     }
 
     public static void shutdownAndAwaitTermination(ExecutorService executorService) {
-        MoreExecutors.shutdownAndAwaitTermination(executorService, DEFAULT_TIMEOUT_FOR_SHUTDOWN,
-                                                  DEFAULT_TIMEOUT_UNIT_FOR_SHUTDOWN);
+        MoreExecutors.shutdownAndAwaitTermination(
+                executorService, DEFAULT_TIMEOUT_FOR_SHUTDOWN, DEFAULT_TIMEOUT_UNIT_FOR_SHUTDOWN);
     }
 
     private static ThreadFactory createThreadFactory(String namePrefix, Logger logger) {
