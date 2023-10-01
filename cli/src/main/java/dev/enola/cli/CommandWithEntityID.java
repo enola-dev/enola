@@ -38,8 +38,7 @@ public abstract class CommandWithEntityID extends CommandWithModel {
             names = {"--format", "-f"},
             required = true,
             defaultValue = "YAML",
-            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-            description = "Output Format")
+            description = "Output Format: ${COMPLETION-CANDIDATES}; default=${DEFAULT-VALUE}")
     Format format;
 
     // TODO @Parameters(index = "0..*") List<String> ids;
