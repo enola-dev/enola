@@ -19,7 +19,7 @@
 # Singularity 🔮
 
 The [🔮 Singularity](https://en.wikipedia.org/wiki/Technological_singularity), for an Org using Enola,
-is reached when this tool is no longer used to support 🕵🏾‍♀️ humans, but (only) continously runs
+is reached when this tool is no longer used to support 🕵🏾‍♀️ humans, but (only) continuously runs
 to detect problems and automagically mitigates and fully resolves them - without
 any human intervention at all.
 

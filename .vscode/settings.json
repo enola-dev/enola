@@ -71,5 +71,6 @@
     "bazel-enola": true,
     "bazel-out": true,
     "bazel-testlogs": true
-  }
+  },
+  "markdown.validate.ignoredLinks": ["../dev/proto/core#id"]
 }

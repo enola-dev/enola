@@ -41,6 +41,7 @@ nav:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
       - Singularity: concepts/singularity.md
+      - URL & ID: concepts/uri.md
   - Developers:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md
