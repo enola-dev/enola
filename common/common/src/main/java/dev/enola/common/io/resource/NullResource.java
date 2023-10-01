@@ -28,17 +28,32 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-class NullResource implements Resource {
+/**
+ * Resource which ignores writes, and returns an infinite amount of bytes of value 0 on read. This
+ * is a bit like /dev/null on *NIX OS, but not quite (because /dev/null returns EOF on read; this
+ * does not).
+ *
+ * @see EmptyResource for an (non-writable) EOF ReadableResource
+ */
+public class NullResource implements Resource {
 
-    static final NullResource INSTANCE = new NullResource();
+    public static final NullResource INSTANCE =
+            new NullResource(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
 
     static final String SCHEME = "null";
 
     private static final URI NULL_URI = URI.create("null:-");
-    private static final MediaType MEDIA_TYPE =
-            MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8);
+    private final MediaType mediaType;
+    private final URI uri;
 
-    private NullResource() {}
+    public NullResource(MediaType mediaType) {
+        this.mediaType = mediaType;
+        this.uri = uri(this.mediaType);
+    }
+
+    public static URI uri(MediaType mediaType) {
+        return URI.create(SCHEME + ":" + mediaType.withoutParameters());
+    }
 
     @Override
     public URI uri() {
@@ -47,7 +62,7 @@ class NullResource implements Resource {
 
     @Override
     public MediaType mediaType() {
-        return MEDIA_TYPE;
+        return mediaType;
     }
 
     @Override
