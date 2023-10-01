@@ -47,6 +47,19 @@ public final class Executors {
     }
 
     /**
+     * Creates an executor service that runs each task in the thread that invokes execute/submit.
+     * This does not take namePrefix and Logger arguments, to make it clear they are not needed,
+     * because no separate new threads will ever be created. Note that a "scheduled direct Executor"
+     * variant doesn't really make sense conceptually (unless you would want it to just completely
+     * ignore all requested delays; which would be weird).
+     *
+     * @see MoreExecutors#newDirectExecutorService()
+     */
+    public static ListeningExecutorService newListeningDirectExecutor() {
+        return MoreExecutors.newDirectExecutorService();
+    }
+
+    /**
      * Creates a single thread executor with a {@link ThreadFactory} that uses the provided prefix
      * for its thread names and logs uncaught exceptions with the specified {@link Logger}.
      *
@@ -66,7 +79,7 @@ public final class Executors {
     /**
      * @see java.util.concurrent.Executors#newFixedThreadPool(int)
      */
-    public static ListeningExecutorService newFixedThreadPool(
+    public static ListeningExecutorService newListeningFixedThreadPool(
             int size, String namePrefix, Logger logger) {
         return MoreExecutors.listeningDecorator(
                 java.util.concurrent.Executors.newFixedThreadPool(

@@ -37,7 +37,7 @@ public class EnolaGrpcServerTest {
             // similarly in dev.enola.demo.ServerTest
             var port = enolaServer.getPort();
             var endpoint = "localhost:" + port;
-            try (var enolaClient = new EnolaGrpcClientProvider(endpoint)) {
+            try (var enolaClient = new EnolaGrpcClientProvider(endpoint, false)) {
                 check(enolaClient.get());
             }
         }
@@ -45,7 +45,7 @@ public class EnolaGrpcServerTest {
 
     @Test
     public void inProcess() throws Exception {
-        try (var enolaServer = new EnolaGrpcInProcess(service())) {
+        try (var enolaServer = new EnolaGrpcInProcess(service(), false)) {
             check(enolaServer.get());
         }
     }
