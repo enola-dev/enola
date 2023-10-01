@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.infrautils.utils.concurrent;
+package dev.enola.common.concurrent;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
@@ -83,6 +83,6 @@ public final class Executors {
     }
 
     private static ThreadFactory createThreadFactory(String namePrefix, Logger logger) {
-        return ThreadFactoryProvider.builder().namePrefix(namePrefix).logger(logger).build().get();
+        return ThreadFactoryProvider.create(namePrefix, logger);
     }
 }
