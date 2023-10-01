@@ -25,6 +25,13 @@ import dev.enola.common.io.mediatype.MediaTypes;
 
 import java.net.URI;
 
+/**
+ * Resources which when read is always immediately EOF. Note that this is read-only, and
+ * intentionally does not implement WritableResource; use e.g. {@link ResourceProviders#getResource}
+ * with "empty:-" to get a wrapped implementation that implements writable but throws an error.
+ *
+ * @see NullResource for an alternatives that returns 0s instead of EOF.
+ */
 public class EmptyResource implements ReadableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
 
