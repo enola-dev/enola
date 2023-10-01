@@ -35,9 +35,9 @@ It _models_ real world concepts as what it terms _Entities,_ [identified by URI]
 across its Entities, as well as to arbitrary non-Enola URIs. (This notably includes traditional
 URLs like HTTP links, which models can use to create hyperlinks to UIs of applications managing Entities.)
 
-Enola has [built-in interchangeable support](../use/rosetta/index.md) for JSON, YAML, and Text proto
+Enola has [built-in interchangeable support](../use/rosetta/index.md) for JSON, YAML, and Text & Binary Protocol Buffers
 [wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for entities.
-<!-- TODO In the future, maybe (binary!) PB? FHIR? Blockchain EVM format? -->
+<!-- TODO In the future, maybe also ... FHIR? Blockchain EVM format? What else? -->
 
 Enola currently uses [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
 Schema language, but is conceptually open to supporting other kinds of schemas in the future; perhaps e.g.

@@ -39,7 +39,7 @@ public class FileDescriptorResource implements Resource {
             throw new IllegalArgumentException(uri.toString());
         }
 
-        var fd = uri.getSchemeSpecificPart();
+        var fd = URIs.getPath(uri);
         if (fd.startsWith("0")) {
             fileDescriptor = FileDescriptor.in;
         } else if (fd.startsWith("1")) {
@@ -51,7 +51,7 @@ public class FileDescriptorResource implements Resource {
         }
 
         this.uri = uri;
-        this.mediaType = MediaType.OCTET_STREAM.withCharset(URIs.getCharset(uri));
+        this.mediaType = URIs.getMediaType(uri);
     }
 
     @Override

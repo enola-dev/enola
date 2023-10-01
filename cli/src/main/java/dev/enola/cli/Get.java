@@ -34,6 +34,6 @@ public class Get extends CommandWithEntityID {
         var entity = response.getEntity();
 
         write(entity);
-        out.flush();
+        spec.commandLine().getOut().flush();
     }
 }

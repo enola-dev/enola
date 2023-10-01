@@ -38,8 +38,8 @@ public class List extends CommandWithEntityID {
 
         for (var entity : response.getEntitiesList()) {
             write(entity);
-            out.println();
+            spec.commandLine().getOut().println();
         }
-        out.flush();
+        spec.commandLine().getOut().flush();
     }
 }

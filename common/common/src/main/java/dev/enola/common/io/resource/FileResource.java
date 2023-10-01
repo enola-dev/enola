@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.resource;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
@@ -40,16 +39,23 @@ public class FileResource implements Resource {
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     private final Path path;
-    private final Charset charset;
+    private final MediaType mediaType;
     private final OpenOption[] openOptions;
 
+    @Deprecated // TODO Remove this variant without explicit Charset
     public FileResource(Path path, OpenOption... openOptions) {
-        this(path, Charsets.UTF_8, openOptions);
+        this(path, Charset.defaultCharset(), openOptions);
     }
 
     public FileResource(Path path, Charset charset, OpenOption... openOptions) {
         this.path = path;
-        this.charset = charset;
+        this.mediaType = mtd.detect(null, charset.name(), uri());
+        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+    }
+
+    public FileResource(Path path, MediaType mediaType, OpenOption... openOptions) {
+        this.path = path;
+        this.mediaType = mediaType;
         this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
     }
 
@@ -60,7 +66,7 @@ public class FileResource implements Resource {
 
     @Override
     public MediaType mediaType() {
-        return mtd.detect(null, charset.name(), uri());
+        return mediaType;
     }
 
     @Override
@@ -84,6 +90,6 @@ public class FileResource implements Resource {
 
     @Override
     public String toString() {
-        return "FileResource{path=" + path + ", charset=" + charset + '}';
+        return "FileResource{path=" + path + ", mediaType=" + mediaType + '}';
     }
 }

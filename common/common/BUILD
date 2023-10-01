@@ -35,6 +35,7 @@ java_library(
     deps = [
         ":common",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_extensions_truth_java8_extension",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",
     ],

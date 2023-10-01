@@ -19,15 +19,17 @@ package dev.enola.common.io.resource;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteSink;
+import com.google.common.net.MediaType;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 
 public class ResourceProviders implements ResourceProvider {
 
-    // TODO Add support for ?charset=... to all resources
-    // (see how it's done in FileDescriptorResource)
+    // TODO Add support for mediaType to all resources
+    // (see how it's already done for FileResource and in FileDescriptorResource)
 
     // This is hard-coded to the ResourceProvider implementations
     // in this package, for now.  TODO Later, read ResourceProvider
@@ -37,19 +39,29 @@ public class ResourceProviders implements ResourceProvider {
 
     @Override
     public Resource getResource(URI uri) {
+        String uriPath = URIs.getPath(uri);
+        MediaType mediaType = URIs.getMediaType(uri);
+
         String scheme = uri.getScheme();
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if (scheme.startsWith("file")) {
-            if (uri.getSchemeSpecificPart().startsWith("/")) {
-                return new FileResource(Path.of(uri));
+            Path filePath = Path.of(uriPath);
+            if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
+                return new FileResource(filePath, mediaType);
             } else {
-                // This is for relative file URIs, like file:hello.txt
-                return new FileResource(Path.of(uri.getSchemeSpecificPart(), ""));
+                return new FileResource(filePath, mediaType.charset().or(Charset.defaultCharset()));
             }
+        } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
+            ClasspathResource cpr;
+            if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
+                cpr = new ClasspathResource(uriPath, mediaType);
+            } else {
+                cpr = new ClasspathResource(uriPath);
+            }
+            return new ReadableButNotWritableResource(cpr);
         } else if (scheme.startsWith(StringResource.SCHEME)) {
-            return new ReadableButNotWritableResource(
-                    new StringResource(uri.getSchemeSpecificPart()));
+            return new ReadableButNotWritableResource(new StringResource(uriPath, mediaType));
         } else if (scheme.startsWith(EmptyResource.SCHEME)) {
             return new ReadableButNotWritableResource(
                     new EmptyResource(uri.getSchemeSpecificPart()));
@@ -64,9 +76,6 @@ public class ResourceProviders implements ResourceProvider {
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Malformed URI is not valid URL" + uri, e);
             }
-        } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
-            return new ReadableButNotWritableResource(
-                    new ClasspathResource(uri.getSchemeSpecificPart()));
         } else if (scheme.startsWith("fd")) {
             return new FileDescriptorResource(uri);
         } else if (scheme.startsWith(testResourceProvider.scheme())) {

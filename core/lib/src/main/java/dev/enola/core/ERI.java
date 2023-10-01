@@ -52,8 +52,11 @@ public final class ERI {
         check(eri, uri.getRawUserInfo() == null);
 
         String tail;
-        if ("urn".equals(scheme)) tail = uri.getSchemeSpecificPart().substring(6);
-        else tail = uri.getSchemeSpecificPart();
+        if ("urn".equals(scheme)) {
+            tail = uri.getSchemeSpecificPart().substring(6);
+        } else {
+            tail = uri.getSchemeSpecificPart();
+        }
         return new ERI(tail);
     }
 

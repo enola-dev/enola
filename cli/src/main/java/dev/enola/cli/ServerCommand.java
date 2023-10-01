@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.cli.ServerCommand.HttpAndOrGrpcPorts;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
@@ -47,6 +48,7 @@ public class ServerCommand extends CommandWithModel {
     @Override
     protected void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
             throws Exception {
+        var out = spec.commandLine().getOut();
 
         // gRPC API
         if (ports.grpcPort != null) {

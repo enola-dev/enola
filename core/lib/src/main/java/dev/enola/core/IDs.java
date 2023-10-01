@@ -58,8 +58,6 @@ public final class IDs {
 
     public static ID parse(String s) {
         if (s.startsWith(URI_SCHEME_COLON)) {
-            URI uri = URI.create(s);
-            // return parseOur(uri.getSchemeSpecificPart());
             return parseOur(s.substring(URI_SCHEME_COLON.length()));
         } else {
             return parseOur(s);

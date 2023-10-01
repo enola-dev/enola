@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.io.resource.URIs;
+import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.IDs;
@@ -32,7 +34,7 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 
-public abstract class CommandWithEntityID extends CommandWithModel {
+public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
 
     @CommandLine.Option(
             names = {"--format", "-f"},
@@ -45,7 +47,7 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI of Entity")
     String eri;
 
-    private WriterResource resource;
+    private WritableResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
 
     @Override
@@ -64,7 +66,12 @@ public abstract class CommandWithEntityID extends CommandWithModel {
         var response1 = service.getEntity(request1);
         var ek = response1.getEntity().getDataOrThrow("schema").unpack(EntityKind.class);
 
-        resource = new WriterResource(out, format.toMediaType());
+        // See CommandWithModelAndOutput
+        if (output.equals(DEFAULT_OUTPUT_URI)) {
+            resource = new WriterResource(spec.commandLine().getOut(), format.toMediaType());
+        } else {
+            resource = rp.getWritableResource(URIs.addMediaType(output, format.toMediaType()));
+        }
 
         run(service, ek, eri);
     }
