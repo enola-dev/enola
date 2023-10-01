@@ -1,9 +1,19 @@
 /*
- * Copyright (c) 2018 Pantheon Technologies, s.r.o. and others. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  *
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright 2017 - 2023 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package dev.enola.common.concurrent;
 
@@ -22,8 +32,7 @@ import java.util.concurrent.Future;
 /**
  * Utility methods to add completion/failure logging to various kinds of Futures.
  *
- * @author Michael Vorburger.ch - Initial author
- * @author Robert Varga - moved here from JdkFutures &amp; ListenableFutures
+ * @author Michael Vorburger.ch, originally for https://www.opendaylight.org
  */
 @Beta
 public final class LoggingFutures {
@@ -94,7 +103,10 @@ public final class LoggingFutures {
      */
     public static <V> ListenableFuture<V> addErrorLogging(
             ListenableFuture<V> future, Logger logger, String message) {
-        return addCallback(future, new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(logger, message));
+        return addCallback(
+                future,
+                new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(
+                        logger, message));
     }
 
     /**
@@ -115,7 +127,9 @@ public final class LoggingFutures {
     public static <V> ListenableFuture<V> addErrorLogging(
             ListenableFuture<V> future, Logger logger, String format, Object arg) {
         return addCallback(
-                future, new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<V>(logger, format, arg));
+                future,
+                new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<V>(
+                        logger, format, arg));
     }
 
     /**
@@ -137,7 +151,8 @@ public final class LoggingFutures {
             ListenableFuture<V> future, Logger logger, String format, Object... args) {
         return addCallback(
                 future,
-                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
+                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(
+                        logger, format, args));
     }
 
     /**
@@ -156,7 +171,10 @@ public final class LoggingFutures {
      */
     public static <V> FluentFuture<V> addErrorLogging(
             FluentFuture<V> future, Logger logger, String message) {
-        return addCallback(future, new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(logger, message));
+        return addCallback(
+                future,
+                new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(
+                        logger, message));
     }
 
     /**
@@ -177,7 +195,9 @@ public final class LoggingFutures {
     public static <V> FluentFuture<V> addErrorLogging(
             FluentFuture<V> future, Logger logger, String format, Object arg) {
         return addCallback(
-                future, new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<>(logger, format, arg));
+                future,
+                new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<>(
+                        logger, format, arg));
     }
 
     /**
@@ -199,7 +219,8 @@ public final class LoggingFutures {
             FluentFuture<V> future, Logger logger, String format, Object... args) {
         return addCallback(
                 future,
-                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
+                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(
+                        logger, format, args));
     }
 
     private static <V, F extends ListenableFuture<V>> F addCallback(
