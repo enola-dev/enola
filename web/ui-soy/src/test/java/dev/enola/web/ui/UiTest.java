@@ -41,7 +41,7 @@ public class UiTest {
     public void testUi() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            try (var grpc = new EnolaGrpcInProcess(new TestService())) {
+            try (var grpc = new EnolaGrpcInProcess(new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new UI(testGrpcService).register(server);
                 server.start();

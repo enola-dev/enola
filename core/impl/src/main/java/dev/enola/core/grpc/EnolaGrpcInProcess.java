@@ -17,8 +17,7 @@
  */
 package dev.enola.core.grpc;
 
-import static dev.enola.common.concurrent.Executors.newListeningCachedThreadPool;
-import static dev.enola.common.concurrent.Executors.newListeningScheduledThreadPool;
+import static dev.enola.common.concurrent.Executors.*;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
@@ -52,15 +51,21 @@ public class EnolaGrpcInProcess implements ServiceProvider {
     private final ListeningScheduledExecutorService serverScheduledExecutor;
     private final ListeningScheduledExecutorService clientScheduledExecutor;
 
-    public EnolaGrpcInProcess(EnolaService service) throws IOException {
+    public EnolaGrpcInProcess(EnolaService service, boolean multithreaded) throws IOException {
         this.service = service;
 
-        serverExecutorService = newListeningCachedThreadPool("gRPC-InProcessServer", LOGGER);
+        if (multithreaded) {
+            serverExecutorService = newListeningCachedThreadPool("gRPC-InProcessServer", LOGGER);
+            clientExecutorService = newListeningCachedThreadPool("gRPC-InProcessClient", LOGGER);
+            clientOffloadExecutorService =
+                    newListeningCachedThreadPool("gRPC-InProcessClient-Offload", LOGGER);
+        } else {
+            serverExecutorService = newListeningDirectExecutor();
+            clientExecutorService = newListeningDirectExecutor();
+            clientOffloadExecutorService = newListeningDirectExecutor();
+        }
         serverScheduledExecutor =
                 newListeningScheduledThreadPool(2, "gRPC-InProcessServer-Scheduled", LOGGER);
-        clientExecutorService = newListeningCachedThreadPool("gRPC-InProcessClient", LOGGER);
-        clientOffloadExecutorService =
-                newListeningCachedThreadPool("gRPC-InProcessClient-Offload", LOGGER);
         clientScheduledExecutor =
                 newListeningScheduledThreadPool(2, "gRPC-InProcessClient-Scheduled", LOGGER);
 

@@ -40,9 +40,14 @@ public class EnolaGrpcClientProvider implements ServiceProvider {
     private final ListeningExecutorService executor;
     private final ListeningExecutorService offloadExecutor;
 
-    public EnolaGrpcClientProvider(String endpoint) {
-        executor = Executors.newListeningCachedThreadPool("gRPC-Client", LOGGER);
-        offloadExecutor = Executors.newListeningCachedThreadPool("gRPC-Client-Offload", LOGGER);
+    public EnolaGrpcClientProvider(String endpoint, boolean multithreaded) {
+        if (multithreaded) {
+            executor = Executors.newListeningCachedThreadPool("gRPC-Client", LOGGER);
+            offloadExecutor = Executors.newListeningCachedThreadPool("gRPC-Client-Offload", LOGGER);
+        } else {
+            executor = Executors.newListeningDirectExecutor();
+            offloadExecutor = Executors.newListeningDirectExecutor();
+        }
 
         var credz = InsecureChannelCredentials.create();
         channel =
