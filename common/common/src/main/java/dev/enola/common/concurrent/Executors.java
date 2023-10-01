@@ -20,6 +20,7 @@ package dev.enola.common.concurrent;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import org.slf4j.Logger;
 
@@ -49,9 +50,11 @@ public final class Executors {
      * Creates a single thread executor with a {@link ThreadFactory} that uses the provided prefix
      * for its thread names and logs uncaught exceptions with the specified {@link Logger}.
      *
-     * @param namePrefix Prefix for this executor thread names
-     * @param logger Logger used to log uncaught exceptions
-     * @return the newly created single-threaded Executor
+     * @param namePrefix Prefix for threads from this executor. For example, "rpc-pool", to create *
+     *     "rpc-pool-1/2/3" named threads. Note that this is a prefix, not a format, * so you pass
+     *     just "rpc-pool" instead of e.g. "rpc-pool-%d".
+     * @param logger Logger used to log uncaught exceptions from new threads created from this.
+     * @see java.util.concurrent.Executors#newSingleThreadExecutor()
      */
     public static ListeningExecutorService newListeningSingleThreadExecutor(
             String namePrefix, Logger logger) {
@@ -60,6 +63,9 @@ public final class Executors {
                         createThreadFactory(namePrefix, logger)));
     }
 
+    /**
+     * @see java.util.concurrent.Executors#newFixedThreadPool(int)
+     */
     public static ListeningExecutorService newFixedThreadPool(
             int size, String namePrefix, Logger logger) {
         return MoreExecutors.listeningDecorator(
@@ -67,6 +73,9 @@ public final class Executors {
                         size, createThreadFactory(namePrefix, logger)));
     }
 
+    /**
+     * @see java.util.concurrent.Executors#newCachedThreadPool()
+     */
     public static ListeningExecutorService newListeningCachedThreadPool(
             String namePrefix, Logger logger) {
         return MoreExecutors.listeningDecorator(
@@ -74,6 +83,9 @@ public final class Executors {
                         createThreadFactory(namePrefix, logger)));
     }
 
+    /**
+     * @see java.util.concurrent.Executors#newSingleThreadScheduledExecutor()
+     */
     public static ListeningScheduledExecutorService newListeningSingleThreadScheduledExecutor(
             String namePrefix, Logger logger) {
         return MoreExecutors.listeningDecorator(
@@ -82,6 +94,9 @@ public final class Executors {
                                 createThreadFactory(namePrefix, logger))));
     }
 
+    /**
+     * @see java.util.concurrent.Executors#newScheduledThreadPool(int)
+     */
     public static ListeningScheduledExecutorService newListeningScheduledThreadPool(
             int corePoolSize, String namePrefix, Logger logger) {
         return MoreExecutors.listeningDecorator(
@@ -95,6 +110,15 @@ public final class Executors {
     }
 
     private static ThreadFactory createThreadFactory(String namePrefix, Logger logger) {
-        return ThreadFactoryProvider.create(namePrefix, logger);
+        ThreadFactoryBuilder guavaBuilder =
+                new ThreadFactoryBuilder()
+                        .setNameFormat(namePrefix + "-%d")
+                        .setUncaughtExceptionHandler(
+                                dev.enola.common.concurrent.LoggingThreadUncaughtExceptionHandler
+                                        .toLogger(logger))
+                        .setDaemon(true);
+        // priority.ifPresent(guavaBuilder::setPriority);
+        logger.info("ThreadFactory created: {}", namePrefix);
+        return guavaBuilder.build();
     }
 }

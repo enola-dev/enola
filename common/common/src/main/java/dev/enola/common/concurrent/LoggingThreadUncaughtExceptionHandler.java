@@ -28,7 +28,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
  *
  * @author Michael Vorburger.ch, originally for https://www.opendaylight.org
  */
-public final class LoggingThreadUncaughtExceptionHandler implements UncaughtExceptionHandler {
+final class LoggingThreadUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
     private final Logger logger;
 
