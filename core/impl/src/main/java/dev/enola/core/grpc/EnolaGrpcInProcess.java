@@ -80,6 +80,16 @@ public class EnolaGrpcInProcess implements ServiceProvider {
         channelBuilder.executor(clientExecutorService);
         channelBuilder.scheduledExecutorService(clientScheduledExecutor);
         channelBuilder.offloadExecutor(clientOffloadExecutorService);
+        // ==============================================================
+        // This propagates the stack trace of any uncaught exception on
+        // the "server" side of the in-process set-up to the "client"
+        // side. This is *GREAT* for local debugging! It does however
+        // mean that error propagation works differently to a "real"
+        // gRPC client/server. That's good for security, but ideally
+        // should be configurable with a "dev mode" to do this for
+        // "real" gRPC client/server just like this in-process.
+        // ==============================================================
+        channelBuilder.propagateCauseWithStatus(true);
         channel = channelBuilder.build();
 
         // .withDeadlineAfter(13, SECONDS) doesn't seem to work will with InProcessChannelBuilder?!
