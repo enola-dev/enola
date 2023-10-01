@@ -23,6 +23,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "@maven//:com_google_guava_guava",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

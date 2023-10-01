@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.infrautils.utils.concurrent;
+package dev.enola.common.concurrent;
 
 import com.google.common.annotations.Beta;
 import com.google.common.util.concurrent.FluentFuture;
@@ -94,7 +94,7 @@ public final class LoggingFutures {
      */
     public static <V> ListenableFuture<V> addErrorLogging(
             ListenableFuture<V> future, Logger logger, String message) {
-        return addCallback(future, new FailureMessageLoggingFutureCallback<>(logger, message));
+        return addCallback(future, new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(logger, message));
     }
 
     /**
@@ -115,7 +115,7 @@ public final class LoggingFutures {
     public static <V> ListenableFuture<V> addErrorLogging(
             ListenableFuture<V> future, Logger logger, String format, Object arg) {
         return addCallback(
-                future, new FailureFormat1ArgumentLoggingFutureCallback<V>(logger, format, arg));
+                future, new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<V>(logger, format, arg));
     }
 
     /**
@@ -137,7 +137,7 @@ public final class LoggingFutures {
             ListenableFuture<V> future, Logger logger, String format, Object... args) {
         return addCallback(
                 future,
-                new FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
+                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
     }
 
     /**
@@ -156,7 +156,7 @@ public final class LoggingFutures {
      */
     public static <V> FluentFuture<V> addErrorLogging(
             FluentFuture<V> future, Logger logger, String message) {
-        return addCallback(future, new FailureMessageLoggingFutureCallback<>(logger, message));
+        return addCallback(future, new dev.enola.common.concurrent.FailureMessageLoggingFutureCallback<>(logger, message));
     }
 
     /**
@@ -177,7 +177,7 @@ public final class LoggingFutures {
     public static <V> FluentFuture<V> addErrorLogging(
             FluentFuture<V> future, Logger logger, String format, Object arg) {
         return addCallback(
-                future, new FailureFormat1ArgumentLoggingFutureCallback<>(logger, format, arg));
+                future, new dev.enola.common.concurrent.FailureFormat1ArgumentLoggingFutureCallback<>(logger, format, arg));
     }
 
     /**
@@ -199,7 +199,7 @@ public final class LoggingFutures {
             FluentFuture<V> future, Logger logger, String format, Object... args) {
         return addCallback(
                 future,
-                new FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
+                new dev.enola.common.concurrent.FailureFormatMoreArgumentsLoggingFutureCallback<V>(logger, format, args));
     }
 
     private static <V, F extends ListenableFuture<V>> F addCallback(

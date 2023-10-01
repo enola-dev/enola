@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.infrautils.utils.concurrent;
+package dev.enola.common.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,7 +19,8 @@ import java.util.concurrent.CancellationException;
  * @author Michael Vorburger.ch
  */
 // package-local not public (for the time being)
-final class FailureMessageLoggingFutureCallback<V> extends FailureLoggingFutureCallbackBase<V> {
+final class FailureMessageLoggingFutureCallback<V>
+        extends dev.enola.common.concurrent.FailureLoggingFutureCallbackBase<V> {
     private final String message;
 
     FailureMessageLoggingFutureCallback(Logger logger, String message) {
