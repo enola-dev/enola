@@ -25,6 +25,7 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,8 +77,20 @@ public class LoggingMixin {
         // Root Logger, so for dev.enola.* but also e.g. ch.vorburger.exec or gRPC, etc.
         var rootLogger = Logger.getLogger("");
         rootLogger.setLevel(level);
+
         // see https://stackoverflow.com/a/48455401/421602
         rootLogger.getHandlers()[0].setLevel(level);
+
+        // Remove all existing handlers
+        Handler[] handlers = rootLogger.getHandlers();
+        for (Handler handler : handlers) {
+            rootLogger.removeHandler(handler);
+        }
+
+        // Add (only) our fancy colouring handler
+        var handler = new LoggingColorConsoleHandler();
+        handler.setLevel(level);
+        rootLogger.addHandler(handler);
     }
 
     @Option(
