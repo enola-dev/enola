@@ -77,7 +77,7 @@ public class EntityKindAspect implements EntityAspectWithRepository {
         var name = entity.getId().getPaths(0);
         var entityKindID = IDs.parse(name);
         var entityKind = ekr.get(entityKindID);
-        var entityKindAsAny = Any.pack(entityKind, TYPE_URL_PREFIX);
+        var entityKindAsAny = Any.pack(entityKind); // , TYPE_URL_PREFIX);
         entity.putData("schema", entityKindAsAny);
     }
 

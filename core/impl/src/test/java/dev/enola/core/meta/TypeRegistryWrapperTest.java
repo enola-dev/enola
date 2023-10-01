@@ -18,11 +18,23 @@
 package dev.enola.core.meta;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.protobuf.Any.pack;
 
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+
+import com.google.common.collect.ImmutableList;
+import com.google.protobuf.Any;
+import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.Timestamp;
+
+import dev.enola.common.io.resource.NullResource;
+import dev.enola.common.protobuf.ProtoIO;
+import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.proto.ID;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TypeRegistryWrapperTest {
@@ -36,5 +48,30 @@ public class TypeRegistryWrapperTest {
         var wrapper =
                 TypeRegistryWrapper.newBuilder().add(List.of(Timestamp.getDescriptor())).build();
         assertThat(wrapper.names()).containsExactly("google.protobuf.Timestamp");
+    }
+
+    @Test
+    public void aLot() throws IOException {
+        var wrapper1 =
+                TypeRegistryWrapper.newBuilder()
+                        .add(
+                                ImmutableList.of(
+                                        Any.getDescriptor(),
+                                        Timestamp.getDescriptor(),
+                                        ID.getDescriptor(),
+                                        EntityKind.getDescriptor(),
+                                        DescriptorProtos.DescriptorProto.getDescriptor()))
+                        .build();
+        var io1 = new ProtoIO(wrapper1.get());
+        io1.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+
+        var wrapper2 = TypeRegistryWrapper.newBuilder();
+        for (var name : wrapper1.names()) {
+            var any = pack(wrapper1.find(name).toProto(), "type.googleapis.com/");
+            var descriptorProto = any.unpack(DescriptorProtos.DescriptorProto.class);
+            wrapper2.add(descriptorProto);
+        }
+        var io2 = new ProtoIO(wrapper2.build().get());
+        io2.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
     }
 }
