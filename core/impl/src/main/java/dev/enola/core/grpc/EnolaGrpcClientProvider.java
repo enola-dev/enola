@@ -19,21 +19,38 @@ package dev.enola.core.grpc;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
+
+import dev.enola.common.concurrent.Executors;
 import dev.enola.core.proto.EnolaServiceGrpc;
 
 import io.grpc.Grpc;
 import io.grpc.InsecureChannelCredentials;
 import io.grpc.ManagedChannel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class EnolaGrpcClientProvider
         implements AutoCloseable { // javax.inject.Provider<EnolaServiceGrpc.EnolaServiceBlockingStub>
 
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
     private final EnolaServiceGrpc.EnolaServiceBlockingStub client;
     private final ManagedChannel channel;
+    private final ListeningExecutorService executor;
+    private final ListeningExecutorService offloadExecutor;
 
     public EnolaGrpcClientProvider(String endpoint) {
+        executor = Executors.newListeningCachedThreadPool("gRPC-Client-Non_Offload", LOGGER);
+        offloadExecutor = Executors.newListeningCachedThreadPool("gRPC-Client-Offload", LOGGER);
+
         var credz = InsecureChannelCredentials.create();
-        channel = Grpc.newChannelBuilder(endpoint, credz).build();
+        channel =
+                Grpc.newChannelBuilder(endpoint, credz)
+                        .executor(executor)
+                        .offloadExecutor(offloadExecutor)
+                        .build();
         client = EnolaServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
     }
 
@@ -43,5 +60,7 @@ public class EnolaGrpcClientProvider
 
     public void close() throws Exception {
         channel.shutdownNow().awaitTermination(3, SECONDS);
+        Executors.shutdownAndAwaitTermination(executor);
+        Executors.shutdownAndAwaitTermination(offloadExecutor);
     }
 }
