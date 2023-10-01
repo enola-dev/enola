@@ -42,6 +42,7 @@ public class EnolaTest {
     // The following is thus set up like it is to make it clear that this captures
     // the output of all tests, not just the testLoggingVerbosity.  It "works"
     // because this is the only test (in this module).
+    // TODO Try if LogManager.getLogManager().reset(); could fix ^^^ this?
 
     private static final SystemOutErrCapture capture = new SystemOutErrCapture();
 

@@ -28,6 +28,7 @@ import java.nio.charset.Charset;
  * together with code which keeps references to System.out/err in a static, such as JUL; see
  * EnolaTest.
  */
+// TODO Try if LogManager.getLogManager().reset(); could fix ^^^ this?
 public class SystemOutErrCapture implements AutoCloseable {
 
     private static final Charset CHARSET = Charsets.UTF_8;
