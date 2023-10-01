@@ -10,19 +10,23 @@ package org.opendaylight.infrautils.utils.concurrent;
 import static java.util.Objects.requireNonNull;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.slf4j.Logger;
 
 /**
  * Failure logging future callback with a message format String and 1 argument.
+ *
  * @author Michael Vorburger.ch
  */
 // package-local not public (for the time being)
-final class FailureFormatMoreArgumentsLoggingFutureCallback<V> extends FailureLoggingFutureCallbackBase<V> {
+final class FailureFormatMoreArgumentsLoggingFutureCallback<V>
+        extends FailureLoggingFutureCallbackBase<V> {
 
     private final String format;
     private final Object[] arguments;
 
-    FailureFormatMoreArgumentsLoggingFutureCallback(Logger logger, String format, Object... arguments) {
+    FailureFormatMoreArgumentsLoggingFutureCallback(
+            Logger logger, String format, Object... arguments) {
         super(logger);
         this.format = requireNonNull(format, "format is null");
         // do *NOT* null check these (it's valid)
