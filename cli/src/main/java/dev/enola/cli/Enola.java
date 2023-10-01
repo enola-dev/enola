@@ -33,14 +33,15 @@ import picocli.CommandLine.Mixin;
         description = Enola.DESCRIPTION,
         versionProvider = VersionProvider.class,
         subcommands = {
-            HelpCommand.class, // TODO , Version.class
+            HelpCommand.class,
             AutoComplete.GenerateCompletion.class,
             DocGen.class,
             List.class,
             Get.class,
             RosettaCommand.class,
             ServerCommand.class,
-            ExecMdCommand.class
+            ExecMdCommand.class,
+            LoggingTestCommand.class
         })
 public class Enola {
 

@@ -17,8 +17,10 @@
  */
 package dev.enola.cli;
 
+
 import picocli.CommandLine;
 
+// This is used by enola --version
 public class VersionProvider implements CommandLine.IVersionProvider {
     @Override
     public String[] getVersion() throws Exception {
@@ -28,8 +30,8 @@ public class VersionProvider implements CommandLine.IVersionProvider {
             "@|yellow,italic Version: DEVELOPMENT|@",
             "@|red,bg(white),blink Copyright 2023 The Enola <https://enola.dev> Authors|@",
             "@|magenta,faint JVM: ${java.version} (${java.vendor} ${java.vm.name}"
-                + " ${java.vm.version})|@ on @|cyan,faint OS: ${os.name} ${os.version} ${os.arch}|@"
+                    + " ${java.vm.version})|@ on @|cyan,faint OS: ${os.name} ${os.version} ${os.arch}|@"
         };
-        // TODO Add git repo? E.g. "https://github.com/enola-dev/enola/commits/main" or similiar?
+        // TODO Add git repo? E.g. "https://github.com/enola-dev/enola/commits/main" or similar?
     }
 }
