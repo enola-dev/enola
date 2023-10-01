@@ -33,39 +33,40 @@ import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Instant;
 
 public class RestTest {
 
     @Test
-    public void getAndList() throws IOException {
+    public void getAndList() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             // Setup
-            var testGrpcService = new EnolaGrpcInProcess(new TestService()).get();
-            new RestAPI(testGrpcService).register(server);
-            server.start();
-            var rp = new ResourceProviders();
-            var port = server.getInetAddress().getPort();
-            var prefix = "http://localhost:" + port;
+            try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(new TestService())) {
+                var testGrpcService = grpc.get();
+                new RestAPI(testGrpcService).register(server);
+                server.start();
+                var rp = new ResourceProviders();
+                var port = server.getInetAddress().getPort();
+                var prefix = "http://localhost:" + port;
 
-            // Get
-            var uri1 = create(prefix + "/api/entity/test.demo/123");
-            var response1 = rp.getResource(uri1);
-            assertThat(response1.charSource().read())
-                    .startsWith(
-                            "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
-            assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+                // Get
+                var uri1 = create(prefix + "/api/entity/test.demo/123");
+                var response1 = rp.getResource(uri1);
+                assertThat(response1.charSource().read())
+                        .startsWith(
+                                "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
+                assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
 
-            // List
-            var uri2 = create(prefix + "/api/entities/test.demo");
-            var response2 = rp.getResource(uri2);
-            assertThat(response1.charSource().read())
-                    .startsWith(
-                            "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
-            assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+                // List
+                var uri2 = create(prefix + "/api/entities/test.demo");
+                var response2 = rp.getResource(uri2);
+                assertThat(response1.charSource().read())
+                        .startsWith(
+                                "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
+                assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
+            }
         }
     }
 

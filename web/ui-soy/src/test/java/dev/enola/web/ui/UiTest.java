@@ -33,32 +33,33 @@ import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Instant;
 
 public class UiTest {
     @Test
-    public void testUi() throws IOException {
+    public void testUi() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            var testGrpcService = new EnolaGrpcInProcess(new TestService()).get();
-            new UI(testGrpcService).register(server);
-            server.start();
-            var rp = new ResourceProviders();
-            var port = server.getInetAddress().getPort();
-            var prefix = "http://localhost:" + port;
+            try (var grpc = new EnolaGrpcInProcess(new TestService())) {
+                var testGrpcService = grpc.get();
+                new UI(testGrpcService).register(server);
+                server.start();
+                var rp = new ResourceProviders();
+                var port = server.getInetAddress().getPort();
+                var prefix = "http://localhost:" + port;
 
-            var uri1 = create(prefix + "/ui/bad-page-404");
-            var response1 = rp.getResource(uri1);
-            assertThat(response1.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
-            assertThat(response1.charSource().read()).contains("Enola");
-            assertThat(response1.charSource().read()).contains("404");
+                var uri1 = create(prefix + "/ui/bad-page-404");
+                var response1 = rp.getResource(uri1);
+                assertThat(response1.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
+                assertThat(response1.charSource().read()).contains("Enola");
+                assertThat(response1.charSource().read()).contains("404");
 
-            var uri2 = create(prefix + "/ui/entity/test.demo/123");
-            var response2 = rp.getResource(uri2);
-            assertThat(response2.charSource().read()).contains("Enola");
-            assertThat(response2.charSource().read()).contains("test.demo/123");
+                var uri2 = create(prefix + "/ui/entity/test.demo/123");
+                var response2 = rp.getResource(uri2);
+                assertThat(response2.charSource().read()).contains("Enola");
+                assertThat(response2.charSource().read()).contains("test.demo/123");
+            }
         }
     }
 

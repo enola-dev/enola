@@ -31,8 +31,7 @@ import io.grpc.ManagedChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EnolaGrpcClientProvider
-        implements AutoCloseable { // javax.inject.Provider<EnolaServiceGrpc.EnolaServiceBlockingStub>
+public class EnolaGrpcClientProvider implements ServiceProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 

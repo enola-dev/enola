@@ -21,6 +21,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
+import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 
@@ -51,17 +52,24 @@ public abstract class CommandWithModel implements CheckedRunnable {
         EntityKindRepository ekr = null;
 
         // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
+        ServiceProvider grpc = null;
         if (group.model != null) {
             var modelResource = new ResourceProviders().getReadableResource(group.model);
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
             esp = new EnolaServiceProvider();
-            service = new EnolaGrpcInProcess(esp.get(ekr)).get();
+            grpc = new EnolaGrpcInProcess(esp.get(ekr));
+            service = grpc.get();
         } else if (group.server != null) {
-            service = new EnolaGrpcClientProvider(group.server).get();
+            grpc = new EnolaGrpcClientProvider(group.server);
+            service = grpc.get();
         }
 
-        run(ekr, service);
+        try {
+            run(ekr, service);
+        } finally {
+            grpc.close();
+        }
     }
 
     // TODO Pass only the EnolaServiceBlockingStub through, remove the EntityKindRepository from
