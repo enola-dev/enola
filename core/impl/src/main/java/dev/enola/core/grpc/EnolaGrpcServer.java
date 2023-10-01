@@ -17,9 +17,15 @@
  */
 package dev.enola.core.grpc;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
+
+import dev.enola.common.concurrent.Executors;
 import dev.enola.core.EnolaService;
 
 import io.grpc.ServerBuilder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -28,15 +34,20 @@ public class EnolaGrpcServer implements AutoCloseable {
 
     // See also dev.enola.demo.Server
 
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
     private final EnolaService service;
     private io.grpc.Server server;
+    private ListeningExecutorService executor;
 
     public EnolaGrpcServer(EnolaService service) {
         this.service = service;
     }
 
     public EnolaGrpcServer start(int port) throws IOException {
+        executor = Executors.newListeningCachedThreadPool("gRPC-Server", LOGGER);
         var builder = ServerBuilder.forPort(port);
+        builder.executor(executor);
         builder.addService(new EnolaGrpcService(service)); // as in EnolaGrpcInProcess
         server = builder.build().start();
         return this;
@@ -49,5 +60,6 @@ public class EnolaGrpcServer implements AutoCloseable {
     @Override
     public void close() throws InterruptedException {
         server.shutdown().awaitTermination(7, TimeUnit.SECONDS);
+        Executors.shutdownAndAwaitTermination(executor);
     }
 }
