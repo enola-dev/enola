@@ -38,8 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class EnolaGrpcInProcess
-        implements AutoCloseable { // javax.inject.Provider<EnolaServiceGrpc.EnolaServiceBlockingStub>
+public class EnolaGrpcInProcess implements ServiceProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
