@@ -17,7 +17,7 @@
  */
 package dev.enola.cli;
 
-import com.google.protobuf.DescriptorProtos.DescriptorProto;
+import com.google.protobuf.Empty;
 
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
@@ -29,7 +29,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
 
 import picocli.CommandLine;
 
@@ -55,13 +54,8 @@ public abstract class CommandWithEntityID extends CommandWithModel {
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception {
-        var builder = TypeRegistryWrapper.newBuilder();
-        var sid = ID.newBuilder().setNs("enola").setEntity("schema").build();
-        var response = service.listEntities(ListEntitiesRequest.newBuilder().setId(sid).build());
-        for (var entity : response.getEntitiesList()) {
-            builder.add(entity.getDataOrThrow("proto").unpack(DescriptorProto.class));
-        }
-        typeRegistryWrapper = builder.build();
+        var fds = service.getFileDescriptorSet(Empty.getDefaultInstance());
+        typeRegistryWrapper = TypeRegistryWrapper.from(fds);
 
         ID id = IDs.parse(idString); // TODO replace with ITypeConverter
         // TODO Validate id; here it must have ns+name+path!

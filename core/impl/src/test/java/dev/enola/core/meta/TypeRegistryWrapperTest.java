@@ -25,6 +25,7 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Any;
 import com.google.protobuf.DescriptorProtos;
+import com.google.protobuf.Descriptors;
 import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.NullResource;
@@ -40,18 +41,19 @@ import java.util.List;
 public class TypeRegistryWrapperTest {
     @Test
     public void empty() {
-        assertThat(TypeRegistryWrapper.newBuilder().build().names()).isEmpty();
+        var wrapper = TypeRegistryWrapper.newBuilder().build();
+        assertThat(wrapper.fileDescriptorSet().getFileList()).isEmpty();
     }
 
     @Test
     public void one() {
         var wrapper =
                 TypeRegistryWrapper.newBuilder().add(List.of(Timestamp.getDescriptor())).build();
-        assertThat(wrapper.names()).containsExactly("google.protobuf.Timestamp");
+        assertThat(wrapper.fileDescriptorSet().getFileCount()).isEqualTo(1);
     }
 
     @Test
-    public void aLot() throws IOException {
+    public void aLot() throws IOException, Descriptors.DescriptorValidationException {
         var wrapper1 =
                 TypeRegistryWrapper.newBuilder()
                         .add(
@@ -63,14 +65,10 @@ public class TypeRegistryWrapperTest {
                                         DescriptorProtos.DescriptorProto.getDescriptor()))
                         .build();
         check(wrapper1);
+        var fileDescriptorProto = wrapper1.fileDescriptorSet();
 
-        var wrapper2 = TypeRegistryWrapper.newBuilder();
-        for (var name : wrapper1.names()) {
-            var any = pack(wrapper1.find(name).toProto(), "type.googleapis.com/");
-            var descriptorProto = any.unpack(DescriptorProtos.DescriptorProto.class);
-            wrapper2.add(descriptorProto);
-        }
-        check(wrapper2.build());
+        var wrapper2 = TypeRegistryWrapper.from(fileDescriptorProto);
+        check(wrapper2);
     }
 
     private void check(TypeRegistryWrapper wrapper) throws IOException {

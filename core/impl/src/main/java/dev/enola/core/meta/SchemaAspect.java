@@ -59,12 +59,13 @@ public class SchemaAspect implements EntityAspect {
             List<Entity.Builder> entities)
             throws EnolaException {
         // TODO if (!IDs.withoutPath(request.getId()).equals(idBuilderTemplate)) return
-        for (var name : esp.getTypeRegistryWrapper().names()) {
+
+        /*for (var name : esp.getTypeRegistryWrapper().names()) {
             var id = idBuilderTemplate.clone().addPaths(name);
             var newSchemaEntity = Entity.newBuilder().setId(id);
             augment(newSchemaEntity, null);
             entities.add(newSchemaEntity);
-        }
+        }*/
     }
 
     public List<Descriptors.Descriptor> getDescriptors() throws EnolaException {

@@ -17,8 +17,12 @@
  */
 package dev.enola.core.grpc;
 
+import com.google.protobuf.DescriptorProtos;
+import com.google.protobuf.Empty;
+
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
+import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.proto.*;
 
 import io.grpc.stub.StreamObserver;
@@ -26,9 +30,11 @@ import io.grpc.stub.StreamObserver;
 public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
 
     private final EnolaService enola;
+    private final EnolaServiceProvider esp;
 
-    public EnolaGrpcService(EnolaService service) {
+    public EnolaGrpcService(EnolaServiceProvider esp, EnolaService service) {
         this.enola = service;
+        this.esp = esp;
     }
 
     @Override
@@ -53,5 +59,12 @@ public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
         } catch (EnolaException e) {
             responseObserver.onError(e);
         }
+    }
+
+    @Override
+    public void getFileDescriptorSet(
+            Empty request, StreamObserver<DescriptorProtos.FileDescriptorSet> responseObserver) {
+        responseObserver.onNext(esp.getTypeRegistryWrapper().fileDescriptorSet());
+        responseObserver.onCompleted();
     }
 }
