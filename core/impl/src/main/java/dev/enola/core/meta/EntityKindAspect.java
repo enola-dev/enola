@@ -35,7 +35,7 @@ import java.util.List;
 
 public class EntityKindAspect implements EntityAspectWithRepository {
 
-    private static final String TYPE_URL_PREFIX = "type.enola.dev";
+    private static final String TYPE_URL_PREFIX = "type.googleapis.com";
 
     private static final Data SCHEMA_DATA =
             Data.newBuilder()

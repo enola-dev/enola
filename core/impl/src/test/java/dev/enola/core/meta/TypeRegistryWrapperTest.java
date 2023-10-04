@@ -62,8 +62,7 @@ public class TypeRegistryWrapperTest {
                                         EntityKind.getDescriptor(),
                                         DescriptorProtos.DescriptorProto.getDescriptor()))
                         .build();
-        var io1 = new ProtoIO(wrapper1.get());
-        io1.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+        check(wrapper1);
 
         var wrapper2 = TypeRegistryWrapper.newBuilder();
         for (var name : wrapper1.names()) {
@@ -71,7 +70,14 @@ public class TypeRegistryWrapperTest {
             var descriptorProto = any.unpack(DescriptorProtos.DescriptorProto.class);
             wrapper2.add(descriptorProto);
         }
-        var io2 = new ProtoIO(wrapper2.build().get());
-        io2.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+        check(wrapper2.build());
+    }
+
+    private void check(TypeRegistryWrapper wrapper) throws IOException {
+        var io = new ProtoIO(wrapper.get());
+        io.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+
+        var any = pack(EntityKind.getDefaultInstance(), "type.googleapis.com/");
+        io.write(any, new NullResource(PROTOBUF_JSON_UTF_8));
     }
 }
