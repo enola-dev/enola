@@ -13,7 +13,7 @@ lxml==4.9.3
 readtime==3.0.0
 
 # https://asciinema.org
-asciinema==2.3.0
+asciinema==2.4.0
 
 # https://github.com/mondeja/mkdocs-include-markdown-plugin (ASL)
 # Possible alternative: https://github.com/cmacmackin/markdown-include (GPL)
