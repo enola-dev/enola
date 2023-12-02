@@ -31,7 +31,7 @@ A code block such as this one in [`demo.md`](../../../docs/use/execmd/demo.md):
     ```
 ```
 
-when ran through `./enola execmd docs/use/execmd/index.md` produces:
+when ran through `./enola execmd docs/use/execmd/demo.md` produces:
 
 ```bash
 $ echo Hi
