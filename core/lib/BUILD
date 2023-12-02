@@ -31,9 +31,18 @@ load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
 proto_library(
+    name = "ext_proto",
+    srcs = ["src/main/java/dev/enola/core/enola_ext.proto"],
+    deps = [
+        "@com_google_protobuf//:descriptor_proto",
+    ],
+)
+
+proto_library(
     name = "core_proto",
     srcs = ["src/main/java/dev/enola/core/enola_core.proto"],
     deps = [
+        ":ext_proto",
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:struct_proto",
@@ -53,7 +62,11 @@ proto_library(
 proto_library(
     name = "meta_proto",
     srcs = ["src/main/java/dev/enola/core/meta/enola_meta.proto"],
-    deps = [":core_proto"],
+    deps = [
+        ":core_proto",
+        ":ext_proto",
+        "@com_google_protobuf//:empty_proto",
+    ],
 )
 
 proto_library(
@@ -76,6 +89,7 @@ java_proto_library(
     deps = [
         "connector_proto",
         "core_proto",
+        "ext_proto",
         "meta_proto",
         "util_proto",
     ],
@@ -114,6 +128,7 @@ doc_markdown_compile(
     protos = [
         "connector_proto",
         "core_proto",
+        "ext_proto",
         "meta_proto",
         "util_proto",
     ],
@@ -129,6 +144,7 @@ buf_proto_lint_test(
     protos = [
         "connector_proto",
         "core_proto",
+        # "ext_proto",
         "meta_proto",
         "util_proto",
     ],
@@ -151,6 +167,7 @@ java_library(
     deps = [
         ":core_java_proto",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
     ],
 )
 
@@ -163,6 +180,7 @@ java_library(
         ":core_java_proto",
         ":lib_java",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",
     ],
@@ -171,10 +189,18 @@ java_library(
 ])]
 
 go_proto_library(
+    name = "ext_go_proto",
+    importpath = "dev/enola/core/ext",
+    protos = [":ext_proto"],
+    visibility = [],
+)
+
+go_proto_library(
     name = "core_go_proto",
     importpath = "dev/enola/core",
     protos = [":core_proto"],
     visibility = [],
+    deps = [":ext_go_proto"],
 )
 
 go_proto_library(
@@ -190,7 +216,10 @@ go_proto_library(
     importpath = "dev/enola/core/meta",
     protos = [":meta_proto"],
     visibility = [],
-    deps = [":core_go_proto"],
+    deps = [
+        ":core_go_proto",
+        ":ext_go_proto",
+    ],
 )
 
 go_proto_library(

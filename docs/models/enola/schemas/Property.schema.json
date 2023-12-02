@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Property",
+  "definitions": {
+    "Property": {
+      "properties": {
+        "id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "type": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Type of Property, as Name of another Type."
+        },
+        "link": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Link to something related. Intended both for human consumption in a UI, as well as machine readable linked data relationships. Typically a Template of an (HTML a/href-like) HTTP URL, or enola: URI. Template parameters refer to other properties of the Type."
+        },
+        "labels": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Human readable label of this property, may be several words, any case. This is a map where the key is an IETF [BCP 47](https://www.rfc-editor.org/info/bcp47) \"language code\" (like \"en\" or \"de-CH\") and the value is text in that language. These can easily be changed at any time without breaking anything in Enola."
+        },
+        "doc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Documentation description (as URL; either absolute, or URL relative to the model's location - from where a UI will serve it). TODO Is this a [(dev.enola.type) = \"enola.dev/url\"]? Really??"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Property"
+    }
+  }
+}

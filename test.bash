@@ -66,6 +66,9 @@ set -u
 echo $ Bazel testing...
 bazelisk query //... | xargs bazel test
 
+# TODO Run all this only when model inputs change
+tools/protoc/protoc.bash
+
 # Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
 tools/distro/test.bash
 

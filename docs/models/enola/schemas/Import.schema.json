@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Import",
+  "definitions": {
+    "Import": {
+      "properties": {
+        "types": {
+          "items": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "description": "URLs from where to load additional referenced Types."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Import"
+    }
+  }
+}

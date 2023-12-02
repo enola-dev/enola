@@ -43,14 +43,17 @@ tab_width = 2
 [*.json]
 indent_size = 2
 tab_width = 2
+max_line_length = unset
 
 [*.jsonc]
 indent_size = 2
 tab_width = 2
+max_line_length = unset
 
 [*.json5]
 indent_size = 2
 tab_width = 2
+max_line_length = unset
 
 [*.toml]
 indent_size = 2

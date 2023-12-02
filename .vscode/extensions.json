@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "redhat.java",
     "sfdc.bazel-vscode-java",
     "bazelbuild.vscode-bazel",
     "josevseb.google-java-format-for-vs-code",

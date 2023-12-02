@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EntityRelationship",
+  "definitions": {
+    "EntityRelationship": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "id": {
+          "$ref": "#/definitions/dev.enola.core.ID",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {}
+          ],
+          "description": "ID reference to another Entity. This ID's ns/entity/paths fields can contain a template, like Link#uri_template. Alternatively, this can be left empty, and set by connectors."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Entity Relationship",
+      "description": "Entity#related map model; its key is the same as this in EntityKind#related."
+    },
+    "dev.enola.core.ID": {
+      "properties": {
+        "ns": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Namespace. Serves to distinguish same entity names (below). This is optional if in your use of Enola you avoid name conflicts. It's like in C# or \"package\" in Java or Go or the xmlns: from XML Schema, or whatever the hell confusing thing ;) that Python is doing about this. Validated to only contain [a-z0-9_.] characters, so it's safe in URLs. By convention can contain '.' for sub-namespacing, but does not have to. The namespace of an Entity is always the same as its EntityKind."
+        },
+        "entity": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Entity Kind Name. This is mandatory and thus always present. This refers to an EntityKind and not an individual Entity, despite the name. (In practice this is just shorter and clearer for people to understand.) Validated to only contain [a-z0-9_] characters, so it's safe in URLs."
+        },
+        "paths": {
+          "items": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "description": "Path. This is mandatory and thus always present with at least 1 element. Think of this as what would typically uniquely identify this entity IRL; e.g. a \"hostname\" or some UUID or a S/N or whatever is its \"primary key\". Validated to only contain [a-z0-9_-.] characters, so it's safe in URLs. (This restriction could in theory be relaxed, if there was a strong need to support it; as long as sufficient test coverage is added for correct encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.) Multiple \"segments\" are supported for \"composed keys\", for example a network/context/namespace/name kind of ID."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Id",
+      "description": "TODO Replace this with //docs/concepts/uri.md! ID of an Entity known to Enola, fully qualified. Can be formatted to and parsed from several different string text forms, see Java class dev.enola.core.IDs.java"
+    }
+  }
+}

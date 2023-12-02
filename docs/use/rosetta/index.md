@@ -21,7 +21,13 @@
 Rosetta, inspired by
 [the Rosetta Stone](https://en.wikipedia.org/wiki/Rosetta_Stone), transforms
 between [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
-[`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) formats:
+[`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) formats.
+
+Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
+
+Binary protocol buffer as input/output is not currently supported, but will be; see [PR #316](https://github.com/enola-dev/enola/pull/316/files).
+
+For example:
 
 ```bash cd .././.././..
 $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.json --schema=EntityKinds

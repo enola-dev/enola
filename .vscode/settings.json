@@ -63,9 +63,14 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
-  // https://github.com/salesforce/bazel-vscode#installation
-  "java.import.bazel.enabled": true,
-  "java.import.maven.enabled": false,
+  "java": {
+    "completion.favoriteStaticMembers": ["com.google.common.truth.Truth.*"],
+
+    // https://github.com/salesforce/bazel-vscode#installation
+    "import.bazel.enabled": true,
+    "import.maven.enabled": false
+    // NOT! "import.gradle.enabled": false
+  },
 
   // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
   "yaml.schemas": {
@@ -112,9 +117,14 @@
     "docs": false,
     "site": false,
     "tools": false,
-    "web": false
+    "web": false,
+    "BUILT": false,
+    "models": false
   },
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
   "java.compile.nullAnalysis.mode": "automatic",
-  "bazel.projectview.open": false
+  "bazel.projectview.open": false,
+  "[proto3]": {
+    "editor.defaultFormatter": "zxh404.vscode-proto3"
+  }
 }

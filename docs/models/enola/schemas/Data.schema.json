@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Data",
+  "definitions": {
+    "Data": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        },
+        "type_url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The fully qualified name of the (root) Protocol Buffer Message; see https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Data"
+    }
+  }
+}

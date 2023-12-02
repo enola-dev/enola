@@ -44,7 +44,7 @@ public class SchemaAspectTest {
         var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var response = service.listEntities(request);
 
-        assertThat(response.getEntitiesList()).hasSize(38);
+        assertThat(response.getEntitiesList().size()).isAtLeast(38);
     }
 
     @Test

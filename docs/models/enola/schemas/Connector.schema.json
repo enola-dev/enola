@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Connector",
+  "definitions": {
+    "Connector": {
+      "properties": {
+        "error": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Always fails with this error message (for testing, only)."
+        },
+        "java_class": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Java class name for in-process connector on the Java classpath."
+        },
+        "fs": {
+          "$ref": "#/definitions/dev.enola.core.meta.FileSystemRepository",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {}
+          ],
+          "title": "TODO java_guice lookup?",
+          "description": "TODO java_guice lookup?"
+        },
+        "grpc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Invokes remote connector via gRPC. The \"connection string\" here is a target endpoint in hostname:port format. (It's NOT an URI, so there is no scheme:// nor any /path/ or #fragment.)"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Connector"
+    },
+    "dev.enola.core.meta.FileSystemRepository": {
+      "properties": {
+        "path": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "format": {
+          "enum": [
+            "FORMAT_UNSPECIFIED",
+            0,
+            "FORMAT_TEXTPROTO",
+            1,
+            "FORMAT_YAML",
+            2,
+            "FORMAT_JSON",
+            3
+          ],
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Format"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "File System Repository"
+    }
+  }
+}

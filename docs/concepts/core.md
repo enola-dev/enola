@@ -35,11 +35,15 @@ It _models_ real world concepts as what it terms _Entities,_ [identified by URI]
 across its Entities, as well as to arbitrary non-Enola URIs. (This notably includes traditional
 URLs like HTTP links, which models can use to create hyperlinks to UIs of applications managing Entities.)
 
+## Formats
+
 Enola has [built-in interchangeable support](../use/rosetta/index.md) for JSON, YAML, and Text proto
 [wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for entities.
 <!-- TODO In the future, maybe (binary!) PB? FHIR? Blockchain EVM format? -->
 
+## Schemas
+
 Enola currently uses [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
-Schema language, but is conceptually open to supporting other kinds of schemas in the future; perhaps e.g.
-[JSON Schema](https://github.com/enola-dev/enola/issues/313), or XSD XML Schema, or
+Schema language. It is conceptually open to supporting other kinds of schemas in the future; perhaps e.g.
+[JSON Schema](https://github.com/enola-dev/enola/issues/313), or [Cap’n Proto](https://capnproto.org/language.html), or [TypeScript](https://www.typescriptlang.org/docs/handbook/2/objects.html) (à la [Typson](https://github.com/lbovet/typson)), or [XML Schema](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) (XSD), or [YANG](https://en.wikipedia.org/wiki/YANG) or [FHIR](https://www.hl7.org/fhir/) or [Varlink](https://varlink.org/Interface-Definition) or [Web IDL](https://webidl.spec.whatwg.org) or
 [ASN.1](https://en.m.wikipedia.org/wiki/ASN.1) or [GNU poke](https://www.gnu.org/software/poke/).
