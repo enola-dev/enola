@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.Set;
 
 public interface MediaTypeProvider {
+
+    // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
+
     Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
 
     Map<String, MediaType> extensionsToTypes();

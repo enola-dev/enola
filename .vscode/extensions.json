@@ -16,6 +16,10 @@
     "zignd.html-css-class-completion",
     "timonwong.shellcheck"
   ],
-  // https://github.com/kshetline/ligatures-limited/issues/39
-  "unwantedRecommendations": ["kshetline.ligatures-limited"]
+  "unwantedRecommendations": [
+    // https://github.com/kshetline/ligatures-limited/issues/39
+    "kshetline.ligatures-limited",
+    "vscjava.vscode-gradle",
+    "vscjava.vscode-maven"
+  ]
 }

@@ -40,6 +40,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO Rename (refactor) to GrpcEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
+// TODO Write a ThingGrpcAspect variant of this
 public class GrpcAspect implements Closeable, EntityAspect {
 
     private final ManagedChannel channel;

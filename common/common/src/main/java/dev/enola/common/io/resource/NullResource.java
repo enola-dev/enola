@@ -30,8 +30,8 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Resource which ignores writes, and returns an infinite amount of bytes of value 0 on read. This
- * is a bit like /dev/null on *NIX OS, but not quite (because /dev/null returns EOF on read; this
- * does not).
+ * is a bit like /dev/null on *NIX OS for writing, but not for reading (because /dev/null returns
+ * EOF on read, but this does not).
  *
  * @see EmptyResource for an (non-writable) EOF ReadableResource
  */

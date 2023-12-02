@@ -26,8 +26,11 @@ copyright: Copyright &copy; 2023 The Enola <https://enola.dev> Authors
 nav:
   - News (Blog): blog/index.md
   - Introduction: index.md
+  - Installation: use/index.md
+  - Models:
+      - Demo:
+          - Hello: models/demo/hello/README.md
   - Users:
-      - Overview: use/index.md
       - Help: use/help/index.md
       - Example Model: use/library/index.md
       - DocGen: use/docgen/index.md

@@ -1,0 +1,552 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/EntityKinds",
+  "definitions": {
+    "EntityKinds": {
+      "properties": {
+        "kinds": {
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/dev.enola.core.meta.EntityKind"
+              },
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Entity Kinds"
+    },
+    "dev.enola.core.ID": {
+      "properties": {
+        "ns": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Namespace. Serves to distinguish same entity names (below). This is optional if in your use of Enola you avoid name conflicts. It's like in C# or \"package\" in Java or Go or the xmlns: from XML Schema, or whatever the hell confusing thing ;) that Python is doing about this. Validated to only contain [a-z0-9_.] characters, so it's safe in URLs. By convention can contain '.' for sub-namespacing, but does not have to. The namespace of an Entity is always the same as its EntityKind."
+        },
+        "entity": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Entity Kind Name. This is mandatory and thus always present. This refers to an EntityKind and not an individual Entity, despite the name. (In practice this is just shorter and clearer for people to understand.) Validated to only contain [a-z0-9_] characters, so it's safe in URLs."
+        },
+        "paths": {
+          "items": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array"
+            }
+          ],
+          "description": "Path. This is mandatory and thus always present with at least 1 element. Think of this as what would typically uniquely identify this entity IRL; e.g. a \"hostname\" or some UUID or a S/N or whatever is its \"primary key\". Validated to only contain [a-z0-9_-.] characters, so it's safe in URLs. (This restriction could in theory be relaxed, if there was a strong need to support it; as long as sufficient test coverage is added for correct encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.) Multiple \"segments\" are supported for \"composed keys\", for example a network/context/namespace/name kind of ID."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Id",
+      "description": "TODO Replace this with //docs/concepts/uri.md! ID of an Entity known to Enola, fully qualified. Can be formatted to and parsed from several different string text forms, see Java class dev.enola.core.IDs.java"
+    },
+    "dev.enola.core.meta.Connector": {
+      "properties": {
+        "error": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Always fails with this error message (for testing, only)."
+        },
+        "java_class": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Java class name for in-process connector on the Java classpath."
+        },
+        "fs": {
+          "$ref": "#/definitions/dev.enola.core.meta.FileSystemRepository",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {}
+          ],
+          "title": "TODO java_guice lookup?",
+          "description": "TODO java_guice lookup?"
+        },
+        "grpc": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Invokes remote connector via gRPC. The \"connection string\" here is a target endpoint in hostname:port format. (It's NOT an URI, so there is no scheme:// nor any /path/ or #fragment.)"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Connector"
+    },
+    "dev.enola.core.meta.Data": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        },
+        "type_url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The fully qualified name of the (root) Protocol Buffer Message; see https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/any.proto"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Data"
+    },
+    "dev.enola.core.meta.EntityKind": {
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/dev.enola.core.ID",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {}
+          ],
+          "description": "ID. The ns may be filled in by the reader, if omitted in *-model.textproto. The entity is the name of THIS EntityKind! This is typically never changed anymore after initial creation. The path contains' the segments' names (here, whereas in Entity it's the \"values\")."
+        },
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label of entity, may be several words, any case. This can easily be changed at any time."
+        },
+        "emoji": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The Emoji shown as prefix to the name in UIs, if there is no logo."
+        },
+        "logo_url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Logo (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it)."
+        },
+        "doc_url": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Documentation description (as URL; either absolute, or URL relative to the model's textproto file location - from where a UI will serve it)."
+        },
+        "related": {
+          "additionalProperties": {
+            "$ref": "#/definitions/dev.enola.core.meta.EntityRelationship",
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {}
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Description of related Entities. The string keys here match Entity#related's."
+        },
+        "link": {
+          "additionalProperties": {
+            "$ref": "#/definitions/dev.enola.core.meta.Link",
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {}
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Description of URL links. The string keys here match Entity#links's."
+        },
+        "data": {
+          "additionalProperties": {
+            "$ref": "#/definitions/dev.enola.core.meta.Data",
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {}
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Description of data about the Entity, in machine readable form. The string keys here match Entity#data's."
+        },
+        "connectors": {
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/dev.enola.core.meta.Connector"
+              },
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Entity Kind",
+      "description": "Kind of an Entity, as in message Entity."
+    },
+    "dev.enola.core.meta.EntityRelationship": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "id": {
+          "$ref": "#/definitions/dev.enola.core.ID",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {}
+          ],
+          "description": "ID reference to another Entity. This ID's ns/entity/paths fields can contain a template, like Link#uri_template. Alternatively, this can be left empty, and set by connectors."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Entity Relationship",
+      "description": "Entity#related map model; its key is the same as this in EntityKind#related."
+    },
+    "dev.enola.core.meta.FileSystemRepository": {
+      "properties": {
+        "path": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "format": {
+          "enum": [
+            "FORMAT_UNSPECIFIED",
+            0,
+            "FORMAT_TEXTPROTO",
+            1,
+            "FORMAT_YAML",
+            2,
+            "FORMAT_JSON",
+            3
+          ],
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Format"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "File System Repository"
+    },
+    "dev.enola.core.meta.Link": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "uri_template": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "URI template, to create URL. As an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template. The available variables are the ID's path parameters, as well as a special proto.* which allows to declaratively create links out of the Any proto (instead of coding link generation in the service; which is always still also possible)."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Link",
+      "description": "Entity#link map model; its key is the same as this in EntityKind#link."
+    }
+  }
+}

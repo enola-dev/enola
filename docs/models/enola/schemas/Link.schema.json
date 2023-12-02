@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/Link",
+  "definitions": {
+    "Link": {
+      "properties": {
+        "label": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Human readable label, may be shown on a UI."
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Short 1-2 sentences of description, may be shown on a UI e.g. as tooltip."
+        },
+        "uri_template": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "URI template, to create URL. As an ID URI Template (RFC 6570); see https://en.wikipedia.org/wiki/URI_Template. The available variables are the ID's path parameters, as well as a special proto.* which allows to declaratively create links out of the Any proto (instead of coding link generation in the service; which is always still also possible)."
+        },
+        "tags": {
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "Tags."
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "Link",
+      "description": "Entity#link map model; its key is the same as this in EntityKind#link."
+    }
+  }
+}

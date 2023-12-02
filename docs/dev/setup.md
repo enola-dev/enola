@@ -59,21 +59,24 @@ If you do still want to try, here's how to manually install what the development
    There are different Java (like Linux) "distributions" (all based on OpenJDK).
    The easiest way to install one of them is typically to use your OS' package manager:
 
-       sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
+        sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
 
    An alternative is to use e.g. [the SDKMAN!](https://sdkman.io)
    If you work on several projects using different Java versions,
-   then we recommend [using the great jEnv](https://www.jenv.be).
+   then we recommend using something like
+   [jEnv (with `.java-version`)](https://www.jenv.be), or
+   [asdf (with `.tool-versions`)](https://asdf-vm.com), or
+   [direnv (with `.envrc`)](https://direnv.net).
 
 1. Install C/C++ etc. (it's required by the
    [Proto rule for Bazel](https://github.com/bazelbuild/rules_proto)), e.g. do:
 
-       sudo apt-get install build-essential
+        sudo apt-get install build-essential
 
 1. Install [Python venv](https://docs.python.org/3/library/venv.html)
    (it's used by the presubmit and docs site generation), e.g. with:
 
-       sudo apt-get install python3-venv
+        sudo apt-get install python3-venv
 
 1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk) (NOT Bazel),
    on a (recent enough...) Debian/Ubuntu [with Go](https://go.dev/doc/install)

@@ -24,41 +24,76 @@ import com.google.common.net.MediaType;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.function.Supplier;
 
-public class StringResource implements ReadableResource {
+public class StringResource implements ReadableButNotWritableResource {
 
     static final String SCHEME = "string";
 
     private final String string;
     private final MediaType mediaType;
-    private final URI uri;
+    private final Supplier<URI> uriSupplier;
+    private URI uri;
 
+    public static Resource of(String text, MediaType mediaType, Supplier<URI> fragmentSupplier) {
+        if (text == null || text.isBlank()) {
+            return new EmptyResource(mediaType, fragmentSupplier);
+        } else {
+            return new StringResource(text, mediaType, fragmentSupplier);
+        }
+    }
+
+    public static Resource of(String text, MediaType mediaType) {
+        if (text == null || text.isBlank()) {
+            return new EmptyResource(mediaType);
+        } else {
+            return new StringResource(text, mediaType);
+        }
+    }
+
+    public static Resource of(String text) {
+        return of(text, MediaType.PLAIN_TEXT_UTF_8);
+    }
+
+    @Deprecated // Use #of() instead! (Remove this.)
     public StringResource(String text) {
         this(text, MediaType.PLAIN_TEXT_UTF_8);
     }
 
+    @Deprecated // Use #of() instead! (Make protected instead public)
     public StringResource(String text, MediaType mediaType) {
+        this(
+                text,
+                mediaType,
+                () -> {
+                    try {
+                        return new URI(SCHEME, text, null);
+                    } catch (URISyntaxException e) {
+                        // This should never happen, if the escaping above is correct...
+                        throw new IllegalArgumentException("String is invalid in URI: " + text, e);
+                    }
+                });
+    }
+
+    protected StringResource(String text, MediaType mediaType, Supplier<URI> uriSupplier) {
         this.string = Objects.requireNonNull(text, "text");
         if ("".equals(text)) {
             throw new IllegalArgumentException(
                     "Empty string: not supported (because that's an invalid URI)");
         }
+
         this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
         if (!mediaType.charset().isPresent()) {
             throw new IllegalArgumentException(
                     "MediaType is missing required charset: " + mediaType);
         }
 
-        try {
-            this.uri = new URI(SCHEME, string, null);
-        } catch (URISyntaxException e) {
-            // This should never happen, if the escaping above is correct...
-            throw new IllegalArgumentException("String is invalid in URI: " + text, e);
-        }
+        this.uriSupplier = uriSupplier;
     }
 
     @Override
     public URI uri() {
+        if (uri == null) uri = uriSupplier.get();
         return uri;
     }
 

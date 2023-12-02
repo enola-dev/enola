@@ -37,4 +37,9 @@ public class TypeRegistryDescriptorProvider implements DescriptorProvider {
             throw new IllegalArgumentException(messageTypeURL, e);
         }
     }
+
+    @Override
+    public Descriptor findByName(String name) {
+        return typeRegistry.find(name);
+    }
 }

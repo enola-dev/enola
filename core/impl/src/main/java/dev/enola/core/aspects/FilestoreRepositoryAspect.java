@@ -42,6 +42,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+// TODO Rename (refactor) to FilestoreRepositoryEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
 public class FilestoreRepositoryAspect implements EntityAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(FilestoreRepositoryAspect.class);

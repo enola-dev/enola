@@ -1,0 +1,52 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2024 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.enola.common.io.mediatype;
+
+import static com.google.common.net.MediaType.create;
+
+import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.net.MediaType;
+
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * The "text/markdown" media type, as per <a href="https://www.rfc-editor.org/rfc/rfc7763.html">RFC
+ * 7763</a> (and <a href="https://www.rfc-editor.org/rfc/rfc7764.html">RFC 7764</a>).
+ */
+public class MarkdownMediaTypes implements MediaTypeProvider {
+
+    // TODO Distinguish https://commonmark.org from GFH et al. via a variant parameter; see
+    // https://www.iana.org/assignments/markdown-variants/markdown-variants.xhtml
+
+    public static final MediaType MARKDOWN_UTF_8 =
+            create("text", "markdown").withCharset(Charsets.UTF_8);
+    ;
+
+    @Override
+    public Map<String, MediaType> extensionsToTypes() {
+        return ImmutableMap.of("md", MARKDOWN_UTF_8);
+    }
+
+    @Override
+    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return ImmutableMap.of(MARKDOWN_UTF_8, ImmutableSet.of(create("text", "x-markdown")));
+    }
+}

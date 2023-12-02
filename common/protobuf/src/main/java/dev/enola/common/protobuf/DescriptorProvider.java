@@ -20,5 +20,9 @@ package dev.enola.common.protobuf;
 import com.google.protobuf.Descriptors.Descriptor;
 
 public interface DescriptorProvider {
+
+    // TODO Rename to findByTypeUrl() for consistency
     Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+
+    Descriptor findByName(String name);
 }

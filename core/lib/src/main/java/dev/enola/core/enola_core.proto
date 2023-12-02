@@ -18,6 +18,7 @@ syntax = "proto3";
 
 package dev.enola.core;
 
+import "core/lib/src/main/java/dev/enola/core/enola_ext.proto";
 import "google/protobuf/any.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
@@ -33,7 +34,6 @@ option go_package = "dev/enola/core";
 // https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp,
 // et al.
 message Thing {
-  // TODO URI for Linked Data...
   oneof kind {
     // NB: There are intentionally no other "basic types" than string; because
     // this is ultimately only intended for end-user viewing (so we convert
@@ -41,7 +41,6 @@ message Thing {
     LinkedText text = 4;
     List list = 5;
     Struct struct = 6;
-    // TODO Map?
   }
   message LinkedText {
     string string = 1;

@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023-2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# yaml-language-server: $schema=../../enola/schemas/Types.schema.json
+
+# TODO Demo how to alternative declare this in library.proto, with extensions.
+
+types:
+  - name: enola.dev/demo/library/book
+    proto: library.proto#dev.enola.demo.library.Book
+    emoji: 📖
+    properties:
+      openlibrary:
+        link: https://openlibrary.org/search?isbn={path.isbn}
+        labels:
+          en: Open Library
+      google:
+        link: https://www.google.com/search?tbm=bks&q=isbn:{path.isbn}
+        labels:
+          en: Google Book Search
+          fr: Recherche de Livres sur Google
+      urn:
+        # https://en.m.wikipedia.org/wiki/Uniform_Resource_Name
+        link: urn:isbn:{isbn}
+
+  - name: enola.dev/demo/library/favorites
+    proto: dev.enola.demo.library.Favorites
+    emoji: ⭐

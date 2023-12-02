@@ -18,6 +18,7 @@
 package dev.enola.core;
 
 import dev.enola.core.iri.URITemplateMatcherChain;
+import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
@@ -81,6 +82,10 @@ class EnolaServiceRegistry implements EnolaService {
             b.add(uriTemplateWithoutPath, service);
 
             return this;
+        }
+
+        public void register(Type type, EnolaService service) {
+            b.add(type.getUri(), service);
         }
 
         public EnolaServiceRegistry build() {

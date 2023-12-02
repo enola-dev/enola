@@ -21,7 +21,7 @@ import static com.google.common.net.MediaType.create;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import java.util.Map;
@@ -41,7 +41,7 @@ public class YamlMediaType implements MediaTypeProvider {
     public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
         return ImmutableMap.of(
                 YAML_UTF_8,
-                Sets.newHashSet(
+                ImmutableSet.of(
                         create("text", "yaml"),
                         create("text", "x-yaml"),
                         create("application", "x-yaml")));

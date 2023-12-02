@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$ref": "#/definitions/FileSystemRepository",
+  "definitions": {
+    "FileSystemRepository": {
+      "properties": {
+        "path": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "format": {
+          "enum": [
+            "FORMAT_UNSPECIFIED",
+            0,
+            "FORMAT_TEXTPROTO",
+            1,
+            "FORMAT_YAML",
+            2,
+            "FORMAT_JSON",
+            3
+          ],
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Format"
+        }
+      },
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object"
+        }
+      ],
+      "title": "File System Repository"
+    }
+  }
+}
