@@ -31,14 +31,14 @@ $ ./enola
 ...
 ```
 
-Each sub-command's help can be shown either with `enola help SUBCOMMAND` or `enola SUBCOMMAND --help`.
+Each sub-command's help can be shown either with `enola help SUBCOMMAND` (better) or `enola SUBCOMMAND --help` (not recommended).
 
 ## DocGen
 
 [Documentation Generation](../docgen/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola docgen --help
+```bash cd .././.././..
+$ ./enola help docgen
 ...
 ```
 
@@ -46,8 +46,8 @@ $ ./enola docgen --help
 
 [Get Entity](../get/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola get --help
+```bash cd .././.././..
+$ ./enola help get
 ...
 ```
 
@@ -55,8 +55,8 @@ $ ./enola get --help
 
 [List Entities](../list/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola list --help
+```bash cd .././.././..
+$ ./enola help list
 ...
 ```
 
@@ -66,8 +66,8 @@ Because Entity Kinds are Entites themselves, `list` [can also be used to see the
 
 [The built-in HTTP Web Server](../server/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola server --help
+```bash cd .././.././..
+$ ./enola help server
 ...
 ```
 
@@ -75,8 +75,8 @@ $ ./enola server --help
 
 [Executable Markdown](../execmd/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola execmd --help
+```bash cd .././.././..
+$ ./enola help execmd
 ...
 ```
 
@@ -84,8 +84,8 @@ $ ./enola execmd --help
 
 [Rosetta](../rosetta/index.md) has the following options:
 
-```bash $? cd .././.././..
-$ ./enola rosetta --help
+```bash cd .././.././..
+$ ./enola help rosetta
 ...
 ```
 
