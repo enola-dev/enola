@@ -23,7 +23,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -86,7 +86,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v16.0.6
+    rev: v17.0.6
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -98,7 +98,7 @@ repos:
         exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
 
   - repo: https://github.com/yoheimuta/protolint
-    rev: v0.46.0
+    rev: v0.46.3
     hooks:
       - id: protolint
 
@@ -107,13 +107,13 @@ repos:
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
   # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.10.0
+    rev: v2.11.0
     hooks:
       - id: pretty-format-java
         args: [--autofix, --aosp, --google-java-formatter-version=1.16.0]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: markdownlint-cli2
         exclude: (^.github/|src/test/resources/|docs/use/docgen/docgen.md)
@@ -128,7 +128,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 6.3.3
+    rev: 6.3.3.1
     hooks:
       - id: buildifier
         args: &args
@@ -137,7 +137,7 @@ repos:
         args: *args
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.3
+    rev: v4.0.0-alpha.3
     hooks:
       - id: prettier
         exclude: ^docs/use|core/impl/src/test/resources
@@ -146,7 +146,7 @@ repos:
 
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.2
+    rev: 2.7.3
     hooks:
       - id: editorconfig-checker
 

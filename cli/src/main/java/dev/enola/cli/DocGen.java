@@ -48,7 +48,8 @@ public class DocGen extends CommandWithModel {
             required = true,
             defaultValue = "Mermaid",
             description =
-                    "Type of diagrams to generate (${COMPLETION-CANDIDATES}; default: ${DEFAULT-VALUE})")
+                    "Type of diagrams to generate (${COMPLETION-CANDIDATES}; default:"
+                            + " ${DEFAULT-VALUE})")
     Options.DiagramType diagram;
 
     @Option(
