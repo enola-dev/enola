@@ -7,15 +7,7 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
 
-  "cSpell.words": [
-    "Bazel",
-    "bazelisk",
-    "Classpath",
-    "Enola",
-    "Intelli",
-    "protolint",
-    "textproto"
-  ],
+  "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
 
   "editor.formatOnType": true,
   "editor.formatOnSave": true,
@@ -86,11 +78,11 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/*.crswap": true,
     "**/.classpath": true,
-    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/*.crswap": true,
+    "**/.factorypath": true,
     "**/eclipse-bin/": true,
     "**/eclipse-testbin/": true,
     "**/.bazeltargets": true,
@@ -116,7 +108,8 @@
     "web": false,
     "node_modules": false,
     ".be": false,
-    "bin": false
+    "bin": false,
+    ".devcontainer": false
   },
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
   "java.compile.nullAnalysis.mode": "automatic",

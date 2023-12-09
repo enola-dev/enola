@@ -18,6 +18,8 @@
 
 # IDE
 
+<!-- TODO Reorder! Simplify. -->
+
 ## Eclipse
 
 Eclipse is not actively supported by this project as an IDE.
@@ -61,8 +63,21 @@ $ sudo apt get install clang-format
 
 ## Web IDE
 
-In order to work on this project with a purely Web-based IDE, which is great to hack from e.g. a Tablet or Work Computer or some such setup,
-we recommend you use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
+
+Web-based IDEs are great to easily work from any computer.
+
+We recommend you use GitHub Codespaces to contribute to this project by clicking on the button above.
+
+This project is configured to automatically configure your Codespace with all required tools. If anything doesn't just work "out of the box", please [create an issue](https://github.com/enola-dev/enola/issues).
+
+While the 32 GB disk space of the Codespace default _Machine Type_ is sufficient, its _2-core • 8 GB RAM_ is too limited for sufficiently efficient building, and at very least the _4-core • 16GB RAM_ (or bigger) is highly recommended.
+
+If you are missing your fancy custom Shell configuration that you have built over the last 100 years,
+you should [set up your dotfiles for Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
+such as [e.g. this dude did in his dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc#github-codespaces).
+
+Alternatively, you can use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
 together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
 e.g. to a computer at home, or a VM in the Cloud.
 

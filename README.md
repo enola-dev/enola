@@ -27,3 +27,5 @@ Enola is a Graph-based analytics system for exploring relationships between comm
 This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
 merchantability, or fitness for a particular purpose. ([`LICENSE`](LICENSE))
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
