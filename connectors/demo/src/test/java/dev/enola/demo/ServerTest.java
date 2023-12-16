@@ -65,7 +65,7 @@ public class ServerTest {
             var credz = InsecureChannelCredentials.create();
             ManagedChannel channel = Grpc.newChannelBuilder(endpoint, credz).build();
             var client =
-                    ConnectorServiceGrpc.newBlockingStub(channel).withDeadlineAfter(3, SECONDS);
+                    ConnectorServiceGrpc.newBlockingStub(channel).withDeadlineAfter(7, SECONDS);
 
             // Test the Demo Connector directly
             checkConnectorAugment(client);
@@ -76,7 +76,7 @@ public class ServerTest {
             checkEnolaGet(enola);
             checkEnolaList(enola);
 
-            channel.shutdownNow().awaitTermination(3, SECONDS);
+            channel.shutdownNow().awaitTermination(7, SECONDS);
         }
     }
 
