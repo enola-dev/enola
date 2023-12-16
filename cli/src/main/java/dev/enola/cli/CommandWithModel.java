@@ -80,13 +80,13 @@ public abstract class CommandWithModel implements CheckedRunnable {
     static class ModelOrServer {
 
         @Option(
-                names = {"--model"},
+                names = {"--model", "-m"},
                 required = true,
                 description = "URI to EntityKinds (e.g. file:model.yaml)")
         private URI model;
 
         @Option(
-                names = {"--server"},
+                names = {"--server", "-s"},
                 required = true,
                 description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
         private String server;
