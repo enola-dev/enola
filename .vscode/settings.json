@@ -30,6 +30,10 @@
   "markdown.validate.fragmentLinks.enabled": "error",
   "markdown.validate.fileLinks.markdownFragmentLinks": "error",
 
+  "[json5]": {
+    "editor.tabSize": 2
+  },
+
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
