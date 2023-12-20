@@ -98,7 +98,7 @@ repos:
         exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
 
   - repo: https://github.com/yoheimuta/protolint
-    rev: v0.46.3
+    rev: v0.47.2
     hooks:
       - id: protolint
 
@@ -107,7 +107,7 @@ repos:
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
   # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.11.0
+    rev: v2.12.0
     hooks:
       - id: pretty-format-java
         args: [--autofix, --aosp, --google-java-formatter-version=1.16.0]
@@ -128,7 +128,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 6.3.3.1
+    rev: 6.4.0
     hooks:
       - id: buildifier
         args: &args
@@ -137,7 +137,7 @@ repos:
         args: *args
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.3
+    rev: v4.0.0-alpha.7
     hooks:
       - id: prettier
         exclude: ^docs/use|core/impl/src/test/resources
