@@ -23,7 +23,7 @@ maven.install(
     artifacts = [
         "junit:junit:4.13.2",
         # Google
-        "com.google.guava:guava:32.1.2-jre",
+        "com.google.guava:guava:33.0.0-jre",
         "com.google.truth:truth:1.1.5",
         "com.google.template:soy:2023-09-13",
         # Protobuf
