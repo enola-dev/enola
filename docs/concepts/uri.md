@@ -40,7 +40,7 @@ planned for the future.
 An Enola URI is defined as `enola:{ns}.{entity}/path1/path2/...`; for example:
 `enola:demo.foo/abc/def`. The namespace (NS) and entity define the "kind" (type)
 of the entity and the paths an instance of it. This is further defined in
-[the Proto API doc](../dev/proto/core#id).
+[the Proto API doc](../dev/proto/core.md#id).
 
 The `enola:` URI scheme prefix is often omitted when an URI is not in the full
 normal form described on this page. Within Enola, the Enola CLI and Web UI
@@ -54,7 +54,7 @@ user models. <!-- TODO Later change these to be enola.dev/schema etc. -->
 
 Enola alternatively also accepts a
 [_Uniform Resource Name_](https://en.wikipedia.org/wiki/Uniform_Resource_Name)
-syntax; e.g. `urn:enola.dev:demo.foo:xyz:abc`.
+syntax; e.g. `urn:enola:demo.foo/abc/def`.
 
 ## TODO Planned Future Extensions
 
