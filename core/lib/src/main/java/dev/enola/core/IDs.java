@@ -37,8 +37,10 @@ import java.util.Map;
  * <ul>
  *   <li>Our: demo.foo/abc/def
  *   <li>URI: enola:demo.foo/abc/def
- *   <li>URN: urn:enola.dev:demo.foo:abc:def
+ *   <li>URN: urn:enola:demo.foo/abc/def
  * </ul>
+ *
+ * This is the predecessor of {@link ERI}. The intention is to eventually completely remove this.
  */
 public final class IDs {
 
