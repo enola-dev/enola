@@ -18,7 +18,7 @@ kinds:
   - id:
       ns: demo
       entity: foo
-      paths: [ name ]
+      paths: [name]
     label: Fo-o
     emoji: 💂
     doc_url: demo-model.md#foo
@@ -26,7 +26,7 @@ kinds:
   - id:
       ns: demo
       entity: bar
-      paths: [ foo, name ]
+      paths: [foo, name]
     label: Bar (not Bard)
     emoji: 👩‍🎤
     doc_url: demo-model.md#bar
@@ -44,7 +44,7 @@ kinds:
       wiki:
         label: Wikipedia
         description: founded by Jimmy Wales
-        uri_template: https://en.wikipedia.org/w/index.php?fulltext=Search&search={name}
+        uri_template: https://en.wikipedia.org/w/index.php?fulltext=Search&search={path.name}
 
       # data: ?
       zzz:

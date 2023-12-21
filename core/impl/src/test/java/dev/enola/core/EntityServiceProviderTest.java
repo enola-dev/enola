@@ -42,6 +42,8 @@ import java.nio.file.Path;
 
 public class EntityServiceProviderTest {
 
+    // TODO Test coverage of error handling, with https://docs.enola.dev/use/connector/#error
+
     // TODO EntityKinds from file instead of programmatically constructing may be easier to read?
 
     @Test

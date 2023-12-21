@@ -17,19 +17,36 @@
  */
 package dev.enola.core.iri;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.SortedSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class URITemplateMatcherChain<T> {
 
-    private final Collection<Entry<URITemplateSplitter, T>> splitters =
-            new ConcurrentLinkedQueue<>();
+    private final Comparator<Entry<URITemplateSplitter, T>> COMPARATOR =
+            new Comparator<>() {
+                @Override
+                public int compare(
+                        Entry<URITemplateSplitter, T> o1, Entry<URITemplateSplitter, T> o2) {
+                    return o2.getKey().getLength() - o1.getKey().getLength();
+                }
+            };
+
+    private final SortedSet<Entry<URITemplateSplitter, T>> splitters =
+            new ConcurrentSkipListSet<>(COMPARATOR);
 
     public void add(String uriTemplate, T key) {
+        requireNonNull(key);
+        requireNonNull(uriTemplate);
+        if (has(uriTemplate)) {
+            throw new IllegalArgumentException("Already added: " + uriTemplate);
+        }
         splitters.add(new SimpleEntry<>(new URITemplateSplitter(uriTemplate), key));
     }
 
@@ -41,5 +58,16 @@ public class URITemplateMatcherChain<T> {
             }
         }
         return Optional.empty();
+    }
+
+    private boolean has(String uriTemplate) {
+        requireNonNull(uriTemplate);
+        for (var splitter : splitters) {
+            var it = splitter.getKey();
+            if (it.equals(uriTemplate)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -41,6 +41,8 @@ import java.util.Map;
 
 public class UriTemplateAspect implements EntityAspectRepeater {
 
+    // TODO Fail if an URI Template refers to an unknown variable/value (as-is it's just ignored)
+
     private final Map<String, URITemplate> linkTemplates;
     private final Map<String, IdTemplates> relatedTemplates;
 
@@ -84,6 +86,8 @@ public class UriTemplateAspect implements EntityAspectRepeater {
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
+        // TODO Performance: Skip entirely if model has no uriTemplate...
+
         // Prepare all available template placeholder variables
         var variablesBuilder = VariableMap.newBuilder();
         var map = IDs.pathMap(entityKind.getId(), entity.getId());

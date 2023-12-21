@@ -38,13 +38,37 @@ public class URITemplateMatcherChainTest {
 
         assertThat(chain.match("thing/")).isEmpty();
         assertThat(chain.match("thing/hello"))
-                .hasValue(new SimpleEntry(1, ImmutableMap.of("name", "hello")));
+                .hasValue(new SimpleEntry<>(1, ImmutableMap.of("name", "hello")));
         assertThat(chain.match("people/donald-duck/overview"))
                 .hasValue(
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 2, ImmutableMap.of("firstName", "donald", "lastName", "duck")));
 
         assertThat(chain.match("")).isEmpty();
         assertThat(chain.match("another/something")).isEmpty();
+    }
+
+    @Test
+    public void matchLongest() throws Exception {
+        var chain1 = new URITemplateMatcherChain<Integer>();
+        chain1.add("aNS.anEntityKindName", 1);
+        chain1.add("aNS.anEntityKindName/{foo}/{name}", 2);
+        // Tihs is intentionally (just 1 character) SHORTER than the previous
+        chain1.add("aNS.anEntityKindName/{x}/{y}/{z}", 3);
+        checkMatchLongest(chain1);
+
+        // Let's make sure this also works if the registration is in the other order
+        var chain2 = new URITemplateMatcherChain<Integer>();
+        chain2.add("aNS.anEntityKindName/{foo}/{name}", 2);
+        chain2.add("aNS.anEntityKindName", 1);
+        checkMatchLongest(chain2);
+    }
+
+    private void checkMatchLongest(URITemplateMatcherChain<Integer> chain) {
+        assertThat(chain.match("somethingelse")).isEmpty();
+        assertThat(chain.match("aNS.anEntityKindName"))
+                .hasValue(new SimpleEntry<>(1, ImmutableMap.of()));
+        assertThat(chain.match("aNS.anEntityKindName/hello/world"))
+                .hasValue(new SimpleEntry<>(2, ImmutableMap.of("foo", "hello", "name", "world")));
     }
 }
