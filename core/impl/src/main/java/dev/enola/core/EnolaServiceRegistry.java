@@ -37,15 +37,16 @@ class EnolaServiceRegistry implements EnolaService {
 
     @Override
     public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-        return getDelegate(r.getId()).getEntity(r);
+        return getDelegate(r.getEri()).getEntity(r);
     }
 
     @Override
     public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        return getDelegate(r.getId()).listEntities(r);
+        return getDelegate(r.getEri()).listEntities(r);
     }
 
-    private EnolaService getDelegate(ID id) {
+    private EnolaService getDelegate(String eri) {
+        var id = IDs.parse(eri);
         var lookup = IDs.withoutPath(id);
         var delegate = registry.get(lookup);
         if (delegate == null) {

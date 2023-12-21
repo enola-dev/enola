@@ -52,7 +52,8 @@ public class EntityServiceProviderTest {
         var service = new EnolaServiceProvider().get(ekr);
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
-        var request = GetEntityRequest.newBuilder().setId(eid).build();
+        var eri = IDs.toPath(eid);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
         assertThat(entity.getId()).isEqualTo(eid);
@@ -87,7 +88,8 @@ public class EntityServiceProviderTest {
         new FileResource(path).charSink().write("related:\n  rel1:\n    entity: \"cat\"");
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("king-charles").build();
-        var request = GetEntityRequest.newBuilder().setId(eid).build();
+        var eri = IDs.toPath(eid);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
 
@@ -113,7 +115,8 @@ public class EntityServiceProviderTest {
         var service = new EnolaServiceProvider().get(ekr);
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
-        var request = GetEntityRequest.newBuilder().setId(eid).build();
+        var eri = IDs.toPath(eid);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var ex = assertThrows(EnolaException.class, () -> service.getEntity(request));
         assertThat(ex.getMessage()).isEqualTo("failed!");
     }
@@ -130,7 +133,8 @@ public class EntityServiceProviderTest {
         var service = new EnolaServiceProvider().get(ekr);
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
-        var request = GetEntityRequest.newBuilder().setId(eid).build();
+        var eri = IDs.toPath(eid);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         assertThrows(EnolaException.class, () -> service.getEntity(request));
     }
 
@@ -145,7 +149,8 @@ public class EntityServiceProviderTest {
             var service = new EnolaServiceProvider().get(ekr);
 
             var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
-            var request = GetEntityRequest.newBuilder().setId(eid).build();
+            var eri = IDs.toPath(eid);
+            var request = GetEntityRequest.newBuilder().setEri(eri).build();
             var entity = service.getEntity(request).getEntity();
             assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
         }
@@ -162,13 +167,14 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
 
-        var getRequest = GetEntityRequest.newBuilder().setId(eid).build();
+        var eri = IDs.toPath(eid);
+        var getRequest = GetEntityRequest.newBuilder().setEri(eri).build();
         var getResponse = service.getEntity(getRequest);
         assertWithMessage("data.schema")
                 .that(getResponse.getEntity().getDataOrThrow("schema"))
                 .isNotNull();
 
-        var listRequest = ListEntitiesRequest.newBuilder().setId(kid).build();
+        var listRequest = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var listResponse = service.listEntities(listRequest);
         assertThat(listResponse.getEntitiesList()).hasSize(2);
     }

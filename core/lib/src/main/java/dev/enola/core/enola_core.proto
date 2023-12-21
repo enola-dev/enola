@@ -30,7 +30,7 @@ option go_package = "dev/enola/core";
 // TODO Replace this with //docs/concepts/uri.md!
 // ID of an Entity known to Enola, fully qualified.
 // Can be formatted to and parsed from several different string text forms,
-// see class dev.enola.core.IDs.
+// see Java class dev.enola.core.IDs.java
 message ID {
   // Namespace.
   // Serves to distinguish same entity names (below).
@@ -93,14 +93,16 @@ message Entity {
 }
 
 message GetEntityRequest {
-  // This ID has to have all of its 'path' fully set.
-  ID id = 1;
+  // This is an https://docs.enola.dev/concepts/uri.
+  // TODO repeated?!
+  string eri = 1;
 
   // Request to inline Entity#link, by the same string key as used there.
   // (Conceptually inspired by e.g. GraphQL architecture.)
   // TODO repeated string inline_links = 2;
 }
 message GetEntityResponse {
+  // TODO Any instead of Entity
   Entity entity = 1;
 
   /*
@@ -124,8 +126,8 @@ message GetEntityResponse {
 // paths; but if it had any other related, one could filter one or several of
 // those.
 message ListEntitiesRequest {
-  // The ID (with path) of the EntityKind to be returned.
-  dev.enola.core.ID id = 1;
+  // This is an https://docs.enola.dev/concepts/uri.
+  string eri = 1;
 
   // Filters on related entities.
   // The key is as in EntityKind or Entity's .related,

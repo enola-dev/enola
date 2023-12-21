@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.docgen.Options;
@@ -66,7 +67,8 @@ public class DocGen extends CommandWithModel {
 
         var eks = new ArrayList<EntityKind>();
         var ekid = ID.newBuilder().setNs("enola").setEntity("entity_kind").build();
-        var response = service.listEntities(ListEntitiesRequest.newBuilder().setId(ekid).build());
+        var eri = IDs.toPath(ekid);
+        var response = service.listEntities(ListEntitiesRequest.newBuilder().setEri(eri).build());
         for (var entity : response.getEntitiesList()) {
             eks.add(entity.getDataOrThrow("schema").unpack(EntityKind.class));
         }

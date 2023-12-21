@@ -26,7 +26,6 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.core.EnolaException;
-import dev.enola.core.IDs;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
@@ -72,17 +71,16 @@ public class UI implements WebHandler {
     private String getHTML(URI uri) throws EnolaException, IOException {
         var path = uri.getPath();
         if (path.startsWith("/ui/entity/")) {
-            var idString = path.substring("/ui/entity/".length());
-            var id = IDs.parse(idString);
-            return getEntityHTML(id);
+            var eri = path.substring("/ui/entity/".length());
+            return getEntityHTML(eri);
         } else {
             // TODO Create HTML page “frame” from .soy, with body from another .soy
             return new ClasspathResource("404.html").charSource().read();
         }
     }
 
-    private String getEntityHTML(ID id) throws EnolaException {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+    private String getEntityHTML(String eri) throws EnolaException {
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
 

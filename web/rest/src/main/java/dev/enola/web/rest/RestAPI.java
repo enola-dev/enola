@@ -26,10 +26,8 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaException;
-import dev.enola.core.IDs;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
@@ -64,31 +62,29 @@ public class RestAPI implements WebHandler {
     private void writeJSON(URI uri, WritableResource resource) throws EnolaException, IOException {
         var path = uri.getPath();
         if (path.startsWith("/api/entity/")) {
-            var idString = path.substring("/api/entity/".length());
-            var id = IDs.parse(idString);
-            getEntityJSON(id, resource);
+            var eri = path.substring("/api/entity/".length());
+            getEntityJSON(eri, resource);
         } else if (path.startsWith("/api/entities/")) {
-            var idString = path.substring("/api/entities/".length());
-            var id = IDs.parse(idString);
-            listEntityJSON(id, resource);
+            var eri = path.substring("/api/entities/".length());
+            listEntityJSON(eri, resource);
         } else {
             // TODO 404 instead 500 (needs API changes)
             throw new IllegalArgumentException("404 - Unknown URI!");
         }
     }
 
-    private void getEntityJSON(ID id, WritableResource resource)
+    private void getEntityJSON(String eri, WritableResource resource)
             throws EnolaException, IOException {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
 
         protoIO.write(entity, resource);
     }
 
-    private void listEntityJSON(ID id, WritableResource resource)
+    private void listEntityJSON(String eri, WritableResource resource)
             throws EnolaException, IOException {
-        var request = ListEntitiesRequest.newBuilder().setId(id).build();
+        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var response = service.listEntities(request);
         for (var entity : response.getEntitiesList()) {
             protoIO.write(entity, resource);

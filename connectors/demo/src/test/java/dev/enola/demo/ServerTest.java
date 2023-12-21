@@ -30,6 +30,7 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.IDs;
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
@@ -114,7 +115,8 @@ public class ServerTest {
 
     private void checkEnolaGet(EnolaService enola) throws EnolaException, IOException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var eri = IDs.toPath(id);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = enola.getEntity(request);
         Entity entity = response.getEntity();
         assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
@@ -133,7 +135,8 @@ public class ServerTest {
 
     private void checkEnolaList(EnolaService enola) throws EnolaException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").build();
-        var request = ListEntitiesRequest.newBuilder().setId(id).build();
+        var eri = IDs.toPath(id);
+        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var response = enola.listEntities(request);
         var entities = response.getEntitiesList();
 

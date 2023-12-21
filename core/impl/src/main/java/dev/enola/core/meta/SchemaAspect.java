@@ -48,7 +48,12 @@ public class SchemaAspect implements EntityAspect {
 
     @Override
     public void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException {
-        var name = entity.getId().getPaths(0);
+        var id = entity.getId();
+        if (id.getPathsCount() != 1) {
+            throw new EnolaException("Entity ID must have 1 Path:" + id);
+        }
+        var name = id.getPaths(0);
+
         var descriptor = esp.getTypeRegistryWrapper().find(name).toProto();
         var any = pack(descriptor, "type.googleapis.com/");
         entity.putData("proto", any);

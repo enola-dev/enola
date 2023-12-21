@@ -25,6 +25,7 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.core.proto.GetEntityRequest;
@@ -66,7 +67,8 @@ public class EnolaGrpcServerTest {
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client) {
         var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var eri = IDs.toPath(id);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = client.getEntity(request);
         assertThat(response.getEntity().getLinkMap()).hasSize(1);
     }

@@ -38,7 +38,8 @@ class EntityAspectService implements EnolaService {
     @Override
     public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
         var entity = Entity.newBuilder();
-        entity.setId(r.getId());
+        var id = IDs.parse(r.getEri());
+        entity.setId(id);
 
         for (var aspect : registry) {
             aspect.augment(entity, entityKind);
@@ -50,10 +51,11 @@ class EntityAspectService implements EnolaService {
 
     @Override
     public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
+        var id = IDs.parse(r.getEri());
         var entities = new ArrayList<Entity.Builder>();
         var connectorRequest =
                 ConnectorServiceListRequest.newBuilder()
-                        .setId(r.getId())
+                        .setId(id)
                         .putAllRelatedFilter(r.getRelatedFilterMap())
                         .build();
 
