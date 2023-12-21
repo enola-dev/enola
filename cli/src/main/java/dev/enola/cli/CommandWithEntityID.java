@@ -27,7 +27,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
-import dev.enola.core.proto.ID;
 
 import picocli.CommandLine;
 
@@ -42,10 +41,9 @@ public abstract class CommandWithEntityID extends CommandWithModel {
             description = "Output Format: ${COMPLETION-CANDIDATES}; default=${DEFAULT-VALUE}")
     Format format;
 
-    // TODO @Parameters(index = "0..*") List<String> ids;
-    // TODO ID instead of String, with https://picocli.info/#_strongly_typed_everything
-    @CommandLine.Parameters(index = "0", paramLabel = "id", description = "ID of Entity")
-    String idString;
+    // TODO @Parameters(index = "0..*") List<String> eris;
+    @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI of Entity")
+    String eri;
 
     private WriterResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
@@ -58,19 +56,20 @@ public abstract class CommandWithEntityID extends CommandWithModel {
                         .getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
 
-        ID id = IDs.parse(idString); // TODO replace with ITypeConverter
-        // TODO Validate id; here it must have ns+name+path!
+        var id = IDs.parse(eri);
+        var ekid = IDs.entityKind(id);
+        var entityKindERI = IDs.toPath(ekid);
 
-        var request1 = GetEntityRequest.newBuilder().setId(IDs.entityKind(id)).build();
+        var request1 = GetEntityRequest.newBuilder().setEri(entityKindERI).build();
         var response1 = service.getEntity(request1);
         var ek = response1.getEntity().getDataOrThrow("schema").unpack(EntityKind.class);
 
         resource = new WriterResource(out, format.toMediaType());
 
-        run(service, ek, id);
+        run(service, ek, eri);
     }
 
-    protected abstract void run(EnolaServiceBlockingStub service, EntityKind ek, ID id)
+    protected abstract void run(EnolaServiceBlockingStub service, EntityKind ek, String eri)
             throws Exception;
 
     protected void write(Entity entity) throws IOException {

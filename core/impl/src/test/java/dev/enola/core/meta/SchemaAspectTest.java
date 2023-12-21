@@ -23,6 +23,7 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.IDs;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
@@ -39,7 +40,8 @@ public class SchemaAspectTest {
 
     @Test
     public void list() throws ValidationException, EnolaException {
-        var request = ListEntitiesRequest.newBuilder().setId(schemaKindID).build();
+        var eri = IDs.toPath(schemaKindID);
+        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var response = service.listEntities(request);
 
         assertThat(response.getEntitiesList()).hasSize(38);
@@ -48,7 +50,8 @@ public class SchemaAspectTest {
     @Test
     public void get() throws ValidationException, EnolaException {
         var id = schemaKindID.clone().addPaths("google.protobuf.Timestamp");
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+        var eri = IDs.toPath(id);
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
 
         assertThat(response.getEntity().getDataOrThrow("proto")).isNotNull();

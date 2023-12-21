@@ -20,7 +20,6 @@ package dev.enola.cli;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.ID;
 
 import picocli.CommandLine.Command;
 
@@ -28,8 +27,9 @@ import picocli.CommandLine.Command;
 public class Get extends CommandWithEntityID {
 
     @Override
-    protected void run(EnolaServiceBlockingStub service, EntityKind ek, ID id) throws Exception {
-        var request = GetEntityRequest.newBuilder().setId(id).build();
+    protected void run(EnolaServiceBlockingStub service, EntityKind ek, String eri)
+            throws Exception {
+        var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = service.getEntity(request);
         var entity = response.getEntity();
 
