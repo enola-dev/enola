@@ -28,8 +28,10 @@ import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
 
 import org.junit.Test;
 
@@ -66,10 +68,27 @@ public class EnolaGrpcServerTest {
     }
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client) {
+        checkGet(client);
+        checkList(client);
+    }
+
+    private void checkGet(EnolaServiceBlockingStub client) {
         var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
         var eri = IDs.toPath(id);
         var request = GetEntityRequest.newBuilder().setEri(eri).build();
         var response = client.getEntity(request);
-        assertThat(response.getEntity().getLinkMap()).hasSize(1);
+        var linkMap = response.getEntity().getLinkMap();
+        assertThat(linkMap).hasSize(1);
+        assertThat(linkMap.get("wiki"))
+                .isEqualTo("https://en.wikipedia.org/w/index.php?fulltext=Search&search=b");
+    }
+
+    private void checkList(EnolaServiceBlockingStub client) {
+        var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
+        var eri = IDs.toPath(id);
+        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
+        var response = client.listEntities(request);
+        assertThat(response.getEntitiesList()).isEmpty();
+        // TODO Make this more interesting!
     }
 }

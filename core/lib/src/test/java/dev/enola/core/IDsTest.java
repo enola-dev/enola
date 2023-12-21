@@ -36,27 +36,30 @@ public class IDsTest {
     String path0 = "foo";
     URI uri0 = URI.create("enola:" + path0);
     ID proto0 = ID.newBuilder().setEntity("foo").build();
+    String template0 = "foo";
 
     String path1 = "demo.foo";
     URI uri1 = URI.create("enola:" + path1);
     ID proto1 = ID.newBuilder().setNs("demo").setEntity("foo").build();
+    String template1 = "demo.foo";
 
     String path2 = "demo.foo/abc";
     URI uri2 = URI.create("enola:" + path2);
     ID proto2 = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("abc").build();
+    String template2 = "demo.foo/{abc}";
 
-    // String uri2 = "k8s:pod?network=prod&context=demo&namespace=test&name=hello";
-    String path3 = "k8s.pod/prod/demo/test/hello";
+    String path3 = "k8s.pod/network/context/namespace/name"; // e.g. "k8s.pod/prod/demo/test/hello"
     URI uri3 = URI.create("enola:" + path3);
     ID proto3 =
             ID.newBuilder()
                     .setNs("k8s")
                     .setEntity("pod")
-                    .addPaths("prod") // "network"
-                    .addPaths("demo") // "context"
-                    .addPaths("test") // "namespace"
-                    .addPaths("hello") // "name"
+                    .addPaths("network") // e.g. "prod"
+                    .addPaths("context") // e.g. "demo"
+                    .addPaths("namespace") // e.g. "test"
+                    .addPaths("name") // e.g. "hello"
                     .build();
+    String template3 = "k8s.pod/{network}/{context}/{namespace}/{name}";
 
     @Test
     public void testToPath() {
@@ -72,6 +75,14 @@ public class IDsTest {
         assertThat(IDs.toPathURI(proto1)).isEqualTo(uri1);
         assertThat(IDs.toPathURI(proto2)).isEqualTo(uri2);
         assertThat(IDs.toPathURI(proto3)).isEqualTo(uri3);
+    }
+
+    @Test
+    public void testToURITemplate() {
+        assertThat(IDs.toURITemplate(proto0)).isEqualTo(template0);
+        assertThat(IDs.toURITemplate(proto1)).isEqualTo(template1);
+        assertThat(IDs.toURITemplate(proto2)).isEqualTo(template2);
+        assertThat(IDs.toURITemplate(proto3)).isEqualTo(template3);
     }
 
     @Test

@@ -17,22 +17,22 @@
  */
 package dev.enola.core;
 
+import dev.enola.core.iri.URITemplateMatcherChain;
 import dev.enola.core.proto.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class EnolaServiceRegistry implements EnolaService {
 
-    private final Map<ID, EnolaService> registry = new HashMap<>();
+    private final URITemplateMatcherChain<EnolaService> matcher = new URITemplateMatcherChain<>();
 
-    public synchronized void register(ID id, EnolaService service) {
-        var lookup = IDs.withoutPath(id);
-        var existing = registry.get(lookup);
-        if (existing != null) {
-            throw new IllegalArgumentException("Service already registered for: " + lookup);
-        }
-        registry.put(lookup, service);
+    public synchronized void register(ID ekid, EnolaService service) {
+        // URI for get():
+        var uriTemplateWithPath = IDs.toURITemplate(ekid);
+        matcher.add(uriTemplateWithPath, service);
+
+        // URI for list():
+        var ekidWithoutPath = IDs.withoutPath(ekid);
+        var uriTemplateWithoutPath = IDs.toURITemplate(ekidWithoutPath);
+        matcher.add(uriTemplateWithoutPath, service);
     }
 
     @Override
@@ -46,12 +46,18 @@ class EnolaServiceRegistry implements EnolaService {
     }
 
     private EnolaService getDelegate(String eri) {
-        var id = IDs.parse(eri);
-        var lookup = IDs.withoutPath(id);
-        var delegate = registry.get(lookup);
-        if (delegate == null) {
-            throw new IllegalArgumentException("No Connector registered for: " + lookup);
-        }
+        var opt = matcher.match(eri);
+        opt.orElseThrow(
+                () ->
+                        new IllegalArgumentException(
+                                "No EnolaService handler registered for: " + eri));
+        var entry = opt.get();
+        var map = entry.getValue();
+        var delegate = entry.getKey();
+
+        // TODO map has to somehow be passed to the EnolaService!
+        // TODO Is it OK to ditch?! var lookup = IDs.withoutPath(IDs.parse(eri));
+
         return delegate;
     }
 }

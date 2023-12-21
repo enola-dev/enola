@@ -20,11 +20,9 @@ package dev.enola.core.iri;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.core.iri.URITemplatePatternizer.toNamesAndPattern;
-
 import org.junit.Test;
 
-public class URITemplatePatternizerTest {
+public class URITemplateSplitterTest {
 
     @Test
     public void example() throws Exception {
@@ -38,12 +36,21 @@ public class URITemplatePatternizerTest {
     }
 
     private void check(String template, String regexp, String... names) {
-        var namesAndPattern = toNamesAndPattern(template);
+        var namesAndPattern = new URITemplateSplitter(template);
 
-        var pattern = namesAndPattern.getValue();
+        var pattern = namesAndPattern.getPattern();
         assertThat(pattern.toString()).isEqualTo(regexp);
 
-        var keys = namesAndPattern.getKey();
+        var keys = namesAndPattern.getKeys();
         assertThat(keys).isEqualTo(newArrayList(names));
+    }
+
+    @Test
+    public void length() throws Exception {
+        assertThat(new URITemplateSplitter("").getLength()).isEqualTo(0);
+        assertThat(new URITemplateSplitter("/hello").getLength()).isEqualTo(6);
+        assertThat(new URITemplateSplitter("/hello/{msg}").getLength()).isEqualTo(8);
+        assertThat(new URITemplateSplitter("/hello/{message}").getLength()).isEqualTo(8);
+        assertThat(new URITemplateSplitter("/hello/{world}/{message}").getLength()).isEqualTo(10);
     }
 }

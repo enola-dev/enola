@@ -124,92 +124,26 @@ public final class IDs {
         return sb.toString();
     }
 
-    // TODO public static String toURN(ID id) {
-
-    /* TODO Re-implement later - or ditch?
-
-         * In text (string) form, it "looks" like an RFC 2396 Uniform Resource
-         * Identifier (URI, not URN), but this is just we want some "standard"-like
-         * format which humans are used to seeing. The real syntax is actually simpler
-         * and quite a bit more restricted, see
-         * https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax:
-         * The "authority" (//...) is not used (and IDs with them are rejected; see
-         * IDsTest.java).
-         * Things like a "cluster" or a "rack" or whatever "hierarchies" an entity may
-         * have are, by convention, not part of the entity (path), but represented as
-         * part of the query; for example:
-         *   k8s:pod?network=prod&context=demo&namespace=test&name=hello
-         * * The "path" is not actually a path, but just a name of a kind of entity
-         *   within that scheme. It cannot contain slashes.
-         * * The "query" (?...) is used to identify a specific entity (with one or
-         *   several names or UUID or whatever; specific to each entity).
-         * * The "fragment" (#...) is not used (and IDs with them are rejected; see
-         *   IDsTest.java).
-        public static ID parse(String s) {
-            java.net.URI uri = java.net.URI.create(s);
-            ID.Builder builder = ID.newBuilder();
-
-            if (uri.getScheme() == null) {
-                throw new IllegalArgumentException(s + " ID URI has no scheme: " + uri);
+    /**
+     * Transform ID into a RFC 6570 URI Template which can be used with an {@link
+     * dev.enola.core.iri.URITemplateSplitter} or an {@link com.github.fge.uritemplate.URITemplate}.
+     */
+    public static String toURITemplate(IDOrBuilder id) {
+        var sb = ekPath(id);
+        if (id.getPathsCount() > 0) {
+            sb.append('/');
+            for (int i = 0; i < id.getPathsCount(); i++) {
+                sb.append('{');
+                sb.append(id.getPaths(i));
+                sb.append('}');
+                if (i < id.getPathsCount() - 1) {
+                    sb.append('/');
+                }
             }
-            builder.setNs(uri.getScheme());
-
-            if (uri.getAuthority() != null) {
-                throw new IllegalArgumentException(s + " ID URI cannot have an //authority: " + uri);
-            }
-
-            if (uri.getFragment() != null) {
-                throw new IllegalArgumentException(s + " ID URI cannot have an #fragment: " + uri);
-            }
-
-            if (uri.getSchemeSpecificPart() == null) {
-                throw new IllegalArgumentException(s + " ID URI has no path: " + uri);
-            }
-            String path = uri.getSchemeSpecificPart();
-            int idx = path.indexOf('?');
-            if (idx == -1) builder.setEntity(uri.getSchemeSpecificPart());
-            else {
-                String entity = path.substring(0, idx);
-                builder.setEntity(entity);
-
-                Map<String, String> map = IDs.getQueryMap(uri);
-            }
-
-            // TODO builder.setSegments(i, segment)
-
-            return builder.build();
         }
 
-        // KEEP the original Query format, but use enola: as scheme,
-        // not the package 📦 as originally, that does into a dotted package
-        // and entity name; so e.g. enola:dev.enola.demo/foo?name=abc
-        public static String toQueryURI(ID id) {
-            if (Strings.isNullOrEmpty(id.getScheme()))
-                throw new IllegalArgumentException("ID proto has no scheme: " + id);
-            StringBuffer sb = new StringBuffer(id.getScheme());
-            sb.append(':');
-            if (Strings.isNullOrEmpty(id.getEntityKind()))
-                throw new IllegalArgumentException("ID proto has no entity: " + id);
-            sb.append(id.getEntityKind());
-
-            if (id.getSegmentsCount() > 0) sb.append('?');
-            sb.append(
-                    AMPERSAND_JOINER.join(
-                            parts.getQueryMap().entrySet().stream()
-                                    .map(
-                                            pair -> {
-                                                StringBuilder pairSB = new StringBuilder(pair.getKey());
-                                                if (pair.getValue() != null) {
-                                                    pairSB.append('=');
-                                                    pairSB.append(pair.getValue());
-                                                }
-                                                return pairSB.toString();
-                                            })
-                                    .iterator()));
-
-            return sb.toString();
-        }
-    */
+        return sb.toString();
+    }
 
     public static Map<String, String> pathMap(ID kindID, ID entityID) {
         if (entityID.getPathsCount() != kindID.getPathsCount()) {
