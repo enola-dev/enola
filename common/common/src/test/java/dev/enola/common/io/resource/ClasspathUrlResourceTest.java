@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023 The Enola <https://enola.dev> Authors
+ * Copyright 2023-2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,8 +83,8 @@ public class ClasspathUrlResourceTest {
         checkBinary("test.png", PNG, 3435);
 
         checkText("test.json", JSON_UTF_8, Optional.of(UTF_8), "{}\n");
-        checkText("test.proto", PROTO_UTF_8, Optional.of(UTF_8), 744);
-        checkText("test.textproto", PROTOBUF_TEXTPROTO_UTF_8, Optional.of(UTF_8), 748);
+        checkText("test.proto", PROTO_UTF_8, Optional.of(UTF_8), 749);
+        checkText("test.textproto", PROTOBUF_TEXTPROTO_UTF_8, Optional.of(UTF_8), 753);
 
         checkText(
                 "test-hello-ascii.txt",
