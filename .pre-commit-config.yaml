@@ -144,6 +144,11 @@ repos:
         additional_dependencies:
           - prettier@2.8.4
 
+  - repo: https://github.com/pre-commit/mirrors-csslint
+    rev: 818b64c6bf19ca1e089b4dabc8dc74059b405814
+    hooks:
+      - id: csslint
+
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 2.7.3
