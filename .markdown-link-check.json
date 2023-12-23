@@ -2,6 +2,9 @@
   "ignorePatterns": [
     {
       "pattern": ".*dev/proto/core.*"
+    },
+    {
+      "pattern": "script.svg"
     }
   ]
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2023-2024 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ else
 fi
 
 # pip install - but only if required! ;)
-tools/be/pip-installed.sh
+tools/be/pip-installed.bash
 
 echo
 echo $ pre-commit run

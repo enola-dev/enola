@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023 The Enola <https://enola.dev> Authors
+    Copyright 2023-2024 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 ## Eclipse
 
-Eclipse is not actively supported by this project as an IDE. 
+Eclipse is not actively supported by this project as an IDE.
 
 It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
 
