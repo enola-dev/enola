@@ -41,3 +41,6 @@ docs/use/library/model.textproto
 
 # Node.JS
 node_modules/
+
+# JS files that are generated from TS
+json-ld-ui/src/json-ld-ui.js

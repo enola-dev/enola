@@ -1,0 +1,79 @@
+<!--
+    SPDX-License-Identifier: Apache-2.0
+
+    Copyright 2023 The Enola <https://enola.dev> Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>JSON LD UI Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="json-ld-ui.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="demo.css" />
+    <script src="json-ld-ui.js"></script>
+  </head>
+  <body>
+    <h1>JSON LD UI Demo</h1>
+
+    <h2>Expected</h2>
+    <!-- Use this target for testing - this is the 'expected' output?! -->
+    <!-- TODO Remove this hand-coded "target" once the code builds this... -->
+    <div id="jsonld-expected">
+      <table class="json-ld-ui-table">
+        <tbody>
+          <!-- No tr>th as this "table" doesn't really have any "header row" -->
+          <tr>
+            <td>@context</td>
+            <td>https://json-ld.org/contexts/person.jsonld</td>
+          </tr>
+          <tr>
+            <td>@id</td>
+            <td>http://dbpedia.org/resource/John_Lennon</td>
+          </tr>
+          <tr>
+            <td>name</td>
+            <td>John Lennon</td>
+          </tr>
+          <tr>
+            <td>born</td>
+            <td>1940-10-09</td>
+          </tr>
+          <tr>
+            <td>spouse</td>
+            <td>http://dbpedia.org/resource/Cynthia_Lennon</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Actual</h2>
+    <div id="jsonld-actual"></div>
+    <script>
+      renderURI("demo.jsonld", "jsonld-actual")
+    </script>
+
+    <h2>Another Table</h2>
+    <table>
+      <tbody>
+        <tr>
+          <td>No Border!</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

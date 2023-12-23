@@ -1,0 +1,7 @@
+{
+  "elements": ["html5"],
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "void-style": "off"
+  }
+}

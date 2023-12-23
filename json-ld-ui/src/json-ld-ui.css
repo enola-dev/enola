@@ -1,0 +1,9 @@
+table.json-ld-ui-table {
+  border: 1px;
+  border-style: dashed;
+  border-collapse: collapse;
+  border-color: chartreuse;
+}
+table.json-ld-ui-table td {
+  border-left: solid 2px red;
+}
