@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
-load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
-
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
 # TODO replace with bazel_dep in MODULE.bazel
 # when https://github.com/bazelbuild/bazel-central-registry/issues/353
 # (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+
+# https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
+load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
