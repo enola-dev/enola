@@ -37,9 +37,9 @@ fi
 
 cd "$ROOT"
 LOG=$(mktemp)
-if "$BZL" build --color=yes //cli/... >"$LOG" 2>&1 ; then
+if "$BZL" build --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
   rm "$LOG"
-  cd "$CWD" && "$ROOT"/bazel-bin/cli/enola "$@"
+  cd "$CWD" && java -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
 else
   cat "$LOG" && echo >&2 && echo >&2
   rm "$LOG"
