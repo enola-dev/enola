@@ -55,3 +55,7 @@ find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | \
 mkdocs build --strict --config-file mkdocs.yaml
 
 cleanup
+
+# Enola Binary Distro
+mkdir -p site/download/latest/
+cp bazel-bin/cli/enola_deploy.jar site/download/latest/enola.jar

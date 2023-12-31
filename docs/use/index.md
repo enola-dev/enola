@@ -18,9 +18,6 @@
 
 # Using Enola.dev
 
-The project does not yet publish releases. For now, just do (once) a [Developer Set-Up for Local Build](../dev/setup.md),
-and then use this project by launching the `enola` CLI tool via the [`./enola`](../../enola) script.
-
-<!-- TODO There are plans to build a server with Web UI later. -->
+Download [`enola.jar`](../download/latest/enola.jar) and launch it using `java -jar enola.jar`.
 
 The following chapters demonstrate different usage scenarios with recorded demos.
