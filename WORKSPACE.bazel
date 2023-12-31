@@ -17,7 +17,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # Keep gRPC version in sync with MODULE.bazel
-GRPC_JAVA_VERSION = "1.54.1"
+GRPC_JAVA_VERSION = "1.60.1"
 
 # https://github.com/grpc/grpc-java/
 # https://github.com/enola-dev/enola/issues/202
@@ -27,7 +27,7 @@ GRPC_JAVA_VERSION = "1.54.1"
 # (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
 http_archive(
     name = "io_grpc_grpc_java",
-    sha256 = "78bf175f9a8fa23cda724bbef52ad9d0d555cdd1122bcb06484b91174f931239",
+    sha256 = "df87042540fd2cf4b6d1e3e38ba8bd192e16fe1c5ac82336c9811752cb69eb91",
     strip_prefix = "grpc-java-%s" % GRPC_JAVA_VERSION,
     url = "https://github.com/grpc/grpc-java/archive/v%s.zip" % GRPC_JAVA_VERSION,
 )

@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "8614c49761c5d8752826686d61533bb4a12531164ccfe1ead0f9a554d7f6c99b",
+  "moduleFileHash": "e3fa233a0bbfa2cbd75fd7a6586b09233f40e71dce6a8913e95b009e090d2590",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -51,9 +51,8 @@
                   "com.google.protobuf:protobuf-java:4.0.0-rc-2",
                   "com.google.protobuf:protobuf-java-util:4.0.0-rc-2",
                   "com.google.api.grpc:proto-google-common-protos:2.29.0",
-                  "io.grpc:grpc-netty:1.54.1",
-                  "io.grpc:grpc-stub:1.54.1",
-                  "io.grpc:grpc-core:1.54.1",
+                  "io.grpc:grpc-netty:1.60.1",
+                  "io.grpc:grpc-stub:1.60.1",
                   "org.apache.tomcat:annotations-api:6.0.53",
                   "io.kubernetes:client-java:19.0.0",
                   "ch.vorburger.exec:exec:3.1.5",
@@ -2337,23 +2336,11 @@
       "general": {
         "bzlTransitiveDigest": "9VQBVBpk1BYX8MlZX/v6yoWpeoWbbeIDc8bZ2kiueLI=",
         "accumulatedFileDigests": {
-          "@@//:maven_install.json": "7e5e24e1fbea90c72a58a4155a59507bfd68ea33e5ab74b240451019a73c76f7",
+          "@@//:maven_install.json": "16c03bfe5db2fd99574fc7e1a47ba416b7f59ab2e9c0ee91ee080ece1ad70624",
           "@@rules_jvm_external~5.3//:rules_jvm_external_deps_install.json": "741ab2ef3843a43eaacb45d1448835c9deb99c95162279f513096eface8acd44"
         },
         "envVariables": {},
         "generatedRepoSpecs": {
-          "io_netty_netty_codec_http2_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http2_jar_sources_4_1_87_Final",
-              "sha256": "e4454eaed6d09569885b9f8bac0561c0db1896eaa32e5ccd60afea490569591a",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-http2/4.1.87.Final/netty-codec-http2-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec-http2/4.1.87.Final/netty-codec-http2-4.1.87.Final-sources.jar"
-            }
-          },
           "ch_vorburger_exec_exec_jar_sources_3_1_5": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -2364,18 +2351,6 @@
                 "https://repo1.maven.org/maven2/ch/vorburger/exec/exec/3.1.5/exec-3.1.5-sources.jar"
               ],
               "downloaded_file_path": "ch/vorburger/exec/exec/3.1.5/exec-3.1.5-sources.jar"
-            }
-          },
-          "io_netty_netty_codec_http_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http_4_1_87_Final",
-              "sha256": "39368c15595b791dbe26e7639cf2e71b6647bab8838fa5781cf7a80762eac927",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-http/4.1.87.Final/netty-codec-http-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec-http/4.1.87.Final/netty-codec-http-4.1.87.Final.jar"
             }
           },
           "io_kubernetes_client_java_proto_jar_sources_19_0_0": {
@@ -2415,16 +2390,16 @@
               "downloaded_file_path": "commons-io/commons-io/2.14.0/commons-io-2.14.0-sources.jar"
             }
           },
-          "io_netty_netty_resolver_4_1_87_Final": {
+          "io_netty_netty_codec_http2_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_resolver_4_1_87_Final",
-              "sha256": "ee11d22d240b4b125edaed23ec7cc35ad9241b1b8fdd50630de20411ec345fc7",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http2_4_1_100_Final",
+              "sha256": "23b4a74350f4cf8d41b93fb93d52b5050667d8d53fffc385672c86eab83b8749",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.87.Final/netty-resolver-4.1.87.Final.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-http2/4.1.100.Final/netty-codec-http2-4.1.100.Final.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-resolver/4.1.87.Final/netty-resolver-4.1.87.Final.jar"
+              "downloaded_file_path": "io/netty/netty-codec-http2/4.1.100.Final/netty-codec-http2-4.1.100.Final.jar"
             }
           },
           "org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_6_20": {
@@ -2563,6 +2538,18 @@
               "downloaded_file_path": "org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar"
             }
           },
+          "io_netty_netty_transport_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_4_1_100_Final",
+              "sha256": "b1deeceedab3734cdb959c55f4be5ab4a667a8aed59121ff93763f49470f5470",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.100.Final/netty-transport-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-transport/4.1.100.Final/netty-transport-4.1.100.Final.jar"
+            }
+          },
           "commons_codec_commons_codec_jar_sources_1_16_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -2636,6 +2623,18 @@
               "downloaded_file_path": "com/google/code/gson/gson/2.10.1/gson-2.10.1.jar"
             }
           },
+          "io_grpc_grpc_api_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_api_1_60_1",
+              "sha256": "bdcefde43d7c542e748adb7b2bccc46db16313ba86ab46f8ba3b54677c7c5883",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-api/1.60.1/grpc-api-1.60.1.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-api/1.60.1/grpc-api-1.60.1.jar"
+            }
+          },
           "io_github_classgraph_classgraph_jar_sources_4_8_165": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -2659,6 +2658,30 @@
                 "https://maven.google.com/com/google/http-client/google-http-client-gson/1.43.1/google-http-client-gson-1.43.1.jar"
               ],
               "downloaded_file_path": "com/google/http-client/google-http-client-gson/1.43.1/google-http-client-gson-1.43.1.jar"
+            }
+          },
+          "io_netty_netty_handler_proxy_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_proxy_jar_sources_4_1_100_Final",
+              "sha256": "40b1123cfaec444459e1184af882c994cb7c6a9b21cc7f4c98e902e2ee628f10",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-handler-proxy/4.1.100.Final/netty-handler-proxy-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-handler-proxy/4.1.100.Final/netty-handler-proxy-4.1.100.Final-sources.jar"
+            }
+          },
+          "io_netty_netty_handler_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_4_1_100_Final",
+              "sha256": "0e10e584c2e7fdf7f4804e14760ed987003f1b62ab982f62eaf13a9892793d3a",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.100.Final/netty-handler-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-handler/4.1.100.Final/netty-handler-4.1.100.Final.jar"
             }
           },
           "org_apache_httpcomponents_httpcore_4_4_16": {
@@ -2758,16 +2781,16 @@
               "downloaded_file_path": "com/google/protobuf/protobuf-java-util/4.0.0-rc-2/protobuf-java-util-4.0.0-rc-2-sources.jar"
             }
           },
-          "io_grpc_grpc_netty_1_54_1": {
+          "io_netty_netty_codec_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_netty_1_54_1",
-              "sha256": "79d3953d3ff6e105e6a694855bd357f18770cd2d0536080e7a4436354e067838",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_4_1_100_Final",
+              "sha256": "180a01ed67af399602e24ff1c32864e7f57f57c4a0fa5e9ab3fe9b0e5e9cf051",
               "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-netty/1.54.1/grpc-netty-1.54.1.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.100.Final/netty-codec-4.1.100.Final.jar"
               ],
-              "downloaded_file_path": "io/grpc/grpc-netty/1.54.1/grpc-netty-1.54.1.jar"
+              "downloaded_file_path": "io/netty/netty-codec/4.1.100.Final/netty-codec-4.1.100.Final.jar"
             }
           },
           "unpinned_maven": {
@@ -2787,9 +2810,8 @@
                 "{ \"group\": \"com.google.protobuf\", \"artifact\": \"protobuf-java\", \"version\": \"4.0.0-rc-2\" }",
                 "{ \"group\": \"com.google.protobuf\", \"artifact\": \"protobuf-java-util\", \"version\": \"4.0.0-rc-2\" }",
                 "{ \"group\": \"com.google.api.grpc\", \"artifact\": \"proto-google-common-protos\", \"version\": \"2.29.0\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-netty\", \"version\": \"1.54.1\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-stub\", \"version\": \"1.54.1\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-core\", \"version\": \"1.54.1\" }",
+                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-netty\", \"version\": \"1.60.1\" }",
+                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-stub\", \"version\": \"1.60.1\" }",
                 "{ \"group\": \"org.apache.tomcat\", \"artifact\": \"annotations-api\", \"version\": \"6.0.53\" }",
                 "{ \"group\": \"io.kubernetes\", \"artifact\": \"client-java\", \"version\": \"19.0.0\" }",
                 "{ \"group\": \"ch.vorburger.exec\", \"artifact\": \"exec\", \"version\": \"3.1.5\" }",
@@ -2833,6 +2855,18 @@
                 "https://maven.google.com/io/netty/netty-transport-native-unix-common/4.1.86.Final/netty-transport-native-unix-common-4.1.86.Final.jar"
               ],
               "downloaded_file_path": "io/netty/netty-transport-native-unix-common/4.1.86.Final/netty-transport-native-unix-common-4.1.86.Final.jar"
+            }
+          },
+          "io_netty_netty_transport_native_unix_common_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_native_unix_common_jar_sources_4_1_100_Final",
+              "sha256": "28c71aa6c4f36cd8cc472142c858f324f8a23b85150a443e742c8814f46bb596",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common/4.1.100.Final/netty-transport-native-unix-common-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-transport-native-unix-common/4.1.100.Final/netty-transport-native-unix-common-4.1.100.Final-sources.jar"
             }
           },
           "com_google_template_soy_jar_sources_2023_09_13": {
@@ -2909,18 +2943,6 @@
               "downloaded_file_path": "com/google/protobuf/protobuf-java-util/3.23.1/protobuf-java-util-3.23.1.jar"
             }
           },
-          "io_grpc_grpc_context_jar_sources_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_context_jar_sources_1_54_1",
-              "sha256": "771aad84995fd80e434525cf00824da2d3507eb539676d78be75c01d12db5e95",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-context/1.54.1/grpc-context-1.54.1-sources.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-context/1.54.1/grpc-context-1.54.1-sources.jar"
-            }
-          },
           "org_apache_commons_commons_lang3_3_13_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -2944,6 +2966,18 @@
                 "https://maven.google.com/software/amazon/awssdk/profiles/2.20.78/profiles-2.20.78.jar"
               ],
               "downloaded_file_path": "software/amazon/awssdk/profiles/2.20.78/profiles-2.20.78.jar"
+            }
+          },
+          "io_netty_netty_transport_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_jar_sources_4_1_100_Final",
+              "sha256": "3c90fa8b30f71f02aff109d06931819ae54b16a3d61a15dfa9e24161057d57c4",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.100.Final/netty-transport-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-transport/4.1.100.Final/netty-transport-4.1.100.Final-sources.jar"
             }
           },
           "com_google_guava_listenablefuture_9999_0_empty_to_avoid_conflict_with_guava": {
@@ -3084,6 +3118,18 @@
               "downloaded_file_path": "org/threeten/threetenbp/1.6.8/threetenbp-1.6.8.jar"
             }
           },
+          "io_grpc_grpc_core_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_core_1_60_1",
+              "sha256": "b96af7b762e7fca6ffecce7163bcaf2d762dd7a0e24bb757e507639a3469b8e9",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-core/1.60.1/grpc-core-1.60.1.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-core/1.60.1/grpc-core-1.60.1.jar"
+            }
+          },
           "javax_inject_javax_inject_jar_sources_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3184,16 +3230,16 @@
               "downloaded_file_path": "com/google/escapevelocity/escapevelocity/1.1/escapevelocity-1.1-sources.jar"
             }
           },
-          "io_grpc_grpc_context_1_54_1": {
+          "io_netty_netty_codec_http_jar_sources_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_context_1_54_1",
-              "sha256": "9ea99708e2ae3bf4befaaad8efe216fec8734a497f3dccf8750bd5db007b3bce",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http_jar_sources_4_1_100_Final",
+              "sha256": "6f1489ef88b5dc670addd06180e1f5f3bf86b9fd01758d8200a4f7307ddf77d1",
               "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-context/1.54.1/grpc-context-1.54.1.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-http/4.1.100.Final/netty-codec-http-4.1.100.Final-sources.jar"
               ],
-              "downloaded_file_path": "io/grpc/grpc-context/1.54.1/grpc-context-1.54.1.jar"
+              "downloaded_file_path": "io/netty/netty-codec-http/4.1.100.Final/netty-codec-http-4.1.100.Final-sources.jar"
             }
           },
           "com_google_code_gson_gson_jar_sources_2_10_1": {
@@ -3244,18 +3290,6 @@
               "downloaded_file_path": "org/bouncycastle/bcprov-jdk18on/1.76/bcprov-jdk18on-1.76-sources.jar"
             }
           },
-          "io_netty_netty_codec_http_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http_jar_sources_4_1_87_Final",
-              "sha256": "f8cd7ba87346f5e70cf4cfc1c018ad682f7a7c099f802dac805dcb0614c67f19",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-http/4.1.87.Final/netty-codec-http-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec-http/4.1.87.Final/netty-codec-http-4.1.87.Final-sources.jar"
-            }
-          },
           "javax_annotation_javax_annotation_api_1_3_2": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3293,18 +3327,6 @@
               "downloaded_file_path": "com/google/auto/value/auto-value-annotations/1.10.4/auto-value-annotations-1.10.4.jar"
             }
           },
-          "io_grpc_grpc_api_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_api_1_54_1",
-              "sha256": "7fbc4beb922f40e6a84987c8dfbc833ee12e332849161f13f32928a728bb5597",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-api/1.54.1/grpc-api-1.54.1.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-api/1.54.1/grpc-api-1.54.1.jar"
-            }
-          },
           "org_slf4j_slf4j_simple_2_0_9": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3315,6 +3337,18 @@
                 "https://repo1.maven.org/maven2/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar"
               ],
               "downloaded_file_path": "org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar"
+            }
+          },
+          "io_netty_netty_resolver_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_resolver_4_1_100_Final",
+              "sha256": "c42c481c776e9d367a45cc3a67a06f65897d280334eb30b2362b8c55b7523f4f",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.100.Final/netty-resolver-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-resolver/4.1.100.Final/netty-resolver-4.1.100.Final.jar"
             }
           },
           "com_google_truth_truth_1_2_0": {
@@ -3695,6 +3729,18 @@
               "downloaded_file_path": "jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1-sources.jar"
             }
           },
+          "io_netty_netty_codec_socks_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_socks_4_1_100_Final",
+              "sha256": "608a453b90f8384ba4efcdc6db7f899a1f10b9ea1890954696e6cfac45ff1ba9",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-socks/4.1.100.Final/netty-codec-socks-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-codec-socks/4.1.100.Final/netty-codec-socks-4.1.100.Final.jar"
+            }
+          },
           "org_bouncycastle_bcutil_jdk18on_1_76": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3782,18 +3828,6 @@
               "downloaded_file_path": "com/google/truth/extensions/truth-java8-extension/1.2.0/truth-java8-extension-1.2.0-sources.jar"
             }
           },
-          "io_grpc_grpc_stub_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_stub_1_54_1",
-              "sha256": "630a97d7521ef6f10e686141a4a659ba8cddb6f2e5f3bafe15b0517531fea9d8",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-stub/1.54.1/grpc-stub-1.54.1.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-stub/1.54.1/grpc-stub-1.54.1.jar"
-            }
-          },
           "com_google_guava_guava_jar_sources_33_0_0_jre": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3804,6 +3838,18 @@
                 "https://repo1.maven.org/maven2/com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre-sources.jar"
               ],
               "downloaded_file_path": "com/google/guava/guava/33.0.0-jre/guava-33.0.0-jre-sources.jar"
+            }
+          },
+          "io_netty_netty_codec_socks_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_socks_jar_sources_4_1_100_Final",
+              "sha256": "a2f57ddadc95f8d06ce8b1713a30e72aab6acf9a20fba7eb0e30b7df9e6ec256",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-socks/4.1.100.Final/netty-codec-socks-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-codec-socks/4.1.100.Final/netty-codec-socks-4.1.100.Final-sources.jar"
             }
           },
           "org_apache_commons_commons_compress_1_24_0": {
@@ -3865,6 +3911,18 @@
                 "https://repo1.maven.org/maven2/com/github/java-json-tools/btf/1.3/btf-1.3-sources.jar"
               ],
               "downloaded_file_path": "com/github/java-json-tools/btf/1.3/btf-1.3-sources.jar"
+            }
+          },
+          "io_grpc_grpc_core_jar_sources_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_core_jar_sources_1_60_1",
+              "sha256": "62105c991dcd52e4b7f818a2dab565a0d3b53ef1a0103d3196ce3f01a5446a79",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-core/1.60.1/grpc-core-1.60.1-sources.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-core/1.60.1/grpc-core-1.60.1-sources.jar"
             }
           },
           "com_google_auto_value_auto_value_annotations_jar_sources_1_10_4": {
@@ -3941,6 +3999,18 @@
               "downloaded_file_path": "com/google/errorprone/error_prone_annotations/2.23.0/error_prone_annotations-2.23.0-sources.jar"
             }
           },
+          "io_netty_netty_codec_http2_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http2_jar_sources_4_1_100_Final",
+              "sha256": "10ddecd4de1351a4bdfa4ed6a113a47f808edfdd54b83cd477c4fb27e935f78e",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-http2/4.1.100.Final/netty-codec-http2-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-codec-http2/4.1.100.Final/netty-codec-http2-4.1.100.Final-sources.jar"
+            }
+          },
           "com_google_flogger_flogger_0_7_4": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3953,18 +4023,6 @@
               "downloaded_file_path": "com/google/flogger/flogger/0.7.4/flogger-0.7.4.jar"
             }
           },
-          "io_grpc_grpc_stub_jar_sources_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_stub_jar_sources_1_54_1",
-              "sha256": "ee700229e4f629d5a5f184f4a51b3db1b707828065feef21d8580aba14ea6f79",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-stub/1.54.1/grpc-stub-1.54.1-sources.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-stub/1.54.1/grpc-stub-1.54.1-sources.jar"
-            }
-          },
           "com_google_code_findbugs_jsr305_3_0_2": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -3975,6 +4033,18 @@
                 "https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
               ],
               "downloaded_file_path": "com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar"
+            }
+          },
+          "io_grpc_grpc_netty_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_netty_1_60_1",
+              "sha256": "492594358710ad644167fa905c076b0caebac3fee89950d33d33a46b3417859d",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-netty/1.60.1/grpc-netty-1.60.1.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-netty/1.60.1/grpc-netty-1.60.1.jar"
             }
           },
           "com_fasterxml_jackson_core_jackson_core_2_14_2": {
@@ -4001,18 +4071,6 @@
                 "https://maven.google.com/software/amazon/awssdk/crt-core/2.20.78/crt-core-2.20.78.jar"
               ],
               "downloaded_file_path": "software/amazon/awssdk/crt-core/2.20.78/crt-core-2.20.78.jar"
-            }
-          },
-          "io_netty_netty_transport_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_jar_sources_4_1_87_Final",
-              "sha256": "f0f3423820aa0bf83dcef001a8343c742c69b0bd0041e2228a2c8d67ce0cacd8",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.87.Final/netty-transport-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-transport/4.1.87.Final/netty-transport-4.1.87.Final-sources.jar"
             }
           },
           "com_google_cloud_google_cloud_core_http_2_18_1": {
@@ -4052,18 +4110,6 @@
               "downloaded_file_path": "com/ibm/icu/icu4j/73.2/icu4j-73.2.jar"
             }
           },
-          "io_netty_netty_codec_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_jar_sources_4_1_87_Final",
-              "sha256": "39a397c6636288eadaf1366e0f0da3e53a9e15bf35df252bbc36532ccf415547",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.87.Final/netty-codec-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec/4.1.87.Final/netty-codec-4.1.87.Final-sources.jar"
-            }
-          },
           "io_grpc_grpc_rls_1_55_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -4075,6 +4121,18 @@
                 "https://maven.google.com/io/grpc/grpc-rls/1.55.1/grpc-rls-1.55.1.jar"
               ],
               "downloaded_file_path": "io/grpc/grpc-rls/1.55.1/grpc-rls-1.55.1.jar"
+            }
+          },
+          "io_netty_netty_buffer_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_buffer_4_1_100_Final",
+              "sha256": "462874b44ee782fbefec64078cda6eb8e7bf9f0e0af71a928ef4c1f2d564f7ee",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.100.Final/netty-buffer-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-buffer/4.1.100.Final/netty-buffer-4.1.100.Final.jar"
             }
           },
           "org_jetbrains_kotlin_kotlin_stdlib_jar_sources_1_6_20": {
@@ -4171,8 +4229,7 @@
               "name": "rules_jvm_external~5.3~maven~io_perfmark_perfmark_api_0_26_0",
               "sha256": "b7d23e93a34537ce332708269a0d1404788a5b5e1949e82f5535fce51b3ea95b",
               "urls": [
-                "https://repo1.maven.org/maven2/io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0.jar",
-                "https://maven.google.com/io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0.jar"
+                "https://repo1.maven.org/maven2/io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0.jar"
               ],
               "downloaded_file_path": "io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0.jar"
             }
@@ -4237,18 +4294,6 @@
                 "https://repo1.maven.org/maven2/com/ibm/icu/icu4j/73.2/icu4j-73.2-sources.jar"
               ],
               "downloaded_file_path": "com/ibm/icu/icu4j/73.2/icu4j-73.2-sources.jar"
-            }
-          },
-          "io_grpc_grpc_netty_jar_sources_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_netty_jar_sources_1_54_1",
-              "sha256": "c87f4fa00d2ecc26620d28c581bfca14246d064deba966aabaef8c5f08ea2af8",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-netty/1.54.1/grpc-netty-1.54.1-sources.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-netty/1.54.1/grpc-netty-1.54.1-sources.jar"
             }
           },
           "com_google_api_gax_httpjson_0_113_1": {
@@ -4337,18 +4382,6 @@
               "downloaded_file_path": "com/google/j2objc/j2objc-annotations/2.8/j2objc-annotations-2.8-sources.jar"
             }
           },
-          "io_netty_netty_resolver_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_resolver_jar_sources_4_1_87_Final",
-              "sha256": "5c2ee5e9e26e10e1d94faaf7ee12fd021f967144eb630ef779aa81dd4d72da3e",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.87.Final/netty-resolver-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-resolver/4.1.87.Final/netty-resolver-4.1.87.Final-sources.jar"
-            }
-          },
           "org_apache_commons_commons_lang3_jar_sources_3_13_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -4368,8 +4401,7 @@
               "name": "rules_jvm_external~5.3~maven~org_codehaus_mojo_animal_sniffer_annotations_1_23",
               "sha256": "9ffe526bf43a6348e9d8b33b9cd6f580a7f5eed0cf055913007eda263de974d0",
               "urls": [
-                "https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23.jar",
-                "https://maven.google.com/org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23.jar"
+                "https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23.jar"
               ],
               "downloaded_file_path": "org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23.jar"
             }
@@ -4411,18 +4443,6 @@
               "downloaded_file_path": "com/google/protobuf/protobuf-java-util/4.0.0-rc-2/protobuf-java-util-4.0.0-rc-2.jar"
             }
           },
-          "io_netty_netty_common_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_common_4_1_87_Final",
-              "sha256": "811443fc1411a9ef7c1f7b02a750e2a6688f1eec0ae7361ed07812a85d982c86",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.87.Final/netty-common-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-common/4.1.87.Final/netty-common-4.1.87.Final.jar"
-            }
-          },
           "io_grpc_grpc_core_1_55_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -4434,18 +4454,6 @@
                 "https://maven.google.com/io/grpc/grpc-core/1.55.1/grpc-core-1.55.1.jar"
               ],
               "downloaded_file_path": "io/grpc/grpc-core/1.55.1/grpc-core-1.55.1.jar"
-            }
-          },
-          "org_codehaus_mojo_animal_sniffer_annotations_1_21": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~org_codehaus_mojo_animal_sniffer_annotations_1_21",
-              "sha256": "2f25841c937e24959a57b630e2c4b8525b3d0f536f2e511c9b2bed30b1651d54",
-              "urls": [
-                "https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.21/animal-sniffer-annotations-1.21.jar"
-              ],
-              "downloaded_file_path": "org/codehaus/mojo/animal-sniffer-annotations/1.21/animal-sniffer-annotations-1.21.jar"
             }
           },
           "com_squareup_okhttp3_okhttp_4_11_0": {
@@ -4497,18 +4505,6 @@
               "downloaded_file_path": "org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.6.20/kotlin-stdlib-jdk8-1.6.20.jar"
             }
           },
-          "io_netty_netty_handler_proxy_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_proxy_jar_sources_4_1_87_Final",
-              "sha256": "b6c10bc43044cb3b53c601a9ffc75ffb3d6af7b9c218e6bff72f5beb22993947",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-handler-proxy/4.1.87.Final/netty-handler-proxy-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-handler-proxy/4.1.87.Final/netty-handler-proxy-4.1.87.Final-sources.jar"
-            }
-          },
           "com_github_java_json_tools_msg_simple_jar_sources_1_2": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -4532,6 +4528,30 @@
                 "https://maven.google.com/com/google/api/grpc/proto-google-iam-v1/1.14.1/proto-google-iam-v1-1.14.1.jar"
               ],
               "downloaded_file_path": "com/google/api/grpc/proto-google-iam-v1/1.14.1/proto-google-iam-v1-1.14.1.jar"
+            }
+          },
+          "io_grpc_grpc_api_jar_sources_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_api_jar_sources_1_60_1",
+              "sha256": "23d0d4bb5eed8cf0b5732ab96c815028071e2b3537bd39f5dfe0c8f16731e74c",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-api/1.60.1/grpc-api-1.60.1-sources.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-api/1.60.1/grpc-api-1.60.1-sources.jar"
+            }
+          },
+          "io_grpc_grpc_context_jar_sources_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_context_jar_sources_1_60_1",
+              "sha256": "90655e7ff0d7ee867fbdf7c6ac6db13ef9b339f4e8e3af15665f5a98101f9674",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-context/1.60.1/grpc-context-1.60.1-sources.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-context/1.60.1/grpc-context-1.60.1-sources.jar"
             }
           },
           "org_bitbucket_b_c_jose4j_0_9_3": {
@@ -4582,18 +4602,6 @@
                 "https://repo1.maven.org/maven2/org/bitbucket/b_c/jose4j/0.9.3/jose4j-0.9.3-sources.jar"
               ],
               "downloaded_file_path": "org/bitbucket/b_c/jose4j/0.9.3/jose4j-0.9.3-sources.jar"
-            }
-          },
-          "io_perfmark_perfmark_api_0_25_0": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_perfmark_perfmark_api_0_25_0",
-              "sha256": "2044542933fcdf40ad18441bec37646d150c491871157f288847e29cb81de4cb",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/perfmark/perfmark-api/0.25.0/perfmark-api-0.25.0.jar"
-              ],
-              "downloaded_file_path": "io/perfmark/perfmark-api/0.25.0/perfmark-api-0.25.0.jar"
             }
           },
           "jakarta_inject_jakarta_inject_api_2_0_1": {
@@ -4719,16 +4727,16 @@
               "downloaded_file_path": "org/ow2/asm/asm/9.6/asm-9.6-sources.jar"
             }
           },
-          "io_netty_netty_transport_4_1_87_Final": {
+          "io_netty_netty_buffer_jar_sources_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_4_1_87_Final",
-              "sha256": "17ed465cf5b1579b72379e47be3ba7fccb09dda8d95d47c8d668118483b08f43",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_buffer_jar_sources_4_1_100_Final",
+              "sha256": "7954d2b274d418d844a573a4712b18a7c40b85f94284f5429cb32e6408394d60",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-transport/4.1.87.Final/netty-transport-4.1.87.Final.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.100.Final/netty-buffer-4.1.100.Final-sources.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-transport/4.1.87.Final/netty-transport-4.1.87.Final.jar"
+              "downloaded_file_path": "io/netty/netty-buffer/4.1.100.Final/netty-buffer-4.1.100.Final-sources.jar"
             }
           },
           "org_snakeyaml_snakeyaml_engine_2_7": {
@@ -4753,6 +4761,18 @@
                 "https://repo1.maven.org/maven2/io/swagger/swagger-annotations/1.6.11/swagger-annotations-1.6.11-sources.jar"
               ],
               "downloaded_file_path": "io/swagger/swagger-annotations/1.6.11/swagger-annotations-1.6.11-sources.jar"
+            }
+          },
+          "io_netty_netty_codec_http_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http_4_1_100_Final",
+              "sha256": "326811d249cb0e5555e78e026e877834e792261c38f0666d80464426695d9590",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-codec-http/4.1.100.Final/netty-codec-http-4.1.100.Final.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-codec-http/4.1.100.Final/netty-codec-http-4.1.100.Final.jar"
             }
           },
           "com_google_apis_google_api_services_storage_v1_rev20230301_2_0_0": {
@@ -4856,18 +4876,6 @@
               "downloaded_file_path": "org/ow2/asm/asm-analysis/9.5/asm-analysis-9.5-sources.jar"
             }
           },
-          "io_netty_netty_handler_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_jar_sources_4_1_87_Final",
-              "sha256": "e07bc5906414d522eb10cee0ce9162ab6382d05a71bf14ecb53630e3ebff5067",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.87.Final/netty-handler-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-handler/4.1.87.Final/netty-handler-4.1.87.Final-sources.jar"
-            }
-          },
           "org_codehaus_plexus_plexus_utils_3_5_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -4969,18 +4977,6 @@
               "downloaded_file_path": "org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar"
             }
           },
-          "io_netty_netty_handler_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_4_1_87_Final",
-              "sha256": "31a20e1de13b06a677a4719fd5aa95635982114a32c1d034739a48cceada2383",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.87.Final/netty-handler-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-handler/4.1.87.Final/netty-handler-4.1.87.Final.jar"
-            }
-          },
           "org_jetbrains_annotations_13_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5056,18 +5052,6 @@
               "downloaded_file_path": "com/google/errorprone/error_prone_annotations/2.18.0/error_prone_annotations-2.18.0.jar"
             }
           },
-          "io_netty_netty_codec_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_4_1_87_Final",
-              "sha256": "c643fe8318b7c7405acec13ed98e8f634f917960b20486295efbc5a690bac694",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.87.Final/netty-codec-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec/4.1.87.Final/netty-codec-4.1.87.Final.jar"
-            }
-          },
           "com_google_api_gax_2_28_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5107,18 +5091,6 @@
               "downloaded_file_path": "org/conscrypt/conscrypt-openjdk-uber/2.5.2/conscrypt-openjdk-uber-2.5.2.jar"
             }
           },
-          "io_netty_netty_common_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_common_jar_sources_4_1_87_Final",
-              "sha256": "679c23349089a12edeb0dbd6a4b05e1c7f527db69e33be8b98fb482c8c24db64",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.87.Final/netty-common-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-common/4.1.87.Final/netty-common-4.1.87.Final-sources.jar"
-            }
-          },
           "com_google_cloud_google_cloud_core_2_18_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5156,18 +5128,6 @@
               "downloaded_file_path": "com/github/java-json-tools/btf/1.3/btf-1.3.jar"
             }
           },
-          "io_perfmark_perfmark_api_jar_sources_0_25_0": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_perfmark_perfmark_api_jar_sources_0_25_0",
-              "sha256": "007b6b6beaba11fabb025d79b8774b6a7583596a8ec0a28157570304642b0e72",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/perfmark/perfmark-api/0.25.0/perfmark-api-0.25.0-sources.jar"
-              ],
-              "downloaded_file_path": "io/perfmark/perfmark-api/0.25.0/perfmark-api-0.25.0-sources.jar"
-            }
-          },
           "commons_codec_commons_codec_1_16_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5180,16 +5140,16 @@
               "downloaded_file_path": "commons-codec/commons-codec/1.16.0/commons-codec-1.16.0.jar"
             }
           },
-          "io_netty_netty_handler_proxy_4_1_87_Final": {
+          "io_netty_netty_transport_native_unix_common_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_proxy_4_1_87_Final",
-              "sha256": "65276b2ab687b1b7c1ceabcc941d6e2cce1038f35b581218d7dbf46b16c5b4ac",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_native_unix_common_4_1_100_Final",
+              "sha256": "5d888230a04c4a3e647c64e933cefb64fd49056f969bfb734c8a3fcedf0bea8a",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-handler-proxy/4.1.87.Final/netty-handler-proxy-4.1.87.Final.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common/4.1.100.Final/netty-transport-native-unix-common-4.1.100.Final.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-handler-proxy/4.1.87.Final/netty-handler-proxy-4.1.87.Final.jar"
+              "downloaded_file_path": "io/netty/netty-transport-native-unix-common/4.1.100.Final/netty-transport-native-unix-common-4.1.100.Final.jar"
             }
           },
           "junit_junit_jar_sources_4_13_2": {
@@ -5254,30 +5214,6 @@
               "downloaded_file_path": "software/amazon/awssdk/aws-xml-protocol/2.20.78/aws-xml-protocol-2.20.78.jar"
             }
           },
-          "io_netty_netty_codec_http2_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_http2_4_1_87_Final",
-              "sha256": "e5d01b8db385b23103de67d3666c6fa9fa144d42217a3c8266b2a5efe425f093",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-http2/4.1.87.Final/netty-codec-http2-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-codec-http2/4.1.87.Final/netty-codec-http2-4.1.87.Final.jar"
-            }
-          },
-          "io_grpc_grpc_core_jar_sources_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_core_jar_sources_1_54_1",
-              "sha256": "5b4e174b222606b4eea20ca71eaff13057cac2abc5b4d7dee7aeaa3e5973e81f",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-core/1.54.1/grpc-core-1.54.1-sources.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-core/1.54.1/grpc-core-1.54.1-sources.jar"
-            }
-          },
           "io_kubernetes_client_java_api_jar_sources_19_0_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5314,18 +5250,6 @@
               "downloaded_file_path": "com/google/flogger/flogger-system-backend/0.7.4/flogger-system-backend-0.7.4-sources.jar"
             }
           },
-          "io_netty_netty_transport_native_unix_common_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_native_unix_common_4_1_87_Final",
-              "sha256": "cc2d013c933c206605da01be39f4c2c1f4586a1b9103a665bd724bdd46d9cd0c",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common/4.1.87.Final/netty-transport-native-unix-common-4.1.87.Final.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-transport-native-unix-common/4.1.87.Final/netty-transport-native-unix-common-4.1.87.Final.jar"
-            }
-          },
           "maven": {
             "bzlFile": "@@rules_jvm_external~5.3//:coursier.bzl",
             "ruleClassName": "pinned_coursier_fetch",
@@ -5343,9 +5267,8 @@
                 "{ \"group\": \"com.google.protobuf\", \"artifact\": \"protobuf-java\", \"version\": \"4.0.0-rc-2\" }",
                 "{ \"group\": \"com.google.protobuf\", \"artifact\": \"protobuf-java-util\", \"version\": \"4.0.0-rc-2\" }",
                 "{ \"group\": \"com.google.api.grpc\", \"artifact\": \"proto-google-common-protos\", \"version\": \"2.29.0\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-netty\", \"version\": \"1.54.1\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-stub\", \"version\": \"1.54.1\" }",
-                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-core\", \"version\": \"1.54.1\" }",
+                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-netty\", \"version\": \"1.60.1\" }",
+                "{ \"group\": \"io.grpc\", \"artifact\": \"grpc-stub\", \"version\": \"1.60.1\" }",
                 "{ \"group\": \"org.apache.tomcat\", \"artifact\": \"annotations-api\", \"version\": \"6.0.53\" }",
                 "{ \"group\": \"io.kubernetes\", \"artifact\": \"client-java\", \"version\": \"19.0.0\" }",
                 "{ \"group\": \"ch.vorburger.exec\", \"artifact\": \"exec\", \"version\": \"3.1.5\" }",
@@ -5452,6 +5375,18 @@
               "downloaded_file_path": "io/netty/netty-transport/4.1.86.Final/netty-transport-4.1.86.Final.jar"
             }
           },
+          "io_grpc_grpc_stub_jar_sources_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_stub_jar_sources_1_60_1",
+              "sha256": "07767d70cbdf3f3bd5c34d581729a1fc613ab5be7044f87376dfa72ef0ac0cc8",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-stub/1.60.1/grpc-stub-1.60.1-sources.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-stub/1.60.1/grpc-stub-1.60.1-sources.jar"
+            }
+          },
           "com_google_inject_guice_jar_sources_7_0_0": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5464,16 +5399,40 @@
               "downloaded_file_path": "com/google/inject/guice/7.0.0/guice-7.0.0-sources.jar"
             }
           },
-          "io_netty_netty_codec_socks_jar_sources_4_1_87_Final": {
+          "io_grpc_grpc_stub_1_60_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_socks_jar_sources_4_1_87_Final",
-              "sha256": "bc90f881572fafc3abdf38c6905e848173cedb5d54f0920380b52a4bb03fa4a9",
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_stub_1_60_1",
+              "sha256": "4c73ded16d31519b20a43a0c7f6c1e2f65238b2a1025256d97b77ab5ada26ed4",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-socks/4.1.87.Final/netty-codec-socks-4.1.87.Final-sources.jar"
+                "https://repo1.maven.org/maven2/io/grpc/grpc-stub/1.60.1/grpc-stub-1.60.1.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-codec-socks/4.1.87.Final/netty-codec-socks-4.1.87.Final-sources.jar"
+              "downloaded_file_path": "io/grpc/grpc-stub/1.60.1/grpc-stub-1.60.1.jar"
+            }
+          },
+          "io_grpc_grpc_util_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_util_1_60_1",
+              "sha256": "0232e0160f8a54eee8d12942f6ddfadd8ce05231ad8e035cbba9fc31b687b76c",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-util/1.60.1/grpc-util-1.60.1.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-util/1.60.1/grpc-util-1.60.1.jar"
+            }
+          },
+          "io_netty_netty_codec_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_jar_sources_4_1_100_Final",
+              "sha256": "33a18f8618c81b251e58d2cc94445bddf7bf0c84856213febf13c2b42fd5966a",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-codec/4.1.100.Final/netty-codec-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-codec/4.1.100.Final/netty-codec-4.1.100.Final-sources.jar"
             }
           },
           "org_yaml_snakeyaml_2_2": {
@@ -5524,16 +5483,52 @@
               "downloaded_file_path": "org/apache/commons/commons-collections4/4.4/commons-collections4-4.4.jar"
             }
           },
-          "org_codehaus_mojo_animal_sniffer_annotations_jar_sources_1_21": {
+          "org_codehaus_mojo_animal_sniffer_annotations_jar_sources_1_23": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~org_codehaus_mojo_animal_sniffer_annotations_jar_sources_1_21",
-              "sha256": "b96c0e3e96686e4ace91f416ff2f7c5a53a53f25be6e404fc71bfcf20e9c253e",
+              "name": "rules_jvm_external~5.3~maven~org_codehaus_mojo_animal_sniffer_annotations_jar_sources_1_23",
+              "sha256": "4878fcc6808dbc88085a4622db670e703867754bc4bc40312c52bf3a3510d019",
               "urls": [
-                "https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.21/animal-sniffer-annotations-1.21-sources.jar"
+                "https://repo1.maven.org/maven2/org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23-sources.jar"
               ],
-              "downloaded_file_path": "org/codehaus/mojo/animal-sniffer-annotations/1.21/animal-sniffer-annotations-1.21-sources.jar"
+              "downloaded_file_path": "org/codehaus/mojo/animal-sniffer-annotations/1.23/animal-sniffer-annotations-1.23-sources.jar"
+            }
+          },
+          "io_netty_netty_handler_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_jar_sources_4_1_100_Final",
+              "sha256": "c591995af266161769863298dfe1aa2ff634c25abef33e710a1c9f2ef707fc20",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-handler/4.1.100.Final/netty-handler-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-handler/4.1.100.Final/netty-handler-4.1.100.Final-sources.jar"
+            }
+          },
+          "io_grpc_grpc_netty_jar_sources_1_60_1": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_netty_jar_sources_1_60_1",
+              "sha256": "8a78e63799f6f70d303ecc6d97234b2b338273bd01bc658301956b6d2bb31174",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/grpc/grpc-netty/1.60.1/grpc-netty-1.60.1-sources.jar"
+              ],
+              "downloaded_file_path": "io/grpc/grpc-netty/1.60.1/grpc-netty-1.60.1-sources.jar"
+            }
+          },
+          "io_netty_netty_common_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_common_jar_sources_4_1_100_Final",
+              "sha256": "cb67f6cfc3ee2c9f0966ad244197e0c23a9c1c615aec764afd3793316766c67c",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.100.Final/netty-common-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-common/4.1.100.Final/netty-common-4.1.100.Final-sources.jar"
             }
           },
           "org_slf4j_slf4j_simple_jar_sources_2_0_9": {
@@ -5598,18 +5593,6 @@
               "downloaded_file_path": "io/netty/netty-codec/4.1.86.Final/netty-codec-4.1.86.Final.jar"
             }
           },
-          "io_grpc_grpc_api_jar_sources_1_54_1": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_api_jar_sources_1_54_1",
-              "sha256": "99452a0e8b40d989e085f7d8a8a91a907488cc8844213884ed2bbf1cba5f1e6a",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-api/1.54.1/grpc-api-1.54.1-sources.jar"
-              ],
-              "downloaded_file_path": "io/grpc/grpc-api/1.54.1/grpc-api-1.54.1-sources.jar"
-            }
-          },
           "org_apache_tomcat_annotations_api_6_0_53": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5646,6 +5629,18 @@
               "downloaded_file_path": "com/github/java-json-tools/uri-template/0.10/uri-template-0.10.jar"
             }
           },
+          "io_perfmark_perfmark_api_jar_sources_0_26_0": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_perfmark_perfmark_api_jar_sources_0_26_0",
+              "sha256": "7379e0fef0c32d69f3ebae8f271f426fc808613f1cfbc29e680757f348ba8aa4",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0-sources.jar"
+              ],
+              "downloaded_file_path": "io/perfmark/perfmark-api/0.26.0/perfmark-api-0.26.0-sources.jar"
+            }
+          },
           "software_amazon_awssdk_aws_query_protocol_2_20_78": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5671,28 +5666,28 @@
               "downloaded_file_path": "com/squareup/okio/okio/3.2.0/okio-3.2.0.jar"
             }
           },
-          "io_netty_netty_buffer_4_1_87_Final": {
+          "io_netty_netty_handler_proxy_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_buffer_4_1_87_Final",
-              "sha256": "4e3abdf4ddb8810f5fb4a2b57c9144407873b359faa1894007673ed1465dd3e8",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_handler_proxy_4_1_100_Final",
+              "sha256": "686dbc2e61407f216d6cb267dd7954896f851dd34b58be3e757c5a89f20a5e67",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.87.Final/netty-buffer-4.1.87.Final.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-handler-proxy/4.1.100.Final/netty-handler-proxy-4.1.100.Final.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-buffer/4.1.87.Final/netty-buffer-4.1.87.Final.jar"
+              "downloaded_file_path": "io/netty/netty-handler-proxy/4.1.100.Final/netty-handler-proxy-4.1.100.Final.jar"
             }
           },
-          "io_netty_netty_transport_native_unix_common_jar_sources_4_1_87_Final": {
+          "io_grpc_grpc_context_1_60_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_transport_native_unix_common_jar_sources_4_1_87_Final",
-              "sha256": "4a9b81c8dc1497038d1a6b4c01ba9fb8a86aa538dd2b8c6f47dc360ec09f6c94",
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_context_1_60_1",
+              "sha256": "4ab6efb9cbadc88f8dc723ada3a61785da367697373d4432aef5222312aa70f6",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common/4.1.87.Final/netty-transport-native-unix-common-4.1.87.Final-sources.jar"
+                "https://repo1.maven.org/maven2/io/grpc/grpc-context/1.60.1/grpc-context-1.60.1.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-transport-native-unix-common/4.1.87.Final/netty-transport-native-unix-common-4.1.87.Final-sources.jar"
+              "downloaded_file_path": "io/grpc/grpc-context/1.60.1/grpc-context-1.60.1.jar"
             }
           },
           "com_google_flogger_flogger_system_backend_0_7_4": {
@@ -5707,6 +5702,18 @@
               "downloaded_file_path": "com/google/flogger/flogger-system-backend/0.7.4/flogger-system-backend-0.7.4.jar"
             }
           },
+          "io_netty_netty_resolver_jar_sources_4_1_100_Final": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_resolver_jar_sources_4_1_100_Final",
+              "sha256": "5e8cd49d0804f2ec6c04f16f46cc1a6ebfb00745177d740c23a51b9913c28fc8",
+              "urls": [
+                "https://repo1.maven.org/maven2/io/netty/netty-resolver/4.1.100.Final/netty-resolver-4.1.100.Final-sources.jar"
+              ],
+              "downloaded_file_path": "io/netty/netty-resolver/4.1.100.Final/netty-resolver-4.1.100.Final-sources.jar"
+            }
+          },
           "org_ow2_asm_asm_commons_jar_sources_9_5": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5719,16 +5726,16 @@
               "downloaded_file_path": "org/ow2/asm/asm-commons/9.5/asm-commons-9.5-sources.jar"
             }
           },
-          "io_grpc_grpc_core_1_54_1": {
+          "io_netty_netty_common_4_1_100_Final": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_core_1_54_1",
-              "sha256": "296844ad5e022fc988b49210804bf7c92f56fc9f9b22cdbaef02c69b9bed1945",
+              "name": "rules_jvm_external~5.3~maven~io_netty_netty_common_4_1_100_Final",
+              "sha256": "d2908301f1ac6f2910900742473c15d701765d3d4467acdb1eebb9df3aa82885",
               "urls": [
-                "https://repo1.maven.org/maven2/io/grpc/grpc-core/1.54.1/grpc-core-1.54.1.jar"
+                "https://repo1.maven.org/maven2/io/netty/netty-common/4.1.100.Final/netty-common-4.1.100.Final.jar"
               ],
-              "downloaded_file_path": "io/grpc/grpc-core/1.54.1/grpc-core-1.54.1.jar"
+              "downloaded_file_path": "io/netty/netty-common/4.1.100.Final/netty-common-4.1.100.Final.jar"
             }
           },
           "org_bouncycastle_bcprov_jdk18on_1_76": {
@@ -5818,18 +5825,6 @@
               "downloaded_file_path": "com/google/android/annotations/4.1.1.4/annotations-4.1.1.4-sources.jar"
             }
           },
-          "io_netty_netty_buffer_jar_sources_4_1_87_Final": {
-            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
-            "ruleClassName": "http_file",
-            "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_buffer_jar_sources_4_1_87_Final",
-              "sha256": "9b7e313923c37d2467726a9fcf247bc128535cc2c5533c6ec4026d662c746945",
-              "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-buffer/4.1.87.Final/netty-buffer-4.1.87.Final-sources.jar"
-              ],
-              "downloaded_file_path": "io/netty/netty-buffer/4.1.87.Final/netty-buffer-4.1.87.Final-sources.jar"
-            }
-          },
           "org_yaml_snakeyaml_jar_sources_2_2": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
@@ -5854,16 +5849,16 @@
               "downloaded_file_path": "com/google/android/annotations/4.1.1.4/annotations-4.1.1.4.jar"
             }
           },
-          "io_netty_netty_codec_socks_4_1_87_Final": {
+          "io_grpc_grpc_util_jar_sources_1_60_1": {
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "name": "rules_jvm_external~5.3~maven~io_netty_netty_codec_socks_4_1_87_Final",
-              "sha256": "41a76a64514f8f8f50ab8527254073521394138e8a96191905e8c143368b2006",
+              "name": "rules_jvm_external~5.3~maven~io_grpc_grpc_util_jar_sources_1_60_1",
+              "sha256": "d5e51b36d4af2908fba4619667cd310d7dfe70047462ce632b321d686977cbf9",
               "urls": [
-                "https://repo1.maven.org/maven2/io/netty/netty-codec-socks/4.1.87.Final/netty-codec-socks-4.1.87.Final.jar"
+                "https://repo1.maven.org/maven2/io/grpc/grpc-util/1.60.1/grpc-util-1.60.1-sources.jar"
               ],
-              "downloaded_file_path": "io/netty/netty-codec-socks/4.1.87.Final/netty-codec-socks-4.1.87.Final.jar"
+              "downloaded_file_path": "io/grpc/grpc-util/1.60.1/grpc-util-1.60.1-sources.jar"
             }
           },
           "commons_codec_commons_codec_1_15": {
