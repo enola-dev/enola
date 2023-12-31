@@ -39,6 +39,7 @@ cd "$ROOT"
 LOG=$(mktemp)
 if "$BZL" build --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
   rm "$LOG"
+  # TODO Integrate this with (use) tools/distro/build.sh instead of launching it like this
   cd "$CWD" && java -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
 else
   cat "$LOG" && echo >&2 && echo >&2
