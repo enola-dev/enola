@@ -18,6 +18,8 @@
 
 # Using Enola.dev
 
-Download the [`enola`](../download/latest/enola) binary, `chmod +x enola` it, and launch using `./enola`.
+Download the [`enola`](../download/latest/enola) binary, then `chmod +x enola`
+and launch it directly using `./enola` (on Linux, FreeBSD & macOS); or
+`java -jar enola` (e.g. on 🪟 Windows).
 
 The following chapters demonstrate different usage scenarios with recorded demos.
