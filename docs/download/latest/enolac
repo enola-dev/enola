@@ -15,17 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Replace this shell script with Bazel targets?
+set -euo pipefail
+: "${ENOLA_IMAGE:=ghcr.io/enola-dev/enola:latest}"
 
-mkdir -p site/download/latest/
-set -euox pipefail
+set -x
+docker run --rm --volume "$PWD":/app/CWD/:Z --tty "$ENOLA_IMAGE" "$@"
 
-# Build the end-user distributed executable fat über JAR
-# NB: "bazelisk build //..." does *NOT* build "//cli:enola_deploy.jar", for some reason
-bazelisk build //cli:enola_deploy.jar
-cp tools/distro/execjar-header.bash site/download/latest/enola
-cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
-
-# Build the Container Image
-# NB: This must work both on Docker (which turns it into docker buildx build) and Podman!
-docker build -t localhost/enola:latest .
+# NB: --tty is required so that output is colourful
+# PS: --interactive is not used, because Enola normally doesn't read from STDIN
+# (and it breaks CI/CD, due to "the input device is not a TTY").

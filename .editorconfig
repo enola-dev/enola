@@ -24,10 +24,7 @@ indent_size = unset
 tab_width = unset
 
 # The ./enola* files are Bash scripts (without *.bash extension)
-[enola]
-indent_size = 2
-tab_width = 2
-[enola-dl]
+[enola*]
 indent_size = 2
 tab_width = 2
 

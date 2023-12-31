@@ -39,3 +39,15 @@ once a day or so.
 Of course, whether you are comfortable with such _"Continuous Delivery",_ and thus
 _"always living at `HEAD`",_ like in _"rolling release distros",_ or have any concerns
 with such an approach e.g. from a security perspective, is entirely your choice - YMMV.
+
+## Container
+
+[`enolac`](../download/latest/enolac) runs Enola from a Container, on Docker (or Podman,
+or CRI-O; locally or e.g. on Kubernetes).
+
+It takes the exact same CLI arguments as the "regular" `enola` binary, but pulls it
+via a container image, instead of a "local installation", as above.
+
+It appropriately "mounts" the current working directory into the container, so that
+relative `file:` URIs should work. Absolute paths on your host won't work, because they
+are not accessible to the container ("by design").

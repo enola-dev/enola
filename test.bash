@@ -32,6 +32,9 @@ echo
 echo $ b build //...
 bazelisk build //...
 
+# Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
+tools/distro/test.bash
+
 # Check if https://pre-commit.com is available (and try to install it not)
 if ! [ -e "./.venv/bin/pre-commit" ]; then
   echo "https://pre-commit.com is not available..."

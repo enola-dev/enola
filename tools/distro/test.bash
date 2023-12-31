@@ -15,17 +15,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Replace this shell script with Bazel targets?
-
-mkdir -p site/download/latest/
+# TODO Transform this into a Bazel target instead...
 set -euox pipefail
 
-# Build the end-user distributed executable fat über JAR
-# NB: "bazelisk build //..." does *NOT* build "//cli:enola_deploy.jar", for some reason
-bazelisk build //cli:enola_deploy.jar
-cp tools/distro/execjar-header.bash site/download/latest/enola
-cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
+tools/distro/build.bash
 
-# Build the Container Image
-# NB: This must work both on Docker (which turns it into docker buildx build) and Podman!
-docker build -t localhost/enola:latest .
+# TODO Test output
+site/download/latest/enola help
+site/download/latest/enola --version
+site/download/latest/enola get --model file:docs/use/library/model.yaml demo.book_kind/0-13-140731-7
+
+# TODO Test output
+ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac help
+ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac --version
+ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac \
+  get --model file:docs/use/library/model.yaml demo.book_kind/0-13-140731-7
