@@ -86,6 +86,8 @@ java_grpc_library(
     srcs = [
         "core_proto",
     ],
+    # https://github.com/bazelbuild/bazel/issues/18970
+    toolchains = ['@bazel_tools//tools/jdk:toolchain_type'],
     visibility = [
         "//cli:__subpackages__",
         "//connectors:__subpackages__",
@@ -101,6 +103,8 @@ java_grpc_library(
     srcs = [
         "connector_proto",
     ],
+    # https://github.com/bazelbuild/bazel/issues/18970
+    toolchains = ['@bazel_tools//tools/jdk:toolchain_type'],
     visibility = [
         "//connectors:__subpackages__",
         "//core:__subpackages__",
