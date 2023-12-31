@@ -23,3 +23,19 @@ and launch it directly using `./enola` (on Linux, FreeBSD & macOS); or
 `java -jar enola` (e.g. on 🪟 Windows).
 
 The following chapters demonstrate different usage scenarios with recorded demos.
+
+## Downloader
+
+[`enola-dl`](../download/latest/enola-dl) downloads the latest version (into
+`~/.cache/`) when required, and then directly runs it. If you put this somewhere on
+your `$PATH`, e.g. into your `~/bin/`, then you will automagically always be running
+the latest up-to-date version of Enola. (We recommend actually saving it renamed as
+`enola` instead of `enola-dl`, just for convenience of launching.)
+
+As is currently implemented (using basic `curl`), there is a bit of a start-up time
+overhead for this. Future enhancements may further optimize this; e.g. check only
+once a day or so.
+
+Of course, whether you are comfortable with such _"Continuous Delivery",_ and thus
+_"always living at `HEAD`",_ like in _"rolling release distros",_ or have any concerns
+with such an approach e.g. from a security perspective, is entirely your choice - YMMV.
