@@ -58,7 +58,9 @@ load(
 )
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
+# TODO Declare Maven dependencies in 1 single place, instead of both here as well as in maven.install() of MODULE.bazel
 maven_install(
+    name = "rules_jvm_external_maven",
     artifacts = IO_GRPC_GRPC_JAVA_ARTIFACTS,
     generate_compat_repositories = True,
     override_targets = IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS,
@@ -67,7 +69,7 @@ maven_install(
     ],
 )
 
-load("@maven//:compat.bzl", "compat_repositories")
+load("@rules_jvm_external_maven//:compat.bzl", "compat_repositories")
 
 compat_repositories()
 

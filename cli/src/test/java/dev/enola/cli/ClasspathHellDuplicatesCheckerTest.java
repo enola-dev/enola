@@ -75,6 +75,10 @@ public class ClasspathHellDuplicatesCheckerTest {
         // Bazel Rules etc. not runtime classpath
         return jarPath.contains("java_tools/Runner_deploy.jar")
 
+                // TODO Declare Maven dependencies in 1 single place, instead of both in
+                // maven.install() of MODULE.bazel and in maven_install() of WORKSPACE.bazel.
+                || jarPath.contains("/external/rules_jvm_external%7e5.3%7emaven%7emaven/")
+
                 // TODO: Fix the sad mess :( of duplicate Protobuf & gRPC JARs!
                 || jarPath.contains("protobuf")
                 || jarPath.contains("grpc");
