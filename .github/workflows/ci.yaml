@@ -40,13 +40,15 @@ jobs:
       - name: Cache Bazel
         uses: actions/cache@v3
         with:
+          # KEEP IN SYNC WITH BELOW!
           # https://github.com/actions/cache/pull/575/files
           path: |
             ~/.cache/bazel/
             ~/.cache/bazelisk/
             /private/var/tmp/_bazel_runner/
           key: >
-            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE.bazel', 'MODULE.bazel') }}
+            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc',
+            'WORKSPACE.bazel', 'MODULE.bazel') }}
           restore-keys: ${{ runner.os }}-bazel-
       - name: Cache Python
         uses: actions/cache@v3
@@ -65,7 +67,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit/
-          key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
+          key:
+            ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Cache Demo
         uses: actions/cache@v3
@@ -110,3 +113,56 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
+  # https://docs.github.com/en/packages/managing-github-packages-using-github-actions-workflows/publishing-and-installing-a-package-with-github-actions#publishing-a-package-using-an-action
+  push-container-image:
+    needs: build
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    # This is a separate job from 'build' only because it needs additional permissions which we don't want 'build' to have:
+    permissions:
+      contents: read
+      packages: write
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Bazel
+        uses: actions/cache@v3
+        with:
+          # KEEP IN SYNC WITH ABOVE!
+          # https://github.com/actions/cache/pull/575/files
+          path: |
+            ~/.cache/bazel/
+            ~/.cache/bazelisk/
+            /private/var/tmp/_bazel_runner/
+          key: >
+            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc',
+            'WORKSPACE.bazel', 'MODULE.bazel') }}
+          restore-keys: ${{ runner.os }}-bazel-
+      - name: Build Container Image # again, because technically it was already built in the 'build' job, but oh well!
+        run: ./tools/distro/build.bash
+      # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # This step uses [docker/metadata-action](https://github.com/docker/metadata-action#about) to extract tags and labels that will be applied to the specified image. The `id` "meta" allows the output of this step to be referenced in a subsequent step. The `images` value provides the base name for the tags and labels.
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      # This step uses the `docker/build-push-action` action to build the image, based on your repository's `Dockerfile`. If the build succeeds, it pushes the image to GitHub Packages.
+      # It uses the `context` parameter to define the build's context as the set of files located in the specified path. For more information, see "[Usage](https://github.com/docker/build-push-action#usage)" in the README of the `docker/build-push-action` repository.
+      # It uses the `tags` and `labels` parameters to tag and label the image with the output from the "meta" step.
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
