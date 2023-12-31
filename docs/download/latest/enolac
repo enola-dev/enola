@@ -16,7 +16,7 @@
 # limitations under the License.
 
 set -euo pipefail
-: "${ENOLA_IMAGE:=ghcr.io/enola-dev/enola:latest}"
+: "${ENOLA_IMAGE:=ghcr.io/enola-dev/enola:main}"
 
 set -x
 docker run --rm --volume "$PWD":/app/CWD/:Z --tty "$ENOLA_IMAGE" "$@"
