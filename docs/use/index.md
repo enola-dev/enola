@@ -18,11 +18,15 @@
 
 # Using Enola.dev
 
+The following chapters demonstrate different usage scenarios with recorded demos.
+
+This page documents several options available to locally install and run Enola.
+
+## Binary
+
 Download the [`enola`](../download/latest/enola) binary, then `chmod +x enola`
 and launch it directly using `./enola` (on Linux, FreeBSD & macOS); or
 `java -jar enola` (e.g. on 🪟 Windows).
-
-The following chapters demonstrate different usage scenarios with recorded demos.
 
 ## Downloader
 
