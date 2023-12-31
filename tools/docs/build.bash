@@ -57,5 +57,4 @@ mkdocs build --strict --config-file mkdocs.yaml
 cleanup
 
 # Enola Binary Distro
-mkdir -p site/download/latest/
-cp bazel-bin/cli/enola_deploy.jar site/download/latest/enola.jar
+tools/distro/build.bash
