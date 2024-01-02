@@ -1,0 +1,43 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+    <title>🕵🏾‍♀️ Enola</title>
+
+    <script src="/ui/static/main.js"></script>
+
+    <link href="/ui/static/main.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+        media="screen"
+        rel="stylesheet"
+        type="text/css"/>
+</head>
+<body>
+<div class="app-bar">
+    <span class="material-symbols-outlined">menu</span>
+    <span>Enola 🕵🏾‍♀️</span>
+    <span style="width: 100%">
+            <input incremental="true" name="q" placeholder="Search..." size="70" type="search"/>
+        </span>
+    <a href="https://www.enola.dev"
+    ><span class="material-symbols-outlined" style="float: right; color: #ccc"> help </span></a
+    >
+</div>
+
+<div class="main">
+    <div style="float: right; padding-top: 1em"><a href="#">name</a>: <input value="demo"/></div>
+
+    <div style="float: let">
+        {{.entity}}
+    </div>
+</div>
+</body>
+</html>
