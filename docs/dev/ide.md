@@ -36,7 +36,7 @@ We recommend using VSC.
 
       * [VSC Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) for syntax highlighting, linting and formatting `BUILD` files
 
-      * [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). You may have to right-click on (the right "level" of) some folders to _Synchronize Projects with Bazel View_ to resolve weird initial problems like e.g. _Implicit super constructor Object() is undefined for default constructor. Must define an explicit constructor._ or _The import cannot be resolved._ or _cannot be resolved to a type_ or _The method is undefined for the type_ etc.
+      * [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). Check out its [great Troubleshooting Guide](https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md) in case of any set-up problems.
 
 * [google-java-format](https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance) TODO pick which one of the 8 to use 😸
 
