@@ -41,3 +41,6 @@ docs/use/library/model.textproto
 
 # Node.JS
 node_modules/
+
+# Ignore Gradle build output directory
+build

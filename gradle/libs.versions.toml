@@ -1,0 +1,15 @@
+# https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
+
+# NB: build-logic/src/main/kotlin/dev.enola.java-common-conventions.gradle.kts can also have versions; that's confusing!
+
+[versions]
+slf4j = "2.0.9"
+
+[libraries]
+# TODO slf4j API how to; hyphen slf4j-api and underscore slf4j_api are NOK...
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j_jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
+slf4j_simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+guava = { module = "com.google.guava:guava", version = "33.0.0-jre" }
+junit = { module = "junit:junit", version = "4.13.2" }
+truth = { module = "com.google.truth:truth", version = "1.2.0" }

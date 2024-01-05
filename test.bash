@@ -24,6 +24,7 @@ if ! [ -x "$(command -v bazelisk)" ]; then
     exit 255
 fi
 
+# Bazel
 # https://github.com/bazelbuild/bazel/issues/4257
 # https://bazel.build/reference/command-line-reference#flag--build_tests_only
 echo $ b test //...
@@ -31,6 +32,12 @@ bazelisk test --nobuild_tests_only //...
 echo
 echo $ b build //...
 bazelisk build //...
+
+# Gradle
+echo
+echo Gradle
+./gradlew test
+echo
 
 # Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
 tools/distro/test.bash
