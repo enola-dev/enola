@@ -20,7 +20,11 @@
 
 ## Eclipse
 
-Eclipse is not actively supported by this project as an IDE. We recommend using VSC.
+Eclipse is not actively supported by this project as an IDE. 
+
+It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
+
+We recommend using VSC.
 
 ## Visual Studio Code (VSC)
 
