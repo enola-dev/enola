@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2023-2024 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,8 +54,20 @@ fi
 tools/be/pip-installed.sh
 
 echo
-echo $ pre-commit run
-pre-commit run
+# Run https://pre-commit.com, see .pre-commit-config.yaml;
+# locally run only on last commit (quick), but on CI
+# <https://stackoverflow.com/a/75223617/421602>
+# do run on all files, even if a bit slower.
+# This prevents "cheating" and tech debt.
+set +u
+if [ -z "$CI" ]; then
+  echo "$ pre-commit run (locally, only changed files)"
+  pre-commit run
+else
+  echo "$ pre-commit run --all-files (on CI)"
+  pre-commit run --all-files
+fi
+set -u
 
 # This makes sure that this test.bash will run as a pre-commit hook
 # NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
