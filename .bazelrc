@@ -23,6 +23,10 @@ test --test_output=errors
 build --explicit_java_test_deps
 test --explicit_java_test_deps
 
+# https://github.com/bazelbuild/bazel/issues/4257
+# https://bazel.build/docs/user-manual#build-tests-only
+test --nobuild_tests_only
+
 # Quiet!
 # common --noshow_progress
 common --ui_event_filters=error,warning,info,-debug,stdout,stderr
