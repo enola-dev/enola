@@ -19,6 +19,8 @@ run --incompatible_strict_action_env
 test --test_output=errors
 
 # https://bazel.build/reference/command-line-reference#flag--explicit_java_test_deps
+# BOTH build and test HAVE to have this - otherwise "Build option --explicit_java_test_deps has changed, discarding analysis cache."
+build --explicit_java_test_deps
 test --explicit_java_test_deps
 
 # Quiet!
