@@ -51,7 +51,7 @@ else
 fi
 
 # pip install - but only if required! ;)
-tools/be/pip-installed.sh
+tools/be/pip-installed.bash
 
 echo
 # Run https://pre-commit.com, see .pre-commit-config.yaml;

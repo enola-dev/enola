@@ -1,22 +1,22 @@
 body {
-    margin: 0;
-    font-family: "Roboto", sans-serif;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
 }
 
 .app-bar {
-    color: #ccc;
-    background-color: green;
-    height: 2.5em;
+  color: #ccc;
+  background-color: green;
+  height: 2.5em;
 }
 
 .main {
-    padding: 0.7em;
-    padding-top: 0;
+  padding: 0.7em;
+  padding-top: 0;
 }
 
 .proto {
-    padding: 0.3em;
-    border-style: solid;
-    color: darkolivegreen;
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  padding: 0.3em;
+  border-style: solid;
+  color: darkolivegreen;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
 }
