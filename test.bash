@@ -50,12 +50,8 @@ else
   source ./.venv/bin/activate
 fi
 
-# We need to pip install "every time" (and not just e.g. inside the if above),
-# because otherwise changes to requirements.txt don't lead to updates locally and on CI.
-# TODO Is there a way to only run pip install "if requirements.txt changed"? With Bazel?!
-echo
-echo $ pip install -r requirements.txt
-pip install -r requirements.txt
+# pip install - but only if required! ;)
+tools/be/pip-installed.sh
 
 echo
 echo $ pre-commit run
