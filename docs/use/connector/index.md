@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023 The Enola <https://enola.dev> Authors
+    Copyright 2023-2024 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -52,13 +52,13 @@ This is useful e.g. for testing, but also in production for "fixed" entities.
 For example, this `model-fs.yaml`:
 
 ```yaml
-{% include "model-fs.yaml" %}
+{% include "./model-fs.yaml" %}
 ```
 
 with this `demo.book_kind/0-13-140731-7.yaml`:
 
 ```yaml
-{% include "demo.book_kind/0-13-140731-7.yaml" %}
+{% include "./demo.book_kind/0-13-140731-7.yaml" %}
 ```
 
 will cause:
@@ -79,7 +79,7 @@ which implements [the ConnectorService API](.././../dev/proto/core#connectorserv
 For example, this `model-grpc.yaml`:
 
 ```yaml
-{% include "model-grpc.yaml" %}
+{% include "./model-grpc.yaml" %}
 ```
 
 we can see it in action by running [`demo-grpc.bash`](demo-grpc.bash):
@@ -98,7 +98,7 @@ This connector always triggers an error, and is only intended for testing; e.g.
 this `model-error.yaml`:
 
 ```yaml
-{% include "model-error.yaml" %}
+{% include "./model-error.yaml" %}
 ```
 
 will cause:
@@ -116,7 +116,7 @@ To illustrate, we could e.g. directly use the
 like this:
 
 ```yaml
-{% include "model-java.yaml" %}
+{% include "./model-java.yaml" %}
 ```
 
 which will cause:
