@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023 The Enola <https://enola.dev> Authors
+    Copyright 2023-2024 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,5 +25,5 @@ Different formats are supported, and can be converted using [Rosetta](../rosetta
 ## `model.yaml`
 
 ```yaml
-{% include "model.yaml" %}
+{% include "./model.yaml" %}
 ```
