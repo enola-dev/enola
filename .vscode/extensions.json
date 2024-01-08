@@ -1,3 +1,14 @@
 {
-  "recommendations": ["bazelbuild.vscode-bazel", "sfdc.bazel-vscode-java", "josevseb.google-java-format-for-vs-code"]
+  "recommendations": [
+    "sfdc.bazel-vscode-java",
+    "bazelbuild.vscode-bazel",
+    "josevseb.google-java-format-for-vs-code",
+    "editorconfig.editorconfig",
+    "davidanson.vscode-markdownlint",
+    "esbenp.prettier-vscode",
+    "plex.vscode-protolint",
+    "zxh404.vscode-proto3",
+    "thejustinwalsh.textproto-grammer",
+    "seaube.clangformat"
+  ]
 }
