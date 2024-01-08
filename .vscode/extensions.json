@@ -1,3 +1,3 @@
 {
-  "recommendations": ["bazelbuild.vscode-bazel", "sfdc.bazel-vscode-java"]
+  "recommendations": ["bazelbuild.vscode-bazel", "sfdc.bazel-vscode-java", "josevseb.google-java-format-for-vs-code"]
 }

@@ -28,6 +28,8 @@ We recommend using VSC.
 
 ## Visual Studio Code (VSC)
 
+<!-- TODO All of these extensions should be just also be in .vscode/extensions.json, and this should be explained properly here... -->
+
 [The code style used in this project](style.md) can be enforced while typing using the following VSC plugins, which will automagically pick up their options from the respective configuration files in this repository:
 
 * [`.editorconfig`](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
@@ -38,7 +40,7 @@ We recommend using VSC.
 
       * [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). Check out its [great Troubleshooting Guide](https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md) in case of any set-up problems.
 
-* [google-java-format](https://marketplace.visualstudio.com/search?term=google-java-format&target=VSCode&category=All%20categories&sortBy=Relevance) TODO pick which one of the 8 to use 😸
+* [google-java-format](https://marketplace.visualstudio.com/items?itemName=JoseVSeb.google-java-format-for-vs-code)
 
 * [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
 
@@ -60,7 +62,7 @@ We recommend using VSC.
 ## Web IDE
 
 In order to work on this project with a purely Web-based IDE, which is great to hack from e.g. a Tablet or Work Computer or some such setup,
-we recommend you use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at https://vscode.dev
+we recommend you use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
 together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
 e.g. to a computer at home, or a VM in the Cloud.
 
