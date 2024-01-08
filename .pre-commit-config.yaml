@@ -110,6 +110,7 @@ repos:
     rev: v2.12.0
     hooks:
       - id: pretty-format-java
+        # Keep this version in sync with the same version in .vscode/settings.json
         args: [--autofix, --aosp, --google-java-formatter-version=1.19.2]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
