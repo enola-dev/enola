@@ -28,17 +28,22 @@ We recommend using VSC.
 
 ## Visual Studio Code (VSC)
 
-<!-- TODO All of these extensions should be just also be in .vscode/extensions.json, and this should be explained properly here... -->
+You must manually install the following tools for all VSC extensions to work:
 
-[The code style used in this project](style.md) can be enforced while typing using the following VSC plugins, which will automagically pick up their options from the respective configuration files in this repository:
+```bash
+$ go install github.com/yoheimuta/protolint/cmd/protolint@latest
 
-* [`.editorconfig`](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+$ sudo apt get install clang-format
+# sudo dnf install clang-format
+```
 
-* For Bazel support:
+[The code style used in this project](style.md) will be enforced while typing in VSC using the extensions below. They are automatically proposed to be installed (because they are all listed in [`.vscode/extensions.json`](https://github.com/enola-dev/enola/blob/main/.vscode/extensions.json)). They will all also automagically pick up their options from the respective configuration files in this repository; this makes the VSC IDE and pre-commit use the same parameters for these tools.
 
-      * [VSC Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) for syntax highlighting, linting and formatting `BUILD` files
+* [`.editorconfig`](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) for normalized line endings etc. on all files
 
-      * [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). Check out its [great Troubleshooting Guide](https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md) in case of any set-up problems.
+* [VSC Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) for syntax highlighting, linting and formatting `BUILD` files
+
+* [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). Check out its [great Troubleshooting Guide](https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md) in case of any set-up problems.
 
 * [google-java-format](https://marketplace.visualstudio.com/items?itemName=JoseVSeb.google-java-format-for-vs-code)
 
@@ -46,18 +51,13 @@ We recommend using VSC.
 
 * [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-* [protolint](https://github.com/plexsystems/vscode-protolint), which requires `protolint`:
+* [protolint](https://marketplace.visualstudio.com/items?itemName=Plex.vscode-protolint) for `*.proto` validation (this requires `protolint`, see above)
 
-        go install github.com/yoheimuta/protolint/cmd/protolint@latest
+* [proto3](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3) for `*.proto` editing
 
-* For `*.proto` & `*.textproto`:
+* [TextProto](https://marketplace.visualstudio.com/items?itemName=thejustinwalsh.textproto-grammer) for `*.textproto` syntax highlighting
 
-      * [proto3](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3)
-      * [TextProto](https://marketplace.visualstudio.com/items?itemName=thejustinwalsh.textproto-grammer)
-      * [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat), which requires `clang-package`:
-
-            sudo apt get install clang-format
-            # sudo dnf install clang-format
+* [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat) (this requires `clang-package`, see above) for `*.textproto` formatting
 
 ## Web IDE
 
