@@ -24,13 +24,6 @@ if ! [ -x "$(command -v bazelisk)" ]; then
     exit 255
 fi
 
-# https://github.com/bazelbuild/bazel/issues/4257
-echo $ Bazel testing...
-bazelisk query //... | xargs bazel test
-
-# Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
-tools/distro/test.bash
-
 # Check if https://pre-commit.com is available (and try to install it not)
 if ! [ -e "./.venv/bin/pre-commit" ]; then
   echo "https://pre-commit.com is not available..."
@@ -68,6 +61,13 @@ else
   pre-commit run --all-files
 fi
 set -u
+
+# https://github.com/bazelbuild/bazel/issues/4257
+echo $ Bazel testing...
+bazelisk query //... | xargs bazel test
+
+# Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
+tools/distro/test.bash
 
 # This makes sure that this test.bash will run as a pre-commit hook
 # NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
