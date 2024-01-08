@@ -9,13 +9,9 @@
 
   "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
 
-  // TODO Saving recently got excruciatingly *SLOW* for some reason,
-  // so let's just use only pre-commit, or explicit format; for now, so:
-  // TODO Actually this doesn't seem to help, even WITH this, it
-  // sometimes (but less often?!) gets stuck too long when saving.
-  "editor.formatOnType": false,
-  "editor.formatOnSave": false,
-  "editor.formatOnPaste": false,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
 
   // https://code.visualstudio.com/docs/languages/html#_auto-update-tags
   "editor.linkedEditing": true,
@@ -48,8 +44,7 @@
   },
 
   // Keep this version in sync with the same version in .pre-commit-config.yaml
-  // TODO This does not work, it's using 1.18.1 (see Output tab) despite this;
-  // However google-java-format has great backwards compability, so no issue.
+  // NB: Changes to this are only taken into account on start-up, so need to restart.
   "java.format.settings.google.version": "1.19.2",
 
   "[json5]": {
