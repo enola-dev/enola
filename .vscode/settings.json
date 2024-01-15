@@ -63,9 +63,10 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
-  // https://github.com/salesforce/bazel-vscode#installation
+  // https://github.com/salesforce/bazel-vscode-java/issues/82
   "java.import.bazel.enabled": true,
   "java.import.maven.enabled": false,
+  "java.import.gradle.enabled": false,
 
   // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
   "yaml.schemas": {
@@ -112,7 +113,8 @@
     "docs": false,
     "site": false,
     "tools": false,
-    "web": false
+    "web": false,
+    "node_modules": false
   },
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
   "java.compile.nullAnalysis.mode": "automatic",
