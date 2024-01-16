@@ -36,3 +36,6 @@ docs/use/**/*.output
 
 # Node.JS
 node_modules/
+
+# Be
+.be/

@@ -15,18 +15,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This runs "pip install", but (only) if requirements.txt has changed.
+set -euo pipefail
 
-# TODO Cute idea, but this doesn't actually work, like this... fix!
+# This runs "pip install", but (only) if requirements.txt has changed.
 
 # TODO Use sha512sum (or b2sum) instead of md5sum!
 # TODO Use cksum <https://man7.org/linux/man-pages/man1/cksum.1.html> instead, with parameter?
 # TODO Replace this with Enola's very own Resource hash() and exec() ...
 
-HASH_FILE=.pip-install.hash.txt
+mkdir -p .be/
+HASH_FILE=.be/.pip-install.hash.txt
+# It's crucial that //.be/ is on .gitignore and not checked-in; this only works like that.
 
 # Always run on CI (because THIS IS BROKEN!)
-if ! md5sum --warn --status --check $HASH_FILE || [ -n "$CI" ]; then
+if ! md5sum --warn --status --check $HASH_FILE ; then
   echo
   set -e
   pip install -r requirements.txt
@@ -34,7 +36,7 @@ if ! md5sum --warn --status --check $HASH_FILE || [ -n "$CI" ]; then
   # Technically not required, but let's just double check:
   md5sum --warn --status --strict --check $HASH_FILE
 else
-  echo "Skipping running pip install - BUT THIS DETECTION IS BROKEN ANYWAY AS-IS! :("
+  echo "Skip running pip install, because requirements.txt hasn't changed."
 fi
 
 # PS: A "real" (non-script) implementation should hash the command itself as well.
