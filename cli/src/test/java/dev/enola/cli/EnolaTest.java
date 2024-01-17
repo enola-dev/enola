@@ -23,8 +23,6 @@ import static dev.enola.cli.CommandLineSubject.assertThat;
 import static dev.enola.cli.Enola.cli;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
-import static org.junit.Assert.assertThat;
-
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.TestResource;

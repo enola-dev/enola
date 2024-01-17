@@ -19,8 +19,6 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThat;
-
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 

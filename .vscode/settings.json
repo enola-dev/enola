@@ -46,7 +46,7 @@
     "editor.defaultFormatter": "josevseb.google-java-format-for-vs-code",
     "editor.codeActionsOnSave": {
       // Used by at least JS as well as Java, so only overridden for [java]
-      "source.organizeImports": "never",
+      "source.organizeImports": "always",
       "source.addMissingImports": "never"
     }
   },
