@@ -16,7 +16,7 @@
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-GRPC_JAVA_VERSION = "1.60.1"
+GRPC_JAVA_VERSION = "1.61.0"
 
 # https://github.com/grpc/grpc-java/
 # https://github.com/enola-dev/enola/issues/202
@@ -26,9 +26,9 @@ GRPC_JAVA_VERSION = "1.60.1"
 # (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
 http_archive(
     name = "io_grpc_grpc_java",
-    sha256 = "df87042540fd2cf4b6d1e3e38ba8bd192e16fe1c5ac82336c9811752cb69eb91",
+    sha256 = "301e0de87c7659cc790bd2a7265970a71632d55773128c98768385091c0a1a97",
     strip_prefix = "grpc-java-%s" % GRPC_JAVA_VERSION,
-    url = "https://github.com/grpc/grpc-java/archive/v%s.zip" % GRPC_JAVA_VERSION,
+    url = "https://github.com/grpc/grpc-java/archive/refs/tags/v%s.zip" % GRPC_JAVA_VERSION,
 )
 
 load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS")
