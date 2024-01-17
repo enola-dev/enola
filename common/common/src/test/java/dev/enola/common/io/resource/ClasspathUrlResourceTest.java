@@ -102,8 +102,13 @@ public class ClasspathUrlResourceTest {
                 Optional.of(Charsets.UTF_8),
                 "🕵🏾‍♀️\n");
 
-        checkBinary("test.md", OCTET_STREAM, 19);
+        var md = "# Markdown\n\n❤️\n";
+        checkText(
+                "test.md",
+                MediaType.create("text", "markdown").withCharset(Charsets.UTF_8),
+                Optional.of(Charsets.UTF_8),
+                md);
         var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
-        assertThat(resource.charSource().read()).isEqualTo("# Markdown\n\n❤️\n");
+        assertThat(resource.charSource().read()).isEqualTo(md);
     }
 }
