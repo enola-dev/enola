@@ -115,9 +115,11 @@
     "tools": false,
     "web": false,
     "node_modules": false,
-    ".be": false
+    ".be": false,
+    "bin": false
   },
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
   "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "automatic",
   "bazel.projectview.open": false
 }
