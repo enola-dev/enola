@@ -98,15 +98,6 @@ maven_install(
         "io.grpc:grpc-netty:1.60.1",  # Alternative: grpc-netty-shaded
         "io.grpc:grpc-stub:1.60.1",
         "io.grpc:grpc-inprocess:1.60.1",
-        # https://github.com/grpc/grpc-java/issues/10576
-        maven.artifact(
-            artifact = "grpc-core",
-            exclusions = [
-                "io.grpc:grpc-util",
-            ],
-            group = "io.grpc",
-            version = "1.60.1",
-        ),
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:19.0.0",
