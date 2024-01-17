@@ -1,6 +1,0 @@
---- java_grpc_library.bzl
-+++ java_grpc_library.bzl
-@@ -103,1 +103,2 @@
--        use_default_shell_env = True,
-+        use_default_shell_env = True,
-+        toolchain = None
