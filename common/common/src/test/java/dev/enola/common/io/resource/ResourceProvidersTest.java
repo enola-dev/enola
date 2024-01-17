@@ -54,8 +54,17 @@ public class ResourceProvidersTest {
 
     @Test
     public void testEmpty() throws IOException {
-        var r = new ResourceProviders().getResource(URI.create("file:///dev/null"));
+        // NB: URI.create("empty:") causes an java.net.URISyntaxException, so:
+        var uri = URI.create("empty:?");
+        var r = new ResourceProviders().getResource(uri);
         assertThat(r.byteSource().isEmpty()).isTrue();
+        assertThat(r.mediaType())
+                .isEqualTo(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
+
+        uri = URI.create("empty:?mediaType=" + MediaType.JSON_UTF_8.toString().replace(" ", ""));
+        r = new ResourceProviders().getResource(uri);
+        assertThat(r.byteSource().isEmpty()).isTrue();
+        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
     }
 
     @Test

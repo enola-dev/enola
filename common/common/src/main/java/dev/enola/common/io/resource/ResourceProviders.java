@@ -28,9 +28,6 @@ import java.nio.file.Path;
 
 public class ResourceProviders implements ResourceProvider {
 
-    // TODO Add support for mediaType to all resources
-    // (see how it's already done for FileResource and in FileDescriptorResource)
-
     // This is hard-coded to the ResourceProvider implementations
     // in this package, for now.  TODO Later, read ResourceProvider
     // implementations from the classpath via ServiceLoader, and
@@ -68,8 +65,7 @@ public class ResourceProviders implements ResourceProvider {
             var stringResource = new StringResource(uri.getSchemeSpecificPart());
             return new ReadableButNotWritableResource(stringResource);
         } else if (scheme.startsWith(EmptyResource.SCHEME)) {
-            return new ReadableButNotWritableResource(
-                    new EmptyResource(uri.getSchemeSpecificPart()));
+            return new ReadableButNotWritableResource(new EmptyResource(mediaType));
         } else if (scheme.startsWith(NullResource.SCHEME)) {
             return NullResource.INSTANCE;
         } else if (scheme.startsWith(ErrorResource.SCHEME)) {

@@ -28,7 +28,7 @@ import java.io.IOException;
 public class EmptyResourceTest {
     @Test
     public void testEmptyResource() throws IOException {
-        var e = new EmptyResource(YamlMediaType.YAML_UTF_8.toString());
+        var e = new EmptyResource(YamlMediaType.YAML_UTF_8);
         assertThat(e.byteSource().isEmpty()).isTrue();
         assertThat(e.charSource().isEmpty()).isTrue();
         assertThat(e.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
