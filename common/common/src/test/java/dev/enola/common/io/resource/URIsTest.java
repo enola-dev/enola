@@ -84,6 +84,10 @@ public class URIsTest {
         var uri2expected = URI.create("scheme:something?mediaType=text%2Fplain%3Bcharset%3Dutf-8");
         assertThat(uri2).isEqualTo(uri2expected);
         assertThat(URIs.getMediaType(uri2expected)).isEqualTo(mt2);
+
+        var uri3 = URIs.addMediaType(URI.create("scheme:?"), mt1);
+        var uri3expected = URI.create("scheme:?mediaType=image%2Fgif");
+        assertThat(uri3).isEqualTo(uri3expected);
     }
 
     @Test

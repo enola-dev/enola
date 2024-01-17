@@ -24,6 +24,7 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class EmptyResourceTest {
     @Test
@@ -32,6 +33,7 @@ public class EmptyResourceTest {
         assertThat(e.byteSource().isEmpty()).isTrue();
         assertThat(e.charSource().isEmpty()).isTrue();
         assertThat(e.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
-        assertThat(e.uri().toString()).isEqualTo("empty:application/yaml");
+        assertThat(e.uri())
+                .isEqualTo(URI.create("empty:?mediaType=application%2Fyaml%3Bcharset%3Dutf-8"));
     }
 }
