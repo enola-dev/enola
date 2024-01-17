@@ -1,21 +1,29 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/debian
+// see https://aka.ms/devcontainer.json
 {
-  "name": "Debian",
+  "name": "Enola.dev's Dev Containers.dev",
+
+  // This is the "fat" container with a lot of ready tools
+  // from https://github.com/devcontainers/images/tree/main/src/universal
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  //
+  // "image": "mcr.microsoft.com/devcontainers/base:bookworm"
+  // from https://github.com/devcontainers/images/tree/main/src/base-debian
+  // from https://github.com/devcontainers/templates/tree/main/src/debian
+  // is very minimal, and we would need to add a lot...
+  //
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
-  // ? "initializeCommand": "./test.bash",
-  "features": {
-    "ghcr.io/devcontainers-contrib/features/bash-command:1": {
-      "command": "./test.bash",
-    }, // ,
-    // "ghcr.io/balazs23/devcontainers-features/bazel:1": {
-    //	"bazelisk": "v1.15.0"
-    // }
-  },
+
+  // https://containers.dev/implementors/json_reference/#lifecycle-scripts
+  // is what you want, NOT features' "ghcr.io/devcontainers-contrib/features/bash-command:1"
+  // (because that doesn't seem to have access to the workspace, whereas this does)
+  "onCreateCommand": "/workspaces/enola/test.bash",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+    },
+  },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
@@ -25,4 +33,8 @@
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
+
+  "hostRequirements": {
+    "cpus": 4,
+  },
 }

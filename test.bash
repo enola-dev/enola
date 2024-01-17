@@ -20,6 +20,7 @@ set -euo pipefail
 # Same also in the ./enola script:
 if ! [ -x "$(command -v bazelisk)" ]; then
   if [ -x "$(command -v go)" ]; then
+    echo "go install bazelisk, buildifier, buildozer..."
     go install github.com/bazelbuild/bazelisk@latest
     go install github.com/bazelbuild/buildtools/buildifier@latest
     go install github.com/bazelbuild/buildtools/buildozer@latest
@@ -29,16 +30,20 @@ if ! [ -x "$(command -v bazelisk)" ]; then
     # 64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
     GO_BIN_PATH=$(go env GOPATH)/bin
     ln -s "$GO_BIN_PATH"/bazelisk "$GO_BIN_PATH"/bazel
+    ln -s "$GO_BIN_PATH"/bazelisk "$GO_BIN_PATH"/b
+
+    echo "b --version"
+    "$GO_BIN_PATH"/b version
+    echo
   else
-    echo "bazelisk is not installed, please either install Go https://go.dev/doc/install "
-    echo "and then run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
-    echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
+    echo "Please install Go from https://go.dev/doc/install and re-run this script!"
+    echo "See also https://docs.enola.dev/dev/setup/"
     exit 255
   fi
 fi
 
 # Check if https://pre-commit.com is available (and try to install it not)
-if ! [ -e "./.venv/bin/pre-commit" ]; then
+if ! [ -e ".venv/bin/pre-commit" ]; then
   echo "https://pre-commit.com is not available..."
 
   if ! [ -x "$(command -v python3)" ]; then
@@ -68,10 +73,10 @@ echo
 set +u
 if [ -z "$CI" ]; then
   echo "$ pre-commit run (locally, only changed files)"
-  pre-commit run
+  .venv/bin/pre-commit run
 else
   echo "$ pre-commit run --all-files (on CI)"
-  pre-commit run --all-files
+  .venv/bin/pre-commit run --all-files
 fi
 set -u
 
