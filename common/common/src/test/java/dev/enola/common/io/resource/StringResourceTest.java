@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ public class StringResourceTest {
         var r2 = new StringResource("# Models\n");
         assertThat(r2.charSource().read()).isEqualTo("# Models\n");
 
-        assertThat(new StringResource("").byteSource().size()).isEqualTo(0);
-        assertThat(new StringResource("").charSource().length()).isEqualTo(0);
+        // NB: new StringResource("") is not supported, because
+        // URI.create("string:") causes an java.net.URISyntaxException.
     }
 }

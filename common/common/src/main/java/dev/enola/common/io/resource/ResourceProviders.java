@@ -61,7 +61,12 @@ public class ResourceProviders implements ResourceProvider {
             }
             return new ReadableButNotWritableResource(cpr);
         } else if (scheme.startsWith(StringResource.SCHEME)) {
-            return new ReadableButNotWritableResource(new StringResource(uriPath, mediaType));
+            // NOT new StringResource(uriPath, mediaType),
+            // because that is confusing, as it will chop off after # and interpret '?'
+            // which is confusing for users, for this URI scheme. If "literal" resources
+            // WITH MediaType are required, consider adding DataResource for data:
+            var stringResource = new StringResource(uri.getSchemeSpecificPart());
+            return new ReadableButNotWritableResource(stringResource);
         } else if (scheme.startsWith(EmptyResource.SCHEME)) {
             return new ReadableButNotWritableResource(
                     new EmptyResource(uri.getSchemeSpecificPart()));
