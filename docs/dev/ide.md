@@ -18,15 +18,25 @@
 
 # IDE
 
-<!-- TODO Reorder! Simplify. -->
+## Web IDE
 
-## Eclipse
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
 
-Eclipse is not actively supported by this project as an IDE.
+Web-based IDEs are great to easily work from any computer.
 
-It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
+We recommend you use GitHub Codespaces to contribute to this project by clicking on the button above.
 
-We recommend using VSC.
+This project is configured to automatically configure your Codespace with all required tools. If anything doesn't just work "out of the box", please [create an issue](https://github.com/enola-dev/enola/issues).
+
+While the 32 GB disk space of the Codespace default _Machine Type_ is sufficient, its _2-core • 8 GB RAM_ is too limited for sufficiently efficient building, and at very least the _4-core • 16GB RAM_ (or bigger) is highly recommended.
+
+If you are missing your fancy custom Shell configuration that you have built over the last 100 years,
+you should [set up your dotfiles for Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
+such as [e.g. this dude did in his dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc#github-codespaces).
+
+Alternatively, you can use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
+together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
+e.g. to a computer at home, or a VM in the Cloud.
 
 ## Visual Studio Code (VSC)
 
@@ -61,26 +71,6 @@ $ sudo apt get install clang-format
 
 * [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat) (this requires `clang-package`, see above) for `*.textproto` formatting
 
-## Web IDE
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
-
-Web-based IDEs are great to easily work from any computer.
-
-We recommend you use GitHub Codespaces to contribute to this project by clicking on the button above.
-
-This project is configured to automatically configure your Codespace with all required tools. If anything doesn't just work "out of the box", please [create an issue](https://github.com/enola-dev/enola/issues).
-
-While the 32 GB disk space of the Codespace default _Machine Type_ is sufficient, its _2-core • 8 GB RAM_ is too limited for sufficiently efficient building, and at very least the _4-core • 16GB RAM_ (or bigger) is highly recommended.
-
-If you are missing your fancy custom Shell configuration that you have built over the last 100 years,
-you should [set up your dotfiles for Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
-such as [e.g. this dude did in his dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc#github-codespaces).
-
-Alternatively, you can use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
-together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
-e.g. to a computer at home, or a VM in the Cloud.
-
 ## JetBrains IntelliJ IDEA (IJ)
 
 IJ can be used as a complete alternative to VSC, or only for Java coding, with:
@@ -92,6 +82,14 @@ IJ can be used as a complete alternative to VSC, or only for Java coding, with:
 * [Google Java Format](https://plugins.jetbrains.com/plugin/8527-google-java-format)
 
 * [Bamboo Soy](https://plugins.jetbrains.com/plugin/9841-bamboo-soy) for `*.soy` templates
+
+## Eclipse
+
+Eclipse is not actively supported by this project as an IDE.
+
+It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
+
+We recommend using VSC.
 
 ## Other
 
