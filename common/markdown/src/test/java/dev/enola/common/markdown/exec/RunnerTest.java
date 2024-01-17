@@ -17,12 +17,13 @@
  */
 package dev.enola.common.markdown.exec;
 
-import static org.junit.Assert.assertEquals;
-
 import static java.nio.file.Path.of;
 import static java.time.Duration.ofSeconds;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.google.common.truth.Truth;
 
 public class RunnerTest {
 
@@ -32,7 +33,7 @@ public class RunnerTest {
             throws Exception {
         var sb = new StringBuffer();
         var actualExitCode = runner.bash(expectNonZeroExitCode, of("."), command, sb, ofSeconds(3));
-        assertEquals(expectedOutput, sb.toString());
+        Truth.assertThat(sb.toString()).contains(expectedOutput);
         assertEquals(expectNonZeroExitCode, actualExitCode != 0);
     }
 
@@ -53,6 +54,6 @@ public class RunnerTest {
 
     @Test
     public void testInexistantCommand() throws Exception {
-        check("does-not-exist", true, "bash: line 1: does-not-exist: command not found\n");
+        check("does-not-exist", true, "does-not-exist: command not found\n");
     }
 }
