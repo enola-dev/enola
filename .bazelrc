@@ -30,6 +30,6 @@ test --nobuild_tests_only
 
 # Quiet!
 # common --noshow_progress
-# TODO common --ui_event_filters=error,warning,info,-debug,stdout,stderr
+common --ui_event_filters=error,warning,info,-debug,stdout,stderr
 # FYI -info also hides :( output from tests and tools such as core_buf_proto_lint (TODO how-to show only if failure?)
 # Beware, -stdout breaks IDE integrations!
