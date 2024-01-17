@@ -21,8 +21,6 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.MediaTypes;
-
 import java.net.URI;
 
 /**
@@ -43,15 +41,8 @@ public class EmptyResource implements ReadableResource {
 
     public EmptyResource(MediaType mediaType) {
         this.mediaType = mediaType;
-        this.uri = uri(this.mediaType);
-    }
-
-    public EmptyResource(String mediaType) {
-        this(MediaTypes.parse(mediaType));
-    }
-
-    private static URI uri(MediaType mediaType) {
-        return URI.create(SCHEME + ":" + mediaType.withoutParameters());
+        // TODO Why withoutParameters()? Remove!
+        this.uri = URI.create(SCHEME + ":" + mediaType.withoutParameters());
     }
 
     @Override
