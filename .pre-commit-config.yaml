@@ -98,7 +98,7 @@ repos:
         exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
 
   - repo: https://github.com/yoheimuta/protolint
-    rev: v0.47.2
+    rev: v0.47.5
     hooks:
       - id: protolint
 
@@ -114,7 +114,7 @@ repos:
         args: [--autofix, --aosp, --google-java-formatter-version=1.19.2]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.11.0
+    rev: v0.12.1
     hooks:
       - id: markdownlint-cli2
         exclude: (^.github/|src/test/resources/|docs/use/docgen/docgen.md)
@@ -144,7 +144,7 @@ repos:
         exclude: ^docs/use|core/impl/src/test/resources
 
   - repo: https://github.com/pre-commit/mirrors-csslint
-    rev: 818b64c6bf19ca1e089b4dabc8dc74059b405814
+    rev: v1.0.5
     hooks:
       - id: csslint
 
