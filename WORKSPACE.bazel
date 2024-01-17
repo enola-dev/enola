@@ -16,7 +16,6 @@
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Keep gRPC version in sync with MODULE.bazel
 GRPC_JAVA_VERSION = "1.60.1"
 
 # https://github.com/grpc/grpc-java/
@@ -93,10 +92,9 @@ maven_install(
         "com.google.protobuf:protobuf-java:4.0.0-rc-2",
         "com.google.protobuf:protobuf-java-util:4.0.0-rc-2",
         # gRPC
-        # "com.google.api.grpc:proto-google-common-protos:2.29.0",
-        "io.grpc:grpc-netty:1.60.1",  # Alternative: grpc-netty-shaded
-        "io.grpc:grpc-stub:1.60.1",
-        "io.grpc:grpc-inprocess:1.60.1",
+        "io.grpc:grpc-netty:%s" % GRPC_JAVA_VERSION,
+        "io.grpc:grpc-stub:%s" % GRPC_JAVA_VERSION,
+        "io.grpc:grpc-inprocess:%s" % GRPC_JAVA_VERSION,
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:19.0.0",
