@@ -69,13 +69,58 @@ load("@rules_proto_grpc//buf:repositories.bzl", rules_proto_grpc_buf_repos = "bu
 
 rules_proto_grpc_buf_repos()
 
+# https://github.com/bazelbuild/rules_jvm_external#usage
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+
+rules_jvm_external_deps()
+
+load("@rules_jvm_external//:setup.bzl", "rules_jvm_external_setup")
+
+rules_jvm_external_setup()
+
 # https://github.com/grpc/grpc-java/blob/master/examples/WORKSPACE
 load("@rules_jvm_external//:defs.bzl", "maven_install")
+load("@rules_jvm_external//:specs.bzl", "maven")
 
-# TODO Declare Maven dependencies in 1 single place, instead of both here as well as in maven.install() of MODULE.bazel
 maven_install(
-    name = "rules_jvm_external_maven",
-    artifacts = IO_GRPC_GRPC_JAVA_ARTIFACTS,
+    artifacts = IO_GRPC_GRPC_JAVA_ARTIFACTS + [
+        "junit:junit:4.13.2",
+        # Google
+        "com.google.guava:guava:33.0.0-jre",
+        # "com.google.truth:truth:1.2.0",
+        "com.google.truth.extensions:truth-java8-extension:1.2.0",
+        "com.google.template:soy:2023-09-13",
+        # Protobuf
+        "com.google.protobuf:protobuf-java:4.0.0-rc-2",
+        "com.google.protobuf:protobuf-java-util:4.0.0-rc-2",
+        # gRPC
+        # "com.google.api.grpc:proto-google-common-protos:2.29.0",
+        "io.grpc:grpc-netty:1.60.1",  # Alternative: grpc-netty-shaded
+        "io.grpc:grpc-stub:1.60.1",
+        "io.grpc:grpc-inprocess:1.60.1",
+        # https://github.com/grpc/grpc-java/issues/10576
+        maven.artifact(
+            artifact = "grpc-core",
+            exclusions = [
+                "io.grpc:grpc-util",
+            ],
+            group = "io.grpc",
+            version = "1.60.1",
+        ),
+        "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
+        # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
+        "io.kubernetes:client-java:19.0.0",
+        # Other
+        "ch.vorburger.exec:exec:3.1.5",
+        "com.github.java-json-tools:uri-template:0.10",
+        "info.picocli:picocli:4.7.5",
+        "org.snakeyaml:snakeyaml-engine:2.7",
+        "org.slf4j:slf4j-jdk14:2.0.9",
+        "org.slf4j:slf4j-simple:2.0.9",
+        "io.github.classgraph:classgraph:4.8.165",
+    ],
+    # TODO duplicate_version_warning = "error",
+    fetch_sources = True,
     generate_compat_repositories = True,
     override_targets = IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS,
     repositories = [
@@ -83,7 +128,7 @@ maven_install(
     ],
 )
 
-load("@rules_jvm_external_maven//:compat.bzl", "compat_repositories")
+load("@maven//:compat.bzl", "compat_repositories")
 
 compat_repositories()
 

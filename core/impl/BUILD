@@ -43,7 +43,8 @@ java_library(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:io_grpc_grpc_api",
-        "@maven//:io_grpc_grpc_core",  # for inprocess
+        "@maven//:io_grpc_grpc_core",
+        "@maven//:io_grpc_grpc_inprocess",
         "@maven//:io_grpc_grpc_stub",
         "@maven//:org_slf4j_slf4j_api",
     ],
