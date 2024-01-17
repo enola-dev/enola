@@ -17,13 +17,14 @@
  */
 package dev.enola.common.markdown.exec;
 
-import static java.nio.file.Path.of;
-import static java.time.Duration.ofSeconds;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import static java.nio.file.Path.of;
+import static java.time.Duration.ofSeconds;
 
 import com.google.common.truth.Truth;
+
+import org.junit.Test;
 
 public class RunnerTest {
 

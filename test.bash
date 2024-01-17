@@ -24,12 +24,14 @@ if ! [ -x "$(command -v bazelisk)" ]; then
     go install github.com/bazelbuild/buildtools/buildifier@latest
     go install github.com/bazelbuild/buildtools/buildozer@latest
 
-    # Due to https://github.com/salesforce/bazel-vscode-java/issues/88,
-    # like in https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
+    # Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
+    # https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/
+    # 64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
     GO_BIN_PATH=$(go env GOPATH)/bin
     ln -s "$GO_BIN_PATH"/bazelisk "$GO_BIN_PATH"/bazel
   else
-    echo "bazelisk is not installed, please either install Go https://go.dev/doc/install and then run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
+    echo "bazelisk is not installed, please either install Go https://go.dev/doc/install "
+    echo "and then run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
     echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
     exit 255
   fi
