@@ -148,9 +148,18 @@ public class ResourceProvidersTest {
 
     @Test
     public void testString() throws IOException {
+        var rp = new ResourceProviders();
+
         var uri = URI.create(StringResource.SCHEME + ":hello");
-        var hello = new ResourceProviders().getReadableResource(uri).charSource().read();
+        var hello = rp.getReadableResource(uri).charSource().read();
         assertThat(hello).isEqualTo("hello");
+
+        // StringResource (intentionally) does not support ?mediaType= nor (need) #anchor
+        uri = URI.create("string:%23%20Models%0A"); // "# Models\n"
+        var docDefaultGenHeader = rp.getReadableResource(uri).charSource().read();
+        assertThat(docDefaultGenHeader).isEqualTo("# Models\n");
+
+        // NB: Empty strings cannot work; URI.create("string:") causes java.net.URISyntaxException.
     }
 
     @Test

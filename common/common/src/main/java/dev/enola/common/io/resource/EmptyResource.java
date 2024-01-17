@@ -50,7 +50,7 @@ public class EmptyResource implements ReadableResource {
         this(MediaTypes.parse(mediaType));
     }
 
-    public static URI uri(MediaType mediaType) {
+    private static URI uri(MediaType mediaType) {
         return URI.create(SCHEME + ":" + mediaType.withoutParameters());
     }
 

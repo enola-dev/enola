@@ -39,18 +39,18 @@ public class StringResource implements ReadableResource {
 
     public StringResource(String text, MediaType mediaType) {
         this.string = Objects.requireNonNull(text, "text");
+        if ("".equals(text)) {
+            throw new IllegalArgumentException(
+                    "Empty string: not supported (because that's an invalid URI)");
+        }
         this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
         if (!mediaType.charset().isPresent()) {
             throw new IllegalArgumentException(
                     "MediaType is missing required charset: " + mediaType);
         }
-        try {
-            if (!text.isEmpty()) {
-                this.uri = new URI(SCHEME, string, null);
-            } else {
-                this.uri = EmptyResource.uri(mediaType);
-            }
 
+        try {
+            this.uri = new URI(SCHEME, string, null);
         } catch (URISyntaxException e) {
             // This should never happen, if the escaping above is correct...
             throw new IllegalArgumentException("String is invalid in URI: " + text, e);
