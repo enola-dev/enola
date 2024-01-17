@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.cli.ServerCommand.HttpAndOrGrpcPorts;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;

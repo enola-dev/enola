@@ -22,8 +22,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.cli.CommandLineSubject.assertThat;
 import static dev.enola.cli.Enola.cli;
 
-import static org.junit.Assert.assertThat;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
