@@ -47,7 +47,7 @@ Note how the section above showed some additional entity kinds, in addition to t
 It's possible to list only those built-in entity kinds, using an "empty" model URI, like this:
 
 ```bash cd .././.././..
-$ ./enola list --model empty:application/json enola.entity_kind
+$ ./enola list --model "empty:?mediaType=application/json" enola.entity_kind
 ...
 ```
 

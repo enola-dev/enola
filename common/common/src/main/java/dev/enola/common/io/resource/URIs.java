@@ -63,13 +63,20 @@ public final class URIs {
     }
 
     private static URI addQueryParameter(URI uri, String key, String value) {
+        String connector;
         if (uri.getQuery() != null && uri.getQuery().contains(key)) {
             return uri;
         } else if (uri.getQuery() == null) {
-            return URI.create(uri.toString() + "?" + key + "=" + encodeQueryParameterValue(value));
+            if (!uri.getSchemeSpecificPart().contains("?")) {
+                connector = "?";
+            } else {
+                // Special case of "scheme:?"-like URIs with "empty" query
+                connector = "";
+            }
         } else {
-            return URI.create(uri.toString() + "&" + key + "=" + encodeQueryParameterValue(value));
+            connector = "&";
         }
+        return URI.create(uri + connector + key + "=" + encodeQueryParameterValue(value));
     }
 
     private static String encodeQueryParameterValue(String value) {

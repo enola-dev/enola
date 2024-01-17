@@ -34,15 +34,14 @@ public class EmptyResource implements ReadableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
 
     static final String SCHEME = "empty";
-
+    private static final URI EMPTY_URI = URI.create(SCHEME + ":?");
     private final MediaType mediaType;
 
     private final URI uri;
 
     public EmptyResource(MediaType mediaType) {
         this.mediaType = mediaType;
-        // TODO Why withoutParameters()? Remove!
-        this.uri = URI.create(SCHEME + ":" + mediaType.withoutParameters());
+        this.uri = URIs.addMediaType(EMPTY_URI, mediaType);
     }
 
     @Override
