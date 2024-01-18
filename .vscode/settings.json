@@ -122,5 +122,6 @@
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "automatic",
+  "java.server.launchMode": "Standard",
   "bazel.projectview.open": false
 }

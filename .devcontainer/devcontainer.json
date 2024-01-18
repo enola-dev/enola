@@ -1,4 +1,4 @@
-// see https://aka.ms/devcontainer.json
+// see https://aka.ms/devcontainer.json ==> https://containers.dev/implementors/json_reference/
 {
   "name": "Enola.dev's Dev Containers.dev",
 
@@ -21,8 +21,8 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-      "version": "21",
-    },
+      "version": "21"
+    }
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -35,6 +35,6 @@
   // "remoteUser": "root"
 
   "hostRequirements": {
-    "cpus": 4,
-  },
+    "cpus": 4
+  }
 }
