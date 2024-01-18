@@ -24,11 +24,11 @@
 
 Web-based IDEs are great to easily work from any computer.
 
-We recommend you use GitHub Codespaces to contribute to this project by clicking on the button above.
+We recommend you use GitHub Codespaces to contribute to this project by [clicking here](https://codespaces.new/enola-dev/enola?quickstart=1).
 
-This project is configured to automatically configure your Codespace with all required tools. If anything doesn't just work "out of the box", please [create an issue](https://github.com/enola-dev/enola/issues).
+This project is configured to automatically configure your Codespace with all required tools. If anything doesn't just work "out of the box", please [create an issue](https://github.com/enola-dev/enola/issues). The only "it's not 100% fully automated" currently known open issues to be aware of are:
 
-While the 32 GB disk space of the Codespace default _Machine Type_ is sufficient, its _2-core • 8 GB RAM_ is too limited for sufficiently efficient building, and at very least the _4-core • 16GB RAM_ (or bigger) is highly recommended.
+1. You must _"Switch to Pre-Release Version"_ for the _Bazel extension for Java_ extension
 
 If you are missing your fancy custom Shell configuration that you have built over the last 100 years,
 you should [set up your dotfiles for Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
@@ -38,9 +38,9 @@ Alternatively, you can use [Visual Studio Code for the Web](https://code.visuals
 together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
 e.g. to a computer at home, or a VM in the Cloud.
 
-## Visual Studio Code (VSC)
+## Local Visual Studio Code (VSC)
 
-You must manually install the following tools for all VSC extensions to work:
+You must manually install the following tools locally for all VSC extensions to work:
 
 ```bash
 $ go install github.com/yoheimuta/protolint/cmd/protolint@latest

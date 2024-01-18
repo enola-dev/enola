@@ -11,5 +11,6 @@
     "zxh404.vscode-proto3",
     "thejustinwalsh.textproto-grammer",
     "seaube.clangformat"
-  ]
+  ],
+  "unwantedRecommendations": ["kshetline.ligatures-limited"]
 }

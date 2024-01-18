@@ -18,13 +18,13 @@
 
 # Dev Set-Up
 
-To locally build, work on and contribute to this project, you need to:
+**We highly recommend you use our ready-made [Web/Cloud IDE](ide.md) set-up.** _This page documents various tools you would need to locally install, but it may be out of date (please help to update it) - it's just so much easier to use a ready-made Web/Cloud IDE with only 1 click!_
 
-1. Install Java Development Kit (JDK) [version 11.0](../../.bazelrc).
+1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](../../.bazelrc).
    There are different Java (like Linux) "distributions" (all based on OpenJDK).
    The easiest way to install one of them is typically to use your OS' package manager:
 
-       sudo apt-get install openjdk-11-jdk openjdk-11-doc openjdk-11-source
+       sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
 
    An alternative is to use e.g. [the SDKMAN!](https://sdkman.io)
    If you work on several projects using different Java versions,
@@ -46,7 +46,6 @@ To locally build, work on and contribute to this project, you need to:
 
         sudo apt update
         sudo apt install golang-go
-        go install github.com/bazelbuild/bazelisk@latest
 
 1. Get the source code:
 
