@@ -59,8 +59,9 @@ public class ServerTest {
     @Test
     public void bothConnectorDirectlyAndViaServer()
             throws IOException, InterruptedException, ValidationException, EnolaException {
-        try (var connectorServer = new Server().start(0)) {
+        try (var connectorServer = new Server()) {
             // similarly in dev.enola.core.grpc.EnolaGrpcServerTest
+            connectorServer.start(0);
             var port = connectorServer.getPort();
             var endpoint = "localhost:" + port;
             var credz = InsecureChannelCredentials.create();

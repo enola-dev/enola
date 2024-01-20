@@ -33,13 +33,15 @@ public class Server implements Closeable {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         var port = args.length > 0 ? Integer.parseInt(args[0]) : 9090;
-        var server = new Server().start(port);
-        System.out.println("Started Demo gRPC Server on localhost at port: " + port);
+        try (var server = new Server()) {
+            server.start(port);
+            System.out.println("Started Demo gRPC Server on localhost at port: " + port);
 
-        var pid = ProcessHandle.current().pid();
-        Files.writeString(Path.of("/tmp/ServerPID"), Long.toString(pid));
-        System.out.println(pid + " PID written to /tmp/ServerPID");
-        server.blockUntilShutdown();
+            var pid = ProcessHandle.current().pid();
+            Files.writeString(Path.of("/tmp/ServerPID"), Long.toString(pid));
+            System.out.println(pid + " PID written to /tmp/ServerPID");
+            server.blockUntilShutdown();
+        }
     }
 
     public Server start(int port) throws IOException {
