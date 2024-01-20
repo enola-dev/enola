@@ -24,6 +24,8 @@
   // https://code.visualstudio.com/docs/languages/html#_auto-update-tags
   "editor.linkedEditing": true,
 
+  "editor.foldingImportsByDefault": true,
+
   // see docs/dev/style.md
 
   "[textproto]": {
@@ -38,6 +40,7 @@
   "markdown.validate.fragmentLinks.enabled": "error",
   "markdown.validate.fileLinks.markdownFragmentLinks": "error",
 
+  "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
   "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
   "[java]": {
     "editor.tabSize": 4,
@@ -54,6 +57,10 @@
   // Keep this version in sync with the same version in .pre-commit-config.yaml
   // NB: Changes to this are only taken into account on start-up, so need to restart.
   "java.format.settings.google.version": "1.19.2",
+
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.server.launchMode": "Standard",
 
   "[json5]": {
     "editor.tabSize": 2,
@@ -120,8 +127,5 @@
     ".devcontainer": false
   },
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
-  "java.compile.nullAnalysis.mode": "automatic",
-  "java.configuration.updateBuildConfiguration": "automatic",
-  "java.server.launchMode": "Standard",
   "bazel.projectview.open": false
 }

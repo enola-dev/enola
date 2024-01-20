@@ -35,11 +35,9 @@ public class Soy {
     // But must first contribute https://github.com/bazelbuild/rules_closure/issues/225;
     // this won't work without that.
 
-    private final SoyFileSet sfs;
     private final SoySauce sauce;
 
     private Soy(SoyFileSet sfs) {
-        this.sfs = sfs;
         this.sauce = sfs.compileTemplates();
     }
 

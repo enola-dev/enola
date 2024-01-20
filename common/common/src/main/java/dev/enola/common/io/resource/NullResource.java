@@ -42,7 +42,6 @@ public class NullResource implements Resource {
 
     static final String SCHEME = "null";
 
-    private static final URI NULL_URI = URI.create("null:-");
     private final MediaType mediaType;
     private final URI uri;
 
@@ -57,7 +56,7 @@ public class NullResource implements Resource {
 
     @Override
     public URI uri() {
-        return NULL_URI;
+        return uri;
     }
 
     @Override

@@ -42,7 +42,6 @@ class GraphvizGenerator {
     // TODO: improve this quick and dirty first version
     private static void renderGraphvizEntity(EntityKind ek, Appendable md) throws IOException {
         ID idWithoutPathArguments = IDs.withoutPath(ek.getId());
-        String fqn = IDs.toPath(idWithoutPathArguments);
         String name = StringUtil.capitalize(idWithoutPathArguments.getEntity());
 
         List<String> pathArguments =

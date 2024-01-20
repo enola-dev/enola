@@ -27,7 +27,9 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class URIs {
 
@@ -103,7 +105,6 @@ public final class URIs {
         if (Strings.isNullOrEmpty(query)) {
             return Collections.emptyMap();
         }
-        final String finalQuery = query;
         AMPERSAND_SPLITTER.split(query).forEach(queryParameter -> put(uri, queryParameter, map));
         return map;
     }

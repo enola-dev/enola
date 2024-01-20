@@ -25,7 +25,11 @@ import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 public class UrlResource implements ReadableResource {
@@ -85,7 +89,7 @@ public class UrlResource implements ReadableResource {
                 encodingFromServer = charset.name();
             }
 
-            final var fc = c;
+            // final var fc = c;
             return mtd.detect(
                     contentTypeFromServer, encodingFromServer, uri /*, () -> fc.getInputStream()*/);
         } catch (IOException e) {

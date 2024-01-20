@@ -112,7 +112,7 @@ public class ExecMD {
         return pair;
     }
 
-    void exec(Path dir, String preamble, String command, Appendable script, Appendable md)
+    int exec(Path dir, String preamble, String command, Appendable script, Appendable md)
             throws MarkdownProcessingException, IOException {
 
         if (!preamble.startsWith("```bash")) throw new IllegalArgumentException(preamble);
@@ -144,7 +144,7 @@ public class ExecMD {
         Duration timeout = Duration.ofSeconds(7);
 
         try {
-            var exitCode = runner.bash(expectFailure, dir, fullCommand, md, timeout);
+            return runner.bash(expectFailure, dir, fullCommand, md, timeout);
         } catch (Exception e) {
             throw new MarkdownProcessingException(
                     "exec failed (use ```bash $? marker if that's expected): " + fullCommand, e);
