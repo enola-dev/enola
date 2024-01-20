@@ -17,7 +17,9 @@
  */
 package dev.enola.core.grpc;
 
-import static dev.enola.common.concurrent.Executors.*;
+import static dev.enola.common.concurrent.Executors.newListeningCachedThreadPool;
+import static dev.enola.common.concurrent.Executors.newListeningDirectExecutor;
+import static dev.enola.common.concurrent.Executors.newListeningScheduledThreadPool;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
@@ -42,7 +44,6 @@ public class EnolaGrpcInProcess implements ServiceProvider {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private final EnolaService service;
     private final Server server;
     private final ManagedChannel channel;
     private final EnolaServiceGrpc.EnolaServiceBlockingStub client;
@@ -54,8 +55,6 @@ public class EnolaGrpcInProcess implements ServiceProvider {
 
     public EnolaGrpcInProcess(EnolaServiceProvider esp, EnolaService service, boolean multithreaded)
             throws IOException {
-        this.service = service;
-
         if (multithreaded) {
             serverExecutorService = newListeningCachedThreadPool("gRPC-InProcessServer", LOGGER);
             clientExecutorService = newListeningCachedThreadPool("gRPC-InProcessClient", LOGGER);

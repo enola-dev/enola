@@ -128,7 +128,6 @@ public class ServerTest {
 
         var io = new ProtoIO(typeRegistryWrapper.get());
         var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
-        var entityKind = ekr.get(ID.newBuilder().setNs("demo").setEntity("foo").build());
         io.write(entity, resource);
         assertThat(resource.charSource().read()).contains("text: 'hello, world'");
     }

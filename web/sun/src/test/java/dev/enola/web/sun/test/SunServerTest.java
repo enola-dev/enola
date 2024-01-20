@@ -80,7 +80,7 @@ public class SunServerTest {
             Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
 
             var error2 = URI.create(prefix + "/error2");
-            var errorResponse2 = rp.getResource(error1);
+            var errorResponse2 = rp.getResource(error2);
             Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
 
             // TODO expect HTTP Error 500
