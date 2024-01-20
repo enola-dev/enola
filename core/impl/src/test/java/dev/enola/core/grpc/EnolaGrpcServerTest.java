@@ -50,8 +50,9 @@ public class EnolaGrpcServerTest {
 
     @Test
     public void remoting() throws Exception {
-        try (var enolaServer = new EnolaGrpcServer(esp, service).start(0)) {
+        try (var enolaServer = new EnolaGrpcServer(esp, service)) {
             // similarly in dev.enola.demo.ServerTest
+            enolaServer.start(0);
             var port = enolaServer.getPort();
             var endpoint = "localhost:" + port;
             try (var enolaClient = new EnolaGrpcClientProvider(endpoint, false)) {

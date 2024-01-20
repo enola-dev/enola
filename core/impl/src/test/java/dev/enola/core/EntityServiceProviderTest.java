@@ -29,7 +29,11 @@ import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.proto.*;
+import dev.enola.core.meta.proto.Connector;
+import dev.enola.core.meta.proto.EntityKind;
+import dev.enola.core.meta.proto.EntityRelationship;
+import dev.enola.core.meta.proto.FileSystemRepository;
+import dev.enola.core.meta.proto.Link;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
@@ -142,7 +146,8 @@ public class EntityServiceProviderTest {
 
     @Test
     public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
-        try (var server = new Server().start(0)) {
+        try (var server = new Server()) {
+            server.start(0);
             var port = Integer.toString(server.getPort());
             var model =
                     new ReplacingResource(
