@@ -24,6 +24,8 @@ import static dev.enola.core.meta.proto.FileSystemRepository.Format.FORMAT_YAML;
 
 import static org.junit.Assert.assertThrows;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ReplacingResource;
@@ -34,7 +36,8 @@ import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.meta.proto.EntityRelationship;
 import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.meta.proto.Link;
-import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.demo.Server;
@@ -51,17 +54,19 @@ public class EntityServiceProviderTest {
     // TODO EntityKinds from file instead of programmatically constructing may be easier to read?
 
     @Test
-    public void testTrivialEmptyEntityKind() throws EnolaException, ValidationException {
+    public void testTrivialEmptyEntityKind()
+            throws EnolaException, ValidationException, InvalidProtocolBufferException {
         var kid = ID.newBuilder().setNs("test").setEntity("empty").addPaths("name").build();
         var kind = EntityKind.newBuilder().setId(kid).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider().get(ekr);
+        var service = new EnolaServiceProvider(ekr).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = service.getThing(request);
+        var thing = response.getThing();
+        var entity = thing.unpack(Entity.class);
         assertThat(entity.getId()).isEqualTo(eid);
         assertThat(entity.getTs().getSeconds()).isGreaterThan(123);
     }
@@ -87,7 +92,7 @@ public class EntityServiceProviderTest {
                         .addConnectors(connector)
                         .build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider().get(ekr);
+        var service = new EnolaServiceProvider(ekr).getEnolaService();
 
         var path = Path.of("./test.dog/king-charles.yaml");
         path.getParent().toFile().mkdir();
@@ -95,9 +100,10 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("king-charles").build();
         var eri = IDs.toPath(eid);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = service.getThing(request);
+        var thing = response.getThing();
+        var entity = thing.unpack(Entity.class);
 
         assertThat(entity.getId()).isEqualTo(eid);
         assertThat(entity.getTs().getSeconds()).isGreaterThan(123);
@@ -118,12 +124,12 @@ public class EntityServiceProviderTest {
         var ec = Connector.newBuilder().setError("failed!").build();
         var kind = EntityKind.newBuilder().setId(kid).addConnectors(ec).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider().get(ekr);
+        var service = new EnolaServiceProvider(ekr).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var ex = assertThrows(EnolaException.class, () -> service.getEntity(request));
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var ex = assertThrows(EnolaException.class, () -> service.getThing(request));
         assertThat(ex.getMessage()).isEqualTo("failed!");
     }
 
@@ -136,12 +142,12 @@ public class EntityServiceProviderTest {
                         .build();
         var kind = EntityKind.newBuilder().setId(kid).addConnectors(ivc).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider().get(ekr);
+        var service = new EnolaServiceProvider(ekr).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        assertThrows(EnolaException.class, () -> service.getEntity(request));
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        assertThrows(EnolaException.class, () -> service.getThing(request));
     }
 
     @Test
@@ -153,33 +159,36 @@ public class EntityServiceProviderTest {
                     new ReplacingResource(
                             new ClasspathResource("demo-connector-model.textproto"), "9090", port);
             var ekr = new EntityKindRepository().load(model);
-            var service = new EnolaServiceProvider().get(ekr);
+            var service = new EnolaServiceProvider(ekr).getEnolaService();
 
             var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
             var eri = IDs.toPath(eid);
-            var request = GetEntityRequest.newBuilder().setEri(eri).build();
-            var entity = service.getEntity(request).getEntity();
+            var request = GetThingRequest.newBuilder().setEri(eri).build();
+            var response = service.getThing(request);
+            var thing = response.getThing();
+            var entity = thing.unpack(Entity.class);
             assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
         }
     }
 
     @Test
-    public void testEntityKindInception() throws ValidationException, EnolaException {
+    public void testEntityKindInception()
+            throws ValidationException, EnolaException, InvalidProtocolBufferException {
         var kid = ID.newBuilder().setNs("enola").setEntity("entity_kind").addPaths("name").build();
         var sid = ID.newBuilder().setNs("enola").setEntity("schema").addPaths("fqn").build();
 
         var ekr = new EntityKindRepository();
         assertThat(ekr.listID()).containsExactly(kid, sid);
-        var service = new EnolaServiceProvider().get(ekr);
+        var service = new EnolaServiceProvider(ekr).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
 
         var eri = IDs.toPath(eid);
-        var getRequest = GetEntityRequest.newBuilder().setEri(eri).build();
-        var getResponse = service.getEntity(getRequest);
-        assertWithMessage("data.schema")
-                .that(getResponse.getEntity().getDataOrThrow("schema"))
-                .isNotNull();
+        var getRequest = GetThingRequest.newBuilder().setEri(eri).build();
+        var getResponse = service.getThing(getRequest);
+        var thing = getResponse.getThing();
+        var entity = thing.unpack(Entity.class);
+        assertWithMessage("data.schema").that(entity.getDataOrThrow("schema")).isNotNull();
 
         var listRequest = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var listResponse = service.listEntities(listRequest);

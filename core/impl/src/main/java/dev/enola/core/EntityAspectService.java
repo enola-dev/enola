@@ -18,10 +18,15 @@
 package dev.enola.core;
 
 import com.google.common.collect.ImmutableList;
+import com.google.protobuf.Any;
 
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.*;
+import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.proto.GetThingResponse;
+import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.ListEntitiesResponse;
 
 import java.util.ArrayList;
 
@@ -36,7 +41,7 @@ class EntityAspectService implements EnolaService {
     }
 
     @Override
-    public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
+    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         var entity = Entity.newBuilder();
         var id = IDs.parse(r.getEri());
         entity.setId(id);
@@ -45,8 +50,9 @@ class EntityAspectService implements EnolaService {
             aspect.augment(entity, entityKind);
         }
 
-        var response = GetEntityResponse.newBuilder().setEntity(entity).build();
-        return response;
+        var responseBuilder = GetThingResponse.newBuilder();
+        responseBuilder.setThing(Any.pack(entity.build()));
+        return responseBuilder.build();
     }
 
     @Override

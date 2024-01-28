@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.net.URI.create;
 
 import com.google.common.net.MediaType;
+import com.google.protobuf.Any;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
@@ -29,9 +30,10 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
+import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
@@ -49,7 +51,8 @@ public class RestTest {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             // Setup
-            var esp = new EnolaServiceProvider();
+            var ekr = new EntityKindRepository();
+            var esp = new EnolaServiceProvider(ekr);
             try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new RestAPI(testGrpcService).register(server);
@@ -63,7 +66,8 @@ public class RestTest {
                 var response1 = rp.getResource(uri1);
                 assertThat(response1.charSource().read())
                         .startsWith(
-                                "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
+                                "{\"@type\":\"type.googleapis.com/dev.enola.core.Entity\","
+                                    + "\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
                 assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
 
                 // List
@@ -79,8 +83,8 @@ public class RestTest {
 
     private static class TestService implements EnolaService {
         @Override
-        public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-            return GetEntityResponse.newBuilder().setEntity(newEntity("123")).build();
+        public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
+            return GetThingResponse.newBuilder().setThing(Any.pack(newEntity("123"))).build();
         }
 
         @Override

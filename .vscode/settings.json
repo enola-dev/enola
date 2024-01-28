@@ -5,6 +5,7 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/216
   // https://github.com/bazelbuild/vscode-bazel/issues/223
   // https://github.com/bazelbuild/vscode-bazel/issues/261
+  "bazel.projectview.open": false,
   "bazel.queriesShareServer": true,
 
   "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
@@ -12,14 +13,14 @@
   "editor.formatOnType": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-
   // https://code.visualstudio.com/docs/languages/html#_auto-update-tags
   "editor.linkedEditing": true,
-
   "editor.foldingImportsByDefault": true,
 
-  // see docs/dev/style.md
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
 
+  // see docs/dev/style.md
   "[textproto]": {
     "editor.defaultFormatter": "seaube.clangformat"
   },
@@ -31,6 +32,12 @@
   "markdown.validate.enabled": true,
   "markdown.validate.fragmentLinks.enabled": "error",
   "markdown.validate.fileLinks.markdownFragmentLinks": "error",
+  "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
+
+  // https://github.com/salesforce/bazel-vscode-java/issues/82
+  "java.import.bazel.enabled": true,
+  "java.import.maven.enabled": false,
+  "java.import.gradle.enabled": false,
 
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
   "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
@@ -45,11 +52,9 @@
       "source.addMissingImports": "never"
     }
   },
-
   // Keep this version in sync with the same version in .pre-commit-config.yaml
   // NB: Changes to this are only taken into account on start-up, so need to restart.
   "java.format.settings.google.version": "1.19.2",
-
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
@@ -58,14 +63,6 @@
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
-  "files.insertFinalNewline": true,
-  "files.trimTrailingWhitespace": true,
-
-  // https://github.com/salesforce/bazel-vscode-java/issues/82
-  "java.import.bazel.enabled": true,
-  "java.import.maven.enabled": false,
-  "java.import.gradle.enabled": false,
 
   // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
   "yaml.schemas": {
@@ -78,6 +75,7 @@
     "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
     "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
   ],
+
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -117,7 +115,5 @@
     ".be": false,
     "bin": false,
     ".devcontainer": false
-  },
-  "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
-  "bazel.projectview.open": false
+  }
 }

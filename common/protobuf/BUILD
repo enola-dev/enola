@@ -66,6 +66,7 @@ java_library(
         "//common/common",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_truth_extensions_truth_proto_extension",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",
     ],

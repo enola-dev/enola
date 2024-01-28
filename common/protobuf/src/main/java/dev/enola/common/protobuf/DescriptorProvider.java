@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.common.protobuf;
 
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
+import com.google.protobuf.Descriptors.Descriptor;
 
-public interface EnolaService {
-    // TODO Merge this "local" API with the ("remote") dev.enola.core.grpc.EnolaGrpcService
-
-    GetThingResponse getThing(GetThingRequest r) throws EnolaException;
-
-    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
+public interface DescriptorProvider {
+    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
 }

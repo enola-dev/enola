@@ -24,13 +24,15 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.TypeRegistry;
 
+import dev.enola.common.protobuf.DescriptorProvider;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 // TODO Optimization: This should allow clients like CLI to fetch as Map of Protos!
-public class TypeRegistryWrapper {
+public class TypeRegistryWrapper implements DescriptorProvider {
     private final TypeRegistry originalTypeRegistry;
     private final FileDescriptorSet fileDescriptorSet;
 
@@ -81,6 +83,20 @@ public class TypeRegistryWrapper {
             throw new IllegalArgumentException("Proto unknown: " + name);
         }
         return descriptor;
+    }
+
+    @Override
+    public Descriptor getDescriptorForTypeUrl(String typeURL) {
+        return (Descriptor) find(getTypeName(typeURL));
+    }
+
+    // This method is copy/pasted from com.google.protobuf.TypeRegistry
+    private static String getTypeName(String typeUrl) throws IllegalArgumentException {
+        String[] parts = typeUrl.split("/");
+        if (parts.length == 1) {
+            throw new IllegalArgumentException("Invalid type url found: " + typeUrl);
+        }
+        return parts[parts.length - 1];
     }
 
     public static final class Builder {

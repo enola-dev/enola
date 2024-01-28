@@ -20,14 +20,18 @@ package dev.enola.web.rest;
 import com.google.common.net.MediaType;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.protobuf.Descriptors.DescriptorValidationException;
 
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaException;
+import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.GetFileDescriptorSetRequest;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
@@ -35,13 +39,20 @@ import dev.enola.web.WebServer;
 import java.io.IOException;
 import java.net.URI;
 
+// TODO Merge this with class UI in /ui/ module, to re-use code better
 public class RestAPI implements WebHandler {
 
-    private final ProtoIO protoIO = new ProtoIO();
     private final EnolaServiceBlockingStub service;
+    private final TypeRegistryWrapper typeRegistryWrapper;
+    private final Anys anys;
+    private ProtoIO protoIO;
 
-    public RestAPI(EnolaServiceBlockingStub service) {
+    public RestAPI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
         this.service = service;
+        var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
+        var fds = service.getFileDescriptorSet(gfdsr).getProtos();
+        typeRegistryWrapper = TypeRegistryWrapper.from(fds);
+        anys = new Anys(typeRegistryWrapper);
     }
 
     public void register(WebServer server) {
@@ -75,11 +86,11 @@ public class RestAPI implements WebHandler {
 
     private void getEntityJSON(String eri, WritableResource resource)
             throws EnolaException, IOException {
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = service.getThing(request);
+        var thing = response.getThing();
 
-        protoIO.write(entity, resource);
+        getProtoIO().write(thing, resource);
     }
 
     private void listEntityJSON(String eri, WritableResource resource)
@@ -87,7 +98,14 @@ public class RestAPI implements WebHandler {
         var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
         var response = service.listEntities(request);
         for (var entity : response.getEntitiesList()) {
-            protoIO.write(entity, resource);
+            getProtoIO().write(entity, resource);
         }
+    }
+
+    private ProtoIO getProtoIO() {
+        if (protoIO == null) {
+            protoIO = new ProtoIO(typeRegistryWrapper.get());
+        }
+        return protoIO;
     }
 }

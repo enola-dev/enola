@@ -20,7 +20,12 @@ package dev.enola.core;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.protobuf.ValidationException;
-import dev.enola.core.aspects.*;
+import dev.enola.core.aspects.ErrorTestAspect;
+import dev.enola.core.aspects.FilestoreRepositoryAspect;
+import dev.enola.core.aspects.GrpcAspect;
+import dev.enola.core.aspects.TimestampAspect;
+import dev.enola.core.aspects.UriTemplateAspect;
+import dev.enola.core.aspects.ValidationAspect;
 import dev.enola.core.meta.EntityAspectWithRepository;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.SchemaAspect;
@@ -31,12 +36,13 @@ import java.nio.file.Path;
 
 public class EnolaServiceProvider {
 
-    private TypeRegistryWrapper typeRegistry;
+    private final EnolaServiceRegistry enolaService;
+    private final TypeRegistryWrapper typeRegistry;
 
-    // TODO rename to getService
-    public EnolaService get(EntityKindRepository ekr) throws ValidationException, EnolaException {
+    public EnolaServiceProvider(EntityKindRepository ekr)
+            throws ValidationException, EnolaException {
+        enolaService = new EnolaServiceRegistry();
         var trb = TypeRegistryWrapper.newBuilder();
-        var sr = new EnolaServiceRegistry();
         for (var ek : ekr.list()) {
             var aspectsBuilder = ImmutableList.<EntityAspect>builder();
 
@@ -103,20 +109,20 @@ public class EnolaServiceProvider {
 
             var aspects = aspectsBuilder.build();
             var s = new EntityAspectService(ek, aspects);
-            sr.register(ek.getId(), s);
+            enolaService.register(ek.getId(), s);
 
             for (var aspect : aspects) {
                 trb.add(aspect.getDescriptors());
             }
         }
         this.typeRegistry = trb.build();
-        return sr;
+    }
+
+    public EnolaService getEnolaService() {
+        return enolaService;
     }
 
     public TypeRegistryWrapper getTypeRegistryWrapper() {
-        if (typeRegistry == null) {
-            throw new IllegalStateException("getTypeRegistry() must be called after get()");
-        }
         return typeRegistry;
     }
 }
