@@ -7,15 +7,7 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
 
-  "cSpell.words": [
-    "Bazel",
-    "bazelisk",
-    "Classpath",
-    "Enola",
-    "Intelli",
-    "protolint",
-    "textproto"
-  ],
+  "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
 
   "editor.formatOnType": true,
   "editor.formatOnSave": true,
