@@ -37,8 +37,8 @@ indent_size = 2
 tab_width = 2
 
 [*.html]
-indent_size = 2
-tab_width = 2
+indent_size = unset
+tab_width = unset
 
 [*.json]
 indent_size = 2

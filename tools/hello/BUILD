@@ -14,10 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 
 java_binary(
     name = "hello",
-    srcs = glob(["src/main/java/**/*.java"]),
+    srcs = ["src/main/java/dev/enola/common/hello/Hello.java"],
+    javacopts = ["--enable-preview"],
+    jvm_flags = ["--enable-preview"],
     main_class = "dev.enola.common.hello.Hello",
+    deps = [":hello_lib"],
+)
+
+# https://github.com/bazelbuild/bazel/issues/21119
+java_library(
+    name = "hello_lib",
+    srcs = ["src/main/java/dev/enola/common/hello/Library.java"],
+    javacopts = ["--enable-preview"],
 )

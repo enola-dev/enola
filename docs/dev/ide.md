@@ -81,8 +81,6 @@ IJ can be used as a complete alternative to VSC, or only for Java coding, with:
 
 * [Google Java Format](https://plugins.jetbrains.com/plugin/8527-google-java-format)
 
-* [Bamboo Soy](https://plugins.jetbrains.com/plugin/9841-bamboo-soy) for `*.soy` templates
-
 ## Eclipse
 
 Eclipse is not actively supported by this project as an IDE.

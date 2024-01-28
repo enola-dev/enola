@@ -19,14 +19,12 @@ package dev.enola.common.hello;
 
 import static java.lang.StringTemplate.STR;
 
-public class Hello {
-    public static void main(String[] args) {
-        // System.out.println("hello, world");
-        System.out.println(Hello.helloWithJavaStringTemplate("world"));
-        System.out.println(Library.helloWithJavaStringTemplate("world"));
-    }
-
+public class Library {
     public static String helloWithJavaStringTemplate(String planet) {
+        // https://github.com/bazelbuild/bazel/issues/21119
+        // TODO Make "bazelisk run //tools/hello" work!
+        // Only "bazelisk run --nojava_header_compilation //tools/hello" works.
         return STR."hello, \{planet}";
+        // return "hello, " + planet;
     }
 }

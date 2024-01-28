@@ -1,0 +1,99 @@
+<!-- prettier-ignore -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <title>Enola</title>
+
+    <link href="main.css" media="screen" rel="stylesheet" type="text/css" />
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      media="screen"
+      rel="stylesheet"
+      type="text/css" />
+  </head>
+  <body>
+    <div class="app-bar">
+      <!-- <span class="material-symbols-outlined">menu</span> -->
+      <span>&nbsp;Enola 🕵🏾‍♀️ </span>
+      <span>
+        <!-- TODO How-to horizontally align in the middle/center,
+             and make it use "most" of the available space, without a fixed size="70" ? -->
+        <input incremental="true" name="q" placeholder="Search..." size="70" type="search" />
+      </span>
+      <a href="https://www.enola.dev"><span class="material-symbols-outlined help"> help </span></a>
+    </div>
+
+    <div class="main">
+      <div class="proto">
+        <pre>
+id:
+  ns: demo
+  entity: book
+  paths: [ABC, 0-13-140731-7, '1']
+ts: 2024-01-27T22:19:24.998064929Z
+related:
+  library:
+    ns: demo
+    entity: library
+    paths: [ABC]
+  kind:
+    ns: demo
+    entity: book_kind
+    paths: [0-13-140731-7]</pre
+        >
+      </div>
+
+      <hr />
+
+      <table class="thing">
+        <tbody>
+          <tr>
+            <td class="label">id</td>
+            <td>
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="label">ns</td>
+                    <td>demo</td>
+                  </tr>
+                  <tr>
+                    <td class="label">entity</td>
+                    <td>book</td>
+                  </tr>
+                  <tr>
+                    <td class="label">paths</td>
+                    <!-- TODO Nicer Lists... -->
+                    <td>
+                      <ol>
+                        <li>ABC</li>
+                        <li>0-13-140731-7</li>
+                        <li>1</li>
+                      </ol>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">ts</td>
+            <td>2024-01-27T22:19:24.998064929Z</td>
+          </tr>
+          <tr>
+            <td class="label">related</td>
+            <td>...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

@@ -22,13 +22,22 @@
 
 1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
 
-1. It's ugly how 404.html and ui.soy duplicate the HTML "frame" - how-to re-use?
-   https://github.com/google/closure-templates/blob/master/documentation/reference/template-types.md#how-do-you-pass-in-a-template
+### UI
 
-1. UI Enhancements of HTML
-    - Search should be more in the middle
-    - Icon should be vertically aligned in the middle
-    - Footer
+1. _#css_ Units `px` -VS- `em`? Uniform?!
+
+1. _#css_ `.app-bar` (incl. Help icon) middle alignment how-to?
+
+1. _#css_ Search Bar should be more in the middle, and fill all space
+
+1. _#css_ How to `vertical-align: top` the "inner" Thing table/s?
+
+1. _#feat_ Collapse Thing value cells on click (perhaps with a [+/-] ?)
+
+1. _#dev_ `Resource.watch()` etc. with https://github.com/livereload/livereload-js
+
+1. _#dev_ It's ugly how 404.html and other HTML templates duplicate the HTML "frame" - how-to re-use nicely? With Mustache Templates?
+   https://github.com/google/closure-templates/blob/master/documentation/reference/template-types.md#how-do-you-pass-in-a-template
 
 ---
 

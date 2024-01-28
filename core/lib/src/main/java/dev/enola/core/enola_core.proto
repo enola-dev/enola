@@ -27,6 +27,38 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/core";
 
+// ThingView is the data structure used to view "Things" on the Web UI
+// (and later possibly in the CLI TUI, but that's TBD). This is (loosely)
+// inspired by JSON-LD, and src/google/protobuf/struct.proto, or
+// https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp,
+// et al.
+message ThingView {
+  // TODO Is this duality a brilliant or a very dumb idea?!
+  // Let's initially try to always use only bytes, and we'll see...
+  // oneof type {
+  //  string type_name = 1 [(dev.enola.type) = "enola.dev/type"];
+  //  bytes type_id = 2 [(dev.enola.type) = "enola.dev/type-id"];
+  // }
+  string type_uri = 1;  // TODO [(dev.enola.type) = "enola.dev/type"];
+  map<string, Value> fields = 3;
+}
+
+message Value {
+  oneof kind {
+    // NB: There are intentionally no other "basic types" than string; because
+    // this is ultimately only intended for end-user viewing (so we convert
+    // before).
+    string string = 4;
+    List list = 5;
+    ThingView struct = 6;
+  }
+  // TODO URI for Linked Data...
+}
+
+message List {
+  repeated Value entries = 1;
+}
+
 // TODO Replace this with //docs/concepts/uri.md!
 // ID of an Entity known to Enola, fully qualified.
 // Can be formatted to and parsed from several different string text forms,
