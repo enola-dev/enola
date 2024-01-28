@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.app-bar {
+  color: #ccc;
+  background-color: green;
+  /* TODO Neither of these work., because of the float in .help.. :-/ */
+  align-items: center;
+  vertical-align: middle;
+  height: 2.5em;
+}
+
+.help {
+  float: right;
+  color: #ccc;
+}
+
+.main {
+  padding: 0.7em;
+  padding-top: 1em;
+}
+
+.proto {
+  padding: 0.3em;
+  border-style: solid;
+  color: darkolivegreen;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+table.thing {
+  border: 2px;
+  border-style: solid;
+  border-collapse: collapse;
+  border-color: cadetblue;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+table.thing td {
+  padding: 4px;
+  vertical-align: top;
+}
+table.thing td.label {
+  border-right-style: dotted;
+  border-color: burlywood;
+}
+table.thing ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+table.thing li {
+  border-top-style: dashed;
+  border-top-color: cadetblue;
+}

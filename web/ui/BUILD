@@ -17,36 +17,24 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
 java_library(
-    name = "impl",
+    name = "ui",
     srcs = glob(["src/main/java/**/*.java"]),
+    # for String Templates in Java 21
+    # but still NOK due to https://github.com/bazelbuild/bazel/issues/21119 :-()
+    # TODO Why can this not be removed, now that there is a tools/java_toolchain/BUILD with "--enable_preview"?
+    javacopts = ["--enable-preview"],
     resources = glob(["src/main/resources/**/*"]),
     visibility = [
         "//cli:__subpackages__",
-        "//connectors:__subpackages__",  #  ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
-        # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this:
-        "//web/rest:__pkg__",
-        "//web/ui:__pkg__",
-    ],
-    runtime_deps = [
-        "@maven//:io_grpc_grpc_netty",
     ],
     deps = [
         "//common/common",
-        "//common/protobuf",
-        "//common/protobuf:validation_proto_java_library",
-        "//common/yamljson",
-        "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "//web/api",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:io_grpc_grpc_api",
-        "@maven//:io_grpc_grpc_core",
-        "@maven//:io_grpc_grpc_inprocess",
-        "@maven//:io_grpc_grpc_stub",
-        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -54,27 +42,20 @@ java_library(
     name = name[:-len(".java")],
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
+    jvm_flags = ["--enable-preview"],
     resources = glob(["src/test/resources/**/*"]),
-    runtime_deps = [
-        "@maven//:io_grpc_grpc_netty",
-    ],
     deps = [
-        ":impl",
+        ":ui",
         "//common/common",
         "//common/protobuf",
-        "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
-        "//connectors/demo",
-        "//connectors/demo:demo_java_proto",
-        "//core/lib:connector_java_grpc",
+        "//core/impl",  # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "//web/api",
+        "//web/sun",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:com_google_truth_extensions_truth_java8_extension",
         "@maven//:com_google_truth_truth",
-        "@maven//:io_grpc_grpc_api",
         "@maven//:junit_junit",
     ],
 ) for name in glob([

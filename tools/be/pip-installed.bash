@@ -36,7 +36,7 @@ if ! md5sum --warn --status --check $HASH_FILE ; then
   # Technically not required, but let's just double check:
   md5sum --warn --status --strict --check $HASH_FILE
 else
-  echo "Skip running pip install, because requirements.txt hasn't changed."
+  echo "Skip running pip install, because requirements.txt hasn't changed. (Force with rm $HASH_FILE)"
 fi
 
 # PS: A "real" (non-script) implementation should hash the command itself as well.

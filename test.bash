@@ -82,7 +82,8 @@ set -u
 
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
-bazelisk query //... | xargs bazelisk test
+# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
+bazelisk query //... | xargs bazelisk test --nojava_header_compilation
 
 # Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
 tools/distro/test.bash
