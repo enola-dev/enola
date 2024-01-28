@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# see ./tools/java_toolchain/BUILD
+# see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
+register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 GRPC_JAVA_VERSION = "1.61.0"
