@@ -29,6 +29,8 @@ java_library(
     ],
     deps = [
         "//common/common",
+        "//common/protobuf",
+        "//core/impl",  # TODO Ideally shouldn't be required...
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",

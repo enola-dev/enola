@@ -22,9 +22,8 @@ import static java.lang.StringTemplate.STR;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
-import dev.enola.core.proto.List;
-import dev.enola.core.proto.ThingViewOrBuilder;
-import dev.enola.core.proto.Value;
+import dev.enola.core.proto.Thing;
+import dev.enola.core.proto.ThingOrBuilder;
 
 import java.util.Map;
 
@@ -39,47 +38,48 @@ public class ThingUI {
     // TODO Implement Escaper as StringTemplate.Processor?
     // (See e.g. https://javaalmanac.io/features/stringtemplates/)
 
-    String html(ThingViewOrBuilder thingView) {
-        return STR."""
-        <a href="/TODO">\{
-                s(thingView.getTypeUri())}</a>
-        \{
-                table(thingView, "thing")}
-        """;
+    public static CharSequence html(ThingOrBuilder value) {
+        return html(value, "thing");
     }
 
-    public static String table(ThingViewOrBuilder thingView, String cssClass) {
-        return STR."<table class=\"\{
-                s(cssClass)}\"><tbody>\{
-                tr(thingView.getFieldsMap())}</tbody></table>";
-    }
-
-    private static CharSequence tr(Map<String, Value> fieldsMap) {
-        var sb = new StringBuilder();
-        for (var nameValue : fieldsMap.entrySet()) {
-            sb.append("<tr>\n");
-            sb.append(STR."<td class=\"label\">\{s(nameValue.getKey())}</td>");
-            sb.append(STR."<td>\{value(nameValue.getValue())}</td>");
-            sb.append("</tr>\n");
-        }
-        return sb;
-    }
-
-    private static CharSequence value(Value value) {
+    public static CharSequence html(ThingOrBuilder value, String tableCssClass) {
         return switch (value.getKindCase()) {
             case STRING -> s(value.getString());
-            case STRUCT -> table(value.getStruct(), "");
+            case STRUCT -> table(value.getStruct(), tableCssClass);
             case LIST -> list(value.getList());
             case KIND_NOT_SET -> "";
         };
     }
 
-    private static CharSequence list(List list) {
+    private static CharSequence table(Thing.StructOrBuilder thingView, String cssClass) {
+        // <a href=\"/TODO\">\{s(thingView.getTypeUri())}</a>
+        var sb = new StringBuilder("<table");
+        if (!cssClass.isEmpty()) {
+            sb.append(" class=\"" + s(cssClass) + "\"");
+        }
+        sb.append("><tbody>\n");
+        sb.append(tr(thingView.getFieldsMap()));
+        sb.append("</tbody></table>\n");
+        return sb;
+    }
+
+    private static CharSequence tr(Map<String, Thing> fieldsMap) {
+        var sb = new StringBuilder();
+        for (var nameValue : fieldsMap.entrySet()) {
+            sb.append("<tr>\n");
+            sb.append(STR."<td class=\"label\">\{s(nameValue.getKey())}</td>");
+            sb.append(STR."<td>\{html(nameValue.getValue(), "")}</td>");
+            sb.append("</tr>\n");
+        }
+        return sb;
+    }
+
+    private static CharSequence list(Thing.List list) {
         var sb = new StringBuilder();
         sb.append("<ol>\n");
         for (var value : list.getEntriesList()) {
             sb.append("<li>");
-            sb.append(value(value));
+            sb.append(html(value, ""));
             sb.append("</li>\n");
         }
         sb.append("</ol>\n");

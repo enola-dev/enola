@@ -24,7 +24,7 @@ java_binary(
         "//common/common",
         "//common/markdown",
         "//common/protobuf",
-        "//core/impl",
+        "//core/impl",  # TODO Ideally shouldn't be required...
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",

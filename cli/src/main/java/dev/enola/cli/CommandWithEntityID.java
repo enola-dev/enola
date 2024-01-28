@@ -53,9 +53,8 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception {
-        var fds =
-                service.getFileDescriptorSet(GetFileDescriptorSetRequest.newBuilder().build())
-                        .getProtos();
+        var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
+        var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
 
         var id = IDs.parse(eri);
