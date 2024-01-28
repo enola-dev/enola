@@ -29,6 +29,7 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
+import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetEntityResponse;
@@ -48,6 +49,8 @@ public class UiTest {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             var esp = new EnolaServiceProvider();
+            var ekr = new EntityKindRepository();
+            esp.get(ekr);
             try (var grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new UI(testGrpcService).register(server);

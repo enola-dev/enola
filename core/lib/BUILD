@@ -168,6 +168,7 @@ java_library(
         ":core_java_proto",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
     ],
 )
 
