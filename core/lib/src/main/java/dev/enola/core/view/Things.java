@@ -22,6 +22,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
 
+import dev.enola.common.protobuf.Anys;
 import dev.enola.core.IDs;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.Thing;
@@ -34,11 +35,18 @@ public class Things {
     }
 
     private static Thing.Builder from(Message message, boolean isTopLevel) {
-        return switch (message) {
-            case ID id -> toThing(id);
-            case Timestamp ts -> toThing(Timestamps.toString(ts));
-            default -> Thing.newBuilder().setStruct(fromGeneric(message, isTopLevel));
-        };
+        // NB: We must use this instead of e.g. message instanceof Timestamp
+        // because this has to work for DynamicMessage from Anys#toMessage().
+        var descriptor = message.getDescriptorForType();
+        if (ID.getDescriptor().getFullName().equals(descriptor.getFullName())) {
+            ID id = Anys.dynamicToStaticMessage(message, ID.newBuilder());
+            return toThing(id);
+        }
+        if (Timestamp.getDescriptor().getFullName().equals(descriptor.getFullName())) {
+            Timestamp ts = Anys.dynamicToStaticMessage(message, Timestamp.newBuilder());
+            return toThing(Timestamps.toString(ts));
+        }
+        return Thing.newBuilder().setStruct(fromGeneric(message, isTopLevel));
     }
 
     private static Thing.Struct.Builder fromGeneric(Message message, boolean isTopLevel) {

@@ -35,12 +35,13 @@ import java.net.URI;
 public abstract class CommandWithModel implements CheckedRunnable {
 
     protected EnolaServiceProvider esp;
+
     @Spec CommandSpec spec;
 
     @ArgGroup(multiplicity = "1")
     ModelOrServer group;
 
-    private EnolaServiceBlockingStub service;
+    private EnolaServiceBlockingStub gRPCService;
 
     @Override
     public final void run() throws Exception {
@@ -53,16 +54,17 @@ public abstract class CommandWithModel implements CheckedRunnable {
             var modelResource = new ResourceProviders().getReadableResource(group.model);
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
-            esp = new EnolaServiceProvider();
-            grpc = new EnolaGrpcInProcess(esp, esp.get(ekr), false); // direct, single-threaded!
-            service = grpc.get();
+            esp = new EnolaServiceProvider(ekr);
+            var enolaService = esp.getEnolaService();
+            grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
+            gRPCService = grpc.get();
         } else if (group.server != null) {
             grpc = new EnolaGrpcClientProvider(group.server, false); // direct, single-threaded!
-            service = grpc.get();
+            gRPCService = grpc.get();
         }
 
         try {
-            run(ekr, service);
+            run(ekr, gRPCService);
         } finally {
             grpc.close();
         }

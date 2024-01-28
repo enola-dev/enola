@@ -19,12 +19,15 @@ package dev.enola.core.meta;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.IDs;
-import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 
@@ -33,7 +36,7 @@ import org.junit.Test;
 public class SchemaAspectTest {
 
     EntityKindRepository ekr = new EntityKindRepository();
-    EnolaService service = new EnolaServiceProvider().get(ekr);
+    EnolaService service = new EnolaServiceProvider(ekr).getEnolaService();
     ID.Builder schemaKindID = SchemaAspect.idBuilderTemplate;
 
     public SchemaAspectTest() throws ValidationException, EnolaException {}
@@ -48,12 +51,14 @@ public class SchemaAspectTest {
     }
 
     @Test
-    public void get() throws ValidationException, EnolaException {
+    public void get() throws ValidationException, EnolaException, InvalidProtocolBufferException {
         var id = schemaKindID.clone().addPaths("google.protobuf.Timestamp");
         var eri = IDs.toPath(id);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = service.getEntity(request);
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = service.getThing(request);
+        var any = response.getThing();
+        var entity = any.unpack(Entity.class);
 
-        assertThat(response.getEntity().getDataOrThrow("proto")).isNotNull();
+        assertThat(entity.getDataOrThrow("proto")).isNotNull();
     }
 }

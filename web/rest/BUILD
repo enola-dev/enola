@@ -26,6 +26,7 @@ java_library(
     deps = [
         "//common/common",
         "//common/protobuf",
+        "//core/impl",  # TODO Ideally shouldn't be required...
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
@@ -51,6 +52,7 @@ java_library(
         "//web/api",
         "//web/sun",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",
     ],

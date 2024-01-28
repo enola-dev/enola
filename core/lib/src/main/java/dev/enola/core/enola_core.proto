@@ -120,7 +120,7 @@ message Entity {
   map<string, google.protobuf.Any> data = 9;
 }
 
-message GetEntityRequest {
+message GetThingRequest {
   // This is an https://docs.enola.dev/concepts/uri.
   // TODO repeated?!
   string eri = 1;
@@ -129,20 +129,9 @@ message GetEntityRequest {
   // (Conceptually inspired by e.g. GraphQL architecture.)
   // TODO repeated string inline_links = 2;
 }
-message GetEntityResponse {
-  // TODO Any instead of Entity
-  Entity entity = 1;
 
-  /*
-    TODO Think this through & implement it...
-
-    repeated InlineLinkData data = 2;
-    message InlineLinkData {
-      oneof oneof {
-        google.protobuf.Any protos = 1;
-        string json = 2;
-      }
-    } */
+message GetThingResponse {
+  google.protobuf.Any thing = 1;
 }
 
 // Request for a list of entities.
@@ -167,6 +156,8 @@ message ListEntitiesRequest {
 }
 
 message ListEntitiesResponse {
+  // TODO Any instead of Entity? Or (better!), abandon ListEntities() entirely
+  // repeated google.protobuf.Any things = 1;
   repeated dev.enola.core.Entity entities = 1;
 }
 
@@ -189,6 +180,6 @@ message GetFileDescriptorSetResponse {
 service EnolaService {
   rpc GetFileDescriptorSet(GetFileDescriptorSetRequest)
       returns (GetFileDescriptorSetResponse) {}
-  rpc GetEntity(GetEntityRequest) returns (GetEntityResponse) {}
+  rpc GetThing(GetThingRequest) returns (GetThingResponse) {}
   rpc ListEntities(ListEntitiesRequest) returns (ListEntitiesResponse) {}
 }

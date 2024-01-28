@@ -21,10 +21,10 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetFileDescriptorSetResponse;
+import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 
@@ -41,10 +41,10 @@ public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
     }
 
     @Override
-    public void getEntity(
-            GetEntityRequest request, StreamObserver<GetEntityResponse> responseObserver) {
+    public void getThing(
+            GetThingRequest request, StreamObserver<GetThingResponse> responseObserver) {
         try {
-            var response = enola.getEntity(request);
+            var response = enola.getThing(request);
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (EnolaException e) {

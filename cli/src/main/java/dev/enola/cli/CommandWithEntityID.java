@@ -17,9 +17,12 @@
  */
 package dev.enola.cli;
 
+import com.google.protobuf.Message;
+
 import dev.enola.common.io.resource.URIs;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
+import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
@@ -27,8 +30,8 @@ import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
+import dev.enola.core.proto.GetThingRequest;
 
 import picocli.CommandLine;
 
@@ -49,6 +52,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
 
     private WritableResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
+    protected Anys anys;
 
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
@@ -56,14 +60,16 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
+        anys = new Anys(typeRegistryWrapper);
 
         var id = IDs.parse(eri);
         var ekid = IDs.entityKind(id);
         var entityKindERI = IDs.toPath(ekid);
 
-        var request1 = GetEntityRequest.newBuilder().setEri(entityKindERI).build();
-        var response1 = service.getEntity(request1);
-        var ek = response1.getEntity().getDataOrThrow("schema").unpack(EntityKind.class);
+        var request1 = GetThingRequest.newBuilder().setEri(entityKindERI).build();
+        var response1 = service.getThing(request1);
+        var any = response1.getThing();
+        var ek = any.unpack(Entity.class).getDataOrThrow("schema").unpack(EntityKind.class);
 
         // See CommandWithModelAndOutput
         if (output.equals(DEFAULT_OUTPUT_URI)) {
@@ -78,7 +84,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
     protected abstract void run(EnolaServiceBlockingStub service, EntityKind ek, String eri)
             throws Exception;
 
-    protected void write(Entity entity) throws IOException {
-        new ProtoIO(typeRegistryWrapper.get()).write(entity, resource);
+    protected void write(Message thing) throws IOException {
+        new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
     }
 }

@@ -37,7 +37,7 @@ import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.demo.proto.Something;
@@ -109,17 +109,18 @@ public class ServerTest {
         ekr = new EntityKindRepository();
         ekr.load(model);
 
-        var esp = new EnolaServiceProvider();
-        enola = esp.get(ekr);
+        var esp = new EnolaServiceProvider(ekr);
+        enola = esp.getEnolaService();
         typeRegistryWrapper = esp.getTypeRegistryWrapper();
     }
 
     private void checkEnolaGet(EnolaService enola) throws EnolaException, IOException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
         var eri = IDs.toPath(id);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = enola.getEntity(request);
-        Entity entity = response.getEntity();
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = enola.getThing(request);
+        var thing = response.getThing();
+        Entity entity = thing.unpack(Entity.class);
         assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
 
         var any = entity.getDataOrThrow("data1");

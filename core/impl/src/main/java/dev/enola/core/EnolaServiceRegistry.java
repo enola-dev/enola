@@ -18,7 +18,11 @@
 package dev.enola.core;
 
 import dev.enola.core.iri.URITemplateMatcherChain;
-import dev.enola.core.proto.*;
+import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.proto.GetThingResponse;
+import dev.enola.core.proto.ID;
+import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.ListEntitiesResponse;
 
 class EnolaServiceRegistry implements EnolaService {
 
@@ -36,8 +40,8 @@ class EnolaServiceRegistry implements EnolaService {
     }
 
     @Override
-    public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
-        return getDelegate(r.getEri()).getEntity(r);
+    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
+        return getDelegate(r.getEri()).getThing(r);
     }
 
     @Override

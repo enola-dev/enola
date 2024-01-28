@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.net.URI.create;
 
 import com.google.common.net.MediaType;
+import com.google.protobuf.Any;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
@@ -31,8 +32,8 @@ import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetEntityRequest;
-import dev.enola.core.proto.GetEntityResponse;
+import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
@@ -48,9 +49,8 @@ public class UiTest {
     public void testUi() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
-            var esp = new EnolaServiceProvider();
             var ekr = new EntityKindRepository();
-            esp.get(ekr);
+            var esp = new EnolaServiceProvider(ekr);
             try (var grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new UI(testGrpcService).register(server);
@@ -68,8 +68,9 @@ public class UiTest {
                 var uri2 = create(prefix + "/ui/entity/test.demo/123");
                 var response2 = rp.getResource(uri2);
                 assertThat(response2.charSource().read()).contains("Enola");
-                // TODO assertThat(response2.charSource().read()).contains("test.demo/123");
+                assertThat(response2.charSource().read()).contains("test.demo/123");
                 assertThat(response2.charSource().read()).contains("<table class=\"thing\">");
+
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html
             }
         }
@@ -77,11 +78,11 @@ public class UiTest {
 
     private static class TestService implements EnolaService {
         @Override
-        public GetEntityResponse getEntity(GetEntityRequest r) throws EnolaException {
+        public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
             var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths("123");
             var now = Timestamps2.fromInstant(Instant.now());
             var entity = Entity.newBuilder().setId(id).setTs(now).build();
-            return GetEntityResponse.newBuilder().setEntity(entity).build();
+            return GetThingResponse.newBuilder().setThing(Any.pack(entity)).build();
         }
 
         @Override

@@ -27,13 +27,14 @@ import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.GetEntityRequest;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.Things;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
@@ -48,8 +49,10 @@ public class UI implements WebHandler {
 
     private static final ReadableResource HTML_FRAME =
             new ClasspathResource("templates/index.html");
+
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
+    private final Anys anys;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -57,6 +60,7 @@ public class UI implements WebHandler {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
+        anys = new Anys(typeRegistryWrapper);
     }
 
     public void register(WebServer server) {
@@ -87,14 +91,15 @@ public class UI implements WebHandler {
     }
 
     private String getEntityHTML(String eri) throws EnolaException, IOException {
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = service.getEntity(request);
-        var entity = response.getEntity();
-        var thing = Things.from(entity);
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = service.getThing(request);
+        var any = response.getThing();
+        var message = anys.toMessage(any);
+        var thing = Things.from(message);
         var thingHTML = ThingUI.html(thing).toString();
 
         var yamlResource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
-        getProtoIO().write(entity, yamlResource);
+        getProtoIO().write(message, yamlResource);
         var thingYAML = yamlResource.charSource().read();
 
         return new ReplacingResource(

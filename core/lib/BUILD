@@ -16,20 +16,25 @@
 
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
+
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
 # https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
+
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
 # https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
+
 load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
 
 # https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
+
 load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
 # https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
+
 proto_library(
     name = "core_proto",
     srcs = ["src/main/java/dev/enola/core/enola_core.proto"],
@@ -166,6 +171,7 @@ java_library(
     ],
     deps = [
         ":core_java_proto",
+        "//common/protobuf",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

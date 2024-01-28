@@ -19,6 +19,8 @@ package dev.enola.core.grpc;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.ValidationException;
@@ -29,7 +31,8 @@ import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.GetEntityRequest;
+import dev.enola.core.proto.Entity;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 
@@ -41,11 +44,11 @@ public class EnolaGrpcServerTest {
 
     private final ReadableResource model = new ClasspathResource("demo-model.yaml");
     private final EntityKindRepository ekr = new EntityKindRepository().load(model);
-    private final EnolaServiceProvider esp = new EnolaServiceProvider();
+    private final EnolaServiceProvider esp = new EnolaServiceProvider(ekr);
     private final EnolaService service;
 
     public EnolaGrpcServerTest() throws ValidationException, IOException, EnolaException {
-        service = esp.get(ekr);
+        service = esp.getEnolaService();
     }
 
     @Test
@@ -68,17 +71,20 @@ public class EnolaGrpcServerTest {
         }
     }
 
-    private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client) {
+    private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
         checkGet(client);
         checkList(client);
     }
 
-    private void checkGet(EnolaServiceBlockingStub client) {
+    private void checkGet(EnolaServiceBlockingStub client) throws InvalidProtocolBufferException {
         var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
         var eri = IDs.toPath(id);
-        var request = GetEntityRequest.newBuilder().setEri(eri).build();
-        var response = client.getEntity(request);
-        var linkMap = response.getEntity().getLinkMap();
+        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var response = client.getThing(request);
+        var any = response.getThing();
+        var entity = any.unpack(Entity.class);
+        var linkMap = entity.getLinkMap();
         assertThat(linkMap).hasSize(1);
         assertThat(linkMap.get("wiki"))
                 .isEqualTo("https://en.wikipedia.org/w/index.php?fulltext=Search&search=b");
