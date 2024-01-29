@@ -97,7 +97,8 @@ public class UI implements WebHandler {
         getProtoIO().write(entity, yamlResource);
         var thingYAML = yamlResource.charSource().read();
 
-        return new ReplacingResource(HTML_FRAME, "%%THING%%", thingHTML, "%%YAML%%", thingYAML)
+        return new ReplacingResource(
+                        HTML_FRAME, "%%ERI%%", eri, "%%THING%%", thingHTML, "%%YAML%%", thingYAML)
                 .charSource()
                 .read();
     }

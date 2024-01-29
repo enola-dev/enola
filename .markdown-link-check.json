@@ -1,10 +1,8 @@
 {
   "ignorePatterns": [
-    {
-      "pattern": ".*dev/proto/core.*"
-    },
-    {
-      "pattern": "script.svg"
-    }
-  ]
+    { "pattern": ".*dev/proto/core.*" },
+    { "pattern": "script.svg" },
+    { "pattern": "^https://vscode.dev" }
+  ],
+  "aliveStatusCodes": [200, 0]
 }

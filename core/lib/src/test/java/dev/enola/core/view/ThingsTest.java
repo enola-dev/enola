@@ -33,14 +33,23 @@ import org.junit.Test;
 public class ThingsTest {
 
     TestSimple.Builder simple = TestSimple.newBuilder().setText("hello").setNumber(123);
-    Thing.Struct.Builder simpleThingView =
+    Thing.Struct.Builder simpleThingViewBuilder =
             Thing.Struct.newBuilder()
                     .putFields("text", string("hello"))
                     .putFields("number", string("123"));
+    Thing.Struct simpleThingView = simpleThingViewBuilder.build();
+    Thing.Struct simpleThingViewWithProto =
+            simpleThingViewBuilder
+                    .putFields(
+                            "$proto",
+                            string(
+                                    "dev.enola.core.test.TestSimple",
+                                    "enola:proto/dev.enola.core.test.TestSimple"))
+                    .build();
 
     @Test
     public void testSimple() {
-        check(simple, simpleThingView);
+        check(simple, simpleThingViewWithProto);
     }
 
     @Test
@@ -54,7 +63,14 @@ public class ThingsTest {
     public void testRepeated() {
         check(
                 TestRepeated.newBuilder().addLines("one").addLines("two"),
-                Thing.Struct.newBuilder().putFields("lines", list(string("one"), string("two"))));
+                Thing.Struct.newBuilder()
+                        .putFields("lines", list(string("one"), string("two")))
+                        .putFields(
+                                "$proto",
+                                string(
+                                        "dev.enola.core.test.TestRepeated",
+                                        "enola:proto/dev.enola.core.test.TestRepeated"))
+                        .build());
     }
 
     @Test
@@ -64,29 +80,34 @@ public class ThingsTest {
                 Thing.Struct.newBuilder()
                         .putFields("simple", struct(simpleThingView))
                         .putFields(
-                                "simples", list(struct(simpleThingView), struct(simpleThingView))));
+                                "simples", list(struct(simpleThingView), struct(simpleThingView)))
+                        .putFields(
+                                "$proto",
+                                string(
+                                        "dev.enola.core.test.TestComplex",
+                                        "enola:proto/dev.enola.core.test.TestComplex"))
+                        .build());
     }
 
     private void check(Message.Builder thing, String expectedText) {
         var view = Things.from(thing.build()).build();
         assertThat(view.hasStruct()).isFalse();
-        assertThat(view.hasString()).isTrue();
-        assertThat(view.getString()).isEqualTo(expectedText);
+        assertThat(view.hasText()).isTrue();
+        assertThat(view.getText().getString()).isEqualTo(expectedText);
     }
 
-    private void check(Message.Builder thing, Thing.Struct.Builder expectedView) {
+    private void check(Message.Builder thing, Thing.Struct expectedView) {
         var view = Things.from(thing.build()).build();
         assertThat(view.hasStruct()).isTrue();
-        assertThat(view.getStruct())
-                .ignoringFields(Thing.Struct.TYPE_URI_FIELD_NUMBER)
-                .isEqualTo(expectedView.build());
-        if (view.hasStruct()) {
-            assertThat(view.getStruct().getTypeUri()).isNotEmpty();
-        }
+        assertThat(view.getStruct()).isEqualTo(expectedView);
     }
 
     private Thing string(String string) {
-        return Thing.newBuilder().setString(string).build();
+        return Things.toThing(string).build();
+    }
+
+    private Thing string(String string, String uri) {
+        return Things.toThing(string, uri).build();
     }
 
     private Thing list(Thing... elements) {
@@ -97,7 +118,7 @@ public class ThingsTest {
         return Thing.newBuilder().setList(valueList).build();
     }
 
-    private Thing struct(Thing.Struct.Builder thingView) {
+    private Thing struct(Thing.Struct thingView) {
         return Thing.newBuilder().setStruct(thingView).build();
     }
 }
