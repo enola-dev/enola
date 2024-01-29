@@ -19,10 +19,12 @@ package dev.enola.web.ui;
 
 import static java.lang.StringTemplate.STR;
 
+import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
 import dev.enola.core.proto.Thing;
+import dev.enola.core.proto.Thing.LinkedText;
 import dev.enola.core.proto.ThingOrBuilder;
 
 import java.util.Map;
@@ -44,7 +46,7 @@ public class ThingUI {
 
     public static CharSequence html(ThingOrBuilder value, String tableCssClass) {
         return switch (value.getKindCase()) {
-            case STRING -> s(value.getString());
+            case TEXT -> text(value.getText());
             case STRUCT -> table(value.getStruct(), tableCssClass);
             case LIST -> list(value.getList());
             case KIND_NOT_SET -> "";
@@ -83,6 +85,27 @@ public class ThingUI {
             sb.append("</li>\n");
         }
         sb.append("</ol>\n");
+        return sb;
+    }
+
+    private static CharSequence text(LinkedText text) {
+        var sb = new StringBuilder();
+        var uri = text.getUri();
+        if (!Strings.isNullOrEmpty(uri)) {
+            // TODO s(uri) or not - or another escaping?
+            // TODO Adapt enola: URIs! Adding the /ui/ prefix belongs here...
+            String url;
+            if (uri.startsWith("enola:")) {
+                url = "/ui/" + uri.substring("enola:".length());
+            } else {
+                url = uri;
+            }
+            sb.append("<a href=" + url + ">");
+        }
+        sb.append(text.getString());
+        if (!Strings.isNullOrEmpty(uri)) {
+            sb.append("</a>");
+        }
         return sb;
     }
 

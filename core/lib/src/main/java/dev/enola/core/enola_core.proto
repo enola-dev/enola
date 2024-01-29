@@ -38,16 +38,19 @@ message Thing {
     // NB: There are intentionally no other "basic types" than string; because
     // this is ultimately only intended for end-user viewing (so we convert
     // before).
-    string string = 4;
+    LinkedText text = 4;
     List list = 5;
     Struct struct = 6;
     // TODO Map?
+  }
+  message LinkedText {
+    string string = 1;
+    string uri = 2;
   }
   message List {
     repeated Thing entries = 1;
   }
   message Struct {
-    string type_uri = 1;  // TODO [(dev.enola.type) = "enola.dev/type"];
     map<string, Thing> fields = 3;
   }
 }

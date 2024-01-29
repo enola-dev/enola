@@ -30,21 +30,32 @@ import dev.enola.core.proto.Thing;
 public class Things {
 
     public static Thing.Builder from(Message message) {
+        return from(message, true);
+    }
+
+    private static Thing.Builder from(Message message, boolean isTopLevel) {
         return switch (message) {
-            case ID id -> toThing(IDs.toPath(id));
+            case ID id -> toThing(id);
             case Timestamp ts -> toThing(Timestamps.toString(ts));
-            default -> Thing.newBuilder().setStruct(fromGeneric(message));
+            default -> Thing.newBuilder().setStruct(fromGeneric(message, isTopLevel));
         };
     }
 
-    private static Thing.Struct.Builder fromGeneric(Message message) {
+    private static Thing.Struct.Builder fromGeneric(Message message, boolean isTopLevel) {
         var struct = Thing.Struct.newBuilder();
+        if (isTopLevel) {
+            var protoFQN = message.getDescriptorForType().getFullName();
+            // NB: Intentionally "$proto" instead of "$type" because TBD #soon,
+            // or "$schema", because in the future with non-Proto direct-JSON
+            // with https://json-schema.org the $schema will be as-is from JSON,
+            // and the $type and $proto are Enola's.
+            struct.putFields("$proto", toThing(protoFQN, "enola:proto/" + protoFQN).build());
+        }
         for (var field : message.getAllFields().entrySet()) {
             var descriptor = field.getKey();
             var name = descriptor.getName();
             struct.putFields(name, listToThing(field.getValue(), descriptor, message));
         }
-        struct.setTypeUri("enola:proto/" + message.getDescriptorForType().getFullName());
         return struct;
     }
 
@@ -67,13 +78,29 @@ public class Things {
     private static Thing.Builder toThing(Object object, FieldDescriptor field, Message message) {
         var type = field.getType();
         if (FieldDescriptor.Type.MESSAGE.equals(type)) {
-            return from((Message) object);
+            return from((Message) object, false);
         } else {
             return toThing(object.toString());
         }
     }
 
-    private static Thing.Builder toThing(String string) {
-        return Thing.newBuilder().setString(string);
+    private static Thing.Builder toThing(ID id) {
+        var path = IDs.toPath(id);
+        return toThing(path, "enola:entity/" + path);
+    }
+
+    static Thing.Builder toThing(String string) {
+        var text = Thing.LinkedText.newBuilder();
+        text.setString(string);
+        if (string.startsWith("https://") || string.startsWith("http://")) {
+            text.setUri(string);
+        }
+        return Thing.newBuilder().setText(text);
+    }
+
+    static Thing.Builder toThing(String string, String uri) {
+        var text = Thing.LinkedText.newBuilder();
+        text.setString(string).setUri(uri);
+        return Thing.newBuilder().setText(text);
     }
 }
