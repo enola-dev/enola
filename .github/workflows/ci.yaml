@@ -44,7 +44,7 @@ jobs:
           java-version: "21"
 
       - name: Cache Bazel
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # KEEP IN SYNC WITH BELOW!
           # https://github.com/actions/cache/pull/575/files
@@ -57,27 +57,27 @@ jobs:
             'WORKSPACE.bazel', 'MODULE.bazel') }}
           restore-keys: ${{ runner.os }}-bazel-
       - name: Cache Python
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .venv/
           key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
       - name: Cache Node.js
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           # -${{ hashFiles('**/package-lock.json') }}
           key: ${{ runner.os }}-npm
           restore-keys: ${{ runner.os }}-npm
       - name: Cache Pre-Commit
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit/
           key:
             ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Cache Demo
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .cache/demo/
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
@@ -140,7 +140,7 @@ jobs:
           # NB: Repeated above in build: job; must keep in sync!
           java-version: "21"
       - name: Cache Bazel
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # KEEP IN SYNC WITH ABOVE!
           # https://github.com/actions/cache/pull/575/files
