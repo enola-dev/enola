@@ -51,14 +51,14 @@ if ! [ -e ".venv/bin/pre-commit" ]; then
     exit 255
   fi
 
-  if ! [ -d ./.venv/ ]; then
+  if ! [ -d .venv/ ]; then
     python3 -m venv .venv
   fi
   # shellcheck disable=SC1091
-  source ./.venv/bin/activate
+  source .venv/bin/activate
 else
   # shellcheck disable=SC1091
-  source ./.venv/bin/activate
+  source .venv/bin/activate
 fi
 
 # pip install - but only if required! ;)

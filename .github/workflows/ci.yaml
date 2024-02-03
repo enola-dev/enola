@@ -24,6 +24,8 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main]
+    # https://github.com/orgs/community/discussions/25722
+    types: [opened, synchronize, reopened, ready_for_review]
 
 # Cancel any in-progress job or run if there is a newer commit
 concurrency:
@@ -32,7 +34,10 @@ concurrency:
 
 jobs:
   build:
-    if: github.repository == 'enola-dev/enola'
+    # https://github.com/orgs/community/discussions/25722
+    if:
+      (github.repository == 'enola-dev/enola') &&
+      (github.event.pull_request.draft == false)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
