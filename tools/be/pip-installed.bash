@@ -31,7 +31,7 @@ HASH_FILE=.be/.pip-install.hash.txt
 if ! md5sum --warn --status --check $HASH_FILE ; then
   echo
   set -e
-  pip install -r requirements.txt
+  .venv/bin/pip install -r requirements.txt
   md5sum --tag requirements.txt >$HASH_FILE
   # Technically not required, but let's just double check:
   md5sum --warn --status --strict --check $HASH_FILE
