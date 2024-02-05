@@ -37,28 +37,57 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Personal
 
-Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management) like features similar to tools such as:
+Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management) like features, similar to tools such as:
 
-* [Obsidian](https://obsidian.md)
-* [Logseq](https://logseq.com)
-* [Cosma](https://cosma.arthurperret.fr)
-* [Org Mode](https://orgmode.org)
+* [Obsidian](https://obsidian.md) #freeware
+* [Logseq](https://logseq.com) #opensource
+* [Cosma](https://cosma.arthurperret.fr) #opensource
+* [Org Mode](https://orgmode.org) #opensource
 * [The Brain](https://thebrain.com)
 * [TiddlyWiki](https://tiddlywiki.com)
+* [Zettlr](https://www.zettlr.com) #opensource
 * [The Archive from zettelkasten.de](https://zettelkasten.de/the-archive/)
 * [Zettelkasten history on Wikipedia](https://en.wikipedia.org/wiki/Zettelkasten)
 
 <!-- TODO ### Shared what was Bundesarchive's Linked Data (not 'Knowledge Graph') thing? -->
 
+## Graph
+
+### Visualization
+
+Enola 🕵🏾‍♀️  visualizes the relationships of its _Entities_ using:
+
+* [Graphviz](https://graphviz.org) #available
+* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #planned #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md)
+
+### Frameworks
+
+* [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API
+* [JGraphT](https://jgrapht.org) Java Library
+
 ## Persistence
 
-Enola 🕵🏾‍♀️ might not become a (persistent) "database" itself - but could integrate with some in the future?
+Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself - but could integrate with some in the future?
 
-### Graph
+### [Triplestore (AKA RDF store) DB](https://en.wikipedia.org/wiki/Triplestore)
+
+* [GraphDB, by Ontotext](https://graphdb.ontotext.com)
+
+### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
 * [Neo4j](https://neo4j.com)
+* [Tinkerpop](https://tinkerpop.apache.org)
 
-### Vector
+### Vector DB
+
+Vector _("Embedding")_ databases of possible future interest:
 
 * [ChromaDB](https://www.trychroma.com)
 * [Weaviate](https://weaviate.io)
+
+## Build
+
+Enola 🕵🏾‍♀️ models may internally gain (optional) `hash` support, for caching transformations; this would give it some aspects that make it similar to [tools which made the art of procrasting while running builds](https://xkcd.com/303/), such as:
+
+* [Justbuild](https://github.com/just-buildsystem/justbuild) (not to be confused with [just.systems](https://just.systems) and similar [command runners](https://github.com/casey/just?tab=readme-ov-file#alternatives-and-prior-art))
+* [Bazel](https://bazel.build) (and its flattering imitations, such as [Buck2](https://buck2.build) and [Pants](https://www.pantsbuild.org))
