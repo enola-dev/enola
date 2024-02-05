@@ -35,6 +35,13 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 <!-- I would be fun to capture in a structured format, with Enola... ;-) And then generated this from that! -->
 
+### Linked Data Sources
+
+* [Wikidata](https://www.wikidata.org) ([SPARQL query](https://query.wikidata.org))
+* [European data](https://data.europa.eu)
+* [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
+* [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
+
 ### Personal
 
 Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management) like features, similar to tools such as:
@@ -48,8 +55,6 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 * [Zettlr](https://www.zettlr.com) #opensource
 * [The Archive from zettelkasten.de](https://zettelkasten.de/the-archive/)
 * [Zettelkasten history on Wikipedia](https://en.wikipedia.org/wiki/Zettelkasten)
-
-<!-- TODO ### Shared what was Bundesarchive's Linked Data (not 'Knowledge Graph') thing? -->
 
 ## Graph
 
@@ -71,7 +76,11 @@ Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself -
 
 ### [Triplestore (AKA RDF store) DB](https://en.wikipedia.org/wiki/Triplestore)
 
-* [GraphDB, by Ontotext](https://graphdb.ontotext.com)
+* [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium
+* [Jena](https://jena.apache.org) #opensource
+* [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
+* [Stardog](https://www.stardog.com)
+* [Virtuoso](https://virtuoso.openlinksw.com)
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
