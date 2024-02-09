@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# https://github.com/bazelbuild/bazel/issues/21119
 # https://bazel.build/docs/bazel-and-java#config-compilation-toolchains
 
 # NB: This is "activated" by register_toolchains() in WORKSPACE.bazel!

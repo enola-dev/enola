@@ -22,8 +22,7 @@ set -euox pipefail
 
 # Build the end-user distributed executable fat über JAR
 # NB: "bazelisk build //..." does *NOT* build "//cli:enola_deploy.jar", for some reason
-# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
-bazelisk build --nojava_header_compilation //cli:enola_deploy.jar
+bazelisk build //cli:enola_deploy.jar
 cp tools/distro/execjar-header.bash site/download/latest/enola
 cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
 

@@ -20,7 +20,6 @@ java_library(
     name = "ui",
     srcs = glob(["src/main/java/**/*.java"]),
     # for String Templates in Java 21
-    # but still NOK due to https://github.com/bazelbuild/bazel/issues/21119 :-()
     # TODO Why can this not be removed, now that there is a tools/java_toolchain/BUILD with "--enable_preview"?
     javacopts = ["--enable-preview"],
     resources = glob(["src/main/resources/**/*"]),
