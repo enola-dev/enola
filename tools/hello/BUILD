@@ -25,7 +25,6 @@ java_binary(
     deps = [":hello_lib"],
 )
 
-# https://github.com/bazelbuild/bazel/issues/21119
 java_library(
     name = "hello_lib",
     srcs = ["src/main/java/dev/enola/common/hello/Library.java"],

@@ -37,8 +37,7 @@ fi
 
 cd "$ROOT"
 LOG=$(mktemp)
-# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
-if "$BZL" build --nojava_header_compilation --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
+if "$BZL" build --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
   rm "$LOG"
   # TODO Integrate this with (use) tools/distro/build.sh instead of launching it like this
   cd "$CWD" && java --enable-preview -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"

@@ -36,8 +36,7 @@ fi
 
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
-# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
-"$BZL" query //... | xargs "$BZL" test --nojava_header_compilation
+"$BZL" query //... | xargs "$BZL" test
 
 # The following makes sure that this test.bash will run as a pre-commit hook.
 # NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
