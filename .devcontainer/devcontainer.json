@@ -35,6 +35,6 @@
   // "remoteUser": "root"
 
   "hostRequirements": {
-    "cpus": 4
+    "cpus": 16
   }
 }
