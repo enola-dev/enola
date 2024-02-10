@@ -2,16 +2,18 @@
 {
   "name": "Enola.dev's Dev Containers.dev",
 
+  // TODO https://containers.dev/guide/prebuild
+  // with https://github.com/marketplace/actions/dev-container-build-and-run-action
+
   // This is the "fat" container with a lot of ready tools
   // from https://github.com/devcontainers/images/tree/main/src/universal
   "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
-  //
-  // "image": "mcr.microsoft.com/devcontainers/base:bookworm"
-  // from https://github.com/devcontainers/images/tree/main/src/base-debian
-  // from https://github.com/devcontainers/templates/tree/main/src/debian
-  // is very minimal, and we would need to add a lot...
-  //
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+
+  // TODO https://containers.dev/guide/dockerfile
+  // "build": {
+  //  // Path is relative to the devcontainer.json file.
+  //   "dockerfile": "../Dockerfile-DevEnv"
+  // }
 
   // https://containers.dev/implementors/json_reference/#lifecycle-scripts
   // is what you want, NOT features' "ghcr.io/devcontainers-contrib/features/bash-command:1"

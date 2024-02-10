@@ -13,7 +13,9 @@
     "seaube.clangformat",
     "htmlhint.vscode-htmlhint",
     "ecmel.vscode-html-css",
-    "zignd.html-css-class-completion"
+    "zignd.html-css-class-completion",
+    "timonwong.shellcheck"
   ],
+  // https://github.com/kshetline/ligatures-limited/issues/39
   "unwantedRecommendations": ["kshetline.ligatures-limited"]
 }

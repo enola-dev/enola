@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023-2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Read https://github.com/enola-dev/enola/issues/180 for background...
+
+# This builds a container image for an Enola development environment.
+# It may later be referenced in .devcontainer/devcontainer.json, but can
+# also be used unrelated to https://containers.dev e.g. for local builds
+# by the ./devenv script.
+
+# TODO The https://containers.dev base image don't work on plain Debian...
+# This is a "fat" container with a lot of ready tools
+# from https://github.com/devcontainers/images/tree/main/src/universal
+# (Note that "image": "mcr.microsoft.com/devcontainers/base:bookworm"
+#  from https://github.com/devcontainers/images/tree/main/src/base-debian
+#  from https://github.com/devcontainers/templates/tree/main/src/debian
+#  is very (too) minimal, and we would need to add a lot...)
+# FROM mcr.microsoft.com/devcontainers/universal:2-linux
+FROM docker.io/library/fedora:39
+
+RUN dnf update -y
+
+RUN dnf install -y fish gcc-c++ golang \
+    java-21-openjdk-devel java-21-openjdk-src java-21-openjdk-javadoc \
+    java-21-openjdk-javadoc-zip java-21-openjdk-jmods
+
+# TODO useradd --shell fish ...
+RUN useradd "developer" && \
+    sed -i 's/# %wheel/%wheel/' /etc/sudoers && \
+    sudo usermod -aG wheel "developer"
+USER developer
+
+# https://go.dev/doc/install (adapted for Fedora, which does not use ~/.profile, and ignores PATH in ~/.bash_profile)
+RUN echo "export PATH=$PATH:/home/developer/go/bin" >> /home/developer/.bashrc
+
+ADD tools/go/install.bash /tmp/go-install.bash
+RUN /tmp/go-install.bash
+
+WORKDIR /workspace/
+RUN --mount=type=bind,source=.,target=/workspace/ /workspace/tools/devenv/install.bash
+
+# See https://docs.docker.com/build/guide/mounts/ for documentation about --mount=type.

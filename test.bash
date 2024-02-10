@@ -17,24 +17,16 @@
 
 set -euo pipefail
 
-# Same also in the ./enola script:
-if ! [ -x "$(command -v bazelisk)" ]; then
+# This script builds the project *WITHOUT* requiring containers.
+# It can be used *IN* a container though; and is so, by the ./build script.
+
+# Similar also in the ./enola script:
+GO_BIN_PATH=$(go env GOPATH)/bin
+BZL=$GO_BIN_PATH/bazelisk
+if ! [ -x "$(command -v "$BZL")" ]; then
   if [ -x "$(command -v go)" ]; then
-    echo "go install bazelisk, buildifier, buildozer..."
-    go install github.com/bazelbuild/bazelisk@latest
-    go install github.com/bazelbuild/buildtools/buildifier@latest
-    go install github.com/bazelbuild/buildtools/buildozer@latest
+    tools/go/install.bash
 
-    # Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
-    # https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/
-    # 64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
-    GO_BIN_PATH=$(go env GOPATH)/bin
-    ln -s "$GO_BIN_PATH"/bazelisk "$GO_BIN_PATH"/bazel
-    ln -s "$GO_BIN_PATH"/bazelisk "$GO_BIN_PATH"/b
-
-    echo "b --version"
-    "$GO_BIN_PATH"/b version
-    echo
   else
     echo "Please install Go from https://go.dev/doc/install and re-run this script!"
     echo "See also https://docs.enola.dev/dev/setup/"
@@ -42,27 +34,18 @@ if ! [ -x "$(command -v bazelisk)" ]; then
   fi
 fi
 
-# Check if https://pre-commit.com is available (and try to install it not)
-if ! [ -e ".venv/bin/pre-commit" ]; then
-  echo "https://pre-commit.com is not available..."
+# https://github.com/bazelbuild/bazel/issues/4257
+echo $ Bazel testing...
+# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
+"$BZL" query //... | xargs "$BZL" test --nojava_header_compilation
 
-  if ! [ -x "$(command -v python3)" ]; then
-    echo "python3 is not installed, please run e.g. 'sudo apt-get install virtualenv python3-venv' (or an equivalent)"
-    exit 255
-  fi
+# The following makes sure that this test.bash will run as a pre-commit hook.
+# NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
+# (And because our own venv etc. stuff above is better for the "first touch" contributor experience.)
+# This is intentionally only done here at the END of successfully running the tests above,
+# because only if we reach here we now that everything above actually works well locally.
 
-  if ! [ -d .venv/ ]; then
-    python3 -m venv .venv
-  fi
-  # shellcheck disable=SC1091
-  source .venv/bin/activate
-else
-  # shellcheck disable=SC1091
-  source .venv/bin/activate
-fi
-
-# pip install - but only if required! ;)
-tools/be/pip-installed.bash
+source tools/pre-commit/install.bash
 
 echo
 # Run https://pre-commit.com, see .pre-commit-config.yaml;
@@ -80,17 +63,4 @@ else
 fi
 set -u
 
-# https://github.com/bazelbuild/bazel/issues/4257
-echo $ Bazel testing...
-# TODO Remove --nojava_header_compilation when https://github.com/bazelbuild/bazel/issues/21119 is fixed
-bazelisk query //... | xargs bazelisk test --nojava_header_compilation
-
-# Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
-tools/distro/test.bash
-
-# This makes sure that this test.bash will run as a pre-commit hook
-# NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
-# (And because our own venv etc. stuff above is better for the "first touch" contributor experience.)
-# This is intentionally only done here at the END of successfully running the tests above,
-# because only if we reach here we now that everything above actually works well locally.
 tools/git/install-hooks.bash
