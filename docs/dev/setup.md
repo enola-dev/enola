@@ -18,7 +18,42 @@
 
 # Dev Set-Up
 
-**We highly recommend you use our ready-made [Web/Cloud IDE](ide.md) set-up.** _This page documents various tools you would need to locally install, but it may be out of date (please help to update it) - it's just so much easier to use a ready-made Web/Cloud IDE with only 1 click!_
+## Visual Studio Code
+
+**We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
+
+## Development Environment in a Docker Container
+
+Because it can be a PITA to install all required tools, especially on non-Linux platforms,
+this project comes with a containerized ("Docker") development environment, which you can use like this:
+
+1. Get the source code:
+
+        git clone https://github.com/enola-dev/enola.git
+        cd enola
+
+1. Build and enter (prompt) the Dev. Env. container, which includes all required tools, but with the source code "local / on host" mounted:
+
+        ./devenv.bash
+
+1. (You're now in the container.) Run the Enola CLI, built from source:
+
+        ./enola
+
+1. (You're still in the container.) Build everything and run the tests:
+
+        ./test.bash
+
+When tests ran fully successfully, then a `.git/hooks/pre-commit` that's useful for development is installed.
+
+To work on documentation, launch `tools/docs/serve.bash` for hot reloading live refresh which is great while writing
+(even though it has some limitations), and `tools/docs/build.bash` for generating the "real" (full) static `site/`.
+
+## Manual Tools Installation
+
+_This may be out of date (please help to update it) - it's just so much easier to use the above!_
+
+If you do still want to try, here's how to manually install what the development environment container comes built-in with:
 
 1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](../../.bazelrc).
    There are different Java (like Linux) "distributions" (all based on OpenJDK).
@@ -47,19 +82,9 @@
         sudo apt update
         sudo apt install golang-go
 
-1. Get the source code:
+You should now be able to proceed as above (but without requiring _Docker)._
 
-        git clone https://github.com/enola-dev/enola.git
-        cd enola
-
-1. Build everything and run the tests:
-
-        ./test.bash
-
-When tests are successful locally, a `.git/hooks/pre-commit` is installed.
-
-To work on documentation, launch `tools/docs/serve.bash` for hot reloading live refresh which is great while writing
-(even though it has some limitations), and `tools/docs/build.bash` for generating the "real" (full) static `site/`.
+## Further Reading
 
 You can now read more about:
 

@@ -17,6 +17,9 @@
   "editor.linkedEditing": true,
   "editor.foldingImportsByDefault": true,
 
+  "files.associations": {
+    "*.json": "jsonc"
+  },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
 
@@ -60,6 +63,10 @@
   "java.server.launchMode": "Standard",
 
   "[json5]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
