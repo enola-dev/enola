@@ -30,7 +30,7 @@ This project automatically formats and checks ("lints") the style of its source 
 * [ShellCheck](https://www.shellcheck.net) for `*.bash`
 * [Lucas-C/pre-commit-hooks](https://github.com/Lucas-C/pre-commit-hooks) to add missing license headers
 
-There are [pre-commit.com](https://pre-commit.com) hooks for each of these tools configured in [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml). (Only ShellCheck is directly invoked by Bazel.)
+There are [pre-commit.com](https://pre-commit.com) hooks for each of these tools configured in [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml).
 
 Run the [`./test.bash`](../../test.bash) script during local development to reformat changed files and re-run all tests affected by a change.
 
