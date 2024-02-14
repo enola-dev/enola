@@ -66,10 +66,11 @@ public class UiTest {
                 assertThat(response1.charSource().read()).contains("404");
 
                 var uri2 = create(prefix + "/ui/entity/test.demo/123");
-                var response2 = rp.getResource(uri2);
-                assertThat(response2.charSource().read()).contains("Enola");
-                assertThat(response2.charSource().read()).contains("test.demo/123");
-                assertThat(response2.charSource().read()).contains("<table class=\"thing\">");
+                var response2 = rp.getResource(uri2).charSource().read();
+                assertThat(response2).contains("Enola");
+                assertThat(response2).contains("test.demo/123");
+                assertThat(response2).contains("<table class=\"thing\">");
+                assertThat(response2).contains("test.demo/123");
 
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html
             }

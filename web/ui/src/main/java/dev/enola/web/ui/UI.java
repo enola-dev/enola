@@ -21,13 +21,13 @@ import com.google.common.net.MediaType;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.Descriptors.DescriptorValidationException;
+import com.google.protobuf.ExtensionRegistryLite;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.io.resource.StringResource;
-import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.EnolaException;
@@ -35,6 +35,7 @@ import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.view.EnolaMessages;
 import dev.enola.core.view.Things;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
@@ -52,7 +53,7 @@ public class UI implements WebHandler {
 
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
-    private final Anys anys;
+    private final EnolaMessages enolaMessages;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -60,7 +61,8 @@ public class UI implements WebHandler {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
-        anys = new Anys(typeRegistryWrapper);
+        var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
+        enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
     }
 
     public void register(WebServer server) {
@@ -94,7 +96,7 @@ public class UI implements WebHandler {
         var request = GetThingRequest.newBuilder().setEri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
-        var message = anys.toMessage(any);
+        var message = enolaMessages.toMessage(any);
         var thing = Things.from(message);
         var thingHTML = ThingUI.html(thing).toString();
 

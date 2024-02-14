@@ -17,12 +17,12 @@
  */
 package dev.enola.cli;
 
+import com.google.protobuf.ExtensionRegistryLite;
 import com.google.protobuf.Message;
 
 import dev.enola.common.io.resource.URIs;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
-import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
@@ -32,6 +32,7 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.view.EnolaMessages;
 
 import picocli.CommandLine;
 
@@ -52,7 +53,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
 
     private WritableResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
-    protected Anys anys;
+    protected EnolaMessages enolaMessages;
 
     @Override
     protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
@@ -60,7 +61,8 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
-        anys = new Anys(typeRegistryWrapper);
+        var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
+        enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
 
         var id = IDs.parse(eri);
         var ekid = IDs.entityKind(id);

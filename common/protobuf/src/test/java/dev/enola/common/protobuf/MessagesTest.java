@@ -17,8 +17,10 @@
  */
 package dev.enola.common.protobuf;
 
+import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Any;
+import com.google.protobuf.ExtensionRegistry;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.TypeRegistry;
@@ -27,7 +29,9 @@ import org.junit.Test;
 
 import java.time.Instant;
 
-public class AnysTest {
+public class MessagesTest {
+
+    private ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
 
     private TypeRegistry typeRegistry =
             TypeRegistry.newBuilder().add(Timestamp.getDescriptor()).build();
@@ -35,17 +39,15 @@ public class AnysTest {
     private DescriptorProvider descriptorProvider =
             new TypeRegistryDescriptorProvider(typeRegistry);
 
-    private Anys anys = new Anys(descriptorProvider);
+    private Messages messages = new Messages(descriptorProvider, extensionRegistry);
 
     @Test
     public void testTimestamp() throws InvalidProtocolBufferException {
         Timestamp ts = Timestamps2.fromInstant(Instant.now());
 
         var any = Any.pack(ts);
-        var dynamicMessage = anys.toMessage(any);
-        ProtoTruth.assertThat(ts).isEqualTo(dynamicMessage);
-
-        Timestamp ts2 = Anys.dynamicToStaticMessage(dynamicMessage, Timestamp.newBuilder());
-        ProtoTruth.assertThat(ts2).isEqualTo(ts);
+        var message = messages.toMessage(any);
+        ProtoTruth.assertThat(ts).isEqualTo(message);
+        Truth.assertThat(message).isInstanceOf(Timestamp.class);
     }
 }

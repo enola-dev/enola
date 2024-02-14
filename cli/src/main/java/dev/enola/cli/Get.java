@@ -32,7 +32,7 @@ public class Get extends CommandWithEntityID {
         var request = GetThingRequest.newBuilder().setEri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
-        var message = anys.toMessage(any);
+        var message = enolaMessages.toMessage(any);
         write(message);
         spec.commandLine().getOut().flush();
     }
