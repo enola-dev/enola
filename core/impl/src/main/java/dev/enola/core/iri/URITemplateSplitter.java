@@ -95,6 +95,10 @@ public class URITemplateSplitter {
         }
     }
 
+    public String getTemplate() {
+        return template;
+    }
+
     public List<String> getKeys() {
         return keys;
     }
@@ -113,6 +117,7 @@ public class URITemplateSplitter {
                 .add("template", template)
                 .add("keys", keys)
                 .add("pattern", pattern)
+                .add("length", length)
                 .toString();
     }
 }

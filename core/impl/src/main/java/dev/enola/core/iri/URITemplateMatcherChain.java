@@ -20,19 +20,16 @@ package dev.enola.core.iri;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class URITemplateMatcherChain<T> {
-
-    // TODO Rewrite this class with a Builder to simplify concurrency!
 
     private final Comparator<Entry<URITemplateSplitter, T>> COMPARATOR =
             new Comparator<>() {
@@ -46,21 +43,22 @@ public class URITemplateMatcherChain<T> {
     // Beware: This needs to be List and not a Set! (Because of how COMPARATOR is implemented;
     // note how URI Template need to be ordered by length - but two *different* template of
     // the *SAME* length still both need to be added!
-    private final List<Entry<URITemplateSplitter, T>> splitters = new CopyOnWriteArrayList<>();
-    private Set<String> templates = new ConcurrentSkipListSet<>();
+    private final List<Entry<URITemplateSplitter, T>> splitters;
+    private final List<String> templates;
 
-    public void add(String uriTemplate, T key) {
-        requireNonNull(key);
-        requireNonNull(uriTemplate);
-        if (has(uriTemplate)) {
-            throw new IllegalArgumentException("Already added: " + uriTemplate);
-        }
-        if (!splitters.add(new SimpleEntry<>(new URITemplateSplitter(uriTemplate), key))) {
-            throw new IllegalStateException(
-                    "Template failed to add; this is likely a bug in COMPARATOR?!");
-        }
+    // TODO How do you correctly solve the Java generics issue here?!
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private URITemplateMatcherChain(List<Entry<URITemplateSplitter, T>> splitters) {
         splitters.sort(COMPARATOR);
-        templates.add(uriTemplate);
+        this.splitters = splitters;
+        this.templates =
+                Collections.unmodifiableList(
+                        splitters.stream()
+                                .map(entry -> entry.getKey().getTemplate())
+                                .collect(Collectors.toList()));
     }
 
     public Optional<Entry<T, Map<String, String>>> match(String uri) {
@@ -73,22 +71,42 @@ public class URITemplateMatcherChain<T> {
         return Optional.empty();
     }
 
-    public Set<String> listTemplates() {
+    public List<String> listTemplates() {
         // Un-comment for debugging:
         // return splitters.stream()
         //         .map(entry -> entry.getKey().toString())
         //         .collect(Collectors.toSet());
-        return Collections.unmodifiableSet(templates);
+        return templates;
     }
 
-    private boolean has(String uriTemplate) {
-        requireNonNull(uriTemplate);
-        for (var splitter : splitters) {
-            var it = splitter.getKey();
-            if (it.equals(uriTemplate)) {
-                return true;
-            }
+    public static class Builder<T> {
+        private Builder() {}
+
+        private final List<Entry<URITemplateSplitter, T>> splitters = new ArrayList<>();
+
+        public URITemplateMatcherChain<T> build() {
+            return new URITemplateMatcherChain<>(splitters);
         }
-        return false;
+
+        public Builder<T> add(String uriTemplate, T key) {
+            requireNonNull(key);
+            requireNonNull(uriTemplate);
+            if (has(uriTemplate)) {
+                throw new IllegalArgumentException("Already added: " + uriTemplate);
+            }
+            splitters.add(new SimpleEntry<>(new URITemplateSplitter(uriTemplate), key));
+            return this;
+        }
+
+        private boolean has(String uriTemplate) {
+            requireNonNull(uriTemplate);
+            for (var splitter : splitters) {
+                var it = splitter.getKey().getTemplate();
+                if (it.equals(uriTemplate)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -8,7 +8,15 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
 
-  "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
+  "cSpell.words": [
+    "Bazel",
+    "bazelisk",
+    "Classpath",
+    "Enola",
+    "Intelli",
+    "protolint",
+    "textproto"
+  ],
 
   // formatOnType and formatOnPaste is a very bad idea for slow formatters
   // (such as an external Google Java Format invocation exec), so just on Save.
@@ -79,6 +87,8 @@
     "org.mockito.Answers.*"
   ],
   "java.configuration.updateBuildConfiguration": "automatic",
+  // JDT sometimes hits OOM with this project without increased memory
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -Xlog:disable",
   "java.server.launchMode": "Standard",
   // NOT "java": { ... see https://github.com/JoseVSeb/google-java-format-for-vs-code/issues/12
 

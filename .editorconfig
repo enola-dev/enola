@@ -44,6 +44,7 @@ tab_width = unset
 max_line_length = unset
 
 [*.json]
+max_line_length = unset
 indent_size = 2
 tab_width = 2
 
