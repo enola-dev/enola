@@ -86,6 +86,7 @@ Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself -
 
 * [Neo4j](https://neo4j.com)
 * [Tinkerpop](https://tinkerpop.apache.org)
+* ... There are [other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases).
 
 ### Vector DB
 
