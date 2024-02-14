@@ -20,14 +20,19 @@ package dev.enola.core.iri;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.SortedSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class URITemplateMatcherChain<T> {
+
+    // TODO Rewrite this class with a Builder to simplify concurrency!
 
     private final Comparator<Entry<URITemplateSplitter, T>> COMPARATOR =
             new Comparator<>() {
@@ -38,8 +43,11 @@ public class URITemplateMatcherChain<T> {
                 }
             };
 
-    private final SortedSet<Entry<URITemplateSplitter, T>> splitters =
-            new ConcurrentSkipListSet<>(COMPARATOR);
+    // Beware: This needs to be List and not a Set! (Because of how COMPARATOR is implemented;
+    // note how URI Template need to be ordered by length - but two *different* template of
+    // the *SAME* length still both need to be added!
+    private final List<Entry<URITemplateSplitter, T>> splitters = new CopyOnWriteArrayList<>();
+    private Set<String> templates = new ConcurrentSkipListSet<>();
 
     public void add(String uriTemplate, T key) {
         requireNonNull(key);
@@ -47,7 +55,12 @@ public class URITemplateMatcherChain<T> {
         if (has(uriTemplate)) {
             throw new IllegalArgumentException("Already added: " + uriTemplate);
         }
-        splitters.add(new SimpleEntry<>(new URITemplateSplitter(uriTemplate), key));
+        if (!splitters.add(new SimpleEntry<>(new URITemplateSplitter(uriTemplate), key))) {
+            throw new IllegalStateException(
+                    "Template failed to add; this is likely a bug in COMPARATOR?!");
+        }
+        splitters.sort(COMPARATOR);
+        templates.add(uriTemplate);
     }
 
     public Optional<Entry<T, Map<String, String>>> match(String uri) {
@@ -58,6 +71,14 @@ public class URITemplateMatcherChain<T> {
             }
         }
         return Optional.empty();
+    }
+
+    public Set<String> listTemplates() {
+        // Un-comment for debugging:
+        // return splitters.stream()
+        //         .map(entry -> entry.getKey().toString())
+        //         .collect(Collectors.toSet());
+        return Collections.unmodifiableSet(templates);
     }
 
     private boolean has(String uriTemplate) {

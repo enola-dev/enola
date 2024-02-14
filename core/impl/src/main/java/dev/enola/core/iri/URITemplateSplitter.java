@@ -18,6 +18,7 @@
 package dev.enola.core.iri;
 
 import com.github.fge.uritemplate.URITemplate;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -40,6 +41,7 @@ public class URITemplateSplitter {
 
     private static final Pattern URI_TEMPLATE_PATTERN = Pattern.compile("\\{([^{}]+)\\}");
 
+    private final String template;
     private final List<String> keys;
     private final Pattern pattern;
     private final int length;
@@ -47,7 +49,7 @@ public class URITemplateSplitter {
     /** Transforms a RFC 6570 URI Template into a Regular Expression usable to "match" it. */
     public URITemplateSplitter(String template) {
         var lengther = new StringBuilder();
-        var pattern = new StringBuilder();
+        var pattern = new StringBuilder("^");
         var pmatcher = URI_TEMPLATE_PATTERN.matcher(template);
         var lmatcher = URI_TEMPLATE_PATTERN.matcher(template);
         var keysBuilder = ImmutableList.<String>builder();
@@ -69,7 +71,9 @@ public class URITemplateSplitter {
         }
         pmatcher.appendTail(pattern);
         lmatcher.appendTail(lengther);
+        pattern.append('$');
 
+        this.template = template;
         this.keys = keysBuilder.build();
         this.pattern = Pattern.compile(pattern.toString());
         this.length = lengther.length();
@@ -84,6 +88,7 @@ public class URITemplateSplitter {
                 String value = matcher.group(name);
                 map.put(name, value);
             }
+            // System.out.println("URITemplateSplitter matched '" + uri + "' to: " + pattern);
             return Optional.of(map.build());
         } else {
             return Optional.empty();
@@ -100,5 +105,14 @@ public class URITemplateSplitter {
 
     public int getLength() {
         return length;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("template", template)
+                .add("keys", keys)
+                .add("pattern", pattern)
+                .toString();
     }
 }

@@ -28,11 +28,11 @@ public class URITemplateSplitterTest {
     public void example() throws Exception {
         check(
                 "http://example.com/people/{firstName}-{lastName}/SSN",
-                "http://example.com/people/(?<firstName>[^-]+)-(?<lastName>[^/]+)/SSN",
+                "^http://example.com/people/(?<firstName>[^-]+)-(?<lastName>[^/]+)/SSN$",
                 "firstName",
                 "lastName");
 
-        check("thing/{name}", "thing/(?<name>.+)", "name");
+        check("thing/{name}", "^thing/(?<name>.+)$", "name");
     }
 
     private void check(String template, String regexp, String... names) {

@@ -17,7 +17,7 @@
  */
 package dev.enola.core.iri;
 
-import static com.google.common.truth.Truth8.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -35,6 +35,9 @@ public class URITemplateMatcherChainTest {
 
         chain.add("thing/{name}", 1);
         chain.add("people/{firstName}-{lastName}/overview", 2);
+        assertThat(chain.listTemplates())
+                .containsExactly("people/{firstName}-{lastName}/overview", "thing/{name}")
+                .inOrder();
 
         assertThat(chain.match("thing/")).isEmpty();
         assertThat(chain.match("thing/hello"))
@@ -46,6 +49,21 @@ public class URITemplateMatcherChainTest {
 
         assertThat(chain.match("")).isEmpty();
         assertThat(chain.match("another/something")).isEmpty();
+    }
+
+    @Test
+    public void doNotMatchContained() throws Exception {
+        var chain = new URITemplateMatcherChain<Integer>();
+
+        chain.add("thing", 1);
+        assertThat(chain.match("thingxoxo")).isEmpty();
+        assertThat(chain.match("xoxothingxoxo")).isEmpty();
+        assertThat(chain.match("xoxothing")).isEmpty();
+
+        chain.add("thing/{name}", 1);
+        assertThat(chain.match("thingxoxo/hello")).isEmpty();
+        assertThat(chain.match("xoxothingxoxo/hello")).isEmpty();
+        assertThat(chain.match("xoxothing/hello")).isEmpty();
     }
 
     @Test
