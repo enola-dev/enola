@@ -65,7 +65,7 @@ public class UiTest {
                 assertThat(response1.charSource().read()).contains("Enola");
                 assertThat(response1.charSource().read()).contains("404");
 
-                var uri2 = create(prefix + "/ui/entity/test.demo/123");
+                var uri2 = create(prefix + "/ui/test.demo/123");
                 var response2 = rp.getResource(uri2).charSource().read();
                 assertThat(response2).contains("Enola");
                 assertThat(response2).contains("test.demo/123");

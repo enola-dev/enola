@@ -28,7 +28,7 @@
     $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080
     HTTP JSON REST API + HTML UI server started; open http://0:0:0:0:0:0:0:0:8080/ui ...
 
-You can now open e.g. <http://localhost:8080/ui/entity/demo.book/ABC/0-13-140731-7/1>
+You can now open e.g. <http://localhost:8080/ui/demo.book/ABC/0-13-140731-7/1>
 to view this `demo.book` _Entity._ When you click on the _Related_ `kind` you will
 see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
 
@@ -36,6 +36,7 @@ see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
 
 There is also a REST API which returns JSON if you replace `ui` with `api` in the URL,
 so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
+<!-- TODO Clean Up: /ui/ dropped /entity/ but API kept it, due to /entities/ ... -->
 
 ## gRPC
 
