@@ -41,6 +41,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 * [European data](https://data.europa.eu)
 * [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
+* [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units
 
 ### Personal
 
@@ -70,22 +71,34 @@ Enola 🕵🏾‍♀️  visualizes the relationships of its _Entities_ using:
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API
 * [JGraphT](https://jgrapht.org) Java Library
 
+[Semantic Triple](https://en.wikipedia.org/wiki/Semantic_triple) Java libraries ([comparison](https://github.com/trellis-ldp/trellis/issues/358)):
+
+* [Eclipse RDF4j](https://rdf4j.org)
+* [Apache Jena](https://jena.apache.org)
+* [Apache Commons RDF API](https://commons.apache.org/proper/commons-rdf/)
+
 ## Persistence
 
 Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself - but could integrate with some in the future?
 
 ### [Triplestore (AKA RDF store) DB](https://en.wikipedia.org/wiki/Triplestore)
 
-* [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium
-* [Jena](https://jena.apache.org) #opensource
+Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
+
+* [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
+* [Apache Jena's TDB](https://jena.apache.org) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
-* [Stardog](https://www.stardog.com)
-* [Virtuoso](https://virtuoso.openlinksw.com)
+* [Stardog](https://www.stardog.com) #commercial
+* [Virtuoso](https://virtuoso.openlinksw.com) #opensource
+* [Blazegraph](https://blazegraph.com) #opensource
+* [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource
+* [Strabon](http://strabon.di.uoa.gr) #opensource
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
-* [Neo4j](https://neo4j.com)
+* [Neo4j](https://neo4j.com), with [neosemantics](https://neo4j.com/labs/neosemantics/) for RDF
 * [Tinkerpop](https://tinkerpop.apache.org)
+* [Other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases)...
 
 ### Vector DB
 
@@ -93,6 +106,12 @@ Vector _("Embedding")_ databases of possible future interest:
 
 * [ChromaDB](https://www.trychroma.com)
 * [Weaviate](https://weaviate.io)
+
+## Symbolic AI Reasoning (GOFAI?)
+
+[Semantic Reasoning](https://en.wikipedia.org/wiki/Semantic_reasoner) through [modus ponens](https://en.wikipedia.org/wiki/Modus_ponens) of an [Inference Engine](https://en.wikipedia.org/wiki/Inference_engine) by
+_Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
+[TBD](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)._
 
 ## Build
 
