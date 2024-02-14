@@ -26,17 +26,14 @@ import dev.enola.core.proto.ListEntitiesResponse;
 
 class EnolaServiceRegistry implements EnolaService {
 
-    private final URITemplateMatcherChain<EnolaService> matcher = new URITemplateMatcherChain<>();
+    private final URITemplateMatcherChain<EnolaService> matcher;
 
-    public synchronized void register(ID ekid, EnolaService service) {
-        // URI for get():
-        var uriTemplateWithPath = IDs.toURITemplate(ekid);
-        matcher.add(uriTemplateWithPath, service);
+    public static Builder builder() {
+        return new Builder();
+    }
 
-        // URI for list():
-        var ekidWithoutPath = IDs.withoutPath(ekid);
-        var uriTemplateWithoutPath = IDs.toURITemplate(ekidWithoutPath);
-        matcher.add(uriTemplateWithoutPath, service);
+    private EnolaServiceRegistry(URITemplateMatcherChain<EnolaService> matcherChain) {
+        this.matcher = matcherChain;
     }
 
     @Override
@@ -67,5 +64,27 @@ class EnolaServiceRegistry implements EnolaService {
         // TODO Is it OK to ditch?! var lookup = IDs.withoutPath(IDs.parse(eri));
 
         return delegate;
+    }
+
+    public static class Builder {
+        private final URITemplateMatcherChain.Builder<EnolaService> b =
+                URITemplateMatcherChain.builder();
+
+        public Builder register(ID ekid, EnolaService service) {
+            // URI for get():
+            var uriTemplateWithPath = IDs.toURITemplate(ekid);
+            b.add(uriTemplateWithPath, service);
+
+            // URI for list():
+            var ekidWithoutPath = IDs.withoutPath(ekid);
+            var uriTemplateWithoutPath = IDs.toURITemplate(ekidWithoutPath);
+            b.add(uriTemplateWithoutPath, service);
+
+            return this;
+        }
+
+        public EnolaServiceRegistry build() {
+            return new EnolaServiceRegistry(b.build());
+        }
     }
 }

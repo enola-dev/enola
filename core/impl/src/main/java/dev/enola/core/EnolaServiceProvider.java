@@ -41,7 +41,7 @@ public class EnolaServiceProvider {
 
     public EnolaServiceProvider(EntityKindRepository ekr)
             throws ValidationException, EnolaException {
-        enolaService = new EnolaServiceRegistry();
+        var esb = EnolaServiceRegistry.builder();
         var trb = TypeRegistryWrapper.newBuilder();
         for (var ek : ekr.list()) {
             var aspectsBuilder = ImmutableList.<EntityAspect>builder();
@@ -109,13 +109,14 @@ public class EnolaServiceProvider {
 
             var aspects = aspectsBuilder.build();
             var s = new EntityAspectService(ek, aspects);
-            enolaService.register(ek.getId(), s);
+            esb.register(ek.getId(), s);
 
             for (var aspect : aspects) {
                 trb.add(aspect.getDescriptors());
             }
         }
         this.typeRegistry = trb.build();
+        this.enolaService = esb.build();
     }
 
     public EnolaService getEnolaService() {

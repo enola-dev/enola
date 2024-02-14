@@ -28,13 +28,21 @@ import java.util.AbstractMap.SimpleEntry;
 public class URITemplateMatcherChainTest {
 
     @Test
-    public void basic() throws Exception {
-        var chain = new URITemplateMatcherChain<Integer>();
-        assertThat(chain.match("")).isEmpty();
-        assertThat(chain.match("another/something")).isEmpty();
+    @SuppressWarnings("unchecked") // TODO
+    public void empty() throws Exception {
+        var empty = URITemplateMatcherChain.builder().build();
+        assertThat(empty.match("")).isEmpty();
+        assertThat(empty.match("another/something")).isEmpty();
+    }
 
-        chain.add("thing/{name}", 1);
-        chain.add("people/{firstName}-{lastName}/overview", 2);
+    @Test
+    @SuppressWarnings("unchecked") // TODO
+    public void basic() throws Exception {
+        var chainBuilder = URITemplateMatcherChain.builder();
+        chainBuilder.add("thing/{name}", 1);
+        chainBuilder.add("people/{firstName}-{lastName}/overview", 2);
+        var chain = chainBuilder.build();
+
         assertThat(chain.listTemplates())
                 .containsExactly("people/{firstName}-{lastName}/overview", "thing/{name}")
                 .inOrder();
@@ -52,33 +60,37 @@ public class URITemplateMatcherChainTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked") // TODO
     public void doNotMatchContained() throws Exception {
-        var chain = new URITemplateMatcherChain<Integer>();
-
-        chain.add("thing", 1);
+        var chain =
+                URITemplateMatcherChain.builder().add("thing", 1).add("thing/{name}", 1).build();
         assertThat(chain.match("thingxoxo")).isEmpty();
         assertThat(chain.match("xoxothingxoxo")).isEmpty();
         assertThat(chain.match("xoxothing")).isEmpty();
 
-        chain.add("thing/{name}", 1);
         assertThat(chain.match("thingxoxo/hello")).isEmpty();
         assertThat(chain.match("xoxothingxoxo/hello")).isEmpty();
         assertThat(chain.match("xoxothing/hello")).isEmpty();
     }
 
     @Test
+    @SuppressWarnings("unchecked") // TODO
     public void matchLongest() throws Exception {
-        var chain1 = new URITemplateMatcherChain<Integer>();
-        chain1.add("aNS.anEntityKindName", 1);
-        chain1.add("aNS.anEntityKindName/{foo}/{name}", 2);
-        // Tihs is intentionally (just 1 character) SHORTER than the previous
-        chain1.add("aNS.anEntityKindName/{x}/{y}/{z}", 3);
+        var chain1 =
+                URITemplateMatcherChain.builder()
+                        .add("aNS.anEntityKindName", 1)
+                        .add("aNS.anEntityKindName/{foo}/{name}", 2)
+                        // This is intentionally (just 1 character) SHORTER than the previous
+                        .add("aNS.anEntityKindName/{x}/{y}/{z}", 3)
+                        .build();
         checkMatchLongest(chain1);
 
         // Let's make sure this also works if the registration is in the other order
-        var chain2 = new URITemplateMatcherChain<Integer>();
-        chain2.add("aNS.anEntityKindName/{foo}/{name}", 2);
-        chain2.add("aNS.anEntityKindName", 1);
+        var chain2 =
+                URITemplateMatcherChain.builder()
+                        .add("aNS.anEntityKindName/{foo}/{name}", 2)
+                        .add("aNS.anEntityKindName", 1)
+                        .build();
         checkMatchLongest(chain2);
     }
 
