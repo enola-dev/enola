@@ -83,8 +83,8 @@ public class UI implements WebHandler {
 
     private String getHTML(URI uri) throws EnolaException, IOException {
         var path = uri.getPath();
-        if (path.startsWith("/ui/entity/")) {
-            var eri = path.substring("/ui/entity/".length());
+        if (path.startsWith("/ui/")) {
+            var eri = path.substring("/ui/".length());
             return getEntityHTML(eri);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
