@@ -61,12 +61,12 @@ jobs:
             ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc',
             'WORKSPACE.bazel', 'MODULE.bazel') }}
           restore-keys: ${{ runner.os }}-bazel-
-      # - name: Cache Python
-      #  uses: actions/cache@v4
-      #  with:
-      #    path: .venv/
-      #    key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
-      #    restore-keys: ${{ runner.os }}-venv-
+      - name: Cache Python
+        uses: actions/cache@v4
+        with:
+          path: .venv/
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-venv-
       - name: Cache Node.js
         uses: actions/cache@v4
         with:
