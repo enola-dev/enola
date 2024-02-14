@@ -37,10 +37,12 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Linked Data Sources
 
+* _Cyc as RDF?_
 * [Wikidata](https://www.wikidata.org) ([SPARQL query](https://query.wikidata.org))
 * [European data](https://data.europa.eu)
 * [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
+* [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units (?)
 
 ### Personal
 
@@ -70,11 +72,18 @@ Enola 🕵🏾‍♀️  visualizes the relationships of its _Entities_ using:
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API
 * [JGraphT](https://jgrapht.org) Java Library
 
+[Semantic Triple](https://en.wikipedia.org/wiki/Semantic_triple) Java libraries ([comparison](https://github.com/trellis-ldp/trellis/issues/358)):
+
+* Apache Jena
+* RDF4j
+
 ## Persistence
 
 Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself - but could integrate with some in the future?
 
 ### [Triplestore (AKA RDF store) DB](https://en.wikipedia.org/wiki/Triplestore)
+
+Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium
 * [Jena](https://jena.apache.org) #opensource
@@ -93,6 +102,12 @@ Vector _("Embedding")_ databases of possible future interest:
 
 * [ChromaDB](https://www.trychroma.com)
 * [Weaviate](https://weaviate.io)
+
+## Symbolic AI Reasoning (GOFAI?)
+
+[Semantic Reasoning](https://en.wikipedia.org/wiki/Semantic_reasoner) through [modus ponens](https://en.wikipedia.org/wiki/Modus_ponens) of an [Inference Engine](https://en.wikipedia.org/wiki/Inference_engine) by
+_Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
+[TBD](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)._
 
 ## Build
 
