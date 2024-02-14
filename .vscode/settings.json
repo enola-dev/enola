@@ -2,17 +2,20 @@
   "bazel.buildifierFixOnFormat": true,
   "bazel.enableCodeLens": true,
   "bazel.executable": "bazelisk",
+  "bazel.projectview.open": false,
   // https://github.com/bazelbuild/vscode-bazel/issues/216
   // https://github.com/bazelbuild/vscode-bazel/issues/223
   // https://github.com/bazelbuild/vscode-bazel/issues/261
-  "bazel.projectview.open": false,
   "bazel.queriesShareServer": true,
 
   "cSpell.words": ["Bazel", "bazelisk", "Classpath", "Enola", "Intelli", "protolint", "textproto"],
 
-  "editor.formatOnType": true,
+  // formatOnType and formatOnPaste is a very bad idea for slow formatters
+  // (such as an external Google Java Format invocation exec), so just on Save.
+  "editor.formatOnPaste": false,
   "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
+  "editor.formatOnType": false,
+
   // https://code.visualstudio.com/docs/languages/html#_auto-update-tags
   "editor.linkedEditing": true,
   "editor.foldingImportsByDefault": true,
@@ -31,6 +34,9 @@
   "[markdown]": {
     "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
+  // TODO change to 'smartWithSelection' when it works better?
+  // https://code.visualstudio.com/updates/v1_86#_languages
+  "markdown.editor.pasteUrlAsFormattedLink.enabled": "never",
   "markdown.validate.fileLinks.enabled": "error",
   "markdown.validate.enabled": true,
   "markdown.validate.fragmentLinks.enabled": "error",
@@ -44,6 +50,9 @@
 
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
   "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
+  // Keep this version in sync with the same version in .pre-commit-config.yaml
+  // NB: Changes to this are only taken into account on start-up, so need to restart.
+  "java.format.settings.google.version": "1.19.2",
   "[java]": {
     "editor.tabSize": 4,
     // Format Java using https://github.com/google/google-java-format,
@@ -55,9 +64,6 @@
       "source.addMissingImports": "never"
     }
   },
-  // Keep this version in sync with the same version in .pre-commit-config.yaml
-  // NB: Changes to this are only taken into account on start-up, so need to restart.
-  "java.format.settings.google.version": "1.19.2",
   // TODO https://github.com/eclipse-jdtls/eclipse.jdt.ls/issues/3050
   "java.compile.nullAnalysis.mode": "automatic",
   "java.completion.favoriteStaticMembers": [
@@ -83,6 +89,10 @@
   "[jsonc]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[proto3]": {
+    "editor.defaultFormatter": "zxh404.vscode-proto3"
   },
 
   // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
@@ -112,18 +122,21 @@
     "**/eclipse-bin/": true,
     "**/eclipse-testbin/": true,
     "**/.bazeltargets": true,
+    ".be": false,
     ".cache": false,
+    ".devcontainer": false,
     ".eclipse": false,
     ".git": false,
+    ".github": false,
     ".idea": false,
     ".ijwb": false,
     ".venv": false,
+    ".vscode": false,
     "bazel-bin": false,
     "bazel-enola": false,
     "bazel-out": false,
     "bazel-testlogs": false,
-    ".github": false,
-    ".vscode": false,
+    "bin": false,
     "cli": false,
     "common": false,
     "connectors": false,
@@ -131,10 +144,8 @@
     "docs": false,
     "site": false,
     "tools": false,
-    "web": false,
     "node_modules": false,
-    ".be": false,
-    "bin": false,
-    ".devcontainer": false
+    "web": false,
+    "BUILT": false
   }
 }
