@@ -25,7 +25,6 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
-import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.TypeRegistryWrapper;
@@ -44,7 +43,6 @@ public class RestAPI implements WebHandler {
 
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
-    private final Anys anys;
     private ProtoIO protoIO;
 
     public RestAPI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -52,7 +50,6 @@ public class RestAPI implements WebHandler {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
-        anys = new Anys(typeRegistryWrapper);
     }
 
     public void register(WebServer server) {
