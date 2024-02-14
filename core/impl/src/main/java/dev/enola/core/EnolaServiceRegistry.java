@@ -51,6 +51,7 @@ class EnolaServiceRegistry implements EnolaService {
 
     private EnolaService getDelegate(String eri) {
         var opt = matcher.match(eri);
+        // TODO Instead of throwing IllegalArgumentException, return list of URI templates!
         opt.orElseThrow(
                 () ->
                         new IllegalArgumentException(

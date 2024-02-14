@@ -75,4 +75,9 @@ class EntityAspectService implements EnolaService {
         }
         return responseBuilder.build();
     }
+
+    @Override
+    public String toString() {
+        return "EntityAspectService{entityKind=" + entityKind + "}";
+    }
 }

@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
 
@@ -27,8 +26,7 @@ import picocli.CommandLine.Command;
 public class Get extends CommandWithEntityID {
 
     @Override
-    protected void run(EnolaServiceBlockingStub service, EntityKind ek, String eri)
-            throws Exception {
+    protected void run(EnolaServiceBlockingStub service, String eri) throws Exception {
         var request = GetThingRequest.newBuilder().setEri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
