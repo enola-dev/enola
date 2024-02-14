@@ -24,14 +24,10 @@ import dev.enola.common.io.resource.URIs;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.TypeRegistryWrapper;
-import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
-import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 
 import picocli.CommandLine;
@@ -64,15 +60,6 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
         var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
 
-        var id = IDs.parse(eri);
-        var ekid = IDs.entityKind(id);
-        var entityKindERI = IDs.toPath(ekid);
-
-        var request1 = GetThingRequest.newBuilder().setEri(entityKindERI).build();
-        var response1 = service.getThing(request1);
-        var any = response1.getThing();
-        var ek = any.unpack(Entity.class).getDataOrThrow("schema").unpack(EntityKind.class);
-
         // See CommandWithModelAndOutput
         if (output.equals(DEFAULT_OUTPUT_URI)) {
             resource = new WriterResource(spec.commandLine().getOut(), format.toMediaType());
@@ -80,11 +67,10 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
             resource = rp.getWritableResource(URIs.addMediaType(output, format.toMediaType()));
         }
 
-        run(service, ek, eri);
+        run(service, eri);
     }
 
-    protected abstract void run(EnolaServiceBlockingStub service, EntityKind ek, String eri)
-            throws Exception;
+    protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
 
     protected void write(Message thing) throws IOException {
         new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
