@@ -55,7 +55,10 @@ class EnolaServiceRegistry implements EnolaService {
         opt.orElseThrow(
                 () ->
                         new IllegalArgumentException(
-                                "No EnolaService handler registered for: " + eri));
+                                "No EnolaService handler registered for: "
+                                        + eri
+                                        + ", only: "
+                                        + matcher.listTemplates()));
         var entry = opt.get();
         var map = entry.getValue();
         var delegate = entry.getKey();
