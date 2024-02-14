@@ -48,11 +48,6 @@
   "java.import.maven.enabled": false,
   "java.import.gradle.enabled": false,
 
-  "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
-  "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
-  // Keep this version in sync with the same version in .pre-commit-config.yaml
-  // NB: Changes to this are only taken into account on start-up, so need to restart.
-  "java.format.settings.google.version": "1.19.2",
   "[java]": {
     "editor.tabSize": 4,
     // Format Java using https://github.com/google/google-java-format,
@@ -64,8 +59,13 @@
       "source.addMissingImports": "never"
     }
   },
+  "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
+  // Keep this version in sync with the same version in .pre-commit-config.yaml
+  // NB: Changes to this are only taken into account on start-up, so need to restart.
+  "java.format.settings.google.version": "1.19.2",
   // TODO https://github.com/eclipse-jdtls/eclipse.jdt.ls/issues/3050
   "java.compile.nullAnalysis.mode": "automatic",
+  "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
   "java.completion.favoriteStaticMembers": [
     "com.google.common.truth.Truth.*",
     "org.junit.Assert.*",
