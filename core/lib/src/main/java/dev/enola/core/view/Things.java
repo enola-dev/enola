@@ -26,6 +26,7 @@ import com.google.protobuf.util.Timestamps;
 import dev.enola.core.IDs;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.Thing;
+import dev.enola.core.proto.Thing.Builder;
 
 @SuppressWarnings("restriction")
 public class Things {
@@ -52,7 +53,7 @@ public class Things {
             // or "$schema", because in the future with non-Proto direct-JSON
             // with https://json-schema.org the $schema will be as-is from JSON,
             // and the $type and $proto are Enola's.
-            struct.putFields("$proto", toThing(protoFQN, "enola:proto/" + protoFQN).build());
+            struct.putFields("$proto", toProto(protoFQN).build());
         }
         for (var field : message.getAllFields().entrySet()) {
             var descriptor = field.getKey();
@@ -81,12 +82,20 @@ public class Things {
         var type = field.getType();
         if (FieldDescriptor.Type.MESSAGE.equals(type)) {
             return from((Message) object, false);
+        } else if ("google.protobuf.FieldDescriptorProto.type_name".equals(field.getFullName())) {
+            // TODO This eventually shouldn't be hard-coded anymore, but declarative
+            return toProto(object.toString().substring(1));
         } else {
             return toThing(object.toString());
         }
     }
 
+    private static Builder toProto(String protoFQN) {
+        return toThing(protoFQN, "enola:proto/" + protoFQN);
+    }
+
     private static Thing.Builder toThing(ID id) {
+        // TODO This eventually shouldn't be hard-coded anymore, but declarative
         var path = IDs.toPath(id);
         return toThing(path, "enola:" + path);
     }
