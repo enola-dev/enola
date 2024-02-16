@@ -27,9 +27,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * API for in-process "connectors". This is the internal equivalent of the gRPC ConnectorService.
+ * API for in-process Entity "connectors". This is the internal equivalent of the gRPC
+ * ConnectorService.
  */
 public interface EntityAspect {
+    // TODO Move (refactor) this into a package dev.enola.core.entity.
 
     void augment(Entity.Builder entity, EntityKind entityKind) throws EnolaException;
 

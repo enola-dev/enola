@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
+package dev.enola.common.io.resource;
 
-import com.google.common.net.MediaType;
+public class ReadableButNotWritableDelegatingResource extends DelegatingReadableResource
+        implements ReadableButNotWritableResource {
 
-import java.util.Map;
-import java.util.Set;
-
-public interface MediaTypeProvider {
-
-    // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
-
-    Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
-
-    Map<String, MediaType> extensionsToTypes();
+    public ReadableButNotWritableDelegatingResource(ReadableResource resource) {
+        super(resource);
+    }
 }

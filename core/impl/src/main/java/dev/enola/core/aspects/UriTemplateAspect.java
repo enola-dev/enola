@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// TODO Rename (refactor) to UriTemplateEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
 public class UriTemplateAspect implements EntityAspectRepeater {
 
     // TODO Fail if an URI Template refers to an unknown variable/value (as-is it's just ignored)

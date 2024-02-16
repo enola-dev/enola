@@ -88,7 +88,7 @@ public class Things {
 
     private static Thing.Builder toThing(ID id) {
         var path = IDs.toPath(id);
-        return toThing(path, "enola:entity/" + path);
+        return toThing(path, "enola:" + path);
     }
 
     @VisibleForTesting

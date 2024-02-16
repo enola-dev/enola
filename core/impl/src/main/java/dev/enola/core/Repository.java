@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
+package dev.enola.core;
 
-import com.google.common.net.MediaType;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
 
-import java.util.Map;
-import java.util.Set;
+public interface Repository<T> {
+    // TODO Consider moving from package
+    // dev.enola.core to dev.enola.common.io.resource
 
-public interface MediaTypeProvider {
+    ImmutableCollection<T> list();
 
-    // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
+    ImmutableSet<String> names();
 
-    Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
-
-    Map<String, MediaType> extensionsToTypes();
+    T getByName(String name);
 }

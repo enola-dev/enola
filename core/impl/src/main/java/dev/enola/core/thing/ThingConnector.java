@@ -15,14 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.core.thing;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors;
+import com.google.protobuf.MessageLite;
 
-public interface DescriptorProvider {
+import dev.enola.core.EnolaException;
+import dev.enola.core.meta.proto.Type;
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+import java.util.Collections;
+import java.util.List;
 
-    Descriptor findByName(String name);
+/**
+ * API for in-process Thing "connectors".
+ *
+ * <p>This is the internal equivalent of the gRPC ConnectorService.
+ */
+@SuppressWarnings("restriction")
+public interface ThingConnector {
+
+    void augment(MessageLite.Builder thing, Type type) throws EnolaException;
+
+    default List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
+        return Collections.emptyList();
+    }
 }

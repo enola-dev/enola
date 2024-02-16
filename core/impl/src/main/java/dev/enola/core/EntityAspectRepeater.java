@@ -29,6 +29,8 @@ import java.util.List;
  * List)} implementation.
  */
 public interface EntityAspectRepeater extends EntityAspect {
+    // TODO Move (refactor) this into a package dev.enola.core.entity.
+
     @Override
     default void list(
             ConnectorServiceListRequest request,

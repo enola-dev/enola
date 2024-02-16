@@ -5,7 +5,7 @@ kinds:
     link:
       google:
         label: Google Book Search
-        uriTemplate: "https://www.google.com/search?tbm=bks&q={path.isbn}"
+        uriTemplate: "https://www.google.com/search?tbm=bks&q=isbn:{path.isbn}"
 
   - id: { ns: demo, entity: library, paths: [id] }
     label: Library

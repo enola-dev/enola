@@ -27,13 +27,15 @@ import java.net.URISyntaxException;
 public class StringResourceTest {
     @Test
     public void testStringResource() throws IOException, URISyntaxException {
-        var r1 = new StringResource("hello, world");
+        var r1 = StringResource.of("hello, world");
         assertThat(r1.charSource().read()).isEqualTo("hello, world");
 
-        var r2 = new StringResource("# Models\n");
+        var r2 = StringResource.of("# Models\n");
         assertThat(r2.charSource().read()).isEqualTo("# Models\n");
 
         // NB: new StringResource("") is not supported, because
         // URI.create("string:") causes an java.net.URISyntaxException.
+        var r3 = StringResource.of("");
+        assertThat(r3.charSource().read()).isEmpty();
     }
 }

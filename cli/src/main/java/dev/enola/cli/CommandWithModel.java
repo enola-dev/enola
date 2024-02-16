@@ -19,11 +19,14 @@ package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
+import dev.enola.core.Repository;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
+import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
+import dev.enola.core.type.TypeRepositoryBuilder;
 
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
@@ -54,7 +57,9 @@ public abstract class CommandWithModel implements CheckedRunnable {
             var modelResource = new ResourceProviders().getReadableResource(group.model);
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
-            esp = new EnolaServiceProvider(ekr);
+            Repository<Type> tyr = new TypeRepositoryBuilder().build();
+            // TODO --types for Types (and more?), e.g. from MD, YAML, textproto, etc.
+            esp = new EnolaServiceProvider(ekr, tyr);
             var enolaService = esp.getEnolaService();
             grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
             gRPCService = grpc.get();

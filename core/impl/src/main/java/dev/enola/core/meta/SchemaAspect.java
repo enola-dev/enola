@@ -54,7 +54,7 @@ public class SchemaAspect implements EntityAspect {
         }
         var name = id.getPaths(0);
 
-        var descriptor = esp.getTypeRegistryWrapper().find(name).toProto();
+        var descriptor = esp.getTypeRegistryWrapper().findByName(name).toProto();
         var any = pack(descriptor, "type.googleapis.com/");
         entity.putData("proto", any);
     }
