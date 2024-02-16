@@ -17,12 +17,10 @@
 
 set -euox pipefail
 
-# This script runs on CI and tests the project.
+# https://stackoverflow.com/a/2659808
 
-./test.bash
+git status
 
-# No files (which are not on .gitigore) should have been modified!
-tools/git/test.bash
+git diff --exit-code
 
-# Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
-tools/distro/test.bash
+# TODO Also fail if there are untracked new files (which are not on .gitignore)
