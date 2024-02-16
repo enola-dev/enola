@@ -1,0 +1,9 @@
+# tools/asdf/install.bash
+
+# https://github.com/asdf-vm/asdf-plugins
+
+# asdf plugin add protoc
+# asdf install protoc latest
+# asdf local protoc latest
+
+protoc 25.3
