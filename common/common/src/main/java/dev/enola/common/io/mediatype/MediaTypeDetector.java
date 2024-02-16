@@ -20,6 +20,7 @@ package dev.enola.common.io.mediatype;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.URIs;
@@ -42,9 +43,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MediaTypeDetector {
+
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-    public static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
+    private static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
+
+    // Ignores certain known to be wrong (bad, invalid) content types
+    private static final Set<MediaType> IGNORE =
+            ImmutableSet.of(
+                    // java.net.URLConnection returns this when there is no content-type header
+                    MediaType.parse("content/unknown"));
+
+    private static final Set<MediaType> TRY_FIXING =
+            ImmutableSet.of(
+                    // raw.githubusercontent.com returns "text/plain" e.g. for *.yaml
+                    MediaType.parse("text/plain"));
 
     private static final Set<String> fileSystemProviderSchemes =
             FileSystemProvider.installedProviders().stream()
@@ -108,19 +121,30 @@ public class MediaTypeDetector {
     public MediaType detect(String contentType, String contentEncoding, URI uri
             // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
             ) {
-        var mediaType = DEFAULT;
-        // java.net.URLConnection returns "content/unknown" when there is no content-type header
-        if ("content/unknown".equals(contentType)) {
-            contentType = null;
-        }
+
+        MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
-        } else if (uri != null) {
+            if (TRY_FIXING.contains(mediaType.withoutParameters())
+                    || IGNORE.contains(mediaType.withoutParameters())) {
+                mediaType = null;
+            }
+        }
+
+        if (mediaType == null && uri != null) {
             for (FromURI provider : providers) {
-                if (!mediaType.equals(DEFAULT)) {
-                    break;
-                }
                 mediaType = provider.from(uri).orElse(mediaType);
+                if (mediaType != null) break;
+            }
+        }
+
+        if (mediaType == null) {
+            if (contentType == null) mediaType = DEFAULT;
+            else {
+                mediaType = MediaTypes.parse(contentType);
+                if (IGNORE.contains(mediaType.withoutParameters())) {
+                    mediaType = DEFAULT;
+                }
             }
         }
 
