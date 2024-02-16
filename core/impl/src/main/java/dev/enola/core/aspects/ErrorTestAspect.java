@@ -22,6 +22,8 @@ import dev.enola.core.EntityAspectRepeater;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
 
+// TODO Rename (refactor) from ErrorTestAspect to ErrorEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
 public class ErrorTestAspect implements EntityAspectRepeater {
     private final String message;
 

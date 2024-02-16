@@ -76,6 +76,6 @@ could include other protocols to connect to another Enola server, for federation
 ## Internationalization
 
 The project envisions to eventually fully support
-[_Internationalized Resource Identifiers_](https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier)
-(URI), instead of ASCII only URI syntax; more testing to identify and fix any
+_[Internationalized Resource Identifiers](https://en.wikipedia.org/wiki/Internationalized_Resource_Identifier)_
+(IRIs), instead of only ASCII URI syntax; more testing to identify and fix any
 related gaps is required.

@@ -26,6 +26,8 @@ import dev.enola.core.proto.Entity;
 import java.time.Clock;
 import java.time.Instant;
 
+// TODO Rename (refactor) to TimestampEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
 public class TimestampAspect implements EntityAspectRepeater {
     private final Clock clock = Clock.systemUTC();
 

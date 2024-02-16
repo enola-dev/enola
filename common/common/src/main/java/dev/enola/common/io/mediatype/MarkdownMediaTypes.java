@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,28 +27,26 @@ import com.google.common.net.MediaType;
 import java.util.Map;
 import java.util.Set;
 
-public class YamlMediaType implements MediaTypeProvider {
+/**
+ * The "text/markdown" media type, as per <a href="https://www.rfc-editor.org/rfc/rfc7763.html">RFC
+ * 7763</a> (and <a href="https://www.rfc-editor.org/rfc/rfc7764.html">RFC 7764</a>).
+ */
+public class MarkdownMediaTypes implements MediaTypeProvider {
 
-    // https://www.ietf.org/archive/id/draft-ietf-httpapi-yaml-mediatypes-00.html
-    // https://github.com/ietf-wg-httpapi/mediatypes/blob/main/draft-ietf-httpapi-yaml-mediatypes.md
+    // TODO Distinguish https://commonmark.org from GFH et al. via a variant parameter; see
+    // https://www.iana.org/assignments/markdown-variants/markdown-variants.xhtml
 
-    // https://stackoverflow.com/questions/488694/how-to-set-the-character-encoding-in-a-yaml-file
-
-    public static final MediaType YAML_UTF_8 =
-            create("application", "yaml").withCharset(Charsets.UTF_8);
-
-    @Override
-    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return ImmutableMap.of(
-                YAML_UTF_8,
-                ImmutableSet.of(
-                        create("text", "yaml"),
-                        create("text", "x-yaml"),
-                        create("application", "x-yaml")));
-    }
+    public static final MediaType MARKDOWN_UTF_8 =
+            create("text", "markdown").withCharset(Charsets.UTF_8);
+    ;
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("yaml", YAML_UTF_8);
+        return ImmutableMap.of("md", MARKDOWN_UTF_8);
+    }
+
+    @Override
+    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return ImmutableMap.of(MARKDOWN_UTF_8, ImmutableSet.of(create("text", "x-markdown")));
     }
 }

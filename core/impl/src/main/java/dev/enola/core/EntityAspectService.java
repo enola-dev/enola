@@ -30,6 +30,7 @@ import dev.enola.core.proto.ListEntitiesResponse;
 
 import java.util.ArrayList;
 
+// TODO Move (refactor) this into a package dev.enola.core.entity.
 class EntityAspectService implements EnolaService {
 
     private final EntityKind entityKind;

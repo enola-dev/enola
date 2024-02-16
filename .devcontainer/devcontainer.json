@@ -22,8 +22,13 @@
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
+    // Java version must match .bazelrc
     "ghcr.io/devcontainers/features/java:1": {
       "version": "21"
+    },
+    // protoc is used by tools/protoc/protoc.bash
+    "ghcr.io/devcontainers-contrib/features/protoc-asdf:1": {
+      "version": "3.6.1"
     }
   },
 

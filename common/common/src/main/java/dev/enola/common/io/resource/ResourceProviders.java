@@ -18,7 +18,6 @@
 package dev.enola.common.io.resource;
 
 import com.google.common.base.Strings;
-import com.google.common.io.ByteSink;
 import com.google.common.net.MediaType;
 
 import java.net.MalformedURLException;
@@ -56,16 +55,15 @@ public class ResourceProviders implements ResourceProvider {
             } else {
                 cpr = new ClasspathResource(uriPath);
             }
-            return new ReadableButNotWritableResource(cpr);
+            return new ReadableButNotWritableDelegatingResource(cpr);
         } else if (scheme.startsWith(StringResource.SCHEME)) {
             // NOT new StringResource(uriPath, mediaType),
             // because that is confusing, as it will chop off after # and interpret '?'
             // which is confusing for users, for this URI scheme. If "literal" resources
             // WITH MediaType are required, consider adding DataResource for data:
-            var stringResource = new StringResource(uri.getSchemeSpecificPart());
-            return new ReadableButNotWritableResource(stringResource);
+            return new StringResource(uri.getSchemeSpecificPart());
         } else if (scheme.startsWith(EmptyResource.SCHEME)) {
-            return new ReadableButNotWritableResource(new EmptyResource(mediaType));
+            return new EmptyResource(mediaType);
         } else if (scheme.startsWith(NullResource.SCHEME)) {
             return NullResource.INSTANCE;
         } else if (scheme.startsWith(ErrorResource.SCHEME)) {
@@ -73,7 +71,7 @@ public class ResourceProviders implements ResourceProvider {
         } else if (scheme.startsWith("http")) {
             try {
                 // TODO Replace UrlResource with alternative, when implemented
-                return new ReadableButNotWritableResource(new UrlResource(uri.toURL()));
+                return new ReadableButNotWritableDelegatingResource(new UrlResource(uri.toURL()));
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Malformed URI is not valid URL" + uri, e);
             }
@@ -83,19 +81,5 @@ public class ResourceProviders implements ResourceProvider {
             return testResourceProvider.getResource(uri);
         }
         throw new IllegalArgumentException("Unknown URI scheme '" + scheme + "' in: " + uri);
-    }
-
-    private static class ReadableButNotWritableResource extends DelegatingReadableResource
-            implements Resource {
-
-        ReadableButNotWritableResource(ReadableResource resource) {
-            super(resource);
-        }
-
-        @Override
-        public ByteSink byteSink() {
-            throw new UnsupportedOperationException(
-                    "This is a read-only resource which is not writable.");
-        }
     }
 }

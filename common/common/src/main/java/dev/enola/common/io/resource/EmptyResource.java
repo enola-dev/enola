@@ -22,30 +22,38 @@ import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.util.function.Supplier;
 
 /**
- * Resources which when read is always immediately EOF. Note that this is read-only, and
- * intentionally does not implement WritableResource; use e.g. {@link ResourceProviders#getResource}
- * with "empty:-" to get a wrapped implementation that implements writable but throws an error.
+ * Read-only resources which when read are always immediately EOF. This is a bit like /dev/null on
+ * *NIX OS for reading, but not for writing (because /dev/null ignores writes, whereas this fails).
  *
- * @see NullResource for an alternatives that returns 0s instead of EOF.
+ * @see NullResource for an alternatives that returns infinite 0s instead of EOF.
  */
-public class EmptyResource implements ReadableResource {
+public class EmptyResource implements ReadableButNotWritableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
 
     static final String SCHEME = "empty";
     private static final URI EMPTY_URI = URI.create(SCHEME + ":?");
-    private final MediaType mediaType;
 
-    private final URI uri;
+    private final MediaType mediaType;
+    private final Supplier<URI> uriSupplier;
+    private URI uri;
 
     public EmptyResource(MediaType mediaType) {
         this.mediaType = mediaType;
         this.uri = URIs.addMediaType(EMPTY_URI, mediaType);
+        this.uriSupplier = null;
+    }
+
+    public EmptyResource(MediaType mediaType, Supplier<URI> uriSupplier) {
+        this.mediaType = mediaType;
+        this.uriSupplier = uriSupplier;
     }
 
     @Override
     public URI uri() {
+        if (uri == null) uri = uriSupplier.get();
         return uri;
     }
 

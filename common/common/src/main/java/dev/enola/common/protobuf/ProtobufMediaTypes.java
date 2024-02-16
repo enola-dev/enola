@@ -21,7 +21,7 @@ import static java.util.Collections.emptySet;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ProtobufMediaTypes implements MediaTypeProvider {
-    // TODO move this class into the (TBD) common.proto module
+    // TODO move this class into the common.proto module!
 
     // TODO Introduce parameters like messageType to indicate .textproto root message type? (And
     // "sniffing" them.)
@@ -68,7 +68,7 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
                 emptySet(),
                 PROTOBUF_BINARY,
                 // https://stackoverflow.com/questions/30505408/what-is-the-correct-protobuf-content-type
-                Sets.newHashSet(
+                ImmutableSet.of(
                         MediaType.create("application", "x-protobuf"),
                         MediaType.create("application", "vnd.google.protobuf")));
     }

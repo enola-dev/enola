@@ -33,6 +33,8 @@ import dev.enola.core.proto.EntityOrBuilder;
 import java.util.Map;
 import java.util.Set;
 
+// TODO Rename (refactor) to ValidationEntityAspect
+// TODO Move (refactor) this into a package dev.enola.core.entity.aspect
 public class ValidationAspect
         implements EntityAspectRepeater, MessageValidator<EntityKind, EntityOrBuilder> {
 
