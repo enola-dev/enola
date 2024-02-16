@@ -20,6 +20,9 @@
 
 These _logical models_ are [implemented](implementation.md) and further documented in [Protobuf messages](../dev/proto/core.md).
 
+They are also published as JSON Schemas, for [`EntityKind`](../models/enola/schemas/EntityKind.schema.json)
+and [`Type`](../models/enola/schemas/Type.schema.json) et al.
+
 ## Entity (Model)
 
 As an UML-like class diagram:
@@ -88,7 +91,9 @@ classDiagram
   }
 ```
 
+<!--
 !!! question
 
     **TODO** Add a `status` to Entity... based on a "state machine"
     (which can visualized as state diagrams) that is TBD in the EntityKind.
+ -->
