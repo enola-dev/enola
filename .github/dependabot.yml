@@ -1,6 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: "github-actions"
+    commit-message:
+      prefix: "build(deps): "
     directory: "/"
     schedule:
       interval: "monthly"
@@ -8,6 +10,8 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 99
   - package-ecosystem: "pip"
+    commit-message:
+      prefix: "build(deps): "
     directory: "/"
     schedule:
       interval: "monthly"
@@ -15,6 +19,8 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 99
   - package-ecosystem: "devcontainers"
+    commit-message:
+      prefix: "build(deps): "
     directory: "/"
     schedule:
       interval: "monthly"
