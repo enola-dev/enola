@@ -98,17 +98,20 @@ jobs:
           restore-keys: ${{ runner.os }}-demo-
 
       # https://asdf-vm.com
+      - name: Setup ASDF itself
+        uses: asdf-vm/actions/setup@v3
       - name: Cache ASDF
         uses: actions/cache@v4
         id: asdf-cache
         with:
-          path: ~/.asdf/
-          key:
-            # Include this YAML in hashFiles so that asdf_branch changes invalidate
-            ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions',
-            '.github/workflows/ci.yaml') }}
-          restore-keys: ${{ runner.os }}-asdf-
-      - name: Install ASDF
+          # https://github.com/asdf-vm/asdf/blob/master/.gitignore
+          path: |
+            ~/.asdf/installs
+            ~/.asdf/plugins
+            ~/.asdf/shims
+          key: ${{ runner.os }}-asdf-tools-${{ hashFiles('.tool-versions') }}
+          restore-keys: ${{ runner.os }}-asdf-tools-
+      - name: Install ASDF plugins
         uses: asdf-vm/actions/install@v3
         # See https://github.com/asdf-vm/actions/issues/445
         if: ${{ steps.asdf-cache.outputs.cache-hit != 'true' }}
