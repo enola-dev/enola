@@ -48,12 +48,6 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
-      - name: Cache ASDF
-        uses: actions/cache@v4
-        with:
-          path: ~/.asdf/
-          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
-          restore-keys: ${{ runner.os }}-asdf-
       - name: Cache Bazel
         uses: actions/cache@v4
         with:
@@ -103,10 +97,26 @@ jobs:
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
           restore-keys: ${{ runner.os }}-demo-
 
+      # https://asdf-vm.com
+      - name: Cache ASDF
+        uses: actions/cache@v4
+        id: asdf-cache
+        with:
+          path: ~/.asdf/
+          key:
+            # Include this YAML in hashFiles so that asdf_branch changes invalidate
+            ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions',
+            '.github/workflows/ci.yaml') }}
+          restore-keys: ${{ runner.os }}-asdf-
       - name: Install ASDF
         uses: asdf-vm/actions/install@v3
+        # See https://github.com/asdf-vm/actions/issues/445
+        if: ${{ steps.asdf-cache.outputs.cache-hit != 'true' }}
         with:
           asdf_branch: v0.14.0
+      - name: Reshim installed ASDF tools
+        shell: bash
+        run: asdf reshim
 
       - run: ./tools/test-ci/test.bash
 
