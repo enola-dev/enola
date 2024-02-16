@@ -42,18 +42,18 @@ public class UrlResource implements ReadableResource {
     private final Charset charset;
 
     public UrlResource(URL url) {
-        this(url, null, null, null);
+        this(url, null, null);
     }
 
     public UrlResource(URL url, MediaType mediaType) {
-        this(url, mediaType, null, null);
+        this(url, mediaType, null);
     }
 
     public UrlResource(URL url, Charset charset) {
-        this(url, null, charset, null);
+        this(url, null, charset);
     }
 
-    private UrlResource(URL url, MediaType mediaType, Charset charset, Void unused) {
+    private UrlResource(URL url, MediaType mediaType, Charset charset) {
         this.url = url;
         this.mediaType = mediaType;
         this.charset = charset;

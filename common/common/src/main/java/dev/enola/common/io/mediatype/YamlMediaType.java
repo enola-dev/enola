@@ -49,6 +49,6 @@ public class YamlMediaType implements MediaTypeProvider {
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("yaml", YAML_UTF_8);
+        return ImmutableMap.of("yaml", YAML_UTF_8, "yml", YAML_UTF_8);
     }
 }

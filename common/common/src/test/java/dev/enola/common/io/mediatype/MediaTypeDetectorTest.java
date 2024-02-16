@@ -17,7 +17,9 @@
  */
 package dev.enola.common.io.mediatype;
 
-import static com.google.common.net.MediaType.*;
+import static com.google.common.net.MediaType.JSON_UTF_8;
+import static com.google.common.net.MediaType.OCTET_STREAM;
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
@@ -45,6 +47,9 @@ public class MediaTypeDetectorTest {
                 .isEqualTo(MediaType.parse("application/test"));
         assertThat(md.detect("text/plain", "ascii", null))
                 .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(Charsets.US_ASCII));
+
+        assertThat(md.detect("text/plain", null, URI.create("http://server/hello.yaml")))
+                .isEqualTo(YAML_UTF_8);
 
         assertThat(md.detect("application/octet-stream", null, URI.create("hello.txt")))
                 .isEqualTo(OCTET_STREAM);
