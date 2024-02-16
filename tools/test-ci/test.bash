@@ -19,6 +19,9 @@ set -euox pipefail
 
 # This script runs on CI and tests the project.
 
+# TODO Run all this only when model inputs change
+tools/protoc/protoc.bash
+
 ./test.bash
 
 # No files (which are not on .gitigore) should have been modified!
