@@ -36,7 +36,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Use sed instead of (ancient) rpl!
+# Fix up ../.. links in docs/**/*.md link to GitHub (instead of docs.enola.dev)
+# If you do want to link to ../.. within docs, then use .././.. instead, for now.
+# TODO Replace this with another convention, perhaps e.g. // à la Bazel?
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|\.\./\.\.|https://github.com/enola-dev/enola/blob/main|g'
 
