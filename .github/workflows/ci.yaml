@@ -48,6 +48,12 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      - name: Cache ASDF
+        uses: actions/cache@v4
+        with:
+          path: ~/.asdf/
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
+          restore-keys: ${{ runner.os }}-asdf-
       - name: Cache Bazel
         uses: actions/cache@v4
         with:
@@ -96,6 +102,11 @@ jobs:
           path: .cache/demo/
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
           restore-keys: ${{ runner.os }}-demo-
+
+      - name: Install ASDF
+        uses: asdf-vm/actions/install@v3
+        with:
+          asdf_branch: v0.14.0
 
       - run: ./tools/test-ci/test.bash
 
