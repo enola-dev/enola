@@ -15,14 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.io.resource.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.WritableResource;
 
-public interface DescriptorProvider {
+import java.io.IOException;
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+/**
+ * Copies all bytes from the input into the output resource.
+ *
+ * <p>This never actually "converts" anything!
+ */
+public class IdempotentCopyingResourceNonConverter implements ResourceConverter {
 
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    @Override
+    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+        from.byteSource().copyTo(into.byteSink());
+        return true;
+    }
 }

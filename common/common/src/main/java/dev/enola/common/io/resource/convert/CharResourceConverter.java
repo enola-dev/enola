@@ -15,14 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.io.resource.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import com.google.common.net.MediaType;
 
-public interface DescriptorProvider {
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.WritableResource;
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+import java.io.IOException;
 
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+/**
+ * Copies all characters from the input into the output resource.
+ *
+ * <p>Depending on their respective {@link MediaType#charset()}, this may change the text encoding!
+ */
+public class CharResourceConverter implements ResourceConverter {
+
+    @Override
+    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+        from.charSource().copyTo(into.charSink());
+        return true;
+    }
 }

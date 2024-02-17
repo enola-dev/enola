@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+public class ObjectToStringConverter implements Converter<Object, String> {
 
-public interface DescriptorProvider {
-
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
-
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    @Override
+    public String convert(Object input) {
+        return input.toString();
+    }
 }

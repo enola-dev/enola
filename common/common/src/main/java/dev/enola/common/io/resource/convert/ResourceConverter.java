@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.io.resource.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import dev.enola.common.convert.ConverterInto;
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.WritableResource;
 
-public interface DescriptorProvider {
-
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
-
-    Descriptor findByName(String protoMessageFullyQualifiedName);
-}
+/**
+ * Reads in from a {@link ReadableResource}, converts content, and writes out to a {@link
+ * WritableResource}.
+ */
+public interface ResourceConverter extends ConverterInto<ReadableResource, WritableResource> {}

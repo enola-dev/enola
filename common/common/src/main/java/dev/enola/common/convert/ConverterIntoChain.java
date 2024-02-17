@@ -15,14 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import java.io.IOException;
 
-public interface DescriptorProvider {
+/**
+ * A "chain" of {@link ConverterInto}s. It attempts the conversion in order until one is successful.
+ */
+public class ConverterIntoChain<I, O> implements ConverterInto<I, O> {
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+    private final Iterable<ConverterInto<I, O>> converters;
 
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    public ConverterIntoChain(Iterable<ConverterInto<I, O>> converters) {
+        this.converters = converters;
+    }
+
+    @Override
+    public boolean convertInto(I from, O into) throws IOException {
+        for (var converter : converters) {
+            if (converter.convertInto(from, into)) return true;
+        }
+        return false;
+    }
 }

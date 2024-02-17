@@ -49,6 +49,7 @@ import com.google.protobuf.UInt64Value;
  * {@link DynamicMessage} for unknown types.
  */
 public class Messages {
+    // TODO Create an interface for newBuilder() to make this ready for DI with EnolaMessages ext
 
     // TODO Re-consider using MessageLite instead of Message here, in case class Wany is removed
 

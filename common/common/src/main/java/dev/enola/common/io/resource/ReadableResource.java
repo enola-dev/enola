@@ -36,6 +36,7 @@ public interface ReadableResource {
 
     ByteSource byteSource();
 
+    // TODO Consider replacing or integrating this with Converter?!
     default CharSource charSource() {
         return byteSource()
                 .asCharSource(

@@ -44,8 +44,8 @@ public class Rosetta {
 
     // TODO This class is in dev.enola.core.tbd only for now, in order to have classpath access to
     // Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below but
-    // eventually it should move e.g. to dev.enola.common.protobuf instead;
-    // but that will require creating a generic proto Descriptor registry.
+    // eventually it should move e.g. to dev.enola.common.protobuf instead, and use a
+    // DescriptorProvider as generic proto Descriptor registry.
 
     private final ProtoIO protoIO = new ProtoIO();
 
@@ -57,10 +57,13 @@ public class Rosetta {
     public void convert(ReadableResource in, WritableResource out, String protoFQN)
             throws IOException {
 
+        // TODO Use the new ResourceConverter infrastructure here!
+
         var inmt = in.mediaType().withoutParameters();
         var outmt = out.mediaType().withoutParameters();
         if (protoFQN != null) {
             Descriptors.Descriptor descriptor = lookupDescriptor(protoFQN);
+            // TODO Use new Messages (EnolaMessages) utility here #performance
             var builder = DynamicMessage.newBuilder(descriptor);
             protoIO.convert(in, builder, out);
 
@@ -81,7 +84,7 @@ public class Rosetta {
     }
 
     private Descriptors.Descriptor lookupDescriptor(String protoFQN) {
-        // TODO look it up in a Registry, instead of hard-coding
+        // TODO look it up via a DescriptorProvider, instead of hard-coding
         switch (protoFQN) {
             case "dev.enola.core.Entity":
                 return Entity.getDescriptor();
