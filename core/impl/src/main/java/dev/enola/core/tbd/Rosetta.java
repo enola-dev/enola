@@ -24,11 +24,12 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
 
-import com.google.protobuf.Descriptors;
-import com.google.protobuf.DynamicMessage;
+import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.protobuf.DescriptorProvider;
+import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.common.yamljson.YamlJson;
@@ -50,6 +51,9 @@ public class Rosetta {
 
     private final ProtoIO protoIO = new ProtoIO();
 
+    private final MessageResourceConverter messageResourceConverter =
+            new MessageResourceConverter(protoIO, DESCRIPTOR_PROVIDER);
+
     /**
      * Convert.
      *
@@ -59,14 +63,9 @@ public class Rosetta {
 
         // TODO Use the new ResourceConverter infrastructure here!
 
-        var protoFQN = ProtobufMediaTypes.getProtoMessageFQN(in.mediaType());
         var inmt = in.mediaType().withoutParameters();
         var outmt = out.mediaType().withoutParameters();
-        if (protoFQN.isPresent()) {
-            Descriptors.Descriptor descriptor = lookupDescriptor(protoFQN.get());
-            // TODO Use new Messages (EnolaMessages) utility here #performance
-            var builder = DynamicMessage.newBuilder(descriptor);
-            protoIO.convert(in, builder, out);
+        if (messageResourceConverter.convertInto(in, out)) {
 
         } else if (normalizedNoParamsEquals(inmt, PROTOBUF_JSON_UTF_8, JSON_UTF_8)
                 && normalizedNoParamsEquals(outmt, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
@@ -89,14 +88,24 @@ public class Rosetta {
         }
     }
 
-    private Descriptors.Descriptor lookupDescriptor(String protoFQN) {
-        // TODO look it up via a DescriptorProvider, instead of hard-coding
-        switch (protoFQN) {
-            case "dev.enola.core.Entity":
-                return Entity.getDescriptor();
-            case "dev.enola.core.meta.EntityKinds":
-                return EntityKinds.getDescriptor();
-        }
-        throw new IllegalArgumentException("TODO Cannot find Descriptor for: " + protoFQN);
-    }
+    private static final DescriptorProvider DESCRIPTOR_PROVIDER =
+            new DescriptorProvider() {
+
+                @Override
+                public Descriptor findByName(String messageTypeURL) {
+                    switch (messageTypeURL) {
+                        case "dev.enola.core.Entity":
+                            return Entity.getDescriptor();
+                        case "dev.enola.core.meta.EntityKinds":
+                            return EntityKinds.getDescriptor();
+                    }
+                    throw new IllegalArgumentException(
+                            "TODO Cannot find Descriptor for: " + messageTypeURL);
+                }
+
+                @Override
+                public Descriptor getDescriptorForTypeUrl(String protoMessageFullyQualifiedName) {
+                    throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+                }
+            };
 }
