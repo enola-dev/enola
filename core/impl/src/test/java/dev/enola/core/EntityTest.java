@@ -81,7 +81,7 @@ public class EntityTest {
         var yamlText = YamlJson.jsonToYaml(jsonText);
         var jsonText2 = YamlJson.yamlToJson(yamlText);
 
-        var jsonResource2 = new StringResource(jsonText2, ProtobufMediaTypes.PROTOBUF_JSON_UTF_8);
+        var jsonResource2 = StringResource.of(jsonText2, ProtobufMediaTypes.PROTOBUF_JSON_UTF_8);
         var metaModel2 =
                 new ProtoIO().read(jsonResource2, EntityKinds.newBuilder(), EntityKinds.class);
 

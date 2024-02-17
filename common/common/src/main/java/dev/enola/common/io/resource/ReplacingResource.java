@@ -35,6 +35,6 @@ public class ReplacingResource extends DelegatingReadableResource {
         for (int i = 0; i < replacements.length; i += 2) {
             template = template.replace(replacements[i], replacements[i + 1]);
         }
-        return new StringResource(template, delegate.mediaType());
+        return StringResource.of(template, delegate.mediaType());
     }
 }

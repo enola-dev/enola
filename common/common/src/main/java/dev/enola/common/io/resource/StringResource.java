@@ -55,13 +55,7 @@ public class StringResource implements ReadableButNotWritableResource {
         return of(text, MediaType.PLAIN_TEXT_UTF_8);
     }
 
-    @Deprecated // Use #of() instead! (Remove this.)
-    public StringResource(String text) {
-        this(text, MediaType.PLAIN_TEXT_UTF_8);
-    }
-
-    @Deprecated // Use #of() instead! (Make protected instead public)
-    public StringResource(String text, MediaType mediaType) {
+    private StringResource(String text, MediaType mediaType) {
         this(
                 text,
                 mediaType,
@@ -69,7 +63,7 @@ public class StringResource implements ReadableButNotWritableResource {
                     try {
                         return new URI(SCHEME, text, null);
                     } catch (URISyntaxException e) {
-                        // This should never happen, if the escaping above is correct...
+                        // This should never happen, if the escaping done within URI is correct...
                         throw new IllegalArgumentException("String is invalid in URI: " + text, e);
                     }
                 });

@@ -74,7 +74,7 @@ public class UI implements WebHandler {
     public ListenableFuture<ReadableResource> get(URI uri) {
         try {
             String html = getHTML(uri);
-            var resource = new StringResource(html, MediaType.HTML_UTF_8);
+            var resource = StringResource.of(html, MediaType.HTML_UTF_8);
             return Futures.immediateFuture(resource);
         } catch (EnolaException | IOException e) {
             return Futures.immediateFailedFuture(e);

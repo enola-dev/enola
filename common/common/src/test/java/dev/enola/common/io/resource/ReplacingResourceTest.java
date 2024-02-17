@@ -26,7 +26,7 @@ import java.io.IOException;
 public class ReplacingResourceTest {
     @Test
     public void replace() throws IOException {
-        var r = new ReplacingResource(new StringResource("hello, XXX"), "XXX", "world");
+        var r = new ReplacingResource(StringResource.of("hello, XXX"), "XXX", "world");
         assertThat(r.charSource().read()).isEqualTo("hello, world");
     }
 }

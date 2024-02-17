@@ -41,7 +41,7 @@ public class SunServerTest {
         var addr = new InetSocketAddress(0);
         var server = new SunServer(addr);
 
-        var hello = new StringResource("hello, world", MediaType.PLAIN_TEXT_UTF_8);
+        var hello = StringResource.of("hello, world", MediaType.PLAIN_TEXT_UTF_8);
         server.register("/hello", uri -> immediateFuture(hello));
 
         server.register("/abc/xyz/", new StaticWebHandler("/abc/xyz/", "static"));
