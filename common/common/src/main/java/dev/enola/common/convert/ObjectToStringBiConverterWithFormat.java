@@ -17,7 +17,6 @@
  */
 package dev.enola.common.convert;
 
-import java.io.IOException;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParseException;
@@ -47,7 +46,7 @@ public class ObjectToStringBiConverterWithFormat
     }
 
     @Override
-    public boolean convertInto(Object from, StringBuffer into) throws IOException {
+    public boolean convertInto(Object from, StringBuffer into) throws ConversionException {
         // TODO Test if this really works like this...
         format.format(from, into, ALL_FIELD_POSITIONS);
         return true;

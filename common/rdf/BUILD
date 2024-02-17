@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+load("@rules_java//java:defs.bzl", "java_library", "java_test")
+
+java_library(
+    name = "rdf",
+    srcs = glob(["src/main/java/**/*.java"]),
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//common/common",
+        "//common/protobuf",
+        "//common/thing:thing_java",
+        "//common/thing:thing_java_proto",
+        "@maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
+        "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
+        "@maven//:org_eclipse_rdf4j_rdf4j_rio_jsonld",
+        "@maven//:org_eclipse_rdf4j_rdf4j_rio_turtle",
+    ],
+)
+
+[java_test(
+    name = name[:-len(".java")],
+    size = "small",
+    srcs = glob(["src/test/java/**/*.java"]),
+    resources = glob(["src/test/resources/**/*"]),
+    deps = [
+        ":rdf",
+        "//common/common",
+        "//common/thing:thing_java",
+        "//common/thing:thing_java_proto",
+        "//common/yamljson",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_truth_extensions_truth_proto_extension",
+        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model_vocabulary",
+    ],
+) for name in glob([
+    "src/test/java/**/*Test.java",
+])]

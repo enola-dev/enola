@@ -1,5 +1,7 @@
 root = true
 
+# TODO At this point it may be easier to do 2 by default, and 4 where needed... ;-)
+
 [*]
 charset = utf-8
 end_of_line = lf
@@ -55,10 +57,19 @@ indent_size = 2
 tab_width = 2
 max_line_length = unset
 
+[*.jsonld]
+indent_size = 2
+tab_width = 2
+max_line_length = unset
+
 [*.json5]
 indent_size = 2
 tab_width = 2
 max_line_length = unset
+
+[*.turtle]
+indent_size = 2
+tab_width = 2
 
 [*.toml]
 indent_size = 2

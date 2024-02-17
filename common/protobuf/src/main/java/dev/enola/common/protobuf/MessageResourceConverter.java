@@ -22,11 +22,11 @@ import com.google.protobuf.DynamicMessage;
 
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
-import dev.enola.common.io.resource.convert.ResourceConverter;
+import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
 import java.io.IOException;
 
-public class MessageResourceConverter implements ResourceConverter {
+public class MessageResourceConverter implements CatchingResourceConverter {
 
     private final DescriptorProvider descriptorProvider;
     private final ProtoIO protoIO;
@@ -37,7 +37,8 @@ public class MessageResourceConverter implements ResourceConverter {
     }
 
     @Override
-    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
+            throws IOException {
         var fromProtoFQN = ProtobufMediaTypes.getProtoMessageFQN(from.mediaType());
         if (fromProtoFQN.isPresent()) {
             Descriptors.Descriptor descriptor = descriptorProvider.findByName(fromProtoFQN.get());

@@ -28,7 +28,7 @@ import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Optional;
 
-public interface ReadableResource {
+public interface ReadableResource extends AbstractResource {
 
     URI uri();
 

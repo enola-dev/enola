@@ -27,10 +27,11 @@ import java.io.IOException;
  *
  * <p>This never actually "converts" anything!
  */
-public class IdempotentCopyingResourceNonConverter implements ResourceConverter {
+public class IdempotentCopyingResourceNonConverter implements CatchingResourceConverter {
 
     @Override
-    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
+            throws IOException {
         from.byteSource().copyTo(into.byteSink());
         return true;
     }

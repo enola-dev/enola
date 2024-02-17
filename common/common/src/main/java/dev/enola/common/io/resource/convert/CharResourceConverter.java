@@ -29,10 +29,11 @@ import java.io.IOException;
  *
  * <p>Depending on their respective {@link MediaType#charset()}, this may change the text encoding!
  */
-public class CharResourceConverter implements ResourceConverter {
+public class CharResourceConverter implements CatchingResourceConverter {
 
     @Override
-    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
+            throws IOException {
         from.charSource().copyTo(into.charSink());
         return true;
     }
