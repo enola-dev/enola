@@ -98,6 +98,7 @@ repos:
         exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
 
   - repo: https://github.com/yoheimuta/protolint
+    # This version must be kept in the sync with the one in tools/protolint/install.bash
     rev: v0.47.5
     hooks:
       - id: protolint
