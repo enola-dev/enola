@@ -1,6 +1,3 @@
-# JDT
-bin/
-
 # Bazel
 bazel-*
 
@@ -12,13 +9,8 @@ build/
 .ijwb/
 .idea/
 
-# Eclipse (including bazel-vscode-java)
+# Eclipse JDT with VSC Bazel for Java (bazel-vscode-java)
 .eclipse/
-
-# VSC Bazel for Java
-.bazeltargets
-eclipse-bin/
-eclipse-testbin/
 
 # Python Virtual Environment (venv, created by ./test.bash)
 .venv/
