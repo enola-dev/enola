@@ -20,7 +20,6 @@ package dev.enola.cli;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.cli.CommandLineSubject.assertThat;
-import static dev.enola.cli.Enola.cli;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.net.MediaType;
@@ -34,6 +33,16 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class EnolaTest {
+
+    private static CLI cli;
+
+    private static CLI cli(String... args) {
+        // This was intended to make initization one time and faster, but it doesn't help.
+        // TODO Profile this test and see where it spends time!
+        if (cli == null) cli = dev.enola.cli.Enola.cli(args);
+        else cli.setArgs(args);
+        return cli;
+    }
 
     @Test
     public void noArguments() {
@@ -116,10 +125,12 @@ public class EnolaTest {
                 .hasExitCode(0)
                 .out()
                 .startsWith(
-                        "id {\n"
-                                + "  ns: \"test\"\n"
-                                + "  entity: \"foobar\"\n"
-                                + "  paths: \"helo\"\n");
+                        """
+                            id {
+                              ns: "test"
+                              entity: "foobar"
+                              paths: "helo"
+                            """);
     }
 
     @Test

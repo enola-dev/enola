@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public class CLI {
 
-    private final String[] args;
+    private String[] args;
     private final CommandLine commandLine;
     private StringWriter out;
     private StringWriter err;
@@ -35,6 +35,10 @@ public class CLI {
     public CLI(String[] args, CommandLine commandLine) {
         this.commandLine = commandLine;
         this.args = Arrays.copyOf(args, args.length);
+    }
+
+    public void setArgs(String[] args) {
+        this.args = args;
     }
 
     public CLI setOut(PrintWriter out) {
