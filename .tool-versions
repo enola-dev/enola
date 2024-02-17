@@ -1,9 +1,14 @@
-# tools/asdf/install.bash
+# See tools/asdf/install.bash
 
-# https://github.com/asdf-vm/asdf-plugins
+# List is on https://github.com/asdf-vm/asdf-plugins
+# (It's also possible to directly install from any other repo.)
 
 # asdf plugin add protoc
+# asdf list-all protoc
 # asdf install protoc latest
 # asdf local protoc latest
 
 protoc 25.3
+
+# TODO protolint here instead of installing it in test.bash
+# when https://github.com/spencergilbert/asdf-protolint/issues/37 is fixed

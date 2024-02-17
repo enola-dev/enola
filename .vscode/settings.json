@@ -29,7 +29,8 @@
   "editor.foldingImportsByDefault": true,
 
   "files.associations": {
-    "*.json": "jsonc"
+    "*.json": "jsonc",
+    ".tool-versions": "properties"
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
