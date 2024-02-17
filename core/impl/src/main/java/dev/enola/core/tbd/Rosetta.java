@@ -17,22 +17,17 @@
  */
 package dev.enola.core.tbd;
 
-import static com.google.common.net.MediaType.JSON_UTF_8;
-
-import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
-import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
-
+import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
-import dev.enola.common.yamljson.YamlJson;
+import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
 
@@ -50,43 +45,6 @@ public class Rosetta {
     // DescriptorProvider as generic proto Descriptor registry.
 
     private final ProtoIO protoIO = new ProtoIO();
-
-    private final MessageResourceConverter messageResourceConverter =
-            new MessageResourceConverter(protoIO, DESCRIPTOR_PROVIDER);
-
-    /**
-     * Convert.
-     *
-     * @param protoFQN optional, may be null; only required if in is a *.textproto
-     */
-    public void convert(ReadableResource in, WritableResource out) throws IOException {
-
-        // TODO Use the new ResourceConverter infrastructure here!
-
-        var inmt = in.mediaType().withoutParameters();
-        var outmt = out.mediaType().withoutParameters();
-        if (messageResourceConverter.convertInto(in, out)) {
-
-        } else if (normalizedNoParamsEquals(inmt, PROTOBUF_JSON_UTF_8, JSON_UTF_8)
-                && normalizedNoParamsEquals(outmt, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
-
-            out.charSink().write(YamlJson.jsonToYaml(in.charSource().read()));
-
-        } else if (normalizedNoParamsEquals(inmt, PROTOBUF_YAML_UTF_8, YAML_UTF_8)
-                && normalizedNoParamsEquals(outmt, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {
-
-            out.charSink().write(YamlJson.yamlToJson(in.charSource().read()));
-
-        } else {
-            throw new IllegalArgumentException(
-                    "Without protoFQN --schema CLI arg, or ?"
-                            + ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE
-                            + "= contentType parameter, cannot convert "
-                            + inmt
-                            + " to "
-                            + outmt);
-        }
-    }
 
     private static final DescriptorProvider DESCRIPTOR_PROVIDER =
             new DescriptorProvider() {
@@ -108,4 +66,23 @@ public class Rosetta {
                     throw new UnsupportedOperationException("Unimplemented method 'findByName'");
                 }
             };
+
+    private final MessageResourceConverter messageResourceConverter =
+            new MessageResourceConverter(protoIO, DESCRIPTOR_PROVIDER);
+
+    private final ResourceConverterChain resourceConverterChain =
+            new ResourceConverterChain(
+                    ImmutableList.of(messageResourceConverter, new YamlJsonResourceConverter()));
+
+    public void convert(ReadableResource in, WritableResource out) throws IOException {
+        if (!resourceConverterChain.convertInto(in, out)) {
+            throw new IllegalArgumentException(
+                    "Without protoFQN --schema CLI arg, or ?"
+                            + ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE
+                            + "= contentType parameter, cannot convert "
+                            + in
+                            + " to "
+                            + out);
+        }
+    }
 }

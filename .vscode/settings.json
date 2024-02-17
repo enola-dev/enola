@@ -153,9 +153,10 @@
     "connectors": false,
     "core": false,
     "docs": false,
+    "node_modules": false,
+    "rdf": false,
     "site": false,
     "tools": false,
-    "node_modules": false,
     "web": false,
     "BUILT": false
   }
