@@ -21,6 +21,7 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -38,48 +39,57 @@ public class RosettaTest {
 
     @Test
     public void testJsonToYaml() throws IOException {
-        var in = new StringResource("{\"value\":123}", JSON_UTF_8);
+        var in = StringResource.of("{\"value\":123}", JSON_UTF_8);
         var out = new MemoryResource(YAML_UTF_8);
-        new Rosetta().convert(in, out, null);
+        new Rosetta().convert(in, out);
         assertThat(out.charSource().read()).isEqualTo("{value: 123.0}\n");
     }
 
     @Test
     public void testYamlToJson() throws IOException {
-        var in = new StringResource("value: 123", YAML_UTF_8);
+        var in = StringResource.of("value: 123", YAML_UTF_8);
         var out = new MemoryResource(JSON_UTF_8);
-        new Rosetta().convert(in, out, null);
+        new Rosetta().convert(in, out);
         assertThat(out.charSource().read()).isEqualTo("{\"value\":123}");
     }
 
     @Test
     public void testTextprotoToYaml() throws IOException {
-        var in = new ClasspathResource("bar-abc-def.textproto", PROTOBUF_TEXTPROTO_UTF_8);
+        var in =
+                new ClasspathResource(
+                        "bar-abc-def.textproto",
+                        PROTOBUF_TEXTPROTO_UTF_8.withParameter(
+                                PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
         var out = new MemoryResource(YAML_UTF_8);
-        new Rosetta().convert(in, out, "dev.enola.core.Entity");
+        new Rosetta().convert(in, out);
 
         var expectedOut =
-                new StringResource(
-                        "id:\n"
-                            + "  ns: demo\n"
-                            + "  entity: bar\n"
-                            + "  paths: [abc, def]\n"
-                            + "related:\n"
-                            + "  one:\n"
-                            + "    ns: demo\n"
-                            + "    entity: baz\n"
-                            + "    paths: [uvw]\n"
-                            + "link: {wiki:"
-                            + " 'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}\n",
+                StringResource.of(
+                        """
+                            id:
+                              ns: demo
+                              entity: bar
+                              paths: [abc, def]
+                            related:
+                              one:
+                                ns: demo
+                                entity: baz
+                                paths: [uvw]
+                            link: {wiki:\
+                             'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}
+                            """,
                         YAML_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
     }
 
     @Test
     public void testYamlToTextproto() throws IOException {
-        var in = new ClasspathResource("bar-abc-def.yaml", YAML_UTF_8);
+        var in =
+                new ClasspathResource(
+                        "bar-abc-def.yaml",
+                        YAML_UTF_8.withParameter(PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
         var out = new MemoryResource(PROTOBUF_TEXTPROTO_UTF_8);
-        new Rosetta().convert(in, out, "dev.enola.core.Entity");
+        new Rosetta().convert(in, out);
 
         var expectedOut = new ClasspathResource("bar-abc-def.textproto", PROTOBUF_TEXTPROTO_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());

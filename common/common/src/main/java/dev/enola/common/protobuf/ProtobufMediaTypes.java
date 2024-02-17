@@ -25,8 +25,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
+import dev.enola.common.io.mediatype.MediaTypes;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class ProtobufMediaTypes implements MediaTypeProvider {
@@ -39,6 +41,20 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     // are text/* and not application/* whereas the binary serialization wire format is an
     // "application/*";
     // based on https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types.
+
+    /**
+     * MediaType parameter to indicate the resource's root message fully qualified name. Inspired by
+     * https://protobuf.dev/reference/protobuf/textformat-spec/#header.
+     */
+    public static final String PARAMETER_PROTO_MESSAGE = "proto-message";
+
+    public static MediaType setProtoMessageFQN(MediaType mediaType, String protoFQN) {
+        return mediaType.withParameter(PARAMETER_PROTO_MESSAGE, protoFQN);
+    }
+
+    public static Optional<String> getProtoMessageFQN(MediaType mediaType) {
+        return MediaTypes.parameter(mediaType, PARAMETER_PROTO_MESSAGE);
+    }
 
     public static final MediaType PROTO_UTF_8 =
             MediaType.create("text", "proto").withCharset(Charsets.UTF_8);
@@ -82,7 +98,7 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
                 // TODO This parameter isn't actually used for anything... yet.
                 "proto.binpb",
                 ProtobufMediaTypes.PROTOBUF_BINARY.withParameter(
-                        "proto-message", "google.protobuf.FileDescriptorSet"),
+                        PARAMETER_PROTO_MESSAGE, "google.protobuf.FileDescriptorSet"),
                 "binpb",
                 ProtobufMediaTypes.PROTOBUF_BINARY,
                 "pb",
