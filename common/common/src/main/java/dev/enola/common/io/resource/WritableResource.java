@@ -34,6 +34,7 @@ public interface WritableResource {
 
     ByteSink byteSink();
 
+    // TODO Consider replacing or integrating this with Converter?!
     default CharSink charSink() {
         return byteSink()
                 .asCharSink(

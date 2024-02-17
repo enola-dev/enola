@@ -15,14 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+public interface BiConverter<A, B> {
 
-public interface DescriptorProvider {
+    B convertTo(A input);
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
-
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    A convertFrom(B input);
 }

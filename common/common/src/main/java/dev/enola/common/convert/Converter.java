@@ -15,14 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+/**
+ * Converts an object of type I to a new object of type O.
+ *
+ * <p>The "context" of the conversion, if any, must be part of I.
+ *
+ * <p>For #efficiency, consider whether this or a {@link ConverterInto} is more suitable.
+ */
+public interface Converter<I, O> {
 
-public interface DescriptorProvider {
-
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
-
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    O convert(I input);
 }

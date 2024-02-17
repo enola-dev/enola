@@ -92,6 +92,7 @@ public class ProtoIO {
             }
         } else {
             try (Writer writer = resource.charSink(UTF_8).openBufferedStream()) {
+                // TODO Use the new ResourceConverter infrastructure here...
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     TextFormat.printer()
                             .escapingNonAscii(false)
@@ -135,6 +136,7 @@ public class ProtoIO {
             }
         } else {
             try (Reader reader = resource.charSource(UTF_8).openBufferedStream()) {
+                // TODO Use the new ResourceConverter infrastructure here...
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     textFormatParser.merge(reader, extensionRegistry, builder);
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {

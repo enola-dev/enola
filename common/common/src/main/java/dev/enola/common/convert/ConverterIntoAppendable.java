@@ -15,14 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.protobuf;
+package dev.enola.common.convert;
 
-import com.google.protobuf.Descriptors.Descriptor;
+import com.google.common.io.ByteSink;
+import com.google.common.io.CharSink;
 
-public interface DescriptorProvider {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 
-    // TODO Rename to findByTypeUrl() for consistency
-    Descriptor getDescriptorForTypeUrl(String messageTypeURL);
+/**
+ * Converts an object of type I into characters written to an Appendable.
+ *
+ * <p>O is typically something like an {@link Appendable}, *Builder, {@link ByteSink}, {@link
+ * CharSink}, {@link OutputStream}, or {@link Writer} or some similar such kind of thing.
+ *
+ * <p>The "context" of the conversion, if any, must be part of I.
+ */
+public interface ConverterIntoAppendable<I> extends ConverterInto<I, Appendable> {
 
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    void convertInto(I from) throws IOException;
 }

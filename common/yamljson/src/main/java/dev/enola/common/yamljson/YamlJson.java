@@ -20,6 +20,8 @@ package dev.enola.common.yamljson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import dev.enola.common.io.resource.convert.ResourceConverter;
+
 import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.DumpSettings;
 import org.snakeyaml.engine.v2.api.Load;
@@ -30,6 +32,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class YamlJson {
+
+    public static ResourceConverter JSON_TO_YAML =
+            (from, into) -> {
+                into.charSink().write(jsonToYaml(from.charSource().read()));
+                return true;
+            };
+
+    public static ResourceConverter YAML_TO_JSON =
+            (from, into) -> {
+                into.charSink().write(yamlToJson(from.charSource().read()));
+                return true;
+            };
 
     public static String jsonToYaml(String json) {
         TypeToken<Map<String, Object>> mapType = new TypeToken<Map<String, Object>>() {};
@@ -52,7 +66,7 @@ public class YamlJson {
         Iterator<Object> iter = list.iterator();
 
         if (!iter.hasNext()) {
-            return ""; // Or "{}"?! Or "[]"?!
+            return "";
         } else {
             Object firstRoot = list.iterator().next();
             if (iter.hasNext()) {
