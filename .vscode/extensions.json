@@ -14,7 +14,8 @@
     "htmlhint.vscode-htmlhint",
     "ecmel.vscode-html-css",
     "zignd.html-css-class-completion",
-    "timonwong.shellcheck"
+    "timonwong.shellcheck",
+    "stardog-union.vscode-langserver-turtle"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39

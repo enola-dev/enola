@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import picocli.CommandLine;
 
 import java.io.PrintWriter;
@@ -37,7 +39,8 @@ public class CLI {
         this.args = Arrays.copyOf(args, args.length);
     }
 
-    public void setArgs(String[] args) {
+    @VisibleForTesting
+    void setArgs(String[] args) {
         this.args = args;
     }
 

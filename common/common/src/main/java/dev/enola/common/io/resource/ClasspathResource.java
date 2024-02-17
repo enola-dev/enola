@@ -31,10 +31,12 @@ public class ClasspathResource extends UrlResource {
     }
 
     public ClasspathResource(String path, Charset charset) {
+        // TODO mediaType should be set based on looking at file extension from path
         super(Resources.getResource(path), charset);
     }
 
     public ClasspathResource(String path) {
+        // TODO mediaType should be set based on looking at file extension from path
         super(Resources.getResource(path));
     }
 }

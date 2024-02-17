@@ -26,5 +26,5 @@ package dev.enola.common.convert;
  */
 public interface Converter<I, O> {
 
-    O convert(I input);
+    O convert(I input) throws ConversionException;
 }

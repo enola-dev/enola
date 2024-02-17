@@ -19,7 +19,7 @@ package dev.enola.common.convert;
 
 public interface BiConverter<A, B> {
 
-    B convertTo(A input);
+    B convertTo(A input) throws ConversionException;
 
-    A convertFrom(B input);
+    A convertFrom(B input) throws ConversionException;
 }

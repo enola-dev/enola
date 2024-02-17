@@ -40,11 +40,7 @@ java_library(
     srcs = glob(["src/main/java/**/*.java"]),
     resources = glob(["src/main/resources/**/*"]),
     visibility = [
-        "//cli:__pkg__",
-        "//connectors:__subpackages__",
-        "//core:__subpackages__",
-        "//web/rest:__pkg__",
-        "//web/ui:__pkg__",
+        "//:__subpackages__",
     ],
     deps = [
         ":validation_proto_java_library",

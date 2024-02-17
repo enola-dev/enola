@@ -28,6 +28,7 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/core";
 
+// TODO Unify this with the duplicate in //common/thing/thing.proto!
 // Thing is the data structure used to view "Things" on the Web UI
 // (and later possibly in the CLI TUI, but that's TBD). This is (loosely)
 // inspired by src/google/protobuf/struct.proto, JSON (+ JSON-LD, for links),

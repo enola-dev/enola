@@ -20,6 +20,7 @@ package dev.enola.core.tbd;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.ResourceConverterChain;
@@ -30,8 +31,6 @@ import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
-
-import java.io.IOException;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
@@ -74,7 +73,7 @@ public class Rosetta {
             new ResourceConverterChain(
                     ImmutableList.of(messageResourceConverter, new YamlJsonResourceConverter()));
 
-    public void convert(ReadableResource in, WritableResource out) throws IOException {
+    public void convert(ReadableResource in, WritableResource out) throws ConversionException {
         if (!resourceConverterChain.convertInto(in, out)) {
             throw new IllegalArgumentException(
                     "Without protoFQN --schema CLI arg, or ?"

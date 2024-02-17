@@ -22,6 +22,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 GRPC_JAVA_VERSION = "1.61.0"
 
+RDF4J_VERSION = "5.0.0-M2"
+
 # https://github.com/grpc/grpc-java/
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
@@ -99,6 +101,12 @@ maven_install(
         "io.grpc:grpc-stub:%s" % GRPC_JAVA_VERSION,
         "io.grpc:grpc-inprocess:%s" % GRPC_JAVA_VERSION,
         "org.apache.tomcat:annotations-api:6.0.53",  # NOT :tomcat-annotations-api
+        # RDF4j <https://rdf4j.org>
+        "org.eclipse.rdf4j:rdf4j-model:%s" % RDF4J_VERSION,
+        "org.eclipse.rdf4j:rdf4j-rio-jsonld:%s" % RDF4J_VERSION,
+        "org.eclipse.rdf4j:rdf4j-rio-turtle:%s" % RDF4J_VERSION,
+        # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
+        "com.fasterxml.jackson.core:jackson-databind:2.13.5",
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:19.0.0",
         # Other

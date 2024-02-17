@@ -1,0 +1,97 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// Copyright 2024 The Enola <https://enola.dev> Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package dev.enola.thing;
+
+import "google/protobuf/timestamp.proto";
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.thing";
+option java_multiple_files = true;
+option go_package = "dev/enola/thing";
+
+// TODO Unify this with the original still in //core/lib!
+
+// Thing is is (loosely) inspired by RDF, google/protobuf/struct.proto, JSON (+
+// JSON-LD, for links), [Cap'n Proto's
+// schema.capnp](https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp),
+// et al. It intentionally doesn't quite look like
+// https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Protobuf/binary-rdf.proto,
+// because RDF4j already has its own binary serialization format - the point of
+// this is not to replicate that.
+message Thing {
+  // The IRI is often only set on the "top outer most", and may well be unset
+  // for things "contained" in other things (RDF calls this "blank nodes"). It's
+  // not even mandatory required for the "top outer most" one either.
+  string iri = 1;
+
+  // Key string is an IRI (of a "property").
+  map<string, Value> fields = 2;
+}
+
+message Value {
+  oneof kind {
+    // TODO enum NullValue { NULL_VALUE = 0; } like in
+    // https://github.com/protocolbuffers/protobuf/blob
+    // /7949a62bf88e1d4e97c93b3a7b8a8cfb201b713a/src/google/protobuf/struct.proto#L84C1-L88C1
+
+    Link link = 1;
+
+    // https://protobuf.dev/programming-guides/proto3/#scalar
+    string string = 2;
+    Text text = 3;
+
+    // TODO Reconsider if this is really needed?! By who, for what?
+    // bytes bytes = 4;
+    // int32 int32 = 5;
+    // int64 int64 = 6;
+    // uint32 uint32 = 7;
+    // uint64 uint64 = 8;
+    // sint32 sint32 = 9;
+    // sint64 sint64 = 10;
+    // fixed32 fixed32 = 11;
+    // fixed64 fixed64 = 12;
+    // sfixed32 sfixed32 = 13;
+    // sfixed64 sfixed64 = 14;
+    // double double = 15;
+    // float float = 16;
+    // bool bool = 17;
+
+    List list = 18;
+    Thing struct = 19;
+  }
+
+  message Link {
+    string iri = 1;
+    string label = 2;
+  }
+
+  message Text {
+    string string = 1;
+
+    // This is an IRI.
+    string datatype = 2;
+
+    // BCP 47 “language tag” (e.g. “de-ch”)
+    string language = 3;
+  }
+
+  message List {
+    repeated Thing entries = 1;
+  }
+}

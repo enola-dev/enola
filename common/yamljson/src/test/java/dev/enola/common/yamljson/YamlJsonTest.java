@@ -51,4 +51,10 @@ public class YamlJsonTest {
     public void testMultiYAML() {
         yamlToJson("value: 123\n---\nvalue: 456");
     }
+
+    @Test
+    public void normalizeJSON() {
+        assertThat(JSON.normalize(" {  'a':\n37}")).isEqualTo("{\"a\":37.0}");
+        assertThat(JSON.normalize("[ ]")).isEqualTo("[]");
+    }
 }

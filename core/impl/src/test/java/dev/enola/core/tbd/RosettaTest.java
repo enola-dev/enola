@@ -30,15 +30,13 @@ import dev.enola.common.io.resource.StringResource;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class RosettaTest {
 
     // These intentionally only tests 1 case; more detailed tests are done in YamlJsonTest,
     // and in ProtoIOTest and (indirectly) EntityKindRepositoryTest, and other tests.
 
     @Test
-    public void testJsonToYaml() throws IOException {
+    public void testJsonToYaml() throws Exception {
         var in = StringResource.of("{\"value\":123}", JSON_UTF_8);
         var out = new MemoryResource(YAML_UTF_8);
         new Rosetta().convert(in, out);
@@ -46,7 +44,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testYamlToJson() throws IOException {
+    public void testYamlToJson() throws Exception {
         var in = StringResource.of("value: 123", YAML_UTF_8);
         var out = new MemoryResource(JSON_UTF_8);
         new Rosetta().convert(in, out);
@@ -54,7 +52,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testTextprotoToYaml() throws IOException {
+    public void testTextprotoToYaml() throws Exception {
         var in =
                 new ClasspathResource(
                         "bar-abc-def.textproto",
@@ -83,7 +81,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testYamlToTextproto() throws IOException {
+    public void testYamlToTextproto() throws Exception {
         var in =
                 new ClasspathResource(
                         "bar-abc-def.yaml",

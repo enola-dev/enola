@@ -27,7 +27,7 @@ It should be regularly (manually) run by maintainers of this project.
 
 ## Runtime Dependencies
 
-* [`MODULE.bazel`](../../MODULE.bazel) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)
+* [`WORKSPACE.bazel`](../../WORKSPACE.bazel) (later [`MODULE.bazel`](../../MODULE.bazel)) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)
 
 ## Build-time (only) Dependencies
 

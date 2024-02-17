@@ -24,10 +24,11 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
 import dev.enola.common.io.resource.WritableResource;
-import dev.enola.common.io.resource.convert.ResourceConverter;
+import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.common.yamljson.YamlJson;
 
 import java.io.IOException;
@@ -38,7 +39,7 @@ import java.io.IOException;
  * @see MessageResourceConverter
  * @see YamlJson
  */
-public class YamlJsonResourceConverter implements ResourceConverter {
+public class YamlJsonResourceConverter implements CatchingResourceConverter {
 
     // TODO This class ideally should be in package dev.enola.common.yamljson,
     // but as-is it cannot, because it references ProtobufMediaTypes directly...
@@ -46,7 +47,8 @@ public class YamlJsonResourceConverter implements ResourceConverter {
     // sub-types.
 
     @Override
-    public boolean convertInto(ReadableResource from, WritableResource into) throws IOException {
+    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
+            throws IOException, ConversionException {
         var fromMT = from.mediaType().withoutParameters();
         var intoMT = into.mediaType().withoutParameters();
 

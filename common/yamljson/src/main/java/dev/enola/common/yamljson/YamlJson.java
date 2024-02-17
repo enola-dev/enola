@@ -17,46 +17,36 @@
  */
 package dev.enola.common.yamljson;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
-import dev.enola.common.io.resource.convert.ResourceConverter;
-
-import org.snakeyaml.engine.v2.api.Dump;
-import org.snakeyaml.engine.v2.api.DumpSettings;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
-import org.snakeyaml.engine.v2.common.ScalarStyle;
 
 import java.util.Iterator;
 import java.util.Map;
 
 public class YamlJson {
 
-    public static final ResourceConverter JSON_TO_YAML =
+    public static final CatchingResourceConverter JSON_TO_YAML =
             (from, into) -> {
                 into.charSink().write(jsonToYaml(from.charSource().read()));
                 return true;
             };
 
-    public static final ResourceConverter YAML_TO_JSON =
+    public static final CatchingResourceConverter YAML_TO_JSON =
             (from, into) -> {
                 into.charSink().write(yamlToJson(from.charSource().read()));
                 return true;
             };
 
     public static String jsonToYaml(String json) {
-        TypeToken<Map<String, Object>> mapType = new TypeToken<Map<String, Object>>() {};
-        Map<String, Object> map = new GsonBuilder().create().fromJson(json, mapType);
+        Map<String, Object> map = JSON.readMap(json);
 
         if (map == null || map.isEmpty()) {
             return "";
         }
 
-        DumpSettings settings =
-                DumpSettings.builder().setDefaultScalarStyle(ScalarStyle.PLAIN).build();
-        Dump dump = new Dump(settings);
-        return dump.dumpToString(map);
+        return YAML.write(map);
     }
 
     public static String yamlToJson(String yaml) {
@@ -73,7 +63,7 @@ public class YamlJson {
                 throw new IllegalArgumentException(
                         "YAML with more than 1 root cannot be converted to JSON");
             }
-            return new GsonBuilder().create().toJson(firstRoot);
+            return JSON.write(firstRoot);
         }
     }
 }

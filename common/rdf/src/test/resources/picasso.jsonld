@@ -1,0 +1,18 @@
+[
+  {
+    "@id": "http://example.enola.dev/Picasso",
+    "@type": [
+      "http://example.enola.dev/Artist"
+    ],
+    "http://www.w3.org/ns/locn#location": [
+      {
+        "@value": "Spain"
+      }
+    ],
+    "http://xmlns.com/foaf/0.1/firstName": [
+      {
+        "@value": "Pablo"
+      }
+    ]
+  }
+]

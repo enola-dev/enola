@@ -1,0 +1,3 @@
+<http://example.enola.dev/Picasso> a <http://example.enola.dev/Artist>;
+  <http://www.w3.org/ns/locn#location> "Spain";
+  <http://xmlns.com/foaf/0.1/firstName> "Pablo" .

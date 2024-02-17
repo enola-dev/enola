@@ -20,7 +20,6 @@ package dev.enola.common.convert;
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -34,5 +33,6 @@ import java.io.Writer;
  */
 public interface ConverterIntoAppendable<I> extends ConverterInto<I, Appendable> {
 
-    void convertInto(I from) throws IOException;
+    @Override
+    boolean convertInto(I from, Appendable into) throws ConversionException;
 }

@@ -26,10 +26,12 @@ import com.google.common.net.MediaType;
 import java.net.URI;
 import java.nio.charset.Charset;
 
-public interface WritableResource {
+public interface WritableResource extends AbstractResource {
 
+    @Override
     URI uri();
 
+    @Override
     MediaType mediaType();
 
     ByteSink byteSink();
