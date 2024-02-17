@@ -33,13 +33,13 @@ import java.util.Map;
 
 public class YamlJson {
 
-    public static ResourceConverter JSON_TO_YAML =
+    public static final ResourceConverter JSON_TO_YAML =
             (from, into) -> {
                 into.charSink().write(jsonToYaml(from.charSource().read()));
                 return true;
             };
 
-    public static ResourceConverter YAML_TO_JSON =
+    public static final ResourceConverter YAML_TO_JSON =
             (from, into) -> {
                 into.charSink().write(yamlToJson(from.charSource().read()));
                 return true;

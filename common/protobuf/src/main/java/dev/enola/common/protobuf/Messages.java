@@ -51,6 +51,8 @@ import com.google.protobuf.UInt64Value;
 public class Messages {
     // TODO Create an interface for newBuilder() to make this ready for DI with EnolaMessages ext
 
+    // TODO Integrate with dev.enola.common.protobuf.DescriptorProvider?
+
     // TODO Re-consider using MessageLite instead of Message here, in case class Wany is removed
 
     private final DescriptorProvider descriptorProvider;
