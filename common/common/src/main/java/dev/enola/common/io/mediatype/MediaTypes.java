@@ -22,6 +22,7 @@ import com.google.common.net.MediaType;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
@@ -85,5 +86,18 @@ public final class MediaTypes {
                                                                                 mediaType
                                                                                         .withoutParameters()))));
         return map.build();
+    }
+
+    public static Optional<String> parameter(MediaType mediaType, String name) {
+        var parameters = mediaType.parameters().get(name);
+        if (parameters.isEmpty()) {
+            return Optional.empty();
+        } else if (parameters.size() == 1) {
+            // NB: ofNullable() instead of of() is crucial here!
+            return Optional.ofNullable(parameters.get(0));
+        } else {
+            throw new IllegalArgumentException(
+                    "MediaType has multiple '" + name + "' parameters: " + mediaType);
+        }
     }
 }

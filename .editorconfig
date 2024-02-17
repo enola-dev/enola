@@ -42,6 +42,7 @@ tab_width = unset
 
 [*.java]
 max_line_length = unset
+indent_size = unset
 
 [*.json]
 max_line_length = unset

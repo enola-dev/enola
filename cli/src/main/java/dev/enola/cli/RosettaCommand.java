@@ -17,7 +17,9 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.io.resource.DelegatingResourceWithMediaType;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.tbd.Rosetta;
 
 import picocli.CommandLine;
@@ -61,7 +63,14 @@ public class RosettaCommand implements CheckedRunnable {
         var inResource = rp.getReadableResource(in);
         var outResource = rp.getWritableResource(out);
 
-        rosetta.convert(inResource, outResource, schema != null ? schema.protoFQN : null);
+        if (schema != null) {
+            // required if in is a *.textproto to determine its type (until header sniffing is
+            // implemented)
+            var mt = ProtobufMediaTypes.setProtoMessageFQN(inResource.mediaType(), schema.protoFQN);
+            inResource = new DelegatingResourceWithMediaType(inResource, mt);
+        }
+
+        rosetta.convert(inResource, outResource);
     }
 
     public enum Schema {

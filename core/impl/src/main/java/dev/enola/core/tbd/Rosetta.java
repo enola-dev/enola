@@ -30,6 +30,7 @@ import com.google.protobuf.DynamicMessage;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.protobuf.ProtoIO;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.common.yamljson.YamlJson;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
@@ -54,15 +55,15 @@ public class Rosetta {
      *
      * @param protoFQN optional, may be null; only required if in is a *.textproto
      */
-    public void convert(ReadableResource in, WritableResource out, String protoFQN)
-            throws IOException {
+    public void convert(ReadableResource in, WritableResource out) throws IOException {
 
         // TODO Use the new ResourceConverter infrastructure here!
 
+        var protoFQN = ProtobufMediaTypes.getProtoMessageFQN(in.mediaType());
         var inmt = in.mediaType().withoutParameters();
         var outmt = out.mediaType().withoutParameters();
-        if (protoFQN != null) {
-            Descriptors.Descriptor descriptor = lookupDescriptor(protoFQN);
+        if (protoFQN.isPresent()) {
+            Descriptors.Descriptor descriptor = lookupDescriptor(protoFQN.get());
             // TODO Use new Messages (EnolaMessages) utility here #performance
             var builder = DynamicMessage.newBuilder(descriptor);
             protoIO.convert(in, builder, out);
@@ -79,7 +80,12 @@ public class Rosetta {
 
         } else {
             throw new IllegalArgumentException(
-                    "Without protoFQN --schema arg, cannot convert " + inmt + " to " + outmt);
+                    "Without protoFQN --schema CLI arg, or ?"
+                            + ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE
+                            + "= contentType parameter, cannot convert "
+                            + inmt
+                            + " to "
+                            + outmt);
         }
     }
 
