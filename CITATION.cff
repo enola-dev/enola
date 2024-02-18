@@ -1,0 +1,42 @@
+# https://citation-file-format.github.io
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files
+# https://github.com/citation-file-format/ruby-cff
+
+cff-version: 1.2.0
+title: "Enola.dev"
+message: "If you use this software, please cite it using the metadata from this file."
+type: software
+version: main
+authors:
+  - family-names: Vorburger.ch
+    given-names: Michael
+    orcid: https://orcid.org/0009-0001-4017-9397
+identifiers:
+  - type: url
+    description: Documentation
+    value: "https://docs.enola.dev"
+# TODO Other identifiers type doi, swh
+repository-code: "https://github.com/enola-dev/enola"
+license: Apache-2.0
+url: "https://enola.dev"
+date-released: 2023-02-22
+abstract: Technical Cloud Infrastructure et al. as RDF Linked Data graphs.
+keywords:
+  - RDF
+  - RDF4j
+  - semantic-web
+  - Cloud
+  - Kubernetes
+  - Markdown
+  - Linked Data
+  - linked-data
+  - knowledge-graph
+  - knowledge-base
+  - knowledge-representation
+  - Java
+  - Graphviz
+  - Graph
+  - Modeling
+  - SRE
+  - Mermaid
+  - Bazel

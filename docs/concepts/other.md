@@ -43,11 +43,16 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 * [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
 * [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units
+* [ORCID](https://orcid.org)
 
 ### Vocabularies
 
 * [SPDX](https://spdx.dev) Software Package Data Exchange (evolution of [DOAP](https://github.com/ewilderj/doap/wiki), see [Maven](https://maven.apache.org/plugins/maven-doap-plugin/))
 * [Digital Buildings](https://google.github.io/digitalbuildings/) #Google
+
+### Platforms
+
+* [Corese](https://project.inria.fr/corese/)
 
 ### Personal
 
