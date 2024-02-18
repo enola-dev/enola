@@ -22,27 +22,19 @@ import dev.enola.common.convert.Converter;
 import dev.enola.common.io.resource.ReadableResource;
 
 import org.eclipse.rdf4j.model.Model;
-import org.eclipse.rdf4j.rio.Rio;
-
-import java.io.IOException;
-import java.io.Reader;
+import org.eclipse.rdf4j.model.impl.DynamicModel;
+import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 public class RdfReaderConverter implements Converter<ReadableResource, Model> {
 
+    private final RdfReaderConverterInto converterInto = new RdfReaderConverterInto();
+
     @Override
     public Model convert(ReadableResource input) throws ConversionException {
-        var parserFormat = Rio.getParserFormatForMIMEType(input.mediaType().toString());
-        if (!parserFormat.isPresent()) {
-            parserFormat = Rio.getParserFormatForFileName(input.uri().toString());
-        }
-        if (parserFormat.isPresent()) {
-            String baseURI = input.uri().toString();
-            try (Reader reader = input.charSource().openStream()) {
-                return Rio.parse(reader, baseURI, parserFormat.get());
-            } catch (IOException e) {
-                throw new ConversionException("Failing reading from : " + input, e);
-            }
-        }
-        throw new ConversionException("No RDFFormat for: " + input);
+        var model = new DynamicModel(new LinkedHashModelFactory());
+        var handler = new StatementCollector(model);
+        converterInto.convertInto(input, handler);
+        return model;
     }
 }
