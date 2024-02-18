@@ -17,22 +17,13 @@
  */
 package dev.enola.common.io.resource.convert;
 
-import dev.enola.common.convert.ConversionException;
+import dev.enola.common.convert.CatchingConverterInto;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
-public interface CatchingResourceConverter extends ResourceConverter {
-
-    boolean convertIntoThrows(ReadableResource from, WritableResource into) throws Exception;
-
-    @Override
-    default boolean convertInto(ReadableResource from, WritableResource into)
-            throws ConversionException {
-        try {
-            return convertIntoThrows(from, into);
-        } catch (Exception e) {
-            if (e instanceof ConversionException) throw (ConversionException) e;
-            else throw new ConversionException("I/O failed; from=" + from + ", into=" + into, e);
-        }
-    }
-}
+/**
+ * {@link ResourceConverter} which catches any failures and wraps them into ConversionException.
+ * Specialization of {@link CatchingConverterInto}.
+ */
+public interface CatchingResourceConverter
+        extends CatchingConverterInto<ReadableResource, WritableResource>, ResourceConverter {}

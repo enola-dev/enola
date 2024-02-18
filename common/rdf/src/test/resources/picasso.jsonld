@@ -6,6 +6,7 @@
     ],
     "http://www.w3.org/ns/locn#location": [
       {
+        "@language": "en",
         "@value": "Spain"
       }
     ],

@@ -38,6 +38,7 @@ public final class JSON {
         return new GsonBuilder().create().toJson(root);
     }
 
+    // TODO normalize() should ideally do away with order differences by sorting map keys
     public static String normalize(String json) {
         return write(readObject(json));
     }

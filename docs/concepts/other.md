@@ -33,7 +33,12 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ## Knowledge Management
 
-<!-- TODO https://github.com/enola-dev/dora/tree/main/awesome: It would be fun to capture in a structured format, with Enola... ;-) And then generated this from that! -->
+<!-- TODO https://github.com/enola-dev/dora/tree/main/awesome:
+     It would be fun to capture in a structured format, with Enola... ;-)
+     Actually this may be a (kind of) "citations" background?! And e.g. Zotero has RDF... hm!
+     This is kind of like an https://github.com/sindresorhus/awesome/blob/main/awesome.md ?
+     So, ... perhaps https://github.com/enola-dev/awesome-linked-data ? Research existing?
+     Then generate this MD from that?  -->
 
 ### Linked Data Sources
 
@@ -44,14 +49,18 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 * [SBB](https://data.sbb.ch) The Swiss trains schedule
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
 * [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units
+
+#### Academic
+
 * [ORCID](https://orcid.org)
+* [OpenAIRE](https://www.openaire.eu)
 
 ### Vocabularies
 
 * [SPDX](https://spdx.dev) Software Package Data Exchange (evolution of [DOAP](https://github.com/ewilderj/doap/wiki), see [Maven](https://maven.apache.org/plugins/maven-doap-plugin/))
 * [Digital Buildings](https://google.github.io/digitalbuildings/) #Google
 
-### Platforms
+### Platforms (?)
 
 * [Protégé](https://protege.stanford.edu) #opensource #editor #ontology #ToDo
 * [Corese](https://project.inria.fr/corese/) #opensource #ToDo
@@ -89,7 +98,7 @@ Enola 🕵🏾‍♀️ visualizes the relationships of its _Entities_ using:
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
 * [aws/graph-explorer](https://github.com/aws/graph-explorer) #RDF #SPARQL #TinkerPop #AWS #opensource
-* [GraphDB Workbench](https://github.com/Ontotext-AD/graphdb-workbench) #freemium #commercial #opensource
+* [GraphDB Workbench](https://github.com/Ontotext-AD/graphdb-workbench) #RDF4j #freemium #commercial #opensource
 
 ### Frameworks
 
@@ -163,6 +172,17 @@ _Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
 [TBD](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)._
 
 * [Mangle](https://github.com/google/mangle) #OpenSource #Google
+
+## Platforms
+
+### Enterprise Data Catalogs
+
+* [data.world](https://data.world)
+
+## Model Template Languages
+
+* [CUE](https://cuelang.org)
+* [Yglu](https://yglu.io)
 
 ## Build
 

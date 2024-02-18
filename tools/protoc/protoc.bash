@@ -36,12 +36,16 @@ ${PLUGIN} --version
 
 mkdir -pv docs/models/enola/schemas/
 protoc \
-    --plugin="${PLUGIN}" \
+  --plugin="${PLUGIN}" \
   --jsonschema_opt=allow_null_values \
   --jsonschema_opt=file_extension=schema.json \
   --jsonschema_opt=disallow_additional_properties \
   --jsonschema_out=docs/models/enola/schemas/ \
+  common/thing/thing.proto \
   core/lib/src/main/java/dev/enola/core/meta/enola_meta.proto
+
+# TODO Add core/lib/src/main/java/dev/enola/core/enola_core.proto
+# when https://github.com/chrusty/protoc-gen-jsonschema/issues/180 is fixed
 
 mkdir -pv ~/.npm/lib/
 npx --yes prettier --write docs/models/enola/schemas/*.json

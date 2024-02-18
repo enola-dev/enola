@@ -45,6 +45,7 @@ java_library(
     deps = [
         ":rdf",
         "//common/common",
+        "//common/protobuf",
         "//common/thing:thing_java",
         "//common/thing:thing_java_proto",
         "//common/yamljson",

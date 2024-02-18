@@ -27,7 +27,6 @@ import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
@@ -75,12 +74,10 @@ public class Rosetta {
 
     public void convert(ReadableResource in, WritableResource out) throws ConversionException {
         if (!resourceConverterChain.convertInto(in, out)) {
-            throw new IllegalArgumentException(
-                    "Without protoFQN --schema CLI arg, or ?"
-                            + ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE
-                            + "= contentType parameter, cannot convert "
+            throw new ConversionException(
+                    "No Converter (registered on the Chain) accepted to transform from "
                             + in
-                            + " to "
+                            + " into "
                             + out);
         }
     }
