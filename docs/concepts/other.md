@@ -37,11 +37,17 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Linked Data Sources
 
+* [Data Commons](https://datacommons.org), by #Google
 * [Wikidata](https://www.wikidata.org) ([SPARQL query](https://query.wikidata.org))
-* [European data](https://data.europa.eu)
+* [European data](https://data.europa.eu), and [Kohesio](https://kohesio.ec.europa.eu)
 * [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
 * [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units
+
+### Vocabularies
+
+* [SPDX](https://spdx.dev) Software Package Data Exchange (evolution of [DOAP](https://github.com/ewilderj/doap/wiki), see [Maven](https://maven.apache.org/plugins/maven-doap-plugin/))
+* [Digital Buildings](https://google.github.io/digitalbuildings/) #Google
 
 ### Personal
 
@@ -61,10 +67,15 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 
 ### Visualization
 
-Enola 🕵🏾‍♀️  visualizes the relationships of its _Entities_ using:
+Enola 🕵🏾‍♀️ visualizes the relationships of its _Entities_ using:
 
 * [Graphviz](https://graphviz.org) #available
-* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #planned #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md)
+* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned
+
+Other _"Graph Explorer"_ kind of UIs that we have heard about include:
+
+* [aws/graph-explorer](https://github.com/aws/graph-explorer) #RDF #SPARQL #TinkerPop #AWS #opensource
+* [GraphDB Workbench](https://github.com/Ontotext-AD/graphdb-workbench) #freemium #commercial #opensource
 
 ### Frameworks
 
@@ -85,6 +96,7 @@ Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself -
 
 Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
+* [qEndpoint](https://github.com/the-qa-company/qEndpoint) #RDF #RDF4j #HDT #GeoSPARQL #SPARQL #opensource
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
 * [Apache Jena's TDB](https://jena.apache.org) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
@@ -93,12 +105,18 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [Blazegraph](https://blazegraph.com) #opensource
 * [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource
 * [Strabon](http://strabon.di.uoa.gr) #opensource
+* [BadWolf](https://github.com/google/badwolf) #temporal #Google #opensource
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
 * [Neo4j](https://neo4j.com), with [neosemantics](https://neo4j.com/labs/neosemantics/) for RDF
 * [Tinkerpop](https://tinkerpop.apache.org)
 * [Other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases)...
+
+### Document DB
+
+* [CursusDB](https://github.com/cursusdb/cursusdb) #opensource
+* [MongoDB](https://www.mongodb.com) #commercial
 
 ### Vector DB
 
@@ -107,11 +125,20 @@ Vector _("Embedding")_ databases of possible future interest:
 * [ChromaDB](https://www.trychroma.com)
 * [Weaviate](https://weaviate.io)
 
-## Symbolic AI Reasoning (GOFAI?)
+## AI
+
+### LLM
+
+* [QAnswer](https://qanswer.ai) by [The QA Company](https://the-qa-company.com) (on [GitHub](https://github.com/the-qa-company)) #RDF
+* [Franz](https://franz.com) #commercial
+
+### Symbolic AI Reasoning (GOFAI?)
 
 [Semantic Reasoning](https://en.wikipedia.org/wiki/Semantic_reasoner) through [modus ponens](https://en.wikipedia.org/wiki/Modus_ponens) of an [Inference Engine](https://en.wikipedia.org/wiki/Inference_engine) by
 _Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
 [TBD](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)._
+
+* [Mangle](https://github.com/google/mangle) #OpenSource #Google
 
 ## Build
 
