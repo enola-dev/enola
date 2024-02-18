@@ -23,7 +23,7 @@ import com.google.common.net.MediaType;
 import org.eclipse.rdf4j.rio.RDFFormat;
 
 public class RdfMediaType {
-    // TODO implements MediaTypeProvder - when that's more pluggable
+    // TODO implements MediaTypeProvider - when that's more pluggable
 
     public static final MediaType TURTLE =
             MediaType.parse(RDFFormat.TURTLE.getDefaultMIMEType()).withCharset(Charsets.UTF_8);

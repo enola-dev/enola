@@ -21,7 +21,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.common.io.resource.WritableResource;
 
-import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
@@ -29,10 +29,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URISyntaxException;
 
-public class RdfWriterConverter implements ConverterInto<Model, WritableResource> {
+public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
 
     @Override
-    public boolean convertInto(Model from, WritableResource into) throws ConversionException {
+    public boolean convertInto(Iterable<Statement> from, WritableResource into)
+            throws ConversionException {
         var writerFormat =
                 Rio.getWriterFormatForMIMEType(into.mediaType().withoutParameters().toString());
         String baseURI = into.uri().toString();
