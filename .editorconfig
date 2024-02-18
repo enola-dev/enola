@@ -118,6 +118,10 @@ indent_size = 2
 [ci.yaml]
 max_line_length = unset
 
+[CITATION.cff]
+indent_size = unset
+max_line_length = unset
+
 [Dockerfile]
 max_line_length = unset
 

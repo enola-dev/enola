@@ -28,4 +28,6 @@ This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
 merchantability, or fitness for a particular purpose. ([`LICENSE`](LICENSE))
 
+Use the _"Cite this repository"_ option on the right side of this page for citations.
+
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
