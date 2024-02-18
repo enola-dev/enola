@@ -34,7 +34,9 @@ public class RdfReaderConverter implements Converter<ReadableResource, Model> {
     public Model convert(ReadableResource input) throws ConversionException {
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
-        converterInto.convertInto(input, handler);
+        if (!converterInto.convertInto(input, handler)) {
+            throw new ConversionException("No RDFFormat for: " + input);
+        }
         return model;
     }
 }

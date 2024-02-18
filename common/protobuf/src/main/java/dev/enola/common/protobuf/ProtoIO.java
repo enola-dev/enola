@@ -22,12 +22,20 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 
 import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-import static dev.enola.common.protobuf.ProtobufMediaTypes.*;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_BINARY;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.net.MediaType;
-import com.google.protobuf.*;
+import com.google.protobuf.ExtensionRegistry;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Message;
+import com.google.protobuf.TextFormat;
+import com.google.protobuf.TypeRegistry;
 import com.google.protobuf.util.JsonFormat;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -35,11 +43,17 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.yamljson.YamlJson;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 
+/**
+ * Converts Protocol Buffer {@link Message}s from/to {@link TextFormat}, {@link JsonFormat} and
+ * YAML.
+ */
 public class ProtoIO {
 
     // TODO scan for proto-file and proto-message headers to support DynamicMessage
@@ -66,7 +80,8 @@ public class ProtoIO {
         this(ExtensionRegistry.getEmptyRegistry(), TypeRegistry.newBuilder().build());
     }
 
-    // Shortcut intended for unit tests. This uses an empty TypeRegistry.
+    @Deprecated // TODO This is ugly... remove!
+    @VisibleForTesting // Shortcut intended for unit tests. This uses an empty TypeRegistry.
     public static void check(String pathToResourceOnClasspath, Message.Builder builder)
             throws IOException {
         ReadableResource resource = new ClasspathResource(pathToResourceOnClasspath);
@@ -162,13 +177,15 @@ public class ProtoIO {
         return builder;
     }
 
+    @SuppressWarnings("unchecked")
     public <M extends Message> M read(
             ReadableResource resource, Message.Builder builder, Class<M> messageClass)
             throws IOException {
         return (M) read(resource, builder).build();
     }
 
-    // see also class Rosetta for a more general Resource format conversion framework
+    /** Deprecated; switch to using MessageResourceConverter. */
+    @Deprecated // TODO Remove ProtoIO#convert by moving it into MessageResourceConverter
     public void convert(ReadableResource in, Message.Builder builder, WritableResource out)
             throws IOException {
         read(in, builder);

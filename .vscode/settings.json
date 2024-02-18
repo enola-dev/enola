@@ -107,9 +107,11 @@
     "editor.defaultFormatter": "zxh404.vscode-proto3"
   },
 
-  // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
   "yaml.schemas": {
-    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yaml"
+    // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
+    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yaml",
+    // Keep this in sync with check-jsonschema in .pre-commit-config.yaml
+    "docs/models/enola/schemas/Thing.schema.json": "*.thing.yaml"
   },
   "yaml.customTags": [
     "!ENV scalar",
@@ -126,11 +128,11 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/*.crswap": true,
     "**/.classpath": true,
+    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true,
+    "**/*.crswap": true,
     "**/eclipse-bin/": true,
     "**/eclipse-testbin/": true,
     "**/.bazeltargets": true,

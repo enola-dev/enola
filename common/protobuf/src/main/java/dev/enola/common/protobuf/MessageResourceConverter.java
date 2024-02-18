@@ -26,6 +26,7 @@ import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
 import java.io.IOException;
 
+/** Converts Resources containing Protocol Buffer messages using the {@link ProtoIO} utility. */
 public class MessageResourceConverter implements CatchingResourceConverter {
 
     private final DescriptorProvider descriptorProvider;
