@@ -36,7 +36,9 @@ do this incrementally over time, improving with each incident
 ([until 🔮](concepts/singularity.md)).
 It complements [related existing tools](concepts/other.md).
 
-Due to its inherently modular underlying technical framework, its internal data model is highly extensible to a variety
-of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups.
+We call this _"Infrastructure as Linked Data"_ graphs.
+
+<!-- Due to its inherently modular underlying technical framework, its internal data model is highly extensible to a variety
+of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups. -->
 
 <!-- TODO The actual usage of [the underlying core](core.md) can be illustrated e.g. by its [Kubernetes Edition](k8s/index.md). -->
