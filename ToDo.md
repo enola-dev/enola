@@ -77,8 +77,6 @@
 
 1. docs: Make `tools/docs/serve.bash` use [`ibazel`](https://github.com/bazelbuild/bazel-watcher) to rebuild Proto MD on change of `.proto`
 
-1. Eventually switch from Java 11 to probably Java 19 (in `.bazelrc`)
-
 1. https://github.com/textlint/textlint with https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule
 
 1. `dev.enola.common.io.mediatype` adapter for https://tika.apache.org/2.7.0/api/org/apache/tika/detect/Detector.html

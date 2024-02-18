@@ -23,6 +23,6 @@ import dev.enola.common.io.resource.WritableResource;
 
 /**
  * Reads in from a {@link ReadableResource}, converts content, and writes out to a {@link
- * WritableResource}.
+ * WritableResource}. Use {@link ResourceConverterChain} to "chain" implementations together.
  */
 public interface ResourceConverter extends ConverterInto<ReadableResource, WritableResource> {}

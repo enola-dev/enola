@@ -27,8 +27,8 @@ option go_package = "dev/enola/thing";
 
 // TODO Unify this with the original still in //core/lib!
 
-// Thing is is (loosely) inspired by RDF, google/protobuf/struct.proto, JSON (+
-// JSON-LD, for links), [Cap'n Proto's
+// Thing is is (loosely) inspired by RDF, or google/protobuf/struct.proto
+// (+link), JSON (+ JSON-LD, for links), [Cap'n Proto's
 // schema.capnp](https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp),
 // et al. It intentionally doesn't quite look like
 // https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Protobuf/binary-rdf.proto,
@@ -52,10 +52,13 @@ message Value {
 
     Link link = 1;
 
-    // https://protobuf.dev/programming-guides/proto3/#scalar
     string string = 2;
-    Text text = 3;
 
+    Literal literal = 3;
+
+    LangString lang_string = 4;
+
+    // https://protobuf.dev/programming-guides/proto3/#scalar
     // TODO Reconsider if this is really needed?! By who, for what?
     // bytes bytes = 4;
     // int32 int32 = 5;
@@ -78,17 +81,33 @@ message Value {
 
   message Link {
     string iri = 1;
+
+    // This is something to show humans, it's the "text to click on for this
+    // link", e.g. from the "title" of the resource that the IRI points to.
+    // This concept doesn't exist as such in RDF, but it's important to us.
     string label = 2;
+
+    // TODO Is there any point/interest in Link (optionally) having a
+    // LangString?
+    LangString lang_string = 3;
   }
 
-  message Text {
-    string string = 1;
+  message Literal {
+    // Value of the literal. This is "encoded" by the datatype, below. (RDF
+    // calls this the "label", but to us that sounds wrong, because it evokes
+    // "something to show human users" too much.)
+    string value = 1;
 
     // This is an IRI.
     string datatype = 2;
+  }
 
-    // BCP 47 “language tag” (e.g. “de-ch”)
-    string language = 3;
+  message LangString {
+    // Text, for humans.
+    string text = 1;
+
+    // BCP 47 “language tag” (e.g. “de-ch”) of the text.
+    string lang = 2;
   }
 
   message List {

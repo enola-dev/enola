@@ -15,19 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.resource.convert;
+package dev.enola.common.convert;
 
-import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.convert.ConverterIntoChain;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.WritableResource;
+/** {@link ConverterInto} which catches any failures and wraps them into ConversionException. */
+public interface CatchingConverterInto<I, O> extends ConverterInto<I, O> {
 
-/** Chain of {@link ResourceConverter}s. Specialization of {@link ConverterIntoChain}. */
-public class ResourceConverterChain extends ConverterIntoChain<ReadableResource, WritableResource>
-        implements ResourceConverter {
+    boolean convertIntoThrows(I from, O into) throws Exception;
 
-    public ResourceConverterChain(
-            Iterable<ConverterInto<ReadableResource, WritableResource>> converters) {
-        super(converters);
+    @Override
+    default /* final */ boolean convertInto(I from, O into) throws ConversionException {
+        try {
+            return convertIntoThrows(from, into);
+        } catch (Exception e) {
+            if (e instanceof ConversionException) throw (ConversionException) e;
+            else throw new ConversionException("I/O failed; from=" + from + ", into=" + into, e);
+        }
     }
 }

@@ -19,11 +19,6 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.rdf.ResourceSubject.assertThat;
-
-import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.MemoryResource;
-
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.TreeModel;
@@ -34,7 +29,7 @@ import org.eclipse.rdf4j.model.vocabulary.LOCN;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.junit.Test;
 
-public class RdfTest {
+public class LearnRdf4jTest {
 
     // https://rdf4j.org/documentation/tutorials/getting-started/
 
@@ -57,8 +52,12 @@ public class RdfTest {
         model.add(picasso, FOAF.FIRST_NAME, Values.literal("Pablo"));
 
         // Terzo
+        // TODO Use MLS LangString here!!
         // TODO What defines what's "valid" for http://www.w3.org/ns/locn#location?
         model.add(picasso, LOCN.LOCATION, Values.literal("Spain"));
+
+        // TODO Add Blank Node (and #test ConvertersTest and MessageToThingConverterTest), see
+        // https://rdf4j.org/documentation/tutorials/getting-started/#blank-nodes
 
         return model;
     }
@@ -78,17 +77,5 @@ public class RdfTest {
         var picasso1 = picasso1();
         var picasso2 = picasso2();
         assertThat(picasso1).isEqualTo(picasso2);
-
-        // 🎨 as 🐢 https://www.w3.org/TR/turtle
-        var actualT = new MemoryResource(RdfMediaType.TURTLE);
-        new RdfWriterConverter().convertInto(picasso1, actualT);
-        var expectedT = new ClasspathResource("picasso.turtle", RdfMediaType.TURTLE);
-        assertThat(actualT).containsCharsOf(expectedT);
-
-        // 🎨 as https://json-ld.org
-        var actualJ = new MemoryResource(RdfMediaType.JSON_LD);
-        new RdfWriterConverter().convertInto(picasso1, actualJ);
-        var expectedJ = new ClasspathResource("picasso.jsonld", RdfMediaType.JSON_LD);
-        assertThat(actualJ).hasJSONEqualTo(expectedJ);
     }
 }

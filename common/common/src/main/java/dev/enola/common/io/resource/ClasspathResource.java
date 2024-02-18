@@ -30,13 +30,13 @@ public class ClasspathResource extends UrlResource {
         super(Resources.getResource(path), mediaType);
     }
 
+    @Deprecated // TODO Until mediaType is set based file extension from path
     public ClasspathResource(String path, Charset charset) {
-        // TODO mediaType should be set based on looking at file extension from path
         super(Resources.getResource(path), charset);
     }
 
+    @Deprecated // TODO Until mediaType is set based file extension from path
     public ClasspathResource(String path) {
-        // TODO mediaType should be set based on looking at file extension from path
         super(Resources.getResource(path));
     }
 }
