@@ -31,8 +31,8 @@ default_java_toolchain(
     configuration = DEFAULT_TOOLCHAIN_CONFIGURATION,  # One of predefined configurations
     # Other parameters are from java_toolchain rule:
     java_runtime = "@rules_java//toolchains:remotejdk_21",  # JDK to use for compilation and toolchain's tools execution
-    javacopts = DEFAULT_JAVACOPTS + ["--enable_preview"],  # Additional javac options
-    jvm_opts = BASE_JDK9_JVM_OPTS + ["--enable_preview"],  # Additional JDK options
+    javacopts = DEFAULT_JAVACOPTS + ["--enable-preview"],  # Additional javac options
+    jvm_opts = BASE_JDK9_JVM_OPTS + ["--enable-preview"],  # Additional JDK options
     source_version = "21",
     target_version = "21",
 )
