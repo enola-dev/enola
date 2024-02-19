@@ -18,7 +18,13 @@
 
 # IDE
 
+Ensure you are [set-up](setup.md) with a working build on the CLI before configuring your IDE.
+
 ## Web IDE
+
+VSC-based Web IDEs like _GitHub Codespaces_ or _Visual Studio Code for the Web_ don't work well for this project, yet - see [issue #506](https://github.com/enola-dev/enola/issues/506).
+
+<!-- TODO https://github.com/enola-dev/enola/issues/506
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
 
@@ -37,6 +43,7 @@ such as [e.g. this dude did in his dotfiles](https://github.com/vorburger/vorbur
 Alternatively, you can use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
 together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
 e.g. to a computer at home, or a VM in the Cloud.
+-->
 
 ## Local Visual Studio Code (VSC)
 

@@ -18,9 +18,7 @@
 
 # Dev Set-Up
 
-## Visual Studio Code
-
-**We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
+<!-- TODO https://github.com/enola-dev/enola/issues/506: ## Visual Studio Code **We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.** -->
 
 ## Development Environment in a Docker Container
 

@@ -33,7 +33,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ## Knowledge Management
 
-<!-- I would be fun to capture in a structured format, with Enola... ;-) And then generated this from that! -->
+<!-- TODO https://github.com/enola-dev/dora/tree/main/awesome: It would be fun to capture in a structured format, with Enola... ;-) And then generated this from that! -->
 
 ### Linked Data Sources
 
@@ -52,6 +52,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Platforms
 
+* [Protégé](https://protege.stanford.edu)
 * [Corese](https://project.inria.fr/corese/)
 
 ### Personal
