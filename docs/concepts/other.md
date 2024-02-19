@@ -52,18 +52,20 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Platforms
 
-* [Protégé](https://protege.stanford.edu)
-* [Corese](https://project.inria.fr/corese/)
+* [Protégé](https://protege.stanford.edu) #ToDo
+* [Corese](https://project.inria.fr/corese/) #ToDo
 
 ### Personal
 
 Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management) like features, similar to tools such as:
 
 * [Obsidian](https://obsidian.md) #freeware
-* [Logseq](https://logseq.com) #opensource
+* [Logseq](https://logseq.com) #opensource #ToDo
 * [Cosma](https://cosma.arthurperret.fr) #opensource
 * [Org Mode](https://orgmode.org) #opensource
 * [The Brain](https://thebrain.com)
+* [Roam Research](https://roamresearch.com) #ToDo
+* [RemNote](https://www.remnote.com)
 * [TiddlyWiki](https://tiddlywiki.com)
 * [Zettlr](https://www.zettlr.com) #opensource
 * [The Archive from zettelkasten.de](https://zettelkasten.de/the-archive/)
@@ -76,7 +78,7 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 Enola 🕵🏾‍♀️ visualizes the relationships of its _Entities_ using:
 
 * [Graphviz](https://graphviz.org) #available
-* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned
+* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned #ToDo
 
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
@@ -106,7 +108,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
 * [Apache Jena's TDB](https://jena.apache.org) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
-* [Stardog](https://www.stardog.com) #commercial
+* [Stardog](https://www.stardog.com) #freemium #commercial #GraphML? #LLM?
 * [Virtuoso](https://virtuoso.openlinksw.com) #opensource
 * [Blazegraph](https://blazegraph.com) #opensource
 * [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource
@@ -119,10 +121,15 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [Tinkerpop](https://tinkerpop.apache.org)
 * [Other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases)...
 
-### Document DB
+### GraphML DB
 
-* [CursusDB](https://github.com/cursusdb/cursusdb) #opensource
-* [MongoDB](https://www.mongodb.com) #commercial
+* [LlamaIndex](https://www.llamaindex.ai) #GraphML #opensource? #ToDo
+* [varunshenoy/GraphGPT](https://github.com/varunshenoy/GraphGPT) #GraphML #opensource #demo
+* [HKUDS/GraphGPT](https://github.com/HKUDS/GraphGPT) #GraphML #opensource #paper
+* [Kumo.ai](https://kumo.ai) #GraphML #commercial #LLM
+* [Relational.ai](https://relational.ai) #commercial
+* [QAnswer](https://qanswer.ai) by [The QA Company](https://the-qa-company.com) (on [GitHub](https://github.com/the-qa-company)) #RDF
+* [Franz](https://franz.com) #commercial
 
 ### Vector DB
 
@@ -131,12 +138,12 @@ Vector _("Embedding")_ databases of possible future interest:
 * [ChromaDB](https://www.trychroma.com)
 * [Weaviate](https://weaviate.io)
 
+### Document DB
+
+* [CursusDB](https://github.com/cursusdb/cursusdb) #opensource
+* [MongoDB](https://www.mongodb.com) #commercial
+
 ## AI
-
-### LLM
-
-* [QAnswer](https://qanswer.ai) by [The QA Company](https://the-qa-company.com) (on [GitHub](https://github.com/the-qa-company)) #RDF
-* [Franz](https://franz.com) #commercial
 
 ### Symbolic AI Reasoning (GOFAI?)
 
