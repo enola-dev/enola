@@ -29,27 +29,29 @@
 #  from https://github.com/devcontainers/templates/tree/main/src/debian
 #  is very (too) minimal, and we would need to add a lot...)
 # FROM mcr.microsoft.com/devcontainers/universal:2-linux
-FROM docker.io/library/fedora:39
+FROM docker.io/library/debian:11
 
-RUN dnf update -y
+RUN apt update -y
 
-RUN dnf install -y fish gcc-c++ golang \
-    java-21-openjdk-devel java-21-openjdk-src java-21-openjdk-javadoc \
-    java-21-openjdk-javadoc-zip java-21-openjdk-jmods
+RUN apt install -y fish g++ git curl unzip -y
 
 # TODO useradd --shell fish ...
-RUN useradd "developer" && \
-    sed -i 's/# %wheel/%wheel/' /etc/sudoers && \
-    sudo usermod -aG wheel "developer"
+RUN adduser "developer"
+# && \
+#    sed -i 's/# %wheel/%wheel/' /etc/sudoers && \
+#    sudo usermod -aG wheel "developer"
 USER developer
 
 # https://go.dev/doc/install (adapted for Fedora, which does not use ~/.profile, and ignores PATH in ~/.bash_profile)
 RUN echo "export PATH=$PATH:/home/developer/go/bin" >> /home/developer/.bashrc
 
-ADD tools/go/install.bash /tmp/go-install.bash
-RUN /tmp/go-install.bash
-
 WORKDIR /workspace/
-RUN --mount=type=bind,source=.,target=/workspace/ /workspace/tools/devenv/install.bash
+ADD tools /workspace/tools
+ADD .tool-versions /workspace/
+
+RUN /workspace/tools/devenv/install.bash
+
+RUN echo "export PATH=$PATH:/home/developer/.asdf/installs/golang/1.22.0/packages/bin" >> /home/developer/.bashrc
+RUN echo ". /home/developer/.asdf/asdf.sh" >> /home/developer/.bashrc
 
 # See https://docs.docker.com/build/guide/mounts/ for documentation about --mount=type.

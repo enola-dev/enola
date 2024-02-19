@@ -18,11 +18,14 @@
 set -euo pipefail
 
 if ! [ -x "$(command -v asdf)" ]; then
-  echo "Please install ASDF, see https://asdf-vm.com/guide/getting-started.html"
-  # Ideally the same version as the one specified by asdf_branch in ci.yaml
-  exit 1
+  git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
+  . "$HOME/.asdf/asdf.sh"
 fi
 
 asdf info
+asdf plugin add protoc
+asdf plugin add java
+asdf plugin add golang
 asdf install
 asdf current
+
