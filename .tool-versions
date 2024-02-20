@@ -3,11 +3,26 @@
 # List is on https://github.com/asdf-vm/asdf-plugins
 # (It's also possible to directly install from any other repo.)
 
+# This how to use ASDF, for example:
 # asdf plugin add protoc
 # asdf list-all protoc
 # asdf install protoc latest
 # asdf local protoc latest
 
+# Go is required to install Bazelisk, if required
+# (and perhaps for Go developer later); and its used
+# by Bazel, due to go_sdk.host() in MODULE.bazel.
+golang 1.22.0
+
+# This Java is not currently used by Bazel,
+# because of toolchains:remotejdk_21
+# in tools/java_toolchain/BUILD.
+# It is however used by the ./enola launcher script.
+java openjdk-21
+
+# Protoc is used (only) by tools/protoc/protoc.bash
+# to generate *.schema.json from *.proto; the Bazel
+# rules_proto (downloads and builds) its own protoc.
 protoc 25.3
 
 # TODO protolint here instead of installing it in test.bash
