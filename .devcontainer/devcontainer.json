@@ -7,6 +7,8 @@
 
   // This is the "fat" container with a lot of ready tools
   // from https://github.com/devcontainers/images/tree/main/src/universal
+  // TODO This image is (too!) huge... try switching to https://github.com/devcontainers/images/tree/main/src/base-debian?
+  // Make sure https://github.com/vorburger/vorburger-dotfiles-bin-etc still work... ;-)
   "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
 
   // TODO https://containers.dev/guide/dockerfile
@@ -23,7 +25,7 @@
   // slows down the "Setting up your workspace"... better let the developer pop into
   // a work Web IDE ASAP - and then let them manually run this in it.
   // "onCreateCommand": "/workspaces/enola/test.bash",
-  "onCreateCommand": "/workspaces/enola/tools/sdkman/java-21.bash",
+  "onCreateCommand": "/workspaces/enola/tools/asdf/install.bash",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
