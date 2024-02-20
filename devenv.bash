@@ -21,4 +21,11 @@ set -euo pipefail
 
 docker build -t enola.dev-devenv --rm -f Dockerfile-DevEnv .
 
-docker run -v .:/workspace/:Z -it --rm enola.dev-devenv
+# NB: Use PWD instead of . here because different of different . intepretations;
+# between older/newer Docker (and Podman...) versions - at least some older Docker
+# versions have been observed to fail, because they assume . to be a volume name! :/)
+set +u
+if [ -z "$CI" ]; then
+  docker run -v "$PWD":/workspace/:Z -it --rm enola.dev-devenv
+fi
+set -u
