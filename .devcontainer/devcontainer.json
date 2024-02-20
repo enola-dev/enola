@@ -18,18 +18,17 @@
   // https://containers.dev/implementors/json_reference/#lifecycle-scripts
   // is what you want, NOT features' "ghcr.io/devcontainers-contrib/features/bash-command:1"
   // (because that doesn't seem to have access to the workspace, whereas this does)
-  "onCreateCommand": "/workspaces/enola/test.bash",
+  //
+  // TODO Rethink if we want this? It seems like a dumb idea now, as it (considerably)
+  // slows down the "Setting up your workspace"... better let the developer pop into
+  // a work Web IDE ASAP - and then let them manually run this in it.
+  // "onCreateCommand": "/workspaces/enola/test.bash",
+  "onCreateCommand": "/workspaces/enola/tools/sdkman/java-21.bash",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     // Do *NOT* add anything here; all tools are always only installed
     // via https://asdf-vm.com from //.tool-versions!
-
-    // TODO Move Java version to .tool-versions
-    // Java version must match .bazelrc
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "21"
-    }
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
