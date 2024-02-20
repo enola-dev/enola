@@ -25,22 +25,49 @@
   // slows down the "Setting up your workspace"... better let the developer pop into
   // a work Web IDE ASAP - and then let them manually run this in it.
   // "onCreateCommand": "/workspaces/enola/test.bash",
-  "onCreateCommand": "/workspaces/enola/tools/asdf/install.bash",
+  "onCreateCommand": "/workspaces/enola/tools/devcontainer/install.bash",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    // Do *NOT* add anything here; all tools are always only installed
+    // DO NOT REMOVE THIS! Unless you *really* know what you're doing! Like really.
+    //
+    // The reason is that, while the CLI build with ./test.bash and all will still work,
+    // the Visual Studio Code Web on GitHub Codespaces will break without this - even
+    // if you installed Bazel/Bazelisk in another script, e.g. via ASDF or go install.
+    //
+    // The reason for that is that the Language Server from the VSC Bazel Java extension
+    // needs to be able to launch "bazel" from PATH - and that only works if it's in a
+    // directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
+    // VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or ~/.asdf or
+    // whatever.
+    //
+    // See also https://github.com/salesforce/bazel-vscode-java/issues/94
+    // and use https://github.com/vorburger/LearningBazelJavaVSC as reference.
+    //
+    // TODO ghcr.io/devcontainers-community/features/bazel is broken?
+    // see https://github.com/devcontainers-community/features-bazel/issues/10
+    // and https://github.com/devcontainers/spec/issues/431
+    //"ghcr.io/devcontainers-community/features/bazel:1": {
+    //      "bazelisk_version": "v1.19.0"
+    //   }
+    //
+    // Do *NOT* add anything else here; most other tools are always only installed
     // via https://asdf-vm.com from //.tool-versions!
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
-  // Configure tool-specific properties.
-  // "customizations": {},
-
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
+  // Configure tool-specific properties; see https://containers.dev/supporting.
+  "customizations": {
+    "vscode": {
+      // Keeping this in-sync (duplicated; urgh!) with .vscode/extensions.json
+      // does NOT appear to pre-install them, it still annoyingly asks
+      // "Do you want to install..." for *every* extension, so there is
+      // really no point in duplicating the list here.
+      "extensions": []
+    }
+  },
 
   "hostRequirements": {
     "cpus": 16
