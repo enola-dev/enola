@@ -19,7 +19,11 @@ set -euo pipefail
 
 # This script prepares the Development Environment container.
 
-tools/pre-commit/install.bash
+tools/asdf/install.bash
+. "$HOME/.asdf/asdf.sh"
+asdf reshim
+tools/go/install.bash
+#tools/pre-commit/install.bash
 
 # TODO After https://github.com/enola-dev/enola/pull/452, uncomment:
 # $(go env GOPATH)/bin/bazelisk run //tools/hello

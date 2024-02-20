@@ -21,4 +21,4 @@ set -euo pipefail
 
 docker build -t enola.dev-devenv --rm -f Dockerfile-DevEnv .
 
-docker run -v .:/workspace/:Z -it --rm enola.dev-devenv
+docker run -v $PWD:/workspace/:Z -it --rm enola.dev-devenv

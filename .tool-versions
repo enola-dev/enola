@@ -9,6 +9,8 @@
 # asdf local protoc latest
 
 protoc 25.3
+golang 1.22.0
+java openjdk-21
 
 # TODO protolint here instead of installing it in test.bash
 # when https://github.com/spencergilbert/asdf-protolint/issues/37 is fixed
