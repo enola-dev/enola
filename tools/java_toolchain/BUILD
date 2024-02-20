@@ -20,8 +20,6 @@
 
 load(
     "@bazel_tools//tools/jdk:default_java_toolchain.bzl",
-    "BASE_JDK9_JVM_OPTS",
-    "DEFAULT_JAVACOPTS",
     "DEFAULT_TOOLCHAIN_CONFIGURATION",
     "default_java_toolchain",
 )
@@ -31,8 +29,8 @@ default_java_toolchain(
     configuration = DEFAULT_TOOLCHAIN_CONFIGURATION,  # One of predefined configurations
     # Other parameters are from java_toolchain rule:
     java_runtime = "@rules_java//toolchains:remotejdk_21",  # JDK to use for compilation and toolchain's tools execution
-    javacopts = DEFAULT_JAVACOPTS + ["--enable-preview"],  # Additional javac options
-    jvm_opts = BASE_JDK9_JVM_OPTS + ["--enable-preview"],  # Additional JDK options
+    # Do *NOT* add "--enable-preview" javacopts + jvm_opts here!!
+    # (See https://github.com/enola-dev/enola/issues/511 for why not.)
     source_version = "21",
     target_version = "21",
 )
