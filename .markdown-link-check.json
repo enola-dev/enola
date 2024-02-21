@@ -2,7 +2,8 @@
   "ignorePatterns": [
     { "pattern": ".*dev/proto/core.*" },
     { "pattern": "script.svg" },
-    { "pattern": "^https://vscode.dev" }
+    { "pattern": "^https://vscode.dev" },
+    { "pattern": "^https://graphdb.ontotext.com" }
   ],
   "aliveStatusCodes": [200, 0]
 }
