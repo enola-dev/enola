@@ -30,4 +30,4 @@ merchantability, or fitness for a particular purpose. ([`LICENSE`](LICENSE))
 
 Use the _"Cite this repository"_ option on the right side of this page for citations.
 
-<!-- TODO https://github.com/enola-dev/enola/issues/506: [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1) -->
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)

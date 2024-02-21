@@ -20,11 +20,7 @@
 
 Ensure you are [set-up](setup.md) with a working build on the CLI before configuring your IDE.
 
-## Web IDE
-
-VSC-based Web IDEs like _GitHub Codespaces_ or _Visual Studio Code for the Web_ don't work well for this project, yet - see [issue #506](https://github.com/enola-dev/enola/issues/506).
-
-<!-- TODO https://github.com/enola-dev/enola/issues/506
+## GitHub Codespaces
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
 
@@ -40,10 +36,24 @@ If you are missing your fancy custom Shell configuration that you have built ove
 you should [set up your dotfiles for Codespaces](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
 such as [e.g. this dude did in his dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc#github-codespaces).
 
-Alternatively, you can use [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
-together with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
-e.g. to a computer at home, or a VM in the Cloud.
--->
+If you are hitting the _"Codespace could not be created: SKU name 'basicLinux32gb' is not allowed for this repository"_
+error, this actually (somewhat confusingly) indicates a _billing_ problem. Please create an issue on the project to
+discuss how we can increase quota so that you can contribute.
+
+## Visual Studio Code on Web
+
+You may alternatively be interested in using:
+
+* [Visual Studio Code for the Web](https://code.visualstudio.com/docs/editor/vscode-web) at <https://vscode.dev>
+* [The `github.dev` web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor)
+
+with a [Remote Tunnel](https://code.visualstudio.com/docs/editor/vscode-web#_use-your-own-compute-with-remote-tunnels)
+e.g. your own VM in the Cloud, or to a computer at home, or perhaps even simply running and exposing a `code serve-web`
+with your own VPN or SSH port forwarding solution (but without GitHub tunnel).
+
+While GitHub Codespaces are built on VSC Web technologies, this project is currently known
+to unfortunately not work well with such non-GitHub Codespaces VSC Web environments.
+The [bazel-vscode-java issues #94](https://github.com/salesforce/bazel-vscode-java/issues/94) has more background about this.
 
 ## Local Visual Studio Code (VSC)
 
