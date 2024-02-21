@@ -20,6 +20,7 @@
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
     "kshetline.ligatures-limited",
+    "vscjava.vscode-java-pack",
     "vscjava.vscode-gradle",
     "vscjava.vscode-maven"
   ]

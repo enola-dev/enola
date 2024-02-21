@@ -19,7 +19,7 @@ golang 1.21.7
 # because of toolchains:remotejdk_21
 # in tools/java_toolchain/BUILD.
 # It is however used by the ./enola launcher script.
-java openjdk-21
+java temurin-21.0.2+13.0.LTS
 
 # Protoc is used (only) by tools/protoc/protoc.bash
 # to generate *.schema.json from *.proto; the Bazel
