@@ -26,4 +26,6 @@ ROOT_DIR=$(realpath "$(dirname "$0")")/../..
 
 "$ROOT_DIR"/tools/asdf/install.bash
 
-# NOT "$ROOT_DIR"/tools/go/install.bash - this is too slow; it will just get triggered on first use of ./test.bash.
+# This is required, otherwise when opening *.java it will be all red;
+# see /usr/local/bin/bazel related inline documentation in tools/go/install.bash.
+"$ROOT_DIR"/tools/go/install.bash
