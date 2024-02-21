@@ -116,7 +116,6 @@ jobs:
         # See https://github.com/asdf-vm/actions/issues/445
         if: ${{ steps.asdf-cache.outputs.cache-hit != 'true' }}
         with:
-          # Keep this asdf_branch version in sync with //tools/asdf/install.bash
           asdf_branch: v0.14.0
       - name: Reshim installed ASDF tools
         shell: bash

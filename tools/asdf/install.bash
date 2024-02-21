@@ -17,41 +17,12 @@
 
 set -euo pipefail
 
-# Because mcr.microsoft.com/devcontainers/universal:2-linux
-# comes with several Java versions pre-installed by SDKMAN already,
-# let's wipe everything, and (re)install only the one we want below
-# (via ASDF, for consistency), to avoid confusion:
-# TODO Remove this when .devcontainer/devcontainer.json switched to a ligher base image
-rm -rf /usr/local/sdkman/candidates/java/
-
 if ! [ -x "$(command -v asdf)" ]; then
-  if ! [ -d "$HOME/.asdf/" ]; then
-    # As per https://asdf-vm.com/guide/getting-started.html
-    # Keep the --branch version in sync with //.github/workflows/ci.yaml
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-
-    # shellcheck disable=SC2016
-    echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-    # shellcheck disable=SC2016
-    echo '. "$HOME/.asdf/completions/asdf.bash" ' >> ~/.bashrc
-
-    mkdir -p ~/.config/fish/completions
-    echo 'source ~/.asdf/asdf.fish' >> ~/.config/fish/config.fish
-    ln -s ~/.asdf/completions/asdf.fish ~/.config/fish/completions
-
-  fi
-  # shellcheck source=/dev/null
-  . "$HOME/.asdf/asdf.sh"
+  echo "Please install ASDF, see https://asdf-vm.com/guide/getting-started.html"
+  # Ideally the same version as the one specified by asdf_branch in ci.yaml
+  exit 1
 fi
 
 asdf info
-asdf plugin add golang
-asdf plugin add java
-asdf plugin add protoc
-# This installs the tools as per //.tools-versions (with fixed versions)
 asdf install
 asdf current
-
-go version
-java -version
-protoc --version
