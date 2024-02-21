@@ -52,8 +52,12 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Platforms
 
-* [Protégé](https://protege.stanford.edu) #ToDo
-* [Corese](https://project.inria.fr/corese/) #ToDo
+* [Protégé](https://protege.stanford.edu) #opensource #editor #ontology #ToDo
+* [Corese](https://project.inria.fr/corese/) #opensource #ToDo
+* [PoolParty](https://www.poolparty.biz) #commercial #LLM
+* [Anzo, by Cambridge Semantics](https://cambridgesemantics.com/anzo-platform/) #commercial
+* [Semaphore, by Progress](https://www.progress.com/semaphore) #commercial
+* [metaphactory, by Metaphacts](https://metaphacts.com)
 
 ### Personal
 
@@ -114,11 +118,15 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource
 * [Strabon](http://strabon.di.uoa.gr) #opensource
 * [BadWolf](https://github.com/google/badwolf) #temporal #Google #opensource
+* [Neptune](https://aws.amazon.com/neptune/) #AWS #cloud #commercial #SaaS
+* [Cosmos](https://azure.microsoft.com/en-us/products/cosmos-db/) #Azure #cloud #commercial #SaaS
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
+* [Tinkerpop](https://tinkerpop.apache.org) #opensource
+* [JanusGraph](https://janusgraph.org) #opensource
 * [Neo4j](https://neo4j.com), with [neosemantics](https://neo4j.com/labs/neosemantics/) for RDF
-* [Tinkerpop](https://tinkerpop.apache.org)
+* [Tiger](https://www.tigergraph.com) #commercial #ML
 * [Other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases)...
 
 ### GraphML DB
