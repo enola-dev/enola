@@ -19,6 +19,9 @@ set -euox pipefail
 
 # This script runs on CI and tests the project.
 
+# shellcheck source=/dev/null
+source tools/asdf/install.bash
+
 # TODO Run all this only when model inputs change
 tools/protoc/protoc.bash
 

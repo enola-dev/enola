@@ -23,8 +23,7 @@ set -euox pipefail
 # TODO Make this using Bazel with a BUILD instead
 # (It's kind of dumb how as-is there is a protoc "in" Bazel and a separate one.)
 
-tools/asdf/install.bash
-asdf exec protoc --version
+protoc --version
 
 # https://github.com/chrusty/protoc-gen-jsonschema
 if ! [ -x "$(command -v protoc-gen-jsonschema)" ]; then
@@ -36,8 +35,8 @@ PLUGIN=$(go env GOPATH)/bin/protoc-gen-jsonschema
 ${PLUGIN} --version
 
 mkdir -pv docs/models/enola/schemas/
-asdf exec protoc \
-  --plugin="${PLUGIN}" \
+protoc \
+    --plugin="${PLUGIN}" \
   --jsonschema_opt=allow_null_values \
   --jsonschema_opt=file_extension=schema.json \
   --jsonschema_opt=disallow_additional_properties \
