@@ -15,6 +15,12 @@
 # by Bazel, due to go_sdk.host() in MODULE.bazel.
 golang 1.21.7
 
+# This Java is not currently used by Bazel,
+# because of toolchains:remotejdk_21
+# in tools/java_toolchain/BUILD.
+# It is however used by the ./enola launcher script.
+java openjdk-21
+
 # Protoc is used (only) by tools/protoc/protoc.bash
 # to generate *.schema.json from *.proto; the Bazel
 # rules_proto (downloads and builds) its own protoc.
@@ -22,11 +28,3 @@ protoc 25.3
 
 # TODO protolint here instead of installing it in test.bash
 # when https://github.com/spencergilbert/asdf-protolint/issues/37 is fixed
-
-# PS: Nota bene, we intentionally *do NOT* have e.g.
-# "java temurin-21.0.2+13.0.LTS" (or "java openjdk-21") here,
-# due to https://github.com/enola-dev/enola/issues/520!
-# (And such a Java also wouldn't be used by Bazel,
-#  because of toolchains:remotejdk_21
-#  in tools/java_toolchain/BUILD.
-#  Only ./enola launcher script.)

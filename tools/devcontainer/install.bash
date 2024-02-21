@@ -26,14 +26,6 @@ ROOT_DIR=$(realpath "$(dirname "$0")")/../..
 
 "$ROOT_DIR"/tools/asdf/install.bash
 
-# Since we do not install Java via ASDF by default (see PS in .tools-versions),
-# we do that here now - but notably only for the dev container. And we do a "global"
-# installation, to prevent this from being added to the project's .tools-versions.
-asdf plugin add java
-asdf install temurin-21.0.2+13.0.LTS
-asdf global java temurin-21.0.2+13.0.LTS
-java --version
-
 # This is required, otherwise when opening *.java it will be all red;
 # see /usr/local/bin/bazel related inline documentation in tools/go/install.bash.
 "$ROOT_DIR"/tools/go/install.bash
