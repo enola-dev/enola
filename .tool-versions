@@ -11,7 +11,7 @@
 # asdf local protoc latest
 
 # Go is required to install Bazelisk, if required
-# (and perhaps for Go developer later); and its used
+# (and perhaps for Go development later); and it's used
 # by Bazel, due to go_sdk.host() in MODULE.bazel.
 golang 1.21.7
 

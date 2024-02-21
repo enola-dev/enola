@@ -36,6 +36,7 @@ fi
 
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
+source tools/asdf/goroot.bash
 "$BZL" query //... | xargs "$BZL" test
 
 # The following makes sure that this test.bash will run as a pre-commit hook.

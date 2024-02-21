@@ -15,19 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Replace this shell script with Bazel targets?
+# This much be source'd!
 
-# shellcheck source=/dev/null
-source tools/asdf/goroot.bash
-mkdir -p site/download/latest/
-set -euox pipefail
-
-# Build the end-user distributed executable fat über JAR
-# NB: "bazelisk build //..." does *NOT* build "//cli:enola_deploy.jar", for some reason
-bazelisk build //cli:enola_deploy.jar
-cp tools/distro/execjar-header.bash site/download/latest/enola
-cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
-
-# Build the Container Image
-# NB: This must work both on Docker (which turns it into docker buildx build) and Podman!
-docker build -t localhost/enola:latest .
+# https://github.com/enola-dev/enola/issues/506
+if [ -d "$HOME/.asdf/" ]; then
+  GOROOT=$(asdf where golang)/go/
+  export GOROOT
+fi

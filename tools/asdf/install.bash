@@ -51,5 +51,7 @@ asdf plugin add protoc
 asdf install
 asdf current
 
+source tools/asdf/goroot.bash
+
 go version
 protoc --version
