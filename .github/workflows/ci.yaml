@@ -42,12 +42,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          # NB: Repeated below in push-container-image: job; must keep in sync!
-          java-version: "21"
-
       - name: Cache Bazel
         uses: actions/cache@v4
         with:
