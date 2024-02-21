@@ -53,7 +53,7 @@ with your own VPN or SSH port forwarding solution (but without GitHub tunnel).
 
 While GitHub Codespaces are built on VSC Web technologies, this project is currently known
 to unfortunately not work well with such non-GitHub Codespaces VSC Web environments.
-The [bazel-vscode-java issues #94](https://github.com/salesforce/bazel-vscode-java/issues/94) has more background about this.
+The [bazel-vscode-java issue #94](https://github.com/salesforce/bazel-vscode-java/issues/94) has more background about this.
 
 ## Local Visual Studio Code (VSC)
 

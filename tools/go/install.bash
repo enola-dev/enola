@@ -42,9 +42,11 @@ ln -fs "$BZL" "$GO_BIN_PATH"/b
 # VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or ~/.asdf or
 # whatever; see https://github.com/salesforce/bazel-vscode-java/issues/94
 # (and //.devcontainer/devcontainer.json) for further background.
+set +u
 if [ -n "$CODESPACES" ]; then
   sudo ln -fs "$BZL" /usr/local/bin/bazelisk
   sudo ln -fs "$BZL" /usr/local/bin/bazel
 fi
+set -u
 
 "$BZL" version

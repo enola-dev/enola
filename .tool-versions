@@ -3,7 +3,8 @@
 # List is on https://github.com/asdf-vm/asdf-plugins
 # (It's also possible to directly install from any other repo.)
 
-# This how to use ASDF, for example:
+# Here is how to use ASDF, for example:
+#
 # asdf plugin add protoc
 # asdf list-all protoc
 # asdf install protoc latest
