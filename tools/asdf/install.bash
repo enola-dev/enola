@@ -46,12 +46,10 @@ fi
 
 asdf info
 asdf plugin add golang
-asdf plugin add java
 asdf plugin add protoc
 # This installs the tools as per //.tools-versions (with fixed versions)
 asdf install
 asdf current
 
 go version
-java -version
 protoc --version
