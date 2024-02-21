@@ -22,31 +22,14 @@ set -euox pipefail
 GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
 
-go install github.com/bazelbuild/bazelisk@v1.19.0
-# TODO How do we install a fixed version? @v6.4.0 doesn't work:
-# 'invalid version: module contains a go.mod file, so module path must match major version
-# ("github.com/bazelbuild/buildtools/v6")', but "go install github.com/bazelbuild/buildtools/buildifier@v6"
-# also fails, with: 'go: github.com/bazelbuild/buildtools/buildifier@v6: no matching versions for query "v6"'
+go install github.com/bazelbuild/bazelisk@latest
 go install github.com/bazelbuild/buildtools/buildifier@latest
 go install github.com/bazelbuild/buildtools/buildozer@latest
 
 # Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
 # https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/
 # 64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
-ln -fs "$BZL" "$GO_BIN_PATH"/bazel
-ln -fs "$BZL" "$GO_BIN_PATH"/b
-
-# The Language Server from the VSC Bazel Java extension
-# needs to be able to launch "bazel" from PATH - and that only works if it's in a
-# directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
-# VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or ~/.asdf or
-# whatever; see https://github.com/salesforce/bazel-vscode-java/issues/94
-# (and //.devcontainer/devcontainer.json) for further background.
-set +u
-if [ -n "$CODESPACES" ]; then
-  sudo ln -fs "$BZL" /usr/local/bin/bazelisk
-  sudo ln -fs "$BZL" /usr/local/bin/bazel
-fi
-set -u
+ln -s "$BZL" "$GO_BIN_PATH"/bazel
+ln -s "$BZL" "$GO_BIN_PATH"/b
 
 "$BZL" version
