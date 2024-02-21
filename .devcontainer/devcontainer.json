@@ -65,10 +65,13 @@
   },
 
   "hostRequirements": {
-    // 2-core • 8GB RAM • 32GB "time ./test.bash" on 1st run is TBD
-    // 4-core • 16GB RAM • 32GB "time ./test.bash" on 1st run is TBD
-    // 8-core • 32GB RAM • 64GB "time ./test.bash" on 1st run is TBD
+    // sudo rm -rf ~/.cache/bazel/ to reproduce
+    // "High codespace CPU (100%) utilization detected. Consider stopping some processes for the best experience."
+    // 2-core • 8GB RAM • 32GB "time ./test.bash" on 1st run is >>21'
+    // 4-core • 16GB RAM • 32GB "time ./test.bash" on 1st run is ~10.5'
+    // 8-core • 32GB RAM • 64GB "time ./test.bash" on 1st run is ~6.8'
     // 16-core • 64GB RAM • 128GB "time ./test.bash" on 1st run is ~4.5'
-    "cpus": 2
+    // 12-cores local workstation (Xeon) on 1st run is ~2.5' !!!
+    "cpus": 4
   }
 }
