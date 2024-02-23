@@ -6,10 +6,16 @@ body {
 .app-bar {
   color: #ccc;
   background-color: green;
-  /* TODO Neither of these work., because of the float in .help.. :-/ */
+  display: grid;
+  grid-template-columns: 5em auto 2em;
+  justify-items: stretch;
   align-items: center;
-  vertical-align: middle;
   height: 2.5em;
+  padding: 0 20px;
+}
+
+.app-bar input {
+  width: 100%;
 }
 
 .help {

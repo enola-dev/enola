@@ -84,7 +84,7 @@ Enola 🕵🏾‍♀️ visualizes the relationships of its _Entities_ using:
 
 * [Graphviz](https://graphviz.org) #available
 * [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned #ToDo
-* [D3 js](https://d3js.org/)
+* [D3js.org](https://d3js.org) also has [Graphs](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf))
 
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
@@ -152,6 +152,7 @@ Vector _("Embedding")_ databases of possible future interest:
 
 * [CursusDB](https://github.com/cursusdb/cursusdb) #opensource
 * [MongoDB](https://www.mongodb.com) #commercial
+* [CouchDB](https://couchdb.apache.org) #opensource
 
 ## AI
 
