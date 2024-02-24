@@ -66,6 +66,7 @@ public class LearnRdf4jTest {
     Model picasso2() {
         return new ModelBuilder()
                 .setNamespace("ex", "http://example.enola.dev/")
+                .setNamespace(FOAF.NS)
                 .subject("ex:Picasso")
                 .add(RDF.TYPE, "ex:Artist")
                 .add(FOAF.FIRST_NAME, "Pablo")
