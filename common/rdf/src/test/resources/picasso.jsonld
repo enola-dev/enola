@@ -10,6 +10,12 @@
         "@value": "Spain"
       }
     ],
+    "http://www.w3.org/ns/locn#location": [
+      {
+        "@language": "es",
+        "@value": "España"
+      }
+    ],
     "http://xmlns.com/foaf/0.1/firstName": [
       {
         "@value": "Pablo"
