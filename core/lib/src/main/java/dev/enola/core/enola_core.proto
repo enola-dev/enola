@@ -180,6 +180,6 @@ message GetFileDescriptorSetResponse {
 service EnolaService {
   rpc GetFileDescriptorSet(GetFileDescriptorSetRequest)
       returns (GetFileDescriptorSetResponse) {}
-  rpc GetThing(GetThingRequest) returns (GetThingResponse) {}
+  rpc GetThing(GetThingRequest) returns (/* TODO stream */ GetThingResponse) {}
   rpc ListEntities(ListEntitiesRequest) returns (ListEntitiesResponse) {}
 }

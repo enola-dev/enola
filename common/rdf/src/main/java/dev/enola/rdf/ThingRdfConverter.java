@@ -17,14 +17,19 @@
  */
 package dev.enola.rdf;
 
+import com.google.common.base.Strings;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.common.convert.ConverterInto;
+import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.Value.LangString;
 
+import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
@@ -32,6 +37,9 @@ import org.eclipse.rdf4j.model.impl.ValidatingValueFactory;
 import org.eclipse.rdf4j.model.util.ModelBuilder;
 import org.eclipse.rdf4j.rio.RDFHandler;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class ThingRdfConverter
         implements Converter<ThingOrBuilder, Model>, ConverterInto<ThingOrBuilder, RDFHandler> {
@@ -58,20 +66,48 @@ class ThingRdfConverter
     @Override
     public boolean convertInto(ThingOrBuilder from, RDFHandler into) throws ConversionException {
         into.startRDF();
-        IRI subject = vf.createIRI(from.getIri());
-
-        for (var field : from.getFieldsMap().entrySet()) {
-            IRI predicate = vf.createIRI(field.getKey());
-            var object = convert(field.getValue());
-            Statement statement = vf.createStatement(subject, predicate, object);
-            into.handleStatement(statement);
-        }
-
+        Map<BNode, Thing> containedThings = new HashMap<>();
+        convertInto(null, from, into, containedThings);
         into.endRDF();
         return true;
     }
 
-    private org.eclipse.rdf4j.model.Value convert(dev.enola.thing.Value value) {
+    private void convertInto(
+            String bNodeID, ThingOrBuilder from, RDFHandler into, Map<BNode, Thing> containedThings)
+            throws ConversionException {
+        Resource subject;
+        try {
+            var iri = from.getIri();
+            if (!Strings.isNullOrEmpty(iri)) {
+                subject = vf.createIRI(iri);
+            } else if (!Strings.isNullOrEmpty(bNodeID)) {
+                subject = vf.createBNode(bNodeID);
+            } else {
+                throw new IllegalStateException(from.toString());
+            }
+        } catch (IllegalArgumentException e) {
+            // https://github.com/eclipse-rdf4j/rdf4j/pull/4919
+            throw new IllegalArgumentException(from.getIri(), e);
+        }
+        for (var field : from.getFieldsMap().entrySet()) {
+            IRI predicate = vf.createIRI(field.getKey());
+            var object = convert(field.getValue(), containedThings);
+            Statement statement = vf.createStatement(subject, predicate, object);
+            into.handleStatement(statement);
+        }
+
+        for (var containedThing : containedThings.entrySet()) {
+            Map<BNode, Thing> deeperContainedThings = new HashMap<>();
+            convertInto(
+                    containedThing.getKey().getID(),
+                    containedThing.getValue(),
+                    into,
+                    deeperContainedThings);
+        }
+    }
+
+    private org.eclipse.rdf4j.model.Value convert(
+            dev.enola.thing.Value value, Map<BNode, Thing> containedThings) {
         return switch (value.getKindCase()) {
             case LINK -> vf.createIRI(value.getLink().getIri());
 
@@ -87,9 +123,20 @@ class ThingRdfConverter
                 yield vf.createLiteral(langString.getText(), langString.getLang());
             }
 
-            case LIST -> throw new UnsupportedOperationException("TODO");
+            case STRUCT -> {
+                BNode bNode;
+                var containedThing = value.getStruct();
+                var containedThingIRI = containedThing.getIri();
+                if (!Strings.isNullOrEmpty(containedThingIRI)) {
+                    bNode = vf.createBNode(containedThingIRI);
+                } else {
+                    bNode = vf.createBNode();
+                }
+                containedThings.put(bNode, containedThing);
+                yield bNode;
+            }
 
-            case STRUCT -> throw new UnsupportedOperationException("TODO");
+                // case LIST -> throw new UnsupportedOperationException("TODO");
 
             case KIND_NOT_SET -> throw new IllegalArgumentException(value.toString());
         };

@@ -100,6 +100,14 @@ Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 * [aws/graph-explorer](https://github.com/aws/graph-explorer) #RDF #SPARQL #TinkerPop #AWS #opensource
 * [GraphDB Workbench](https://github.com/Ontotext-AD/graphdb-workbench) #RDF4j #freemium #commercial #opensource
 
+Web-based:
+
+* **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** #RDF
+* [isSemantic's RDF Visualizer](https://issemantic.net/rdf-visualizer)
+* [Zazuko's Sketch](https://sketch.zazuko.com) (also [for VSC](https://marketplace.visualstudio.com/items?itemName=Zazuko.vscode-rdf-sketch)) #RDF #swiss
+* [VisGraph^3](https://visgraph3.github.io) #opensource #RDF
+* [Brickschema's Viewer](https://viewer.brickschema.org)
+
 ### Frameworks
 
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API

@@ -17,59 +17,84 @@
  */
 package dev.enola.rdf;
 
+import static com.google.common.collect.MoreCollectors.onlyElement;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
-import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.Value;
 import dev.enola.thing.Value.Link;
 
+import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.base.CoreDatatype;
 
-class RdfThingConverter
-        implements Converter<Model, ThingOrBuilder>, ConverterInto<Model, Thing.Builder> {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
-    @Override
-    public Thing convert(Model input) throws ConversionException {
-        if (input.isEmpty()) {
-            return Thing.getDefaultInstance();
-        }
+class RdfThingConverter implements Converter<Model, Stream<ThingOrBuilder>> {
 
-        var thing = Thing.newBuilder();
-        convertInto(input, thing);
-        return thing.build();
+    // TODO In general, an RDF stream of statements is not "ordered"; there could be "later updates"
+    // to "previous things" at any time. The design of this current default implementation takes
+    // this into account - which makes this very inefficient from a memory usage point of view
+    // for very large RDF graphs. Future optimizations could include (optional, always) modes
+    // which make assumptions when "a Thing is completed".
+
+    public ThingOrBuilder convert1(Model input) throws ConversionException {
+        // Cannot convert RDF with >1 statements to a single Thing
+        return convert(input).collect(onlyElement());
     }
 
     @Override
-    public boolean convertInto(Model input, Builder thing) throws ConversionException {
-        var subjects = input.subjects();
-        if (subjects.size() > 1) {
-            throw new ConversionException(
-                    "Cannot convert RDF with >1 statements to a single Thing");
+    public Stream<ThingOrBuilder> convert(Model input) {
+        // These are the "root" Things; i.e. the Statements where Subject is an IRI.
+        final Map<IRI, Thing.Builder> roots = new HashMap<>();
+
+        // These are the "contained" Things, which are inside "struct" of another Thing; i.e. the
+        // Statements where the Subject is a BNode with an ID (which is the key of this
+        // Map).
+        Map<String, Thing.Builder> structs = new HashMap<>();
+
+        List<Consumer<Map<String, Thing.Builder>>> deferred = new ArrayList<>();
+
+        for (var statement : input) {
+            Thing.Builder thing;
+            var subject = statement.getSubject();
+            if (subject.isIRI()) {
+                var subjectIRI = (IRI) subject;
+                thing =
+                        roots.computeIfAbsent(
+                                subjectIRI, iri -> Thing.newBuilder().setIri(iri.stringValue()));
+
+            } else if (subject.isBNode()) {
+                var subjectBNode = (BNode) subject;
+                var subjectBNodeID = subjectBNode.getID();
+                thing = structs.computeIfAbsent(subjectBNodeID, id -> Thing.newBuilder());
+
+            } else throw new UnsupportedOperationException("TODO: " + subject);
+
+            convert(thing, statement, deferred);
         }
 
-        var subject = subjects.iterator().next();
-        if (subject.isIRI()) {
-            var subjectAsIRI = (IRI) subject;
-            thing.setIri(subjectAsIRI.stringValue());
+        for (var action : deferred) {
+            action.accept(structs);
         }
 
-        var statementIterator = input.iterator();
-        while (statementIterator.hasNext()) {
-            var statement = statementIterator.next();
-            thing.putFields(statement.getPredicate().stringValue(), convert(statement.getObject()));
-        }
-
-        return true;
+        return roots.values().stream().map(builder -> builder.build());
     }
 
-    private Value convert(org.eclipse.rdf4j.model.Value rdfValue) {
+    private static void convert(
+            Builder thing, Statement statement, List<Consumer<Map<String, Builder>>> deferred) {
+        org.eclipse.rdf4j.model.Value rdfValue = statement.getObject();
         var value = Value.newBuilder();
-
         if (rdfValue.isIRI()) {
             value.setLink(Link.newBuilder().setIri(rdfValue.stringValue()));
 
@@ -93,16 +118,25 @@ class RdfThingConverter
                 value.setLiteral(literal);
             }
 
-        } else if (rdfValue.isResource()) {
-            throw new UnsupportedOperationException("TODO");
+        } else if (rdfValue.isBNode()) {
+            var bNodeID = ((BNode) rdfValue).getID();
+            deferred.add(
+                    map -> {
+                        var containedThing = map.get(bNodeID);
+                        if (containedThing == null)
+                            throw new IllegalStateException(
+                                    bNodeID + " not found: " + map.keySet());
+                        value.setStruct(containedThing);
+                        thing.putFields(statement.getPredicate().stringValue(), value.build());
+                    });
 
         } else if (rdfValue.isTriple()) {
-            throw new UnsupportedOperationException("TODO");
+            throw new UnsupportedOperationException("TODO: Triple");
 
-        } else if (rdfValue.isBNode()) {
-            throw new UnsupportedOperationException("TODO");
+        } else if (rdfValue.isResource()) {
+            throw new UnsupportedOperationException("TODO: Resource");
         }
 
-        return value.build();
+        thing.putFields(statement.getPredicate().stringValue(), value.build());
     }
 }

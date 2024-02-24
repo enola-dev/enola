@@ -18,9 +18,9 @@
 package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.rdf.ModelSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
@@ -56,7 +56,7 @@ public class RdfThingConverterTest {
 
     @Test
     public void rdfToThing() throws ConversionException, IOException {
-        var actualThing = rdfToThingConverter.convert(rdf);
+        var actualThing = rdfToThingConverter.convert1(rdf);
         var expectedThing = thing;
         assertThat(actualThing).isEqualTo(expectedThing);
     }

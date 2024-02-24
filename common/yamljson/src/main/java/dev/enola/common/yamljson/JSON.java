@@ -17,9 +17,14 @@
  */
 package dev.enola.common.yamljson;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class JSON {
@@ -39,7 +44,35 @@ public final class JSON {
     }
 
     // TODO normalize() should ideally do away with order differences by sorting map keys
+    @SuppressWarnings("rawtypes")
     public static String normalize(String json) {
-        return write(readObject(json));
+        return write(sortByKeyIfMap(readObject(json)));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Object sortByKeyIfMap(Object object) {
+        if (object instanceof Map) {
+            var map = (Map<String, Object>) object;
+            return sortByKey(map);
+        } else if (object instanceof List) {
+            var list = (List) object;
+            var newList = ImmutableList.builderWithExpectedSize(list.size());
+            for (var element : list) {
+                newList.add(sortByKeyIfMap(element));
+            }
+            return newList.build();
+        }
+        return object;
+    }
+
+    private static Map<String, Object> sortByKey(Map<String, Object> map) {
+        List<String> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+
+        var newMap = ImmutableMap.<String, Object>builderWithExpectedSize(keys.size());
+        for (var key : keys) {
+            newMap.put(key, sortByKeyIfMap(map.get(key)));
+        }
+        return newMap.build();
     }
 }
