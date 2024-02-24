@@ -42,7 +42,8 @@ public class RdfThingConverterTest {
 
     private final ProtoIO protoReader = new ProtoIO();
     private final RdfReaderConverter rdfReader = new RdfReaderConverter();
-    private final RdfThingConverter converter = new RdfThingConverter();
+    private final RdfThingConverter rdfToThingConverter = new RdfThingConverter();
+    private final ThingRdfConverter thingToRdfConverter = new ThingRdfConverter();
 
     private Model rdf;
     private Thing thing;
@@ -55,14 +56,14 @@ public class RdfThingConverterTest {
 
     @Test
     public void rdfToThing() throws ConversionException, IOException {
-        var actualThing = converter.convertFrom(rdf);
+        var actualThing = rdfToThingConverter.convert(rdf);
         var expectedThing = thing;
         assertThat(actualThing).isEqualTo(expectedThing);
     }
 
     @Test
     public void thingToRDF() throws ConversionException {
-        var actualRDF = converter.convertTo(thing);
+        var actualRDF = thingToRdfConverter.convert(thing);
         var expectedRDF = rdf;
         assertThat(actualRDF).isEqualTo(expectedRDF);
     }

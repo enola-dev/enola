@@ -18,7 +18,7 @@ syntax = "proto3";
 
 package dev.enola.thing;
 
-import "google/protobuf/timestamp.proto";
+// import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.thing";
@@ -88,8 +88,8 @@ message Value {
     string label = 2;
 
     // TODO Is there any point/interest in Link (optionally) having a
-    // LangString?
-    LangString lang_string = 3;
+    // LangString? Note that RDF doesn't even have labels on links anyway.
+    // LangString lang_string = 3;
   }
 
   message Literal {
@@ -114,3 +114,6 @@ message Value {
     repeated Thing entries = 1;
   }
 }
+
+// TODO Allow uint64 id for IRI or all Value, similar to
+// https://rdf4j.org/documentation/reference/rdf4j-binary/
