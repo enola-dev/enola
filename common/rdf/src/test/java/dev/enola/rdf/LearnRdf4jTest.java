@@ -19,6 +19,7 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.TreeModel;
@@ -57,13 +58,16 @@ public class LearnRdf4jTest {
         model.add(picasso, LOCN.LOCATION, Values.literal("Spain", "en"));
         // TODO model.add(picasso, LOCN.LOCATION, Values.literal("España", "es"));
 
-        // TODO Add Blank Node (and #test ConvertersTest and MessageToThingConverterTest), see
-        // https://rdf4j.org/documentation/tutorials/getting-started/#blank-nodes
+        BNode address = Values.bnode("f034741e5da3451ead5b5972d6cf75311");
+        model.add(picasso, Values.iri(ex, "homeAddress"), address);
+        model.add(address, Values.iri(ex, "street"), Values.literal("31 Art Gallery"));
+        model.add(address, Values.iri(ex, "city"), Values.literal("Barcelona"));
 
         return model;
     }
 
     Model picasso2() {
+        BNode address = Values.bnode("f034741e5da3451ead5b5972d6cf75311");
         return new ModelBuilder()
                 .setNamespace("ex", "http://example.enola.dev/")
                 .setNamespace(FOAF.NS)
@@ -72,6 +76,11 @@ public class LearnRdf4jTest {
                 .add(FOAF.FIRST_NAME, "Pablo")
                 .add(LOCN.LOCATION, Values.literal("Spain", "en"))
                 // TODO .add(LOCN.LOCATION, Values.literal("España", "es"))
+
+                .add("ex:homeAddress", address) // link the blank node
+                .subject(address) // switch the subject
+                .add("ex:street", "31 Art Gallery")
+                .add("ex:city", "Barcelona")
                 .build();
     }
 

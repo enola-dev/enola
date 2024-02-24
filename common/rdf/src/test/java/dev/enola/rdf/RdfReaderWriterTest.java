@@ -17,13 +17,13 @@
  */
 package dev.enola.rdf;
 
-import static com.google.common.truth.Truth.assertThat;
-
+import static dev.enola.rdf.ModelSubject.assertThat;
 import static dev.enola.rdf.ResourceSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.common.io.resource.Resource;
 
 import org.eclipse.rdf4j.model.Model;
 import org.junit.Test;
@@ -43,11 +43,31 @@ public class RdfReaderWriterTest {
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
     public void writeTurtle() throws ConversionException, IOException {
-        var actual = new MemoryResource(RdfMediaType.TURTLE);
+        Resource actual = new MemoryResource(RdfMediaType.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
-
+        /*
+               // The "blank node" IRI is not stable, so we have to cheat a bit:
+               // (We could also use Models.getPropertyIRI().)
+               var statements =
+                       PICASSO_MODEL.getStatements(null, Values.iri("ex:homeAddress"), null).iterator();
+               if (!statements.hasNext())
+                   throw new IllegalArgumentException(PICASSO_MODEL.toString()); // #@?!
+               var bNodeIRI = statements.next().getObject().stringValue();
+               actual =
+                       StringResource.of(
+                               actual.charSource()
+                                       .read()
+                                       .replace(bNodeIRI, "_:f034741e5da3451ead5b5972d6cf75311"),
+                               RdfMediaType.TURTLE);
+        */
         var expected = PICASSO_TURTLE_RESOURCE;
         assertThat(actual).containsCharsOf(expected);
+    }
+
+    @Test
+    public void readTurtle() throws ConversionException {
+        var model = new RdfReaderConverter().convert(PICASSO_TURTLE_RESOURCE);
+        assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
@@ -58,12 +78,6 @@ public class RdfReaderWriterTest {
 
         var expected = PICASSO_JSONLD_RESOURCE;
         assertThat(actual).hasJSONEqualTo(expected);
-    }
-
-    @Test
-    public void readTurtle() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_TURTLE_RESOURCE);
-        assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test

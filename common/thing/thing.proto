@@ -27,13 +27,8 @@ option go_package = "dev/enola/thing";
 
 // TODO Unify this with the original still in //core/lib!
 
-// Thing is is (loosely) inspired by RDF, or google/protobuf/struct.proto
-// (+link), JSON (+ JSON-LD, for links), [Cap'n Proto's
-// schema.capnp](https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp),
-// et al. It intentionally doesn't quite look like
-// https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Protobuf/binary-rdf.proto,
-// because RDF4j already has its own binary serialization format - the point of
-// this is not to replicate that.
+// Thing is a generic datastructure which can hold any kind of information.
+// It notably has a way to express links between things.
 message Thing {
   // The IRI is often only set on the "top outer most", and may well be unset
   // for things "contained" in other things (RDF calls this "blank nodes"). It's
@@ -44,6 +39,7 @@ message Thing {
   map<string, Value> fields = 2;
 }
 
+// Value is the stuff that Thing's fields are made of.
 message Value {
   oneof kind {
     // TODO enum NullValue { NULL_VALUE = 0; } like in
@@ -75,8 +71,12 @@ message Value {
     // float float = 16;
     // bool bool = 17;
 
-    List list = 18;
-    Thing struct = 19;
+    Thing struct = 18;
+
+    // TODO Do we actually need List? That's just a stream of Thing, no?
+    // TODO Inline? repeated Thing things = 18;
+    // TODO Never has an IRI? Maybe just repeated Value values = 18;
+    // List list = 19;
   }
 
   message Link {
@@ -110,10 +110,28 @@ message Value {
     string lang = 2;
   }
 
-  message List {
-    repeated Thing entries = 1;
-  }
+  // message List {
+  //   repeated Thing entries = 1;
+  // }
 }
 
-// TODO Allow uint64 id for IRI or all Value, similar to
+// TODO Allow "uint64 id" instatead string IRIs (or all Value?), similar to
 // https://rdf4j.org/documentation/reference/rdf4j-binary/
+
+// Implementation notes (not documentation for user of proto)
+//
+// There is intentionally nothing of this sort here:
+//   message Things { repeated Thing things = 1; }
+// This is because we want developers to (only) use "streaming" instead.
+//
+// Thing is (obviously) inspired by "Triples" (RDF), but also things such as
+// google/protobuf/struct.proto (+link), JSON (+ JSON-LD, for links), [Cap'n
+// Proto's
+// schema.capnp](https://github.com/capnproto/capnproto/blob/master/c%2B%2B/src/capnp/schema.capnp),
+// et al.
+//
+// It intentionally doesn't quite look like
+// https://github.com/apache/jena/blob/main/jena-arq/Grammar/RDF-Protobuf/binary-rdf.proto,
+// because RDF4j already has its own binary serialization format - the point of
+// this is not to directly replicate that, but to permit integration of RDF4j
+// into Protocol Buffer based ecosystems.

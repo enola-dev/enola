@@ -55,6 +55,10 @@ public class YamlJsonTest {
     @Test
     public void normalizeJSON() {
         assertThat(JSON.normalize(" {  'a':\n37}")).isEqualTo("{\"a\":37.0}");
+        assertThat(JSON.normalize(" {\"b\":\"hi\", \"a\":37.0}"))
+                .isEqualTo("{\"a\":37.0,\"b\":\"hi\"}");
+        assertThat(JSON.normalize("[{\"b\":\"hi\", \"a\":37.0}]"))
+                .isEqualTo("[{\"a\":37.0,\"b\":\"hi\"}]");
         assertThat(JSON.normalize("[ ]")).isEqualTo("[]");
     }
 }

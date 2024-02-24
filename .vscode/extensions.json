@@ -15,7 +15,8 @@
     "ecmel.vscode-html-css",
     "zignd.html-css-class-completion",
     "timonwong.shellcheck",
-    "stardog-union.vscode-langserver-turtle"
+    "stardog-union.vscode-langserver-turtle",
+    "zazuko.vscode-rdf-sketch"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
