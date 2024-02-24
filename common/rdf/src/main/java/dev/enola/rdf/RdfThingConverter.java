@@ -19,7 +19,9 @@ package dev.enola.rdf;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
+import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.Thing;
+import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.Value;
 import dev.enola.thing.Value.Link;
@@ -28,10 +30,8 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.base.CoreDatatype;
 
-class RdfThingConverter implements Converter<Model, ThingOrBuilder> {
-
-    // TODO For better performance at scale, this could easily be adapted to be more "streaming"
-    // like; see https://rdf4j.org/documentation/programming/rio.
+class RdfThingConverter
+        implements Converter<Model, ThingOrBuilder>, ConverterInto<Model, Thing.Builder> {
 
     @Override
     public Thing convert(Model input) throws ConversionException {
@@ -39,14 +39,20 @@ class RdfThingConverter implements Converter<Model, ThingOrBuilder> {
             return Thing.getDefaultInstance();
         }
 
+        var thing = Thing.newBuilder();
+        convertInto(input, thing);
+        return thing.build();
+    }
+
+    @Override
+    public boolean convertInto(Model input, Builder thing) throws ConversionException {
         var subjects = input.subjects();
         if (subjects.size() > 1) {
             throw new ConversionException(
                     "Cannot convert RDF with >1 statements to a single Thing");
         }
-        var subject = subjects.iterator().next();
 
-        var thing = Thing.newBuilder();
+        var subject = subjects.iterator().next();
         if (subject.isIRI()) {
             var subjectAsIRI = (IRI) subject;
             thing.setIri(subjectAsIRI.stringValue());
@@ -58,7 +64,7 @@ class RdfThingConverter implements Converter<Model, ThingOrBuilder> {
             thing.putFields(statement.getPredicate().stringValue(), convert(statement.getObject()));
         }
 
-        return thing.build();
+        return true;
     }
 
     private Value convert(org.eclipse.rdf4j.model.Value rdfValue) {
