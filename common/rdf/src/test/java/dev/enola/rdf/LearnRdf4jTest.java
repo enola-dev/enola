@@ -31,7 +31,7 @@ import org.junit.Test;
 
 public class LearnRdf4jTest {
 
-    // TODO Ontology to define what's "valid" for http://www.w3.org/ns/locn#location?
+    // TODO Ontology to define what's "valid" for http://www.w3.org/ns/locn#location ?
 
     // https://rdf4j.org/documentation/tutorials/getting-started/
 
@@ -55,7 +55,7 @@ public class LearnRdf4jTest {
 
         // Terzo
         model.add(picasso, LOCN.LOCATION, Values.literal("Spain", "en"));
-        // TODO model.add(picasso, LOCN.LOCATION, Values.literal("España", "es"));
+        model.add(picasso, LOCN.LOCATION, Values.literal("España", "es"));
 
         // TODO Add Blank Node (and #test ConvertersTest and MessageToThingConverterTest), see
         // https://rdf4j.org/documentation/tutorials/getting-started/#blank-nodes
@@ -70,7 +70,7 @@ public class LearnRdf4jTest {
                 .add(RDF.TYPE, "ex:Artist")
                 .add(FOAF.FIRST_NAME, "Pablo")
                 .add(LOCN.LOCATION, Values.literal("Spain", "en"))
-                // TODO .add(LOCN.LOCATION, Values.literal("España", "es"))
+                .add(LOCN.LOCATION, Values.literal("España", "es"))
                 .build();
     }
 
