@@ -65,7 +65,11 @@ public class LearnRdf4jTest {
 
         IRI dali = Values.iri(ex, "Dalí");
         model.add(dali, RDF.TYPE, artist);
+        // The spanish really do make sure that their names are UUIDs... ;-)
         model.add(dali, FOAF.FIRST_NAME, Values.literal("Salvador"));
+        model.add(dali, FOAF.FIRST_NAME, Values.literal("Domingo"));
+        model.add(dali, FOAF.FIRST_NAME, Values.literal("Felipe"));
+        model.add(dali, FOAF.FIRST_NAME, Values.literal("Jacinto"));
 
         return model;
     }
@@ -86,7 +90,11 @@ public class LearnRdf4jTest {
                 .add("ex:city", "Barcelona")
                 .subject("ex:Dalí")
                 .add(RDF.TYPE, "ex:Artist")
+                // The spanish really do make sure that their names are UUIDs... ;-)
                 .add(FOAF.FIRST_NAME, "Salvador")
+                .add(FOAF.FIRST_NAME, "Domingo")
+                .add(FOAF.FIRST_NAME, "Felipe")
+                .add(FOAF.FIRST_NAME, "Jacinto")
                 .build();
     }
 

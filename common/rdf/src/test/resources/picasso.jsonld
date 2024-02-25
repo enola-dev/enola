@@ -20,6 +20,15 @@
     "http://xmlns.com/foaf/0.1/firstName": [
       {
         "@value": "Salvador"
+      },
+      {
+        "@value": "Domingo"
+      },
+      {
+        "@value": "Felipe"
+      },
+      {
+        "@value": "Jacinto"
       }
     ]
   },
