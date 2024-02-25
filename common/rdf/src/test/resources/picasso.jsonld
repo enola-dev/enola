@@ -13,6 +13,17 @@
     ]
   },
   {
+    "@id": "http://example.enola.dev/Dalí",
+    "@type": [
+      "http://example.enola.dev/Artist"
+    ],
+    "http://xmlns.com/foaf/0.1/firstName": [
+      {
+        "@value": "Salvador"
+      }
+    ]
+  },
+  {
     "@id": "http://example.enola.dev/Picasso",
     "@type": [
       "http://example.enola.dev/Artist"

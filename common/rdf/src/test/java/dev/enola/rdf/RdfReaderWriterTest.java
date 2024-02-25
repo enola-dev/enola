@@ -45,21 +45,7 @@ public class RdfReaderWriterTest {
     public void writeTurtle() throws ConversionException, IOException {
         Resource actual = new MemoryResource(RdfMediaType.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
-        /*
-               // The "blank node" IRI is not stable, so we have to cheat a bit:
-               // (We could also use Models.getPropertyIRI().)
-               var statements =
-                       PICASSO_MODEL.getStatements(null, Values.iri("ex:homeAddress"), null).iterator();
-               if (!statements.hasNext())
-                   throw new IllegalArgumentException(PICASSO_MODEL.toString()); // #@?!
-               var bNodeIRI = statements.next().getObject().stringValue();
-               actual =
-                       StringResource.of(
-                               actual.charSource()
-                                       .read()
-                                       .replace(bNodeIRI, "_:f034741e5da3451ead5b5972d6cf75311"),
-                               RdfMediaType.TURTLE);
-        */
+
         var expected = PICASSO_TURTLE_RESOURCE;
         assertThat(actual).containsCharsOf(expected);
     }

@@ -23,7 +23,10 @@ This project, like any software, stands on the shoulders of giants, and depends 
 ## Updating Dependencies
 
 [`./update.bash`](../../update.bash) shows some of and where possible automatically updates these dependencies.
-It should be regularly (manually) run by maintainers of this project.
+It should be regularly (manually) run by maintainers of this project. Where possible, we automate this with "bots" such as:
+
+* Renovate: [Dashboard](https://github.com/enola-dev/enola/issues/73), and [its PRs](https://github.com/enola-dev/enola/pulls?q=is%3Apr+author%3Aapp%2Frenovate+)
+* Dependabot: [Its PRs](https://github.com/enola-dev/enola/pulls?q=is%3Apr+author%3Aapp%2Fdependabot)
 
 ## Runtime Dependencies
 
