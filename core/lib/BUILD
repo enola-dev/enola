@@ -82,17 +82,6 @@ proto_library(
     ],
 )
 
-proto_library(
-    name = "test_proto",
-    srcs = ["src/test/proto/enola_test.proto"],
-    deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
-)
-
 java_proto_library(
     name = "core_java_proto",
     visibility = [
@@ -109,11 +98,6 @@ java_proto_library(
         "meta_proto",
         "util_proto",
     ],
-)
-
-java_proto_library(
-    name = "test_java_proto",
-    deps = ["test_proto"],
 )
 
 java_grpc_library(
@@ -202,7 +186,6 @@ java_library(
     deps = [
         ":core_java_proto",
         ":lib_java",
-        ":test_java_proto",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_extensions_truth_proto_extension",

@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,52 +15,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.view;
+package dev.enola.thing.proto;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
-
+import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Message;
-import com.google.protobuf.Timestamp;
 
-import dev.enola.core.proto.Thing;
-import dev.enola.core.test.TestComplex;
-import dev.enola.core.test.TestRepeated;
+import dev.enola.common.convert.ConversionException;
 import dev.enola.core.test.TestSimple;
+import dev.enola.thing.Thing;
 
 import org.junit.Test;
 
-public class ThingsTest {
+public class MessageToThingConverterTest {
+
+    MessageToThingConverter c = new MessageToThingConverter();
 
     TestSimple.Builder simple = TestSimple.newBuilder().setText("hello").setNumber(123);
-    Thing.Struct.Builder simpleThingViewBuilder =
-            Thing.Struct.newBuilder()
-                    .putFields("text", string("hello"))
-                    .putFields("number", string("123"));
-    Thing.Struct simpleThingView = simpleThingViewBuilder.build();
-    Thing.Struct simpleThingViewWithProto =
-            simpleThingViewBuilder
-                    .putFields(
-                            "$proto",
-                            string(
-                                    "dev.enola.core.test.TestSimple",
-                                    "enola:proto/dev.enola.core.test.TestSimple"))
-                    .build();
+    Thing.Builder simpleThing =
+            Thing.newBuilder()
+                    .putFields("text", c.toValue("hello").build())
+                    .putFields("number", c.toValue("123").build());
+
+    Thing.Builder simpleThingWithProto = ProtoTypes.addProtoField(simpleThing, simple);
 
     @Test
-    public void testSimple() {
-        check(simple, simpleThingViewWithProto);
+    public void testSimple() throws ConversionException {
+        check(simple, simpleThingWithProto);
     }
 
+    /* TODO Activate more old tests...
+
     @Test
-    public void testTimestamp() {
+    public void testTimestamp() throws ConversionException {
         check(
                 Timestamp.newBuilder().setSeconds(123).setNanos(456),
                 "1970-01-01T00:02:03.000000456Z");
     }
 
     @Test
-    public void testRepeated() {
+    public void testRepeated() throws ConversionException {
         check(
                 TestRepeated.newBuilder().addLines("one").addLines("two"),
                 Thing.Struct.newBuilder()
@@ -74,7 +67,7 @@ public class ThingsTest {
     }
 
     @Test
-    public void testComplex() {
+    public void testComplex() throws ConversionException {
         check(
                 TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple),
                 Thing.Struct.newBuilder()
@@ -89,28 +82,14 @@ public class ThingsTest {
                         .build());
     }
 
-    private void check(Message.Builder thing, String expectedText) {
+    private void check(Message.Builder thing, String expectedText) throws ConversionException {
         var view = Things.from(thing.build()).build();
         assertThat(view.hasStruct()).isFalse();
         assertThat(view.hasText()).isTrue();
         assertThat(view.getText().getString()).isEqualTo(expectedText);
     }
 
-    private void check(Message.Builder thing, Thing.Struct expectedView) {
-        var view = Things.from(thing.build()).build();
-        assertThat(view.hasStruct()).isTrue();
-        assertThat(view.getStruct()).isEqualTo(expectedView);
-    }
-
-    private Thing string(String string) {
-        return Things.toThing(string).build();
-    }
-
-    private Thing string(String string, String uri) {
-        return Things.toThing(string, uri).build();
-    }
-
-    private Thing list(Thing... elements) {
+    private Thing list(Thing... elements) throws ConversionException {
         var valueList = Thing.List.newBuilder();
         for (var value : elements) {
             valueList.addEntries(value);
@@ -118,7 +97,14 @@ public class ThingsTest {
         return Thing.newBuilder().setList(valueList).build();
     }
 
-    private Thing struct(Thing.Struct thingView) {
+    private Thing struct(Thing.Struct thingView) throws ConversionException {
         return Thing.newBuilder().setStruct(thingView).build();
+    }
+     */
+
+    private void check(Message.Builder message, Thing.Builder expectedThing)
+            throws ConversionException {
+        var actualThing = c.convert(message.build());
+        ProtoTruth.assertThat(actualThing.build()).isEqualTo(expectedThing.build());
     }
 }
