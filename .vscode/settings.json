@@ -107,6 +107,10 @@
     "editor.defaultFormatter": "zxh404.vscode-proto3"
   },
 
+  "[starlark]": {
+    "editor.defaultFormatter": "BazelBuild.vscode-bazel"
+  },
+
   "yaml.schemas": {
     // https://squidfunk.github.io/mkdocs-material/creating-your-site/#configuration
     "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yaml",

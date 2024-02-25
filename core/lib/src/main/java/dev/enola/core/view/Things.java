@@ -31,7 +31,8 @@ import dev.enola.core.proto.Thing.Builder;
 @SuppressWarnings("restriction")
 public class Things {
 
-    // TODO com.google.protobuf.Struct support!
+    // TODO Replace uses of this "old" with new dev.enola.thing.MessageToThingConverter API
+    // TODO Delete this
 
     public static Thing.Builder from(Message message) {
         return from(message, true);
