@@ -56,6 +56,12 @@ message Value {
     // https://github.com/enola-dev/enola/pull/540...
     LangString lang_string = 4;
 
+    // Sub-structure (contained) Thing.
+    Thing struct = 18;
+
+    // List of Values.
+    List list = 19;
+
     // https://protobuf.dev/programming-guides/proto3/#scalar
     // TODO Reconsider if this is really needed?! By who, for what?
     // bytes bytes = 4;
@@ -72,13 +78,6 @@ message Value {
     // double double = 15;
     // float float = 16;
     // bool bool = 17;
-
-    Thing struct = 18;
-
-    // TODO Do we actually need List? That's just a stream of Thing, no?
-    // TODO Inline? repeated Thing things = 18;
-    // TODO Never has an IRI? Maybe just repeated Value values = 18;
-    // List list = 19;
   }
 
   message Link {
@@ -114,9 +113,9 @@ message Value {
     string lang = 2;
   }
 
-  // message List {
-  //   repeated Thing entries = 1;
-  // }
+  message List {
+    repeated Value values = 1;
+  }
 }
 
 // TODO Allow "uint64 id" instatead string IRIs (or all Value?), similar to
