@@ -24,6 +24,6 @@ cd /tmp
 # shellcheck disable=SC1091
 source "$ROOT"/bazel-java-tool-chain.bash
 
-java_binary
+bazel_java_home
 
 cd "$CWD"

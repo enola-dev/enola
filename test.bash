@@ -20,19 +20,9 @@ set -euo pipefail
 # This script builds the project *WITHOUT* requiring containers.
 # It can be used *IN* a container though; and is so, by the ./build script.
 
-# Similar also in the ./enola script:
-GO_BIN_PATH=$(go env GOPATH)/bin
-BZL=$GO_BIN_PATH/bazelisk
-if ! [ -x "$(command -v "$BZL")" ]; then
-  if [ -x "$(command -v go)" ]; then
-    tools/go/install.bash
+ROOT="$(realpath "$(dirname "$0")")"
 
-  else
-    echo "Please install Go from https://go.dev/doc/install and re-run this script!"
-    echo "See also https://docs.enola.dev/dev/setup/"
-    exit 255
-  fi
-fi
+source tools/environment/setup.bash
 
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
