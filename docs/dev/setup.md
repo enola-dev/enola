@@ -55,37 +55,36 @@ _This may be out of date (please help to update it) - it's just so much easier t
 
 If you do still want to try, here's how to manually install what the development environment container comes built-in with:
 
-1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](../../.bazelrc).
-   There are different Java (like Linux) "distributions" (all based on OpenJDK).
-   The easiest way to install one of them is typically to use your OS' package manager:
-
-        sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
-
-   An alternative is to use e.g. [the SDKMAN!](https://sdkman.io)
-   If you work on several projects using different Java versions,
-   then we recommend using something like
-   [jEnv (with `.java-version`)](https://www.jenv.be), or
-   [asdf (with `.tool-versions`)](https://asdf-vm.com), or
-   [direnv (with `.envrc`)](https://direnv.net).
+1. You do _NOT_ need to install a Java Development Kit (JDK), anymore.
+   The [version downloaded by Bazel via `.bazelrc`](../../.bazelrc) is now used by all scripts.
 
 1. Install C/C++ etc. (it's required by the
    [Proto rule for Bazel](https://github.com/bazelbuild/rules_proto)), e.g. do:
 
         sudo apt-get install build-essential
 
-1. Install [Python venv](https://docs.python.org/3/library/venv.html)
+1. [Install Python venv](https://docs.python.org/3/library/venv.html)
    (it's used by the presubmit and docs site generation), e.g. with:
 
         sudo apt-get install python3-venv
 
-1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk) (NOT Bazel),
-   on a (recent enough...) Debian/Ubuntu [with Go](https://go.dev/doc/install)
-   e.g. like this (or some more manual equivalent):
+1. You do _NOT_ need to install [Bazelisk](https://github.com/bazelbuild/bazelisk) (NOT Bazel),
+   that, and other tools, will be automagically installed by script. You do however Go for those tools,
+   and to build Enola's Go code.
+
+1. [Install Go](https://go.dev/doc/install) e.g. like this on a (recent enough...) Debian/Ubuntu (or some more manual equivalent):
 
         sudo apt update
         sudo apt install golang-go
 
-You should now be able to proceed as above (but without requiring _Docker)._
+1. Now run `. .envrc` (or `source .envrc`, but NOT `./envrc`).
+   You could automated this with [direnv](https://direnv.net) (also [for Nix](https://github.com/direnv/direnv/wiki/Nix), and [other alternatives](https://direnv.net/#related-projects)).
+
+You should now be able to proceed as above (but without requiring _Docker),_ try specifically:
+
+* `./enola`
+
+* `./test.bash`
 
 ## Further Reading
 
