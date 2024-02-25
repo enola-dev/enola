@@ -2,19 +2,19 @@
 
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 common --enable_bzlmod
-common --extra_toolchains=@local_jdk//:all
+
+# Do *NOT* use "common --extra_toolchains=@local_jdk//:all", as we want **ONLY** remotejdk_21!
 
 # Java version must match .devcontainer/devcontainer.json
 # https://bazel.build/docs/bazel-and-java#java-versions
-build --java_language_version=21
-build --tool_java_language_version=21
+common --java_language_version=21
+common --tool_java_language_version=21
 # https://bazel.build/docs/user-manual#java_runtime_version
-build --java_runtime_version=remotejdk_21
-build --tool_java_runtime_version=remotejdk_21
+common --java_runtime_version=remotejdk_21
+common --tool_java_runtime_version=remotejdk_21
 
 # https://github.com/bazelbuild/intellij/issues/1169
-build --incompatible_strict_action_env
-run --incompatible_strict_action_env
+common --incompatible_strict_action_env
 
 # https://bazel.build/reference/command-line-reference#flag--test_output
 test --test_output=errors
@@ -22,8 +22,7 @@ test --test_output=errors
 # https://bazel.build/reference/command-line-reference#flag--explicit_java_test_deps
 # BOTH build and test HAVE to have this - otherwise it's broken due to frequent this:
 # "Build option --explicit_java_test_deps has changed, discarding analysis cache."
-build --explicit_java_test_deps
-test --explicit_java_test_deps
+common --explicit_java_test_deps
 
 # https://github.com/bazelbuild/bazel/issues/4257
 # https://bazel.build/docs/user-manual#build-tests-only
