@@ -49,25 +49,30 @@ public class MessageToThingConverter implements Converter<Message, Thing.Builder
             // TODO This name needs to be something like
             // http://enola.dev/proto/{{schemaFQN}}/{{name}}...
             var name = descriptor.getName();
-            thing.putFields(name, listToThing(field.getValue(), descriptor, message));
+            thing.putFields(name, listToThing(field.getValue(), descriptor, message).build());
         }
         return thing;
     }
 
-    private Value listToThing(Object object, FieldDescriptor field, Message message) {
-        /* TODO Must enable Thing.Value.List?
+    private Value.Builder listToThing(Object object, FieldDescriptor field, Message message) {
         if (field.isRepeated()) {
-            var thing = Thing.newBuilder();
             var n = message.getRepeatedFieldCount(field);
-            var valueList = Thing.Value.List.newBuilder();
+            var values = new Value.Builder[n];
             for (int i = 0; i < n; i++) {
-                valueList.addEntries(toThing(message.getRepeatedField(field, i), field, message));
+                values[i] = toThing(message.getRepeatedField(field, i), field, message);
             }
-            thing.setList(valueList);
-            return thing.build();
-        } else {*/
-        return toThing(object, field, message).build();
-        // }
+            return toList(values);
+        } else {
+            return toThing(object, field, message);
+        }
+    }
+
+    Value.Builder toList(Value.Builder... values) {
+        var valueList = dev.enola.thing.Value.List.newBuilder();
+        for (var value : values) {
+            valueList.addValues(value);
+        }
+        return Value.newBuilder().setList(valueList);
     }
 
     private Value.Builder toThing(Object object, FieldDescriptor field, Message message) {
@@ -92,7 +97,6 @@ public class MessageToThingConverter implements Converter<Message, Thing.Builder
         // TODO Support Literal, with datatype, IFF Type says so!
     }
 
-    @VisibleForTesting
     static Value.Builder toLink(String iri, String label) {
         var link = Value.Link.newBuilder().setIri(iri).setLabel(label);
         return Value.newBuilder().setLink(link);

@@ -21,6 +21,7 @@ import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Message;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
 import dev.enola.thing.Thing;
 
@@ -43,29 +44,25 @@ public class MessageToThingConverterTest {
         check(simple, simpleThingWithProto);
     }
 
-    /* TODO Activate more old tests...
-
+    /* TODO Activate testTimestamp()
     @Test
     public void testTimestamp() throws ConversionException {
         check(
                 Timestamp.newBuilder().setSeconds(123).setNanos(456),
                 "1970-01-01T00:02:03.000000456Z");
-    }
+    } */
 
     @Test
     public void testRepeated() throws ConversionException {
-        check(
-                TestRepeated.newBuilder().addLines("one").addLines("two"),
-                Thing.Struct.newBuilder()
-                        .putFields("lines", list(string("one"), string("two")))
-                        .putFields(
-                                "$proto",
-                                string(
-                                        "dev.enola.core.test.TestRepeated",
-                                        "enola:proto/dev.enola.core.test.TestRepeated"))
-                        .build());
+        var repeated = TestRepeated.newBuilder().addLines("one").addLines("two");
+        var repeatedThing =
+                Thing.newBuilder()
+                        .putFields("lines", c.toList(c.toValue("one"), c.toValue("two")).build());
+        var repeatedThingWithProto = ProtoTypes.addProtoField(repeatedThing, repeated);
+        check(repeated, repeatedThingWithProto);
     }
 
+    /* TODO Activate testComplex()
     @Test
     public void testComplex() throws ConversionException {
         check(
@@ -80,27 +77,16 @@ public class MessageToThingConverterTest {
                                         "dev.enola.core.test.TestComplex",
                                         "enola:proto/dev.enola.core.test.TestComplex"))
                         .build());
-    }
+    } */
 
+    /*
     private void check(Message.Builder thing, String expectedText) throws ConversionException {
         var view = Things.from(thing.build()).build();
         assertThat(view.hasStruct()).isFalse();
         assertThat(view.hasText()).isTrue();
         assertThat(view.getText().getString()).isEqualTo(expectedText);
     }
-
-    private Thing list(Thing... elements) throws ConversionException {
-        var valueList = Thing.List.newBuilder();
-        for (var value : elements) {
-            valueList.addEntries(value);
-        }
-        return Thing.newBuilder().setList(valueList).build();
-    }
-
-    private Thing struct(Thing.Struct thingView) throws ConversionException {
-        return Thing.newBuilder().setStruct(thingView).build();
-    }
-     */
+    */
 
     private void check(Message.Builder message, Thing.Builder expectedThing)
             throws ConversionException {
