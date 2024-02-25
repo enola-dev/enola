@@ -63,6 +63,10 @@ public class LearnRdf4jTest {
         model.add(address, Values.iri(ex, "street"), Values.literal("31 Art Gallery"));
         model.add(address, Values.iri(ex, "city"), Values.literal("Barcelona"));
 
+        IRI dali = Values.iri(ex, "Dalí");
+        model.add(dali, RDF.TYPE, artist);
+        model.add(dali, FOAF.FIRST_NAME, Values.literal("Salvador"));
+
         return model;
     }
 
@@ -76,11 +80,13 @@ public class LearnRdf4jTest {
                 .add(FOAF.FIRST_NAME, "Pablo")
                 .add(LOCN.LOCATION, Values.literal("Spain", "en"))
                 // TODO .add(LOCN.LOCATION, Values.literal("España", "es"))
-
                 .add("ex:homeAddress", address) // link the blank node
                 .subject(address) // switch the subject
                 .add("ex:street", "31 Art Gallery")
                 .add("ex:city", "Barcelona")
+                .subject("ex:Dalí")
+                .add(RDF.TYPE, "ex:Artist")
+                .add(FOAF.FIRST_NAME, "Salvador")
                 .build();
     }
 

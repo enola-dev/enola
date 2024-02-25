@@ -17,10 +17,9 @@
  */
 package dev.enola.rdf;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-import static dev.enola.rdf.ModelSubject.assertThat;
+
+import com.google.common.truth.Truth;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
@@ -29,6 +28,7 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.thing.Thing;
 
 import org.eclipse.rdf4j.model.Model;
+import org.eclipse.rdf4j.model.util.Values;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,16 +56,18 @@ public class RdfThingConverterTest {
 
     @Test
     public void rdfToThing() throws ConversionException, IOException {
-        var actualThing = rdfToThingConverter.convert1(rdf);
+        var actualThings = rdfToThingConverter.convertToList(rdf);
         var expectedThing = thing;
-        assertThat(actualThing).isEqualTo(expectedThing);
+        // TODO Use ProtoTruth instead of Truth (requires fixing *Builder return type)
+        Truth.assertThat(actualThings.get(1)).isEqualTo(expectedThing);
     }
 
     @Test
     public void thingToRDF() throws ConversionException {
         var actualRDF = thingToRdfConverter.convert(thing);
+        rdf.remove(Values.iri("http://example.enola.dev/Dalí"), null, null);
         var expectedRDF = rdf;
-        assertThat(actualRDF).isEqualTo(expectedRDF);
+        ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 
     @Test

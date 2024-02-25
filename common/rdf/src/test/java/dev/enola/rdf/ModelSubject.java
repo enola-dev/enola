@@ -38,7 +38,7 @@ public final class ModelSubject extends Subject {
         return ModelSubject::new;
     }
 
-    private Model actual;
+    private final Model actual;
 
     public ModelSubject(FailureMetadata metadata, Model actual) {
         super(metadata, actual);

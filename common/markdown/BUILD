@@ -33,11 +33,13 @@ java_library(
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
+    runtime_deps = [
+        "@maven//:org_slf4j_slf4j_simple",
+    ],
     deps = [
         ":markdown",
         "@maven//:com_google_truth_truth",
         "@maven//:junit_junit",
-        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

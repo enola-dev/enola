@@ -62,6 +62,7 @@ java_binary(
     # resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":demo",
@@ -79,7 +80,6 @@ java_binary(
         "@maven//:com_google_truth_truth",
         "@maven//:io_grpc_grpc_api",
         "@maven//:junit_junit",
-        "@maven//:org_slf4j_slf4j_simple",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

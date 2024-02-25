@@ -39,7 +39,7 @@ public final class ResourceSubject extends Subject {
         return ResourceSubject::new;
     }
 
-    private ReadableResource actual;
+    private final ReadableResource actual;
 
     public ResourceSubject(FailureMetadata metadata, ReadableResource actual) {
         super(metadata, actual);

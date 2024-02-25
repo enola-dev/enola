@@ -17,8 +17,6 @@
  */
 package dev.enola.rdf;
 
-import static com.google.common.collect.MoreCollectors.onlyElement;
-
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.thing.Thing;
@@ -46,11 +44,14 @@ class RdfThingConverter implements Converter<Model, Stream<ThingOrBuilder>> {
     // to "previous things" at any time. The design of this current default implementation takes
     // this into account - which makes this very inefficient from a memory usage point of view
     // for very large RDF graphs. Future optimizations could include (optional, always) modes
-    // which make assumptions when "a Thing is completed".
+    // which either makes assumptions when "a Thing is completed" (perhaps upon encountering
+    // the first a non-Blank statement for another Subject?), or which uses
+    // for (var subject : model.subjects()) filter(subject, null, null) ...
+    // to do this in a more orderly fashion - if that scales better?
+    // (Perhaps keep such different "strategies" configurable?)
 
-    public ThingOrBuilder convert1(Model input) throws ConversionException {
-        // Cannot convert RDF with >1 statements to a single Thing
-        return convert(input).collect(onlyElement());
+    public List<ThingOrBuilder> convertToList(Model input) throws ConversionException {
+        return convert(input).toList();
     }
 
     @Override
