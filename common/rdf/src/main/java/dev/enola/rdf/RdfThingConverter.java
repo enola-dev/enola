@@ -21,7 +21,6 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
-import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.Value;
 import dev.enola.thing.Value.Link;
 
@@ -38,7 +37,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-class RdfThingConverter implements Converter<Model, Stream<ThingOrBuilder>> {
+class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
 
     // TODO In general, an RDF stream of statements is not "ordered"; there could be "later updates"
     // to "previous things" at any time. The design of this current default implementation takes
@@ -50,12 +49,12 @@ class RdfThingConverter implements Converter<Model, Stream<ThingOrBuilder>> {
     // to do this in a more orderly fashion - if that scales better?
     // (Perhaps keep such different "strategies" configurable?)
 
-    public List<ThingOrBuilder> convertToList(Model input) throws ConversionException {
+    public List<Thing.Builder> convertToList(Model input) throws ConversionException {
         return convert(input).toList();
     }
 
     @Override
-    public Stream<ThingOrBuilder> convert(Model input) {
+    public Stream<Thing.Builder> convert(Model input) {
         // These are the "root" Things; i.e. the Statements where Subject is an IRI.
         final Map<IRI, Thing.Builder> roots = new HashMap<>();
 
@@ -89,7 +88,7 @@ class RdfThingConverter implements Converter<Model, Stream<ThingOrBuilder>> {
             action.accept(structs);
         }
 
-        return roots.values().stream().map(builder -> builder.build());
+        return roots.values().stream();
     }
 
     private static void convert(

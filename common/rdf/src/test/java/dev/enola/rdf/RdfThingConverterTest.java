@@ -19,7 +19,7 @@ package dev.enola.rdf;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
-import com.google.common.truth.Truth;
+import com.google.common.truth.extensions.proto.ProtoTruth;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
@@ -58,8 +58,7 @@ public class RdfThingConverterTest {
     public void rdfToThing() throws ConversionException, IOException {
         var actualThings = rdfToThingConverter.convertToList(rdf);
         var expectedThing = thing;
-        // TODO Use ProtoTruth instead of Truth (requires fixing *Builder return type)
-        Truth.assertThat(actualThings.get(1)).isEqualTo(expectedThing);
+        ProtoTruth.assertThat(actualThings.get(1).build()).isEqualTo(expectedThing);
     }
 
     @Test
