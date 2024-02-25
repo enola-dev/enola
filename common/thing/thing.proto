@@ -52,6 +52,8 @@ message Value {
 
     Literal literal = 3;
 
+    // TODO Keep or remove this? See
+    // https://github.com/enola-dev/enola/pull/540...
     LangString lang_string = 4;
 
     // https://protobuf.dev/programming-guides/proto3/#scalar
@@ -102,6 +104,8 @@ message Value {
     string datatype = 2;
   }
 
+  // TODO Keep or remove this? See
+  // https://github.com/enola-dev/enola/pull/540...
   message LangString {
     // Text, for humans.
     string text = 1;
