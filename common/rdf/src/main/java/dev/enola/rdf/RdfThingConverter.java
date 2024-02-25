@@ -27,7 +27,6 @@ import dev.enola.thing.Value.Link;
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
-import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.base.CoreDatatype;
 
 import java.util.ArrayList;
@@ -81,7 +80,25 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
 
             } else throw new UnsupportedOperationException("TODO: " + subject);
 
-            convert(thing, statement, deferred);
+            // The goal of this is to turn an RDF Object List into a Thing List Value
+            var predicate = statement.getPredicate();
+            var statements = input.filter(subject, predicate, null);
+            if (statements.size() == 1) {
+                convertAndPut(thing, predicate, statement.getObject(), deferred);
+                var value = convert(thing, predicate, statement.getObject(), deferred);
+                thing.putFields(predicate.stringValue(), value.build());
+            } else {
+                var valueList = dev.enola.thing.Value.List.newBuilder();
+                for (var subStatement : statements) {
+                    var object = subStatement.getObject();
+                    var value = convert(thing, predicate, object, deferred);
+                    valueList.addValues(value);
+                }
+                var value = Value.newBuilder().setList(valueList);
+                thing.putFields(statement.getPredicate().stringValue(), value.build());
+            }
+            // TODO It's surprising that this this really works (test pass) as-is?
+            // What causes it not to repeat (duplicate) values?
         }
 
         for (var action : deferred) {
@@ -91,9 +108,21 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
         return roots.values().stream();
     }
 
-    private static void convert(
-            Builder thing, Statement statement, List<Consumer<Map<String, Builder>>> deferred) {
-        org.eclipse.rdf4j.model.Value rdfValue = statement.getObject();
+    // TODO Remove this again?
+    private static void convertAndPut(
+            Builder thing,
+            IRI predicate,
+            org.eclipse.rdf4j.model.Value object,
+            List<Consumer<Map<String, Builder>>> deferred) {
+        var value = convert(thing, predicate, object, deferred);
+        thing.putFields(predicate.stringValue(), value.build());
+    }
+
+    private static dev.enola.thing.Value.Builder convert(
+            Builder thing,
+            IRI predicate,
+            org.eclipse.rdf4j.model.Value rdfValue,
+            List<Consumer<Map<String, Builder>>> deferred) {
         var value = Value.newBuilder();
         if (rdfValue.isIRI()) {
             value.setLink(Link.newBuilder().setIri(rdfValue.stringValue()));
@@ -127,7 +156,7 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
                             throw new IllegalStateException(
                                     bNodeID + " not found: " + map.keySet());
                         value.setStruct(containedThing);
-                        thing.putFields(statement.getPredicate().stringValue(), value.build());
+                        thing.putFields(predicate.stringValue(), value.build());
                     });
 
         } else if (rdfValue.isTriple()) {
@@ -137,6 +166,6 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
             throw new UnsupportedOperationException("TODO: Resource");
         }
 
-        thing.putFields(statement.getPredicate().stringValue(), value.build());
+        return value;
     }
 }

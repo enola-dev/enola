@@ -17,7 +17,10 @@
  */
 package dev.enola.rdf;
 
+import static java.util.Collections.singleton;
+
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
@@ -91,9 +94,10 @@ class ThingRdfConverter
         }
         for (var field : from.getFieldsMap().entrySet()) {
             IRI predicate = vf.createIRI(field.getKey());
-            var object = convert(field.getValue(), containedThings);
-            Statement statement = vf.createStatement(subject, predicate, object);
-            into.handleStatement(statement);
+            for (var object : convert(field.getValue(), containedThings)) {
+                Statement statement = vf.createStatement(subject, predicate, object);
+                into.handleStatement(statement);
+            }
         }
 
         for (var containedThing : containedThings.entrySet()) {
@@ -106,21 +110,22 @@ class ThingRdfConverter
         }
     }
 
-    private org.eclipse.rdf4j.model.Value convert(
+    private Iterable<org.eclipse.rdf4j.model.Value> convert(
             dev.enola.thing.Value value, Map<BNode, Thing> containedThings) {
         return switch (value.getKindCase()) {
-            case LINK -> vf.createIRI(value.getLink().getIri());
+            case LINK -> singleton(vf.createIRI(value.getLink().getIri()));
 
-            case STRING -> vf.createLiteral(value.getString());
+            case STRING -> singleton(vf.createLiteral(value.getString()));
 
             case LITERAL -> {
                 var literal = value.getLiteral();
-                yield vf.createLiteral(literal.getValue(), vf.createIRI(literal.getDatatype()));
+                yield singleton(
+                        vf.createLiteral(literal.getValue(), vf.createIRI(literal.getDatatype())));
             }
 
             case LANG_STRING -> {
                 LangString langString = value.getLangString();
-                yield vf.createLiteral(langString.getText(), langString.getLang());
+                yield singleton(vf.createLiteral(langString.getText(), langString.getLang()));
             }
 
             case STRUCT -> {
@@ -133,10 +138,22 @@ class ThingRdfConverter
                     bNode = vf.createBNode();
                 }
                 containedThings.put(bNode, containedThing);
-                yield bNode;
+                yield singleton(bNode);
             }
 
-                // case LIST -> throw new UnsupportedOperationException("TODO");
+            case LIST -> {
+                // TODO value.getList().getValuesList().stream().map(eValue -> convert(eValue,?
+                var enolaValues = value.getList().getValuesList();
+                var rdfValues =
+                        ImmutableList.<org.eclipse.rdf4j.model.Value>builderWithExpectedSize(
+                                enolaValues.size());
+                for (var enolaValue : enolaValues) {
+                    var rdfValue = convert(enolaValue, containedThings);
+                    // Not 100% sure if addAll() is "correct" here...
+                    rdfValues.addAll(rdfValue);
+                }
+                yield rdfValues.build();
+            }
 
             case KIND_NOT_SET -> throw new IllegalArgumentException(value.toString());
         };

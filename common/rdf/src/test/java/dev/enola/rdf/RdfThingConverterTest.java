@@ -19,6 +19,7 @@ package dev.enola.rdf;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
+import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.ProtoTruth;
 
 import dev.enola.common.convert.ConversionException;
@@ -38,7 +39,12 @@ public class RdfThingConverterTest {
 
     private final ReadableResource turtle =
             new ClasspathResource("picasso.turtle", RdfMediaType.TURTLE);
-    private final ReadableResource yaml = new ClasspathResource("picasso.thing.yaml", YAML_UTF_8);
+
+    private final ReadableResource picassoYaml =
+            new ClasspathResource("picasso.thing.yaml", YAML_UTF_8);
+
+    private final ReadableResource daliYaml = //
+            new ClasspathResource("dali.thing.yaml", YAML_UTF_8);
 
     private final ProtoIO protoReader = new ProtoIO();
     private final RdfReaderConverter rdfReader = new RdfReaderConverter();
@@ -46,26 +52,43 @@ public class RdfThingConverterTest {
     private final ThingRdfConverter thingToRdfConverter = new ThingRdfConverter();
 
     private Model rdf;
-    private Thing thing;
+    private Thing picassoThing;
+    private Thing daliThing;
 
     @Before
     public void before() throws ConversionException, IOException {
         rdf = rdfReader.convert(turtle);
-        thing = protoReader.read(yaml, Thing.newBuilder(), Thing.class);
+        picassoThing = protoReader.read(picassoYaml, Thing.newBuilder(), Thing.class);
+        daliThing = protoReader.read(daliYaml, Thing.newBuilder(), Thing.class);
     }
 
     @Test
-    public void rdfToThing() throws ConversionException, IOException {
+    public void rdfToPicassoThing() throws ConversionException, IOException {
         var actualThings = rdfToThingConverter.convertToList(rdf);
-        var expectedThing = thing;
+        var expectedThing = picassoThing;
         ProtoTruth.assertThat(actualThings.get(1).build()).isEqualTo(expectedThing);
     }
 
     @Test
-    public void thingToRDF() throws ConversionException {
-        var actualRDF = thingToRdfConverter.convert(thing);
-        rdf.remove(Values.iri("http://example.enola.dev/Dalí"), null, null);
+    public void rdfToDaliThing() throws ConversionException, IOException {
+        var actualThings = rdfToThingConverter.convertToList(rdf);
+        var expectedThing = daliThing;
+        ProtoTruth.assertThat(actualThings.get(0).build()).isEqualTo(expectedThing);
+    }
+
+    @Test
+    public void picassoThingToRDF() throws ConversionException {
+        var actualRDF = thingToRdfConverter.convert(picassoThing);
+        Truth.assertThat(rdf.remove(Values.iri("http://example.enola.dev/Dalí"), null, null))
+                .isTrue();
         var expectedRDF = rdf;
+        ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
+    }
+
+    @Test
+    public void daliThingToRDF() throws ConversionException {
+        var actualRDF = thingToRdfConverter.convert(daliThing);
+        var expectedRDF = rdf.filter(Values.iri("http://example.enola.dev/Dalí"), null, null);
         ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 
