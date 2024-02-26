@@ -1,5 +1,8 @@
 # Bazel
-bazel-*
+/bazel-bin
+/bazel-enola
+/bazel-out
+/bazel-testlogs
 
 # Gradle
 build/
