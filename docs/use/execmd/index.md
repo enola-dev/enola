@@ -83,3 +83,5 @@ $ ./enola execmd --help
 * <https://github.com/zombocom/rundoc>
 * <https://github.com/khalidx/runbook>
 * <https://github.com/eclecticiq/rundoc>
+* <https://codeberg.org/mhwombat/run-code-inline>
+* <https://github.com/jgm/pandoc/wiki/Pandoc-Filters#running-code-related>
