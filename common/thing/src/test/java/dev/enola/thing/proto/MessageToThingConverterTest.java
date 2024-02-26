@@ -47,14 +47,6 @@ public class MessageToThingConverterTest {
         check(simple, simpleThingWithProto);
     }
 
-    /* TODO Activate testTimestamp()
-    @Test
-    public void testTimestamp() throws ConversionException {
-        check(
-                Timestamp.newBuilder().setSeconds(123).setNanos(456),
-                "1970-01-01T00:02:03.000000456Z");
-    } */
-
     @Test
     public void testRepeated() throws ConversionException {
         var repeated = TestRepeated.newBuilder().addLines("one").addLines("two");
@@ -78,15 +70,6 @@ public class MessageToThingConverterTest {
         var complexThingWithProto = ProtoTypes.addProtoField(complexThing, complex);
         check(complex, complexThingWithProto);
     }
-
-    /*
-    private void check(Message.Builder thing, String expectedText) throws ConversionException {
-        var view = Things.from(thing.build()).build();
-        assertThat(view.hasStruct()).isFalse();
-        assertThat(view.hasText()).isTrue();
-        assertThat(view.getText().getString()).isEqualTo(expectedText);
-    }
-    */
 
     private void check(Message.Builder message, Thing.Builder expectedThing)
             throws ConversionException {
