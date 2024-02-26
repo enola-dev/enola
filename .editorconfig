@@ -33,6 +33,7 @@ tab_width = 2
 [*.bash]
 indent_size = 2
 tab_width = 2
+max_line_length = unset
 
 [*.css]
 indent_size = 2

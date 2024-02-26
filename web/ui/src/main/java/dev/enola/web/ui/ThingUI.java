@@ -31,6 +31,9 @@ import java.util.Map;
 
 public class ThingUI {
 
+    // We intentionally don't use any template engine here; see e.g.
+    // https://blog.machinezoo.com/template-engines-broken for why.
+
     // See https://github.com/google/google-java-format/issues/1033 re. STR formatting :()
 
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"

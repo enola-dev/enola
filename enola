@@ -35,12 +35,15 @@ else
   exit 255
 fi
 
+source "$ROOT"/tools/bazel-java-tool-chain/bazel-java-tool-chain.bash
+JAVA=$(java_binary)
+
 cd "$ROOT"
 LOG=$(mktemp)
 if "$BZL" build --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
   rm "$LOG"
   # TODO Integrate this with (use) tools/distro/build.sh instead of launching it like this
-  cd "$CWD" && java --enable-preview -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
+  cd "$CWD" && $JAVA --enable-preview -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
 else
   cat "$LOG" && echo >&2 && echo >&2
   rm "$LOG"
