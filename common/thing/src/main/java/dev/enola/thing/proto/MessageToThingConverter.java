@@ -26,7 +26,7 @@ import dev.enola.common.convert.Converter;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Value;
 
-public class MessageToThingConverter implements Converter<Message, Thing.Builder> {
+public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
     // TODO Converter<MessageOrBuilder, to avoid build(), when not required?
 
     // TODO Fully replace "old" dev.enola.core.view.Things with this new API
@@ -34,8 +34,10 @@ public class MessageToThingConverter implements Converter<Message, Thing.Builder
     // TODO com.google.protobuf.Struct support!
 
     @Override
-    public Thing.Builder convert(Message message) throws ConversionException {
-        return from(message, true);
+    public Thing.Builder convert(MessageWithIRI messageWithIRI) throws ConversionException {
+        var thing = from(messageWithIRI.message(), true);
+        thing.setIri(messageWithIRI.iri());
+        return thing;
     }
 
     private Thing.Builder from(Message message, boolean isTopLevel) {
@@ -46,10 +48,8 @@ public class MessageToThingConverter implements Converter<Message, Thing.Builder
         }
         for (var field : message.getAllFields().entrySet()) {
             var descriptor = field.getKey();
-            // TODO This name needs to be something like
-            // http://enola.dev/proto/{{schemaFQN}}/{{name}}...
-            var name = descriptor.getName();
-            thing.putFields(name, listToThing(field.getValue(), descriptor, message).build());
+            var key = ProtoTypes.getFieldERI(descriptor);
+            thing.putFields(key, listToThing(field.getValue(), descriptor, message).build());
         }
         return thing;
     }

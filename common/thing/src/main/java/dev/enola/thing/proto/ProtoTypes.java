@@ -18,10 +18,14 @@
 package dev.enola.thing.proto;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
+import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.MessageOrBuilder;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.Value;
+import dev.enola.thing.Value.Builder;
 
 /**
  * ProtoTypes defines the Enola @{link Type}/s related to <a href="https://protobuf.dev">Protocol
@@ -30,21 +34,45 @@ import dev.enola.thing.Value;
 public class ProtoTypes {
 
     @VisibleForTesting
-    static final String MESSAGE_DESCRIPTOR_PREDICATE_IRI = "http://enola.dev/proto";
+    static final String MESSAGE_DESCRIPTOR_PREDICATE_IRI = "http://enola.dev/proto/message";
 
-    private static final String MESSAGE_DESCRIPTOR_ERI = "enola:/enola.dev/proto/schema/";
+    private static final String MESSAGE_DESCRIPTOR_ERI = "enola:/enola.dev/proto/message/";
+
+    private static final String FIELD_DESCRIPTOR_ERI = "enola:/enola.dev/proto/field/";
 
     static Thing.Builder addProtoField(Thing.Builder thing, MessageOrBuilder message) {
         // NB: We're setting the field that describes what Proto (Descriptor)
         // Thing (originally) has (had). This is *NOT* the same as e.g.
         // the "$etype" or (https://json-schema.org) "$schema", or other schemas by Enola's
         // "multi-schema support".
-        var protoFQN = message.getDescriptorForType().getFullName();
-        thing.putFields(MESSAGE_DESCRIPTOR_PREDICATE_IRI, toThingValueLink(protoFQN).build());
+        var messageDescriptor = message.getDescriptorForType();
+        thing.putFields(
+                MESSAGE_DESCRIPTOR_PREDICATE_IRI, toThingValueLink(messageDescriptor).build());
         return thing;
     }
 
-    static Value.Builder toThingValueLink(String protoFQN) {
-        return MessageToThingConverter.toLink(MESSAGE_DESCRIPTOR_ERI + protoFQN, protoFQN);
+    static Value.Builder toThingValueLink(Descriptor messageDescriptor) {
+        return toThingValueLink(messageDescriptor.getFullName());
+    }
+
+    public static Builder toThingValueLink(String messageFQN) {
+        var iri = getMessageERI(messageFQN);
+        return MessageToThingConverter.toLink(iri, messageFQN);
+    }
+
+    private static String getMessageERI(String messageFQN) {
+        return MESSAGE_DESCRIPTOR_ERI + messageFQN;
+    }
+
+    static String getFieldERI(FieldDescriptor fieldDescriptor) {
+        return FIELD_DESCRIPTOR_ERI
+                + requireNonNullOrEmpty(fieldDescriptor.getContainingType().getFullName())
+                + "/"
+                + fieldDescriptor.getNumber();
+    }
+
+    static String requireNonNullOrEmpty(String test) {
+        if (!Strings.isNullOrEmpty(test)) return test;
+        else throw new IllegalArgumentException();
     }
 }

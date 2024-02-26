@@ -1,0 +1,19 @@
+<http://test/thing>
+  <http://enola.dev/proto/message> <enola:/enola.dev/proto/message/dev.enola.thing.test.TestComplex>;
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/1> _:1c42b1ddae2a4c8fa34faed4f26840582 ;
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/2> _:1c42b1ddae2a4c8fa34faed4f26840583,
+                                                                    _:1c42b1ddae2a4c8fa34faed4f26840584 .
+
+# The following x3 should be the *same* bNode... how-to - ID as hash of fields?!
+
+_:1c42b1ddae2a4c8fa34faed4f26840582
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/1> "hello" ;
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2> "123" .
+
+_:1c42b1ddae2a4c8fa34faed4f26840583
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/1> "hello" ;
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2> "123" .
+
+_:1c42b1ddae2a4c8fa34faed4f26840584
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/1> "hello" ;
+  <enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2> "123" .
