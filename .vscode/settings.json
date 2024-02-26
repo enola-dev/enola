@@ -136,6 +136,7 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/.classpath": true,
+    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
     "**/*.crswap": true,

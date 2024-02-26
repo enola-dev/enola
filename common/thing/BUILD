@@ -75,6 +75,7 @@ proto_library(
 
 java_proto_library(
     name = "test_java_proto",
+    visibility = ["//:__subpackages__"],
     deps = ["test_proto"],
 )
 

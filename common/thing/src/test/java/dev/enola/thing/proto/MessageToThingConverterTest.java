@@ -19,28 +19,40 @@ package dev.enola.thing.proto;
 
 import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.core.test.TestComplex;
 import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
 import dev.enola.thing.Thing;
+import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.Value;
 
 import org.junit.Test;
 
 public class MessageToThingConverterTest {
 
+    private static final String TEST_THING_IRI = "http://test/thing";
+
     MessageToThingConverter c = new MessageToThingConverter();
 
     TestSimple.Builder simple = TestSimple.newBuilder().setText("hello").setNumber(123);
     Thing.Builder simpleThing =
             Thing.newBuilder()
-                    .putFields("text", c.toValue("hello").build())
-                    .putFields("number", c.toValue("123").build());
+                    .putFields(
+                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/1",
+                            c.toValue("hello").build())
+                    .putFields(
+                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2",
+                            c.toValue("123").build());
 
-    Thing.Builder simpleThingWithProto =
-            ProtoTypes.addProtoField(Thing.newBuilder(simpleThing.build()), simple);
+    Thing.Builder simpleThingWithProto = headers(Thing.newBuilder(simpleThing.build()), simple);
+
+    private Builder headers(Thing.Builder thing, MessageOrBuilder message) {
+        thing.setIri(TEST_THING_IRI);
+        return ProtoTypes.addProtoField(thing, message);
+    }
 
     @Test
     public void testSimple() throws ConversionException {
@@ -52,8 +64,10 @@ public class MessageToThingConverterTest {
         var repeated = TestRepeated.newBuilder().addLines("one").addLines("two");
         var repeatedThing =
                 Thing.newBuilder()
-                        .putFields("lines", c.toList(c.toValue("one"), c.toValue("two")).build());
-        var repeatedThingWithProto = ProtoTypes.addProtoField(repeatedThing, repeated);
+                        .putFields(
+                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestRepeated/1",
+                                c.toList(c.toValue("one"), c.toValue("two")).build());
+        var repeatedThingWithProto = headers(repeatedThing, repeated);
         check(repeated, repeatedThingWithProto);
     }
 
@@ -63,17 +77,19 @@ public class MessageToThingConverterTest {
                 TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);
         var complexThing =
                 Thing.newBuilder()
-                        .putFields("simple", struct(simpleThing).build())
                         .putFields(
-                                "simples",
+                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/1",
+                                struct(simpleThing).build())
+                        .putFields(
+                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/2",
                                 c.toList(struct(simpleThing), struct(simpleThing)).build());
-        var complexThingWithProto = ProtoTypes.addProtoField(complexThing, complex);
+        var complexThingWithProto = headers(complexThing, complex);
         check(complex, complexThingWithProto);
     }
 
     private void check(Message.Builder message, Thing.Builder expectedThing)
             throws ConversionException {
-        var actualThing = c.convert(message.build());
+        var actualThing = c.convert(new MessageWithIRI(TEST_THING_IRI, message.build()));
         ProtoTruth.assertThat(actualThing.build()).isEqualTo(expectedThing.build());
     }
 

@@ -26,7 +26,11 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.ProtoIO;
+import dev.enola.core.test.TestComplex;
+import dev.enola.core.test.TestSimple;
 import dev.enola.thing.Thing;
+import dev.enola.thing.proto.MessageToThingConverter;
+import dev.enola.thing.proto.MessageWithIRI;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Values;
@@ -93,7 +97,15 @@ public class RdfThingConverterTest {
     }
 
     @Test
-    public void messageToRDF() {
-        // TODO Implement messageToRDF(), via MessageToThingConverter
+    public void protoMessageToRDF() throws ConversionException {
+        var simple = TestSimple.newBuilder().setText("hello").setNumber(123);
+        var complex =
+                TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);
+        var converter = new MessageToThingConverter();
+        var thing = converter.convert(new MessageWithIRI("http://test/thing", complex.build()));
+        var actualRDF = thingToRdfConverter.convert(thing);
+        var expectedRDF =
+                rdfReader.convert(new ClasspathResource("proto.turtle", RdfMediaType.TURTLE));
+        ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 }
