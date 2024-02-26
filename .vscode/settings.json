@@ -72,6 +72,8 @@
   // Keep this version in sync with the same version in .pre-commit-config.yaml
   // NB: Changes to this are only taken into account on start-up, so need to restart.
   "java.format.settings.google.version": "1.20.0",
+  // TODO Remove when https://github.com/google/google-java-format/issues/1072 is fixed:
+  "java.format.settings.google.mode": "jar-file",
   // TODO https://github.com/eclipse-jdtls/eclipse.jdt.ls/issues/3050
   "java.compile.nullAnalysis.mode": "automatic",
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
@@ -133,7 +135,6 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/.classpath": true,
-    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
     "**/*.crswap": true,
