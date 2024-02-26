@@ -104,6 +104,8 @@ Web-based:
 
 * **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** #RDF
 * [isSemantic's RDF Visualizer](https://issemantic.net/rdf-visualizer)
+* [Triply's Yasgui](https://docs.triply.cc/yasgui-api/)
+* [Zazuko's Trifid](https://github.com/zazuko/trifid)
 * [Zazuko's Sketch](https://sketch.zazuko.com) (also [for VSC](https://marketplace.visualstudio.com/items?itemName=Zazuko.vscode-rdf-sketch)) #RDF #swiss
 * [VisGraph^3](https://visgraph3.github.io) #opensource #RDF
 * [Brickschema's Viewer](https://viewer.brickschema.org)
@@ -199,3 +201,15 @@ Enola 🕵🏾‍♀️ models may internally gain (optional) `hash` support, fo
 * [Bob](https://bob.build)
 * [Justbuild](https://github.com/just-buildsystem/justbuild) (not to be confused with [just.systems](https://just.systems) and similar [command runners](https://github.com/casey/just?tab=readme-ov-file#alternatives-and-prior-art))
 * [Bazel](https://bazel.build) (and its flattering imitations, such as [Buck2](https://buck2.build) and [Pants](https://www.pantsbuild.org))
+
+## Conferences & Events
+
+### Switzerland
+
+* [Linked Data Days](https://www.bfh.ch/de/aktuell/fachveranstaltungen/linked-data-day-2024/) in Bern
+* [Knowledge Graph Forum](https://github.com/zazuko/knowledge-graph-forum) in Basel
+* [Data Community Conference](https://www.data-community.ch) in Bern
+
+### International
+
+* [Knowledge Graph Conference](https://www.knowledgegraph.tech)
