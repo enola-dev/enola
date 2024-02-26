@@ -24,7 +24,7 @@
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    // DO NOT REMOVE THIS! Unless you *really* know what you're doing! Like really.
+    // DO NOT REMOVE ANY OF THIS! Unless you *really* know what you're doing! Like really.
     //
     // The reason is that, while the CLI build with ./test.bash and all will still work,
     // the Visual Studio Code Web on GitHub Codespaces will break without this - even
@@ -45,7 +45,16 @@
     //"ghcr.io/devcontainers-community/features/bazel:1": {
     //      "bazelisk_version": "v1.19.0"
     //   }
+
+    // TODO Test carefully if this could be removed again after 
+    // https://github.com/enola-dev/enola/issues/546 is full resolved;
+    // IFF VSC LS can use THAT Java JDK?!
     //
+    // Note: Java version must match .bazelrc!
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21"
+    }
+    
     // Do *NOT* add anything else here; most other tools are always only installed
     // via https://asdf-vm.com from //.tool-versions!
   },
