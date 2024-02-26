@@ -21,9 +21,11 @@ import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.Message;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.core.test.TestComplex;
 import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
 import dev.enola.thing.Thing;
+import dev.enola.thing.Value;
 
 import org.junit.Test;
 
@@ -37,7 +39,8 @@ public class MessageToThingConverterTest {
                     .putFields("text", c.toValue("hello").build())
                     .putFields("number", c.toValue("123").build());
 
-    Thing.Builder simpleThingWithProto = ProtoTypes.addProtoField(simpleThing, simple);
+    Thing.Builder simpleThingWithProto =
+            ProtoTypes.addProtoField(Thing.newBuilder(simpleThing.build()), simple);
 
     @Test
     public void testSimple() throws ConversionException {
@@ -62,22 +65,19 @@ public class MessageToThingConverterTest {
         check(repeated, repeatedThingWithProto);
     }
 
-    /* TODO Activate testComplex()
     @Test
     public void testComplex() throws ConversionException {
-        check(
-                TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple),
-                Thing.Struct.newBuilder()
-                        .putFields("simple", struct(simpleThingView))
+        var complex =
+                TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);
+        var complexThing =
+                Thing.newBuilder()
+                        .putFields("simple", struct(simpleThing).build())
                         .putFields(
-                                "simples", list(struct(simpleThingView), struct(simpleThingView)))
-                        .putFields(
-                                "$proto",
-                                string(
-                                        "dev.enola.core.test.TestComplex",
-                                        "enola:proto/dev.enola.core.test.TestComplex"))
-                        .build());
-    } */
+                                "simples",
+                                c.toList(struct(simpleThing), struct(simpleThing)).build());
+        var complexThingWithProto = ProtoTypes.addProtoField(complexThing, complex);
+        check(complex, complexThingWithProto);
+    }
 
     /*
     private void check(Message.Builder thing, String expectedText) throws ConversionException {
@@ -92,5 +92,9 @@ public class MessageToThingConverterTest {
             throws ConversionException {
         var actualThing = c.convert(message.build());
         ProtoTruth.assertThat(actualThing.build()).isEqualTo(expectedThing.build());
+    }
+
+    private Value.Builder struct(Thing.Builder thing) {
+        return Value.newBuilder().setStruct(thing);
     }
 }
