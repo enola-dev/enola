@@ -42,7 +42,7 @@ import java.io.IOException;
 public class RdfThingConverterTest {
 
     private final ReadableResource turtle =
-            new ClasspathResource("picasso.turtle", RdfMediaType.TURTLE);
+            new ClasspathResource("picasso.ttl", RdfMediaType.TURTLE);
 
     private final ReadableResource picassoYaml =
             new ClasspathResource("picasso.thing.yaml", YAML_UTF_8);
@@ -105,7 +105,7 @@ public class RdfThingConverterTest {
         var thing = converter.convert(new MessageWithIRI("http://test/thing", complex.build()));
         var actualRDF = thingToRdfConverter.convert(thing);
         var expectedRDF =
-                rdfReader.convert(new ClasspathResource("proto.turtle", RdfMediaType.TURTLE));
+                rdfReader.convert(new ClasspathResource("proto.ttl", RdfMediaType.TURTLE));
         ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 }
