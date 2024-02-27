@@ -35,7 +35,7 @@ public class RdfReaderWriterTest {
     private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
 
     private static final ClasspathResource PICASSO_TURTLE_RESOURCE =
-            new ClasspathResource("picasso.turtle", RdfMediaType.TURTLE);
+            new ClasspathResource("picasso.ttl", RdfMediaType.TURTLE);
 
     private static final ClasspathResource PICASSO_JSONLD_RESOURCE =
             new ClasspathResource("picasso.jsonld", RdfMediaType.JSON_LD);
