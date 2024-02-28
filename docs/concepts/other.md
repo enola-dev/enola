@@ -99,6 +99,7 @@ Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
 * [aws/graph-explorer](https://github.com/aws/graph-explorer) #RDF #SPARQL #TinkerPop #AWS #opensource
 * [GraphDB Workbench](https://github.com/Ontotext-AD/graphdb-workbench) #RDF4j #freemium #commercial #opensource
+* [zazuko/graph-explorer](https://github.com/zazuko/graph-explorer) #RDF #SPARQL #opensource #[fork](https://github.com/metaphacts/ontodia/network/members) #metaphacts/ontodia
 
 Web-based:
 
