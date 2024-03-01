@@ -134,11 +134,11 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
             if (CoreDatatype.XSD.STRING.getIri().equals(datatype)) {
                 value.setString(rdfValue.stringValue());
 
-            } else if (optLang.isPresent()) {
-                var langString = dev.enola.thing.Value.LangString.newBuilder();
-                langString.setText(rdfLiteral.stringValue());
-                langString.setLang(optLang.get());
-                value.setLangString(langString);
+                // } else if (optLang.isPresent()) {
+                //     var langString = dev.enola.thing.Value.LangString.newBuilder();
+                //     langString.setText(rdfLiteral.stringValue());
+                //     langString.setLang(optLang.get());
+                //     value.setLangString(langString);
 
             } else {
                 var literal = dev.enola.thing.Value.Literal.newBuilder();
