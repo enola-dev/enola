@@ -29,7 +29,7 @@
 #  from https://github.com/devcontainers/templates/tree/main/src/debian
 #  is very (too) minimal, and we would need to add a lot...)
 # FROM mcr.microsoft.com/devcontainers/universal:2-linux
-FROM docker.io/library/fedora:39
+FROM docker.io/library/fedora:41
 
 RUN dnf update -y
 
