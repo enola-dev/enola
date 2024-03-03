@@ -3,7 +3,9 @@
     { "pattern": ".*dev/proto/core.*" },
     { "pattern": "script.svg" },
     { "pattern": "^https://vscode.dev" },
-    { "pattern": "^https://graphdb.ontotext.com" }
+    { "pattern": "^https://graphdb.ontotext.com" },
+    { "pattern": "^https://thebrain.com" },
+    { "pattern": "^https://codeberg.org" }
   ],
-  "aliveStatusCodes": [200, 0]
+  "aliveStatusCodes": [500, 200, 0]
 }

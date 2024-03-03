@@ -24,28 +24,19 @@ set -euo pipefail
 CWD=$(pwd)
 ROOT="$(realpath "$(dirname "$0")")"
 
-if [ -x "$(command -v gbazelisk)" ]; then
-  BZL=gbazelisk
-elif [ -x "$(command -v bazelisk)" ]; then
-  BZL=bazelisk
-else
-  # Also in test.bash
-  echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
-  echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
-  exit 255
-fi
-
-source "$ROOT"/tools/bazel-java-tool-chain/bazel-java-tool-chain.bash
-JAVA=$(java_binary)
+source "$ROOT"/tools/environment/setup.bash
 
 cd "$ROOT"
 LOG=$(mktemp)
+# NB: Similar build & launch also in tools/distro/build.sh & tools/distro/execjar-header.bash
 if "$BZL" build --color=yes //cli:enola_deploy.jar >"$LOG" 2>&1 ; then
   rm "$LOG"
-  # TODO Integrate this with (use) tools/distro/build.sh instead of launching it like this
-  cd "$CWD" && $JAVA --enable-preview -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
+  # TODO Integrate this with (use) tools/distro/build.sh instead of launching it directly like this? (But slower.)
+  cd "$CWD" && "$bazel_java_home"/bin/java --enable-preview -jar "$ROOT"/bazel-bin/cli/enola_deploy.jar "$@"
 else
   cat "$LOG" && echo >&2 && echo >&2
   rm "$LOG"
   cd "$CWD"
 fi
+
+# PS: Alternatively, you can also launch it simply via "bazelisk run //cli:enola -- --version" etc.

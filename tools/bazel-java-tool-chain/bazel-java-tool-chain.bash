@@ -32,7 +32,7 @@ function cleanup {
 #   * https://github.com/salesforce/bazel-eclipse/blob/888bcd333ac7bd4166fdb411562b74c2b54514d5/bundles/com.salesforce.bazel.eclipse.core/src/com/salesforce/bazel/eclipse/core/model/discovery/BaseProvisioningStrategy.java#L945-L960
 #   * https://stackoverflow.com/questions/78057833/how-to-query-bazel-for-the-absolute-jave-home-like-path-to-the-remote-jdk-of
 
-function java_binary {
+function bazel_java_home {
   local current_java_runtime
 
   ROOT="$(realpath "$(dirname "${BASH_SOURCE[0]}"/)")"
@@ -58,5 +58,5 @@ function java_binary {
     rm "$LOG"
   fi
 
-  echo "$output_base/$current_java_runtime/bin/java"
+  echo "$output_base/$current_java_runtime"
 }
