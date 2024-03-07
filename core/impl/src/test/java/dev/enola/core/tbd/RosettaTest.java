@@ -64,18 +64,18 @@ public class RosettaTest {
         var expectedOut =
                 StringResource.of(
                         """
-                            id:
-                              ns: demo
-                              entity: bar
-                              paths: [abc, def]
-                            related:
-                              one:
-                                ns: demo
-                                entity: baz
-                                paths: [uvw]
-                            link: {wiki:\
-                             'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}
-                            """,
+                        id:
+                          ns: demo
+                          entity: bar
+                          paths: [abc, def]
+                        related:
+                          one:
+                            ns: demo
+                            entity: baz
+                            paths: [uvw]
+                        link: {wiki:\
+                         'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}
+                        """,
                         YAML_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
     }

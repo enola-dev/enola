@@ -41,7 +41,7 @@ public class MarkdownResourceTest {
             ...
             -->
 
-                """;
+            """;
 
     String FRONTMATTER =
             """
@@ -51,11 +51,12 @@ public class MarkdownResourceTest {
 
             """;
 
-    String MD = """
+    String MD =
+            """
             # Thaw Blough!
 
             **It rocks...**
-                """;
+            """;
 
     @Test
     public void commentFrontmatterMarkdown() throws IOException {
