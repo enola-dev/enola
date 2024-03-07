@@ -54,7 +54,7 @@ message Value {
 
     // TODO Keep or remove this? See
     // https://github.com/enola-dev/enola/pull/540...
-    LangString lang_string = 4;
+    // LangString lang_string = 4;
 
     // Sub-structure (contained) Thing.
     Thing struct = 18;
@@ -105,13 +105,13 @@ message Value {
 
   // TODO Keep or remove this? See
   // https://github.com/enola-dev/enola/pull/540...
-  message LangString {
-    // Text, for humans.
-    string text = 1;
-
-    // BCP 47 “language tag” (e.g. “de-ch”) of the text.
-    string lang = 2;
-  }
+  // message LangString {
+  //   // Text, for humans.
+  //   string text = 1;
+  //
+  //   // BCP 47 “language tag” (e.g. “de-ch”) of the text.
+  //   string lang = 2;
+  // }
 
   message List {
     repeated Value values = 1;

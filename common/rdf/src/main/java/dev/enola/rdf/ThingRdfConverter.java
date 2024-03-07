@@ -27,7 +27,6 @@ import dev.enola.common.convert.Converter;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
-import dev.enola.thing.Value.LangString;
 
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -118,10 +117,11 @@ class ThingRdfConverter
                         vf.createLiteral(literal.getValue(), createIRI(literal.getDatatype())));
             }
 
-            case LANG_STRING -> {
-                LangString langString = value.getLangString();
-                yield singleton(vf.createLiteral(langString.getText(), langString.getLang()));
-            }
+                // case LANG_STRING -> {
+                //     LangString langString = value.getLangString();
+                //     yield singleton(vf.createLiteral(langString.getText(),
+                // langString.getLang()));
+                // }
 
             case STRUCT -> {
                 BNode bNode;
