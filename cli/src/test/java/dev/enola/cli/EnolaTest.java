@@ -126,11 +126,11 @@ public class EnolaTest {
                 .out()
                 .startsWith(
                         """
-                            id {
-                              ns: "test"
-                              entity: "foobar"
-                              paths: "helo"
-                            """);
+                        id {
+                          ns: "test"
+                          entity: "foobar"
+                          paths: "helo"
+                        """);
     }
 
     @Test
