@@ -23,7 +23,8 @@ GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
 
 go install github.com/bazelbuild/bazelisk@v1.19.0
-# TODO How do we install a fixed version? @v6.4.0 doesn't work:
+# TODO https://github.com/bazelbuild/buildtools/issues/1237
+# We should install a fixed version? @v6.4.0 doesn't work:
 # 'invalid version: module contains a go.mod file, so module path must match major version
 # ("github.com/bazelbuild/buildtools/v6")', but "go install github.com/bazelbuild/buildtools/buildifier@v6"
 # also fails, with: 'go: github.com/bazelbuild/buildtools/buildifier@v6: no matching versions for query "v6"'
