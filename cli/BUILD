@@ -15,11 +15,11 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_graalvm//graalvm:defs.bzl", "native_image")
 
-java_binary(
-    name = "enola",
+java_library(
+    name = "enola_library",
     srcs = glob(["src/main/java/**/*.java"]),
-    main_class = "dev.enola.cli.Enola",
     deps = [
         "//common/common",
         "//common/markdown",
@@ -40,6 +40,21 @@ java_binary(
     ],
 )
 
+java_binary(
+    name = "enola",
+    main_class = "dev.enola.cli.Enola",
+    runtime_deps = [
+        ":enola_library",
+    ]
+)
+
+native_image(
+    name = "enola-native",
+    deps = [":enola_library"],
+    main_class = "dev.enola.cli.Enola",
+    native_image_tool = "@graalvm//:native-image",
+)
+
 [java_test(
     name = name[:-len(".java")],
     size = "small",
@@ -47,7 +62,7 @@ java_binary(
     jvm_flags = ["--enable-preview"],
     resources = glob(["src/test/resources/**/*"]),
     deps = [
-        ":enola",
+        ":enola_library",
         "//common/common",
         "//common/markdown",
         "//core/impl",
