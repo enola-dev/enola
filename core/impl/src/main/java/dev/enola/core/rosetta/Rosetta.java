@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.tbd;
+package dev.enola.core.rosetta;
 
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
@@ -33,13 +33,13 @@ import dev.enola.core.proto.Entity;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
- * different model serialization formats.
+ * different model formats.
  */
 public class Rosetta {
 
-    // TODO This class is in dev.enola.core.tbd only for now, in order to have classpath access to
-    // Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below but
-    // eventually it should move e.g. to dev.enola.common.protobuf instead, and use a
+    // TODO This class is in dev.enola.core.rosetta only for now, in order to have classpath access
+    // to Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below.
+    // Eventually it could be moved e.g. to a new dev.enola[.common?].rosetta instead, and use a
     // DescriptorProvider as generic proto Descriptor registry.
 
     private final ProtoIO protoIO = new ProtoIO();

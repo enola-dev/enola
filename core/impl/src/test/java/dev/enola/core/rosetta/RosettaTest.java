@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.tbd;
+package dev.enola.core.rosetta;
 
 import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.truth.Truth.assertThat;

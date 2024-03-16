@@ -20,7 +20,7 @@ package dev.enola.cli;
 import dev.enola.common.io.resource.DelegatingResourceWithMediaType;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
-import dev.enola.core.tbd.Rosetta;
+import dev.enola.core.rosetta.Rosetta;
 
 import picocli.CommandLine;
 
