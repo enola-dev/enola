@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.proto;
 
+// TODO package dev.enola.thing.message;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
