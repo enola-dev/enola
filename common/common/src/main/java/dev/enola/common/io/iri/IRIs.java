@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
  * <p>See <a href="https://datatracker.ietf.org/doc/html/rfc3987">RFC 3987</a>.
  */
 public final class IRIs {
-    // see also (new) class dev.enola.common.io.resource.URIs
+    // see also class dev.enola.common.io.resource.URIs
 
     /**
      * Resolves an IRI reference against a base IRI and returns the resulting IRI as a String.

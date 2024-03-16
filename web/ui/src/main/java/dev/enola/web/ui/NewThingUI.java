@@ -23,13 +23,15 @@ import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
-import dev.enola.core.proto.Thing;
-import dev.enola.core.proto.Thing.LinkedText;
-import dev.enola.core.proto.ThingOrBuilder;
+import dev.enola.thing.ThingOrBuilder;
+import dev.enola.thing.Value;
+import dev.enola.thing.Value.Link;
+import dev.enola.thing.Value.List;
+import dev.enola.thing.Value.Literal;
 
 import java.util.Map;
 
-public class ThingUI {
+public class NewThingUI {
 
     // We intentionally don't use any template engine here; see e.g.
     // https://blog.machinezoo.com/template-engines-broken for why.
@@ -43,46 +45,53 @@ public class ThingUI {
     // TODO Implement Escaper as StringTemplate.Processor?
     // (See e.g. https://javaalmanac.io/features/stringtemplates/)
 
-    public static CharSequence html(ThingOrBuilder value) {
-        return html(value, "thing");
+    // TODO rename html() to thing()
+    public static CharSequence html(ThingOrBuilder thing) {
+        // TODO Print thing.getIri()
+        return table(thing.getFieldsMap(), "thing");
     }
 
-    public static CharSequence html(ThingOrBuilder value, String tableCssClass) {
+    // TODO private?
+    // TODO rename html() to value()
+    public static CharSequence html(Value value, String tableCssClass) {
         return switch (value.getKindCase()) {
-            case TEXT -> text(value.getText());
-            case STRUCT -> table(value.getStruct(), tableCssClass);
+            case STRING -> s(value.getString());
+            case LINK -> link(value.getLink());
+            case LITERAL -> literal(value.getLiteral());
+            case STRUCT -> html(value.getStruct());
             case LIST -> list(value.getList());
             case KIND_NOT_SET -> "";
+            default ->
+                    throw new IllegalArgumentException("Unexpected value: " + value.getKindCase());
         };
     }
 
-    private static CharSequence table(Thing.StructOrBuilder thingView, String cssClass) {
+    private static CharSequence literal(Literal literal) {
+        // TODO Use a dev.enola.common.convert.Converter based on the literal.getDatatype()
+        return literal.getValue();
+    }
+
+    private static CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
         // <a href=\"/TODO\">\{s(thingView.getTypeUri())}</a>
         var sb = new StringBuilder("<table");
         if (!cssClass.isEmpty()) {
             sb.append(" class=\"" + s(cssClass) + "\"");
         }
         sb.append("><tbody>\n");
-        sb.append(tr(thingView.getFieldsMap()));
-        sb.append("</tbody></table>\n");
-        return sb;
-    }
-
-    private static CharSequence tr(Map<String, Thing> fieldsMap) {
-        var sb = new StringBuilder();
         for (var nameValue : fieldsMap.entrySet()) {
             sb.append("<tr>\n");
             sb.append(STR."<td class=\"label\">\{s(nameValue.getKey())}</td>");
             sb.append(STR."<td>\{html(nameValue.getValue(), "")}</td>");
             sb.append("</tr>\n");
         }
+        sb.append("</tbody></table>\n");
         return sb;
     }
 
-    private static CharSequence list(Thing.List list) {
+    private static CharSequence list(List list) {
         var sb = new StringBuilder();
         sb.append("<ol>\n");
-        for (var value : list.getEntriesList()) {
+        for (var value : list.getValuesList()) {
             sb.append("<li>");
             sb.append(html(value, ""));
             sb.append("</li>\n");
@@ -91,21 +100,21 @@ public class ThingUI {
         return sb;
     }
 
-    private static CharSequence text(LinkedText text) {
+    private static CharSequence link(Link link) {
         var sb = new StringBuilder();
-        var uri = text.getUri();
-        if (!Strings.isNullOrEmpty(uri)) {
+        var iri = link.getIri();
+        if (!Strings.isNullOrEmpty(iri)) {
             String url;
-            if (uri.startsWith("enola:")) {
-                url = "/ui/" + uri.substring("enola:".length());
+            if (iri.startsWith("enola:")) {
+                url = "/ui3/" + iri.substring("enola:".length());
             } else {
-                url = uri;
+                url = iri;
             }
             // TODO s(uri) or not - or another escaping?
             sb.append("<a href=" + s(url) + ">");
         }
-        sb.append(s(text.getString()));
-        if (!Strings.isNullOrEmpty(uri)) {
+        sb.append(s(link.getLabel()));
+        if (!Strings.isNullOrEmpty(iri)) {
             sb.append("</a>");
         }
         return sb;

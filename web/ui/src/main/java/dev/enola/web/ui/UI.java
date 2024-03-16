@@ -17,12 +17,14 @@
  */
 package dev.enola.web.ui;
 
-import com.google.common.net.MediaType;
+import static com.google.common.net.MediaType.HTML_UTF_8;
+
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -37,6 +39,8 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.core.view.Things;
+import dev.enola.thing.proto.MessageToThingConverter;
+import dev.enola.thing.proto.MessageWithIRI;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
@@ -49,7 +53,9 @@ public class UI implements WebHandler {
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
     private static final ReadableResource HTML_FRAME =
-            new ClasspathResource("templates/index.html");
+            new ClasspathResource("templates/index.html", HTML_UTF_8);
+
+    private final MessageToThingConverter m2t = new MessageToThingConverter();
 
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
@@ -74,31 +80,42 @@ public class UI implements WebHandler {
     public ListenableFuture<ReadableResource> get(URI uri) {
         try {
             String html = getHTML(uri);
-            var resource = StringResource.of(html, MediaType.HTML_UTF_8);
+            var resource = StringResource.of(html, HTML_UTF_8);
             return Futures.immediateFuture(resource);
-        } catch (EnolaException | IOException e) {
+        } catch (EnolaException | IOException | ConversionException e) {
             return Futures.immediateFailedFuture(e);
         }
     }
 
-    private String getHTML(URI uri) throws EnolaException, IOException {
+    private String getHTML(URI uri) throws EnolaException, IOException, ConversionException {
         var path = uri.getPath();
         if (path.startsWith("/ui/")) {
             var eri = path.substring("/ui/".length());
-            return getEntityHTML(eri);
+            return getEntityHTML(eri, false);
+        } else if (path.startsWith("/ui3/")) {
+            var eri = path.substring("/ui3/".length());
+            return getEntityHTML(eri, true);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
-            return new ClasspathResource("static/404.html").charSource().read();
+            return new ClasspathResource("static/404.html", HTML_UTF_8).charSource().read();
         }
     }
 
-    private String getEntityHTML(String eri) throws EnolaException, IOException {
+    private String getEntityHTML(String eri, boolean usingNewAPI)
+            throws EnolaException, IOException, ConversionException {
         var request = GetThingRequest.newBuilder().setEri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);
-        var thing = Things.from(message);
-        var thingHTML = ThingUI.html(thing).toString();
+
+        String thingHTML;
+        if (usingNewAPI) {
+            var thing = m2t.convert(new MessageWithIRI(eri, message));
+            thingHTML = NewThingUI.html(thing).toString();
+        } else {
+            var thing = Things.from(message);
+            thingHTML = ThingUI.html(thing).toString();
+        }
 
         var yamlResource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
         getProtoIO().write(message, yamlResource);
