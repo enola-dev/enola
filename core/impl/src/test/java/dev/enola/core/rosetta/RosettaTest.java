@@ -18,6 +18,7 @@
 package dev.enola.core.rosetta;
 
 import static com.google.common.net.MediaType.JSON_UTF_8;
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
@@ -30,9 +31,11 @@ import dev.enola.common.io.resource.StringResource;
 
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
+
 public class RosettaTest {
 
-    // These intentionally only tests 1 case; more detailed tests are done in YamlJsonTest,
+    // These intentionally only test some cases; more detailed tests are done e.g. in YamlJsonTest,
     // and in ProtoIOTest and (indirectly) EntityKindRepositoryTest, and other tests.
 
     @Test
@@ -91,5 +94,29 @@ public class RosettaTest {
 
         var expectedOut = new ClasspathResource("bar-abc-def.textproto", PROTOBUF_TEXTPROTO_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
+    }
+
+    @Test
+    public void testChangeTextEncodingFromUtf8ToIso8859() throws Exception {
+        var in = StringResource.of("hello, wörld", PLAIN_TEXT_UTF_8); // Note the umlaut!
+        var out = new MemoryResource(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.ISO_8859_1));
+        new Rosetta().convertInto(in, out);
+
+        assertThat(in.charSource().read()).isEqualTo(out.charSource().read());
+        assertThat(in.byteSource().read()).isNotEqualTo(out.byteSource().read());
+        assertThat(in.byteSource().size()).isEqualTo(13);
+        assertThat(out.byteSource().size()).isEqualTo(12);
+    }
+
+    @Test
+    public void testChangeTextEncodingFromUtf8ToUtf16() throws Exception {
+        var in = StringResource.of("hello, wörld", PLAIN_TEXT_UTF_8); // Note the umlaut!
+        var out = new MemoryResource(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.UTF_16BE));
+        new Rosetta().convertInto(in, out);
+
+        assertThat(in.charSource().read()).isEqualTo(out.charSource().read());
+        assertThat(in.byteSource().read()).isNotEqualTo(out.byteSource().read());
+        assertThat(in.byteSource().size()).isEqualTo(13);
+        assertThat(out.byteSource().size()).isEqualTo(24);
     }
 }

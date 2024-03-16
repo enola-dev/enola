@@ -20,13 +20,16 @@
 
 Rosetta, inspired by
 [the Rosetta Stone](https://en.wikipedia.org/wiki/Rosetta_Stone), transforms
-between [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
+between:
+
+* Text Encodings
+* [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
 _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
 
-For example:
+## YAML to JSON
 
 ```bash cd .././.././..
 $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.json --schema=EntityKinds
@@ -39,7 +42,7 @@ The `model.json` file now contains:
 {% include "../library/model.json" %}
 ```
 
-Similarly with:
+## YAML to TextProto
 
 ```bash cd .././.././..
 $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.textproto --schema=EntityKinds
@@ -52,7 +55,7 @@ The `model.textproto` file now contains:
 {% include "../library/model.textproto" %}
 ```
 
-Lastly, for `binpb`:
+## YAML to Binary Protocol Buffer
 
 ```bash cd .././.././..
 $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.binpb --schema=EntityKinds
@@ -60,3 +63,14 @@ $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/libr
 ```
 
 The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
+
+## UTF-8 to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) (~ [Windows code page 1252](https://en.wikipedia.org/wiki/Windows-1252))
+
+```bash cd .././.././..
+$ file docs/use/rosetta/hello.txt
+$ cat docs/use/rosetta/hello.txt
+$ ./enola rosetta --in='file:docs/use/rosetta/hello.txt?charset=UTF-8' --out='file:/tmp/hello-windows.txt?charset=ISO-8859-1'
+$ file /tmp/hello-windows.txt
+$ cat /tmp/hello-windows.txt
+...
+```

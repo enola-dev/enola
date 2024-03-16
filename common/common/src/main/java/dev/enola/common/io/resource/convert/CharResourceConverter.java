@@ -19,6 +19,7 @@ package dev.enola.common.io.resource.convert;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
@@ -34,7 +35,15 @@ public class CharResourceConverter implements CatchingResourceConverter {
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws IOException {
-        from.charSource().copyTo(into.charSink());
-        return true;
+        if (hasCharset(from) && hasCharset(into)) {
+            from.charSource().copyTo(into.charSink());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean hasCharset(AbstractResource resource) {
+        return resource.mediaType().charset().isPresent();
     }
 }
