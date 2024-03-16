@@ -37,7 +37,7 @@ public abstract class CommandWithModelAndOutput extends CommandWithModel {
             required = true,
             defaultValue = DEFAULT_OUTPUT,
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-            description = "URI of where to write generated documentation")
+            description = "URI of where to write output (of get or docgen)")
     URI output;
 
     protected ResourceProviders rp = new ResourceProviders();
