@@ -80,7 +80,7 @@ public class EnolaGrpcServerTest {
     private void checkGet(EnolaServiceBlockingStub client) throws InvalidProtocolBufferException {
         var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
         var eri = IDs.toPath(id);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = client.getThing(request);
         var any = response.getThing();
         var entity = any.unpack(Entity.class);

@@ -63,7 +63,7 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = service.getThing(request);
         var thing = response.getThing();
         var entity = thing.unpack(Entity.class);
@@ -100,7 +100,7 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("king-charles").build();
         var eri = IDs.toPath(eid);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = service.getThing(request);
         var thing = response.getThing();
         var entity = thing.unpack(Entity.class);
@@ -128,7 +128,7 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var ex = assertThrows(EnolaException.class, () -> service.getThing(request));
         assertThat(ex.getMessage()).isEqualTo("failed!");
     }
@@ -146,7 +146,7 @@ public class EntityServiceProviderTest {
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         assertThrows(EnolaException.class, () -> service.getThing(request));
     }
 
@@ -163,7 +163,7 @@ public class EntityServiceProviderTest {
 
             var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
             var eri = IDs.toPath(eid);
-            var request = GetThingRequest.newBuilder().setEri(eri).build();
+            var request = GetThingRequest.newBuilder().setIri(eri).build();
             var response = service.getThing(request);
             var thing = response.getThing();
             var entity = thing.unpack(Entity.class);
@@ -184,7 +184,7 @@ public class EntityServiceProviderTest {
         var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
 
         var eri = IDs.toPath(eid);
-        var getRequest = GetThingRequest.newBuilder().setEri(eri).build();
+        var getRequest = GetThingRequest.newBuilder().setIri(eri).build();
         var getResponse = service.getThing(getRequest);
         var thing = getResponse.getThing();
         var entity = thing.unpack(Entity.class);

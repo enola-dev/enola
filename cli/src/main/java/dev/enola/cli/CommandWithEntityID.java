@@ -45,7 +45,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
 
     // TODO @Parameters(index = "0..*") List<String> eris;
     @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI of Entity")
-    String eri;
+    String iri;
 
     private WritableResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
@@ -67,7 +67,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
             resource = rp.getWritableResource(URIs.addMediaType(output, format.toMediaType()));
         }
 
-        run(service, eri);
+        run(service, iri);
     }
 
     protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
