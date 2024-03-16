@@ -19,10 +19,10 @@ package dev.enola.rdf;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
-import dev.enola.thing.Thing;
-import dev.enola.thing.Thing.Builder;
-import dev.enola.thing.Value;
-import dev.enola.thing.Value.Link;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Thing.Builder;
+import dev.enola.thing.proto.Value;
+import dev.enola.thing.proto.Value.Link;
 
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -88,7 +88,7 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
                 var value = convert(thing, predicate, statement.getObject(), deferred);
                 thing.putFields(predicate.stringValue(), value.build());
             } else {
-                var valueList = dev.enola.thing.Value.List.newBuilder();
+                var valueList = dev.enola.thing.proto.Value.List.newBuilder();
                 for (var subStatement : statements) {
                     var object = subStatement.getObject();
                     var value = convert(thing, predicate, object, deferred);
@@ -118,7 +118,7 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
         thing.putFields(predicate.stringValue(), value.build());
     }
 
-    private static dev.enola.thing.Value.Builder convert(
+    private static dev.enola.thing.proto.Value.Builder convert(
             Builder thing,
             IRI predicate,
             org.eclipse.rdf4j.model.Value rdfValue,
@@ -135,13 +135,13 @@ class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
                 value.setString(rdfValue.stringValue());
 
             } else if (optLang.isPresent()) {
-                var langString = dev.enola.thing.Value.LangString.newBuilder();
+                var langString = dev.enola.thing.proto.Value.LangString.newBuilder();
                 langString.setText(rdfLiteral.stringValue());
                 langString.setLang(optLang.get());
                 value.setLangString(langString);
 
             } else {
-                var literal = dev.enola.thing.Value.Literal.newBuilder();
+                var literal = dev.enola.thing.proto.Value.Literal.newBuilder();
                 literal.setDatatype(rdfLiteral.getDatatype().stringValue());
                 literal.setValue(rdfLiteral.stringValue());
                 value.setLiteral(literal);

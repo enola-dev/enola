@@ -25,9 +25,9 @@ import com.google.common.collect.ImmutableList;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.thing.Thing;
-import dev.enola.thing.ThingOrBuilder;
-import dev.enola.thing.Value.LangString;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.ThingOrBuilder;
+import dev.enola.thing.proto.Value.LangString;
 
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -106,7 +106,7 @@ class ThingRdfConverter
     }
 
     private Iterable<org.eclipse.rdf4j.model.Value> convert(
-            dev.enola.thing.Value value, Map<BNode, Thing> containedThings) {
+            dev.enola.thing.proto.Value value, Map<BNode, Thing> containedThings) {
         return switch (value.getKindCase()) {
             case LINK -> singleton(createIRI(value.getLink().getIri()));
 

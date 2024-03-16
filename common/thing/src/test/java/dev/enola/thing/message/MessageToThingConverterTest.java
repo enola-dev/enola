@@ -25,9 +25,9 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.core.test.TestComplex;
 import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
-import dev.enola.thing.Thing;
-import dev.enola.thing.Thing.Builder;
-import dev.enola.thing.Value;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Thing.Builder;
+import dev.enola.thing.proto.Value;
 
 import org.junit.Test;
 

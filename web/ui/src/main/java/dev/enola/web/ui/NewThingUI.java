@@ -23,11 +23,11 @@ import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
-import dev.enola.thing.ThingOrBuilder;
-import dev.enola.thing.Value;
-import dev.enola.thing.Value.Link;
-import dev.enola.thing.Value.List;
-import dev.enola.thing.Value.Literal;
+import dev.enola.thing.proto.ThingOrBuilder;
+import dev.enola.thing.proto.Value;
+import dev.enola.thing.proto.Value.Link;
+import dev.enola.thing.proto.Value.List;
+import dev.enola.thing.proto.Value.Literal;
 
 import java.util.Map;
 
