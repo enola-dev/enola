@@ -15,9 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.proto;
-
-// TODO package dev.enola.thing.message;
+package dev.enola.thing.message;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
@@ -30,7 +28,7 @@ import dev.enola.thing.Value;
 import dev.enola.thing.Value.Builder;
 
 /**
- * ProtoTypes defines the Enola @{link Type}/s related to <a href="https://protobuf.dev">Protocol
+ * ProtoTypes defines the Enola {@link Type}/s related to <a href="https://protobuf.dev">Protocol
  * Buffers</a>.
  */
 public class ProtoTypes {
