@@ -21,8 +21,7 @@ package dev.enola.thing;
 // import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
-// TODO java_package = "dev.enola.thing.proto" for consistency
-option java_package = "dev.enola.thing";
+option java_package = "dev.enola.thing.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/thing";
 

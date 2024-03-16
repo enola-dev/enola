@@ -23,9 +23,9 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.MessageOrBuilder;
 
-import dev.enola.thing.Thing;
-import dev.enola.thing.Value;
-import dev.enola.thing.Value.Builder;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Value;
+import dev.enola.thing.proto.Value.Builder;
 
 /**
  * ProtoTypes defines the Enola {@link Type}/s related to <a href="https://protobuf.dev">Protocol

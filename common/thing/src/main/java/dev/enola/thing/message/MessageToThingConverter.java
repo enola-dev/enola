@@ -23,8 +23,8 @@ import com.google.protobuf.Message;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
-import dev.enola.thing.Thing;
-import dev.enola.thing.Value;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Value;
 
 public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
     // TODO Converter<MessageOrBuilder, to avoid build(), when not required?
@@ -68,7 +68,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     Value.Builder toList(Value.Builder... values) {
-        var valueList = dev.enola.thing.Value.List.newBuilder();
+        var valueList = dev.enola.thing.proto.Value.List.newBuilder();
         for (var value : values) {
             valueList.addValues(value);
         }
