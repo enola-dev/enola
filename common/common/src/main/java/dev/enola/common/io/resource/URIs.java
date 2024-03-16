@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class URIs {
+    // see also class dev.enola.common.io.iri.IRIs
+    // TODO Move this from package io.resource to package io.iri
 
     // URI Query Parameter Names
     private static final String MEDIA_TYPE = "mediaType";
