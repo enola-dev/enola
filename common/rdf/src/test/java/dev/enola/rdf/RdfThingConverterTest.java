@@ -29,8 +29,8 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.test.TestComplex;
 import dev.enola.core.test.TestSimple;
 import dev.enola.thing.Thing;
-import dev.enola.thing.proto.MessageToThingConverter;
-import dev.enola.thing.proto.MessageWithIRI;
+import dev.enola.thing.message.MessageToThingConverter;
+import dev.enola.thing.message.MessageWithIRI;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Values;

@@ -15,9 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.proto;
-
-// TODO package dev.enola.thing.message;
+package dev.enola.thing.message;
 
 import com.google.protobuf.Message;
 
