@@ -23,6 +23,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
@@ -35,7 +36,7 @@ import dev.enola.core.proto.Entity;
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
  * different model formats.
  */
-public class Rosetta {
+public class Rosetta implements ResourceConverter {
 
     // TODO This class is in dev.enola.core.rosetta only for now, in order to have classpath access
     // to Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below.
@@ -72,13 +73,16 @@ public class Rosetta {
             new ResourceConverterChain(
                     ImmutableList.of(messageResourceConverter, new YamlJsonResourceConverter()));
 
-    public void convert(ReadableResource in, WritableResource out) throws ConversionException {
-        if (!resourceConverterChain.convertInto(in, out)) {
+    @Override
+    public boolean convertInto(ReadableResource from, WritableResource into)
+            throws ConversionException {
+        if (!resourceConverterChain.convertInto(from, into)) {
             throw new ConversionException(
                     "No Converter (registered on the Chain) accepted to transform from "
-                            + in
+                            + from
                             + " into "
-                            + out);
+                            + into);
         }
+        return true;
     }
 }
