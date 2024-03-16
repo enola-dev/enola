@@ -30,6 +30,8 @@ public final class MediaTypes {
 
     // TODO Rename this class MediaTypes to MediaTypeNormalizer? And remove #parse() method here?
 
+    // TODO Refactor the stuff below out into a class MediaTypeRegistry implements MediaTypeProvider
+
     private static final MediaTypes INSTANCE = new MediaTypes();
 
     private final Map<MediaType, MediaType> alternatives;

@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.mediatype;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
@@ -29,14 +30,16 @@ public class TestMediaTypes implements MediaTypeProvider {
 
     public static final MediaType TEST = MediaType.create("application", "test");
 
+    @VisibleForTesting
+    static final MediaType TEST_ALTERNATIVE = MediaType.create("application", "test-alternative");
+
     @Override
     public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return ImmutableMap.of(
-                TEST, Sets.newHashSet(MediaType.create("application", "test-alternative")));
+        return ImmutableMap.of(TEST, Sets.newHashSet(TEST_ALTERNATIVE));
     }
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
-        return null;
+        return ImmutableMap.of("test", TEST);
     }
 }
