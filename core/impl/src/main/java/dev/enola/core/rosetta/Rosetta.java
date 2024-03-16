@@ -23,6 +23,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.resource.convert.CharResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -71,7 +72,12 @@ public class Rosetta implements ResourceConverter {
 
     private final ResourceConverterChain resourceConverterChain =
             new ResourceConverterChain(
-                    ImmutableList.of(messageResourceConverter, new YamlJsonResourceConverter()));
+                    ImmutableList.of(
+                            // TODO new ResourceIntoThingResourceConverter(),
+                            // TODO new RdfResourceConverter(),
+                            messageResourceConverter,
+                            new YamlJsonResourceConverter(),
+                            new CharResourceConverter()));
 
     @Override
     public boolean convertInto(ReadableResource from, WritableResource into)
