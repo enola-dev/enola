@@ -19,14 +19,38 @@ package dev.enola.common.io.mediatype;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.AbstractResource;
+
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-public interface MediaTypeProvider {
+public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
     // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
 
     Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
 
     Map<String, MediaType> extensionsToTypes();
+
+    @Override
+    // TODO Integrate this with MediaTypeDetector
+    default Optional<MediaType> detect(AbstractResource resource) {
+        var e2mt = extensionsToTypes();
+        var mediaTypes = e2mt.values();
+        var resourceMediaType = resource.mediaType();
+        // TODO This should compare MediaTypes ditching (only) charset parameters
+        // TODO Use MediaTypes#normalizedNoParamsEquals with knownTypesWithAlternatives()
+        if (mediaTypes.contains(resourceMediaType)) return Optional.of(resourceMediaType);
+
+        var uri = resource.uri().toString();
+        for (var extensionEntry : e2mt.entrySet()) {
+            if (uri.endsWith(extensionEntry.getKey()))
+                return Optional.of(extensionEntry.getValue());
+        }
+
+        // TODO if (resource instanceof ReadableResource) ... snif it, like in MediaTypeDetector
+
+        return Optional.empty();
+    }
 }

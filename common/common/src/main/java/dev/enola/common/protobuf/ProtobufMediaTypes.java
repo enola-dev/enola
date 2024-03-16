@@ -34,9 +34,6 @@ import java.util.Set;
 public class ProtobufMediaTypes implements MediaTypeProvider {
     // TODO move this class into the common.proto module!
 
-    // TODO Introduce parameters like messageType to indicate .textproto root message type? (And
-    // "sniffing" them.)
-
     // The *.proto ("schemas") files, as well as "Text Proto" (and their JSON and YAML equivalent)
     // are text/* and not application/* whereas the binary serialization wire format is an
     // "application/*";
@@ -52,9 +49,16 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
         return mediaType.withParameter(PARAMETER_PROTO_MESSAGE, protoFQN);
     }
 
+    // TODO After move: public static MediaType setProtoMessage(MediaType mediaType, Descriptor
+    // descriptor) {
+    //     return mediaType.withParameter(PARAMETER_PROTO_MESSAGE, descriptor.getFullName());
+    // }
+
     public static Optional<String> getProtoMessageFQN(MediaType mediaType) {
         return MediaTypes.parameter(mediaType, PARAMETER_PROTO_MESSAGE);
     }
+
+    // TODO Support "sniffing" proto-message from header in comment of ReadableResource
 
     public static final MediaType PROTO_UTF_8 =
             MediaType.create("text", "proto").withCharset(Charsets.UTF_8);
@@ -62,9 +66,11 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     public static final MediaType PROTOBUF_TEXTPROTO_UTF_8 =
             MediaType.create("text", "protobuf").withCharset(Charsets.UTF_8);
 
+    // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf JSON" really just JSON?!
     public static final MediaType PROTOBUF_JSON_UTF_8 =
             MediaType.create("text", "protobuf+json").withCharset(Charsets.UTF_8);
 
+    // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf YAML" really just YAML?!
     public static final MediaType PROTOBUF_YAML_UTF_8 =
             MediaType.create("text", "protobuf+yaml").withCharset(Charsets.UTF_8);
 

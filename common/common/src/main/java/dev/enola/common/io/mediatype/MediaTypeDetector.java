@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.URIs;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
@@ -42,7 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MediaTypeDetector {
+public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -67,8 +68,8 @@ public class MediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
-    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
-    // with test coverage via TestMediaTypes
+    // TODO Query *all* MediaTypeProvider#extensionsToTypes() via MediaTypes (TBD MediaTypeRegistry)
+    // TODO Test this in MediaTypeDetectorTest via test coverage using TestMediaTypes
     private final Map<String, MediaType> extensionMap =
             ImmutableMap.<String, MediaType>builder()
                     .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
@@ -117,6 +118,15 @@ public class MediaTypeDetector {
     // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
     private final List<FromURI> providers =
             ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
+
+    @Override
+    public Optional<MediaType> detect(AbstractResource resource) {
+        var uri = resource.uri();
+        var mt = resource.mediaType();
+        return Optional.ofNullable(
+                detect(mt.toString(), mt.charset().transform(cs -> cs.name()).orNull(), uri));
+        // TODO if (resource instanceof ReadableResource) ... snif it, with inputStreamSupplier
+    }
 
     public MediaType detect(String contentType, String contentEncoding, URI uri
             // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
