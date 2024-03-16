@@ -39,7 +39,7 @@ public class RosettaTest {
     public void testJsonToYaml() throws Exception {
         var in = StringResource.of("{\"value\":123}", JSON_UTF_8);
         var out = new MemoryResource(YAML_UTF_8);
-        new Rosetta().convert(in, out);
+        new Rosetta().convertInto(in, out);
         assertThat(out.charSource().read()).isEqualTo("{value: 123.0}\n");
     }
 
@@ -47,7 +47,7 @@ public class RosettaTest {
     public void testYamlToJson() throws Exception {
         var in = StringResource.of("value: 123", YAML_UTF_8);
         var out = new MemoryResource(JSON_UTF_8);
-        new Rosetta().convert(in, out);
+        new Rosetta().convertInto(in, out);
         assertThat(out.charSource().read()).isEqualTo("{\"value\":123}");
     }
 
@@ -59,7 +59,7 @@ public class RosettaTest {
                         PROTOBUF_TEXTPROTO_UTF_8.withParameter(
                                 PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
         var out = new MemoryResource(YAML_UTF_8);
-        new Rosetta().convert(in, out);
+        new Rosetta().convertInto(in, out);
 
         var expectedOut =
                 StringResource.of(
@@ -87,7 +87,7 @@ public class RosettaTest {
                         "bar-abc-def.yaml",
                         YAML_UTF_8.withParameter(PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
         var out = new MemoryResource(PROTOBUF_TEXTPROTO_UTF_8);
-        new Rosetta().convert(in, out);
+        new Rosetta().convertInto(in, out);
 
         var expectedOut = new ClasspathResource("bar-abc-def.textproto", PROTOBUF_TEXTPROTO_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
