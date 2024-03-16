@@ -121,9 +121,9 @@ message Entity {
 }
 
 message GetThingRequest {
-  // This is an https://docs.enola.dev/concepts/uri.
-  // TODO repeated?!
-  string eri = 1;
+  // IRI of Thing to get. This may use an enola: scheme, see
+  // https://docs.enola.dev/concepts/uri.
+  string iri = 1;
 
   // Request to inline Entity#link, by the same string key as used there.
   // (Conceptually inspired by e.g. GraphQL architecture.)

@@ -26,8 +26,8 @@ import picocli.CommandLine.Command;
 public class Get extends CommandWithEntityID {
 
     @Override
-    protected void run(EnolaServiceBlockingStub service, String eri) throws Exception {
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+    protected void run(EnolaServiceBlockingStub service, String iri) throws Exception {
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);

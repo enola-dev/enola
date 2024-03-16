@@ -39,7 +39,7 @@ class EnolaServiceRegistry implements EnolaService {
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        return getDelegate(r.getEri()).getThing(r);
+        return getDelegate(r.getIri()).getThing(r);
     }
 
     @Override

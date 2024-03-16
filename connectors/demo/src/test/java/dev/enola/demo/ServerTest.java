@@ -117,7 +117,7 @@ public class ServerTest {
     private void checkEnolaGet(EnolaService enola) throws EnolaException, IOException {
         var id = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("hello").build();
         var eri = IDs.toPath(id);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = enola.getThing(request);
         var thing = response.getThing();
         Entity entity = thing.unpack(Entity.class);

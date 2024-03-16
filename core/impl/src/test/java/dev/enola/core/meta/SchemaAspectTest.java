@@ -54,7 +54,7 @@ public class SchemaAspectTest {
     public void get() throws ValidationException, EnolaException, InvalidProtocolBufferException {
         var id = schemaKindID.clone().addPaths("google.protobuf.Timestamp");
         var eri = IDs.toPath(id);
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
         var entity = any.unpack(Entity.class);

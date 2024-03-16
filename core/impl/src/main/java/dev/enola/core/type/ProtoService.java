@@ -58,7 +58,7 @@ public class ProtoService implements EnolaService {
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         // TODO It's pretty dumb to duplicate extracting the parameter from ERI again here... :-(
-        var fqn = r.getEri().substring("proto/".length());
+        var fqn = r.getIri().substring("proto/".length());
         var descriptor = descriptorProvider.findByName(fqn);
 
         var response = GetThingResponse.newBuilder();

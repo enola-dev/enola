@@ -83,7 +83,7 @@ public class RestAPI implements WebHandler {
 
     private void getEntityJSON(String eri, WritableResource resource)
             throws EnolaException, IOException {
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = service.getThing(request);
         var thing = response.getThing();
 

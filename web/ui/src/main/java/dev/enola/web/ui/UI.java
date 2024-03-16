@@ -103,7 +103,7 @@ public class UI implements WebHandler {
 
     private String getEntityHTML(String eri, boolean usingNewAPI)
             throws EnolaException, IOException, ConversionException {
-        var request = GetThingRequest.newBuilder().setEri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(eri).build();
         var response = service.getThing(request);
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);

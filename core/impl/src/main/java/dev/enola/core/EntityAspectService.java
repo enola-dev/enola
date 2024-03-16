@@ -44,7 +44,7 @@ class EntityAspectService implements EnolaService {
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         var entity = Entity.newBuilder();
-        var id = IDs.parse(r.getEri());
+        var id = IDs.parse(r.getIri());
         entity.setId(id);
 
         for (var aspect : registry) {

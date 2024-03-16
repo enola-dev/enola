@@ -47,7 +47,7 @@ public class ThingConnectorService implements EnolaService {
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        var eri = r.getEri();
+        var eri = r.getIri();
 
         Builder thing = enolaMessages.newBuilder(type.getProto());
 
