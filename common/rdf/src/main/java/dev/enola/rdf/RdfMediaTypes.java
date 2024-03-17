@@ -32,7 +32,7 @@ import java.util.Set;
 
 /** This "bridges" RDF4j's MIME Type database to Enola's MediaType registry. */
 // TODO Rename from RdfMediaType to RdfMediaTypes for consistency with other MediaTypeProvider impls
-public class RdfMediaType implements MediaTypeProvider {
+public class RdfMediaTypes implements MediaTypeProvider {
 
     public static final MediaType TURTLE =
             MediaType.parse(RDFFormat.TURTLE.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
@@ -43,11 +43,11 @@ public class RdfMediaType implements MediaTypeProvider {
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
     private final Map<String, MediaType> extensionsToTypes;
 
-    public RdfMediaType() {
+    public RdfMediaTypes() {
         this(RDFFormat.TURTLE, RDFFormat.JSONLD);
     }
 
-    public RdfMediaType(FileFormat... rdf4jFormats) {
+    public RdfMediaTypes(FileFormat... rdf4jFormats) {
         var extensionsToTypesBuilder = ImmutableMap.<String, MediaType>builder();
         var knownTypesWithAlternativesBuilder = ImmutableMap.<MediaType, Set<MediaType>>builder();
 

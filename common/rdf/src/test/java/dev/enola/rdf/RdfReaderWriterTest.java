@@ -37,10 +37,10 @@ public class RdfReaderWriterTest {
     private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
 
     private static final ClasspathResource PICASSO_TURTLE_RESOURCE =
-            new ClasspathResource("picasso.ttl", RdfMediaType.TURTLE);
+            new ClasspathResource("picasso.ttl", RdfMediaTypes.TURTLE);
 
     private static final ClasspathResource PICASSO_JSONLD_RESOURCE =
-            new ClasspathResource("picasso.jsonld", RdfMediaType.JSON_LD);
+            new ClasspathResource("picasso.jsonld", RdfMediaTypes.JSON_LD);
 
     private static final ClasspathResource PICASSO_YAMLLD_RESOURCE =
             new ClasspathResource("picasso.yamlld", RdfMediaTypeYamlLd.YAML_LD);
@@ -51,7 +51,7 @@ public class RdfReaderWriterTest {
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
     public void writeTurtle() throws ConversionException, IOException {
-        Resource actual = new MemoryResource(RdfMediaType.TURTLE);
+        Resource actual = new MemoryResource(RdfMediaTypes.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
         var expected = PICASSO_TURTLE_RESOURCE;
@@ -67,7 +67,7 @@ public class RdfReaderWriterTest {
     @Test
     // 🎨 as https://json-ld.org
     public void writeJsonLD() throws ConversionException, IOException {
-        var actual = new MemoryResource(RdfMediaType.JSON_LD);
+        var actual = new MemoryResource(RdfMediaTypes.JSON_LD);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
         var expected = PICASSO_JSONLD_RESOURCE;
