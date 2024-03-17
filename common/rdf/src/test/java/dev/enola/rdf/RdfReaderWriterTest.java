@@ -52,7 +52,7 @@ public class RdfReaderWriterTest {
 
     @Test
     public void readTurtle() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_TURTLE_RESOURCE);
+        var model = new RdfReaderConverter().convert(PICASSO_TURTLE_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
@@ -68,7 +68,7 @@ public class RdfReaderWriterTest {
 
     @Test
     public void readJsonLD() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_JSONLD_RESOURCE);
+        var model = new RdfReaderConverter().convert(PICASSO_JSONLD_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 }

@@ -17,17 +17,10 @@
  */
 package dev.enola.common.convert;
 
-/**
- * Converts an object of type I to a new object of type O.
- *
- * <p>The "context" of the conversion, if any, must be part of I.
- *
- * <p>For #efficiency, consider whether this or a {@link ConverterInto} is more suitable.
- *
- * <p>Converter implementations "have" to convert; if they may or may not convert depending on I,
- * then implement an {@link OptionalConverter} instead of throwing a ConversionException.
- */
-public interface Converter<I, O> {
+import java.util.Optional;
 
-    O convert(I input) throws ConversionException;
-}
+/**
+ * Optional {@link Converter} of an object of type I to a new object of type O, or {@link
+ * Optional#empty()}.
+ */
+public interface OptionalConverter<I, O> extends Converter<I, Optional<O>> {}

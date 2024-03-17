@@ -61,7 +61,7 @@ public class RdfThingConverterTest {
 
     @Before
     public void before() throws ConversionException, IOException {
-        rdf = rdfReader.convert(turtle);
+        rdf = rdfReader.convert(turtle).get();
         picassoThing = protoReader.read(picassoYaml, Thing.newBuilder(), Thing.class);
         daliThing = protoReader.read(daliYaml, Thing.newBuilder(), Thing.class);
     }
@@ -105,7 +105,7 @@ public class RdfThingConverterTest {
         var thing = converter.convert(new MessageWithIRI("http://test/thing", complex.build()));
         var actualRDF = thingToRdfConverter.convert(thing);
         var expectedRDF =
-                rdfReader.convert(new ClasspathResource("proto.ttl", RdfMediaType.TURTLE));
+                rdfReader.convert(new ClasspathResource("proto.ttl", RdfMediaType.TURTLE)).get();
         ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 }
