@@ -41,7 +41,7 @@ public class ThingMediaTypes implements MediaTypeProvider {
             ProtobufMediaTypes.setProtoMessageFQN(
                     ProtobufMediaTypes.PROTOBUF_BINARY, Thing.getDescriptor().getFullName());
 
-    private static final String THING_SUBTYPE = "enola.dev/thing";
+    private static final String THING_SUBTYPE = "enola.dev#thing";
 
     public static final MediaType THING_JSON_UTF_8 =
             MediaType.create("text", THING_SUBTYPE + "+json").withCharset(Charsets.UTF_8);

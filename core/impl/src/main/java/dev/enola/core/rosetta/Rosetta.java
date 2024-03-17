@@ -73,7 +73,7 @@ public class Rosetta implements ResourceConverter {
     private final ResourceConverterChain resourceConverterChain =
             new ResourceConverterChain(
                     ImmutableList.of(
-                            // TODO new ResourceIntoThingResourceConverter(),
+                            new ResourceIntoThingResourceConverter(),
                             // TODO new RdfResourceConverter(),
                             messageResourceConverter,
                             new YamlJsonResourceConverter(),
