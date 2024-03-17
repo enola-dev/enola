@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class StringResource implements ReadableButNotWritableResource {
+public class StringResource extends BaseResource implements ReadableButNotWritableResource {
     // TODO Replace ReadableButNotWritableResource with ReadableResource #again
 
     static final String SCHEME = "string";
@@ -105,10 +105,5 @@ public class StringResource implements ReadableButNotWritableResource {
     @Override
     public CharSource charSource() {
         return CharSource.wrap(string);
-    }
-
-    @Override
-    public String toString() {
-        return "StringResource{uri=" + uri() + ", mediaType=" + mediaType() + "}";
     }
 }

@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @see NullResource for an alternatives that returns infinite 0s instead of EOF.
  */
-public class EmptyResource implements ReadableButNotWritableResource {
+public class EmptyResource extends BaseResource implements ReadableButNotWritableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
 
     static final String SCHEME = "empty";
@@ -70,10 +70,5 @@ public class EmptyResource implements ReadableButNotWritableResource {
     @Override
     public CharSource charSource() {
         return CharSource.empty();
-    }
-
-    @Override
-    public String toString() {
-        return "EmptyResource{uri=" + uri() + ", mediaType=" + mediaType + "}";
     }
 }

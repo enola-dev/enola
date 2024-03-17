@@ -25,7 +25,7 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 
-public class MemoryResource implements Resource {
+public class MemoryResource extends BaseResource implements Resource {
 
     private final URI uri;
     private final MediaType mediaType;
@@ -59,14 +59,5 @@ public class MemoryResource implements Resource {
     @Override
     public ByteSource byteSource() {
         return new MemoryByteSource(memoryByteSink.toByteArray());
-    }
-
-    @Override
-    public String toString() {
-        return "MemoryResource{mediaType="
-                + mediaType
-                + '}'
-                + "@"
-                + Integer.toHexString(hashCode());
     }
 }

@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,10 @@
  */
 package dev.enola.common.io.resource;
 
-import com.google.common.net.MediaType;
-
-import java.net.URI;
-
-public class GoogleHttpClientResource extends BaseResource {
-
-    // TODO Implement delegate to https://github.com/googleapis/google-http-java-client
-    // See e.g. https://www.baeldung.com/google-http-client
+public abstract class BaseResource implements AbstractResource {
 
     @Override
-    public URI uri() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'uri'");
-    }
-
-    @Override
-    public MediaType mediaType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mediaType'");
+    public String toString() {
+        return getClass().getName() + "{uri=" + uri() + " & mediaType=" + mediaType() + '}';
     }
 }

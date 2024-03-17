@@ -25,7 +25,7 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 
-public class DelegatingResource implements Resource {
+public class DelegatingResource extends BaseResource implements Resource {
 
     protected Resource delegate;
 
@@ -61,10 +61,5 @@ public class DelegatingResource implements Resource {
     @Override
     public CharSink charSink() {
         return delegate.charSink();
-    }
-
-    @Override
-    public String toString() {
-        return delegate.toString();
     }
 }

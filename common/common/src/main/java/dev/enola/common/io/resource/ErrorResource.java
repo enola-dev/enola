@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
-public class ErrorResource implements Resource {
+public class ErrorResource extends BaseResource implements Resource {
     public static final ErrorResource INSTANCE = new ErrorResource();
 
     static final String SCHEME = "error";
@@ -55,11 +55,6 @@ public class ErrorResource implements Resource {
     @Override
     public ByteSource byteSource() {
         return ErrorByteSource.INSTANCE;
-    }
-
-    @Override
-    public String toString() {
-        return "ErrorResource{uri=" + uri() + '}';
     }
 
     private static final class ErrorByteSink extends ByteSink {

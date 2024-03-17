@@ -23,7 +23,7 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 
-public abstract class DelegatingReadableResource implements ReadableResource {
+public abstract class DelegatingReadableResource extends BaseResource implements ReadableResource {
 
     protected ReadableResource delegate;
 
@@ -49,10 +49,5 @@ public abstract class DelegatingReadableResource implements ReadableResource {
     @Override
     public CharSource charSource() {
         return delegate.charSource();
-    }
-
-    @Override
-    public String toString() {
-        return delegate.toString();
     }
 }
