@@ -15,21 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
+package dev.enola.rdf;
 
-import com.google.common.net.MediaType;
+import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.resource.AbstractResource;
-import dev.enola.common.io.resource.Resource;
+import dev.enola.common.io.resource.ClasspathResource;
 
-import java.util.Optional;
+import org.junit.Test;
 
-public interface ResourceMediaTypeDetector {
+public class RdfMediaTypeTest {
 
-    /**
-     * Detect the MediaType of a {@link Resource}. This is (currently) based on its (supposed)
-     * existing {@link AbstractResource#mediaType()} and (if required) e.g. an file name extension
-     * from its {@link AbstractResource#uri()}. (It does not (yet) "sniff" the content.)
-     */
-    Optional<MediaType> detect(AbstractResource resource);
+    @Test
+    public void mediaTypes() {
+        assertThat(new ClasspathResource("picasso.ttl").mediaType()).isEqualTo(RdfMediaType.TURTLE);
+    }
 }

@@ -43,7 +43,7 @@ public class RdfReaderWriterTest {
             new ClasspathResource("picasso.jsonld", RdfMediaType.JSON_LD);
 
     private static final ClasspathResource PICASSO_YAMLLD_RESOURCE =
-            new ClasspathResource("picasso.yamlld", RdfMediaType.YAML_LD);
+            new ClasspathResource("picasso.yamlld", RdfMediaTypeYamlLd.YAML_LD);
 
     private static final ClasspathResource PICASSO_YAML_RESOURCE =
             new ClasspathResource("picasso.yaml", YamlMediaType.YAML_UTF_8);

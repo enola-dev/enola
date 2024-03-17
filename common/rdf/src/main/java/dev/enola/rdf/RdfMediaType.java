@@ -18,13 +18,21 @@
 package dev.enola.rdf;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.MediaTypeProvider;
+
+import org.eclipse.rdf4j.common.lang.FileFormat;
 import org.eclipse.rdf4j.rio.RDFFormat;
 
-public class RdfMediaType {
-    // TODO Implement a more generic adapter of RDFParserRegistry to RdfMediaType
-    // TODO implements MediaTypeProvider - when that's more pluggable
+import java.util.Map;
+import java.util.Set;
+
+/** This "bridges" RDF4j's MIME Type database to Enola's MediaType registry. */
+// TODO Rename from RdfMediaType to RdfMediaTypes for consistency with other MediaTypeProvider impls
+public class RdfMediaType implements MediaTypeProvider {
 
     public static final MediaType TURTLE =
             MediaType.parse(RDFFormat.TURTLE.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
@@ -32,8 +40,45 @@ public class RdfMediaType {
     public static final MediaType JSON_LD =
             MediaType.parse(RDFFormat.JSONLD.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
 
-    // TODO Register *.yamlld as per https://json-ld.github.io/yaml-ld/spec/#application-ld-yaml
-    // https://json-ld.github.io/yaml-ld/ and https://json-ld.github.io/yaml-ld/spec/
-    public static final MediaType YAML_LD =
-            MediaType.create("application", "ld+yaml").withCharset(Charsets.UTF_8);
+    private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
+    private final Map<String, MediaType> extensionsToTypes;
+
+    public RdfMediaType() {
+        this(RDFFormat.TURTLE, RDFFormat.JSONLD);
+    }
+
+    public RdfMediaType(FileFormat... rdf4jFormats) {
+        var extensionsToTypesBuilder = ImmutableMap.<String, MediaType>builder();
+        var knownTypesWithAlternativesBuilder = ImmutableMap.<MediaType, Set<MediaType>>builder();
+
+        for (var fileFormat : rdf4jFormats) {
+            var primaryMediaType =
+                    MediaType.parse(fileFormat.getDefaultMIMEType())
+                            .withCharset(fileFormat.getCharset());
+            for (var extension : fileFormat.getFileExtensions()) {
+                extensionsToTypesBuilder.put(extension, primaryMediaType);
+            }
+
+            var altMediaTypeNames = fileFormat.getMIMETypes();
+            var altMediaTypes =
+                    ImmutableSet.<MediaType>builderWithExpectedSize(altMediaTypeNames.size());
+            for (var alternativeMediaType : fileFormat.getMIMETypes()) {
+                altMediaTypes.add(MediaType.parse(alternativeMediaType));
+            }
+            knownTypesWithAlternativesBuilder.put(primaryMediaType, altMediaTypes.build());
+        }
+
+        extensionsToTypes = extensionsToTypesBuilder.build();
+        knownTypesWithAlternatives = knownTypesWithAlternativesBuilder.build();
+    }
+
+    @Override
+    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return knownTypesWithAlternatives;
+    }
+
+    @Override
+    public Map<String, MediaType> extensionsToTypes() {
+        return extensionsToTypes;
+    }
 }

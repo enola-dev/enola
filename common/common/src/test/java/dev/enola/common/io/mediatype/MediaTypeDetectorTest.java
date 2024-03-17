@@ -63,7 +63,11 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect(null, null, new File("hello.textproto").toURI()))
                 .isEqualTo(PROTOBUF_TEXTPROTO_UTF_8);
 
-        // Assert.assertThrows()
+        // Test that TestMediaTypes was correctly registered
+        assertThat(md.detect(null, null, URI.create("whatever:something.test")))
+                .isEqualTo(TestMediaTypes.TEST);
+
+        // TODO Assert.assertThrows() ?
         md.detect(null, null, URI.create("bad-URI-without-scheme"));
     }
 }

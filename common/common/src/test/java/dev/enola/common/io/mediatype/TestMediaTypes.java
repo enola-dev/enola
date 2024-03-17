@@ -25,8 +25,12 @@ import com.google.common.net.MediaType;
 import java.util.Map;
 import java.util.Set;
 
-// TODO @AutoService(MediaTypeProvider.class)
+// TODO @AutoService(MediaTypeProvider.class) instead of requiring to have a
+// common/common/src/test/resources/META-INF/services/dev.enola.common.io.mediatype.MediaTypeProvider
 public class TestMediaTypes implements MediaTypeProvider {
+
+    // TODO use example/test instead of application/test (and rename accordingly everywhere...)
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#example
 
     public static final MediaType TEST = MediaType.create("application", "test");
 

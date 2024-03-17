@@ -25,6 +25,7 @@ import com.google.common.net.MediaType;
 import org.junit.Test;
 
 public class MediaTypesTest {
+
     @Test
     public void testParse() {
         assertThat(MediaTypes.parse("application/test")).isEqualTo(TestMediaTypes.TEST);
