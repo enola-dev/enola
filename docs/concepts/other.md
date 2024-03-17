@@ -139,6 +139,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [Virtuoso](https://virtuoso.openlinksw.com) #opensource
 * [Blazegraph](https://blazegraph.com) #opensource
 * [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource
+* [Cayley](https://cayley.io) #opensource #Google
 * [Strabon](http://strabon.di.uoa.gr) #opensource
 * [BadWolf](https://github.com/google/badwolf) #temporal #Google #opensource
 * [Neptune](https://aws.amazon.com/neptune/) #AWS #cloud #commercial #SaaS
