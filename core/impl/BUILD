@@ -34,6 +34,9 @@ java_library(
         "//common/common",
         "//common/protobuf",
         "//common/protobuf:validation_proto_java_library",
+        "//common/rdf",
+        "//common/thing:thing_java",
+        "//common/thing:thing_java_proto",
         "//common/yamljson",
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
@@ -57,11 +60,13 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":impl",
         "//common/common",
         "//common/protobuf",
+        "//common/thing:thing_java_proto",
         "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//connectors/demo",
         "//connectors/demo:demo_java_proto",

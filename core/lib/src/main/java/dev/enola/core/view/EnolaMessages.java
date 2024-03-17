@@ -41,15 +41,16 @@ public class EnolaMessages extends Messages {
                 // thing.proto
                 .put(
                         dev.enola.thing.proto.Thing.getDescriptor().getFullName(),
-                        Thing.getDefaultInstance())
+                        dev.enola.thing.proto.Thing.getDefaultInstance())
                 .put(
                         dev.enola.thing.proto.Things.getDescriptor().getFullName(),
-                        Thing.getDefaultInstance())
+                        dev.enola.thing.proto.Things.getDefaultInstance())
 
                 // enola_core.proto
                 .put(Thing.getDescriptor().getFullName(), Thing.getDefaultInstance())
                 .put(Entity.getDescriptor().getFullName(), Entity.getDefaultInstance())
                 .put(ID.getDescriptor().getFullName(), ID.getDefaultInstance())
+
                 // enola_meta.proto
                 .put(EntityKinds.getDescriptor().getFullName(), EntityKinds.getDefaultInstance())
                 .put(EntityKind.getDescriptor().getFullName(), EntityKind.getDefaultInstance())
