@@ -89,6 +89,15 @@ $ ./enola help rosetta
 ...
 ```
 
+## Info
+
+[Info](../info/index.md) has the following options:
+
+```bash cd .././.././..
+$ ./enola help info
+...
+```
+
 ## Generate Completion
 
 ```bash cd .././.././..

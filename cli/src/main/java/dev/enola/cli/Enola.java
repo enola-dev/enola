@@ -41,7 +41,8 @@ import picocli.CommandLine.Mixin;
             RosettaCommand.class,
             ServerCommand.class,
             ExecMdCommand.class,
-            LoggingTestCommand.class
+            LoggingTestCommand.class,
+            InfoCommand.class
         })
 public class Enola {
 
