@@ -40,13 +40,13 @@ public class YamlJson {
             };
 
     public static String jsonToYaml(String json) {
-        Map<String, Object> map = JSON.readMap(json);
+        Object object = JSON.readObject(json);
 
-        if (map == null || map.isEmpty()) {
+        if (object == null || object instanceof Map && ((Map<?, ?>) object).isEmpty()) {
             return "";
         }
 
-        return YAML.write(map);
+        return YAML.write(object);
     }
 
     public static String yamlToJson(String yaml) {
