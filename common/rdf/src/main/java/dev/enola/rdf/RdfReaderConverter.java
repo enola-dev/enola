@@ -18,7 +18,7 @@
 package dev.enola.rdf;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.Converter;
+import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
 
 import org.eclipse.rdf4j.model.Model;
@@ -26,17 +26,20 @@ import org.eclipse.rdf4j.model.impl.DynamicModel;
 import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
-public class RdfReaderConverter implements Converter<ReadableResource, Model> {
+import java.util.Optional;
+
+public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
 
     private final RdfReaderConverterInto converterInto = new RdfReaderConverterInto();
 
     @Override
-    public Model convert(ReadableResource input) throws ConversionException {
+    public Optional<Model> convert(ReadableResource input) throws ConversionException {
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
-        if (!converterInto.convertInto(input, handler)) {
-            throw new ConversionException("No RDFFormat for: " + input);
+        if (converterInto.convertInto(input, handler)) {
+            return Optional.of(model);
+        } else {
+            return Optional.empty();
         }
-        return model;
     }
 }
