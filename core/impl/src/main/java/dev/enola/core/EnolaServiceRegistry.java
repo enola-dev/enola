@@ -17,6 +17,10 @@
  */
 package dev.enola.core;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+
+import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.iri.URITemplateMatcherChain;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.GetThingRequest;
@@ -24,17 +28,27 @@ import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.resource.ResourceEnolaService;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 class EnolaServiceRegistry implements EnolaService {
 
     private final URITemplateMatcherChain<EnolaService> matcher;
+    private Entry<EnolaService, Map<String, String>> resourceEnolaServiceEntry;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    private EnolaServiceRegistry(URITemplateMatcherChain<EnolaService> matcherChain) {
+    private EnolaServiceRegistry(
+            URITemplateMatcherChain<EnolaService> matcherChain,
+            ResourceEnolaService resourceEnolaService) {
         this.matcher = matcherChain;
+
+        this.resourceEnolaServiceEntry =
+                Maps.immutableEntry(resourceEnolaService, ImmutableMap.of());
     }
 
     @Override
@@ -47,20 +61,18 @@ class EnolaServiceRegistry implements EnolaService {
         return getDelegate(r.getEri()).listEntities(r);
     }
 
-    private EnolaService getDelegate(String eri) {
-        var opt = matcher.match(eri);
-        // TODO Instead of throwing IllegalArgumentException, return list of URI templates!
-        opt.orElseThrow(
-                () ->
-                        new IllegalArgumentException(
-                                "No EnolaService handler registered for: "
-                                        + eri
-                                        + ", only: "
-                                        + matcher.listTemplates()));
-        var entry = opt.get();
-        var map = entry.getValue();
+    private EnolaService getDelegate(String iri) {
+        var opt = matcher.match(iri);
+
+        // Nota bene: If the IRI didn't match any registered Types,
+        // then we assume it points to a Resource of a Thing, and we (try to) load it:
+        // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not, yet?)
+        // of scheme enola: and so we should only fall back to the ResourceEnolaService for any
+        // other non-enola: scheme URIs!
+        var entry = opt.orElse(resourceEnolaServiceEntry);
         var delegate = entry.getKey();
 
+        // var map = entry.getValue();
         // TODO map has to somehow be passed to the EnolaService!
         // TODO Is it OK to ditch?! var lookup = IDs.withoutPath(IDs.parse(eri));
 
@@ -89,7 +101,8 @@ class EnolaServiceRegistry implements EnolaService {
         }
 
         public EnolaServiceRegistry build() {
-            return new EnolaServiceRegistry(b.build());
+            return new EnolaServiceRegistry(
+                    b.build(), new ResourceEnolaService(new ResourceProviders()));
         }
     }
 }

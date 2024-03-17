@@ -58,7 +58,9 @@ Enola alternatively also accepts a
 [_Uniform Resource Name_](https://en.wikipedia.org/wiki/Uniform_Resource_Name)
 syntax; e.g. `urn:enola:demo.foo/abc/def`.
 
-Other schemes than `enola:` or `urn:enola` are (currently) rejected by Enola.
+Other schemes than `enola:` or `urn:enola` are assumed to point to a Resource,
+and attempted to be fetched and [converted](../use/rosetta/) to a Thing.
+<!-- TODO Link to doc with more explanation about Things. -->
 
 The `?query` and `#fragment` of an URI are not supported, and will be rejected.
 

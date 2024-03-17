@@ -35,6 +35,7 @@ import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.thing.proto.Things;
 
 import org.junit.Test;
 
@@ -73,11 +74,24 @@ public class EnolaGrpcServerTest {
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client)
             throws InvalidProtocolBufferException {
-        checkGet(client);
+        checkGetYAML(client);
+        checkGetEntity(client);
         checkList(client);
     }
 
-    private void checkGet(EnolaServiceBlockingStub client) throws InvalidProtocolBufferException {
+    private void checkGetYAML(EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
+        var request = GetThingRequest.newBuilder().setIri("classpath:picasso.ttl").build();
+        var response = client.getThing(request);
+        var any = response.getThing();
+        // TODO Need to check if the Any is multiple Things or single Thing? Or ditch.. too complex!
+        var things = any.unpack(Things.class);
+        assertThat(things.getThingsList()).hasSize(2);
+        // TODO assertThat it contains Dalí & Picasso from picasso.thing.yaml
+    }
+
+    private void checkGetEntity(EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
         var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
         var eri = IDs.toPath(id);
         var request = GetThingRequest.newBuilder().setIri(eri).build();

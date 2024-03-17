@@ -70,7 +70,18 @@ public class Messages {
             ImmutableMap<String, Message> defaultInstances) {
         this.descriptorProvider = descriptorProvider;
         this.extensionRegistry = extensionRegistry;
-        this.defaultInstances = wellKnownInstances().putAll(defaultInstances).build();
+        this.defaultInstances = check(wellKnownInstances().putAll(defaultInstances).build());
+    }
+
+    private ImmutableMap<String, Message> check(ImmutableMap<String, Message> defaultInstances) {
+        for (var defaultInstanceEntry : defaultInstances.entrySet()) {
+            var expected = defaultInstanceEntry.getKey();
+            var actual = defaultInstanceEntry.getValue().getDescriptorForType().getFullName();
+            if (!expected.equals(actual)) {
+                throw new IllegalArgumentException(expected + " != " + actual);
+            }
+        }
+        return defaultInstances;
     }
 
     public Message.Builder newBuilder(String typeURL) {
@@ -120,10 +131,12 @@ public class Messages {
                 .put(Duration.getDescriptor().getFullName(), Duration.getDefaultInstance())
                 .put(Empty.getDescriptor().getFullName(), Empty.getDefaultInstance())
                 .put(FieldMask.getDescriptor().getFullName(), FieldMask.getDefaultInstance())
+
                 // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/struct.proto
                 .put(Struct.getDescriptor().getFullName(), Struct.getDefaultInstance())
                 .put(Timestamp.getDescriptor().getFullName(), Timestamp.getDefaultInstance())
                 .put(Type.getDescriptor().getFullName(), Type.getDefaultInstance())
+
                 // https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/wrappers.proto
                 .put(BoolValue.getDescriptor().getFullName(), BoolValue.getDefaultInstance())
                 .put(BytesValue.getDescriptor().getFullName(), BytesValue.getDefaultInstance())
