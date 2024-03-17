@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
+public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
 
     // TODO In general, an RDF stream of statements is not "ordered"; there could be "later updates"
     // to "previous things" at any time. The design of this current default implementation takes

@@ -64,13 +64,29 @@ $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/libr
 
 The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
 
-## UTF-8 to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) (~ [Windows code page 1252](https://en.wikipedia.org/wiki/Windows-1252))
+## UTF-8 to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1)
 
 ```bash cd .././.././..
 $ file docs/use/rosetta/hello.txt
+...
+```
+
+```bash cd .././.././..
 $ cat docs/use/rosetta/hello.txt
+...
+```
+
+```bash cd .././.././..
 $ ./enola rosetta --in='file:docs/use/rosetta/hello.txt?charset=UTF-8' --out='file:/tmp/hello-windows.txt?charset=ISO-8859-1'
+...
+```
+
+```bash cd .././.././..
 $ file /tmp/hello-windows.txt
+...
+```
+
+```bash cd .././.././..
 $ cat /tmp/hello-windows.txt
 ...
 ```

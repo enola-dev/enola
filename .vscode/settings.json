@@ -161,6 +161,7 @@
     "connectors": false,
     "core": false,
     "docs": false,
+    "model": false,
     "node_modules": false,
     "rdf": false,
     "site": false,

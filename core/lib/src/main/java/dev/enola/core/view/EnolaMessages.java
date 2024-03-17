@@ -38,6 +38,14 @@ public class EnolaMessages extends Messages {
 
     public static ImmutableMap<String, Message> enolaDefaultInstances() {
         return ImmutableMap.<String, Message>builder()
+                // thing.proto
+                .put(
+                        dev.enola.thing.proto.Thing.getDescriptor().getFullName(),
+                        Thing.getDefaultInstance())
+                .put(
+                        dev.enola.thing.proto.Things.getDescriptor().getFullName(),
+                        Thing.getDefaultInstance())
+
                 // enola_core.proto
                 .put(Thing.getDescriptor().getFullName(), Thing.getDefaultInstance())
                 .put(Entity.getDescriptor().getFullName(), Entity.getDefaultInstance())

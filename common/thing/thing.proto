@@ -18,6 +18,8 @@ syntax = "proto3";
 
 package dev.enola.thing;
 
+// TODO Remove original Thing message that's still in enola_core.proto!
+
 // import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
@@ -25,7 +27,9 @@ option java_package = "dev.enola.thing.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/thing";
 
-// TODO Unify this with the original still in //core/lib!
+message Things {
+  repeated Thing things = 1;
+}
 
 // Thing is a generic datastructure which can hold any kind of information.
 // It notably has a way to express links between things.
@@ -35,7 +39,12 @@ message Thing {
   // not even mandatory required for the "top outer most" one either.
   string iri = 1;
 
-  // Key string is an IRI (of a "property").
+  // Key string is an IRI (of a "property"). Nota Bene: This is never a “name”
+  // (or even a “label”), but really an IRI. In theory such a Property IRI could
+  // be unique to only this single Thing; more typically, it is shared among
+  // things of the same type. Crucially though, it could also be an IRI of a
+  // property that is common among attributes of *different* types! Classic
+  // examples are e.g. https://schema.org/name (rdfs:label 🏷️) or rdfs:type.
   map<string, Value> fields = 2;
 }
 
