@@ -129,6 +129,10 @@ public final class URIs {
      * Get the "path"-like component of any URI. Similar to {@link URI#getPath()}, but also works
      * e.g. for "non-standard" relative "file:hello.txt" URIs, and correctly chops off query
      * arguments and fragments.
+     *
+     * <p>TODO This does not yet decode correctly! :=((
+     *
+     * <p>TODO Is this really required?! Re-review which tests URI#getPath() fails, and why...
      */
     public static String getPath(URI uri) {
         var ssp = uri.getSchemeSpecificPart();
@@ -149,11 +153,8 @@ public final class URIs {
      * com.google.common.io.Files#getNameWithoutExtension(String)}.
      */
     public static String getFilename(URI uri) {
-        final var scheme = uri.getScheme();
-        if (Strings.isNullOrEmpty(scheme)) {
-            return "";
-        }
-        // TODO This should probably use the (new) getPath()?
+        String path;
+        var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
             if (uri.getPath().endsWith("/")) {
                 return "";
@@ -163,16 +164,19 @@ public final class URIs {
         } else if ("jar".equals(scheme)) {
             return getFilename(URI.create(uri.getSchemeSpecificPart()));
         } else if ("http".equals(scheme) || "https".equals(scheme)) {
-            var path = uri.getPath();
-            var p = path.lastIndexOf('/');
-            if (p > -1) {
-                return path.substring(p + 1);
-            } else {
-                return "";
-            }
+            path = uri.getPath();
         } else {
-            // You can try adding it above and see if it works...
-            throw new IllegalArgumentException("TODO Add support for new URI scheme: " + uri);
+            path = getPath(uri);
+        }
+
+        if (Strings.isNullOrEmpty(path) || path.endsWith("/")) {
+            return "";
+        }
+        var p = path.lastIndexOf('/');
+        if (p > -1) {
+            return path.substring(p + 1);
+        } else {
+            return path;
         }
     }
 
