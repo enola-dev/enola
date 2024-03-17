@@ -29,6 +29,8 @@ public class YamlJsonTest {
     @Test
     public void testYAMLToJSON() {
         assertThat(yamlToJson("value: 123")).isEqualTo("{\"value\":123}");
+        assertThat(yamlToJson("value: 123\n---\nhello: world"))
+                .isEqualTo("[{\"value\":123},{\"hello\":\"world\"}]");
     }
 
     @Test
@@ -48,14 +50,8 @@ public class YamlJsonTest {
         assertThat(jsonToYaml("")).isEmpty();
         assertThat(jsonToYaml("{}")).isEmpty();
         assertThat(jsonToYaml("[]")).isEqualTo("[]\n");
-        ;
 
         assertThat(yamlToJson("")).isEmpty();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testMultiYAML() {
-        yamlToJson("value: 123\n---\nvalue: 456");
     }
 
     @Test
