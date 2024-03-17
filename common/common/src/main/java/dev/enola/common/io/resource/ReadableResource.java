@@ -21,18 +21,12 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-import com.google.common.net.MediaType;
 
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Optional;
 
 public interface ReadableResource extends AbstractResource {
-
-    URI uri();
-
-    MediaType mediaType();
 
     ByteSource byteSource();
 

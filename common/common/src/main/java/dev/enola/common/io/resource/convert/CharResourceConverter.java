@@ -24,6 +24,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Copies all characters from the input into the output resource.
@@ -35,7 +36,7 @@ public class CharResourceConverter implements CatchingResourceConverter {
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws IOException {
-        if (hasCharset(from) && hasCharset(into)) {
+        if (hasCharset(from) && hasCharset(into) && !charset(from).equals(charset(into))) {
             from.charSource().copyTo(into.charSink());
             return true;
         } else {
@@ -45,5 +46,9 @@ public class CharResourceConverter implements CatchingResourceConverter {
 
     private boolean hasCharset(AbstractResource resource) {
         return resource.mediaType().charset().isPresent();
+    }
+
+    private Charset charset(AbstractResource resource) {
+        return resource.mediaType().charset().get();
     }
 }

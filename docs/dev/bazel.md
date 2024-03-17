@@ -34,6 +34,8 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 PS: Use `b query "@maven//:*"` to see all targets.
 
+PPS: Consult the [`maven_install.json`](../../maven_install.json) to see artifacts versions, dependencies, and packages.
+
 ### Update Existing Maven dependencies
 
     ./update.bash

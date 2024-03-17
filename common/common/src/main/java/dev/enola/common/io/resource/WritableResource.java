@@ -21,18 +21,10 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
-import com.google.common.net.MediaType;
 
-import java.net.URI;
 import java.nio.charset.Charset;
 
 public interface WritableResource extends AbstractResource {
-
-    @Override
-    URI uri();
-
-    @Override
-    MediaType mediaType();
 
     ByteSink byteSink();
 
