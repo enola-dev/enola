@@ -32,7 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
-public class UrlResource implements ReadableResource {
+public class UrlResource extends BaseResource implements ReadableResource {
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
@@ -104,10 +104,5 @@ public class UrlResource implements ReadableResource {
     @Override
     public ByteSource byteSource() {
         return Resources.asByteSource(url);
-    }
-
-    @Override
-    public String toString() {
-        return "UrlResource{uri=" + uri + '}';
     }
 }

@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @see EmptyResource for an (non-writable) EOF ReadableResource
  */
-public class NullResource implements Resource {
+public class NullResource extends BaseResource implements Resource {
 
     public static final NullResource INSTANCE =
             new NullResource(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
@@ -72,11 +72,6 @@ public class NullResource implements Resource {
     @Override
     public ByteSource byteSource() {
         return NullByteSource.INSTANCE;
-    }
-
-    @Override
-    public String toString() {
-        return "NullResource{uri=" + uri() + '}';
     }
 
     // TODO https://github.com/google/guava/issues/2011

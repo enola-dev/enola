@@ -21,14 +21,19 @@ import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
-import java.io.*;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 
 /**
  * Resource for URIs "fd:0?charset=ASCII" (STDIN), "fd:1?charset=UTF-8" (STDOUT),
  * "fd:2?charset=UTF-16BE" STDERR. Implementation uses {@link FileDescriptor}.
  */
-public class FileDescriptorResource implements Resource {
+public class FileDescriptorResource extends BaseResource implements Resource {
 
     private final FileDescriptor fileDescriptor;
     private final MediaType mediaType;

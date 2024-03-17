@@ -51,11 +51,6 @@ public class TestResource extends MemoryResource implements CloseableResource {
         pool.remove(id);
     }
 
-    @Override
-    public String toString() {
-        return "TestResource{" + uri() + "}";
-    }
-
     public static class Provider implements ResourceProviderSPI {
         @Override
         public String scheme() {

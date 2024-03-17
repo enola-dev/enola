@@ -34,7 +34,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class FileResource implements Resource {
+public class FileResource extends BaseResource implements Resource {
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
@@ -86,10 +86,5 @@ public class FileResource implements Resource {
         } catch (IOException e) {
             return Optional.empty();
         }
-    }
-
-    @Override
-    public String toString() {
-        return "FileResource{path=" + path + ", mediaType=" + mediaType + '}';
     }
 }
