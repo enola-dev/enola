@@ -24,6 +24,10 @@ GRPC_JAVA_VERSION = "1.61.0"
 
 RDF4J_VERSION = "5.0.0-M2"
 
+APACHE_HTTP_COMPONENTS_CORE_VERSION = "4.4.16"
+
+APACHE_HTTP_COMPONENTS_CLIENT_VERSION = "4.5.14"
+
 # https://github.com/grpc/grpc-java/
 # https://github.com/enola-dev/enola/issues/202
 # https://github.com/grpc/grpc-java/issues/10215
@@ -117,6 +121,16 @@ maven_install(
         "org.slf4j:slf4j-jdk14:2.0.9",
         "org.slf4j:slf4j-simple:2.0.9",
         "io.github.classgraph:classgraph:4.8.165",
+        # Various org.apache.httpcomponents:* artifacts are dragged in different dependencies,
+        # but their versions are, of course, not aligned. We therefore "normalize" them here:
+        # For com.github.jsonld-java:jsonld-java ...
+        "org.apache.httpcomponents:httpclient-osgi:%s" % APACHE_HTTP_COMPONENTS_CLIENT_VERSION,
+        "org.apache.httpcomponents:httpcore-osgi:%s" % APACHE_HTTP_COMPONENTS_CORE_VERSION,
+        # For com.google.http-client:google-http-client ...
+        "org.apache.httpcomponents:httpclient:%s" % APACHE_HTTP_COMPONENTS_CLIENT_VERSION,
+        "org.apache.httpcomponents:httpcore:%s" % APACHE_HTTP_COMPONENTS_CORE_VERSION,
+        # For org.eclipse.rdf4j:rdf4j-rio-jsonld ...
+        "org.apache.httpcomponents:httpclient-cache:%s" % APACHE_HTTP_COMPONENTS_CLIENT_VERSION,
     ],
     # TODO duplicate_version_warning = "error",
     fetch_sources = True,
