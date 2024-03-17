@@ -23,7 +23,6 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.TestAbstractResource;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
@@ -47,7 +46,6 @@ public class MediaTypeProviderTest {
     }
 
     @Test
-    @Ignore // TODO Make this work!
     public void alternative() {
         var uri = URI.create("test:MediaTypeProviderTest");
         var resource = new TestAbstractResource(uri, TestMediaTypes.TEST_ALTERNATIVE);

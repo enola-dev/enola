@@ -17,36 +17,12 @@
  */
 package dev.enola.common.io.mediatype;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.stream.Stream;
 
+/** Extension methods for {@link MediaType}. */
 public final class MediaTypes {
-
-    // TODO Rename this class MediaTypes to MediaTypeNormalizer? And remove #parse() method here?
-
-    // TODO Refactor the stuff below out into a class MediaTypeRegistry implements MediaTypeProvider
-
-    private static final MediaTypes INSTANCE = new MediaTypes();
-
-    private final Map<MediaType, MediaType> alternatives;
-
-    private MediaTypes(MediaTypeProvider... providers) {
-        this.alternatives = createAlternatives(providers);
-    }
-
-    private MediaTypes(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
-        this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
-    }
-
-    private MediaTypes() {
-        this(ServiceLoader.load(MediaTypeProvider.class).stream());
-    }
 
     /**
      * Improved version of {@link MediaType#parse(String)} which also invokes {@link
@@ -58,10 +34,9 @@ public final class MediaTypes {
         return normalize(MediaType.parse(input));
     }
 
+    @Deprecated // Remove and replace (inline) with implementation, for clarity
     public static MediaType normalize(MediaType mediaType) {
-        return INSTANCE.alternatives
-                .getOrDefault(mediaType.withoutParameters(), mediaType)
-                .withParameters(mediaType.parameters());
+        return MediaTypeProviders.SINGLETON.normalize(mediaType);
     }
 
     public static boolean normalizedNoParamsEquals(MediaType actual, MediaType... expecteds) {
@@ -70,24 +45,6 @@ public final class MediaTypes {
                 return true;
         }
         return false;
-    }
-
-    private Map<MediaType, MediaType> createAlternatives(MediaTypeProvider[] providers) {
-        var map = ImmutableMap.<MediaType, MediaType>builder();
-        Arrays.stream(providers)
-                .forEach(
-                        provider ->
-                                provider.knownTypesWithAlternatives()
-                                        .forEach(
-                                                (mediaType, mediaTypes) ->
-                                                        mediaTypes.forEach(
-                                                                alternativeMediaType ->
-                                                                        map.put(
-                                                                                alternativeMediaType
-                                                                                        .withoutParameters(),
-                                                                                mediaType
-                                                                                        .withoutParameters()))));
-        return map.build();
     }
 
     public static Optional<String> parameter(MediaType mediaType, String name) {

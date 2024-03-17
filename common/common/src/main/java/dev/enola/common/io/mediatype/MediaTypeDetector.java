@@ -19,13 +19,11 @@ package dev.enola.common.io.mediatype;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.URIs;
-import dev.enola.common.protobuf.ProtobufMediaTypes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,16 +66,8 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
-    // TODO Query *all* MediaTypeProvider#extensionsToTypes() via MediaTypes (TBD MediaTypeRegistry)
-    // TODO Test this in MediaTypeDetectorTest via test coverage using TestMediaTypes
     private final Map<String, MediaType> extensionMap =
-            ImmutableMap.<String, MediaType>builder()
-                    .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
-                    .putAll(ImmutableMap.of("css", MediaType.CSS_UTF_8.withoutParameters()))
-                    .putAll(ImmutableMap.of("js", MediaType.JAVASCRIPT_UTF_8.withoutParameters()))
-                    .putAll(new ProtobufMediaTypes().extensionsToTypes())
-                    .putAll(new YamlMediaType().extensionsToTypes())
-                    .build();
+            MediaTypeProviders.SINGLETON.extensionsToTypes();
 
     private final FromURI fromExtensionMap =
             uri -> {

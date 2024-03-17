@@ -23,7 +23,12 @@ import java.net.URI;
 
 public interface AbstractResource {
 
+    /** {@link URI} where the (bytes) content of resource can be read from or written to. */
     URI uri();
 
+    /**
+     * {@link MediaType} describing the format of this resource. This is always present, but could
+     * be wrong; a {@link ResourceMediaTypeDetector} may find a better one.
+     */
     MediaType mediaType();
 }

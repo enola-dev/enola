@@ -1,5 +1,3 @@
-# TODO Implement reading this in MediaTypeDetector
-# It's currently already read in MediaTypes (only), which is confusing!
-
+dev.enola.common.io.mediatype.StandardMediaTypes
 dev.enola.common.io.mediatype.YamlMediaType
 dev.enola.common.protobuf.ProtobufMediaTypes
