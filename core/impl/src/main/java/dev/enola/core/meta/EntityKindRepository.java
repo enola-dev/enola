@@ -17,8 +17,6 @@
  */
 package dev.enola.core.meta;
 
-import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
-
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ErrorResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -31,10 +29,11 @@ import dev.enola.core.proto.ID;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 public class EntityKindRepository {
@@ -46,7 +45,7 @@ public class EntityKindRepository {
         try {
             put(EntityKindAspect.ENTITY_KIND_ENTITY_KIND);
             try {
-                load(new ClasspathResource("schema.textproto", PROTOBUF_TEXTPROTO_UTF_8));
+                load(new ClasspathResource("schema.textproto"));
             } catch (IOException e) {
                 throw new IllegalStateException("Built-in ClasspathResource missing?!", e);
             }

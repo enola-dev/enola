@@ -29,9 +29,10 @@ public class StandardMediaTypes implements MediaTypeProvider {
     @Override
     public Map<String, MediaType> extensionsToTypes() {
         return ImmutableMap.<String, MediaType>builder()
-                .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8.withoutParameters()))
-                .putAll(ImmutableMap.of("css", MediaType.CSS_UTF_8.withoutParameters()))
-                .putAll(ImmutableMap.of("js", MediaType.JAVASCRIPT_UTF_8.withoutParameters()))
+                .putAll(ImmutableMap.of("html", MediaType.HTML_UTF_8))
+                .putAll(ImmutableMap.of("json", MediaType.JSON_UTF_8))
+                .putAll(ImmutableMap.of("css", MediaType.CSS_UTF_8))
+                .putAll(ImmutableMap.of("js", MediaType.JAVASCRIPT_UTF_8))
                 .build();
     }
 
