@@ -27,6 +27,7 @@ public class RdfMediaTypeTest {
 
     @Test
     public void mediaTypes() {
-        assertThat(new ClasspathResource("picasso.ttl").mediaType()).isEqualTo(RdfMediaType.TURTLE);
+        assertThat(new ClasspathResource("picasso.ttl").mediaType())
+                .isEqualTo(RdfMediaTypes.TURTLE);
     }
 }

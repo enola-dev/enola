@@ -43,7 +43,7 @@ public class RdfReaderConverter implements OptionalConverter<ReadableResource, M
         // we just Rosetta transform YAML to JSON and then pass that through to RDJ4j:
         if (MediaTypes.normalizedNoParamsEquals(
                 input.mediaType(), RdfMediaTypeYamlLd.YAML_LD, YAML_UTF_8)) {
-            var json = new MemoryResource(RdfMediaType.JSON_LD);
+            var json = new MemoryResource(RdfMediaTypes.JSON_LD);
             YamlJson.YAML_TO_JSON.convertInto(input, json);
             input = json;
         }
