@@ -53,7 +53,7 @@ public class UI implements WebHandler {
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
     private static final ReadableResource HTML_FRAME =
-            new ClasspathResource("templates/index.html", HTML_UTF_8);
+            new ClasspathResource("templates/index.html");
 
     private final MessageToThingConverter m2t = new MessageToThingConverter();
 
@@ -97,7 +97,7 @@ public class UI implements WebHandler {
             return getEntityHTML(eri, true);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
-            return new ClasspathResource("static/404.html", HTML_UTF_8).charSource().read();
+            return new ClasspathResource("static/404.html").charSource().read();
         }
     }
 

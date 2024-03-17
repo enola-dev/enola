@@ -21,7 +21,6 @@ import static dev.enola.rdf.ModelSubject.assertThat;
 import static dev.enola.rdf.ResourceSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.Resource;
@@ -37,16 +36,16 @@ public class RdfReaderWriterTest {
     private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
 
     private static final ClasspathResource PICASSO_TURTLE_RESOURCE =
-            new ClasspathResource("picasso.ttl", RdfMediaTypes.TURTLE);
+            new ClasspathResource("picasso.ttl");
 
     private static final ClasspathResource PICASSO_JSONLD_RESOURCE =
-            new ClasspathResource("picasso.jsonld", RdfMediaTypes.JSON_LD);
+            new ClasspathResource("picasso.jsonld");
 
     private static final ClasspathResource PICASSO_YAMLLD_RESOURCE =
-            new ClasspathResource("picasso.yamlld", RdfMediaTypeYamlLd.YAML_LD);
+            new ClasspathResource("picasso.yamlld");
 
     private static final ClasspathResource PICASSO_YAML_RESOURCE =
-            new ClasspathResource("picasso.yaml", YamlMediaType.YAML_UTF_8);
+            new ClasspathResource("picasso.yaml");
 
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle

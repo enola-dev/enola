@@ -17,8 +17,6 @@
  */
 package dev.enola.rdf;
 
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-
 import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.ProtoTruth;
 
@@ -41,14 +39,11 @@ import java.io.IOException;
 
 public class RdfThingConverterTest {
 
-    private final ReadableResource turtle =
-            new ClasspathResource("picasso.ttl", RdfMediaTypes.TURTLE);
+    private final ReadableResource turtle = new ClasspathResource("picasso.ttl");
 
-    private final ReadableResource picassoYaml =
-            new ClasspathResource("picasso.thing.yaml", YAML_UTF_8);
+    private final ReadableResource picassoYaml = new ClasspathResource("picasso.thing.yaml");
 
-    private final ReadableResource daliYaml = //
-            new ClasspathResource("dali.thing.yaml", YAML_UTF_8);
+    private final ReadableResource daliYaml = new ClasspathResource("dali.thing.yaml");
 
     private final ProtoIO protoReader = new ProtoIO();
     private final RdfReaderConverter rdfReader = new RdfReaderConverter();
@@ -104,8 +99,7 @@ public class RdfThingConverterTest {
         var converter = new MessageToThingConverter();
         var thing = converter.convert(new MessageWithIRI("http://test/thing", complex.build()));
         var actualRDF = thingToRdfConverter.convert(thing);
-        var expectedRDF =
-                rdfReader.convert(new ClasspathResource("proto.ttl", RdfMediaTypes.TURTLE)).get();
+        var expectedRDF = rdfReader.convert(new ClasspathResource("proto.ttl")).get();
         ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 }

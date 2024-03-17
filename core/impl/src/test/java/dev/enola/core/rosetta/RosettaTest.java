@@ -92,7 +92,7 @@ public class RosettaTest {
         var out = new MemoryResource(PROTOBUF_TEXTPROTO_UTF_8);
         new Rosetta().convertInto(in, out);
 
-        var expectedOut = new ClasspathResource("bar-abc-def.textproto", PROTOBUF_TEXTPROTO_UTF_8);
+        var expectedOut = new ClasspathResource("bar-abc-def.textproto");
         assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
     }
 
