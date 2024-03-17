@@ -66,6 +66,7 @@ java_library(
         ":impl",
         "//common/common",
         "//common/protobuf",
+        "//common/thing:thing_java",
         "//common/thing:thing_java_proto",
         "//common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//connectors/demo",

@@ -20,9 +20,10 @@
 
 Rosetta, inspired by
 [the Rosetta Stone](https://en.wikipedia.org/wiki/Rosetta_Stone), transforms
-between:
+e.g. between:
 
 * Text Encodings
+* RDF Turtle to Enola Things
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
 _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
@@ -63,6 +64,13 @@ $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/libr
 ```
 
 The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
+
+## Turtle 🐢 to Things ⛓️
+
+```bash cd .././.././..
+$ ./enola rosetta --in file:common/rdf/src/test/resources/picasso.ttl --out file:picasso.thing.yaml
+...
+```
 
 ## UTF-8 to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1)
 

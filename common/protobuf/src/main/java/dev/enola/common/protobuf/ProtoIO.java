@@ -114,13 +114,15 @@ public class ProtoIO {
                             .usingTypeRegistry(typeRegistry)
                             .print(message, writer);
 
-                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)) {
+                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_JSON_UTF_8, JSON_UTF_8)
+                        || mediaType.subtype().endsWith("+json")) {
                     JsonFormat.printer()
                             .usingTypeRegistry(typeRegistry)
                             .omittingInsignificantWhitespace()
                             .appendTo(message, writer);
 
-                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
+                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)
+                        || mediaType.subtype().endsWith("+yaml")) {
                     var sb = new StringBuffer();
                     JsonFormat.printer()
                             .usingTypeRegistry(typeRegistry)
