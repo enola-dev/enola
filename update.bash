@@ -34,4 +34,4 @@ pre-commit run --all-files
 # Note that this doesn't actually update, just prints if *YOU* (manually) can.
 bazelisk run @maven//:outdated
 echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
-echo "Don't forget to run 'bazelisk run @unpinned_maven//:pin' after changes!"
+echo "Don't forget to run 'REPIN=1 bazelisk run @unpinned_maven//:pin' after changes!"

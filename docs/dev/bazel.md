@@ -30,7 +30,7 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 1. Edit [dependencies](dependencies.md) in [`WORKSPACE.bazel`](../../WORKSPACE.bazel) (later [`MODULE.bazel`](../../MODULE.bazel))
 
-1. `b run @unpinned_maven//:pin`
+1. `REPIN=1 b run @unpinned_maven//:pin`
 
 PS: Use `b query "@maven//:*"` to see all targets.
 
