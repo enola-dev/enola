@@ -17,12 +17,14 @@
  */
 package dev.enola.common.yamljson;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class YamlJson {
@@ -52,18 +54,14 @@ public class YamlJson {
     public static String yamlToJson(String yaml) {
         LoadSettings settings = LoadSettings.builder().build();
         Load load = new Load(settings);
-        Iterable<Object> list = load.loadAllFromString(yaml);
-        Iterator<Object> iter = list.iterator();
+        Iterable<Object> iterable = load.loadAllFromString(yaml);
+        List<Object> list = ImmutableList.copyOf(iterable);
+        if (list.isEmpty()) return "";
 
-        if (!iter.hasNext()) {
-            return "";
-        } else {
-            Object firstRoot = list.iterator().next();
-            if (iter.hasNext()) {
-                throw new IllegalArgumentException(
-                        "YAML with more than 1 root cannot be converted to JSON");
-            }
-            return JSON.write(firstRoot);
+        Object root = list;
+        if (list.size() == 1) {
+            root = list.get(0);
         }
+        return JSON.write(root);
     }
 }
