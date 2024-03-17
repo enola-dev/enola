@@ -43,7 +43,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
+    rev: v1.5.5
     hooks:
       - id: insert-license
         files: \.(proto)$
@@ -86,7 +86,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.6
+    rev: v18.1.1
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -99,7 +99,7 @@ repos:
 
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
-    rev: v0.47.5
+    rev: v0.49.3
     hooks:
       - id: protolint
 
@@ -122,7 +122,7 @@ repos:
 
     # Until https://github.com/DavidAnson/markdownlint/issues/121
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.11.2
+    rev: v3.12.1
     hooks:
       - id: markdown-link-check
         exclude: (src/test/resources/|docs/use/docgen/docgen.md|docs/use/server/index.md)
@@ -155,7 +155,7 @@ repos:
 
   # https://yamllint.readthedocs.io/en/stable/integration.html#integration-with-pre-commit
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.33.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         # https://yamllint.readthedocs.io/en/stable/configuration.html#errors-and-warnings

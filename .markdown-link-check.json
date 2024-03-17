@@ -1,5 +1,6 @@
 {
   "ignorePatterns": [
+    { "pattern": "^#.*" },
     { "pattern": ".*dev/proto/core.*" },
     { "pattern": "script.svg" },
     { "pattern": "^https://vscode.dev" },
