@@ -1,0 +1,20 @@
+- "@id": _:f034741e5da3451ead5b5972d6cf75311
+  http://example.enola.dev/city:
+    - { "@value": Barcelona }
+  http://example.enola.dev/street:
+    - { "@value": 31 Art Gallery }
+- "@id": http://example.enola.dev/Dalí
+  "@type": ["http://example.enola.dev/Artist"]
+  http://xmlns.com/foaf/0.1/firstName:
+    - { "@value": Salvador }
+    - { "@value": Domingo }
+    - { "@value": Felipe }
+    - { "@value": Jacinto }
+- "@id": http://example.enola.dev/Picasso
+  "@type": ["http://example.enola.dev/Artist"]
+  http://www.w3.org/ns/locn#location:
+    - { "@language": en, "@value": Spain }
+  http://xmlns.com/foaf/0.1/firstName:
+    - { "@value": Pablo }
+  http://example.enola.dev/homeAddress:
+    - { "@id": "_:f034741e5da3451ead5b5972d6cf75311" }
