@@ -33,16 +33,22 @@ public class YamlJsonTest {
 
     @Test
     public void testJSONToYaml() {
+        // Maps
         assertThat(jsonToYaml("{\"value\":123}")).isEqualTo("{value: 123.0}\n");
         assertThat(jsonToYaml("{\"number\":123, \"text\":\"hello\"}"))
                 .isEqualTo("{number: 123.0, text: hello}\n");
+
+        // Arrays
+        assertThat(jsonToYaml("[{\"value\":123}, {\"hello\":\"world\"}]"))
+                .isEqualTo("- {value: 123.0}\n- {hello: world}\n");
     }
 
     @Test
     public void testEmpty() {
         assertThat(jsonToYaml("")).isEmpty();
         assertThat(jsonToYaml("{}")).isEmpty();
-        assertThat(jsonToYaml("[]")).isEmpty();
+        assertThat(jsonToYaml("[]")).isEqualTo("[]\n");
+        ;
 
         assertThat(yamlToJson("")).isEmpty();
     }

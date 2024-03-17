@@ -21,15 +21,13 @@ import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.DumpSettings;
 import org.snakeyaml.engine.v2.common.ScalarStyle;
 
-import java.util.Map;
-
 public final class YAML {
     private YAML() {}
 
-    public static String write(Map<String, Object> map) {
+    public static String write(Object object) {
         DumpSettings settings =
                 DumpSettings.builder().setDefaultScalarStyle(ScalarStyle.PLAIN).build();
         Dump dump = new Dump(settings);
-        return dump.dumpToString(map);
+        return dump.dumpToString(object);
     }
 }
