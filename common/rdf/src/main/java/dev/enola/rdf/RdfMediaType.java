@@ -23,6 +23,7 @@ import com.google.common.net.MediaType;
 import org.eclipse.rdf4j.rio.RDFFormat;
 
 public class RdfMediaType {
+    // TODO Implement a more generic adapter of RDFParserRegistry to RdfMediaType
     // TODO implements MediaTypeProvider - when that's more pluggable
 
     public static final MediaType TURTLE =
@@ -30,4 +31,9 @@ public class RdfMediaType {
 
     public static final MediaType JSON_LD =
             MediaType.parse(RDFFormat.JSONLD.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
+
+    // TODO Register *.yamlld as per https://json-ld.github.io/yaml-ld/spec/#application-ld-yaml
+    // https://json-ld.github.io/yaml-ld/ and https://json-ld.github.io/yaml-ld/spec/
+    public static final MediaType YAML_LD =
+            MediaType.create("application", "ld+yaml").withCharset(Charsets.UTF_8);
 }

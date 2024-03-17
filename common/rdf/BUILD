@@ -25,6 +25,7 @@ java_library(
         "//common/protobuf",
         "//common/thing:thing_java",
         "//common/thing:thing_java_proto",
+        "//common/yamljson",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
