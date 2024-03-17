@@ -127,9 +127,13 @@ public class URIsTest {
                         .toURI(),
                 "dev.enola.common.io.mediatype.MediaTypeProvider");
 
-        // No schema - this is correct!
-        assertName(URI.create("test.txt"), "");
+        // No schema
+        assertName(URI.create("test.txt"), "test.txt");
         assertName(URI.create(""), "");
+
+        assertName(URI.create("whatever:/place/something.test"), "something.test");
+        assertName(URI.create("whatever:place/something.test"), "something.test");
+        assertName(URI.create("whatever:something.test"), "something.test");
 
         Assert.assertThrows(NullPointerException.class, () -> URI.create(null));
     }
@@ -150,5 +154,9 @@ public class URIsTest {
 
         // NOK! assertThat(URI.create("file:relative/file").getPath()).isEqualTo("relative/file");
         assertThat(URIs.getPath(URI.create("file:relative/file"))).isEqualTo("relative/file");
+
+        assertThat(URIs.getPath(URI.create("whatever:/place/something.test")))
+                .isEqualTo("/place/something.test");
+        assertThat(URIs.getPath(URI.create("whatever:something.test"))).isEqualTo("something.test");
     }
 }
