@@ -25,8 +25,17 @@ public final class XmlSchemaBuiltinDatatypes {
 
     private static final String NS = "http://www.w3.org/2001/XMLSchema#";
 
-    public static final String INT = NS + "int";
+    public static final String BOOL = NS + "boolean";
+
+    public static final String DOUBLE = NS + "double";
+    public static final String FLOAT = NS + "float";
+
+    public static final String INT32 = NS + "int";
+    public static final String INT64 = NS + "long";
+    public static final String UINT64 = NS + "unsignedLong";
     public static final String UINT32 = NS + "unsignedInt";
+
+    public static final String BIN64 = NS + "base64Binary";
 
     public static final String TS = NS + "dateTime";
 
