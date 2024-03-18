@@ -19,7 +19,7 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.thing.XmlSchemaBuiltinDatatypes;
+import dev.enola.thing.KIRI;
 
 import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.junit.Test;
@@ -29,14 +29,14 @@ public class DatatypesTest {
 
     @Test
     public void XSD() {
-        assertThat(XmlSchemaBuiltinDatatypes.BIN64).isEqualTo(XSD.BASE64BINARY.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.BOOL).isEqualTo(XSD.BOOLEAN.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.DOUBLE).isEqualTo(XSD.DOUBLE.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.FLOAT).isEqualTo(XSD.FLOAT.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.INT32).isEqualTo(XSD.INT.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.INT64).isEqualTo(XSD.LONG.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.UINT32).isEqualTo(XSD.UNSIGNED_INT.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.UINT64).isEqualTo(XSD.UNSIGNED_LONG.stringValue());
-        assertThat(XmlSchemaBuiltinDatatypes.TS).isEqualTo(XSD.DATETIME.stringValue());
+        assertThat(KIRI.XSD.BIN64).isEqualTo(XSD.BASE64BINARY.stringValue());
+        assertThat(KIRI.XSD.BOOL).isEqualTo(XSD.BOOLEAN.stringValue());
+        assertThat(KIRI.XSD.DOUBLE).isEqualTo(XSD.DOUBLE.stringValue());
+        assertThat(KIRI.XSD.FLOAT).isEqualTo(XSD.FLOAT.stringValue());
+        assertThat(KIRI.XSD.INT32).isEqualTo(XSD.INT.stringValue());
+        assertThat(KIRI.XSD.INT64).isEqualTo(XSD.LONG.stringValue());
+        assertThat(KIRI.XSD.UINT32).isEqualTo(XSD.UNSIGNED_INT.stringValue());
+        assertThat(KIRI.XSD.UINT64).isEqualTo(XSD.UNSIGNED_LONG.stringValue());
+        assertThat(KIRI.XSD.TS).isEqualTo(XSD.DATETIME.stringValue());
     }
 }

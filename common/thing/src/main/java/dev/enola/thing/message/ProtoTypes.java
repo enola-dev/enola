@@ -34,6 +34,8 @@ import dev.enola.thing.proto.Value.Builder;
  */
 public class ProtoTypes {
 
+    // TODO ERI vs IRI - come again, please? ;-)
+
     @VisibleForTesting
     static final String MESSAGE_DESCRIPTOR_PREDICATE_IRI = "http://enola.dev/proto/message";
 
