@@ -19,6 +19,7 @@ package dev.enola.thing.message;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
@@ -91,7 +92,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     private Value.Builder toThingByFieldType(
             Object object, FieldDescriptor field, Message message) {
         return switch (field.getType()) {
-                // TODO ENUM
+            case FieldDescriptor.Type.ENUM -> toEnumLink((EnumValueDescriptor) object);
             case FieldDescriptor.Type.BOOL ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.BOOL);
             case FieldDescriptor.Type.BYTES ->
@@ -129,6 +130,12 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
                     Value.newBuilder().setStruct(from((Message) object, false));
             default -> toThingByFieldName(object, field, message);
         };
+    }
+
+    private Value.Builder toEnumLink(EnumValueDescriptor enumValue) {
+        var iri = ProtoTypes.getEnumERI(enumValue);
+        var label = enumValue.getName();
+        return toLink(iri, label);
     }
 
     private String b64(ByteString byteString) {
