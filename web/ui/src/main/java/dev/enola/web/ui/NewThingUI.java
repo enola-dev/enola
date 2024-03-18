@@ -68,7 +68,7 @@ public class NewThingUI {
 
     private static CharSequence literal(Literal literal) {
         // TODO Use a dev.enola.common.convert.Converter based on the literal.getDatatype()
-        return literal.getValue();
+        return "<span title=" + literal.getDatatype() + ">" + s(literal.getValue()) + "</span>";
     }
 
     private static CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
