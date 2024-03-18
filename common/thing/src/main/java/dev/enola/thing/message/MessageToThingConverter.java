@@ -18,6 +18,7 @@
 package dev.enola.thing.message;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
@@ -28,6 +29,8 @@ import dev.enola.common.convert.Converter;
 import dev.enola.thing.XmlSchemaBuiltinDatatypes;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
+
+import java.util.Base64;
 
 public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
 
@@ -88,10 +91,11 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     private Value.Builder toThingByFieldType(
             Object object, FieldDescriptor field, Message message) {
         return switch (field.getType()) {
-                // TODO BYTES -> BIN64
                 // TODO ENUM
             case FieldDescriptor.Type.BOOL ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.BOOL);
+            case FieldDescriptor.Type.BYTES ->
+                    toLiteral(b64((ByteString) object), XmlSchemaBuiltinDatatypes.BIN64);
             case FieldDescriptor.Type.DOUBLE ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.DOUBLE);
             case FieldDescriptor.Type.FLOAT ->
@@ -125,6 +129,10 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
                     Value.newBuilder().setStruct(from((Message) object, false));
             default -> toThingByFieldName(object, field, message);
         };
+    }
+
+    private String b64(ByteString byteString) {
+        return Base64.getEncoder().encodeToString(byteString.toByteArray());
     }
 
     private Value.Builder toThingByFieldName(
