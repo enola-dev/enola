@@ -21,10 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.KIRI;
 
+import org.eclipse.rdf4j.model.base.CoreDatatype.RDF;
+import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.junit.Test;
 
-/** Tests IRIs defined in {@link KIRI} by comparing them against their RDF4j equivalents. */
+/** Tests IRIs defined in {@link KIRI}, by comparing them against their RDF4j equivalents. */
 public class WellKnownIRIsTest {
 
     @Test
@@ -41,5 +43,12 @@ public class WellKnownIRIsTest {
     }
 
     @Test
-    public void SchemaDotOrg() {}
+    public void RDF() {
+        assertThat(KIRI.RDF.HTML).isEqualTo(RDF.HTML.getIri().stringValue());
+    }
+
+    @Test
+    public void RDFS() {
+        assertThat(KIRI.RDFS.CLASS).isEqualTo(RDFS.CLASS.stringValue());
+    }
 }
