@@ -88,6 +88,33 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     private Value.Builder toThingByFieldType(
             Object object, FieldDescriptor field, Message message) {
         return switch (field.getType()) {
+                // TODO BYTES -> BIN64
+                // TODO ENUM
+                // TODO GROUP ?
+            case FieldDescriptor.Type.BOOL ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.BOOL);
+            case FieldDescriptor.Type.DOUBLE ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.DOUBLE);
+            case FieldDescriptor.Type.FLOAT ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.FLOAT);
+            case FieldDescriptor.Type.INT64 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
+            case FieldDescriptor.Type.FIXED64 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
+            case FieldDescriptor.Type.SFIXED64 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
+            case FieldDescriptor.Type.SINT64 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
+            case FieldDescriptor.Type.UINT64 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.UINT64);
+            case FieldDescriptor.Type.INT32 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
+            case FieldDescriptor.Type.FIXED32 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
+            case FieldDescriptor.Type.SFIXED32 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
+            case FieldDescriptor.Type.SINT32 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
             case FieldDescriptor.Type.UINT32 ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.UINT32);
             case FieldDescriptor.Type.MESSAGE ->
