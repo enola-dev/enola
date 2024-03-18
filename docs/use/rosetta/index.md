@@ -23,7 +23,7 @@ Rosetta, inspired by
 e.g. between:
 
 * Text Encodings
-* RDF Turtle to Enola Things
+* RDF Turtle ⇔ JSON-LD ⇔ YAML-LD ⇔ Enola Things
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
 _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
