@@ -37,6 +37,8 @@ message Thing {
   // The IRI is often only set on the "top outer most", and may well be unset
   // for things "contained" in other things (RDF calls this "blank nodes"). It's
   // not even mandatory required for the "top outer most" one either.
+  // TODO Why do we even need this?! Why not just use an
+  // https://schema.org/identifier attribute?
   string iri = 1;
 
   // Key string is an IRI (of a "property"). Nota Bene: This is never a “name”
@@ -44,7 +46,7 @@ message Thing {
   // be unique to only this single Thing; more typically, it is shared among
   // things of the same type. Crucially though, it could also be an IRI of a
   // property that is common among attributes of *different* types! Classic
-  // examples are e.g. https://schema.org/name (rdfs:label 🏷️) or rdfs:type.
+  // examples are e.g. https://schema.org/name (rdfs:label 🏷️) or rdf:type.
   map<string, Value> fields = 2;
 }
 
