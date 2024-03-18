@@ -15,13 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.message;
-
-import com.google.protobuf.Message;
+package dev.enola.thing;
 
 /**
- * MessageWithIRI is a Proto {@link Message} + an IRI describing "what it is" (logical), or "where
- * it comes from" ('physical' URI).
+ * Constants for XML Schema's built-in datatypes. See e.g. <a
+ * href="https://www.w3.org/TR/rdf11-concepts/#xsd-datatypes">https://www.w3.org/TR/rdf11-concepts/#xsd-datatypes</a>.
  */
-// MessageOrBuilder instead Message, to avoid build(), when not required?
-public record MessageWithIRI(String iri, Message message) {}
+public final class XmlSchemaBuiltinDatatypes {
+
+    private static final String NS = "http://www.w3.org/2001/XMLSchema#";
+
+    public static final String INT = NS + "int";
+    public static final String UINT32 = NS + "unsignedInt";
+
+    public static final String TS = NS + "dateTime";
+
+    private XmlSchemaBuiltinDatatypes() {}
+}

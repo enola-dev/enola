@@ -71,6 +71,7 @@ max_line_length = unset
 [*.ttl]
 indent_size = 2
 tab_width = 2
+max_line_length = 140
 
 [*.toml]
 indent_size = 2
