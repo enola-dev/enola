@@ -53,8 +53,8 @@ public class MessageToThingConverterTest {
             TestSimple.newBuilder()
                     .setText("hello")
                     .setNumber(UnsignedInteger.MAX_VALUE.intValue())
-                    .setTs(ts);
-    // .setBytes(bytes);
+                    .setTs(ts)
+                    .setBytes(bytes);
     Thing.Builder simpleThing =
             Thing.newBuilder()
                     .putFields(
@@ -66,7 +66,10 @@ public class MessageToThingConverterTest {
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/3",
                             c.toLiteral(Timestamps.toString(ts), XmlSchemaBuiltinDatatypes.TS)
-                                    .build());
+                                    .build())
+                    .putFields(
+                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/4",
+                            c.toLiteral("AQID", XmlSchemaBuiltinDatatypes.BIN64).build());
 
     Thing.Builder simpleThingWithProto = headers(Thing.newBuilder(simpleThing.build()), simple);
 

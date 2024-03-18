@@ -27,10 +27,18 @@ option java_package = "dev.enola.core.test";
 option java_multiple_files = true;
 option go_package = "dev/enola/core/test";
 
+enum TestEnum {
+  TEST_ENUM_UNSPECIFIED = 0;
+  TEST_ENUM_A = 1;
+  TEST_ENUM_B = 2;
+}
+
 message TestSimple {
   string text = 1;
   uint32 number = 2;
   google.protobuf.Timestamp ts = 3;
+  bytes bytes = 4;
+  TestEnum anenum = 5;
 }
 
 message TestRepeated {
