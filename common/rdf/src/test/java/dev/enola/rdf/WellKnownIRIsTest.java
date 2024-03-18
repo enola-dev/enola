@@ -24,8 +24,8 @@ import dev.enola.thing.KIRI;
 import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.junit.Test;
 
-/** Test datatype IRIs. */
-public class DatatypesTest {
+/** Tests IRIs defined in {@link KIRI} by comparing them against their RDF4j equivalents. */
+public class WellKnownIRIsTest {
 
     @Test
     public void XSD() {
@@ -39,4 +39,7 @@ public class DatatypesTest {
         assertThat(KIRI.XSD.UINT64).isEqualTo(XSD.UNSIGNED_LONG.stringValue());
         assertThat(KIRI.XSD.TS).isEqualTo(XSD.DATETIME.stringValue());
     }
+
+    @Test
+    public void SchemaDotOrg() {}
 }
