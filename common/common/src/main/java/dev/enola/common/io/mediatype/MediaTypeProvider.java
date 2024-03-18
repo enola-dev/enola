@@ -32,13 +32,17 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
     /** Maps "canoncial" (primary) Media Types to a set of its "also known as alternatives". */
     Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
 
-    /** Maps URI path extensions to a "canoncial" Media Types */
+    /** Maps URI path extensions to a "canonical" Media Types */
     Map<String, MediaType> extensionsToTypes();
 
     /**
      * {@link ResourceMediaTypeDetector#detect(AbstractResource)} implementation using {@link
      * #extensionsToTypes()} and {@link #knownTypesWithAlternatives()}.
      */
+    // TODO Abandon this, again? Users which need #knownTypesWithAlternatives() should just use
+    // MediaTypes' normalize, typically via normalizedNoParamsEquals()? For users which need
+    // #extensionsToTypes()... well, that one is tricky - who's "right", the Resource mediaType,
+    // or the extension of the Resource's URI?!
     @Override
     default Optional<MediaType> detect(AbstractResource resource) {
         var e2mt = extensionsToTypes();
@@ -53,11 +57,14 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
         var normalized = MediaTypeProviders.SINGLETON.normalize(resourceMediaType);
         if (!normalized.equals(resourceMediaType)) return Optional.of(normalized);
 
-        // TODO This is (very) inefficient, and should be done the "other way around"... Instead of
-        // checking EACH map entry with uri.endsWith(), the URI extension should be looked up in the
-        // Map!
+        // NB: This looks inefficient, and you could be tempted do this "the other way around"
+        // (instead of checking EACH map entry with uri.endsWith(), the URI extension should be
+        // looked up in theMap). However, this is not possible because we want to support
+        // "extensions" with several dots, such as *.schema.yaml etc. which makes it difficult to
+        // "extract the extension" from a path.
         var uri = resource.uri().toString();
         for (var extensionEntry : e2mt.entrySet()) {
+            // System.out.println(uri + " ? " + extensionEntry.getKey());
             if (uri.endsWith(extensionEntry.getKey()))
                 return Optional.of(extensionEntry.getValue());
         }

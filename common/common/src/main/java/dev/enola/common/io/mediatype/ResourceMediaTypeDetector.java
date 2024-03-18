@@ -24,12 +24,17 @@ import dev.enola.common.io.resource.Resource;
 
 import java.util.Optional;
 
+/** Detects a (better) MediaType of a Resource. */
+// TODO Clarify & document for who this is - Resource API users, or implementors?!
+// See the related comments on MediaTypeProvider#detect() ...
 public interface ResourceMediaTypeDetector {
 
     /**
      * Detect the MediaType of a {@link Resource}. This is (currently) based on its (supposed)
      * existing {@link AbstractResource#mediaType()} and (if required) e.g. an file name extension
-     * from its {@link AbstractResource#uri()}. (It does not (yet) "sniff" the content.)
+     * from its {@link AbstractResource#uri()}. (It does not "sniff" the content, yet.)
      */
     Optional<MediaType> detect(AbstractResource resource);
+    // TODO Replace Optional<MediaType> with just MediaType
+    // and return .orElseGet(() -> resource.mediaType())
 }

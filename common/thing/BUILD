@@ -51,6 +51,7 @@ java_proto_library(
 java_library(
     name = "thing_java",
     srcs = glob(["src/main/java/**/*.java"]),
+    resources = glob(["src/main/resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
         ":thing_java_proto",
