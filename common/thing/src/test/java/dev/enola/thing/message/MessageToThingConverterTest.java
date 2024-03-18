@@ -31,7 +31,7 @@ import dev.enola.core.test.TestComplex;
 import dev.enola.core.test.TestEnum;
 import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
-import dev.enola.thing.XmlSchemaBuiltinDatatypes;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Thing.Builder;
 import dev.enola.thing.proto.Value;
@@ -65,14 +65,13 @@ public class MessageToThingConverterTest {
                             c.toValue("hello").build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2",
-                            c.toLiteral("4294967295", XmlSchemaBuiltinDatatypes.UINT32).build())
+                            c.toLiteral("4294967295", KIRI.XSD.UINT32).build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/3",
-                            c.toLiteral(Timestamps.toString(ts), XmlSchemaBuiltinDatatypes.TS)
-                                    .build())
+                            c.toLiteral(Timestamps.toString(ts), KIRI.XSD.TS).build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/4",
-                            c.toLiteral("AQID", XmlSchemaBuiltinDatatypes.BIN64).build())
+                            c.toLiteral("AQID", KIRI.XSD.BIN64).build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/5",
                             c.toLink(

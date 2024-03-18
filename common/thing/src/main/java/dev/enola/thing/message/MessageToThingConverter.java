@@ -27,7 +27,7 @@ import com.google.protobuf.util.Timestamps;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
-import dev.enola.thing.XmlSchemaBuiltinDatatypes;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
@@ -84,7 +84,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     private Value.Builder toThing(Object object, FieldDescriptor field, Message message) {
         return switch (object) {
                 // TODO case ID id -> ? ;
-            case Timestamp ts -> toLiteral(Timestamps.toString(ts), XmlSchemaBuiltinDatatypes.TS);
+            case Timestamp ts -> toLiteral(Timestamps.toString(ts), KIRI.XSD.TS);
             default -> toThingByFieldType(object, field, message);
         };
     }
@@ -93,37 +93,22 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
             Object object, FieldDescriptor field, Message message) {
         return switch (field.getType()) {
             case FieldDescriptor.Type.ENUM -> toEnumLink((EnumValueDescriptor) object);
-            case FieldDescriptor.Type.BOOL ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.BOOL);
-            case FieldDescriptor.Type.BYTES ->
-                    toLiteral(b64((ByteString) object), XmlSchemaBuiltinDatatypes.BIN64);
-            case FieldDescriptor.Type.DOUBLE ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.DOUBLE);
-            case FieldDescriptor.Type.FLOAT ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.FLOAT);
-            case FieldDescriptor.Type.INT64 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
-            case FieldDescriptor.Type.FIXED64 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
-            case FieldDescriptor.Type.SFIXED64 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
-            case FieldDescriptor.Type.SINT64 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
+            case FieldDescriptor.Type.BOOL -> toLiteral(object.toString(), KIRI.XSD.BOOL);
+            case FieldDescriptor.Type.BYTES -> toLiteral(b64((ByteString) object), KIRI.XSD.BIN64);
+            case FieldDescriptor.Type.DOUBLE -> toLiteral(object.toString(), KIRI.XSD.DOUBLE);
+            case FieldDescriptor.Type.FLOAT -> toLiteral(object.toString(), KIRI.XSD.FLOAT);
+            case FieldDescriptor.Type.INT64 -> toLiteral(object.toString(), KIRI.XSD.INT64);
+            case FieldDescriptor.Type.FIXED64 -> toLiteral(object.toString(), KIRI.XSD.INT64);
+            case FieldDescriptor.Type.SFIXED64 -> toLiteral(object.toString(), KIRI.XSD.INT64);
+            case FieldDescriptor.Type.SINT64 -> toLiteral(object.toString(), KIRI.XSD.INT64);
             case FieldDescriptor.Type.UINT64 ->
-                    toLiteral(
-                            Long.toUnsignedString((Long) object), XmlSchemaBuiltinDatatypes.UINT64);
-            case FieldDescriptor.Type.INT32 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
-            case FieldDescriptor.Type.FIXED32 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
-            case FieldDescriptor.Type.SFIXED32 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
-            case FieldDescriptor.Type.SINT32 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
+                    toLiteral(Long.toUnsignedString((Long) object), KIRI.XSD.UINT64);
+            case FieldDescriptor.Type.INT32 -> toLiteral(object.toString(), KIRI.XSD.INT32);
+            case FieldDescriptor.Type.FIXED32 -> toLiteral(object.toString(), KIRI.XSD.INT32);
+            case FieldDescriptor.Type.SFIXED32 -> toLiteral(object.toString(), KIRI.XSD.INT32);
+            case FieldDescriptor.Type.SINT32 -> toLiteral(object.toString(), KIRI.XSD.INT32);
             case FieldDescriptor.Type.UINT32 ->
-                    toLiteral(
-                            Integer.toUnsignedString((Integer) object),
-                            XmlSchemaBuiltinDatatypes.UINT32);
+                    toLiteral(Integer.toUnsignedString((Integer) object), KIRI.XSD.UINT32);
             case FieldDescriptor.Type.MESSAGE ->
                     Value.newBuilder().setStruct(from((Message) object, false));
             case FieldDescriptor.Type.GROUP ->
