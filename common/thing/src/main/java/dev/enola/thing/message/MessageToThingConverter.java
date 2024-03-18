@@ -20,14 +20,16 @@ package dev.enola.thing.message;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Message;
+import com.google.protobuf.Timestamp;
+import com.google.protobuf.util.Timestamps;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
+import dev.enola.thing.XmlSchemaBuiltinDatatypes;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
 public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
-    // TODO Converter<MessageOrBuilder, to avoid build(), when not required?
 
     // TODO Fully replace "old" dev.enola.core.view.Things with this new API
 
@@ -76,15 +78,37 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     private Value.Builder toThing(Object object, FieldDescriptor field, Message message) {
-        var type = field.getType();
-        if (FieldDescriptor.Type.MESSAGE.equals(type)) {
-            return Value.newBuilder().setStruct(from((Message) object, false));
-        } else if ("google.protobuf.FieldDescriptorProto.type_name".equals(field.getFullName())) {
-            // TODO This eventually shouldn't be hard-coded anymore, but declarative
-            return ProtoTypes.toThingValueLink(object.toString().substring(1));
-        } else {
-            return toValue(object.toString());
-        }
+        return switch (object) {
+                // TODO case ID id -> ? ;
+            case Timestamp ts -> toLiteral(Timestamps.toString(ts), XmlSchemaBuiltinDatatypes.TS);
+            default -> toThingByFieldType(object, field, message);
+        };
+    }
+
+    private Value.Builder toThingByFieldType(
+            Object object, FieldDescriptor field, Message message) {
+        return switch (field.getType()) {
+            case FieldDescriptor.Type.UINT32 ->
+                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.UINT32);
+            case FieldDescriptor.Type.MESSAGE ->
+                    Value.newBuilder().setStruct(from((Message) object, false));
+            default -> toThingByFieldName(object, field, message);
+        };
+    }
+
+    private Value.Builder toThingByFieldName(
+            Object object, FieldDescriptor field, Message message) {
+        return switch (field.getFullName()) {
+            case "google.protobuf.FieldDescriptorProto.type_name" ->
+                    // TODO This eventually shouldn't be hard-coded anymore, but declarative
+                    ProtoTypes.toThingValueLink(object.toString().substring(1));
+            default -> toValue(object.toString());
+        };
+    }
+
+    Value.Builder toLiteral(String value, String datatype) {
+        var literal = Value.Literal.newBuilder().setValue(value).setDatatype(datatype);
+        return Value.newBuilder().setLiteral(literal);
     }
 
     @VisibleForTesting
@@ -94,7 +118,6 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         } else {
             return Value.newBuilder().setString(string);
         }
-        // TODO Support Literal, with datatype, IFF Type says so!
     }
 
     static Value.Builder toLink(String iri, String label) {

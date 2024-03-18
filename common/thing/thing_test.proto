@@ -30,6 +30,7 @@ option go_package = "dev/enola/core/test";
 message TestSimple {
   string text = 1;
   uint32 number = 2;
+  google.protobuf.Timestamp ts = 3;
 }
 
 message TestRepeated {
