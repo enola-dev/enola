@@ -90,7 +90,6 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         return switch (field.getType()) {
                 // TODO BYTES -> BIN64
                 // TODO ENUM
-                // TODO GROUP ?
             case FieldDescriptor.Type.BOOL ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.BOOL);
             case FieldDescriptor.Type.DOUBLE ->
@@ -106,7 +105,8 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
             case FieldDescriptor.Type.SINT64 ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT64);
             case FieldDescriptor.Type.UINT64 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.UINT64);
+                    toLiteral(
+                            Long.toUnsignedString((Long) object), XmlSchemaBuiltinDatatypes.UINT64);
             case FieldDescriptor.Type.INT32 ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
             case FieldDescriptor.Type.FIXED32 ->
@@ -116,8 +116,12 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
             case FieldDescriptor.Type.SINT32 ->
                     toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.INT32);
             case FieldDescriptor.Type.UINT32 ->
-                    toLiteral(object.toString(), XmlSchemaBuiltinDatatypes.UINT32);
+                    toLiteral(
+                            Integer.toUnsignedString((Integer) object),
+                            XmlSchemaBuiltinDatatypes.UINT32);
             case FieldDescriptor.Type.MESSAGE ->
+                    Value.newBuilder().setStruct(from((Message) object, false));
+            case FieldDescriptor.Type.GROUP ->
                     Value.newBuilder().setStruct(from((Message) object, false));
             default -> toThingByFieldName(object, field, message);
         };

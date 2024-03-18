@@ -17,7 +17,9 @@
  */
 package dev.enola.thing.message;
 
+import com.google.common.primitives.UnsignedInteger;
 import com.google.common.truth.extensions.proto.ProtoTruth;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.Timestamp;
@@ -45,7 +47,14 @@ public class MessageToThingConverterTest {
 
     Timestamp ts = Timestamps2.fromInstant(Instant.now());
 
-    TestSimple.Builder simple = TestSimple.newBuilder().setText("hello").setNumber(123).setTs(ts);
+    ByteString bytes = ByteString.copyFrom(new byte[] {1, 2, 3});
+
+    TestSimple.Builder simple =
+            TestSimple.newBuilder()
+                    .setText("hello")
+                    .setNumber(UnsignedInteger.MAX_VALUE.intValue())
+                    .setTs(ts);
+    // .setBytes(bytes);
     Thing.Builder simpleThing =
             Thing.newBuilder()
                     .putFields(
@@ -53,7 +62,7 @@ public class MessageToThingConverterTest {
                             c.toValue("hello").build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2",
-                            c.toLiteral("123", XmlSchemaBuiltinDatatypes.UINT32).build())
+                            c.toLiteral("4294967295", XmlSchemaBuiltinDatatypes.UINT32).build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/3",
                             c.toLiteral(Timestamps.toString(ts), XmlSchemaBuiltinDatatypes.TS)
