@@ -73,6 +73,7 @@ message Value {
 
     // https://protobuf.dev/programming-guides/proto3/#scalar
     // TODO Reconsider if this is really needed?! By who, for what?
+    // Note that MessageToThingConverter does already set the dataType.
     // bytes bytes = 4;
     // int32 int32 = 5;
     // int64 int64 = 6;

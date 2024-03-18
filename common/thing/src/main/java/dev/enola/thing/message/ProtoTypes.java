@@ -20,6 +20,7 @@ package dev.enola.thing.message;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.MessageOrBuilder;
 
@@ -39,6 +40,8 @@ public class ProtoTypes {
     private static final String MESSAGE_DESCRIPTOR_ERI = "enola:/enola.dev/proto/message/";
 
     private static final String FIELD_DESCRIPTOR_ERI = "enola:/enola.dev/proto/field/";
+
+    private static final String FIELD_ENUM_ERI = "enola:/enola.dev/proto/enum/";
 
     static Thing.Builder addProtoField(Thing.Builder thing, MessageOrBuilder message) {
         // NB: We're setting the field that describes what Proto (Descriptor)
@@ -69,6 +72,13 @@ public class ProtoTypes {
                 + requireNonNullOrEmpty(fieldDescriptor.getContainingType().getFullName())
                 + "/"
                 + fieldDescriptor.getNumber();
+    }
+
+    static String getEnumERI(EnumValueDescriptor enumValue) {
+        return FIELD_ENUM_ERI
+                + requireNonNullOrEmpty(enumValue.getType().getFullName())
+                + "/"
+                + enumValue.getIndex();
     }
 
     static String requireNonNullOrEmpty(String test) {

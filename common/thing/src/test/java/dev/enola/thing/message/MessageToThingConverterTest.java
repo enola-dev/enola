@@ -28,6 +28,7 @@ import com.google.protobuf.util.Timestamps;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.test.TestComplex;
+import dev.enola.core.test.TestEnum;
 import dev.enola.core.test.TestRepeated;
 import dev.enola.core.test.TestSimple;
 import dev.enola.thing.XmlSchemaBuiltinDatatypes;
@@ -54,7 +55,9 @@ public class MessageToThingConverterTest {
                     .setText("hello")
                     .setNumber(UnsignedInteger.MAX_VALUE.intValue())
                     .setTs(ts)
-                    .setBytes(bytes);
+                    .setBytes(bytes)
+                    .setAnenum(TestEnum.TEST_ENUM_B);
+
     Thing.Builder simpleThing =
             Thing.newBuilder()
                     .putFields(
@@ -69,7 +72,14 @@ public class MessageToThingConverterTest {
                                     .build())
                     .putFields(
                             "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/4",
-                            c.toLiteral("AQID", XmlSchemaBuiltinDatatypes.BIN64).build());
+                            c.toLiteral("AQID", XmlSchemaBuiltinDatatypes.BIN64).build())
+                    .putFields(
+                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/5",
+                            c.toLink(
+                                            ProtoTypes.getEnumERI(
+                                                    TestEnum.TEST_ENUM_B.getValueDescriptor()),
+                                            "TEST_ENUM_B")
+                                    .build());
 
     Thing.Builder simpleThingWithProto = headers(Thing.newBuilder(simpleThing.build()), simple);
 
