@@ -32,6 +32,7 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
+import dev.enola.rdf.RdfResourceConverter;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
@@ -74,7 +75,7 @@ public class Rosetta implements ResourceConverter {
             new ResourceConverterChain(
                     ImmutableList.of(
                             new ResourceIntoThingResourceConverter(),
-                            // TODO new RdfResourceConverter(),
+                            new RdfResourceConverter(),
                             messageResourceConverter,
                             new YamlJsonResourceConverter(),
                             new CharResourceConverter()));
