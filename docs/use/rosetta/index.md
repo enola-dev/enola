@@ -65,6 +65,13 @@ $ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/libr
 
 The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
 
+## Turtle 🐢 to JSON-LD 🔗
+
+```bash cd .././.././..
+$ ./enola rosetta --in file:common/rdf/src/test/resources/picasso.ttl --out file:picasso.jsonld
+...
+```
+
 ## Turtle 🐢 to Things ⛓️
 
 ```bash cd .././.././..

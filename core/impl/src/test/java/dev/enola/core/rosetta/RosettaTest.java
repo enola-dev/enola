@@ -28,6 +28,7 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UT
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.rdf.RdfMediaTypes;
 import dev.enola.thing.ThingMediaTypes;
 
 import org.junit.Test;
@@ -124,8 +125,16 @@ public class RosettaTest {
     @Test
     public void testTurtleToThings() throws Exception {
         var in = new ClasspathResource("picasso.ttl");
-        // var out = new MemoryResource(YAML_UTF_8);
         var out = new MemoryResource(ThingMediaTypes.THING_YAML_UTF_8);
+        new Rosetta().convertInto(in, out);
+
+        assertThat(out.byteSource().size()).isGreaterThan(800);
+    }
+
+    @Test
+    public void testTurtleToJsonLd() throws Exception {
+        var in = new ClasspathResource("picasso.ttl");
+        var out = new MemoryResource(RdfMediaTypes.JSON_LD);
         new Rosetta().convertInto(in, out);
 
         assertThat(out.byteSource().size()).isGreaterThan(800);

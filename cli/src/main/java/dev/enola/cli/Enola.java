@@ -101,7 +101,7 @@ public class Enola {
                 cmd.getErr().print(cmd.getColorScheme().optionText(intro));
                 Throwable e = ex;
                 while (e != null) {
-                    var msg = e.getClass().getSimpleName() + ": " + e.getMessage();
+                    var msg = /*e.getClass().getSimpleName() + ": " + */ e.getMessage();
                     cmd.getErr().println(cmd.getColorScheme().errorText(msg));
                     e = e.getCause();
                     if (e != null) {
