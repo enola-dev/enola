@@ -65,6 +65,10 @@ public class ThingMetadataProvider implements MetadataProvider {
     public String getLabel(String iri) {
         var name = getString(iri, KIRI.SCHEMA.NAME);
         if (name != null) return name;
+
+        var label = getString(iri, KIRI.RDFS.LABEL);
+        if (label != null) return label;
+
         try {
             return URIs.getFilename(IRIs.toURI(iri));
         } catch (URISyntaxException e) {

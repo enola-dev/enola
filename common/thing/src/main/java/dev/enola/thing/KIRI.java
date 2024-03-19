@@ -113,8 +113,8 @@ public final class KIRI {
         /** https://www.w3.org/TR/rdf-schema/#ch_class */
         public static final String CLASS = NS + "Class";
 
-        // Intentionally no LABEL here, just use SORG.NAME! (It's a subproperty of rdfs:label.)
-        // https://www.w3.org/TR/rdf-schema/#ch_label
+        /** https://www.w3.org/TR/rdf-schema/#ch_label */
+        public static final String LABEL = NS + "label";
 
         // Intentionally no COMMENT here, just use SORG.DESC!
         // https://www.w3.org/TR/rdf-schema/#ch_comment

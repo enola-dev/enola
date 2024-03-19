@@ -50,5 +50,6 @@ public class WellKnownIRIsTest {
     @Test
     public void RDFS() {
         assertThat(KIRI.RDFS.CLASS).isEqualTo(RDFS.CLASS.stringValue());
+        assertThat(KIRI.RDFS.LABEL).isEqualTo(RDFS.LABEL.stringValue());
     }
 }
