@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
 import dev.enola.thing.proto.Value.Link;
@@ -41,12 +42,18 @@ public class NewThingUI {
 
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
-    public static CharSequence html(ThingOrBuilder thing) {
+    private final MetadataProvider metadataProvider;
+
+    public NewThingUI(MetadataProvider metadataProvider) {
+        this.metadataProvider = metadataProvider;
+    }
+
+    public CharSequence html(ThingOrBuilder thing) {
         // TODO Print thing.getIri()
         return table(thing.getFieldsMap(), "thing");
     }
 
-    private static CharSequence value(Value value, String tableCssClass) {
+    private CharSequence value(Value value, String tableCssClass) {
         return switch (value.getKindCase()) {
             case STRING -> s(value.getString());
             case LINK -> link(value.getLink());
@@ -59,12 +66,12 @@ public class NewThingUI {
         };
     }
 
-    private static CharSequence literal(Literal literal) {
+    private CharSequence literal(Literal literal) {
         // TODO Use a dev.enola.common.convert.Converter based on the literal.getDatatype()
         return "<span title=" + literal.getDatatype() + ">" + s(literal.getValue()) + "</span>";
     }
 
-    private static CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
+    private CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
         var sb = new StringBuilder("<table");
         if (!cssClass.isEmpty()) {
             sb.append(" class=\"" + s(cssClass) + "\"");
@@ -72,7 +79,7 @@ public class NewThingUI {
         sb.append("><tbody>\n");
         for (var nameValue : fieldsMap.entrySet()) {
             sb.append("<tr>\n");
-            sb.append(STR."<td class=\"label\">\{s(nameValue.getKey())}</td>");
+            sb.append(STR."<td class=\"label\">\{s(link(nameValue.getKey()))}</td>");
             sb.append(STR."<td>\{value(nameValue.getValue(), "")}</td>");
             sb.append("</tr>\n");
         }
@@ -80,7 +87,12 @@ public class NewThingUI {
         return sb;
     }
 
-    private static CharSequence list(List list) {
+    private String link(String iri) {
+        // TODO return metadataProvider.getLabel(iri);
+        return iri;
+    }
+
+    private CharSequence list(List list) {
         var sb = new StringBuilder();
         sb.append("<ol>\n");
         for (var value : list.getValuesList()) {
@@ -92,7 +104,7 @@ public class NewThingUI {
         return sb;
     }
 
-    private static CharSequence link(Link link) {
+    private CharSequence link(Link link) {
         var sb = new StringBuilder();
         var iri = link.getIri();
         if (!Strings.isNullOrEmpty(iri)) {

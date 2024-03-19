@@ -39,6 +39,7 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.core.view.Things;
+import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.ThingProvider;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
@@ -58,6 +59,7 @@ public class UI implements WebHandler {
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
     private final ThingProvider thingProvider;
+    private final NewThingUI thingUI;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -68,6 +70,7 @@ public class UI implements WebHandler {
         var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
         thingProvider = new EnolaThingProvider(service);
+        thingUI = new NewThingUI(new ThingMetadataProvider(thingProvider));
     }
 
     public void register(WebServer server) {
@@ -110,7 +113,7 @@ public class UI implements WebHandler {
         String thingHTML;
         if (usingNewAPI) {
             var thing = thingProvider.getThing(iri);
-            thingHTML = NewThingUI.html(thing).toString();
+            thingHTML = thingUI.html(thing).toString();
         } else {
             var thing = Things.from(message);
             thingHTML = ThingUI.html(thing).toString();
