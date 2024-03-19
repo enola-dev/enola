@@ -28,11 +28,9 @@ import dev.enola.core.proto.ID;
 import dev.enola.core.proto.Thing;
 import dev.enola.core.proto.Thing.Builder;
 
+@Deprecated // TODO Delete this soon, as MessageToThingConverter has replaced it
 @SuppressWarnings("restriction")
 public class Things {
-
-    // TODO Replace uses of this "old" with new dev.enola.thing.MessageToThingConverter API
-    // TODO Delete this
 
     public static Thing.Builder from(Message message) {
         return from(message, true);
