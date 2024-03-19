@@ -47,6 +47,9 @@ message Thing {
   // things of the same type. Crucially though, it could also be an IRI of a
   // property that is common among attributes of *different* types! Classic
   // examples are e.g. https://schema.org/name (rdfs:label 🏷️) or rdf:type.
+  //
+  // TODO Rename this from fields to properties, because fields is quite
+  // confusing at least in the Java proto API, where it has another meaning too.
   map<string, Value> fields = 2;
 }
 
