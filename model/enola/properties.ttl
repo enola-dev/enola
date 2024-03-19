@@ -1,0 +1,36 @@
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+
+enola:emoji a rdf:Property;
+  schema:name "Emoji";
+  schema:description "Emoji 😃 of a Thing, from Unicode or <a href='https://www.nerdfonts.com'>Nerdfonts</a>.";
+  enola:emoji "😃".
+
+# How can we somehow just read the following (except for the enola:emoji) directly from https://schema.org ?!
+
+schema:identifier a rdf:Property;
+  schema:name "ID";
+  enola:emoji "🆔";
+  # TODO How do we express the "constraint" that this has to be an IRI?
+  schema:description "IRI which identifies 🆔 a Thing. This is a 'logical' identity, and may or may not be an URL.".
+
+schema:name a rdf:Property;
+  schema:name "Name";
+  enola:emoji "🏷️";
+  schema:description "Name of a Thing; AKA its 🏷️ label.".
+
+schema:description a rdf:Property;
+  schema:name "Description";
+  enola:emoji "📜";
+  schema:description "Text with description 📜 of a Thing.".
+
+schema:image a rdf:Property;
+  enola:emoji "🖼️".
+
+schema:url a rdf:Property;
+  enola:emoji "🔗".
+
+schema:sameAs a rdf:Property;
+  enola:emoji "🪞".
