@@ -39,8 +39,7 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.core.view.Things;
-import dev.enola.thing.message.MessageToThingConverter;
-import dev.enola.thing.message.MessageWithIRI;
+import dev.enola.thing.ThingProvider;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
@@ -55,11 +54,10 @@ public class UI implements WebHandler {
     private static final ReadableResource HTML_FRAME =
             new ClasspathResource("templates/index.html");
 
-    private final MessageToThingConverter m2t = new MessageToThingConverter();
-
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
+    private final ThingProvider thingProvider;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -69,6 +67,7 @@ public class UI implements WebHandler {
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
         var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
+        thingProvider = new EnolaThingProvider(service);
     }
 
     public void register(WebServer server) {
@@ -93,36 +92,37 @@ public class UI implements WebHandler {
             var eri = path.substring("/ui/".length());
             return getEntityHTML(eri, false);
         } else if (path.startsWith("/ui3/")) {
-            var eri = path.substring("/ui3/".length());
-            return getEntityHTML(eri, true);
+            var iri = path.substring("/ui3/".length());
+            return getEntityHTML(iri, true);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
             return new ClasspathResource("static/404.html").charSource().read();
         }
     }
 
-    private String getEntityHTML(String eri, boolean usingNewAPI)
+    private String getEntityHTML(String iri, boolean usingNewAPI)
             throws EnolaException, IOException, ConversionException {
-        var request = GetThingRequest.newBuilder().setIri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);
 
         String thingHTML;
         if (usingNewAPI) {
-            var thing = m2t.convert(new MessageWithIRI(eri, message));
+            var thing = thingProvider.getThing(iri);
             thingHTML = NewThingUI.html(thing).toString();
         } else {
             var thing = Things.from(message);
             thingHTML = ThingUI.html(thing).toString();
         }
 
+        // TODO Replace this with a *.yaml (et al.) link in the UI!
         var yamlResource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
         getProtoIO().write(message, yamlResource);
         var thingYAML = yamlResource.charSource().read();
 
         return new ReplacingResource(
-                        HTML_FRAME, "%%ERI%%", eri, "%%THING%%", thingHTML, "%%YAML%%", thingYAML)
+                        HTML_FRAME, "%%ERI%%", iri, "%%THING%%", thingHTML, "%%YAML%%", thingYAML)
                 .charSource()
                 .read();
     }
