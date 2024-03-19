@@ -37,14 +37,14 @@ public final class KIRI {
         /**
          * Emoji 😃 of a Thing, from Unicode or <a href="https://www.nerdfonts.com">Nerdfonts</a>.
          *
-         * <p>Often used as an alternative to {@link KIRI.SORG#IMG}, and (either) is often shown as
-         * prefix to the label in UIs. This
+         * <p>Often used as an alternative to {@link KIRI.SCHEMA#IMG}, and (either) is often shown
+         * as prefix to the label in UIs. This
          */
         public static final String EMOJI = NS + "emoji";
     }
 
     /** Schema.org Properties. */
-    public static final class SORG {
+    public static final class SCHEMA {
         private static final String NS = "https://schema.org/";
 
         /**
@@ -87,7 +87,7 @@ public final class KIRI {
          */
         public static final String SAMEAS = NS + "sameAs";
 
-        private SORG() {}
+        private SCHEMA() {}
     }
 
     public static final class RDF {

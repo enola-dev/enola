@@ -45,8 +45,8 @@ public class ThingMetadataProviderTest {
                 @Override
                 public Thing getThing(String iri) throws IOException {
                     var builder = Thing.newBuilder();
-                    ThingExt.setString(builder, KIRI.SORG.ID, THING_IRI);
-                    ThingExt.setString(builder, KIRI.SORG.NAME, THING_LABEL);
+                    ThingExt.setString(builder, KIRI.SCHEMA.ID, THING_IRI);
+                    ThingExt.setString(builder, KIRI.SCHEMA.NAME, THING_LABEL);
                     return builder.build();
                 }
             };
