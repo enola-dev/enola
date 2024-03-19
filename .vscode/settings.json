@@ -75,18 +75,7 @@
   // TODO https://github.com/eclipse-jdtls/eclipse.jdt.ls/issues/3050
   "java.compile.nullAnalysis.mode": "automatic",
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
-  "java.completion.favoriteStaticMembers": [
-    "com.google.common.truth.Truth.*",
-    "org.junit.Assert.*",
-    "org.junit.Assume.*",
-    "org.junit.jupiter.api.Assertions.*",
-    "org.junit.jupiter.api.Assumptions.*",
-    "org.junit.jupiter.api.DynamicContainer.*",
-    "org.junit.jupiter.api.DynamicTest.*",
-    "org.mockito.Mockito.*",
-    "org.mockito.ArgumentMatchers.*",
-    "org.mockito.Answers.*"
-  ],
+  "java.completion.favoriteStaticMembers": ["com.google.common.truth.Truth.*"],
   "java.configuration.updateBuildConfiguration": "automatic",
   // JDT sometimes hits OOM with this project without increased memory
   // -Djava.bazel.staticProcessStreamSocket=22222 for https://github.com/salesforce/bazel-vscode-java/pull/98/commits/956213d1510e8001a672d4fa3dc103229adde814

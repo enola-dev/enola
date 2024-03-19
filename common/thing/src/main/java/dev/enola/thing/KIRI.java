@@ -37,7 +37,7 @@ public final class KIRI {
         /**
          * Emoji 😃 of a Thing, from Unicode or <a href="https://www.nerdfonts.com">Nerdfonts</a>.
          *
-         * <p>Often used as an alternative to {@link KIRI.SORG.IMG}, and (either) is often shown as
+         * <p>Often used as an alternative to {@link KIRI.SORG#IMG}, and (either) is often shown as
          * prefix to the label in UIs. This
          */
         public static final String EMOJI = NS + "emoji";
@@ -69,7 +69,7 @@ public final class KIRI {
          * URL of an 🖼️ image of the Thing, see https://schema.org/image.
          *
          * <p>Perhaps e.g. a logo or favicon or something like that. Alternatively use {@link
-         * KIRI.E.EMOJI}.
+         * KIRI.E#EMOJI}.
          */
         public static final String IMG = NS + "image";
 
