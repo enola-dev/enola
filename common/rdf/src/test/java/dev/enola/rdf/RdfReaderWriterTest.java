@@ -38,6 +38,9 @@ public class RdfReaderWriterTest {
     private static final ClasspathResource PICASSO_TURTLE_RESOURCE =
             new ClasspathResource("picasso.ttl");
 
+    private static final ClasspathResource PICASSO_TURTLE_WRITTEN_RESOURCE =
+            new ClasspathResource("picasso.written.ttl");
+
     private static final ClasspathResource PICASSO_JSONLD_RESOURCE =
             new ClasspathResource("picasso.jsonld");
 
@@ -53,7 +56,7 @@ public class RdfReaderWriterTest {
         Resource actual = new MemoryResource(RdfMediaTypes.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
-        var expected = PICASSO_TURTLE_RESOURCE;
+        var expected = PICASSO_TURTLE_WRITTEN_RESOURCE;
         assertThat(actual).containsCharsOf(expected);
     }
 
