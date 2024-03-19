@@ -56,7 +56,7 @@ public class ThingMetadataProviderTest {
 
                 @Override
                 public Thing getThing(String iri) throws IOException {
-                    throw new IOException();
+                    throw new IllegalStateException();
                 }
             };
 
@@ -73,5 +73,13 @@ public class ThingMetadataProviderTest {
         assertThat(new ThingMetadataProvider(empty).getLabel(THING_IRI)).isEqualTo("test");
 
         assertThat(new ThingMetadataProvider(test).getLabel(THING_IRI)).isEqualTo(THING_LABEL);
+    }
+
+    @Test
+    public void error() {
+        assertThat(new ThingMetadataProvider(error).getID(THING_IRI)).isNotEmpty();
+        assertThat(new ThingMetadataProvider(error).getLabel(THING_IRI)).isNotEmpty();
+        assertThat(new ThingMetadataProvider(error).getDescriptionHTML(THING_IRI)).isEmpty();
+        assertThat(new ThingMetadataProvider(error).getImageHTML(THING_IRI)).isEmpty();
     }
 }

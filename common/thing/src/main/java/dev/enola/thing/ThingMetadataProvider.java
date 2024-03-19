@@ -25,7 +25,6 @@ import dev.enola.thing.proto.Things;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -79,7 +78,9 @@ public class ThingMetadataProvider implements MetadataProvider {
     /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
     @Override
     public String getDescriptionHTML(String iri) {
-        return getString(iri, KIRI.SCHEMA.DESC);
+        var description = getString(iri, KIRI.SCHEMA.DESC);
+        if (description != null) return description;
+        return "";
     }
 
     /**
@@ -111,7 +112,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     private String getString(String thingIRI, String propertyIRI) {
         try {
             return ThingExt.getString(tp.getThing(thingIRI), propertyIRI);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.warn("Could not get {} from {}", propertyIRI, thingIRI);
             return null;
         }
