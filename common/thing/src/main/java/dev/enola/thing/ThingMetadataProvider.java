@@ -47,23 +47,23 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     /**
-     * Returns the Thing's {@link KIRI.SORG#ID}, if any; otherwise just returns the IRI argument.
+     * Returns the Thing's {@link KIRI.SCHEMA#ID}, if any; otherwise just returns the IRI argument.
      */
     @Override
     public String getID(String iri) {
-        var id = getString(iri, KIRI.SORG.ID);
+        var id = getString(iri, KIRI.SCHEMA.ID);
         if (id != null) return id;
         return iri;
     }
 
     /**
-     * Returns the Thing's {@link KIRI.SORG#NAME}, if any; otherwise attempts to extract a "file
+     * Returns the Thing's {@link KIRI.SCHEMA#NAME}, if any; otherwise attempts to extract a "file
      * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
      * as-is.
      */
     @Override
     public String getLabel(String iri) {
-        var name = getString(iri, KIRI.SORG.NAME);
+        var name = getString(iri, KIRI.SCHEMA.NAME);
         if (name != null) return name;
         try {
             return URIs.getFilename(IRIs.toURI(iri));
@@ -72,15 +72,15 @@ public class ThingMetadataProvider implements MetadataProvider {
         }
     }
 
-    /** Returns the Thing's {@link KIRI.SORG#DESC}, if any. */
+    /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
     @Override
     public String getDescriptionHTML(String iri) {
-        return getString(iri, KIRI.SORG.DESC);
+        return getString(iri, KIRI.SCHEMA.DESC);
     }
 
     /**
      * Returns the Thing's {@link KIRI.E#EMOJI}, if any; otherwise a HTML IMG tag using the URL from
-     * {@link KIRI.SORG#IMG}, if any; and if neither tries the same on the Thing's {@link
+     * {@link KIRI.SCHEMA#IMG}, if any; and if neither tries the same on the Thing's {@link
      * KIRI.RDFS#CLASS}; if that also is not present, then gives up and just an empty String.
      */
     @Override
@@ -98,7 +98,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     private String getImageHTML_(String iri) {
         var emoji = getString(iri, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
-        var imageURL = getString(iri, KIRI.SORG.IMG);
+        var imageURL = getString(iri, KIRI.SCHEMA.IMG);
         // TODO ImageMetadataProvider which can determine (and cache!) width & height
         if (imageURL != null) return "<img src=" + imageURL + "/>";
         return null;
