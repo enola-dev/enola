@@ -25,7 +25,6 @@ import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
@@ -40,7 +39,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     // TODO com.google.protobuf.Struct support!
 
     @Override
-    public Thing.Builder convert(MessageWithIRI messageWithIRI) throws ConversionException {
+    public Thing.Builder convert(MessageWithIRI messageWithIRI) {
         var thing = from(messageWithIRI.message(), true);
         thing.setIri(messageWithIRI.iri());
         return thing;

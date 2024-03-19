@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
 
 /** Extension methods for {@link Thing}. */
@@ -29,7 +30,7 @@ public final class ThingExt {
         thing.putFields(propertyIRI, value);
     }
 
-    public static String getString(Thing thing, String propertyIRI) {
+    public static String getString(ThingOrBuilder thing, String propertyIRI) {
         var value = thing.getFieldsMap().get(propertyIRI);
         if (value == null) return null;
         return value.getString();
