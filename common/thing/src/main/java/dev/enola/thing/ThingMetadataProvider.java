@@ -33,7 +33,7 @@ import java.net.URISyntaxException;
  * ThingProvider}.
  *
  * <p>Logs logs but does not propagate exceptions from the <tt>ThingProvider</tt>, because we do not
- * want to fail operations "just" because Metadata could not be obtained; the methods have
+ * want to fail operations "just" because Metadata could not be obtained; all the methods have
  * fallbacks.
  */
 public class ThingMetadataProvider implements MetadataProvider {
@@ -57,17 +57,17 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     /**
-     * Returns the Thing's {@link KIRI.SCHEMA#NAME}, if any; otherwise attempts to extract a "file
-     * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
-     * as-is.
+     * Returns the Thing's {@link KIRI.RDFS.LABEL} or {@link KIRI.SCHEMA#NAME}, if any; otherwise
+     * attempts to extract a "file name" (last part of the path) from the IRI, and if that fails
+     * just returns the IRI argument as-is.
      */
     @Override
     public String getLabel(String iri) {
-        var name = getString(iri, KIRI.SCHEMA.NAME);
-        if (name != null) return name;
-
         var label = getString(iri, KIRI.RDFS.LABEL);
         if (label != null) return label;
+
+        var name = getString(iri, KIRI.SCHEMA.NAME);
+        if (name != null) return name;
 
         try {
             return URIs.getFilename(IRIs.toURI(iri));

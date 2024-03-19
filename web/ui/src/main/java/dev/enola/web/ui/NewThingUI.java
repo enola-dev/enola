@@ -33,27 +33,20 @@ import java.util.Map;
 
 public class NewThingUI {
 
-    // We intentionally don't use any template engine here; see e.g.
-    // https://blog.machinezoo.com/template-engines-broken for why.
+    // See https://github.com/google/google-java-format/issues/1033 re. using moar STR formatting ;(
 
-    // See https://github.com/google/google-java-format/issues/1033 re. STR formatting :()
+    // We intentionally don't use any (other) template engine here; see e.g.
+    // https://blog.machinezoo.com/template-engines-broken for why.
+    // TODO Or rewrite using e.g. Mustache? Client Side? ;)
 
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
-    // TODO Rewrite using a Template Engine, e.g. Mustache
-
-    // TODO Implement Escaper as StringTemplate.Processor?
-    // (See e.g. https://javaalmanac.io/features/stringtemplates/)
-
-    // TODO rename html() to thing()
     public static CharSequence html(ThingOrBuilder thing) {
         // TODO Print thing.getIri()
         return table(thing.getFieldsMap(), "thing");
     }
 
-    // TODO private?
-    // TODO rename html() to value()
-    public static CharSequence html(Value value, String tableCssClass) {
+    private static CharSequence value(Value value, String tableCssClass) {
         return switch (value.getKindCase()) {
             case STRING -> s(value.getString());
             case LINK -> link(value.getLink());
@@ -72,7 +65,6 @@ public class NewThingUI {
     }
 
     private static CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
-        // <a href=\"/TODO\">\{s(thingView.getTypeUri())}</a>
         var sb = new StringBuilder("<table");
         if (!cssClass.isEmpty()) {
             sb.append(" class=\"" + s(cssClass) + "\"");
@@ -81,7 +73,7 @@ public class NewThingUI {
         for (var nameValue : fieldsMap.entrySet()) {
             sb.append("<tr>\n");
             sb.append(STR."<td class=\"label\">\{s(nameValue.getKey())}</td>");
-            sb.append(STR."<td>\{html(nameValue.getValue(), "")}</td>");
+            sb.append(STR."<td>\{value(nameValue.getValue(), "")}</td>");
             sb.append("</tr>\n");
         }
         sb.append("</tbody></table>\n");
@@ -93,7 +85,7 @@ public class NewThingUI {
         sb.append("<ol>\n");
         for (var value : list.getValuesList()) {
             sb.append("<li>");
-            sb.append(html(value, ""));
+            sb.append(value(value, ""));
             sb.append("</li>\n");
         }
         sb.append("</ol>\n");
@@ -123,6 +115,8 @@ public class NewThingUI {
     private static final Escaper htmlEscaper = HtmlEscapers.htmlEscaper();
 
     /** Santize raw text to be safe HTML. */
+    // TODO Implement Escaper as StringTemplate.Processor?
+    // (See e.g. https://javaalmanac.io/features/stringtemplates/)
     private static String s(String raw) {
         return htmlEscaper.escape(raw);
     }

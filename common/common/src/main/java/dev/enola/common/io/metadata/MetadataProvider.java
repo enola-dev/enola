@@ -23,9 +23,9 @@ public interface MetadataProvider {
 
     /**
      * Logical IRI of the resource at the physical IRI argument. This could be the same, or not;
-     * e.g. a http: URL argument may encounter a HTTP redirect, and then this would return URL, or
-     * for a file: URL argument it may return what was read from e.g. an "$id" attribute of a
-     * JSON-LD in that file, or something like that.
+     * e.g. a http: URL argument may encounter a HTTP redirect, and then this would return the new
+     * final URL, or for a file: URL argument it may return what was read from e.g. an "$id"
+     * attribute of a JSON-LD in that file, or something like that.
      */
     String getID(String iri);
 

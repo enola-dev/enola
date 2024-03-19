@@ -29,19 +29,8 @@ import dev.enola.core.proto.ThingOrBuilder;
 
 import java.util.Map;
 
+@Deprecated // TODO To be removed as soon as it's fully replaced with NewThingUI
 public class ThingUI {
-
-    // We intentionally don't use any template engine here; see e.g.
-    // https://blog.machinezoo.com/template-engines-broken for why.
-
-    // See https://github.com/google/google-java-format/issues/1033 re. STR formatting :()
-
-    // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
-
-    // TODO Rewrite using a Template Engine, e.g. Mustache
-
-    // TODO Implement Escaper as StringTemplate.Processor?
-    // (See e.g. https://javaalmanac.io/features/stringtemplates/)
 
     public static CharSequence html(ThingOrBuilder value) {
         return html(value, "thing");
@@ -57,7 +46,6 @@ public class ThingUI {
     }
 
     private static CharSequence table(Thing.StructOrBuilder thingView, String cssClass) {
-        // <a href=\"/TODO\">\{s(thingView.getTypeUri())}</a>
         var sb = new StringBuilder("<table");
         if (!cssClass.isEmpty()) {
             sb.append(" class=\"" + s(cssClass) + "\"");

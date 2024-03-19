@@ -53,7 +53,7 @@ message Thing {
   // for things "contained" in other things (RDF calls this "blank nodes"). It's
   // not even mandatory required for the "top outer most" one either.
   // (TODO Why do we even need this?! Why not just use an
-  // https://schema.org/identifier attribute?)
+  // https://schema.org/identifier field/attribute?)
   string iri = 1;
 
   // Key string is an IRI (of a "property"). Nota Bene: This is never a “name”
@@ -121,6 +121,7 @@ message Value {
     // This is something to show humans, it's the "text to click on for this
     // link", e.g. from the "title" of the resource that the IRI points to.
     // This concept doesn't exist as such in RDF, but it's important to us.
+    //
     // (TODO Reconsider if since we now have the MetadataProvider we still want
     // to keep this, or abandon this field and replace it with metadata fetching
     // in the UI; just like we do for the IRI key of the property?)
