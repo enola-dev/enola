@@ -26,11 +26,18 @@ import dev.enola.thing.proto.Value.Literal;
  */
 public final class KIRI {
 
+    // The JavaDoc of this class must currently be manually kept in sync with
+    // the same content that's also in the //model/enola/properties.ttl file.
+    // (We could theoretically build something like https://github.com/ansell/rdf4j-schema-generator
+    // into Enola to automate that; but it's probably not really worth it.)
+
     // TODO Make all of these actually resolvable in Enola! (Just for documentation look-up.)
+    // by (built-in?!) loading //model/enola/properties.ttl from classpath at start-up
 
     // TODO LDP? https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/model/vocabulary/LDP.html
 
     /** Enola.dev's very own! */
+    // NB: Should the constant values ever change, update //model/enola/properties.ttl accordingly!
     public static final class E {
         private static final String NS = "https://enola.dev/";
 
@@ -38,7 +45,7 @@ public final class KIRI {
          * Emoji 😃 of a Thing, from Unicode or <a href="https://www.nerdfonts.com">Nerdfonts</a>.
          *
          * <p>Often used as an alternative to {@link KIRI.SCHEMA#IMG}, and (either) is often shown
-         * as prefix to the label in UIs. This
+         * as prefix to the label in UIs.
          */
         public static final String EMOJI = NS + "emoji";
     }
@@ -51,6 +58,7 @@ public final class KIRI {
          * IRI which identifies 🆔 a Thing, see https://schema.org/identifier. This is a "logical"
          * identity, and may or may not be an URL.
          */
+        // TODO This is technically not always an IRI... so make it E.ID, instead!
         public static final String ID = NS + "identifier";
 
         /**
