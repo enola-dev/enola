@@ -79,7 +79,7 @@ public class NewThingUI {
         sb.append("><tbody>\n");
         for (var nameValue : fieldsMap.entrySet()) {
             sb.append("<tr>\n");
-            sb.append(STR."<td class=\"label\">\{s(link(nameValue.getKey()))}</td>");
+            sb.append(STR."<td class=\"label\">\{link(nameValue.getKey())}</td>");
             sb.append(STR."<td>\{value(nameValue.getValue(), "")}</td>");
             sb.append("</tr>\n");
         }
@@ -87,9 +87,22 @@ public class NewThingUI {
         return sb;
     }
 
-    private String link(String iri) {
-        // TODO return metadataProvider.getLabel(iri);
-        return iri;
+    private CharSequence link(String iri) {
+        var sb = new StringBuilder();
+        sb.append(metadataProvider.getImageHTML(iri));
+        sb.append(' ');
+        // TODO s(uri) or not - or another escaping?
+        sb.append("<a href=" + s(iri));
+        var description = metadataProvider.getDescriptionHTML(iri);
+        if (!description.isEmpty()) {
+            sb.append(" title=\"");
+            sb.append(s(description));
+            sb.append('"');
+        }
+        sb.append('>');
+        sb.append(s(metadataProvider.getLabel(iri)));
+        sb.append("</a>");
+        return sb;
     }
 
     private CharSequence list(List list) {
@@ -117,7 +130,10 @@ public class NewThingUI {
             // TODO s(uri) or not - or another escaping?
             sb.append("<a href=" + s(url) + ">");
         }
-        sb.append(s(link.getLabel()));
+        // TODO Use metadataProvider here as well?! Get rid of label on Link? Remove this method?!
+        var label = link.getLabel();
+        if (!label.isEmpty()) sb.append(s(label));
+        else sb.append("???");
         if (!Strings.isNullOrEmpty(iri)) {
             sb.append("</a>");
         }
