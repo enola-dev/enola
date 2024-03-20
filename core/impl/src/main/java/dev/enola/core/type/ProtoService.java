@@ -28,15 +28,24 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.ThingExt;
+import dev.enola.thing.message.MessageToThingConverter;
+import dev.enola.thing.message.MessageWithIRI;
+import dev.enola.thing.message.ProtoTypes;
+import dev.enola.thing.proto.Things;
 
 public class ProtoService implements EnolaService {
+    // TODO This shouldn't be an EnolaService, just a ThingConnector!!
+
+    private final MessageToThingConverter m2t = new MessageToThingConverter();
 
     public static Type.Builder TYPE() {
         return Type.newBuilder()
                 .setEmoji("🕵🏾‍♀️")
                 .setName("type.enola.dev/proto")
-                .setUri("proto/{FQN}")
-                // "google.protobuf.DescriptorProto"
+                .setUri(ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX + "{FQN}")
+                // This is "google.protobuf.DescriptorProto"
                 .setProto(DescriptorProto.getDescriptor().getFullName());
         // NOT .addConnectors(Connector.newBuilder().setJavaClass(ProtoConnector.class.getName()));
     }
@@ -58,11 +67,15 @@ public class ProtoService implements EnolaService {
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         // TODO It's pretty dumb to duplicate extracting the parameter from ERI again here... :-(
-        var fqn = r.getIri().substring("proto/".length());
+        var fqn = r.getIri().substring(ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX.length());
         var descriptor = descriptorProvider.findByName(fqn);
 
+        var thing = m2t.convert(new MessageWithIRI(r.getIri(), descriptor.toProto()));
+        ThingExt.setString(thing, KIRI.RDFS.LABEL, descriptor.getName());
+        var things = Things.newBuilder().addThings(thing).build();
+
         var response = GetThingResponse.newBuilder();
-        response.setThing(Any.pack(descriptor.toProto()));
+        response.setThing(Any.pack(things));
         return response.build();
     }
 

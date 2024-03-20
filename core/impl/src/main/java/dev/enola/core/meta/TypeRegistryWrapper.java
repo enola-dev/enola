@@ -110,10 +110,15 @@ public class TypeRegistryWrapper implements DescriptorProvider {
 
         private Builder() {}
 
+        public Builder add(Descriptor descriptor) {
+            typeRegistryBuilder.add(descriptor);
+            addFile(descriptor.getFile());
+            return this;
+        }
+
         public Builder add(Iterable<Descriptor> descriptors) {
-            for (Descriptor type : descriptors) {
-                typeRegistryBuilder.add(type);
-                addFile(type.getFile());
+            for (Descriptor descriptor : descriptors) {
+                add(descriptor);
             }
             return this;
         }

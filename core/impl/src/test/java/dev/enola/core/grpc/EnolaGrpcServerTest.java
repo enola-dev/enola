@@ -19,7 +19,9 @@ package dev.enola.core.grpc;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -35,6 +37,10 @@ import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.ThingExt;
+import dev.enola.thing.message.ProtoTypes;
+import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
 import org.junit.Test;
@@ -74,18 +80,53 @@ public class EnolaGrpcServerTest {
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client)
             throws InvalidProtocolBufferException {
+        checkGetProtoMessage(client);
+        // TODO checkGetProtoField(client);
         checkGetYAML(client);
         checkGetEntity(client);
         checkList(client);
     }
 
-    private void checkGetYAML(EnolaServiceBlockingStub client)
+    private Things getThings(EnolaServiceBlockingStub client, String iri)
             throws InvalidProtocolBufferException {
-        var request = GetThingRequest.newBuilder().setIri("classpath:picasso.ttl").build();
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = client.getThing(request);
         var any = response.getThing();
         // TODO Need to check if the Any is multiple Things or single Thing? Or ditch.. too complex!
         var things = any.unpack(Things.class);
+        return things;
+    }
+
+    private void checkGetProtoMessage(EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
+        checkGetProtoMessage(client, Timestamp.getDescriptor());
+        checkGetProtoMessage(client, Things.getDescriptor());
+        checkGetProtoMessage(client, Thing.getDescriptor());
+    }
+
+    private void checkGetProtoMessage(EnolaServiceBlockingStub client, Descriptor descriptor)
+            throws InvalidProtocolBufferException {
+        var iri = ProtoTypes.getMessageERI(descriptor);
+        var things = getThings(client, iri);
+        var thing = things.getThingsList().get(0);
+        // As per ThingMetadataProvider (TODO Just test that directly instead!)
+        var label = ThingExt.getString(thing, KIRI.RDFS.LABEL);
+        assertThat(label).isNotEmpty();
+    }
+
+    private void checkGetProtoField(EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
+        var iri = ProtoTypes.getFieldERI(Timestamp.getDescriptor().findFieldByNumber(1));
+        var things = getThings(client, iri);
+        var thing = things.getThingsList().get(0);
+        // As per ThingMetadataProvider (TODO Just test that directly instead!)
+        var label = ThingExt.getString(thing, KIRI.RDFS.LABEL);
+        assertThat(label).isEqualTo("seconds");
+    }
+
+    private void checkGetYAML(EnolaServiceBlockingStub client)
+            throws InvalidProtocolBufferException {
+        var things = getThings(client, "classpath:picasso.ttl");
         assertThat(things.getThingsList()).hasSize(2);
         // TODO assertThat it contains Dalí & Picasso from picasso.thing.yaml
     }

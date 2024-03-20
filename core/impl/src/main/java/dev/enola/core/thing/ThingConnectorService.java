@@ -35,23 +35,23 @@ import dev.enola.core.view.EnolaMessages;
 public class ThingConnectorService implements EnolaService {
 
     private final Type type;
-    private final ImmutableList<ThingConnector> registry;
+    private final ImmutableList<ThingConnector> aspects;
     private final EnolaMessages enolaMessages;
 
     public ThingConnectorService(
             Type type, ImmutableList<ThingConnector> aspects, EnolaMessages enolaMessages) {
         this.type = type;
-        this.registry = aspects;
+        this.aspects = aspects;
         this.enolaMessages = requireNonNull(enolaMessages);
     }
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        var eri = r.getIri();
+        var iri = r.getIri();
 
         Builder thing = enolaMessages.newBuilder(type.getProto());
 
-        for (var aspect : registry) {
+        for (var aspect : aspects) {
             aspect.augment(thing, type);
         }
 

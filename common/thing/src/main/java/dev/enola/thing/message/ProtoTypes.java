@@ -26,24 +26,21 @@ import com.google.protobuf.MessageOrBuilder;
 
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
-import dev.enola.thing.proto.Value.Builder;
 
 /**
- * ProtoTypes defines the Enola {@link Type}/s related to <a href="https://protobuf.dev">Protocol
+ * ProtoTypes defines the Enola Types related to <a href="https://protobuf.dev">Protocol
  * Buffers</a>.
  */
 public class ProtoTypes {
 
-    // TODO ERI vs IRI - come again, please? ;-)
-
     @VisibleForTesting
     static final String MESSAGE_DESCRIPTOR_PREDICATE_IRI = "http://enola.dev/proto/message";
 
-    private static final String MESSAGE_DESCRIPTOR_ERI = "enola:/enola.dev/proto/message/";
+    public static final String MESSAGE_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/message/";
 
-    private static final String FIELD_DESCRIPTOR_ERI = "enola:/enola.dev/proto/field/";
+    private static final String FIELD_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/field/";
 
-    private static final String FIELD_ENUM_ERI = "enola:/enola.dev/proto/enum/";
+    private static final String FIELD_ENUM_VALUE_ERI_PREFIX = "enola:/enola.dev/proto/enum-value/";
 
     static Thing.Builder addProtoField(Thing.Builder thing, MessageOrBuilder message) {
         // NB: We're setting the field that describes what Proto (Descriptor)
@@ -56,28 +53,32 @@ public class ProtoTypes {
         return thing;
     }
 
-    static Value.Builder toThingValueLink(Descriptor messageDescriptor) {
+    private static Value.Builder toThingValueLink(Descriptor messageDescriptor) {
         return toThingValueLink(messageDescriptor.getFullName());
     }
 
-    public static Builder toThingValueLink(String messageFQN) {
+    public static String getMessageERI(Descriptor messageDescriptor) {
+        return getMessageERI(messageDescriptor.getFullName());
+    }
+
+    public static Value.Builder toThingValueLink(String messageFQN) {
         var iri = getMessageERI(messageFQN);
         return MessageToThingConverter.toLink(iri, messageFQN);
     }
 
     private static String getMessageERI(String messageFQN) {
-        return MESSAGE_DESCRIPTOR_ERI + messageFQN;
+        return MESSAGE_DESCRIPTOR_ERI_PREFIX + messageFQN;
     }
 
-    static String getFieldERI(FieldDescriptor fieldDescriptor) {
-        return FIELD_DESCRIPTOR_ERI
+    public static String getFieldERI(FieldDescriptor fieldDescriptor) {
+        return FIELD_DESCRIPTOR_ERI_PREFIX
                 + requireNonNullOrEmpty(fieldDescriptor.getContainingType().getFullName())
                 + "/"
                 + fieldDescriptor.getNumber();
     }
 
-    static String getEnumERI(EnumValueDescriptor enumValue) {
-        return FIELD_ENUM_ERI
+    static String getEnumValueERI(EnumValueDescriptor enumValue) {
+        return FIELD_ENUM_VALUE_ERI_PREFIX
                 + requireNonNullOrEmpty(enumValue.getType().getFullName())
                 + "/"
                 + enumValue.getIndex();

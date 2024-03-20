@@ -23,6 +23,9 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
@@ -33,6 +36,8 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 public class UrlResource extends BaseResource implements ReadableResource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UrlResource.class);
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
@@ -76,6 +81,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
         // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
+            LOG.debug("mediaType: openConnection {}", url);
             c = url.openConnection();
             c.connect(); // MUST connect(), else failures are ignored!
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
@@ -103,6 +109,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
 
     @Override
     public ByteSource byteSource() {
+        LOG.debug("byteSource: Resources.asByteSource {}", url);
         return Resources.asByteSource(url);
     }
 }

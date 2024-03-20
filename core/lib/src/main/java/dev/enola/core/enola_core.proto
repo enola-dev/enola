@@ -121,6 +121,8 @@ message GetThingRequest {
 }
 
 message GetThingResponse {
+  // TODO Just directly return Things, instead of Any!
+  // (Or oneOf Things | Entity - but remove that, first!)
   google.protobuf.Any thing = 1;
 }
 

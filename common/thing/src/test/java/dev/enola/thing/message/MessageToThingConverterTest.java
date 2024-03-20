@@ -20,6 +20,7 @@ package dev.enola.thing.message;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.truth.extensions.proto.ProtoTruth;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Message;
 import com.google.protobuf.MessageOrBuilder;
 import com.google.protobuf.Timestamp;
@@ -61,26 +62,30 @@ public class MessageToThingConverterTest {
     Thing.Builder simpleThing =
             Thing.newBuilder()
                     .putFields(
-                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/1",
+                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.TEXT_FIELD_NUMBER),
                             c.toValue("hello").build())
                     .putFields(
-                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/2",
+                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.NUMBER_FIELD_NUMBER),
                             c.toLiteral("4294967295", KIRI.XSD.UINT32).build())
                     .putFields(
-                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/3",
+                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.TS_FIELD_NUMBER),
                             c.toLiteral(Timestamps.toString(ts), KIRI.XSD.TS).build())
                     .putFields(
-                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/4",
+                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.BYTES_FIELD_NUMBER),
                             c.toLiteral("AQID", KIRI.XSD.BIN64).build())
                     .putFields(
-                            "enola:/enola.dev/proto/field/dev.enola.thing.test.TestSimple/5",
+                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.ANENUM_FIELD_NUMBER),
                             c.toLink(
-                                            ProtoTypes.getEnumERI(
+                                            ProtoTypes.getEnumValueERI(
                                                     TestEnum.TEST_ENUM_B.getValueDescriptor()),
                                             "TEST_ENUM_B")
                                     .build());
 
     Thing.Builder simpleThingWithProto = headers(Thing.newBuilder(simpleThing.build()), simple);
+
+    private String getFieldIRI(Descriptor descriptor, int i) {
+        return ProtoTypes.getFieldERI(descriptor.findFieldByNumber(i));
+    }
 
     private Builder headers(Thing.Builder thing, MessageOrBuilder message) {
         thing.setIri(TEST_THING_IRI);
@@ -111,10 +116,14 @@ public class MessageToThingConverterTest {
         var complexThing =
                 Thing.newBuilder()
                         .putFields(
-                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/1",
+                                getFieldIRI(
+                                        TestComplex.getDescriptor(),
+                                        TestComplex.SIMPLE_FIELD_NUMBER),
                                 struct(simpleThing).build())
                         .putFields(
-                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestComplex/2",
+                                getFieldIRI(
+                                        TestComplex.getDescriptor(),
+                                        TestComplex.SIMPLES_FIELD_NUMBER),
                                 c.toList(struct(simpleThing), struct(simpleThing)).build());
         var complexThingWithProto = headers(complexThing, complex);
         check(complex, complexThingWithProto);
