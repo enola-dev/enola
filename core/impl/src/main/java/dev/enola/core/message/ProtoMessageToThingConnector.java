@@ -17,32 +17,24 @@
  */
 package dev.enola.core.message;
 
-import com.google.common.collect.ImmutableList;
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
-import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
-import dev.enola.core.thing.ThingConnector;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.ThingExt;
-import dev.enola.thing.message.MessageToThingConverter;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.proto.Things;
 
-import java.util.List;
 import java.util.Map;
 
-public class ProtoMessageToThingConnector implements ThingConnector {
+public class ProtoMessageToThingConnector extends ProtoToThingConnector {
     // TODO Move to package dev.enola.thing.message ?
 
-    private final MessageToThingConverter m2t = new MessageToThingConverter();
-    private final DescriptorProvider descriptorProvider;
-
     public ProtoMessageToThingConnector(DescriptorProvider descriptorProvider) {
-        this.descriptorProvider = descriptorProvider;
+        super(descriptorProvider);
     }
 
     @Override
@@ -65,10 +57,5 @@ public class ProtoMessageToThingConnector implements ThingConnector {
         var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
         ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
         things.addThings(newThing);
-    }
-
-    @Override
-    public List<Descriptor> getDescriptors() throws EnolaException {
-        return ImmutableList.of(Things.getDescriptor());
     }
 }
