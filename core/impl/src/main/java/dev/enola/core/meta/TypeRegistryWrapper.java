@@ -81,6 +81,8 @@ public class TypeRegistryWrapper implements DescriptorProvider {
 
     @Override
     public Descriptor findByName(String name) {
+        if (name == null) throw new IllegalArgumentException("name == null");
+        if (name.isEmpty()) throw new IllegalArgumentException("name is empty");
         var descriptor = get().find(name);
         if (descriptor == null) {
             throw new IllegalArgumentException("Proto unknown: " + name);

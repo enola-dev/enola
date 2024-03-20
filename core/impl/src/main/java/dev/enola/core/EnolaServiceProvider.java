@@ -29,6 +29,7 @@ import dev.enola.core.aspects.GrpcAspect;
 import dev.enola.core.aspects.TimestampAspect;
 import dev.enola.core.aspects.UriTemplateAspect;
 import dev.enola.core.aspects.ValidationAspect;
+import dev.enola.core.message.ProtoMessageToThingConnector;
 import dev.enola.core.meta.EntityAspectWithRepository;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.SchemaAspect;
@@ -37,7 +38,6 @@ import dev.enola.core.meta.TypeRegistryWrapper.Builder;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.thing.ThingConnector;
 import dev.enola.core.thing.ThingConnectorService;
-import dev.enola.core.type.ProtoService;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.thing.proto.Things;
@@ -76,16 +76,11 @@ public class EnolaServiceProvider {
         var esb = EnolaServiceRegistry.builder();
         var trb = TypeRegistryWrapper.newBuilder();
         trb.add(Things.getDescriptor());
-        processBuiltIns(esb);
         process(esb, ekr, trb);
         process(esb, tyr, trb);
         this.typeRegistry = trb.build();
         this.enolaService = esb.build();
         this.enolaMessages = new EnolaMessages(typeRegistry, ExtensionRegistry.getEmptyRegistry());
-    }
-
-    private void processBuiltIns(dev.enola.core.EnolaServiceRegistry.Builder esb) {
-        esb.register(ProtoService.TYPE().build(), new ProtoService(descriptorProvider));
     }
 
     private void process(
@@ -171,57 +166,9 @@ public class EnolaServiceProvider {
             throws EnolaException {
         for (var type : tyr.list()) {
             var aspectsBuilder = ImmutableList.<ThingConnector>builder();
-            for (var connector : type.getConnectorsList()) {
-                switch (connector.getTypeCase()) {
-                    case ERROR:
-                        throw new IllegalArgumentException(
-                                "Error Connector not supported for Types");
-
-                    case JAVA_CLASS:
-                        var className = connector.getJavaClass();
-                        try {
-                            var clazz = Class.forName(className);
-                            var object = clazz.getDeclaredConstructor().newInstance();
-                            ThingConnector aspect = (ThingConnector) object;
-                            aspectsBuilder.add(aspect);
-                            break;
-
-                        } catch (ClassNotFoundException
-                                | NoSuchMethodException
-                                | InstantiationException
-                                | IllegalAccessException
-                                | InvocationTargetException e) {
-                            // TODO Full ValidationException instead of IllegalArgumentException
-                            throw new IllegalArgumentException(
-                                    "Java Class Connector failure for EntityKind: "
-                                            + type.getName(),
-                                    e);
-                        }
-
-                        // TODO JAVA_GUICE Registry lookup?
-
-                    case FS:
-                        throw new IllegalArgumentException(
-                                "TODO: Implement FS Connector for Types!");
-                        // var fs = connector.getFs();
-                        // TODO aspectsBuilder.add(new
-                        // FilestoreRepositoryAspect(Path.of(fs.getPath()), fs.getFormat()));
-                        // break;
-
-                    case GRPC:
-                        throw new IllegalArgumentException(
-                                "TODO: Implement gRPC Connector for Types!");
-                        // TODO aspectsBuilder.add(new GrpcAspect(c.getGrpc()));
-                        // break;
-
-                    case TYPE_NOT_SET:
-                        // TODO Full ValidationException instead of IllegalArgumentException
-                        throw new IllegalArgumentException(
-                                "Connector Type not set in Type: " + type.getName());
-                }
-            }
-
+            // TODO Read ... something from Type to create aspect/s!
             var aspects = aspectsBuilder.build();
+
             var s = new ThingConnectorService(type, aspects, enolaMessages);
             esb.register(type, s);
 
@@ -229,6 +176,18 @@ public class EnolaServiceProvider {
                 trb.add(aspect.getDescriptors());
             }
         }
+
+        // Register a bunch of hard-coded built-in Thing Connectors
+        register(new ProtoMessageToThingConnector(descriptorProvider), esb, trb);
+    }
+
+    private void register(
+            ThingConnector thingConnector, EnolaServiceRegistry.Builder esb, Builder trb)
+            throws EnolaException {
+        var type = thingConnector.type();
+        var s = new ThingConnectorService(type, thingConnector, enolaMessages);
+        esb.register(type, s);
+        trb.add(thingConnector.getDescriptors());
     }
 
     public EnolaService getEnolaService() {

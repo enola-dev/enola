@@ -17,9 +17,6 @@
  */
 package dev.enola.core;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.iri.URITemplateMatcherChain;
 import dev.enola.core.meta.proto.Type;
@@ -29,61 +26,57 @@ import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.resource.ResourceEnolaService;
-
-import java.util.Map;
-import java.util.Map.Entry;
+import dev.enola.core.thing.ThingService;
 
 class EnolaServiceRegistry implements EnolaService {
 
-    private final URITemplateMatcherChain<EnolaService> matcher;
-    private Entry<EnolaService, Map<String, String>> resourceEnolaServiceEntry;
+    private final URITemplateMatcherChain<ThingService> matcher;
+    private ResourceEnolaService resourceEnolaService;
 
     public static Builder builder() {
         return new Builder();
     }
 
     private EnolaServiceRegistry(
-            URITemplateMatcherChain<EnolaService> matcherChain,
+            URITemplateMatcherChain<ThingService> matcherChain,
             ResourceEnolaService resourceEnolaService) {
         this.matcher = matcherChain;
-
-        this.resourceEnolaServiceEntry =
-                Maps.immutableEntry(resourceEnolaService, ImmutableMap.of());
+        this.resourceEnolaService = resourceEnolaService;
     }
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        return getDelegate(r.getIri()).getThing(r);
+        var opt = matcher.match(r.getIri());
+        if (opt.isEmpty()) {
+            // Nota bene: If the IRI didn't match any registered Types,
+            // then we assume it points to a Resource of a Thing, and we (try to) load it:
+            //
+            // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not,
+            // yet?)  of scheme enola: and so we should only fall back to the ResourceEnolaService
+            // for any other non-enola: scheme URIs!
+            return resourceEnolaService.getThing(r);
+        }
+
+        var entry = opt.get();
+        var delegate = entry.getKey();
+        var parameters = entry.getValue();
+        var things = delegate.getThing(r.getIri(), parameters);
+        return GetThingResponse.newBuilder().setThing(things).build();
     }
 
     @Override
     public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        return getDelegate(r.getEri()).listEntities(r);
-    }
-
-    private EnolaService getDelegate(String iri) {
-        var opt = matcher.match(iri);
-
-        // Nota bene: If the IRI didn't match any registered Types,
-        // then we assume it points to a Resource of a Thing, and we (try to) load it:
-        // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not, yet?)
-        // of scheme enola: and so we should only fall back to the ResourceEnolaService for any
-        // other non-enola: scheme URIs!
-        var entry = opt.orElse(resourceEnolaServiceEntry);
-        var delegate = entry.getKey();
-
-        // var map = entry.getValue();
-        // TODO map has to somehow be passed to the EnolaService!
-        // TODO Is it OK to ditch?! var lookup = IDs.withoutPath(IDs.parse(eri));
-
-        return delegate;
+        var opt = matcher.match(r.getEri());
+        if (opt.isEmpty())
+            throw new UnsupportedOperationException("listEntities will eventually be removed");
+        return opt.get().getKey().listEntities(r);
     }
 
     public static class Builder {
-        private final URITemplateMatcherChain.Builder<EnolaService> b =
+        private final URITemplateMatcherChain.Builder<ThingService> b =
                 URITemplateMatcherChain.builder();
 
-        public Builder register(ID ekid, EnolaService service) {
+        public Builder register(ID ekid, ThingService service) {
             // URI for get():
             var uriTemplateWithPath = IDs.toURITemplate(ekid);
             b.add(uriTemplateWithPath, service);
@@ -96,7 +89,7 @@ class EnolaServiceRegistry implements EnolaService {
             return this;
         }
 
-        public void register(Type type, EnolaService service) {
+        public void register(Type type, ThingService service) {
             b.add(type.getUri(), service);
         }
 

@@ -17,47 +17,42 @@
  */
 package dev.enola.core.thing;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Any;
-import com.google.protobuf.Message.Builder;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.EnolaService;
 import dev.enola.core.meta.proto.Type;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.thing.proto.Things;
 
-public class ThingConnectorService implements EnolaService {
+import java.util.Map;
 
-    private final Type type;
+public class ThingConnectorService implements ThingService {
+    // TODO Rename ThingEnolaService
+
     private final ImmutableList<ThingConnector> aspects;
-    private final EnolaMessages enolaMessages;
 
     public ThingConnectorService(
             Type type, ImmutableList<ThingConnector> aspects, EnolaMessages enolaMessages) {
-        this.type = type;
         this.aspects = aspects;
-        this.enolaMessages = requireNonNull(enolaMessages);
+    }
+
+    public ThingConnectorService(Type type, ThingConnector aspect, EnolaMessages enolaMessages) {
+        this.aspects = ImmutableList.of(aspect);
     }
 
     @Override
-    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        var iri = r.getIri();
-
-        Builder thing = enolaMessages.newBuilder(type.getProto());
+    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
+        // Builder thing = enolaMessages.newBuilder(type.getProto());
+        Things.Builder things = Things.newBuilder();
 
         for (var aspect : aspects) {
-            aspect.augment(thing, type);
+            aspect.augment(things, iri, parameters);
         }
 
-        var responseBuilder = GetThingResponse.newBuilder();
-        responseBuilder.setThing(Any.pack(thing.build()));
-        return responseBuilder.build();
+        return Any.pack(things.build());
     }
 
     @Override
