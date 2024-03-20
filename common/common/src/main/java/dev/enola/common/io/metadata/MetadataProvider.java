@@ -41,14 +41,14 @@ public interface MetadataProvider {
      *
      * <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
      *
-     * <p>Always returns something a String (never null), but may be empty.
+     * <p>Always returns something (never null), but may be empty String.
      */
     String getDescriptionHTML(String iri);
 
     /**
      * HTML of an image for the IRI, e.g. <img...> with URL of a favicon. Or an 😃 Emoji!
      *
-     * <p>Always returns something a String (never null), but may be empty.
+     * <p>Always returns something (never null), but may be empty String.
      */
     String getImageHTML(String iri);
 }
