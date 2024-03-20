@@ -29,6 +29,7 @@ import java.io.IOException;
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  */
 public interface ThingProvider {
+    // TODO Later consider merging this with ThingService?
 
     /**
      * Get the Thing.
@@ -37,5 +38,6 @@ public interface ThingProvider {
      * @return a Thing, never null; but may be an empty Thing for an unknown IRI
      * @throws IOException if there was something at that IRI but it could not be read
      */
+    // TODO Things not just 1x Thing?
     Thing getThing(String iri) throws IOException;
 }

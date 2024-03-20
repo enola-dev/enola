@@ -17,31 +17,20 @@
  */
 package dev.enola.core.thing;
 
-import com.google.protobuf.Descriptors;
+import com.google.protobuf.Any;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.meta.proto.Type;
-import dev.enola.thing.proto.Things;
+import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.ListEntitiesResponse;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
-/**
- * API for in-process Thing "connectors".
- *
- * <p>This is the internal equivalent of the gRPC ConnectorService.
- */
-// TODO Is this still needed? @SuppressWarnings("restriction")
-public interface ThingConnector {
-    // TODO Move to lib?
+public interface ThingService {
+    // TODO Later consider merging this with ThingProvider?
 
-    Type type();
+    // TODO Replace Any with Thing, when old Entity is removed?
+    Any getThing(String iri, Map<String, String> parameters) throws EnolaException;
 
-    void augment(Things.Builder thingsBuilder, String iri, Map<String, String> parameters)
-            throws EnolaException;
-
-    default List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
-        return Collections.emptyList();
-    }
+    // TODO Replace listEntities() with get() which returns things
+    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

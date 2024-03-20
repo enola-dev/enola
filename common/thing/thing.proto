@@ -157,6 +157,18 @@ message Value {
   }
 }
 
+message ThingMetadata {
+  string id = 1;
+  string label = 2;
+  string description_html = 3;
+  string image_html = 4;
+}
+
+message LinksMetadata {
+  // Map key is IRI.
+  map<string, ThingMetadata> metadata = 1;
+}
+
 // TODO Using "uint64 id" instead the string IRIs could permit a more "scalable"
 // distributed RDF-like data model with Protocol Buffers. (Simply because as-is,
 // the repeated serialization of all those long IRI Strings is not ideal. See

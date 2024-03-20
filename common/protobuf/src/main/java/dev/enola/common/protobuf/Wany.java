@@ -26,7 +26,6 @@ import com.google.protobuf.MessageLite;
  * wasteful "too early" conversion to and back from Any.
  */
 public class Wany {
-
     // TODO This isn't actually used anywhere, yet; use it! (Or delete it again.)
 
     private Any any;

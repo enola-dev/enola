@@ -134,7 +134,7 @@ message Type {
     google.protobuf.Empty binary = 33;
   }
 
-  repeated Connector connectors = 40;
+  // TODO Remove? repeated Connector connectors = 40;
 
   string java = 50;
   repeated string javas = 51;

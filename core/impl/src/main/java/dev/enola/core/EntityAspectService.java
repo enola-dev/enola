@@ -23,15 +23,15 @@ import com.google.protobuf.Any;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.thing.ThingService;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // TODO Move (refactor) this into a package dev.enola.core.entity.
-class EntityAspectService implements EnolaService {
+class EntityAspectService implements ThingService {
 
     private final EntityKind entityKind;
     private final ImmutableList<EntityAspect> registry;
@@ -42,18 +42,16 @@ class EntityAspectService implements EnolaService {
     }
 
     @Override
-    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
+    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
         var entity = Entity.newBuilder();
-        var id = IDs.parse(r.getIri());
+        var id = IDs.parse(iri);
         entity.setId(id);
 
         for (var aspect : registry) {
             aspect.augment(entity, entityKind);
         }
 
-        var responseBuilder = GetThingResponse.newBuilder();
-        responseBuilder.setThing(Any.pack(entity.build()));
-        return responseBuilder.build();
+        return Any.pack(entity.build());
     }
 
     @Override
