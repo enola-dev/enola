@@ -40,6 +40,7 @@ import dev.enola.core.thing.ThingConnectorService;
 import dev.enola.core.type.ProtoService;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.thing.proto.Things;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
@@ -74,6 +75,7 @@ public class EnolaServiceProvider {
             throws ValidationException, EnolaException {
         var esb = EnolaServiceRegistry.builder();
         var trb = TypeRegistryWrapper.newBuilder();
+        trb.add(Things.getDescriptor());
         processBuiltIns(esb);
         process(esb, ekr, trb);
         process(esb, tyr, trb);

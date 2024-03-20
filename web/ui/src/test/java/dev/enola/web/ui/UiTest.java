@@ -76,14 +76,6 @@ public class UiTest {
                 assertThat(response2)
                         .contains("<a href=/ui/proto/dev.enola.core.Entity>dev.enola.core.Entity");
 
-                // TODO Fix test coverage (doesn't work yet because of minimalistic TestService)
-                // var uri3 = create(prefix + "/ui/proto/dev.enola.core.Entity");
-                // var response3 = rp.getResource(uri3).charSource().read();
-                // assertThat(response3)
-                //         .contains(
-                //                 "<a
-                // href=/ui/proto/google.protobuf.Timestamp>google.protobuf.Timestamp");
-
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html?
             }
         }

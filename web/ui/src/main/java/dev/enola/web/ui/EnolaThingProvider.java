@@ -33,6 +33,7 @@ import dev.enola.thing.proto.Thing;
 import java.io.IOException;
 
 public class EnolaThingProvider implements ThingProvider {
+    // TODO This class doesn't really belong here, but into dev.enola.core.thing?
 
     private final MessageToThingConverter m2t = new MessageToThingConverter();
     private final EnolaServiceBlockingStub service;

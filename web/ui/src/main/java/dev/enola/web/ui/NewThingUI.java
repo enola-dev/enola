@@ -121,12 +121,14 @@ public class NewThingUI {
         var sb = new StringBuilder();
         var iri = link.getIri();
         if (!Strings.isNullOrEmpty(iri)) {
-            String url;
-            if (iri.startsWith("enola:")) {
-                url = "/ui3/" + iri.substring("enola:".length());
-            } else {
-                url = iri;
-            }
+            String url = "/ui3/" + iri;
+            // String url;
+            // if (iri.startsWith("enola:")) {
+            //     url = "/ui3/" + iri.substring("enola:".length());
+            // } else {
+            //     url = iri;
+            // }
+
             // TODO s(uri) or not - or another escaping?
             sb.append("<a href=" + s(url) + ">");
         }

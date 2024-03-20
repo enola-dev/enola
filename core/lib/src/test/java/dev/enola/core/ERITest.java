@@ -27,7 +27,7 @@ import org.junit.Test;
 
 public class ERITest {
 
-    // TODO Add IRI testing, so non-URI, with special characters
+    // NB: IRIs with special characters (so non-URI) are covered in IRIsTest
 
     @Test
     public void basic() {

@@ -106,7 +106,7 @@ message Type {
 
   // The Emoji shown as prefix to the label in UIs, if there is no logo.
   // This is not necessarily unique.
-  string emoji = 22;
+  string emoji = 22 [(dev.enola.type) = "https://enola.dev/emoji"];
 
   // Logo (as URL; either absolute, or URL relative to the model's location -
   // from where a UI will serve it).

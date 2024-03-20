@@ -19,7 +19,7 @@ package dev.enola.common.io.metadata;
 
 public interface MetadataProvider {
 
-    // TODO Rewrite this using a record Metadata? That's more efficient, and easier to cache...
+    // TODO Rewrite this using a record Metadata, instead xN! That's more efficient, and can cache.
 
     /**
      * Logical IRI of the resource at the physical IRI argument. This could be the same, or not;
