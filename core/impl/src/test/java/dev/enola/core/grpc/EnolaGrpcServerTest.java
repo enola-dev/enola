@@ -81,7 +81,7 @@ public class EnolaGrpcServerTest {
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client)
             throws InvalidProtocolBufferException {
         checkGetProtoMessage(client);
-        // TODO checkGetProtoField(client);
+        checkGetProtoField(client);
         checkGetYAML(client);
         checkGetEntity(client);
         checkList(client);

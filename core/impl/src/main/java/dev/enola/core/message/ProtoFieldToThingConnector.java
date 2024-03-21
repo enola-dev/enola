@@ -17,7 +17,7 @@
  */
 package dev.enola.core.message;
 
-import com.google.protobuf.DescriptorProtos.DescriptorProto;
+import com.google.protobuf.DescriptorProtos.FieldDescriptorProto;
 
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.core.EnolaException;
@@ -30,21 +30,21 @@ import dev.enola.thing.proto.Things;
 
 import java.util.Map;
 
-public class ProtoMessageToThingConnector extends ProtoToThingConnector {
+public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     // TODO Move to package dev.enola.thing.message ?
 
-    public ProtoMessageToThingConnector(DescriptorProvider descriptorProvider) {
+    public ProtoFieldToThingConnector(DescriptorProvider descriptorProvider) {
         super(descriptorProvider);
     }
 
     @Override
     public Type type() {
         return Type.newBuilder()
-                .setEmoji("🕵🏾‍♀️")
-                .setName("enola.dev/proto/message")
-                .setUri(ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX + "{FQN}")
+                .setEmoji("🏒")
+                .setName("enola.dev/proto/field")
+                .setUri(ProtoTypes.FIELD_DESCRIPTOR_ERI_PREFIX + "{FQN}/{NUMBER}")
                 // This is "google.protobuf.DescriptorProto"
-                .setProto(DescriptorProto.getDescriptor().getFullName())
+                .setProto(FieldDescriptorProto.getDescriptor().getFullName())
                 .build();
     }
 
@@ -54,8 +54,11 @@ public class ProtoMessageToThingConnector extends ProtoToThingConnector {
         var fqn = parameters.get("FQN");
         var descriptor = descriptorProvider.findByName(fqn);
 
-        var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
-        ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
+        var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
+        var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
+
+        var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
+        ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
         things.addThings(newThing);
     }
 }

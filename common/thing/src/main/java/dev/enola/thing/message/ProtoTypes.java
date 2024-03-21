@@ -38,7 +38,7 @@ public class ProtoTypes {
 
     public static final String MESSAGE_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/message/";
 
-    private static final String FIELD_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/field/";
+    public static final String FIELD_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/field/";
 
     private static final String FIELD_ENUM_VALUE_ERI_PREFIX = "enola:/enola.dev/proto/enum-value/";
 
