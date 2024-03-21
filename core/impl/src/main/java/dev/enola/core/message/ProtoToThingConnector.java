@@ -27,7 +27,7 @@ public abstract class ProtoToThingConnector implements ThingConnector {
     protected final MessageToThingConverter m2t = new MessageToThingConverter();
     protected final DescriptorProvider descriptorProvider;
 
-    public ProtoToThingConnector(DescriptorProvider descriptorProvider) {
+    protected ProtoToThingConnector(DescriptorProvider descriptorProvider) {
         this.descriptorProvider = descriptorProvider;
     }
 }
