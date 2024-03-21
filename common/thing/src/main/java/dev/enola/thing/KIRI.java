@@ -58,7 +58,7 @@ public final class KIRI {
          * IRI which identifies 🆔 a Thing, see https://schema.org/identifier. This is a "logical"
          * identity, and may or may not be an URL.
          */
-        // TODO This is technically not always an IRI... so make it E.ID, instead!
+        // TODO This is technically not always an IRI... so make it E.GUN, instead!
         public static final String ID = NS + "identifier";
 
         /**
