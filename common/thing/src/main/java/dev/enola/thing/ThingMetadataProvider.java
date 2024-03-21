@@ -37,6 +37,8 @@ import java.net.URISyntaxException;
  */
 public class ThingMetadataProvider implements MetadataProvider {
 
+    // TODO As-is, this is *VERY* in-efficient... see TBD in MetadataProvider, and optimize
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ThingProvider tp;
@@ -90,6 +92,8 @@ public class ThingMetadataProvider implements MetadataProvider {
      */
     @Override
     public String getImageHTML(String iri) {
+        if (iri == null) return "";
+
         var thingImage = getImageHTML_(iri);
         if (thingImage != null) return thingImage;
 
@@ -101,6 +105,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     private String getImageHTML_(String iri) {
+        if (iri == null) return null;
         var emoji = getString(iri, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
         var imageURL = getString(iri, KIRI.SCHEMA.IMG);
@@ -111,9 +116,14 @@ public class ThingMetadataProvider implements MetadataProvider {
 
     private String getString(String thingIRI, String propertyIRI) {
         try {
-            return ThingExt.getString(tp.getThing(thingIRI), propertyIRI);
+            var thing = tp.getThing(thingIRI);
+            var string = ThingExt.getString(thing, propertyIRI);
+            if (string == null) {
+                log.debug("No {} on {}:\n{}", propertyIRI, thingIRI, thing);
+            }
+            return string;
         } catch (Exception e) {
-            log.warn("Could not get {} from {}", propertyIRI, thingIRI);
+            log.warn("Could not get {} from {}", propertyIRI, thingIRI, e);
             return null;
         }
     }

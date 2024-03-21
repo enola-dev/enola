@@ -77,6 +77,17 @@ public class UiTest {
                         .contains("<a href=/ui/proto/dev.enola.core.Entity>dev.enola.core.Entity");
 
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html?
+
+                // @Test void enolaThingProvider() {
+                // var tsIRI = "enola:/enola.dev/proto/field/google.protobuf.Timestamp/1";
+                // var thingProvider = new EnolaThingProvider(testGrpcService);
+                // var tsThing = thingProvider.getThing(tsIRI);
+                // assertThat(ThingExt.getString(tsThing, KIRI.RDFS.LABEL)).isEqualTo("seconds");
+
+                // @Test void thingMetadataProvider() {
+                // var thingMetadataProvider = new ThingMetadataProvider(thingProvider);
+                // var label = thingMetadataProvider.getLabel(tsIRI);
+                // assertThat(label).isEqualTo("seconds");
             }
         }
     }

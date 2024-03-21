@@ -51,6 +51,7 @@ java_library(
         ":ui",
         "//common/common",
         "//common/protobuf",
+        "//common/thing:thing_java",
         "//core/impl",  # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
