@@ -29,6 +29,7 @@ import dev.enola.thing.ThingProvider;
 import dev.enola.thing.message.MessageToThingConverter;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Things;
 
 import java.io.IOException;
 
@@ -57,8 +58,15 @@ public class EnolaThingProvider implements ThingProvider {
         var response = service.getThing(request);
         var any = response.getThing();
 
-        var message = enolaMessages.toMessage(any);
-
-        return m2t.convert(new MessageWithIRI(iri, message)).build();
+        // TODO This will need some more thought...
+        if (any.getTypeUrl().endsWith("Thing")) {
+            return any.unpack(Thing.class);
+        } else if (any.getTypeUrl().endsWith("Things")) {
+            var things = any.unpack(Things.class);
+            return things.getThingsList().get(0);
+        } else {
+            var message = enolaMessages.toMessage(any);
+            return m2t.convert(new MessageWithIRI(iri, message)).build();
+        }
     }
 }

@@ -87,24 +87,6 @@ public class NewThingUI {
         return sb;
     }
 
-    private CharSequence link(String iri) {
-        var sb = new StringBuilder();
-        sb.append(metadataProvider.getImageHTML(iri));
-        sb.append(' ');
-        // TODO s(uri) or not - or another escaping?
-        sb.append("<a href=" + s(iri));
-        var description = metadataProvider.getDescriptionHTML(iri);
-        if (!description.isEmpty()) {
-            sb.append(" title=\"");
-            sb.append(s(description));
-            sb.append('"');
-        }
-        sb.append('>');
-        sb.append(s(metadataProvider.getLabel(iri)));
-        sb.append("</a>");
-        return sb;
-    }
-
     private CharSequence list(List list) {
         var sb = new StringBuilder();
         sb.append("<ol>\n");
@@ -114,6 +96,24 @@ public class NewThingUI {
             sb.append("</li>\n");
         }
         sb.append("</ol>\n");
+        return sb;
+    }
+
+    private CharSequence link(String iri) {
+        var sb = new StringBuilder();
+        sb.append(metadataProvider.getImageHTML(iri));
+        sb.append(' ');
+        // TODO s(uri) or not - or another escaping?
+        sb.append("<a href=" + s("/ui3/" + iri));
+        var description = metadataProvider.getDescriptionHTML(iri);
+        if (!description.isEmpty()) {
+            sb.append(" title=\"");
+            sb.append(s(description));
+            sb.append('"');
+        }
+        sb.append('>');
+        sb.append(s(metadataProvider.getLabel(iri)));
+        sb.append("</a>");
         return sb;
     }
 
