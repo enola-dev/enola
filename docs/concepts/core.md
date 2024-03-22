@@ -37,9 +37,9 @@ URLs like HTTP links, which models can use to create hyperlinks to UIs of applic
 
 ## Formats
 
-Enola has [built-in interchangeable support](../use/rosetta/index.md) for JSON, YAML, and Text proto & Binary Protocol Buffers
-[wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for entities.
-<!-- TODO In the future, maybe also ... FHIR? Blockchain EVM format? What else? -->
+Enola currently has [built-in interchangeable support](../use/rosetta/index.md) for JSON, YAML, and Text proto & Binary Protocol Buffers
+[wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for entities. It is conceptually open to supporting other formats in the future; maybe e.g. [CBOR](https://github.com/enola-dev/enola/issues/603).
+<!-- TODO Maybe also ... FHIR? Blockchain EVM format? What else? -->
 
 ## Schemas
 

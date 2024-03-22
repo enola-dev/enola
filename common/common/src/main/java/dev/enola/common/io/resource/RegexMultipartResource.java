@@ -37,8 +37,7 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
         super(baseResource, split(baseResource, defs));
     }
 
-    protected static record PartsDef(String regex, Map<String, MediaType> mediaTypes) {}
-    ;
+    protected static final record PartsDef(String regex, Map<String, MediaType> mediaTypes) {}
 
     private static ImmutableMap<String, Resource> split(
             ReadableResource baseResource, PartsDef defs) throws IOException {

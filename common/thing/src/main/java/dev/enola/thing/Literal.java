@@ -15,15 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.thing;
 
-import com.google.common.base.Strings;
+import dev.enola.datatype.Datatype;
 
-import java.util.Objects;
-
-public final record ImmutableNamespace(String prefix, String iri) implements Namespace {
-    public ImmutableNamespace {
-        Objects.nonNull(prefix);
-        Objects.nonNull(Strings.emptyToNull(iri));
-    }
-}
+/**
+ * Literal is a value with datatype (IRI) which can appear in the {@link Thing#properties()} Map
+ * values.
+ *
+ * <p>Normally, values are some other native Java object; this is only for cases which could not be
+ * decoded to a more suitable Java type, because no {@link Datatype} for this literal's datatype IRI
+ * was registered.
+ */
+public final record Literal(String value, Thing datatype) {}

@@ -17,7 +17,17 @@
  */
 package dev.enola.thing;
 
+import com.google.common.collect.ImmutableMap;
+
 public interface Thing {
 
-    // TODO ...
+    String iri();
+
+    /**
+     * The Map's key is the Thing of a Property, and the value is e.g. directly a String, Integer
+     * etc. or a {@link Literal}. Alteratively, it may be another Thing (if it's been "resolved") or
+     * a {@link Link} with an IRI (if unresolved) or another Map (for an "inline embedded/expanded
+     * blank node") or a List of such items.
+     */
+    ImmutableMap<Thing, Object> properties();
 }
