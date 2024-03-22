@@ -38,8 +38,8 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.KIRI;
-import dev.enola.thing.ThingExt;
 import dev.enola.thing.message.ProtoTypes;
+import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 

@@ -21,6 +21,7 @@ import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.URIs;
+import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Things;
 
 import org.slf4j.Logger;

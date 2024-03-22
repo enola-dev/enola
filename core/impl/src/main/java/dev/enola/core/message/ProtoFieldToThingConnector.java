@@ -23,9 +23,9 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
-import dev.enola.thing.ThingExt;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.ProtoTypes;
+import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Things;
 
 import java.util.Map;

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.message;
 
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.ThingOrBuilder;
@@ -23,7 +23,6 @@ import dev.enola.thing.proto.Value;
 
 /** Extension methods for {@link Thing}. */
 public final class ThingExt {
-    // TODO Move this into the .message sub-package, as that's what this is about
     // TODO Rename proto.Things to ThingList and this from ThingExt to Things
 
     public static void setString(Thing.Builder thing, String propertyIRI, String string) {
