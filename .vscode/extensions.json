@@ -16,7 +16,8 @@
     "zignd.html-css-class-completion",
     "timonwong.shellcheck",
     "stardog-union.vscode-langserver-turtle",
-    "zazuko.vscode-rdf-sketch"
+    "zazuko.vscode-rdf-sketch",
+    "redhat.vscode-yaml"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
