@@ -24,7 +24,7 @@ import dev.enola.common.convert.ObjectToStringBiConverter;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public record ImmutableDatatype<T>(
+public final record ImmutableDatatype<T>(
         String iri,
         Optional<Pattern> pattern,
         ObjectToStringBiConverter<T> stringConverter,

@@ -24,4 +24,4 @@ import com.google.protobuf.Message;
  * it comes from" ('physical' URI).
  */
 // MessageOrBuilder instead Message, to avoid build(), when not required?
-public record MessageWithIRI(String iri, Message message) {}
+public final record MessageWithIRI(String iri, Message message) {}

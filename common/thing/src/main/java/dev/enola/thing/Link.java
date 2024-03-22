@@ -15,15 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.thing;
 
-import com.google.common.base.Strings;
-
-import java.util.Objects;
-
-public final record ImmutableNamespace(String prefix, String iri) implements Namespace {
-    public ImmutableNamespace {
-        Objects.nonNull(prefix);
-        Objects.nonNull(Strings.emptyToNull(iri));
-    }
-}
+/**
+ * Link is an IRI "reference" to another {@link Thing}.
+ *
+ * <p>IRI are normally just String in Enola; this type only exists, and is required, so that it can
+ * appear in the {@link Thing#properties()} Map values; where a String is not an IRI but text.
+ */
+public final record Link(String iri) {}

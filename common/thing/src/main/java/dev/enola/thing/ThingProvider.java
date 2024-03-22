@@ -29,6 +29,7 @@ import java.io.IOException;
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  */
 public interface ThingProvider {
+    // TODO Move this into the .message sub-package, as that's what this is about
     // TODO implements Repository<Thing> ?
     // TODO Later consider merging this with ThingService?
 
@@ -41,4 +42,6 @@ public interface ThingProvider {
      */
     // TODO Things not just 1x Thing?
     Thing getThing(String iri) throws IOException;
+
+    // TODO Thing getThings(String iri, int depth) throws IOException;
 }
