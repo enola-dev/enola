@@ -19,7 +19,6 @@ package dev.enola.core.rosetta;
 
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
-
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
@@ -33,6 +32,8 @@ import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
 import dev.enola.rdf.RdfResourceConverter;
+
+import java.io.IOException;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
@@ -82,7 +83,7 @@ public class Rosetta implements ResourceConverter {
 
     @Override
     public boolean convertInto(ReadableResource from, WritableResource into)
-            throws ConversionException {
+            throws ConversionException, IOException {
         if (!resourceConverterChain.convertInto(from, into)) {
             throw new ConversionException(
                     "No Converter (registered on the Chain) accepted to transform from "

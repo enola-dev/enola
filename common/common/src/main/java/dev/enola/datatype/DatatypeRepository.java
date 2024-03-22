@@ -15,16 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.repository;
+package dev.enola.datatype;
 
-public interface Repository<T> {
+import dev.enola.repository.Repository;
 
-    // TODO Split into 2 interface, separate get()-only; and list()-able?
+import java.util.Optional;
 
-    Iterable<T> list();
+public interface DatatypeRepository extends Repository<Datatype<?>> {
 
-    Iterable<String> listIRI();
+    Optional<Datatype<?>> match(String text);
 
-    // TODO Optional<T> ?
-    T get(String iri);
+    // TODO <T> Optional<Datatype<T>> get(Class<T> type);
+    // Wait, this is tricky... ;-) several datatypes, such as STRING and IRI, can *both* be of
+    // javaType String.class... so there needs to be some way to ask each one if they're it?
 }

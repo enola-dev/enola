@@ -20,6 +20,7 @@ package dev.enola.common.convert;
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -44,6 +45,7 @@ public interface ConverterInto<I, O> {
      *     {@link ConverterIntoChain}
      * @throws ConversionException in case of conversion problems or technical failures to read from
      *     I or write to O
+     * @throws IOException
      */
-    boolean convertInto(I from, O into) throws ConversionException;
+    boolean convertInto(I from, O into) throws ConversionException, IOException;
 }

@@ -17,6 +17,7 @@
  */
 package dev.enola.thing;
 
+import dev.enola.datatype.Datatypes;
 import dev.enola.thing.proto.Value.Literal;
 
 /**
@@ -139,7 +140,9 @@ public final class KIRI {
     public static final class XSD {
         private static final String NS = "http://www.w3.org/2001/XMLSchema#";
 
-        public static final String BOOL = NS + "boolean";
+        public static final String STRING = Datatypes.STRING.iri();
+        public static final String IRI = Datatypes.IRI.iri();
+        public static final String BOOL = Datatypes.BOOLEAN.iri();
 
         public static final String DOUBLE = NS + "double";
         public static final String FLOAT = NS + "float";

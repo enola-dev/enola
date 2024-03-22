@@ -17,10 +17,9 @@
  */
 package dev.enola.common.convert;
 
-public class ObjectToStringConverter implements Converter<Object, String> {
+public interface ObjectToStringConverter extends Converter<Object, String> {
 
-    @Override
-    public String convert(Object input) {
+    default String convert(Object input) {
         return input.toString();
     }
 }

@@ -31,6 +31,8 @@ public class WellKnownIRIsTest {
 
     @Test
     public void XSD() {
+        assertThat(KIRI.XSD.IRI).isEqualTo(XSD.ANYURI.stringValue());
+        assertThat(KIRI.XSD.STRING).isEqualTo(XSD.STRING.stringValue());
         assertThat(KIRI.XSD.BIN64).isEqualTo(XSD.BASE64BINARY.stringValue());
         assertThat(KIRI.XSD.BOOL).isEqualTo(XSD.BOOLEAN.stringValue());
         assertThat(KIRI.XSD.DOUBLE).isEqualTo(XSD.DOUBLE.stringValue());

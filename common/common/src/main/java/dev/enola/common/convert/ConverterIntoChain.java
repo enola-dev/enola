@@ -17,6 +17,8 @@
  */
 package dev.enola.common.convert;
 
+import java.io.IOException;
+
 /**
  * A "chain" of {@link ConverterInto}s. It attempts the conversion in order until one is successful.
  */
@@ -29,7 +31,7 @@ public class ConverterIntoChain<I, O> implements ConverterInto<I, O> {
     }
 
     @Override
-    public boolean convertInto(I from, O into) throws ConversionException {
+    public boolean convertInto(I from, O into) throws ConversionException, IOException {
         for (var converter : converters) {
             if (converter.convertInto(from, into)) return true;
         }

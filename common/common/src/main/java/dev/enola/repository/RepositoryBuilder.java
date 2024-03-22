@@ -23,14 +23,14 @@ import com.google.common.collect.ImmutableSortedMap;
 
 public class RepositoryBuilder<T> {
 
-    private final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
+    protected final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
 
     protected void add(String iri, T item) {
         items.put(iri, item);
     }
 
     public Repository<T> build() {
-        return new RepositoryImpl(items.build());
+        return new RepositoryImpl(items.buildOrThrow());
     }
 
     protected <O> O require(O what, String identification) {
@@ -43,10 +43,10 @@ public class RepositoryBuilder<T> {
         return what;
     }
 
-    private class RepositoryImpl implements Repository<T> {
+    protected class RepositoryImpl implements Repository<T> {
         private final ImmutableSortedMap<String, T> items;
 
-        private RepositoryImpl(ImmutableSortedMap<String, T> items) {
+        protected RepositoryImpl(ImmutableSortedMap<String, T> items) {
             this.items = items;
         }
 
