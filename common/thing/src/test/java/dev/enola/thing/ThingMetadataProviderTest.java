@@ -19,6 +19,8 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.iri.NamespaceConverter;
+import dev.enola.common.io.iri.NamespaceConverterIdentity;
 import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
@@ -26,6 +28,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class ThingMetadataProviderTest {
+
+    private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
 
     private ThingProvider empty =
             new ThingProvider() {
@@ -63,23 +67,24 @@ public class ThingMetadataProviderTest {
     @Test
     public void id() {
         var iri = "https://server/thing";
-        assertThat(new ThingMetadataProvider(empty).getID(iri)).isEqualTo(iri);
+        assertThat(new ThingMetadataProvider(empty, NONS).getID(iri)).isEqualTo(iri);
 
-        assertThat(new ThingMetadataProvider(test).getID(iri)).isEqualTo(THING_IRI);
+        assertThat(new ThingMetadataProvider(test, NONS).getID(iri)).isEqualTo(THING_IRI);
     }
 
     @Test
     public void label() {
-        assertThat(new ThingMetadataProvider(empty).getLabel(THING_IRI)).isEqualTo("test");
+        assertThat(new ThingMetadataProvider(empty, NONS).getLabel(THING_IRI)).isEqualTo("test");
 
-        assertThat(new ThingMetadataProvider(test).getLabel(THING_IRI)).isEqualTo(THING_LABEL);
+        assertThat(new ThingMetadataProvider(test, NONS).getLabel(THING_IRI))
+                .isEqualTo(THING_LABEL);
     }
 
     @Test
     public void error() {
-        assertThat(new ThingMetadataProvider(error).getID(THING_IRI)).isNotEmpty();
-        assertThat(new ThingMetadataProvider(error).getLabel(THING_IRI)).isNotEmpty();
-        assertThat(new ThingMetadataProvider(error).getDescriptionHTML(THING_IRI)).isEmpty();
-        assertThat(new ThingMetadataProvider(error).getImageHTML(THING_IRI)).isEmpty();
+        assertThat(new ThingMetadataProvider(error, NONS).getID(THING_IRI)).isNotEmpty();
+        assertThat(new ThingMetadataProvider(error, NONS).getLabel(THING_IRI)).isNotEmpty();
+        assertThat(new ThingMetadataProvider(error, NONS).getDescriptionHTML(THING_IRI)).isEmpty();
+        assertThat(new ThingMetadataProvider(error, NONS).getImageHTML(THING_IRI)).isEmpty();
     }
 }
