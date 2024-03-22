@@ -23,10 +23,10 @@ import static org.junit.Assert.assertThrows;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.core.Repository;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.meta.proto.Types;
 import dev.enola.core.type.TypeRepositoryBuilder;
+import dev.enola.repository.Repository;
 
 import org.junit.Test;
 

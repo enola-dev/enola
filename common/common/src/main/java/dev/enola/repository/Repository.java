@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.repository;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 
 public interface Repository<T> {
-    // TODO Consider moving from package
-    // dev.enola.core to dev.enola.common.io.resource
 
     ImmutableCollection<T> list();
 

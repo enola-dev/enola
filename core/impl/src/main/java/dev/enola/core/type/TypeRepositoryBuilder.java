@@ -19,8 +19,8 @@ package dev.enola.core.type;
 
 import com.google.protobuf.TypeRegistry;
 
-import dev.enola.core.RepositoryBuilder;
 import dev.enola.core.meta.proto.Type;
+import dev.enola.repository.RepositoryBuilder;
 
 /**
  * Builds Repository of {@link Type}.
