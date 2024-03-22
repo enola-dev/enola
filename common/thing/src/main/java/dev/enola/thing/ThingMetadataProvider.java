@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import dev.enola.common.io.iri.IRIs;
+import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.URIs;
 import dev.enola.thing.proto.Things;
@@ -31,8 +32,8 @@ import java.net.URISyntaxException;
  * {@link MetadataProvider} implementation based on looking at {@link Things}s obtained via {@link
  * ThingProvider}.
  *
- * <p>Logs logs but does not propagate exceptions from the <tt>ThingProvider</tt>, because we do not
- * want to fail operations "just" because Metadata could not be obtained; all the methods have
+ * <p>Logs errors, but does not propagate exceptions from the <tt>ThingProvider</tt>, because we do
+ * not want to fail operations "just" because Metadata could not be obtained; all the methods have
  * fallbacks.
  */
 public class ThingMetadataProvider implements MetadataProvider {
@@ -42,9 +43,11 @@ public class ThingMetadataProvider implements MetadataProvider {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ThingProvider tp;
+    private final NamespaceConverter ns;
 
-    public ThingMetadataProvider(ThingProvider tp) {
+    public ThingMetadataProvider(ThingProvider tp, NamespaceConverter ns) {
         this.tp = tp;
+        this.ns = ns;
     }
 
     /**
@@ -59,8 +62,9 @@ public class ThingMetadataProvider implements MetadataProvider {
 
     /**
      * Returns the Thing's {@link KIRI.RDFS.LABEL} or {@link KIRI.SCHEMA#NAME}, if any; otherwise
-     * attempts to extract a "file name" (last part of the path) from the IRI, and if that fails
-     * just returns the IRI argument as-is.
+     * attempts to convert the IRI to a "CURIE", and if that also fails, it just extracts a "file
+     * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
+     * as-is.
      */
     @Override
     public String getLabel(String iri) {
@@ -69,6 +73,9 @@ public class ThingMetadataProvider implements MetadataProvider {
 
         var name = getString(iri, KIRI.SCHEMA.NAME);
         if (name != null) return name;
+
+        var curie = ns.toCURIE(iri);
+        if (!curie.equals(iri)) return curie;
 
         try {
             return URIs.getFilename(IRIs.toURI(iri));

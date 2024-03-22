@@ -25,6 +25,8 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -70,7 +72,12 @@ public class UI implements WebHandler {
         var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
         thingProvider = new EnolaThingProvider(service);
-        thingUI = new NewThingUI(new ThingMetadataProvider(thingProvider));
+
+        // TODO This must be configurable & dynamic...
+        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+
+        thingUI = new NewThingUI(new ThingMetadataProvider(thingProvider, namespaceConverter));
     }
 
     public void register(WebServer server) {
