@@ -30,7 +30,7 @@ public class RepositoryBuilder<T> {
     }
 
     public Repository<T> build() {
-        return new RepositoryImpl(items.buildOrThrow());
+        return new RepositoryImpl<T>(items.buildOrThrow());
     }
 
     protected <O> O require(O what, String identification) {
@@ -43,7 +43,7 @@ public class RepositoryBuilder<T> {
         return what;
     }
 
-    protected class RepositoryImpl implements Repository<T> {
+    protected static class RepositoryImpl<T> implements Repository<T> {
         private final ImmutableSortedMap<String, T> items;
 
         protected RepositoryImpl(ImmutableSortedMap<String, T> items) {

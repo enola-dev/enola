@@ -42,8 +42,8 @@ public class DatatypeRepositoryBuilder extends RepositoryBuilder<Datatype<?>> {
         return new ImmutableDatatypeRepository(items.buildOrThrow());
     }
 
-    private class ImmutableDatatypeRepository extends RepositoryBuilder<Datatype<?>>.RepositoryImpl
-            implements DatatypeRepository {
+    private static class ImmutableDatatypeRepository
+            extends RepositoryBuilder.RepositoryImpl<Datatype<?>> implements DatatypeRepository {
 
         protected ImmutableDatatypeRepository(ImmutableSortedMap<String, Datatype<?>> items) {
             super(items);
