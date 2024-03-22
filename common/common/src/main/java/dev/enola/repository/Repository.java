@@ -18,13 +18,12 @@
 package dev.enola.repository;
 
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSet;
 
 public interface Repository<T> {
 
     ImmutableCollection<T> list();
 
-    ImmutableSet<String> names();
+    Iterable<String> listIRI();
 
-    T getByName(String name);
+    T get(String iri);
 }

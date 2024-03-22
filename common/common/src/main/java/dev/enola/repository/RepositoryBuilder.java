@@ -25,8 +25,8 @@ public class RepositoryBuilder<T> {
 
     private final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
 
-    protected void add(String name, T item) {
-        items.put(name, item);
+    protected void add(String iri, T item) {
+        items.put(iri, item);
     }
 
     public Repository<T> build() {
@@ -51,13 +51,13 @@ public class RepositoryBuilder<T> {
         }
 
         @Override
-        public ImmutableSet<String> names() {
+        public ImmutableSet<String> listIRI() {
             return items.keySet();
         }
 
         @Override
-        public T getByName(String name) {
-            return items.get(name);
+        public T get(String iri) {
+            return items.get(iri);
         }
 
         @Override
