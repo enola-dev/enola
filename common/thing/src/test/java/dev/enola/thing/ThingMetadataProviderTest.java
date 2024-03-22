@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.iri.NamespaceConverterIdentity;
+import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
