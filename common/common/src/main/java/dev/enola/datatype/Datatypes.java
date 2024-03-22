@@ -57,7 +57,9 @@ public final class Datatypes {
 
     // TODO TIMESTAMP
 
-    // TODO BINARY ... multibase ...
+    // TODO BINARY ... multibase ... with https://github.com/multiformats/java-multibase, or
+    // https://github.com/filip26/copper-multibase, for https://github.com/multiformats/multibase.
+    // Replace use of Base64.getEncoder().encodeToString() in MessageToThingConverter#b64()
 
     // Beware: The order here matters very much, for DatatypeRepository#match()
     public static final Iterable<Datatype<?>> ALL = ImmutableList.of(BOOLEAN, IRI, STRING);

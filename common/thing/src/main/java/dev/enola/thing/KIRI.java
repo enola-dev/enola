@@ -125,8 +125,8 @@ public final class KIRI {
         /** https://www.w3.org/TR/rdf-schema/#ch_label */
         public static final String LABEL = NS + "label";
 
-        // Intentionally no COMMENT here, just use SORG.DESC!
-        // https://www.w3.org/TR/rdf-schema/#ch_comment
+        /** https://www.w3.org/TR/rdf-schema/#ch_comment */
+        public static final String COMMENT = NS + "comment";
 
         private RDFS() {}
     }
