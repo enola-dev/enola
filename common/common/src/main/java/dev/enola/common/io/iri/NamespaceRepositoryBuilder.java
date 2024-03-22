@@ -51,8 +51,8 @@ public class NamespaceRepositoryBuilder extends RepositoryBuilder<Namespace> {
         return new ImmutableNamespaceRepository(items.buildOrThrow(), prefixes.buildOrThrow());
     }
 
-    private class ImmutableNamespaceRepository extends RepositoryBuilder<Namespace>.RepositoryImpl
-            implements NamespaceRepository {
+    private static class ImmutableNamespaceRepository
+            extends RepositoryBuilder.RepositoryImpl<Namespace> implements NamespaceRepository {
 
         private final ImmutableSortedMap<String, String> prefixes;
 
