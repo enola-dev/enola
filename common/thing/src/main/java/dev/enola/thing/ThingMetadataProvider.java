@@ -82,6 +82,10 @@ public class ThingMetadataProvider implements MetadataProvider {
     public String getDescriptionHTML(String iri) {
         var description = getString(iri, KIRI.SCHEMA.DESC);
         if (description != null) return description;
+
+        description = getString(iri, KIRI.RDFS.COMMENT);
+        if (description != null) return description;
+
         return "";
     }
 

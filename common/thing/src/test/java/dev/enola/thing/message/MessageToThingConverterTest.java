@@ -72,7 +72,7 @@ public class MessageToThingConverterTest {
                             c.toLiteral(Timestamps.toString(ts), KIRI.XSD.TS).build())
                     .putFields(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.BYTES_FIELD_NUMBER),
-                            c.toLiteral("AQID", KIRI.XSD.BIN64).build())
+                            c.toLiteral("mAQID", KIRI.XSD.BIN64).build())
                     .putFields(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.ANENUM_FIELD_NUMBER),
                             c.toLink(

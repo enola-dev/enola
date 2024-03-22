@@ -29,6 +29,7 @@ import java.io.IOException;
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  */
 public interface ThingProvider {
+    // TODO implements Repository<Thing> ?
     // TODO Later consider merging this with ThingService?
 
     /**

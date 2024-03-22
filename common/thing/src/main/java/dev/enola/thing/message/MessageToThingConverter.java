@@ -123,7 +123,9 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     private String b64(ByteString byteString) {
-        return Base64.getEncoder().encodeToString(byteString.toByteArray());
+        // Nota Bene: The "m" prefix is base64 from https://github.com/multiformats/multibase
+        // TODO Fully Support Multibase, see TODO in Datatypes for #BINARY support there
+        return "m" + Base64.getEncoder().encodeToString(byteString.toByteArray());
     }
 
     private Value.Builder toThingByFieldName(
