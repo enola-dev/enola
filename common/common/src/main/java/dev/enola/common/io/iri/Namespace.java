@@ -15,8 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.common.io.iri;
 
-import com.google.common.io.ByteSink;
+public interface Namespace {
 
-public interface ObjectToBytesConverter<T> extends ConverterInto<T, ByteSink> {}
+    /** Prefix. May be empty. */
+    String prefix();
+
+    /** IRI. Cannot be empty. */
+    String iri();
+}

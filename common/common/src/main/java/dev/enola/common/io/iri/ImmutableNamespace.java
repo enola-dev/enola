@@ -15,8 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.common.io.iri;
 
-import com.google.common.io.ByteSink;
+import com.google.common.base.Strings;
 
-public interface ObjectToBytesConverter<T> extends ConverterInto<T, ByteSink> {}
+import java.util.Objects;
+
+public record ImmutableNamespace(String prefix, String iri) implements Namespace {
+    public ImmutableNamespace {
+        Objects.nonNull(prefix);
+        Objects.nonNull(Strings.emptyToNull(iri));
+    }
+}

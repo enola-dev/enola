@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.thing;
 
-import com.google.common.io.ByteSink;
+public interface Thing {
 
-public interface ObjectToBytesConverter<T> extends ConverterInto<T, ByteSink> {}
+    // TODO ...
+}
