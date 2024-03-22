@@ -12,6 +12,7 @@
     "Bazel",
     "bazelisk",
     "Classpath",
+    "Datatypes",
     "Enola",
     "Intelli",
     "protolint",

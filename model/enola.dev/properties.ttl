@@ -1,0 +1,24 @@
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+
+enola:emoji a rdf:Property;
+  schema:name "Emoji";
+  rdfs:range xsd:string;
+  schema:description "Emoji 😃 of a Thing, from Unicode or <a href='https://www.nerdfonts.com'>Nerdfonts</a>.";
+  enola:emoji "😃".
+
+enola:origin a rdf:Property;
+  rdfs:range xsd:anyURI;
+  schema:description "What something is 'based on', e.g. where it 'comes from'.";
+  enola:emoji "🏺".
+
+<enola:yaml/uri> a rdf:Property;
+  rdfs:range xsd:anyURI;
+  schema:description "The URI of a YAML !!Tag Type; see e.g. https://yaml.org/type/.".
+
+<enola:yaml/shorthand> a rdf:Property;
+  rdfs:range xsd:NCName;
+  schema:description "The Shorthand of a YAML !!Tag Type; see e.g. https://yaml.org/type/.".

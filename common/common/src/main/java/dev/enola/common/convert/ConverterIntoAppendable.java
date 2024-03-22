@@ -17,22 +17,15 @@
  */
 package dev.enola.common.convert;
 
-import com.google.common.io.ByteSink;
-import com.google.common.io.CharSink;
-
-import java.io.OutputStream;
-import java.io.Writer;
+import java.io.IOException;
 
 /**
  * Converts an object of type I into characters written to an Appendable.
- *
- * <p>O is typically something like an {@link Appendable}, *Builder, {@link ByteSink}, {@link
- * CharSink}, {@link OutputStream}, or {@link Writer} or some similar such kind of thing.
  *
  * <p>The "context" of the conversion, if any, must be part of I.
  */
 public interface ConverterIntoAppendable<I> extends ConverterInto<I, Appendable> {
 
     @Override
-    boolean convertInto(I from, Appendable into) throws ConversionException;
+    boolean convertInto(I from, Appendable into) throws ConversionException, IOException;
 }

@@ -15,16 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.repository;
+package dev.enola.common.convert;
 
-public interface Repository<T> {
+import com.google.common.io.ByteSource;
 
-    // TODO Split into 2 interface, separate get()-only; and list()-able?
-
-    Iterable<T> list();
-
-    Iterable<String> listIRI();
-
-    // TODO Optional<T> ?
-    T get(String iri);
-}
+public interface BytesToObjectConverter<T> extends Converter<ByteSource, T> {}

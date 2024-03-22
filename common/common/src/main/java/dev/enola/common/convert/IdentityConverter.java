@@ -15,16 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.repository;
+package dev.enola.common.convert;
 
-public interface Repository<T> {
+public interface IdentityConverter<T> extends BiConverter<T, T> {
 
-    // TODO Split into 2 interface, separate get()-only; and list()-able?
+    @Override
+    default T convertFrom(T input) throws ConversionException {
+        return input;
+    }
 
-    Iterable<T> list();
-
-    Iterable<String> listIRI();
-
-    // TODO Optional<T> ?
-    T get(String iri);
+    @Override
+    default T convertTo(T input) throws ConversionException {
+        return input;
+    }
 }

@@ -1,0 +1,17 @@
+@prefix enola: <https://enola.dev/>.
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#>.
+
+# TODO Generate (some of) this (in-memory & live) by "reading" dev.enola.datatype.Datatypes#list() ...
+# TODO Is (some of) such a XSD string etc. definition in RDF already available somewhere else?
+xsd:string a rdfs:Datatype;
+  <enola:yaml/uri> <tag:yaml.org,2002:str>;
+  <enola:yaml/shorthand> "!!str".
+<< xsd:string <enola:yaml/uri> <tag:yaml.org,2002:str> >> enola:origin <https://yaml.org/type/str.html>.
+<< xsd:string <enola:yaml/shorthand> "!!str" >> enola:origin <https://yaml.org/type/str.html>.
+
+xsd:boolean a rdfs:Datatype;
+  <enola:yaml/uri> <tag:yaml.org,2002:bool>;
+  <enola:yaml/shorthand> "!!bool".
+<< xsd:boolean <enola:yaml/uri> <tag:yaml.org,2002:bool> >> enola:origin <https://yaml.org/type/bool.html>.
+<< xsd:boolean <enola:yaml/shorthand> "!!str" >> enola:origin <https://yaml.org/type/bool.html>.
