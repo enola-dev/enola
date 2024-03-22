@@ -43,7 +43,7 @@ public class TypeRepositoryTest {
         var trb = new TypeRepositoryBuilder();
         trb.addAllTypes(types.getTypesBuilderList());
         Repository<Type> tyr = trb.build();
-        assertThat(tyr.getByName("enola.dev/test1")).isNotNull();
+        assertThat(tyr.get("enola.dev/test1")).isNotNull();
         assertThat(tyr.list()).hasSize(2);
     }
 
