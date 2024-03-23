@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+imports:
+  - https://enola.dev/namespaces
+
+prefixes:
+  # rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  foaf: http://xmlns.com/foaf/0.1/
+  ex: https://enola.dev/tutorial/artist
+
+things:
+  ex:Picasso:
+    # TODO http://www.w3.org/ns/locn#location: !MLS "Spain"@en
+    foaf:firstName: Pablo
+    ex:homeAddress:
+      ex:city: Barcelona
+      ex:street: 31 Art Gallery
+    rdf:type: ex:Artist
+
+  http://example.enola.dev/Dalí:
+    foaf:firstName: [Salvador, Domingo, Felipe, Jacinto]
+    rdf:type: http://example.enola.dev/Artist
