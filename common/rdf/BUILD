@@ -52,7 +52,7 @@ java_library(
         ":rdf",
         "//common/common",
         "//common/protobuf",
-        "//common/thing:test_java_proto",
+        "//common/protobuf:test_java_proto",
         "//common/thing:thing_java",
         "//common/thing:thing_java_proto",
         "//common/yamljson",

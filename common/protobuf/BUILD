@@ -35,6 +35,23 @@ java_proto_library(
     ],
 )
 
+proto_library(
+    name = "test_proto",
+    srcs = ["test.proto"],
+    deps = [
+        "@com_google_protobuf//:any_proto",
+        "@com_google_protobuf//:descriptor_proto",
+        "@com_google_protobuf//:struct_proto",
+        "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+java_proto_library(
+    name = "test_java_proto",
+    visibility = ["//:__subpackages__"],
+    deps = ["test_proto"],
+)
+
 java_library(
     name = "protobuf",
     srcs = glob(["src/main/java/**/*.java"]),

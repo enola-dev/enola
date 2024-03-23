@@ -28,10 +28,10 @@ import com.google.protobuf.util.Timestamps;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.Timestamps2;
-import dev.enola.core.test.TestComplex;
-import dev.enola.core.test.TestEnum;
-import dev.enola.core.test.TestRepeated;
-import dev.enola.core.test.TestSimple;
+import dev.enola.protobuf.test.TestComplex;
+import dev.enola.protobuf.test.TestEnum;
+import dev.enola.protobuf.test.TestRepeated;
+import dev.enola.protobuf.test.TestSimple;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Thing.Builder;
@@ -103,7 +103,7 @@ public class MessageToThingConverterTest {
         var repeatedThing =
                 Thing.newBuilder()
                         .putFields(
-                                "enola:/enola.dev/proto/field/dev.enola.thing.test.TestRepeated/1",
+                                "enola:/enola.dev/proto/field/dev.enola.protobuf.test.TestRepeated/1",
                                 c.toList(c.toValue("one"), c.toValue("two")).build());
         var repeatedThingWithProto = headers(repeatedThing, repeated);
         check(repeated, repeatedThingWithProto);
