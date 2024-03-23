@@ -27,4 +27,4 @@ import dev.enola.datatype.Datatype;
  * decoded to a more suitable Java type, because no {@link Datatype} for this literal's datatype IRI
  * was registered.
  */
-public final record Literal(String value, Thing datatype) {}
+public final record Literal(String value, String datatypeIRI) {}
