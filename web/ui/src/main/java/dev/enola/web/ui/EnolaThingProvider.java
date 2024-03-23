@@ -38,6 +38,7 @@ import java.io.IOException;
 public class EnolaThingProvider implements ThingProvider {
     // TODO Move into dev.enola.core.thing where it probably belongs, more logically?
     // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector
+    // TODO Resolve (some) overlap this class has with abstract class ThingConnectorsProvider
 
     private final MessageToThingConverter m2t = new MessageToThingConverter(new IDValueConverter());
     private final EnolaServiceBlockingStub service;
@@ -66,6 +67,7 @@ public class EnolaThingProvider implements ThingProvider {
             return any.unpack(Thing.class);
         } else if (any.getTypeUrl().endsWith("Things")) {
             var things = any.unpack(Things.class);
+            // TODO The get(0) is wrong, we need to return Things here, and UI needs to show all
             return things.getThingsList().get(0);
         } else {
             var message = enolaMessages.toMessage(any);

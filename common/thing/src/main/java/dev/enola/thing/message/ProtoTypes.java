@@ -77,7 +77,7 @@ public class ProtoTypes {
                 + fieldDescriptor.getNumber();
     }
 
-    static String getEnumValueERI(EnumValueDescriptor enumValue) {
+    public static String getEnumValueERI(EnumValueDescriptor enumValue) {
         return FIELD_ENUM_VALUE_ERI_PREFIX
                 + requireNonNullOrEmpty(enumValue.getType().getFullName())
                 + "/"

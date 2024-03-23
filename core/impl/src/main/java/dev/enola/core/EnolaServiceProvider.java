@@ -32,6 +32,7 @@ import dev.enola.core.aspects.GrpcAspect;
 import dev.enola.core.aspects.TimestampAspect;
 import dev.enola.core.aspects.UriTemplateAspect;
 import dev.enola.core.aspects.ValidationAspect;
+import dev.enola.core.message.ProtoEnumValueToThingConnector;
 import dev.enola.core.message.ProtoFieldToThingConnector;
 import dev.enola.core.message.ProtoMessageToThingConnector;
 import dev.enola.core.meta.EntityAspectWithRepository;
@@ -183,6 +184,7 @@ public class EnolaServiceProvider {
         // Register a bunch of hard-coded built-in Thing Connectors
         register(new ProtoMessageToThingConnector(descriptorProvider), esb, trb);
         register(new ProtoFieldToThingConnector(descriptorProvider), esb, trb);
+        register(new ProtoEnumValueToThingConnector(descriptorProvider), esb, trb);
     }
 
     private void register(
