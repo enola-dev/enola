@@ -58,7 +58,7 @@ public class NewThingUI {
             case STRING -> s(value.getString());
             case LINK -> link(value.getLink());
             case LITERAL -> literal(value.getLiteral());
-            case STRUCT -> html(value.getStruct());
+            case STRUCT -> table(value.getStruct().getFieldsMap(), tableCssClass);
             case LIST -> list(value.getList());
             case KIND_NOT_SET -> "";
             default ->
