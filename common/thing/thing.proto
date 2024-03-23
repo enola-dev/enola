@@ -76,6 +76,7 @@ message Value {
     // /7949a62bf88e1d4e97c93b3a7b8a8cfb201b713a/src/google/protobuf/struct.proto#L84C1-L88C1
 
     Link link = 1;
+    // string link = 1;
 
     string string = 2;
 
@@ -124,12 +125,9 @@ message Value {
     //
     // (TODO Reconsider if since we now have the MetadataProvider we still want
     // to keep this, or abandon this field and replace it with metadata fetching
-    // in the UI; just like we do for the IRI key of the property?)
+    // in the UI; just like we do for the IRI key of the property? Then we can
+    // "inline" and entirely get rid of message Link!)
     string label = 2;
-
-    // TODO Is there any point/interest in Link (optionally) having a
-    // LangString? Note that RDF doesn't even have labels on links anyway.
-    // LangString lang_string = 3;
   }
 
   message Literal {

@@ -34,6 +34,7 @@ import java.io.Writer;
  *
  * @see Converter
  */
+@FunctionalInterface
 public interface ConverterInto<I, O> {
 
     /**

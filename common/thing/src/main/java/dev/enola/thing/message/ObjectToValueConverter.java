@@ -15,21 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.thing.message;
 
-/**
- * Converts an object of type I to a new object of type O.
- *
- * <p>The "context" of the conversion, if any, must be part of I.
- *
- * <p>For #efficiency, consider whether this or a {@link ConverterInto} is more suitable.
- *
- * <p>Converter implementations "have" to convert, and should never return null; if they may or may
- * not convert depending on I, then implement an {@link OptionalConverter} instead of throwing a
- * ConversionException.
- */
-@FunctionalInterface
-public interface Converter<I, O> {
+import dev.enola.common.convert.OptionalConverter;
+import dev.enola.thing.proto.Value;
 
-    O convert(I input) throws ConversionException;
-}
+public interface ObjectToValueConverter extends OptionalConverter<Object, Value.Builder> {}

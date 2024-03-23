@@ -17,19 +17,26 @@
  */
 package dev.enola.common.convert;
 
-/**
- * Converts an object of type I to a new object of type O.
- *
- * <p>The "context" of the conversion, if any, must be part of I.
- *
- * <p>For #efficiency, consider whether this or a {@link ConverterInto} is more suitable.
- *
- * <p>Converter implementations "have" to convert, and should never return null; if they may or may
- * not convert depending on I, then implement an {@link OptionalConverter} instead of throwing a
- * ConversionException.
- */
-@FunctionalInterface
-public interface Converter<I, O> {
+import java.util.Optional;
 
-    O convert(I input) throws ConversionException;
+/**
+ * A "chain" of {@link OptionalConverter}s. It attempts the conversion in order until one is
+ * successful.
+ */
+public class OptionalConverterChain<I, O> implements OptionalConverter<I, O> {
+
+    private final Iterable<OptionalConverter<I, O>> converters;
+
+    public OptionalConverterChain(Iterable<OptionalConverter<I, O>> converters) {
+        this.converters = converters;
+    }
+
+    @Override
+    public Optional<O> convert(I input) throws ConversionException {
+        for (var converter : converters) {
+            var opt = converter.convert(input);
+            if (opt.isPresent()) return opt;
+        }
+        return Optional.empty();
+    }
 }

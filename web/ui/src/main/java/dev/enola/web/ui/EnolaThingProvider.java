@@ -20,6 +20,8 @@ package dev.enola.web.ui;
 import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.core.entity.IDValueConverter;
 import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
@@ -34,9 +36,10 @@ import dev.enola.thing.proto.Things;
 import java.io.IOException;
 
 public class EnolaThingProvider implements ThingProvider {
-    // TODO This class doesn't really belong here, but into dev.enola.core.thing?
+    // TODO Move into dev.enola.core.thing where it probably belongs, more logically?
+    // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector
 
-    private final MessageToThingConverter m2t = new MessageToThingConverter();
+    private final MessageToThingConverter m2t = new MessageToThingConverter(new IDValueConverter());
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
@@ -53,7 +56,7 @@ public class EnolaThingProvider implements ThingProvider {
     }
 
     @Override
-    public Thing getThing(String iri) throws IOException {
+    public Thing getThing(String iri) throws IOException, ConversionException {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         var any = response.getThing();

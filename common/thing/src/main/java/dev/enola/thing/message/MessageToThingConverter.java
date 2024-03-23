@@ -18,6 +18,7 @@
 package dev.enola.thing.message;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.Descriptors.FieldDescriptor;
@@ -25,12 +26,16 @@ import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
+import dev.enola.common.convert.OptionalConverter;
+import dev.enola.common.convert.OptionalConverterChain;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
 import java.util.Base64;
+import java.util.Optional;
 
 public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
 
@@ -38,14 +43,25 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
 
     // TODO com.google.protobuf.Struct support!
 
+    private final OptionalConverter<Object, Value.Builder> converter;
+
+    public MessageToThingConverter(OptionalConverter<Object, Value.Builder> converter) {
+        this.converter =
+                new OptionalConverterChain<>(ImmutableList.of(timestampValueConverter, converter));
+    }
+
+    public MessageToThingConverter() {
+        this.converter = input -> Optional.empty();
+    }
+
     @Override
-    public Thing.Builder convert(MessageWithIRI messageWithIRI) {
+    public Thing.Builder convert(MessageWithIRI messageWithIRI) throws ConversionException {
         var thing = from(messageWithIRI.message(), true);
         thing.setIri(messageWithIRI.iri());
         return thing;
     }
 
-    private Thing.Builder from(Message message, boolean isTopLevel) {
+    private Thing.Builder from(Message message, boolean isTopLevel) throws ConversionException {
         var thing = Thing.newBuilder();
         if (isTopLevel) {
             ProtoTypes.addProtoField(thing, message);
@@ -59,7 +75,8 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         return thing;
     }
 
-    private Value.Builder listToThing(Object object, FieldDescriptor field, Message message) {
+    private Value.Builder listToThing(Object object, FieldDescriptor field, Message message)
+            throws ConversionException {
         if (field.isRepeated()) {
             var n = message.getRepeatedFieldCount(field);
             var values = new Value.Builder[n];
@@ -80,16 +97,30 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         return Value.newBuilder().setList(valueList);
     }
 
-    private Value.Builder toThing(Object object, FieldDescriptor field, Message message) {
+    private Value.Builder toThing(Object object, FieldDescriptor field, Message message)
+            throws ConversionException {
         return switch (object) {
-                // TODO case ID id -> ? ;
             case Timestamp ts -> toLiteral(Timestamps.toString(ts), KIRI.XSD.TS);
-            default -> toThingByFieldType(object, field, message);
+            default -> toThingFallback(object, field, message);
         };
     }
 
-    private Value.Builder toThingByFieldType(
-            Object object, FieldDescriptor field, Message message) {
+    private Value.Builder toThingFallback(Object object, FieldDescriptor field, Message message)
+            throws ConversionException {
+        var opt = converter.convert(object);
+        if (opt.isPresent()) return opt.get();
+        else return toThingByFieldType(object, field, message);
+    }
+
+    private static final ObjectToValueConverter timestampValueConverter =
+            input -> {
+                if (!(input instanceof Timestamp)) return Optional.empty();
+                Timestamp ts = (Timestamp) input;
+                return Optional.of(toLiteral(Timestamps.toString(ts), KIRI.XSD.TS));
+            };
+
+    private Value.Builder toThingByFieldType(Object object, FieldDescriptor field, Message message)
+            throws ConversionException {
         return switch (field.getType()) {
             case FieldDescriptor.Type.ENUM -> toEnumLink((EnumValueDescriptor) object);
             case FieldDescriptor.Type.BOOL -> toLiteral(object.toString(), KIRI.XSD.BOOL);
@@ -138,7 +169,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         };
     }
 
-    Value.Builder toLiteral(String value, String datatype) {
+    static Value.Builder toLiteral(String value, String datatype) {
         var literal = Value.Literal.newBuilder().setValue(value).setDatatype(datatype);
         return Value.newBuilder().setLiteral(literal);
     }

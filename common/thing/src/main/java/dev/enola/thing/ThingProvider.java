@@ -17,6 +17,7 @@
  */
 package dev.enola.thing;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.proto.Thing;
 
 import java.io.IOException;
@@ -39,9 +40,10 @@ public interface ThingProvider {
      * @param iri an IRI
      * @return a Thing, never null; but may be an empty Thing for an unknown IRI
      * @throws IOException if there was something at that IRI but it could not be read
+     * @throws ConversionException if there was a problem converting what was at the IRI to a hHing
      */
     // TODO Things not just 1x Thing?
-    Thing getThing(String iri) throws IOException;
+    Thing getThing(String iri) throws IOException, ConversionException;
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
 }
