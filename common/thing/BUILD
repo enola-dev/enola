@@ -64,23 +64,6 @@ java_library(
     ],
 )
 
-proto_library(
-    name = "test_proto",
-    srcs = ["thing_test.proto"],
-    deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
-)
-
-java_proto_library(
-    name = "test_java_proto",
-    visibility = ["//:__subpackages__"],
-    deps = ["test_proto"],
-)
-
 [java_test(
     name = name[:-len(".java")],
     size = "small",
@@ -90,11 +73,11 @@ java_proto_library(
         "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
-        ":test_java_proto",
         ":thing_java",
         ":thing_java_proto",
         "//common/common",
         "//common/protobuf",
+        "//common/protobuf:test_java_proto",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

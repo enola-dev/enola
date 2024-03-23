@@ -16,16 +16,16 @@
 
 syntax = "proto3";
 
-package dev.enola.thing.test;
+package dev.enola.protobuf.test;
 
 import "google/protobuf/any.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
-option java_package = "dev.enola.core.test";
+option java_package = "dev.enola.protobuf.test";
 option java_multiple_files = true;
-option go_package = "dev/enola/core/test";
+option go_package = "dev/enola/protobuf/test";
 
 enum TestEnum {
   TEST_ENUM_UNSPECIFIED = 0;
