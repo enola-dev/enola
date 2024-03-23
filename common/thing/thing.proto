@@ -169,10 +169,29 @@ message LinksMetadata {
   map<string, ThingMetadata> metadata = 1;
 }
 
-// TODO Using "uint64 id" instead the string IRIs could permit a more "scalable"
-// distributed RDF-like data model with Protocol Buffers. (Simply because as-is,
-// the repeated serialization of all those long IRI Strings is not ideal. See
-// also e.g. the "value-reference-declaration-records" of
+message TextThings {
+  repeated string imports = 2;
+  map<string, string> prefixes = 3;
+  map<string, TextThing> things = 4;
+}
+message TextThing {
+  map<string, string> properties = 1;
+}
+
+message CompactThings {
+  uint64 id = 1;
+  map<uint64, CompactThing> things = 2;
+  map<uint64, string> links = 3;
+}
+message CompactThing {
+  // TODO bytes, really?
+  map<uint64, bytes> properties = 1;
+}
+
+// TODO Using "uint64 id" instead the string IRIs could permit a more
+// "scalable" distributed RDF-like data model with Protocol Buffers. (Simply
+// because as-is, the repeated serialization of all those long IRI Strings
+// is not ideal. See also e.g. the "value-reference-declaration-records" of
 // https://rdf4j.org/documentation/reference/rdf4j-binary.)
 //
 // PS: Apache Jena's

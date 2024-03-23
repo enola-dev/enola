@@ -100,8 +100,8 @@ public final class ThingAdapter implements Thing {
         var protoProperties = struct.getFieldsMap();
         var mapBuilder =
                 ImmutableMap.<String, Object>builderWithExpectedSize(protoProperties.size());
-        for (var propertyIRI : protoProperties.keySet()) {
-            mapBuilder.put(propertyIRI, value(protoProperties.get(propertyIRI)));
+        for (var entry : protoProperties.entrySet()) {
+            mapBuilder.put(entry.getKey(), value(entry.getValue()));
         }
         return mapBuilder.build();
     }
