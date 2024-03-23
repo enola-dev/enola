@@ -20,6 +20,7 @@ package dev.enola.core.resource;
 import com.google.protobuf.Any;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.EnolaException;
@@ -32,14 +33,24 @@ import dev.enola.core.rosetta.ResourceIntoThingConverter;
 
 import java.net.URISyntaxException;
 
+/**
+ * ResourceEnolaService implements {@link EnolaService} by fetching bytes from a {@link
+ * ResourceProvider} and converting them into Things using an {@link OptionalConverter}, such as its
+ * default {@link ResourceIntoThingConverter}.
+ */
 public class ResourceEnolaService implements EnolaService {
 
-    private final ResourceIntoThingConverter resourceToThingConverter =
-            new ResourceIntoThingConverter();
+    private final ResourceIntoThingConverter resourceToThingConverter;
     private final ResourceProvider rp;
 
-    public ResourceEnolaService(ResourceProvider rp) {
+    public ResourceEnolaService(
+            ResourceProvider rp, ResourceIntoThingConverter resourceToThingConverter) {
+        this.resourceToThingConverter = resourceToThingConverter;
         this.rp = rp;
+    }
+
+    public ResourceEnolaService(ResourceProvider rp) {
+        this(rp, new ResourceIntoThingConverter());
     }
 
     @Override

@@ -86,6 +86,7 @@ message Type {
   // URI Template of instances of this Type.
   // For example, "hello/{message}" - where the parameter "message" refers to a
   // property; so instances would be e.g. "hello/world" and "hello/planets".
+  // TODO Rename Type.uri to iri_template! (Because that's what this really is.)
   string uri = 4 [(dev.enola.type) = "enola.dev/uri-template"];
 
   // Properties of this Type.

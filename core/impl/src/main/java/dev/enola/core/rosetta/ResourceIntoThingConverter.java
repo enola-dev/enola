@@ -33,6 +33,10 @@ import java.util.Optional;
 public class ResourceIntoThingConverter
         implements OptionalConverter<ReadableResource, List<Thing.Builder>> {
 
+    // TODO Split interface ResourceIntoThingConverter & class RdfResourceIntoThingConverter
+    // TODO Also implement e.g. an MarkdownResourceIntoThingConverter
+    // TODO Also implement e.g. JavaResourceIntoThingConverter
+
     private final RdfReaderConverter rdfReaderConverter = new RdfReaderConverter();
     private final RdfThingConverter rdfThingConverter = new RdfThingConverter();
 

@@ -149,8 +149,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
 
     private Value.Builder toEnumLink(EnumValueDescriptor enumValue) {
         var iri = ProtoTypes.getEnumValueERI(enumValue);
-        var label = enumValue.getName();
-        return toLink(iri, label);
+        return toLink(iri, "");
     }
 
     private String b64(ByteString byteString) {

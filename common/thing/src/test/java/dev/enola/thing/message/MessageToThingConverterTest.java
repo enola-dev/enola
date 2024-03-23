@@ -79,7 +79,7 @@ public class MessageToThingConverterTest {
                             c.toLink(
                                             ProtoTypes.getEnumValueERI(
                                                     TestEnum.TEST_ENUM_B.getValueDescriptor()),
-                                            "TEST_ENUM_B")
+                                            "")
                                     .build());
 
     Thing.Builder simpleThingWithProto = headers(Thing.newBuilder(simpleThing.build()), simple);

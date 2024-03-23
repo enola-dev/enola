@@ -17,8 +17,8 @@
  */
 package dev.enola.core.message;
 
-import com.google.protobuf.DescriptorProtos.FieldDescriptorProto;
-import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.DescriptorProtos.EnumValueDescriptorProto;
+import com.google.protobuf.Descriptors.EnumDescriptor;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -32,20 +32,20 @@ import dev.enola.thing.proto.Things;
 
 import java.util.Map;
 
-public class ProtoFieldToThingConnector extends ProtoToThingConnector {
+public class ProtoEnumValueToThingConnector extends ProtoToThingConnector {
     // TODO Move to package dev.enola.thing.message ?
 
-    public ProtoFieldToThingConnector(DescriptorProvider descriptorProvider) {
+    public ProtoEnumValueToThingConnector(DescriptorProvider descriptorProvider) {
         super(descriptorProvider);
     }
 
     @Override
     public Type type() {
         return Type.newBuilder()
-                .setEmoji("🏒")
-                .setName("enola.dev/proto/field")
-                .setUri(ProtoTypes.FIELD_DESCRIPTOR_ERI_PREFIX + "{FQN}/{NUMBER}")
-                .setProto(FieldDescriptorProto.getDescriptor().getFullName())
+                .setEmoji("🔂")
+                .setName("enola.dev/proto/enum-value")
+                .setUri(ProtoTypes.FIELD_ENUM_VALUE_ERI_PREFIX + "{FQN}/{NUMBER}")
+                .setProto(EnumValueDescriptorProto.getDescriptor().getFullName())
                 .build();
     }
 
@@ -53,14 +53,14 @@ public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     public void augment(Things.Builder things, String iri, Map<String, String> parameters)
             throws EnolaException {
         var fqn = parameters.get("FQN");
-        var descriptor = (Descriptor) descriptorProvider.findByName(fqn);
 
+        var enumDescriptor = (EnumDescriptor) descriptorProvider.findByName(fqn);
         var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
-        var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
+        var enumValueDescriptor = enumDescriptor.findValueByNumberCreatingIfUnknown(fieldNumber);
 
         try {
-            var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
-            ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
+            var newThing = m2t.convert(new MessageWithIRI(iri, enumValueDescriptor.toProto()));
+            ThingExt.setString(newThing, KIRI.RDFS.LABEL, enumValueDescriptor.getName());
             things.addThings(newThing);
         } catch (ConversionException e) {
             throw new EnolaException("Failed to convert: " + iri, e);

@@ -74,7 +74,7 @@ message Value {
     // /7949a62bf88e1d4e97c93b3a7b8a8cfb201b713a/src/google/protobuf/struct.proto#L84C1-L88C1
 
     Link link = 1;
-    // string link = 1;
+    // TODO string link = 1;
 
     string string = 2;
 

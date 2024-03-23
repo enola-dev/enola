@@ -18,7 +18,6 @@
 package dev.enola.core.message;
 
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
-
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.core.EnolaException;
@@ -44,7 +43,6 @@ public class ProtoMessageToThingConnector extends ProtoToThingConnector {
                 .setEmoji("🕵🏾‍♀️")
                 .setName("enola.dev/proto/message")
                 .setUri(ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX + "{FQN}")
-                // This is "google.protobuf.DescriptorProto"
                 .setProto(DescriptorProto.getDescriptor().getFullName())
                 .build();
     }
