@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.meta;
+package dev.enola.common.protobuf;
 
 import com.google.protobuf.DescriptorProtos.FileDescriptorSet;
 import com.google.protobuf.Descriptors.Descriptor;
@@ -23,18 +23,14 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.Descriptors.FileDescriptor;
 import com.google.protobuf.TypeRegistry;
 
-import dev.enola.common.protobuf.DescriptorProvider;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// TODO Move this class to package dev.enola.common.protobuf
-// (next to class TypeRegistryDescriptorProvider)
-//
 // TODO Optimization: This should allow clients like CLI to fetch as Map of Protos!
 public class TypeRegistryWrapper implements DescriptorProvider {
+
     private final TypeRegistry originalTypeRegistry;
     private final FileDescriptorSet fileDescriptorSet;
 
