@@ -17,7 +17,7 @@
  */
 package dev.enola.thing;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Collection;
 
 public interface Thing {
 
@@ -29,5 +29,34 @@ public interface Thing {
      * a {@link Link} with an IRI (if unresolved) or another Map (for an "inline embedded/expanded
      * blank node") or a List of such items.
      */
-    ImmutableMap<Thing, Object> properties();
+    // ImmutableMap<Thing, Object> properties();
+
+    /** Predicates about this Thing. */
+    // Collection<Thing> predicates();
+
+    /** IRIs of the Predicates about this Thing. */
+    Collection<String> predicateIRIs();
+
+    /**
+     * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
+     * Alteratively, it may be another Thing (if it's been "resolved") or a {@link Link} with an IRI
+     * (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List of
+     * such items.
+     */
+    <T> T get(String predicateIRI);
+
+    @SuppressWarnings("unchecked")
+    default <T> T get(String predicateIRI, Class<T> klass) {
+        Object object = get(predicateIRI);
+        if (!klass.isInstance(object))
+            throw new IllegalArgumentException(
+                    iri() + "'s " + predicateIRI + " is " + object.getClass() + " not " + klass);
+        return (T) object;
+    }
+
+    default String getString(String predicateIRI) {
+        return get(predicateIRI, String.class);
+    }
+
+    // TODO get... other types.
 }
