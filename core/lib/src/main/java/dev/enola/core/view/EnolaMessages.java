@@ -27,7 +27,6 @@ import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.Thing;
 
 public class EnolaMessages extends Messages {
 
@@ -47,7 +46,6 @@ public class EnolaMessages extends Messages {
                         dev.enola.thing.proto.Things.getDefaultInstance())
 
                 // enola_core.proto
-                .put(Thing.getDescriptor().getFullName(), Thing.getDefaultInstance())
                 .put(Entity.getDescriptor().getFullName(), Entity.getDefaultInstance())
                 .put(ID.getDescriptor().getFullName(), ID.getDefaultInstance())
 

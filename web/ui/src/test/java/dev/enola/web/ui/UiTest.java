@@ -74,7 +74,9 @@ public class UiTest {
 
                 // Linked Data
                 assertThat(response2)
-                        .contains("<a href=/ui/proto/dev.enola.core.Entity>dev.enola.core.Entity");
+                        .contains(
+                                "<a href=/ui/enola:/enola.dev/proto/message/dev.enola.core.Entity"
+                                        + ">dev.enola.core.Entity");
 
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html?
 

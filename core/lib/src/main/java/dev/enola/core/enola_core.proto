@@ -28,24 +28,6 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/core";
 
-message Thing {
-  oneof kind {
-    LinkedText text = 4;
-    List list = 5;
-    Struct struct = 6;
-  }
-  message LinkedText {
-    string string = 1;
-    string uri = 2;
-  }
-  message List {
-    repeated Thing entries = 1;
-  }
-  message Struct {
-    map<string, Thing> fields = 3;
-  }
-}
-
 // ID of an Entity known to Enola, fully qualified.
 // Can be formatted to and parsed from several different string text forms,
 // see Java class dev.enola.core.IDs.java

@@ -40,7 +40,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
-import dev.enola.core.view.Things;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.ThingProvider;
 import dev.enola.web.StaticWebHandler;
@@ -101,9 +100,6 @@ public class UI implements WebHandler {
         if (path.startsWith("/ui/")) {
             var eri = path.substring("/ui/".length());
             return getEntityHTML(eri, false);
-        } else if (path.startsWith("/ui3/")) {
-            var iri = path.substring("/ui3/".length());
-            return getEntityHTML(iri, true);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
             return new ClasspathResource("static/404.html").charSource().read();
@@ -117,14 +113,8 @@ public class UI implements WebHandler {
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);
 
-        String thingHTML;
-        if (usingNewAPI) {
-            var thing = thingProvider.getThing(iri);
-            thingHTML = thingUI.html(thing).toString();
-        } else {
-            var thing = Things.from(message);
-            thingHTML = ThingUI.html(thing).toString();
-        }
+        var thing = thingProvider.getThing(iri);
+        var thingHTML = thingUI.html(thing).toString();
 
         // TODO Replace this with a *.yaml (et al.) link in the UI!
         var yamlResource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
