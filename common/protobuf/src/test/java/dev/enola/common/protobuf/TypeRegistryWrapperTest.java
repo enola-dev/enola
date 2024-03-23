@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.meta;
+package dev.enola.common.protobuf;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.protobuf.Any.pack;
@@ -29,9 +29,6 @@ import com.google.protobuf.Descriptors;
 import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.NullResource;
-import dev.enola.common.protobuf.ProtoIO;
-import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.ID;
 
 import org.junit.Test;
 
@@ -63,8 +60,6 @@ public class TypeRegistryWrapperTest {
                                 ImmutableList.of(
                                         Any.getDescriptor(),
                                         Timestamp.getDescriptor(),
-                                        ID.getDescriptor(),
-                                        EntityKind.getDescriptor(),
                                         DescriptorProtos.DescriptorProto.getDescriptor()))
                         .build();
         check(wrapper1);
@@ -76,9 +71,9 @@ public class TypeRegistryWrapperTest {
 
     private void check(TypeRegistryWrapper wrapper) throws IOException {
         var io = new ProtoIO(wrapper.get());
-        io.write(EntityKind.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+        io.write(Timestamp.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
 
-        var any = pack(EntityKind.getDefaultInstance(), "type.googleapis.com/");
+        var any = pack(Timestamp.getDefaultInstance(), "type.googleapis.com/");
         io.write(any, new NullResource(PROTOBUF_JSON_UTF_8));
     }
 }

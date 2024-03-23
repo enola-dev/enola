@@ -21,8 +21,8 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.entity.IDValueConverter;
-import dev.enola.core.meta.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;

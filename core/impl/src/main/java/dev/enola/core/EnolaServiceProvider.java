@@ -22,6 +22,8 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.ExtensionRegistry;
 
 import dev.enola.common.protobuf.DescriptorProvider;
+import dev.enola.common.protobuf.TypeRegistryWrapper;
+import dev.enola.common.protobuf.TypeRegistryWrapper.Builder;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.aspects.ErrorTestAspect;
 import dev.enola.core.aspects.FilestoreRepositoryAspect;
@@ -34,8 +36,6 @@ import dev.enola.core.message.ProtoMessageToThingConnector;
 import dev.enola.core.meta.EntityAspectWithRepository;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.SchemaAspect;
-import dev.enola.core.meta.TypeRegistryWrapper;
-import dev.enola.core.meta.TypeRegistryWrapper.Builder;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.thing.ThingConnector;
 import dev.enola.core.thing.ThingConnectorService;
