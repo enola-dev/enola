@@ -49,7 +49,7 @@ public class NewThingUI {
     }
 
     public CharSequence html(ThingOrBuilder thing) {
-        // TODO Print thing.getIri()
+        // TODO Print/include thing.getIri() on of HTML, but with initial / link
         return table(thing.getFieldsMap(), "thing");
     }
 
@@ -121,21 +121,17 @@ public class NewThingUI {
         var sb = new StringBuilder();
         var iri = link.getIri();
         if (!Strings.isNullOrEmpty(iri)) {
+            // TODO Distinguish between "internal" vs "external" links - but how?!
             String url = "/ui3/" + iri;
-            // String url;
-            // if (iri.startsWith("enola:")) {
-            //     url = "/ui3/" + iri.substring("enola:".length());
-            // } else {
-            //     url = iri;
-            // }
-
             // TODO s(uri) or not - or another escaping?
             sb.append("<a href=" + s(url) + ">");
         }
-        // TODO Use metadataProvider here as well?! Get rid of label on Link? Remove this method?!
+
+        // TODO Get rid of label on Link?!
         var label = link.getLabel();
         if (!label.isEmpty()) sb.append(s(label));
-        else sb.append("???");
+        else sb.append(s(metadataProvider.getLabel(iri)));
+
         if (!Strings.isNullOrEmpty(iri)) {
             sb.append("</a>");
         }
