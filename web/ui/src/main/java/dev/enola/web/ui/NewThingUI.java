@@ -104,7 +104,7 @@ public class NewThingUI {
         sb.append(metadataProvider.getImageHTML(iri));
         sb.append(' ');
         // TODO s(uri) or not - or another escaping?
-        sb.append("<a href=" + s("/ui3/" + iri));
+        sb.append("<a href=" + s("/ui/" + iri));
         var description = metadataProvider.getDescriptionHTML(iri);
         if (!description.isEmpty()) {
             sb.append(" title=\"");
@@ -122,7 +122,7 @@ public class NewThingUI {
         var iri = link.getIri();
         if (!Strings.isNullOrEmpty(iri)) {
             // TODO Distinguish between "internal" vs "external" links - but how?!
-            String url = "/ui3/" + iri;
+            String url = "/ui/" + iri;
             // TODO s(uri) or not - or another escaping?
             sb.append("<a href=" + s(url) + ">");
         }
