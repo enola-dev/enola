@@ -149,7 +149,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
 
     private Value.Builder toEnumLink(EnumValueDescriptor enumValue) {
         var iri = ProtoTypes.getEnumValueERI(enumValue);
-        return toLink(iri, "");
+        return toLink(iri);
     }
 
     private String b64(ByteString byteString) {
@@ -176,14 +176,14 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     @VisibleForTesting
     Value.Builder toValue(String string) {
         if (string.startsWith("https://") || string.startsWith("http://")) {
-            return toLink(string, "");
+            return toLink(string);
         } else {
             return Value.newBuilder().setString(string);
         }
     }
 
-    static Value.Builder toLink(String iri, String label) {
-        var link = Value.Link.newBuilder().setIri(iri).setLabel(label);
+    static Value.Builder toLink(String iri) {
+        var link = Value.Link.newBuilder().setIri(iri);
         return Value.newBuilder().setLink(link);
     }
 }
