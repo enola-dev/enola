@@ -30,10 +30,12 @@ import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.EmptyResource;
+import dev.enola.common.io.resource.MemoryResource;
 
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 
 public class MediaTypeDetectorTest {
@@ -75,9 +77,25 @@ public class MediaTypeDetectorTest {
     // TODO Rewrite more from above in this new style (to test BOM sniffing)
 
     @Test
-    public void testEmptyYAML() {
+    public void testEmptyYML() {
         // Empty .YAML is UTF-8
         var r = new EmptyResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
         assertThat(md.detect(r)).hasValue(YAML_UTF_8);
     }
+
+    @Test
+    public void testNoHeaderYAML() throws IOException {
+        // A .YAML without header and just some ASCII is still UTF-8
+        var text = "hello: world";
+        var r = new MemoryResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
+        r.byteSink().write(text.getBytes(Charsets.US_ASCII));
+        assertThat(md.detect(r)).hasValue(YAML_UTF_8);
+
+        assertThat(r.charSource(md.detect(r).get().charset().get()).read()).isEqualTo(text);
+
+        // TODO Make this work... it requires using the MediaTypeDetector directly in MemoryResource
+        // assertThat(r.charSource().read()).isEqualTo(YAML_UTF_8);
+    }
+
+    // TODO Add mising test coverage for the BOM detection from YamlMediaType
 }
