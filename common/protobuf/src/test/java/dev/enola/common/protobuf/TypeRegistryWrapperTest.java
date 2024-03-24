@@ -29,6 +29,8 @@ import com.google.protobuf.Descriptors;
 import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.NullResource;
+import dev.enola.protobuf.test.TestEnum;
+import dev.enola.protobuf.test.TestSimple;
 
 import org.junit.Test;
 
@@ -59,21 +61,33 @@ public class TypeRegistryWrapperTest {
                         .add(
                                 ImmutableList.of(
                                         Any.getDescriptor(),
+                                        TestSimple.getDescriptor(),
                                         Timestamp.getDescriptor(),
                                         DescriptorProtos.DescriptorProto.getDescriptor()))
                         .build();
         check(wrapper1);
-        var fileDescriptorProto = wrapper1.fileDescriptorSet();
 
+        var fileDescriptorProto = wrapper1.fileDescriptorSet();
         var wrapper2 = TypeRegistryWrapper.from(fileDescriptorProto);
         check(wrapper2);
     }
 
     private void check(TypeRegistryWrapper wrapper) throws IOException {
-        var io = new ProtoIO(wrapper.get());
-        io.write(Timestamp.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+        protoIO(wrapper);
+        wrapper.findByName(TestSimple.getDescriptor().getFullName());
 
-        var any = pack(Timestamp.getDefaultInstance(), "type.googleapis.com/");
-        io.write(any, new NullResource(PROTOBUF_JSON_UTF_8));
+        var anEnumName = TestEnum.getDescriptor().getFullName();
+        wrapper.findByName(anEnumName);
+    }
+
+    private void protoIO(TypeRegistryWrapper wrapper) throws IOException {
+        var io = new ProtoIO(wrapper.get());
+        io.write(TestSimple.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
+
+        var any1 = pack(TestSimple.getDefaultInstance());
+        io.write(any1, new NullResource(PROTOBUF_JSON_UTF_8));
+
+        var any2 = pack(TestSimple.getDefaultInstance(), "type.googleapis.com/");
+        io.write(any2, new NullResource(PROTOBUF_JSON_UTF_8));
     }
 }

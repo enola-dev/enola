@@ -29,7 +29,11 @@ kinds {
     value: {
       label: "Protocol Buffer Descriptor (Proto)"
       description: "This is the Proto ('Schema') for the 'Any' fields in the 'data' of a Connector."
-      type_url: "type.googleapis.com/google.protobuf.DescriptorProto"
+
+      # Since the work which make TypeRegistryWrapper support
+      # EnumDescriptor/FieldDescriptor/ServiceDescriptor in addition to only
+      # DescriptorProto, we cannot put a type_url for validation here anymore.
+      # type_url: "type.googleapis.com/google.protobuf.DescriptorProto"
     }
   }
   # TODO Add a "source" kind of data entry, which links to the Connector?

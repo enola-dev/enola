@@ -25,7 +25,7 @@ import "google/protobuf/timestamp.proto";
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.protobuf.test";
 option java_multiple_files = true;
-option go_package = "dev/enola/protobuf/test";
+option go_package = "dev/enola/core/test";
 
 enum TestEnum {
   TEST_ENUM_UNSPECIFIED = 0;

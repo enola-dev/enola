@@ -54,9 +54,10 @@ public class EntityKindValidations {
                         if (isNullOrEmpty(data.getLabel())) {
                             r.add(Data.getDescriptor(), "Data label mandatory");
                         }
-                        if (isNullOrEmpty(data.getTypeUrl())) {
-                            r.add(Data.getDescriptor(), "Data type_url mandatory");
-                        }
+                        // See schema.textproto for why we cannot:
+                        // if (isNullOrEmpty(data.getTypeUrl())) {
+                        //     r.add(Data.getDescriptor(), "Data type_url mandatory");
+                        // }
                     }
                 }
             };

@@ -18,13 +18,15 @@
 package dev.enola.common.protobuf;
 
 import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.GenericDescriptor;
 
 public interface DescriptorProvider {
 
     // TODO Integrate with dev.enola.common.protobuf.Messages?
 
+    // TODO Remove the un-used typeURL (instead of FQN) variant
     // TODO Rename to findByTypeUrl() for consistency
     Descriptor getDescriptorForTypeUrl(String messageTypeURL);
 
-    Descriptor findByName(String protoMessageFullyQualifiedName);
+    GenericDescriptor findByName(String protoMessageFullyQualifiedName);
 }

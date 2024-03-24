@@ -18,6 +18,7 @@
 package dev.enola.common.protobuf;
 
 import com.google.protobuf.Descriptors;
+import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.DynamicMessage;
 
 import dev.enola.common.io.resource.ReadableResource;
@@ -42,7 +43,8 @@ public class MessageResourceConverter implements CatchingResourceConverter {
             throws IOException {
         var fromProtoFQN = ProtobufMediaTypes.getProtoMessageFQN(from.mediaType());
         if (fromProtoFQN.isPresent()) {
-            Descriptors.Descriptor descriptor = descriptorProvider.findByName(fromProtoFQN.get());
+            Descriptors.Descriptor descriptor =
+                    (Descriptor) descriptorProvider.findByName(fromProtoFQN.get());
             // TODO Use new Messages (EnolaMessages) utility here #performance
             var builder = DynamicMessage.newBuilder(descriptor);
             protoIO.convert(from, builder, into);
