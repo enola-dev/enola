@@ -57,7 +57,7 @@ public class MessageToThingConverterTest {
                     .setNumber(UnsignedInteger.MAX_VALUE.intValue())
                     .setTs(ts)
                     .setBytes(bytes)
-                    .setAnenum(TestEnum.TEST_ENUM_B);
+                    .setAnEnum(TestEnum.TEST_ENUM_B);
 
     Thing.Builder simpleThing =
             Thing.newBuilder()
@@ -74,7 +74,8 @@ public class MessageToThingConverterTest {
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.BYTES_FIELD_NUMBER),
                             c.toLiteral("mAQID", KIRI.XSD.BIN64).build())
                     .putFields(
-                            getFieldIRI(TestSimple.getDescriptor(), TestSimple.ANENUM_FIELD_NUMBER),
+                            getFieldIRI(
+                                    TestSimple.getDescriptor(), TestSimple.AN_ENUM_FIELD_NUMBER),
                             c.toLink(
                                             ProtoTypes.getEnumValueERI(
                                                     TestEnum.TEST_ENUM_B.getValueDescriptor()),

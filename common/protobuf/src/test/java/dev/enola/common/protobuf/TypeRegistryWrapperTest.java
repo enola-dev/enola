@@ -73,14 +73,21 @@ public class TypeRegistryWrapperTest {
     }
 
     private void check(TypeRegistryWrapper wrapper) throws IOException {
-        protoIO(wrapper);
-        wrapper.findByName(TestSimple.getDescriptor().getFullName());
-
-        var anEnumName = TestEnum.getDescriptor().getFullName();
-        wrapper.findByName(anEnumName);
+        checkProtoIO(wrapper);
+        checkFindByName(wrapper);
     }
 
-    private void protoIO(TypeRegistryWrapper wrapper) throws IOException {
+    private void checkFindByName(TypeRegistryWrapper wrapper) {
+        assertThat(wrapper.findByName(TestSimple.getDescriptor().getFullName()));
+
+        var anEnumName = TestEnum.getDescriptor().getFullName();
+        assertThat(wrapper.findByName(anEnumName)).isNotNull();
+
+        var aNestedEnumName = TestSimple.TestNestedEnum.getDescriptor().getFullName();
+        assertThat(wrapper.findByName(aNestedEnumName)).isNotNull();
+    }
+
+    private void checkProtoIO(TypeRegistryWrapper wrapper) throws IOException {
         var io = new ProtoIO(wrapper.get());
         io.write(TestSimple.getDefaultInstance(), new NullResource(PROTOBUF_JSON_UTF_8));
 
