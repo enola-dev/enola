@@ -27,8 +27,9 @@ final class SPI {
         return () ->
                 new IllegalStateException(
                         uri
-                                + " mediaType() must have a charset() - specify it as *Resource"
-                                + " constructor argument?");
+                                + " mediaType has no charset (specify it as *Resource"
+                                + " constructor argument, or by URI parameter");
+        // TODO Actually implement ;-) being able to specify ?charset= or ?mediaType=
     }
 
     private SPI() {}

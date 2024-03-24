@@ -29,6 +29,8 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.EmptyResource;
+
 import org.junit.Test;
 
 import java.io.File;
@@ -57,7 +59,6 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect(null, null, new File("hello.txt").toURI()))
                 .isEqualTo(PLAIN_TEXT_UTF_8);
         assertThat(md.detect(null, null, new File("hello.json").toURI())).isEqualTo(JSON_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.yaml").toURI())).isEqualTo(YAML_UTF_8);
 
         assertThat(md.detect(null, null, new File("hello.proto").toURI())).isEqualTo(PROTO_UTF_8);
         assertThat(md.detect(null, null, new File("hello.textproto").toURI()))
@@ -69,5 +70,14 @@ public class MediaTypeDetectorTest {
 
         // TODO Assert.assertThrows() ?
         md.detect(null, null, URI.create("bad-URI-without-scheme"));
+    }
+
+    // TODO Rewrite more from above in this new style (to test BOM sniffing)
+
+    @Test
+    public void testEmptyYAML() {
+        // Empty .YAML is UTF-8
+        var r = new EmptyResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
+        assertThat(md.detect(r)).hasValue(YAML_UTF_8);
     }
 }

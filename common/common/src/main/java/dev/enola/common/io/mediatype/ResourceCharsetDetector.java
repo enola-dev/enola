@@ -22,26 +22,23 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.Resource;
 
+import java.nio.charset.Charset;
 import java.util.Optional;
 
 /**
- * Detects a (better) MediaType of a Resource.
+ * Detects the Charset of a Resource.
  *
  * <p>This interface is typically not used directly by {@link Resource} API users (who would just
- * use {@link AbstractResource#mediaType()}). Instead, it is normally implemented by (some)
- * <tt>*MediaType</tt> API implementations.
+ * use {@link MediaType#charset()} on an {@link AbstractResource#mediaType()}). Instead, it is
+ * normally implemented by (some) <tt>*MediaType</tt> API implementations, for Charset detection
+ * that is specific to a given MediaType (if any). For example, RFC 4627 §3 specifies how to
+ * determine the encoding of JSON, or https://yaml.org/spec §5.2. specifies ditto for YAML.
  */
-public interface ResourceMediaTypeDetector {
+public interface ResourceCharsetDetector {
 
     /**
-     * Detect the {@link MediaType} of a {@link AbstractResource}. This is (currently) based on
-     * refining an existing {@link AbstractResource#mediaType()} and (if required) e.g. an file name
-     * extension from its {@link AbstractResource#uri()}. (It could also "sniff" the content to
-     * detect "magic numbers" of certain binary file formats in headers, but implementations in this
-     * project currently do not, yet.) Implementations internally may use {@link
-     * ResourceCharsetDetector} (which may "sniff" e.g. BOM headers).
+     * Detect the {@link Charset} of an {@link AbstractResource}. Implementations may "sniff" the
+     * content e.g. for "<a href="https://en.wikipedia.org/wiki/Byte_order_mark">BOM detection</a>".
      */
-    Optional<MediaType> detect(AbstractResource resource);
-    // TODO Replace Optional<MediaType> with just MediaType
-    // and return .orElseGet(() -> resource.mediaType()) ?
+    Optional<Charset> detectCharset(AbstractResource resource);
 }
