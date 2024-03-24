@@ -19,14 +19,12 @@ package dev.enola.web.ui;
 
 import static java.lang.StringTemplate.STR;
 
-import com.google.common.base.Strings;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
-import dev.enola.thing.proto.Value.Link;
 import dev.enola.thing.proto.Value.List;
 import dev.enola.thing.proto.Value.Literal;
 
@@ -114,24 +112,6 @@ public class NewThingUI {
         sb.append('>');
         sb.append(s(metadataProvider.getLabel(iri)));
         sb.append("</a>");
-        return sb;
-    }
-
-    private CharSequence link(Link link) {
-        var sb = new StringBuilder();
-        var iri = link.getIri();
-        if (!Strings.isNullOrEmpty(iri)) {
-            // TODO Distinguish between "internal" vs "external" links - but how?!
-            String url = "/ui/" + iri;
-            // TODO s(uri) or not - or another escaping?
-            sb.append("<a href=" + s(url) + ">");
-        }
-
-        sb.append(s(metadataProvider.getLabel(iri)));
-
-        if (!Strings.isNullOrEmpty(iri)) {
-            sb.append("</a>");
-        }
         return sb;
     }
 

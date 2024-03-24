@@ -78,7 +78,7 @@ public class TypeRegistryWrapperTest {
     }
 
     private void checkFindByName(TypeRegistryWrapper wrapper) {
-        assertThat(wrapper.findByName(TestSimple.getDescriptor().getFullName()));
+        assertThat(wrapper.findByName(TestSimple.getDescriptor().getFullName())).isNotNull();
 
         var anEnumName = TestEnum.getDescriptor().getFullName();
         assertThat(wrapper.findByName(anEnumName)).isNotNull();
