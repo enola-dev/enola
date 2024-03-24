@@ -38,7 +38,13 @@ message TestSimple {
   uint32 number = 2;
   google.protobuf.Timestamp ts = 3;
   bytes bytes = 4;
-  TestEnum anenum = 5;
+  TestEnum an_enum = 5;
+  enum TestNestedEnum {
+    TEST_NESTED_ENUM_UNSPECIFIED = 0;
+    TEST_NESTED_ENUM_X = 1;
+    TEST_NESTED_ENUM_Y = 2;
+  }
+  TestNestedEnum a_nested_enum = 6;
 }
 
 message TestRepeated {

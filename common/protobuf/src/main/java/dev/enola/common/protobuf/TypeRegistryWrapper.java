@@ -156,7 +156,13 @@ public class TypeRegistryWrapper implements DescriptorProvider {
         }
 
         private void addDescriptor(Descriptor descriptor) {
-            for (Descriptor nestedType : descriptor.getNestedTypes()) {
+            for (var nestedType : descriptor.getNestedTypes()) {
+                addDescriptor(nestedType);
+            }
+            for (var nestedType : descriptor.getEnumTypes()) {
+                addDescriptor(nestedType);
+            }
+            for (var nestedType : descriptor.getExtensions()) {
                 addDescriptor(nestedType);
             }
             typesBuilder.put(descriptor.getFullName(), descriptor);
