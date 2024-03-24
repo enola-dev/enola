@@ -59,4 +59,13 @@ public interface Thing {
     }
 
     // TODO get... other types.
+
+    public interface Builder {
+
+        void iri(String iri);
+
+        void set(String predicateIRI, Object value);
+
+        Thing build();
+    }
 }
