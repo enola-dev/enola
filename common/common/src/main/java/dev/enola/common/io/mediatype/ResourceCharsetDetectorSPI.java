@@ -42,19 +42,19 @@ public abstract class ResourceCharsetDetectorSPI implements ResourceCharsetDetec
     protected abstract Optional<Charset> detectCharset(ReadableResource resource);
 
     /**
-     * Peeks at the first N bytes of resource.
+     * Peeks at the first N bytes of a resource.
      *
-     * @return byte array of size, or null if the resource had less bytes, or there was an error
-     *     reading from it
+     * @return byte array of length up to N bytes, or shorter if the resource had less bytes, or
+     *     there was an error reading from it
      */
     protected final byte[] peek(int n, ReadableResource resource) {
         try {
-            final byte[] bytes = resource.byteSource().slice(0, n).read();
-            if (bytes.length == n) return bytes;
-            else return null;
+            return resource.byteSource().slice(0, n).read();
         } catch (IOException e) {
             LOG.warn("Failed to peek at the first {} bytes of {}", n, resource.uri(), e);
-            return null;
+            return EMPTY;
         }
     }
+
+    private static final byte[] EMPTY = new byte[0];
 }

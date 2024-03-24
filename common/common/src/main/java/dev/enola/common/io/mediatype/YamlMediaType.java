@@ -58,9 +58,36 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
     }
 
     @Override
+    @SuppressWarnings("ComparisonOutOfRange") // TX ErrorProne, but it's OK here!
     public Optional<Charset> detectCharset(ReadableResource resource) {
-        // TODO Implement https://yaml.org/spec/1.2.2/#52-character-encodings instead fixing UTF-8
-        // byte[] header = peek(4, resource);
+        byte[] header = peek(4, resource);
+        if (header.length != 4) return Optional.of(Charsets.UTF_8);
+
+        // TODO Add test coverage for this to MediaTypeDetectorTest. Do BOMs have to be skipped?!
+        // See https://yaml.org/spec/1.2.2/#52-character-encodings
+        if (header[0] == 0 && header[1] == 0 && header[2] == 0xFE && header[3] == 0xFF)
+            return Optional.of(MoreCharsets.UTF_32BE);
+
+        if (header[0] == 0 && header[1] == 0 && header[2] == 0)
+            return Optional.of(MoreCharsets.UTF_32BE);
+
+        if (header[0] == 0xFF && header[1] == 0xFE && header[2] == 0 && header[3] == 0)
+            return Optional.of(MoreCharsets.UTF_32LE);
+
+        if (header[1] == 0 && header[2] == 0 && header[3] == 0)
+            return Optional.of(MoreCharsets.UTF_32LE);
+
+        if (header[0] == 0xFE && header[1] == 0xFF) return Optional.of(Charsets.UTF_16BE);
+
+        if (header[0] == 0 && header[1] == 0xFF) return Optional.of(Charsets.UTF_16BE);
+
+        if (header[0] == 0xFF && header[1] == 0xFE) return Optional.of(Charsets.UTF_16LE);
+
+        if (header[1] == 0) return Optional.of(Charsets.UTF_16LE);
+
+        if (header[0] == 0xEF && header[1] == 0xBB && header[3] == 0xBF)
+            return Optional.of(Charsets.UTF_8);
+
         return Optional.of(Charsets.UTF_8);
     }
 }
