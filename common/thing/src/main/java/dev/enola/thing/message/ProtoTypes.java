@@ -62,8 +62,7 @@ public class ProtoTypes {
     }
 
     public static Value.Builder toThingValueLink(String messageFQN) {
-        var iri = getMessageERI(messageFQN);
-        return MessageToThingConverter.toLink(iri, messageFQN);
+        return MessageToThingConverter.toLink(getMessageERI(messageFQN));
     }
 
     private static String getMessageERI(String messageFQN) {

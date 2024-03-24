@@ -127,10 +127,7 @@ public class NewThingUI {
             sb.append("<a href=" + s(url) + ">");
         }
 
-        // TODO Get rid of label on Link?!
-        var label = link.getLabel();
-        if (!label.isEmpty()) sb.append(s(label));
-        else sb.append(s(metadataProvider.getLabel(iri)));
+        sb.append(s(metadataProvider.getLabel(iri)));
 
         if (!Strings.isNullOrEmpty(iri)) {
             sb.append("</a>");
