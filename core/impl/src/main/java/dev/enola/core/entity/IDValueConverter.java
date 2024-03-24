@@ -32,7 +32,7 @@ public class IDValueConverter implements ObjectToValueConverter {
         if (!(input instanceof ID)) return Optional.empty();
         ID id = (ID) input;
         var path = IDs.toPath(id);
-        var link = Value.Link.newBuilder().setIri("enola:" + path);
-        return Optional.of(Value.newBuilder().setLink(link));
+        var iri = "enola:" + path;
+        return Optional.of(Value.newBuilder().setLink(iri));
     }
 }

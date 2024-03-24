@@ -19,7 +19,7 @@ fields:
   http://www.w3.org/ns/locn#location: { lang_string: { text: "Spain", lang: en } }
   # TODO http://www.w3.org/ns/locn#location: { lang_string: { text: "España", lang: es } }
   http://xmlns.com/foaf/0.1/firstName: { string: "Pablo" }
-  http://www.w3.org/1999/02/22-rdf-syntax-ns#type: { link: { iri: "http://example.enola.dev/Artist" } }
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type: { link: "http://example.enola.dev/Artist" }
   http://example.enola.dev/homeAddress:
     struct:
       fields:

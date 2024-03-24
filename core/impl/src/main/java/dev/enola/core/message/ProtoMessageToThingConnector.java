@@ -18,6 +18,7 @@
 package dev.enola.core.message;
 
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.core.EnolaException;

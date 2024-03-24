@@ -73,8 +73,7 @@ message Value {
     // https://github.com/protocolbuffers/protobuf/blob
     // /7949a62bf88e1d4e97c93b3a7b8a8cfb201b713a/src/google/protobuf/struct.proto#L84C1-L88C1
 
-    Link link = 1;
-    // TODO string link = 1;
+    string link = 1;
 
     string string = 2;
 
@@ -112,11 +111,6 @@ message Value {
     // double double = 19;
     // float float = 20;
     // google.protobuf.Timestamp ts = 21;
-  }
-
-  message Link {
-    // TODO Inline this above now! (FYI There used to be another field here.)
-    string iri = 1;
   }
 
   message Literal {

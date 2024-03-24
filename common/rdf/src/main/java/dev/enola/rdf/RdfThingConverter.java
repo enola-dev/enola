@@ -22,7 +22,6 @@ import dev.enola.common.convert.Converter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Thing.Builder;
 import dev.enola.thing.proto.Value;
-import dev.enola.thing.proto.Value.Link;
 
 import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
@@ -125,7 +124,7 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
             List<Consumer<Map<String, Builder>>> deferred) {
         var value = Value.newBuilder();
         if (rdfValue.isIRI()) {
-            value.setLink(Link.newBuilder().setIri(rdfValue.stringValue()));
+            value.setLink(rdfValue.stringValue());
 
         } else if (rdfValue.isLiteral()) {
             var rdfLiteral = (org.eclipse.rdf4j.model.Literal) rdfValue;

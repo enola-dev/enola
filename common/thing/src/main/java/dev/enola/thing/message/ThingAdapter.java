@@ -65,7 +65,7 @@ public final class ThingAdapter implements Thing {
             case STRING -> value.getString();
             case LITERAL -> literal(value.getLiteral());
             case LANG_STRING -> throw new UnsupportedOperationException(); // TODO Remove?
-            case LINK -> new Link(value.getLink().getIri()); // TODO This looses label - OK?
+            case LINK -> new Link(value.getLink());
             case LIST -> list(value.getList());
             case STRUCT -> map(value.getStruct());
             case KIND_NOT_SET -> null;

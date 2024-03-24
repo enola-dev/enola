@@ -183,7 +183,6 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     static Value.Builder toLink(String iri) {
-        var link = Value.Link.newBuilder().setIri(iri);
-        return Value.newBuilder().setLink(link);
+        return Value.newBuilder().setLink(iri);
     }
 }

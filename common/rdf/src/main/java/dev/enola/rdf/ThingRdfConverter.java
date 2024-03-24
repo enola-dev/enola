@@ -108,7 +108,7 @@ class ThingRdfConverter
     private Iterable<org.eclipse.rdf4j.model.Value> convert(
             dev.enola.thing.proto.Value value, Map<BNode, Thing> containedThings) {
         return switch (value.getKindCase()) {
-            case LINK -> singleton(createIRI(value.getLink().getIri()));
+            case LINK -> singleton(createIRI(value.getLink()));
 
             case STRING -> singleton(vf.createLiteral(value.getString()));
 
