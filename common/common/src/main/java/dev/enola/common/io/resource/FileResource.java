@@ -42,8 +42,9 @@ public class FileResource extends BaseResource implements Resource {
     private final MediaType mediaType;
     private final OpenOption[] openOptions;
 
-    @Deprecated // TODO Remove this variant without explicit Charset
+    @Deprecated // TODO Un-deprecate, but make it not have a charset, so it gets detected
     public FileResource(Path path, OpenOption... openOptions) {
+        // TODO Remove this and all other uses of defaultCharset() ...
         this(path, Charset.defaultCharset(), openOptions);
     }
 

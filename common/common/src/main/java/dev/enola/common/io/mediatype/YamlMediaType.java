@@ -24,10 +24,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.ReadableResource;
+
+import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-public class YamlMediaType implements MediaTypeProvider {
+public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTypeProvider {
+    // TODO Move this into e.g. dev.enola.format.yaml ?
 
     // https://www.ietf.org/archive/id/draft-ietf-httpapi-yaml-mediatypes-00.html
     // https://github.com/ietf-wg-httpapi/mediatypes/blob/main/draft-ietf-httpapi-yaml-mediatypes.md
@@ -50,5 +55,12 @@ public class YamlMediaType implements MediaTypeProvider {
     @Override
     public Map<String, MediaType> extensionsToTypes() {
         return ImmutableMap.of("yaml", YAML_UTF_8, "yml", YAML_UTF_8);
+    }
+
+    @Override
+    public Optional<Charset> detectCharset(ReadableResource resource) {
+        // TODO Implement https://yaml.org/spec/1.2.2/#52-character-encodings instead fixing UTF-8
+        // byte[] header = peek(4, resource);
+        return Optional.of(Charsets.UTF_8);
     }
 }

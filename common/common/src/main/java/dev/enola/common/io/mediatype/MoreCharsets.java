@@ -29,10 +29,8 @@ public final class MoreCharsets {
     // https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html
 
     public static final Charset UTF_32BE = Charset.forName("UTF-32BE");
-    ;
 
     public static final Charset UTF_32LE = Charset.forName("UTF_32LE");
-    ;
 
     private MoreCharsets() {}
 }

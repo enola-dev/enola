@@ -113,9 +113,20 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
     public Optional<MediaType> detect(AbstractResource resource) {
         var uri = resource.uri();
         var mt = resource.mediaType();
-        return Optional.ofNullable(
-                detect(mt.toString(), mt.charset().transform(cs -> cs.name()).orNull(), uri));
-        // TODO if (resource instanceof ReadableResource) ... snif it, with inputStreamSupplier
+
+        var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
+        var detected = detect(mt.toString(), charsetName, uri);
+
+        if (detected != null && !detected.charset().isPresent()) {
+            // TODO Make YAML just 1 of many detectors...
+            ResourceCharsetDetector rcd = new YamlMediaType();
+            var detectedCharset = rcd.detectCharset(resource);
+            if (detectedCharset.isPresent()) {
+                detected = detected.withCharset(detectedCharset.get());
+            }
+        }
+
+        return Optional.ofNullable(detected);
     }
 
     public MediaType detect(String contentType, String contentEncoding, URI uri
@@ -151,11 +162,13 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
         if (contentEncoding != null) {
             mediaType = mediaType.withCharset(Charset.forName(contentEncoding));
         } else {
-            if (mediaType.is(MediaType.ANY_TEXT_TYPE)
-                    || mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
-                // TODO Remove this hard-coded default, use BOM detection + per-format default,
-                // as e.g. TXT really has none (???), whereas JSON is UTF-8; see
-                // https://www.ietf.org/rfc/rfc4627.txt
+            // TODO Replace this with a more "pluggable" instead of this initial hard-coded design
+            if (mediaType.is(MediaType.ANY_TEXT_TYPE)) {
+                // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
+                mediaType = mediaType.withCharset(Charsets.UTF_8);
+            } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
+                // See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
+                // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
             }
         }
