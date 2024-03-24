@@ -77,6 +77,7 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":protobuf",
+        ":test_java_proto",
         "//common/common",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",

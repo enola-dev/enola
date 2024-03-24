@@ -40,7 +40,7 @@ public class ProtoTypes {
 
     public static final String FIELD_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/field/";
 
-    private static final String FIELD_ENUM_VALUE_ERI_PREFIX = "enola:/enola.dev/proto/enum-value/";
+    public static final String FIELD_ENUM_VALUE_ERI_PREFIX = "enola:/enola.dev/proto/enum-value/";
 
     static Thing.Builder addProtoField(Thing.Builder thing, MessageOrBuilder message) {
         // NB: We're setting the field that describes what Proto (Descriptor)

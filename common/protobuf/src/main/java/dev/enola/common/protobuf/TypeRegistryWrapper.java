@@ -17,24 +17,40 @@
  */
 package dev.enola.common.protobuf;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.DescriptorProtos.FileDescriptorSet;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.DescriptorValidationException;
+import com.google.protobuf.Descriptors.EnumDescriptor;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 import com.google.protobuf.Descriptors.FileDescriptor;
+import com.google.protobuf.Descriptors.GenericDescriptor;
+import com.google.protobuf.Descriptors.ServiceDescriptor;
 import com.google.protobuf.TypeRegistry;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+/**
+ * TypeRegistryWrapper is a registry of ProtoBuf type descriptors.
+ *
+ * <p>While it's similar to ProtoBuf's own {@link TypeRegistry}, this one (a) has a {@link #names()}
+ * method to enumerate all registered types' names, and (b) includes not just "message" but also
+ * "enum" and "service".
+ */
+// TODO Rename to drop the *Wrapper suffix (it used to wrap TypeRegistry, but now does not anymore)
 // TODO Optimization: This should allow clients like CLI to fetch as Map of Protos!
 public class TypeRegistryWrapper implements DescriptorProvider {
 
     private final TypeRegistry originalTypeRegistry;
+    private final ImmutableMap<String, GenericDescriptor> types;
     private final FileDescriptorSet fileDescriptorSet;
 
-    private TypeRegistryWrapper(TypeRegistry typeRegistry, FileDescriptorSet fileDescriptorSet) {
+    private TypeRegistryWrapper(
+            TypeRegistry typeRegistry,
+            ImmutableMap<String, GenericDescriptor> types,
+            FileDescriptorSet fileDescriptorSet) {
+        this.types = types;
         this.originalTypeRegistry = typeRegistry;
         this.fileDescriptorSet = fileDescriptorSet;
     }
@@ -45,14 +61,14 @@ public class TypeRegistryWrapper implements DescriptorProvider {
 
     public static TypeRegistryWrapper from(FileDescriptorSet fileDescriptorSet)
             throws DescriptorValidationException {
-        var builder = TypeRegistry.newBuilder();
+        var builder = newBuilder();
         for (var fileDescriptorProto : fileDescriptorSet.getFileList()) {
-            FileDescriptor[] dependencies = new FileDescriptor[0];
+            FileDescriptor[] noDependencies = new FileDescriptor[0];
             FileDescriptor fileDescriptor =
-                    FileDescriptor.buildFrom(fileDescriptorProto, dependencies, true);
+                    FileDescriptor.buildFrom(fileDescriptorProto, noDependencies, true);
             builder.add(fileDescriptor.getMessageTypes());
         }
-        return new TypeRegistryWrapper(builder.build(), fileDescriptorSet);
+        return builder.build();
     }
 
     public TypeRegistry get() {
@@ -63,25 +79,18 @@ public class TypeRegistryWrapper implements DescriptorProvider {
         return fileDescriptorSet;
     }
 
-    public List<String> names() {
-        var names = new ArrayList<String>();
-        for (var file : fileDescriptorSet().getFileList()) {
-            var pkg = file.hasPackage() ? file.getPackage() + "." : "";
-            names.ensureCapacity(file.getMessageTypeCount());
-            for (var message : file.getMessageTypeList()) {
-                names.add(pkg + message.getName());
-            }
-        }
-        return names;
+    public Set<String> names() {
+        return types.keySet();
     }
 
     @Override
-    public Descriptor findByName(String name) {
+    public GenericDescriptor findByName(String name) {
         if (name == null) throw new IllegalArgumentException("name == null");
         if (name.isEmpty()) throw new IllegalArgumentException("name is empty");
-        var descriptor = get().find(name);
+        var descriptor = types.get(name);
         if (descriptor == null) {
-            throw new IllegalArgumentException("Proto unknown: " + name);
+            throw new IllegalArgumentException(
+                    "Proto unknown: " + name + "; only knows: " + names());
         }
         return descriptor;
     }
@@ -102,9 +111,11 @@ public class TypeRegistryWrapper implements DescriptorProvider {
 
     public static final class Builder {
         private final Set<String> files = new HashSet<>();
+        private ImmutableMap.Builder<String, GenericDescriptor> typesBuilder =
+                ImmutableMap.builder();
         private final TypeRegistry.Builder typeRegistryBuilder = TypeRegistry.newBuilder();
-        private final FileDescriptorSet.Builder fileDescriptorBuilder =
-                FileDescriptorSet.newBuilder();
+
+        private FileDescriptorSet.Builder fileDescriptorBuilder = FileDescriptorSet.newBuilder();
 
         private Builder() {}
 
@@ -129,11 +140,48 @@ public class TypeRegistryWrapper implements DescriptorProvider {
                 addFile(dependency);
             }
             fileDescriptorBuilder.addFile(file.toProto());
+
+            for (Descriptor messageType : file.getMessageTypes()) {
+                addDescriptor(messageType);
+            }
+            for (var enumType : file.getEnumTypes()) {
+                addDescriptor(enumType);
+            }
+            for (var fieldType : file.getExtensions()) {
+                addDescriptor(fieldType);
+            }
+            for (var serviceType : file.getServices()) {
+                addDescriptor(serviceType);
+            }
+        }
+
+        private void addDescriptor(Descriptor descriptor) {
+            for (Descriptor nestedType : descriptor.getNestedTypes()) {
+                addDescriptor(nestedType);
+            }
+            typesBuilder.put(descriptor.getFullName(), descriptor);
+        }
+
+        private void addDescriptor(EnumDescriptor descriptor) {
+            typesBuilder.put(descriptor.getFullName(), descriptor);
+        }
+
+        private void addDescriptor(FieldDescriptor descriptor) {
+            typesBuilder.put(descriptor.getFullName(), descriptor);
+        }
+
+        private void addDescriptor(ServiceDescriptor descriptor) {
+            typesBuilder.put(descriptor.getFullName(), descriptor);
         }
 
         public TypeRegistryWrapper build() {
-            return new TypeRegistryWrapper(
-                    typeRegistryBuilder.build(), fileDescriptorBuilder.build());
+            var types = typesBuilder.build();
+            var typeRegistry = typeRegistryBuilder.build();
+            var fileDescriptor = fileDescriptorBuilder.build();
+            var wrapper = new TypeRegistryWrapper(typeRegistry, types, fileDescriptor);
+            typesBuilder = null;
+            fileDescriptorBuilder = null;
+            return wrapper;
         }
     }
 }

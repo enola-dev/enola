@@ -19,6 +19,7 @@ package dev.enola.core;
 
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
+import com.google.protobuf.Descriptors.GenericDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -59,7 +60,7 @@ public class EnolaServiceProvider {
                 }
 
                 @Override
-                public Descriptor findByName(String name) {
+                public GenericDescriptor findByName(String name) {
                     return typeRegistry.findByName(name);
                 }
             };

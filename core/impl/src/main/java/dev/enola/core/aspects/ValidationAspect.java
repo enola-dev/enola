@@ -76,7 +76,8 @@ public class ValidationAspect
                 (key, any) -> {
                     var data = kind.get(key);
                     if (data != null) {
-                        if (!data.getTypeUrl().equals(any.getTypeUrl())) {
+                        if (!data.getTypeUrl().isEmpty()
+                                && !data.getTypeUrl().equals(any.getTypeUrl())) {
                             r.add(
                                     Entity.getDescriptor()
                                             .findFieldByNumber(Entity.DATA_FIELD_NUMBER),

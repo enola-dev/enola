@@ -18,6 +18,7 @@
 package dev.enola.core.message;
 
 import com.google.protobuf.DescriptorProtos.FieldDescriptorProto;
+import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -53,7 +54,7 @@ public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     public void augment(Things.Builder things, String iri, Map<String, String> parameters)
             throws EnolaException {
         var fqn = parameters.get("FQN");
-        var descriptor = descriptorProvider.findByName(fqn);
+        var descriptor = (Descriptor) descriptorProvider.findByName(fqn);
 
         var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
         var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
