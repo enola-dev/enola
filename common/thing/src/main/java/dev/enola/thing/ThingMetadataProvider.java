@@ -128,7 +128,7 @@ public class ThingMetadataProvider implements MetadataProvider {
 
     private String getString(String thingIRI, String propertyIRI) {
         try {
-            var thing = tp.getThing(thingIRI);
+            var thing = tp.get(thingIRI);
             var string = ThingExt.getString(thing, propertyIRI);
             if (string == null) {
                 log.debug("No {} on {}:\n{}", propertyIRI, thingIRI, thing);

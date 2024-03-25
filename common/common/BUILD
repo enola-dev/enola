@@ -22,6 +22,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
     ],

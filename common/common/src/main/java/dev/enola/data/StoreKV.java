@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-import java.util.Optional;
+/** StoreKV store Values so that they can be retrieved again later by Key. */
+public interface StoreKV<B, K, V> {
 
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
+    @CanIgnoreReturnValue
+    B store(K key, V value);
 }

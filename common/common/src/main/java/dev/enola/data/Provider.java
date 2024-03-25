@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
+/** Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K). */
+public interface Provider<K, V> {
 
-import java.util.Optional;
-
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
+    /**
+     * Get.
+     *
+     * @param key Key
+     * @return value, or null if there is no Value for the given key
+     */
+    // TODO @Nullable (from JSpecify)
+    V get(K key);
 }

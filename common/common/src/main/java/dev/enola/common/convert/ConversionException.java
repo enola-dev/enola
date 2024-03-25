@@ -21,7 +21,7 @@ package dev.enola.common.convert;
  * Failures encountered by {@link ConverterInto}, {@link Converter} and {@link BiConverter}
  * implementations.
  */
-public class ConversionException extends Exception {
+public class ConversionException extends RuntimeException {
 
     public ConversionException(String message, Throwable cause) {
         super(message, cause);

@@ -15,13 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
+public interface Queryable<QL, Q, L> {
 
-import java.util.Optional;
+    L query(QL queryLanguage, Q query);
 
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
+    // TODO ? List<QL> queryLanguages();
 }

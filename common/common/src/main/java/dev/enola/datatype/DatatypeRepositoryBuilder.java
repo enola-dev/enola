@@ -19,7 +19,7 @@ package dev.enola.datatype;
 
 import com.google.common.collect.ImmutableSortedMap;
 
-import dev.enola.repository.RepositoryBuilder;
+import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
@@ -33,7 +33,7 @@ public class DatatypeRepositoryBuilder extends RepositoryBuilder<Datatype<?>> {
     public DatatypeRepositoryBuilder add(Datatype<?> datatype) {
         var iri = datatype.iri();
         require(iri, "iri");
-        add(iri, datatype);
+        store(iri, datatype);
         return this;
     }
 

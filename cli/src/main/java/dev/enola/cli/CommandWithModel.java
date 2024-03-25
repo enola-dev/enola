@@ -26,7 +26,7 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.type.TypeRepositoryBuilder;
-import dev.enola.repository.Repository;
+import dev.enola.data.Repository;
 
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;

@@ -43,7 +43,7 @@ import dev.enola.core.thing.ThingConnector;
 import dev.enola.core.thing.ThingConnectorService;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
-import dev.enola.repository.Repository;
+import dev.enola.data.Repository;
 import dev.enola.thing.proto.Things;
 
 import java.lang.reflect.InvocationTargetException;
