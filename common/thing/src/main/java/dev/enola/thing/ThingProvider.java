@@ -18,9 +18,11 @@
 package dev.enola.thing;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.proto.Thing;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 /**
  * Provides things.
@@ -29,9 +31,8 @@ import java.io.IOException;
  * "fetch from" a "data store" (which *Repository often implies); as some might indeed, but others
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  */
-public interface ThingProvider {
+public interface ThingProvider extends ProviderFromIRI<Thing> {
     // TODO Move this into the .message sub-package, as that's what this is about
-    // TODO implements Repository<Thing> ?
     // TODO Later consider merging this with ThingService?
 
     /**
@@ -40,10 +41,11 @@ public interface ThingProvider {
      * @param iri an IRI
      * @return a Thing, never null; but may be an empty Thing for an unknown IRI
      * @throws IOException if there was something at that IRI but it could not be read
-     * @throws ConversionException if there was a problem converting what was at the IRI to a hHing
+     * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
+    @Override
     // TODO Things not just 1x Thing?
-    Thing getThing(String iri) throws IOException, ConversionException;
+    Thing get(String iri) throws UncheckedIOException, ConversionException;
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
 }

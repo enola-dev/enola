@@ -15,13 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
-
-import java.util.Optional;
-
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
-}
+/** RepositoryRW is a readable & writable {@link Repository} which is thus also a {@link Store}. */
+public interface RepositoryRW<T> extends Repository<T>, Store<Void, T> {}

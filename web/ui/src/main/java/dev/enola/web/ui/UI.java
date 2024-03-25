@@ -113,7 +113,7 @@ public class UI implements WebHandler {
         var any = response.getThing();
         var message = enolaMessages.toMessage(any);
 
-        var thing = thingProvider.getThing(iri);
+        var thing = thingProvider.get(iri);
         var thingHTML = thingUI.html(thing).toString();
 
         // TODO Replace this with a *.yaml (et al.) link in the UI!

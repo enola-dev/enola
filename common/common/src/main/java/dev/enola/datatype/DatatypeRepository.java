@@ -17,7 +17,7 @@
  */
 package dev.enola.datatype;
 
-import dev.enola.repository.Repository;
+import dev.enola.data.Repository;
 
 import java.util.Optional;
 

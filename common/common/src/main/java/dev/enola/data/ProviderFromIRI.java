@@ -15,13 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
-
-import java.util.Optional;
-
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
-}
+/** ProviderFromIRI is a {@link Provider} where the Key is an IRI as String. */
+public interface ProviderFromIRI<V> extends Provider<String, V> {}
