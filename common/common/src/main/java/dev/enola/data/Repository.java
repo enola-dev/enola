@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-import dev.enola.data.Repository;
+// TODO JavaDoc! Repository is a Queryable ProviderFromIRI ?
+public interface Repository<T> extends ProviderFromIRI<T> {
 
-import java.util.Optional;
+    // TODO Split into 2 interface, separate get()-only; and list()-able?
 
-public interface NamespaceRepository extends Repository<Namespace> {
+    Iterable<T> list();
 
-    Optional<String> getIRI(String prefix);
+    Iterable<String> listIRI();
+
+    @Override
+    T get(String iri);
 }

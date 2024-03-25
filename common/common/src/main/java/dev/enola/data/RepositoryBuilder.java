@@ -15,20 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.repository;
+package dev.enola.data;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 
-public class RepositoryBuilder<T> {
+import dev.enola.common.Builder;
+
+/** RepositoryBuilder builds immutable {@link Repository} instances. */
+public class RepositoryBuilder<T>
+        implements StoreKV<RepositoryBuilder<T>, String, T>, Builder<Repository<T>> {
 
     protected final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
 
-    protected void add(String iri, T item) {
+    @Override
+    public RepositoryBuilder<T> store(String iri, T item) {
         items.put(iri, item);
+        return this;
     }
 
+    @Override
     public Repository<T> build() {
         return new RepositoryImpl<T>(items.buildOrThrow());
     }

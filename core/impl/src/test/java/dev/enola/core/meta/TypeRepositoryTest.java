@@ -26,7 +26,7 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.meta.proto.Types;
 import dev.enola.core.type.TypeRepositoryBuilder;
-import dev.enola.repository.Repository;
+import dev.enola.data.Repository;
 
 import org.junit.Test;
 
@@ -51,21 +51,21 @@ public class TypeRepositoryTest {
     public void noDuplicates() {
         var trb = new TypeRepositoryBuilder();
         var type = Type.newBuilder().setName("enola.dev/testDupe").setUri("enola.dev/testDupe");
-        trb.add(type);
-        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.add(type).build()));
+        trb.store(type);
+        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
     }
 
     @Test
     public void noName() {
         var trb = new TypeRepositoryBuilder();
         var type = Type.newBuilder();
-        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.add(type).build()));
+        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
     }
 
     @Test
     public void noURI() {
         var trb = new TypeRepositoryBuilder();
         var type = Type.newBuilder().setName("enola.dev/testDupe");
-        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.add(type).build()));
+        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
     }
 }

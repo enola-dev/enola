@@ -26,8 +26,6 @@ import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class ThingMetadataProviderTest {
 
     private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
@@ -36,7 +34,7 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
+                public Thing get(String iri) {
                     return Thing.getDefaultInstance();
                 }
             };
@@ -48,7 +46,7 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
+                public Thing get(String iri) {
                     var builder = Thing.newBuilder();
                     ThingExt.setString(builder, KIRI.SCHEMA.ID, THING_IRI);
                     ThingExt.setString(builder, KIRI.SCHEMA.NAME, THING_LABEL);
@@ -60,7 +58,7 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
+                public Thing get(String iri) {
                     throw new IllegalStateException();
                 }
             };

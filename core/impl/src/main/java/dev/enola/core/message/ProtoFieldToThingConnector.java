@@ -20,9 +20,7 @@ package dev.enola.core.message;
 import com.google.protobuf.DescriptorProtos.FieldDescriptorProto;
 import com.google.protobuf.Descriptors.Descriptor;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
-import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.MessageWithIRI;
@@ -50,20 +48,15 @@ public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     }
 
     @Override
-    public void augment(Things.Builder things, String iri, Map<String, String> parameters)
-            throws EnolaException {
+    public void augment(Things.Builder things, String iri, Map<String, String> parameters) {
         var fqn = parameters.get("FQN");
         var descriptor = (Descriptor) descriptorProvider.findByName(fqn);
 
         var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
         var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
 
-        try {
-            var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
-            ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
-            things.addThings(newThing);
-        } catch (ConversionException e) {
-            throw new EnolaException("Failed to convert: " + iri, e);
-        }
+        var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
+        ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
+        things.addThings(newThing);
     }
 }

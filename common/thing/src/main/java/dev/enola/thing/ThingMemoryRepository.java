@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.thing;
 
-import dev.enola.data.Repository;
+import dev.enola.data.MemoryRepositoryRW;
 
-import java.util.Optional;
+public class ThingMemoryRepository extends MemoryRepositoryRW<Thing> {
 
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
+    @Override
+    protected String getIRI(Thing value) {
+        return value.iri();
+    }
 }

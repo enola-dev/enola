@@ -79,11 +79,12 @@ public class URITemplateMatcherChain<T> {
         return templates;
     }
 
-    public static class Builder<T> {
+    public static class Builder<T> implements dev.enola.common.Builder<URITemplateMatcherChain<T>> {
         private Builder() {}
 
         private final List<Entry<URITemplateSplitter, T>> splitters = new ArrayList<>();
 
+        @Override
         public URITemplateMatcherChain<T> build() {
             return new URITemplateMatcherChain<>(splitters);
         }

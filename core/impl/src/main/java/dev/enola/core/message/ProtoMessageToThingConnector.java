@@ -19,9 +19,7 @@ package dev.enola.core.message;
 
 import com.google.protobuf.DescriptorProtos.DescriptorProto;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.common.protobuf.DescriptorProvider;
-import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.MessageWithIRI;
@@ -49,17 +47,12 @@ public class ProtoMessageToThingConnector extends ProtoToThingConnector {
     }
 
     @Override
-    public void augment(Things.Builder things, String iri, Map<String, String> parameters)
-            throws EnolaException {
+    public void augment(Things.Builder things, String iri, Map<String, String> parameters) {
         var fqn = parameters.get("FQN");
         var descriptor = descriptorProvider.findByName(fqn);
 
-        try {
-            var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
-            ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
-            things.addThings(newThing);
-        } catch (ConversionException e) {
-            throw new EnolaException("Failed to convert: " + iri, e);
-        }
+        var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
+        ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
+        things.addThings(newThing);
     }
 }
