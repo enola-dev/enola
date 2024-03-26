@@ -33,6 +33,7 @@ import dev.enola.core.thing.ThingConnectorsProvider;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.ThingProvider;
 import dev.enola.thing.message.ProtoTypes;
+import dev.enola.thing.message.ThingProviderAdapter;
 
 import org.junit.Test;
 
@@ -53,7 +54,9 @@ public class ProtoEnumValueToThingConnectorTest {
         DescriptorProvider dp = TypeRegistryWrapper.newBuilder().add(descriptor).build();
         var thingConnector = new ProtoEnumValueToThingConnector(dp);
 
-        ThingProvider tp = new ThingConnectorsProvider(ImmutableList.of(thingConnector));
+        ThingProvider tp =
+                new ThingProviderAdapter(
+                        new ThingConnectorsProvider(ImmutableList.of(thingConnector)), null);
 
         MetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
         var label = mp.getLabel(iri);
