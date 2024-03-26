@@ -19,7 +19,6 @@ package dev.enola.thing;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.thing.proto.Thing;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -32,7 +31,6 @@ import java.io.UncheckedIOException;
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  */
 public interface ThingProvider extends ProviderFromIRI<Thing> {
-    // TODO Move this into the .message sub-package, as that's what this is about
     // TODO Later consider merging this with ThingService?
 
     /**

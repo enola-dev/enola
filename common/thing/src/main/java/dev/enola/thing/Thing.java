@@ -66,6 +66,8 @@ public interface Thing {
 
         void set(String predicateIRI, Object value);
 
+        // Supplier<Builder> builderSupplier();
+
         @Override
         Thing build();
     }

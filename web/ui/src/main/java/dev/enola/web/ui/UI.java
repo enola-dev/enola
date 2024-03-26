@@ -40,8 +40,10 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.ThingProvider;
+import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
@@ -56,10 +58,13 @@ public class UI implements WebHandler {
     private static final ReadableResource HTML_FRAME =
             new ClasspathResource("templates/index.html");
 
+    private final DatatypeRepository datatypeRepository =
+            new DatatypeRepositoryBuilder().build(); // TODO look up in global repository!
+
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
-    private final ThingProvider thingProvider;
+    private final EnolaThingProvider /* TODO ThingProvider*/ thingProvider;
     private final NewThingUI thingUI;
     private ProtoIO protoIO;
 
@@ -76,7 +81,11 @@ public class UI implements WebHandler {
         var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
 
-        thingUI = new NewThingUI(new ThingMetadataProvider(thingProvider, namespaceConverter));
+        thingUI =
+                new NewThingUI(
+                        new ThingMetadataProvider(
+                                new ThingProviderAdapter(thingProvider, datatypeRepository),
+                                namespaceConverter));
     }
 
     public void register(WebServer server) {

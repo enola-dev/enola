@@ -23,7 +23,7 @@ import dev.enola.thing.proto.Value;
 
 /** Extension methods for {@link Thing}. */
 public final class ThingExt {
-    // TODO Rename proto.Things to ThingList and this from ThingExt to Things
+    // TODO Rename proto.Things to ThingList and mv this from ThingExt to Things
 
     public static void setString(Thing.Builder thing, String propertyIRI, String string) {
         var value = Value.newBuilder().setString(string).build();

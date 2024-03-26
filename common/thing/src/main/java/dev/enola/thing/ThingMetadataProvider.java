@@ -21,7 +21,6 @@ import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.URIs;
-import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Things;
 
 import org.slf4j.Logger;
@@ -129,7 +128,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     private String getString(String thingIRI, String propertyIRI) {
         try {
             var thing = tp.get(thingIRI);
-            var string = ThingExt.getString(thing, propertyIRI);
+            var string = thing.getString(propertyIRI);
             if (string == null) {
                 log.debug("No {} on {}:\n{}", propertyIRI, thingIRI, thing);
             }
