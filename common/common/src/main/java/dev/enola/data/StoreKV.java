@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-    /** Prefix. May be empty. */
-    String prefix();
+/** StoreKV store Values so that they can be retrieved again later by Key. */
+public interface StoreKV<B, K, V> {
 
-    /** IRI. Cannot be empty. */
-    String iri();
+    @CanIgnoreReturnValue
+    B store(K key, V value);
 }

@@ -17,20 +17,18 @@
  */
 package dev.enola.core.thing;
 
-import dev.enola.common.convert.ConversionException;
-import dev.enola.core.EnolaException;
 import dev.enola.core.iri.URITemplateMatcherChain;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.ThingProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
-
-import java.io.IOException;
 
 /**
  * ThingConnectorsProvider implements {@link ThingProvider} by delegating to a list of {@link
  * ThingConnector}.
  */
-public class ThingConnectorsProvider implements ThingProvider {
+public class ThingConnectorsProvider
+        implements ProviderFromIRI<Thing> /* TODO implements ThingProvider */ {
 
     // TODO Align the overlap this has with EnolaThingProvider & EnolaServiceRegistry
 
@@ -45,8 +43,9 @@ public class ThingConnectorsProvider implements ThingProvider {
         this.matcher = builder.build();
     }
 
+    // TODO @Override
     @Override
-    public Thing getThing(String iri) throws IOException, ConversionException {
+    public Thing get(String iri) {
         var opt = matcher.match(iri);
         if (opt.isEmpty()) throw new IllegalArgumentException("No template matched: " + iri);
 
@@ -54,13 +53,9 @@ public class ThingConnectorsProvider implements ThingProvider {
         var thingConnector = entry.getKey();
         var parameters = entry.getValue();
 
-        try {
-            var thingsBuilder = Things.newBuilder();
-            thingConnector.augment(thingsBuilder, iri, parameters);
-            // TODO The get(0) is wrong, we need to return Things here, and UI needs to show all
-            return thingsBuilder.build().getThings(0);
-        } catch (EnolaException e) {
-            throw new IOException("Failed to augment: " + iri, e);
-        }
+        var thingsBuilder = Things.newBuilder();
+        thingConnector.augment(thingsBuilder, iri, parameters);
+        // TODO The get(0) is wrong, we need to return Things here, and UI needs to show all
+        return thingsBuilder.build().getThings(0);
     }
 }

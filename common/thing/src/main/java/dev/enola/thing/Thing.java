@@ -60,12 +60,15 @@ public interface Thing {
 
     // TODO get... other types.
 
-    public interface Builder {
+    public interface Builder extends dev.enola.common.Builder<Thing> {
 
         void iri(String iri);
 
         void set(String predicateIRI, Object value);
 
+        // Supplier<Builder> builderSupplier();
+
+        @Override
         Thing build();
     }
 }

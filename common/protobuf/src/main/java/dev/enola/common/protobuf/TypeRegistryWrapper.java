@@ -109,7 +109,7 @@ public class TypeRegistryWrapper implements DescriptorProvider {
         return parts[parts.length - 1];
     }
 
-    public static final class Builder {
+    public static final class Builder implements dev.enola.common.Builder<TypeRegistryWrapper> {
         private final Set<String> files = new HashSet<>();
         private ImmutableMap.Builder<String, GenericDescriptor> typesBuilder =
                 ImmutableMap.builder();
@@ -180,6 +180,7 @@ public class TypeRegistryWrapper implements DescriptorProvider {
             typesBuilder.put(descriptor.getFullName(), descriptor);
         }
 
+        @Override
         public TypeRegistryWrapper build() {
             var types = typesBuilder.build();
             var typeRegistry = typeRegistryBuilder.build();

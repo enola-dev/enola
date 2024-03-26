@@ -19,10 +19,12 @@ package dev.enola.core.thing;
 
 import com.google.protobuf.Descriptors;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.proto.Things;
 
+import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +41,7 @@ public interface ThingConnector {
     Type type();
 
     void augment(Things.Builder thingsBuilder, String iri, Map<String, String> parameters)
-            throws EnolaException;
+            throws UncheckedIOException, ConversionException;
 
     default List<Descriptors.Descriptor> getDescriptors() throws EnolaException {
         return Collections.emptyList();

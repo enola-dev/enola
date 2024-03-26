@@ -15,13 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-    /** Prefix. May be empty. */
-    String prefix();
+/**
+ * Stores "store" (AKA "save" or you can "put") Ts in(to) them.
+ *
+ * <p>Stores which are also {@link Provider} typically internally actually are, or delegate to, a
+ * {@link StoreKV}, but their external API is {@link #store(T value)} instead of {@link
+ * StoreKV#store(K key, V value)} simply because they internally extract a key from T.
+ */
+public interface Store<B, T> {
 
-    /** IRI. Cannot be empty. */
-    String iri();
+    @CanIgnoreReturnValue
+    B store(T value);
 }

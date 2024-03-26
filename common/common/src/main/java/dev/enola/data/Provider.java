@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
+/** Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K). */
+public interface Provider<K, V> {
 
-    /** Prefix. May be empty. */
-    String prefix();
-
-    /** IRI. Cannot be empty. */
-    String iri();
+    /**
+     * Get.
+     *
+     * @param key Key
+     * @return value, or null if there is no Value for the given key
+     */
+    // TODO @Nullable (from JSpecify)
+    V get(K key);
 }

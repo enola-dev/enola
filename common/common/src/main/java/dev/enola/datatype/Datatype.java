@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public interface Datatype<T> {
+public interface Datatype<T> /* TODO extends Thing */ {
 
     /** IRI of this datatype. Always present, never null or empty. */
     String iri();

@@ -15,13 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
+// TODO JavaDoc! Repository is a Queryable ProviderFromIRI ?
+public interface Repository<T> extends ProviderFromIRI<T> {
 
-    /** Prefix. May be empty. */
-    String prefix();
+    // TODO Split into 2 interface, separate get()-only; and list()-able?
 
-    /** IRI. Cannot be empty. */
-    String iri();
+    Iterable<T> list();
+
+    Iterable<String> listIRI();
+
+    @Override
+    T get(String iri);
 }

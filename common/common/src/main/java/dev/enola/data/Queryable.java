@@ -15,13 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
+public interface Queryable<QL, Q, L> {
 
-    /** Prefix. May be empty. */
-    String prefix();
+    L query(QL queryLanguage, Q query);
 
-    /** IRI. Cannot be empty. */
-    String iri();
+    // TODO ? List<QL> queryLanguages();
 }

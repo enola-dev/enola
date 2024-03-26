@@ -27,8 +27,8 @@ import java.io.Writer;
 /**
  * Converts an object of type I into an existing object of type O.
  *
- * <p>O is typically something like an {@link Appendable}, *Builder, {@link ByteSink}, {@link
- * CharSink}, {@link OutputStream}, or {@link Writer} or some similar such kind of thing.
+ * <p>O is typically something like an {@link Appendable}, <tt>*Builder</tt>, {@link ByteSink},
+ * {@link CharSink}, {@link OutputStream}, or {@link Writer} or some similar such kind of thing.
  *
  * <p>The "context" of the conversion, if any, must be part of I.
  *

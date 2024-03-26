@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.thing;
 
-public interface Namespace /* TODO extends Thing */ {
+import dev.enola.data.MemoryRepositoryRW;
 
-    /** Prefix. May be empty. */
-    String prefix();
+public class ThingMemoryRepository extends MemoryRepositoryRW<Thing> {
 
-    /** IRI. Cannot be empty. */
-    String iri();
+    @Override
+    protected String getIRI(Thing value) {
+        return value.iri();
+    }
 }

@@ -19,7 +19,7 @@ package dev.enola.common.io.iri;
 
 import com.google.common.collect.ImmutableSortedMap;
 
-import dev.enola.repository.RepositoryBuilder;
+import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
@@ -36,7 +36,7 @@ public class NamespaceRepositoryBuilder extends RepositoryBuilder<Namespace> {
     public NamespaceRepositoryBuilder add(Namespace namespace) {
         var iri = namespace.iri();
         require(iri, "iri");
-        add(iri, namespace);
+        store(iri, namespace);
         prefixes.put(namespace.prefix(), namespace.iri());
         return this;
     }

@@ -82,5 +82,10 @@ public final class ImmutableThing implements Thing {
         public Thing build() {
             return new ImmutableThing(iri, properties.build());
         }
+
+        // @Override
+        // public Supplier<Thing.Builder> builderSupplier() {
+        //     return Builder::new;
+        // }
     }
 }

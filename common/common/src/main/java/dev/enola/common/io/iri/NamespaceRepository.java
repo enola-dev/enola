@@ -17,7 +17,7 @@
  */
 package dev.enola.common.io.iri;
 
-import dev.enola.repository.Repository;
+import dev.enola.data.Repository;
 
 import java.util.Optional;
 

@@ -43,6 +43,7 @@ java_library(
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
         "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:io_grpc_grpc_api",

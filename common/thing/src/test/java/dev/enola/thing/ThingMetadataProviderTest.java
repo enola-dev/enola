@@ -21,23 +21,25 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.iri.NamespaceConverterIdentity;
-import dev.enola.thing.message.ThingExt;
-import dev.enola.thing.proto.Thing;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.thing.message.ThingAdapter;
 
 import org.junit.Test;
-
-import java.io.IOException;
 
 public class ThingMetadataProviderTest {
 
     private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
 
+    private static final DatatypeRepository EMPTY_DTR = new DatatypeRepositoryBuilder().build();
+
     private ThingProvider empty =
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
-                    return Thing.getDefaultInstance();
+                public Thing get(String iri) {
+                    return new ThingAdapter(
+                            dev.enola.thing.proto.Thing.getDefaultInstance(), EMPTY_DTR);
                 }
             };
 
@@ -48,10 +50,10 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
-                    var builder = Thing.newBuilder();
-                    ThingExt.setString(builder, KIRI.SCHEMA.ID, THING_IRI);
-                    ThingExt.setString(builder, KIRI.SCHEMA.NAME, THING_LABEL);
+                public Thing get(String iri) {
+                    var builder = ImmutableThing.builder();
+                    builder.set(KIRI.SCHEMA.ID, THING_IRI);
+                    builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
                     return builder.build();
                 }
             };
@@ -60,7 +62,7 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing getThing(String iri) throws IOException {
+                public Thing get(String iri) {
                     throw new IllegalStateException();
                 }
             };

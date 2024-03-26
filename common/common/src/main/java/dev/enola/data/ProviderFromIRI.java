@@ -15,13 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.data;
 
-public interface Namespace /* TODO extends Thing */ {
-
-    /** Prefix. May be empty. */
-    String prefix();
-
-    /** IRI. Cannot be empty. */
-    String iri();
-}
+/** ProviderFromIRI is a {@link Provider} where the Key is an IRI as String. */
+public interface ProviderFromIRI<V> extends Provider<String, V> {}
