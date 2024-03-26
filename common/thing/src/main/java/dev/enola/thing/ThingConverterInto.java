@@ -15,13 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.thing;
 
-public interface Namespace /* TODO extends Thing */ {
+import dev.enola.common.convert.ConversionException;
+import dev.enola.common.convert.ConverterInto;
+import dev.enola.thing.Thing.Builder;
 
-    /** Prefix. May be empty. */
-    String prefix();
+import java.io.IOException;
 
-    /** IRI. Cannot be empty. */
-    String iri();
+public class ThingConverterInto implements ConverterInto<Thing, Thing.Builder> {
+
+    @Override
+    public boolean convertInto(Thing from, Builder into) throws ConversionException, IOException {
+        into.iri(from.iri());
+        for (var iri : from.predicateIRIs()) {
+            var value = from.get(iri);
+            // TODO if (value instanceof Thing) into.builderSupplier().get() ...
+            into.set(iri, value);
+        }
+        return true;
+    }
 }

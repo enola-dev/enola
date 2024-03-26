@@ -18,6 +18,7 @@
 package dev.enola.core.thing;
 
 import dev.enola.core.iri.URITemplateMatcherChain;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.ThingProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
@@ -26,7 +27,8 @@ import dev.enola.thing.proto.Things;
  * ThingConnectorsProvider implements {@link ThingProvider} by delegating to a list of {@link
  * ThingConnector}.
  */
-public class ThingConnectorsProvider implements ThingProvider {
+public class ThingConnectorsProvider
+        implements ProviderFromIRI<Thing> /* TODO implements ThingProvider */ {
 
     // TODO Align the overlap this has with EnolaThingProvider & EnolaServiceRegistry
 
@@ -41,6 +43,7 @@ public class ThingConnectorsProvider implements ThingProvider {
         this.matcher = builder.build();
     }
 
+    // TODO @Override
     @Override
     public Thing get(String iri) {
         var opt = matcher.match(iri);
