@@ -1,7 +1,7 @@
 # PLEASE only use fixed (package)==(version)
 
 pre-commit==3.6.2
-mkdocs-material==9.5.12
+mkdocs-material==9.5.16
 mkdocs-git-committers-plugin-2==2.3.0
 mkdocs-git-revision-date-localized-plugin==1.2.4
 
