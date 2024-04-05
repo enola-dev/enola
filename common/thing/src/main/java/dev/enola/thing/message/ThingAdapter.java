@@ -30,7 +30,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/** ThingAdapter adapts a {@link dev.enola.thing.proto.Thing} to a {@link dev.enola.thing.Thing}. */
+/**
+ * ThingAdapter adapts a {@link dev.enola.thing.proto.Thing} to a {@link dev.enola.thing.Thing}.
+ *
+ * <p>This is somewhat similar to {@link ProtoThingIntoJavaThingBuilderConverter}, but this one only
+ * "wraps" whereas that one "converts".
+ */
 public final class ThingAdapter implements Thing {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThingAdapter.class);

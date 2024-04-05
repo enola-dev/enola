@@ -46,9 +46,8 @@ public class URITemplateMatcherChain<T> {
     private final List<Entry<URITemplateSplitter, T>> splitters;
     private final List<String> templates;
 
-    // TODO How do you correctly solve the Java generics issue here?!
-    public static Builder builder() {
-        return new Builder();
+    public static <T> Builder<T> builder() {
+        return new Builder<T>();
     }
 
     private URITemplateMatcherChain(List<Entry<URITemplateSplitter, T>> splitters) {

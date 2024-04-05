@@ -20,6 +20,8 @@ package dev.enola.common.convert;
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 
+import dev.enola.common.Builder;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
@@ -27,8 +29,9 @@ import java.io.Writer;
 /**
  * Converts an object of type I into an existing object of type O.
  *
- * <p>O is typically something like an {@link Appendable}, <tt>*Builder</tt>, {@link ByteSink},
- * {@link CharSink}, {@link OutputStream}, or {@link Writer} or some similar such kind of thing.
+ * <p>O is typically something like an {@link Appendable}, {@link Builder} (or any other such
+ * <tt>*Builder</tt>), {@link ByteSink}, {@link CharSink}, {@link OutputStream}, or {@link Writer}
+ * or some similar such kind of thing.
  *
  * <p>The "context" of the conversion, if any, must be part of I.
  *

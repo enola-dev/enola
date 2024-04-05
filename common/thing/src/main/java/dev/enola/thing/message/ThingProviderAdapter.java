@@ -25,6 +25,10 @@ import dev.enola.thing.ThingProvider;
 
 import java.io.UncheckedIOException;
 
+/**
+ * ThingProviderAdapter is a {@link ThingProvider} which delegates to any {@link ProviderFromIRI} of
+ * proto Thing, and then wraps the results with a {@link ThingAdapter}.
+ */
 public class ThingProviderAdapter implements ThingProvider {
 
     private final ProviderFromIRI<dev.enola.thing.proto.Thing> protoThingProvider;
