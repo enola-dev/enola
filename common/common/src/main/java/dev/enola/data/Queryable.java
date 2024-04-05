@@ -17,9 +17,11 @@
  */
 package dev.enola.data;
 
-public interface Queryable<QL, Q, L> {
+/** Queryable returns Results (R), given a Query (Q) in a given Query Language (QR) . */
+// TODO This API will likely need some more thought in the future, and evolve when implemented
+public interface Queryable<QL, Q, R> {
 
-    L query(QL queryLanguage, Q query);
+    R query(QL queryLanguage, Q query);
 
     // TODO ? List<QL> queryLanguages();
 }

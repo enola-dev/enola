@@ -18,4 +18,8 @@
 package dev.enola.data;
 
 /** ProviderFromIRI is a {@link Provider} where the Key is an IRI as String. */
-public interface ProviderFromIRI<V> extends Provider<String, V> {}
+public interface ProviderFromIRI<V> extends Provider<String, V> {
+
+    @Override
+    V get(String iri);
+}

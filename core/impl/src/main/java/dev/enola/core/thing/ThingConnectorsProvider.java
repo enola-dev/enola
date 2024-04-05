@@ -25,17 +25,17 @@ import dev.enola.thing.proto.Things;
 
 /**
  * ThingConnectorsProvider implements {@link ThingProvider} by delegating to a list of {@link
- * ThingConnector}.
+ * ThingCon nector}.
  */
 public class ThingConnectorsProvider
-        implements ProviderFromIRI<Thing> /* TODO implements ThingProvider */ {
+        implements ProviderFromIRI<Thing> /* TODO implements ThingProvider ? */ {
 
     // TODO Align the overlap this has with EnolaThingProvider & EnolaServiceRegistry
 
     private final URITemplateMatcherChain<ThingConnector> matcher;
 
     public ThingConnectorsProvider(Iterable<ThingConnector> connectors) {
-        var builder = URITemplateMatcherChain.builder();
+        var builder = URITemplateMatcherChain.<ThingConnector>builder();
         for (var connector : connectors) {
             builder.add(connector.type().getUri(), connector);
         }
@@ -43,7 +43,6 @@ public class ThingConnectorsProvider
         this.matcher = builder.build();
     }
 
-    // TODO @Override
     @Override
     public Thing get(String iri) {
         var opt = matcher.match(iri);

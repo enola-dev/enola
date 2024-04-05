@@ -74,10 +74,9 @@ public class URITemplateMatcherChainTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked") // TODO
     public void matchLongest() throws Exception {
         var chain1 =
-                URITemplateMatcherChain.builder()
+                URITemplateMatcherChain.<Integer>builder()
                         .add("aNS.anEntityKindName", 1)
                         .add("aNS.anEntityKindName/{foo}/{name}", 2)
                         // This is intentionally (just 1 character) SHORTER than the previous
@@ -87,7 +86,7 @@ public class URITemplateMatcherChainTest {
 
         // Let's make sure this also works if the registration is in the other order
         var chain2 =
-                URITemplateMatcherChain.builder()
+                URITemplateMatcherChain.<Integer>builder()
                         .add("aNS.anEntityKindName/{foo}/{name}", 2)
                         .add("aNS.anEntityKindName", 1)
                         .build();

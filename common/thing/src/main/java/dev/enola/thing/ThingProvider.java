@@ -38,7 +38,7 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      *
      * @param iri an IRI
      * @return a Thing, never null; but may be an empty Thing for an unknown IRI
-     * @throws IOException if there was something at that IRI but it could not be read
+     * @throws IOException if there was something at that IRI, but it could not be read
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
     @Override

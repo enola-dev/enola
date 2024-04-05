@@ -17,15 +17,29 @@
  */
 package dev.enola.data;
 
-// TODO JavaDoc! Repository is a Queryable ProviderFromIRI ?
+import com.google.common.collect.Iterables;
+
+/**
+ * Repository is a Provider which, in addition to being able to getting a single T given an IRI, can
+ * also "list" all such IRIs which it "has".
+ *
+ * <p>This is not quite a real full {@link Queryable}, but kind of like a subset of it, because it's
+ * "queryable" for "everything" (without any "query", really).
+ */
 public interface Repository<T> extends ProviderFromIRI<T> {
+    // TODO Rename Repository to RepositoryOfIRI? (But there probably won't be another one...)
 
-    // TODO Split into 2 interface, separate get()-only; and list()-able?
-
-    Iterable<T> list();
-
+    // TODO Switch from Iterable to Stream?
     Iterable<String> listIRI();
 
-    @Override
-    T get(String iri);
+    /**
+     * list() returns Ts directly (not just the IRIs, like {@link #listIRI()}).
+     *
+     * <p>This default implementation here just combines {@link #listIRI()} and {@link
+     * #get(String)}. Your subclass may be able to provide a more efficient and more "direct"
+     * implementation?
+     */
+    default Iterable<T> list() {
+        return Iterables.transform(listIRI(), iri -> get(iri));
+    }
 }

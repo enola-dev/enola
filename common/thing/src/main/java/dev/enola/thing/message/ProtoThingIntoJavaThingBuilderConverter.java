@@ -30,6 +30,12 @@ import dev.enola.thing.proto.Value;
 
 import java.io.IOException;
 
+/**
+ * Converter of proto Thing into Java Thing Builder. *
+ *
+ * <p>This is somewhat similar to {@link ThingAdapter}, but this one "converts" whereas that one
+ * only "wraps".
+ */
 public class ProtoThingIntoJavaThingBuilderConverter
         implements ConverterInto<dev.enola.thing.proto.Thing, dev.enola.thing.Thing.Builder> {
 

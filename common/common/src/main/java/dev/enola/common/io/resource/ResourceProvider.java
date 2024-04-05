@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import dev.enola.data.ProviderFromIRI;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,7 +31,12 @@ import java.net.URL;
  *
  * @see dev.enola.common.io.resource
  */
-public interface ResourceProvider {
+public interface ResourceProvider extends ProviderFromIRI<Resource> {
+
+    @Override
+    default Resource get(String iri) {
+        return getResource(URI.create(iri));
+    }
 
     Resource getResource(URI uri);
 
