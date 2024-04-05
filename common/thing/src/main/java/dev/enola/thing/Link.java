@@ -21,6 +21,7 @@ package dev.enola.thing;
  * Link is an IRI "reference" to another {@link Thing}.
  *
  * <p>IRI are normally just String in Enola; this type only exists, and is required, so that it can
- * appear in the {@link Thing#properties()} Map values; where a String is not an IRI but text.
+ * be returned by {@link Thing#get(String)} and distinguished from a String which is not an IRI but
+ * text.
  */
 public final record Link(String iri) {}
