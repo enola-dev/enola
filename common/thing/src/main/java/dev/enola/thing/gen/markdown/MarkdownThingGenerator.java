@@ -69,7 +69,7 @@ class MarkdownThingGenerator {
                 out.append("](");
                 out.append(rel(link.iri(), outputIRI, base));
                 out.append(")");
-                return;
+                break;
 
             case Literal literal:
                 out.append(literal.value());
@@ -77,13 +77,13 @@ class MarkdownThingGenerator {
                 // TODO Use MetadataProvider (for the 4th time), *AFTER* it's been refactored
                 out.append(literal.datatypeIRI());
                 out.append(")");
-                return;
+                break;
 
             case Map<?, ?> properties:
-                write(indent + "  ", (Map<String, ?>) properties, out, outputIRI, base);
-                return;
+                write(indent + "  ", properties, out, outputIRI, base);
+                break;
 
-            case List list:
+            case List<?> list:
                 throw new IllegalStateException("TODO Implement List..");
 
             default:
