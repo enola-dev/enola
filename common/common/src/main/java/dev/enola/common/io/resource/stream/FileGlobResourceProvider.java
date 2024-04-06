@@ -17,74 +17,39 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import dev.enola.common.CloseableIterator;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
+import java.net.URI;
 import java.nio.file.Path;
-import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * FileGlobResourceProvider is a GlobResourceProvider for a "globbed" file: IRI.
  *
- * <p>For example <tt>file:**&#47;*.txt</tt> (relative), or <tt>file:/tmp/**&#47;*.txt</tt>
- * (absolute; or <tt>file:///tmp/**&#47;*.txt</tt>), or something similar to that.
+ * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or
+ * <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories of /tmp, but excluding /tmp
+ * itself), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and sub-directories), or
+ * similar.
  */
 public class FileGlobResourceProvider implements GlobResourceProvider {
 
     private final ResourceProvider fileResourceProvider = new ResourceProviders();
 
     @Override
-    public CloseableIterator<ReadableResource> get(String globIRI) {
-        if (!globIRI.startsWith("file:")) {
-            throw new IllegalArgumentException(
-                    "IRI can be relative, but must start with scheme file: " + globIRI);
-        }
-        var globPath = globIRI.substring("file:".length() - 1);
+    public Stream<ReadableResource> get(String globIRI) {
+        var globURI = URI.create(globIRI);
+        var globPath = Path.of(globURI);
 
         try {
-            var starPos = globPath.indexOf('*');
-            if (starPos == -1)
-                throw new IllegalArgumentException(
-                        "TODO: Implement support for non-* glob: " + globIRI);
+            return FileGlobPathWalker.walk(globPath)
+                    .map(path -> fileResourceProvider.getReadableResource(path.toUri()));
 
-            Path basePath = Path.of(globPath.substring(0, starPos - 1));
-            String glob = globPath.substring(starPos);
-            return new DirectoryStreamCloseableIterator(Files.newDirectoryStream(basePath, glob));
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to process 'globbed' IRI: " + globIRI, e);
-        }
-    }
-
-    private class DirectoryStreamCloseableIterator implements CloseableIterator<ReadableResource> {
-        private final DirectoryStream<Path> directoryStream;
-        private final Iterator<Path> iterator;
-
-        public DirectoryStreamCloseableIterator(DirectoryStream<Path> directoryStream) {
-            this.directoryStream = directoryStream;
-            this.iterator = directoryStream.iterator();
-        }
-
-        @Override
-        public void close() throws IOException {
-            directoryStream.close();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return iterator.hasNext();
-        }
-
-        @Override
-        public ReadableResource next() {
-            var path = iterator.next();
-            var fileURI = path.toFile().toURI();
-            return fileResourceProvider.getReadableResource(fileURI);
         }
     }
 }

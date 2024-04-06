@@ -17,20 +17,20 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import dev.enola.common.CloseableIterator;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 
 import java.nio.file.FileSystem;
+import java.util.stream.Stream;
 
 /**
  * Resource Provider similar to the basic {@link ResourceProvider} - but for multiple resources,
  * collected using an IRI with a "glob" (e.g. à la Java's {@link FileSystem#getPathMatcher
  * getPathMatcher}).
  */
-public interface GlobResourceProvider extends ProviderFromIRI<CloseableIterator<ReadableResource>> {
+public interface GlobResourceProvider extends ProviderFromIRI<Stream<ReadableResource>> {
 
     @Override
-    CloseableIterator<ReadableResource> get(String globIRI);
+    Stream<ReadableResource> get(String globIRI);
 }

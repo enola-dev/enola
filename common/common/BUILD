@@ -33,6 +33,9 @@ java_library(
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
+    runtime_deps = [
+        "@maven//:org_slf4j_slf4j_simple",
+    ],
     deps = [
         ":common",
         "@maven//:com_google_guava_guava",
