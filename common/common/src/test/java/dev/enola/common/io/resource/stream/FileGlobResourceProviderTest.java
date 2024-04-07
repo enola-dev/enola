@@ -68,7 +68,10 @@ public class FileGlobResourceProviderTest {
         check("**.txt", 3);
     }
 
-    // TODO Test single file name, without * glob
+    @Test
+    public void nonGlob() {
+        check("a.txt", 1);
+    }
 
     // TODO Test non-* glob (e.g. {})
 
