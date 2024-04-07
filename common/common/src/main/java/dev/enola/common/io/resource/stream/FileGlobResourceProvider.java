@@ -24,16 +24,22 @@ import dev.enola.common.io.resource.ResourceProviders;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
  * FileGlobResourceProvider is a GlobResourceProvider for a "globbed" file: IRI.
  *
+ * <p>See {@link FileSystem#getPathMatcher(String)} for the full (Java) documentation of globs.
+ *
  * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or
  * <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories of /tmp, but excluding /tmp
  * itself), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and sub-directories), or
  * similar.
+ *
+ * <p>It is also valid to use a file: IRI which is not actually a glob; in that case, it is
+ * interpreted as just the given single file (if it is a file, or empty if that's a directory).
  */
 public class FileGlobResourceProvider implements GlobResourceProvider {
 

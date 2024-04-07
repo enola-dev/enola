@@ -30,16 +30,17 @@ final class FileGlobPathWalker {
     static Stream<Path> walk(Path globPath) throws IOException {
         var globString = globPath.toString();
         var starPos = globString.indexOf('*');
-        if (starPos == -1)
-            throw new IllegalArgumentException(
-                    "TODO: Implement missing support for non-* glob: " + globString);
-        var basePath = Path.of(globString.substring(0, starPos - 1));
+        if (starPos > -1) {
+            var basePath = Path.of(globString.substring(0, starPos - 1));
 
-        // Inspired by File.newDirectoryStream(), but matching full path, not just getFileName()
-        var fs = basePath.getFileSystem();
-        var matcher = fs.getPathMatcher("glob:" + globString);
-        return Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
-                .filter(path -> matcher.matches(path));
+            // Inspired by File.newDirectoryStream(), but matching full path, not just getFileName()
+            var fs = basePath.getFileSystem();
+            var matcher = fs.getPathMatcher("glob:" + globString);
+            return Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
+                    .filter(path -> matcher.matches(path));
+        } else {
+            return Stream.of(globPath);
+        }
     }
 
     private FileGlobPathWalker() {}
