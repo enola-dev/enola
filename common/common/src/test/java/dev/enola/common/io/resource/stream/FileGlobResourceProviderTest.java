@@ -30,7 +30,7 @@ import java.nio.file.Files;
 
 public class FileGlobResourceProviderTest {
 
-    @ClassRule public static TemporaryFolder tempFolder = new TemporaryFolder();
+    @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
     @BeforeClass
     public static void beforeClass() throws IOException {

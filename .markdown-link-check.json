@@ -5,7 +5,8 @@
     { "pattern": "script.svg" },
     { "pattern": "^https://vscode.dev" },
     { "pattern": "^https://graphdb.ontotext.com" },
-    { "pattern": "^https://virtuoso.openlinksw.com" }
+    { "pattern": "^https://virtuoso.openlinksw.com" },
+    { "pattern": "^https://tiddlywiki.com" }
   ],
   "aliveStatusCodes": [200, 0]
 }
