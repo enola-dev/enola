@@ -73,9 +73,22 @@ public class FileGlobResourceProviderTest {
     }
 
     @Test
+    public void globStarCurly() {
+        check("**.{txt,json,yaml}", 5);
+    }
+
+    @Test
+    public void globQuestionMarkButWithoutAnyStar() {
+        check("?.txt", 2);
+    }
+
+    @Test
+    public void globSquareBracketButWithoutAnyStar() {
+        check("[a-d].txt", 2);
+    }
+
+    @Test
     public void nonGlob() {
         check("a.txt", 1);
     }
-
-    // TODO Test non-* glob (e.g. {})
 }

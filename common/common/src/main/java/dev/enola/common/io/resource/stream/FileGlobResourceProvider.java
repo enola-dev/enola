@@ -23,7 +23,6 @@ import dev.enola.common.io.resource.ResourceProviders;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -47,8 +46,10 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
 
     @Override
     public Stream<ReadableResource> get(String globIRI) {
-        var globURI = URI.create(globIRI);
-        var globPath = Path.of(globURI);
+        if (!globIRI.startsWith("file:")) {
+            throw new IllegalArgumentException("Not a file: IRI: " + globIRI);
+        }
+        var globPath = Path.of(globIRI.substring("file:".length()));
 
         try {
             return FileGlobPathWalker.walk(globPath)
