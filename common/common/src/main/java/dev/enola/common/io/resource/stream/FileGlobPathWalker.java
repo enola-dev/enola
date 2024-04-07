@@ -30,6 +30,11 @@ final class FileGlobPathWalker {
     static Stream<Path> walk(Path globPath) throws IOException {
         var globString = globPath.toString();
         var starPos = globString.indexOf('*');
+
+        if (starPos == -1) starPos = globString.indexOf('?');
+
+        if (starPos == -1) starPos = globString.indexOf('[');
+
         if (starPos > -1) {
             var basePath = Path.of(globString.substring(0, starPos - 1));
 
