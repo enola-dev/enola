@@ -40,8 +40,12 @@ public class FileGlobResourceProviderTest {
         Files.createFile(new File(tempRoot, "c.json").toPath());
         Files.createFile(new File(tempRoot, "d.yaml").toPath());
 
-        Files.createDirectory(new File(tempRoot, "subdir/").toPath());
-        Files.createFile(new File(tempRoot, "subdir/e.txt").toPath());
+        // Note how we're intentionally being sneaky here and name the sub-directory
+        // to match the *.txt glob used in the tests below. This is so that we test that
+        // so named directories are be "searched into", but themselves ignored - because we're only
+        // looking for files, but not returning the directories themselves.
+        Files.createDirectory(new File(tempRoot, "subdir.txt/").toPath());
+        Files.createFile(new File(tempRoot, "subdir.txt/e.txt").toPath());
     }
 
     private void check(String suffix, int expectedFiles) {
@@ -74,7 +78,4 @@ public class FileGlobResourceProviderTest {
     }
 
     // TODO Test non-* glob (e.g. {})
-
-    // TODO Test Directory name matching glob pattern should be excluded (as it's not a readable
-    // "resource" / file)
 }
