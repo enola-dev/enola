@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.message;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.convert.ConversionException;
@@ -27,7 +28,6 @@ import dev.enola.thing.spi.AbstractThing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,6 +37,8 @@ import java.util.Collection;
  * "wraps" whereas that one "converts".
  */
 public final class ThingAdapter extends AbstractThing {
+
+    // TODO This is too similar to ProtoThingIntoJavaThingBuilderConverter, and must be merged
 
     private static final Logger LOG = LoggerFactory.getLogger(ThingAdapter.class);
 
@@ -93,11 +95,11 @@ public final class ThingAdapter extends AbstractThing {
     private java.util.List<?> list(dev.enola.thing.proto.Value.List list) {
         // TODO Make this lazier... only convert object when they're actually used
         var protoValues = list.getValuesList();
-        var arrayList = new ArrayList<Object>(protoValues.size());
+        var listBuilder = ImmutableList.builderWithExpectedSize(protoValues.size());
         for (var value : protoValues) {
-            arrayList.add(value(value));
+            listBuilder.add(value(value));
         }
-        return arrayList;
+        return listBuilder.build();
     }
 
     private java.util.Map<String, ?> map(dev.enola.thing.proto.Thing struct) {
