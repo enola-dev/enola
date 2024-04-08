@@ -26,7 +26,8 @@ import dev.enola.thing.ThingMediaTypes;
 public class ResourceIntoThingResourceConverter implements CatchingResourceConverter {
 
     private final ThingMediaTypes thingMediaTypes = new ThingMediaTypes();
-    private final ResourceIntoThingConverter ritc = new ResourceIntoThingConverter();
+    private final RdfResourceIntoProtoThingConverter ritc =
+            new RdfResourceIntoProtoThingConverter();
     private final ProtoIO protoIO = new ProtoIO();
 
     @Override

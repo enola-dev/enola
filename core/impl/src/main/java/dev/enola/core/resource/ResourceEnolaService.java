@@ -29,28 +29,28 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
-import dev.enola.core.rosetta.ResourceIntoThingConverter;
+import dev.enola.core.rosetta.RdfResourceIntoProtoThingConverter;
 
 import java.net.URISyntaxException;
 
 /**
  * ResourceEnolaService implements {@link EnolaService} by fetching bytes from a {@link
  * ResourceProvider} and converting them into Things using an {@link OptionalConverter}, such as its
- * default {@link ResourceIntoThingConverter}.
+ * default {@link RdfResourceIntoProtoThingConverter}.
  */
 public class ResourceEnolaService implements EnolaService {
 
-    private final ResourceIntoThingConverter resourceToThingConverter;
+    private final RdfResourceIntoProtoThingConverter resourceToThingConverter;
     private final ResourceProvider rp;
 
     public ResourceEnolaService(
-            ResourceProvider rp, ResourceIntoThingConverter resourceToThingConverter) {
+            ResourceProvider rp, RdfResourceIntoProtoThingConverter resourceToThingConverter) {
         this.resourceToThingConverter = resourceToThingConverter;
         this.rp = rp;
     }
 
     public ResourceEnolaService(ResourceProvider rp) {
-        this(rp, new ResourceIntoThingConverter());
+        this(rp, new RdfResourceIntoProtoThingConverter());
     }
 
     @Override

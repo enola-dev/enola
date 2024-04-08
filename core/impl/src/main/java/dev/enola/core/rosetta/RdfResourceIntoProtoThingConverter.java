@@ -30,10 +30,9 @@ import dev.enola.thing.proto.Things;
 import java.util.List;
 import java.util.Optional;
 
-public class ResourceIntoThingConverter
+public class RdfResourceIntoProtoThingConverter
         implements OptionalConverter<ReadableResource, List<Thing.Builder>> {
 
-    // TODO Split interface ResourceIntoThingConverter & class RdfResourceIntoThingConverter
     // TODO Also implement e.g. an MarkdownResourceIntoThingConverter
     // TODO Also implement e.g. JavaResourceIntoThingConverter
 
