@@ -26,7 +26,7 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
 import dev.enola.thing.Thing.Builder;
-import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
 
 import java.io.IOException;
@@ -38,7 +38,8 @@ import java.io.IOException;
  * only "wraps".
  */
 public class ProtoThingIntoJavaThingBuilderConverter
-        implements ConverterInto<dev.enola.thing.proto.Thing, dev.enola.thing.Thing.Builder> {
+        implements ConverterInto<
+                dev.enola.thing.proto.ThingOrBuilder, dev.enola.thing.Thing.Builder> {
 
     // TODO This is too similar to ThingAdapter, and must be merged; maybe via ThingConverterInto?
 
@@ -49,7 +50,8 @@ public class ProtoThingIntoJavaThingBuilderConverter
     }
 
     @Override
-    public boolean convertInto(Thing from, Builder into) throws ConversionException, IOException {
+    public boolean convertInto(ThingOrBuilder from, Builder into)
+            throws ConversionException, IOException {
         into.iri(from.getIri());
         for (var entry : from.getFieldsMap().entrySet()) {
             var iri = entry.getKey();
