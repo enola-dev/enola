@@ -77,9 +77,9 @@ public interface Thing {
 
     public interface Builder extends dev.enola.common.Builder<Thing> {
 
-        void iri(String iri);
+        Builder iri(String iri);
 
-        void set(String predicateIRI, Object value);
+        Builder set(String predicateIRI, Object value);
 
         // Supplier<Builder> builderSupplier();
 
