@@ -19,6 +19,7 @@ syntax = "proto3";
 package dev.enola.thing;
 
 option java_string_check_utf8 = true;
+// TODO Change "dev.enola.thing.proto" to "dev.enola.thing.message.proto"
 option java_package = "dev.enola.thing.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/thing";

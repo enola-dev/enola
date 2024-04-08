@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
 import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.proto.Thing;
@@ -31,13 +32,15 @@ import dev.enola.thing.proto.Value;
 import java.io.IOException;
 
 /**
- * Converter of proto Thing into Java Thing Builder. *
+ * Converter of proto Thing into Java Thing Builder.
  *
  * <p>This is somewhat similar to {@link ThingAdapter}, but this one "converts" whereas that one
  * only "wraps".
  */
 public class ProtoThingIntoJavaThingBuilderConverter
         implements ConverterInto<dev.enola.thing.proto.Thing, dev.enola.thing.Thing.Builder> {
+
+    // TODO This is too similar to ThingAdapter, and must be merged; maybe via ThingConverterInto?
 
     private final DatatypeRepository datatypeRepository;
 
@@ -61,7 +64,7 @@ public class ProtoThingIntoJavaThingBuilderConverter
             case STRING:
                 return protoThingValue.getString();
             case LINK:
-                return protoThingValue.getLink();
+                return new Link(protoThingValue.getLink());
             case LITERAL:
                 {
                     var datatypeValue = protoThingValue.getLiteral().getValue();
