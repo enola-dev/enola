@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource.stream;
 
+import com.google.errorprone.annotations.MustBeClosed;
+
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
@@ -32,5 +34,6 @@ import java.util.stream.Stream;
 public interface GlobResourceProvider extends ProviderFromIRI<Stream<ReadableResource>> {
 
     @Override
+    @MustBeClosed
     Stream<ReadableResource> get(String globIRI);
 }
