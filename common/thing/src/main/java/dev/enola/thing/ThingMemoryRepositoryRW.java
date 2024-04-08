@@ -18,8 +18,16 @@
 package dev.enola.thing;
 
 import dev.enola.data.MemoryRepositoryRW;
+import dev.enola.data.Repository;
+import dev.enola.data.Store;
 
-public class ThingMemoryRepository extends MemoryRepositoryRW<Thing> {
+/**
+ * ThingMemoryRepositoryRW is an in-memory read & write (i.e. both a {@link Store} and a {@link
+ * Repository} of {@link Thing}s.
+ *
+ * <p>{@link ThingMemoryRepositoryROBuilder} is one of possibly several other alternatives for this.
+ */
+public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing> {
 
     @Override
     protected String getIRI(Thing value) {
