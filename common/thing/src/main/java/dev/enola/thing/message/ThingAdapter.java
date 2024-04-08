@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.Link;
-import dev.enola.thing.Thing;
+import dev.enola.thing.spi.AbstractThing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import java.util.Collection;
  * <p>This is somewhat similar to {@link ProtoThingIntoJavaThingBuilderConverter}, but this one only
  * "wraps" whereas that one "converts".
  */
-public final class ThingAdapter implements Thing {
+public final class ThingAdapter extends AbstractThing {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThingAdapter.class);
 
