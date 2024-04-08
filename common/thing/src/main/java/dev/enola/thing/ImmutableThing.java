@@ -26,7 +26,7 @@ import java.util.Collection;
 public final class ImmutableThing extends AbstractThing {
 
     private final String iri;
-    private final ImmutableMap<String, Object> properties;
+    private final ImmutableMap<String, ?> properties;
 
     public static Thing.Builder builder() {
         return new Builder();
@@ -36,7 +36,7 @@ public final class ImmutableThing extends AbstractThing {
         return new Builder(expectedSize);
     }
 
-    private ImmutableThing(String iri, ImmutableMap<String, Object> properties) {
+    private ImmutableThing(String iri, ImmutableMap<String, ?> properties) {
         this.iri = iri;
         this.properties = properties;
     }
@@ -60,7 +60,7 @@ public final class ImmutableThing extends AbstractThing {
     private static final class Builder implements Thing.Builder {
 
         private String iri;
-        private final ImmutableMap.Builder<String, Object> properties;
+        private final ImmutableMap.Builder<String, ?> properties;
 
         public Builder() {
             properties = ImmutableMap.builder();
@@ -77,7 +77,7 @@ public final class ImmutableThing extends AbstractThing {
         }
 
         @Override
-        public Thing.Builder set(String predicateIRI, Object value) {
+        public <T> Thing.Builder set(String predicateIRI, T value) {
             properties.put(predicateIRI, value);
             return this;
         }

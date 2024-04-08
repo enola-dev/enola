@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.Immutable;
 
 import java.util.Collection;
 
@@ -32,6 +33,7 @@ import java.util.Collection;
  * Data</i>, such as also described by by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
+@Immutable
 public interface Thing {
 
     String iri();
@@ -79,7 +81,7 @@ public interface Thing {
 
         Builder iri(String iri);
 
-        Builder set(String predicateIRI, Object value);
+        <@ImmutableTypeParameter T> Builder set(String predicateIRI, T value);
 
         // Supplier<Builder> builderSupplier();
 
