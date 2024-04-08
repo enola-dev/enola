@@ -57,6 +57,7 @@ java_library(
         ":thing_java_proto",
         "//common/common",
         "//common/protobuf",
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
