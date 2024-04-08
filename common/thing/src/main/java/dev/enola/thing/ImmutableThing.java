@@ -19,9 +19,11 @@ package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.thing.spi.AbstractThing;
+
 import java.util.Collection;
 
-public final class ImmutableThing implements Thing {
+public final class ImmutableThing extends AbstractThing {
 
     private final String iri;
     private final ImmutableMap<String, Object> properties;
@@ -54,8 +56,6 @@ public final class ImmutableThing implements Thing {
     public <T> T get(String predicateIRI) {
         return (T) properties.get(predicateIRI);
     }
-
-    // TODO Implement hashCode() + equals(), with test coverage
 
     private static final class Builder implements Thing.Builder {
 

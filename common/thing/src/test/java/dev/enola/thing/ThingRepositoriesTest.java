@@ -26,20 +26,20 @@ import org.junit.Test;
 
 public class ThingRepositoriesTest {
 
-    private Thing testThing =
+    static Thing TEST_THING =
             ImmutableThing.builder()
                     .iri("http://example.com")
                     .set("http://example.com/message", "hello")
                     .build();
 
     private void checkStore(Store<?, Thing> thingStore) {
-        thingStore.store(testThing);
+        thingStore.store(TEST_THING);
     }
 
     private void checkThingRepository(Repository<Thing> thingRepository) {
-        assertThat(thingRepository.listIRI()).contains(testThing.iri());
-        assertThat(thingRepository.list()).contains(testThing);
-        assertThat(thingRepository.get(testThing.iri())).isEqualTo(testThing);
+        assertThat(thingRepository.listIRI()).contains(TEST_THING.iri());
+        assertThat(thingRepository.list()).contains(TEST_THING);
+        assertThat(thingRepository.get(TEST_THING.iri())).isEqualTo(TEST_THING);
     }
 
     @Test
