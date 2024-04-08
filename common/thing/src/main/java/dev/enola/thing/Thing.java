@@ -28,7 +28,7 @@ import java.util.Collection;
  * properties, each identified by an IRI itself, and having a value. Each such value has a (Java,
  * here) Type.
  *
- * <p>This is, of course, heavily inspired by TBL'ss vision of the <i>Semantic Web</i> of <i>Linked
+ * <p>This is, of course, heavily inspired by TBL's vision of the <i>Semantic Web</i> of <i>Linked
  * Data</i>, such as also described by by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
@@ -56,7 +56,7 @@ public interface Thing {
      * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
      * Alteratively, it may be another Thing (if it's been "resolved") or a {@link Link} with an IRI
      * (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List of
-     * such items.
+     * such items. The object is immutable.
      */
     <T> T get(String predicateIRI);
 
