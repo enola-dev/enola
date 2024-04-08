@@ -69,13 +69,15 @@ public final class ImmutableThing implements Thing {
         }
 
         @Override
-        public void iri(String iri) {
+        public Thing.Builder iri(String iri) {
             this.iri = iri;
+            return this;
         }
 
         @Override
-        public void set(String predicateIRI, Object value) {
+        public Thing.Builder set(String predicateIRI, Object value) {
             properties.put(predicateIRI, value);
+            return this;
         }
 
         @Override
