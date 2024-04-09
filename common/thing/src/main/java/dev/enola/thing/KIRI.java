@@ -49,6 +49,13 @@ public final class KIRI {
          * as prefix to the label in UIs.
          */
         public static final String EMOJI = NS + "emoji";
+
+        /**
+         * Source URI of where e.g. a Thing was originally loaded from.
+         *
+         * <p>TODO: Is there some existing standard vocabulary for this?
+         */
+        public static final String SOURCE = NS + "source";
     }
 
     /** Schema.org Properties. */
