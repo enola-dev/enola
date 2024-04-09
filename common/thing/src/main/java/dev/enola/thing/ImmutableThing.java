@@ -18,11 +18,13 @@
 package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.thing.spi.AbstractThing;
 
 import java.util.Collection;
 
+@ThreadSafe
 public final class ImmutableThing extends AbstractThing {
 
     private final String iri;

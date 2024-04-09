@@ -17,6 +17,8 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.ThreadSafe;
+
 import dev.enola.data.MemoryRepositoryRW;
 import dev.enola.data.Repository;
 import dev.enola.data.Store;
@@ -27,6 +29,7 @@ import dev.enola.data.Store;
  *
  * <p>{@link ThingMemoryRepositoryROBuilder} is one of possibly several other alternatives for this.
  */
+@ThreadSafe
 public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing> {
 
     @Override

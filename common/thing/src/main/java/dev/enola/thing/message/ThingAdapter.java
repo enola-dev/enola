@@ -19,6 +19,7 @@ package dev.enola.thing.message;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
@@ -36,6 +37,7 @@ import java.util.Collection;
  * <p>This is somewhat similar to {@link ProtoThingIntoJavaThingBuilderConverter}, but this one only
  * "wraps" whereas that one "converts".
  */
+@ThreadSafe
 public final class ThingAdapter extends AbstractThing {
 
     // TODO This is too similar to ProtoThingIntoJavaThingBuilderConverter, and must be merged
