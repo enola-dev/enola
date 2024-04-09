@@ -91,4 +91,18 @@ public class FileGlobResourceProviderTest {
     public void nonGlob() {
         check("a.txt", 1);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void relativeGlobWithoutScheme() {
+        try (var stream = new FileGlobResourceProvider().get("*.ttl")) {
+            assertThat(stream).isEmpty();
+        }
+    }
+
+    @Test
+    public void relativeGlobWithFileScheme() {
+        try (var stream = new FileGlobResourceProvider().get("file:*.ttl")) {
+            assertThat(stream).isEmpty();
+        }
+    }
 }
