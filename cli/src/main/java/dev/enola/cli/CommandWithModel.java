@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
@@ -25,8 +26,16 @@ import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
+import dev.enola.core.rosetta.RdfResourceIntoThingConverter;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.data.Repository;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.thing.ImmutableThing;
+import dev.enola.thing.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.ThingRepository;
+import dev.enola.thing.io.Loader;
+import dev.enola.thing.io.ResourceIntoThingConverter;
 
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
@@ -53,16 +62,39 @@ public abstract class CommandWithModel implements CheckedRunnable {
 
         // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
         ServiceProvider grpc = null;
-        if (group.model != null) {
+        if (group.load != null) {
+            // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
+            DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
+            ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
+            ResourceIntoThingConverter ritc =
+                    new RdfResourceIntoThingConverter(dtr, ImmutableThing::builder);
+            var loader = new Loader(ritc);
+            var fgrp = new GlobResourceProviders();
+            for (var globIRI : group.load) {
+                try (var stream = fgrp.get(globIRI.toString())) {
+                    loader.convertInto(stream, store);
+                }
+            }
+            ThingRepository readOnlyRepo = store.build();
+            // NB: Copy/pasted below...
+            ekr = new EntityKindRepository();
+            Repository<Type> tyr = new TypeRepositoryBuilder().build();
+            esp = new EnolaServiceProvider(ekr, tyr, readOnlyRepo);
+            var enolaService = esp.getEnolaService();
+            grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
+            gRPCService = grpc.get();
+
+        } else if (group.model != null) {
             var modelResource = new ResourceProviders().getReadableResource(group.model);
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
+            // NB: Copy/paste from above...
             Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            // TODO --types for Types (and more?), e.g. from MD, YAML, textproto, etc.
             esp = new EnolaServiceProvider(ekr, tyr);
             var enolaService = esp.getEnolaService();
             grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
             gRPCService = grpc.get();
+
         } else if (group.server != null) {
             grpc = new EnolaGrpcClientProvider(group.server, false); // direct, single-threaded!
             gRPCService = grpc.get();
@@ -81,6 +113,12 @@ public abstract class CommandWithModel implements CheckedRunnable {
             throws Exception;
 
     static class ModelOrServer {
+
+        @Option(
+                names = {"--load", "-l"},
+                required = true,
+                description = "URI Glob of Models to load (e.g. file:\"**.ttl\")")
+        private java.util.List<URI> load;
 
         @Option(
                 names = {"--model", "-m"},

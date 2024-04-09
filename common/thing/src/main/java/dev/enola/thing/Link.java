@@ -24,4 +24,5 @@ package dev.enola.thing;
  * be returned by {@link Thing#get(String)} and distinguished from a String which is not an IRI but
  * text.
  */
+// TODO Abandon this and just use java.net.URI in Things instead?!
 public final record Link(String iri) {}

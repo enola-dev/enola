@@ -110,7 +110,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void get() {
+    public void getEntity() {
         var exec =
                 cli(
                         "-v",
@@ -134,7 +134,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void getBinary() throws IOException {
+    public void getBinaryEntity() throws IOException {
         try (var r = TestResource.create(ProtobufMediaTypes.PROTOBUF_BINARY)) {
             var exec =
                     cli(
@@ -153,6 +153,19 @@ public class EnolaTest {
             // Size varies because Entity contains "ts:" Timestamp
             assertThat(r.byteSource().size()).isAtLeast(100);
         }
+    }
+
+    @Test
+    public void getLoadedThing() {
+        var exec =
+                cli(
+                        "-vvv",
+                        "get",
+                        "--load",
+                        "classpath:enola.dev-properties.ttl",
+                        "https://enola.dev/emoji");
+        assertThat(exec).err().isEmpty();
+        assertThat(exec).hasExitCode(0);
     }
 
     @Test

@@ -26,11 +26,13 @@ import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.resource.ResourceEnolaService;
+import dev.enola.core.thing.ThingRepositoryEnolaService;
 import dev.enola.core.thing.ThingService;
 
 class EnolaServiceRegistry implements EnolaService {
 
     private final URITemplateMatcherChain<ThingService> matcher;
+    private final ThingRepositoryEnolaService thingRepositoryEnolaService;
     private ResourceEnolaService resourceEnolaService;
 
     public static Builder builder() {
@@ -39,16 +41,30 @@ class EnolaServiceRegistry implements EnolaService {
 
     private EnolaServiceRegistry(
             URITemplateMatcherChain<ThingService> matcherChain,
-            ResourceEnolaService resourceEnolaService) {
+            ResourceEnolaService resourceEnolaService,
+            ThingRepositoryEnolaService thingRepositoryEnolaService) {
         this.matcher = matcherChain;
         this.resourceEnolaService = resourceEnolaService;
+        this.thingRepositoryEnolaService = thingRepositoryEnolaService;
     }
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         var opt = matcher.match(r.getIri());
-        if (opt.isEmpty()) {
-            // Nota bene: If the IRI didn't match any registered Types,
+        if (opt.isPresent()) {
+            var entry = opt.get();
+            var delegate = entry.getKey();
+            var parameters = entry.getValue();
+            var things = delegate.getThing(r.getIri(), parameters);
+            return GetThingResponse.newBuilder().setThing(things).build();
+
+        } else {
+            if (thingRepositoryEnolaService != null) {
+                var response = thingRepositoryEnolaService.getThing(r);
+                if (response.hasThing()) return response;
+            }
+
+            // Nota bene: If the IRI didn't match any registered Types or pre-loaded Things,
             // then we assume it points to a Resource of a Thing, and we (try to) load it:
             //
             // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not,
@@ -56,12 +72,6 @@ class EnolaServiceRegistry implements EnolaService {
             // for any other non-enola: scheme URIs!
             return resourceEnolaService.getThing(r);
         }
-
-        var entry = opt.get();
-        var delegate = entry.getKey();
-        var parameters = entry.getValue();
-        var things = delegate.getThing(r.getIri(), parameters);
-        return GetThingResponse.newBuilder().setThing(things).build();
     }
 
     @Override
@@ -75,6 +85,7 @@ class EnolaServiceRegistry implements EnolaService {
     public static class Builder {
         private final URITemplateMatcherChain.Builder<ThingService> b =
                 URITemplateMatcherChain.builder();
+        private ThingRepositoryEnolaService thingRepositoryEnolaService;
 
         public Builder register(ID ekid, ThingService service) {
             // URI for get():
@@ -93,9 +104,17 @@ class EnolaServiceRegistry implements EnolaService {
             b.add(type.getUri(), service);
         }
 
+        public void setThingRepositoryEnolaService(
+                ThingRepositoryEnolaService thingRepositoryEnolaService) {
+            // TODO Might it make sense to ThingRepository.listIRI() to add to b ?!
+            this.thingRepositoryEnolaService = thingRepositoryEnolaService;
+        }
+
         public EnolaServiceRegistry build() {
             return new EnolaServiceRegistry(
-                    b.build(), new ResourceEnolaService(new ResourceProviders()));
+                    b.build(),
+                    new ResourceEnolaService(new ResourceProviders()),
+                    thingRepositoryEnolaService);
         }
     }
 }

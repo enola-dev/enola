@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource.stream;
 
+import com.google.errorprone.annotations.MustBeClosed;
+
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
@@ -45,6 +47,7 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
     private final ResourceProvider fileResourceProvider = new ResourceProviders();
 
     @Override
+    @MustBeClosed
     public Stream<ReadableResource> get(String globIRI) {
         if (!globIRI.startsWith("file:")) {
             throw new IllegalArgumentException("Not a file: IRI: " + globIRI);

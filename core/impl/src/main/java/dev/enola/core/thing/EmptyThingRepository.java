@@ -15,12 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data;
+package dev.enola.core.thing;
 
-/** ProviderFromIRI is a {@link Provider} where the Key is an IRI as String. */
-public interface ProviderFromIRI<V> extends Provider<String, V> {
+import dev.enola.thing.Thing;
+import dev.enola.thing.ThingRepository;
+
+import java.util.Collections;
+
+@Deprecated // Remove when no longer needed
+public class EmptyThingRepository implements ThingRepository {
 
     @Override
-    // TODO @Nullable (from JSpecify)
-    V get(String iri);
+    public Iterable<String> listIRI() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public Thing get(String iri) {
+        return null;
+    }
 }
