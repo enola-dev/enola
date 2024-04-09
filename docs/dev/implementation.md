@@ -86,8 +86,6 @@ Any [Protocol Buffer](https://protobuf.dev) can be [converted](#conversions) to 
 
 <!-- Eventually this Mermaid (and also a Graphviz) should also be generated from a machine readable model/enola.dev/et.ttl -->
 
-<!-- TODO Conversion from/to arbitrary Proto Message Java objects -->
-
 ``` mermaid
 graph BT
   ProtoThing[Proto Thing]
@@ -97,7 +95,7 @@ graph BT
   JavaThing("Java ☕ Thing")
 
   ProtoThing-- "ThingAdapter" -->JavaThing
-  JavaThing-- "??? TBD ???" -->ProtoThing
+  JavaThing-- "JavaThingToProtoThingConverter" -->ProtoThing
   ProtoMessage-- "MessageToThingConverter" -->ProtoThing
 
   JavaThing<-- "ThingConverterInto" -->JavaThing

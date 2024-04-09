@@ -34,6 +34,8 @@ import java.util.Collection;
  */
 public interface Thing {
 
+    // TODO Fix properties / predicate (which is the same!) inconsistency in method names & doc!
+
     String iri();
 
     /**
