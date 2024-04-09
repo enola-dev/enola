@@ -17,6 +17,8 @@
  */
 package dev.enola.data;
 
+import com.google.errorprone.annotations.ThreadSafe;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * MemoryRepositoryRW is an in-memory {@link RepositoryRW} implemented using a {@link
  * ConcurrentHashMap}.
  */
+@ThreadSafe
 public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     private final Map<String, T> map = new ConcurrentHashMap<>();
