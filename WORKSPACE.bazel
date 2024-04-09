@@ -89,7 +89,7 @@ load("@rules_jvm_external//:specs.bzl", "maven")
 
 # This is required so that we can use duplicate_version_warning (below) and fixes
 # the "com.google.guava:guava has multiple versions 32.1.3-android, 33.0.0-jre" problem.
-IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA = [item for item in IO_GRPC_GRPC_JAVA_ARTIFACTS if item != "com.google.guava:guava:32.1.3-android"]
+IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA = [item for item in IO_GRPC_GRPC_JAVA_ARTIFACTS if ((item != "com.google.guava:guava:32.1.3-android") and not item.startswith("com.google.errorprone:error_prone_annotations"))]
 
 maven_install(
     artifacts = IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA + [
@@ -138,6 +138,7 @@ maven_install(
         "org.slf4j:slf4j-jdk14:2.0.9",
         "org.slf4j:slf4j-simple:2.0.9",
         "io.github.classgraph:classgraph:4.8.165",
+        "com.google.errorprone:error_prone_annotations:2.26.1",
     ],
     duplicate_version_warning = "error",
     excluded_artifacts = [
