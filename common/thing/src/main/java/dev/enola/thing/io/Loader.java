@@ -46,21 +46,22 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
     public boolean convertInto(Stream<ReadableResource> stream, Store<?, Thing> store)
             throws ConversionException, IOException {
 
-        stream.forEach(
-                resource -> {
-                    LOG.info("Loading {}...", resource);
-                    var things = resourceIntoThingConverter.convert(resource);
-                    if (!things.isPresent()) LOG.warn("Could not load: {}", resource);
-                    else {
-                        things.get()
-                                .forEach(
-                                        thingBuilder -> {
-                                            thingBuilder.set(KIRI.E.SOURCE, resource.uri());
-                                            var thing = thingBuilder.build();
-                                            store.store(thing);
-                                        });
-                    }
-                });
+        stream.forEach(resource -> load(resource, store));
         return true;
+    }
+
+    private void load(ReadableResource resource, Store<?, Thing> store) {
+        LOG.info("Loading {}...", resource);
+        var things = resourceIntoThingConverter.convert(resource);
+        if (!things.isPresent()) LOG.warn("Could not load: {}", resource);
+        else {
+            things.get()
+                    .forEach(
+                            thingBuilder -> {
+                                thingBuilder.set(KIRI.E.SOURCE, resource.uri());
+                                var thing = thingBuilder.build();
+                                store.store(thing);
+                            });
+        }
     }
 }
