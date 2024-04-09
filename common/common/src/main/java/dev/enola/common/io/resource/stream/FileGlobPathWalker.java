@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource.stream;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
@@ -36,7 +37,9 @@ final class FileGlobPathWalker {
         if (starPos == -1) starPos = globString.indexOf('[');
 
         if (starPos > -1) {
-            var basePath = Path.of(globString.substring(0, starPos - 1));
+            Path basePath;
+            if (starPos > 0) basePath = Path.of(globString.substring(0, starPos - 1));
+            else basePath = new File(".").toPath();
 
             // Inspired by File.newDirectoryStream(), but matching full path, not just getFileName()
             var fs = basePath.getFileSystem();
