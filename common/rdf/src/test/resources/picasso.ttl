@@ -1,5 +1,6 @@
 @prefix ex: <http://example.enola.dev/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix schema: <https://schema.org/> .
 
 ex:Picasso a ex:Artist;
   foaf:firstName "Pablo";
@@ -9,4 +10,5 @@ ex:Picasso a ex:Artist;
     ex:city "Barcelona" ].
 
 ex:Dalí a ex:Artist;
-  foaf:firstName "Salvador", "Domingo", "Felipe", "Jacinto".
+  foaf:firstName "Salvador", "Domingo", "Felipe", "Jacinto";
+  schema:birthDate "1904-05-11"^^schema:Date.
