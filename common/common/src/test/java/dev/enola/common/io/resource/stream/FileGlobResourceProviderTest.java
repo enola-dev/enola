@@ -32,6 +32,16 @@ public class FileGlobResourceProviderTest {
 
     @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
+    protected GlobResourceProvider newGlobResourceProvider() {
+        return new FileGlobResourceProvider();
+    }
+
+    protected void checkGlobIRI(String globIRI, int expectedFiles) {
+        try (var stream = newGlobResourceProvider().get(globIRI)) {
+            assertThat(stream).hasSize(expectedFiles);
+        }
+    }
+
     @BeforeClass
     public static void beforeClass() throws IOException {
         var tempRoot = tempFolder.getRoot();
@@ -50,9 +60,7 @@ public class FileGlobResourceProviderTest {
 
     private void check(String suffix, int expectedFiles) {
         var globIRI = tempFolder.getRoot().getAbsoluteFile().toURI().toString() + "/" + suffix;
-        try (var stream = new FileGlobResourceProvider().get(globIRI)) {
-            assertThat(stream).hasSize(expectedFiles);
-        }
+        checkGlobIRI(globIRI, expectedFiles);
     }
 
     @Test
@@ -99,14 +107,14 @@ public class FileGlobResourceProviderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void relativeGlobWithoutScheme() {
-        try (var stream = new FileGlobResourceProvider().get("*.ttl")) {
+        try (var stream = newGlobResourceProvider().get("*.ttl")) {
             assertThat(stream).isEmpty();
         }
     }
 
     @Test
     public void relativeGlobWithFileScheme() {
-        try (var stream = new FileGlobResourceProvider().get("file:*.ttl")) {
+        try (var stream = newGlobResourceProvider().get("file:*.ttl")) {
             assertThat(stream).isEmpty();
         }
     }
