@@ -24,6 +24,24 @@
 
 ![Demo](script.svg)
 
+## List
+
+Get the list of all available Thing (Template) IRIs, using the special `enola:/` IRI:
+
+```bash cd .././.././..
+$ ./enola get --load "file:model/**.ttl" enola:/
+...
+```
+
+## Get 🐢
+
+Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/properties.ttl](../../../model/enola.dev/properties.ttl) model:
+
+```bash cd .././.././..
+$ ./enola get --load file:model/enola.dev/properties.ttl https://enola.dev/emoji | head --lines=3
+...
+```
+
 ## Get Book
 
 Get a `book` - note how the _related_ `kind` and `library` ID are set, based on the template

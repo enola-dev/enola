@@ -26,6 +26,7 @@ import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.resource.ResourceEnolaService;
+import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryEnolaService;
 import dev.enola.core.thing.ThingService;
 
@@ -111,8 +112,12 @@ class EnolaServiceRegistry implements EnolaService {
         }
 
         public EnolaServiceRegistry build() {
+            var listThingService = new ListThingService();
+            b.add(ListThingService.ENOLA_ROOT_LIST_IRI, listThingService);
+            var uriTemplateMatcherChain = b.build();
+            listThingService.setIRIs(uriTemplateMatcherChain.listTemplates());
             return new EnolaServiceRegistry(
-                    b.build(),
+                    uriTemplateMatcherChain,
                     new ResourceEnolaService(new ResourceProviders()),
                     thingRepositoryEnolaService);
         }
