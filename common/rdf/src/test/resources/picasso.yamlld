@@ -10,6 +10,8 @@
     - { "@value": Domingo }
     - { "@value": Felipe }
     - { "@value": Jacinto }
+  https://schema.org/birthDate:
+    - { "@value": "1904-05-11", "@type": "https://schema.org/Date" }
 - "@id": http://example.enola.dev/Picasso
   "@type": ["http://example.enola.dev/Artist"]
   http://www.w3.org/ns/locn#location:

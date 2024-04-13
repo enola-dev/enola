@@ -10,4 +10,5 @@ _:f034741e5da3451ead5b5972d6cf75311 ex:street "31 Art Gallery";
   ex:city "Barcelona" .
 
 ex:Dalí a ex:Artist;
-  foaf:firstName "Salvador", "Domingo", "Felipe", "Jacinto" .
+  foaf:firstName "Salvador", "Domingo", "Felipe", "Jacinto";
+  <https://schema.org/birthDate> "1904-05-11"^^<https://schema.org/Date> .

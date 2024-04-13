@@ -21,6 +21,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
+import dev.enola.thing.Literal;
 import dev.enola.thing.proto.Value;
 
 import java.net.URI;
@@ -87,6 +88,13 @@ public class JavaThingToProtoThingConverter
                 protoLangString.setText(langString.text());
                 protoLangString.setLang(langString.lang());
                 protoValue.setLangString(protoLangString);
+                break;
+
+            case Literal literal:
+                var protoLiteral = dev.enola.thing.proto.Value.Literal.newBuilder();
+                protoLiteral.setValue(literal.value());
+                protoLiteral.setDatatype(literal.datatypeIRI());
+                protoValue.setLiteral(protoLiteral);
                 break;
 
             default:

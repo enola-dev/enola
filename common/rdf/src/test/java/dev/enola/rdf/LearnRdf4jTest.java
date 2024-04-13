@@ -70,6 +70,10 @@ public class LearnRdf4jTest {
         model.add(dali, FOAF.FIRST_NAME, Values.literal("Domingo"));
         model.add(dali, FOAF.FIRST_NAME, Values.literal("Felipe"));
         model.add(dali, FOAF.FIRST_NAME, Values.literal("Jacinto"));
+        model.add(
+                dali,
+                Values.iri("https://schema.org/birthDate"),
+                Values.literal("1904-05-11", Values.iri("https://schema.org/Date")));
 
         return model;
     }
@@ -95,6 +99,9 @@ public class LearnRdf4jTest {
                 .add(FOAF.FIRST_NAME, "Domingo")
                 .add(FOAF.FIRST_NAME, "Felipe")
                 .add(FOAF.FIRST_NAME, "Jacinto")
+                .add(
+                        "https://schema.org/birthDate",
+                        Values.literal("1904-05-11", Values.iri("https://schema.org/Date")))
                 .build();
     }
 
