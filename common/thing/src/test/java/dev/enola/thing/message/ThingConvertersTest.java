@@ -44,7 +44,7 @@ import java.time.LocalDate;
 public class ThingConvertersTest {
 
     private final DatatypeRepository datatypeRepo =
-            new DatatypeRepositoryBuilder().add(Datatypes.DATE).build();
+            new DatatypeRepositoryBuilder().store(Datatypes.DATE).build();
 
     @Test
     public void picasso() throws Exception {

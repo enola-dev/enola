@@ -23,11 +23,11 @@ public class NamespaceRepositoryEnolaDefaults {
 
     public static final NamespaceRepository INSTANCE =
             new NamespaceRepositoryBuilder()
-                    .add("enola", "https://enola.dev/")
-                    .add("xsd", "http://www.w3.org/2001/XMLSchema#")
-                    .add("schema", "https://schema.org/")
-                    .add("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-                    .add("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
-                    .add("foaf", "http://xmlns.com/foaf/0.1/")
+                    .store("enola", "https://enola.dev/")
+                    .store("xsd", "http://www.w3.org/2001/XMLSchema#")
+                    .store("schema", "https://schema.org/")
+                    .store("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                    .store("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
+                    .store("foaf", "http://xmlns.com/foaf/0.1/")
                     .build();
 }

@@ -29,5 +29,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 public interface Store<B, T> {
 
     @CanIgnoreReturnValue
-    B store(T value);
+    B store(T item);
+
+    @CanIgnoreReturnValue
+    B store(Iterable<T> items);
 }

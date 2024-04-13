@@ -23,18 +23,12 @@ import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
-public class DatatypeRepositoryBuilder extends RepositoryBuilder<Datatype<?>> {
+public class DatatypeRepositoryBuilder
+        extends RepositoryBuilder<DatatypeRepositoryBuilder, Datatype<?>> {
 
-    public DatatypeRepositoryBuilder addAll(Iterable<Datatype<?>> datatypes) {
-        datatypes.forEach(datatype -> add(datatype));
-        return this;
-    }
-
-    public DatatypeRepositoryBuilder add(Datatype<?> datatype) {
-        var iri = datatype.iri();
-        require(iri, "iri");
-        store(iri, datatype);
-        return this;
+    @Override
+    protected String getIRI(Datatype<?> datatype) {
+        return require(datatype.iri(), "iri");
     }
 
     @Override

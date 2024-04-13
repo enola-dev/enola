@@ -17,6 +17,7 @@
  */
 package dev.enola.data;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import java.util.Map;
@@ -34,8 +35,18 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     protected abstract String getIRI(T value);
 
     @Override
-    public Void store(T value) {
+    @CanIgnoreReturnValue
+    public final Void store(T value) {
         map.put(getIRI(value), value);
+        return null;
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    public final Void store(Iterable<T> items) {
+        for (T item : items) {
+            store(item);
+        }
         return null;
     }
 

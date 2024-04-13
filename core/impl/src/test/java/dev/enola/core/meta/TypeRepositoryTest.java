@@ -41,7 +41,7 @@ public class TypeRepositoryTest {
         new ProtoIO().read(resource, types, Types.class);
 
         var trb = new TypeRepositoryBuilder();
-        trb.addAllTypes(types.getTypesBuilderList());
+        trb.store(types.getTypesList());
         Repository<Type> tyr = trb.build();
         assertThat(tyr.get("enola.dev/test1")).isNotNull();
         assertThat(tyr.list()).hasSize(2);
@@ -51,21 +51,22 @@ public class TypeRepositoryTest {
     public void noDuplicates() {
         var trb = new TypeRepositoryBuilder();
         var type = Type.newBuilder().setName("enola.dev/testDupe").setUri("enola.dev/testDupe");
-        trb.store(type);
-        assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
+        trb.store(type.build());
+        assertThrows(
+                IllegalArgumentException.class, () -> assertThat(trb.store(type.build()).build()));
     }
 
     @Test
     public void noName() {
         var trb = new TypeRepositoryBuilder();
-        var type = Type.newBuilder();
+        var type = Type.newBuilder().build();
         assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
     }
 
     @Test
     public void noURI() {
         var trb = new TypeRepositoryBuilder();
-        var type = Type.newBuilder().setName("enola.dev/testDupe");
+        var type = Type.newBuilder().setName("enola.dev/testDupe").build();
         assertThrows(IllegalArgumentException.class, () -> assertThat(trb.store(type).build()));
     }
 }
