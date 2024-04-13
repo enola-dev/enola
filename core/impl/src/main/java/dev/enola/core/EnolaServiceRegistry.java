@@ -27,13 +27,13 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.resource.ResourceEnolaService;
 import dev.enola.core.thing.ListThingService;
-import dev.enola.core.thing.ThingRepositoryEnolaService;
+import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
+import dev.enola.thing.ThingRepository;
 
 class EnolaServiceRegistry implements EnolaService {
 
     private final URITemplateMatcherChain<ThingService> matcher;
-    private final ThingRepositoryEnolaService thingRepositoryEnolaService;
     private ResourceEnolaService resourceEnolaService;
 
     public static Builder builder() {
@@ -42,11 +42,9 @@ class EnolaServiceRegistry implements EnolaService {
 
     private EnolaServiceRegistry(
             URITemplateMatcherChain<ThingService> matcherChain,
-            ResourceEnolaService resourceEnolaService,
-            ThingRepositoryEnolaService thingRepositoryEnolaService) {
+            ResourceEnolaService resourceEnolaService) {
         this.matcher = matcherChain;
         this.resourceEnolaService = resourceEnolaService;
-        this.thingRepositoryEnolaService = thingRepositoryEnolaService;
     }
 
     @Override
@@ -60,11 +58,6 @@ class EnolaServiceRegistry implements EnolaService {
             return GetThingResponse.newBuilder().setThing(things).build();
 
         } else {
-            if (thingRepositoryEnolaService != null) {
-                var response = thingRepositoryEnolaService.getThing(r);
-                if (response.hasThing()) return response;
-            }
-
             // Nota bene: If the IRI didn't match any registered Types or pre-loaded Things,
             // then we assume it points to a Resource of a Thing, and we (try to) load it:
             //
@@ -86,7 +79,6 @@ class EnolaServiceRegistry implements EnolaService {
     public static class Builder {
         private final URITemplateMatcherChain.Builder<ThingService> b =
                 URITemplateMatcherChain.builder();
-        private ThingRepositoryEnolaService thingRepositoryEnolaService;
 
         public Builder register(ID ekid, ThingService service) {
             // URI for get():
@@ -105,10 +97,11 @@ class EnolaServiceRegistry implements EnolaService {
             b.add(type.getUri(), service);
         }
 
-        public void setThingRepositoryEnolaService(
-                ThingRepositoryEnolaService thingRepositoryEnolaService) {
-            // TODO Might it make sense to ThingRepository.listIRI() to add to b ?!
-            this.thingRepositoryEnolaService = thingRepositoryEnolaService;
+        public void register(ThingRepository thingRepository) {
+            var thingRepositoryThingService = new ThingRepositoryThingService(thingRepository);
+            for (var iri : thingRepository.listIRI()) {
+                b.add(iri, thingRepositoryThingService);
+            }
         }
 
         public EnolaServiceRegistry build() {
@@ -117,9 +110,7 @@ class EnolaServiceRegistry implements EnolaService {
             var uriTemplateMatcherChain = b.build();
             listThingService.setIRIs(uriTemplateMatcherChain.listTemplates());
             return new EnolaServiceRegistry(
-                    uriTemplateMatcherChain,
-                    new ResourceEnolaService(new ResourceProviders()),
-                    thingRepositoryEnolaService);
+                    uriTemplateMatcherChain, new ResourceEnolaService(new ResourceProviders()));
         }
     }
 }
