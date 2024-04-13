@@ -25,7 +25,7 @@ public class DatatypeRepositoryTest {
 
     @Test
     public void match() {
-        var r = new DatatypeRepositoryBuilder().addAll(Datatypes.ALL).build();
+        var r = new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
         assertThat(r.match("hello, world")).hasValue(Datatypes.STRING);
         assertThat(r.match("hello,\n\tworld")).hasValue(Datatypes.STRING);
 

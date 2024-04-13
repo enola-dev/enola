@@ -17,27 +17,20 @@
  */
 package dev.enola.thing;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
-import dev.enola.data.Store;
 
 /**
  * Builds a read-only Repository of {@link Thing}s.
  *
  * <p>{@link ThingMemoryRepositoryRW} is one of possibly several other alternatives for this.
  */
-public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing>
-        implements Store<ThingMemoryRepositoryROBuilder, Thing> {
+public class ThingMemoryRepositoryROBuilder
+        extends RepositoryBuilder<ThingMemoryRepositoryROBuilder, Thing> {
 
     @Override
-    @CanIgnoreReturnValue
-    public ThingMemoryRepositoryROBuilder store(Thing thing) {
-        String thingIRI = thing.iri();
-        require(thingIRI, "iri");
-        store(thingIRI, thing);
-        return this;
+    protected String getIRI(Thing thing) {
+        return require(thing.iri(), "iri");
     }
 
     @Override

@@ -17,35 +17,22 @@
  */
 package dev.enola.core.type;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.protobuf.TypeRegistry;
 
 import dev.enola.core.meta.proto.Type;
 import dev.enola.data.RepositoryBuilder;
-import dev.enola.data.Store;
 
 /**
  * Builds Repository of {@link Type}.
  *
  * <p>Not to be confused with and totally unrelated to {@link TypeRegistry}.
  */
-public class TypeRepositoryBuilder extends RepositoryBuilder<Type>
-        implements Store<TypeRepositoryBuilder, Type.Builder> {
+public class TypeRepositoryBuilder extends RepositoryBuilder<TypeRepositoryBuilder, Type> {
 
     @Override
-    @CanIgnoreReturnValue
-    public TypeRepositoryBuilder store(Type.Builder type) {
+    protected String getIRI(Type type) {
         require(type.getUri(), "uri");
         // TODO setUrl(...), based on some sort of baseURL to the Web UI
-        var name = require(type.getName(), "name");
-        store(name, type.build());
-        return this;
-    }
-
-    public TypeRepositoryBuilder addAllTypes(Iterable<Type.Builder> types) {
-        for (Type.Builder type : types) {
-            store(type);
-        }
-        return this;
+        return require(type.getName(), "name");
     }
 }

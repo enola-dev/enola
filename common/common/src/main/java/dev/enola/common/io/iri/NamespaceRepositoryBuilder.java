@@ -23,26 +23,21 @@ import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
-public class NamespaceRepositoryBuilder extends RepositoryBuilder<Namespace> {
+public class NamespaceRepositoryBuilder
+        extends RepositoryBuilder<NamespaceRepositoryBuilder, Namespace> {
 
     protected final ImmutableSortedMap.Builder<String, String> prefixes =
             ImmutableSortedMap.naturalOrder();
 
-    public NamespaceRepositoryBuilder addAll(Iterable<Namespace> namespaces) {
-        namespaces.forEach(namespace -> add(namespace));
-        return this;
-    }
-
-    public NamespaceRepositoryBuilder add(Namespace namespace) {
-        var iri = namespace.iri();
-        require(iri, "iri");
-        store(iri, namespace);
+    @Override
+    protected String getIRI(Namespace namespace) {
+        var iri = require(namespace.iri(), "iri");
         prefixes.put(namespace.prefix(), namespace.iri());
-        return this;
+        return iri;
     }
 
-    public NamespaceRepositoryBuilder add(String prefix, String iri) {
-        add(new ImmutableNamespace(prefix, iri));
+    public NamespaceRepositoryBuilder store(String prefix, String iri) {
+        store(new ImmutableNamespace(prefix, iri));
         return this;
     }
 

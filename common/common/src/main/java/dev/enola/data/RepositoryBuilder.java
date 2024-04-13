@@ -20,19 +20,35 @@ package dev.enola.data;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.common.Builder;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
-public class RepositoryBuilder<T>
-        implements StoreKV<RepositoryBuilder<T>, String, T>, Builder<Repository<T>> {
+public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
+        implements Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
 
     protected final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
 
+    protected abstract String getIRI(T value);
+
     @Override
-    public RepositoryBuilder<T> store(String iri, T item) {
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unchecked")
+    public final B store(T item) {
+        var iri = getIRI(item);
         items.put(iri, item);
-        return this;
+        return (B) this;
+    }
+
+    @Override
+    @CanIgnoreReturnValue
+    @SuppressWarnings("unchecked")
+    public final B store(Iterable<T> items) {
+        for (T item : items) {
+            store(item);
+        }
+        return (B) this;
     }
 
     @Override

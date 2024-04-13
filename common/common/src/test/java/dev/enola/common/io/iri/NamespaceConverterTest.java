@@ -33,7 +33,7 @@ public class NamespaceConverterTest {
 
     @Test
     public void empty() {
-        var empty = new NamespaceRepositoryBuilder().add("", "https://schema.org/").build();
+        var empty = new NamespaceRepositoryBuilder().store("", "https://schema.org/").build();
         var convert = new NamespaceConverterWithRepository(empty);
         assertThat(convert.toIRI(":name")).isEqualTo("https://schema.org/name");
         assertThat(convert.toCURIE("https://schema.org/name")).isEqualTo(":name");
