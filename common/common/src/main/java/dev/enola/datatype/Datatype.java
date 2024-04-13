@@ -31,8 +31,14 @@ public interface Datatype<T> /* TODO extends Thing */ {
     /** Regular Expression {@link Pattern} which text of this datatype matches. */
     Optional<Pattern> pattern();
 
-    /** Converter from/to text. */
+    /** Converter from/to T <=> text. */
     ObjectToStringBiConverter<T> stringConverter();
+
+    /** Converter from/to Object (expected to be of T) <=> text. Just for convenience. */
+    @SuppressWarnings("unchecked")
+    default ObjectToStringBiConverter<Object> stringConverterFromObject() {
+        return (ObjectToStringBiConverter<Object>) stringConverter();
+    }
 
     // BytesToObjectConverter<?> fromBytesConverter()
 

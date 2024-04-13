@@ -57,7 +57,17 @@ public class ProtoThingIntoJavaThingBuilderConverter
         for (var entry : from.getFieldsMap().entrySet()) {
             var iri = entry.getKey();
             var value = entry.getValue();
-            into.set(iri, object(value));
+            if (dev.enola.thing.proto.Value.KindCase.LITERAL.equals(value.getKindCase())) {
+                var datatypeValue = value.getLiteral().getValue();
+                var datatypeIRI = value.getLiteral().getDatatype();
+                var datatype = datatypeRepository.get(datatypeIRI);
+                if (datatype != null) {
+                    Object object = datatype.stringConverter().convertFrom(datatypeValue);
+                    into.set(iri, object, datatypeIRI);
+                } else into.set(iri, new Literal(datatypeValue, datatypeIRI));
+            } else {
+                into.set(iri, object(value));
+            }
         }
         return true;
     }
@@ -71,15 +81,6 @@ public class ProtoThingIntoJavaThingBuilderConverter
             case LANG_STRING:
                 var protoLangString = protoThingValue.getLangString();
                 return new LangString(protoLangString.getText(), protoLangString.getLang());
-            case LITERAL:
-                {
-                    var datatypeValue = protoThingValue.getLiteral().getValue();
-                    var datatypeIRI = protoThingValue.getLiteral().getDatatype();
-                    var datatype = datatypeRepository.get(datatypeIRI);
-                    if (datatype != null)
-                        return datatype.stringConverter().convertFrom(datatypeValue);
-                    else return new Literal(datatypeValue, datatypeIRI);
-                }
             case LIST:
                 {
                     var protoList = protoThingValue.getList();

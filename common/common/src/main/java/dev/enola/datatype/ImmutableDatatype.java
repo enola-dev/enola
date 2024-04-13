@@ -38,19 +38,28 @@ public final record ImmutableDatatype<T>(
         requireNonNull(javaType);
     }
 
-    ImmutableDatatype(String iri) {
+    public ImmutableDatatype(String iri) {
         this(iri, Optional.empty(), new MissingObjectToStringBiConverter<T>(iri), Optional.empty());
     }
 
-    ImmutableDatatype(String iri, ObjectToStringBiConverter<T> stringConverter, Class<T> javaType) {
+    public ImmutableDatatype(
+            String iri, ObjectToStringBiConverter<T> stringConverter, Class<T> javaType) {
         this(iri, Optional.empty(), stringConverter, Optional.of(javaType));
     }
 
-    ImmutableDatatype(
+    public ImmutableDatatype(
+            String iri,
+            ObjectToStringBiConverter<T> stringConverter,
+            Class<T> javaType,
+            Pattern pattern) {
+        this(iri, Optional.of(pattern), stringConverter, Optional.of(javaType));
+    }
+
+    public ImmutableDatatype(
             String iri,
             ObjectToStringBiConverter<T> stringConverter,
             Class<T> javaType,
             String pattern) {
-        this(iri, Optional.of(Pattern.compile(pattern)), stringConverter, Optional.of(javaType));
+        this(iri, stringConverter, javaType, Pattern.compile(pattern));
     }
 }

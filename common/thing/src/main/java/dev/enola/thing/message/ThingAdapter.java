@@ -25,6 +25,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
+import dev.enola.thing.proto.Value.KindCase;
 import dev.enola.thing.spi.AbstractThing;
 
 import org.slf4j.Logger;
@@ -68,6 +69,13 @@ public final class ThingAdapter extends AbstractThing {
     public <T> T get(String predicateIRI) {
         var value = proto.getFieldsMap().get(predicateIRI);
         return (T) value(value);
+    }
+
+    @Override
+    public String datatype(String predicateIRI) {
+        var value = proto.getFieldsMap().get(predicateIRI);
+        if (KindCase.LITERAL.equals(value.getKindCase())) return value.getLiteral().getDatatype();
+        else return null;
     }
 
     private Object value(dev.enola.thing.proto.Value value) {
