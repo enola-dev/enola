@@ -25,6 +25,8 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.ThingRepository;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 
@@ -34,13 +36,22 @@ import dev.enola.thing.message.JavaThingToProtoThingConverter;
  */
 public class ThingRepositoryEnolaService implements EnolaService {
 
-    private final JavaThingToProtoThingConverter jt2ptConverter =
-            new JavaThingToProtoThingConverter();
-
+    private final JavaThingToProtoThingConverter jt2ptConverter;
     private final ThingRepository thingRepository;
 
     public ThingRepositoryEnolaService(ThingRepository thingRepository) {
+        // TODO Replace empty DatatypeRepository with one which looks up in ThingRepository
+        this(thingRepository, new DatatypeRepositoryBuilder().build());
+    }
+
+    @Deprecated // TODO Remove, see above
+    public ThingRepositoryEnolaService(
+            ThingRepository thingRepository,
+            // TODO Remove datatypeRepository arg, once Datatype implements Thing
+            // (Because we can then use the thingRepository as a DatatypeRepository.)
+            DatatypeRepository datatypeRepository) {
         this.thingRepository = thingRepository;
+        this.jt2ptConverter = new JavaThingToProtoThingConverter(datatypeRepository);
     }
 
     @Override

@@ -26,6 +26,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.model.schema.Datatypes;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.ImmutableThing;
@@ -34,6 +35,7 @@ import dev.enola.thing.proto.Thing;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * Tests for {@link JavaThingToProtoThingConverter} and {@link ThingAdapter} and {@link
@@ -41,7 +43,8 @@ import java.io.IOException;
  */
 public class ThingConvertersTest {
 
-    private final DatatypeRepository datatypeRepo = new DatatypeRepositoryBuilder().build();
+    private final DatatypeRepository datatypeRepo =
+            new DatatypeRepositoryBuilder().add(Datatypes.DATE).build();
 
     @Test
     public void picasso() throws Exception {
@@ -52,15 +55,25 @@ public class ThingConvertersTest {
     }
 
     private void check(Thing inProtoThing) throws ConversionException, IOException {
-        var javaThing = new ThingAdapter(inProtoThing, datatypeRepo);
-        var outProtoThing = new JavaThingToProtoThingConverter().convert(javaThing).build();
+        dev.enola.thing.Thing javaThing = new ThingAdapter(inProtoThing, datatypeRepo);
+        checkDateDatatype(javaThing);
+        var outProtoThing =
+                new JavaThingToProtoThingConverter(datatypeRepo).convert(javaThing).build();
         assertThat(outProtoThing).isEqualTo(inProtoThing);
 
         var pt2jtC = new ProtoThingIntoJavaThingBuilderConverter(datatypeRepo);
         var javaThingBuilder = ImmutableThing.builder();
         assertThat(pt2jtC.convertInto(inProtoThing, javaThingBuilder)).isTrue();
-        outProtoThing =
-                new JavaThingToProtoThingConverter().convert(javaThingBuilder.build()).build();
+        javaThing = javaThingBuilder.build();
+        checkDateDatatype(javaThing);
+        outProtoThing = new JavaThingToProtoThingConverter(datatypeRepo).convert(javaThing).build();
         assertThat(outProtoThing).isEqualTo(inProtoThing);
+    }
+
+    private void checkDateDatatype(dev.enola.thing.Thing javaThing) {
+        if ("http://example.enola.dev/Dalí".equals(javaThing.iri())) {
+            LocalDate birthDate = javaThing.get("https://schema.org/birthDate", LocalDate.class);
+            assertThat(birthDate).isNotNull();
+        }
     }
 }

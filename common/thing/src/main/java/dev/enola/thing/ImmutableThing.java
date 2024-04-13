@@ -29,6 +29,7 @@ public final class ImmutableThing extends AbstractThing {
 
     private final String iri;
     private final ImmutableMap<String, Object> properties;
+    private final ImmutableMap<String, String> datatypes;
 
     public static Thing.Builder builder() {
         return new Builder();
@@ -38,9 +39,13 @@ public final class ImmutableThing extends AbstractThing {
         return new Builder(expectedSize);
     }
 
-    private ImmutableThing(String iri, ImmutableMap<String, Object> properties) {
+    private ImmutableThing(
+            String iri,
+            ImmutableMap<String, Object> properties,
+            ImmutableMap<String, String> datatypes) {
         this.iri = iri;
         this.properties = properties;
+        this.datatypes = datatypes;
     }
 
     @Override
@@ -59,17 +64,25 @@ public final class ImmutableThing extends AbstractThing {
         return (T) properties.get(predicateIRI);
     }
 
+    @Override
+    public String datatype(String predicateIRI) {
+        return datatypes.get(predicateIRI);
+    }
+
     private static final class Builder implements Thing.Builder {
 
         private String iri;
         private final ImmutableMap.Builder<String, Object> properties;
+        private final ImmutableMap.Builder<String, String> datatypes;
 
         public Builder() {
             properties = ImmutableMap.builder();
+            datatypes = ImmutableMap.builder();
         }
 
         public Builder(int expectedSize) {
-            properties = ImmutableMap.builderWithExpectedSize(expectedSize);
+            properties = ImmutableMap.builderWithExpectedSize(expectedSize); // exact
+            datatypes = ImmutableMap.builderWithExpectedSize(expectedSize); // upper bound
         }
 
         @Override
@@ -85,8 +98,15 @@ public final class ImmutableThing extends AbstractThing {
         }
 
         @Override
+        public Thing.Builder set(String predicateIRI, Object value, String datatypeIRI) {
+            set(predicateIRI, value);
+            datatypes.put(predicateIRI, datatypeIRI);
+            return this;
+        }
+
+        @Override
         public Thing build() {
-            return new ImmutableThing(iri, properties.build());
+            return new ImmutableThing(iri, properties.build(), datatypes.build());
         }
 
         // @Override

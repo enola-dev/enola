@@ -24,8 +24,4 @@ import java.util.Optional;
 public interface DatatypeRepository extends Repository<Datatype<?>> {
 
     Optional<Datatype<?>> match(String text);
-
-    // TODO <T> Optional<Datatype<T>> get(Class<T> type);
-    // Wait, this is tricky... ;-) several datatypes, such as STRING and IRI, can *both* be of
-    // javaType String.class... so there needs to be some way to ask each one if they're it?
 }

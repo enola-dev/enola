@@ -55,10 +55,18 @@ public interface Thing {
     Collection<String> predicateIRIs();
 
     /**
+     * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype
+     * set. This is required because the predicate's Object Java class is not necessarily unique;
+     * e.g. both dev.enola.model.schema.Datatypes.DATE as well as dev.enola.model.xsd.DATE are both
+     * java.time.LocalDate instances.
+     */
+    String datatype(String predicateIRI);
+
+    /**
      * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
      * Alteratively, it may be another Thing (if it's been "resolved") or a {@link Link} with an IRI
      * (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List of
-     * such items. The object is immutable.
+     * such items. The object is immutable. May be null if Thing has no such predicate.
      */
     <T> T get(String predicateIRI);
 
@@ -82,6 +90,8 @@ public interface Thing {
         Builder iri(String iri);
 
         Builder set(String predicateIRI, Object value);
+
+        Builder set(String predicateIRI, Object value, String datatypeIRI);
 
         // Supplier<Builder> builderSupplier();
 
