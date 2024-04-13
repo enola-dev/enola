@@ -46,7 +46,6 @@ public class RdfReaderConverterInto implements ConverterInto<ReadableResource, R
                 throw new ConversionException("Failing reading from : " + from, e);
             }
         }
-        // throw new ConversionException("No RDFFormat for: " + from);
         return false;
     }
 }

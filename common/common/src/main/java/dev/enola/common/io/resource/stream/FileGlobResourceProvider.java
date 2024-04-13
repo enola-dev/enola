@@ -53,7 +53,7 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
 
         try {
             return FileGlobPathWalker.walk(globPath)
-                    .filter(path -> path.toFile().isFile())
+                    .filter(path -> !path.toFile().isDirectory())
                     .map(path -> fileResourceProvider.getReadableResource(path.toUri()));
 
         } catch (IOException e) {

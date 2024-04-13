@@ -53,7 +53,7 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
     private void load(ReadableResource resource, Store<?, Thing> store) {
         LOG.info("Loading {}...", resource);
         var things = resourceIntoThingConverter.convert(resource);
-        if (!things.isPresent()) LOG.warn("Could not load: {}", resource);
+        if (!things.isPresent()) LOG.error("No Things in loaded: {}", resource);
         else {
             things.get()
                     .forEach(

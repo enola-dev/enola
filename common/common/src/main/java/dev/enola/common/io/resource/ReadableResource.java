@@ -40,6 +40,8 @@ public interface ReadableResource extends AbstractResource {
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
     }
 
+    // TODO Remove this method?
+    // Callers should never need to pass a defaultCharset - it must always be in mediaType!
     default CharSource charSource(Charset defaultCharset) {
         return byteSource().asCharSource(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }

@@ -38,6 +38,8 @@ public interface WritableResource extends AbstractResource {
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
     }
 
+    // TODO Remove this method?
+    // Callers should never need to pass a defaultCharset - it must always be in mediaType!
     default CharSink charSink(Charset defaultCharset) {
         return byteSink().asCharSink(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }
