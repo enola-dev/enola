@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.PrimitiveObjectToStringBiConverters;
 
+import java.net.URI;
+
 /** Enola's built-in core datatypes. */
 // TODO Doc: <p>See https://enola.dev/datatypes --- once we put something on
 // https://docs.enola.dev/models/datatypes and have a working HTTP redirector.
@@ -45,12 +47,13 @@ public final class Datatypes {
                     // Subset of https://yaml.org/type/bool.html
                     "true|True|TRUE|false|False|FALSE");
 
-    private static final String IRI_PATTERN = "[a-zA-Z][a-zA-Z+-\\.]*:\\S+";
-    public static final Datatype<String> IRI =
+    private static final String IRI_PATTERN =
+            "(<([a-zA-Z][a-zA-Z+-\\.]*:\\S+)>)|([a-zA-Z][a-zA-Z+-\\.]*:\\S+)";
+    public static final Datatype<URI> IRI =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#anyURI",
-                    PrimitiveObjectToStringBiConverters.STRING,
-                    String.class,
+                    PrimitiveObjectToStringBiConverters.URI,
+                    URI.class, // TODO Make this URI.class!
                     IRI_PATTERN);
 
     // TODO public static final Datatype NUMBER = new NumberDatatype();

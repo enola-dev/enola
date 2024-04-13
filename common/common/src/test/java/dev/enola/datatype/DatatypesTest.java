@@ -23,6 +23,8 @@ import dev.enola.common.convert.ConversionException;
 
 import org.junit.Test;
 
+import java.net.URI;
+
 public class DatatypesTest {
 
     public @Test void testImplementationWithOnlyIRI() throws ConversionException {
@@ -49,9 +51,9 @@ public class DatatypesTest {
         var datatype = Datatypes.IRI;
         checkInvariants(datatype);
         assertThat(datatype.pattern()).isPresent();
-        assertThat(datatype.javaType()).hasValue(String.class);
+        assertThat(datatype.javaType()).hasValue(URI.class);
         assertThat(datatype.stringConverter().convertFrom("https://enola.dev"))
-                .isEqualTo("https://enola.dev");
+                .isEqualTo(URI.create("https://enola.dev"));
     }
 
     void checkInvariants(Datatype<?> datatype) {
