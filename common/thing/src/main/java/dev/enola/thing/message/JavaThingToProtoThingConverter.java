@@ -19,9 +19,14 @@ package dev.enola.thing.message;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
+import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
+import dev.enola.thing.proto.Value;
 
 import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class JavaThingToProtoThingConverter
         implements Converter<dev.enola.thing.Thing, dev.enola.thing.proto.Thing.Builder> {
@@ -29,33 +34,66 @@ public class JavaThingToProtoThingConverter
     // TODO private final DatatypeRepository datatypeRepository;
 
     @Override
-    public dev.enola.thing.proto.Thing.Builder convert(dev.enola.thing.Thing input)
+    public dev.enola.thing.proto.Thing.Builder convert(dev.enola.thing.Thing javaThing)
             throws ConversionException {
         var protoBuilder = dev.enola.thing.proto.Thing.newBuilder();
-        protoBuilder.setIri(input.iri());
-        for (var property : input.properties().entrySet()) {
-            var protoValue = dev.enola.thing.proto.Value.newBuilder();
+        protoBuilder.setIri(javaThing.iri());
+        map2proto(protoBuilder, javaThing.properties().entrySet());
+        return protoBuilder;
+    }
+
+    private void map2proto(
+            dev.enola.thing.proto.Thing.Builder protoBuilder,
+            Iterable<Entry<String, Object>> properties) {
+        for (var property : properties) {
             var iri = property.getKey();
             var object = property.getValue();
-            switch (object) {
-                case Link link:
-                    protoValue.setLink(link.iri());
-                    break;
-
-                case URI uri:
-                    protoValue.setLink(uri.toString());
-                    break;
-
-                case String string:
-                    protoValue.setString(string);
-                    break;
-
-                default:
-                    throw new IllegalStateException(
-                            "TODO: Implement support for: " + object.getClass() + " :: " + object);
-            }
-            protoBuilder.putFields(iri, protoValue.build());
+            protoBuilder.putFields(iri, toValue(object));
         }
-        return protoBuilder;
+    }
+
+    private Value toValue(Object object) {
+        var protoValue = dev.enola.thing.proto.Value.newBuilder();
+        switch (object) {
+            case String string:
+                protoValue.setString(string);
+                break;
+
+            case Link link:
+                protoValue.setLink(link.iri());
+                break;
+
+            case URI uri:
+                protoValue.setLink(uri.toString());
+                break;
+
+            case List<?> list:
+                var protoList = dev.enola.thing.proto.Value.List.newBuilder();
+                for (var e : list) {
+                    protoList.addValues(toValue(e));
+                }
+                protoValue.setList(protoList);
+                break;
+
+            case Map<?, ?> map:
+                var propertiesMap = (Map<String, Object>) map;
+                var protoThing = dev.enola.thing.proto.Thing.newBuilder();
+                map2proto(protoThing, propertiesMap.entrySet());
+                protoValue.setStruct(protoThing);
+                break;
+
+            case LangString langString:
+                var protoLangString = dev.enola.thing.proto.Value.LangString.newBuilder();
+                protoLangString.setText(langString.text());
+                protoLangString.setLang(langString.lang());
+                protoValue.setLangString(protoLangString);
+                break;
+
+            default:
+                // TODO Consult the datatypeRepository ... -- WITH TEST COVERAGE IN picasso.ttl
+                throw new IllegalStateException(
+                        "TODO: Implement support for: " + object.getClass() + " :: " + object);
+        }
+        return protoValue.build();
     }
 }

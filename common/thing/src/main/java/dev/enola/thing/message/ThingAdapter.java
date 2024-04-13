@@ -23,6 +23,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.spi.AbstractThing;
 
@@ -73,12 +74,16 @@ public final class ThingAdapter extends AbstractThing {
         return switch (value.getKindCase()) {
             case STRING -> value.getString();
             case LITERAL -> literal(value.getLiteral());
-            case LANG_STRING -> throw new UnsupportedOperationException(); // TODO Remove?
+            case LANG_STRING -> langString(value.getLangString());
             case LINK -> new Link(value.getLink());
             case LIST -> list(value.getList());
             case STRUCT -> map(value.getStruct());
             case KIND_NOT_SET -> null;
         };
+    }
+
+    private dev.enola.thing.LangString langString(dev.enola.thing.proto.Value.LangString proto) {
+        return new LangString(proto.getText(), proto.getLang());
     }
 
     private Object literal(dev.enola.thing.proto.Value.Literal literal) {
