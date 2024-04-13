@@ -19,7 +19,7 @@ package dev.enola.datatype;
 
 import com.google.common.collect.ImmutableList;
 
-import dev.enola.common.convert.PrimitiveObjectToStringBiConverters;
+import dev.enola.common.convert.ObjectToStringBiConverters;
 
 import java.net.URI;
 
@@ -35,14 +35,14 @@ public final class Datatypes {
     public static final Datatype<String> STRING =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#string",
-                    PrimitiveObjectToStringBiConverters.STRING,
+                    ObjectToStringBiConverters.STRING,
                     String.class,
                     "(?s).*");
 
     public static final Datatype<Boolean> BOOLEAN =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#boolean",
-                    PrimitiveObjectToStringBiConverters.BOOLEAN,
+                    ObjectToStringBiConverters.BOOLEAN,
                     Boolean.class,
                     // Subset of https://yaml.org/type/bool.html
                     "true|True|TRUE|false|False|FALSE");
@@ -52,7 +52,7 @@ public final class Datatypes {
     public static final Datatype<URI> IRI =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#anyURI",
-                    PrimitiveObjectToStringBiConverters.URI,
+                    ObjectToStringBiConverters.URI,
                     URI.class, // TODO Make this URI.class!
                     IRI_PATTERN);
 

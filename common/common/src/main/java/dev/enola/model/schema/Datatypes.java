@@ -17,7 +17,6 @@
  */
 package dev.enola.model.schema;
 
-import dev.enola.common.convert.string.TemporalToStringBiConverters;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
@@ -26,11 +25,11 @@ import java.time.LocalDate;
 /** Datatypes for <a href="https://schema.org/">Schema.org</a> */
 public final class Datatypes {
 
-    // TODO How-to copy/paste even less from dev.enola.model.xsd.Datatypes.DATE?!
+    // TODO How-to copy/paste even less from dev.enola.model.xsd.Datatypes.DATE?
     public static final Datatype<LocalDate> DATE =
             new ImmutableDatatype<>(
                     "https://schema.org/Date",
-                    TemporalToStringBiConverters.LOCAL_DATE,
+                    dev.enola.model.xsd.Datatypes.DATE.stringConverter(),
                     LocalDate.class,
                     dev.enola.model.xsd.Datatypes.DATE.pattern().get());
 

@@ -18,10 +18,9 @@
 package dev.enola.common.convert;
 
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 
-public final class PrimitiveObjectToStringBiConverters {
-    // TODO Move into sub-package dev.enola.common.convert.string
-    // TODO Rename misnamed Primitive* to ... Builtin*
+public final class ObjectToStringBiConverters {
 
     private static class IdentityObjectToStringBiConverter
             implements ObjectToStringBiConverter<String>, IdentityConverter<String> {}
@@ -30,7 +29,7 @@ public final class PrimitiveObjectToStringBiConverters {
             new IdentityObjectToStringBiConverter();
 
     public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
-            new PrimitiveObjectToStringBiConverter<Boolean>() {
+            new ObjectToStringToStringBiConverter<Boolean>() {
 
                 @Override
                 public Boolean convertFrom(String input) throws ConversionException {
@@ -39,7 +38,7 @@ public final class PrimitiveObjectToStringBiConverters {
             };
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
-            new PrimitiveObjectToStringBiConverter<java.net.URI>() {
+            new ObjectToStringToStringBiConverter<java.net.URI>() {
 
                 @Override
                 public java.net.URI convertFrom(String input) throws ConversionException {
@@ -51,8 +50,25 @@ public final class PrimitiveObjectToStringBiConverters {
                 }
             };
 
-    // TODO Rename misnamed Primitive* to ... Builtin*
-    private abstract static class PrimitiveObjectToStringBiConverter<T>
+    public static final ObjectToStringBiConverter<LocalDate> LOCAL_DATE =
+            new ObjectToStringBiConverter<LocalDate>() {
+
+                @Override
+                public String convertTo(LocalDate input) throws ConversionException {
+                    return input.toString();
+                }
+
+                @Override
+                public LocalDate convertFrom(String input) throws ConversionException {
+                    return LocalDate.parse(input);
+                }
+            };
+
+    /**
+     * An ObjectToStringBiConverter which uses {@link Object#toString()} for {@link
+     * ObjectToStringBiConverter#convertTo(Object)}.
+     */
+    private abstract static class ObjectToStringToStringBiConverter<T>
             implements ObjectToStringBiConverter<T> {
         @Override
         public String convertTo(T input) throws ConversionException {
@@ -60,5 +76,5 @@ public final class PrimitiveObjectToStringBiConverters {
         }
     }
 
-    private PrimitiveObjectToStringBiConverters() {}
+    private ObjectToStringBiConverters() {}
 }
