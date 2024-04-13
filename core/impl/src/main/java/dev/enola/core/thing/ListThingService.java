@@ -31,17 +31,22 @@ import java.util.Map;
 /** ThingService which returns the list of all known Things' IRIs for GET enola:/ */
 public class ListThingService implements ThingService {
 
-    public static final String ENOLA_ROOT_LIST_IRI = "enola:/";
-    private static final String ENOLA_ROOT_LIST_PROPERTY = "https://enola.dev/thing-iri-list";
+    // TODO Support something like:  ?inline, instead 1:N fetching...
+    // public static final String ENOLA_ROOT_LIST_THINGS = "enola:/?inline";
+
+    public static final String ENOLA_ROOT_LIST_IRIS = "enola:/";
+    public static final String ENOLA_ROOT_LIST_PROPERTY = "https://enola.dev/thing-iri-list";
 
     private List<String> iris;
 
     public void setIRIs(List<String> iris) {
+        if (this.iris != null) throw new IllegalStateException();
         this.iris = iris;
     }
 
     @Override
-    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
+    public Any getThing(String iri, Map<String, String> parameters) {
+        // TODO Have a static Proto message type for this? And use it e.g. in DocGen?
         var list = Value.List.newBuilder();
         for (var thingIRI : iris) {
             var linkValue = Value.newBuilder().setLink(thingIRI);
@@ -49,7 +54,7 @@ public class ListThingService implements ThingService {
         }
         var value = Value.newBuilder().setList(list);
         var thing = Thing.newBuilder();
-        thing.setIri(ENOLA_ROOT_LIST_IRI);
+        thing.setIri(ENOLA_ROOT_LIST_IRIS);
         thing.putFields(ENOLA_ROOT_LIST_PROPERTY, value.build());
         return Any.pack(thing.build());
     }

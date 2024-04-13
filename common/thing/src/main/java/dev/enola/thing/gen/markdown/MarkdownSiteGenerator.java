@@ -48,4 +48,6 @@ public class MarkdownSiteGenerator {
             }
         }
     }
+
+    // TODO Add MarkdownDocGenerator.FOOTER ;-)
 }

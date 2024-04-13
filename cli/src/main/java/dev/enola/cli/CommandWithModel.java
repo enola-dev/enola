@@ -118,18 +118,19 @@ public abstract class CommandWithModel implements CheckedRunnable {
                 names = {"--load", "-l"},
                 required = true,
                 description = "URI Glob of Models to load (e.g. file:\"**.ttl\")")
-        private java.util.List<URI> load;
+        java.util.List<URI> load;
 
         @Option(
                 names = {"--model", "-m"},
                 required = true,
                 description = "URI to EntityKinds (e.g. file:model.yaml)")
-        private URI model;
+        // TODO Simple integrate this into --load eventually...
+        URI model;
 
         @Option(
                 names = {"--server", "-s"},
                 required = true,
                 description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
-        private String server;
+        String server;
     }
 }
