@@ -17,6 +17,7 @@
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library", "java_test")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
+load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 
 proto_library(
     name = "thing_proto",
@@ -39,6 +40,13 @@ buf_proto_lint_test(
     use_rules = [
         "DEFAULT",
         "COMMENTS",
+    ],
+)
+
+doc_markdown_compile(
+    name = "thing_proto_doc",
+    protos = [
+        "thing_proto",
     ],
 )
 

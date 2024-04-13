@@ -16,12 +16,12 @@
     limitations under the License.
 -->
 
-# News (Blog)
+# IGNORE!
 
-These are also posted to [the Enola.dev Announcements Google Group](https://groups.google.com/g/enoladev-announcements) - please click **_Join_** on it!
+THIS FILE WILL BE OVERWRITTEN WITH THE GENERATED
 
-<!-- TODO * 2024-04-xx: [TBD](posts/2024-04.md) -->
-* 2024-02-18: [Linked Thing UI v1](posts/ui1.md)
-* 2023-03-26: [DocGen v0.1](posts/docgen1.md)
-* 2023-03-19: [First Model](posts/model1.md)
-* 2023-03-17: [Repo Created](posts/git-repo-created.md)
+bazel-bin/common/thing/thing_proto_doc/thing_proto_doc.md
+
+BY THE tools/docs/build.sh SCRIPT!
+
+## dev-enola-thing-Thing
