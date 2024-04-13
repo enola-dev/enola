@@ -25,8 +25,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 
 public class FileResourceTest {
+
     @Test
     public void testWriteRead() throws IOException {
         var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
@@ -35,5 +38,11 @@ public class FileResourceTest {
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
         r.charSink().write("hello, world");
         assertThat(r.charSource().read()).isEqualTo("hello, world");
+    }
+
+    @Test(expected = NoSuchFileException.class)
+    public void readNonExisting() throws IOException {
+        var r = new FileResource(Path.of("does-not-exist.txt"), MediaType.PLAIN_TEXT_UTF_8);
+        r.charSource().read();
     }
 }
