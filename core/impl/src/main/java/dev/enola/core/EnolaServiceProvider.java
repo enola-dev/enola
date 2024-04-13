@@ -42,7 +42,6 @@ import dev.enola.core.meta.proto.Type;
 import dev.enola.core.thing.EmptyThingRepository;
 import dev.enola.core.thing.ThingConnector;
 import dev.enola.core.thing.ThingConnectorService;
-import dev.enola.core.thing.ThingRepositoryEnolaService;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.data.Repository;
@@ -88,8 +87,7 @@ public class EnolaServiceProvider {
             EntityKindRepository ekr, Repository<Type> tyr, ThingRepository thingRepository)
             throws ValidationException, EnolaException {
         var esb = EnolaServiceRegistry.builder();
-        var tres = new ThingRepositoryEnolaService(thingRepository);
-        esb.setThingRepositoryEnolaService(tres);
+        esb.register(thingRepository);
 
         var trb = TypeRegistryWrapper.newBuilder();
         trb.add(Things.getDescriptor());

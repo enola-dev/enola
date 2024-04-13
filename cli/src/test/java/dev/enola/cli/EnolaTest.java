@@ -172,8 +172,7 @@ public class EnolaTest {
     public void getList() {
         var exec = cli("-vvv", "get", "--load", "classpath:enola.dev-properties.ttl", "enola:/");
         assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0);
-        // TODO contains https://enola.dev/emoji
+        assertThat(exec).hasExitCode(0).out().contains("https://enola.dev/emoji");
     }
 
     @Test
