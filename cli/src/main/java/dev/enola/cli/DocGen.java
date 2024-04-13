@@ -22,9 +22,12 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.docgen.Options;
 import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
+import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.thing.ListThingService;
+import dev.enola.thing.proto.Thing;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -54,9 +57,35 @@ public class DocGen extends CommandWithModelAndOutput {
     URI headerURI;
 
     @Override
-    public void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
-            throws Exception {
+    public void run(EntityKindRepository ekr, EnolaServiceBlockingStub service) throws Exception {
+        if (group.model != null) {
+            singleMDDocForEntities(service);
+        } else {
+            multipleMDDocsForThings(service);
+        }
+    }
 
+    private void multipleMDDocsForThings(EnolaServiceBlockingStub service) throws Exception {
+        var request =
+                GetThingRequest.newBuilder().setIri(ListThingService.ENOLA_ROOT_LIST_IRIS).build();
+        var response = service.getThing(request);
+        var any = response.getThing();
+
+        // TODO Have a static Proto message type for this? Use it here and in ListThingService.
+        var listThing = any.unpack(Thing.class);
+        var values =
+                listThing
+                        .getFieldsMap()
+                        .get(ListThingService.ENOLA_ROOT_LIST_PROPERTY)
+                        .getList()
+                        .getValuesList();
+        for (var value : values) {
+            spec.commandLine().getOut().println(value.getLink());
+        }
+        spec.commandLine().getOut().flush();
+    }
+
+    private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {
         var eks = new ArrayList<EntityKind>();
         var ekid = ID.newBuilder().setNs("enola").setEntity("entity_kind").build();
         var eri = IDs.toPath(ekid);
