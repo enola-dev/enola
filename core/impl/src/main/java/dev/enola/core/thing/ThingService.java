@@ -31,6 +31,6 @@ public interface ThingService {
     // TODO Replace Any with Thing, when old Entity is removed?
     Any getThing(String iri, Map<String, String> parameters) throws EnolaException;
 
-    // TODO Replace listEntities() with get() which returns things
+    // TODO Replace listEntities() with getThing() which returns things
     ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

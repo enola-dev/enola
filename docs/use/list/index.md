@@ -18,7 +18,9 @@
 
 # List Entities
 
-`enola list` will retrieve a list of _entities_ from [connectors](../connector/index.md).
+**NOTE:** *The `list` command will eventually be entirely replaced by [`get enola:/`](../get/index.md#list)*
+
+`enola list` will retrieve a list of *entities* from [connectors](../connector/index.md).
 
 <!--
 

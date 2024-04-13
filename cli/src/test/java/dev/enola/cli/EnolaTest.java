@@ -169,6 +169,14 @@ public class EnolaTest {
     }
 
     @Test
+    public void getList() {
+        var exec = cli("-vvv", "get", "--load", "classpath:enola.dev-properties.ttl", "enola:/");
+        assertThat(exec).err().isEmpty();
+        assertThat(exec).hasExitCode(0);
+        // TODO contains https://enola.dev/emoji
+    }
+
+    @Test
     public void serveBothHttpAndGRPC() {
         var exec =
                 cli(
