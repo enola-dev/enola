@@ -17,7 +17,11 @@
  */
 package dev.enola.common.convert;
 
+import java.net.URISyntaxException;
+
 public final class PrimitiveObjectToStringBiConverters {
+    // TODO Move into sub-package dev.enola.common.convert.string
+    // TODO Rename misnamed Primitive* to ... Builtin*
 
     private static class IdentityObjectToStringBiConverter
             implements ObjectToStringBiConverter<String>, IdentityConverter<String> {}
@@ -34,6 +38,20 @@ public final class PrimitiveObjectToStringBiConverters {
                 }
             };
 
+    public static final ObjectToStringBiConverter<java.net.URI> URI =
+            new PrimitiveObjectToStringBiConverter<java.net.URI>() {
+
+                @Override
+                public java.net.URI convertFrom(String input) throws ConversionException {
+                    try {
+                        return new java.net.URI(input);
+                    } catch (URISyntaxException e) {
+                        throw new ConversionException(input, e);
+                    }
+                }
+            };
+
+    // TODO Rename misnamed Primitive* to ... Builtin*
     private abstract static class PrimitiveObjectToStringBiConverter<T>
             implements ObjectToStringBiConverter<T> {
         @Override
