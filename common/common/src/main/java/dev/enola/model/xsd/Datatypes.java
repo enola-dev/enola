@@ -17,7 +17,7 @@
  */
 package dev.enola.model.xsd;
 
-import dev.enola.common.convert.string.TemporalToStringBiConverters;
+import dev.enola.common.convert.ObjectToStringBiConverters;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
@@ -31,7 +31,7 @@ public final class Datatypes {
     public static final Datatype<LocalDate> DATE =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#date",
-                    TemporalToStringBiConverters.LOCAL_DATE,
+                    ObjectToStringBiConverters.LOCAL_DATE,
                     LocalDate.class,
                     // TODO Make LocalDate RegExp more fancy...
                     // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s07.html
