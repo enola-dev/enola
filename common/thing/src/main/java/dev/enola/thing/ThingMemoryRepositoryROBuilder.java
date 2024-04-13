@@ -19,6 +19,7 @@ package dev.enola.thing;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
 import dev.enola.data.Store;
 
@@ -37,5 +38,25 @@ public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing>
         require(thingIRI, "iri");
         store(thingIRI, thing);
         return this;
+    }
+
+    @Override
+    public ThingRepository build() {
+        return wrap(super.build());
+    }
+
+    private ThingRepository wrap(final Repository<Thing> repository) {
+        return new ThingRepository() {
+
+            @Override
+            public Iterable<String> listIRI() {
+                return repository.listIRI();
+            }
+
+            @Override
+            public Thing get(String iri) {
+                return repository.get(iri);
+            }
+        };
     }
 }

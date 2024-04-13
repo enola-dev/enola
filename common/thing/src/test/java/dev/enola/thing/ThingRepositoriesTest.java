@@ -19,7 +19,6 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.data.Repository;
 import dev.enola.data.Store;
 
 import org.junit.Test;
@@ -36,7 +35,7 @@ public class ThingRepositoriesTest {
         thingStore.store(TEST_THING);
     }
 
-    private void checkThingRepository(Repository<Thing> thingRepository) {
+    private void checkThingRepository(ThingRepository thingRepository) {
         assertThat(thingRepository.listIRI()).contains(TEST_THING.iri());
         assertThat(thingRepository.list()).contains(TEST_THING);
         assertThat(thingRepository.get(TEST_THING.iri())).isEqualTo(TEST_THING);
