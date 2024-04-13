@@ -112,6 +112,10 @@ Web-based:
 * [VisGraph^3](https://visgraph3.github.io) #opensource #RDF
 * [Brickschema's Viewer](https://viewer.brickschema.org)
 
+Vaguely related other such tools include:
+
+* [Reactome](https://en.wikipedia.org/wiki/Reactome)'s [Pathway Browser](https://reactome.org/PathwayBrowser)
+
 ### Frameworks
 
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API

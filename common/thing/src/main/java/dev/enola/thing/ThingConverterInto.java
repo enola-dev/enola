@@ -23,6 +23,11 @@ import dev.enola.thing.Thing.Builder;
 
 import java.io.IOException;
 
+/**
+ * ThingConverterInto converts a {@link Thing} into an {@link Thing.Builder}.
+ *
+ * <p>This is useful e.g. to convert from one kind of Thing API implementation to another.
+ */
 public class ThingConverterInto implements ConverterInto<Thing, Thing.Builder> {
 
     @Override
