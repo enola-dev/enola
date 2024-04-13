@@ -41,6 +41,7 @@ import org.junit.Test;
 
 import java.time.Instant;
 
+/** Tests for {@link MessageToThingConverter}. */
 public class MessageToThingConverterTest {
 
     private static final String TEST_THING_IRI = "http://test/thing";

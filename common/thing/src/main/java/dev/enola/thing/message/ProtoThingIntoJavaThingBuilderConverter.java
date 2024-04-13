@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
 import dev.enola.thing.Thing.Builder;
@@ -67,6 +68,9 @@ public class ProtoThingIntoJavaThingBuilderConverter
                 return protoThingValue.getString();
             case LINK:
                 return new Link(protoThingValue.getLink());
+            case LANG_STRING:
+                var protoLangString = protoThingValue.getLangString();
+                return new LangString(protoLangString.getText(), protoLangString.getLang());
             case LITERAL:
                 {
                     var datatypeValue = protoThingValue.getLiteral().getValue();
@@ -78,10 +82,10 @@ public class ProtoThingIntoJavaThingBuilderConverter
                 }
             case LIST:
                 {
-                    var listProto = protoThingValue.getList();
-                    var size = listProto.getValuesCount();
+                    var protoList = protoThingValue.getList();
+                    var size = protoList.getValuesCount();
                     var listBuilder = ImmutableList.builderWithExpectedSize(size);
-                    for (var protoListValue : listProto.getValuesList()) {
+                    for (var protoListValue : protoList.getValuesList()) {
                         listBuilder.add(object(protoListValue));
                     }
                     return listBuilder.build();
