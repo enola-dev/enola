@@ -28,17 +28,17 @@ import dev.enola.thing.proto.Value.Literal;
 public final class KIRI {
 
     // The JavaDoc of this class must currently be manually kept in sync with
-    // the same content that's also in the //model/enola/properties.ttl file.
+    // the same content that's also in the //models/enola.dev/properties.ttl file.
     // (We could theoretically build something like https://github.com/ansell/rdf4j-schema-generator
     // into Enola to automate that; but it's probably not really worth it.)
 
     // TODO Make all of these actually resolvable in Enola! (Just for documentation look-up.)
-    // by (built-in?!) loading //model/enola/properties.ttl from classpath at start-up
+    // by (built-in?!) loading //models/enola.dev/properties.ttl from classpath at start-up
 
     // TODO LDP? https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/model/vocabulary/LDP.html
 
     /** Enola.dev's very own! */
-    // NB: Should the constant values ever change, update //model/enola/properties.ttl accordingly!
+    // NB: Should the constant values ever change, update //models/enola.dev/properties.ttl
     public static final class E {
         private static final String NS = "https://enola.dev/";
 

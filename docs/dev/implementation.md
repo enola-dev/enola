@@ -20,7 +20,7 @@
 
 ## Enola Thing (ET 👽)
 
-<!-- TODO Generate (some of) this MD from a machine readable RDF model/enola.dev/et.ttl, using Enola itself?! -->
+<!-- TODO Generate (some of) this MD from a machine readable RDF models/enola.dev/et.ttl, using Enola itself?! -->
 
 All ETs have 0.. n properties. Each such Property is identified by [an IRI](../concepts/uri.md), and has a value. Each such value has a Type. These types include e.g. text (string), numbers, or dates - but also lists, and “nested" sub-properties. There is actually no fixed set of known such types; applications can define their own.
 
@@ -84,7 +84,7 @@ Any [Protocol Buffer](https://protobuf.dev) can be [converted](#conversions) to 
 
 ### Conversions
 
-<!-- Eventually this Mermaid (and also a Graphviz) should also be generated from a machine readable model/enola.dev/et.ttl -->
+<!-- Eventually this Mermaid (and also a Graphviz) should also be generated from a machine readable models/enola.dev/et.ttl -->
 
 ``` mermaid
 graph BT

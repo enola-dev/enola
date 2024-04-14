@@ -29,16 +29,16 @@
 Get the list of all available Thing (Template) IRIs, using the special `enola:/` IRI:
 
 ```bash cd .././.././..
-$ ./enola get --load "file:model/**.ttl" enola:/
+$ ./enola get --load "file:models/**.ttl" enola:/
 ...
 ```
 
 ## Get 🐢
 
-Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/properties.ttl](../../../model/enola.dev/properties.ttl) model:
+Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/properties.ttl](../../../models/enola.dev/properties.ttl) model:
 
 ```bash cd .././.././..
-$ ./enola get --load file:model/enola.dev/properties.ttl https://enola.dev/emoji | head --lines=3
+$ ./enola get --load file:models/enola.dev/properties.ttl https://enola.dev/emoji | head --lines=3
 ...
 ```
 

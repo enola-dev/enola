@@ -25,7 +25,7 @@ import java.time.LocalDate;
 
 /** Datatypes for <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema (XSD)</a>. */
 public final class Datatypes {
-    // TODO Eventually replace this class with a declarative model/schema.org/datatypes.ttl ?
+    // TODO Eventually replace this class with a declarative models/schema.org/datatypes.ttl ?
     // TODO Hack sth. which scans for an @Things and introspects constants and writes them out?!
 
     public static final Datatype<LocalDate> DATE =
