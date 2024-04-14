@@ -32,11 +32,11 @@ import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
 import dev.enola.thing.ThingRepository;
-import dev.enola.thing.message.ProtoThingProvider;
+import dev.enola.thing.message.ProtoThingRepository;
 
 import java.util.Map;
 
-class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
+class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
 
     private final URITemplateMatcherChain<ThingService> matcher;
     private ResourceEnolaService resourceEnolaService;
@@ -77,6 +77,12 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
         String iri = r.getIri();
         return GetThingResponse.newBuilder().setThing(get(iri)).build();
+    }
+
+    @Override
+    public Iterable<String> listIRI() {
+        // TODO Should this still also do the same as, and be called by, listEntities() below?
+        return matcher.listTemplates();
     }
 
     @Override
@@ -141,7 +147,6 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
             b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, wrap(listThingService));
             b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, wrap(listThingService));
             var uriTemplateMatcherChain = b.build();
-            listThingService.setIRIs(uriTemplateMatcherChain.listTemplates());
             var esr =
                     new EnolaServiceRegistry(
                             uriTemplateMatcherChain,

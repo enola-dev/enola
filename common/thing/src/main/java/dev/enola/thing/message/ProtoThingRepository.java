@@ -15,8 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.message;
+
+import com.google.protobuf.Any;
 
 import dev.enola.data.Repository;
 
-public interface ThingRepository extends Repository<Thing>, ThingProvider {}
+// TODO Replace Any with Things, by moving EnolaThingProvider's logic into core
+public interface ProtoThingRepository extends Repository<Any>, ProtoThingProvider {}
