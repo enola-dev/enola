@@ -19,6 +19,12 @@ package dev.enola.common.io.resource;
 
 public abstract class BaseResource implements AbstractResource {
 
+    // Always keep the user-specified URI (because e.g. ?query parameters & #fragment may get lost)
+    // TODO private final URI uri;
+
+    // TODO protected BaseResource(URI uri) {
+    // TODO protected BaseResource(URI uri, MediaType mediaType) {
+
     @Override
     public String toString() {
         return getClass().getName() + "{uri=" + uri() + " & mediaType=" + mediaType() + '}';

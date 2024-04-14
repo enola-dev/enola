@@ -24,7 +24,6 @@ import dev.enola.common.io.MoreFileSystems;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.nio.charset.Charset;
 
 public class ResourceProviders implements ResourceProvider {
 
@@ -43,11 +42,7 @@ public class ResourceProviders implements ResourceProvider {
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if (MoreFileSystems.URI_SCHEMAS.contains(scheme)) {
-            if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
-                return new FileResource(uri, mediaType);
-            } else {
-                return new FileResource(uri, mediaType.charset().or(Charset.defaultCharset()));
-            }
+            return new FileResource(uri);
         } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
             ClasspathResource cpr;
             if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {

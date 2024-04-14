@@ -1,0 +1,50 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Attach",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": "5005",
+      "projectName": "common.common:common"
+    },
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Enola",
+      "request": "launch",
+      "mainClass": "dev.enola.cli.Enola",
+      "projectName": "cli:enola"
+    },
+    {
+      "type": "java",
+      "name": "Server",
+      "request": "launch",
+      "mainClass": "dev.enola.demo.Server",
+      "projectName": "connectors.demo:demo"
+    },
+    {
+      "type": "java",
+      "name": "Bek",
+      "request": "launch",
+      "mainClass": "dev.enola.k8s.Bek",
+      "projectName": "connectors.k8s:enola-k8s"
+    },
+    {
+      "type": "java",
+      "name": "Hello",
+      "request": "launch",
+      "mainClass": "dev.enola.common.hello.Hello",
+      "projectName": "tools.hello:hello"
+    }
+  ]
+}

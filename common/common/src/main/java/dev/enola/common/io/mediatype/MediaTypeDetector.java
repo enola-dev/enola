@@ -23,6 +23,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.Resource;
 import dev.enola.common.io.resource.URIs;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ import java.net.URI;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Utility for detecting a (better) MediaType for a Resource.
+ *
+ * <p>This interface is typically not used directly by {@link Resource} API users (who would just
+ * use {@link AbstractResource#mediaType()}), but is used by Resource implementations.
+ */
 public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     // Default to "application/octet-stream", as per e.g.
@@ -92,7 +100,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                         && ("file".equalsIgnoreCase(uri.getScheme())
                                 || fileSystemProviderSchemes.contains(
                                         uri.getScheme().toLowerCase()))) {
-                    var path = Paths.get(uri);
+                    var path = Path.of(uri);
                     try {
                         var contentType = Files.probeContentType(path);
                         if (contentType != null) {
@@ -109,14 +117,22 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
     private final List<FromURI> providers =
             ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
 
-    @Override
-    public Optional<MediaType> detect(AbstractResource resource) {
+    /**
+     * This is called by Resource* implementation constructors, as <tt>this.mediaType =
+     * mtd.detectAlways(this);</tt>. It is guaranteed to never call the resource argument's {@link
+     * AbstractResource#mediaType()} (because its purpose is to determine it). It will however
+     * likely examine the URL, and might use a {@link ResourceCharsetDetector} which may invoke
+     * {@link ReadableResource#byteSource()} (but never {@link ReadableResource#charSource()}).
+     */
+    public MediaType detectAlways(AbstractResource resource) {
         var uri = resource.uri();
-        var mt = resource.mediaType();
+        var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
+        var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
+        detected = detectCharset(resource, detected);
+        return (detected != null) ? detected : DEFAULT;
+    }
 
-        var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
-        var detected = detect(mt.toString(), charsetName, uri);
-
+    private MediaType detectCharset(AbstractResource resource, MediaType detected) {
         if (detected != null && !detected.charset().isPresent()) {
             // TODO Make YAML just 1 of many detectors...
             ResourceCharsetDetector rcd = new YamlMediaType();
@@ -125,13 +141,26 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 detected = detected.withCharset(detectedCharset.get());
             }
         }
+        return detected;
+    }
+
+    @Override
+    public Optional<MediaType> detect(AbstractResource resource) {
+        var uri = resource.uri();
+        var mt = resource.mediaType();
+
+        var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
+        var detected = detect(mt.toString(), charsetName, uri);
+        detected = detectCharset(resource, detected);
 
         return Optional.ofNullable(detected);
     }
 
-    public MediaType detect(String contentType, String contentEncoding, URI uri
-            // TODO CheckedSupplier<InputStream, IOException> inputStreamSupplier
-            ) {
+    // This is not @Deprecated and used e.g. by UrlResource
+    public MediaType detect(String contentType, String contentEncoding, URI uri) {
+        // Some of the things we're about to call do Path.of(URI uri) which doesn't like
+        // our "fake" relative file: URIs (e.g. "file:relative.txt") so we "fix" them:
+        uri = URIs.rel2abs(uri);
 
         MediaType mediaType = null;
         if (contentType != null) {
@@ -172,8 +201,6 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
             }
         }
-
-        // TODO probe both contentType AND contentEncoding FROM all registered inputStreamSupplier
 
         return mediaType;
     }

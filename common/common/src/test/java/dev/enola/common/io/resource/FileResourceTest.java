@@ -91,7 +91,7 @@ public class FileResourceTest {
         // file:///tmp/bazel-working-directory/_main/bazel-out/k8-fastbuild/bin/common/common/src/test/java/dev/enola/common/io/resource/FileResourceTest.runfiles/_main/jimfs:/dc113772-abe6-4ffd-be54-eeaecdc34414/testPathToURIonJimJS/hello.txt
         // let's double-check:
         assertThat(r.uri().getScheme()).isEqualTo("jimfs");
-        assertThat(Files.readString(fs.getPath(r.uri().getPath()))).isEqualTo("hello, world");
+        assertThat(Files.readString(r.path())).isEqualTo("hello, world");
     }
 
     private void check(Resource r) throws IOException {

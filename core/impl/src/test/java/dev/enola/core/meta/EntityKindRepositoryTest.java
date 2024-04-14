@@ -106,7 +106,7 @@ public class EntityKindRepositoryTest {
     public void testReLoad() throws ValidationException, IOException {
         var cpr = new ClasspathResource("demo-model.yaml");
         var temp = Files.createTempFile("EntityKindRepositoryTest-", "-testReLoad.yaml");
-        var fr = new FileResource(temp.toUri(), cpr.mediaType().charset().get());
+        var fr = new FileResource(temp.toUri(), cpr.mediaType());
         try {
             cpr.byteSource().copyTo(fr.byteSink());
             r.load(fr);
