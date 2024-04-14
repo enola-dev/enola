@@ -25,8 +25,11 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
@@ -60,6 +63,35 @@ public class FileResource extends BaseResource implements Resource {
         this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
     }
 
+    private static Path pathFromURI(URI uri) {
+        var path = URIs.getPath(uri);
+        var scheme = uri.getScheme();
+        if ("file".equals(scheme)) {
+            return FileSystems.getDefault().getPath(path);
+        } else
+            try {
+                URI fsURI = new URI(scheme, uri.getAuthority(), "", null, null);
+                var fs = FileSystems.getFileSystem(fsURI);
+                return fs.getPath(path);
+            } catch (URISyntaxException e) {
+                // TODO Instead of throwing this RuntimeException, we could return a
+                // FailingByteSink?
+                throw new UncheckedIOException(
+                        new IOException(
+                                "Failed to create FileSystem Authority URI: " + uri.toString(), e));
+            }
+    }
+
+    // TODO Remove all Path constructors above, only support URI!
+
+    public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
+        this(pathFromURI(uri), mediaType, openOptions);
+    }
+
+    public FileResource(URI uri, Charset charset, OpenOption... openOptions) {
+        this(pathFromURI(uri), charset, openOptions);
+    }
+
     @Override
     public URI uri() {
         return path.toUri();
@@ -72,11 +104,14 @@ public class FileResource extends BaseResource implements Resource {
 
     @Override
     public ByteSink byteSink() {
-        var directory = path.toFile().getParentFile();
-        if (directory != null && !directory.exists()) {
-            if (!directory.mkdirs()) {
-                throw new IllegalStateException(
-                        "FileResource parent directory could not be created");
+        var parentDirectoryPath = path.getParent();
+        if (parentDirectoryPath != null) {
+            try {
+                Files.createDirectories(parentDirectoryPath);
+            } catch (IOException e) {
+                // TODO Instead of throwing this RuntimeException, we could return a
+                // FailingByteSink?
+                throw new UncheckedIOException("Failed to mkdirs: " + parentDirectoryPath, e);
             }
         }
         return MoreFiles.asByteSink(path, openOptions);

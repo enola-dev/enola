@@ -23,7 +23,6 @@ import com.google.common.net.MediaType;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
 
 public class ResourceProviders implements ResourceProvider {
 
@@ -41,12 +40,12 @@ public class ResourceProviders implements ResourceProvider {
         String scheme = uri.getScheme();
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
-        } else if (scheme.startsWith("file")) {
-            Path filePath = Path.of(uriPath);
+        } else if ("file".equals(scheme) || "jimfs".equals(scheme)) {
+            // "jimfs" is https://github.com/google/jimfs, used in EnolaTest
             if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
-                return new FileResource(filePath, mediaType);
+                return new FileResource(uri, mediaType);
             } else {
-                return new FileResource(filePath, mediaType.charset().or(Charset.defaultCharset()));
+                return new FileResource(uri, mediaType.charset().or(Charset.defaultCharset()));
             }
         } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
             ClasspathResource cpr;
