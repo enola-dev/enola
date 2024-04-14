@@ -46,8 +46,13 @@ this project comes with a containerized ("Docker") development environment, whic
 
 When tests ran fully successfully, then a `.git/hooks/pre-commit` that's useful for development is installed.
 
-To work on documentation, launch `tools/docs/serve.bash` for hot reloading live refresh which is great while writing
-(even though it has some limitations), and `tools/docs/build.bash` for generating the "real" (full) static `site/`.
+## Documentation Writing
+
+To work on documentation, launch:
+
+* `tools/docs/serve-quick.bash` for hot reloading live refresh, which is great while writing (even though it has some limitations)
+* `tools/docs/serve-build.bash` for a  "real" (full) docs build, without without the demo "screen cast" recordings (which are slow)
+* `tools/docs/serve.bash` for generating the "real" (full) static `site/` exactly as it's deployed on <https://docs.enola.dev>
 
 ## Manual Tools Installation
 
