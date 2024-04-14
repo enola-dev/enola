@@ -90,8 +90,6 @@ public class EnolaTest {
     @Test
     public void docGenEmojiThing() throws IOException {
         Path dir = Files.createTempDirectory("EnolaTest");
-        // FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
-        // Path dir = fs.getPath("/docGenEmojiThing/");
 
         var exec =
                 cli(
