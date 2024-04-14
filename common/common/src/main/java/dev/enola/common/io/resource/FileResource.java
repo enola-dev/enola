@@ -25,7 +25,6 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
@@ -74,11 +73,9 @@ public class FileResource extends BaseResource implements Resource {
                 var fs = FileSystems.getFileSystem(fsURI);
                 return fs.getPath(path);
             } catch (URISyntaxException e) {
-                // TODO Instead of throwing this RuntimeException, we could return a
-                // FailingByteSink?
-                throw new UncheckedIOException(
-                        new IOException(
-                                "Failed to create FileSystem Authority URI: " + uri.toString(), e));
+                // This is rather unexpected...
+                throw new IllegalStateException(
+                        "Failed to create FileSystem Authority URI: " + uri.toString(), e);
             }
     }
 
@@ -109,9 +106,7 @@ public class FileResource extends BaseResource implements Resource {
             try {
                 Files.createDirectories(parentDirectoryPath);
             } catch (IOException e) {
-                // TODO Instead of throwing this RuntimeException, we could return a
-                // FailingByteSink?
-                throw new UncheckedIOException("Failed to mkdirs: " + parentDirectoryPath, e);
+                return new ErrorByteSink(e);
             }
         }
         return MoreFiles.asByteSink(path, openOptions);
