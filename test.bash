@@ -20,6 +20,9 @@ set -euo pipefail
 # This script builds the project *WITHOUT* requiring containers.
 # It can be used *IN* a container though; and is so, by the ./build script.
 
+# Abort if there are any broken symlinks
+(find . -xtype l -ls | grep .) && exit 1
+
 # Similar also in the ./enola script:
 GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
