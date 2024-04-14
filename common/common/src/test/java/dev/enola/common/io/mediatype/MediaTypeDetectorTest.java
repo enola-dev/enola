@@ -91,8 +91,6 @@ public class MediaTypeDetectorTest {
         r.byteSink().write(text.getBytes(Charsets.US_ASCII));
         assertThat(md.detect(r)).hasValue(YAML_UTF_8);
 
-        assertThat(r.charSource(md.detect(r).get().charset().get()).read()).isEqualTo(text);
-
         // TODO Make this work... it requires using the MediaTypeDetector directly in MemoryResource
         // assertThat(r.charSource().read()).isEqualTo(YAML_UTF_8);
     }

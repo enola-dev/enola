@@ -152,7 +152,7 @@ public class ProtoIO {
                 builder.mergeFrom(is, extensionRegistry);
             }
         } else {
-            try (Reader reader = resource.charSource(UTF_8).openBufferedStream()) {
+            try (Reader reader = resource.charSource().openBufferedStream()) {
                 // TODO Use the new ResourceConverter infrastructure here...
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     textFormatParser.merge(reader, extensionRegistry, builder);
@@ -161,7 +161,7 @@ public class ProtoIO {
                         JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
                     }
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
-                    var yaml = resource.charSource(UTF_8).read();
+                    var yaml = resource.charSource().read();
                     var json = YamlJson.yamlToJson(yaml);
                     if (!json.isEmpty()) {
                         JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(json, builder);
