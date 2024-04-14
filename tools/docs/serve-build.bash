@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-./tools/docs/build.bash
+./tools/docs/build.bash --without-demo-screencasts
 
 cd site/
 xdg-open http://localhost:8000
