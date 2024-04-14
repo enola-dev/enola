@@ -104,7 +104,7 @@ public class EnolaTest {
         assertThat(exec).hasExitCode(0).out().isEmpty();
 
         var mdPath = dir.resolve("enola.dev/emoji.md");
-        var r = new FileResource(mdPath, MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(mdPath.toUri(), MediaType.PLAIN_TEXT_UTF_8);
         var md = r.charSource().read();
         assertThat(md).contains("Emoji");
     }

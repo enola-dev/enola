@@ -41,6 +41,7 @@ public class ResourceProviders implements ResourceProvider {
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if ("file".equals(scheme) || "jimfs".equals(scheme)) {
+            // TODO The schemes probably shouldn't be hard-coded here, but queried!
             // "jimfs" is https://github.com/google/jimfs, used in EnolaTest
             if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
                 return new FileResource(uri, mediaType);

@@ -38,7 +38,7 @@ public class FileResourceTest {
     @Test
     public void testWriteRead() throws IOException {
         var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
-        var r = new FileResource(t);
+        var r = new FileResource(t.toUri());
         assertThat(r.uri().toString()).endsWith(".json");
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
         check(r);
@@ -50,7 +50,7 @@ public class FileResourceTest {
         var dir = new File(tmp, "FileResourceTest-" + Long.toString(System.nanoTime()));
         assertThat(dir.exists()).isFalse();
         var file = new File(dir, "text.txt");
-        var r = new FileResource(file.toPath(), MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(file.toURI(), MediaType.PLAIN_TEXT_UTF_8);
         r.charSink().write("hello, world");
         assertThat(file.delete()).isTrue();
         assertThat(dir.delete()).isTrue();
@@ -58,7 +58,7 @@ public class FileResourceTest {
 
     @Test(expected = NoSuchFileException.class)
     public void readNonExisting() throws IOException {
-        var r = new FileResource(Path.of("does-not-exist.txt"), MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(URI.create("file:does-not-exist.txt"), MediaType.PLAIN_TEXT_UTF_8);
         r.charSource().read();
     }
 
@@ -68,7 +68,7 @@ public class FileResourceTest {
         Path foo = fs.getPath("/testBasicJimFS");
         Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
 
-        var r = new FileResource(hello, MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(hello.toUri(), MediaType.PLAIN_TEXT_UTF_8);
         check(r);
     }
 

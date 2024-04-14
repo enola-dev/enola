@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -36,6 +37,19 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * {@link Resource} for a file at a {@link Path} on a {@link FileSystem}.
+ *
+ * <p>Note that a {@link Path} object instance is associated to a FileSystem, see {@link
+ * Path#getFileSystem()}. But in its text-form ({@link Path#of(String, String...)} and {@link
+ * Path#toString()}) this association is lost, and it should thus be avoided. In its URI-form
+ * ({@link Path#of(URI)} and {@link Path#toUri()}) this is preserved; typically via the "scheme"
+ * (and possibly the "authority") component/s of an URI. So a path in text does not identify a
+ * filesystem, whereas an URI can. While the "file:" scheme is obviously the most well-known and
+ * common one, the JVM actually can and does support others, notably the "jar:file:" one. To avoid
+ * related confusions, this class intentionally only offers constructors which take {@link URI}
+ * instead of {@link Path} arguments.
+ */
 public class FileResource extends BaseResource implements Resource {
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
@@ -44,25 +58,8 @@ public class FileResource extends BaseResource implements Resource {
     private final MediaType mediaType;
     private final OpenOption[] openOptions;
 
-    @Deprecated // TODO Un-deprecate, but make it not have a charset, so it gets detected
-    public FileResource(Path path, OpenOption... openOptions) {
-        // TODO Remove this and all other uses of defaultCharset() ...
-        this(path, Charset.defaultCharset(), openOptions);
-    }
-
-    public FileResource(Path path, Charset charset, OpenOption... openOptions) {
-        this.path = path;
-        this.mediaType = mtd.detect(null, charset.name(), uri());
-        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
-    }
-
-    public FileResource(Path path, MediaType mediaType, OpenOption... openOptions) {
-        this.path = path;
-        this.mediaType = mediaType;
-        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
-    }
-
     private static Path pathFromURI(URI uri) {
+        // TODO Replace this with return Path.of(uri); but it needs more work...
         var path = URIs.getPath(uri);
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
@@ -79,14 +76,22 @@ public class FileResource extends BaseResource implements Resource {
             }
     }
 
-    // TODO Remove all Path constructors above, only support URI!
-
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
-        this(pathFromURI(uri), mediaType, openOptions);
+        this.path = pathFromURI(uri);
+        this.mediaType = mediaType;
+        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
     }
 
     public FileResource(URI uri, Charset charset, OpenOption... openOptions) {
-        this(pathFromURI(uri), charset, openOptions);
+        this.path = pathFromURI(uri);
+        this.mediaType = mtd.detect(null, charset.name(), uri());
+        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+    }
+
+    public FileResource(URI uri, OpenOption... openOptions) {
+        this.path = pathFromURI(uri);
+        this.mediaType = mtd.detect(null, null, uri());
+        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
     }
 
     @Override
