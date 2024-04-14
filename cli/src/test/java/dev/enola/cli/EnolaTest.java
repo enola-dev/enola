@@ -27,7 +27,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
-import dev.enola.core.meta.docgen.MarkdownDocGenerator;
+import dev.enola.thing.gen.DocGenConstants;
 
 import org.junit.Test;
 
@@ -83,7 +83,7 @@ public class EnolaTest {
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
             assertThat(exec).hasExitCode(0).out().isEmpty();
-            assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
+            assertThat(r.charSource().read()).endsWith(DocGenConstants.FOOTER);
         }
     }
 
@@ -107,8 +107,6 @@ public class EnolaTest {
         var r = new FileResource(mdPath, MediaType.PLAIN_TEXT_UTF_8);
         var md = r.charSource().read();
         assertThat(md).contains("Emoji");
-
-        // TODO assertThat(md).endsWith(MarkdownDocGenerator.FOOTER);
     }
 
     @Test

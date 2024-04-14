@@ -34,7 +34,6 @@ public class MarkdownSiteGenerator {
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
 
-    // TODO Remove ResourceProvider ?
     public MarkdownSiteGenerator(URI base, ResourceProvider rp) {
         this.base = base;
         if (!"file".equals(base.getScheme()) && !"jimfs".equals(base.getScheme()))
@@ -64,6 +63,4 @@ public class MarkdownSiteGenerator {
             }
         }
     }
-
-    // TODO Add MarkdownDocGenerator.FOOTER ;-)
 }

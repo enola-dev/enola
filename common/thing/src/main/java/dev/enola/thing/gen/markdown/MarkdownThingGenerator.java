@@ -19,6 +19,7 @@ package dev.enola.thing.gen.markdown;
 
 import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
+import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
@@ -58,6 +59,7 @@ class MarkdownThingGenerator {
 
             write(indent, object, out, outputIRI, base);
         }
+        out.append(DocGenConstants.FOOTER);
     }
 
     private void write(String indent, Object object, Appendable out, URI outputIRI, URI base)
