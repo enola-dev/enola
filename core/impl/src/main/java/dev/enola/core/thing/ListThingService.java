@@ -60,6 +60,7 @@ public class ListThingService implements ThingService {
         if (ENOLA_ROOT_LIST_THINGS.equals(iri)) {
             var things = Things.newBuilder();
             for (var thingIRI : iris) {
+                if (ENOLA_ROOT_LIST_IRIS.equals(thingIRI)) continue;
                 if (ENOLA_ROOT_LIST_THINGS.equals(thingIRI)) continue;
                 if (thingIRI.startsWith("enola."))
                     // TODO Fix enola.* hack... (get enola.entity_kind & enola.schema doesn't work)

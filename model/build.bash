@@ -19,8 +19,7 @@ set -euox pipefail
 
 # TODO Replace this Bash script with a Bazel BUILD
 
-./enola -vvv docgen --load=file:"model/**.ttl"
-
-# TODO Add CLI flag to set output directory to site/model/, when that's available...
+rm -rf "$PWD"/site/model/
+./enola -vvv docgen --load=file:"model/**.ttl" --output=file://"$PWD"/site/model/
 
 # TODO This should eventually be called by tools/docs/build.bash...

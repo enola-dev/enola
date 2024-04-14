@@ -19,8 +19,9 @@ package dev.enola.thing.gen.markdown;
 
 import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
-import dev.enola.thing.Thing;
 import dev.enola.thing.gen.Relativizer;
+import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Value;
 
 import java.io.IOException;
 import java.net.URI;
@@ -36,14 +37,14 @@ class MarkdownThingGenerator {
 
         out.append("# ");
         // TODO Make IRI path segments clickable?!
-        out.append(thing.iri());
+        out.append(thing.getIri());
         out.append("\n\n");
 
-        write("", thing.properties(), out, outputIRI, base);
+        write("", thing.getFieldsMap(), out, outputIRI, base);
     }
 
     private void write(
-            String indent, Map<String, ?> properties, Appendable out, URI outputIRI, URI base)
+            String indent, Map<String, Value> properties, Appendable out, URI outputIRI, URI base)
             throws IOException {
         for (var entry : properties.entrySet()) {
             var predicateIRI = entry.getKey();

@@ -23,6 +23,7 @@ import com.google.common.net.MediaType;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -38,6 +39,18 @@ public class FileResourceTest {
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
         r.charSink().write("hello, world");
         assertThat(r.charSource().read()).isEqualTo("hello, world");
+    }
+
+    @Test
+    public void testWriteFileInNonExistingDirectory() throws IOException {
+        var tmp = System.getProperty("java.io.tmpdir");
+        var dir = new File(tmp, "FileResourceTest-" + Long.toString(System.nanoTime()));
+        assertThat(dir.exists()).isFalse();
+        var file = new File(dir, "text.txt");
+        var r = new FileResource(file.toPath(), MediaType.PLAIN_TEXT_UTF_8);
+        r.charSink().write("hello, world");
+        assertThat(file.delete()).isTrue();
+        assertThat(dir.delete()).isTrue();
     }
 
     @Test(expected = NoSuchFileException.class)

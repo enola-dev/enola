@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
+
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -26,8 +28,8 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.thing.ListThingService;
-import dev.enola.thing.proto.Thing;
+import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
+import dev.enola.thing.proto.Things;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -66,23 +68,12 @@ public class DocGen extends CommandWithModelAndOutput {
     }
 
     private void multipleMDDocsForThings(EnolaServiceBlockingStub service) throws Exception {
-        var request =
-                GetThingRequest.newBuilder().setIri(ListThingService.ENOLA_ROOT_LIST_IRIS).build();
+        var request = GetThingRequest.newBuilder().setIri(ENOLA_ROOT_LIST_THINGS).build();
         var response = service.getThing(request);
         var any = response.getThing();
-
-        // TODO Have a static Proto message type for this? Use it here and in ListThingService.
-        var listThing = any.unpack(Thing.class);
-        var values =
-                listThing
-                        .getFieldsMap()
-                        .get(ListThingService.ENOLA_ROOT_LIST_PROPERTY)
-                        .getList()
-                        .getValuesList();
-        for (var value : values) {
-            spec.commandLine().getOut().println(value.getLink());
-        }
-        spec.commandLine().getOut().flush();
+        var things = any.unpack(Things.class);
+        var mdsg = new MarkdownSiteGenerator(output, rp);
+        mdsg.generate(things.getThingsList());
     }
 
     private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {

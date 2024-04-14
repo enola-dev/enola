@@ -72,6 +72,13 @@ public class FileResource extends BaseResource implements Resource {
 
     @Override
     public ByteSink byteSink() {
+        var directory = path.toFile().getParentFile();
+        if (directory != null && !directory.exists()) {
+            if (!directory.mkdirs()) {
+                throw new IllegalStateException(
+                        "FileResource parent directory could not be created");
+            }
+        }
         return MoreFiles.asByteSink(path, openOptions);
     }
 
