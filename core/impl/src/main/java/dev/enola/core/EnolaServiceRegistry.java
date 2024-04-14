@@ -34,6 +34,8 @@ import dev.enola.core.thing.ThingService;
 import dev.enola.thing.ThingRepository;
 import dev.enola.thing.message.ProtoThingProvider;
 
+import java.util.Map;
+
 class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
 
     private final URITemplateMatcherChain<ThingService> matcher;
@@ -102,25 +104,50 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
             return this;
         }
 
+        private ThingService wrap(ThingService service) {
+            return new ThingService() {
+
+                @Override
+                public Any getThing(String iri, Map<String, String> parameters) {
+                    try {
+                        return service.getThing(iri, parameters);
+                    } catch (RuntimeException e) {
+                        throw new RuntimeException(
+                                service.toString() + " failed to get: " + iri, e);
+                    }
+                }
+
+                @Override
+                public ListEntitiesResponse listEntities(ListEntitiesRequest r)
+                        throws EnolaException {
+                    return service.listEntities(r);
+                }
+            };
+        }
+
         public void register(Type type, ThingService service) {
-            b.add(type.getUri(), service);
+            b.add(type.getUri(), wrap(service));
         }
 
         public void register(ThingRepository thingRepository) {
             var thingRepositoryThingService = new ThingRepositoryThingService(thingRepository);
             for (var iri : thingRepository.listIRI()) {
-                b.add(iri, thingRepositoryThingService);
+                b.add(iri, wrap(thingRepositoryThingService));
             }
         }
 
         public EnolaServiceRegistry build() {
             var listThingService = new ListThingService();
-            b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, listThingService);
-            // TODO ? b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, listThingService);
+            b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, wrap(listThingService));
+            b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, wrap(listThingService));
             var uriTemplateMatcherChain = b.build();
             listThingService.setIRIs(uriTemplateMatcherChain.listTemplates());
-            return new EnolaServiceRegistry(
-                    uriTemplateMatcherChain, new ResourceEnolaService(new ResourceProviders()));
+            var esr =
+                    new EnolaServiceRegistry(
+                            uriTemplateMatcherChain,
+                            new ResourceEnolaService(new ResourceProviders()));
+            listThingService.setProtoThingProvider(esr);
+            return esr;
         }
     }
 }
