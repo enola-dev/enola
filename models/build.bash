@@ -1,6 +1,7 @@
+#!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2024 The Enola <https://enola.dev> Authors
+# Copyright 2023-2024 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: enola.dev/tutorial/greeting
-emoji: 👋🏼
-doc: README.md
-uri: greet/{MESSAGE}
-# connectors:
-#   - fs:
-#       format: FORMAT_YAML
-#       path: model/example/greeting/
+set -euox pipefail
+
+# TODO Replace this Bash script with a Bazel BUILD
+
+./enola -vvv docgen --load=file:"models/**.ttl" --output=file://"$PWD"/docs/models/

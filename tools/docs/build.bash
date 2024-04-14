@@ -58,7 +58,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # This writes (temporarily) into docs/, not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
-model/build.bash
+models/build.bash
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
