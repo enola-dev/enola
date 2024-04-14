@@ -24,6 +24,7 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -31,6 +32,13 @@ import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EnolaTest {
 
@@ -68,7 +76,7 @@ public class EnolaTest {
     }
 
     @Test
-    public void docGen() throws IOException {
+    public void docGenEntity() throws IOException {
         try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             var exec =
                     cli(
@@ -81,6 +89,46 @@ public class EnolaTest {
             assertThat(exec).err().isEmpty();
             assertThat(exec).hasExitCode(0).out().isEmpty();
             assertThat(r.charSource().read()).endsWith(MarkdownDocGenerator.FOOTER);
+        }
+    }
+
+    @Test
+    public void docGenEmojiThing() throws IOException {
+        Path dir = Files.createTempDirectory("EnolaTest");
+        // FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
+        // Path dir = fs.getPath("/docGenEmojiThing/");
+
+        var exec =
+                cli(
+                        "-vvv",
+                        "docgen",
+                        "--load",
+                        "classpath:enola.dev-properties.ttl",
+                        "--output",
+                        dir.toUri().toString());
+
+        assertThat(exec).err().isEmpty();
+        assertThat(exec).hasExitCode(0).out().isEmpty();
+
+        var mdPath = dir.resolve("enola.dev/emoji.md");
+        var r = new FileResource(mdPath, MediaType.PLAIN_TEXT_UTF_8);
+        try {
+            var md = r.charSource().read();
+            assertThat(md).contains("Emoji");
+        } catch (NoSuchFileException e) {
+            throw new IOException(
+                    "NoSuchFileException, only available: " + allFiles(dir).toString(), e);
+        }
+
+        // TODO assertThat(md).endsWith(MarkdownDocGenerator.FOOTER);
+    }
+
+    // TODO Move this somewhere else...
+    private static Iterable<URI> allFiles(Path root) {
+        try (Stream<Path> stream = Files.walk(root)) {
+            return stream.map(Path::toUri).collect(Collectors.toSet());
+        } catch (IOException e) {
+            throw new UncheckedIOException("Failed walk Files: " + root.toString(), e);
         }
     }
 

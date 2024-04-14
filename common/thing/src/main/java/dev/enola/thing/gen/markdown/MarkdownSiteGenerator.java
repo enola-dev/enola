@@ -36,6 +36,15 @@ public class MarkdownSiteGenerator {
 
     public MarkdownSiteGenerator(URI base, ResourceProvider rp) {
         this.base = base;
+        if (!"file".equals(base.getScheme()))
+            throw new IllegalArgumentException(
+                    "Must pass an existing (!) directory as --output=file:... not: " + base);
+        if (!base.toString().endsWith("/"))
+            throw new IllegalArgumentException(
+                    "Must pass an existing (!) directory which ends with '/' as --output=file:..."
+                            + " not: "
+                            + base);
+
         this.mtg = new MarkdownThingGenerator();
         this.rp = rp;
     }
@@ -47,7 +56,7 @@ public class MarkdownSiteGenerator {
             var thingIRI = thing.getIri();
             var relativeThingIRI = Relativizer.relativize(URI.create(thingIRI), "md");
             var outputIRI = base.resolve(relativeThingIRI);
-            LOG.info("Generating {}", outputIRI);
+            LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
                 mtg.generate(thing, writer, outputIRI, base);
