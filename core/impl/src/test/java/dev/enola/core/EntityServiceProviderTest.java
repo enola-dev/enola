@@ -97,7 +97,7 @@ public class EntityServiceProviderTest {
 
         var path = Path.of("./test.dog/king-charles.yaml");
         path.getParent().toFile().mkdir();
-        new FileResource(path).charSink().write("related:\n  rel1:\n    entity: \"cat\"");
+        new FileResource(path.toUri()).charSink().write("related:\n  rel1:\n    entity: \"cat\"");
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("king-charles").build();
         var eri = IDs.toPath(eid);

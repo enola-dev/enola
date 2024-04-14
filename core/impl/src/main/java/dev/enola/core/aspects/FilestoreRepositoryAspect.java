@@ -77,7 +77,7 @@ public class FilestoreRepositoryAspect implements EntityAspect {
             return;
         }
 
-        ReadableResource resource = new FileResource(path);
+        ReadableResource resource = new FileResource(path.toUri());
         try {
             io.read(resource, entity);
             resource.lastModifiedIfKnown().ifPresent(ts -> entity.setTs(fromInstant(ts)));

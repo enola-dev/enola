@@ -47,7 +47,7 @@ public class MarkdownDocGeneratorTest {
             // NOT System.getProperty("java.io.tmpdir")
             File tmp = new File("/tmp");
             var gotFile = new File(tmp, "MarkdownDocGeneratorTest-got.md");
-            new FileResource(gotFile.toPath()).charSink().write(got);
+            new FileResource(gotFile.toURI()).charSink().write(got);
             assertWithMessage(gotFile.toString()).that(got).isEqualTo(expected);
         }
     }
