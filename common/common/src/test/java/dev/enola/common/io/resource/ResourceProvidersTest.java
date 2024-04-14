@@ -123,7 +123,7 @@ public class ResourceProvidersTest {
         var resource = new ResourceProviders().getWritableResource(uriWithMT);
         assertThat(resource.mediaType()).isEqualTo(mediaType);
 
-        resource.charSink(cs).write(hello);
+        resource.charSink().write(hello);
         String text = Files.asCharSource(f, cs).read();
         assertThat(text).isEqualTo(hello);
     }
