@@ -23,7 +23,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
-import dev.enola.thing.message.ProtoThingProvider;
+import dev.enola.thing.message.ProtoThingRepository;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 import dev.enola.thing.proto.Value;
@@ -31,7 +31,6 @@ import dev.enola.thing.proto.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 
 /** ThingService which returns the list of all known Things' IRIs for GET enola:/ */
@@ -43,23 +42,18 @@ public class ListThingService implements ThingService {
     public static final String ENOLA_ROOT_LIST_THINGS = "enola:/inline";
     public static final String ENOLA_ROOT_LIST_PROPERTY = "https://enola.dev/thing-iri-list";
 
-    private List<String> iris;
-    private ProtoThingProvider protoThingProvider;
+    private ProtoThingRepository protoThingRepository;
 
-    public void setIRIs(List<String> iris) {
-        if (this.iris != null) throw new IllegalStateException();
-        this.iris = iris;
-    }
-
-    public void setProtoThingProvider(ProtoThingProvider protoThingProvider) {
-        this.protoThingProvider = protoThingProvider;
+    public void setProtoThingProvider(ProtoThingRepository protoThingRepository) {
+        this.protoThingRepository = protoThingRepository;
     }
 
     @Override
     public Any getThing(String iri, Map<String, String> parameters) {
+        var thingIRIs = protoThingRepository.listIRI();
         if (ENOLA_ROOT_LIST_THINGS.equals(iri)) {
             var things = Things.newBuilder();
-            for (var thingIRI : iris) {
+            for (var thingIRI : thingIRIs) {
                 if (ENOLA_ROOT_LIST_IRIS.equals(thingIRI)) continue;
                 if (ENOLA_ROOT_LIST_THINGS.equals(thingIRI)) continue;
                 if (thingIRI.startsWith("enola."))
@@ -68,7 +62,7 @@ public class ListThingService implements ThingService {
                 if (thingIRI.contains("{"))
                     // TODO Return some kinda Template Descriptor Thing...
                     continue;
-                var any = protoThingProvider.get(thingIRI);
+                var any = protoThingRepository.get(thingIRI);
                 if (any.getTypeUrl().endsWith("Thing")) {
                     try {
                         var thing = any.unpack(Thing.class);
@@ -85,7 +79,7 @@ public class ListThingService implements ThingService {
         } else { // only IRIs, not fully inlined Things
             // TODO Have a static Proto message type for this? And use it e.g. in DocGen?
             var list = Value.List.newBuilder();
-            for (var thingIRI : iris) {
+            for (var thingIRI : thingIRIs) {
                 var linkValue = Value.newBuilder().setLink(thingIRI);
                 list.addValues(linkValue);
             }
