@@ -52,5 +52,6 @@ public class MarkdownSiteGeneratorTest {
         var pabloMdFileURI = dir.resolve("example.enola.dev/Picasso.md").toUri();
         var pabloMd = rp.getReadableResource(pabloMdFileURI).charSource().read();
         assertThat(pabloMd).contains("Pablo");
+        assertThat(pabloMd).endsWith(DocGenConstants.FOOTER);
     }
 }

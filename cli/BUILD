@@ -52,7 +52,7 @@ java_binary(
         ":enola",
         "//common/common",
         "//common/markdown",
-        "//core/impl",
+        "//common/thing:thing_java",
         "//web/rest",
         "//web/sun",
         "//web/ui",

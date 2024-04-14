@@ -22,16 +22,13 @@ import com.google.common.base.Strings;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.ID;
+import dev.enola.thing.gen.DocGenConstants;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MarkdownDocGenerator {
-
-    public static final String FOOTER =
-            "_This model documentation was generated with ❤️ by"
-                    + " [Enola.dev](https://www.enola.dev)_\n";
 
     private final Options options;
 
@@ -42,16 +39,15 @@ public class MarkdownDocGenerator {
     public void render(Iterable<EntityKind> kinds, String header, Appendable md)
             throws IOException {
         md.append(header);
-        if (options.diagram.equals(Options.DiagramType.Mermaid)) {
+        if (Options.DiagramType.Mermaid.equals(options.diagram)) {
             MermaidGenerator.renderMermaid(kinds, md);
-        } else if (options.diagram.equals(Options.DiagramType.Graphviz)) {
+        } else if (Options.DiagramType.Graphviz.equals(options.diagram)) {
             GraphvizGenerator.renderGraphviz(kinds, md);
         }
         for (var ek : kinds) {
             render(ek, md);
         }
-        md.append("\n---\n");
-        md.append(FOOTER);
+        md.append(DocGenConstants.FOOTER);
     }
 
     private void render(EntityKind ek, Appendable md) throws IOException {
