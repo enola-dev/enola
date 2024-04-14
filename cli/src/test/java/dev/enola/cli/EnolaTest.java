@@ -32,13 +32,8 @@ import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class EnolaTest {
 
@@ -112,24 +107,10 @@ public class EnolaTest {
 
         var mdPath = dir.resolve("enola.dev/emoji.md");
         var r = new FileResource(mdPath, MediaType.PLAIN_TEXT_UTF_8);
-        try {
-            var md = r.charSource().read();
-            assertThat(md).contains("Emoji");
-        } catch (NoSuchFileException e) {
-            throw new IOException(
-                    "NoSuchFileException, only available: " + allFiles(dir).toString(), e);
-        }
+        var md = r.charSource().read();
+        assertThat(md).contains("Emoji");
 
         // TODO assertThat(md).endsWith(MarkdownDocGenerator.FOOTER);
-    }
-
-    // TODO Move this somewhere else...
-    private static Iterable<URI> allFiles(Path root) {
-        try (Stream<Path> stream = Files.walk(root)) {
-            return stream.map(Path::toUri).collect(Collectors.toSet());
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed walk Files: " + root.toString(), e);
-        }
     }
 
     @Test
