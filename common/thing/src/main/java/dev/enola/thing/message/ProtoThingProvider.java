@@ -15,20 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.thing.message;
 
-/**
- * Failures encountered by {@link ConverterInto}, {@link Converter} and {@link BiConverter}
- * implementations.
- */
-public class ConversionException extends RuntimeException {
-    // TODO Re-try making this extends Exception instead Runtime, now that I have 👟 MoreStreams
+import com.google.protobuf.Any;
 
-    public ConversionException(String message, Throwable cause) {
-        super(message, cause);
-    }
+import dev.enola.data.ProviderFromIRI;
+import dev.enola.thing.ThingProvider;
 
-    public ConversionException(String message) {
-        super(message);
-    }
+/** Proto Thing variant of {@link ThingProvider} (which is for Java Things). */
+public interface ProtoThingProvider extends ProviderFromIRI<Any> {
+    // TODO This should eventually replace all uses of ThingService...
+
+    @Override
+    // TODO Replace Any with Things, by moving EnolaThingProvider's logic into core
+    Any get(String iri); // TODO throws ?? UncheckedIOException, ConversionException;
 }

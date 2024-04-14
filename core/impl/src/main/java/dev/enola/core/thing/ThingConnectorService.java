@@ -44,7 +44,7 @@ public class ThingConnectorService implements ThingService {
     }
 
     @Override
-    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
+    public Any getThing(String iri, Map<String, String> parameters) {
         // Builder thing = enolaMessages.newBuilder(type.getProto());
         Things.Builder things = Things.newBuilder();
 

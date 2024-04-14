@@ -47,7 +47,7 @@ public class ThingRepositoryThingService implements ThingService {
     }
 
     @Override
-    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
+    public Any getThing(String iri, Map<String, String> parameters) {
         var javaThing = thingRepository.get(iri);
         if (javaThing == null) {
             throw new IllegalStateException("This should never happen: " + iri);

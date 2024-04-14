@@ -20,6 +20,7 @@ package dev.enola.core;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Any;
 
+import dev.enola.common.convert.ConversionException;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
@@ -42,13 +43,18 @@ class EntityAspectService implements ThingService {
     }
 
     @Override
-    public Any getThing(String iri, Map<String, String> parameters) throws EnolaException {
+    public Any getThing(String iri, Map<String, String> parameters) {
         var entity = Entity.newBuilder();
         var id = IDs.parse(iri);
         entity.setId(id);
 
         for (var aspect : registry) {
-            aspect.augment(entity, entityKind);
+            try {
+                aspect.augment(entity, entityKind);
+            } catch (EnolaException e) {
+                // TODO Temporary workaround, until EnolaException is removed everywhere
+                throw new ConversionException(iri, e);
+            }
         }
 
         return Any.pack(entity.build());

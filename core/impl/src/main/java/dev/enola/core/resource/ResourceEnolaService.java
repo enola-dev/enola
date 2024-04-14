@@ -19,9 +19,7 @@ package dev.enola.core.resource;
 
 import com.google.protobuf.Any;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.OptionalConverter;
-import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -30,15 +28,17 @@ import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.rosetta.RdfResourceIntoProtoThingConverter;
+import dev.enola.thing.message.ProtoThingProvider;
 
-import java.net.URISyntaxException;
+import java.net.URI;
 
 /**
  * ResourceEnolaService implements {@link EnolaService} by fetching bytes from a {@link
  * ResourceProvider} and converting them into Things using an {@link OptionalConverter}, such as its
  * default {@link RdfResourceIntoProtoThingConverter}.
  */
-public class ResourceEnolaService implements EnolaService {
+public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
+    // TODO Remove implements EnolaService (only ProtoThingProvider)
 
     private final RdfResourceIntoProtoThingConverter resourceToThingConverter;
     private final ResourceProvider rp;
@@ -54,23 +54,22 @@ public class ResourceEnolaService implements EnolaService {
     }
 
     @Override
-    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        try {
-            var iri = IRIs.toURI(r.getIri());
-            var resource = rp.getReadableResource(iri);
-            var opt = resourceToThingConverter.convert(resource);
-            if (opt.isEmpty()) {
-                throw new EnolaException(
-                        "Unknown format, no parser for " + resource.mediaType() + " from " + iri);
-            }
-            var thingsList = opt.get();
-            var message = resourceToThingConverter.asMessage(thingsList).build();
-            var any = Any.pack(message);
-            return GetThingResponse.newBuilder().setThing(any).build();
-
-        } catch (URISyntaxException | ConversionException e) {
-            throw new EnolaException("Bad IRI: " + r.getIri(), e);
+    public Any get(String iri) {
+        var uri = URI.create(iri); // TODO IRIs.toURI(iri);
+        var resource = rp.getReadableResource(uri);
+        var opt = resourceToThingConverter.convert(resource);
+        if (opt.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Unknown format, no parser for " + resource.mediaType() + " from " + iri);
         }
+        var thingsList = opt.get();
+        var message = resourceToThingConverter.asMessage(thingsList).build();
+        return Any.pack(message);
+    }
+
+    @Override
+    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
+        return GetThingResponse.newBuilder().setThing(get(r.getIri())).build();
     }
 
     @Override

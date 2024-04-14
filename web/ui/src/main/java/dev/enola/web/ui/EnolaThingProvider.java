@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 public class EnolaThingProvider
-        implements ProviderFromIRI<Thing> /* TODO implements ThingProvider */ {
+        implements ProviderFromIRI<Thing> /* TODO implements ProtoThingProvider */ {
     // TODO Move into dev.enola.core.thing where it probably belongs, more logically?
     // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector
     // TODO Resolve (some) overlap this class has with abstract class ThingConnectorsProvider
@@ -57,7 +57,6 @@ public class EnolaThingProvider
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
     }
 
-    // TODO @Override
     @Override
     public Thing get(String iri) {
         var request = GetThingRequest.newBuilder().setIri(iri).build();

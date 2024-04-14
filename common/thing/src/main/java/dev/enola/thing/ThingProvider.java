@@ -19,19 +19,21 @@ package dev.enola.thing;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.thing.message.ProtoThingProvider;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * Provides things.
+ * Provides {@link Thing}s.
  *
  * <p>Intentionally named a *Provider and not a *Repository, because implementations may or may not
  * "fetch from" a "data store" (which *Repository often implies); as some might indeed, but others
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
+ *
+ * <p>See {@link ProtoThingProvider} for a Proto Thing variant (this is for the Java Thing).
  */
 public interface ThingProvider extends ProviderFromIRI<Thing> {
-    // TODO Later consider merging this with ThingService?
 
     /**
      * Get the Thing.
@@ -42,7 +44,8 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
     @Override
-    // TODO Things not just 1x Thing?
+    // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
+    // TODO Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
     Thing get(String iri) throws UncheckedIOException, ConversionException;
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
