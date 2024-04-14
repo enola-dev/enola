@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,26 +38,41 @@ public final class URIs {
 
     // URI Query Parameter Names
     private static final String MEDIA_TYPE = "mediaType";
-    private static final String CHARSET = "charset";
+    private static final String CHARSET = "charset"; // as in MediaType#CHARSET_ATTRIBUTE
 
     private static final Splitter AMPERSAND_SPLITTER =
             Splitter.on('&').omitEmptyStrings().trimResults();
 
+    public static record MediaTypeAndOrCharset(String mediaType, String charset) {}
+
+    public static MediaTypeAndOrCharset getMediaTypeAndCharset(URI uri) {
+        var queryMap = getQueryMap(uri);
+        var charsetParameter = queryMap.get(CHARSET);
+        var mediaTypeParameter = queryMap.get(MEDIA_TYPE.toLowerCase());
+        return new MediaTypeAndOrCharset(mediaTypeParameter, charsetParameter);
+    }
+
+    // TODO Remove this, once #getMediaType() is fully removed
     public static final MediaType DEFAULT_MEDIA_TYPE = MediaType.OCTET_STREAM;
 
+    @Deprecated // TODO Remove this from here, as it's now in MediaTypeDetector
     public static MediaType getMediaType(URI uri) {
         MediaType mediaType;
-        var charsetParameter = getQueryMap(uri).get(CHARSET);
-        var mediaTypeParameter = getQueryMap(uri).get(MEDIA_TYPE.toLowerCase());
+        var queryMap = getQueryMap(uri);
+        var charsetParameter = queryMap.get(CHARSET);
+        var mediaTypeParameter = queryMap.get(MEDIA_TYPE.toLowerCase());
         if (mediaTypeParameter == null) {
+            // This default application/octet-stream should be the last fallback, only!
             mediaType = DEFAULT_MEDIA_TYPE;
         } else {
             mediaType = MediaTypes.parse(mediaTypeParameter);
         }
+
         if (charsetParameter != null) {
             mediaType = mediaType.withCharset(Charset.forName(charsetParameter));
         }
         if (!mediaType.charset().isPresent()) {
+            // TODO This Charset.defaultCharset() is not a good idea! Remove?
             mediaType = mediaType.withCharset(Charset.defaultCharset());
         }
         return mediaType;
@@ -135,8 +151,10 @@ public final class URIs {
      * <p>TODO Is this really required?! Re-review which tests URI#getPath() fails, and why...
      */
     public static String getPath(URI uri) {
-        var ssp = uri.getSchemeSpecificPart();
+        return chop(uri.getSchemeSpecificPart());
+    }
 
+    private static String chop(String ssp) {
         var chop = ssp.indexOf('?', 0);
         if (chop == -1) chop = ssp.indexOf('#', 0);
         if (chop == -1) chop = ssp.length();
@@ -156,15 +174,18 @@ public final class URIs {
         String path;
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
-            if (uri.getPath().endsWith("/")) {
-                return "";
-            } else {
-                return new java.io.File(uri.getPath()).getName();
+            path = uri.getPath();
+            if (path != null) {
+                if (path.endsWith("/")) {
+                    return "";
+                } else {
+                    return chop(new java.io.File(path).getName());
+                }
             }
         } else if ("jar".equals(scheme)) {
-            return getFilename(URI.create(uri.getSchemeSpecificPart()));
+            return chop(getFilename(URI.create(uri.getSchemeSpecificPart())));
         } else if ("http".equals(scheme) || "https".equals(scheme)) {
-            path = uri.getPath();
+            path = chop(uri.getPath());
         } else {
             path = getPath(uri);
         }
@@ -174,10 +195,23 @@ public final class URIs {
         }
         var p = path.lastIndexOf('/');
         if (p > -1) {
-            return path.substring(p + 1);
+            return chop(path.substring(p + 1));
         } else {
-            return path;
+            return chop(path);
         }
+    }
+
+    /**
+     * This converts e.g. "file:relative.txt" to "file:///tmp/.../relative.txt" (depending on the
+     * current working directory, obviously). It looses any query parameters and fragment.
+     */
+    public static URI rel2abs(URI uri) {
+        if (uri == null) return uri;
+        if (!"file".equals(uri.getScheme())) return uri;
+        if (!uri.isOpaque()) return uri;
+
+        String relativePath = uri.getSchemeSpecificPart();
+        return Path.of(relativePath).toAbsolutePath().toUri();
     }
 
     private URIs() {}

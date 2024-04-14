@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
@@ -54,6 +56,7 @@ public class FileResource extends BaseResource implements Resource {
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
+    private final URI uri; // TODO Move to BaseResource...
     private final Path path;
     private final MediaType mediaType;
     private final OpenOption[] openOptions;
@@ -77,26 +80,42 @@ public class FileResource extends BaseResource implements Resource {
     }
 
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
+        this.uri = uri;
         this.path = pathFromURI(uri);
-        this.mediaType = mediaType;
+        // TODO Optimize Arrays.copyOf() for empty options
         this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        // Here we intentionally do not do something like this, because the arg takes precedence:
+        // mtd.detect(
+        //         mediaType.toString(),
+        //         mediaType.charset().transform(cs -> cs.name()).orNull(),
+        //         uri());
+        this.mediaType = requireNonNull(mediaType);
     }
 
+    @Deprecated // TODO Either URI+MediaType, or just URI; but not URI+Charset
     public FileResource(URI uri, Charset charset, OpenOption... openOptions) {
+        this.uri = uri;
         this.path = pathFromURI(uri);
-        this.mediaType = mtd.detect(null, charset.name(), uri());
+        // TODO Optimize Arrays.copyOf() for empty options
         this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        this.mediaType = mtd.detect(null, charset.name(), uri());
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
+        this.uri = uri;
         this.path = pathFromURI(uri);
-        this.mediaType = mtd.detect(null, null, uri());
+        // TODO Optimize Arrays.copyOf() for empty options
         this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        this.mediaType = mtd.detectAlways(this);
     }
 
     @Override
     public URI uri() {
-        return path.toUri();
+        return uri; // NOT path.toUri();
+    }
+
+    public Path path() {
+        return path;
     }
 
     @Override
@@ -109,7 +128,8 @@ public class FileResource extends BaseResource implements Resource {
         var parentDirectoryPath = path.getParent();
         if (parentDirectoryPath != null) {
             try {
-                Files.createDirectories(parentDirectoryPath);
+                if (!Files.exists(parentDirectoryPath))
+                    Files.createDirectories(parentDirectoryPath);
             } catch (IOException e) {
                 return new ErrorByteSink(e);
             }

@@ -25,11 +25,12 @@ import dev.enola.common.io.resource.Resource;
 import java.util.Optional;
 
 /**
- * Detects a (better) MediaType of a Resource.
+ * API for detectors of a (better) MediaType for a Resource.
  *
  * <p>This interface is typically not used directly by {@link Resource} API users (who would just
  * use {@link AbstractResource#mediaType()}). Instead, it is normally implemented by (some)
- * <tt>*MediaType</tt> API implementations.
+ * <tt>*MediaType</tt> API implementations (and the {@link MediaTypeDetector} "switch board", which
+ * is used in Resource implementations).
  */
 public interface ResourceMediaTypeDetector {
 

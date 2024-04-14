@@ -33,6 +33,8 @@ import java.net.URL;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
+    // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
+
     @Override
     default Resource get(String iri) {
         return getResource(URI.create(iri));

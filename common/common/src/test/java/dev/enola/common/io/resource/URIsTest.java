@@ -93,6 +93,7 @@ public class URIsTest {
         // Files
         assertName(URI.create(""), "");
         assertName(new File("test.txt").toURI(), "test.txt");
+        assertName(new File("test.txt?p=1").toURI(), "test.txt");
         assertName(new File("/test.txt").toURI(), "test.txt");
         assertName(new File("/home/test.txt").toURI(), "test.txt");
         assertName(new File("/").toURI(), "");
