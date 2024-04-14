@@ -19,7 +19,4 @@ set -euox pipefail
 
 # TODO Replace this Bash script with a Bazel BUILD
 
-rm -rf "$PWD"/site/model/
-./enola -vvv docgen --load=file:"model/**.ttl" --output=file://"$PWD"/site/model/
-
-# TODO This should eventually be called by tools/docs/build.bash...
+./enola -vvv docgen --load=file:"model/**.ttl" --output=file://"$PWD"/docs/model/
