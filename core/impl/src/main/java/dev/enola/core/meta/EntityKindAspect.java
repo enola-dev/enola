@@ -74,11 +74,15 @@ public class EntityKindAspect implements EntityAspectWithRepository {
             throws EnolaException {
         entity.setTs(ONE_TIMESTAMP);
 
-        var name = entity.getId().getPaths(0);
-        var entityKindID = IDs.parse(name);
-        var entityKind = ekr.get(entityKindID);
-        var entityKindAsAny = Any.pack(entityKind); // , TYPE_URL_PREFIX);
-        entity.putData("schema", entityKindAsAny);
+        if (entity.getId().getPathsCount() > 0) {
+            var name = entity.getId().getPaths(0);
+            var entityKindID = IDs.parse(name);
+            var entityKind = ekr.get(entityKindID);
+            var entityKindAsAny = Any.pack(entityKind); // , TYPE_URL_PREFIX);
+            entity.putData("schema", entityKindAsAny);
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     @Override
