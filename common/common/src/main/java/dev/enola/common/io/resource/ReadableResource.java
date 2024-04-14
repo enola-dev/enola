@@ -22,7 +22,6 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 
-import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -38,12 +37,6 @@ public interface ReadableResource extends AbstractResource {
                                 .charset()
                                 .toJavaUtil()
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
-    }
-
-    // TODO Remove this method?
-    // Callers should never need to pass a defaultCharset - it must always be in mediaType!
-    default CharSource charSource(Charset defaultCharset) {
-        return byteSource().asCharSource(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
