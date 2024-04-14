@@ -33,6 +33,7 @@ public class GlobResourceProviders implements GlobResourceProvider {
     @Override
     @MustBeClosed
     public Stream<ReadableResource> get(String globIRI) {
+        // TODO Don't hard-code this to file: but use MoreFileSystems.URI_SCHEMAS, somehow...
         if (globIRI.startsWith("file:")) return fileGlobResourceProvider.get(globIRI);
         else return Stream.of(resourceProvider.get(globIRI));
     }

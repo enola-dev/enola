@@ -20,6 +20,8 @@ package dev.enola.common.io.resource;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.MoreFileSystems;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -40,9 +42,7 @@ public class ResourceProviders implements ResourceProvider {
         String scheme = uri.getScheme();
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
-        } else if ("file".equals(scheme) || "jimfs".equals(scheme)) {
-            // TODO The schemes probably shouldn't be hard-coded here, but queried!
-            // "jimfs" is https://github.com/google/jimfs, used in EnolaTest
+        } else if (MoreFileSystems.URI_SCHEMAS.contains(scheme)) {
             if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
                 return new FileResource(uri, mediaType);
             } else {
