@@ -52,7 +52,7 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
         if (!globIRI.startsWith("file:")) {
             throw new IllegalArgumentException("Not a file: IRI: " + globIRI);
         }
-        // TODO Don't hard-code this to file: so that it also works e.g. for jimfs:
+        // TODO Don't hard-code this to file: but use MoreFileSystems.URI_SCHEMAS, somehow...
         var globPath = Path.of(globIRI.substring("file:".length()));
 
         try {

@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource.stream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
@@ -29,5 +30,11 @@ public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
     @Test
     public void nonGlobClasspath() {
         checkGlobIRI("classpath:test.md", 1);
+    }
+
+    @Test
+    @Ignore // TODO Write a test, and fix the code, to glob over a JAR file...
+    public void globOnZIP() {
+        // ...
     }
 }

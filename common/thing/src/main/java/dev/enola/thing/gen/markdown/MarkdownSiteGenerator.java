@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
@@ -36,7 +37,7 @@ public class MarkdownSiteGenerator {
 
     public MarkdownSiteGenerator(URI base, ResourceProvider rp) {
         this.base = base;
-        if (!"file".equals(base.getScheme()) && !"jimfs".equals(base.getScheme()))
+        if (!MoreFileSystems.URI_SCHEMAS.contains(base.getScheme()))
             throw new IllegalArgumentException(
                     "Must pass an existing (!) directory as --output=file:... not: " + base);
         if (!base.toString().endsWith("/"))
