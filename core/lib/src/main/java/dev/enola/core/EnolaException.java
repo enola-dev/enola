@@ -18,7 +18,7 @@
 package dev.enola.core;
 
 public class EnolaException extends Exception {
-    // TODO Remove, when EnolaService is replaced with EnolaGrpcService
+    // TODO Remove, when EnolaService is replaced with EnolaGrpcService?
 
     public EnolaException(String msg) {
         super(msg);

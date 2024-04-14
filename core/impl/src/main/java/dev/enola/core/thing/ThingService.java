@@ -26,11 +26,12 @@ import dev.enola.core.proto.ListEntitiesResponse;
 import java.util.Map;
 
 public interface ThingService {
-    // TODO Later consider merging this with ThingProvider?
+    // TODO Replace usages with ProtoThingProvider, once listEntities() is gone
 
     // TODO Replace Any with Thing, when old Entity is removed?
-    Any getThing(String iri, Map<String, String> parameters) throws EnolaException;
+    // TODO throws ConversionException, only?
+    Any getThing(String iri, Map<String, String> parameters); // TODO rm throws EnolaException;
 
-    // TODO Replace listEntities() with getThing() which returns things
+    // TODO Replace all listEntities() callers with getThing() which returns Things
     ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

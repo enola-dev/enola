@@ -17,6 +17,8 @@
  */
 package dev.enola.core;
 
+import com.google.protobuf.Any;
+
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.iri.URITemplateMatcherChain;
 import dev.enola.core.meta.proto.Type;
@@ -30,8 +32,9 @@ import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
 import dev.enola.thing.ThingRepository;
+import dev.enola.thing.message.ProtoThingProvider;
 
-class EnolaServiceRegistry implements EnolaService {
+class EnolaServiceRegistry implements EnolaService, ProtoThingProvider {
 
     private final URITemplateMatcherChain<ThingService> matcher;
     private ResourceEnolaService resourceEnolaService;
@@ -48,14 +51,14 @@ class EnolaServiceRegistry implements EnolaService {
     }
 
     @Override
-    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        var opt = matcher.match(r.getIri());
+    public Any get(String iri) {
+        var opt = matcher.match(iri);
         if (opt.isPresent()) {
             var entry = opt.get();
             var delegate = entry.getKey();
             var parameters = entry.getValue();
-            var things = delegate.getThing(r.getIri(), parameters);
-            return GetThingResponse.newBuilder().setThing(things).build();
+            Any things = delegate.getThing(iri, parameters);
+            return things;
 
         } else {
             // Nota bene: If the IRI didn't match any registered Types or pre-loaded Things,
@@ -64,8 +67,14 @@ class EnolaServiceRegistry implements EnolaService {
             // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not,
             // yet?)  of scheme enola: and so we should only fall back to the ResourceEnolaService
             // for any other non-enola: scheme URIs!
-            return resourceEnolaService.getThing(r);
+            return resourceEnolaService.get(iri);
         }
+    }
+
+    @Override
+    public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
+        String iri = r.getIri();
+        return GetThingResponse.newBuilder().setThing(get(iri)).build();
     }
 
     @Override
@@ -106,7 +115,8 @@ class EnolaServiceRegistry implements EnolaService {
 
         public EnolaServiceRegistry build() {
             var listThingService = new ListThingService();
-            b.add(ListThingService.ENOLA_ROOT_LIST_IRI, listThingService);
+            b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, listThingService);
+            // TODO ? b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, listThingService);
             var uriTemplateMatcherChain = b.build();
             listThingService.setIRIs(uriTemplateMatcherChain.listTemplates());
             return new EnolaServiceRegistry(
