@@ -25,7 +25,6 @@ import com.google.common.net.MediaType;
 
 import java.io.Writer;
 import java.net.URI;
-import java.nio.charset.Charset;
 
 /**
  * A {@link WritableResource} which delegates to a {@link Writer}. The underlying Writer is
@@ -55,12 +54,6 @@ public class WriterResource extends BaseResource implements WritableResource {
     @Override
     public CharSink charSink() {
         return new WriterCharSink(writer);
-    }
-
-    @Override
-    public CharSink charSink(Charset defaultCharset) {
-        // Ignores defaultCharset argument
-        return charSink();
     }
 
     @Override

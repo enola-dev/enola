@@ -17,7 +17,6 @@
  */
 package dev.enola.common.protobuf;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.net.MediaType.JSON_UTF_8;
 
 import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
@@ -106,7 +105,7 @@ public class ProtoIO {
                 message.writeTo(os);
             }
         } else {
-            try (Writer writer = resource.charSink(UTF_8).openBufferedStream()) {
+            try (Writer writer = resource.charSink().openBufferedStream()) {
                 // TODO Use the new ResourceConverter infrastructure here...
                 if (normalizedNoParamsEquals(mediaType, PROTOBUF_TEXTPROTO_UTF_8)) {
                     TextFormat.printer()

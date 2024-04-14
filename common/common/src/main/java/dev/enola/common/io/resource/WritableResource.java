@@ -22,8 +22,6 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 
-import java.nio.charset.Charset;
-
 public interface WritableResource extends AbstractResource {
 
     ByteSink byteSink();
@@ -36,11 +34,5 @@ public interface WritableResource extends AbstractResource {
                                 .charset()
                                 .toJavaUtil()
                                 .orElseThrow(missingCharsetExceptionSupplier(uri())));
-    }
-
-    // TODO Remove this method?
-    // Callers should never need to pass a defaultCharset - it must always be in mediaType!
-    default CharSink charSink(Charset defaultCharset) {
-        return byteSink().asCharSink(mediaType().charset().toJavaUtil().orElse(defaultCharset));
     }
 }

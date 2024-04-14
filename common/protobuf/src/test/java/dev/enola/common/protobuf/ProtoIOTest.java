@@ -112,8 +112,7 @@ public class ProtoIOTest extends AbstractProtoTestBase {
     @Test
     public void writeUnknown() throws IOException {
         MemoryResource resource = new MemoryResource(MediaType.ANY_TYPE);
-        assertThrows(
-                IllegalArgumentException.class, () -> new ProtoIO().write(TIMESTAMP, resource));
+        assertThrows(IllegalStateException.class, () -> new ProtoIO().write(TIMESTAMP, resource));
     }
 
     @Test
@@ -138,10 +137,12 @@ public class ProtoIOTest extends AbstractProtoTestBase {
         var io = new ProtoIO(typeRegistry);
         var any = Any.pack(TIMESTAMP);
         var textproto =
-                "[type.googleapis.com/google.protobuf.Timestamp] {\n"
-                        + "  seconds: 123\n"
-                        + "  nanos: 456\n"
-                        + "}\n";
+                """
+                [type.googleapis.com/google.protobuf.Timestamp] {
+                  seconds: 123
+                  nanos: 456
+                }
+                """;
 
         var resource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
         io.write(any, resource);
