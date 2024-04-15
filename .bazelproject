@@ -3,6 +3,8 @@
 # See https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/projectviews.md for VS Code
 # (with https://github.com/salesforce/bazel-vscode-java).
 
+# tools/eclipse/.managed-defaults.bazelproject has Eclipse (and thus VSC) specific settings which IntelliJ doesn't dig.
+
 directories:
   .
 
@@ -14,7 +16,3 @@ additional_languages:
   go
   kotlin
   typescript
-
-# https://github.com/salesforce/bazel-eclipse/issues/475
-# https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/projectviews.md#project-per-package
-target_provisioning_strategy: project-per-package

@@ -19,6 +19,7 @@ common --incompatible_strict_action_env
 # https://bazel.build/reference/command-line-reference#flag--test_output
 test --test_output=errors
 
+# https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/classpath.md#basics-classpath
 # https://bazel.build/reference/command-line-reference#flag--explicit_java_test_deps
 # BOTH build and test HAVE to have this - otherwise it's broken due to frequent this:
 # "Build option --explicit_java_test_deps has changed, discarding analysis cache."
