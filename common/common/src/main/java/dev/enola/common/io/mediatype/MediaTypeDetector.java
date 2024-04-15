@@ -20,9 +20,11 @@ package dev.enola.common.io.mediatype;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.io.resource.BaseResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
 import dev.enola.common.io.resource.URIs;
@@ -118,27 +120,44 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
             ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
 
     /**
-     * This is called by Resource* implementation constructors, as <tt>this.mediaType =
-     * mtd.detectAlways(this);</tt>. It is guaranteed to never call the resource argument's {@link
-     * AbstractResource#mediaType()} (because its purpose is to determine it). It will however
-     * likely examine the URL, and might use a {@link ResourceCharsetDetector} which may invoke
-     * {@link ReadableResource#byteSource()} (but never {@link ReadableResource#charSource()}).
+     * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
      */
-    public MediaType detectAlways(AbstractResource resource) {
-        var uri = resource.uri();
+    public MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
-        detected = detectCharset(resource, detected);
+        detected = detectCharset(uri, byteSource, detected);
         return (detected != null) ? detected : DEFAULT;
     }
 
-    private MediaType detectCharset(AbstractResource resource, MediaType detected) {
+    public MediaType overwrite(URI uri, final MediaType originalMediaType) {
+        var mediaType = originalMediaType;
+
+        var uriCharset = URIs.getMediaTypeAndCharset(uri);
+        var uriMediaType = uriCharset.mediaType();
+
+        if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
+
+        var cs = uriCharset.charset();
+        if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
+
+        if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
+            mediaType = mediaType.withCharset(originalMediaType.charset().get());
+        }
+
+        return mediaType;
+    }
+
+    private MediaType detectCharset(URI uri, ByteSource byteSource, MediaType detected) {
         if (detected != null && !detected.charset().isPresent()) {
             // TODO Make YAML just 1 of many detectors...
-            ResourceCharsetDetector rcd = new YamlMediaType();
-            var detectedCharset = rcd.detectCharset(resource);
-            if (detectedCharset.isPresent()) {
-                detected = detected.withCharset(detectedCharset.get());
+            YamlMediaType rcd = new YamlMediaType();
+            if (URIs.getFilename(uri).endsWith(".yaml")
+                    || MediaTypes.normalizedNoParamsEquals(
+                            detected, rcd.knownTypesWithAlternatives().keySet())) {
+                var detectedCharset = rcd.detectCharset(uri, byteSource);
+                if (detectedCharset.isPresent()) {
+                    detected = detected.withCharset(detectedCharset.get());
+                }
             }
         }
         return detected;
@@ -151,7 +170,10 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
         var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
         var detected = detect(mt.toString(), charsetName, uri);
-        detected = detectCharset(resource, detected);
+        if (resource instanceof ReadableResource) {
+            var readableResource = (ReadableResource) resource;
+            detected = detectCharset(resource.uri(), readableResource.byteSource(), detected);
+        }
 
         return Optional.ofNullable(detected);
     }
@@ -196,7 +218,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
             } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
-                // See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
+                // TODO See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
                 // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
             }

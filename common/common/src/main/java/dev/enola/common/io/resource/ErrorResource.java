@@ -27,7 +27,6 @@ import java.io.OutputStream;
 import java.net.URI;
 
 public class ErrorResource extends BaseResource implements Resource {
-    public static final ErrorResource INSTANCE = new ErrorResource();
 
     static final String SCHEME = "error";
 
@@ -35,16 +34,11 @@ public class ErrorResource extends BaseResource implements Resource {
 
     private static final MediaType MEDIA_TYPE = MediaType.OCTET_STREAM;
 
-    private ErrorResource() {}
+    // Must be *AFTER* above! static field initialization in Java is dumb...
+    public static final ErrorResource INSTANCE = new ErrorResource();
 
-    @Override
-    public URI uri() {
-        return ERROR_URI;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return MEDIA_TYPE;
+    private ErrorResource() {
+        super(ERROR_URI, MEDIA_TYPE);
     }
 
     @Override

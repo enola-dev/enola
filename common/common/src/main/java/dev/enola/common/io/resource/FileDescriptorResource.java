@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.charset.Charset;
 
 /**
  * Resource for URIs "fd:0?charset=ASCII" (STDIN), "fd:1?charset=UTF-8" (STDOUT),
@@ -36,10 +37,10 @@ import java.net.URI;
 public class FileDescriptorResource extends BaseResource implements Resource {
 
     private final FileDescriptor fileDescriptor;
-    private final MediaType mediaType;
-    private final URI uri;
 
     public FileDescriptorResource(URI uri) {
+        super(uri, MediaType.PLAIN_TEXT_UTF_8.withCharset(Charset.defaultCharset()));
+
         if (!"fd".equals(uri.getScheme())) {
             throw new IllegalArgumentException(uri.toString());
         }
@@ -54,19 +55,6 @@ public class FileDescriptorResource extends BaseResource implements Resource {
         } else {
             throw new IllegalArgumentException(fd);
         }
-
-        this.uri = uri;
-        this.mediaType = URIs.getMediaType(uri);
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
     }
 
     @Override

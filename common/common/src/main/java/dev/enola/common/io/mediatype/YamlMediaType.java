@@ -22,10 +22,10 @@ import static com.google.common.net.MediaType.create;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.ReadableResource;
-
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Optional;
@@ -59,8 +59,8 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
 
     @Override
     @SuppressWarnings("ComparisonOutOfRange") // TX ErrorProne, but it's OK here!
-    public Optional<Charset> detectCharset(ReadableResource resource) {
-        byte[] header = peek(4, resource);
+    public Optional<Charset> detectCharset(URI uri, ByteSource source) {
+        byte[] header = peek(4, uri, source);
         if (header.length != 4) return Optional.of(Charsets.UTF_8);
 
         // TODO Add test coverage for this to MediaTypeDetectorTest. Do BOMs have to be skipped?!

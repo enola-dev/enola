@@ -17,38 +17,25 @@
  */
 package dev.enola.common.io.resource;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryResource extends BaseResource implements Resource {
 
-    private final URI uri;
-    private final MediaType mediaType;
+    private static AtomicLong counter = new AtomicLong();
+
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
     protected MemoryResource(MediaType mediaType, URI uri) {
-        this.uri = requireNonNull(uri, "uri");
-        this.mediaType = requireNonNull(mediaType, "mediaType");
+        super(uri, mediaType);
     }
 
     public MemoryResource(MediaType mediaType) {
-        this.uri = URI.create("memory:" + Integer.toHexString(hashCode()));
-        this.mediaType = requireNonNull(mediaType, "mediaType");
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
+        super(URI.create("memory:" + Long.toHexString(counter.incrementAndGet())), mediaType);
     }
 
     @Override

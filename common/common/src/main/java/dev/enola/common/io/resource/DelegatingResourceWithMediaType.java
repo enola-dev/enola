@@ -21,19 +21,11 @@ import com.google.common.net.MediaType;
 
 public class DelegatingResourceWithMediaType extends DelegatingResource {
 
-    protected MediaType mediaType;
-
     public DelegatingResourceWithMediaType(Resource delegate, MediaType mediaType) {
-        super(delegate);
-        this.mediaType = mediaType;
+        super(delegate, mediaType);
     }
 
     public DelegatingResourceWithMediaType(ReadableResource inResource, MediaType mediaType) {
         this(new ReadableButNotWritableDelegatingResource(inResource), mediaType);
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return this.mediaType;
     }
 }

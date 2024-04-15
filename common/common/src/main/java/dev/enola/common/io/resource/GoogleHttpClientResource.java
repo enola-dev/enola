@@ -17,24 +17,25 @@
  */
 package dev.enola.common.io.resource;
 
-import com.google.common.net.MediaType;
+import com.google.common.io.ByteSource;
 
 import java.net.URI;
 
-public class GoogleHttpClientResource extends BaseResource {
+public class GoogleHttpClientResource extends BaseResource implements ReadableResource {
 
     // TODO Implement delegate to https://github.com/googleapis/google-http-java-client
     // See e.g. https://www.baeldung.com/google-http-client
 
-    @Override
-    public URI uri() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'uri'");
+    public GoogleHttpClientResource(URI uri) {
+        super(uri, byteSource(uri));
+    }
+
+    private static ByteSource byteSource(URI uri) {
+        throw new UnsupportedOperationException("TODO Implemented method 'byteSource'");
     }
 
     @Override
-    public MediaType mediaType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mediaType'");
+    public ByteSource byteSource() {
+        return byteSource(uri());
     }
 }
