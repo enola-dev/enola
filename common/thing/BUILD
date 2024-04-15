@@ -88,6 +88,7 @@ java_library(
         "//common/protobuf",
         "//common/protobuf:test_java_proto",
         "//common/rdf",
+        "//java/dev/enola/model",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
