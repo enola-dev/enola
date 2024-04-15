@@ -17,10 +17,8 @@
  */
 package dev.enola.common.function;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.Streams;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 /** Static utility methods related to {@code Stream} instances. {@link Streams} has more. */
@@ -54,28 +52,6 @@ public final class MoreStreams {
     private static <T, E extends Exception> void sneakyForEach(
             Stream<T> stream, CheckedConsumer<T, E> action) throws E {
         stream.forEach(Sneaker.sneakyConsumer(action));
-    }
-
-    // This was an initial attempt, which I then improved as above; keeping here only for history...
-    @SuppressWarnings("unchecked") // only for lastProblem.set((E) e)
-    private static <T, E extends Exception> void forEachThrowLast(
-            Stream<T> stream, CheckedConsumer<T, E> action) throws E {
-
-        AtomicReference<E> lastProblemReference = new AtomicReference<>();
-        stream.forEach(
-                element -> {
-                    try {
-                        action.accept(element);
-                    } catch (Exception e) {
-                        Throwables.throwIfUnchecked(e);
-                        // If we're still here, it was a checked Exception of E...
-                        lastProblemReference.set((E) e);
-                    }
-                });
-        E lastProblem = lastProblemReference.get();
-        if (lastProblem != null) {
-            throw lastProblem;
-        }
     }
 
     private MoreStreams() {}
