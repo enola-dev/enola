@@ -17,13 +17,13 @@
  */
 package dev.enola.common.io.mediatype;
 
-import dev.enola.common.io.resource.AbstractResource;
-import dev.enola.common.io.resource.ReadableResource;
+import com.google.common.io.ByteSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
@@ -32,14 +32,7 @@ public abstract class ResourceCharsetDetectorSPI implements ResourceCharsetDetec
     private static final Logger LOG = LoggerFactory.getLogger(ResourceCharsetDetectorSPI.class);
 
     @Override
-    public final Optional<Charset> detectCharset(AbstractResource resource) {
-        if (resource instanceof ReadableResource) {
-            return detectCharset((ReadableResource) resource);
-        }
-        return Optional.empty();
-    }
-
-    protected abstract Optional<Charset> detectCharset(ReadableResource resource);
+    public abstract Optional<Charset> detectCharset(URI uri, ByteSource source);
 
     /**
      * Peeks at the first N bytes of a resource.
@@ -47,11 +40,11 @@ public abstract class ResourceCharsetDetectorSPI implements ResourceCharsetDetec
      * @return byte array of length up to N bytes, or shorter if the resource had less bytes, or
      *     there was an error reading from it
      */
-    protected final byte[] peek(int n, ReadableResource resource) {
+    protected final byte[] peek(int n, URI uri, ByteSource source) {
         try {
-            return resource.byteSource().slice(0, n).read();
+            return source.slice(0, n).read();
         } catch (IOException e) {
-            LOG.warn("Failed to peek at the first {} bytes of {}", n, resource.uri(), e);
+            LOG.warn("Failed to peek at the first {} bytes", n, uri, e);
             return EMPTY;
         }
     }

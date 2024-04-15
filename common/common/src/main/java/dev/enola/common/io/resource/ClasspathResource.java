@@ -30,6 +30,7 @@ public class ClasspathResource extends UrlResource {
         super(Resources.getResource(path), mediaType);
     }
 
+    @Deprecated // TODO Remove, as un-used and pointless? Review Test Coverage #1st...
     public ClasspathResource(String path, Charset charset) {
         super(Resources.getResource(path), charset);
     }

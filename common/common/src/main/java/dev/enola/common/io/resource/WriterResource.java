@@ -17,38 +17,27 @@
  */
 package dev.enola.common.io.resource;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
 import com.google.common.net.MediaType;
 
 import java.io.Writer;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A {@link WritableResource} which delegates to a {@link Writer}. The underlying Writer is
  * intentionally never closed by this Resource's CharSink.
  */
 public class WriterResource extends BaseResource implements WritableResource {
+
+    private static AtomicLong counter = new AtomicLong();
+
     private final Writer writer;
-    private final URI uri;
-    private final MediaType mediaType;
 
     public WriterResource(Writer writer, MediaType mediaType) {
+        super(URI.create("writer:" + Long.toHexString(counter.incrementAndGet())), mediaType);
         this.writer = writer;
-        this.mediaType = requireNonNull(mediaType, "mediaType");
-        this.uri = URI.create("writer:" + Integer.toHexString(hashCode()));
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
     }
 
     @Override

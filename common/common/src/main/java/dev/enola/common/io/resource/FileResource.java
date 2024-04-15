@@ -17,14 +17,10 @@
  */
 package dev.enola.common.io.resource;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
 import com.google.common.net.MediaType;
-
-import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.io.IOException;
 import java.net.URI;
@@ -53,13 +49,9 @@ import java.util.Optional;
  */
 public class FileResource extends BaseResource implements Resource {
 
-    private static final MediaTypeDetector mtd = new MediaTypeDetector();
-
     private static final OpenOption[] EMPTY_OPTIONS = new OpenOption[0];
 
-    private final URI uri; // TODO Move to BaseResource...
     private final Path path;
-    private final MediaType mediaType;
     private final OpenOption[] openOptions;
 
     private static Path pathFromURI(URI uri) {
@@ -81,22 +73,15 @@ public class FileResource extends BaseResource implements Resource {
     }
 
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
-        this.uri = uri;
+        super(uri, mediaType);
         this.path = pathFromURI(uri);
         this.openOptions = safe(openOptions);
-        // Here we intentionally do not do something like this, because the arg takes precedence:
-        // mtd.detect(
-        //         mediaType.toString(),
-        //         mediaType.charset().transform(cs -> cs.name()).orNull(),
-        //         uri());
-        this.mediaType = requireNonNull(mediaType);
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
-        this.uri = uri;
+        super(uri, MoreFiles.asByteSource(pathFromURI(uri), openOptions));
         this.path = pathFromURI(uri);
         this.openOptions = safe(openOptions);
-        this.mediaType = mtd.detectAlways(this);
     }
 
     private static OpenOption[] safe(OpenOption[] openOptions) {
@@ -104,18 +89,8 @@ public class FileResource extends BaseResource implements Resource {
         else return Arrays.copyOf(openOptions, openOptions.length);
     }
 
-    @Override
-    public URI uri() {
-        return uri; // NOT path.toUri();
-    }
-
     public Path path() {
         return path;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
     }
 
     @Override

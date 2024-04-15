@@ -42,26 +42,12 @@ public class NullResource extends BaseResource implements Resource {
 
     static final String SCHEME = "null";
 
-    private final MediaType mediaType;
-    private final URI uri;
-
     public NullResource(MediaType mediaType) {
-        this.mediaType = mediaType;
-        this.uri = uri(this.mediaType);
+        super(uri(mediaType), mediaType);
     }
 
     public static URI uri(MediaType mediaType) {
         return URI.create(SCHEME + ":" + mediaType.withoutParameters());
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
     }
 
     @Override

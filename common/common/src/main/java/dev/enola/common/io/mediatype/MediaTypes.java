@@ -20,6 +20,7 @@ package dev.enola.common.io.mediatype;
 import com.google.common.net.MediaType;
 
 import java.util.Optional;
+import java.util.Set;
 
 /** Extension methods for {@link MediaType}. */
 public final class MediaTypes {
@@ -40,6 +41,14 @@ public final class MediaTypes {
     }
 
     public static boolean normalizedNoParamsEquals(MediaType actual, MediaType... expecteds) {
+        for (var expected : expecteds) {
+            if (normalize(actual).withoutParameters().equals(expected.withoutParameters()))
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean normalizedNoParamsEquals(MediaType actual, Set<MediaType> expecteds) {
         for (var expected : expecteds) {
             if (normalize(actual).withoutParameters().equals(expected.withoutParameters()))
                 return true;

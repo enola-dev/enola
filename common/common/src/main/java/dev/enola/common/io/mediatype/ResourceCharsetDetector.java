@@ -17,11 +17,13 @@
  */
 package dev.enola.common.io.mediatype;
 
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.Resource;
 
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
@@ -37,8 +39,9 @@ import java.util.Optional;
 public interface ResourceCharsetDetector {
 
     /**
-     * Detect the {@link Charset} of an {@link AbstractResource}. Implementations may "sniff" the
-     * content e.g. for "<a href="https://en.wikipedia.org/wiki/Byte_order_mark">BOM detection</a>".
+     * Detect the {@link Charset} by "sniffing" the source e.g. for "<a
+     * href="https://en.wikipedia.org/wiki/Byte_order_mark">BOM detection</a>". The URI argument is
+     * only uses for error messages. (It's never "accessed".)
      */
-    Optional<Charset> detectCharset(AbstractResource resource);
+    Optional<Charset> detectCharset(URI uri, ByteSource source);
 }

@@ -17,13 +17,41 @@
  */
 package dev.enola.common.io.resource;
 
+import static java.util.Objects.requireNonNull;
+
+import com.google.common.io.ByteSource;
+import com.google.common.net.MediaType;
+
+import dev.enola.common.io.mediatype.MediaTypeDetector;
+
+import java.net.URI;
+
 public abstract class BaseResource implements AbstractResource {
 
-    // Always keep the user-specified URI (because e.g. ?query parameters & #fragment may get lost)
-    // TODO private final URI uri;
+    private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
-    // TODO protected BaseResource(URI uri) {
-    // TODO protected BaseResource(URI uri, MediaType mediaType) {
+    // Always keep the user-specified URI (because e.g. ?query parameters & #fragment may get lost)
+    protected final URI uri;
+    protected final MediaType mediaType;
+
+    protected BaseResource(URI uri, ByteSource byteSource) {
+        this(uri, mtd.detect(uri, byteSource));
+    }
+
+    protected BaseResource(URI uri, MediaType mediaType) {
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType = mtd.overwrite(uri, requireNonNull(mediaType, "mediaType"));
+    }
+
+    @Override
+    public final URI uri() {
+        return uri; // NOT path.toUri();
+    }
+
+    @Override
+    public final MediaType mediaType() {
+        return mediaType;
+    }
 
     @Override
     public String toString() {

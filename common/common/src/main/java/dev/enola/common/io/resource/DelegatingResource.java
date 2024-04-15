@@ -23,24 +23,18 @@ import com.google.common.io.CharSink;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
-import java.net.URI;
-
 public class DelegatingResource extends BaseResource implements Resource {
 
-    protected Resource delegate;
+    protected final Resource delegate;
 
     protected DelegatingResource(Resource delegate) {
+        super(delegate.uri(), delegate.mediaType());
         this.delegate = delegate;
     }
 
-    @Override
-    public URI uri() {
-        return delegate.uri();
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return delegate.mediaType();
+    public DelegatingResource(Resource delegate, MediaType mediaType) {
+        super(delegate.uri(), mediaType);
+        this.delegate = delegate;
     }
 
     @Override

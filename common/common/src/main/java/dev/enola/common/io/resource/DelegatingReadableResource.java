@@ -19,26 +19,14 @@ package dev.enola.common.io.resource;
 
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-import com.google.common.net.MediaType;
-
-import java.net.URI;
 
 public abstract class DelegatingReadableResource extends BaseResource implements ReadableResource {
 
-    protected ReadableResource delegate;
+    protected final ReadableResource delegate;
 
     protected DelegatingReadableResource(ReadableResource delegate) {
+        super(delegate.uri(), delegate.mediaType());
         this.delegate = delegate;
-    }
-
-    @Override
-    public URI uri() {
-        return delegate.uri();
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return delegate.mediaType();
     }
 
     @Override

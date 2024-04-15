@@ -42,42 +42,24 @@ public class UrlResource extends BaseResource implements ReadableResource {
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     private final URL url;
-    private final URI uri;
-    private final MediaType mediaType;
-    private final Charset charset;
 
     public UrlResource(URL url) {
-        this(url, null, null);
+        super(URI.create(url.toString()), mediaType(url, null));
+        this.url = url;
     }
 
     public UrlResource(URL url, MediaType mediaType) {
-        this(url, mediaType, null);
-    }
-
-    public UrlResource(URL url, Charset charset) {
-        this(url, null, charset);
-    }
-
-    private UrlResource(URL url, MediaType mediaType, Charset charset) {
+        super(URI.create(url.toString()), mediaType);
         this.url = url;
-        this.mediaType = mediaType;
-        this.charset = charset;
-        try {
-            this.uri = url.toURI();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid URL: " + url, e);
-        }
     }
 
-    @Override
-    public URI uri() {
-        return uri;
+    @Deprecated // TODO Remove, as un-used and pointless? Review Test Coverage #1st...
+    public UrlResource(URL url, Charset charset) {
+        super(URI.create(url.toString()), mediaType(url, charset));
+        this.url = url;
     }
 
-    @Override
-    public MediaType mediaType() {
-        if (mediaType != null) return mediaType;
-
+    private static MediaType mediaType(URL url, Charset charset) {
         // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
@@ -95,11 +77,12 @@ public class UrlResource extends BaseResource implements ReadableResource {
                 encodingFromServer = charset.name();
             }
 
-            // final var fc = c;
-            return mtd.detect(
-                    contentTypeFromServer, encodingFromServer, uri /*, () -> fc.getInputStream()*/);
+            return mtd.detect(contentTypeFromServer, encodingFromServer, url.toURI());
+
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
         } finally {
             if (c instanceof HttpURLConnection) {
                 ((HttpURLConnection) c).disconnect();
