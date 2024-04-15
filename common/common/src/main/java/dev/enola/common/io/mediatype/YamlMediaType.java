@@ -34,6 +34,8 @@ import java.util.Set;
 public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTypeProvider {
     // TODO Move this into e.g. dev.enola.format.yaml ?
 
+    // TODO How to allow this to express mediaType.subtype().endsWith("+yaml") ?
+
     // https://www.ietf.org/archive/id/draft-ietf-httpapi-yaml-mediatypes-00.html
     // https://github.com/ietf-wg-httpapi/mediatypes/blob/main/draft-ietf-httpapi-yaml-mediatypes.md
 

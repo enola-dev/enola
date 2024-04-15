@@ -217,11 +217,15 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
             if (mediaType.is(MediaType.ANY_TEXT_TYPE)) {
                 // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
+                // TODO This should move into a TBD JsonMediaType implements ResourceCharsetDetector
             } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
                 // TODO See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
                 // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
                 mediaType = mediaType.withCharset(Charsets.UTF_8);
+            } else if (mediaType.subtype().endsWith("+json")) {
+                mediaType = mediaType.withCharset(Charsets.UTF_8);
             }
+            // TODO NOT if (mediaType.subtype().endsWith("+yaml")) { but via YamlMediaType
         }
 
         return mediaType;
