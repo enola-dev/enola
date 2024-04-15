@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.schema;
+package dev.enola.model.schemaorg;
 
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
