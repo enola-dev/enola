@@ -67,13 +67,14 @@ java_binary(
     deps = [
         ":demo",
         ":demo_java_proto",
-        "//common/common",
         "//common/protobuf",
         "//core/impl",  # ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
         "//core/lib:connector_java_grpc",
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/protobuf",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

@@ -24,7 +24,7 @@ java_library(
         "//web:__subpackages__",
     ],
     deps = [
-        "//common/common",
+        "//java/dev/enola/common/io",
         "@maven//:com_google_guava_guava",
     ],
 )

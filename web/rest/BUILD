@@ -24,12 +24,12 @@ java_library(
         "//cli:__subpackages__",
     ],
     deps = [
-        "//common/common",
         "//common/protobuf",
         "//core/impl",  # TODO Ideally shouldn't be required...
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//java/dev/enola/common/io",
         "//web/api",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
@@ -43,12 +43,12 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":rest",
-        "//common/common",
         "//common/protobuf",
         "//core/impl",  # TODO Move package dev.enola.core.grpc from impl to lib_java, and remove this
         "//core/lib:core_java_grpc",
         "//core/lib:core_java_proto",
         "//core/lib:lib_java",
+        "//java/dev/enola/common/io",
         "//web/api",
         "//web/sun",
         "@maven//:com_google_guava_guava",

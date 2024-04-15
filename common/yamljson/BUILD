@@ -22,7 +22,7 @@ java_library(
     resources = glob(["src/main/resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//common/common",
+        "//java/dev/enola/common/io",
         "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
         "@maven//:org_snakeyaml_snakeyaml_engine",

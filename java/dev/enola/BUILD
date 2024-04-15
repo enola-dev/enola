@@ -24,8 +24,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//common/common",
         "//common/thing:thing_java",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/io",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
@@ -41,7 +42,7 @@ java_test(
     ],
     deps = [
         ":enola",
-        "//common/common",
+        "//java/dev/enola/common/io",
         "//java/dev/enola/model",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_extensions_truth_java8_extension",

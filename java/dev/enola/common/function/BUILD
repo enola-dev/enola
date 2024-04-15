@@ -16,21 +16,17 @@
 
 load("@rules_java//java:defs.bzl", "java_library", "java_test")
 
-[java_test(
-    name = name[:-len(".java")],
-    size = "small",
-    srcs = glob(["src/test/java/**/*.java"]),
-    resources = glob(["src/test/resources/**/*"]),
-    runtime_deps = [
-        "@maven//:org_slf4j_slf4j_simple",
-    ],
+java_library(
+    name = "function",
+    srcs = glob(
+        ["*.java"],
+        exclude = ["*Test.java"],
+    ),
+    visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_jimfs_jimfs",
-        "@maven//:com_google_truth_extensions_truth_java8_extension",
-        "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
+        "@maven//:org_slf4j_slf4j_api",
     ],
-) for name in glob([
-    "src/test/java/**/*Test.java",
-])]
+)
