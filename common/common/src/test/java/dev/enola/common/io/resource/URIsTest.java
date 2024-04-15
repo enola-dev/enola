@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.resource.URIs.MediaTypeAndOrCharset;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,8 +30,6 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 public class URIsTest {
 
@@ -54,8 +52,8 @@ public class URIsTest {
 
     @Test
     public void testHasNoMediaType() throws URISyntaxException {
-        assertThat(URIs.getMediaType(URI.create("scheme:something")))
-                .isEqualTo(MediaType.OCTET_STREAM.withCharset(Charset.defaultCharset()));
+        assertThat(URIs.getMediaTypeAndCharset(URI.create("scheme:something")))
+                .isEqualTo(new MediaTypeAndOrCharset(null, null));
     }
 
     @Test
@@ -64,8 +62,8 @@ public class URIsTest {
         assertThat(URIs.getQueryMap(uri))
                 .containsExactly(
                         "something", "else", "mediatype", "application/yaml;charset=utf-16be");
-        assertThat(URIs.getMediaType(uri))
-                .isEqualTo(YamlMediaType.YAML_UTF_8.withCharset(StandardCharsets.UTF_16BE));
+        assertThat(URIs.getMediaTypeAndCharset(uri))
+                .isEqualTo(new MediaTypeAndOrCharset("application/yaml;charset=utf-16be", null));
     }
 
     @Test
@@ -74,14 +72,15 @@ public class URIsTest {
         var uri1 = URIs.addMediaType(URI.create("scheme:something"), mt1);
         var uri1expected = URI.create("scheme:something?mediaType=image%2Fgif");
         assertThat(uri1).isEqualTo(uri1expected);
-        assertThat(URIs.getMediaType(uri1expected))
-                .isEqualTo(mt1.withCharset(Charset.defaultCharset()));
+        assertThat(URIs.getMediaTypeAndCharset(uri1expected))
+                .isEqualTo(new MediaTypeAndOrCharset(mt1.toString(), null));
 
         var mt2 = MediaType.PLAIN_TEXT_UTF_8;
         var uri2 = URIs.addMediaType(URI.create("scheme:something"), mt2);
         var uri2expected = URI.create("scheme:something?mediaType=text%2Fplain%3Bcharset%3Dutf-8");
         assertThat(uri2).isEqualTo(uri2expected);
-        assertThat(URIs.getMediaType(uri2expected)).isEqualTo(mt2);
+        assertThat(URIs.getMediaTypeAndCharset(uri2expected))
+                .isEqualTo(new MediaTypeAndOrCharset("text/plain;charset=utf-8", null));
 
         var uri3 = URIs.addMediaType(URI.create("scheme:?"), mt1);
         var uri3expected = URI.create("scheme:?mediaType=image%2Fgif");

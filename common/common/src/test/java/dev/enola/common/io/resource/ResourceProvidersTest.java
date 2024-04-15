@@ -57,8 +57,7 @@ public class ResourceProvidersTest {
         var uri = URI.create("empty:?");
         var r = new ResourceProviders().getResource(uri);
         assertThat(r.byteSource().isEmpty()).isTrue();
-        assertThat(r.mediaType())
-                .isEqualTo(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
+        assertThat(r.mediaType()).isEqualTo(MediaType.OCTET_STREAM);
 
         uri = URI.create("empty:?mediaType=" + MediaType.JSON_UTF_8.toString().replace(" ", ""));
         r = new ResourceProviders().getResource(uri);

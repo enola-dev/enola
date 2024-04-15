@@ -21,6 +21,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.MediaTypeDetector;
+
 import java.net.URI;
 import java.util.function.Supplier;
 
@@ -30,8 +32,12 @@ import java.util.function.Supplier;
  *
  * @see NullResource for an alternatives that returns infinite 0s instead of EOF.
  */
-public class EmptyResource implements AbstractResource, ReadableButNotWritableResource {
+public class EmptyResource implements ReadableButNotWritableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
+
+    // TODO extends BaseResource, like everything else?
+
+    private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     static final String SCHEME = "empty";
     private static final URI EMPTY_URI = URI.create(SCHEME + ":?");
@@ -39,6 +45,10 @@ public class EmptyResource implements AbstractResource, ReadableButNotWritableRe
     private final MediaType mediaType;
     private final Supplier<URI> uriSupplier;
     private URI uri;
+
+    public EmptyResource(URI uri) {
+        this(mtd.detect(uri, ByteSource.empty()));
+    }
 
     public EmptyResource(MediaType mediaType) {
         this.mediaType = mediaType;

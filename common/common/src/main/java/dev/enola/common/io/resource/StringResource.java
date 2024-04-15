@@ -29,6 +29,8 @@ import java.util.function.Supplier;
 public class StringResource implements ReadableButNotWritableResource {
     // TODO Replace ReadableButNotWritableResource with ReadableResource #again
 
+    // TODO extends BaseResource, like everything else?
+
     static final String SCHEME = "string";
 
     private final String string;

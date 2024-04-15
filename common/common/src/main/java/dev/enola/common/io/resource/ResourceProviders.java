@@ -18,7 +18,6 @@
 package dev.enola.common.io.resource;
 
 import com.google.common.base.Strings;
-import com.google.common.net.MediaType;
 
 import dev.enola.common.io.MoreFileSystems;
 
@@ -35,22 +34,14 @@ public class ResourceProviders implements ResourceProvider {
 
     @Override
     public Resource getResource(URI uri) {
-        String uriPath = URIs.getPath(uri);
-        MediaType mediaType = URIs.getMediaType(uri);
-
         String scheme = uri.getScheme();
         if (Strings.isNullOrEmpty(scheme)) {
             throw new IllegalArgumentException("URI is missing a scheme: " + uri);
         } else if (MoreFileSystems.URI_SCHEMAS.contains(scheme)) {
             return new FileResource(uri);
         } else if (scheme.startsWith(ClasspathResource.SCHEME)) {
-            ClasspathResource cpr;
-            if (!mediaType.withoutParameters().equals(URIs.DEFAULT_MEDIA_TYPE)) {
-                cpr = new ClasspathResource(uriPath, mediaType);
-            } else {
-                cpr = new ClasspathResource(uriPath);
-            }
-            return new ReadableButNotWritableDelegatingResource(cpr);
+            return new ReadableButNotWritableDelegatingResource(
+                    new ClasspathResource(URIs.getPath(uri)));
         } else if (scheme.startsWith(StringResource.SCHEME)) {
             // NOT new StringResource(uriPath, mediaType),
             // because that is confusing, as it will chop off after # and interpret '?'
@@ -58,7 +49,7 @@ public class ResourceProviders implements ResourceProvider {
             // WITH MediaType are required, consider adding DataResource for data:
             return StringResource.of(uri.getSchemeSpecificPart());
         } else if (scheme.startsWith(EmptyResource.SCHEME)) {
-            return new EmptyResource(mediaType);
+            return new EmptyResource(uri);
         } else if (scheme.startsWith(NullResource.SCHEME)) {
             return NullResource.INSTANCE;
         } else if (scheme.startsWith(ErrorResource.SCHEME)) {
