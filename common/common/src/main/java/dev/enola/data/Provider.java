@@ -23,7 +23,7 @@ public interface Provider<K, V> {
     /**
      * Get.
      *
-     * @param key Key
+     * @param key Key, never null
      * @return value, or null if there is no Value for the given key
      */
     // TODO @Nullable (from JSpecify)

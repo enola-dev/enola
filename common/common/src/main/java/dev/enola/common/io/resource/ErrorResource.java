@@ -28,6 +28,15 @@ import java.net.URI;
 
 public class ErrorResource extends BaseResource implements Resource {
 
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith(SCHEME)) return ErrorResource.INSTANCE;
+            else return null;
+        }
+    }
+
     static final String SCHEME = "error";
 
     private static final URI ERROR_URI = URI.create("error:-");

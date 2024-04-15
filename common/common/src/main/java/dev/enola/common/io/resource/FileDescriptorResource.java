@@ -36,6 +36,15 @@ import java.nio.charset.Charset;
  */
 public class FileDescriptorResource extends BaseResource implements Resource {
 
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith("fd")) return new FileDescriptorResource(uri);
+            else return null;
+        }
+    }
+
     private final FileDescriptor fileDescriptor;
 
     public FileDescriptorResource(URI uri) {

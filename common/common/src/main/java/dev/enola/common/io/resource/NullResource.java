@@ -37,6 +37,15 @@ import java.nio.charset.StandardCharsets;
  */
 public class NullResource extends BaseResource implements Resource {
 
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith(SCHEME)) return NullResource.INSTANCE;
+            else return null;
+        }
+    }
+
     public static final NullResource INSTANCE =
             new NullResource(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_8));
 

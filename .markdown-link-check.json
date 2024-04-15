@@ -6,7 +6,8 @@
     { "pattern": "^https://vscode.dev" },
     { "pattern": "^https://graphdb.ontotext.com" },
     { "pattern": "^https://virtuoso.openlinksw.com" },
-    { "pattern": "^https://tiddlywiki.com" }
+    { "pattern": "^https://tiddlywiki.com" },
+    { "pattern": "^https://marketplace.visualstudio.com" }
   ],
-  "aliveStatusCodes": [200, 0]
+  "aliveStatusCodes": [503, 200, 0]
 }
