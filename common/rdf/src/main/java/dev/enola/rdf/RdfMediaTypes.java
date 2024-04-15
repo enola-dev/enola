@@ -17,6 +17,7 @@
  */
 package dev.enola.rdf;
 
+import com.google.auto.service.AutoService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 /** This "bridges" RDF4j's MIME Type database to Enola's MediaType registry. */
 // TODO Rename from RdfMediaType to RdfMediaTypes for consistency with other MediaTypeProvider impls
+@AutoService(MediaTypeProvider.class)
 public class RdfMediaTypes implements MediaTypeProvider {
 
     public static final MediaType TURTLE =

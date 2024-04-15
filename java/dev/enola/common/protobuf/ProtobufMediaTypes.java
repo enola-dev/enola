@@ -19,6 +19,7 @@ package dev.enola.common.protobuf;
 
 import static java.util.Collections.emptySet;
 
+import com.google.auto.service.AutoService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@AutoService(MediaTypeProvider.class)
 public class ProtobufMediaTypes implements MediaTypeProvider {
     // TODO move this class into the common.proto module!
 

@@ -17,6 +17,7 @@
  */
 package dev.enola.rdf;
 
+import com.google.auto.service.AutoService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 /** MediaType of https://json-ld.github.io/yaml-ld/ and https://json-ld.github.io/yaml-ld/spec/ */
+@AutoService(MediaTypeProvider.class)
 public class RdfMediaTypeYamlLd implements MediaTypeProvider {
 
     public static final MediaType YAML_LD =

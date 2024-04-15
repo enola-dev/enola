@@ -22,10 +22,12 @@ java_library(
         ["**/*.java"],
         exclude = ["**/*Test.java"],
     ),
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
