@@ -16,55 +16,64 @@
 
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
+load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 proto_library(
-    name = "validation_proto",
-    srcs = ["validation.proto"],
+    name = "thing_proto",
+    srcs = ["thing.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
-    ],
-)
-
-java_proto_library(
-    name = "validation_proto_java_library",
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "validation_proto",
-    ],
-)
-
-proto_library(
-    name = "test_proto",
-    srcs = ["test.proto"],
-    deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
         "@com_google_protobuf//:timestamp_proto",
     ],
 )
 
+buf_proto_lint_test(
+    name = "thing_proto_lint",
+    size = "small",
+    except_rules = [
+        "PACKAGE_VERSION_SUFFIX",
+        "PACKAGE_DIRECTORY_MATCH",
+    ],
+    protos = [
+        "thing_proto",
+    ],
+    use_rules = [
+        "DEFAULT",
+        "COMMENTS",
+    ],
+)
+
+doc_markdown_compile(
+    name = "thing_proto_doc",
+    protos = [
+        "thing_proto",
+    ],
+)
+
 java_proto_library(
-    name = "test_java_proto",
+    name = "thing_java_proto",
     visibility = ["//:__subpackages__"],
-    deps = ["test_proto"],
+    deps = ["thing_proto"],
 )
 
 java_library(
-    name = "protobuf",
+    name = "thing_java",
     srcs = glob(
-        ["*.java"],
-        exclude = ["*Test.java"],
+        ["**/*.java"],
+        exclude = ["**/*Test.java"],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":validation_proto_java_library",
+        ":thing_java_proto",
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
@@ -78,9 +87,17 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     deps = [
-        ":protobuf",
-        ":test_java_proto",
+        ":thing_java",
+        ":thing_java_proto",
+        "//java/dev/enola/common/convert",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/common/protobuf:test_java_proto",
+        "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
+        "//java/dev/enola/model",
+        "//java/dev/enola/rdf",
         "//test",
     ],
 )

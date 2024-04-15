@@ -24,9 +24,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//common/thing:thing_java",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",

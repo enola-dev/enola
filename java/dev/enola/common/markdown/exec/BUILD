@@ -15,18 +15,26 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "data",
+    name = "markdown",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
-        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:ch_vorburger_exec_exec",
         "@maven//:com_google_guava_guava",
-        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_apache_commons_commons_exec",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["**/*Test.java"]),
+    deps = [
+        ":markdown",
     ],
 )

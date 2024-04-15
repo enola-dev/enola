@@ -15,18 +15,27 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "data",
+    name = "yamljson",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
-        "@maven//:com_google_errorprone_error_prone_annotations",
+        "//java/dev/enola/common/io",
+        "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
-        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_snakeyaml_snakeyaml_engine",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["**/*Test.java"]),
+    deps = [
+        ":yamljson",
     ],
 )

@@ -66,7 +66,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(bash|bazel|textproto|yaml)$
-        exclude: ^docs/use|core/impl/src/test/resources|.*test_resources.*
+        exclude: ^docs/use|test/
         args:
           - --comment-style
           - "#"
@@ -76,7 +76,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(md|html)$
-        exclude: ^.github|src/test/resources/|docs/blog/posts/|docs/use/execmd/demo.md|.*test_resources.*
+        exclude: ^.github|test/|docs/blog/posts/|docs/use/execmd/demo.md
         args:
           - --comment-style
           - "<!--|   |-->"
@@ -95,7 +95,7 @@ repos:
         # and https://github.com/pre-commit/mirrors-clang-format/pull/22.
         # In the mean-time, it's possible to manually clang-format -i the.textproto
         files: \.(proto|textproto)$
-        exclude: ^core/impl/src/test/resources/bar-abc-def.textproto
+        exclude: ^test
 
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
@@ -118,14 +118,14 @@ repos:
     rev: v0.12.1
     hooks:
       - id: markdownlint-cli2
-        exclude: (^.github/|src/test/resources/|docs/use/docgen/docgen.md)
+        exclude: (^.github/|test/|docs/use/docgen/docgen.md)
 
     # Until https://github.com/DavidAnson/markdownlint/issues/121
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.12.1
     hooks:
       - id: markdown-link-check
-        exclude: (src/test/resources/|docs/use/docgen/docgen.md|docs/use/server/index.md)
+        exclude: (test/|docs/use/docgen/docgen.md|docs/use/server/index.md)
         args: [--quiet, --config, .markdown-link-check.json]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
@@ -144,7 +144,7 @@ repos:
       - id: prettier
         # NOT markdown, because we use markdownlint for that
         types_or: [css, html, javascript, json, json5, scss, ts, tsx, yaml]
-        exclude: ^docs/use|core/impl/src/test/resources|.devcontainer/devcontainer.json
+        exclude: ^docs/use|test/|.devcontainer/devcontainer.json
         additional_dependencies:
           - prettier@3.2.4
 
