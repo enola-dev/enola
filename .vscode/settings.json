@@ -151,6 +151,7 @@
     "connectors": false,
     "core": false,
     "docs": false,
+    "java": false,
     "models": false,
     "node_modules": false,
     "rdf": false,

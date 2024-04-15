@@ -49,7 +49,7 @@ public class EmptyResource implements ReadableButNotWritableResource {
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     static final String SCHEME = "empty";
-    private static final URI EMPTY_URI = URI.create(SCHEME + ":?");
+    public static final URI EMPTY_URI = URI.create(SCHEME + ":?");
 
     private final MediaType mediaType;
     private final Supplier<URI> uriSupplier;
