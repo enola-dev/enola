@@ -19,27 +19,35 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.auto.service.AutoService;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
 import org.junit.Test;
 
-public class MediaTypesTest {
+import java.util.Map;
+import java.util.Set;
+
+@AutoService(MediaTypeProvider.class)
+public class MediaTypesTest implements MediaTypeProvider {
 
     @Test
     public void testParse() {
-        assertThat(MediaTypes.parse("application/test")).isEqualTo(TestMediaTypes.TEST);
+        assertThat(MediaTypes.parse("application/test")).isEqualTo(TEST);
     }
 
     @Test
     public void testNormalizeMediaTypesParse() {
-        assertThat(MediaTypes.parse("application/test-alternative")).isEqualTo(TestMediaTypes.TEST);
+        assertThat(MediaTypes.parse("application/test-alternative")).isEqualTo(TEST);
     }
 
     @Test
     public void testNormalizeMediaTypeParse() {
         assertThat(MediaTypes.normalize(MediaType.parse("application/test-alternative")))
-                .isEqualTo(TestMediaTypes.TEST);
+                .isEqualTo(TEST);
     }
 
     @Test
@@ -47,27 +55,26 @@ public class MediaTypesTest {
         var alternative = MediaTypes.parse("application/test-alternative");
         var alternativeWithCharset =
                 MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE));
-        assertThat(alternativeWithCharset)
-                .isEqualTo(TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE));
+        assertThat(alternativeWithCharset).isEqualTo(TEST.withCharset(Charsets.UTF_16BE));
     }
 
     @Test
     public void testNormalizeMediaTypeParseWithCharsetParameter() {
         var alternative = MediaType.parse("application/test-alternative");
-        assertThat(MediaTypes.normalize(alternative)).isEqualTo(TestMediaTypes.TEST);
+        assertThat(MediaTypes.normalize(alternative)).isEqualTo(TEST);
         assertThat(MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE)))
-                .isEqualTo(TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE));
+                .isEqualTo(TEST.withCharset(Charsets.UTF_16BE));
     }
 
     @Test
     public void testToString() {
-        var mediaType = TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE);
+        var mediaType = TEST.withCharset(Charsets.UTF_16BE);
         assertThat(mediaType.toString()).isEqualTo("application/test; charset=utf-16be");
     }
 
     @Test
     public void testParseWithCharset() {
-        var expected = TestMediaTypes.TEST.withCharset(Charsets.UTF_16BE);
+        var expected = TEST.withCharset(Charsets.UTF_16BE);
 
         // https://www.ietf.org/rfc/rfc2045.txt format:
         assertThat(MediaTypes.parse("application/test-alternative; charset=utf-16be"))
@@ -76,5 +83,23 @@ public class MediaTypesTest {
         // RFC-inspired format, but without that ugly space, works as well:
         assertThat(MediaTypes.parse("application/test-alternative;charset=utf-16be"))
                 .isEqualTo(expected);
+    }
+
+    // TODO use example/test instead of application/test (and rename accordingly everywhere...)
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#example
+
+    public static final MediaType TEST = MediaType.create("application", "test");
+
+    @VisibleForTesting
+    static final MediaType TEST_ALTERNATIVE = MediaType.create("application", "test-alternative");
+
+    @Override
+    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return ImmutableMap.of(TEST, Sets.newHashSet(TEST_ALTERNATIVE));
+    }
+
+    @Override
+    public Map<String, MediaType> extensionsToTypes() {
+        return ImmutableMap.of("test", TEST);
     }
 }

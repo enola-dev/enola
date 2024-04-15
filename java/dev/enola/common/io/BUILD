@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "io",
@@ -31,5 +32,19 @@ java_library(
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["**/*Test.java"]),
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
+    # TODO Add support for resources with resource_strip_prefix to junit_tests...
+    resource_strip_prefix = "java/dev/enola/common/io/test_resources",
+    resources = glob(["test_resources/*"]),
+    deps = [
+        ":io",
+        "//java/dev/enola/common/protobuf",
+        "@maven//:com_google_auto_service_auto_service_annotations",
     ],
 )

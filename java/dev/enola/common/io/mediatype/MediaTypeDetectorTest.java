@@ -68,7 +68,7 @@ public class MediaTypeDetectorTest {
 
         // Test that TestMediaTypes was correctly registered
         assertThat(md.detect(null, null, URI.create("whatever:something.test")))
-                .isEqualTo(TestMediaTypes.TEST);
+                .isEqualTo(MediaTypesTest.TEST);
 
         // TODO Assert.assertThrows() ?
         md.detect(null, null, URI.create("bad-URI-without-scheme"));

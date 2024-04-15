@@ -20,9 +20,6 @@ package dev.enola.common.io.mediatype;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.common.io.mediatype.TestMediaTypes.TEST;
-import static dev.enola.common.io.mediatype.TestMediaTypes.TEST_ALTERNATIVE;
-
 import org.junit.Test;
 
 public class MediaTypeProvidersTest {
@@ -30,17 +27,18 @@ public class MediaTypeProvidersTest {
     @Test
     public void empty() {
         var mtp = new MediaTypeProviders();
-        assertThat(mtp.normalize(TEST_ALTERNATIVE)).isEqualTo(TEST_ALTERNATIVE);
+        assertThat(mtp.normalize(MediaTypesTest.TEST_ALTERNATIVE))
+                .isEqualTo(MediaTypesTest.TEST_ALTERNATIVE);
         assertThat(mtp.extensionsToTypes()).isEmpty();
         assertThat(mtp.knownTypesWithAlternatives()).isEmpty();
     }
 
     @Test
     public void testMediaType() {
-        var mtp = new MediaTypeProviders(new StandardMediaTypes(), new TestMediaTypes());
-        assertThat(mtp.normalize(TEST_ALTERNATIVE)).isEqualTo(TEST);
-        assertThat(mtp.extensionsToTypes()).containsEntry("test", TEST);
+        var mtp = new MediaTypeProviders(new StandardMediaTypes(), new MediaTypesTest());
+        assertThat(mtp.normalize(MediaTypesTest.TEST_ALTERNATIVE)).isEqualTo(MediaTypesTest.TEST);
+        assertThat(mtp.extensionsToTypes()).containsEntry("test", MediaTypesTest.TEST);
         assertThat(mtp.knownTypesWithAlternatives())
-                .containsEntry(TEST, newHashSet(TEST_ALTERNATIVE));
+                .containsEntry(MediaTypesTest.TEST, newHashSet(MediaTypesTest.TEST_ALTERNATIVE));
     }
 }

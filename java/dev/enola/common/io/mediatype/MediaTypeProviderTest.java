@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.TestAbstractResource;
+import dev.enola.common.io.resource.AbstractResource;
 
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ import java.net.URI;
 
 public class MediaTypeProviderTest {
 
-    TestMediaTypes tmt = new TestMediaTypes();
+    MediaTypesTest tmt = new MediaTypesTest();
 
     @Test
     public void nomatch() {
@@ -41,21 +41,24 @@ public class MediaTypeProviderTest {
     @Test
     public void match() {
         var uri = URI.create("test:MediaTypeProviderTest");
-        var resource = new TestAbstractResource(uri, TestMediaTypes.TEST);
-        assertThat(tmt.detect(resource)).hasValue(TestMediaTypes.TEST);
+        var resource = new TestAbstractResource(uri, MediaTypesTest.TEST);
+        assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
     }
 
     @Test
     public void alternative() {
         var uri = URI.create("test:MediaTypeProviderTest");
-        var resource = new TestAbstractResource(uri, TestMediaTypes.TEST_ALTERNATIVE);
-        assertThat(tmt.detect(resource)).hasValue(TestMediaTypes.TEST);
+        var resource = new TestAbstractResource(uri, MediaTypesTest.TEST_ALTERNATIVE);
+        assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
     }
 
     @Test
     public void extension() {
         var uri = URI.create("test:MediaTypeProviderTest.test");
         var resource = new TestAbstractResource(uri, MediaType.ANY_TYPE);
-        assertThat(tmt.detect(resource)).hasValue(TestMediaTypes.TEST);
+        assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
     }
+
+    private static record TestAbstractResource(URI uri, MediaType mediaType)
+            implements AbstractResource {}
 }

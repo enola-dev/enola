@@ -19,7 +19,6 @@ load("@rules_java//java:defs.bzl", "java_library", "java_test")
 java_library(
     name = "markdown",
     srcs = glob(["src/main/java/**/*.java"]),
-    resources = glob(["src/main/resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
         "@maven//:ch_vorburger_exec_exec",
@@ -32,7 +31,6 @@ java_library(
     name = name[:-len(".java")],
     size = "small",
     srcs = glob(["src/test/java/**/*.java"]),
-    resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",
     ],
