@@ -28,7 +28,7 @@ proto_library(
 java_proto_library(
     name = "demo_java_proto",
     # ONLY for tests:
-    visibility = ["//core/impl:__subpackages__"],
+    visibility = ["//:__subpackages__"],
     deps = [
         "demo_proto",
     ],
@@ -40,14 +40,14 @@ java_binary(
     main_class = "dev.enola.demo.Server",
     resources = glob(["src/main/resources/**/*"]),
     # ONLY for tests:
-    visibility = ["//core/impl:__subpackages__"],
+    visibility = ["//:__subpackages__"],
     runtime_deps = [
         "@maven//:io_grpc_grpc_netty",
     ],
     deps = [
         ":demo_java_proto",
-        "//core/lib:connector_java_grpc",
-        "//core/lib:core_java_proto",
+        "//java/dev/enola/core:connector_java_grpc",
+        "//java/dev/enola/core:core_java_proto",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
         "@maven//:io_grpc_grpc_api",
@@ -67,14 +67,13 @@ java_binary(
     deps = [
         ":demo",
         ":demo_java_proto",
-        "//common/protobuf",
-        "//core/impl",  # ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
-        "//core/lib:connector_java_grpc",
-        "//core/lib:core_java_grpc",
-        "//core/lib:core_java_proto",
-        "//core/lib:lib_java",
+        # "//core/impl",  # ONLY for test, NEVER for non-test Demo (or any other) Connector binary!
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/core:connector_java_grpc",
+        "//java/dev/enola/core:core_java_grpc",
+        "//java/dev/enola/core:core_java_proto",
+        "//java/dev/enola/core",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

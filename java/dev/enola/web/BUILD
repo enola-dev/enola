@@ -14,39 +14,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
+load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "enola",
+    name = "web",
     srcs = glob(
-        ["*.java"],
-        exclude = ["*Test.java"],
+        ["**/*.java"],
+        exclude = ["**/*Test.java"],
     ),
+    javacopts = ["--enable-preview"],
+    resource_strip_prefix = "java/dev/enola/web/resources/",
+    resources = glob(["resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/core",
+        "//java/dev/enola/core:core_java_grpc",
+        "//java/dev/enola/core:core_java_proto",
+        "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
-        "@maven//:com_google_errorprone_error_prone_annotations",
+        "//java/dev/enola/thing:thing_java_proto",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
-java_test(
-    name = "EnolaTest",
-    size = "small",
-    srcs = ["EnolaTest.java"],
+junit_tests(
+    name = "tests",
+    srcs = glob(["**/*Test.java"]),
+    jvm_flags = ["--enable-preview"],
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
-        ":enola",
+        ":web",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/model",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_truth_extensions_truth_java8_extension",
-        "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
+        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/core",
+        "//java/dev/enola/core:core_java_proto",
     ],
 )

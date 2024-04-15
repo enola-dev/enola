@@ -40,7 +40,7 @@ The Java `Thing` API is an _interface_ which has several available implementatio
 
 #### Proto Thing
 
-* Defined in: [`common/thing/thing.proto`](../../common/thing/thing.proto), see [Proto doc](proto/thing.md#dev-enola-thing-thing)
+* Defined in: [`common/thing/thing.proto`](../../java/dev/enola/thing/thing.proto), see [Proto doc](proto/thing.md#dev-enola-thing-thing)
 * Java Type: `dev.enola.thing.proto.Thing` <!-- TODO https://github.com/enola-dev/enola/issues/491: Link to Java Doc -->
 
 #### Proto Message
@@ -61,7 +61,7 @@ Any [Protocol Buffer](https://protobuf.dev) can be [converted](#conversions) to 
 * Filename extension: `.ttl`
 * Wikipedia: [Turtle Syntax](https://en.wikipedia.org/wiki/Turtle_(syntax))
 * W3C Spec: [w3.org/TR/turtle](https://www.w3.org/TR/turtle/)
-* Example: [picasso.ttl](../../common/rdf/src/test/resources/picasso.ttl)
+* Example: [picasso.ttl](../../test/picasso.ttl)
 
 <!-- TODO #### RDF TriG-star 📐 -->
 
@@ -75,7 +75,7 @@ Any [Protocol Buffer](https://protobuf.dev) can be [converted](#conversions) to 
 
 * Media Type: `text/enola.dev#thing+yaml` (from `dev.enola.thing.ThingMediaTypes`)
 * Filename extension: `.thing.yaml`
-* Example: [picasso.thing.yaml](../../common/rdf/src/test/resources/picasso.thing.yaml)
+* Example: [picasso.thing.yaml](../../test/picasso.thing.yaml)
 
 #### Proto Thing Text
 

@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// Copyright 2023-2024 The Enola <https://enola.dev> Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package dev.enola.core.connector;
+
+import "google/protobuf/descriptor.proto";
+import "java/dev/enola/core/enola_core.proto";
+
+option java_string_check_utf8 = true;
+option java_package = "dev.enola.core.connector.proto";
+option java_multiple_files = true;
+option go_package = "dev/enola/core/connector";
+
+message AugmentRequest {
+  dev.enola.core.Entity entity = 1;
+
+  // Intentionally no EntityKind! It would be wasteful to resend it every time.
+}
+message AugmentResponse {
+  dev.enola.core.Entity entity = 1;
+}
+
+// See dev.enola.core.ListRequest
+message ConnectorServiceListRequest {
+  dev.enola.core.ID id = 1;
+  map<string, ID> related_filter = 2;
+}
+
+// See dev.enola.core.ListResponse
+message ConnectorServiceListResponse {
+  repeated dev.enola.core.Entity entities = 1;
+}
+
+// No string type_url here, because a Connector simply returns everything.
+message GetDescriptorsRequest {
+  // Intentionally empty.
+}
+
+message GetDescriptorsResponse {
+  // This has to be in order of dependencies, so reverse import order.
+  // For example, for the connectors/demo's demo_data.proto which has an
+  // import "google/protobuf/timestamp.proto" this has to FIRST contain
+  // the Timestamp's and THEN the Something's FileDescriptorProto.
+  repeated google.protobuf.FileDescriptorProto protos = 1;
+}
+
+// This is the API which Enola Connectors implement.
+// Enola Core calls this API for each of the listed connector of an EntityKind.
+// Enola clients (such as a CLI or UI) use the EnolaService, instead of this
+// directly. This is the gRPC equivalent of the internal EntityAspect Java API.
+service ConnectorService {
+  rpc Augment(AugmentRequest) returns (AugmentResponse) {}
+  rpc List(ConnectorServiceListRequest) returns (ConnectorServiceListResponse) {
+  }
+  rpc GetDescriptors(GetDescriptorsRequest) returns (GetDescriptorsResponse) {}
+}

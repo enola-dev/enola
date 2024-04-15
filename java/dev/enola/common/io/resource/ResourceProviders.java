@@ -39,6 +39,7 @@ public class ResourceProviders implements ResourceProvider {
      * more fine-grained control over allowed URI schemes to support in your application (if any at
      * all).
      */
+    @Deprecated // Replace all users with more explicit choices...
     public ResourceProviders() {
         this(
                 new FileResource.Provider(),

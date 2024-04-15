@@ -64,17 +64,19 @@ _gen_suite = rule(
         "deps": attr.label_list(allow_files = False),
         "outname": attr.string(),
         "srcs": attr.label_list(allow_files = True),
+        "srcs_utils": attr.label_list(allow_files = True, default = []),
     },
     outputs = {"out": "%{name}.java"},
     implementation = _impl,
 )
 
-def junit_tests(name, srcs, deps, **kwargs):
+def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
     """Implementation.
 
     Args:
         name: Rule Name
-        srcs: Java Test Sources
+        srcs: All Tests to actually run
+        srcs_utils: Utility classes to build but not run tests, if any
         deps: Dependencies of Test
         **kwargs: KW Args
     """
@@ -91,15 +93,15 @@ def junit_tests(name, srcs, deps, **kwargs):
         name = name,
         size = "small",
         test_class = s_name,
-        srcs = srcs + [":" + s_name],
-        runtime_deps = [
-            "@maven//:org_slf4j_slf4j_simple",
-        ],
+        srcs = [":" + s_name] + srcs + srcs_utils,
         deps = deps + [
             "@maven//:com_google_guava_guava",
             "@maven//:com_google_jimfs_jimfs",
+            "@maven//:com_google_protobuf_protobuf_java",
+            "@maven//:com_google_protobuf_protobuf_java_util",
             "@maven//:com_google_truth_extensions_truth_java8_extension",
             "@maven//:com_google_truth_truth",
+            "@maven//:com_google_truth_extensions_truth_proto_extension",
             "@maven//:junit_junit",
         ],
         **dict(kwargs, jvm_flags = jvm_flags)

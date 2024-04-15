@@ -39,12 +39,10 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
-    # TODO Add support for resources with resource_strip_prefix to junit_tests...
-    resource_strip_prefix = "java/dev/enola/common/io/test_resources",
-    resources = glob(["test_resources/*"]),
     deps = [
         ":io",
         "//java/dev/enola/common/protobuf",
+        "//test",
         "@maven//:com_google_auto_service_auto_service_annotations",
     ],
 )
