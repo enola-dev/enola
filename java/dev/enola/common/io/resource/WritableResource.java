@@ -33,6 +33,6 @@ public interface WritableResource extends AbstractResource {
                         mediaType()
                                 .charset()
                                 .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
+                                .orElseThrow(missingCharsetExceptionSupplier(this)));
     }
 }

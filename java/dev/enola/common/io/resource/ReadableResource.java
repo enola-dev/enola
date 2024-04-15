@@ -36,7 +36,7 @@ public interface ReadableResource extends AbstractResource {
                         mediaType()
                                 .charset()
                                 .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(uri())));
+                                .orElseThrow(missingCharsetExceptionSupplier(this)));
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
