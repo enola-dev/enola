@@ -29,7 +29,6 @@ import dev.enola.common.io.mediatype.MediaTypeDetector;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -91,14 +90,6 @@ public class FileResource extends BaseResource implements Resource {
         //         mediaType.charset().transform(cs -> cs.name()).orNull(),
         //         uri());
         this.mediaType = requireNonNull(mediaType);
-    }
-
-    @Deprecated // TODO Either URI+MediaType, or just URI; but not URI+Charset
-    public FileResource(URI uri, Charset charset, OpenOption... openOptions) {
-        this.uri = uri;
-        this.path = pathFromURI(uri);
-        this.openOptions = safe(openOptions);
-        this.mediaType = mtd.detect(null, charset.name(), uri());
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
