@@ -22,6 +22,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.MoreFiles;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.MoreFileSystems;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,6 +50,15 @@ import java.util.Optional;
  * instead of {@link Path} arguments.
  */
 public class FileResource extends BaseResource implements Resource {
+
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (MoreFileSystems.URI_SCHEMAS.contains(uri.getScheme())) return new FileResource(uri);
+            else return null;
+        }
+    }
 
     private static final OpenOption[] EMPTY_OPTIONS = new OpenOption[0];
 

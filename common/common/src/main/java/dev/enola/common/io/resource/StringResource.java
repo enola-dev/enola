@@ -31,6 +31,20 @@ public class StringResource implements ReadableButNotWritableResource {
 
     // TODO extends BaseResource, like everything else?
 
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith(SCHEME))
+                // NOT new StringResource(uriPath, mediaType),
+                // because that is confusing, as it will chop off after # and interpret '?'
+                // which is confusing for users, for this URI scheme. If "literal" resources
+                // WITH MediaType are required, consider adding DataResource for data:
+                return StringResource.of(uri.getSchemeSpecificPart());
+            else return null;
+        }
+    }
+
     static final String SCHEME = "string";
 
     private final String string;

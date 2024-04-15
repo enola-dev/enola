@@ -20,9 +20,21 @@ package dev.enola.common.io.resource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import java.net.URI;
 import java.nio.charset.Charset;
 
 public class ClasspathResource extends UrlResource {
+
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith(SCHEME))
+                return new ReadableButNotWritableDelegatingResource(
+                        new ClasspathResource(URIs.getPath(uri)));
+            else return null;
+        }
+    }
 
     public static final String SCHEME = "classpath";
 

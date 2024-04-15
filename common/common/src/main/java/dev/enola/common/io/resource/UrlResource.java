@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -36,6 +37,22 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 public class UrlResource extends BaseResource implements ReadableResource {
+
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith("http")) {
+                try {
+                    return new ReadableButNotWritableDelegatingResource(
+                            new UrlResource(uri.toURL()));
+                } catch (MalformedURLException e) {
+                    throw new IllegalArgumentException(
+                            "Malformed http: URI is not valid URL" + uri, e);
+                }
+            } else return null;
+        }
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(UrlResource.class);
 

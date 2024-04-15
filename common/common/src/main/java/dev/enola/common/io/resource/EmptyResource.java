@@ -37,6 +37,15 @@ public class EmptyResource implements ReadableButNotWritableResource {
 
     // TODO extends BaseResource, like everything else?
 
+    public static class Provider implements ResourceProvider {
+
+        @Override
+        public Resource getResource(URI uri) {
+            if (uri.getScheme().startsWith(SCHEME)) return new EmptyResource(uri);
+            else return null;
+        }
+    }
+
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     static final String SCHEME = "empty";
