@@ -56,6 +56,8 @@ public class FileResource extends BaseResource implements Resource {
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
+    private static final OpenOption[] EMPTY_OPTIONS = new OpenOption[0];
+
     private final URI uri; // TODO Move to BaseResource...
     private final Path path;
     private final MediaType mediaType;
@@ -82,8 +84,7 @@ public class FileResource extends BaseResource implements Resource {
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
         this.uri = uri;
         this.path = pathFromURI(uri);
-        // TODO Optimize Arrays.copyOf() for empty options
-        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        this.openOptions = safe(openOptions);
         // Here we intentionally do not do something like this, because the arg takes precedence:
         // mtd.detect(
         //         mediaType.toString(),
@@ -96,17 +97,20 @@ public class FileResource extends BaseResource implements Resource {
     public FileResource(URI uri, Charset charset, OpenOption... openOptions) {
         this.uri = uri;
         this.path = pathFromURI(uri);
-        // TODO Optimize Arrays.copyOf() for empty options
-        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        this.openOptions = safe(openOptions);
         this.mediaType = mtd.detect(null, charset.name(), uri());
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
         this.uri = uri;
         this.path = pathFromURI(uri);
-        // TODO Optimize Arrays.copyOf() for empty options
-        this.openOptions = Arrays.copyOf(openOptions, openOptions.length);
+        this.openOptions = safe(openOptions);
         this.mediaType = mtd.detectAlways(this);
+    }
+
+    private static OpenOption[] safe(OpenOption[] openOptions) {
+        if (openOptions.length == 0) return EMPTY_OPTIONS;
+        else return Arrays.copyOf(openOptions, openOptions.length);
     }
 
     @Override
