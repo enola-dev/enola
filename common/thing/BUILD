@@ -59,7 +59,7 @@ java_proto_library(
 java_library(
     name = "thing_java",
     srcs = glob(["src/main/java/**/*.java"]),
-    resources = glob(["src/main/resources/**/*"]),
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":thing_java_proto",
@@ -70,6 +70,7 @@ java_library(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",

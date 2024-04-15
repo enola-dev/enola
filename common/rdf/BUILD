@@ -19,7 +19,7 @@ load("@rules_java//java:defs.bzl", "java_library", "java_test")
 java_library(
     name = "rdf",
     srcs = glob(["src/main/java/**/*.java"]),
-    resources = glob(["src/main/resources/**/*"]),
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//common/protobuf",
@@ -29,6 +29,7 @@ java_library(
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",

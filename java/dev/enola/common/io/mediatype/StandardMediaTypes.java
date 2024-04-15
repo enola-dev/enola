@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.mediatype;
 
+import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
+@AutoService(MediaTypeProvider.class)
 public class StandardMediaTypes implements MediaTypeProvider {
 
     @Override

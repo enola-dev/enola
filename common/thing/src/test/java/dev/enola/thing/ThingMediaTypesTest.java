@@ -39,7 +39,8 @@ public class ThingMediaTypesTest {
     public void thingYaml() throws URISyntaxException {
         var resource = new ResourceProviders().getResource(new URI("file:picasso.thing.yaml"));
         var mediaType = MediaTypeProviders.SINGLETON.detect(resource).get();
-        // TODO assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
         assertThat(mediaType).isEqualTo(YamlMediaType.YAML_UTF_8);
+        // TODO assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
+        // Without ProtobufMediaTypes this ^^^ works... it may be an ordering issue?
     }
 }

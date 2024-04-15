@@ -19,6 +19,7 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.net.MediaType.create;
 
+import com.google.auto.service.AutoService;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@AutoService(MediaTypeProvider.class)
 public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTypeProvider {
     // TODO Move this into e.g. dev.enola.format.yaml ?
 
