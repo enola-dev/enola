@@ -8,6 +8,13 @@ directories:
 
 derive_targets_from_directories: true
 
+workspace_type: java
+
+additional_languages:
+  go
+  kotlin
+  typescript
+
 # https://github.com/salesforce/bazel-eclipse/issues/475
 # https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/projectviews.md#project-per-package
 target_provisioning_strategy: project-per-package
