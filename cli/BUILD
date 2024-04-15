@@ -19,7 +19,7 @@ load("@rules_java//java:defs.bzl", "java_binary", "java_test")
 java_binary(
     name = "enola",
     srcs = glob(["src/main/java/**/*.java"]),
-    main_class = "dev.enola.cli.Enola",
+    main_class = "dev.enola.cli.EnolaCLI",
     deps = [
         "//common/common",
         "//common/markdown",

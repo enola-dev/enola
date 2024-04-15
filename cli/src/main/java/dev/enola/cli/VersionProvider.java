@@ -25,7 +25,7 @@ public class VersionProvider implements CommandLine.IVersionProvider {
     public String[] getVersion() throws Exception {
         // TODO Read Git version generated during build, if available...
         return new String[] {
-            Enola.DESCRIPTION,
+            EnolaCLI.DESCRIPTION,
             "@|yellow,italic Version: DEVELOPMENT|@",
             "@|red,bg(white),blink Copyright 2023 The Enola <https://enola.dev> Authors|@",
             "@|magenta,faint JVM: ${java.version} (${java.vendor} ${java.vm.name}"

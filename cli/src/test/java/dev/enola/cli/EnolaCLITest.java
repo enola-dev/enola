@@ -35,14 +35,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class EnolaTest {
+public class EnolaCLITest {
 
     private static CLI cli;
 
     private static CLI cli(String... args) {
         // This was intended to make initization one time and faster, but it doesn't help.
         // TODO Profile this test and see where it spends time!
-        if (cli == null) cli = dev.enola.cli.Enola.cli(args);
+        if (cli == null) cli = dev.enola.cli.EnolaCLI.cli(args);
         else cli.setArgs(args);
         return cli;
     }
