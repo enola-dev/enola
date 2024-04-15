@@ -26,7 +26,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.model.schema.Datatypes;
+import dev.enola.model.schemaorg.Datatypes;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.ImmutableThing;
