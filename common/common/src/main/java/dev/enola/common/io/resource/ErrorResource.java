@@ -76,6 +76,11 @@ public class ErrorResource extends BaseResource implements Resource {
         public void write(int i) throws IOException {
             throw new IOException();
         }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            throw new IOException();
+        }
     }
 
     private static final class ErrorByteSource extends ByteSource {
