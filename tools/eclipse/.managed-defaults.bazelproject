@@ -1,0 +1,6 @@
+# This extends //.bazelproject (which is primarily for IntelliJ) with required Bazel Eclipse settings.
+# https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/projectviews.md
+
+# https://github.com/salesforce/bazel-eclipse/issues/475
+# https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/projectviews.md#project-per-package
+target_provisioning_strategy: project-per-package
