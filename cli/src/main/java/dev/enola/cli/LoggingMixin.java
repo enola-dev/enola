@@ -57,7 +57,7 @@ public class LoggingMixin {
     }
 
     public static int executionStrategy(CommandLine.ParseResult parseResult) {
-        var enola = (Enola) parseResult.commandSpec().root().userObject();
+        var enola = (EnolaCLI) parseResult.commandSpec().root().userObject();
         var level = calcLogLevel(enola.verbosity.length);
 
         configureJUL(level);
@@ -101,7 +101,7 @@ public class LoggingMixin {
                         + " -vvv."
             })
     public void setVerbose(boolean[] verbosity) {
-        var enola = (Enola) mixee.root().userObject();
+        var enola = (EnolaCLI) mixee.root().userObject();
         enola.verbosity = verbosity;
     }
 

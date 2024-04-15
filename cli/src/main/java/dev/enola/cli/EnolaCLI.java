@@ -30,7 +30,7 @@ import picocli.CommandLine.Mixin;
         mixinStandardHelpOptions = true,
         showDefaultValues = true,
         synopsisSubcommandLabel = "COMMAND",
-        description = Enola.DESCRIPTION,
+        description = EnolaCLI.DESCRIPTION,
         versionProvider = VersionProvider.class,
         subcommands = {
             HelpCommand.class,
@@ -44,7 +44,7 @@ import picocli.CommandLine.Mixin;
             LoggingTestCommand.class,
             InfoCommand.class
         })
-public class Enola {
+public class EnolaCLI {
 
     static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
 
@@ -52,7 +52,7 @@ public class Enola {
     boolean[] verbosity = {};
 
     static CLI cli(String... args) {
-        var enola = new Enola();
+        var enola = new EnolaCLI();
         return new CLI(
                 args,
                 new CommandLine(enola)
@@ -84,9 +84,9 @@ public class Enola {
     private static class QuietExecutionExceptionHandler
             implements CommandLine.IExecutionExceptionHandler {
 
-        private final Enola enola;
+        private final EnolaCLI enola;
 
-        public QuietExecutionExceptionHandler(Enola enola) {
+        public QuietExecutionExceptionHandler(EnolaCLI enola) {
             this.enola = enola;
         }
 
