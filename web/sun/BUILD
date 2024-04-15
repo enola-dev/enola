@@ -24,7 +24,7 @@ java_library(
         "//web:__subpackages__",
     ],
     deps = [
-        "//common/common",
+        "//java/dev/enola/common/io",
         "//web/api",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
@@ -38,7 +38,7 @@ java_library(
     resources = glob(["src/test/resources/**/*"]),
     deps = [
         ":sun",
-        "//common/common",
+        "//java/dev/enola/common/io",
         "//web/api",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",

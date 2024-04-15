@@ -61,8 +61,11 @@ java_library(
     ],
     deps = [
         ":validation_proto_java_library",
-        "//common/common",
         "//common/yamljson",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/convert",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/protobuf",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
@@ -78,7 +81,8 @@ java_library(
     deps = [
         ":protobuf",
         ":test_java_proto",
-        "//common/common",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/protobuf",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_truth_extensions_truth_proto_extension",
