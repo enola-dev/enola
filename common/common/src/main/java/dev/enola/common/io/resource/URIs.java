@@ -21,11 +21,8 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.MediaTypes;
-
 import java.net.URI;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -50,32 +47,6 @@ public final class URIs {
         var charsetParameter = queryMap.get(CHARSET);
         var mediaTypeParameter = queryMap.get(MEDIA_TYPE.toLowerCase());
         return new MediaTypeAndOrCharset(mediaTypeParameter, charsetParameter);
-    }
-
-    // TODO Remove this, once #getMediaType() is fully removed
-    public static final MediaType DEFAULT_MEDIA_TYPE = MediaType.OCTET_STREAM;
-
-    @Deprecated // TODO Remove this from here, as it's now in MediaTypeDetector
-    public static MediaType getMediaType(URI uri) {
-        MediaType mediaType;
-        var queryMap = getQueryMap(uri);
-        var charsetParameter = queryMap.get(CHARSET);
-        var mediaTypeParameter = queryMap.get(MEDIA_TYPE.toLowerCase());
-        if (mediaTypeParameter == null) {
-            // This default application/octet-stream should be the last fallback, only!
-            mediaType = DEFAULT_MEDIA_TYPE;
-        } else {
-            mediaType = MediaTypes.parse(mediaTypeParameter);
-        }
-
-        if (charsetParameter != null) {
-            mediaType = mediaType.withCharset(Charset.forName(charsetParameter));
-        }
-        if (!mediaType.charset().isPresent()) {
-            // TODO This Charset.defaultCharset() is not a good idea! Remove?
-            mediaType = mediaType.withCharset(Charset.defaultCharset());
-        }
-        return mediaType;
     }
 
     public static URI addMediaType(URI uri, MediaType mediaType) {
