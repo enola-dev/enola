@@ -27,3 +27,7 @@ common --explicit_java_test_deps
 # https://github.com/bazelbuild/bazel/issues/4257
 # https://bazel.build/docs/user-manual#build-tests-only
 test --nobuild_tests_only
+
+# https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/classpath.md#basics-classpath
+# For having sources available in the IDE always create source jars, as Bazel doesn't do this by default.
+build --output_groups=+_source_jars
