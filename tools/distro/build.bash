@@ -21,10 +21,11 @@ mkdir -p site/download/latest/
 set -euox pipefail
 
 # Build the end-user distributed executable fat über JAR
-# NB: "bazelisk build //..." does *NOT* build "//cli:enola_deploy.jar", for some reason
-bazelisk build //cli:enola_deploy.jar
+# NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
+bazelisk build //java/dev/enola/cli:enola_deploy.jar
 cp tools/distro/execjar-header.bash site/download/latest/enola
 cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
+chmod +x site/download/latest/enola
 
 # Build the Container Image
 # NB: This must work both on Docker (which turns it into docker buildx build) and Podman!

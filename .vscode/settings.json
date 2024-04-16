@@ -156,6 +156,7 @@
     "node_modules": false,
     "rdf": false,
     "site": false,
+    "test": false,
     "tools": false,
     "web": false,
     "BUILT": false
