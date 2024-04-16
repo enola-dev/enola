@@ -85,7 +85,7 @@ For example, this `model-grpc.yaml`:
 we can see it in action by running [`demo-grpc.bash`](demo-grpc.bash):
 
 ```bash
-$ ./demo-grpc.bash
+$ # ./demo-grpc.bash
 ...
 ```
 
