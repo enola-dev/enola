@@ -15,12 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola;
+package dev.enola.model.enola;
 
-public class EnolaImplementation implements Enola {
+import dev.enola.Action;
+import dev.enola.thing.java.IRI;
+
+@IRI(Get.IRI)
+class Get implements Action<String, Object> {
+    public static final String IRI = "https://enola.dev/get";
 
     @Override
-    public Object act(String objectIRI, String verbIRI) {
+    public Object act(String iri) {
         return null;
     }
 }

@@ -14,39 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library", "java_test")
+load("@rules_java//java:defs.bzl", "java_library")
 
 java_library(
     name = "enola",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/io",
         "//java/dev/enola/thing:thing_java",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:org_slf4j_slf4j_api",
-    ],
-)
-
-java_test(
-    name = "EnolaTest",
-    size = "small",
-    srcs = ["EnolaTest.java"],
-    runtime_deps = [
-        "@maven//:org_slf4j_slf4j_simple",
-    ],
-    deps = [
-        ":enola",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/model",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_truth_extensions_truth_java8_extension",
-        "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
     ],
 )

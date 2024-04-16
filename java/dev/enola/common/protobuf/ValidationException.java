@@ -29,7 +29,7 @@ public class ValidationException extends Exception {
 
     private static String createMessage(Validations proto) {
         var n = proto.getValidationsCount();
-        var sb = new StringBuffer(n + " model validation error/s...\n");
+        var sb = new StringBuilder(n + " model validation error/s...\n");
         for (int i = 0; i < n; i++) {
             var v = proto.getValidations(i);
             sb.append("\t" + (i + 1) + ". " + v.getPath() + " : " + v.getError() + "\n");
