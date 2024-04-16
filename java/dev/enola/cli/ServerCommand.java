@@ -20,10 +20,10 @@ package dev.enola.cli;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.web.RestAPI;
+import dev.enola.web.SunServer;
+import dev.enola.web.UI;
 import dev.enola.web.WebServer;
-import dev.enola.web.rest.RestAPI;
-import dev.enola.web.sun.SunServer;
-import dev.enola.web.ui.UI;
 
 import picocli.CommandLine;
 

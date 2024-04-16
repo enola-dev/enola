@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.sun;
+package dev.enola.web;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.Futures.immediateFailedFuture;
@@ -25,7 +25,6 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.StringResource;
-import dev.enola.web.StaticWebHandler;
 
 import org.junit.Assert;
 import org.junit.Test;
