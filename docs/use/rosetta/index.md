@@ -68,14 +68,14 @@ The `model.binpb` now contains _[binary protocol buffer wire format](https://pro
 ## Turtle 🐢 to JSON-LD 🔗
 
 ```bash cd .././.././..
-$ ./enola rosetta --in file:common/rdf/src/test/resources/picasso.ttl --out file:picasso.jsonld
+$ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.jsonld
 ...
 ```
 
 ## Turtle 🐢 to Things ⛓️
 
 ```bash cd .././.././..
-$ ./enola rosetta --in file:common/rdf/src/test/resources/picasso.ttl --out file:picasso.thing.yaml
+$ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.thing.yaml
 ...
 ```
 
