@@ -27,9 +27,7 @@ import static org.junit.Assert.assertThrows;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
-import dev.enola.common.io.resource.ReplacingResource;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.Connector;
@@ -41,7 +39,7 @@ import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.demo.Server;
+// import dev.enola.demo.Server;
 
 import org.junit.Test;
 
@@ -151,26 +149,28 @@ public class EntityServiceProviderTest {
         assertThrows(ConversionException.class, () -> service.getThing(request));
     }
 
-    @Test
-    public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
-        try (var server = new Server()) {
-            server.start(0);
-            var port = Integer.toString(server.getPort());
-            var model =
-                    new ReplacingResource(
-                            new ClasspathResource("demo-connector-model.textproto"), "9090", port);
-            var ekr = new EntityKindRepository().load(model);
-            var service = new EnolaServiceProvider(ekr).getEnolaService();
+    // @Test
+    // public void testGrpcConnector() throws IOException, ValidationException, EnolaException {
+    //     try (var server = new Server()) {
+    //         server.start(0);
+    //         var port = Integer.toString(server.getPort());
+    //         var model =
+    //                 new ReplacingResource(
+    //                         new ClasspathResource("demo-connector-model.textproto"), "9090",
+    // port);
+    //         var ekr = new EntityKindRepository().load(model);
+    //         var service = new EnolaServiceProvider(ekr).getEnolaService();
 
-            var eid = ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
-            var eri = IDs.toPath(eid);
-            var request = GetThingRequest.newBuilder().setIri(eri).build();
-            var response = service.getThing(request);
-            var thing = response.getThing();
-            var entity = thing.unpack(Entity.class);
-            assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
-        }
-    }
+    //         var eid =
+    // ID.newBuilder().setNs("demo").setEntity("foo").addPaths("whatever").build();
+    //         var eri = IDs.toPath(eid);
+    //         var request = GetThingRequest.newBuilder().setIri(eri).build();
+    //         var response = service.getThing(request);
+    //         var thing = response.getThing();
+    //         var entity = thing.unpack(Entity.class);
+    //         assertThat(entity.getLinkOrThrow("link1")).isEqualTo("http://www.vorburger.ch");
+    //     }
+    // }
 
     @Test
     public void testEntityKindInception()

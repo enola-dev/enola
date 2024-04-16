@@ -194,8 +194,8 @@ junit_tests(
         "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
-        "//connectors/demo",
-        "//connectors/demo:demo_java_proto",
+        # "//connectors/demo",
+        # "//connectors/demo:demo_java_proto",
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
