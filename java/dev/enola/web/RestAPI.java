@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.rest;
+package dev.enola.web;
 
 import com.google.common.net.MediaType;
 import com.google.common.util.concurrent.Futures;
@@ -32,8 +32,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.web.WebHandler;
-import dev.enola.web.WebServer;
 
 import java.io.IOException;
 import java.net.URI;

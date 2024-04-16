@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.ui;
+package dev.enola.web;
 
 import static java.lang.StringTemplate.STR;
 
@@ -30,7 +30,7 @@ import dev.enola.thing.proto.Value.Literal;
 
 import java.util.Map;
 
-public class NewThingUI {
+public class ThingUI {
 
     // See https://github.com/google/google-java-format/issues/1033 re. using moar STR formatting ;(
 
@@ -42,7 +42,7 @@ public class NewThingUI {
 
     private final MetadataProvider metadataProvider;
 
-    public NewThingUI(MetadataProvider metadataProvider) {
+    public ThingUI(MetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
     }
 

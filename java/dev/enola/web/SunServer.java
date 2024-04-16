@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.sun;
+package dev.enola.web;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
@@ -31,8 +31,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.web.WebHandler;
-import dev.enola.web.WebServer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

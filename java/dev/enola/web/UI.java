@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.ui;
+package dev.enola.web;
 
 import static com.google.common.net.MediaType.HTML_UTF_8;
 
@@ -44,9 +44,6 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.message.ThingProviderAdapter;
-import dev.enola.web.StaticWebHandler;
-import dev.enola.web.WebHandler;
-import dev.enola.web.WebServer;
 
 import java.io.IOException;
 import java.net.URI;
@@ -65,7 +62,7 @@ public class UI implements WebHandler {
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
     private final EnolaThingProvider /* TODO ThingProvider*/ thingProvider;
-    private final NewThingUI thingUI;
+    private final ThingUI thingUI;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
@@ -82,7 +79,7 @@ public class UI implements WebHandler {
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
 
         thingUI =
-                new NewThingUI(
+                new ThingUI(
                         new ThingMetadataProvider(
                                 new ThingProviderAdapter(thingProvider, datatypeRepository),
                                 namespaceConverter));

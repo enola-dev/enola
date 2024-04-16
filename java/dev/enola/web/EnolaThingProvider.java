@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.ui;
+package dev.enola.web;
 
 import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;

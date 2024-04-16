@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web.rest;
+package dev.enola.web;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -37,7 +37,6 @@ import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
-import dev.enola.web.sun.SunServer;
 
 import org.junit.Test;
 
