@@ -14,22 +14,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:defs.bzl", "java_binary", "java_test")
 
-java_library(
-    name = "model",
+java_binary(
+    name = "zimpl",
     srcs = glob(
-        ["**/*.java"],
-        exclude = ["**/*Test.java"],
+        ["*.java"],
+        exclude = ["*Test.java"],
     ),
+    main_class = "dev.enola.Main",
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola",
-        "//java/dev/enola/common/convert",
-        "//java/dev/enola/datatype",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/data",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_jdk14",
+    ],
+)
+
+java_test(
+    name = "EnolaTest",
+    size = "small",
+    srcs = ["EnolaTest.java"],
+    runtime_deps = [
+        "@maven//:org_slf4j_slf4j_simple",
+    ],
+    deps = [
+        ":zimpl",
+        "//java/dev/enola",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/model",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_extensions_truth_java8_extension",
+        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )

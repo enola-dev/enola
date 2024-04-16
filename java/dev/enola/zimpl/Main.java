@@ -15,11 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola;
+package dev.enola.zimpl;
 
+import dev.enola.Enola;
+
+/**
+ * Enola CLI demo MVP.
+ *
+ * <p>The "real" CLI is in the <tt>dev.enola.cli</tt> package.
+ */
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.exit(execute(args));
+    }
+
+    private static int execute(String[] args) {
+        String actionIRI;
+        Enola enola = new EnolaImplementation();
+        if (args.length == 0 || args.length > 2) {
+            System.err.println("Usage: enola <ObjectIRI> [ActionIRI]");
+            return -1;
+        } else if (args.length == 1) {
+            actionIRI = "https://enola.dev/Get"; // TODO Get.IRI;
+        } else {
+            actionIRI = args[1];
+        }
+        enola.act(args[0], actionIRI);
+        return 0;
     }
 }

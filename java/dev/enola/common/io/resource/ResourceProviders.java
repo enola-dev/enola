@@ -39,7 +39,14 @@ public class ResourceProviders implements ResourceProvider {
      * more fine-grained control over allowed URI schemes to support in your application (if any at
      * all).
      */
-    @Deprecated // Replace all users with more explicit choices...
+    @Deprecated // TODO Replace all users with more explicit choices...
+    // * FileResource is very useful in a CLI, but Very Bad Idea (TM)(R)(C) in a Server
+    // * ClasspathResource is a *BAD* idea, by default; without filter!
+    // * NullResource is probably not actually useful by default?
+    // * ErrorResource is intended for testing, cannot not be active by default
+    // * UrlResource Users may or may not want to allow external HTTP access!
+    // * FileDescriptorResource should probably not be enable by default (notably e.g. in a Server)
+    // * TestResource is intended for testing, cannot not be active by default
     public ResourceProviders() {
         this(
                 new FileResource.Provider(),

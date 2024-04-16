@@ -17,8 +17,11 @@
  */
 package dev.enola;
 
+import dev.enola.thing.java.IRI;
+
+// TODO This probably will have to be in package dev.enola after all?!
 // TODO Doc see also Converter
-@JIRI("https://enola.dev/Action")
+@IRI("https://enola.dev/Action")
 public interface Action<I, O> { // TODO extends HasIRI
 
     O act(I object);

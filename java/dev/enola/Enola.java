@@ -17,8 +17,9 @@
  */
 package dev.enola;
 
-import dev.enola.common.io.resource.Resource;
 import dev.enola.thing.Thing;
+
+import java.net.URI;
 
 /**
  * 🕵🏾‍♀️ Enola ✨ <i>actions</i> ⬛ <i>Objects</i>, such as 📄 {@link Resource}s and structured 💾
@@ -29,7 +30,10 @@ import dev.enola.thing.Thing;
  * <p>"Resistance is futile" (said the Borg).
  */
 public interface Enola {
-    // TODO Move from //cli/src into //java/src/main/dev/enola
 
     Object act(String objectIRI, String actionIRI);
+
+    Object act(URI object, Thing action);
+
+    Object act(Thing object, Action action);
 }

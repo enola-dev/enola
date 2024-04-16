@@ -71,7 +71,7 @@ public class ListThingService implements ThingService {
                         throw new IllegalStateException("Huh?!", e);
                     }
                 } else {
-                    LOG.warn("Skipping non-Thing Any: " + any);
+                    LOG.warn("Skipping non-Thing Any: {}", any);
                 }
             }
             return Any.pack(things.build());

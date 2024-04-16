@@ -22,7 +22,7 @@ import dev.enola.thing.Thing;
 
 public final class Actions {
 
-    public static final Thing GET = ImmutableThing.builder().iri("https://enola.dev/get").build();
+    public static final Thing GET = ImmutableThing.builder().iri(Get.IRI).build();
 
     private Actions() {}
 }

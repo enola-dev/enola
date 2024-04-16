@@ -15,19 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola;
+package dev.enola.thing.java;
 
-import dev.enola.common.io.resource.EmptyResource;
-import dev.enola.model.enola.Actions;
-
-import org.junit.Test;
-
-public class EnolaTest {
-
-    @Test
-    public void emptyGet() {
-        Enola e = new EnolaImplementation();
-        e.act(EmptyResource.EMPTY_URI.toString(), Actions.GET.iri());
-        // TODO assertThat().isInstanceOf(EmptyResource.class);
-    }
+public @interface IRI {
+    String value();
 }
