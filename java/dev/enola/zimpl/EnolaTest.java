@@ -41,15 +41,14 @@ public class EnolaTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
     public void stringGet() {
         var r = e.act(StringResource.of("hello, world").uri(), Actions.GET);
         assertThat(r).isInstanceOf(StringResource.class);
         // TODO Test convert to String, assert "hello, world"
     }
 
-    @Ignore // TODO FIXME
     @Test
+    @Ignore // TODO FIXME
     public void getList() {
         // TODO Constant for "enola:/" from where? It's also a Model...
         var r = e.act("enola:/", Actions.GET);
