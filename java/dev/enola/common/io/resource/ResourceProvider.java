@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import dev.enola.data.ProviderFromIRI;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -36,23 +38,23 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
     // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
 
     @Override
-    default Resource get(String iri) {
+    default @Nullable Resource get(String iri) {
         return getResource(URI.create(iri));
     }
 
-    Resource getResource(URI uri);
+    @Nullable Resource getResource(URI uri);
 
-    default ReadableResource getReadableResource(URI uri) {
+    default @Nullable ReadableResource getReadableResource(URI uri) {
         return getResource(uri);
     }
 
-    default WritableResource getWritableResource(URI uri) {
+    default @Nullable WritableResource getWritableResource(URI uri) {
         return getResource(uri);
     }
 
     // -------------------------------------------
 
-    default ReadableResource getReadableResource(URL url) {
+    default @Nullable ReadableResource getReadableResource(URL url) {
         try {
             return getReadableResource(url.toURI());
         } catch (URISyntaxException e) {
@@ -60,7 +62,7 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         }
     }
 
-    default WritableResource getWritableResource(URL url) {
+    default @Nullable WritableResource getWritableResource(URL url) {
         try {
             return getWritableResource(url.toURI());
         } catch (URISyntaxException e) {
@@ -68,7 +70,7 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         }
     }
 
-    default Resource getResource(URL url) {
+    default @Nullable Resource getResource(URL url) {
         try {
             return getResource(url.toURI());
         } catch (URISyntaxException e) {
