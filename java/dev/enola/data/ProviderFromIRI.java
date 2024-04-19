@@ -17,10 +17,11 @@
  */
 package dev.enola.data;
 
+import org.jspecify.annotations.Nullable;
+
 /** ProviderFromIRI is a {@link Provider} where the Key is an IRI as String. */
 public interface ProviderFromIRI<V> extends Provider<String, V> {
 
     @Override
-    // TODO @Nullable (from JSpecify)
-    V get(String iri);
+    @Nullable V get(String iri);
 }

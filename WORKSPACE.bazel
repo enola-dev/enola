@@ -142,6 +142,7 @@ maven_install(
         "org.slf4j:slf4j-simple:2.0.9",
         "io.github.classgraph:classgraph:4.8.165",
         "com.google.errorprone:error_prone_annotations:2.26.1",
+        "org.jspecify:jspecify:0.3.0",
     ],
     duplicate_version_warning = "error",
     excluded_artifacts = [
