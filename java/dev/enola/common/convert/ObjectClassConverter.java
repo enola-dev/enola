@@ -17,14 +17,16 @@
  */
 package dev.enola.common.convert;
 
+import java.io.IOException;
+import java.util.Optional;
+
 /**
- * Bi-directional alternative to {@link Converter}.
+ * Converts an object to a requested other class, if it can.
  *
- * <p>See also Guava's similar {@link com.google.common.base.Converter}.
+ * @see Converter for an alternative
  */
-public interface BiConverter<A, B> {
+public interface ObjectClassConverter {
+    // TODO ObjectClassConverter<I> convertToType(I input
 
-    B convertTo(A input) throws ConversionException;
-
-    A convertFrom(B input) throws ConversionException;
+    <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException;
 }

@@ -15,16 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.common;
 
-/**
- * Bi-directional alternative to {@link Converter}.
- *
- * <p>See also Guava's similar {@link com.google.common.base.Converter}.
- */
-public interface BiConverter<A, B> {
+import static com.google.common.truth.Truth.assertThat;
 
-    B convertTo(A input) throws ConversionException;
+import org.junit.Test;
 
-    A convertFrom(B input) throws ConversionException;
+public class ImmutableObjectWithTypeTokenTest {
+
+    @Test
+    public void constructor() {
+        var test = new ImmutableObjectWithTypeToken<>("hello, world");
+        assertThat(test.typeToken().getType()).isEqualTo(String.class);
+    }
 }

@@ -18,6 +18,7 @@
 package dev.enola.zimpl;
 
 import dev.enola.Enola;
+import dev.enola.model.enola.Get;
 
 /**
  * Enola CLI demo MVP.
@@ -32,16 +33,18 @@ public class Main {
 
     private static int execute(String[] args) {
         String actionIRI;
-        Enola enola = new EnolaImplementation();
+        Enola enola = new EnolaProvider().get();
         if (args.length == 0 || args.length > 2) {
+            // TODO Enter an interactive REPL loop instead...
             System.err.println("Usage: enola <ObjectIRI> [ActionIRI]");
             return -1;
         } else if (args.length == 1) {
-            actionIRI = "https://enola.dev/Get"; // TODO Get.IRI;
+            actionIRI = Get.IRI;
         } else {
             actionIRI = args[1];
         }
         enola.act(args[0], actionIRI);
+        // TODO Support longer | piped chains...
         return 0;
     }
 }

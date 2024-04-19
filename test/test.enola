@@ -1,0 +1,15 @@
+# TODO: Re-write as enola-test.ttl (at least initially)
+
+https://enola.dev/ns
+  "" https://enola.dev/action/
+
+#get-empty[]
+  get empty:?
+  assert string:?
+
+#get-string[]
+  get string:hello, world
+  assert "hello, world"
+
+#get-root-list[]
+  get enola:/

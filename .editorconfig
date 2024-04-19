@@ -39,6 +39,10 @@ max_line_length = unset
 indent_size = 2
 tab_width = 2
 
+[*.enola]
+indent_size = 2
+tab_width = 2
+
 [*.html]
 indent_size = unset
 tab_width = unset

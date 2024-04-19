@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.java;
 
+// TODO This is really @Thing instead of @IRI (I think...)
 public @interface IRI {
     String value();
 }

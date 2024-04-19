@@ -18,13 +18,21 @@
 package dev.enola.common.convert;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public interface ObjectToStringBiConverter<T>
-        extends BiConverter<T, String>, ConverterIntoAppendable<T> {
+        extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter {
 
     @Override
     default boolean convertInto(T from, Appendable into) throws ConversionException, IOException {
         into.append(this.convertTo(from));
         return true;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    default <X> Optional<X> convertToType(Object input, Class<X> type) {
+        if (String.class.equals(type)) return (Optional<X>) Optional.of(convertTo((T) input));
+        return Optional.empty();
     }
 }

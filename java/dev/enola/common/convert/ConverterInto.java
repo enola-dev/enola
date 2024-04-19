@@ -19,6 +19,7 @@ package dev.enola.common.convert;
 
 import com.google.common.io.ByteSink;
 import com.google.common.io.CharSink;
+import com.google.errorprone.annotations.CheckReturnValue;
 
 import dev.enola.common.Builder;
 
@@ -49,7 +50,24 @@ public interface ConverterInto<I, O> {
      *     {@link ConverterIntoChain}
      * @throws ConversionException in case of conversion problems or technical failures to read from
      *     I or write to O
-     * @throws IOException
+     * @throws IOException TODO wrap IOException into ConversionException and remove throws
      */
+    @CheckReturnValue
     boolean convertInto(I from, O into) throws ConversionException, IOException;
+
+    default void convertIntoOrThrow(I from, O into) throws ConversionException {
+        try {
+            if (!convertInto(from, into)) {
+                throw new ConversionException(
+                        this.toString() + " could not convert " + from + " into " + into);
+            }
+        } catch (IOException e) {
+            throw new ConversionException(
+                    "Caught IOException while converting "
+                            + from.toString()
+                            + " to "
+                            + into.toString(),
+                    e);
+        }
+    }
 }

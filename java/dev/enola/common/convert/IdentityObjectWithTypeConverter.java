@@ -17,14 +17,19 @@
  */
 package dev.enola.common.convert;
 
-/**
- * Bi-directional alternative to {@link Converter}.
- *
- * <p>See also Guava's similar {@link com.google.common.base.Converter}.
- */
-public interface BiConverter<A, B> {
+import dev.enola.common.MutableObjectWithTypeToken;
+import dev.enola.common.ObjectWithTypeToken;
 
-    B convertTo(A input) throws ConversionException;
+import java.io.IOException;
 
-    A convertFrom(B input) throws ConversionException;
+public class IdentityObjectWithTypeConverter implements ObjectWithTypeTokenConverter {
+
+    @Override
+    public boolean convertInto(ObjectWithTypeToken<?> from, MutableObjectWithTypeToken<?> into)
+            throws ConversionException, IOException {
+        if (from.typeToken().equals(into.typeToken())) {
+            into.set(from);
+            return true;
+        } else return false;
+    }
 }

@@ -17,15 +17,39 @@
  */
 package dev.enola.model.enola;
 
+import com.google.common.reflect.TypeToken;
+
 import dev.enola.Action;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.java.IRI;
 
 @IRI(Get.IRI)
-class Get implements Action<String, Object> {
+public class Get implements Action<String, Object> {
     public static final String IRI = "https://enola.dev/get";
+
+    private final ProviderFromIRI<?> provider;
+
+    public Get(ProviderFromIRI<?> provider) {
+        this.provider = provider;
+    }
+
+    @Override
+    public String iri() {
+        return IRI;
+    }
+
+    @Override
+    public TypeToken<String> argumentType() {
+        return new TypeToken<String>() {};
+    }
+
+    @Override
+    public TypeToken<Object> returnType() {
+        return new TypeToken<Object>() {};
+    }
 
     @Override
     public Object act(String iri) {
-        return null;
+        return provider.get(iri);
     }
 }

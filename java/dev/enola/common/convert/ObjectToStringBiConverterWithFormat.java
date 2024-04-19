@@ -17,13 +17,12 @@
  */
 package dev.enola.common.convert;
 
+import java.io.IOException;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParseException;
 
-public class ObjectToStringBiConverterWithFormat
-        implements BiConverter<Object, String>, ConverterInto<Object, StringBuffer> {
-    // TODO Or better ConverterIntoAppendable<Object> instead ConverterInto<Object, StringBuffer>?
+public class ObjectToStringBiConverterWithFormat implements ObjectToStringBiConverter<Object> {
 
     private final Format format;
 
@@ -46,9 +45,15 @@ public class ObjectToStringBiConverterWithFormat
     }
 
     @Override
-    public boolean convertInto(Object from, StringBuffer into) throws ConversionException {
+    public boolean convertInto(Object from, Appendable into) throws ConversionException {
         // TODO Test if this really works like this...
-        format.format(from, into, ALL_FIELD_POSITIONS);
+        var sb = new StringBuffer();
+        format.format(from, sb, ALL_FIELD_POSITIONS);
+        try {
+            into.append(sb);
+        } catch (IOException e) {
+            throw new ConversionException("append() failed: " + sb, e);
+        }
         return true;
     }
 

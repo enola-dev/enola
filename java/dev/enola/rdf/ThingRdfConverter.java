@@ -62,7 +62,7 @@ class ThingRdfConverter
     public Model convert(ThingOrBuilder input) throws ConversionException {
         var model = new ModelBuilder().build();
         var statementCollector = new StatementCollector(model);
-        convertInto(input, statementCollector);
+        convertIntoOrThrow(input, statementCollector);
         return model;
     }
 

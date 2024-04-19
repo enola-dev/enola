@@ -31,7 +31,6 @@ import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -69,9 +68,10 @@ public class RdfResourceIntoThingConverter implements ResourceIntoThingConverter
         for (var protoThing : protoList) {
             try {
                 var thingBuilder = builderSupplier.get();
-                protoThingIntoJavaThingBuilderConverter.convertInto(protoThing, thingBuilder);
+                protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(
+                        protoThing, thingBuilder);
                 listBuilder.add(thingBuilder);
-            } catch (ConversionException | IOException e) {
+            } catch (ConversionException e) {
                 LOG.error("Failed to convert Thing in: " + input.uri(), e);
             }
         }

@@ -19,39 +19,42 @@ package dev.enola.zimpl;
 
 import dev.enola.Action;
 import dev.enola.Enola;
-import dev.enola.common.io.resource.EmptyResource;
+import dev.enola.common.convert.ObjectWithTypeTokenConverter;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.data.Repository;
 import dev.enola.thing.Thing;
 
 import java.net.URI;
 
 public class EnolaImplementation implements Enola {
 
-    private final ProviderFromIRI<?> provider;
+    private final ObjectWithTypeTokenConverter converter;
+    private final ProviderFromIRI<?> provider; // TODO Remove provider!
+    private final Repository<Action<?, ?>> actions;
 
-    public EnolaImplementation() {
-        this(new EmptyResource.Provider());
-    }
-
-    private EnolaImplementation(ProviderFromIRI<?> provider) {
+    public EnolaImplementation(
+            ProviderFromIRI<?> provider,
+            Repository<Action<?, ?>> actions,
+            ObjectWithTypeTokenConverter converter) {
         this.provider = provider;
+        this.actions = actions;
+        this.converter = converter;
     }
 
     @Override
-    public Object act(String objectIRI, String verbIRI) {
-        // TODO Look-up and invoke Action, instead of hard-coding Get...
-        return provider.get(objectIRI);
+    public Object act(URI objectURI, Thing actionThing) {
+        return act(objectURI.toString(), actionThing.iri());
     }
 
     @Override
-    public Object act(URI objectURI, Thing action) {
-        // TODO Look-up and invoke Action, instead of hard-coding Get...
-        // TODO ProviderFromIRI must have get(URI) ...
-        return provider.get(objectURI.toString());
+    public Object act(String objectIRI, Thing actionThing) {
+        return act(objectIRI, actionThing.iri());
     }
 
     @Override
-    public Object act(Thing object, Action action) {
-        return null; // TODO Implement... class IriThing implements Thing, has URI?
+    public Object act(String objectIRI, String actionIRI) {
+        var action = actions.get(actionIRI);
+        var convertedObject = converter.convertToTypeOrThrow(objectIRI, action.argumentType());
+        return action.act(convertedObject.as(action.argumentType()));
     }
 }
