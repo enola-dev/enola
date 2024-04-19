@@ -61,6 +61,7 @@ public class ResourceProviders implements ResourceProvider {
     }
 
     @Override
+    // TODO @NonNull
     public Resource getResource(URI uri) {
         String scheme = requireNonNull(uri, "uri").getScheme();
         if (Strings.isNullOrEmpty(scheme)) {

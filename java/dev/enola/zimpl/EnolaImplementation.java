@@ -20,7 +20,6 @@ package dev.enola.zimpl;
 import dev.enola.Action;
 import dev.enola.Enola;
 import dev.enola.common.convert.ObjectWithTypeTokenConverter;
-import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.thing.Thing;
 
@@ -29,14 +28,10 @@ import java.net.URI;
 public class EnolaImplementation implements Enola {
 
     private final ObjectWithTypeTokenConverter converter;
-    private final ProviderFromIRI<?> provider; // TODO Remove provider!
     private final Repository<Action<?, ?>> actions;
 
     public EnolaImplementation(
-            ProviderFromIRI<?> provider,
-            Repository<Action<?, ?>> actions,
-            ObjectWithTypeTokenConverter converter) {
-        this.provider = provider;
+            Repository<Action<?, ?>> actions, ObjectWithTypeTokenConverter converter) {
         this.actions = actions;
         this.converter = converter;
     }
