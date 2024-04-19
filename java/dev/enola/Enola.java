@@ -31,9 +31,11 @@ import java.net.URI;
  */
 public interface Enola {
 
+    // TODO Invert? action-object instead object-action is more familiar...
+
     Object act(String objectIRI, String actionIRI);
 
-    Object act(URI object, Thing action);
+    Object act(URI object, Thing actionThing);
 
-    Object act(Thing object, Action action);
+    Object act(String objectIRI, Thing actionThing);
 }

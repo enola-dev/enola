@@ -25,4 +25,5 @@ package dev.enola.thing;
  * text.
  */
 // TODO Abandon this and just use java.net.URI in Things instead?!
+//   Or change this record to a class and have an URI field, for 1 time conversion.
 public final record Link(String iri) {}

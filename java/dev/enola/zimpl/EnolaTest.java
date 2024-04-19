@@ -29,7 +29,9 @@ import org.junit.Test;
 
 public class EnolaTest {
 
-    Enola e = new EnolaImplementation();
+    // TODO Replace this with //test/test.enola scripting...
+
+    Enola e = new EnolaProvider().get();
 
     @Test
     public void emptyGet() {
@@ -50,7 +52,7 @@ public class EnolaTest {
     @Test
     public void getList() {
         // TODO Constant for "enola:/" from where? It's also a Model...
-        var r = e.act("enola:/", Actions.GET.iri());
+        var r = e.act("enola:/", Actions.GET);
         assertThat(r).isInstanceOf(Iterable.class);
         // TODO Assert contains EmptyResource.EMPTY_URI and StringResource.TEMPLATE
     }

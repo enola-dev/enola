@@ -32,7 +32,7 @@ import java.util.Collection;
  * Data</i>, such as also described by by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
-public interface Thing { // TODO extends HasIRI? interface HasIRI { String iri(); }
+public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(); }
 
     // TODO Fix properties / predicate (which is the same!) inconsistency in method names & doc!
 

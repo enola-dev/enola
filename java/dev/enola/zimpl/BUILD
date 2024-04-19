@@ -26,8 +26,11 @@ java_binary(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/data",
+        "//java/dev/enola/model",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",

@@ -27,6 +27,8 @@ package dev.enola.common.convert;
  * <p>Converter implementations "have" to convert, and should never return null; if they may or may
  * not convert depending on I, then implement an {@link OptionalConverter} instead of throwing a
  * ConversionException.
+ *
+ * <p>{@link BiConverter} is a bi-directional alternative to this.
  */
 @FunctionalInterface
 public interface Converter<I, O> {

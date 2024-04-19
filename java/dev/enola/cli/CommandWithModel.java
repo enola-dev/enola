@@ -72,7 +72,7 @@ public abstract class CommandWithModel implements CheckedRunnable {
             var fgrp = new GlobResourceProviders();
             for (var globIRI : group.load) {
                 try (var stream = fgrp.get(globIRI.toString())) {
-                    loader.convertInto(stream, store);
+                    loader.convertIntoOrThrow(stream, store);
                 }
             }
             ThingRepository readOnlyRepo = store.build();

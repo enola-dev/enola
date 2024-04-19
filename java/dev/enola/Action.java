@@ -17,12 +17,19 @@
  */
 package dev.enola;
 
+import com.google.common.reflect.TypeToken;
+
 import dev.enola.thing.java.IRI;
 
 // TODO This probably will have to be in package dev.enola after all?!
 // TODO Doc see also Converter
 @IRI("https://enola.dev/Action")
-public interface Action<I, O> { // TODO extends HasIRI
+public interface Action<I, O> { // TODO extends HasIRI or even BaseThing
+    String iri();
+
+    TypeToken<I> argumentType();
+
+    TypeToken<O> returnType();
 
     O act(I object);
 }

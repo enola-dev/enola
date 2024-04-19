@@ -70,7 +70,7 @@ public class RosettaCommand implements CheckedRunnable {
             inResource = new DelegatingResourceWithMediaType(inResource, mt);
         }
 
-        rosetta.convertInto(inResource, outResource);
+        rosetta.convertIntoOrThrow(inResource, outResource);
     }
 
     public enum Schema {

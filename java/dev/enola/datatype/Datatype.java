@@ -50,4 +50,6 @@ public interface Datatype<T> /* TODO extends Thing */ {
      * @return Java Type of this datatype, if any. (It may be unknown or N/A.)
      */
     Optional<Class<T>> javaType();
+
+    // TODO Optional<TypeToken<T>> javaTypeToken();
 }

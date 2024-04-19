@@ -26,6 +26,7 @@ java_library(
     deps = [
         "//java/dev/enola",
         "//java/dev/enola/common/convert",
+        "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_errorprone_error_prone_annotations",

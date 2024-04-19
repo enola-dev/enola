@@ -15,16 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.common;
 
-/**
- * Bi-directional alternative to {@link Converter}.
- *
- * <p>See also Guava's similar {@link com.google.common.base.Converter}.
- */
-public interface BiConverter<A, B> {
+import com.google.common.reflect.TypeToken;
 
-    B convertTo(A input) throws ConversionException;
+public interface ObjectWithTypeToken<T> {
 
-    A convertFrom(B input) throws ConversionException;
+    T object();
+
+    TypeToken<T> typeToken();
+
+    @SuppressWarnings("unchecked")
+    default <X> X as(TypeToken<?> typeToken) {
+        if (!typeToken().equals(typeToken)) {
+            throw new IllegalStateException(
+                    "Requested " + typeToken.toString() + ", but I'm a " + typeToken().toString());
+        }
+        return (X) object();
+    }
 }
