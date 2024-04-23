@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.net.MediaType;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,8 +31,8 @@ public class OkHttpResourceTest {
 
     @Test
     public void google() throws IOException {
-        // TODO Remove ?charset=UTF-8 again later
-        var r = new OkHttpResource("http://www.google.com?charset=UTF-8");
+        var r = new OkHttpResource("http://www.google.com");
         assertThat(r.charSource().read()).startsWith("<!doctype html>");
+        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 }
