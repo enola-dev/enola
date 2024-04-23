@@ -42,6 +42,8 @@ class MarkdownThingGenerator {
         out.append("\n\n");
 
         write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI);
+
+        out.append(DocGenConstants.FOOTER);
     }
 
     private void write(
@@ -64,7 +66,6 @@ class MarkdownThingGenerator {
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI);
         }
-        out.append(DocGenConstants.FOOTER);
     }
 
     private void write(
@@ -103,7 +104,7 @@ class MarkdownThingGenerator {
             case LANG_STRING:
                 var langString = value.getLangString();
                 out.append(langString.getText());
-                out.append(" @ ");
+                out.append(" @");
                 // TODO Print emoji of LANG flag - itself read from a Thing...
                 out.append(langString.getLang());
                 out.append('\n');

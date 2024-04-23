@@ -52,6 +52,8 @@ public class MarkdownSiteGeneratorTest {
 
         var expectedPabloMd = new ClasspathResource("picasso.md").charSource().read();
         assertThat(trimLineEndWhitespace(genPabloMd)).isEqualTo(expectedPabloMd);
+
+        // TODO Dalí.md
     }
 
     private String trimLineEndWhitespace(String string) {
