@@ -60,7 +60,7 @@ class MarkdownThingGenerator {
             out.append("* ");
             // TODO Use MetadataProvider (again), *AFTER* it's been refactored
             out.append(predicateIRI);
-            out.append(" : ");
+            out.append(": ");
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI);
         }
