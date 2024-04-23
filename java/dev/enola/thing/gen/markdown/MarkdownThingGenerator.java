@@ -29,8 +29,6 @@ import java.util.function.Predicate;
 
 class MarkdownThingGenerator {
 
-    // TODO Add Datatype support, with a a DatatypeRepository...
-
     void generate(
             Thing thing, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
             throws IOException {
@@ -95,10 +93,9 @@ class MarkdownThingGenerator {
             case LITERAL:
                 var literal = value.getLiteral();
                 out.append(literal.getValue());
-                out.append("(");
-                // TODO Use MetadataProvider (for the 4th time), *AFTER* it's been refactored
+                out.append(" <!-- ");
                 out.append(literal.getDatatype());
-                out.append(")\n");
+                out.append(" -->\n");
                 break;
 
             case LANG_STRING:
