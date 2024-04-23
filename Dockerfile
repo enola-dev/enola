@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.licenses=Apache-2.0
 # Loosely inspired by https://github.com/GoogleContainerTools/distroless/blob/main/examples/java/Dockerfile
 
 # For consistency, use Enola's standard "distro"
-# (instead of e.g. directly COPY bazel-bin/cli/enola_deploy.jar)...
+# (instead of e.g. directly COPY bazel-bin/java/dev/enola/cli/enola_deploy.jar)...
 
 # ...BUT note that we still CANNOT just do e.g. ENTRYPOINT ["enola"],
 # because in a (non :debug!) distroless we (intentionally!) do not
