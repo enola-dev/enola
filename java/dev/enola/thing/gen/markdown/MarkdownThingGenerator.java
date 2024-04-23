@@ -25,12 +25,15 @@ import dev.enola.thing.proto.Value;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.function.Predicate;
 
 class MarkdownThingGenerator {
 
     // TODO Add Datatype support, with a a DatatypeRepository...
 
-    void generate(Thing thing, Appendable out, URI outputIRI, URI base) throws IOException {
+    void generate(
+            Thing thing, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
+            throws IOException {
         // TODO Title with MetadataProvider, *AFTER* it's been refactored
         out.append("# ");
         // TODO IRI under title, as <link>
@@ -38,11 +41,16 @@ class MarkdownThingGenerator {
         out.append(thing.getIri());
         out.append("\n\n");
 
-        write("", thing.getFieldsMap(), out, outputIRI, base);
+        write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI);
     }
 
     private void write(
-            String indent, Map<String, Value> properties, Appendable out, URI outputIRI, URI base)
+            String indent,
+            Map<String, Value> properties,
+            Appendable out,
+            URI outputIRI,
+            URI base,
+            Predicate<String> isDocumentedIRI)
             throws IOException {
         for (var entry : properties.entrySet()) {
             var predicateIRI = entry.getKey();
@@ -54,12 +62,18 @@ class MarkdownThingGenerator {
             out.append(predicateIRI);
             out.append(" : ");
 
-            write(indent, object, out, outputIRI, base);
+            write(indent, object, out, outputIRI, base, isDocumentedIRI);
         }
         out.append(DocGenConstants.FOOTER);
     }
 
-    private void write(String indent, Value value, Appendable out, URI outputIRI, URI base)
+    private void write(
+            String indent,
+            Value value,
+            Appendable out,
+            URI outputIRI,
+            URI base,
+            Predicate<String> isDocumentedIRI)
             throws IOException {
         switch (value.getKindCase()) {
             case LINK:
@@ -68,7 +82,7 @@ class MarkdownThingGenerator {
                 // TODO Use MetadataProvider (for the 3d time), *AFTER* it's been refactored
                 out.append(link);
                 out.append("](");
-                out.append(rel(link, outputIRI, base));
+                out.append(rel(link, outputIRI, base, isDocumentedIRI));
                 out.append(")\n");
                 break;
 
@@ -96,7 +110,13 @@ class MarkdownThingGenerator {
                 break;
 
             case STRUCT:
-                write(indent + "  ", value.getStruct().getFieldsMap(), out, outputIRI, base);
+                write(
+                        indent + "  ",
+                        value.getStruct().getFieldsMap(),
+                        out,
+                        outputIRI,
+                        base,
+                        isDocumentedIRI);
                 out.append('\n');
                 break;
 
@@ -106,7 +126,7 @@ class MarkdownThingGenerator {
                 for (var element : list) {
                     out.append(indent);
                     out.append("  1. ");
-                    write(indent, element, out, outputIRI, base);
+                    write(indent, element, out, outputIRI, base, isDocumentedIRI);
                 }
                 break;
 
@@ -115,20 +135,16 @@ class MarkdownThingGenerator {
         }
     }
 
-    private CharSequence rel(String linkIRI, URI outputIRI, URI base) {
-        // TODO We should really only do this if linkIRI is in our Repository...
-        var relativeLinkedIRI = Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
-        var absoluteRelativeLinkedIRI = base.resolve(relativeLinkedIRI);
-        var relativeToOutputIRI = Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
-        if (linkIRI.equals(
-                "TODO-rm-file:///home/vorburger/git/github.com/enola-dev/enola/docs/models/enola.dev/properties.ttl"))
-            throw new IllegalArgumentException(
-                    "relativeToOutputIRI="
-                            + relativeToOutputIRI
-                            + "; outputIRI="
-                            + outputIRI
-                            + "; absoluteRelativeLinkedIRI="
-                            + absoluteRelativeLinkedIRI);
-        return relativeToOutputIRI.toString();
+    private CharSequence rel(
+            String linkIRI, URI outputIRI, URI base, Predicate<String> isDocumentedIRI) {
+        if (!isDocumentedIRI.test(linkIRI)) {
+            if (linkIRI.startsWith("file:"))
+                return Relativizer.relativize(outputIRI, URI.create(linkIRI));
+            else return linkIRI;
+        } else {
+            var relativeLinkedIRI = Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
+            var absoluteRelativeLinkedIRI = base.resolve(relativeLinkedIRI);
+            return Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
+        }
     }
 }

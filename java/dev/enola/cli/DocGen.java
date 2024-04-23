@@ -19,6 +19,8 @@ package dev.enola.cli;
 
 import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 
+import static java.util.stream.Collectors.toUnmodifiableSet;
+
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -29,6 +31,7 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
+import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
 import picocli.CommandLine;
@@ -73,7 +76,10 @@ public class DocGen extends CommandWithModelAndOutput {
         var any = response.getThing();
         var things = any.unpack(Things.class);
         var mdsg = new MarkdownSiteGenerator(output, rp);
-        mdsg.generate(things.getThingsList());
+
+        var thingsList = things.getThingsList();
+        var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());
+        mdsg.generate(thingsList, allIRI::contains);
     }
 
     private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {

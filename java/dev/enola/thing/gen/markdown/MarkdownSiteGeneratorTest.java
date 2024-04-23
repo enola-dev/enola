@@ -47,11 +47,13 @@ public class MarkdownSiteGeneratorTest {
         var rp = new ResourceProviders();
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp);
-        mdDocsGen.generate(protoThings);
+        mdDocsGen.generate(protoThings, iri -> false);
 
         var pabloMdFileURI = dir.resolve("example.enola.dev/Picasso.md").toUri();
         var pabloMd = rp.getReadableResource(pabloMdFileURI).charSource().read();
         assertThat(pabloMd).contains("Pablo");
         assertThat(pabloMd).endsWith(DocGenConstants.FOOTER);
+
+        // TODO Compare with full expected MD instead contains & endsWith
     }
 }

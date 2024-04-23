@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.function.Predicate;
 
 public class MarkdownSiteGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(MarkdownSiteGenerator.class);
@@ -50,7 +51,8 @@ public class MarkdownSiteGenerator {
         this.rp = rp;
     }
 
-    public void generate(Iterable<Thing> things) throws IOException {
+    public void generate(Iterable<Thing> things, Predicate<String> isDocumentedIRI)
+            throws IOException {
         // TODO Do this multi-threaded, in parallel...
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
@@ -60,7 +62,7 @@ public class MarkdownSiteGenerator {
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
-                mtg.generate(thing, writer, outputIRI, base);
+                mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI);
             }
         }
     }
