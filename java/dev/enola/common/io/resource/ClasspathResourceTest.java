@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-public class ClasspathUrlResourceTest {
+public class ClasspathResourceTest {
 
     private ReadableResource check(
             String name, MediaType expectedMediaType, Optional<Charset> expectedCharset)
