@@ -68,7 +68,8 @@ public final class ThingAdapter extends AbstractThing {
     @SuppressWarnings("unchecked")
     public <T> T get(String predicateIRI) {
         var value = proto.getFieldsMap().get(predicateIRI);
-        return (T) value(value);
+        if (value != null) return (T) value(value);
+        else return null;
     }
 
     @Override

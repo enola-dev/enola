@@ -19,6 +19,7 @@ package dev.enola.thing;
 
 import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.iri.NamespaceConverter;
+import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.URIs;
 import dev.enola.thing.proto.Things;
@@ -38,8 +39,6 @@ import java.net.URISyntaxException;
  */
 public class ThingMetadataProvider implements MetadataProvider {
 
-    // TODO As-is, this is *VERY* in-efficient... see TBD in MetadataProvider, and optimize
-
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ThingProvider tp;
@@ -50,14 +49,22 @@ public class ThingMetadataProvider implements MetadataProvider {
         this.ns = ns;
     }
 
-    /**
-     * Returns the Thing's {@link KIRI.SCHEMA#ID}, if any; otherwise just returns the IRI argument.
-     */
     @Override
-    public String getID(String iri) {
-        var id = getString(iri, KIRI.SCHEMA.ID);
-        if (id != null) return id;
-        return iri;
+    public Metadata get(String iri) {
+        var imageHTML = "";
+        var descriptionHTML = "";
+        Thing thing = null;
+
+        try {
+            thing = tp.get(iri);
+            imageHTML = getImageHTML(thing);
+            descriptionHTML = getDescriptionHTML(thing);
+
+        } catch (Exception e) {
+            log.warn("Could not get {}", iri, e);
+        }
+
+        return new Metadata(imageHTML, getLabel(thing, iri), descriptionHTML);
     }
 
     /**
@@ -66,31 +73,31 @@ public class ThingMetadataProvider implements MetadataProvider {
      * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
      * as-is.
      */
-    @Override
-    public String getLabel(String iri) {
-        var label = getString(iri, KIRI.RDFS.LABEL);
+    private String getLabel(Thing thing, String fallbackIRI) {
+        var label = getString(thing, KIRI.RDFS.LABEL);
         if (label != null) return label;
 
-        var name = getString(iri, KIRI.SCHEMA.NAME);
+        var name = getString(thing, KIRI.SCHEMA.NAME);
         if (name != null) return name;
 
-        var curie = ns.toCURIE(iri);
-        if (!curie.equals(iri)) return curie;
+        if (thing != null) {
+            var curie = ns.toCURIE(thing.iri());
+            if (!curie.equals(thing.iri())) return curie;
+        }
 
         try {
-            return URIs.getFilename(IRIs.toURI(iri));
+            return URIs.getFilename(IRIs.toURI(fallbackIRI));
         } catch (URISyntaxException e) {
-            return iri;
+            return fallbackIRI;
         }
     }
 
     /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
-    @Override
-    public String getDescriptionHTML(String iri) {
-        var description = getString(iri, KIRI.SCHEMA.DESC);
+    private String getDescriptionHTML(Thing thing) {
+        var description = getString(thing, KIRI.SCHEMA.DESC);
         if (description != null) return description;
 
-        description = getString(iri, KIRI.RDFS.COMMENT);
+        description = getString(thing, KIRI.RDFS.COMMENT);
         if (description != null) return description;
 
         return "";
@@ -101,41 +108,53 @@ public class ThingMetadataProvider implements MetadataProvider {
      * from {@link KIRI.SCHEMA#IMG}, if any; and if neither tries the same on the Thing's {@link
      * KIRI.RDFS#CLASS}; if that also is not present, then gives up and just an empty String.
      */
-    @Override
-    public String getImageHTML(String iri) {
-        if (iri == null) return "";
+    public String getImageHTML(Thing thing) {
+        if (thing == null) return "";
 
-        var thingImage = getImageHTML_(iri);
+        var thingImage = getImageHTML_(thing);
         if (thingImage != null) return thingImage;
 
-        var rdfClassIRI = getString(iri, KIRI.RDFS.CLASS);
-        var rdfClassImage = getImageHTML_(rdfClassIRI);
+        var rdfClassIRI = getString(thing, KIRI.RDFS.CLASS);
+        var rdfClassImage = getImageHTML_(tp.get(rdfClassIRI));
         if (rdfClassImage != null) return rdfClassImage;
 
         return "";
     }
 
-    private String getImageHTML_(String iri) {
-        if (iri == null) return null;
-        var emoji = getString(iri, KIRI.E.EMOJI);
+    private String getImageHTML_(Thing thing) {
+        if (thing == null) return null;
+        var emoji = getString(thing, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
-        var imageURL = getString(iri, KIRI.SCHEMA.IMG);
+        var imageURL = getString(thing, KIRI.SCHEMA.IMG);
         // TODO ImageMetadataProvider which can determine (and cache!) width & height
         if (imageURL != null) return "<img src=" + imageURL + "/>";
         return null;
     }
 
-    private String getString(String thingIRI, String propertyIRI) {
-        try {
-            var thing = tp.get(thingIRI);
-            var string = thing.getString(propertyIRI);
-            if (string == null) {
-                log.debug("No {} on {}:\n{}", propertyIRI, thingIRI, thing);
-            }
-            return string;
-        } catch (Exception e) {
-            log.warn("Could not get {} from {}", propertyIRI, thingIRI, e);
-            return null;
+    private String getString(Thing thing, String propertyIRI) {
+        if (thing == null) return null;
+        var string = thing.getString(propertyIRI);
+        if (string == null) {
+            log.debug("No {} on {}:\n{}", propertyIRI, thing.iri(), thing);
         }
+        return string;
+    }
+
+    @Override
+    @Deprecated
+    public String getLabel(String iri) {
+        return get(iri).label();
+    }
+
+    @Override
+    @Deprecated
+    public String getDescriptionHTML(String iri) {
+        return get(iri).descriptionHTML();
+    }
+
+    @Override
+    @Deprecated
+    public String getImageHTML(String iri) {
+        return get(iri).imageHTML();
     }
 }

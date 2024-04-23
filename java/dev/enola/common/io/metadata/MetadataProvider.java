@@ -17,38 +17,19 @@
  */
 package dev.enola.common.io.metadata;
 
-public interface MetadataProvider {
+import dev.enola.data.ProviderFromIRI;
 
-    // TODO Rewrite this using a record Metadata, instead xN! That's more efficient, and can cache.
+public interface MetadataProvider extends ProviderFromIRI<Metadata> {
 
-    /**
-     * Logical IRI of the resource at the physical IRI argument. This could be the same, or not;
-     * e.g. a http: URL argument may encounter a HTTP redirect, and then this would return the new
-     * final URL, or for a file: URL argument it may return what was read from e.g. an "$id"
-     * attribute of a JSON-LD in that file, or something like that.
-     */
-    String getID(String iri);
+    @Override
+    Metadata get(String iri);
 
-    /**
-     * Short human-readable 🏷️ label, as text; e.g. TITLE of HTML page found at the IRI.
-     *
-     * <p>Always returns text (never empty), but may fallback to e.g. last part of IRI.
-     */
+    @Deprecated // TODO Replace with #get().label()
     String getLabel(String iri);
 
-    /**
-     * Longer human-readable 📜 description, as HTML.
-     *
-     * <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
-     *
-     * <p>Always returns something (never null), but may be empty String.
-     */
+    @Deprecated // TODO Replace with #get().descriptionHTML()
     String getDescriptionHTML(String iri);
 
-    /**
-     * HTML of an image for the IRI, e.g. <img...> with URL of a favicon. Or an 😃 Emoji!
-     *
-     * <p>Always returns something (never null), but may be empty String.
-     */
+    @Deprecated // TODO Replace with #get().imageHTML()
     String getImageHTML(String iri);
 }
