@@ -28,6 +28,8 @@ import java.net.URI;
 
 public abstract class BaseResource implements AbstractResource {
 
+    // TODO For implementations such as OkHttpResource, MediaType should be "lazily" initialized...
+
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     // Always keep the user-specified URI (because e.g. ?query parameters & #fragment may get lost)

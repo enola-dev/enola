@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,23 +19,26 @@ package dev.enola.common.io.resource;
 
 import com.google.common.io.ByteSource;
 
-import java.net.URI;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class GoogleHttpClientResource extends BaseResource implements ReadableResource {
+final class ErrorByteSource extends ByteSource {
 
-    // TODO Implement delegate to https://github.com/googleapis/google-http-java-client
-    // See e.g. https://www.baeldung.com/google-http-client
+    private final IOException error;
 
-    public GoogleHttpClientResource(URI uri) {
-        super(uri, byteSource(uri));
-    }
-
-    private static ByteSource byteSource(URI uri) {
-        throw new UnsupportedOperationException("TODO Implemented method 'byteSource'");
+    public ErrorByteSource(IOException ioException) {
+        this.error = ioException;
     }
 
     @Override
-    public ByteSource byteSource() {
-        return byteSource(uri());
+    public InputStream openStream() throws IOException {
+        return new ErrorInputStream();
+    }
+
+    private final class ErrorInputStream extends InputStream {
+        @Override
+        public int read() throws IOException {
+            throw error;
+        }
     }
 }

@@ -22,7 +22,6 @@ import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
@@ -57,7 +56,7 @@ public class ErrorResource extends BaseResource implements Resource {
 
     @Override
     public ByteSource byteSource() {
-        return ErrorByteSource.INSTANCE;
+        return new ErrorByteSource(new IOException());
     }
 
     private static final class ErrorByteSink extends ByteSink {
@@ -79,22 +78,6 @@ public class ErrorResource extends BaseResource implements Resource {
 
         @Override
         public void write(byte[] b, int off, int len) throws IOException {
-            throw new IOException();
-        }
-    }
-
-    private static final class ErrorByteSource extends ByteSource {
-        public static final ByteSource INSTANCE = new ErrorByteSource();
-
-        @Override
-        public InputStream openStream() throws IOException {
-            return new ErrorInputStream();
-        }
-    }
-
-    private static final class ErrorInputStream extends InputStream {
-        @Override
-        public int read() throws IOException {
             throw new IOException();
         }
     }
