@@ -19,4 +19,9 @@ set -euox pipefail
 
 # TODO Replace this Bash script with a Bazel BUILD
 
-./enola -vvv docgen --load=file:"models/**.ttl" --output=file://"$PWD"/docs/models/
+cp -R models/ docs/
+rm docs/models/BUILD
+
+./enola -vvv docgen --load=file:"docs/models/**.ttl" --output=file://"$PWD"/docs/models/
+
+# TODO RDF* --load=file:"models/**.ttl[s?]"

@@ -27,6 +27,24 @@ public class RelativizerTest {
 
     @Test
     public void relativize() {
+        assertThat(
+                        Relativizer.relativize(
+                                URI.create("file:/docs/models/enola.dev/yaml/shorthand.md"),
+                                URI.create("file:///docs/models/enola.dev/properties.ttl")))
+                .isEqualTo("../properties.ttl");
+    }
+
+    @Test
+    public void relativizeCannot() {
+        assertThat(
+                        Relativizer.relativize(
+                                URI.create("file:///foo/bar.md"),
+                                URI.create("jar:file:/some/models.jar!/enola.dev/properties.ttl")))
+                .isEqualTo("jar:file:/some/models.jar!/enola.dev/properties.ttl");
+    }
+
+    @Test
+    public void dropSchemeAddExtension() {
         check("https://enola.dev/ett", "enola.dev/ett.md");
         check("https://enola.dev/some/thing", "enola.dev/some/thing.md");
         check("https://enola.dev", "enola.dev.md");
@@ -37,10 +55,12 @@ public class RelativizerTest {
         check("http:enola.dev/ett", "enola.dev/ett.md");
         check("http:/x", "x.md");
         check("http:x", "x.md");
+
+        check("file:///source.ttl", "file:///source.ttl");
     }
 
     private void check(String absThingIRI, String relIRI) {
-        assertThat(Relativizer.relativize(URI.create(absThingIRI), "md"))
+        assertThat(Relativizer.dropSchemeAddExtension(URI.create(absThingIRI), "md"))
                 .isEqualTo(URI.create(relIRI));
     }
 }

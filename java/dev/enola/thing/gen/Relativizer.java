@@ -21,20 +21,55 @@ import java.net.URI;
 
 public final class Relativizer {
 
-    public static URI relativize(URI thingIRI, String extension) {
+    private static String path(URI uri) {
+        var path = uri.getPath();
+        if (path == null) {
+            throw new IllegalArgumentException("TODO: Extract path from URI: " + uri);
+        }
+        return path;
+    }
+
+    public static String relativize(URI baseURI, URI targetURI) {
+        if (!baseURI.getScheme().equals(targetURI.getScheme())) return targetURI.toString();
+        String[] basePath = path(baseURI).split("/");
+        String[] targetPath = path(targetURI).split("/");
+
+        int commonPrefixLength = 0;
+        while (commonPrefixLength < basePath.length
+                && commonPrefixLength < targetPath.length
+                && basePath[commonPrefixLength].equals(targetPath[commonPrefixLength])) {
+            commonPrefixLength++;
+        }
+
+        StringBuilder relativePath = new StringBuilder();
+        for (int i = commonPrefixLength; i < basePath.length - 1; i++) { // -1 because no .. on last
+            relativePath.append("../");
+        }
+        for (int i = commonPrefixLength; i < targetPath.length; i++) {
+            relativePath.append(targetPath[i]).append("/");
+        }
+        if (!relativePath.isEmpty()) {
+            relativePath.deleteCharAt(relativePath.length() - 1); // Remove trailing slash
+        }
+
+        return relativePath.toString();
+    }
+
+    public static URI dropSchemeAddExtension(URI thingIRI, String extension) {
         if (thingIRI.getScheme().startsWith("http")) {
             var ssp = thingIRI.getSchemeSpecificPart();
             if (ssp.startsWith("//")) {
                 if (ssp.length() > 2) return URI.create(ssp.substring(2) + "." + extension);
                 else return URI.create("." + extension);
             } else if (ssp.startsWith("/")) {
-                if (ssp.length() > 1)
-                    if (ssp.length() > 1) return URI.create(ssp.substring(1) + "." + extension);
-                    else return URI.create("." + extension);
+                if (ssp.length() > 1) return URI.create(ssp.substring(1) + "." + extension);
+                else return URI.create("." + extension);
             } else return URI.create(ssp + "." + extension);
+        } else {
+            // Intentionally WITHOUT adding extension, here;
+            // this is typically a https://enola.dev/source property value like file:///.../some.ttl
+            return thingIRI;
         }
-        throw new IllegalArgumentException(
-                "TODO Add missing RelativizerTest coverage for: " + thingIRI);
     }
 
     private Relativizer() {}

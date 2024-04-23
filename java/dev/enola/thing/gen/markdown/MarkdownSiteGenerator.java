@@ -55,7 +55,7 @@ public class MarkdownSiteGenerator {
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
             var thingIRI = thing.getIri();
-            var relativeThingIRI = Relativizer.relativize(URI.create(thingIRI), "md");
+            var relativeThingIRI = Relativizer.dropSchemeAddExtension(URI.create(thingIRI), "md");
             var outputIRI = base.resolve(relativeThingIRI);
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
