@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
@@ -29,10 +30,13 @@ import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class MarkdownSiteGeneratorTest {
+
+    ResourceProvider rp = new ResourceProviders();
 
     @Test
     public void picasso() throws Exception {
@@ -42,18 +46,21 @@ public class MarkdownSiteGeneratorTest {
         var protoThings =
                 protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
 
-        var rp = new ResourceProviders();
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp);
         mdDocsGen.generate(protoThings, iri -> false);
 
-        var genPabloMdFileURI = dir.resolve("example.enola.dev/Picasso.md").toUri();
-        var genPabloMd = rp.getReadableResource(genPabloMdFileURI).charSource().read();
+        check(dir, "example.enola.dev/Picasso.md", "picasso.md");
+        check(dir, "example.enola.dev/Dalí.md", "dali.md");
+    }
 
-        var expectedPabloMd = new ClasspathResource("picasso.md").charSource().read();
-        assertThat(trimLineEndWhitespace(genPabloMd)).isEqualTo(expectedPabloMd);
+    private void check(Path dir, String generated, String expected) throws IOException {
+        var genPabloMdFileURI = dir.resolve(generated).toUri();
+        var generatedMarkdown = rp.getReadableResource(genPabloMdFileURI).charSource().read();
+        var trimmedGeneratedMarkdown = trimLineEndWhitespace(generatedMarkdown);
 
-        // TODO Dalí.md
+        var expectedMarkdown = new ClasspathResource(expected).charSource().read();
+        assertThat(trimmedGeneratedMarkdown).isEqualTo(expectedMarkdown);
     }
 
     private String trimLineEndWhitespace(String string) {

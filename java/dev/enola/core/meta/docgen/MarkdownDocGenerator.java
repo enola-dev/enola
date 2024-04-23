@@ -47,7 +47,6 @@ public class MarkdownDocGenerator {
         for (var ek : kinds) {
             render(ek, md);
         }
-        md.append('\n');
         md.append(DocGenConstants.FOOTER);
     }
 
