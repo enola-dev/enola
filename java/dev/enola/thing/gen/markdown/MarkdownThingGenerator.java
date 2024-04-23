@@ -119,7 +119,6 @@ class MarkdownThingGenerator {
                         outputIRI,
                         base,
                         isDocumentedIRI);
-                out.append('\n');
                 break;
 
             case LIST:
@@ -127,7 +126,7 @@ class MarkdownThingGenerator {
                 out.append('\n');
                 for (var element : list) {
                     out.append(indent);
-                    out.append("  1. ");
+                    out.append("    1. ");
                     write(indent, element, out, outputIRI, base, isDocumentedIRI);
                 }
                 break;

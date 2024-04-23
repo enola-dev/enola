@@ -20,6 +20,6 @@ package dev.enola.thing.gen;
 public interface DocGenConstants {
 
     public static final String FOOTER =
-            "---\n_This model documentation was generated with ❤️ by"
+            "\n---\n_This model documentation was generated with ❤️ by"
                     + " [Enola.dev](https://www.enola.dev)_\n";
 }
