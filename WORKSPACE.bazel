@@ -143,6 +143,7 @@ maven_install(
         "io.github.classgraph:classgraph:4.8.165",
         "com.google.errorprone:error_prone_annotations:2.26.1",
         "org.jspecify:jspecify:0.3.0",
+        "com.squareup.okhttp3:okhttp:4.12.0",
     ],
     duplicate_version_warning = "error",
     excluded_artifacts = [
