@@ -24,6 +24,7 @@ import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 import org.jspecify.annotations.Nullable;
 
@@ -54,18 +55,28 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     }
 
     public OkHttpResource(String url) {
-        this(URI.create(url));
+        super(URI.create(url), mediaType(url));
     }
 
     public OkHttpResource(URI uri) {
-        super(uri, mediaType(uri));
+        super(uri, mediaType(uri.toString()));
     }
 
-    private static MediaType mediaType(URI uri) {
-        // TODO Improve this... the problem is close() !!
+    private static MediaType mediaType(String url) {
+        Request request = new Request.Builder().url(url).build();
         String contentTypeFromServer = null;
-        String encodingFromServer = null;
-        return mtd.detect(contentTypeFromServer, encodingFromServer, uri);
+
+        try (Response response = client.newCall(request).execute()) {
+            var mt = response.body().contentType();
+            if (mt != null) {
+                contentTypeFromServer = mt.toString();
+            }
+
+        } catch (IOException e) {
+            // Swallow silently; it will likely happen again for byteSource()
+        }
+
+        return mtd.detect(contentTypeFromServer, null, URI.create(url));
     }
 
     @Override
