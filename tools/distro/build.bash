@@ -24,7 +24,7 @@ set -euox pipefail
 # NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
 bazelisk build //java/dev/enola/cli:enola_deploy.jar
 cp tools/distro/execjar-header.bash site/download/latest/enola
-cat bazel-bin/cli/enola_deploy.jar >>site/download/latest/enola
+cat bazel-bin/java/dev/enola/cli/enola_deploy.jar >>site/download/latest/enola
 chmod +x site/download/latest/enola
 
 # Build the Container Image
