@@ -110,6 +110,7 @@ class MarkdownThingGenerator {
                 break;
 
             case STRUCT:
+                out.append('\n');
                 write(
                         indent + "    ",
                         value.getStruct().getFieldsMap(),
