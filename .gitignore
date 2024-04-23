@@ -24,7 +24,7 @@ site/
 .cache/
 
 # Enola (self, "dog 🐕 fooding!"") generated docs content
-docs/models/**.*
+docs/models/
 
 # asciinema, used in demo/**
 docs/use/**/*.cast

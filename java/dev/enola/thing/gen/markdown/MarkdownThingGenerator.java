@@ -17,8 +17,6 @@
  */
 package dev.enola.thing.gen.markdown;
 
-import dev.enola.thing.Link;
-import dev.enola.thing.Literal;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
@@ -26,7 +24,6 @@ import dev.enola.thing.proto.Value;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 class MarkdownThingGenerator {
@@ -34,9 +31,9 @@ class MarkdownThingGenerator {
     // TODO Add Datatype support, with a a DatatypeRepository...
 
     void generate(Thing thing, Appendable out, URI outputIRI, URI base) throws IOException {
-        // TODO Use MetadataProvider, *AFTER* it's been refactored
-
+        // TODO Title with MetadataProvider, *AFTER* it's been refactored
         out.append("# ");
+        // TODO IRI under title, as <link>
         // TODO Make IRI path segments clickable?!
         out.append(thing.getIri());
         out.append("\n\n");
@@ -62,42 +59,76 @@ class MarkdownThingGenerator {
         out.append(DocGenConstants.FOOTER);
     }
 
-    private void write(String indent, Object object, Appendable out, URI outputIRI, URI base)
+    private void write(String indent, Value value, Appendable out, URI outputIRI, URI base)
             throws IOException {
-        switch (object) {
-            case Link link:
+        switch (value.getKindCase()) {
+            case LINK:
+                var link = value.getLink();
                 out.append("[");
                 // TODO Use MetadataProvider (for the 3d time), *AFTER* it's been refactored
-                out.append(link.iri());
+                out.append(link);
                 out.append("](");
-                out.append(rel(link.iri(), outputIRI, base));
-                out.append(")");
+                out.append(rel(link, outputIRI, base));
+                out.append(")\n");
                 break;
 
-            case Literal literal:
-                out.append(literal.value());
+            case STRING:
+                out.append(value.getString());
+                out.append('\n');
+                break;
+
+            case LITERAL:
+                var literal = value.getLiteral();
+                out.append(literal.getValue());
                 out.append("(");
                 // TODO Use MetadataProvider (for the 4th time), *AFTER* it's been refactored
-                out.append(literal.datatypeIRI());
-                out.append(")");
+                out.append(literal.getDatatype());
+                out.append(")\n");
                 break;
 
-            case Map<?, ?> properties:
-                write(indent + "  ", properties, out, outputIRI, base);
+            case LANG_STRING:
+                var langString = value.getLangString();
+                out.append(langString.getText());
+                out.append(" @ ");
+                // TODO Print emoji of LANG flag - itself read from a Thing...
+                out.append(langString.getLang());
+                out.append('\n');
                 break;
 
-            case List<?> list:
-                throw new IllegalStateException("TODO Implement List..");
+            case STRUCT:
+                write(indent + "  ", value.getStruct().getFieldsMap(), out, outputIRI, base);
+                out.append('\n');
+                break;
+
+            case LIST:
+                var list = value.getList().getValuesList();
+                out.append('\n');
+                for (var element : list) {
+                    out.append(indent);
+                    out.append("  1. ");
+                    write(indent, element, out, outputIRI, base);
+                }
+                break;
 
             default:
-                out.append(object.toString());
+                throw new IllegalStateException("TODO: " + value);
         }
     }
 
     private CharSequence rel(String linkIRI, URI outputIRI, URI base) {
-        var relativeLinkedIRI = Relativizer.relativize(URI.create(linkIRI), "md");
+        // TODO We should really only do this if linkIRI is in our Repository...
+        var relativeLinkedIRI = Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
         var absoluteRelativeLinkedIRI = base.resolve(relativeLinkedIRI);
-        var relativeToOutputIRI = outputIRI.relativize(absoluteRelativeLinkedIRI);
+        var relativeToOutputIRI = Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
+        if (linkIRI.equals(
+                "TODO-rm-file:///home/vorburger/git/github.com/enola-dev/enola/docs/models/enola.dev/properties.ttl"))
+            throw new IllegalArgumentException(
+                    "relativeToOutputIRI="
+                            + relativeToOutputIRI
+                            + "; outputIRI="
+                            + outputIRI
+                            + "; absoluteRelativeLinkedIRI="
+                            + absoluteRelativeLinkedIRI);
         return relativeToOutputIRI.toString();
     }
 }
