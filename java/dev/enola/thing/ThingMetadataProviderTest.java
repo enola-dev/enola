@@ -52,7 +52,6 @@ public class ThingMetadataProviderTest {
                 @Override
                 public Thing get(String iri) {
                     var builder = ImmutableThing.builder();
-                    builder.set(KIRI.SCHEMA.ID, THING_IRI);
                     builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
                     return builder.build();
                 }
@@ -68,14 +67,6 @@ public class ThingMetadataProviderTest {
             };
 
     @Test
-    public void id() {
-        var iri = "https://server/thing";
-        assertThat(new ThingMetadataProvider(empty, NONS).getID(iri)).isEqualTo(iri);
-
-        assertThat(new ThingMetadataProvider(test, NONS).getID(iri)).isEqualTo(THING_IRI);
-    }
-
-    @Test
     public void label() {
         assertThat(new ThingMetadataProvider(empty, NONS).getLabel(THING_IRI)).isEqualTo("test");
 
@@ -85,7 +76,6 @@ public class ThingMetadataProviderTest {
 
     @Test
     public void error() {
-        assertThat(new ThingMetadataProvider(error, NONS).getID(THING_IRI)).isNotEmpty();
         assertThat(new ThingMetadataProvider(error, NONS).getLabel(THING_IRI)).isNotEmpty();
         assertThat(new ThingMetadataProvider(error, NONS).getDescriptionHTML(THING_IRI)).isEmpty();
         assertThat(new ThingMetadataProvider(error, NONS).getImageHTML(THING_IRI)).isEmpty();

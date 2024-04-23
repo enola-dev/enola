@@ -19,6 +19,8 @@ package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collection;
 
 /**
@@ -69,12 +71,12 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
      * (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List of
      * such items. The object is immutable. May be null if Thing has no such predicate.
      */
-    <T> T get(String predicateIRI);
+    <T> @Nullable T get(String predicateIRI);
 
     @SuppressWarnings("unchecked")
     default <T> T get(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
-        if (!klass.isInstance(object))
+        if (object != null && !klass.isInstance(object))
             throw new IllegalArgumentException(
                     iri() + "'s " + predicateIRI + " is " + object.getClass() + " not " + klass);
         return (T) object;

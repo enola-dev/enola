@@ -98,19 +98,20 @@ public class ThingUI {
     }
 
     private CharSequence link(String iri) {
+        var meta = metadataProvider.get(iri);
         var sb = new StringBuilder();
-        sb.append(metadataProvider.getImageHTML(iri));
+        sb.append(meta.imageHTML());
         sb.append(' ');
         // TODO s(uri) or not - or another escaping?
         sb.append("<a href=" + s("/ui/" + iri));
-        var description = metadataProvider.getDescriptionHTML(iri);
+        var description = meta.descriptionHTML();
         if (!description.isEmpty()) {
             sb.append(" title=\"");
             sb.append(s(description));
             sb.append('"');
         }
         sb.append('>');
-        sb.append(s(metadataProvider.getLabel(iri)));
+        sb.append(s(meta.label()));
         sb.append("</a>");
         return sb;
     }
