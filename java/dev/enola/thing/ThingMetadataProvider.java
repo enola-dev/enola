@@ -61,7 +61,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     /**
-     * Returns the Thing's {@link KIRI.RDFS.LABEL} or {@link KIRI.SCHEMA#NAME}, if any; otherwise
+     * Returns the Thing's {@link KIRI.RDFS#LABEL} or {@link KIRI.SCHEMA#NAME}, if any; otherwise
      * attempts to convert the IRI to a "CURIE", and if that also fails, it just extracts a "file
      * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
      * as-is.
@@ -97,8 +97,8 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     /**
-     * Returns the Thing's {@link KIRI.E#EMOJI}, if any; otherwise a HTML IMG tag using the URL from
-     * {@link KIRI.SCHEMA#IMG}, if any; and if neither tries the same on the Thing's {@link
+     * Returns the Thing's {@link KIRI.E#EMOJI}, if any; otherwise an HTML IMG tag using the URL
+     * from {@link KIRI.SCHEMA#IMG}, if any; and if neither tries the same on the Thing's {@link
      * KIRI.RDFS#CLASS}; if that also is not present, then gives up and just an empty String.
      */
     @Override

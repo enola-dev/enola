@@ -19,7 +19,9 @@ package dev.enola.common.io.resource;
 
 import org.junit.Test;
 
-public class HttpUrlResourceTest {
+public class UrlResourceTest {
+
+    // NB: ClasspathResourceTest (for ClasspathResource, which extends UrlResource) covers basics.
 
     // TODO Implement, using
     // https://docs.oracle.com/en/java/javase/17/docs/api/jdk.httpserver/module-summary.html ?
