@@ -6,7 +6,7 @@
     1. Domingo
     1. Felipe
     1. Jacinto
-* https://schema.org/birthDate: 1904-05-11(https://schema.org/Date)
+* https://schema.org/birthDate: 1904-05-11 <!-- https://schema.org/Date -->
 
 ---
 _This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_
