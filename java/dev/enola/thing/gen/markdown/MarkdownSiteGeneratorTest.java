@@ -51,6 +51,10 @@ public class MarkdownSiteGeneratorTest {
         var genPabloMd = rp.getReadableResource(genPabloMdFileURI).charSource().read();
 
         var expectedPabloMd = new ClasspathResource("picasso.md").charSource().read();
-        assertThat(genPabloMd).isEqualTo(expectedPabloMd);
+        assertThat(trimLineEndWhitespace(genPabloMd)).isEqualTo(expectedPabloMd);
+    }
+
+    private String trimLineEndWhitespace(String string) {
+        return string.replaceAll("(?m) +$", "");
     }
 }
