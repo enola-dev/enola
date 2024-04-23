@@ -111,7 +111,7 @@ class MarkdownThingGenerator {
 
             case STRUCT:
                 write(
-                        indent + "  ",
+                        indent + "    ",
                         value.getStruct().getFieldsMap(),
                         out,
                         outputIRI,

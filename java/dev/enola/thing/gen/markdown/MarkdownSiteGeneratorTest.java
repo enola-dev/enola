@@ -25,7 +25,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
-import dev.enola.thing.gen.DocGenConstants;
+import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
 
@@ -40,20 +40,17 @@ public class MarkdownSiteGeneratorTest {
         var rdf4jModel = new RdfReaderConverter().convert(cpr).get();
         var protoThingStream = new RdfThingConverter().convert(rdf4jModel);
         var protoThings =
-                protoThingStream
-                        .map(builder -> builder.build())
-                        .collect(ImmutableSet.toImmutableSet());
+                protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
 
         var rp = new ResourceProviders();
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp);
         mdDocsGen.generate(protoThings, iri -> false);
 
-        var pabloMdFileURI = dir.resolve("example.enola.dev/Picasso.md").toUri();
-        var pabloMd = rp.getReadableResource(pabloMdFileURI).charSource().read();
-        assertThat(pabloMd).contains("Pablo");
-        assertThat(pabloMd).endsWith(DocGenConstants.FOOTER);
+        var genPabloMdFileURI = dir.resolve("example.enola.dev/Picasso.md").toUri();
+        var genPabloMd = rp.getReadableResource(genPabloMdFileURI).charSource().read();
 
-        // TODO Compare with full expected MD instead contains & endsWith
+        var expectedPabloMd = new ClasspathResource("picasso.md").charSource().read();
+        assertThat(genPabloMd).isEqualTo(expectedPabloMd);
     }
 }
