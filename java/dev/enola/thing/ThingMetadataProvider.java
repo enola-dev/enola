@@ -24,6 +24,8 @@ import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.URIs;
 import dev.enola.thing.proto.Things;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,20 +53,26 @@ public class ThingMetadataProvider implements MetadataProvider {
 
     @Override
     public Metadata get(String iri) {
-        var imageHTML = "";
-        var descriptionHTML = "";
         Thing thing = null;
-
         try {
             thing = tp.get(iri);
-            imageHTML = getImageHTML(thing);
-            descriptionHTML = getDescriptionHTML(thing);
-
         } catch (Exception e) {
             log.warn("Could not get {}", iri, e);
         }
+        return get(thing, iri);
+    }
 
-        return new Metadata(imageHTML, getLabel(thing, iri), descriptionHTML);
+    @Override
+    public Metadata get(@Nullable Object object, String iri) {
+        if (object instanceof Thing) return get((Thing) object, iri);
+        else return get(iri);
+    }
+
+    private Metadata get(@Nullable Thing thing, @NonNull String fallbackIRI) {
+        var imageHTML = getImageHTML(thing);
+        var descriptionHTML = getDescriptionHTML(thing);
+        var label = getLabel(thing, fallbackIRI);
+        return new Metadata(imageHTML, label, descriptionHTML);
     }
 
     /**
@@ -73,20 +81,25 @@ public class ThingMetadataProvider implements MetadataProvider {
      * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
      * as-is.
      */
-    private String getLabel(Thing thing, String fallbackIRI) {
+    private String getLabel(@Nullable Thing thing, @NonNull String fallbackIRI) {
         var label = getString(thing, KIRI.RDFS.LABEL);
         if (label != null) return label;
 
         var name = getString(thing, KIRI.SCHEMA.NAME);
         if (name != null) return name;
 
-        if (thing != null) {
-            var curie = ns.toCURIE(thing.iri());
-            if (!curie.equals(thing.iri())) return curie;
-        }
+        var title = getString(thing, KIRI.DC.TITLE);
+        if (title != null) return title;
+
+        var curie = ns.toCURIE(fallbackIRI);
+        if (!curie.equals(fallbackIRI)) return curie;
 
         try {
-            return URIs.getFilename(IRIs.toURI(fallbackIRI));
+            var fallbackURI = IRIs.toURI(fallbackIRI);
+            var filename = URIs.getFilename(fallbackURI);
+            var fragment = fallbackURI.getFragment();
+            if (fragment != null) return filename + "#" + fragment;
+            else return filename;
         } catch (URISyntaxException e) {
             return fallbackIRI;
         }
@@ -115,8 +128,13 @@ public class ThingMetadataProvider implements MetadataProvider {
         if (thingImage != null) return thingImage;
 
         var rdfClassIRI = getString(thing, KIRI.RDFS.CLASS);
-        var rdfClassImage = getImageHTML_(tp.get(rdfClassIRI));
-        if (rdfClassImage != null) return rdfClassImage;
+        if (rdfClassIRI != null) {
+            var rdfClassThing = tp.get(rdfClassIRI);
+            if (rdfClassThing != null) {
+                var rdfClassImage = getImageHTML_(rdfClassThing);
+                if (rdfClassImage != null) return rdfClassImage;
+            }
+        }
 
         return "";
     }

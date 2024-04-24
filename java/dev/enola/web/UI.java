@@ -25,8 +25,7 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -42,8 +41,6 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.message.ThingProviderAdapter;
 
 import java.io.IOException;
 import java.net.URI;
@@ -65,7 +62,8 @@ public class UI implements WebHandler {
     private final ThingUI thingUI;
     private ProtoIO protoIO;
 
-    public UI(EnolaServiceBlockingStub service) throws DescriptorValidationException {
+    public UI(EnolaServiceBlockingStub service, MetadataProvider metadataProvider)
+            throws DescriptorValidationException {
         this.service = service;
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
@@ -74,15 +72,7 @@ public class UI implements WebHandler {
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
         thingProvider = new EnolaThingProvider(service);
 
-        // TODO This must be configurable & dynamic...
-        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
-        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
-
-        thingUI =
-                new ThingUI(
-                        new ThingMetadataProvider(
-                                new ThingProviderAdapter(thingProvider, datatypeRepository),
-                                namespaceConverter));
+        thingUI = new ThingUI(metadataProvider);
     }
 
     public void register(WebServer server) {

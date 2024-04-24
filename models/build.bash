@@ -19,6 +19,7 @@ set -euox pipefail
 
 # TODO Replace this Bash script with a Bazel BUILD
 
+rm -rf docs/models/
 cp -R models/ docs/
 rm docs/models/BUILD
 

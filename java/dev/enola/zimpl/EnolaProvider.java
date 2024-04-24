@@ -34,16 +34,16 @@ import dev.enola.model.enola.Get;
 
 public class EnolaProvider {
 
-    ProviderFromIRI<?> objectProvider =
+    private final ProviderFromIRI<?> objectProvider =
             new ResourceProviders(new EmptyResource.Provider(), new StringResource.Provider());
 
-    ObjectWithTypeTokenConverter converter =
+    private final ObjectWithTypeTokenConverter converter =
             new ObjectWithTypeTokenConverterChain(
                     ImmutableList.<ObjectWithTypeTokenConverter>builder()
                             .add(new IdentityObjectWithTypeConverter())
                             .build());
 
-    Repository<Action<?, ?>> actionsRepo =
+    private final Repository<Action<?, ?>> actionsRepo =
             new ActionRepositoryBuilder().store(new Get(objectProvider)).build();
 
     public Enola get() {

@@ -18,6 +18,7 @@
 package dev.enola.thing.gen.markdown;
 
 import dev.enola.common.io.MoreFileSystems;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
@@ -36,7 +37,7 @@ public class MarkdownSiteGenerator {
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
 
-    public MarkdownSiteGenerator(URI base, ResourceProvider rp) {
+    public MarkdownSiteGenerator(URI base, ResourceProvider rp, MetadataProvider metadataProvider) {
         this.base = base;
         if (!MoreFileSystems.URI_SCHEMAS.contains(base.getScheme()))
             throw new IllegalArgumentException(
@@ -47,7 +48,7 @@ public class MarkdownSiteGenerator {
                             + " not: "
                             + base);
 
-        this.mtg = new MarkdownThingGenerator();
+        this.mtg = new MarkdownThingGenerator(metadataProvider);
         this.rp = rp;
     }
 

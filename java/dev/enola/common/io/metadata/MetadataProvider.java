@@ -19,10 +19,14 @@ package dev.enola.common.io.metadata;
 
 import dev.enola.data.ProviderFromIRI;
 
+import org.jspecify.annotations.Nullable;
+
 public interface MetadataProvider extends ProviderFromIRI<Metadata> {
 
     @Override
     Metadata get(String iri);
+
+    Metadata get(@Nullable Object object, String iri);
 
     @Deprecated // TODO Replace with #get().label()
     String getLabel(String iri);

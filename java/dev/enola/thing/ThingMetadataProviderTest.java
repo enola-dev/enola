@@ -21,9 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.iri.NamespaceConverter;
 import dev.enola.common.io.iri.NamespaceConverterIdentity;
-import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.thing.message.ThingAdapter;
 
 import org.junit.Test;
 
@@ -31,17 +28,7 @@ public class ThingMetadataProviderTest {
 
     private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
 
-    private static final DatatypeRepository EMPTY_DTR = new DatatypeRepositoryBuilder().build();
-
-    private ThingProvider empty =
-            new ThingProvider() {
-
-                @Override
-                public Thing get(String iri) {
-                    return new ThingAdapter(
-                            dev.enola.thing.proto.Thing.getDefaultInstance(), EMPTY_DTR);
-                }
-            };
+    private static final ThingProvider NO_THING_PROVIDER = iri -> null;
 
     private String THING_IRI = "http://enola.dev/test";
     private String THING_LABEL = "DaThang!";
@@ -68,7 +55,8 @@ public class ThingMetadataProviderTest {
 
     @Test
     public void label() {
-        assertThat(new ThingMetadataProvider(empty, NONS).getLabel(THING_IRI)).isEqualTo("test");
+        assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).getLabel(THING_IRI))
+                .isEqualTo("test");
 
         assertThat(new ThingMetadataProvider(test, NONS).getLabel(THING_IRI))
                 .isEqualTo(THING_LABEL);

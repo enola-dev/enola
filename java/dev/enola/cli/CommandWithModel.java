@@ -17,6 +17,9 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.io.iri.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
@@ -28,14 +31,18 @@ import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.rosetta.RdfResourceIntoThingConverter;
 import dev.enola.core.type.TypeRepositoryBuilder;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.ThingRepository;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.proto.Thing;
 
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
@@ -105,6 +112,19 @@ public abstract class CommandWithModel implements CheckedRunnable {
         } finally {
             grpc.close();
         }
+    }
+
+    // TODO Move this to class EnolaProvider?
+    protected MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
+        // TODO look up in global repository!
+        var datatypeRepository = new DatatypeRepositoryBuilder().build();
+
+        // TODO This must be configurable & dynamic...
+        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+
+        return new ThingMetadataProvider(
+                new ThingProviderAdapter(thingProvider, datatypeRepository), namespaceConverter);
     }
 
     // TODO Pass only the EnolaServiceBlockingStub through, remove the EntityKindRepository from

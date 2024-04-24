@@ -33,6 +33,7 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
+import dev.enola.web.EnolaThingProvider;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -75,7 +76,8 @@ public class DocGen extends CommandWithModelAndOutput {
         var response = service.getThing(request);
         var any = response.getThing();
         var things = any.unpack(Things.class);
-        var mdsg = new MarkdownSiteGenerator(output, rp);
+        var mdp = getMetadataProvider(new EnolaThingProvider(service));
+        var mdsg = new MarkdownSiteGenerator(output, rp, mdp);
 
         var thingsList = things.getThingsList();
         var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());

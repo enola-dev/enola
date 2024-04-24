@@ -24,6 +24,9 @@ import static java.net.URI.create;
 import com.google.common.net.MediaType;
 import com.google.protobuf.Any;
 
+import dev.enola.common.io.iri.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
@@ -37,6 +40,11 @@ import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.data.ProviderFromIRI;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.thing.ThingMetadataProvider;
+import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
 
@@ -50,9 +58,13 @@ public class UiTest {
         try (var server = new SunServer(addr)) {
             var ekr = new EntityKindRepository();
             var esp = new EnolaServiceProvider(ekr);
-            try (var grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
+            var service = new TestService();
+            try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
                 var testGrpcService = grpc.get();
-                new UI(testGrpcService).register(server);
+                new UI(
+                                testGrpcService,
+                                getMetadataProvider(new EnolaThingProvider(testGrpcService)))
+                        .register(server);
                 server.start();
                 var rp = new ResourceProviders();
                 var port = server.getInetAddress().getPort();
@@ -91,6 +103,18 @@ public class UiTest {
                 // assertThat(label).isEqualTo("seconds");
             }
         }
+    }
+
+    private MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
+        // TODO look up in global repository!
+        var datatypeRepository = new DatatypeRepositoryBuilder().build();
+
+        // TODO This must be configurable & dynamic...
+        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+
+        return new ThingMetadataProvider(
+                new ThingProviderAdapter(thingProvider, datatypeRepository), namespaceConverter);
     }
 
     private static class TestService implements EnolaService {

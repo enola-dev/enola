@@ -51,11 +51,12 @@ public final class KIRI {
         public static final String EMOJI = NS + "emoji";
 
         /**
-         * Source URI of where e.g. a Thing was originally loaded from.
+         * URI of what something is 'based on', e.g. where it 'comes from' (source), such as where
+         * e.g. a Thing was originally "loaded" from.
          *
          * <p>TODO: Is there some existing standard vocabulary for this?
          */
-        public static final String SOURCE = NS + "source";
+        public static final String ORIGIN = NS + "origin";
     }
 
     /** Schema.org Properties. */
@@ -104,6 +105,15 @@ public final class KIRI {
         public static final String SAMEAS = NS + "sameAs";
 
         private SCHEMA() {}
+    }
+
+    /** Dublin Core */
+    public static final class DC {
+        private static final String NS = "http://purl.org/dc/elements/1.1/";
+
+        public static final String TITLE = NS + "title";
+
+        private DC() {}
     }
 
     public static final class RDF {

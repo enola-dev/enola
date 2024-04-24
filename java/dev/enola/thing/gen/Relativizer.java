@@ -52,24 +52,35 @@ public final class Relativizer {
             relativePath.deleteCharAt(relativePath.length() - 1); // Remove trailing slash
         }
 
-        return relativePath.toString();
+        if (!relativePath.isEmpty()) return relativePath.toString();
+        else return "#";
     }
 
     public static URI dropSchemeAddExtension(URI thingIRI, String extension) {
         if (thingIRI.getScheme().startsWith("http")) {
             var ssp = thingIRI.getSchemeSpecificPart();
+            var fragment = thingIRI.getFragment();
+            if (fragment != null) {
+                ssp = ssp + "/" + fragment;
+            }
             if (ssp.startsWith("//")) {
-                if (ssp.length() > 2) return URI.create(ssp.substring(2) + "." + extension);
-                else return URI.create("." + extension);
+                if (ssp.length() > 2) return URI.create(nos(ssp.substring(2)) + "." + extension);
+                else return URI.create("." + extension); // TODO ???
             } else if (ssp.startsWith("/")) {
-                if (ssp.length() > 1) return URI.create(ssp.substring(1) + "." + extension);
-                else return URI.create("." + extension);
-            } else return URI.create(ssp + "." + extension);
+                if (ssp.length() > 1) return URI.create(nos(ssp.substring(1)) + "." + extension);
+                else return URI.create("." + extension); // TODO ???
+            } else return URI.create(nos(ssp) + "." + extension);
         } else {
             // Intentionally WITHOUT adding extension, here;
             // this is typically a https://enola.dev/source property value like file:///.../some.ttl
             return thingIRI;
         }
+    }
+
+    /** No Slash! */
+    private static String nos(String path) {
+        if (!path.endsWith("/")) return path;
+        else return path.substring(0, path.length() - 1);
     }
 
     private Relativizer() {}

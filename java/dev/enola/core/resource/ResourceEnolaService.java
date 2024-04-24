@@ -30,6 +30,9 @@ import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.rosetta.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.message.ProtoThingProvider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URI;
 
 /**
@@ -39,6 +42,8 @@ import java.net.URI;
  */
 public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
     // TODO Remove implements EnolaService (only ProtoThingProvider)
+
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceEnolaService.class);
 
     private final RdfResourceIntoProtoThingConverter resourceToThingConverter;
     private final ResourceProvider rp;
@@ -59,8 +64,8 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
         var resource = rp.getReadableResource(uri);
         var opt = resourceToThingConverter.convert(resource);
         if (opt.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Unknown format, no parser for " + resource.mediaType() + " from " + iri);
+            LOG.warn("Unknown format, no parser for " + resource.mediaType() + " from " + iri);
+            return null;
         }
         var thingsList = opt.get();
         var message = resourceToThingConverter.asMessage(thingsList).build();
@@ -69,7 +74,10 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        return GetThingResponse.newBuilder().setThing(get(r.getIri())).build();
+        var builder = GetThingResponse.newBuilder();
+        var any = get(r.getIri());
+        if (any != null) builder.setThing(any);
+        return builder.build();
     }
 
     @Override
