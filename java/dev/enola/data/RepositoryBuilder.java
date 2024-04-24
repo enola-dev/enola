@@ -31,17 +31,33 @@ import java.util.Map;
 public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
         implements Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
 
-    private final Map<String, T> items = new HashMap<>();
+    private final Map<String, T> map = new HashMap<>();
 
     protected abstract String getIRI(T value);
+
+    protected T merge(T existing, T update) {
+        throw new UnsupportedOperationException("TODO Implement in subclass");
+    }
+
+    @Override
+    public void merge(T item) {
+        var iri = getIRI(item);
+        var existing = map.putIfAbsent(iri, item);
+        if (existing != null) map.put(iri, merge(existing, item));
+    }
 
     @Override
     @CanIgnoreReturnValue
     @SuppressWarnings("unchecked")
     public final B store(T item) {
         var iri = getIRI(item);
-        if (items.putIfAbsent(iri, item) != null)
-            throw new IllegalArgumentException(item.toString());
+        var existing = map.putIfAbsent(iri, item);
+        if (existing != null)
+            throw new IllegalArgumentException(
+                    item.toString()
+                            + " cannot replace "
+                            + existing.toString()
+                            + "; but consider using merge() instead of store()");
         return (B) this;
     }
 
@@ -61,7 +77,7 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
     }
 
     protected ImmutableSortedMap<String, T> buildMap() {
-        return ImmutableSortedMap.<String, T>naturalOrder().putAll(items).buildOrThrow();
+        return ImmutableSortedMap.<String, T>naturalOrder().putAll(map).buildOrThrow();
     }
 
     protected <O> O require(O what, String identification) {

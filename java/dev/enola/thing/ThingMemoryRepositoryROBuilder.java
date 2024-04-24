@@ -34,6 +34,11 @@ public class ThingMemoryRepositoryROBuilder
     }
 
     @Override
+    protected Thing merge(Thing existing, Thing update) {
+        return ThingMerger.merge(existing, update);
+    }
+
+    @Override
     public ThingRepository build() {
         return wrap(super.build());
     }

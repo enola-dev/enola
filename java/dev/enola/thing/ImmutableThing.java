@@ -69,24 +69,43 @@ public final class ImmutableThing extends AbstractThing {
         return datatypes.get(predicateIRI);
     }
 
+    @Override
+    public Thing.Builder copy() {
+        return new Builder(iri, properties, datatypes);
+    }
+
     private static final class Builder implements Thing.Builder {
 
         private String iri;
         private final ImmutableMap.Builder<String, Object> properties;
         private final ImmutableMap.Builder<String, String> datatypes;
 
-        public Builder() {
+        Builder() {
             properties = ImmutableMap.builder();
             datatypes = ImmutableMap.builder();
         }
 
-        public Builder(int expectedSize) {
+        Builder(int expectedSize) {
             properties = ImmutableMap.builderWithExpectedSize(expectedSize); // exact
             datatypes = ImmutableMap.builderWithExpectedSize(expectedSize); // upper bound
         }
 
+        Builder(
+                String iri,
+                final ImmutableMap<String, Object> properties,
+                final ImmutableMap<String, String> datatypes) {
+            iri(iri);
+            this.properties =
+                    ImmutableMap.<String, Object>builderWithExpectedSize(properties.size())
+                            .putAll(properties);
+            this.datatypes =
+                    ImmutableMap.<String, String>builderWithExpectedSize(properties.size())
+                            .putAll(datatypes);
+        }
+
         @Override
         public Thing.Builder iri(String iri) {
+            if (this.iri != null) throw new IllegalStateException("IRI already set: " + this.iri);
             this.iri = iri;
             return this;
         }
@@ -100,7 +119,7 @@ public final class ImmutableThing extends AbstractThing {
         @Override
         public Thing.Builder set(String predicateIRI, Object value, String datatypeIRI) {
             set(predicateIRI, value);
-            datatypes.put(predicateIRI, datatypeIRI);
+            if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;
         }
 

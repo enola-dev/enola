@@ -28,6 +28,19 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 public interface Store<B, T> {
 
+    // TODO Combine #store() and #merge() after all?!
+
+    /**
+     * Merge a T into this store.
+     *
+     * <p>If this store does not already have this T, then this does the same as {@link
+     * #store(Object)}.
+     *
+     * <p>Otherwise, an implementation specific strategy "merges" the existing and new T in the
+     * store.
+     */
+    void merge(T item);
+
     /**
      * Store a T.
      *

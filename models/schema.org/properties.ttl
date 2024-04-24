@@ -1,31 +1,75 @@
-@prefix enola:  <https://enola.dev/>.
-@prefix schema: <https://schema.org/> .
-@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
-@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+# TODO Load full https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/schema.ttl ?!
+# (For speed, this will require implementing caching in OkHttpResource and switching to it instead of UrlResource;
+#  among possibly a bit more other work; incl. implementing ORIGIN merging in class ThingMerger, etc.)
 
-# TODO Read the following (except for the enola:emoji) directly from https://schema.org ...
+@prefix : <https://schema.org/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-schema:identifier a rdf:Property;
-  schema:name "ID";
+@prefix enola:  <https://enola.dev/> .
+
+:identifier a rdf:Property ;
   enola:emoji "🆔";
-  # TODO How do we express the "constraint" that this has to be an IRI?
-  schema:description "IRI which identifies 🆔 a Thing. This is a 'logical' identity, and may or may not be an URL.".
+  rdfs:label "identifier" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :PropertyValue,
+                   :Text,
+                   :URL ;
+  rdfs:comment """The identifier property represents any kind of identifier for any kind of [[Thing]], such as ISBNs, GTIN codes, UUIDs etc. Schema.org provides dedicated properties for representing many of these, either as textual strings or as URL (URI) links. See [background notes](/docs/datamodel.html#identifierBg) for more details.
+        """ ;
+  owl:equivalentProperty dc:identifier .
 
-schema:name a rdf:Property;
-  schema:name "Name";
+:name a rdf:Property ;
   enola:emoji "🏷️";
-  schema:description "Name of a Thing; AKA its 🏷️ label.".
+  rdfs:label "name" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :Text ;
+  rdfs:comment "The name of the item." ;
+  rdfs:subPropertyOf rdfs:label ;
+  owl:equivalentProperty dc:title .
 
-schema:description a rdf:Property;
-  schema:name "Description";
+:description a rdf:Property ;
   enola:emoji "📜";
-  schema:description "Text with description 📜 of a Thing.".
+  rdfs:label "description" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :Text,
+                   :TextObject ;
+  rdfs:comment "A description of the item." ;
+  owl:equivalentProperty dc:description .
 
-schema:image a rdf:Property;
-  enola:emoji "🖼️".
+:image a rdf:Property ;
+  enola:emoji "🖼️";
+  rdfs:label "image" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :ImageObject,
+                   :URL ;
+  rdfs:comment "An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]." .
 
-schema:url a rdf:Property;
-  enola:emoji "🔗".
+:URL a rdfs:Class ;
+  rdfs:label "URL" ;
+  rdfs:comment "Data type: URL." ;
+  rdfs:subClassOf :Text .
 
-schema:sameAs a rdf:Property;
-  enola:emoji "🪞".
+:url a rdf:Property ;
+  enola:emoji "🔗";
+  rdfs:label "url" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :URL ;
+  rdfs:comment "URL of the item." .
+
+:urlTemplate a rdf:Property ;
+  rdfs:label "urlTemplate" ;
+  :domainIncludes :EntryPoint ;
+  :rangeIncludes :Text ;
+  rdfs:comment "An url template (RFC6570) that will be used to construct the target of the execution of the action." .
+
+:sameAs a rdf:Property ;
+  enola:emoji "🪞";
+  rdfs:label "sameAs" ;
+  :domainIncludes :Thing ;
+  :rangeIncludes :URL ;
+  rdfs:comment "URL of a reference Web page that unambiguously indicates the item's identity. E.g. the URL of the item's Wikipedia page, Wikidata entry, or official website." .
