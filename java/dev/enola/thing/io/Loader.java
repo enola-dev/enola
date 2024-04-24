@@ -60,7 +60,7 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
                             thingBuilder -> {
                                 thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
                                 var thing = thingBuilder.build();
-                                store.store(thing);
+                                store.merge(thing);
                             });
         }
     }

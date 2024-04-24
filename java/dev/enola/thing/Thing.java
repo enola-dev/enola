@@ -108,6 +108,8 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
 
     // TODO get... other types.
 
+    Builder copy();
+
     public interface Builder extends dev.enola.common.Builder<Thing> {
 
         Builder iri(String iri);

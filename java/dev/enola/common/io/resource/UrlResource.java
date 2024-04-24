@@ -36,6 +36,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
+/**
+ * Resource implemented with {@link URL#openStream()}.
+ *
+ * <p>Consider using {@link OkHttpResource} instead.
+ */
 public class UrlResource extends BaseResource implements ReadableResource {
 
     public static class Provider implements ResourceProvider {

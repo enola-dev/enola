@@ -101,20 +101,18 @@ class MarkdownThingGenerator {
             case LITERAL:
                 var literal = value.getLiteral();
                 out.append(literal.getValue());
-                out.append(' ');
-                // out.append("<!-- ");
+                out.append(" _");
                 writeMarkdownLink(literal.getDatatype(), out, outputIRI, base, isDocumentedIRI);
-                // out.append(" -->");
-                out.append('\n');
+                out.append("_\n");
                 break;
 
             case LANG_STRING:
                 var langString = value.getLangString();
                 out.append(langString.getText());
-                out.append(" @");
+                out.append(" `@");
                 // TODO Print emoji of LANG flag - itself read from a Thing...
                 out.append(langString.getLang());
-                out.append('\n');
+                out.append("`\n");
                 break;
 
             case STRUCT:

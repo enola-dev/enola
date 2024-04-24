@@ -52,7 +52,7 @@ public final class KIRI {
 
         /**
          * URI of what something is 'based on', e.g. where it 'comes from' (source), such as where
-         * e.g. a Thing was originally "loaded" from.
+         * e.g. a Thing was originally "loaded" from. This may be a list.
          *
          * <p>TODO: Is there some existing standard vocabulary for this?
          */

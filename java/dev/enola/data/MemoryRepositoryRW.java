@@ -34,11 +34,20 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     protected abstract String getIRI(T value);
 
+    protected abstract T merge(T existing, T update);
+
+    @Override
+    public void merge(T item) {
+        var iri = getIRI(item);
+        var existing = map.putIfAbsent(iri, item);
+        if (existing != null) map.put(iri, merge(existing, item));
+    }
+
     @Override
     @CanIgnoreReturnValue
-    public final Void store(T value) {
-        if (map.putIfAbsent(getIRI(value), value) != null)
-            throw new IllegalArgumentException(value.toString());
+    public final Void store(T item) {
+        if (map.putIfAbsent(getIRI(item), item) != null)
+            throw new IllegalArgumentException(item.toString());
         return null;
     }
 

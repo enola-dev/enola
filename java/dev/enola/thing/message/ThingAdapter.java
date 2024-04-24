@@ -23,6 +23,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.proto.Value.KindCase;
@@ -77,6 +78,17 @@ public final class ThingAdapter extends AbstractThing {
         var value = proto.getFieldsMap().get(predicateIRI);
         if (KindCase.LITERAL.equals(value.getKindCase())) return value.getLiteral().getDatatype();
         else return null;
+    }
+
+    @Override
+    public Builder copy() {
+        // TODO Alternatively to this approach, we could also wrap a Proto Thing Builder
+        var properties = properties();
+        var builder = ImmutableThing.builderWithExpectedSize(properties.size());
+        builder.iri(iri());
+        properties.forEach(
+                (predicate, value) -> builder.set(predicate, value, datatype(predicate)));
+        return builder;
     }
 
     private Object value(dev.enola.thing.proto.Value value) {

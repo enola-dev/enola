@@ -34,6 +34,11 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.util.function.Supplier;
 
+/**
+ * Resource implemented with <a href="https://square.github.io/okhttp/">OkHttp</a>.
+ *
+ * <p>Prefer this over {@link UrlResource} (in general).
+ */
 public class OkHttpResource extends BaseResource implements ReadableResource {
 
     // TODO Enable Caching to/from Disk!
