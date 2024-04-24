@@ -43,7 +43,7 @@ public class NamespaceRepositoryBuilder
 
     @Override
     public NamespaceRepository build() {
-        return new ImmutableNamespaceRepository(items.buildOrThrow(), prefixes.buildOrThrow());
+        return new ImmutableNamespaceRepository(buildMap(), prefixes.buildOrThrow());
     }
 
     private static class ImmutableNamespaceRepository

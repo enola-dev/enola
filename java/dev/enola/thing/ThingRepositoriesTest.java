@@ -35,6 +35,7 @@ public class ThingRepositoriesTest {
 
     private void checkStore(Store<?, Thing> thingStore) {
         thingStore.store(TEST_THING);
+        assertThrows(IllegalArgumentException.class, () -> thingStore.store(TEST_THING));
     }
 
     private void checkThingRepository(ThingRepository thingRepository) {
@@ -49,16 +50,12 @@ public class ThingRepositoriesTest {
         checkStore(store);
         var readOnlyRepo = store.build();
         checkThingRepository(readOnlyRepo);
-
-        store.store(TEST_THING);
-        assertThrows(IllegalArgumentException.class, () -> store.build());
     }
 
     @Test
     public void memoryRepositoryRW() {
         var readWriteRepoStore = new ThingMemoryRepositoryRW();
         checkStore(readWriteRepoStore);
-        assertThrows(IllegalArgumentException.class, () -> readWriteRepoStore.store(TEST_THING));
         checkThingRepository(readWriteRepoStore);
     }
 }
