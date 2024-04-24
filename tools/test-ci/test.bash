@@ -22,6 +22,8 @@ set -euox pipefail
 # shellcheck source=/dev/null
 source tools/asdf/install.bash
 
+rm -rf docs/models/
+
 # TODO Run all this only when model inputs change
 tools/protoc/protoc.bash
 
