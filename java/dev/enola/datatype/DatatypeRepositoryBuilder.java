@@ -33,7 +33,7 @@ public class DatatypeRepositoryBuilder
 
     @Override
     public DatatypeRepository build() {
-        return new ImmutableDatatypeRepository(items.buildOrThrow());
+        return new ImmutableDatatypeRepository(buildMap());
     }
 
     private static class ImmutableDatatypeRepository

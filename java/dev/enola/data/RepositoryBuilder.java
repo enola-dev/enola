@@ -24,11 +24,14 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.common.Builder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
 public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
         implements Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
 
-    protected final ImmutableSortedMap.Builder<String, T> items = ImmutableSortedMap.naturalOrder();
+    private final Map<String, T> items = new HashMap<>();
 
     protected abstract String getIRI(T value);
 
@@ -37,7 +40,8 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
     @SuppressWarnings("unchecked")
     public final B store(T item) {
         var iri = getIRI(item);
-        items.put(iri, item);
+        if (items.putIfAbsent(iri, item) != null)
+            throw new IllegalArgumentException(item.toString());
         return (B) this;
     }
 
@@ -53,7 +57,11 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
 
     @Override
     public Repository<T> build() {
-        return new RepositoryImpl<>(items.buildOrThrow());
+        return new RepositoryImpl<>(buildMap());
+    }
+
+    protected ImmutableSortedMap<String, T> buildMap() {
+        return ImmutableSortedMap.<String, T>naturalOrder().putAll(items).buildOrThrow();
     }
 
     protected <O> O require(O what, String identification) {
