@@ -19,6 +19,8 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import dev.enola.data.Store;
 
 import org.junit.Test;
@@ -47,12 +49,16 @@ public class ThingRepositoriesTest {
         checkStore(store);
         var readOnlyRepo = store.build();
         checkThingRepository(readOnlyRepo);
+
+        store.store(TEST_THING);
+        assertThrows(IllegalArgumentException.class, () -> store.build());
     }
 
     @Test
     public void memoryRepositoryRW() {
         var readWriteRepoStore = new ThingMemoryRepositoryRW();
         checkStore(readWriteRepoStore);
+        assertThrows(IllegalArgumentException.class, () -> readWriteRepoStore.store(TEST_THING));
         checkThingRepository(readWriteRepoStore);
     }
 }
