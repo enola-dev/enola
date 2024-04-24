@@ -53,13 +53,12 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
 
     @Override
     public Repository<T> build() {
-        return new RepositoryImpl<T>(items.buildOrThrow());
+        return new RepositoryImpl<>(items.buildOrThrow());
     }
 
     protected <O> O require(O what, String identification) {
         if (what == null) throw new IllegalArgumentException("Missing required: " + identification);
-        if (what instanceof String) {
-            String whatString = (String) what;
+        if (what instanceof String whatString) {
             if (whatString.trim().isEmpty())
                 throw new IllegalArgumentException("Empty: " + identification);
         }

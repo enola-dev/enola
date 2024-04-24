@@ -28,9 +28,15 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 public interface Store<B, T> {
 
+    /**
+     * Store a T.
+     *
+     * @throws IllegalArgumentException if this store already has this T
+     */
     @CanIgnoreReturnValue
     B store(T item);
 
+    /** Store multiple Ts; see {@link #store(Object)}. */
     @CanIgnoreReturnValue
     B store(Iterable<T> items);
 }

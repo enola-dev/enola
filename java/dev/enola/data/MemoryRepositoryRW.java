@@ -37,7 +37,8 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     @Override
     @CanIgnoreReturnValue
     public final Void store(T value) {
-        map.put(getIRI(value), value);
+        if (map.putIfAbsent(getIRI(value), value) != null)
+            throw new IllegalArgumentException(value.toString());
         return null;
     }
 
