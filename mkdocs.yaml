@@ -110,12 +110,14 @@ markdown_extensions:
   # https://squidfunk.github.io/mkdocs-material/reference/admonitions/
   - admonition
   - pymdownx.details
+  # https://facelessuser.github.io/pymdown-extensions/extensions/magiclink/
+  - pymdownx.magiclink
   # https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
   - pymdownx.highlight:
-      # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#highlight
-      #anchor_linenums: true
-      #line_spans: __span
-      #pygments_lang_class: true
+    # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#highlight
+    # anchor_linenums: true
+    # line_spans: __span
+    # pygments_lang_class: true
   # https://squidfunk.github.io/mkdocs-material/reference/diagrams/
   - pymdownx.superfences:
       custom_fences:

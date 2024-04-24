@@ -75,8 +75,10 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
 
     @Override
     public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-        String iri = r.getIri();
-        return GetThingResponse.newBuilder().setThing(get(iri)).build();
+        var builder = GetThingResponse.newBuilder();
+        var any = get(r.getIri());
+        if (any != null) builder.setThing(any);
+        return builder.build();
     }
 
     @Override

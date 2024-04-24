@@ -35,6 +35,14 @@ public class RelativizerTest {
     }
 
     @Test
+    public void relativizeSame() {
+        assertThat(
+                        Relativizer.relativize(
+                                URI.create("file:///foo/bar.md"), URI.create("file:///foo/bar.md")))
+                .isEqualTo("#");
+    }
+
+    @Test
     public void relativizeCannot() {
         assertThat(
                         Relativizer.relativize(
@@ -57,6 +65,12 @@ public class RelativizerTest {
         check("http:x", "x.md");
 
         check("file:///source.ttl", "file:///source.ttl");
+
+        check(
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "www.w3.org/1999/02/22-rdf-syntax-ns/type.md");
+        check("http://www.w3.org/2000/01/rdf-schema#", "www.w3.org/2000/01/rdf-schema.md");
+        check("http://www.w3.org/2000/01/rdf-schema", "www.w3.org/2000/01/rdf-schema.md");
     }
 
     private void check(String absThingIRI, String relIRI) {

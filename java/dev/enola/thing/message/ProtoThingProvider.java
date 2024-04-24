@@ -22,11 +22,13 @@ import com.google.protobuf.Any;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.ThingProvider;
 
+import org.jspecify.annotations.Nullable;
+
 /** Proto Thing variant of {@link ThingProvider} (which is for Java Things). */
 public interface ProtoThingProvider extends ProviderFromIRI<Any> {
     // TODO This should eventually replace all uses of ThingService...
 
-    @Override
     // TODO Replace Any with Things, by moving EnolaThingProvider's logic into core
-    Any get(String iri); // TODO throws ?? UncheckedIOException, ConversionException;
+    @Override
+    @Nullable Any get(String iri); // TODO throws ?? UncheckedIOException, ConversionException;
 }

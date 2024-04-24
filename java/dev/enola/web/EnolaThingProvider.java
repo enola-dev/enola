@@ -43,7 +43,6 @@ public class EnolaThingProvider
 
     private final MessageToThingConverter m2t = new MessageToThingConverter(new IDValueConverter());
     private final EnolaServiceBlockingStub service;
-    private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
 
     public EnolaThingProvider(EnolaServiceBlockingStub service)
@@ -52,7 +51,7 @@ public class EnolaThingProvider
 
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
-        typeRegistryWrapper = TypeRegistryWrapper.from(fds);
+        TypeRegistryWrapper typeRegistryWrapper = TypeRegistryWrapper.from(fds);
         var extensionRegistry = ExtensionRegistryLite.getEmptyRegistry();
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
     }

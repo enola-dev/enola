@@ -21,11 +21,16 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.io.iri.NamespaceConverter;
+import dev.enola.common.io.iri.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
+import dev.enola.thing.ThingMetadataProvider;
+import dev.enola.thing.ThingProvider;
 import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
@@ -35,6 +40,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class MarkdownSiteGeneratorTest {
+
+    ThingProvider NO_THING_PROVIDER = iri -> null;
+
+    NamespaceConverter nc =
+            new NamespaceConverterWithRepository(NamespaceRepositoryEnolaDefaults.INSTANCE);
 
     ResourceProvider rp = new ResourceProviders();
 
@@ -46,8 +56,10 @@ public class MarkdownSiteGeneratorTest {
         var protoThings =
                 protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
 
+        var metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
+
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
         mdDocsGen.generate(protoThings, iri -> false);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");

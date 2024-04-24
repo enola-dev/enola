@@ -58,7 +58,7 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
             things.get()
                     .forEach(
                             thingBuilder -> {
-                                thingBuilder.set(KIRI.E.SOURCE, resource.uri());
+                                thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
                                 var thing = thingBuilder.build();
                                 store.store(thing);
                             });

@@ -57,5 +57,9 @@ junit_tests(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/core",
         "//java/dev/enola/core:core_java_proto",
+        "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
+        "//java/dev/enola/thing:thing_java",
+        "//java/dev/enola/thing:thing_java_proto",
     ],
 )

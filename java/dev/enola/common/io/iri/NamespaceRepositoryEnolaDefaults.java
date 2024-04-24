@@ -26,7 +26,7 @@ public class NamespaceRepositoryEnolaDefaults {
                     .store("enola", "https://enola.dev/")
                     .store("xsd", "http://www.w3.org/2001/XMLSchema#")
                     .store("schema", "https://schema.org/")
-                    .store("dev/enola/rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+                    .store("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
                     .store("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
                     .store("foaf", "http://xmlns.com/foaf/0.1/")
                     .build();

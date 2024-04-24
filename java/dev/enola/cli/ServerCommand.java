@@ -20,10 +20,7 @@ package dev.enola.cli;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
-import dev.enola.web.RestAPI;
-import dev.enola.web.SunServer;
-import dev.enola.web.UI;
-import dev.enola.web.WebServer;
+import dev.enola.web.*;
 
 import picocli.CommandLine;
 
@@ -59,7 +56,8 @@ public class ServerCommand extends CommandWithModel {
         // HTML UI + JSON REST API
         if (ports.httpPort != null) {
             httpServer = new SunServer(new InetSocketAddress(ports.httpPort));
-            new UI(service).register(httpServer);
+            new UI(service, getMetadataProvider(new EnolaThingProvider(service)))
+                    .register(httpServer);
             new RestAPI(service).register(httpServer);
             httpServer.start();
             out.println(

@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableMap;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Thing is the central data structure of Enola.
@@ -73,17 +74,36 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
      */
     <T> @Nullable T get(String predicateIRI);
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Object of predicate, with type cast.
+     *
+     * <p>BEWARE: This may well fail and throw an <tt>IllegalArgumentException</tt>! You can never
+     * really be sure what Java type an object of a predicate is. If in doubt, use {@link
+     * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
+     * dev.enola.common.convert.ObjectClassConverter}.
+     */
     default <T> T get(String predicateIRI, Class<T> klass) {
+        return getOptional(predicateIRI, klass)
+                .orElseThrow(
+                        () ->
+                                new IllegalArgumentException(
+                                        iri() + "'s " + predicateIRI + " is not " + klass));
+    }
+
+    @SuppressWarnings("unchecked")
+    default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
-        if (object != null && !klass.isInstance(object))
-            throw new IllegalArgumentException(
-                    iri() + "'s " + predicateIRI + " is " + object.getClass() + " not " + klass);
-        return (T) object;
+        if (klass.isInstance(object)) return Optional.of((T) object);
+        else return Optional.empty();
     }
 
     default String getString(String predicateIRI) {
-        return get(predicateIRI, String.class);
+        return getOptional(predicateIRI, String.class)
+                .or(
+                        () ->
+                                getOptional(predicateIRI, LangString.class)
+                                        .map(langString -> langString.text()))
+                .orElse(null);
     }
 
     // TODO get... other types.

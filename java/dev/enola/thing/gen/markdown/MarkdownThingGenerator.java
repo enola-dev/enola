@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import dev.enola.common.io.metadata.Metadata;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
@@ -29,15 +31,26 @@ import java.util.function.Predicate;
 
 class MarkdownThingGenerator {
 
+    private final MetadataProvider metadataProvider;
+
+    MarkdownThingGenerator(MetadataProvider metadataProvider) {
+        this.metadataProvider = metadataProvider;
+    }
+
     void generate(
             Thing thing, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
             throws IOException {
-        // TODO Title with MetadataProvider, *AFTER* it's been refactored
+        var thingIRI = thing.getIri();
         out.append("# ");
-        // TODO IRI under title, as <link>
-        // TODO Make IRI path segments clickable?!
-        out.append(thing.getIri());
-        out.append("\n\n");
+        var md = metadataProvider.get(thing, thingIRI);
+        writeLabel(md, out);
+        out.append("\n\n<");
+        out.append(thingIRI);
+        out.append(">\n\n");
+        if (!md.descriptionHTML().isEmpty()) {
+            out.append(md.descriptionHTML());
+            out.append("\n\n");
+        }
 
         write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI);
 
@@ -58,8 +71,7 @@ class MarkdownThingGenerator {
 
             out.append(indent);
             out.append("* ");
-            // TODO Use MetadataProvider (again), *AFTER* it's been refactored
-            out.append(predicateIRI);
+            writeMarkdownLink(predicateIRI, out, outputIRI, base, isDocumentedIRI);
             out.append(": ");
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI);
@@ -77,12 +89,8 @@ class MarkdownThingGenerator {
         switch (value.getKindCase()) {
             case LINK:
                 var link = value.getLink();
-                out.append("[");
-                // TODO Use MetadataProvider (for the 3d time), *AFTER* it's been refactored
-                out.append(link);
-                out.append("](");
-                out.append(rel(link, outputIRI, base, isDocumentedIRI));
-                out.append(")\n");
+                writeMarkdownLink(link, out, outputIRI, base, isDocumentedIRI);
+                out.append('\n');
                 break;
 
             case STRING:
@@ -93,9 +101,11 @@ class MarkdownThingGenerator {
             case LITERAL:
                 var literal = value.getLiteral();
                 out.append(literal.getValue());
-                out.append(" <!-- ");
-                out.append(literal.getDatatype());
-                out.append(" -->\n");
+                out.append(' ');
+                // out.append("<!-- ");
+                writeMarkdownLink(literal.getDatatype(), out, outputIRI, base, isDocumentedIRI);
+                // out.append(" -->");
+                out.append('\n');
                 break;
 
             case LANG_STRING:
@@ -131,6 +141,27 @@ class MarkdownThingGenerator {
             default:
                 throw new IllegalStateException("TODO: " + value);
         }
+    }
+
+    private void writeMarkdownLink(
+            String iri, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
+            throws IOException {
+        out.append('[');
+        var md = metadataProvider.get(iri);
+        writeLabel(md, out);
+        out.append("](");
+        var href = rel(iri, outputIRI, base, isDocumentedIRI);
+        if (href.isEmpty()) throw new IllegalStateException(iri);
+        out.append(href);
+        out.append(')');
+    }
+
+    private void writeLabel(Metadata md, Appendable out) throws IOException {
+        if (!md.imageHTML().isEmpty()) {
+            out.append(md.imageHTML());
+            out.append(" ");
+        }
+        out.append(md.label());
     }
 
     private CharSequence rel(
