@@ -42,3 +42,5 @@ We call this _"Infrastructure as Linked Data"_ graphs.
 of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups. -->
 
 <!-- TODO The actual usage of [the underlying core](core.md) can be illustrated e.g. by its [Kubernetes Edition](k8s/index.md). -->
+
+PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie, and this is an SRE detective's tool!
