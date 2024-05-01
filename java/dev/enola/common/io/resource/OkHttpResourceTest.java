@@ -35,4 +35,9 @@ public class OkHttpResourceTest {
         assertThat(r.charSource().read()).ignoringCase().contains("<!doctype html>");
         assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
+
+    @Test(expected = IOException.class)
+    public void google404() throws IOException {
+        new OkHttpResource("http://www.google.com/bad").charSource().read();
+    }
 }

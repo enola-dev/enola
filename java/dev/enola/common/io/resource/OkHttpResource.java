@@ -99,10 +99,16 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     @Override
     public ByteSource byteSource() {
-        var request = new Request.Builder().url(uri().toString()).build();
+        String url = uri().toString();
+        var request = new Request.Builder().url(url).build();
         try {
             var response = client.newCall(request).execute();
-            return new InputStreamByteSource(() -> response.body().byteStream(), response::close);
+            if (response.isSuccessful())
+                return new InputStreamByteSource(
+                        () -> response.body().byteStream(), response::close);
+            else
+                return new ErrorByteSource(
+                        new IOException(response.code() + " " + url + " : " + response.message()));
         } catch (IOException e) {
             return new ErrorByteSource(e);
         }
@@ -112,7 +118,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
         private final Supplier<InputStream> inputStreamSupplier;
         private final Runnable closer;
 
-        public InputStreamByteSource(Supplier<InputStream> inputStreamSupplier, Runnable closer) {
+        InputStreamByteSource(Supplier<InputStream> inputStreamSupplier, Runnable closer) {
             this.inputStreamSupplier = inputStreamSupplier;
             this.closer = closer;
         }

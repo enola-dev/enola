@@ -57,7 +57,7 @@ public class ResourceProviders implements ResourceProvider {
                 new EmptyResource.Provider(),
                 new NullResource.Provider(),
                 new ErrorResource.Provider(),
-                new UrlResource.Provider(),
+                new OkHttpResource.Provider(), // NOT new UrlResource.Provider(),
                 new FileDescriptorResource.Provider(),
                 new TestResource.Provider());
     }
