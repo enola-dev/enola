@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Greeting Tutorial
+# Greeting Tutorialx
 
 Enola captures knowledge about _Things,_ and the relationships (links) between them.
 
@@ -41,9 +41,13 @@ $ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=fi
 
 [`greeting1.md`](greeting1.md) now contains:
 
-{% include "./greeting1.md" %}
+```markdown
+{% include-markdown "./greeting1.md" start="# greeting1" end="---" comments=false %}
+```
 
-Note how the greeting, in addition to our `message` from above, automagically got another _property_ named `origin` - click on it to learn what it's for!
+Note how the greeting, in addition to our `message` from above, automagically got another _property_ named `origin` - click on it to learn what it's for! Here is how this Markdown renders:
+
+{% include-markdown "./greeting1.md" start="# greeting1" end="---" comments=false %}
 
 ## Linked Data
 
@@ -62,10 +66,14 @@ $ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=fi
 
 [`greeting2.md`](greeting2.md) now contains:
 
-{% include "./greeting2.md" %}
+```markdown
+{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}
+```
 
-There are a couple of things we're illustrating here:
+There are a couple of things worth noting here:
 
-1. We've introduced the `@prefix` shortcut, just to avoid repeating `https://example.org/`.
-1. We're greating an _Object,_ the `https://example.org/world` - this is what _Linked Data_ is all about!
-1. That `world` object contains yet another link, but this one is different... can you tell how & why?
+1. We've introduced the `@prefix` shortcut, just to avoid repeating `https://example.org`.
+1. Instead of a `hello, world` string, we're now greeting an _Object,_ the `https://example.org/world` - this is what _Linked Data_ is all about!
+1. That `world` object contains yet another link, but this one is different... can you tell how & why, by clicking on `world` in the rendered Markdown below?
+
+{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}
