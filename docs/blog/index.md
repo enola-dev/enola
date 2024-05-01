@@ -20,7 +20,7 @@
 
 These are also posted to [the Enola.dev Announcements Google Group](https://groups.google.com/g/enoladev-announcements) - please click **_Join_** on it!
 
-* 2024-05-01: [April News](posts/2024-04.md)
+* 2024-05-01: [April 2024 News](posts/2024-04.md)
 * 2024-02-18: [Linked Thing UI v1](posts/ui1.md)
 * 2023-03-26: [DocGen v0.1](posts/docgen1.md)
 * 2023-03-19: [First Model](posts/model1.md)

@@ -1,0 +1,8 @@
+@prefix : <https://example.org/>.
+
+:greeting2
+  :message "hello";
+  :object :world.
+
+:world
+  :wikipedia <https://en.wikipedia.org/wiki/Earth>.

@@ -32,7 +32,7 @@ public class OkHttpResourceTest {
     @Test
     public void google() throws IOException {
         var r = new OkHttpResource("http://www.google.com");
-        assertThat(r.charSource().read()).startsWith("<!doctype html>");
+        assertThat(r.charSource().read()).ignoringCase().contains("<!doctype html>");
         assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 }

@@ -8,6 +8,7 @@ java_library(
         exclude = [
             "BUILD",
             "build.bash",
+            "example.org/**",
         ],
     ),
     visibility = ["//:__subpackages__"],

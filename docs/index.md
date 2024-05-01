@@ -43,4 +43,4 @@ of environments by modeling concepts from private environments and writing bespo
 
 <!-- TODO The actual usage of [the underlying core](core.md) can be illustrated e.g. by its [Kubernetes Edition](k8s/index.md). -->
 
-PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie, and this is an SRE detective's tool!
+<sub>PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub>

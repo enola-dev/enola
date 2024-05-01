@@ -21,13 +21,15 @@ site_name: Enola.dev
 site_url: https://www.enola.dev
 repo_url: https://github.com/enola-dev/enola
 edit_uri: blob/main/docs/
-copyright: Copyright &copy; 2023 The Enola <https://enola.dev> Authors
+copyright: Copyright &copy; 2023-2024 The Enola <https://enola.dev> Authors
 
 nav:
-  - News (Blog): blog/index.md
-  - Introduction: index.md
-  - Users:
-      - Overview: use/index.md
+  - Tutorial:
+      - News (Blog): blog/index.md
+      - Introduction: index.md
+      - Download: use/index.md
+      - Greeting: models/example.org/greeting.md
+  - Tools:
       - Help: use/help/index.md
       - Example Model: use/library/index.md
       - DocGen: use/docgen/index.md
@@ -80,7 +82,7 @@ theme:
     - navigation.path
     - navigation.top
     # - navigation.sections
-    # - navigation.tabs
+    - navigation.tabs
     # - navigation.tabs.sticky
     - search.suggest
     - search.share

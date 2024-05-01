@@ -57,8 +57,7 @@ if [ $# -eq 0 ]; then
     xargs -n 1 -0 sh -c 'tools/demo/build.bash $0 || exit 255'
 fi
 
-# This writes (temporarily) into docs/, not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
-models/build.bash
+# models/build.bash could be run at this point, but during we (have to) ran it in test-ci/test.bash already.
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml

@@ -1,0 +1,2 @@
+<https://example.org/greeting1>
+  <https://example.org/message> "hello, world".

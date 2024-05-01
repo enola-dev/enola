@@ -55,6 +55,8 @@ echo
 # <https://stackoverflow.com/a/75223617/421602>
 # do run on all files, even if a bit slower.
 # This prevents "cheating" and tech debt.
+#
+# PS: models/build.bash must have run already... TODO automate dependency, with Bazel?
 set +u
 if [ -z "$CI" ]; then
   echo "$ pre-commit run (locally, only changed files)"
