@@ -20,8 +20,8 @@ package dev.enola.common.io.metadata;
 /**
  * Metadata of an IRI, provided by {@link MetadataProvider}.
  *
- * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon. Or an 😃
- *     Emoji!
+ * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon or something
+ *     like that; or an 😃 Emoji!
  *     <p>Always returns something (never null), but may be empty String.
  * @param label Short human-readable 🏷️ label, as text; e.g. TITLE of HTML page found at the IRI.
  *     <p>Always returns text (never empty), but may fallback to e.g. last part of IRI.

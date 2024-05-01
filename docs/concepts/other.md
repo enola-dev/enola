@@ -127,6 +127,10 @@ Vaguely related other such tools include:
 * [Apache Jena](https://jena.apache.org)
 * [Apache Commons RDF API](https://commons.apache.org/proper/commons-rdf/)
 
+## Documentation Generation
+
+* [Snowman](https://github.com/glaciers-in-archives/snowman) _static site generator for SPARQL_
+
 ## Persistence
 
 Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself - but could integrate with some in the future?

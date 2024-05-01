@@ -14,13 +14,13 @@ enola:emoji a rdf:Property;
 enola:origin a rdf:Property;
   schema:name "Origin";
   rdfs:range xsd:anyURI;
-  schema:description "What something is 'based on', e.g. where it 'comes from'. This may be a list.";
+  schema:description "What something is _\"based on\",_ e.g. where it _\"comes from\"._ This may be a list.";
   enola:emoji "🏺".
 
 enolay:uri a rdf:Property;
   rdfs:range xsd:anyURI;
-  schema:description "The URI of a YAML !!Tag Type; see e.g. https://yaml.org/type/.".
+  schema:description "The URI of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".
 
 enolay:shorthand a rdf:Property;
   rdfs:range xsd:NCName;
-  schema:description "The Shorthand of a YAML !!Tag Type; see e.g. https://yaml.org/type/.".
+  schema:description "The Shorthand of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".
