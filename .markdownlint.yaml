@@ -50,6 +50,11 @@ MD013:
 MD026:
   punctuation: ",;:。，；："
 
+# Allow <sub> but no other inline HTML in source MD
+MD033:
+  allowed_elements:
+    - "sub"
+
 # Bare URL are OK
 MD034: false
 

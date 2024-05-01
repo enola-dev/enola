@@ -27,6 +27,9 @@ rm -rf docs/models/
 # TODO Run all this only when model inputs change
 tools/protoc/protoc.bash
 
+# This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
+models/build.bash
+
 ./test.bash
 
 # No files (which are not on .gitigore) should have been modified!

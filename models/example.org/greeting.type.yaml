@@ -21,4 +21,4 @@ uri: greet/{MESSAGE}
 # connectors:
 #   - fs:
 #       format: FORMAT_YAML
-#       path: models/tutorial/greeting/
+#       path: models/example.org/
