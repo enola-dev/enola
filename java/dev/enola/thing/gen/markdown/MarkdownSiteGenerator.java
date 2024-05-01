@@ -59,7 +59,8 @@ public class MarkdownSiteGenerator {
         this.rp = rp;
     }
 
-    public void generate(Iterable<Thing> things, Predicate<String> isDocumentedIRI)
+    public void generate(
+            Iterable<Thing> things, Predicate<String> isDocumentedIRI, boolean generateIndexFile)
             throws IOException {
 
         ImmutableMap.Builder<String, Metadata> metas =
@@ -79,14 +80,16 @@ public class MarkdownSiteGenerator {
             }
         }
 
-        // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
-        // something like existing index pages which were already generated from RDF Turtle, e.g.
-        // https://docs.enola.dev/models/www.w3.org/1999/02/22-rdf-syntax-ns/
+        if (generateIndexFile) {
+            // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
+            // something like existing index pages which were already generated from RDF Turtle,
+            // e.g. https://docs.enola.dev/models/www.w3.org/1999/02/22-rdf-syntax-ns/
 
-        var indexURI = base.resolve("index.md");
-        var indexResource = rp.getWritableResource(indexURI);
-        try (var writer = indexResource.charSink().openBufferedStream()) {
-            mig.generate(metas.build(), writer, indexURI, base, uri -> true);
+            var indexURI = base.resolve("index.md");
+            var indexResource = rp.getWritableResource(indexURI);
+            try (var writer = indexResource.charSink().openBufferedStream()) {
+                mig.generate(metas.build(), writer, indexURI, base, uri -> true);
+            }
         }
     }
 }
