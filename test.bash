@@ -57,15 +57,13 @@ echo
 # This prevents "cheating" and tech debt.
 #
 # PS: models/build.bash must have run already... TODO automate dependency, with Bazel?
-set +u
-if [ -z "$CI" ]; then
+if [ -z "${CI:-""}" ]; then
   echo "$ pre-commit run (locally, only changed files)"
   .venv/bin/pre-commit run
 else
   echo "$ pre-commit run --all-files (on CI)"
   .venv/bin/pre-commit run --all-files
 fi
-set -u
 
 tools/git/install-hooks.bash
 
