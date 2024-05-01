@@ -35,7 +35,7 @@ This means that `https://example.org/greeting1` identifies some _Thing_ which ha
 [Among other things](../../use/help/index.md), Enola can _generate documentation_ about _Things,_ like this:
 
 ```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=file://"$PWD"/docs/models/
+$ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=file://"$PWD"/docs/models/ --no-index
 ...
 ```
 
@@ -60,7 +60,7 @@ Now check out the [`greeting2.ttl`](greeting2.ttl):
 Let's generate documentation again, as above:
 
 ```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=file://"$PWD"/docs/models/
+$ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=file://"$PWD"/docs/models/ --no-index
 ...
 ```
 

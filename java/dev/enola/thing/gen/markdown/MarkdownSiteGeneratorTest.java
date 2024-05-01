@@ -60,7 +60,7 @@ public class MarkdownSiteGeneratorTest {
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
-        mdDocsGen.generate(protoThings, iri -> false);
+        mdDocsGen.generate(protoThings, iri -> false, true);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");

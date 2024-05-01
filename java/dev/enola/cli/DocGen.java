@@ -62,16 +62,26 @@ public class DocGen extends CommandWithModelAndOutput {
             description = "URI of Markdown header (e.g. file: or string:<URL-encoded> etc.)")
     URI headerURI;
 
+    @Option(
+            names = {"--index", "-i"},
+            negatable = true,
+            required = true,
+            defaultValue = "true",
+            fallbackValue = "true",
+            description = "Whether index.md should be generated")
+    boolean generateIndexFile;
+
     @Override
     public void run(EntityKindRepository ekr, EnolaServiceBlockingStub service) throws Exception {
         if (group.model != null) {
             singleMDDocForEntities(service);
         } else {
-            multipleMDDocsForThings(service);
+            multipleMDDocsForThings(service, generateIndexFile);
         }
     }
 
-    private void multipleMDDocsForThings(EnolaServiceBlockingStub service) throws Exception {
+    private void multipleMDDocsForThings(
+            EnolaServiceBlockingStub service, boolean generateIndexFile) throws Exception {
         var request = GetThingRequest.newBuilder().setIri(ENOLA_ROOT_LIST_THINGS).build();
         var response = service.getThing(request);
         var any = response.getThing();
@@ -81,7 +91,7 @@ public class DocGen extends CommandWithModelAndOutput {
 
         var thingsList = things.getThingsList();
         var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());
-        mdsg.generate(thingsList, allIRI::contains);
+        mdsg.generate(thingsList, allIRI::contains, generateIndexFile);
     }
 
     private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {
