@@ -33,6 +33,7 @@ java_library(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
@@ -46,6 +47,7 @@ java_library(
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_jsonld",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_turtle",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

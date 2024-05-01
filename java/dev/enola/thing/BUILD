@@ -74,6 +74,7 @@ java_library(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
@@ -99,6 +100,7 @@ junit_tests(
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",
         "//java/dev/enola/rdf",
+        "//models",
         "//test",
     ],
 )

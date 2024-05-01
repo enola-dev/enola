@@ -112,13 +112,15 @@ public final class ImmutableThing extends AbstractThing {
 
         @Override
         public Thing.Builder set(String predicateIRI, Object value) {
-            properties.put(predicateIRI, value);
+            if (value instanceof Literal literal)
+                set(predicateIRI, literal.value(), literal.datatypeIRI());
+            else properties.put(predicateIRI, value);
             return this;
         }
 
         @Override
         public Thing.Builder set(String predicateIRI, Object value, String datatypeIRI) {
-            set(predicateIRI, value);
+            properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;
         }

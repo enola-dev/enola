@@ -20,10 +20,11 @@ package dev.enola.common.convert;
 import java.io.IOException;
 import java.util.Optional;
 
-/** Converts an object to a requested (other) class, if it can. */
-public interface ObjectClassConverter {
-    // TODO Why?! ObjectClassConverter<I> convertToType(I input, Class<T> type)
+public class IdentityObjectClassConverter implements ObjectClassConverter {
 
-    // TODO Remove throws IOException again, as this seems dumb...
-    <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException;
+    @Override
+    public <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException {
+        if (input != null && type.isAssignableFrom(input.getClass())) return Optional.of((T) input);
+        return Optional.empty();
+    }
 }

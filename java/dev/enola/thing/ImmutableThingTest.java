@@ -48,4 +48,29 @@ public class ImmutableThingTest {
         assertThat(testThingToString).contains("example.com");
         assertThat(testThingToString).contains("hello");
     }
+
+    @Test
+    public void message() {
+        var testThing = ThingRepositoriesTest.TEST_THING;
+        assertThat(testThing.getString("http://example.com/message")).isEqualTo("hello");
+    }
+
+    @Test
+    public void link() {
+        var testThing = ThingRepositoriesTest.TEST_THING;
+        assertThat(testThing.getString("http://example.com/link")).isEqualTo("http://example.com");
+    }
+
+    @Test
+    public void langString() {
+        var testThing = ThingRepositoriesTest.TEST_THING;
+        assertThat(testThing.getString("http://example.com/mls")).isEqualTo("Saluton");
+    }
+
+    @Test
+    public void literal() {
+        var testThing = ThingRepositoriesTest.TEST_THING;
+        assertThat(testThing.datatype("http://example.com/lit")).isEqualTo("test:type");
+        assertThat(testThing.getString("http://example.com/lit")).isEqualTo("k&ç#'");
+    }
 }

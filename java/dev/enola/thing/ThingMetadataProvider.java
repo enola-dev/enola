@@ -142,7 +142,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         if (emoji != null) return emoji;
         var imageURL = getString(thing, KIRI.SCHEMA.IMG);
         // TODO ImageMetadataProvider which can determine (and cache!) width & height
-        if (imageURL != null) return "<img src=" + imageURL + "/>";
+        if (imageURL != null) return "<img src=\"" + imageURL + "\" style=\"max-height: 1em;\">";
         return null;
     }
 

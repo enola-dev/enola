@@ -28,7 +28,7 @@ nav:
       - News (Blog): blog/index.md
       - Introduction: index.md
       - Download: use/index.md
-      - Greeting: models/example.org/greeting.md
+      - Hello World: models/example.org/hello.md
       - Linked Data: models/example.org/linked.md
   - Tools:
       - Help: use/help/index.md

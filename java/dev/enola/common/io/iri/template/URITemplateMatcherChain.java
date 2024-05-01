@@ -50,6 +50,10 @@ public class URITemplateMatcherChain<T> {
         return new Builder<T>();
     }
 
+    public static <T> Builder<T> builderWithExpectedSize(int size) {
+        return new Builder<T>(size);
+    }
+
     private URITemplateMatcherChain(List<Entry<URITemplateSplitter, T>> splitters) {
         splitters.sort(COMPARATOR);
         this.splitters = splitters;
@@ -79,9 +83,15 @@ public class URITemplateMatcherChain<T> {
     }
 
     public static class Builder<T> implements dev.enola.common.Builder<URITemplateMatcherChain<T>> {
-        private Builder() {}
+        private Builder() {
+            splitters = new ArrayList<>();
+        }
 
-        private final List<Entry<URITemplateSplitter, T>> splitters = new ArrayList<>();
+        private Builder(int initialCapacity) {
+            splitters = new ArrayList<>(initialCapacity);
+        }
+
+        private final List<Entry<URITemplateSplitter, T>> splitters;
 
         @Override
         public URITemplateMatcherChain<T> build() {

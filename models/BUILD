@@ -10,6 +10,6 @@ java_library(
             "build.bash",
             "example.org/**",
         ],
-    ),
+    ) + ["example.org/greetingN.ttl"],
     visibility = ["//:__subpackages__"],
 )

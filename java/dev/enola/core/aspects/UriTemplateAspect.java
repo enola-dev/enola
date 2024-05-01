@@ -22,9 +22,9 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import com.github.fge.uritemplate.URITemplate;
 import com.github.fge.uritemplate.URITemplateException;
 import com.github.fge.uritemplate.URITemplateParseException;
-import com.github.fge.uritemplate.vars.VariableMap;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.io.iri.template.VariableMaps;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.common.validation.Validation;
 import dev.enola.common.validation.Validations;
@@ -91,12 +91,8 @@ public class UriTemplateAspect implements EntityAspectRepeater {
         // TODO Performance: Skip entirely if model has no uriTemplate...
 
         // Prepare all available template placeholder variables
-        var variablesBuilder = VariableMap.newBuilder();
         var map = IDs.pathMap(entityKind.getId(), entity.getId());
-        for (var entry : map.entrySet()) {
-            variablesBuilder.addScalarValue("path." + entry.getKey(), entry.getValue());
-        }
-        VariableMap variables = variablesBuilder.freeze();
+        var variables = VariableMaps.from(map, "path.");
 
         try {
             // Set an Entity's #link-s based on EntityKind.Link's #uri_template

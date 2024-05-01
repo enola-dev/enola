@@ -34,8 +34,22 @@ class MarkdownLinkWriter {
             URI base,
             Predicate<String> isDocumentedIRI)
             throws IOException {
+        writeMarkdownLink(iri, meta, out, outputIRI, base, isDocumentedIRI, "");
+    }
+
+    void writeMarkdownLink(
+            String iri,
+            Metadata meta,
+            Appendable out,
+            URI outputIRI,
+            URI base,
+            Predicate<String> isDocumentedIRI,
+            String format)
+            throws IOException {
         out.append('[');
+        out.append(format);
         writeLabel(meta, out);
+        out.append(format);
         out.append("](");
         var href = rel(iri, outputIRI, base, isDocumentedIRI);
         if (href.isEmpty()) throw new IllegalStateException(iri);

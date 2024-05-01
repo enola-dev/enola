@@ -15,15 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.rosetta;
+package dev.enola.rdf;
 
 import com.google.protobuf.Message;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.rdf.RdfReaderConverter;
-import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
