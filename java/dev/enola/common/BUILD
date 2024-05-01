@@ -27,6 +27,7 @@ java_library(
     deps = [
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
+        "@maven//:dev_dirs_directories",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )

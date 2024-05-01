@@ -20,18 +20,21 @@ package dev.enola.common.io.resource;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
 import java.util.function.Supplier;
 
 /**
@@ -41,11 +44,21 @@ import java.util.function.Supplier;
  */
 public class OkHttpResource extends BaseResource implements ReadableResource {
 
-    // TODO Enable Caching to/from Disk!
-    // https://square.github.io/okhttp/features/caching/
-    // https://square.github.io/okhttp/5.x/okhttp/okhttp3/-ok-http-client/index.html
+    private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
 
-    public static final OkHttpClient client = new OkHttpClient();
+    // https://square.github.io/okhttp/features/caching/
+    private static final File cacheDir =
+            new File(FreedesktopDirectories.CACHE_FILE, OkHttpResource.class.getSimpleName());
+    private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
+    private static final OkHttpClient client = new OkHttpClient.Builder().cache(cache).build();
+
+    static {
+        try {
+            Files.createDirectories(cacheDir.toPath());
+        } catch (IOException e) {
+            LOG.warn("Failed to create cache directory: {}", cacheDir.getAbsolutePath(), e);
+        }
+    }
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
