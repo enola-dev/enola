@@ -60,7 +60,7 @@ _This may be out of date (please help to update it) - it's just so much easier t
 
 If you do still want to try, here's how to manually install what the development environment container comes built-in with:
 
-1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](../../.bazelrc).
+1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](//.bazelrc).
    There are different Java (like Linux) "distributions" (all based on OpenJDK).
    The easiest way to install one of them is typically to use your OS' package manager:
 

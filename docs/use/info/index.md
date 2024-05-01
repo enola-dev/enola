@@ -20,21 +20,21 @@
 
 ## Extensions
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola info extensions
 ...
 ```
 
 ## Detect
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola info detect https://www.google.com
 ...
 ```
 
 or:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola info detect file:picasso.thing.yaml
 ...
 ```

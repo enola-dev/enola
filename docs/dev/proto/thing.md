@@ -24,4 +24,4 @@ bazel-bin/common/thing/thing_proto_doc/thing_proto_doc.md
 
 BY THE tools/docs/build.sh SCRIPT!
 
-## dev-enola-thing-Thing
+## thing

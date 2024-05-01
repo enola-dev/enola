@@ -20,7 +20,7 @@
 
 Because the "schemas" are internally Entities (of _Kind_ `enola.schema`), they can also [be listed](index.md):
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola list --model "empty:?mediaType=application/json" --format=yaml enola.schema
 ...
 ```

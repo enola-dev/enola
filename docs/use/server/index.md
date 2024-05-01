@@ -40,7 +40,7 @@ so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
 
 ## gRPC
 
-The `--grpcPort` flag starts [the Enola gRPC API](.././../dev/proto/core#enolaservice).
+The `--grpcPort` flag starts [the Enola gRPC API](../../dev/proto/core.md#enolaservice).
 
 This can be used by the Enola CLI Client's `--server` flag, instead of passing a `--model` file, like so:
 
@@ -68,7 +68,7 @@ related:
     paths: [0-13-140731-7]
 ```
 
-This is the same as a direct "in-process" [Get Entity](../get/) would have:
+This is the same as a direct "in-process" [Get Entity](../get/index.md) would have:
 
     ./enola get --model file:docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
 

@@ -22,7 +22,7 @@ _ExecMD_ is a tool ([not a Dr.](https://memory-alpha.fandom.com/wiki/I%27m_a_doc
 
 ## Usage
 
-A code block such as this one in [`demo.md`](../../../docs/use/execmd/demo.md):
+A code block such as this one in [`demo.md`](demo.md):
 
 ```yaml
     ```bash
@@ -68,7 +68,7 @@ The commands in the MD are also extracted and written into a file named `script`
 
 ## CLI Options
 
-```bash $? cd .././.././..
+```bash $? cd ../.././..
 $ ./enola execmd --help
 ...
 ```

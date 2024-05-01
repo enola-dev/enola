@@ -28,13 +28,13 @@
 
 As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#updating-maven_installjson :
 
-1. Edit [dependencies](dependencies.md) in [`WORKSPACE.bazel`](../../WORKSPACE.bazel) (later [`MODULE.bazel`](../../MODULE.bazel))
+1. Edit [dependencies](dependencies.md) in [`WORKSPACE.bazel`](//WORKSPACE.bazel) (later [`MODULE.bazel`](//MODULE.bazel))
 
 1. `REPIN=1 b run @unpinned_maven//:pin`
 
 PS: Use `b query "@maven//:*"` to see all targets.
 
-PPS: Consult the [`maven_install.json`](../../maven_install.json) to see artifacts versions, dependencies, and packages.
+PPS: Consult the [`maven_install.json`](//maven_install.json) to see artifacts versions, dependencies, and packages.
 
 ### Update Existing Maven dependencies
 

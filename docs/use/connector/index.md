@@ -19,7 +19,7 @@
 # Connectors
 
 Every _Entity Kind_ has a list of
-[`connectors`](.././../dev/proto/core#connector). The
+[`connectors`](../../dev/proto/core.md#connector). The
 [`get` CLI](../get/index.md) (and [Web Server UI](../server/index.md))
 automatically invoke each of these connectors to "augment" an _Entity._ (They
 are called in the declared order, and each "stage" can "add on" to the
@@ -63,7 +63,7 @@ with this `demo.book_kind/0-13-140731-7.yaml`:
 
 will cause:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola get --model file:docs/use/connector/model-fs.yaml demo.book_kind/0-13-140731-7
 ...
 ```
@@ -73,7 +73,7 @@ The File System Repository Connector [does not yet support the `Any` fields in `
 ## gRPC
 
 This connector complements entities by invoking a [remote gRPC](https://grpc.io) microservice
-which implements [the ConnectorService API](.././../dev/proto/core#connectorservice). You can
+which implements [the ConnectorService API](../../dev/proto/core.md#connectorservice). You can
 (and should) implement this yourself, but just for illustration, let's use
 [a trivial demo one](https://github.com/enola-dev/enola/blob/main/connectors/demo/src/main/java/dev/enola/demo/DemoConnector.java).
 For example, this `model-grpc.yaml`:
@@ -103,7 +103,7 @@ this `model-error.yaml`:
 
 will cause:
 
-```bash $? cd .././.././..
+```bash $? cd ../.././..
 $ ./enola get --model file:docs/use/connector/model-error.yaml demo.book_kind/0-13-140731-7
 ...
 ```
@@ -121,7 +121,7 @@ like this:
 
 which will cause:
 
-```bash $? cd .././.././..
+```bash $? cd ../.././..
 $ ./enola get --model file:docs/use/connector/model-java.yaml demo.book_kind/0-13-140731-7
 ...
 ```

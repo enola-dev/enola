@@ -68,6 +68,27 @@ nav:
       - Comparison: concepts/other.md
       - Security Policy: SECURITY.md
 
+not_in_nav: |
+  models/**
+  blog/posts/*.md
+
+exclude_docs: |
+  BUILD
+
+# https://www.mkdocs.org/user-guide/configuration/#validation
+validation:
+  nav:
+    # TODO Eventually make omitted_files warn instead of info...
+    omitted_files: info
+    not_found: warn
+    absolute_links: warn
+  links:
+    not_found: warn
+    # TODO Eventually make anchors warn instead of info...
+    anchors: info
+    absolute_links: warn
+    unrecognized_links: warn
+
 theme:
   logo: images/enola-293_293-transparent.png
   favicon: images/enola-293_293-transparent.png
