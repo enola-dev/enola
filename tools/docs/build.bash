@@ -57,10 +57,9 @@ fi
 
 # models/build.bash could be run at this point, but during we (have to) ran it in test-ci/test.bash already.
 
-# TODO find docs/ -name "*.md" ... or execmd with glob, instead of hard-coding
 TOOLS_DIR=$(realpath "$(dirname "$0")")
 ENOLA="$TOOLS_DIR"/../../enola
-"$ENOLA" -vvvvvvv execmd -i docs/models/example.org/greeting.md
+"$ENOLA" -vvvvvvv execmd -i docs/models/example.org/*.md
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
