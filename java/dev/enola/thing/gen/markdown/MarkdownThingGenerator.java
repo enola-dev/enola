@@ -20,7 +20,6 @@ package dev.enola.thing.gen.markdown;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.gen.DocGenConstants;
-import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
@@ -29,32 +28,35 @@ import java.net.URI;
 import java.util.Map;
 import java.util.function.Predicate;
 
+/** Generates the Markdown showing details about one Thing. */
 class MarkdownThingGenerator {
 
     private final MetadataProvider metadataProvider;
+    private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
 
     MarkdownThingGenerator(MetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
     }
 
-    void generate(
+    Metadata generate(
             Thing thing, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
             throws IOException {
         var thingIRI = thing.getIri();
         out.append("# ");
-        var md = metadataProvider.get(thing, thingIRI);
-        writeLabel(md, out);
+        var meta = metadataProvider.get(thing, thingIRI);
+        linkWriter.writeLabel(meta, out);
         out.append("\n\n<");
         out.append(thingIRI);
         out.append(">\n\n");
-        if (!md.descriptionHTML().isEmpty()) {
-            out.append(md.descriptionHTML());
+        if (!meta.descriptionHTML().isEmpty()) {
+            out.append(meta.descriptionHTML());
             out.append("\n\n");
         }
 
         write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI);
 
         out.append(DocGenConstants.FOOTER);
+        return meta;
     }
 
     private void write(
@@ -71,7 +73,8 @@ class MarkdownThingGenerator {
 
             out.append(indent);
             out.append("* ");
-            writeMarkdownLink(predicateIRI, out, outputIRI, base, isDocumentedIRI);
+            var meta = metadataProvider.get(predicateIRI);
+            linkWriter.writeMarkdownLink(predicateIRI, meta, out, outputIRI, base, isDocumentedIRI);
             out.append(": ");
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI);
@@ -89,7 +92,8 @@ class MarkdownThingGenerator {
         switch (value.getKindCase()) {
             case LINK:
                 var link = value.getLink();
-                writeMarkdownLink(link, out, outputIRI, base, isDocumentedIRI);
+                var meta = metadataProvider.get(link);
+                linkWriter.writeMarkdownLink(link, meta, out, outputIRI, base, isDocumentedIRI);
                 out.append('\n');
                 break;
 
@@ -102,7 +106,10 @@ class MarkdownThingGenerator {
                 var literal = value.getLiteral();
                 out.append(literal.getValue());
                 out.append(" _");
-                writeMarkdownLink(literal.getDatatype(), out, outputIRI, base, isDocumentedIRI);
+                var datatypeIRI = literal.getDatatype();
+                var datatypeMeta = metadataProvider.get(datatypeIRI);
+                linkWriter.writeMarkdownLink(
+                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI);
                 out.append("_\n");
                 break;
 
@@ -138,40 +145,6 @@ class MarkdownThingGenerator {
 
             default:
                 throw new IllegalStateException("TODO: " + value);
-        }
-    }
-
-    private void writeMarkdownLink(
-            String iri, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
-            throws IOException {
-        out.append('[');
-        var md = metadataProvider.get(iri);
-        writeLabel(md, out);
-        out.append("](");
-        var href = rel(iri, outputIRI, base, isDocumentedIRI);
-        if (href.isEmpty()) throw new IllegalStateException(iri);
-        out.append(href);
-        out.append(')');
-    }
-
-    private void writeLabel(Metadata md, Appendable out) throws IOException {
-        if (!md.imageHTML().isEmpty()) {
-            out.append(md.imageHTML());
-            out.append(" ");
-        }
-        out.append(md.label());
-    }
-
-    private CharSequence rel(
-            String linkIRI, URI outputIRI, URI base, Predicate<String> isDocumentedIRI) {
-        if (!isDocumentedIRI.test(linkIRI)) {
-            if (linkIRI.startsWith("file:"))
-                return Relativizer.relativize(outputIRI, URI.create(linkIRI));
-            else return linkIRI;
-        } else {
-            var relativeLinkedIRI = Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
-            var absoluteRelativeLinkedIRI = base.resolve(relativeLinkedIRI);
-            return Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
         }
     }
 }

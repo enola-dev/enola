@@ -17,7 +17,11 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import com.google.common.collect.ImmutableMap;
+
+import dev.enola.common.MoreIterables;
 import dev.enola.common.io.MoreFileSystems;
+import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.gen.Relativizer;
@@ -30,12 +34,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.function.Predicate;
 
+/** Generates a "site" of Markdown files, given some Things. */
 public class MarkdownSiteGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(MarkdownSiteGenerator.class);
 
     private final URI base;
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
+    private final MarkdownIndexGenerator mig;
 
     public MarkdownSiteGenerator(URI base, ResourceProvider rp, MetadataProvider metadataProvider) {
         this.base = base;
@@ -49,11 +55,16 @@ public class MarkdownSiteGenerator {
                             + base);
 
         this.mtg = new MarkdownThingGenerator(metadataProvider);
+        this.mig = new MarkdownIndexGenerator();
         this.rp = rp;
     }
 
     public void generate(Iterable<Thing> things, Predicate<String> isDocumentedIRI)
             throws IOException {
+
+        ImmutableMap.Builder<String, Metadata> metas =
+                ImmutableMap.builderWithExpectedSize(MoreIterables.sizeIfKnown(things).orElse(7));
+
         // TODO Do this multi-threaded, in parallel...
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
@@ -63,8 +74,19 @@ public class MarkdownSiteGenerator {
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
-                mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI);
+                var meta = mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI);
+                metas.put(thingIRI, meta);
             }
+        }
+
+        // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
+        // something like existing index pages which were already generated from RDF Turtle, e.g.
+        // https://docs.enola.dev/models/www.w3.org/1999/02/22-rdf-syntax-ns/
+
+        var indexURI = base.resolve("index.md");
+        var indexResource = rp.getWritableResource(indexURI);
+        try (var writer = indexResource.charSink().openBufferedStream()) {
+            mig.generate(metas.build(), writer, indexURI, base, uri -> true);
         }
     }
 }

@@ -8,7 +8,8 @@
     { "pattern": "^https://virtuoso.openlinksw.com" },
     { "pattern": "^https://tiddlywiki.com" },
     { "pattern": "^https://marketplace.visualstudio.com" },
-    { "pattern": "^https://www.hl7.org/fhir/" }
+    { "pattern": "^https://www.hl7.org/fhir/" },
+    { "pattern": "^https://metaphacts.com" }
   ],
-  "aliveStatusCodes": [503, 405, 200, 0]
+  "aliveStatusCodes": [503, 502, 405, 200, 0]
 }

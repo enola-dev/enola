@@ -39,6 +39,7 @@ nav:
       - Rosetta: use/rosetta/index.md
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
+  - Models: models/index.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
