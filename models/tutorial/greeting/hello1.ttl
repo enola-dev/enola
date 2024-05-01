@@ -1,0 +1,4 @@
+@prefix : <https://example.org/>.
+
+:greeting1
+  :message "hello, world".
