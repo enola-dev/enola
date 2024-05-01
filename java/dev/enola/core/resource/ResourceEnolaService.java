@@ -27,7 +27,7 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
-import dev.enola.core.rosetta.RdfResourceIntoProtoThingConverter;
+import dev.enola.rdf.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.message.ProtoThingProvider;
 
 import org.slf4j.Logger;

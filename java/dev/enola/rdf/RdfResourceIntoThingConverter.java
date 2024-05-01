@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.rosetta;
+package dev.enola.rdf;
 
 import com.google.common.collect.ImmutableList;
 

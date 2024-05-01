@@ -17,6 +17,55 @@ enola:origin a rdf:Property;
   schema:description "What something is _\"based on\",_ e.g. where it _\"comes from\"._ This may be a list.";
   enola:emoji "🏺".
 
+enola:wikidata a rdf:Property;
+  schema:image <https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikidata-logo.svg>;
+  # https://www.wikidata.org/wiki/Wikidata:Data_access#Linked_Data_Interface_(URI)
+  schema:url "http://www.wikidata.org/entity/{VALUE}"^^enola:IRITemplate;
+  schema:description "Wikidata Q123 or P123 etc.".
+  # TODO Range (?) is a RegExp like [QP][0-9]+ or so...
+
+enola:wikipedia a rdf:Property;
+  schema:image <https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg>;
+  schema:description "Wikipedia EN page ID (not URL), e.g. 'Wikipedia' (for https://en.wikipedia.org/wiki/Wikipedia)";
+  schema:url "https://en.wikipedia.org/wiki/{VALUE}"^^enola:IRITemplate.
+  # TODO Range (?) is a RegExp like [a-zA-Z0-9_]+ (but without slash or colon!) or whatever it is...
+
+enola:iriTemplate a rdf:Property;
+  rdfs:domain rdfs:Class;
+  rdfs:range enola:IRITemplate.
+  # TODO ? schema:description "Enola 'copies' (infers?) most other properties of the Class (Thing) with this property to any Things who's IRI matches this template; including filling in any variables.".
+
+enola:IRITemplate a rdfs:Datatype;
+  schema:name "IRI Template";
+  # TODO ? schema:description "Enola can convert properties of this datatype to string by replacing variables.";
+  enola:wikipedia "URI_Template";
+  enola:wikidata "2467760";
+  enola:rfc "6570";
+  enola:gkg "m/05q4zt_";
+  enola:emoji "{}".
+  # TODO rdfs:range (?) how to?
+
+enola:example a rdf:Property;
+  rdfs:domain rdfs:Class;
+  schema:description "Link to an example of this Class. Often used together with iriTemplate, but not exclusively.";
+  rdfs:seeAlso enola:iriTemplate;
+  rdfs:range xsd:anyURI;
+  enola:emoji "🤔".
+
+enola:gkg a rdf:Property;
+  rdfs:range enola:GKG.
+
+enola:GKG a rdfs:Datatype;
+  schema:name "Google Knowledge Graph ID";
+  schema:description "ID in Google's Knowledge Graph (formerly AKA Freebase), see e.g. https://developers.google.com/knowledge-graph/; starts without slash, but with 'm' or 'g' following by a slash and lower case characters, numbers and underscores; e.g. g/11bwcf511s";
+  enola:iriTemplate "kg:/{VALUE}";
+  schema:url "https://www.google.com/search?kgmid=/{VALUE}"^^enola:IRITemplate.
+  # TODO Range (?) is a RegExp like "[mg]/[a-z0-9_]+
+
+enola:rfc a rdf:Property;
+  rdfs:range xsd:positiveInteger;
+  schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
+
 enolay:uri a rdf:Property;
   rdfs:range xsd:anyURI;
   schema:description "The URI of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".

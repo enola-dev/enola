@@ -57,6 +57,9 @@ public final class KIRI {
          * <p>TODO: Is there some existing standard vocabulary for this?
          */
         public static final String ORIGIN = NS + "origin";
+
+        public static final String IRI_TEMPLATE_PROPERTY = NS + "iriTemplate";
+        public static final String IRI_TEMPLATE_DATATYPE = NS + "IRITemplate";
     }
 
     /** Schema.org Properties. */

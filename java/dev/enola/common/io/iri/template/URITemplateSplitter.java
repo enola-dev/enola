@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  * https://github.com/teaconmc/urlpattern/issues/1). This class is intentionally limited, and only
  * fulfills the current needs of this project. It still has a lot of gaps. If you read this and need
  * it to do more and better, please improve it, along with its coverage in URITemplateSplitterTest
- * and URITemplateTest!
+ * and URITemplateTest! (Or find some existing library which does this?)
  */
 public class URITemplateSplitter {
 

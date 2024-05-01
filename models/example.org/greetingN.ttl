@@ -1,0 +1,12 @@
+@prefix :       <https://example.org/>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/>.
+
+:greeting a rdfs:Class;
+  enola:iriTemplate "https://example.org/greeting{NUMBER}";
+  # TODO ^^enola:(IRI)Template should later be automatically detected via Datatype...
+  # TODO Support? schema:description "Greeting #{NUMBER}"^^enola:Template;
+  :yo               "http://example.org/hi/{NUMBER}"^^enola:IRITemplate;
+  enola:example     <https://example.org/greeting42>;
+  enola:emoji       "👋".

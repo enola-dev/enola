@@ -19,11 +19,25 @@ package dev.enola.common.convert;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Function;
 
-/** Converts an object to a requested (other) class, if it can. */
-public interface ObjectClassConverter {
-    // TODO Why?! ObjectClassConverter<I> convertToType(I input, Class<T> type)
+public class ObjectConverter<X, Y> implements ObjectClassConverter {
 
-    // TODO Remove throws IOException again, as this seems dumb...
-    <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException;
+    private final Class<Y> to;
+    private final Class<X> from;
+    private Function<X, Y> converter;
+
+    public ObjectConverter(Class<X> from, Class<Y> to, Function<X, Y> converter) {
+        this.to = to;
+        this.from = from;
+        this.converter = converter;
+    }
+
+    @Override
+    public <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException {
+        if (to.equals(type) && input != null && from.equals(input.getClass())) {
+            return Optional.of((T) converter.apply((X) input));
+        }
+        return Optional.empty();
+    }
 }

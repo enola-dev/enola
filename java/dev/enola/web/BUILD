@@ -46,6 +46,7 @@ java_library(
 
 junit_tests(
     name = "tests",
+    size = "medium",
     srcs = glob(["**/*Test.java"]),
     jvm_flags = ["--enable-preview"],
     runtime_deps = [

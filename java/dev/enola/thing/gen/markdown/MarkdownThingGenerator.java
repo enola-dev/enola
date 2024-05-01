@@ -109,7 +109,7 @@ class MarkdownThingGenerator {
                 var datatypeIRI = literal.getDatatype();
                 var datatypeMeta = metadataProvider.get(datatypeIRI);
                 linkWriter.writeMarkdownLink(
-                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI);
+                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI, "`");
                 out.append("_\n");
                 break;
 

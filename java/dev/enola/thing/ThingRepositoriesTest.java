@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import dev.enola.data.Store;
+import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
@@ -31,6 +32,9 @@ public class ThingRepositoriesTest {
             ImmutableThing.builder()
                     .iri("http://example.com")
                     .set("http://example.com/message", "hello")
+                    .set("http://example.com/link", new Link("http://example.com"))
+                    .set("http://example.com/mls", new LangString("Saluton", "eo"))
+                    .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
                     .build();
 
     private void checkStore(Store<?, Thing> thingStore) {
@@ -50,6 +54,7 @@ public class ThingRepositoriesTest {
         checkStore(store);
         var readOnlyRepo = store.build();
         checkThingRepository(readOnlyRepo);
+        checkThingRepository(new TemplateThingRepository(readOnlyRepo));
     }
 
     @Test
@@ -57,5 +62,6 @@ public class ThingRepositoriesTest {
         var readWriteRepoStore = new ThingMemoryRepositoryRW();
         checkStore(readWriteRepoStore);
         checkThingRepository(readWriteRepoStore);
+        checkThingRepository(new TemplateThingRepository(readWriteRepoStore));
     }
 }

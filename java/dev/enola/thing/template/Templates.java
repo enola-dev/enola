@@ -15,15 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.convert;
+package dev.enola.thing.template;
 
-import java.io.IOException;
-import java.util.Optional;
+final class Templates {
 
-/** Converts an object to a requested (other) class, if it can. */
-public interface ObjectClassConverter {
-    // TODO Why?! ObjectClassConverter<I> convertToType(I input, Class<T> type)
+    static String unescapeURL(String escaped) {
+        return escaped.replace("%7B", "{").replace("%7D", "}");
+    }
 
-    // TODO Remove throws IOException again, as this seems dumb...
-    <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException;
+    private Templates() {}
 }

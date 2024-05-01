@@ -1,0 +1,6 @@
+@prefix : <https://example.org/>.
+@prefix enola: <https://enola.dev/>.
+
+:NGC-Template a :Galaxy;
+   enola:iriTemplate "https://example.org/NGC-{NGC}";
+   :wikipedia "https://en.wikipedia.org/wiki/NGC_{NGC}"^^enola:IRITemplate.

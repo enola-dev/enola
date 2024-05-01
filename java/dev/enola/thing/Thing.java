@@ -21,6 +21,8 @@ import com.google.common.collect.ImmutableMap;
 
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -64,18 +66,18 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
      * e.g. both dev.enola.model.schema.Datatypes.DATE as well as dev.enola.model.xsd.DATE are both
      * java.time.LocalDate instances.
      */
-    String datatype(String predicateIRI);
+    @Nullable String datatype(String predicateIRI);
 
     /**
      * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
-     * Alteratively, it may be another Thing (if it's been "resolved") or a {@link Link} with an IRI
-     * (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List of
-     * such items. The object is immutable. May be null if Thing has no such predicate.
+     * Alternatively, it may be another Thing (if it's been "resolved") or a {@link Link} with an
+     * IRI (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List
+     * of such items. The object is immutable. May be null if Thing has no such predicate.
      */
     <T> @Nullable T get(String predicateIRI);
 
     /**
-     * Object of predicate, with type cast.
+     * Object of predicate, with type conversion - or failure.
      *
      * <p>BEWARE: This may well fail and throw an <tt>IllegalArgumentException</tt>! You can never
      * really be sure what Java type an object of a predicate is. If in doubt, use {@link
@@ -90,20 +92,23 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
                                         iri() + "'s " + predicateIRI + " is not " + klass));
     }
 
+    /** Object of predicate, with conversion - as Optional (never fails). */
     @SuppressWarnings("unchecked")
     default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
+        if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
-        else return Optional.empty();
+        try {
+            return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+        } catch (IOException e) {
+            // TODO Get rid of throws IOException and remove this.
+            // Or better log any exceptions and return just Optional.empty()?
+            throw new UncheckedIOException("Failed to convert " + object + " to " + klass, e);
+        }
     }
 
-    default String getString(String predicateIRI) {
-        return getOptional(predicateIRI, String.class)
-                .or(
-                        () ->
-                                getOptional(predicateIRI, LangString.class)
-                                        .map(langString -> langString.text()))
-                .orElse(null);
+    default @Nullable String getString(String predicateIRI) {
+        return getOptional(predicateIRI, String.class).orElse(null);
     }
 
     // TODO get... other types.

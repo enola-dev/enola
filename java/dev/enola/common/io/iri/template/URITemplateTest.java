@@ -20,7 +20,6 @@ package dev.enola.common.io.iri.template;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.github.fge.uritemplate.URITemplate;
-import com.github.fge.uritemplate.vars.VariableMap;
 import com.google.common.collect.ImmutableMap;
 
 import org.junit.Test;
@@ -45,23 +44,20 @@ public class URITemplateTest {
                 ImmutableMap.of("firstName", "Michael", "lastName", "Vorburger"));
 
         check("thing/{name}", "thing/abc", ImmutableMap.of("name", "abc"));
+
+        // Something that's not actually really an URI should ideally work as well, but does not:
+        // check("Greeting #{NUMBER}", "Greeting #42", ImmutableMap.of("NUMBER", "42"));
     }
 
     private void check(String template, String expected, Map<String, Object> map) throws Exception {
         // Test generating an URI from a Template
         var uriTemplate = new URITemplate(template);
-        var uri = uriTemplate.toString(convert(map));
+        var uri = uriTemplate.toString(VariableMaps.from(map));
         assertThat(uri).isEqualTo(expected);
 
         // Test decomposing an URI
         var uriTemplateSplitter = new URITemplateSplitter(template);
         var split = uriTemplateSplitter.fromString(uri).get();
         assertThat(split).isEqualTo(map);
-    }
-
-    private VariableMap convert(Map<String, Object> map) {
-        var builder = VariableMap.newBuilder();
-        map.entrySet().forEach(entry -> builder.addScalarValue(entry.getKey(), entry.getValue()));
-        return builder.freeze();
     }
 }
