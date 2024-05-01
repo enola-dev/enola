@@ -21,7 +21,12 @@ set -euo pipefail
 # and correctly installs it (into a Python Virtual Environment, if not.
 # This script should be "sourced" from another script, not directly executed!
 
-if ! [ -e ".venv/bin/pre-commit" ]; then
+# TODO Explore (again; tried previously, see git log) a better way to do this...
+# This will *NOT* re-install dependencies when requirements.txt changes! :-(
+# To ensure reproducible builds, it is always executed when running under CI.
+# For local development environments, you have to manually "pip install ..." to update.
+
+if ! [ -e ".venv/bin/pre-commit" ] || [ -n "${CI:-""}" ]; then
   echo "https://pre-commit.com is not available..."
 
   if ! [ -x "$(command -v python3)" ]; then
@@ -36,6 +41,7 @@ if ! [ -e ".venv/bin/pre-commit" ]; then
   source .venv/bin/activate
 
   .venv/bin/pip install -r requirements.txt
+
 else
   # shellcheck disable=SC1091
   source .venv/bin/activate
