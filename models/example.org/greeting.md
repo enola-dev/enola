@@ -20,7 +20,7 @@
 
 Enola captures knowledge about _Things,_ and the relationships (links) between them.
 
-_Things_ can be represented in a variety of _[Formats](../../../concepts/core.md#formats)._ In this tutorial, we'll use the RDF 🐢 Turtle format.
+_Things_ can be represented in a variety of _[Formats](../../concepts/core.md#formats)._ In this tutorial, we'll use the RDF 🐢 Turtle format.
 
 ## Hello World
 
@@ -32,7 +32,7 @@ Let's start with this [`greeting1.ttl`](greeting1.ttl):
 
 This means that `https://example.org/greeting1` identifies some _Thing_ which has a `message` that is _"hello, world"._ Pretty simple, right?
 
-[Among other things](../../../use/help/index.md), Enola can _generate documentation_ about _Things,_ like this:
+[Among other things](../../use/help/index.md), Enola can _generate documentation_ about _Things,_ like this:
 
 ```bash cd .././.././..
 $ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=file://"$PWD"/docs/models/

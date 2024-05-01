@@ -22,7 +22,7 @@ This project, like any software, stands on the shoulders of giants, and depends 
 
 ## Updating Dependencies
 
-[`./update.bash`](../../update.bash) shows some of and where possible automatically updates these dependencies.
+[`./update.bash`](//update.bash) shows some of and where possible automatically updates these dependencies.
 It should be regularly (manually) run by maintainers of this project. Where possible, we automate this with "bots" such as:
 
 * Renovate: [Dashboard](https://github.com/enola-dev/enola/issues/73), and [its PRs](https://github.com/enola-dev/enola/pulls?q=is%3Apr+author%3Aapp%2Frenovate+)
@@ -30,19 +30,19 @@ It should be regularly (manually) run by maintainers of this project. Where poss
 
 ## Runtime Dependencies
 
-* [`WORKSPACE.bazel`](../../WORKSPACE.bazel) (later [`MODULE.bazel`](../../MODULE.bazel)) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)
+* [`WORKSPACE.bazel`](//WORKSPACE.bazel) (later [`MODULE.bazel`](//MODULE.bazel)) contains the Java Maven Group, Artifact & Versions (GAV), see [our Bazel doc](bazel.md)
 
 ## Build-time (only) Dependencies
 
-* [`.bazelversion`](../../.bazelversion) has the Bazel version itself
-* [`WORKSPACE.bazel`](../../WORKSPACE.bazel) contains versioned `http_archive` of Bazel rules
-* [`MODULE.bazel`](../../MODULE.bazel) contains `bazel_dep` versions
-* [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml) contains the versions of various `pre-commit` hooks used to enforce [the Code Styles](style.md)
-* [`requirements.txt`](../../requirements.txt) contains versions of Python packages used as build tools
+* [`.bazelversion`](//.bazelversion) has the Bazel version itself
+* [`WORKSPACE.bazel`](//WORKSPACE.bazel) contains versioned `http_archive` of Bazel rules
+* [`MODULE.bazel`](//MODULE.bazel) contains `bazel_dep` versions
+* [`.pre-commit-config.yaml`](//.pre-commit-config.yaml) contains the versions of various `pre-commit` hooks used to enforce [the Code Styles](style.md)
+* [`requirements.txt`](//requirements.txt) contains versions of Python packages used as build tools
 
 ## GitHub Action Cache
 
-The [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml) uses the
+The [`.github/workflows/ci.yaml`](//.github/workflows/ci.yaml) uses the
 https://github.com/actions/cache to
 This speeds up the Continuous Integration (CI) builds of PRs on GitHub.
 

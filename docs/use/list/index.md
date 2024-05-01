@@ -28,7 +28,7 @@
 
 ## List Books
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola list --model file:docs/use/library/model.yaml demo.book
 ...
 ```
@@ -38,7 +38,7 @@ $ ./enola list --model file:docs/use/library/model.yaml demo.book
 
 Because Entity Kinds are Entities themselves, you can also list them like this, with details:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola list --model file:docs/use/library/model.yaml --format=yaml enola.entity_kind
 ...
 ```
@@ -48,7 +48,7 @@ $ ./enola list --model file:docs/use/library/model.yaml --format=yaml enola.enti
 Note how the section above showed some additional entity kinds, in addition to those from the example.
 It's possible to list only those built-in entity kinds, using an "empty" model URI, like this:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola list --model "empty:?mediaType=application/json" enola.entity_kind
 ...
 ```

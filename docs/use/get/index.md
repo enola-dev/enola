@@ -28,16 +28,16 @@
 
 Get the list of all available Thing (Template) IRIs, using the special `enola:/` IRI:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola get --load "file:models/**.ttl" enola:/
 ...
 ```
 
 ## Get 🐢
 
-Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/properties.ttl](../../../models/enola.dev/properties.ttl) model:
+Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/properties.ttl](../../models/enola.dev/properties.ttl) model:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola get --load file:models/enola.dev/properties.ttl https://enola.dev/emoji | head --lines=3
 ...
 ```
@@ -47,7 +47,7 @@ $ ./enola get --load file:models/enola.dev/properties.ttl https://enola.dev/emoj
 Get a `book` - note how the _related_ `kind` and `library` ID are set, based on the template
 [from the model](../library/index.md):
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola get --model file:docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
 ...
 ```
@@ -55,7 +55,7 @@ $ ./enola get --model file:docs/use/library/model.yaml demo.book/ABC/0-13-140731
 Get a `book_kind` - note how the `google` _link_ was set, based on the template
 [from the model](../library/index.md):
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola get --model file:docs/use/library/model.yaml demo.book_kind/0-13-140731-7
 ...
 ```

@@ -36,11 +36,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Fix up ../.. links in docs/**/*.md link to GitHub (instead of docs.enola.dev)
-# If you do want to link to ../.. within docs, then use .././.. instead, for now.
-# TODO Replace this with another convention, perhaps e.g. // à la Bazel?
+# Fix up //... links in docs/**/*.md link to GitHub (instead of docs.enola.dev)
 find docs/ -type f -name "*.md" -print0 \
-  | xargs -n 1 -0 sed -i 's|\.\./\.\.|https://github.com/enola-dev/enola/blob/main|g'
+  | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
 cp bazel-bin/common/thing/thing_proto_doc/thing_proto_doc.md docs/dev/proto/thing.md
 cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md

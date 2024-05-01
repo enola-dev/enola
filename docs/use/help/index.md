@@ -26,7 +26,7 @@
 
 Invoking the CLI without any arguments, or with `help` or `--help` shows the global help:
 
-```bash $? cd .././.././..
+```bash $? cd ../.././..
 $ ./enola
 ...
 ```
@@ -37,7 +37,7 @@ Each sub-command's help can be shown either with `enola help SUBCOMMAND` (better
 
 [Documentation Generation](../docgen/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help docgen
 ...
 ```
@@ -46,7 +46,7 @@ $ ./enola help docgen
 
 [Get Entity](../get/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help get
 ...
 ```
@@ -55,18 +55,16 @@ $ ./enola help get
 
 [List Entities](../list/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help list
 ...
 ```
-
-Because Entity Kinds are Entites themselves, `list` [can also be used to see the models](../library/index.md#list-kinds).
 
 ## Server
 
 [The built-in HTTP Web Server](../server/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help server
 ...
 ```
@@ -75,7 +73,7 @@ $ ./enola help server
 
 [Executable Markdown](../execmd/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help execmd
 ...
 ```
@@ -84,7 +82,7 @@ $ ./enola help execmd
 
 [Rosetta](../rosetta/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help rosetta
 ...
 ```
@@ -93,14 +91,14 @@ $ ./enola help rosetta
 
 [Info](../info/index.md) has the following options:
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola help info
 ...
 ```
 
 ## Generate Completion
 
-```bash cd .././.././..
+```bash cd ../.././..
 $ ./enola generate-completion --help
 ...
 ```
