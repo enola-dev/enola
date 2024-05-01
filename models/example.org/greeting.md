@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Greeting Tutorialx
+# Greeting Tutorial
 
 Enola captures knowledge about _Things,_ and the relationships (links) between them.
 
