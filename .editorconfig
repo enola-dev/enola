@@ -1,15 +1,13 @@
 root = true
 
-# TODO At this point it may be easier to do 2 by default, and 4 for *.java... ;-)
-
 [*]
 charset = utf-8
 end_of_line = lf
-indent_size = 4
+indent_size = 2
 indent_style = space
 insert_final_newline = true
 max_line_length = 120
-tab_width = 4
+tab_width = 2
 trim_trailing_whitespace = true
 
 [*.md]
@@ -17,62 +15,34 @@ indent_size = unset
 # See, and must match, the .markdownlint.yaml MD013: line_length
 max_line_length = unset
 
-[*.proto]
-indent_size = 2
-tab_width = 2
-
 [*.textproto]
 indent_size = unset
 tab_width = unset
 
-# The ./enola* files are Bash scripts (without *.bash extension)
-[enola*]
-indent_size = 2
-tab_width = 2
-
 [*.bash]
-indent_size = 2
-tab_width = 2
 max_line_length = unset
-
-[*.css]
-indent_size = 2
-tab_width = 2
-
-[*.enola]
-indent_size = 2
-tab_width = 2
 
 [*.html]
 indent_size = unset
 tab_width = unset
 
 [*.java]
+tab_width = 4
+indent_size = 4
 max_line_length = unset
 indent_size = unset
 
-[*.js]
-indent_size = 2
-
 [*.json]
 max_line_length = unset
-indent_size = 2
-tab_width = 2
 max_line_length = unset
 
 [*.jsonc]
-indent_size = 2
-tab_width = 2
 max_line_length = unset
 
 [*.jsonld]
-indent_size = 2
-tab_width = 2
 max_line_length = unset
 
 [*.json5]
-indent_size = 2
-tab_width = 2
 max_line_length = unset
 
 [*.ttl]
@@ -81,24 +51,7 @@ tab_width = unset
 max_line_length = unset
 
 [*.ttls]
-indent_size = 2
-tab_width = 2
 max_line_length = 140
-
-[*.toml]
-indent_size = 2
-
-[*.xml]
-indent_size = 2
-
-[*.yaml]
-indent_size = 2
-
-[*.yamlld]
-indent_size = 2
-
-[*.yml]
-indent_size = 2
 
 [LICENSE]
 indent_size = unset
@@ -131,9 +84,6 @@ max_line_length = unset
 
 [WORKSPACE.bazel]
 max_line_length = unset
-
-[.bazelproject]
-indent_size = 2
 
 [ci.yaml]
 max_line_length = unset
