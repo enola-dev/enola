@@ -87,11 +87,12 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
         deps = deps,
         outname = s_name,
     )
+    size = kwargs.get("size", "small")
+    size = size
     jvm_flags = kwargs.get("jvm_flags", [])
     jvm_flags = jvm_flags
     java_test(
         name = name,
-        size = "small",
         test_class = s_name,
         srcs = [":" + s_name] + srcs + srcs_utils,
         deps = deps + [
@@ -104,5 +105,5 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
             "@maven//:com_google_truth_extensions_truth_proto_extension",
             "@maven//:junit_junit",
         ],
-        **dict(kwargs, jvm_flags = jvm_flags)
+        **dict(kwargs, size = size, jvm_flags = jvm_flags)
     )

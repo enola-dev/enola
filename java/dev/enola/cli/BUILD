@@ -50,6 +50,7 @@ java_binary(
 
 junit_tests(
     name = "tests",
+    size = "medium",
     srcs = glob(
         ["*Test.java"],
     ),
