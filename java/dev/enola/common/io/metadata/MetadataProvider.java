@@ -27,13 +27,4 @@ public interface MetadataProvider extends ProviderFromIRI<Metadata> {
     Metadata get(String iri);
 
     Metadata get(@Nullable Object object, String iri);
-
-    @Deprecated // TODO Replace with #get().label()
-    String getLabel(String iri);
-
-    @Deprecated // TODO Replace with #get().descriptionHTML()
-    String getDescriptionHTML(String iri);
-
-    @Deprecated // TODO Replace with #get().imageHTML()
-    String getImageHTML(String iri);
 }

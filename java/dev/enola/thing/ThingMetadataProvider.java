@@ -157,22 +157,4 @@ public class ThingMetadataProvider implements MetadataProvider {
         }
         return string;
     }
-
-    @Override
-    @Deprecated
-    public String getLabel(String iri) {
-        return get(iri).label();
-    }
-
-    @Override
-    @Deprecated
-    public String getDescriptionHTML(String iri) {
-        return get(iri).descriptionHTML();
-    }
-
-    @Override
-    @Deprecated
-    public String getImageHTML(String iri) {
-        return get(iri).imageHTML();
-    }
 }

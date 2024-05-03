@@ -59,7 +59,7 @@ public class ProtoEnumValueToThingConnectorTest {
                         new ThingConnectorsProvider(ImmutableList.of(thingConnector)), null);
 
         MetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
-        var label = mp.getLabel(iri);
+        var label = mp.get(iri).label();
 
         assertThat(label).isEqualTo(enumValue.getValueDescriptor().getName());
     }

@@ -55,17 +55,18 @@ public class ThingMetadataProviderTest {
 
     @Test
     public void label() {
-        assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).getLabel(THING_IRI))
+        assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get(THING_IRI).label())
                 .isEqualTo("test");
 
-        assertThat(new ThingMetadataProvider(test, NONS).getLabel(THING_IRI))
+        assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).label())
                 .isEqualTo(THING_LABEL);
     }
 
     @Test
     public void error() {
-        assertThat(new ThingMetadataProvider(error, NONS).getLabel(THING_IRI)).isNotEmpty();
-        assertThat(new ThingMetadataProvider(error, NONS).getDescriptionHTML(THING_IRI)).isEmpty();
-        assertThat(new ThingMetadataProvider(error, NONS).getImageHTML(THING_IRI)).isEmpty();
+        var meta = new ThingMetadataProvider(error, NONS).get(THING_IRI);
+        assertThat(meta.label()).isNotEmpty();
+        assertThat(meta.descriptionHTML()).isEmpty();
+        assertThat(meta.imageHTML()).isEmpty();
     }
 }
