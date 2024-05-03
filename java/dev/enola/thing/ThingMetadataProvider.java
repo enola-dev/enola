@@ -127,14 +127,11 @@ public class ThingMetadataProvider implements MetadataProvider {
         var thingImage = getImageHTML_(thing);
         if (thingImage != null) return thingImage;
 
-        var rdfClassIRI = getString(thing, KIRI.RDFS.CLASS);
-        if (rdfClassIRI != null) {
-            var rdfClassThing = tp.get(rdfClassIRI);
-            if (rdfClassThing != null) {
-                var rdfClassImage = getImageHTML_(rdfClassThing);
-                if (rdfClassImage != null) return rdfClassImage;
-            }
-        }
+        thingImage = getAlternativeImageHTML(thing, KIRI.RDFS.RANGE);
+        if (thingImage != null) return thingImage;
+
+        thingImage = getAlternativeImageHTML(thing, KIRI.RDFS.CLASS);
+        if (thingImage != null) return thingImage;
 
         return "";
     }
@@ -146,6 +143,18 @@ public class ThingMetadataProvider implements MetadataProvider {
         var imageURL = getString(thing, KIRI.SCHEMA.IMG);
         // TODO ImageMetadataProvider which can determine (and cache!) width & height
         if (imageURL != null) return "<img src=" + imageURL + "/>";
+        return null;
+    }
+
+    private @Nullable String getAlternativeImageHTML(Thing thing, String viaPropertyIRI) {
+        var rdfClassIRI = getString(thing, viaPropertyIRI);
+        if (rdfClassIRI != null) {
+            var alternativeThing = tp.get(rdfClassIRI);
+            if (alternativeThing != null) {
+                var alternativeImageSource = getImageHTML_(alternativeThing);
+                if (alternativeImageSource != null) return alternativeImageSource;
+            }
+        }
         return null;
     }
 

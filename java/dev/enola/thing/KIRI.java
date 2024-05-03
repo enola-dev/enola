@@ -145,6 +145,9 @@ public final class KIRI {
         /** https://www.w3.org/TR/rdf-schema/#ch_comment */
         public static final String COMMENT = NS + "comment";
 
+        /** http://www.w3.org/2000/01/rdf-schema#range */
+        public static final String RANGE = "range";
+
         private RDFS() {}
     }
 
