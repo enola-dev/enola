@@ -16,13 +16,11 @@
     limitations under the License.
 -->
 
-# Greeting Tutorial
+# Hello World
 
 Enola captures knowledge about _Things,_ and the relationships (links) between them.
 
 _Things_ can be represented in a variety of _[Formats](../../concepts/core.md#formats)._ In this tutorial, we'll use the RDF 🐢 Turtle format.
-
-## Hello World
 
 Let's start with this [`greeting1.ttl`](greeting1.ttl):
 
@@ -48,32 +46,3 @@ $ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=fi
 Note how the greeting, in addition to our `message` from above, automagically got another _property_ named `origin` - click on it to learn what it's for! Here is how this Markdown renders:
 
 {% include-markdown "./greeting1.md" start="# greeting1" end="---" comments=false %}
-
-## Linked Data
-
-Now check out the [`greeting2.ttl`](greeting2.ttl):
-
-```turtle
-{% include "./greeting2.ttl" %}
-```
-
-Let's generate documentation again, as above:
-
-```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=file://"$PWD"/docs/models/ --no-index
-...
-```
-
-[`greeting2.md`](greeting2.md) now contains:
-
-```markdown
-{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}
-```
-
-There are a couple of things worth noting here:
-
-1. We've introduced the `@prefix` shortcut, just to avoid repeating `https://example.org`.
-1. Instead of a `hello, world` string, we're now greeting an _Object,_ the `https://example.org/world` - this is what _Linked Data_ is all about!
-1. That `world` object contains yet another link, but this one is different... can you tell how & why, by clicking on `world` in the rendered Markdown below?
-
-{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}

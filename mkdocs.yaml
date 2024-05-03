@@ -29,6 +29,7 @@ nav:
       - Introduction: index.md
       - Download: use/index.md
       - Greeting: models/example.org/greeting.md
+      - Linked Data: models/example.org/linked.md
   - Tools:
       - Help: use/help/index.md
       - Example Model: use/library/index.md
