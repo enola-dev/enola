@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-// Replaces all {{variable}} in the entire body with query parameters from page URL
+// Replaces {{variable}} in HTML body with URL's ?variable=value query parameter values.
 function varReplace() {
   const params = Object.fromEntries(new URLSearchParams(location.search))
   const template = document.getElementsByTagName("body")[0].innerHTML
