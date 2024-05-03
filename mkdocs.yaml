@@ -191,3 +191,7 @@ plugins:
 
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/
   # - blog
+
+extra_javascript:
+  - https://unpkg.com/mustache@latest
+  - javascripts/var-replacer.js

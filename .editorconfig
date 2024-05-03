@@ -51,6 +51,9 @@ tab_width = unset
 max_line_length = unset
 indent_size = unset
 
+[*.js]
+indent_size = 2
+
 [*.json]
 max_line_length = unset
 indent_size = 2
