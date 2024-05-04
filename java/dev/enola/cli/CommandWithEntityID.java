@@ -20,7 +20,7 @@ package dev.enola.cli;
 import com.google.protobuf.ExtensionRegistryLite;
 import com.google.protobuf.Message;
 
-import dev.enola.common.io.resource.URIs;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;

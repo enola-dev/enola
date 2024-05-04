@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.resource;
+package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.URIs.MediaTypeAndOrCharset;
+import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -21,6 +21,7 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.net.URI;

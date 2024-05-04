@@ -18,10 +18,10 @@
 package dev.enola.thing;
 
 import dev.enola.common.io.iri.IRIs;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.ns.NamespaceConverter;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
-import dev.enola.common.io.resource.URIs;
 import dev.enola.thing.proto.Things;
 
 import org.jspecify.annotations.NonNull;

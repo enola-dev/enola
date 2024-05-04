@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;

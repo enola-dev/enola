@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.resource;
+package dev.enola.common.io.iri;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -31,7 +31,6 @@ import java.util.Map;
 
 public final class URIs {
     // see also class dev.enola.common.io.iri.IRIs
-    // TODO Move this from package io.resource to package io.iri
 
     // URI Query Parameter Names
     private static final String MEDIA_TYPE = "mediaType";
