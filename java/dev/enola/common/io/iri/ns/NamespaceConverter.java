@@ -15,15 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.common.io.iri.ns;
 
-import com.google.common.base.Strings;
+/**
+ * NamespaceConverter converts "compact" <a
+ * href="https://en.m.wikipedia.org/wiki/CURIE">CURIE</a>-like IRIs (i.e. an IRI with a short
+ * schema, from a list of prefixes only valid in a local context instead of globally) to & from
+ * "full" IRIs (which are globally unique).
+ *
+ * <p>Both methods of this interface may simply return back the argument, if no "match" was found.
+ *
+ * <p>This class does not actually use [square] brackets around the CURIE.
+ */
+public interface NamespaceConverter {
 
-import java.util.Objects;
+    String toCURIE(String iri);
 
-public final record ImmutableNamespace(String prefix, String iri) implements Namespace {
-    public ImmutableNamespace {
-        Objects.nonNull(prefix);
-        Objects.nonNull(Strings.emptyToNull(iri));
-    }
+    String toIRI(String curie);
 }

@@ -15,13 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.common.io.iri.ns;
 
-import dev.enola.data.Repository;
+import com.google.common.base.Strings;
 
-import java.util.Optional;
+import java.util.Objects;
 
-public interface NamespaceRepository extends Repository<Namespace> {
-
-    Optional<String> getIRI(String prefix);
+public final record ImmutableNamespace(String prefix, String iri) implements Namespace {
+    public ImmutableNamespace {
+        Objects.nonNull(prefix);
+        Objects.nonNull(Strings.emptyToNull(iri));
+    }
 }
