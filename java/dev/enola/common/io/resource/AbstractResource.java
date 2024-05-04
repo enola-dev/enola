@@ -28,7 +28,8 @@ public interface AbstractResource {
 
     /**
      * {@link MediaType} describing the format of this resource. This is always present, but could
-     * be wrong; a {@link ResourceMediaTypeDetector} may find a better one.
+     * be wrong; a {@link dev.enola.common.io.mediatype.ResourceMediaTypeDetector} may find a better
+     * one.
      */
     MediaType mediaType();
 }
