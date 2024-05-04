@@ -197,6 +197,34 @@ public class EnolaCLITest {
     }
 
     @Test
+    public void getNonExistentThing() {
+        var exec =
+                cli(
+                        "-vvv",
+                        "get",
+                        "--load",
+                        "classpath:enola.dev/properties.ttl",
+                        "https://docs.enola.dev/non-existent");
+        assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent has nothing!\n");
+        assertThat(exec).out().isEmpty();
+        assertThat(exec).hasExitCode(0);
+    }
+
+    @Test
+    public void getNonExistentTemplateIRIThing() {
+        var exec =
+                cli(
+                        "-vvv",
+                        "get",
+                        "--load",
+                        "classpath:enola.dev/properties.ttl",
+                        "https://docs.enola.dev/non-existent/{ID}");
+        assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent/{ID} has nothing!\n");
+        assertThat(exec).out().isEmpty();
+        assertThat(exec).hasExitCode(0);
+    }
+
+    @Test
     public void getList() {
         var exec = cli("-vvv", "get", "--load", "classpath:enola.dev/properties.ttl", "enola:/");
         assertThat(exec).err().isEmpty();

@@ -67,7 +67,7 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             // then we assume it points to a Resource of a Thing, and we (try to) load it:
             //
             // TODO This is kind of wrong... all EntityKind and Type IRIs should be (but are not,
-            // yet?)  of scheme enola: and so we should only fall back to the ResourceEnolaService
+            // yet?) of scheme enola: and so we should only fall back to the ResourceEnolaService
             // for any other non-enola: scheme URIs!
             return resourceEnolaService.get(iri);
         }

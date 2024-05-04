@@ -19,12 +19,13 @@ package dev.enola.thing.gen.markdown;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
+import dev.enola.thing.template.TemplateService;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.util.function.Predicate;
 
 /** Generates a Markdown "index" page with links to details. */
 class MarkdownIndexGenerator {
@@ -40,7 +41,8 @@ class MarkdownIndexGenerator {
             Writer writer,
             URI outputIRI,
             URI base,
-            Predicate<String> isDocumentedIRI)
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
             throws IOException {
 
         writer.append("# Things\n\n");
@@ -48,7 +50,7 @@ class MarkdownIndexGenerator {
             var iri = entry.getKey();
             var meta = entry.getValue();
             writer.append("* ");
-            linkWriter.writeMarkdownLink(iri, meta, writer, outputIRI, base, isDocumentedIRI);
+            linkWriter.writeMarkdownLink(iri, meta, writer, outputIRI, base, isDocumentedIRI, ts);
             writer.append('\n');
         }
     }

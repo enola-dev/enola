@@ -31,6 +31,7 @@ import dev.enola.thing.ThingMemoryRepositoryRW;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.stream.Stream;
@@ -82,5 +83,14 @@ public class TemplateThingRepositoryTest {
                                 new Link(classIRI),
                                 yoPropertyIRI,
                                 new Link("http://example.org/hi/42")));
+
+        // TemplateService testing
+        assertThat(repo.breakdown(yoPropertyIRI)).isEmpty();
+        assertThat(repo.breakdown(classIRI)).isEmpty();
+        Assert.assertThrows(IllegalArgumentException.class, () -> repo.breakdown(templateIRI));
+
+        var breakdown = repo.breakdown(exampleIRI).get();
+        assertThat(breakdown.variables()).containsExactly("NUMBER", "42");
+        assertThat(breakdown.iriTemplate()).isEqualTo(templateIRI);
     }
 }

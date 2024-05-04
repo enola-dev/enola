@@ -20,19 +20,21 @@ package dev.enola.thing.gen.markdown;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.MoreIterables;
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.function.Predicate;
 
 /** Generates a "site" of Markdown files, given some Things. */
 public class MarkdownSiteGenerator {
@@ -60,7 +62,10 @@ public class MarkdownSiteGenerator {
     }
 
     public void generate(
-            Iterable<Thing> things, Predicate<String> isDocumentedIRI, boolean generateIndexFile)
+            Iterable<Thing> things,
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts,
+            boolean generateIndexFile)
             throws IOException {
 
         ImmutableMap.Builder<String, Metadata> metas =
@@ -70,13 +75,15 @@ public class MarkdownSiteGenerator {
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
             var thingIRI = thing.getIri();
-            var relativeThingIRI = Relativizer.dropSchemeAddExtension(URI.create(thingIRI), "md");
+            var thingIRIWithoutTemplateVars = Templates.dropVariableMarkers(thingIRI);
+            var thingURI = URI.create(thingIRIWithoutTemplateVars);
+            var relativeThingIRI = Relativizer.dropSchemeAddExtension(thingURI, "md");
             var outputIRI = base.resolve(relativeThingIRI);
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
-                var meta = mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI);
-                metas.put(thingIRI, meta);
+                var meta = mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts);
+                metas.put(thingIRIWithoutTemplateVars, meta);
             }
         }
 
@@ -88,7 +95,7 @@ public class MarkdownSiteGenerator {
             var indexURI = base.resolve("index.md");
             var indexResource = rp.getWritableResource(indexURI);
             try (var writer = indexResource.charSink().openBufferedStream()) {
-                mig.generate(metas.build(), writer, indexURI, base, uri -> true);
+                mig.generate(metas.build(), writer, indexURI, base, uri -> true, ts);
             }
         }
     }

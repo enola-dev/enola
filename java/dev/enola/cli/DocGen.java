@@ -21,6 +21,9 @@ import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -31,16 +34,19 @@ import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
+import dev.enola.thing.message.MoreThings;
 import dev.enola.thing.proto.Thing;
-import dev.enola.thing.proto.Things;
 import dev.enola.web.EnolaThingProvider;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Predicate;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen extends CommandWithModelAndOutput {
@@ -82,16 +88,27 @@ public class DocGen extends CommandWithModelAndOutput {
 
     private void multipleMDDocsForThings(
             EnolaServiceBlockingStub service, boolean generateIndexFile) throws Exception {
-        var request = GetThingRequest.newBuilder().setIri(ENOLA_ROOT_LIST_THINGS).build();
-        var response = service.getThing(request);
-        var any = response.getThing();
-        var things = any.unpack(Things.class);
         var mdp = getMetadataProvider(new EnolaThingProvider(service));
         var mdsg = new MarkdownSiteGenerator(output, rp, mdp);
 
-        var thingsList = things.getThingsList();
+        var thingsList = getThings(service, ENOLA_ROOT_LIST_THINGS);
+
+        // TODO This works, but is not efficient if there were a HUGE amount of Things and MDs...
         var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());
-        mdsg.generate(thingsList, allIRI::contains, generateIndexFile);
+        Predicate<String> allIRIContainsPredicate = allIRI::contains;
+        CheckedPredicate<String, IOException> knownIRIPredicate = iri -> hasThing(service, iri);
+        mdsg.generate(thingsList, knownIRIPredicate, templateService, generateIndexFile);
+    }
+
+    private Collection<Thing> getThings(EnolaServiceBlockingStub service, String iri)
+            throws InvalidProtocolBufferException {
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
+        var response = service.getThing(request);
+        return MoreThings.fromAny(response.getThing());
+    }
+
+    private boolean hasThing(EnolaServiceBlockingStub service, String iri) throws IOException {
+        return !getThings(service, iri).isEmpty();
     }
 
     private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {

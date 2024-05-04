@@ -29,9 +29,14 @@ public class Get extends CommandWithEntityID {
     protected void run(EnolaServiceBlockingStub service, String iri) throws Exception {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
-        var any = response.getThing();
-        var message = enolaMessages.toMessage(any);
-        write(message);
+        if (response.hasThing()) {
+            var any = response.getThing();
+            var message = enolaMessages.toMessage(any);
+            write(message);
+        } else {
+            spec.commandLine().getErr().println(iri + " has nothing!");
+            spec.commandLine().getErr().flush();
+        }
         spec.commandLine().getOut().flush();
     }
 }

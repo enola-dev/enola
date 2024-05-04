@@ -19,10 +19,12 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -62,6 +64,16 @@ public class FileResourceTest {
         r.charSource().read();
     }
 
+    @Test
+    @Ignore // TODO Support jar: scheme in FileResource, for writeable ZIPs!
+    // For now, ResourceProvidersTest#testJarScheme() makes sure it works via ClasspathResource
+    public void jarScheme() throws IOException {
+        var url = Resources.getResource("test-hello-ascii.txt");
+        var r = new FileResource.Provider().getResource(url);
+        assertThat(r).isNotNull();
+        assertThat(r.charSource().read()).isEqualTo("hello, world");
+    }
+
     @Test // https://github.com/google/jimfs
     public void testBasicJimFS() throws IOException {
         FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
@@ -91,7 +103,6 @@ public class FileResourceTest {
         // file:///tmp/bazel-working-directory/_main/bazel-out/k8-fastbuild/bin/common/common/src/test/java/dev/enola/common/io/resource/FileResourceTest.runfiles/_main/jimfs:/dc113772-abe6-4ffd-be54-eeaecdc34414/testPathToURIonJimJS/hello.txt
         // let's double-check:
         assertThat(r.uri().getScheme()).isEqualTo("jimfs");
-        assertThat(Files.readString(r.path())).isEqualTo("hello, world");
     }
 
     private void check(Resource r) throws IOException {

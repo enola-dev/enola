@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@
 package dev.enola.common.function;
 
 /**
- * {@link java.util.function.Supplier}-like functional interface which can throw a checked
+ * {@link java.util.function.Predicate}-like functional interface which can throw a checked
  * exception.
  */
-// https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
 @FunctionalInterface
-public interface CheckedSupplier<T, E extends Exception> {
-    T get() throws E;
+public interface CheckedPredicate<T, E extends Exception> {
+
+    boolean test(T t) throws E;
 }

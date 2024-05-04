@@ -29,6 +29,7 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.rdf.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.message.ProtoThingProvider;
+import dev.enola.thing.template.Templates;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,7 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
 
     @Override
     public Any get(String iri) {
+        if (Templates.hasVariables(iri)) return null;
         var uri = URI.create(iri); // TODO IRIs.toURI(iri);
         var resource = rp.getReadableResource(uri);
         if (resource == null) {
