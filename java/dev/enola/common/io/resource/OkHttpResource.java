@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.function.Supplier;
 
 /**
@@ -42,6 +43,8 @@ import java.util.function.Supplier;
  */
 public class OkHttpResource extends BaseResource implements ReadableResource {
 
+    // TODO This should better cache failed URLs instead of keep retrying!
+
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
 
     // https://square.github.io/okhttp/features/caching/
@@ -49,8 +52,16 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
             new File(FreedesktopDirectories.CACHE_FILE, OkHttpResource.class.getSimpleName());
     private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
+    private static final Duration t = Duration.ofMillis(300);
     private static final OkHttpClient client =
-            new OkHttpClient.Builder().cache(cache).addInterceptor(httpLog).build();
+            new OkHttpClient.Builder()
+                    .cache(cache)
+                    .addInterceptor(httpLog)
+                    .callTimeout(t)
+                    .connectTimeout(t)
+                    .readTimeout(t)
+                    .writeTimeout(t)
+                    .build();
 
     static {
         httpLog.redactHeader("Authorization");

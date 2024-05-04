@@ -25,12 +25,10 @@ import org.jspecify.annotations.Nullable;
 
 public class CachingMetadataProvider implements MetadataProvider {
 
-    // TODO Instead of working on this, first make OkHttpResource cache non-cacheable URLs!
-
-    // TODO Beware, test/profiling is *very* unreliable, because remote servers seem to throttle!!
-    // TODO Profile why using this class makes `time models/build.bash` ~5x slower, instead faster?!
-    // (FYI Using a HashMap() instead of a LoadingCache still makes it ~x4 slower; and
-    // ConcurrentHashMap ~7x slower.)
+    // This isn't used anywhere, yet - because it doesn't seem to actually really make
+    // e.g. "time models/build.bash" any noticeable faster... optimizations in OkHttpResource are
+    // better than this! Beware, test/profiling is *NOT* reproducible, because remote servers may
+    // throttle!!
 
     // TODO Make Guava Cache configurable...
 
