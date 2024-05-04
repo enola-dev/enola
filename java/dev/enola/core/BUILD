@@ -210,7 +210,6 @@ junit_tests(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//test",
-        "@maven//:com_github_java_json_tools_uri_template",
     ],
 )
 
