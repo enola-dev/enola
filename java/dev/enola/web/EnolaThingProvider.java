@@ -62,6 +62,10 @@ public class EnolaThingProvider
         var response = service.getThing(request);
         var any = response.getThing();
 
+        if (!response.hasThing()) {
+            throw new IllegalArgumentException("No Any Thing at: " + iri);
+        }
+
         try {
             // TODO This Things VS Things business will need some more thought...
             if (any.getTypeUrl().endsWith("Thing")) {
