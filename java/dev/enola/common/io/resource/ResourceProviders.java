@@ -23,12 +23,20 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import org.jspecify.annotations.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 
 public class ResourceProviders implements ResourceProvider {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ResourceProviders.class);
+
     private final Iterable<ResourceProvider> resourceProviders;
+
+    public ResourceProviders(Iterable<ResourceProvider> resourceProviders) {
+        this.resourceProviders = ImmutableList.copyOf(resourceProviders);
+    }
 
     public ResourceProviders(ResourceProvider... resourceProviders) {
         this.resourceProviders = ImmutableList.copyOf(resourceProviders);
@@ -75,6 +83,7 @@ public class ResourceProviders implements ResourceProvider {
             if (resource != null) return resource;
         }
 
-        throw new IllegalArgumentException("Unknown URI scheme '" + scheme + "' in: " + uri);
+        LOG.debug("Unknown URI scheme '" + scheme + "' in: {}", uri);
+        return null;
     }
 }

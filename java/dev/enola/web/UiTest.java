@@ -56,8 +56,9 @@ public class UiTest {
     public void testUi() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
+            var rp = new ResourceProviders();
             var ekr = new EntityKindRepository();
-            var esp = new EnolaServiceProvider(ekr);
+            var esp = new EnolaServiceProvider(ekr, rp);
             var service = new TestService();
             try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
                 var testGrpcService = grpc.get();
@@ -66,7 +67,6 @@ public class UiTest {
                                 getMetadataProvider(new EnolaThingProvider(testGrpcService)))
                         .register(server);
                 server.start();
-                var rp = new ResourceProviders();
                 var port = server.getInetAddress().getPort();
                 var prefix = "http://localhost:" + port;
 

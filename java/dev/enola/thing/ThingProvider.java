@@ -21,6 +21,8 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.message.ProtoThingProvider;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
@@ -44,9 +46,9 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
     @Override
+    @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException;
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
     // TODO Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
-    Thing get(String iri) throws UncheckedIOException, ConversionException;
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
 }

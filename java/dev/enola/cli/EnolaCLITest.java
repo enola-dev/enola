@@ -77,6 +77,8 @@ public class EnolaCLITest {
                     cli(
                             "-v",
                             "docgen",
+                            "--test-scheme",
+                            "--classpath-scheme",
                             "--model",
                             "classpath:cli-test-model.textproto",
                             "--output",
@@ -165,6 +167,7 @@ public class EnolaCLITest {
                     cli(
                             "-v",
                             "get",
+                            "--test-scheme",
                             "--format",
                             "BinaryPB",
                             "--output",
@@ -256,6 +259,7 @@ public class EnolaCLITest {
                     cli(
                             "-v",
                             "rosetta",
+                            "--test-scheme",
                             "--schema",
                             "EntityKinds",
                             "--in",

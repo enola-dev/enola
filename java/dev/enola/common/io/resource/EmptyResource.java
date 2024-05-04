@@ -42,7 +42,7 @@ public class EmptyResource implements ReadableButNotWritableResource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith(SCHEME)) return new EmptyResource(uri);
+            if (SCHEME.equals(uri.getScheme())) return new EmptyResource(uri);
             else return null;
         }
     }

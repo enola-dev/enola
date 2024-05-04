@@ -57,7 +57,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         try {
             thing = tp.get(iri);
         } catch (Exception e) {
-            log.warn("Could not get {}", iri, e);
+            log.warn("Failed to get {}", iri, e);
         }
         return get(thing, iri);
     }
@@ -162,7 +162,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         if (thing == null) return null;
         var string = thing.getString(propertyIRI);
         if (string == null) {
-            log.debug("No {} on {}:\n{}", propertyIRI, thing.iri(), thing);
+            log.trace("No {} on {}:\n{}", propertyIRI, thing.iri(), thing);
         }
         return string;
     }

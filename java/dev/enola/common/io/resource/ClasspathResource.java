@@ -33,7 +33,7 @@ public class ClasspathResource extends UrlResource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith(SCHEME))
+            if (SCHEME.equals(uri.getScheme()))
                 return new ReadableButNotWritableDelegatingResource(
                         new ClasspathResource(URIs.getPath(uri)));
             else return null;

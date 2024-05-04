@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -35,8 +37,9 @@ import org.junit.Test;
 
 public class SchemaAspectTest {
 
+    ResourceProvider rp = new ResourceProviders();
     EntityKindRepository ekr = new EntityKindRepository();
-    EnolaService service = new EnolaServiceProvider(ekr).getEnolaService();
+    EnolaService service = new EnolaServiceProvider(ekr, rp).getEnolaService();
     ID.Builder schemaKindID = SchemaAspect.idBuilderTemplate;
 
     public SchemaAspectTest() throws ValidationException, EnolaException {}

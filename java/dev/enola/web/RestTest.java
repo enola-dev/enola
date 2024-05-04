@@ -50,13 +50,13 @@ public class RestTest {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
             // Setup
+            var rp = new ResourceProviders();
             var ekr = new EntityKindRepository();
-            var esp = new EnolaServiceProvider(ekr);
+            var esp = new EnolaServiceProvider(ekr, rp);
             try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
                 var testGrpcService = grpc.get();
                 new RestAPI(testGrpcService).register(server);
                 server.start();
-                var rp = new ResourceProviders();
                 var port = server.getInetAddress().getPort();
                 var prefix = "http://localhost:" + port;
 

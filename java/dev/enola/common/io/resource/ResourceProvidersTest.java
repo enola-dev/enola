@@ -28,7 +28,6 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -144,10 +143,6 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    @Ignore // TODO Implement me, with a local test HTTP server...
-    public void testHTTP() {}
-
-    @Test
     public void testClasspath() throws IOException {
         var uri = URI.create(ClasspathResource.SCHEME + ":test-emoji.txt");
         var emoji = new ResourceProviders().getReadableResource(uri).charSource().read();
@@ -214,8 +209,6 @@ public class ResourceProvidersTest {
 
     @Test
     public void testUnknownScheme() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new ResourceProviders().getResource(URI.create("xyz-unknown:test")));
+        assertThat(new ResourceProviders().getResource(URI.create("xyz-unknown:test"))).isNull();
     }
 }

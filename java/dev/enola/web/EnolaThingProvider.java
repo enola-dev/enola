@@ -60,11 +60,11 @@ public class EnolaThingProvider
     public Thing get(String iri) {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
-        var any = response.getThing();
 
         if (!response.hasThing()) {
-            throw new IllegalArgumentException("No Any Thing at: " + iri);
+            return null;
         }
+        var any = response.getThing();
 
         try {
             // TODO This Things VS Things business will need some more thought...

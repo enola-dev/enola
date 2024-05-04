@@ -31,7 +31,7 @@ public class ErrorResource extends BaseResource implements Resource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith(SCHEME)) return ErrorResource.INSTANCE;
+            if (SCHEME.equals(uri.getScheme())) return ErrorResource.INSTANCE;
             else return null;
         }
     }

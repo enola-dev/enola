@@ -41,7 +41,7 @@ public class NullResource extends BaseResource implements Resource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith(SCHEME)) return NullResource.INSTANCE;
+            if (SCHEME.equals(uri.getScheme())) return NullResource.INSTANCE;
             else return null;
         }
     }
