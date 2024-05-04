@@ -21,6 +21,8 @@ import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
+
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

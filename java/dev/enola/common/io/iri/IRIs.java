@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
  * <p>See <a href="https://datatracker.ietf.org/doc/html/rfc3987">RFC 3987</a>.
  */
 public final class IRIs {
-    // see also class dev.enola.common.io.resource.URIs
+    // see also class dev.enola.common.io.iri.URIs
 
     /**
      * Resolves an IRI reference against a base IRI and returns the resulting IRI as a String.
@@ -34,9 +34,9 @@ public final class IRIs {
      * <p>See <a href="https://datatracker.ietf.org/doc/html/rfc3986#section-4">Section §4 of RFC
      * 3986</a>.
      *
-     * <p>This is currently implemented using {@link java.net.URI#resolve()}. This works great, but
-     * it creates (two) intermediate URI objects. If this ever becomes a problem for performance,
-     * this implementation could be optimized to work directly on Strings.
+     * <p>This is currently implemented using {@link java.net.URI#resolve(String)}. This works
+     * great, but it creates (two) intermediate URI objects. If this ever becomes a problem for
+     * performance, this implementation could be optimized to work directly on Strings.
      */
     public static String resolve(String base, String reference) throws URISyntaxException {
         return toURI(base).resolve(reference).toString();

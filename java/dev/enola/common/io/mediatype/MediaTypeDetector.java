@@ -23,11 +23,11 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.BaseResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
-import dev.enola.common.io.resource.URIs;
 
 import java.io.IOException;
 import java.io.InputStream;

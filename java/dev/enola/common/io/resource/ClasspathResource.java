@@ -20,6 +20,8 @@ package dev.enola.common.io.resource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
+
 import java.net.URI;
 import java.nio.charset.Charset;
 

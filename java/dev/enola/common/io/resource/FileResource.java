@@ -23,6 +23,7 @@ import com.google.common.io.MoreFiles;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.MoreFileSystems;
+import dev.enola.common.io.iri.URIs;
 
 import java.io.IOException;
 import java.net.URI;
