@@ -74,12 +74,14 @@ public class SunServerTest {
             assertThat(response2.charSource().read()).isEqualTo("hi, you\n");
 
             var error1 = URI.create(prefix + "/error1");
-            var errorResponse1 = rp.getResource(error1);
-            Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
+            Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error1));
+            // var errorResponse1 = rp.getResource(error1);
+            // Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
 
             var error2 = URI.create(prefix + "/error2");
-            var errorResponse2 = rp.getResource(error2);
-            Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
+            Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error2));
+            // var errorResponse2 = rp.getResource(error2);
+            // Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
 
             // TODO expect HTTP Error 500
         }

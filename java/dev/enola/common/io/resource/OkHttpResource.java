@@ -57,8 +57,8 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
 
-    // TODO This seem to cause new test failures?!
-    private static final Duration t = Duration.ofMillis(300);
+    // This must be increased if there are test failures on slow CI servers :(
+    private static final Duration t = Duration.ofMillis(765);
 
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
@@ -104,19 +104,20 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     private static MediaType mediaType(String url) {
         Request request = new Request.Builder().url(url).build();
-        String contentTypeFromServer = null;
 
         try (var response = client.newCall(request).execute()) {
+            if (!response.isSuccessful())
+                throw new IllegalArgumentException(unsuccessfulMessage(url, response));
             var mt = response.body().contentType();
             if (mt != null) {
-                contentTypeFromServer = mt.toString();
+                return mtd.detect(mt.toString(), null, URI.create(url));
+            } else {
+                throw new IllegalStateException("Success, but no Content-Type header: " + url);
             }
 
         } catch (IOException e) {
-            // Swallow silently; it will likely happen again for byteSource()
+            throw new UncheckedIOException("IOException on " + url, e);
         }
-
-        return mtd.detect(contentTypeFromServer, null, URI.create(url));
     }
 
     @Override
@@ -134,12 +135,14 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
             if (response.isSuccessful())
                 return new InputStreamByteSource(
                         () -> response.body().byteStream(), response::close);
-            else
-                return new ErrorByteSource(
-                        new IOException(response.code() + " " + url + " : " + response.message()));
+            else return new ErrorByteSource(new IOException(unsuccessfulMessage(url, response)));
         } catch (IOException e) {
             return new ErrorByteSource(e);
         }
+    }
+
+    private static String unsuccessfulMessage(String url, Response response) {
+        return response.code() + " " + url + " : " + response.message();
     }
 
     private static class InputStreamByteSource extends ByteSource {
