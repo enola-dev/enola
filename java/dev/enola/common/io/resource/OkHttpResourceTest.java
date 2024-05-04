@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 public class OkHttpResourceTest {
 
@@ -36,8 +37,14 @@ public class OkHttpResourceTest {
         assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void google404() throws IOException {
         new OkHttpResource("http://www.google.com/bad").charSource().read();
+    }
+
+    @Test(expected = UncheckedIOException.class)
+    public void connectTimeout() throws IOException {
+        // NB: 203.0.113.1 is a non-routable IPv4 address; the cause includes Timeout
+        new OkHttpResource("http://203.0.113.1").charSource().read();
     }
 }
