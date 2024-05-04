@@ -1,4 +1,18 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix enola: <https://enola.dev/>.
 
+rdf:type enola:emoji "🗂️".
+rdf:language enola:emoji "🌐".
+
+rdfs:range enola:emoji "📑".
+rdfs:domain enola:emoji "🎋".
 rdfs:label enola:emoji "🏷️".
+rdfs:subClassOf enola:emoji "⬆️".
+rdfs:subPropertyOf enola:emoji "⬆️".
+rdfs:isDefinedBy enola:emoji "🏺".
+rdfs:comment enola:emoji "💭".
+rdfs:seeAlso enola:emoji "👀".
+
+xsd:date enola:emoji "📅".
