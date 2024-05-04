@@ -59,9 +59,6 @@ public class ListThingService implements ThingService {
                 if (thingIRI.startsWith("enola."))
                     // TODO Fix enola.* hack... (get enola.entity_kind & enola.schema doesn't work)
                     continue;
-                if (thingIRI.contains("{"))
-                    // TODO Return some kinda Template Descriptor Thing...
-                    continue;
                 var any = protoThingRepository.get(thingIRI);
                 if (any.getTypeUrl().endsWith("Thing")) {
                     try {

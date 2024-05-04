@@ -42,6 +42,7 @@ import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.template.TemplateThingRepository;
 
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
@@ -83,7 +84,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                     loader.convertIntoOrThrow(stream, store);
                 }
             }
-            ThingRepository readOnlyRepo = store.build();
+            ThingRepository readOnlyRepo = new TemplateThingRepository(store.build());
             // NB: Copy/pasted below...
             ekr = new EntityKindRepository();
             Repository<Type> tyr = new TypeRepositoryBuilder().build();

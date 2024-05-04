@@ -50,13 +50,14 @@ public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {
         var fqn = parameters.get("FQN");
-        var descriptor = (Descriptor) descriptorProvider.findByName(fqn);
+        if (!"{FQN}".equals(fqn)) {
+            var descriptor = (Descriptor) descriptorProvider.findByName(fqn);
+            var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
+            var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
 
-        var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
-        var fieldDescriptor = descriptor.findFieldByNumber(fieldNumber);
-
-        var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
-        ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
-        things.addThings(newThing);
+            var newThing = m2t.convert(new MessageWithIRI(iri, fieldDescriptor.toProto()));
+            ThingExt.setString(newThing, KIRI.RDFS.LABEL, fieldDescriptor.getName());
+            things.addThings(newThing);
+        }
     }
 }

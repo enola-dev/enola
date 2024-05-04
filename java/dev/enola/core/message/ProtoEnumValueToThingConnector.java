@@ -50,13 +50,15 @@ public class ProtoEnumValueToThingConnector extends ProtoToThingConnector {
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {
         var fqn = parameters.get("FQN");
+        if (!"{FQN}".equals(fqn)) {
+            var enumDescriptor = (EnumDescriptor) descriptorProvider.findByName(fqn);
+            var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
+            var enumValueDescriptor =
+                    enumDescriptor.findValueByNumberCreatingIfUnknown(fieldNumber);
 
-        var enumDescriptor = (EnumDescriptor) descriptorProvider.findByName(fqn);
-        var fieldNumber = Integer.parseInt(parameters.get("NUMBER"));
-        var enumValueDescriptor = enumDescriptor.findValueByNumberCreatingIfUnknown(fieldNumber);
-
-        var newThing = m2t.convert(new MessageWithIRI(iri, enumValueDescriptor.toProto()));
-        ThingExt.setString(newThing, KIRI.RDFS.LABEL, enumValueDescriptor.getName());
-        things.addThings(newThing);
+            var newThing = m2t.convert(new MessageWithIRI(iri, enumValueDescriptor.toProto()));
+            ThingExt.setString(newThing, KIRI.RDFS.LABEL, enumValueDescriptor.getName());
+            things.addThings(newThing);
+        }
     }
 }
