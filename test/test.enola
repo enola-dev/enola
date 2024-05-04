@@ -1,6 +1,6 @@
 # TODO: Re-write as enola-test.ttl (at least initially)
 
-https://enola.dev/ns
+https://enola.dev/namespace
   "" https://enola.dev/action/
 
 #get-empty[]

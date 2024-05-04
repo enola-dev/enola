@@ -15,13 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri.ns;
+package dev.enola.common.io.iri.namespace;
 
-public interface Namespace /* TODO extends Thing */ {
+import com.google.common.base.Strings;
 
-    /** Prefix. May be empty. */
-    String prefix();
+import java.util.Objects;
 
-    /** IRI. Cannot be empty. */
-    String iri();
+public final record ImmutableNamespace(String prefix, String iri) implements Namespace {
+    public ImmutableNamespace {
+        Objects.nonNull(prefix);
+        Objects.nonNull(Strings.emptyToNull(iri));
+    }
 }

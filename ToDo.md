@@ -20,7 +20,7 @@
 
 ## High Priority (Next Features)
 
-1. Support top-level `ns: "demo"` in `docs/use/library/model.textproto` and rm others
+1. Support top-level `namespace: "demo"` in `docs/use/library/model.textproto` and rm others
 
 ### UI
 
