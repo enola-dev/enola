@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri;
+package dev.enola.common.io.iri.ns;
 
 public final class NamespaceConverterIdentity implements NamespaceConverter {
 

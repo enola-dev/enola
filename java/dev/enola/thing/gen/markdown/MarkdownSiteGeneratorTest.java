@@ -21,9 +21,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 
-import dev.enola.common.io.iri.NamespaceConverter;
-import dev.enola.common.io.iri.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.iri.ns.NamespaceConverter;
+import dev.enola.common.io.iri.ns.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.ns.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
