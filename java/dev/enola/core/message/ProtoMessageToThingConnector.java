@@ -49,10 +49,11 @@ public class ProtoMessageToThingConnector extends ProtoToThingConnector {
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {
         var fqn = parameters.get("FQN");
-        var descriptor = descriptorProvider.findByName(fqn);
-
-        var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
-        ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
-        things.addThings(newThing);
+        if (!"{FQN}".equals(fqn)) {
+            var descriptor = descriptorProvider.findByName(fqn);
+            var newThing = m2t.convert(new MessageWithIRI(iri, descriptor.toProto()));
+            ThingExt.setString(newThing, KIRI.RDFS.LABEL, descriptor.getName());
+            things.addThings(newThing);
+        }
     }
 }
