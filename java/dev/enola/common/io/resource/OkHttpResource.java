@@ -43,7 +43,11 @@ import java.util.function.Supplier;
  */
 public class OkHttpResource extends BaseResource implements ReadableResource {
 
-    // TODO This should better cache failed URLs instead of keep retrying!
+    // TODO Fix potential resource leaks! See details in #byteSource().
+
+    // TODO Re-design to open 1 instead 2 separate connections for mediaType & byteSource - how?!
+
+    // TODO Better cache failed URLs instead of keep retrying! (If it is? Test...)
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
 
@@ -52,7 +56,10 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
             new File(FreedesktopDirectories.CACHE_FILE, OkHttpResource.class.getSimpleName());
     private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
+
+    // TODO This seem to cause new test failures?!
     private static final Duration t = Duration.ofMillis(300);
+
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
                     .cache(cache)
@@ -99,7 +106,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
         Request request = new Request.Builder().url(url).build();
         String contentTypeFromServer = null;
 
-        try (Response response = client.newCall(request).execute()) {
+        try (var response = client.newCall(request).execute()) {
             var mt = response.body().contentType();
             if (mt != null) {
                 contentTypeFromServer = mt.toString();
@@ -113,11 +120,17 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     }
 
     @Override
+    // TODO Re-design to fix resource leak... as-is, if you call this but then never call
+    // the returned ByteSource's openStream(), then the OkHttp Response will never be closed! :(
+    // This could be fixed by postponing actually opening the connection "down" into openStream().
     public ByteSource byteSource() {
         String url = uri().toString();
         var request = new Request.Builder().url(url).build();
         try {
+            // Intentional not try-with-resource (but that's leaky & NOK; see above)
             var response = client.newCall(request).execute();
+
+            // TODO How can this propagate connection errors and timeouts more clearly?
             if (response.isSuccessful())
                 return new InputStreamByteSource(
                         () -> response.body().byteStream(), response::close);
