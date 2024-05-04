@@ -1,0 +1,7 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/>.
+@prefix enola: <https://enola.dev/>.
+
+dc:title enola:emoji "🏷️".
+dc:description enola:emoji "📄".
+dc:date enola:emoji "📅".
+dc:language enola:emoji "🌐".
