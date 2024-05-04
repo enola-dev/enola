@@ -18,17 +18,21 @@
 package dev.enola.common.function;
 
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
-/** 👟 */
-// This class
-// See e.g. is intentionally only package local, and only used via MoreStreams.
-// E.g. https://4comprehension.com/sneakily-throwing-exceptions-in-lambda-expressions-in-java/ and
-// https://www.baeldung.com/java-lambda-exceptions, but also
-// https://github.com/google/guava/wiki/Why-we-deprecated-Throwables.propagate, have some related
-// background. Contrary to what those and similar posts state, the way this is done is actually
-// entirely "safe" in Java... note that the trick here, and important difference to a general 👟
-// sneaker, is that the MoreStreams#forEach signature actually declares the throws E - so it's safe!
-final class Sneaker {
+/**
+ * 👟 Sneaker for (controlled) "sneaky Throw".
+ *
+ * <p>See e.g.
+ * https://4comprehension.com/sneakily-throwing-exceptions-in-lambda-expressions-in-java/ and
+ * https://www.baeldung.com/java-lambda-exceptions, but also
+ * https://github.com/google/guava/wiki/Why-we-deprecated-Throwables.propagate, for some related
+ * background. Contrary to what those and similar posts state, the way this is done here is actually
+ * entirely "safe" in Java... note that the trick here, and important difference to a general 👟
+ * Sneaker, is that the {@link MoreStreams#forEach(Stream, CheckedConsumer)} signature actually
+ * declares the throws E - so it's safe!
+ */
+public final class Sneaker {
 
     @SuppressWarnings("unchecked")
     // This method should be kept private and never made public.

@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
@@ -43,19 +44,34 @@ import java.nio.charset.Charset;
  */
 public class UrlResource extends BaseResource implements ReadableResource {
 
+    public static enum Scheme {
+        jar,
+        http
+    };
+
     public static class Provider implements ResourceProvider {
+
+        private final ImmutableSet<Scheme> schemes;
+
+        public Provider(Scheme... schemes) {
+            this.schemes = ImmutableSet.copyOf(schemes);
+        }
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith("http")) {
-                try {
-                    return new ReadableButNotWritableDelegatingResource(
-                            new UrlResource(uri.toURL()));
-                } catch (MalformedURLException e) {
-                    throw new IllegalArgumentException(
-                            "Malformed http: URI is not valid URL" + uri, e);
+            var uriScheme = uri.getScheme();
+            for (var testScheme : schemes) {
+                if (uriScheme.startsWith(testScheme.name())) {
+                    try {
+                        return new ReadableButNotWritableDelegatingResource(
+                                new UrlResource(uri.toURL()));
+                    } catch (MalformedURLException e) {
+                        throw new IllegalArgumentException(
+                                "Malformed http: URI is not valid URL" + uri, e);
+                    }
                 }
-            } else return null;
+            }
+            return null;
         }
     }
 

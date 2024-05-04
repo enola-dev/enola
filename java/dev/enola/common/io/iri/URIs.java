@@ -52,6 +52,17 @@ public final class URIs {
         return addQueryParameter(uri, MEDIA_TYPE, mediaType.toString().replace(" ", ""));
     }
 
+    public static URI addQuery(URI uri, Map<String, String> parameters) {
+        for (var parameter : parameters.entrySet()) {
+            uri = addQueryParameter(uri, parameter.getKey(), parameter.getValue());
+        }
+        return uri;
+    }
+
+    public static String addQuery(String string, Map<String, String> parameters) {
+        return addQuery(URI.create(string), parameters).toString();
+    }
+
     private static URI addQueryParameter(URI uri, String key, String value) {
         String connector;
         if (uri.getQuery() != null && uri.getQuery().contains(key)) {

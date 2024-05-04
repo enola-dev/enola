@@ -19,9 +19,11 @@
 // Replaces {{variable}} in HTML body with URL's ?variable=value query parameter values.
 function varReplace() {
   const params = Object.fromEntries(new URLSearchParams(location.search))
-  const template = document.getElementsByTagName("body")[0].innerHTML
-  const rendered = Mustache.render(template, params)
-  document.getElementsByTagName("body")[0].innerHTML = rendered
+  if (!(Object.keys(params).length === 0)) {
+    const template = document.getElementsByTagName("body")[0].innerHTML
+    const rendered = Mustache.render(template, params)
+    document.getElementsByTagName("body")[0].innerHTML = rendered
+  }
 }
 
 if (window.document$) {

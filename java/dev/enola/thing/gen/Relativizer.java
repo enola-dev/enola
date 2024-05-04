@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.gen;
 
+import static com.google.common.base.Strings.nullToEmpty;
+
 import java.net.URI;
 
 public final class Relativizer {
@@ -52,27 +54,42 @@ public final class Relativizer {
             relativePath.deleteCharAt(relativePath.length() - 1); // Remove trailing slash
         }
 
+        var query = targetURI.getQuery();
+        if (query != null) {
+            relativePath.append('?');
+            relativePath.append(query);
+        }
+
         if (!relativePath.isEmpty()) return relativePath.toString();
         else return "#";
     }
 
     public static URI dropSchemeAddExtension(URI thingIRI, String extension) {
         if (thingIRI.getScheme().startsWith("http")) {
-            var ssp = thingIRI.getSchemeSpecificPart();
+            var authority = nullToEmpty(thingIRI.getAuthority());
+            if (authority == "") throw new IllegalArgumentException(thingIRI.toString());
+
+            var ssp = authority + nullToEmpty(thingIRI.getPath());
             var fragment = thingIRI.getFragment();
             if (fragment != null) {
                 ssp = ssp + "/" + fragment;
             }
+            var query = thingIRI.getQuery();
+            if (query != null) query = "?" + query;
+            else query = "";
             if (ssp.startsWith("//")) {
-                if (ssp.length() > 2) return URI.create(nos(ssp.substring(2)) + "." + extension);
-                else return URI.create("." + extension); // TODO ???
+                if (ssp.length() > 2)
+                    return URI.create(nos(ssp.substring(2)) + "." + extension + query);
+                else return URI.create("." + extension + query); // TODO ???
             } else if (ssp.startsWith("/")) {
-                if (ssp.length() > 1) return URI.create(nos(ssp.substring(1)) + "." + extension);
-                else return URI.create("." + extension); // TODO ???
-            } else return URI.create(nos(ssp) + "." + extension);
+                if (ssp.length() > 1)
+                    return URI.create(nos(ssp.substring(1)) + "." + extension + query);
+                else return URI.create("." + extension + query); // TODO ???
+            } else return URI.create(nos(ssp) + "." + extension + query);
         } else {
             // Intentionally WITHOUT adding extension, here;
-            // this is typically a https://enola.dev/source property value like file:///.../some.ttl
+            // this is typically a https://enola.dev/origin property value like file:///.../some.ttl
+            // TODO Review ... this seems inconsistent! Must have been for good reason... test?! ;)
             return thingIRI;
         }
     }

@@ -33,17 +33,17 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 import java.util.AbstractMap.SimpleImmutableEntry;
 
-public class TemplateThingRepository implements ThingRepository {
+public class TemplateThingRepository implements ThingRepository, TemplateService {
+
+    private final record Match(String iriTemplate, Function<Map<String, String>, Thing> function) {}
 
     private final ThingRepository delegate;
-    private final URITemplateMatcherChain<Function<Map<String, String>, Thing>> iriTemplateChain;
+    private final URITemplateMatcherChain<Match> iriTemplateChain;
 
     public TemplateThingRepository(ThingRepository delegate) {
         this.delegate = delegate;
         int size = MoreIterables.sizeIfKnown(delegate.list()).orElse(42);
-        var iriTemplateChainBuilder =
-                URITemplateMatcherChain
-                        .<Function<Map<String, String>, Thing>>builderWithExpectedSize(size);
+        var iriTemplateChainBuilder = URITemplateMatcherChain.<Match>builderWithExpectedSize(size);
         for (var thing : delegate.list()) {
             if (KIRI.RDFS.CLASS.equals(thing.getString(KIRI.RDF.TYPE))) {
                 thing.getOptional(KIRI.E.IRI_TEMPLATE_PROPERTY, String.class)
@@ -56,7 +56,7 @@ public class TemplateThingRepository implements ThingRepository {
         this.iriTemplateChain = iriTemplateChainBuilder.build();
     }
 
-    private Function<Map<String, String>, Thing> gen(String classIRITemplate, Thing rdfClass) {
+    private Match gen(String classIRITemplate, Thing rdfClass) {
         try {
             Set<SimpleImmutableEntry<String, URITemplate>> set = new HashSet<>();
             for (String predicateIRI : rdfClass.predicateIRIs()) {
@@ -70,44 +70,63 @@ public class TemplateThingRepository implements ThingRepository {
             var templatePredicates = Collections.unmodifiableSet(set);
 
             var classURITemplate = new URITemplate(classIRITemplate);
-            return params -> {
-                try {
-                    var varMap = VariableMaps.from(params);
-                    var builder = ImmutableThing.builder();
-                    var newIRI = Templates.unescapeURL(classURITemplate.toString(varMap));
-                    builder.iri(newIRI);
-                    builder.set(KIRI.RDF.TYPE, new Link(rdfClass.iri()));
-                    for (var templatePredicate : templatePredicates) {
-                        var predicateIRI = templatePredicate.getKey();
-                        var predicateURITemplate = templatePredicate.getValue();
-                        var link = Templates.unescapeURL(predicateURITemplate.toString(varMap));
-                        builder.set(predicateIRI, new Link(link));
-                    }
+            return new Match(
+                    classIRITemplate,
+                    params -> {
+                        try {
+                            var varMap = VariableMaps.from(params);
+                            var builder = ImmutableThing.builder();
+                            var newIRI = Templates.unescapeURL(classURITemplate.toString(varMap));
+                            builder.iri(newIRI);
+                            builder.set(KIRI.RDF.TYPE, new Link(rdfClass.iri()));
+                            for (var templatePredicate : templatePredicates) {
+                                var predicateIRI = templatePredicate.getKey();
+                                var predicateURITemplate = templatePredicate.getValue();
+                                var link =
+                                        Templates.unescapeURL(
+                                                predicateURITemplate.toString(varMap));
+                                builder.set(predicateIRI, new Link(link));
+                            }
 
-                    return builder.build();
-                } catch (URITemplateException e) {
-                    throw new IllegalArgumentException(rdfClass.iri(), e);
-                }
-            };
+                            return builder.build();
+                        } catch (URITemplateException e) {
+                            throw new IllegalArgumentException(rdfClass.iri(), e);
+                        }
+                    });
         } catch (URITemplateParseException e) {
             throw new IllegalArgumentException(rdfClass.iri() + " invalid IRI Template", e);
         }
     }
 
     @Override
+    public Iterable<String> listIRI() {
+        return Iterables.concat(iriTemplateChain.listTemplates(), delegate.listIRI());
+    }
+
+    @Override
     public @Nullable Thing get(String iri) {
         // TODO Check delegate first, and merge() if found... with TDD!
-        var match = iriTemplateChain.match(iri);
-        if (match.isPresent()) {
-            var entry = match.get();
+        var optEntry = iriTemplateChain.match(iri);
+        if (optEntry.isPresent()) {
+            var entry = optEntry.get();
+            var match = entry.getKey();
             var params = entry.getValue();
-            var function = entry.getKey();
+            var function = match.function;
             return function.apply(params);
         } else return delegate.get(iri);
     }
 
     @Override
-    public Iterable<String> listIRI() {
-        return Iterables.concat(iriTemplateChain.listTemplates(), delegate.listIRI());
+    public Optional<Breakdown> breakdown(String nonTemplateIRI) {
+        if (Templates.hasVariables(nonTemplateIRI))
+            throw new IllegalArgumentException("Template: " + nonTemplateIRI);
+        var optEntry = iriTemplateChain.match(nonTemplateIRI);
+        if (optEntry.isPresent()) {
+            var entry = optEntry.get();
+            var match = entry.getKey();
+            var params = entry.getValue();
+            var iriTemplate = match.iriTemplate;
+            return Optional.of(new Breakdown(iriTemplate, params));
+        } else return Optional.empty();
     }
 }

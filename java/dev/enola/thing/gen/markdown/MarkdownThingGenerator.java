@@ -17,16 +17,18 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
+import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.function.Predicate;
 
 /** Generates the Markdown showing details about one Thing. */
 class MarkdownThingGenerator {
@@ -39,21 +41,26 @@ class MarkdownThingGenerator {
     }
 
     Metadata generate(
-            Thing thing, Appendable out, URI outputIRI, URI base, Predicate<String> isDocumentedIRI)
+            Thing thing,
+            Appendable out,
+            URI outputIRI,
+            URI base,
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
             throws IOException {
         var thingIRI = thing.getIri();
         out.append("# ");
         var meta = metadataProvider.get(thing, thingIRI);
         linkWriter.writeLabel(meta, out);
         out.append("\n\n<");
-        out.append(thingIRI);
+        out.append(Templates.convertToMustache((thingIRI)));
         out.append(">\n\n");
         if (!meta.descriptionHTML().isEmpty()) {
             out.append(meta.descriptionHTML());
             out.append("\n\n");
         }
 
-        write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI);
+        write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI, ts);
 
         out.append(DocGenConstants.FOOTER);
         return meta;
@@ -65,7 +72,8 @@ class MarkdownThingGenerator {
             Appendable out,
             URI outputIRI,
             URI base,
-            Predicate<String> isDocumentedIRI)
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
             throws IOException {
         for (var entry : properties.entrySet()) {
             var predicateIRI = entry.getKey();
@@ -74,10 +82,11 @@ class MarkdownThingGenerator {
             out.append(indent);
             out.append("* ");
             var meta = metadataProvider.get(predicateIRI);
-            linkWriter.writeMarkdownLink(predicateIRI, meta, out, outputIRI, base, isDocumentedIRI);
+            linkWriter.writeMarkdownLink(
+                    predicateIRI, meta, out, outputIRI, base, isDocumentedIRI, ts);
             out.append(": ");
 
-            write(indent, object, out, outputIRI, base, isDocumentedIRI);
+            write(indent, object, out, outputIRI, base, isDocumentedIRI, ts);
         }
     }
 
@@ -87,13 +96,14 @@ class MarkdownThingGenerator {
             Appendable out,
             URI outputIRI,
             URI base,
-            Predicate<String> isDocumentedIRI)
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
             throws IOException {
         switch (value.getKindCase()) {
             case LINK:
                 var link = value.getLink();
                 var meta = metadataProvider.get(link);
-                linkWriter.writeMarkdownLink(link, meta, out, outputIRI, base, isDocumentedIRI);
+                linkWriter.writeMarkdownLink(link, meta, out, outputIRI, base, isDocumentedIRI, ts);
                 out.append('\n');
                 break;
 
@@ -109,7 +119,7 @@ class MarkdownThingGenerator {
                 var datatypeIRI = literal.getDatatype();
                 var datatypeMeta = metadataProvider.get(datatypeIRI);
                 linkWriter.writeMarkdownLink(
-                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI, "`");
+                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI, ts, "`");
                 out.append("_\n");
                 break;
 
@@ -130,7 +140,8 @@ class MarkdownThingGenerator {
                         out,
                         outputIRI,
                         base,
-                        isDocumentedIRI);
+                        isDocumentedIRI,
+                        ts);
                 break;
 
             case LIST:
@@ -139,7 +150,7 @@ class MarkdownThingGenerator {
                 for (var element : list) {
                     out.append(indent);
                     out.append("    1. ");
-                    write(indent, element, out, outputIRI, base, isDocumentedIRI);
+                    write(indent, element, out, outputIRI, base, isDocumentedIRI, ts);
                 }
                 break;
 

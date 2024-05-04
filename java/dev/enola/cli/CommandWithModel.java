@@ -61,6 +61,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     ModelOrServer group;
 
     private EnolaServiceBlockingStub gRPCService;
+    protected TemplateThingRepository templateService;
 
     @Override
     public final void run() throws Exception {
@@ -84,7 +85,10 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                     loader.convertIntoOrThrow(stream, store);
                 }
             }
-            ThingRepository readOnlyRepo = new TemplateThingRepository(store.build());
+            TemplateThingRepository templateThingRepository =
+                    new TemplateThingRepository(store.build());
+            ThingRepository readOnlyRepo = templateThingRepository;
+            templateService = templateThingRepository;
             // NB: Copy/pasted below...
             ekr = new EntityKindRepository();
             Repository<Type> tyr = new TypeRepositoryBuilder().build();

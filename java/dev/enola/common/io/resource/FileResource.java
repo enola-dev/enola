@@ -28,11 +28,7 @@ import dev.enola.common.io.iri.URIs;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
@@ -51,11 +47,16 @@ import java.util.Optional;
  * instead of {@link Path} arguments.
  */
 public class FileResource extends BaseResource implements Resource {
+    // TODO Rename FileResource to FileSystemPathResource!
 
     public static class Provider implements ResourceProvider {
 
         @Override
         public Resource getResource(URI uri) {
+            // URIs like "jar:file:/tmp/libmodels.jar!/enola.dev/properties.ttl" are not supported
+            // here. The UrlResource accepts jar: scheme though - and can read (but not write) them.
+            if ("jar".equals(uri.getScheme())) return null;
+
             if (MoreFileSystems.URI_SCHEMAS.contains(uri.getScheme())) return new FileResource(uri);
             else return null;
         }
@@ -68,6 +69,11 @@ public class FileResource extends BaseResource implements Resource {
 
     private static Path pathFromURI(URI uri) {
         // TODO Replace this with return Path.of(uri); but it needs more work...
+        // Both for relative file URIs and query parameters and ZIP files.
+        // Nota bene: https://stackoverflow.com/q/25032716/421602
+        // https://docs.oracle.com/javase/7/docs/technotes/guides/io/fsp/zipfilesystemprovider.html
+        // https://docs.oracle.com/en/java/javase/21/docs/api/jdk.zipfs/module-summary.html
+
         var path = URIs.getPath(uri);
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
@@ -99,10 +105,6 @@ public class FileResource extends BaseResource implements Resource {
     private static OpenOption[] safe(OpenOption[] openOptions) {
         if (openOptions.length == 0) return EMPTY_OPTIONS;
         else return Arrays.copyOf(openOptions, openOptions.length);
-    }
-
-    public Path path() {
-        return path;
     }
 
     @Override

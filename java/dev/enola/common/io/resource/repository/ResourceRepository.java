@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.function;
+package dev.enola.common.io.resource.repository;
 
-/**
- * {@link java.util.function.Supplier}-like functional interface which can throw a checked
- * exception.
- */
-// https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
-@FunctionalInterface
-public interface CheckedSupplier<T, E extends Exception> {
-    T get() throws E;
-}
+import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.io.resource.Resource;
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.data.Repository;
+
+// TODO Think this through... e.g. writeable ZIP files, remote SSH FS - and ThingRepository!!
+// TODO Thing through relationship to and integration of with GlobResourceProvider...
+public interface ResourceRepository
+        extends AbstractResource, Repository<Resource>, ResourceProvider {}

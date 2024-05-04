@@ -17,6 +17,7 @@ enola:origin a rdf:Property;
   schema:description "What something is _\"based on\",_ e.g. where it _\"comes from\"._ This may be a list.";
   enola:emoji "🏺".
 
+# TODO Split Q & P...
 enola:wikidata a rdf:Property;
   schema:image <https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikidata-logo.svg>;
   # https://www.wikidata.org/wiki/Wikidata:Data_access#Linked_Data_Interface_(URI)
@@ -59,7 +60,7 @@ enola:GKG a rdfs:Datatype;
   schema:name "Google Knowledge Graph ID";
   schema:description "ID in Google's Knowledge Graph (formerly AKA Freebase), see e.g. https://developers.google.com/knowledge-graph/; starts without slash, but with 'm' or 'g' following by a slash and lower case characters, numbers and underscores; e.g. g/11bwcf511s";
   enola:iriTemplate "kg:/{VALUE}";
-  schema:url "https://www.google.com/search?kgmid=/{VALUE}"^^enola:IRITemplate.
+  schema:url "https://www.google.com/search?kgmid=/{VALUE}"^^enola:IRITemplate. # TODO https://g.co/kg/g/11bwcf511s ?!
   # TODO Range (?) is a RegExp like "[mg]/[a-z0-9_]+
 
 enola:rfc a rdf:Property;

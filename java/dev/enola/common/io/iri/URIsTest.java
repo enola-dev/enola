@@ -19,6 +19,7 @@ package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
@@ -85,6 +86,15 @@ public class URIsTest {
         var uri3 = URIs.addMediaType(URI.create("scheme:?"), mt1);
         var uri3expected = URI.create("scheme:?mediaType=image%2Fgif");
         assertThat(uri3).isEqualTo(uri3expected);
+    }
+
+    @Test
+    public void testAddQuery() {
+        assertThat(
+                        URIs.addQuery(
+                                "http://host/path?arg1=a",
+                                ImmutableMap.of("arg2", "b", "arg3", "c")))
+                .isEqualTo("http://host/path?arg1=a&arg2=b&arg3=c");
     }
 
     @Test

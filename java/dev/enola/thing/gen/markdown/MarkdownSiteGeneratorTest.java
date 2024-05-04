@@ -32,6 +32,7 @@ import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.ThingProvider;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.template.TemplateService;
 
 import org.junit.Test;
 
@@ -60,7 +61,7 @@ public class MarkdownSiteGeneratorTest {
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
-        mdDocsGen.generate(protoThings, iri -> false, true);
+        mdDocsGen.generate(protoThings, iri -> false, TemplateService.NONE, true);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");

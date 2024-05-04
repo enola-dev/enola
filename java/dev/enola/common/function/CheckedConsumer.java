@@ -17,7 +17,10 @@
  */
 package dev.enola.common.function;
 
-/** {@link java.util.function.Consumer} which can throw a checked exception. */
+/**
+ * {@link java.util.function.Consumer}-like functional interface which can throw a checked
+ * exception.
+ */
 // https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
 @FunctionalInterface
 public interface CheckedConsumer<T, E extends Exception> {

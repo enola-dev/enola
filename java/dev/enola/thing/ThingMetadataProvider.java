@@ -23,6 +23,7 @@ import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.proto.Things;
+import dev.enola.thing.template.Templates;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -55,7 +56,8 @@ public class ThingMetadataProvider implements MetadataProvider {
     public Metadata get(String iri) {
         Thing thing = null;
         try {
-            thing = tp.get(iri);
+            // TODO We should call for "internal" but skip for ext - but how to distinguish, here?!
+            if (!Templates.hasVariables(iri)) thing = tp.get(iri);
         } catch (Exception e) {
             log.warn("Failed to get {}", iri, e);
         }

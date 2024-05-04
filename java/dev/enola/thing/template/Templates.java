@@ -17,10 +17,22 @@
  */
 package dev.enola.thing.template;
 
-final class Templates {
+public final class Templates {
 
     static String unescapeURL(String escaped) {
         return escaped.replace("%7B", "{").replace("%7D", "}");
+    }
+
+    public static String dropVariableMarkers(String iri) {
+        return iri.replace("{", "").replace("}", "");
+    }
+
+    public static String convertToMustache(String iri) {
+        return iri.replace("{", "{{").replace("}", "}}");
+    }
+
+    public static boolean hasVariables(String iri) {
+        return iri.contains("{");
     }
 
     private Templates() {}

@@ -17,12 +17,15 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import dev.enola.common.function.CheckedPredicate;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.thing.gen.Relativizer;
+import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.function.Predicate;
 
 class MarkdownLinkWriter {
 
@@ -32,9 +35,10 @@ class MarkdownLinkWriter {
             Appendable out,
             URI outputIRI,
             URI base,
-            Predicate<String> isDocumentedIRI)
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
             throws IOException {
-        writeMarkdownLink(iri, meta, out, outputIRI, base, isDocumentedIRI, "");
+        writeMarkdownLink(iri, meta, out, outputIRI, base, isDocumentedIRI, ts, "");
     }
 
     void writeMarkdownLink(
@@ -43,7 +47,8 @@ class MarkdownLinkWriter {
             Appendable out,
             URI outputIRI,
             URI base,
-            Predicate<String> isDocumentedIRI,
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts,
             String format)
             throws IOException {
         out.append('[');
@@ -51,9 +56,20 @@ class MarkdownLinkWriter {
         writeLabel(meta, out);
         out.append(format);
         out.append("](");
+        if (!Templates.hasVariables(iri)) {
+            iri =
+                    ts.breakdown(iri)
+                            .map(
+                                    breakdown ->
+                                            URIs.addQuery(
+                                                    Templates.dropVariableMarkers(
+                                                            breakdown.iriTemplate()),
+                                                    breakdown.variables()))
+                            .orElse(iri);
+        }
         var href = rel(iri, outputIRI, base, isDocumentedIRI);
         if (href.isEmpty()) throw new IllegalStateException(iri);
-        out.append(href);
+        out.append(Templates.convertToMustache(href));
         out.append(')');
     }
 
@@ -62,19 +78,25 @@ class MarkdownLinkWriter {
             out.append(md.imageHTML());
             out.append(" ");
         }
-        out.append(md.label());
+        out.append(Templates.convertToMustache(md.label()));
     }
 
-    private CharSequence rel(
-            String linkIRI, URI outputIRI, URI base, Predicate<String> isDocumentedIRI) {
+    private String rel(
+            String linkIRI,
+            URI outputIRI,
+            URI base,
+            CheckedPredicate<String, IOException> isDocumentedIRI)
+            throws IOException {
         if (!isDocumentedIRI.test(linkIRI)) {
             if (linkIRI.startsWith("file:"))
                 return Relativizer.relativize(outputIRI, URI.create(linkIRI));
             else return linkIRI;
         } else {
-            var relativeLinkedIRI = Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
-            var absoluteRelativeLinkedIRI = base.resolve(relativeLinkedIRI);
-            return Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
+            var woSchemeWithExtLinkedIRI =
+                    Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
+            var absoluteRelativeLinkedIRI = base.resolve(woSchemeWithExtLinkedIRI);
+            var relativeLinkedIRI = Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
+            return relativeLinkedIRI;
         }
     }
 }

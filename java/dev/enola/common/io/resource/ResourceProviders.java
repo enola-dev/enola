@@ -65,7 +65,8 @@ public class ResourceProviders implements ResourceProvider {
                 new EmptyResource.Provider(),
                 new NullResource.Provider(),
                 new ErrorResource.Provider(),
-                new OkHttpResource.Provider(), // NOT new UrlResource.Provider(),
+                new OkHttpResource.Provider(),
+                // For "jar:", use: new UrlResource.Provider(UrlResource.Scheme.jar),
                 new FileDescriptorResource.Provider(),
                 new TestResource.Provider());
     }

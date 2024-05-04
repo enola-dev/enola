@@ -23,6 +23,7 @@ import static org.junit.Assert.assertThrows;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
@@ -146,6 +147,14 @@ public class ResourceProvidersTest {
     public void testClasspath() throws IOException {
         var uri = URI.create(ClasspathResource.SCHEME + ":test-emoji.txt");
         var emoji = new ResourceProviders().getReadableResource(uri).charSource().read();
+        assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
+    }
+
+    @Test
+    public void testJarScheme() throws IOException {
+        var url = Resources.getResource("test-emoji.txt");
+        var rp = new ResourceProviders(new UrlResource.Provider(UrlResource.Scheme.jar));
+        var emoji = rp.getReadableResource(url).charSource().read();
         assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
     }
 

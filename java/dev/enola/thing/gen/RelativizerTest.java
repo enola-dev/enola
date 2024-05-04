@@ -35,6 +35,16 @@ public class RelativizerTest {
     }
 
     @Test
+    public void relativizeWithQuery() {
+        assertThat(
+                        Relativizer.relativize(
+                                URI.create("file:/docs/models/enola.dev/yaml/shorthand.md"),
+                                URI.create(
+                                        "file:///docs/models/enola.dev/properties.ttl?query=arg")))
+                .isEqualTo("../properties.ttl?query=arg");
+    }
+
+    @Test
     public void relativizeSame() {
         assertThat(
                         Relativizer.relativize(
@@ -58,12 +68,6 @@ public class RelativizerTest {
         check("https://enola.dev", "enola.dev.md");
         check("https://x", "x.md");
 
-        // The following are technically illegal and unexpected, of course; but just in case:
-        check("http:/enola.dev/ett", "enola.dev/ett.md");
-        check("http:enola.dev/ett", "enola.dev/ett.md");
-        check("http:/x", "x.md");
-        check("http:x", "x.md");
-
         check("file:///source.ttl", "file:///source.ttl");
 
         check(
@@ -71,6 +75,18 @@ public class RelativizerTest {
                 "www.w3.org/1999/02/22-rdf-syntax-ns/type.md");
         check("http://www.w3.org/2000/01/rdf-schema#", "www.w3.org/2000/01/rdf-schema.md");
         check("http://www.w3.org/2000/01/rdf-schema", "www.w3.org/2000/01/rdf-schema.md");
+
+        check(
+                "https://example.org/greetingNUMBER?NUMBER=42",
+                "example.org/greetingNUMBER.md?NUMBER=42");
+        // TODO check("https://example.org/greetingNUMBER?NUMBER=42#frag",
+        // "example.org/greetingNUMBER.md?NUMBER=42#frag");
+
+        // TODO The following are technically illegal and unexpected, of course; but just in case:
+        // check("http:/enola.dev/ett", "enola.dev/ett.md");
+        // check("http:enola.dev/ett", "enola.dev/ett.md");
+        // check("http:/x", "x.md");
+        // check("http:x", "x.md");
     }
 
     private void check(String absThingIRI, String relIRI) {

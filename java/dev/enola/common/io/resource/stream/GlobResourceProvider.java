@@ -32,6 +32,7 @@ import java.util.stream.Stream;
  * getPathMatcher}).
  */
 public interface GlobResourceProvider extends ProviderFromIRI<Stream<ReadableResource>> {
+    // TODO Thing through relationship to and integration of with ResourceRepository...
 
     @Override
     @MustBeClosed
