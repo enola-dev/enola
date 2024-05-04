@@ -20,7 +20,7 @@ package dev.enola.core;
 import com.google.protobuf.Any;
 
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
-import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;
@@ -144,15 +144,13 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             }
         }
 
-        public EnolaServiceRegistry build() {
+        public EnolaServiceRegistry build(ResourceProvider rp) {
             var listThingService = new ListThingService();
             b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, wrap(listThingService));
             b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, wrap(listThingService));
             var uriTemplateMatcherChain = b.build();
             var esr =
-                    new EnolaServiceRegistry(
-                            uriTemplateMatcherChain,
-                            new ResourceEnolaService(new ResourceProviders()));
+                    new EnolaServiceRegistry(uriTemplateMatcherChain, new ResourceEnolaService(rp));
             listThingService.setProtoThingProvider(esr);
             return esr;
         }

@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.message;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ThreadSafe;
@@ -51,7 +53,8 @@ public final class ThingAdapter extends AbstractThing {
     private final DatatypeRepository datatypeRepository;
 
     public ThingAdapter(dev.enola.thing.proto.Thing proto, DatatypeRepository datatypeRepository) {
-        this.proto = proto;
+        this.proto = requireNonNull(proto, "proto");
+        // TODO requireNonNull(datatypeRepository, "datatypeRepository");
         this.datatypeRepository = datatypeRepository;
     }
 

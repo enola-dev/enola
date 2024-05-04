@@ -20,7 +20,6 @@ package dev.enola.cli;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
-import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
@@ -51,7 +50,7 @@ import picocli.CommandLine.Spec;
 
 import java.net.URI;
 
-public abstract class CommandWithModel implements CheckedRunnable {
+public abstract class CommandWithModel extends CommandWithResourceProvider {
 
     protected EnolaServiceProvider esp;
 
@@ -64,6 +63,8 @@ public abstract class CommandWithModel implements CheckedRunnable {
 
     @Override
     public final void run() throws Exception {
+        super.run();
+
         // TODO Fix design; as-is, this may stay null if --server instead of --model is used
         EntityKindRepository ekr = null;
 
@@ -86,18 +87,18 @@ public abstract class CommandWithModel implements CheckedRunnable {
             // NB: Copy/pasted below...
             ekr = new EntityKindRepository();
             Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            esp = new EnolaServiceProvider(ekr, tyr, readOnlyRepo);
+            esp = new EnolaServiceProvider(ekr, tyr, readOnlyRepo, rp);
             var enolaService = esp.getEnolaService();
             grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
             gRPCService = grpc.get();
 
         } else if (group.model != null) {
-            var modelResource = new ResourceProviders().getReadableResource(group.model);
+            var modelResource = rp.getReadableResource(group.model);
             ekr = new EntityKindRepository();
             ekr.load(modelResource);
             // NB: Copy/paste from above...
             Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            esp = new EnolaServiceProvider(ekr, tyr);
+            esp = new EnolaServiceProvider(ekr, tyr, rp);
             var enolaService = esp.getEnolaService();
             grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
             gRPCService = grpc.get();

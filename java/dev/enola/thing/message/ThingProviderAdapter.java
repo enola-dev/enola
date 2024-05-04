@@ -20,6 +20,7 @@ package dev.enola.thing.message;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.OnlyIRIThing;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingProvider;
 
@@ -44,6 +45,7 @@ public class ThingProviderAdapter implements ThingProvider {
     @Override
     public Thing get(String iri) throws UncheckedIOException, ConversionException {
         var protoThing = protoThingProvider.get(iri);
-        return new ThingAdapter(protoThing, datatypeRepository);
+        if (protoThing != null) return new ThingAdapter(protoThing, datatypeRepository);
+        else return new OnlyIRIThing(iri);
     }
 }

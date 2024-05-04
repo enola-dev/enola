@@ -35,7 +35,7 @@ public class StringResource implements ReadableButNotWritableResource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith(SCHEME))
+            if (SCHEME.equals(uri.getScheme()))
                 // NOT new StringResource(uriPath, mediaType),
                 // because that is confusing, as it will chop off after # and interpret '?'
                 // which is confusing for users, for this URI scheme. If "literal" resources

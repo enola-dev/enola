@@ -26,6 +26,6 @@ find models/ -type d -exec mkdir -p docs/{} \;
 find models/ -type f -exec ln -f {} docs/{} \;
 rm docs/models/{BUILD,build.bash}
 
-./enola -vv docgen --load=file:"docs/models/**.ttl" --output=file://"$PWD"/docs/models/
+./enola -vvv docgen --load=file:"docs/models/**.ttl" --output=file://"$PWD"/docs/models/
 
 # TODO RDF* --load=file:"models/**.ttl[s?]"

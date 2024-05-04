@@ -53,14 +53,12 @@ public class TestResource extends MemoryResource implements CloseableResource {
         pool.remove(id);
     }
 
-    public static class Provider implements ResourceProviderSPI {
-        @Override
-        public String scheme() {
-            return SCHEME;
-        }
+    public static class Provider implements ResourceProvider {
 
         @Override
-        public Resource getResourceImplementation(URI uri) {
+        public Resource getResource(URI uri) {
+            if (!SCHEME.equals(uri.getScheme())) return null;
+
             var id = URIs.getPath(uri);
             var i = Long.parseLong(id);
             var r = pool.get(i);

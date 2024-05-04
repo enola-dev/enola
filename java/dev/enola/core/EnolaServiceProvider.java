@@ -22,6 +22,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.GenericDescriptor;
 import com.google.protobuf.ExtensionRegistry;
 
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.common.protobuf.TypeRegistryWrapper.Builder;
@@ -72,19 +73,22 @@ public class EnolaServiceProvider {
     private final EnolaMessages enolaMessages;
 
     @Deprecated // replace all usages with the new non-deprecated constructor (below)
-    public EnolaServiceProvider(EntityKindRepository ekr)
+    public EnolaServiceProvider(EntityKindRepository ekr, ResourceProvider rp)
             throws ValidationException, EnolaException {
-        this(ekr, new TypeRepositoryBuilder().build());
+        this(ekr, new TypeRepositoryBuilder().build(), rp);
     }
 
     @Deprecated // replace all usages with the new non-deprecated constructor (below)
-    public EnolaServiceProvider(EntityKindRepository ekr, Repository<Type> tyr)
+    public EnolaServiceProvider(EntityKindRepository ekr, Repository<Type> tyr, ResourceProvider rp)
             throws ValidationException, EnolaException {
-        this(ekr, tyr, new EmptyThingRepository());
+        this(ekr, tyr, new EmptyThingRepository(), rp);
     }
 
     public EnolaServiceProvider(
-            EntityKindRepository ekr, Repository<Type> tyr, ThingRepository thingRepository)
+            EntityKindRepository ekr,
+            Repository<Type> tyr,
+            ThingRepository thingRepository,
+            ResourceProvider rp)
             throws ValidationException, EnolaException {
         var esb = EnolaServiceRegistry.builder();
         esb.register(thingRepository);
@@ -94,7 +98,7 @@ public class EnolaServiceProvider {
         process(esb, ekr, trb);
         process(esb, tyr, trb);
         this.typeRegistry = trb.build();
-        this.enolaService = esb.build();
+        this.enolaService = esb.build(rp);
         this.enolaMessages = new EnolaMessages(typeRegistry, ExtensionRegistry.getEmptyRegistry());
     }
 

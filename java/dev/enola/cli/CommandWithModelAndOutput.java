@@ -17,8 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.io.resource.ResourceProviders;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
@@ -39,6 +37,4 @@ public abstract class CommandWithModelAndOutput extends CommandWithModel {
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
             description = "URI of where to write output (of get or docgen)")
     URI output;
-
-    protected ResourceProviders rp = new ResourceProviders();
 }

@@ -18,7 +18,6 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.resource.DelegatingResourceWithMediaType;
-import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.rosetta.Rosetta;
 
@@ -32,9 +31,7 @@ import java.net.URI;
             "Transform YAML <=> JSON <=> TextProto",
             "(see https://en.wikipedia.org/wiki/Rosetta_Stone)"
         })
-public class RosettaCommand implements CheckedRunnable {
-
-    private final ResourceProviders rp = new ResourceProviders();
+public class RosettaCommand extends CommandWithResourceProvider {
 
     private final Rosetta rosetta = new Rosetta();
 
@@ -60,6 +57,8 @@ public class RosettaCommand implements CheckedRunnable {
 
     @Override
     public void run() throws Exception {
+        super.run();
+
         var inResource = rp.getReadableResource(in);
         var outResource = rp.getWritableResource(out);
 

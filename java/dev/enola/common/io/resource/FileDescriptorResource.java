@@ -42,7 +42,7 @@ public class FileDescriptorResource extends BaseResource implements Resource {
 
         @Override
         public Resource getResource(URI uri) {
-            if (uri.getScheme().startsWith("fd")) return new FileDescriptorResource(uri);
+            if ("fd".equals(uri.getScheme())) return new FileDescriptorResource(uri);
             else return null;
         }
     }

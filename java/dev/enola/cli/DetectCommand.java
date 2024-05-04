@@ -18,7 +18,6 @@
 package dev.enola.cli;
 
 import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.resource.ResourceProviders;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -30,7 +29,7 @@ import java.net.URI;
 @Command(
         name = "detect",
         description = "Provides information about the media type detected for a given IRI")
-public class DetectCommand implements CheckedRunnable {
+public class DetectCommand extends CommandWithResourceProvider {
 
     @Spec CommandSpec spec;
 
@@ -39,7 +38,9 @@ public class DetectCommand implements CheckedRunnable {
 
     @Override
     public void run() throws Exception {
-        var resource = new ResourceProviders().getResource(new URI(iri));
+        super.run();
+
+        var resource = rp.getResource(new URI(iri));
         var mediaType = MediaTypeProviders.SINGLETON.detect(resource).orElse(resource.mediaType());
 
         var pw = spec.commandLine().getOut();

@@ -25,6 +25,8 @@ import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -49,9 +51,10 @@ import java.io.IOException;
 
 public class EnolaGrpcServerTest {
 
+    private final ResourceProvider rp = new ResourceProviders();
     private final ReadableResource model = new ClasspathResource("demo-model.yaml");
     private final EntityKindRepository ekr = new EntityKindRepository().load(model);
-    private final EnolaServiceProvider esp = new EnolaServiceProvider(ekr);
+    private final EnolaServiceProvider esp = new EnolaServiceProvider(ekr, rp);
     private final EnolaService service;
 
     public EnolaGrpcServerTest() throws ValidationException, IOException, EnolaException {

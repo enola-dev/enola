@@ -28,6 +28,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.FileResource;
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.proto.Connector;
@@ -52,13 +54,15 @@ public class EntityServiceProviderTest {
 
     // TODO EntityKinds from file instead of programmatically constructing may be easier to read?
 
+    ResourceProvider rp = new ResourceProviders();
+
     @Test
     public void testTrivialEmptyEntityKind()
             throws EnolaException, ValidationException, InvalidProtocolBufferException {
         var kid = ID.newBuilder().setNs("test").setEntity("empty").addPaths("name").build();
         var kind = EntityKind.newBuilder().setId(kid).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider(ekr).getEnolaService();
+        var service = new EnolaServiceProvider(ekr, rp).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
@@ -91,7 +95,7 @@ public class EntityServiceProviderTest {
                         .addConnectors(connector)
                         .build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider(ekr).getEnolaService();
+        var service = new EnolaServiceProvider(ekr, rp).getEnolaService();
 
         var path = Path.of("./test.dog/king-charles.yaml");
         path.getParent().toFile().mkdir();
@@ -123,7 +127,7 @@ public class EntityServiceProviderTest {
         var ec = Connector.newBuilder().setError("failed!").build();
         var kind = EntityKind.newBuilder().setId(kid).addConnectors(ec).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider(ekr).getEnolaService();
+        var service = new EnolaServiceProvider(ekr, rp).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
@@ -141,7 +145,7 @@ public class EntityServiceProviderTest {
                         .build();
         var kind = EntityKind.newBuilder().setId(kid).addConnectors(ivc).build();
         var ekr = new EntityKindRepository().put(kind);
-        var service = new EnolaServiceProvider(ekr).getEnolaService();
+        var service = new EnolaServiceProvider(ekr, rp).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("whatever").build();
         var eri = IDs.toPath(eid);
@@ -180,7 +184,7 @@ public class EntityServiceProviderTest {
 
         var ekr = new EntityKindRepository();
         assertThat(ekr.listID()).containsExactly(kid, sid);
-        var service = new EnolaServiceProvider(ekr).getEnolaService();
+        var service = new EnolaServiceProvider(ekr, rp).getEnolaService();
 
         var eid = ID.newBuilder(kid).clearPaths().addPaths("enola.entity_kind").build();
 
