@@ -19,8 +19,8 @@ package dev.enola.core;
 
 import com.google.protobuf.Any;
 
+import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.core.iri.URITemplateMatcherChain;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.GetThingResponse;

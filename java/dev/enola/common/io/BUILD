@@ -29,6 +29,7 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",
+        "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
@@ -46,6 +47,7 @@ junit_tests(
         ":io",
         "//java/dev/enola/common/protobuf",
         "//test",
+        "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_auto_service_auto_service_annotations",
     ],
 )

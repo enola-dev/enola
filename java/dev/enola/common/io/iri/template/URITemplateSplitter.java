@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.iri;
+package dev.enola.common.io.iri.template;
 
 import com.github.fge.uritemplate.URITemplate;
 import com.google.common.base.MoreObjects;

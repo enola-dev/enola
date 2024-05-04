@@ -22,6 +22,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.io.iri.template.URITemplateSplitter;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.IDOrBuilder;
 
@@ -124,7 +125,7 @@ public final class IDs {
 
     /**
      * Transform ID into a RFC 6570 URI Template which can be used with an {@link
-     * dev.enola.core.iri.URITemplateSplitter} or an {@link com.github.fge.uritemplate.URITemplate}.
+     * URITemplateSplitter} or an {@link com.github.fge.uritemplate.URITemplate}.
      */
     public static String toURITemplate(IDOrBuilder id) {
         var sb = ekPath(id);
