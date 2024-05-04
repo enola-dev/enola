@@ -1,0 +1,10 @@
+@prefix schema: <https://schema.org/>.
+@prefix enola:  <https://enola.dev/>.
+
+schema:name enola:emoji "🏷️".
+schema:description enola:emoji "📜".
+schema:image enola:emoji "🖼️".
+schema:url enola:emoji "🔗".
+schema:identifier enola:emoji "🆔".
+schema:email enola:emoji "📨".
+schema:sameAs enola:emoji "🪞".
