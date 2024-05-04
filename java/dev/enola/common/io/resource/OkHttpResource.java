@@ -23,10 +23,8 @@ import com.google.common.net.MediaType;
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
-import okhttp3.Cache;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -50,9 +48,15 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     private static final File cacheDir =
             new File(FreedesktopDirectories.CACHE_FILE, OkHttpResource.class.getSimpleName());
     private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
-    private static final OkHttpClient client = new OkHttpClient.Builder().cache(cache).build();
+    private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
+    private static final OkHttpClient client =
+            new OkHttpClient.Builder().cache(cache).addInterceptor(httpLog).build();
 
     static {
+        httpLog.redactHeader("Authorization");
+        httpLog.redactHeader("Cookie");
+        httpLog.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
         try {
             Files.createDirectories(cacheDir.toPath());
         } catch (IOException e) {

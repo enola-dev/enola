@@ -144,6 +144,7 @@ maven_install(
         "com.google.errorprone:error_prone_annotations:2.26.1",
         "org.jspecify:jspecify:0.3.0",
         "com.squareup.okhttp3:okhttp:4.12.0",
+        "com.squareup.okhttp3:logging-interceptor:4.12.0",
         "dev.dirs:directories:26",
     ],
     duplicate_version_warning = "error",
