@@ -24,8 +24,8 @@ import static java.net.URI.create;
 import com.google.common.net.MediaType;
 import com.google.protobuf.Any;
 
-import dev.enola.common.io.iri.ns.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.ns.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;

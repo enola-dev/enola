@@ -19,8 +19,8 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.iri.ns.NamespaceConverter;
-import dev.enola.common.io.iri.ns.NamespaceConverterIdentity;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
+import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 
 import org.junit.Test;
 

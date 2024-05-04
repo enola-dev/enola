@@ -17,8 +17,8 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.io.iri.ns.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.ns.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;

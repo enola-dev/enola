@@ -24,7 +24,7 @@ import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.ns.NamespaceConverterIdentity;
+import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
