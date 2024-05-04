@@ -40,6 +40,7 @@ public class ThingMetadataProviderTest {
                 public Thing get(String iri) {
                     var builder = ImmutableThing.builder();
                     builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
+                    builder.set(KIRI.DC.DESCRIPTION, "...");
                     return builder.build();
                 }
             };
@@ -60,6 +61,12 @@ public class ThingMetadataProviderTest {
 
         assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).label())
                 .isEqualTo(THING_LABEL);
+    }
+
+    @Test
+    public void description() {
+        assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).descriptionHTML())
+                .isEqualTo("...");
     }
 
     @Test

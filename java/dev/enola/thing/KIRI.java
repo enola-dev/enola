@@ -115,6 +115,7 @@ public final class KIRI {
         private static final String NS = "http://purl.org/dc/elements/1.1/";
 
         public static final String TITLE = NS + "title";
+        public static final String DESCRIPTION = NS + "description";
 
         private DC() {}
     }
