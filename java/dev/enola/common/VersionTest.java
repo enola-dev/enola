@@ -15,17 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.gen;
+package dev.enola.common;
 
-import dev.enola.common.Version;
+import static com.google.common.truth.Truth.assertThat;
 
-public interface DocGenConstants {
+import org.junit.Test;
 
-    public static final String FOOTER =
-            "\n---\n_This model documentation was generated with ❤️ by"
-                    + " [Enola.dev](https://www.enola.dev) @ ["
-                    + Version.get()
-                    + "]("
-                    + Version.gitUI()
-                    + ")_\n";
+public class VersionTest {
+
+    @Test
+    public void get() {
+        assertThat(Version.get()).isNotEmpty();
+    }
 }

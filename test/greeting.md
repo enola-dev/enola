@@ -6,6 +6,3 @@
 * [enola:iriTemplate](https://enola.dev/iriTemplate): https://example.org/greet/{NUMBER}
 * [yo](https://example.org/yo): http://example.org/hi/{NUMBER} _[`enola:IRITemplate`](https://enola.dev/IRITemplate)_
 * [enola:example](https://enola.dev/example): [42](greet/NUMBER.md?NUMBER=42)
-
----
-_This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

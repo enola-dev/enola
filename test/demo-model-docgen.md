@@ -70,6 +70,3 @@ classDiagram
 * fqn
 
 [See documentation...](https://docs.enola.dev/use/connector/#grpc)
-
----
-_This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

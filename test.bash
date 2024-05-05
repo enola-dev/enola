@@ -37,6 +37,8 @@ if ! [ -x "$(command -v "$BZL")" ]; then
   fi
 fi
 
+tools/version/version.bash
+
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
 if [ -z "${CI:-""}" ]; then

@@ -29,6 +29,7 @@ java_binary(
     ),
     main_class = "dev.enola.cli.EnolaCLI",
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/markdown/exec:markdown",

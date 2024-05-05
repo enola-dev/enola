@@ -65,7 +65,8 @@ public class MarkdownSiteGenerator {
             Iterable<Thing> things,
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts,
-            boolean generateIndexFile)
+            boolean generateIndexFile,
+            boolean footer)
             throws IOException {
 
         ImmutableMap.Builder<String, Metadata> metas =
@@ -82,7 +83,8 @@ public class MarkdownSiteGenerator {
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
-                var meta = mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts);
+                var meta =
+                        mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts, footer);
                 metas.put(thingIRIWithoutTemplateVars, meta);
             }
         }

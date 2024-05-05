@@ -31,9 +31,11 @@ import java.util.stream.Collectors;
 public class MarkdownDocGenerator {
 
     private final Options options;
+    private final boolean footer;
 
-    public MarkdownDocGenerator(Options options) {
+    public MarkdownDocGenerator(Options options, boolean footer) {
         this.options = options;
+        this.footer = footer;
     }
 
     public void render(Iterable<EntityKind> kinds, String header, Appendable md)
@@ -47,7 +49,7 @@ public class MarkdownDocGenerator {
         for (var ek : kinds) {
             render(ek, md);
         }
-        md.append(DocGenConstants.FOOTER);
+        if (footer) md.append(DocGenConstants.FOOTER);
     }
 
     private void render(EntityKind ek, Appendable md) throws IOException {
