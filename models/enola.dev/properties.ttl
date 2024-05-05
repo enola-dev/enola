@@ -33,8 +33,8 @@ enola:wikipedia a rdf:Property;
 
 enola:iriTemplate a rdf:Property;
   rdfs:domain rdfs:Class;
-  rdfs:range enola:IRITemplate.
-  # TODO ? schema:description "Enola 'copies' (infers?) most other properties of the Class (Thing) with this property to any Things who's IRI matches this template; including filling in any variables.".
+  rdfs:range enola:IRITemplate;
+  schema:description "Enola creates (infers?) new 'dynamic' Things of any Class with this property when an IRI matches it. All properties of datatype `IRITemplate` of the Class are copied to the new Thing, and any variables are replaced.".
 
 enola:IRITemplate a rdfs:Datatype;
   schema:name "IRI Template";
