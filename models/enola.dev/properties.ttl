@@ -1,5 +1,6 @@
 @prefix enola:  <https://enola.dev/>.
 @prefix enolay: <https://enola.dev/yaml/>.
+@prefix enolaj: <https://enola.dev/java/>.
 @prefix schema: <https://schema.org/>.
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
@@ -66,6 +67,21 @@ enola:GKG a rdfs:Datatype;
 enola:rfc a rdf:Property;
   rdfs:range xsd:positiveInteger;
   schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
+
+enolaj:type a rdfs:Class;
+  schema:name "Java Type";
+  schema:description "Type (Class, Interface, Enum, Record, Primitives, Array, Void) in the Java Virtual Machine (JVM).";
+  enola:example "https://enola.dev/java/type/java.lang.Object";
+  enola:iriTemplate "https://enola.dev/java/type/{FQN}";
+  # TODO JavaDoc site base URI should be configurable via some sort of global variable
+  enola:javaDoc "https://docs.oracle.com/en/java/javase/21/docs/api/{MODULE | DotToSlash }/{FQN | DotToSlash }.html"^^enola:Template;
+  enola:emoji "☕".
+
+enolaj:module a rdfs:Class;
+  schema:name "Java Module";
+  enola:example "https://enola.dev/java/module/java.base";
+  enola:iriTemplate "https://enola.dev/java/module/{FQN}";
+  enola:emoji "📦".
 
 enolay:uri a rdf:Property;
   rdfs:range xsd:anyURI;

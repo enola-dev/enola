@@ -68,6 +68,20 @@ public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(
      */
     @Nullable String datatype(String predicateIRI);
 
+    @Deprecated // TODO Remove once record Literal is gone
+    default @Nullable String datatypeLEGACY(String predicateIRI) {
+        var datatype = datatype(predicateIRI);
+        if (datatype != null) return datatype;
+
+        var object = get(predicateIRI);
+        if (object != null && object instanceof Literal) {
+            Literal literal = (Literal) object;
+            return literal.datatypeIRI();
+        }
+
+        return null;
+    }
+
     /**
      * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
      * Alternatively, it may be another Thing (if it's been "resolved") or a {@link Link} with an
