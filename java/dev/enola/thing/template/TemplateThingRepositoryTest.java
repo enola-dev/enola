@@ -56,8 +56,8 @@ public class TemplateThingRepositoryTest {
         var repo = new TemplateThingRepository(store);
 
         var classIRI = "https://example.org/greeting";
-        var templateIRI = "https://example.org/greeting{NUMBER}";
-        var exampleIRI = "https://example.org/greeting42";
+        var templateIRI = "https://example.org/greet/{NUMBER}";
+        var exampleIRI = "https://example.org/greet/42";
         var yoPropertyIRI = "https://example.org/yo";
 
         assertThat(repo.listIRI()).containsExactly(classIRI, templateIRI);

@@ -30,6 +30,8 @@ nav:
       - Download: use/index.md
       - Hello World: models/example.org/hello.md
       - Linked Data: models/example.org/linked.md
+      - Classy: models/example.org/class.md
+      - Templates: models/example.org/templates.md
   - Tools:
       - Help: use/help/index.md
       - Example Model: use/library/index.md

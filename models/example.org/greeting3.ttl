@@ -1,30 +1,9 @@
-@prefix : <https://example.org/>.
-@prefix schema: <https://schema.org/>.
-@prefix enola:  <https://enola.dev/>.
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix enola: <https://enola.dev/>.
+@prefix :      <https://example.org/>.
 
-:world a :Planet;
-  enola:emoji "♁";
-  schema:name "Terra"@la;
-  :sun :Sun.
+:Salutation a rdfs:Class;
+  enola:emoji "👋".
 
-:Sun a :Star;
-  enola:emoji "☉";
-  :galaxy :MilkyWay.
-
-:MilkyWay a :Galaxy;
-  :supercluster :Virgo.
-
-:Virgo a :Supercluster;
-  :objects :MilkyWay, :NGC-4486, :NGC-4501.
-
-:NGC-4486 a :Galaxy;
-  :messier "87";
-  :supercluster :Virgo;
-  enola:wikidata "Q14041".
-
-:NGC-4501 a :Galaxy;
-  :messier "88";
-  :supercluster :Virgo;
-  enola:wikidata "Q14048".
-
-# TODO Graph of this...
+:greeting3 a :Salutation;
+  :message "hello".

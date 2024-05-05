@@ -37,6 +37,8 @@ import java.io.UncheckedIOException;
  */
 public interface ThingProvider extends ProviderFromIRI<Thing> {
 
+    // TODO What if this were @NonNull and always returned at least an OnlyIRIThing ?!
+
     /**
      * Get the Thing.
      *

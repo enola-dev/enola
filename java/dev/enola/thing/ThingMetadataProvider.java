@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
+import java.util.function.Function;
 
 /**
  * {@link MetadataProvider} implementation based on looking at {@link Things}s obtained via {@link
@@ -84,14 +85,11 @@ public class ThingMetadataProvider implements MetadataProvider {
      * as-is.
      */
     private String getLabel(@Nullable Thing thing, @NonNull String fallbackIRI) {
-        var label = getString(thing, KIRI.RDFS.LABEL);
+        var label = getLabel_(thing);
         if (label != null) return label;
 
-        var name = getString(thing, KIRI.SCHEMA.NAME);
-        if (name != null) return name;
-
-        var title = getString(thing, KIRI.DC.TITLE);
-        if (title != null) return title;
+        label = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getLabel_(thingX));
+        if (label != null) return label;
 
         var curie = ns.toCURIE(fallbackIRI);
         if (!curie.equals(fallbackIRI)) return curie;
@@ -105,6 +103,19 @@ public class ThingMetadataProvider implements MetadataProvider {
         } catch (URISyntaxException e) {
             return fallbackIRI;
         }
+    }
+
+    private String getLabel_(@Nullable Thing thing) {
+        var label = getString(thing, KIRI.RDFS.LABEL);
+        if (label != null) return label;
+
+        var name = getString(thing, KIRI.SCHEMA.NAME);
+        if (name != null) return name;
+
+        var title = getString(thing, KIRI.DC.TITLE);
+        if (title != null) return title;
+
+        return null;
     }
 
     /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
@@ -132,10 +143,10 @@ public class ThingMetadataProvider implements MetadataProvider {
         var thingImage = getImageHTML_(thing);
         if (thingImage != null) return thingImage;
 
-        thingImage = getAlternativeImageHTML(thing, KIRI.RDFS.RANGE);
+        thingImage = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getImageHTML_(thingX));
         if (thingImage != null) return thingImage;
 
-        thingImage = getAlternativeImageHTML(thing, KIRI.RDFS.CLASS);
+        thingImage = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getImageHTML_(thingX));
         if (thingImage != null) return thingImage;
 
         return "";
@@ -151,13 +162,14 @@ public class ThingMetadataProvider implements MetadataProvider {
         return null;
     }
 
-    private @Nullable String getAlternativeImageHTML(Thing thing, String viaPropertyIRI) {
-        var rdfClassIRI = getString(thing, viaPropertyIRI);
-        if (rdfClassIRI != null) {
-            var alternativeThing = tp.get(rdfClassIRI);
+    private @Nullable String getAlternative(
+            Thing thing, String viaPropertyIRI, Function<Thing, String> alt) {
+        var alternativeThingIRI = getString(thing, viaPropertyIRI);
+        if (alternativeThingIRI != null) {
+            var alternativeThing = tp.get(alternativeThingIRI);
             if (alternativeThing != null) {
-                var alternativeImageSource = getImageHTML_(alternativeThing);
-                if (alternativeImageSource != null) return alternativeImageSource;
+                var alternativeSource = alt.apply(alternativeThing);
+                if (alternativeSource != null) return alternativeSource;
             }
         }
         return null;
