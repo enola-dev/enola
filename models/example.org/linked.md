@@ -27,7 +27,7 @@ Now check out the [`greeting2.ttl`](greeting2.ttl):
 Let's generate documentation:
 
 ```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=file://"$PWD"/docs/models/ --no-index
+$ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=file:///tmp/models/ --no-index
 ...
 ```
 
