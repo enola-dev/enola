@@ -8,6 +8,3 @@
 * [homeAddress](http://example.enola.dev/homeAddress):
     * [street](http://example.enola.dev/street): 31 Art Gallery
     * [city](http://example.enola.dev/city): Barcelona
-
----
-_This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

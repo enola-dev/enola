@@ -97,7 +97,7 @@ public class DocGen extends CommandWithModelAndOutput {
         var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());
         Predicate<String> allIRIContainsPredicate = allIRI::contains;
         CheckedPredicate<String, IOException> knownIRIPredicate = iri -> hasThing(service, iri);
-        mdsg.generate(thingsList, knownIRIPredicate, templateService, generateIndexFile);
+        mdsg.generate(thingsList, knownIRIPredicate, templateService, generateIndexFile, true);
     }
 
     private Collection<Thing> getThings(EnolaServiceBlockingStub service, String iri)
@@ -127,7 +127,7 @@ public class DocGen extends CommandWithModelAndOutput {
         var header = rp.getReadableResource(headerURI).charSource().read();
 
         try (var writer = resource.charSink().openBufferedStream()) {
-            new MarkdownDocGenerator(options).render(eks, header, writer);
+            new MarkdownDocGenerator(options, true).render(eks, header, writer);
         }
     }
 }

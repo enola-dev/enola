@@ -51,3 +51,5 @@ java/dev/enola/core/meta/proto/
 java/dev/enola/core/proto/
 java/dev/enola/protobuf/
 java/dev/enola/thing/proto/
+
+tools/version/VERSION

@@ -9,6 +9,3 @@
     1. Felipe
     1. Jacinto
 * [schema:birthDate](https://schema.org/birthDate): 1904-05-11 _[`schema:Date`](https://schema.org/Date)_
-
----
-_This model documentation was generated with ❤️ by [Enola.dev](https://www.enola.dev)_

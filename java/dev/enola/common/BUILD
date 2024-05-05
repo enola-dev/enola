@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//tools/version",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:dev_dirs_directories",

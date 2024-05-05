@@ -46,7 +46,8 @@ class MarkdownThingGenerator {
             URI outputIRI,
             URI base,
             CheckedPredicate<String, IOException> isDocumentedIRI,
-            TemplateService ts)
+            TemplateService ts,
+            boolean footer)
             throws IOException {
         var thingIRI = thing.getIri();
         out.append("# ");
@@ -62,7 +63,8 @@ class MarkdownThingGenerator {
 
         write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI, ts);
 
-        out.append(DocGenConstants.FOOTER);
+        if (footer) out.append(DocGenConstants.FOOTER);
+
         return meta;
     }
 

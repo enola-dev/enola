@@ -64,7 +64,7 @@ public class MarkdownSiteGeneratorTest {
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
-        mdDocsGen.generate(protoThings, iri -> false, TemplateService.NONE, true);
+        mdDocsGen.generate(protoThings, iri -> false, TemplateService.NONE, true, false);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");
@@ -95,7 +95,7 @@ public class MarkdownSiteGeneratorTest {
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
 
-        mdDocsGen.generate(templatedThings, iri -> ttr.get(iri) != null, ttr, true);
+        mdDocsGen.generate(templatedThings, iri -> ttr.get(iri) != null, ttr, true, false);
 
         check(dir, "example.org/greeting.md", "greeting.md");
         check(dir, "example.org/greet/NUMBER.md", "greet-NUMBER.md");
