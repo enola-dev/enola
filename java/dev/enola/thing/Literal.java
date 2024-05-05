@@ -26,5 +26,10 @@ import dev.enola.datatype.Datatype;
  * <p>Normally, values are some other native Java object; this is only for cases which could not be
  * decoded to a more suitable Java type, because no {@link Datatype} for this literal's datatype IRI
  * was registered.
+ *
+ * <p>This is a LEGACY type which (now) overlaps with {@link Thing#datatype(String predicateIRI)}
+ * (and a String value property). Prefer using that than this, which will eventually be removed.
+ * Until it's removed, use {@link Thing#datatypeLEGACY(String)} to obtain a property's datatype.
  */
+@Deprecated // TODO Remove this; see above
 public final record Literal(String value, String datatypeIRI) {}

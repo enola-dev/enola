@@ -57,44 +57,44 @@ public class TemplateThingRepository implements ThingRepository, TemplateService
     }
 
     private Match gen(String classIRITemplate, Thing rdfClass) {
-        try {
-            Set<SimpleImmutableEntry<String, URITemplate>> set = new HashSet<>();
-            for (String predicateIRI : rdfClass.predicateIRIs()) {
-                if (KIRI.E.IRI_TEMPLATE_DATATYPE.equals(rdfClass.datatype(predicateIRI))) {
-                    var uriTemplate = new URITemplate(rdfClass.getString(predicateIRI));
-                    set.add(
-                            new SimpleImmutableEntry<String, URITemplate>(
-                                    predicateIRI, uriTemplate));
-                }
+        Set<SimpleImmutableEntry<String, URITemplate>> set = new HashSet<>();
+        for (String predicateIRI : rdfClass.predicateIRIs()) {
+            if (KIRI.E.IRI_TEMPLATE_DATATYPE.equals(rdfClass.datatype(predicateIRI))) {
+                var uriTemplate = newURITemplate(rdfClass.getString(predicateIRI));
+                set.add(new SimpleImmutableEntry<String, URITemplate>(predicateIRI, uriTemplate));
             }
-            var templatePredicates = Collections.unmodifiableSet(set);
+        }
+        var templatePredicates = Collections.unmodifiableSet(set);
 
-            var classURITemplate = new URITemplate(classIRITemplate);
-            return new Match(
-                    classIRITemplate,
-                    params -> {
-                        try {
-                            var varMap = VariableMaps.from(params);
-                            var builder = ImmutableThing.builder();
-                            var newIRI = Templates.unescapeURL(classURITemplate.toString(varMap));
-                            builder.iri(newIRI);
-                            builder.set(KIRI.RDF.TYPE, new Link(rdfClass.iri()));
-                            for (var templatePredicate : templatePredicates) {
-                                var predicateIRI = templatePredicate.getKey();
-                                var predicateURITemplate = templatePredicate.getValue();
-                                var link =
-                                        Templates.unescapeURL(
-                                                predicateURITemplate.toString(varMap));
-                                builder.set(predicateIRI, new Link(link));
-                            }
-
-                            return builder.build();
-                        } catch (URITemplateException e) {
-                            throw new IllegalArgumentException(rdfClass.iri(), e);
+        var classURITemplate = newURITemplate(classIRITemplate);
+        return new Match(
+                classIRITemplate,
+                params -> {
+                    try {
+                        var varMap = VariableMaps.from(params);
+                        var builder = ImmutableThing.builder();
+                        var newIRI = Templates.unescapeURL(classURITemplate.toString(varMap));
+                        builder.iri(newIRI);
+                        builder.set(KIRI.RDF.TYPE, new Link(rdfClass.iri()));
+                        for (var templatePredicate : templatePredicates) {
+                            var predicateIRI = templatePredicate.getKey();
+                            var predicateURITemplate = templatePredicate.getValue();
+                            var link = Templates.unescapeURL(predicateURITemplate.toString(varMap));
+                            builder.set(predicateIRI, new Link(link));
                         }
-                    });
+
+                        return builder.build();
+                    } catch (URITemplateException e) {
+                        throw new IllegalArgumentException(rdfClass.iri(), e);
+                    }
+                });
+    }
+
+    private URITemplate newURITemplate(String template) {
+        try {
+            return new URITemplate(template);
         } catch (URITemplateParseException e) {
-            throw new IllegalArgumentException(rdfClass.iri() + " invalid IRI Template", e);
+            throw new IllegalArgumentException(template + " invalid IRI Template", e);
         }
     }
 

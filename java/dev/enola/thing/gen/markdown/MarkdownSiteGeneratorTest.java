@@ -25,20 +25,27 @@ import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
-import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.ThingProvider;
+import dev.enola.thing.*;
+import dev.enola.thing.message.JavaThingToProtoThingConverter;
+import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class MarkdownSiteGeneratorTest {
 
@@ -51,15 +58,11 @@ public class MarkdownSiteGeneratorTest {
 
     @Test
     public void picasso() throws Exception {
-        var cpr = new ClasspathResource("picasso.ttl");
-        var rdf4jModel = new RdfReaderConverter().convert(cpr).get();
-        var protoThingStream = new RdfThingConverter().convert(rdf4jModel);
-        var protoThings =
-                protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
+        var protoThings = load(new ClasspathResource("picasso.ttl"));
 
         var metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
 
-        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest");
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
         mdDocsGen.generate(protoThings, iri -> false, TemplateService.NONE, true);
 
@@ -67,9 +70,46 @@ public class MarkdownSiteGeneratorTest {
         check(dir, "example.enola.dev/Dalí.md", "dali.md");
     }
 
+    @Test
+    public void templatedGreetingN() throws Exception {
+        DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
+        var converterP2J = new ProtoThingIntoJavaThingBuilderConverter(dtr);
+        var loadedProtoThings = load(new ClasspathResource("example.org/greetingN.ttl"));
+        var repoBuilder = new ThingMemoryRepositoryROBuilder();
+        for (var protoThing : loadedProtoThings) {
+            var javaThingBuilder = ImmutableThing.builder();
+            converterP2J.convertIntoOrThrow(protoThing, javaThingBuilder);
+            repoBuilder.store(javaThingBuilder.build());
+        }
+        var repo = repoBuilder.build();
+
+        var ttr = new TemplateThingRepository(repo);
+        var metadataProvider = new ThingMetadataProvider(ttr, nc);
+
+        var converterJ2P = new JavaThingToProtoThingConverter(dtr);
+        var templatedThings =
+                StreamSupport.stream(ttr.list().spliterator(), false)
+                        .map(javaThing -> converterJ2P.convert(javaThing).build())
+                        .collect(Collectors.toUnmodifiableSet());
+
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
+
+        mdDocsGen.generate(templatedThings, iri -> ttr.get(iri) != null, ttr, true);
+
+        check(dir, "example.org/greeting.md", "greeting.md");
+        check(dir, "example.org/greet/NUMBER.md", "greet-NUMBER.md");
+    }
+
+    private ImmutableSet<Thing> load(ReadableResource cpr) {
+        var rdf4jModel = new RdfReaderConverter().convert(cpr).get();
+        var protoThingStream = new RdfThingConverter().convert(rdf4jModel);
+        return protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
+    }
+
     private void check(Path dir, String generated, String expected) throws IOException {
-        var genPabloMdFileURI = dir.resolve(generated).toUri();
-        var generatedMarkdown = rp.getReadableResource(genPabloMdFileURI).charSource().read();
+        var genMdFileURI = dir.resolve(generated).toUri();
+        var generatedMarkdown = rp.getReadableResource(genMdFileURI).charSource().read();
         var trimmedGeneratedMarkdown = trimLineEndWhitespace(generatedMarkdown);
 
         var expectedMarkdown = new ClasspathResource(expected).charSource().read();
