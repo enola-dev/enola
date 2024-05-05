@@ -29,7 +29,7 @@ You can tell that the `greeting1` and `greeting2` from the previous steps are bo
 This simply expresses that `greeting3` _"is a"_ `Salutation`. We're also adding an Emoji to the _Class,_ which Enola always displays for both that class itself and its instances. You can generate documentation:
 
 ```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greeting3.ttl" --output=file://"$PWD"/docs/models/ --no-index
+$ ./enola docgen --load "file:docs/models/example.org/greeting3.ttl" --output=file:///tmp/models/ --no-index
 ...
 ```
 
