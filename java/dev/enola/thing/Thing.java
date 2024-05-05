@@ -17,21 +17,12 @@
  */
 package dev.enola.thing;
 
-import com.google.common.collect.ImmutableMap;
-
-import org.jspecify.annotations.Nullable;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Collection;
-import java.util.Optional;
-
 /**
  * Thing is the central data structure of Enola.
  *
  * <p>Each Thing has an {@link #iri()}, which uniquely identifies it. All Things have 0..n
  * predicates, each identified by an IRI itself, and having a value. Each such value has a (Java,
- * here) Type.
+ * here) Type (see {@link PredicatesObjects}).
  *
  * <p>This is, of course, heavily inspired by TBL's vision of the <i>Semantic Web</i> of <i>Linked
  * Data</i>, such as also described by standards such has RDF and then used e.g. by SPARQL, or
@@ -41,93 +32,15 @@ public interface Thing extends PredicatesObjects {
 
     String iri();
 
-    /**
-     * The Map's key is the IRI of a Property, and the value is as would be returned by {@link
-     * #get(String)}.
-     */
-    ImmutableMap<String, Object> properties();
-
-    /** IRIs of the Predicates about this Thing. */
-    Collection<String> predicateIRIs();
-
-    /**
-     * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype
-     * set. This is required because the predicate's Object Java class is not necessarily unique;
-     * e.g. both dev.enola.model.schema.Datatypes.DATE as well as dev.enola.model.xsd.DATE are both
-     * java.time.LocalDate instances.
-     */
-    @Nullable String datatype(String predicateIRI);
-
-    @Deprecated // TODO Remove once record Literal is gone
-    default @Nullable String datatypeLEGACY(String predicateIRI) {
-        var datatype = datatype(predicateIRI);
-        if (datatype != null) return datatype;
-
-        var object = get(predicateIRI);
-        if (object != null && object instanceof Literal) {
-            Literal literal = (Literal) object;
-            return literal.datatypeIRI();
-        }
-
-        return null;
-    }
-
-    /**
-     * Object of predicate. The type is e.g. directly a String, Integer etc. or a {@link Literal}.
-     * Alternatively, it may be another Thing (if it's been "resolved") or a {@link Link} with an
-     * IRI (if unresolved) or another Map (for an "inline embedded/expanded blank node") or a List
-     * of such items. The object is immutable. May be null if Thing has no such predicate.
-     */
-    <T> @Nullable T get(String predicateIRI);
-
-    /**
-     * Object of predicate, with type conversion - or failure.
-     *
-     * <p>BEWARE: This may well fail and throw an <tt>IllegalArgumentException</tt>! You can never
-     * really be sure what Java type an object of a predicate is. If in doubt, use {@link
-     * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
-     * dev.enola.common.convert.ObjectClassConverter}.
-     */
-    default <T> T get(String predicateIRI, Class<T> klass) {
-        return getOptional(predicateIRI, klass)
-                .orElseThrow(
-                        () ->
-                                new IllegalArgumentException(
-                                        iri() + "'s " + predicateIRI + " is not " + klass));
-    }
-
-    /** Object of predicate, with conversion - as Optional (never fails). */
-    @SuppressWarnings("unchecked")
-    default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
-        Object object = get(predicateIRI);
-        if (object == null) return Optional.empty();
-        if (klass.isInstance(object)) return Optional.of((T) object);
-        try {
-            return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
-        } catch (IOException e) {
-            // TODO Get rid of throws IOException and remove this.
-            // Or better log any exceptions and return just Optional.empty()?
-            throw new UncheckedIOException("Failed to convert " + object + " to " + klass, e);
-        }
-    }
-
-    default @Nullable String getString(String predicateIRI) {
-        return getOptional(predicateIRI, String.class).orElse(null);
-    }
-
-    // TODO get... other types.
-
     Builder copy();
 
-    public interface Builder extends dev.enola.common.Builder<Thing> {
+    public interface Builder extends PredicatesObjects.Builder {
 
         Builder iri(String iri);
 
         Builder set(String predicateIRI, Object value);
 
         Builder set(String predicateIRI, Object value, String datatypeIRI);
-
-        // Supplier<Builder> builderSupplier();
 
         @Override
         Thing build();
