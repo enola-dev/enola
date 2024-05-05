@@ -19,6 +19,7 @@ package dev.enola.thing.message;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ThreadSafe;
@@ -28,13 +29,14 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
+import dev.enola.thing.Thing;
 import dev.enola.thing.proto.Value.KindCase;
-import dev.enola.thing.spi.AbstractThing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * ThingAdapter adapts a {@link dev.enola.thing.proto.Thing} to a {@link dev.enola.thing.Thing}.
@@ -43,7 +45,7 @@ import java.util.Collection;
  * "wraps" whereas that one "converts".
  */
 @ThreadSafe
-public final class ThingAdapter extends AbstractThing {
+public final class ThingAdapter implements Thing {
 
     // TODO This is too similar to ProtoThingIntoJavaThingBuilderConverter, and must be merged
 
@@ -74,6 +76,16 @@ public final class ThingAdapter extends AbstractThing {
         var value = proto.getFieldsMap().get(predicateIRI);
         if (value != null) return (T) value(value);
         else return null;
+    }
+
+    @Override
+    public ImmutableMap<String, Object> properties() {
+        var predicateIRIs = predicateIRIs();
+        var builder = ImmutableMap.<String, Object>builderWithExpectedSize(predicateIRIs.size());
+        for (var predicateIRI : predicateIRIs) {
+            builder.put(predicateIRI, get(predicateIRI));
+        }
+        return builder.build();
     }
 
     @Override
@@ -142,5 +154,29 @@ public final class ThingAdapter extends AbstractThing {
             mapBuilder.put(entry.getKey(), value(entry.getValue()));
         }
         return mapBuilder.build();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        // NO NEED: if (obj == null) return false;
+        // NOT:     if (getClass() != obj.getClass()) return false;
+        if (!(obj instanceof ThingAdapter)) return false;
+        final ThingAdapter other = (ThingAdapter) obj;
+        return this.proto.equals(other.proto)
+                && this.datatypeRepository.equals(other.datatypeRepository);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(proto, datatypeRepository);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("iri", iri())
+                .add("properties", properties())
+                .toString();
     }
 }
