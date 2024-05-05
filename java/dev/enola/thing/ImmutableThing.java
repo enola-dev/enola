@@ -21,15 +21,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ThreadSafe;
 
-import java.util.Collection;
 import java.util.Objects;
 
 @ThreadSafe
-public final class ImmutableThing implements Thing {
+public final class ImmutableThing extends ImmutablePredicatesObjects implements Thing {
 
     private final String iri;
-    private final ImmutableMap<String, Object> properties;
-    private final ImmutableMap<String, String> datatypes;
 
     public static Thing.Builder builder() {
         return new Builder();
@@ -43,35 +40,13 @@ public final class ImmutableThing implements Thing {
             String iri,
             ImmutableMap<String, Object> properties,
             ImmutableMap<String, String> datatypes) {
+        super(properties, datatypes);
         this.iri = iri;
-        this.properties = properties;
-        this.datatypes = datatypes;
     }
 
     @Override
     public String iri() {
         return iri;
-    }
-
-    @Override
-    public ImmutableMap<String, Object> properties() {
-        return properties;
-    }
-
-    @Override
-    public Collection<String> predicateIRIs() {
-        return properties.keySet();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T get(String predicateIRI) {
-        return (T) properties.get(predicateIRI);
-    }
-
-    @Override
-    public String datatype(String predicateIRI) {
-        return datatypes.get(predicateIRI);
     }
 
     @Override
@@ -82,27 +57,27 @@ public final class ImmutableThing implements Thing {
         if (!(obj instanceof ImmutableThing)) return false;
         final ImmutableThing other = (ImmutableThing) obj;
         return Objects.equals(this.iri, other.iri)
-                && Objects.equals(this.properties, other.properties)
-                && Objects.equals(this.datatypes, other.datatypes);
+                && Objects.equals(this.properties(), other.properties())
+                && Objects.equals(this.datatypes(), other.datatypes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(iri, properties, datatypes);
+        return Objects.hash(iri, properties(), datatypes());
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("iri", iri)
-                .add("properties", properties)
-                .add("datatypes", datatypes)
+                .add("properties", properties())
+                .add("datatypes", datatypes())
                 .toString();
     }
 
     @Override
     public Thing.Builder copy() {
-        return new Builder(iri, properties, datatypes);
+        return new Builder(iri, properties(), datatypes());
     }
 
     private static final class Builder implements Thing.Builder {
@@ -160,10 +135,5 @@ public final class ImmutableThing implements Thing {
         public Thing build() {
             return new ImmutableThing(iri, properties.build(), datatypes.build());
         }
-
-        // @Override
-        // public Supplier<Thing.Builder> builderSupplier() {
-        //     return Builder::new;
-        // }
     }
 }
