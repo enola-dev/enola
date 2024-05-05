@@ -61,9 +61,13 @@ public class JavaThingToProtoThingConverter
 
     private Value toValue(Object object, String propertyIRI, dev.enola.thing.Thing javaThing) {
         var protoValue = dev.enola.thing.proto.Value.newBuilder();
+        // javaThing == null when it's for a Map (from Blank Node)
+        // TODO remove null check once fully switching to Struct instead Map
+        var datatypeIRI = javaThing != null ? javaThing.datatype(propertyIRI) : null;
         switch (object) {
             case String string:
-                protoValue.setString(string);
+                if (datatypeIRI == null) protoValue.setString(string);
+                else protoValue.setLiteral(toProtoLiteral(string, datatypeIRI));
                 break;
 
             case Link link:
@@ -83,7 +87,7 @@ public class JavaThingToProtoThingConverter
                 protoValue.setList(protoList);
                 break;
 
-            case Map<?, ?> map:
+            case Map<?, ?> map: // TODO Replace Map with Struct, see below
                 var propertiesMap = (Map<String, Object>) map;
                 var protoThing = dev.enola.thing.proto.Thing.newBuilder();
                 // TODO Fix NULL... Must be (parent of?!)Thing instead of Map, after all?!
@@ -103,7 +107,6 @@ public class JavaThingToProtoThingConverter
                 break;
 
             default:
-                var datatypeIRI = javaThing.datatype(propertyIRI);
                 var datatype = datatypeRepository.get(datatypeIRI);
                 if (datatype == null)
                     throw new IllegalStateException(
