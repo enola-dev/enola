@@ -62,7 +62,7 @@ public class JavaThingToProtoThingConverter
     private Value toValue(Object object, String propertyIRI, dev.enola.thing.Thing javaThing) {
         var protoValue = dev.enola.thing.proto.Value.newBuilder();
         // javaThing == null when it's for a Map (from Blank Node)
-        // TODO remove null check once fully switching to Struct instead Map
+        // TODO remove null check once fully switching to PredicatesObjects instead Map
         var datatypeIRI = javaThing != null ? javaThing.datatype(propertyIRI) : null;
         switch (object) {
             case String string:
@@ -87,10 +87,10 @@ public class JavaThingToProtoThingConverter
                 protoValue.setList(protoList);
                 break;
 
-            case Map<?, ?> map: // TODO Replace Map with Struct, see below
+            case Map<?, ?> map: // TODO Replace Map with PredicatesObjects, see below
                 var propertiesMap = (Map<String, Object>) map;
                 var protoThing = dev.enola.thing.proto.Thing.newBuilder();
-                // TODO Fix NULL... Must be (parent of?!)Thing instead of Map, after all?!
+                // TODO Fix NULL... Must be a PredicatesObjects instead of Map eventually
                 map2proto(protoThing, propertiesMap.entrySet(), null);
                 protoValue.setStruct(protoThing);
                 break;

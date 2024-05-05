@@ -30,32 +30,22 @@ import java.util.Optional;
  * Thing is the central data structure of Enola.
  *
  * <p>Each Thing has an {@link #iri()}, which uniquely identifies it. All Things have 0..n
- * properties, each identified by an IRI itself, and having a value. Each such value has a (Java,
+ * predicates, each identified by an IRI itself, and having a value. Each such value has a (Java,
  * here) Type.
  *
  * <p>This is, of course, heavily inspired by TBL's vision of the <i>Semantic Web</i> of <i>Linked
- * Data</i>, such as also described by by standards such has RDF and then used e.g. by SPARQL, or
+ * Data</i>, such as also described by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
-public interface Thing { // TODO extends WithIRI? interface HasIRI { String iri(); }
+public interface Thing extends PredicatesObjects {
 
-    // TODO Fix properties / predicate (which is the same!) inconsistency in method names & doc!
-
-    // TODO @Override ?
     String iri();
 
     /**
      * The Map's key is the IRI of a Property, and the value is as would be returned by {@link
      * #get(String)}.
      */
-    default ImmutableMap<String, Object> properties() {
-        var predicateIRIs = predicateIRIs();
-        var builder = ImmutableMap.<String, Object>builderWithExpectedSize(predicateIRIs.size());
-        for (var predicateIRI : predicateIRIs) {
-            builder.put(predicateIRI, get(predicateIRI));
-        }
-        return builder.build();
-    }
+    ImmutableMap<String, Object> properties();
 
     /** IRIs of the Predicates about this Thing. */
     Collection<String> predicateIRIs();

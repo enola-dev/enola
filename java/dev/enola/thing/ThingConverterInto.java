@@ -33,10 +33,11 @@ public class ThingConverterInto implements ConverterInto<Thing, Thing.Builder> {
     @Override
     public boolean convertInto(Thing from, Builder into) throws ConversionException, IOException {
         into.iri(from.iri());
-        for (var iri : from.predicateIRIs()) {
-            var value = from.get(iri);
-            // TODO if (value instanceof Thing) into.builderSupplier().get() ...
-            into.set(iri, value);
+        for (var predicateIRI : from.predicateIRIs()) {
+            var value = from.get(predicateIRI);
+            var datatype = from.datatype(predicateIRI);
+            // TODO if (value instanceof PredicatesObjects & Thing) into.builderSupplier().get() ...
+            into.set(predicateIRI, value, datatype);
         }
         return true;
     }

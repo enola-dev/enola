@@ -17,7 +17,7 @@
  */
 package dev.enola.thing;
 
-import dev.enola.thing.spi.AbstractThing;
+import com.google.common.collect.ImmutableMap;
 
 import org.jspecify.annotations.Nullable;
 
@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 /** {@link Thing} with only an IRI and no properties (optimized). */
-public class OnlyIRIThing extends AbstractThing {
+public class OnlyIRIThing implements Thing {
     private final String iri;
 
     public OnlyIRIThing(String iri) {
@@ -35,6 +35,11 @@ public class OnlyIRIThing extends AbstractThing {
     @Override
     public String iri() {
         return iri;
+    }
+
+    @Override
+    public ImmutableMap<String, Object> properties() {
+        return ImmutableMap.of();
     }
 
     @Override

@@ -17,15 +17,15 @@
  */
 package dev.enola.thing;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ThreadSafe;
 
-import dev.enola.thing.spi.AbstractThing;
-
 import java.util.Collection;
+import java.util.Objects;
 
 @ThreadSafe
-public final class ImmutableThing extends AbstractThing {
+public final class ImmutableThing implements Thing {
 
     private final String iri;
     private final ImmutableMap<String, Object> properties;
@@ -54,6 +54,11 @@ public final class ImmutableThing extends AbstractThing {
     }
 
     @Override
+    public ImmutableMap<String, Object> properties() {
+        return properties;
+    }
+
+    @Override
     public Collection<String> predicateIRIs() {
         return properties.keySet();
     }
@@ -67,6 +72,32 @@ public final class ImmutableThing extends AbstractThing {
     @Override
     public String datatype(String predicateIRI) {
         return datatypes.get(predicateIRI);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        // NO NEED: if (obj == null) return false;
+        // NOT:     if (getClass() != obj.getClass()) return false;
+        if (!(obj instanceof ImmutableThing)) return false;
+        final ImmutableThing other = (ImmutableThing) obj;
+        return Objects.equals(this.iri, other.iri)
+                && Objects.equals(this.properties, other.properties)
+                && Objects.equals(this.datatypes, other.datatypes);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iri, properties, datatypes);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("iri", iri)
+                .add("properties", properties)
+                .add("datatypes", datatypes)
+                .toString();
     }
 
     @Override
