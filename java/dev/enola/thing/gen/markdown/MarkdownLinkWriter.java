@@ -20,6 +20,8 @@ package dev.enola.thing.gen.markdown;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.metadata.Metadata;
+import dev.enola.thing.gen.EnolaDevKnownDocsProvider;
+import dev.enola.thing.gen.KnownDocsProvider;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
@@ -28,6 +30,8 @@ import java.io.IOException;
 import java.net.URI;
 
 class MarkdownLinkWriter {
+
+    private KnownDocsProvider kdp = new EnolaDevKnownDocsProvider();
 
     void writeMarkdownLink(
             String iri,
@@ -90,7 +94,7 @@ class MarkdownLinkWriter {
         if (!isDocumentedIRI.test(linkIRI)) {
             if (linkIRI.startsWith("file:"))
                 return Relativizer.relativize(outputIRI, URI.create(linkIRI));
-            else return linkIRI;
+            else return kdp.get(linkIRI);
         } else {
             var woSchemeWithExtLinkedIRI =
                     Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
