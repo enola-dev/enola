@@ -46,5 +46,9 @@ public final class Version {
         return "https://github.com/enola-dev/enola/tree/" + VERSION;
     }
 
+    public static boolean isKnown() {
+        return !DEFAULT.equals(VERSION);
+    }
+
     private Version() {}
 }
