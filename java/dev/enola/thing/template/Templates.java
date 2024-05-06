@@ -24,7 +24,7 @@ public final class Templates {
     }
 
     public static String dropVariableMarkers(String iri) {
-        return iri.replace("{", "").replace("}", "");
+        return iri.replace("{", "_").replace("}", "");
     }
 
     public static String convertToMustache(String iri) {

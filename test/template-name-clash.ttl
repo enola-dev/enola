@@ -1,0 +1,9 @@
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix enola:  <https://enola.dev/>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+
+<http://example.org/test> a rdfs:Class;
+    enola:iriTemplate "http://example.org/test/{NAME}".
+
+<http://example.org/test/NAME> a rdf:Datatype;
+    enola:example "abc".
