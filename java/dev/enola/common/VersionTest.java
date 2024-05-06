@@ -19,6 +19,7 @@ package dev.enola.common;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class VersionTest {
@@ -26,5 +27,11 @@ public class VersionTest {
     @Test
     public void get() {
         assertThat(Version.get()).isNotEmpty();
+    }
+
+    @Test
+    @Ignore // This could fail on a CI due to shallow Git clone
+    public void isKnown() {
+        assertThat(Version.isKnown()).isTrue();
     }
 }
