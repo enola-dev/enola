@@ -64,7 +64,7 @@ public final class Relativizer {
         else return "#";
     }
 
-    public static URI dropSchemeAddExtension(URI thingIRI, String extension) {
+    public static URI dropSchemeAddExtension(final URI thingIRI, final String extension) {
         if (thingIRI.getScheme().startsWith("http")) {
             var authority = nullToEmpty(thingIRI.getAuthority());
             if (authority == "") throw new IllegalArgumentException(thingIRI.toString());
@@ -74,18 +74,23 @@ public final class Relativizer {
             if (fragment != null) {
                 ssp = ssp + "/" + fragment;
             }
+
             var query = thingIRI.getQuery();
             if (query != null) query = "?" + query;
             else query = "";
+
+            var dotExtension = !extension.isEmpty() ? "." + extension : "";
+
             if (ssp.startsWith("//")) {
                 if (ssp.length() > 2)
                     return URI.create(nos(ssp.substring(2)) + "." + extension + query);
-                else return URI.create("." + extension + query); // TODO ???
+                else return URI.create(dotExtension + query); // TODO ???
             } else if (ssp.startsWith("/")) {
                 if (ssp.length() > 1)
                     return URI.create(nos(ssp.substring(1)) + "." + extension + query);
-                else return URI.create("." + extension + query); // TODO ???
-            } else return URI.create(nos(ssp) + "." + extension + query);
+                else return URI.create(dotExtension + query); // TODO ???
+            } else return URI.create(nos(ssp) + dotExtension + query);
+
         } else {
             // Intentionally WITHOUT adding extension, here;
             // this is typically a https://enola.dev/origin property value like file:///.../some.ttl

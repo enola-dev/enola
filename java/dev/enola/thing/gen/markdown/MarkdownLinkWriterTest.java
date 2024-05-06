@@ -48,6 +48,37 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
+    public void unknownIRIs() throws IOException {
+        var sb = new StringBuilder();
+        new MarkdownLinkWriter()
+                .writeMarkdownLink(
+                        "https://unknown.org/whatever",
+                        new Metadata("", "whatever", ""),
+                        sb,
+                        URI.create("file:///out/greeting.md"),
+                        URI.create("file:///out/"),
+                        iri -> false, // sic!
+                        TemplateService.NONE);
+        assertThat(sb.toString()).isEqualTo("[whatever](https://unknown.org/whatever)");
+    }
+
+    @Test
+    public void knownIRIs() throws IOException {
+        var sb = new StringBuilder();
+        new MarkdownLinkWriter()
+                .writeMarkdownLink(
+                        "https://enola.dev/emoji",
+                        new Metadata("", "emoji", ""),
+                        sb,
+                        URI.create("file:///out/greeting.md"),
+                        URI.create("file:///out/"),
+                        iri -> false, // sic!
+                        TemplateService.NONE);
+        assertThat(sb.toString())
+                .isEqualTo("[emoji](https://docs.enola.dev/models/enola.dev/emoji/)");
+    }
+
+    @Test
     public void writeTemplateMarkdownLink() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
