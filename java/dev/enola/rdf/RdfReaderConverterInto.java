@@ -22,6 +22,7 @@ import dev.enola.common.convert.ConverterInto;
 import dev.enola.common.io.resource.ReadableResource;
 
 import org.eclipse.rdf4j.rio.RDFHandler;
+import org.eclipse.rdf4j.rio.RDFParseException;
 import org.eclipse.rdf4j.rio.Rio;
 
 import java.io.IOException;
@@ -44,6 +45,13 @@ public class RdfReaderConverterInto implements ConverterInto<ReadableResource, R
                 return true;
             } catch (IOException e) {
                 throw new ConversionException("Failing reading from : " + from, e);
+            } catch (RDFParseException e) {
+                throw new ConversionException(
+                        "RDFParseException reading from resource",
+                        from.uri(),
+                        e.getLineNumber(),
+                        e.getColumnNumber(),
+                        e);
             }
         }
         return false;
