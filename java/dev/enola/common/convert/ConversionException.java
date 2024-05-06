@@ -17,12 +17,20 @@
  */
 package dev.enola.common.convert;
 
+import dev.enola.common.URILineColumnMessage;
+
+import java.net.URI;
+
 /**
  * Failures encountered by {@link ConverterInto}, {@link Converter} and {@link BiConverter}
  * implementations.
  */
 public class ConversionException extends RuntimeException {
     // TODO Re-try making this extends Exception instead Runtime, now that I have 👟 MoreStreams
+
+    public ConversionException(String message, URI uri, long line, long column, Throwable cause) {
+        super(new URILineColumnMessage(message, uri, line, column).format(), cause);
+    }
 
     public ConversionException(String message, Throwable cause) {
         super(message, cause);
