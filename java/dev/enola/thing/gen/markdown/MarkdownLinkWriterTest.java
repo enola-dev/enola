@@ -60,7 +60,7 @@ public class MarkdownLinkWriterTest {
                         iri -> true,
                         TEST_TEMPLATE_SERVICE);
         assertThat(sb.toString())
-                .isEqualTo("[greeting42](example.org/greetingNUMBER.md?NUMBER=42)");
+                .isEqualTo("[greeting42](example.org/greeting_NUMBER.md?NUMBER=42)");
     }
 
     private static final TemplateService TEST_TEMPLATE_SERVICE =

@@ -72,9 +72,22 @@ public class MarkdownSiteGeneratorTest {
 
     @Test
     public void templatedGreetingN() throws Exception {
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
+        generate(dir, "example.org/greetingN.ttl");
+        check(dir, "example.org/greeting.md", "greeting.md");
+        check(dir, "example.org/greet/_NUMBER.md", "greet-NUMBER.md");
+    }
+
+    @Test
+    public void templateNameClash() throws IOException {
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
+        generate(dir, "template-name-clash.ttl");
+    }
+
+    private void generate(Path dir, String classpathResource) throws IOException {
         DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
         var converterP2J = new ProtoThingIntoJavaThingBuilderConverter(dtr);
-        var loadedProtoThings = load(new ClasspathResource("example.org/greetingN.ttl"));
+        var loadedProtoThings = load(new ClasspathResource(classpathResource));
         var repoBuilder = new ThingMemoryRepositoryROBuilder();
         for (var protoThing : loadedProtoThings) {
             var javaThingBuilder = ImmutableThing.builder();
@@ -92,13 +105,9 @@ public class MarkdownSiteGeneratorTest {
                         .map(javaThing -> converterJ2P.convert(javaThing).build())
                         .collect(Collectors.toUnmodifiableSet());
 
-        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
 
         mdDocsGen.generate(templatedThings, iri -> ttr.get(iri) != null, ttr, true, false);
-
-        check(dir, "example.org/greeting.md", "greeting.md");
-        check(dir, "example.org/greet/NUMBER.md", "greet-NUMBER.md");
     }
 
     private ImmutableSet<Thing> load(ReadableResource cpr) {

@@ -72,7 +72,7 @@ public class MarkdownSiteGenerator {
         ImmutableMap.Builder<String, Metadata> metas =
                 ImmutableMap.builderWithExpectedSize(MoreIterables.sizeIfKnown(things).orElse(7));
 
-        // TODO Do this multi-threaded, in parallel...
+        // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
             var thingIRI = thing.getIri();
