@@ -23,9 +23,8 @@ public interface DocGenConstants {
 
     public static final String FOOTER =
             "\n---\n_This model documentation was generated with ❤️ by"
-                    + " [Enola.dev](https://www.enola.dev) @ ["
-                    + Version.get()
-                    + "]("
-                    + Version.gitUI()
-                    + ")_\n";
+                    + " [Enola.dev](https://www.enola.dev)"
+                    + (Version.isKnown()
+                            ? " @ [" + Version.get() + "](" + Version.gitUI() + ")"
+                            : "" + "_\n");
 }

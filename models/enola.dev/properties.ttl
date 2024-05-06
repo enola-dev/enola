@@ -39,7 +39,8 @@ enola:iriTemplate a rdf:Property;
 
 enola:IRITemplate a rdfs:Datatype;
   schema:name "IRI Template";
-  # TODO ? schema:description "Enola can convert properties of this datatype to string by replacing variables.";
+  rdfs:seeAlso enola:iriTemplate;
+  schema:description "IRITemplate is the Datatype for RFC 6570 URI Templates. Used e.g. in an iriTemplate Class property.";
   enola:wikipedia "URI_Template";
   enola:wikidata "2467760";
   enola:rfc "6570";
