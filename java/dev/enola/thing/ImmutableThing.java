@@ -41,7 +41,7 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
             ImmutableMap<String, Object> properties,
             ImmutableMap<String, String> datatypes) {
         super(properties, datatypes);
-        this.iri = iri;
+        this.iri = Objects.requireNonNull(iri, "iri");
     }
 
     @Override
@@ -133,6 +133,7 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
 
         @Override
         public Thing build() {
+            if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
             return new ImmutableThing(iri, properties.build(), datatypes.build());
         }
     }

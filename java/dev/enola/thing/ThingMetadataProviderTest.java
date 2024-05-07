@@ -41,6 +41,7 @@ public class ThingMetadataProviderTest {
                     var builder = ImmutableThing.builder();
                     builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
                     builder.set(KIRI.DC.DESCRIPTION, "...");
+                    builder.iri(THING_IRI);
                     return builder.build();
                 }
             };
