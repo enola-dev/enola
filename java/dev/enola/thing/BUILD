@@ -102,5 +102,6 @@ junit_tests(
         "//java/dev/enola/rdf",
         "//models",
         "//test",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
