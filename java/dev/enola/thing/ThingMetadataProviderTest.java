@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 
+import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 
 public class ThingMetadataProviderTest {
@@ -37,7 +38,7 @@ public class ThingMetadataProviderTest {
             new ThingProvider() {
 
                 @Override
-                public Thing get(String iri) {
+                public @Nullable Thing get(String iri) {
                     var builder = ImmutableThing.builder();
                     builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
                     builder.set(KIRI.DC.DESCRIPTION, "...");
