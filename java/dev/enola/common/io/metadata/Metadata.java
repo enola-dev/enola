@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.metadata;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Metadata of an IRI, provided by {@link MetadataProvider}.
  *
@@ -29,4 +31,17 @@ package dev.enola.common.io.metadata;
  *     <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
  *     <p>Always returns something (never null), but may be empty String.
  */
-public record Metadata(String imageHTML, String label, String descriptionHTML) {}
+public record Metadata(String imageHTML, String label, String descriptionHTML) {
+
+    public Metadata(String imageHTML, String label, String descriptionHTML) {
+        this.imageHTML = requireNonNull(imageHTML, "imageHTML").trim();
+        this.label = requireNonEmpty(label, "label");
+        this.descriptionHTML = requireNonNull(descriptionHTML, "descriptionHTML").trim();
+    }
+
+    private String requireNonEmpty(String string, String name) {
+        if (requireNonNull(string, name).trim().isEmpty())
+            throw new IllegalArgumentException(name + " is empty?!");
+        return string;
+    }
+}
