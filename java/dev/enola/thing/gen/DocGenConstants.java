@@ -26,5 +26,6 @@ public interface DocGenConstants {
                     + " [Enola.dev](https://www.enola.dev)"
                     + (Version.isKnown()
                             ? " @ [" + Version.get() + "](" + Version.gitUI() + ")"
-                            : "" + "_\n");
+                            : "")
+                    + "_\n";
 }
