@@ -31,14 +31,15 @@ This Core's functionality which [is implemented](implementation.md) and exposed 
 Enola at its core can be viewed as a
 [Knowledge Management tool](https://en.m.wikipedia.org/wiki/Knowledge_management)
 to describe an [Ontology](https://en.m.wikipedia.org/wiki/Ontology_(information_science)).
-It _models_ real world concepts as what it terms _Entities,_ [identified by URI](uri.md), and models their _references_ both
-across its Entities, and to arbitrary non-Enola URIs. (This notably includes traditional
+It _models_ real world concepts as what it terms _Entities,_ [identified by URI](uri.md), and models their
+_references_ both across its Entities, and to arbitrary non-Enola URIs. (This notably includes traditional
 URLs like HTTP links, which models can use to create hyperlinks to UIs of applications managing Entities.)
 
 ## Formats
 
 Enola currently has [built-in interchangeable support](../use/rosetta/index.md) for RDF 🐢 Turtle, JSON, YAML, and Text proto & Binary Protocol Buffers
-[wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for entities. It is conceptually open to supporting other formats in the future; maybe e.g. [CBOR](https://github.com/enola-dev/enola/issues/603).
+[wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for Things. It is conceptually open to supporting other formats in the future; maybe e.g. [CBOR](https://github.com/enola-dev/enola/issues/603),
+or something like [Amazon Ion](https://amazon-ion.github.io/ion-docs/) or [others](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats).
 <!-- TODO Maybe also ... FHIR? Blockchain EVM format? What else? -->
 
 ## Schemas
