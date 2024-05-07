@@ -24,6 +24,8 @@ import com.google.errorprone.annotations.ThreadSafe;
 import java.util.Objects;
 
 @ThreadSafe
+// TODO interface IImmutableThing extends dev.enola.thing.Thing
+// TODO @com.google.errorprone.annotations.Immutable // https://github.com/enola-dev/enola/pull/625
 public final class ImmutableThing extends ImmutablePredicatesObjects implements Thing {
 
     private final String iri;

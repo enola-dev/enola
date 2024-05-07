@@ -76,10 +76,12 @@ $ ./enola execmd --help
 ## Noteworthy
 
 * Using `&` inside the code block, e.g. to start a server in the background for a demo, is a PITA. Instead, put such a demo with the `&` into a script, and call that script in the code block.
-* Beware of the _"[Fork Bomb](https://en.wikipedia.org/wiki/Fork_bomb)"_ 😈 which would happen if a Markdown file were to to include an `execmd` command on itself!
+* Beware of the
+  _"[Fork Bomb](https://en.wikipedia.org/wiki/Fork_bomb)"_ 😈 which would happen if a Markdown file were to to include an `execmd` command on itself!
 
 ## Inspiration
 
+* <https://zimbatm.github.io/mdsh/>
 * <https://github.com/zombocom/rundoc>
 * <https://github.com/khalidx/runbook>
 * <https://github.com/eclecticiq/rundoc>
