@@ -152,6 +152,22 @@ public class URIsTest {
         assertThat(URIs.getFilename(uri)).isEqualTo(expectedFilename);
     }
 
+    @Test
+    public void testGetFilenameOrLastPathSegment() {
+        assertThat(URIs.getFilenameOrLastPathSegment(URI.create("https://vorburger.ch")))
+                .isEqualTo("vorburger.ch");
+
+        assertThat(
+                        URIs.getFilenameOrLastPathSegment(
+                                URI.create("https://vorburger.ch/favicon.ico/")))
+                .isEqualTo("favicon.ico");
+
+        assertThat(
+                        URIs.getFilenameOrLastPathSegment(
+                                URI.create("https://vorburger.ch/favicon.ico")))
+                .isEqualTo("favicon.ico");
+    }
+
     /** See {@link URIs#getPath(String)} */
     @Test
     public void testGetPath() {

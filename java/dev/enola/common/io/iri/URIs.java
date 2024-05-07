@@ -132,15 +132,20 @@ public final class URIs {
      * <p>TODO Is this really required?! Re-review which tests URI#getPath() fails, and why...
      */
     public static String getPath(URI uri) {
-        return chop(uri.getSchemeSpecificPart());
+        return chopFragmentAndQuery(uri.getSchemeSpecificPart());
     }
 
-    private static String chop(String ssp) {
+    private static String chopFragmentAndQuery(String ssp) {
         var chop = ssp.indexOf('?', 0);
         if (chop == -1) chop = ssp.indexOf('#', 0);
         if (chop == -1) chop = ssp.length();
 
         return ssp.substring(0, chop);
+    }
+
+    private static String chopLastSlash(String path) {
+        if (!path.endsWith("/")) return path;
+        else return path.substring(0, path.length() - 1);
     }
 
     /**
@@ -152,6 +157,14 @@ public final class URIs {
      * com.google.common.io.Files#getNameWithoutExtension(String)}.
      */
     public static String getFilename(URI uri) {
+        return getLastPathSegment(uri, false);
+    }
+
+    public static String getFilenameOrLastPathSegment(URI uri) {
+        return getLastPathSegment(uri, true);
+    }
+
+    private static String getLastPathSegment(URI uri, boolean evenIfSlashed) {
         String path;
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
@@ -160,26 +173,27 @@ public final class URIs {
                 if (path.endsWith("/")) {
                     return "";
                 } else {
-                    return chop(new java.io.File(path).getName());
+                    return chopFragmentAndQuery(new java.io.File(path).getName());
                 }
             }
         } else if ("jar".equals(scheme)) {
-            return chop(getFilename(URI.create(uri.getSchemeSpecificPart())));
+            return chopFragmentAndQuery(getFilename(URI.create(uri.getSchemeSpecificPart())));
         } else if ("http".equals(scheme) || "https".equals(scheme)) {
-            path = chop(uri.getPath());
+            path = chopFragmentAndQuery(uri.getPath());
         } else {
             path = getPath(uri);
         }
 
-        if (Strings.isNullOrEmpty(path) || path.endsWith("/")) {
+        if (!evenIfSlashed && (Strings.isNullOrEmpty(path) || path.endsWith("/"))) {
             return "";
         }
-        var p = path.lastIndexOf('/');
-        if (p > -1) {
-            return chop(path.substring(p + 1));
-        } else {
-            return chop(path);
-        }
+        if (evenIfSlashed && Strings.isNullOrEmpty(path)) return uri.getHost();
+
+        int p;
+        if (!path.endsWith("/")) p = path.lastIndexOf('/');
+        else p = path.substring(0, path.length() - 1).lastIndexOf('/');
+
+        return p > -1 ? chopLastSlash(path.substring(p + 1)) : chopLastSlash(path);
     }
 
     /**

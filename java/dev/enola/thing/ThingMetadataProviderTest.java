@@ -59,6 +59,9 @@ public class ThingMetadataProviderTest {
         assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get(THING_IRI).label())
                 .isEqualTo("test");
 
+        assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get(THING_IRI + "/").label())
+                .isEqualTo("test");
+
         assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).label())
                 .isEqualTo(THING_LABEL);
     }
