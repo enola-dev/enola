@@ -46,6 +46,7 @@ java_binary(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:info_picocli_picocli",
+        "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
         "@maven//:org_slf4j_slf4j_jdk14",
     ],

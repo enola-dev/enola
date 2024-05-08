@@ -25,5 +25,6 @@ java_library(
     deps = [
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

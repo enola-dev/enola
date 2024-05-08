@@ -47,6 +47,7 @@ java_library(
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_jsonld",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_turtle",
+        "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
