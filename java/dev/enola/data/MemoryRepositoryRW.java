@@ -17,6 +17,8 @@
  */
 package dev.enola.data;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ThreadSafe;
 
@@ -62,7 +64,7 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     @Override
     public T get(String iri) {
-        return map.get(iri);
+        return map.get(requireNonNull(iri));
     }
 
     @Override
