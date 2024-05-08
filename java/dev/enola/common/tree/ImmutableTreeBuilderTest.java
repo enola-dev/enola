@@ -30,7 +30,12 @@ public class ImmutableTreeBuilderTest {
 
     @Test
     public void root() {
-        var tree = new ImmutableTreeBuilder<String>().root("🌳").build();
+        var treeBuilder = new ImmutableTreeBuilder<String>().root("🌳");
+        assertThat(treeBuilder.root()).isEqualTo("🌳");
+        assertThat(treeBuilder.successors("🌳")).isEmpty();
+        assertThat(treeBuilder.successors("?")).isEmpty();
+
+        var tree = treeBuilder.build();
         assertThat(tree.root()).isEqualTo("🌳");
         assertThat(tree.successors("🌳")).isEmpty();
         assertThat(tree.successors("?")).isEmpty();

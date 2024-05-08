@@ -27,16 +27,13 @@ import com.google.errorprone.annotations.ImmutableTypeParameter;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class ImmutableTreeBuilder<@ImmutableTypeParameter N> implements TreeBuilder<N> {
+public class ImmutableTreeBuilder<@ImmutableTypeParameter N> implements TreeBuilder<N>, Tree<N> {
 
     private @Nullable N root;
-    private Set<N> nodes = new HashSet<>();
-    private Map<@NonNull N, ImmutableList.Builder<N>> map = new HashMap<>();
+    private final Set<N> nodes = new HashSet<>();
+    private final Map<@NonNull N, ImmutableList.Builder<N>> map = new HashMap<>();
 
     @Override
     @CanIgnoreReturnValue
@@ -46,6 +43,12 @@ public class ImmutableTreeBuilder<@ImmutableTypeParameter N> implements TreeBuil
         map.put(root, ImmutableList.builder());
         nodes.add(root);
         return this;
+    }
+
+    @Override
+    public N root() {
+        if (this.root == null) throw new IllegalStateException("Root not set");
+        return root;
     }
 
     @Override
@@ -70,11 +73,19 @@ public class ImmutableTreeBuilder<@ImmutableTypeParameter N> implements TreeBuil
         return new ImmutableListTree<>(root, builder.build());
     }
 
+    @Override
     @SuppressWarnings("UnstableApiUsage")
+    public Iterable<? extends N> successors(N node) {
+        var successorsBuilder = map.get(node);
+        if (successorsBuilder != null) return successorsBuilder.build();
+        else return ImmutableList.of();
+    }
+
     private record ImmutableListTree<@ImmutableTypeParameter N>(
             N root, ImmutableMap<@NonNull N, ImmutableList<N>> map) implements ImmutableTree<N> {
 
         @Override
+        @SuppressWarnings("UnstableApiUsage")
         public Iterable<? extends N> successors(N node) {
             return requireNonNull(map.getOrDefault(node, ImmutableList.of()), "TODO Annotate?");
         }
