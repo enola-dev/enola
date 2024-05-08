@@ -30,8 +30,6 @@ import java.net.URI;
 /** Generates a Markdown "index" page with links to details. */
 class MarkdownIndexGenerator {
 
-    // TODO Order things alphabetically by label!
-
     // TODO Group things, instead of ugly flag list; initially likely best by rdf:type.
 
     private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
