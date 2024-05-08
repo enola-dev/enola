@@ -22,12 +22,12 @@ import com.google.common.collect.ImmutableSet;
 
 import java.io.IOException;
 
-public class DelegatingMultipartResource extends ReadableButNotWritableDelegatingResource
+public abstract class DelegatingMultipartResource extends ReadableButNotWritableDelegatingResource
         implements MultipartResource {
 
     private final ImmutableMap<String, Resource> parts;
 
-    public DelegatingMultipartResource(
+    protected DelegatingMultipartResource(
             ReadableResource baseResource, ImmutableMap<String, Resource> parts)
             throws IOException {
         super(baseResource);

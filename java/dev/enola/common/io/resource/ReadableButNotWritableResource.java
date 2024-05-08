@@ -24,6 +24,6 @@ public interface ReadableButNotWritableResource extends Resource {
     @Override
     default ByteSink byteSink() {
         throw new UnsupportedOperationException(
-                "This is a read-only resource which is not writable.");
+                getClass() + " is a read-only resource which is not writable.");
     }
 }

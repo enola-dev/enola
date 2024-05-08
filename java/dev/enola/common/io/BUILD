@@ -50,5 +50,6 @@ junit_tests(
         "//test",
         "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_auto_service_auto_service_annotations",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

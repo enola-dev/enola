@@ -23,6 +23,8 @@ import com.google.common.io.CharSink;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
+import java.net.URI;
+
 public class DelegatingResource extends BaseResource implements Resource {
 
     protected final Resource delegate;
@@ -35,6 +37,15 @@ public class DelegatingResource extends BaseResource implements Resource {
     public DelegatingResource(Resource delegate, MediaType mediaType) {
         super(delegate.uri(), mediaType);
         this.delegate = delegate;
+    }
+
+    public DelegatingResource(ReadableResource delegate, MediaType mediaType) {
+        this(new ReadableButNotWritableDelegatingResource(delegate), mediaType);
+    }
+
+    public DelegatingResource(ReadableResource delegate, URI uri, MediaType mediaType) {
+        super(uri, mediaType);
+        this.delegate = new ReadableButNotWritableDelegatingResource(delegate);
     }
 
     @Override

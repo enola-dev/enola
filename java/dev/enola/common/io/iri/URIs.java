@@ -41,6 +41,11 @@ public final class URIs {
 
     public static record MediaTypeAndOrCharset(String mediaType, String charset) {}
 
+    public static boolean hasQueryParameter(URI uri, String key) {
+        var queryMap = getQueryMap(uri);
+        return queryMap.containsKey(key);
+    }
+
     public static MediaTypeAndOrCharset getMediaTypeAndCharset(URI uri) {
         var queryMap = getQueryMap(uri);
         var charsetParameter = queryMap.get(CHARSET);

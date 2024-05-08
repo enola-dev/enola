@@ -58,7 +58,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
 
     // This must be increased if there are test failures on slow CI servers :(
-    private static final Duration t = Duration.ofMillis(765);
+    private static final Duration t = Duration.ofMillis(1500);
 
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
