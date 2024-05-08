@@ -19,8 +19,9 @@ package dev.enola.common.io.metadata;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ComparisonChain;
 import com.google.errorprone.annotations.Immutable;
+
+import java.util.Comparator;
 
 /**
  * Metadata of an IRI, provided by {@link MetadataProvider}.
@@ -41,8 +42,12 @@ import com.google.errorprone.annotations.Immutable;
 @Immutable
 // TODO Metadata implements Thing!
 public record Metadata(
-        String iri, String imageHTML, String curie, String label, String descriptionHTML)
-        implements Comparable<Metadata> {
+        String iri, String imageHTML, String curie, String label, String descriptionHTML) {
+
+    public static final Comparator<Metadata> IRI_Comparator =
+            (o1, o2) ->
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder())
+                            .compare(o1.iri, o2.iri);
 
     public Metadata(
             String iri, String imageHTML, String curie, String label, String descriptionHTML) {
@@ -58,10 +63,5 @@ public record Metadata(
         if (requireNonNull(string, name).trim().isEmpty())
             throw new IllegalArgumentException(context + "#" + name + " is empty?!");
         return string;
-    }
-
-    @Override
-    public int compareTo(Metadata other) {
-        return ComparisonChain.start().compare(iri, other.iri).result();
     }
 }

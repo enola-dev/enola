@@ -69,7 +69,7 @@ public class MarkdownSiteGenerator {
             boolean footer)
             throws IOException {
 
-        var metas = ImmutableSortedSet.<Metadata>naturalOrder();
+        var metas = ImmutableSortedSet.orderedBy(Metadata.IRI_Comparator);
 
         // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
         for (var thing : things) {
