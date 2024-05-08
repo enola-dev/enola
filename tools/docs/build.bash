@@ -40,8 +40,8 @@ trap cleanup EXIT
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
-cp bazel-bin/common/thing/thing_proto_doc/thing_proto_doc.md docs/dev/proto/thing.md
-cp bazel-bin/core/lib/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md
+cp bazel-bin/java/dev/enola/thing/thing_proto_doc/thing_proto_doc.md docs/dev/proto/thing.md
+cp bazel-bin/java/dev/enola/core/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md
 
 # Skip (lengthy!) demo screencasts build if this script is called with any argument (handy during dev)
 if [ $# -eq 0 ]; then
