@@ -25,16 +25,20 @@ import static java.util.Objects.requireNonNull;
  * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon or something
  *     like that; or an 😃 Emoji!
  *     <p>Always returns something (never null), but may be empty String.
+ * @param curie An IRI converted to a "CURIE" (e.g. rdfs:Class), if available.
+ *     <p>Always returns something (never null), but may be empty String if no suitable CURIE could
+ *     be determined.
  * @param label Short human-readable 🏷️ label, as text; e.g. TITLE of HTML page found at the IRI.
  *     <p>Always returns text (never empty), but may fallback to e.g. last part of IRI.
  * @param descriptionHTML Longer human-readable 📜 description, as HTML.
  *     <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
  *     <p>Always returns something (never null), but may be empty String.
  */
-public record Metadata(String imageHTML, String label, String descriptionHTML) {
+public record Metadata(String imageHTML, String curie, String label, String descriptionHTML) {
 
-    public Metadata(String imageHTML, String label, String descriptionHTML) {
+    public Metadata(String imageHTML, String curie, String label, String descriptionHTML) {
         this.imageHTML = requireNonNull(imageHTML, "imageHTML").trim();
+        this.curie = requireNonNull(curie, "curie");
         this.label = requireNonEmpty(label, "label");
         this.descriptionHTML = requireNonNull(descriptionHTML, "descriptionHTML").trim();
     }
