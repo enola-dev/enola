@@ -34,7 +34,7 @@ public class CachingMetadataProvider implements MetadataProvider {
 
     private final MetadataProvider delegate;
 
-    LoadingCache<String, Metadata> getIRICache =
+    private final LoadingCache<String, Metadata> getIRICache =
             CacheBuilder.newBuilder()
                     .maximumSize(12345)
                     .build(
@@ -45,7 +45,7 @@ public class CachingMetadataProvider implements MetadataProvider {
                                 }
                             });
 
-    LoadingCache<ObjectIRI, Metadata> getObjectIRICache =
+    private final LoadingCache<ObjectIRI, Metadata> getObjectIRICache =
             CacheBuilder.newBuilder()
                     .maximumSize(12345)
                     .build(

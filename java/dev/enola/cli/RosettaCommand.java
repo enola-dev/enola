@@ -17,7 +17,7 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.io.resource.DelegatingResourceWithMediaType;
+import dev.enola.common.io.resource.DelegatingResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.rosetta.Rosetta;
 
@@ -66,7 +66,7 @@ public class RosettaCommand extends CommandWithResourceProvider {
             // required if in is a *.textproto to determine its type (until header sniffing is
             // implemented)
             var mt = ProtobufMediaTypes.setProtoMessageFQN(inResource.mediaType(), schema.protoFQN);
-            inResource = new DelegatingResourceWithMediaType(inResource, mt);
+            inResource = new DelegatingResource(inResource, mt);
         }
 
         rosetta.convertIntoOrThrow(inResource, outResource);
