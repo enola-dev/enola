@@ -17,12 +17,21 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import static com.google.common.collect.Iterables.filter;
+
+import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
+import com.google.errorprone.annotations.Immutable;
+
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.tree.ImmutableTreeBuilder;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
+
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -31,7 +40,7 @@ import java.net.URI;
 /** Generates a Markdown "index" page with links to details. */
 class MarkdownIndexGenerator {
 
-    // TODO Group things, instead of ugly flag list; initially likely best by rdf:type.
+    // TODO Group by rdfs:subPropertyOf rdfs:subClassOf in the Tree
 
     private final MetadataProvider metadataProvider;
     private final ProviderFromIRI<Thing> thingProvider;
@@ -48,14 +57,12 @@ class MarkdownIndexGenerator {
     }
 
     void generate(Writer writer, URI outputIRI, URI base, TemplateService ts) throws IOException {
-        var tree = new ImmutableTreeBuilder<Metadata>();
-        var rootMetadata = new Metadata("/", "☸", "", "Things", "");
-        var noTypeMetadata = new Metadata("/NOTYPE", "", "", "No Type", "");
+        var tree = new ImmutableTreeBuilder<ThingOrHeading>();
+        var rootMetadata = new ThingOrHeading(null, new Metadata("fake:/", "☸", "", "Things", ""));
         tree.root(rootMetadata);
-        // tree.addChild(rootMetadata, noTypeMetadata);
 
         for (var metadata : metas) {
-            addToTree(tree, metadata, noTypeMetadata);
+            addToTree(tree, rootMetadata, metadata);
         }
 
         write(writer, tree, rootMetadata, 1, outputIRI, base, ts);
@@ -63,66 +70,74 @@ class MarkdownIndexGenerator {
 
     private void write(
             Writer writer,
-            ImmutableTreeBuilder<Metadata> tree,
-            Metadata node,
+            ImmutableTreeBuilder<ThingOrHeading> tree,
+            ThingOrHeading node,
             int level,
             URI outputIRI,
             URI base,
             TemplateService ts)
             throws IOException {
 
-        writer.append("\n");
         for (int i = 0; i < level; i++) {
             writer.write('#');
         }
         writer.write(' ');
-        linkWriter.writeMarkdownLink(node.iri(), node, writer, outputIRI, base, uri -> true, ts);
+        if (!node.heading.iri().equals("/"))
+            linkWriter.writeMarkdownLink(
+                    node.heading.iri(), node.heading, writer, outputIRI, base, uri -> true, ts);
+        else writer.append(node.heading.label());
         writer.append("\n\n");
 
-        for (var metadata : tree.successors(node)) {
-            var iri = metadata.iri();
+        var successors = tree.successors(node);
+        var thingMetas = filter(successors, thingOrHeading -> thingOrHeading.thing() != null);
+        for (var thingOrHeading : thingMetas) {
+            var thingMeta = thingOrHeading.thing;
+            var iri = thingMeta.iri();
             writer.append("* ");
-            linkWriter.writeMarkdownLink(iri, metadata, writer, outputIRI, base, uri -> true, ts);
+            linkWriter.writeMarkdownLink(iri, thingMeta, writer, outputIRI, base, uri -> true, ts);
             writer.append('\n');
-
-            if (tree.successors(metadata).iterator().hasNext()) {
-                write(writer, tree, metadata, level + 1, outputIRI, base, ts);
-            }
         }
+
+        var headingMetas = filter(successors, thingOrHeading -> thingOrHeading.heading() != null);
+        for (var thingOrHeading : headingMetas) {
+            write(writer, tree, thingOrHeading, level + 1, outputIRI, base, ts);
+        }
+        writer.append("\n");
     }
 
     private void addToTree(
-            ImmutableTreeBuilder<Metadata> tree, Metadata metadata, Metadata noTypeMetadata) {
-        tree.addChild(tree.root(), metadata);
+            ImmutableTreeBuilder<ThingOrHeading> tree, ThingOrHeading node, Metadata metadata) {
 
-        /*
         var thingIRI = metadata.iri();
         var thing = thingProvider.get(thingIRI);
 
-        Metadata parent;
+        ThingOrHeading parent;
         if (thing == null) {
-            parent = noTypeMetadata;
-            if (!Iterables.contains(tree.successors(tree.root()), parent)) {
-                tree.addChild(tree.root(), parent);
-            }
+            parent = tree.root();
 
         } else {
             var protoValue = thing.getFieldsMap().get(KIRI.RDF.TYPE);
-
             if (protoValue != null) {
-                var typeIRI = protoValue.getLink();
-                parent = metadataProvider.get(typeIRI);
-                // if (!tree.successors(parent).iterator().hasNext()) {
-                //    addToTree(tree, parent, noTypeMetadata);
-                // }
+                String typeIRI;
+                var list = protoValue.getList();
+                if (list != null && !list.getValuesList().isEmpty()) {
+                    // Hack...
+                    typeIRI = list.getValuesList().get(0).getLink();
+                } else typeIRI = protoValue.getLink();
+                if (Strings.isNullOrEmpty(typeIRI))
+                    throw new IllegalArgumentException(protoValue.toString());
+                parent = new ThingOrHeading(null, metadataProvider.get(typeIRI));
+                if (!Iterables.contains(tree.successors(node), parent)) {
+                    tree.addChild(node, parent);
+                }
             } else {
-                parent = noTypeMetadata;
+                parent = tree.root();
             }
         }
 
-        if (!Iterables.contains(tree.successors(parent), metadata)) {
-            tree.addChild(parent, metadata);
-        }
-        */
+        tree.addChild(parent, new ThingOrHeading(metadata, null));
     }
+
+    @Immutable
+    private record ThingOrHeading(@Nullable Metadata thing, @Nullable Metadata heading) {}
 }
