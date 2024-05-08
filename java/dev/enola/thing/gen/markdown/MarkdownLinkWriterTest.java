@@ -48,6 +48,37 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
+    public void writeMarkdownLinkWithCurieAndSameLabel() throws IOException {
+        var sb = new StringBuilder();
+        new MarkdownLinkWriter()
+                .writeMarkdownLink(
+                        "https://example.org/greeting42",
+                        new Metadata("", "ex:greeting42", "greeting42", ""),
+                        sb,
+                        URI.create("file:///out/greeting.md"),
+                        URI.create("file:///out/"),
+                        iri -> true,
+                        TemplateService.NONE);
+        assertThat(sb.toString()).isEqualTo("[`ex:greeting42`](example.org/greeting42.md)");
+    }
+
+    @Test
+    public void writeMarkdownLinkWithCurieAndBetterLabel() throws IOException {
+        var sb = new StringBuilder();
+        new MarkdownLinkWriter()
+                .writeMarkdownLink(
+                        "https://example.org/greeting42",
+                        new Metadata("", "ex:greeting42", "Da Greeting! ;)", ""),
+                        sb,
+                        URI.create("file:///out/greeting.md"),
+                        URI.create("file:///out/"),
+                        iri -> true,
+                        TemplateService.NONE);
+        assertThat(sb.toString())
+                .isEqualTo("[`ex:greeting42` Da Greeting! ;)](example.org/greeting42.md)");
+    }
+
+    @Test
     public void unknownIRIs() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
