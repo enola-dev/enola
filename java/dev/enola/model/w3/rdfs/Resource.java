@@ -15,20 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.message;
+package dev.enola.model.w3.rdfs;
 
-import com.google.protobuf.Any;
-
-import dev.enola.data.ProviderFromIRI;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
 import dev.enola.thing.ThingProvider;
 
-import org.jspecify.annotations.Nullable;
+public interface Resource extends Thing {
 
-/** Proto Thing variant of {@link ThingProvider} (which is for Java Things). */
-public interface ProtoThingProvider extends ProviderFromIRI<Any> {
-    // TODO Replace Any with proto.Thing (not Things), by moving EnolaThingProvider's logic to core
-    // TODO This should eventually replace all uses of ThingService...
-
-    @Override
-    @Nullable Any get(String iri); // TODO throws ?? UncheckedIOException, ConversionException;
+    default Class type(ThingProvider tp) {
+        return (Class) tp.get(getString(KIRI.RDFS.CLASS));
+    }
 }

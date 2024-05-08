@@ -17,17 +17,17 @@
  */
 package dev.enola.thing.gen.markdown;
 
-import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.ImmutableSortedSet;
 
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
-import dev.enola.thing.template.Templates;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class MarkdownSiteGenerator {
     private final URI base;
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
-    private final MarkdownIndexGenerator mig;
+    private final MetadataProvider metadataProvider;
 
     public MarkdownSiteGenerator(URI base, ResourceProvider rp, MetadataProvider metadataProvider) {
         this.base = base;
@@ -55,38 +55,38 @@ public class MarkdownSiteGenerator {
                             + " not: "
                             + base);
 
+        this.metadataProvider = metadataProvider;
         this.mtg = new MarkdownThingGenerator(metadataProvider);
-        this.mig = new MarkdownIndexGenerator(rp, metadataProvider);
         this.rp = rp;
     }
 
     public void generate(
             Iterable<Thing> things,
+            ProviderFromIRI<Thing> thingProvider,
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts,
             boolean generateIndexFile,
             boolean footer)
             throws IOException {
 
-        var metas = ImmutableSortedMap.<String, Metadata>naturalOrder();
+        var metas = ImmutableSortedSet.<Metadata>naturalOrder();
 
         // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
         for (var thing : things) {
             LOG.debug("Thing {}", thing);
             var thingIRI = thing.getIri();
-            var thingIRIWithoutTemplateVars = Templates.dropVariableMarkers(thingIRI);
-            var thingURI = URI.create(thingIRIWithoutTemplateVars);
-            var relativeThingIRI = Relativizer.dropSchemeAddExtension(thingURI, "md");
+            var relativeThingIRI = Relativizer.dropSchemeAddExtension(thingIRI, "md");
             var outputIRI = base.resolve(relativeThingIRI);
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
             try (var writer = outputResource.charSink().openBufferedStream()) {
                 var meta =
                         mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts, footer);
-                metas.put(thingIRIWithoutTemplateVars, meta);
+                metas.add(meta);
             }
         }
 
+        var mig = new MarkdownIndexGenerator(metas.build(), metadataProvider, thingProvider);
         if (generateIndexFile) {
             // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
             // something like existing index pages which were already generated from RDF Turtle,
@@ -95,7 +95,7 @@ public class MarkdownSiteGenerator {
             var indexURI = base.resolve("index.md");
             var indexResource = rp.getWritableResource(indexURI);
             try (var writer = indexResource.charSink().openBufferedStream()) {
-                mig.generate(metas.build(), writer, indexURI, base, ts);
+                mig.generate(writer, indexURI, base, ts);
             }
         }
     }

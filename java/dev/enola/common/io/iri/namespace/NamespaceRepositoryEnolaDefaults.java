@@ -30,5 +30,6 @@ public class NamespaceRepositoryEnolaDefaults {
                     .store("rdfs", "http://www.w3.org/2000/01/rdf-schema#")
                     .store("foaf", "http://xmlns.com/foaf/0.1/")
                     .store("dc", "http://purl.org/dc/elements/1.1/")
+                    .store("owl", "http://www.w3.org/2002/07/owl#")
                     .build();
 }

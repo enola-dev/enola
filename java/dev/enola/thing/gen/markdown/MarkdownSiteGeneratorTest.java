@@ -58,13 +58,13 @@ public class MarkdownSiteGeneratorTest {
 
     @Test
     public void picasso() throws Exception {
-        var protoThings = load(new ClasspathResource("picasso.ttl"));
+        var things = load(new ClasspathResource("picasso.ttl"));
 
         var metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
-        mdDocsGen.generate(protoThings, iri -> false, TemplateService.NONE, true, false);
+        mdDocsGen.generate(things, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");
@@ -107,7 +107,8 @@ public class MarkdownSiteGeneratorTest {
 
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
 
-        mdDocsGen.generate(templatedThings, iri -> ttr.get(iri) != null, ttr, true, false);
+        mdDocsGen.generate(
+                templatedThings, iri -> null, iri -> ttr.get(iri) != null, ttr, true, false);
     }
 
     private ImmutableSet<Thing> load(ReadableResource cpr) {

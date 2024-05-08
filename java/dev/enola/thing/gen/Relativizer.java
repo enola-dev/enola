@@ -19,6 +19,8 @@ package dev.enola.thing.gen;
 
 import static com.google.common.base.Strings.nullToEmpty;
 
+import dev.enola.thing.template.Templates;
+
 import java.net.URI;
 
 public final class Relativizer {
@@ -64,8 +66,13 @@ public final class Relativizer {
         else return "#";
     }
 
+    public static URI dropSchemeAddExtension(String iri, String extension) {
+        return dropSchemeAddExtension(URI.create(Templates.dropVariableMarkers(iri)), extension);
+    }
+
     public static URI dropSchemeAddExtension(final URI thingIRI, final String extension) {
-        if (thingIRI.getScheme().startsWith("http")) {
+        var scheme = thingIRI.getScheme();
+        if (scheme != null && scheme.startsWith("http")) {
             var authority = nullToEmpty(thingIRI.getAuthority());
             if (authority == "") throw new IllegalArgumentException(thingIRI.toString());
 
