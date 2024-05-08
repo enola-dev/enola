@@ -76,7 +76,8 @@ public class ThingMetadataProvider implements MetadataProvider {
         var curie = ns.toCURIE(fallbackIRI);
         var label = getLabel(thing, curie, fallbackIRI);
         var curieIfDifferentFromFallbackIRI = !curie.equals(fallbackIRI) ? curie : "";
-        return new Metadata(imageHTML, curieIfDifferentFromFallbackIRI, label, descriptionHTML);
+        return new Metadata(
+                fallbackIRI, imageHTML, curieIfDifferentFromFallbackIRI, label, descriptionHTML);
     }
 
     /**
@@ -114,9 +115,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         if (name != null) return name;
 
         var title = getString(thing, KIRI.DC.TITLE);
-        if (title != null) return title;
-
-        return null;
+        return title;
     }
 
     /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
@@ -170,7 +169,7 @@ public class ThingMetadataProvider implements MetadataProvider {
             var alternativeThing = tp.get(alternativeThingIRI);
             if (alternativeThing != null) {
                 var alternativeSource = alt.apply(alternativeThing);
-                if (alternativeSource != null) return alternativeSource;
+                return alternativeSource;
             }
         }
         return null;

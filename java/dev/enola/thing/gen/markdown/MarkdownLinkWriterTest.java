@@ -37,8 +37,7 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://example.org/greeting42",
-                        new Metadata("", "", "greeting42", ""),
+                        new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -52,8 +51,12 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://example.org/greeting42",
-                        new Metadata("", "ex:greeting42", "greeting42", ""),
+                        new Metadata(
+                                "https://example.org/greeting42",
+                                "",
+                                "ex:greeting42",
+                                "greeting42",
+                                ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -67,8 +70,12 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://example.org/greeting42",
-                        new Metadata("", "ex:greeting42", "Da Greeting! ;)", ""),
+                        new Metadata(
+                                "https://example.org/greeting42",
+                                "",
+                                "ex:greeting42",
+                                "Da Greeting! ;)",
+                                ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -83,8 +90,7 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://unknown.org/whatever",
-                        new Metadata("", "", "whatever", ""),
+                        new Metadata("https://unknown.org/whatever", "", "", "whatever", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -98,8 +104,7 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://enola.dev/emoji",
-                        new Metadata("", "", "emoji", ""),
+                        new Metadata("https://enola.dev/emoji", "", "", "emoji", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -114,8 +119,7 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
-                        "https://example.org/greeting42",
-                        new Metadata("", "", "greeting42", ""),
+                        new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),

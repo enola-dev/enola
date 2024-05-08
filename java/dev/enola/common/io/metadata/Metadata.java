@@ -22,6 +22,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Metadata of an IRI, provided by {@link MetadataProvider}.
  *
+ * @param iri IRI about which this is Metadata.
  * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon or something
  *     like that; or an 😃 Emoji!
  *     <p>Always returns something (never null), but may be empty String.
@@ -35,10 +36,12 @@ import static java.util.Objects.requireNonNull;
  *     <p>Always returns something (never null), but may be empty String.
  */
 // TODO Metadata implements Thing!
-// TODO Include IRI into Metadata itself?
-public record Metadata(String imageHTML, String curie, String label, String descriptionHTML) {
+public record Metadata(
+        String iri, String imageHTML, String curie, String label, String descriptionHTML) {
 
-    public Metadata(String imageHTML, String curie, String label, String descriptionHTML) {
+    public Metadata(
+            String iri, String imageHTML, String curie, String label, String descriptionHTML) {
+        this.iri = requireNonEmpty(iri, "iri");
         this.imageHTML = requireNonNull(imageHTML, "imageHTML").trim();
         this.curie = requireNonNull(curie, "curie");
         this.label = requireNonEmpty(label, "label");
