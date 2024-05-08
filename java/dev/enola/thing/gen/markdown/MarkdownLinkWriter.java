@@ -31,7 +31,7 @@ import java.net.URI;
 
 class MarkdownLinkWriter {
 
-    private KnownDocsProvider kdp = new EnolaDevKnownDocsProvider();
+    private final KnownDocsProvider kdp = new EnolaDevKnownDocsProvider();
 
     void writeMarkdownLink(
             String iri,
@@ -42,23 +42,8 @@ class MarkdownLinkWriter {
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts)
             throws IOException {
-        writeMarkdownLink(iri, meta, out, outputIRI, base, isDocumentedIRI, ts, "");
-    }
-
-    void writeMarkdownLink(
-            String iri,
-            Metadata meta,
-            Appendable out,
-            URI outputIRI,
-            URI base,
-            CheckedPredicate<String, IOException> isDocumentedIRI,
-            TemplateService ts,
-            String format)
-            throws IOException {
         out.append('[');
-        out.append(format);
         writeLabel(meta, out);
-        out.append(format);
         out.append("](");
         if (!Templates.hasVariables(iri)) {
             iri =
@@ -80,9 +65,17 @@ class MarkdownLinkWriter {
     void writeLabel(Metadata md, Appendable out) throws IOException {
         if (!md.imageHTML().isEmpty()) {
             out.append(md.imageHTML());
-            out.append(" ");
+            out.append(' ');
         }
-        out.append(Templates.convertToMustache(md.label()));
+        if (!md.curie().isEmpty()) {
+            out.append('`');
+            out.append(md.curie());
+            out.append('`');
+            if (!md.curie().endsWith(md.label())) out.append(' ');
+        }
+        if (!md.curie().endsWith(md.label())) {
+            out.append(Templates.convertToMustache(md.label()));
+        }
     }
 
     private String rel(
@@ -99,8 +92,7 @@ class MarkdownLinkWriter {
             var woSchemeWithExtLinkedIRI =
                     Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
             var absoluteRelativeLinkedIRI = base.resolve(woSchemeWithExtLinkedIRI);
-            var relativeLinkedIRI = Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
-            return relativeLinkedIRI;
+            return Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
         }
     }
 }
