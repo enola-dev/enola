@@ -26,6 +26,7 @@ import dev.enola.thing.proto.Value.Literal;
  * in code.
  */
 public final class KIRI {
+    // TODO Convert all of this into stuff like dev.enola.model.w3.rdfs.Class
 
     // The JavaDoc of this class must currently be manually kept in sync with
     // the same content that's also in the //models/enola.dev/properties.ttl file.

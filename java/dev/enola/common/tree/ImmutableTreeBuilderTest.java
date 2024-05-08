@@ -82,6 +82,13 @@ public class ImmutableTreeBuilderTest {
     }
 
     @Test
+    public void selfLink() {
+        var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
+        treeBuilder.addChild("A", "B");
+        assertThrows(IllegalStateException.class, () -> treeBuilder.addChild("B", "B"));
+    }
+
+    @Test
     public void noParent() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
         assertThrows(IllegalStateException.class, () -> treeBuilder.addChild("X", "B"));

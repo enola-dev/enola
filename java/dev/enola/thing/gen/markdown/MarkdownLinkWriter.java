@@ -100,8 +100,7 @@ class MarkdownLinkWriter {
                 return Relativizer.relativize(outputIRI, URI.create(linkIRI));
             else return kdp.get(linkIRI);
         } else {
-            var woSchemeWithExtLinkedIRI =
-                    Relativizer.dropSchemeAddExtension(URI.create(linkIRI), "md");
+            var woSchemeWithExtLinkedIRI = Relativizer.dropSchemeAddExtension(linkIRI, "md");
             var absoluteRelativeLinkedIRI = base.resolve(woSchemeWithExtLinkedIRI);
             return Relativizer.relativize(outputIRI, absoluteRelativeLinkedIRI);
         }

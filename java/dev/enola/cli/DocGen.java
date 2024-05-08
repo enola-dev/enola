@@ -88,11 +88,11 @@ public class DocGen extends CommandWithModelAndOutput {
         var mdp = getMetadataProvider(new EnolaThingProvider(service));
         var mdsg = new MarkdownSiteGenerator(output, rp, mdp);
 
-        var thingsList = getThings(service, ENOLA_ROOT_LIST_THINGS);
+        var things = getThings(service, ENOLA_ROOT_LIST_THINGS);
 
         // TODO This works, but is not efficient if there were a HUGE amount of Things and MDs...
-        var map = thingsList.stream().collect(Collectors.toMap(Thing::getIri, Function.identity()));
-        mdsg.generate(thingsList, map::containsKey, templateService, generateIndexFile, true);
+        var map = things.stream().collect(Collectors.toMap(Thing::getIri, Function.identity()));
+        mdsg.generate(things, map::get, map::containsKey, templateService, generateIndexFile, true);
     }
 
     private Collection<Thing> getThings(EnolaServiceBlockingStub service, String iri)

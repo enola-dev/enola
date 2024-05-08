@@ -19,6 +19,9 @@ package dev.enola.common.io.metadata;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.ComparisonChain;
+import com.google.errorprone.annotations.Immutable;
+
 /**
  * Metadata of an IRI, provided by {@link MetadataProvider}.
  *
@@ -35,22 +38,30 @@ import static java.util.Objects.requireNonNull;
  *     <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
  *     <p>Always returns something (never null), but may be empty String.
  */
+@Immutable
 // TODO Metadata implements Thing!
 public record Metadata(
-        String iri, String imageHTML, String curie, String label, String descriptionHTML) {
+        String iri, String imageHTML, String curie, String label, String descriptionHTML)
+        implements Comparable<Metadata> {
 
     public Metadata(
             String iri, String imageHTML, String curie, String label, String descriptionHTML) {
-        this.iri = requireNonEmpty(iri, "iri");
-        this.imageHTML = requireNonNull(imageHTML, "imageHTML").trim();
-        this.curie = requireNonNull(curie, "curie");
-        this.label = requireNonEmpty(label, "label");
-        this.descriptionHTML = requireNonNull(descriptionHTML, "descriptionHTML").trim();
+        this.iri = requireNonEmpty(iri, "iri", iri);
+        this.imageHTML = requireNonNull(imageHTML, () -> "imageHTML of " + iri).trim();
+        this.curie = requireNonNull(curie, () -> "curie of " + iri);
+        this.label = requireNonEmpty(label, "label", iri);
+        this.descriptionHTML =
+                requireNonNull(descriptionHTML, () -> "descriptionHTML of " + iri).trim();
     }
 
-    private String requireNonEmpty(String string, String name) {
+    private String requireNonEmpty(String string, String name, String context) {
         if (requireNonNull(string, name).trim().isEmpty())
-            throw new IllegalArgumentException(name + " is empty?!");
+            throw new IllegalArgumentException(context + "#" + name + " is empty?!");
         return string;
+    }
+
+    @Override
+    public int compareTo(Metadata other) {
+        return ComparisonChain.start().compare(iri, other.iri).result();
     }
 }
