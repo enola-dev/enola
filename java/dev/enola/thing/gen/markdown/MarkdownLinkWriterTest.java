@@ -38,7 +38,7 @@ public class MarkdownLinkWriterTest {
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
                         "https://example.org/greeting42",
-                        new Metadata("", "greeting42", ""),
+                        new Metadata("", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -53,7 +53,7 @@ public class MarkdownLinkWriterTest {
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
                         "https://unknown.org/whatever",
-                        new Metadata("", "whatever", ""),
+                        new Metadata("", "", "whatever", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -68,7 +68,7 @@ public class MarkdownLinkWriterTest {
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
                         "https://enola.dev/emoji",
-                        new Metadata("", "emoji", ""),
+                        new Metadata("", "", "emoji", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -84,7 +84,7 @@ public class MarkdownLinkWriterTest {
         new MarkdownLinkWriter()
                 .writeMarkdownLink(
                         "https://example.org/greeting42",
-                        new Metadata("", "greeting42", ""),
+                        new Metadata("", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),

@@ -25,7 +25,6 @@ import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.proto.Things;
 import dev.enola.thing.template.Templates;
 
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,11 +70,13 @@ public class ThingMetadataProvider implements MetadataProvider {
         else return get(iri);
     }
 
-    private Metadata get(@Nullable Thing thing, @NonNull String fallbackIRI) {
+    private Metadata get(@Nullable Thing thing, String fallbackIRI) {
         var imageHTML = getImageHTML(thing);
         var descriptionHTML = getDescriptionHTML(thing);
-        var label = getLabel(thing, fallbackIRI);
-        return new Metadata(imageHTML, label, descriptionHTML);
+        var curie = ns.toCURIE(fallbackIRI);
+        var label = getLabel(thing, curie, fallbackIRI);
+        var curieIfDifferentFromFallbackIRI = !curie.equals(fallbackIRI) ? curie : "";
+        return new Metadata(imageHTML, curieIfDifferentFromFallbackIRI, label, descriptionHTML);
     }
 
     /**
@@ -84,14 +85,13 @@ public class ThingMetadataProvider implements MetadataProvider {
      * name" (last part of the path) from the IRI, and if that fails just returns the IRI argument
      * as-is.
      */
-    private String getLabel(@Nullable Thing thing, @NonNull String fallbackIRI) {
+    private String getLabel(@Nullable Thing thing, String curie, String fallbackIRI) {
         var label = getLabel_(thing);
         if (label != null) return label;
 
         label = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getLabel_(thingX));
         if (label != null) return label;
 
-        var curie = ns.toCURIE(fallbackIRI);
         if (!curie.equals(fallbackIRI)) return curie;
 
         try {
@@ -138,7 +138,7 @@ public class ThingMetadataProvider implements MetadataProvider {
      * from {@link KIRI.SCHEMA#IMG}, if any; and if neither tries the same on the Thing's {@link
      * KIRI.RDFS#CLASS}; if that also is not present, then gives up and just an empty String.
      */
-    public String getImageHTML(Thing thing) {
+    private String getImageHTML(Thing thing) {
         if (thing == null) return "";
 
         var thingImage = getImageHTML_(thing);
