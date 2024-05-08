@@ -40,9 +40,9 @@ $ ./enola docgen --load "file:docs/models/example.org/greeting1.ttl" --output=fi
 [`greeting1.md`](greeting1.md) now contains:
 
 ```markdown
-{% include-markdown "./greeting1.md" start="# greeting1" end="---" comments=false %}
+{% include-markdown "./greeting1.md" start="# `ex:greeting1`" end="---" comments=false %}
 ```
 
 Note how the greeting, in addition to our `message` from above, automagically got another _property_ named `origin` - click on it to learn what it's for! Here is how this Markdown renders:
 
-{% include-markdown "./greeting1.md" start="# greeting1" end="---" comments=false %}
+{% include-markdown "./greeting1.md" start="# `ex:greeting1`" end="---" comments=false %}

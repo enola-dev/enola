@@ -34,7 +34,7 @@ $ ./enola docgen --load "file:docs/models/example.org/greeting2.ttl" --output=fi
 [`greeting2.md`](greeting2.md) now contains:
 
 ```markdown
-{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}
+{% include-markdown "./greeting2.md" start="# `ex:greeting2`" end="---" comments=false %}
 ```
 
 There are a couple of things worth noting here:
@@ -43,4 +43,4 @@ There are a couple of things worth noting here:
 1. Instead of a `hello, world` string, we're now greeting an _Object,_ the `https://example.org/world` - this is what _Linked Data_ is all about!
 1. That `world` object contains yet another link, but this one is different... can you tell how & why, by clicking on `world` in the rendered Markdown below?
 
-{% include-markdown "./greeting2.md" start="# greeting2" end="---" comments=false %}
+{% include-markdown "./greeting2.md" start="# `ex:greeting2`" end="---" comments=false %}

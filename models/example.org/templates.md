@@ -39,7 +39,7 @@ $ ./enola docgen --load "file:docs/models/example.org/greetingN.ttl" --output=fi
 ...
 ```
 
-{% include-markdown "./greeting.md" start="# greeting" end="---" comments=false %}
+{% include-markdown "./greeting.md" start="# `ex:greeting`" end="---" comments=false %}
 
 Now click on the `example` link (42)... can you tell what happened?! 😻
 
