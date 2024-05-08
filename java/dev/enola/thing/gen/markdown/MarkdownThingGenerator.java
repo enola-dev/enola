@@ -84,8 +84,7 @@ class MarkdownThingGenerator {
             out.append(indent);
             out.append("* ");
             var meta = metadataProvider.get(predicateIRI);
-            linkWriter.writeMarkdownLink(
-                    predicateIRI, meta, out, outputIRI, base, isDocumentedIRI, ts);
+            linkWriter.writeMarkdownLink(meta, out, outputIRI, base, isDocumentedIRI, ts);
             out.append(": ");
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI, ts);
@@ -105,7 +104,7 @@ class MarkdownThingGenerator {
             case LINK:
                 var link = value.getLink();
                 var meta = metadataProvider.get(link);
-                linkWriter.writeMarkdownLink(link, meta, out, outputIRI, base, isDocumentedIRI, ts);
+                linkWriter.writeMarkdownLink(meta, out, outputIRI, base, isDocumentedIRI, ts);
                 out.append('\n');
                 break;
 
@@ -121,7 +120,7 @@ class MarkdownThingGenerator {
                 var datatypeIRI = literal.getDatatype();
                 var datatypeMeta = metadataProvider.get(datatypeIRI);
                 linkWriter.writeMarkdownLink(
-                        datatypeIRI, datatypeMeta, out, outputIRI, base, isDocumentedIRI, ts);
+                        datatypeMeta, out, outputIRI, base, isDocumentedIRI, ts);
                 out.append("_\n");
                 break;
 

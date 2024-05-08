@@ -34,6 +34,17 @@ class MarkdownLinkWriter {
     private final KnownDocsProvider kdp = new EnolaDevKnownDocsProvider();
 
     void writeMarkdownLink(
+            Metadata meta,
+            Appendable out,
+            URI outputIRI,
+            URI base,
+            CheckedPredicate<String, IOException> isDocumentedIRI,
+            TemplateService ts)
+            throws IOException {
+        writeMarkdownLink(meta.iri(), meta, out, outputIRI, base, isDocumentedIRI, ts);
+    }
+
+    void writeMarkdownLink(
             String iri,
             Metadata meta,
             Appendable out,
