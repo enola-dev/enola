@@ -56,7 +56,7 @@ public class MarkdownSiteGenerator {
                             + base);
 
         this.mtg = new MarkdownThingGenerator(metadataProvider);
-        this.mig = new MarkdownIndexGenerator();
+        this.mig = new MarkdownIndexGenerator(rp, metadataProvider);
         this.rp = rp;
     }
 
@@ -95,7 +95,7 @@ public class MarkdownSiteGenerator {
             var indexURI = base.resolve("index.md");
             var indexResource = rp.getWritableResource(indexURI);
             try (var writer = indexResource.charSink().openBufferedStream()) {
-                mig.generate(metas.build(), writer, indexURI, base, uri -> true, ts);
+                mig.generate(metas.build(), writer, indexURI, base, ts);
             }
         }
     }
