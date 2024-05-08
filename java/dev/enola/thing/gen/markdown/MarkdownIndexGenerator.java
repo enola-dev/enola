@@ -23,6 +23,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.Immutable;
 
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.tree.ImmutableTreeBuilder;
@@ -77,6 +78,8 @@ class MarkdownIndexGenerator {
             URI base,
             TemplateService ts)
             throws IOException {
+        CheckedPredicate<String, IOException> isDocumentedIRI =
+                uri -> thingProvider.get(uri) != null;
 
         for (int i = 0; i < level; i++) {
             writer.write('#');
@@ -84,7 +87,7 @@ class MarkdownIndexGenerator {
         writer.write(' ');
         if (!node.heading.iri().equals("/"))
             linkWriter.writeMarkdownLink(
-                    node.heading.iri(), node.heading, writer, outputIRI, base, uri -> true, ts);
+                    node.heading.iri(), node.heading, writer, outputIRI, base, isDocumentedIRI, ts);
         else writer.append(node.heading.label());
         writer.append("\n\n");
 
@@ -94,7 +97,8 @@ class MarkdownIndexGenerator {
             var thingMeta = thingOrHeading.thing;
             var iri = thingMeta.iri();
             writer.append("* ");
-            linkWriter.writeMarkdownLink(iri, thingMeta, writer, outputIRI, base, uri -> true, ts);
+            linkWriter.writeMarkdownLink(
+                    iri, thingMeta, writer, outputIRI, base, isDocumentedIRI, ts);
             writer.append('\n');
         }
 
