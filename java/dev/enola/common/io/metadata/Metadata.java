@@ -34,6 +34,8 @@ import static java.util.Objects.requireNonNull;
  *     <p>E.g. first paragraph or &lt; meta ... description &gt; of a HTML page.
  *     <p>Always returns something (never null), but may be empty String.
  */
+// TODO Metadata implements Thing!
+// TODO Include IRI into Metadata itself?
 public record Metadata(String imageHTML, String curie, String label, String descriptionHTML) {
 
     public Metadata(String imageHTML, String curie, String label, String descriptionHTML) {

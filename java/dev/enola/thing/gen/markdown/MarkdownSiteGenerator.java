@@ -17,9 +17,8 @@
  */
 package dev.enola.thing.gen.markdown;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSortedMap;
 
-import dev.enola.common.MoreIterables;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
@@ -69,8 +68,7 @@ public class MarkdownSiteGenerator {
             boolean footer)
             throws IOException {
 
-        ImmutableMap.Builder<String, Metadata> metas =
-                ImmutableMap.builderWithExpectedSize(MoreIterables.sizeIfKnown(things).orElse(7));
+        var metas = ImmutableSortedMap.<String, Metadata>naturalOrder();
 
         // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
         for (var thing : things) {
