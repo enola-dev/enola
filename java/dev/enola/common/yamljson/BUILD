@@ -28,6 +28,7 @@ java_library(
         "//java/dev/enola/common/io",
         "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
         "@maven//:org_snakeyaml_snakeyaml_engine",
     ],
 )

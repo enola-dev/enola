@@ -17,4 +17,7 @@
  */
 
 /** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
+@NullMarked
 package dev.enola.thing.message;
+
+import org.jspecify.annotations.NullMarked;

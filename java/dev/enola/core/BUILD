@@ -182,6 +182,7 @@ java_library(
         "@maven//:io_grpc_grpc_core",
         "@maven//:io_grpc_grpc_inprocess",
         "@maven//:io_grpc_grpc_stub",
+        "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )

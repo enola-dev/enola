@@ -28,6 +28,7 @@ java_library(
         "@maven//:ch_vorburger_exec_exec",
         "@maven//:com_google_guava_guava",
         "@maven//:org_apache_commons_commons_exec",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
