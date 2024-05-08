@@ -15,15 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri.namespace;
+package dev.enola.thing;
 
-import com.google.common.base.Strings;
+import com.google.errorprone.annotations.Immutable;
 
-import java.util.Objects;
-
-public record ImmutableNamespace(String prefix, String iri) implements Namespace {
-    public ImmutableNamespace {
-        Objects.nonNull(prefix);
-        Objects.nonNull(Strings.emptyToNull(iri));
-    }
-}
+@Immutable
+public interface IImmutablePredicatesObjects extends PredicatesObjects {}

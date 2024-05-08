@@ -19,12 +19,16 @@ package dev.enola.thing;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.Immutable;
 
 import java.util.Collection;
 import java.util.Objects;
 
-public class ImmutablePredicatesObjects implements PredicatesObjects {
+@Immutable
+public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
+    // Suppressed because of @ImmutableTypeParameter T in PredicatesObjects.Builder#set:
+    @SuppressWarnings("Immutable")
     private final ImmutableMap<String, Object> properties;
 
     private final ImmutableMap<String, String> datatypes;

@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import org.jspecify.annotations.Nullable;
 
@@ -118,9 +119,10 @@ public interface PredicatesObjects {
 
     interface Builder extends dev.enola.common.Builder<PredicatesObjects> {
 
-        PredicatesObjects.Builder set(String predicateIRI, Object value);
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder set(String predicateIRI, T value);
 
-        PredicatesObjects.Builder set(String predicateIRI, Object value, String datatypeIRI);
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder set(
+                String predicateIRI, T value, String datatypeIRI);
 
         @Override
         PredicatesObjects build();

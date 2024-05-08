@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 /** {@link Thing} with only an IRI and no properties (optimized). */
-public class OnlyIRIThing implements Thing {
+public class OnlyIRIThing implements IImmutableThing {
     private final String iri;
 
     public OnlyIRIThing(String iri) {

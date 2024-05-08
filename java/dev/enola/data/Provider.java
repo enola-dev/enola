@@ -17,7 +17,10 @@
  */
 package dev.enola.data;
 
+import com.google.errorprone.annotations.ThreadSafe;
+
 /** Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K). */
+@ThreadSafe
 public interface Provider<K, V> {
 
     /**
