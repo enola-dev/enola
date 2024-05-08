@@ -19,8 +19,9 @@ package dev.enola.thing.gen.markdown;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
+import dev.enola.common.io.metadata.MetadataProvider;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.template.TemplateService;
 
 import java.io.IOException;
@@ -32,23 +33,32 @@ class MarkdownIndexGenerator {
 
     // TODO Group things, instead of ugly flag list; initially likely best by rdf:type.
 
+    private final ResourceProvider rp;
+    private final MetadataProvider metadataProvider;
     private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
+
+    public MarkdownIndexGenerator(ResourceProvider rp, MetadataProvider metadataProvider) {
+        this.rp = rp;
+        this.metadataProvider = metadataProvider;
+    }
 
     void generate(
             ImmutableMap<String, Metadata> metas,
             Writer writer,
             URI outputIRI,
             URI base,
-            CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts)
             throws IOException {
+
+        // TODO var tree = new ImmutableTreeBuilder<Metadata>();
+        // for (var iri : metas.keySet()) {}
 
         writer.append("# Things\n\n");
         for (var entry : metas.entrySet()) {
             var iri = entry.getKey();
             var meta = entry.getValue();
             writer.append("* ");
-            linkWriter.writeMarkdownLink(iri, meta, writer, outputIRI, base, isDocumentedIRI, ts);
+            linkWriter.writeMarkdownLink(iri, meta, writer, outputIRI, base, uri -> true, ts);
             writer.append('\n');
         }
     }

@@ -37,7 +37,6 @@ import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.ThingRepository;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ThingProviderAdapter;
@@ -61,6 +60,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     ModelOrServer group;
 
     private EnolaServiceBlockingStub gRPCService;
+    // TODO Remove this hack which breaks remote service encapsulation
     protected TemplateThingRepository templateService;
 
     @Override
@@ -87,12 +87,11 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             }
             TemplateThingRepository templateThingRepository =
                     new TemplateThingRepository(store.build());
-            ThingRepository readOnlyRepo = templateThingRepository;
             templateService = templateThingRepository;
             // NB: Copy/pasted below...
             ekr = new EntityKindRepository();
             Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            esp = new EnolaServiceProvider(ekr, tyr, readOnlyRepo, rp);
+            esp = new EnolaServiceProvider(ekr, tyr, templateThingRepository, rp);
             var enolaService = esp.getEnolaService();
             grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
             gRPCService = grpc.get();

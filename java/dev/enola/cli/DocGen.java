@@ -19,11 +19,8 @@ package dev.enola.cli;
 
 import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 
-import static java.util.stream.Collectors.toUnmodifiableSet;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import dev.enola.common.function.CheckedPredicate;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -42,11 +39,11 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Predicate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGen extends CommandWithModelAndOutput {
@@ -94,10 +91,8 @@ public class DocGen extends CommandWithModelAndOutput {
         var thingsList = getThings(service, ENOLA_ROOT_LIST_THINGS);
 
         // TODO This works, but is not efficient if there were a HUGE amount of Things and MDs...
-        var allIRI = thingsList.stream().map(Thing::getIri).collect(toUnmodifiableSet());
-        Predicate<String> allIRIContainsPredicate = allIRI::contains;
-        CheckedPredicate<String, IOException> knownIRIPredicate = iri -> hasThing(service, iri);
-        mdsg.generate(thingsList, knownIRIPredicate, templateService, generateIndexFile, true);
+        var map = thingsList.stream().collect(Collectors.toMap(Thing::getIri, Function.identity()));
+        mdsg.generate(thingsList, map::containsKey, templateService, generateIndexFile, true);
     }
 
     private Collection<Thing> getThings(EnolaServiceBlockingStub service, String iri)
@@ -105,10 +100,6 @@ public class DocGen extends CommandWithModelAndOutput {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         return MoreThings.fromAny(response.getThing());
-    }
-
-    private boolean hasThing(EnolaServiceBlockingStub service, String iri) throws IOException {
-        return !getThings(service, iri).isEmpty();
     }
 
     private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {
