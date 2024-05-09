@@ -58,6 +58,18 @@ public class ThingMetadataProviderTest {
 
     @Test
     public void label() {
+        assertThat(
+                        new ThingMetadataProvider(NO_THING_PROVIDER, NONS)
+                                .get("http://enola.dev/")
+                                .label())
+                .isEqualTo("enola.dev");
+
+        assertThat(
+                        new ThingMetadataProvider(NO_THING_PROVIDER, NONS)
+                                .get("http://enola.dev")
+                                .label())
+                .isEqualTo("enola.dev");
+
         assertThat(new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get(THING_IRI).label())
                 .isEqualTo("test");
 
