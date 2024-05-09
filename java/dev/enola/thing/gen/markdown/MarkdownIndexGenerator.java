@@ -29,6 +29,7 @@ import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.tree.ImmutableTreeBuilder;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
 
@@ -47,14 +48,17 @@ class MarkdownIndexGenerator {
     private final ProviderFromIRI<Thing> thingProvider;
     private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
     private final Iterable<Metadata> metas;
+    private final boolean footer;
 
     public MarkdownIndexGenerator(
             Iterable<Metadata> metas,
             MetadataProvider metadataProvider,
-            ProviderFromIRI<Thing> thingProvider) {
+            ProviderFromIRI<Thing> thingProvider,
+            boolean footer) {
         this.metadataProvider = metadataProvider;
         this.thingProvider = thingProvider;
         this.metas = metas;
+        this.footer = footer;
     }
 
     void generate(Writer writer, URI outputIRI, URI base, TemplateService ts) throws IOException {
@@ -67,6 +71,8 @@ class MarkdownIndexGenerator {
         }
 
         write(writer, tree, rootMetadata, 1, outputIRI, base, ts);
+
+        if (footer) writer.append(DocGenConstants.FOOTER);
     }
 
     private void write(
