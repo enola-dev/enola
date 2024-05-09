@@ -47,3 +47,7 @@ of environments by modeling concepts from private environments and writing bespo
 
 <sub>PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola
 Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub>
+
+<script type="application/ld+json">
+{% include "models/enola.jsonld" %}
+</script>

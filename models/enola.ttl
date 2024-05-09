@@ -1,0 +1,109 @@
+# This is Things metadata *ABOUT* https://enola.dev,
+# as in, The Org, The Software, and such.
+# This is *different* from Enola models!
+
+# models/build.bash transforms this into docs/models/enola.jsonld,
+# which is included in docs/index.md (and its HTML), using Markdown
+# inclusion (because <script src=...> does not work, at least on Google).
+
+# Test it on https://search.google.com/test/rich-results,
+# or in the https://search.google.com/search-console
+# or using https://validator.schema.org/.
+
+# https://localhost.run is one of a number of ways to use the aforementioned
+# tools during development by exposing a temporarily locally running webserver.
+
+# TODO ./enola be valid file:enola.dev.ttl ... should validate (check) this!
+
+@prefix schema: <https://schema.org/>.
+
+<https://enola.dev#software>
+    a                          schema:SoftwareApplication ;
+    # https://developers.google.com/search/docs/appearance/structured-data/software-app#softwareapplication
+    schema:name                "Enola.dev" ;
+    schema:description         "Enola is a toolkit for modeling Technical Infrastructure as Linked Data Graph Models." ;
+    schema:image               <https://docs.enola.dev/images/enola-293_293-transparent.png> ;
+    schema:maintainer          <https://www.vorburger.ch> ;
+    schema:offers              [ a            schema:Offer ;
+                                 schema:price "0" ;
+                                 schema:priceCurrency "CHF" ] ;
+    schema:applicationCategory "DeveloperApplication" ;
+    schema:operatingSystem     "Linux, OS X, Windows" ;
+    # https://schema.org/SoftwareApplication
+    schema:downloadUrl         <https://docs.enola.dev/download/latest/enola> ;
+    # TODO Use URL instead of Text to link to Enola defined concepts!
+    schema:featureList         "JSON LD", "RDF", "Converter", "Markdown", "Generator" ;
+    schema:softwareVersion     "main" ;
+    schema:releaseNotes        <https://github.com/enola-dev/enola/commits/main/> ; # ;-)
+    schema:softwareHelp        <https://docs.enola.dev/> ;
+    schema:author              <https://enola.dev#organization> ;
+    schema:license             <https://github.com/enola-dev/enola/blob/main/LICENSE> ;
+    schema:copyrightYear       2023 ;
+    schema:aggregateRating     [ a schema:AggregateRating;
+                                 schema:ratingValue "5";
+                                 schema:ratingCount "42" ];
+.
+
+<https://docs.enola.dev/>
+    a                    schema:WebSite ;
+    schema:about         <https://enola.dev#software> ;
+    schema:inLanguage    "en" ;
+    schema:copyrightYear 2023 ;
+    schema:abstract      "Documentation about the Enola.dev software for both its end-users and contributors." ;
+.
+
+<https://enola.dev#organization>
+    a                   schema:Organization ;
+    # https://developers.google.com/search/docs/appearance/structured-data/organization
+    schema:name         "Enola.dev Org" ;
+    schema:url          <https://github.com/enola-dev> ;
+    schema:description  "Enola.dev is the organization of contributors to the Enola.dev open source code." ;
+    schema:sameAs       "https://enola.dev/" ;
+    schema:image        <https://docs.enola.dev/images/enola-293_293-transparent.png> ;
+    schema:logo         <https://docs.enola.dev/images/enola-293_293-transparent.png> ;
+    schema:foundingDate "2023-03-17" ;
+    schema:founder      <https://www.vorburger.ch> ;
+
+    # The Git repo is technically not really quite the "same as" the Org,
+    # of course; but it's close enough e.g. for Google Search Structured Data Indexing... ;-)
+    # TODO Find vocabulary for "is Git Repo Source Code of" - likely https://spdx.dev?
+    schema:sameAs       "https://github.com/enola-dev/enola/" ;
+
+    # TODO Find vocabulary for "is documentation about"
+    schema:sameAs       "https://docs.enola.dev/" ;
+.
+
+<https://enola.dev#vorburger>
+    a                 schema:ProfilePage ;
+    schema:mainEntity <https://www.vorburger.ch> ;
+    schema:dateCreated "2023-03-17T00:00:00" ;
+    schema:sameAs     <https://www.vorburger.ch> ;
+.
+# Move this to https://www.vorburger.ch and see if Google digs the link?!
+<https://www.vorburger.ch>
+    a                    schema:Person ;
+    schema:url           <https://www.vorburger.ch> ;
+    schema:subjectOf     <https://www.vorburger.ch> ;
+    schema:identifier    <https://www.vorburger.ch> ;
+    schema:description   "Michael is an avid open source hacker, and an EPFL alumni. As of early 2024 he is employed by Google, but his open source work is personal.";
+    schema:name          "Michael Vorburger" ;
+    schema:alternateName "Michael Vorburger.ch" ;
+    schema:givenName     "Michael" ;
+    schema:familyName    "Vorburger" ;
+    schema:image         <https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg> ;
+    schema:email         "figure-it-out@vorburger.ch" ;
+    schema:member        <https://enola.dev#organization> ;
+    schema:funder        <https://enola.dev#organization> ;
+    schema:affiliation   <https://enola.dev#organization>, <https://www.apache.org/>, <https://www.google.com/> ;
+    schema:worksFor      <https://www.google.com/> ;
+    schema:alumniOf      <https://www.epfl.ch/> ;
+    schema:birthPlace    <https://www.ch.ch/> ; # TODO What's a better IRI for Switzerland?!
+    schema:sameAs        <https://github.com/vorburger> ;
+    schema:sameAs        <https://ch.linkedin.com/in/vorburger> ;
+    schema:sameAs        <https://www.youtube.com/user/mvorburger> ;
+    schema:sameAs        <https://bsky.app/profile/vorburger.ch> ;
+    schema:sameAs        <https://tooting.ch/@vorburger> ;
+    schema:sameAs        <https://twitter.com/vorburger> ;
+    schema:sameAs        <https://scholar.google.com/citations?user=OXGdbawAAAAJ> ;
+    schema:sameAs        <https://orcid.org/0009-0001-4017-9397> ;
+.
