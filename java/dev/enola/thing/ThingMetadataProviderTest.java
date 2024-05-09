@@ -31,10 +31,10 @@ public class ThingMetadataProviderTest {
 
     private static final ThingProvider NO_THING_PROVIDER = iri -> null;
 
-    private String THING_IRI = "http://enola.dev/test";
-    private String THING_LABEL = "DaThang!";
+    private final String THING_IRI = "http://enola.dev/test";
+    private final String THING_LABEL = "DaThang!";
 
-    private ThingProvider test =
+    private final ThingProvider test =
             new ThingProvider() {
 
                 @Override
@@ -47,11 +47,11 @@ public class ThingMetadataProviderTest {
                 }
             };
 
-    private ThingProvider error =
+    private final ThingProvider error =
             new ThingProvider() {
 
                 @Override
-                public Thing get(String iri) {
+                public @Nullable Thing get(String iri) {
                     throw new IllegalStateException();
                 }
             };

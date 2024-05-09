@@ -86,6 +86,9 @@ public final class KIRI {
          */
         public static final String DESC = NS + "description";
 
+        /** An abstract is a short description that summarizes a CreativeWork. */
+        public static final String ABSTRACT = NS + "abstract";
+
         /**
          * URL of an 🖼️ image of the Thing, see https://schema.org/image.
          *
@@ -93,6 +96,10 @@ public final class KIRI {
          * KIRI.E#EMOJI}.
          */
         public static final String IMG = NS + "image";
+
+        public static final String THUMBNAIL_URL = NS + "thumbnailUrl";
+
+        public static final String LOGO = NS + "logo";
 
         /**
          * URL 🔗 of the Thing, see https://schema.org/url. You *CAN* always http GET an URL. This

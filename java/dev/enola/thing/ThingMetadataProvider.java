@@ -123,6 +123,9 @@ public class ThingMetadataProvider implements MetadataProvider {
         var description = getString(thing, KIRI.SCHEMA.DESC);
         if (description != null) return description;
 
+        description = getString(thing, KIRI.SCHEMA.ABSTRACT);
+        if (description != null) return description;
+
         description = getString(thing, KIRI.DC.DESCRIPTION);
         if (description != null) return description;
 
@@ -152,14 +155,29 @@ public class ThingMetadataProvider implements MetadataProvider {
         return "";
     }
 
-    private String getImageHTML_(Thing thing) {
+    private @Nullable String getImageHTML_(Thing thing) {
         if (thing == null) return null;
+
         var emoji = getString(thing, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
+
         var imageURL = getString(thing, KIRI.SCHEMA.IMG);
-        // TODO ImageMetadataProvider which can determine (and cache!) width & height
-        if (imageURL != null) return "<img src=\"" + imageURL + "\" style=\"max-height: 1em;\">";
+        if (imageURL != null) return html(imageURL);
+
+        imageURL = getString(thing, KIRI.SCHEMA.LOGO);
+        if (imageURL != null) return html(imageURL);
+
+        imageURL = getString(thing, KIRI.SCHEMA.THUMBNAIL_URL);
+        if (imageURL != null) return html(imageURL);
+
+        // TODO Also support (and test) https://schema.org/ImageObject
+        // for https://schema.org/thumbnail and https://schema.org/logo
         return null;
+    }
+
+    private String html(String imageURL) {
+        // TODO ImageMetadataProvider which can determine (and cache!) width & height
+        return "<img src=\"" + imageURL + "\" style=\"max-height: 1em;\">";
     }
 
     private @Nullable String getAlternative(
@@ -175,7 +193,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         return null;
     }
 
-    private String getString(Thing thing, String propertyIRI) {
+    private @Nullable String getString(Thing thing, String propertyIRI) {
         if (thing == null) return null;
         var string = thing.getString(propertyIRI);
         if (string == null) {
