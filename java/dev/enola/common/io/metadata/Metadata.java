@@ -61,7 +61,7 @@ public record Metadata(
 
     private String requireNonEmpty(String string, String name, String context) {
         if (requireNonNull(string, name).trim().isEmpty())
-            throw new IllegalArgumentException(context + "#" + name + " is empty?!");
+            throw new IllegalArgumentException(name + " of " + context + " is empty?!");
         return string;
     }
 }

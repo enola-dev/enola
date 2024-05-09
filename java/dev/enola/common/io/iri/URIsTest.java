@@ -154,21 +154,24 @@ public class URIsTest {
 
     @Test
     public void testGetFilenameOrLastPathSegment() {
-        assertThat(URIs.getFilenameOrLastPathSegment(URI.create("https://vorburger.ch")))
+        assertThat(URIs.getFilenameOrLastPathSegmentOrHost(URI.create("https://vorburger.ch/")))
+                .isEqualTo("vorburger.ch");
+
+        assertThat(URIs.getFilenameOrLastPathSegmentOrHost(URI.create("https://vorburger.ch")))
                 .isEqualTo("vorburger.ch");
 
         assertThat(
-                        URIs.getFilenameOrLastPathSegment(
+                        URIs.getFilenameOrLastPathSegmentOrHost(
                                 URI.create("https://vorburger.ch/favicon.ico/")))
                 .isEqualTo("favicon.ico");
 
         assertThat(
-                        URIs.getFilenameOrLastPathSegment(
+                        URIs.getFilenameOrLastPathSegmentOrHost(
                                 URI.create("https://vorburger.ch/favicon.ico")))
                 .isEqualTo("favicon.ico");
     }
 
-    /** See {@link URIs#getPath(String)} */
+    /** See {@link URIs#getPath(URI)} */
     @Test
     public void testGetPath() {
         var f = new File("/absolute/file?param=abc#anchor");

@@ -97,7 +97,7 @@ public class ThingMetadataProvider implements MetadataProvider {
 
         try {
             var fallbackURI = IRIs.toURI(fallbackIRI);
-            var filename = URIs.getFilenameOrLastPathSegment(fallbackURI);
+            var filename = URIs.getFilenameOrLastPathSegmentOrHost(fallbackURI);
             // TODO Should we consider any ?query=arg as part of a "label"?!
             var fragment = fallbackURI.getFragment();
             if (fragment != null) return filename + "#" + fragment;
@@ -107,7 +107,7 @@ public class ThingMetadataProvider implements MetadataProvider {
         }
     }
 
-    private String getLabel_(@Nullable Thing thing) {
+    private @Nullable String getLabel_(@Nullable Thing thing) {
         var label = getString(thing, KIRI.RDFS.LABEL);
         if (label != null) return label;
 

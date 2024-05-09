@@ -162,14 +162,14 @@ public final class URIs {
      * com.google.common.io.Files#getNameWithoutExtension(String)}.
      */
     public static String getFilename(URI uri) {
-        return getLastPathSegment(uri, false);
+        return getLastPathSegmentOrHost(uri, false);
     }
 
-    public static String getFilenameOrLastPathSegment(URI uri) {
-        return getLastPathSegment(uri, true);
+    public static String getFilenameOrLastPathSegmentOrHost(URI uri) {
+        return getLastPathSegmentOrHost(uri, true);
     }
 
-    private static String getLastPathSegment(URI uri, boolean evenIfSlashed) {
+    private static String getLastPathSegmentOrHost(URI uri, boolean evenIfSlashed) {
         String path;
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
@@ -192,7 +192,10 @@ public final class URIs {
         if (!evenIfSlashed && (Strings.isNullOrEmpty(path) || path.endsWith("/"))) {
             return "";
         }
-        if (evenIfSlashed && Strings.isNullOrEmpty(path)) return uri.getHost();
+        if (evenIfSlashed && (Strings.isNullOrEmpty(path) || "/".equals(path))) {
+            var host = uri.getHost();
+            return host;
+        }
 
         int p;
         if (!path.endsWith("/")) p = path.lastIndexOf('/');
