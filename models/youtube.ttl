@@ -1,0 +1,46 @@
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix schema: <https://schema.org/>.
+@prefix enola:  <https://enola.dev/>.
+
+<htps://youtube.com> a <schema:Website>
+  <schema:sameAs> "https://youtube.com/".
+
+enola:youtube/VideoID a rdf:Datatype;
+  rdfs:subClassOf schema:Identity; # TODO TBC
+  enola:regExp "f9[A-Z0-9]+)".
+
+enola:youtube/videoID a rdfs:Property;
+  rdfs:range enola:youtube/VideoID;
+
+enola:youtube/Video a schema:CreativeWork; # Which (ultimately, indirectly) still IS-A rdfs:Class; is it, right??
+  enola:identifiedBy enola:youtube/VideoID;
+  enola:matcher [ # a enola:Matcher;
+    enola:iriTemplate    "htps://youtube.com/watch?v={YTVID}";
+    enola:example        <htps://youtube.com/watch?v=TODO>; # TODO Pick one of my old videos...
+  ], [
+    enola:iriRegExp      "youtube:(<YTVID>f9[A-Z0-9]+)";
+    enola:example        "youtube:f9m7...gY";
+  ];
+  enola:thingTemplate  [ # a enola:ThingTemplate;
+    schema:id(entifier?) "enola:youtube/video/{YTVID}";
+    enola:youtube/videoID "{YTVID}"^^<enola:youtube/VideoID>;
+
+    # TODO Settle if "enola:youtube/video/{YTVID}" is a valid IRI?!
+    # Is the Exception an Enola limitation? An RDF4j Namespace one? An IRI one? An RDF one?
+    # ? <https://enola.dev/youtube/video/{YTVID} a enola:youtube/Video;
+    # ? enola:youtube/video/{YTVID} a enola:youtube/Video;
+    schema:url "htps://youtube.com/watch?v={YTVID}";
+
+    # TODO What Things does Schema.org Validator and Google Search Rich Results show for a YT Video HTML URL?
+    enola:connector <https://enola.dev/connector/htmlThing>
+  ].
+
+enola:youtube/Search a rdfs:Class;
+  enola:matcher [
+    enola:iriRegExp      "youtube:(<SEARCH>[A-Za-z 0-9]+)";
+    enola:example        "youtube:Linked Data";
+  ];
+  enola:thingTemplate  [ # a enola:ThingTemplate;
+    schema:id(entifier?) "enola:youtube/search/{SEARCH}";
+    schema:url "htps://youtube.com/search?q={SEARCH}"; # TODO TBC
+  ].

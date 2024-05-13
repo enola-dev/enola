@@ -52,6 +52,8 @@ nav:
       - Info: use/info/index.md
   - Models: models/index.md
   - Concepts:
+      - What? Things!: concept/what.md
+      - Which? Identifiers!: concept/which.md
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
       - Singularity: concepts/singularity.md

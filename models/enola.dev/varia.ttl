@@ -1,0 +1,56 @@
+@prefix schema: <https://schema.org/>.
+@prefix enola:  <https://enola.dev/>.
+
+enola:Resource a rdfs:Class;
+  enola:identifiedBy schema:URL;
+  schema:description "Resource is the Thing describing what's available at an URL. This is different from a [[rdf:Resource]]).";
+  enola:java/type "dev.enola.thing.ResourceThing".
+
+enola:net/Protocol a rdfs:Class;
+  enola:wikibase TBD; # Infer enola:wikipedia?
+
+enola:net/http a enola:net/Protocol;
+  enola:term "HTTP";
+  schema:name "HyperText Transfer Protocol";
+  enola:rfc "TBD";
+  enola:net/client <enola:webbrowser>, <https://curl.se>, <enola:enola>;
+  enola:wikibase TBD.
+
+enola:net/webbrowser a schema:Software;
+  enola:term "Browser", "Web Browser";
+  schema:name "Web Browser";
+  enola:net/protocol enola:HTTP.
+
+enola:firefox a schema:Software;
+  schema:kindof enola:browser.
+
+enola:chrome a schema:Software;
+  schema:kindof enola:browser.
+
+# TODO Double check that this matches how schema:URL is modeled
+enola:IRI a schema:Class;
+  rdfs:subClassOf schema:Identity;
+  enola:identityOf schema:Thing.
+
+# TODO enola:URI, similar to enola:IRI
+
+# TODO Move the following elsewhere?
+
+enola:identityOf a rdfs:Property;
+  enola:inverseOf enola:identifiedBy.
+
+enola:ThingTemplate a rdfs:Class;
+  schema:description "Template of a Thing. When 'instantiated' (from variables), this 'infers' a (new) Thing.".
+
+enola:Matcher a rdfs:Class;
+
+enola:Term a rdfs:Datatype
+  rdf:subClassOf schema:identity;
+  enola:matcher [
+    enola:regExp "\[\[(<WORDS> .+\)]\]";
+  ], [
+    enola:regExp "\[\[(<NAMESPACE>[a-zA-Z0-9]+:(<NAME>[a-zA-Z0-9]+)\]\]";
+  ].
+
+enola:term a rdf:Property;
+  rdf:range enola:Term.
