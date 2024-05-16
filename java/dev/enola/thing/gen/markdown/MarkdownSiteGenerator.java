@@ -28,6 +28,7 @@ import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,13 @@ public class MarkdownSiteGenerator {
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
     private final MetadataProvider metadataProvider;
+    private final Templates.Format format;
 
-    public MarkdownSiteGenerator(URI base, ResourceProvider rp, MetadataProvider metadataProvider) {
+    public MarkdownSiteGenerator(
+            URI base,
+            ResourceProvider rp,
+            MetadataProvider metadataProvider,
+            Templates.Format format) {
         this.base = base;
         if (!MoreFileSystems.URI_SCHEMAS.contains(base.getScheme()))
             throw new IllegalArgumentException(
@@ -55,8 +61,9 @@ public class MarkdownSiteGenerator {
                             + " not: "
                             + base);
 
+        this.format = format;
         this.metadataProvider = metadataProvider;
-        this.mtg = new MarkdownThingGenerator(metadataProvider);
+        this.mtg = new MarkdownThingGenerator(format, metadataProvider);
         this.rp = rp;
     }
 
@@ -87,7 +94,8 @@ public class MarkdownSiteGenerator {
         }
 
         var mig =
-                new MarkdownIndexGenerator(metas.build(), metadataProvider, thingProvider, footer);
+                new MarkdownIndexGenerator(
+                        metas.build(), metadataProvider, thingProvider, footer, format);
         if (generateIndexFile) {
             // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
             // something like existing index pages which were already generated from RDF Turtle,

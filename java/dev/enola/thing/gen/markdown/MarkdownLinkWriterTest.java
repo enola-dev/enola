@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void writeMarkdownLink() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
                         sb,
@@ -49,7 +50,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void writeMarkdownLinkWithCurieAndSameLabel() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata(
                                 "https://example.org/greeting42",
@@ -68,7 +69,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void writeMarkdownLinkWithCurieAndBetterLabel() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata(
                                 "https://example.org/greeting42",
@@ -88,7 +89,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void unknownIRIs() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata("https://unknown.org/whatever", "", "", "whatever", ""),
                         sb,
@@ -102,7 +103,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void knownIRIs() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata("https://enola.dev/emoji", "", "", "emoji", ""),
                         sb,
@@ -117,7 +118,7 @@ public class MarkdownLinkWriterTest {
     @Test
     public void writeTemplateMarkdownLink() throws IOException {
         var sb = new StringBuilder();
-        new MarkdownLinkWriter()
+        new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
                         new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
                         sb,

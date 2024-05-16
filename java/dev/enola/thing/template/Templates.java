@@ -27,12 +27,20 @@ public final class Templates {
         return iri.replace("{", "_").replace("}", "");
     }
 
-    public static String convertToMustache(String iri) {
-        return iri.replace("{", "{{").replace("}", "}}");
-    }
-
     public static boolean hasVariables(String iri) {
         return iri.contains("{");
+    }
+
+    public static String convertToAnotherFormat(String iri, Format format) {
+        return switch (format) {
+            case Mustache -> iri.replace("{", "{{").replace("}", "}}");
+            case HTML -> iri.replace("{", "<var>").replace("}", "</var>");
+        };
+    }
+
+    public enum Format {
+        Mustache,
+        HTML
     }
 
     private Templates() {}

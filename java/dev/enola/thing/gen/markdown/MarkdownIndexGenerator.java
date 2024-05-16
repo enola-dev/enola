@@ -32,6 +32,7 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
+import dev.enola.thing.template.Templates;
 
 import org.jspecify.annotations.Nullable;
 
@@ -46,7 +47,7 @@ class MarkdownIndexGenerator {
 
     private final MetadataProvider metadataProvider;
     private final ProviderFromIRI<Thing> thingProvider;
-    private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
+    private final MarkdownLinkWriter linkWriter;
     private final Iterable<Metadata> metas;
     private final boolean footer;
 
@@ -54,11 +55,13 @@ class MarkdownIndexGenerator {
             Iterable<Metadata> metas,
             MetadataProvider metadataProvider,
             ProviderFromIRI<Thing> thingProvider,
-            boolean footer) {
+            boolean footer,
+            Templates.Format format) {
         this.metadataProvider = metadataProvider;
         this.thingProvider = thingProvider;
         this.metas = metas;
         this.footer = footer;
+        this.linkWriter = new MarkdownLinkWriter(format);
     }
 
     void generate(Writer writer, URI outputIRI, URI base, TemplateService ts) throws IOException {

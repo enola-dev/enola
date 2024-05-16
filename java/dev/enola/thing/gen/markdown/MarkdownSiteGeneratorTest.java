@@ -19,6 +19,8 @@ package dev.enola.thing.gen.markdown;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.thing.template.Templates.Format.Mustache;
+
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
@@ -63,7 +65,7 @@ public class MarkdownSiteGeneratorTest {
         var metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
         mdDocsGen.generate(things, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
@@ -106,7 +108,7 @@ public class MarkdownSiteGeneratorTest {
                         .map(javaThing -> converterJ2P.convert(javaThing).build())
                         .collect(Collectors.toUnmodifiableSet());
 
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
 
         mdDocsGen.generate(
                 templatedThings, iri -> null, iri -> ttr.get(iri) != null, ttr, true, false);

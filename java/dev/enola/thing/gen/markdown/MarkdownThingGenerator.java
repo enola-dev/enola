@@ -33,10 +33,13 @@ import java.util.Map;
 /** Generates the Markdown showing details about one Thing. */
 class MarkdownThingGenerator {
 
+    private final Templates.Format format;
     private final MetadataProvider metadataProvider;
-    private final MarkdownLinkWriter linkWriter = new MarkdownLinkWriter();
+    private final MarkdownLinkWriter linkWriter;
 
-    MarkdownThingGenerator(MetadataProvider metadataProvider) {
+    MarkdownThingGenerator(Templates.Format format, MetadataProvider metadataProvider) {
+        this.format = format;
+        this.linkWriter = new MarkdownLinkWriter(format);
         this.metadataProvider = metadataProvider;
     }
 
@@ -54,7 +57,7 @@ class MarkdownThingGenerator {
         var meta = metadataProvider.get(thing, thingIRI);
         linkWriter.writeLabel(meta, out);
         out.append("\n\n<");
-        out.append(Templates.convertToMustache((thingIRI)));
+        out.append(Templates.convertToAnotherFormat(thingIRI, format));
         out.append(">\n\n");
         if (!meta.descriptionHTML().isEmpty()) {
             out.append(meta.descriptionHTML());

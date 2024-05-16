@@ -34,6 +34,7 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
 import dev.enola.thing.message.MoreThings;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.template.Templates;
 import dev.enola.web.EnolaThingProvider;
 
 import picocli.CommandLine;
@@ -58,6 +59,15 @@ public class DocGen extends CommandWithModelAndOutput {
                     "Type of diagrams to generate (${COMPLETION-CANDIDATES}; default:"
                             + " ${DEFAULT-VALUE})")
     Options.DiagramType diagram;
+
+    @Option(
+            names = {"--variables", "-var"},
+            required = true,
+            defaultValue = "Mustache",
+            description =
+                    "Type of variables to generate for IRI Templates (${COMPLETION-CANDIDATES};"
+                            + " default: ${DEFAULT-VALUE})")
+    Templates.Format variables;
 
     @Option(
             names = {"--header", "-h"},
@@ -88,7 +98,7 @@ public class DocGen extends CommandWithModelAndOutput {
     private void multipleMDDocsForThings(
             EnolaServiceBlockingStub service, boolean generateIndexFile) throws Exception {
         var mdp = getMetadataProvider(new EnolaThingProvider(service));
-        var mdsg = new MarkdownSiteGenerator(output, rp, mdp);
+        var mdsg = new MarkdownSiteGenerator(output, rp, mdp, variables);
 
         var things = getThings(service, ENOLA_ROOT_LIST_THINGS);
 
