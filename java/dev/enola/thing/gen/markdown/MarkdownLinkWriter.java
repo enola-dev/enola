@@ -17,6 +17,9 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import static dev.enola.thing.template.Templates.Format.HTML;
+import static dev.enola.thing.template.Templates.Format.Star;
+
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.metadata.Metadata;
@@ -73,7 +76,7 @@ class MarkdownLinkWriter {
                                                 Templates.dropVariableMarkers(
                                                         breakdown.iriTemplate());
                                         var vars = breakdown.variables();
-                                        if (format.equals(Templates.Format.HTML)) {
+                                        if (format.equals(HTML) || format.equals(Star)) {
                                             vars = addPrefix(vars, "var.");
                                         }
                                         return URIs.addQuery(urlWithoutVars, vars);
