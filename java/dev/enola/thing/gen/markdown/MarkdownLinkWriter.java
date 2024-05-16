@@ -31,7 +31,12 @@ import java.net.URI;
 
 class MarkdownLinkWriter {
 
+    private final Templates.Format format;
     private final KnownDocsProvider kdp = new EnolaDevKnownDocsProvider();
+
+    MarkdownLinkWriter(Templates.Format format) {
+        this.format = format;
+    }
 
     void writeMarkdownLink(
             Metadata meta,
@@ -71,7 +76,7 @@ class MarkdownLinkWriter {
 
         var href = rel(iri, outputIRI, base, isDocumentedIRI);
         if (href.isEmpty()) throw new IllegalStateException(iri);
-        href = Templates.convertToMustache(href);
+        href = Templates.convertToAnotherFormat(href, format);
         out.append(href);
         out.append(')');
     }
@@ -88,7 +93,7 @@ class MarkdownLinkWriter {
             if (!md.curie().endsWith(md.label())) out.append(' ');
         }
         if (!md.curie().endsWith(md.label())) {
-            out.append(Templates.convertToMustache(md.label()));
+            out.append(Templates.convertToAnotherFormat(md.label(), format));
         }
     }
 
