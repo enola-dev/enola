@@ -43,6 +43,8 @@ import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateThingRepository;
 
+import org.jspecify.annotations.Nullable;
+
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -60,7 +62,8 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     ModelOrServer group;
 
     private EnolaServiceBlockingStub gRPCService;
-    // TODO Remove this hack which breaks remote service encapsulation
+
+    // TODO Turn remote service encapsulation upside down (as-is this "exception" is strange)
     protected TemplateThingRepository templateService;
 
     @Override
@@ -150,12 +153,12 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 required = true,
                 description = "URI to EntityKinds (e.g. file:model.yaml)")
         // TODO Simple integrate this into --load eventually...
-        URI model;
+        @Nullable URI model;
 
         @Option(
                 names = {"--server", "-s"},
                 required = true,
                 description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
-        String server;
+        @Nullable String server;
     }
 }

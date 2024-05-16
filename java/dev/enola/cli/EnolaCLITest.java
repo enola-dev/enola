@@ -24,6 +24,7 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
@@ -104,11 +105,39 @@ public class EnolaCLITest {
 
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0).out().isEmpty();
+        assertThatFileContains(dir, "enola.dev/emoji.md", "Emoji");
+    }
 
-        var mdPath = dir.resolve("enola.dev/emoji.md");
+    private void assertThatFileContains(Path dir, String filePath, String contains)
+            throws IOException {
+        var mdPath = dir.resolve(filePath);
         var r = new FileResource(mdPath.toUri(), MediaType.PLAIN_TEXT_UTF_8);
         var md = r.charSource().read();
-        assertThat(md).contains("Emoji");
+        assertThat(md).contains(contains);
+    }
+
+    @Test // ~same (as unit instead of integration test) also in
+    // MarkdownSiteGeneratorTest#templatedGreetingN()
+    public void docGenTemplatedGreetingN() throws IOException {
+        Path dir = Files.createTempDirectory("EnolaTest");
+
+        var exec =
+                cli(
+                        "-vvv",
+                        "docgen",
+                        "--load",
+                        "classpath:example.org/greetingN.ttl",
+                        "--output",
+                        dir.toUri().toString());
+
+        assertThat(exec).err().isEmpty();
+        assertThat(exec).hasExitCode(0).out().isEmpty();
+
+        var expectedGreetingMD = new ClasspathResource("greeting.md").charSource().read();
+        assertThatFileContains(dir, "example.org/greeting.md", expectedGreetingMD);
+
+        var expectedGreetingNumberMD = new ClasspathResource("greet-NUMBER.md").charSource().read();
+        assertThatFileContains(dir, "example.org/greet/_NUMBER.md", expectedGreetingNumberMD);
     }
 
     @Test

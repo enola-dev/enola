@@ -4,5 +4,5 @@
 
 :greeting a rdfs:Class;
   enola:iriTemplate "https://example.org/greet/{NUMBER}";
-  :yo               "http://example.org/hi/{NUMBER}"^^enola:IRITemplate;
-  enola:example     <https://example.org/greet/42>.
+  enola:example     <https://example.org/greet/42>;
+  :yo               "http://example.org/hi/{NUMBER}"^^enola:IRITemplate.
