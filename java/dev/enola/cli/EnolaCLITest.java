@@ -125,6 +125,8 @@ public class EnolaCLITest {
                 cli(
                         "-vvv",
                         "docgen",
+                        "--variables",
+                        "HTML",
                         "--load",
                         "classpath:example.org/greetingN.ttl",
                         "--output",
@@ -133,10 +135,11 @@ public class EnolaCLITest {
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0).out().isEmpty();
 
-        var expectedGreetingMD = new ClasspathResource("greeting.md").charSource().read();
+        var expectedGreetingMD = new ClasspathResource("greeting_var-HTML.md").charSource().read();
         assertThatFileContains(dir, "example.org/greeting.md", expectedGreetingMD);
 
-        var expectedGreetingNumberMD = new ClasspathResource("greet-NUMBER.md").charSource().read();
+        var expectedGreetingNumberMD =
+                new ClasspathResource("greet-NUMBER_var-HTML.md").charSource().read();
         assertThatFileContains(dir, "example.org/greet/_NUMBER.md", expectedGreetingNumberMD);
     }
 
