@@ -28,6 +28,8 @@ import dev.enola.thing.template.Templates;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 class MarkdownLinkWriter {
 
@@ -66,11 +68,16 @@ class MarkdownLinkWriter {
             iri =
                     ts.breakdown(iri)
                             .map(
-                                    breakdown ->
-                                            URIs.addQuery(
-                                                    Templates.dropVariableMarkers(
-                                                            breakdown.iriTemplate()),
-                                                    breakdown.variables()))
+                                    breakdown -> {
+                                        var urlWithoutVars =
+                                                Templates.dropVariableMarkers(
+                                                        breakdown.iriTemplate());
+                                        var vars = breakdown.variables();
+                                        if (format.equals(Templates.Format.HTML)) {
+                                            vars = addPrefix(vars, "var.");
+                                        }
+                                        return URIs.addQuery(urlWithoutVars, vars);
+                                    })
                             .orElse(iri);
         }
 
@@ -79,6 +86,14 @@ class MarkdownLinkWriter {
         href = Templates.convertToAnotherFormat(href, format);
         out.append(href);
         out.append(')');
+    }
+
+    private Map<String, String> addPrefix(Map<String, String> map, String prefix) {
+        var newMap = new HashMap<String, String>(map.size());
+        for (var entry : map.entrySet()) {
+            newMap.put(prefix + entry.getKey(), entry.getValue());
+        }
+        return newMap;
     }
 
     void writeLabel(Metadata md, Appendable out) throws IOException {
