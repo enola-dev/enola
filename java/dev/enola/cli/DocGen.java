@@ -21,6 +21,7 @@ import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import dev.enola.common.function.CheckedPredicate;
 import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.MarkdownDocGenerator;
@@ -39,6 +40,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +94,9 @@ public class DocGen extends CommandWithModelAndOutput {
 
         // TODO This works, but is not efficient if there were a HUGE amount of Things and MDs...
         var map = things.stream().collect(Collectors.toMap(Thing::getIri, Function.identity()));
-        mdsg.generate(things, map::get, map::containsKey, templateService, generateIndexFile, true);
+        CheckedPredicate<String, IOException> isDocumentedIRI =
+                iri -> templateService.get(iri) != null;
+        mdsg.generate(things, map::get, isDocumentedIRI, templateService, generateIndexFile, true);
     }
 
     private Collection<Thing> getThings(EnolaServiceBlockingStub service, String iri)

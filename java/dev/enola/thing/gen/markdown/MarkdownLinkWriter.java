@@ -56,6 +56,7 @@ class MarkdownLinkWriter {
         out.append('[');
         writeLabel(meta, out);
         out.append("](");
+
         if (!Templates.hasVariables(iri)) {
             iri =
                     ts.breakdown(iri)
@@ -67,9 +68,11 @@ class MarkdownLinkWriter {
                                                     breakdown.variables()))
                             .orElse(iri);
         }
+
         var href = rel(iri, outputIRI, base, isDocumentedIRI);
         if (href.isEmpty()) throw new IllegalStateException(iri);
-        out.append(Templates.convertToMustache(href));
+        href = Templates.convertToMustache(href);
+        out.append(href);
         out.append(')');
     }
 
