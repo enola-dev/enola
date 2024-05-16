@@ -35,12 +35,14 @@ public final class Templates {
         return switch (format) {
             case Mustache -> iri.replace("{", "{{").replace("}", "}}");
             case HTML -> iri.replace("{", "<var>").replace("}", "</var>");
+            case Star -> iri.replace("{", "[*").replace("}", "*]");
         };
     }
 
     public enum Format {
         Mustache,
-        HTML
+        HTML,
+        Star
     }
 
     private Templates() {}
