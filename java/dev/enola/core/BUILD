@@ -172,6 +172,7 @@ java_library(
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/thing/gen",
         "//models",
         "@maven//:com_github_java_json_tools_uri_template",
         "@maven//:com_google_errorprone_error_prone_annotations",

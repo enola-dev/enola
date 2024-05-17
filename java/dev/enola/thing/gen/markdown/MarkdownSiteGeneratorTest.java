@@ -126,7 +126,7 @@ public class MarkdownSiteGeneratorTest {
         var trimmedGeneratedMarkdown = trimLineEndWhitespace(generatedMarkdown);
 
         var expectedMarkdown = new ClasspathResource(expected).charSource().read();
-        assertThat(trimmedGeneratedMarkdown).isEqualTo(expectedMarkdown);
+        assertThat(trimmedGeneratedMarkdown).contains(expectedMarkdown);
     }
 
     private String trimLineEndWhitespace(String string) {

@@ -14,68 +14,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
-    name = "enola",
+java_library(
+    name = "gen",
     srcs = glob(
-        ["*.java"],
-        exclude = [
-            "*Test.java",
-            "CommandLineSubject.java",
-            "SystemOutErrCapture.java",
-        ],
+        ["**/*.java"],
+        exclude = ["**/*Test.java"],
     ),
-    main_class = "dev.enola.cli.EnolaCLI",
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
+    visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/markdown/exec:markdown",
-        "//java/dev/enola/common/protobuf",
-        "//java/dev/enola/core",
-        "//java/dev/enola/core:core_java_grpc",
-        "//java/dev/enola/core:core_java_proto",
+        "//java/dev/enola/common/tree",
         "//java/dev/enola/data",
-        "//java/dev/enola/datatype",
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
-        "//java/dev/enola/thing/gen",
-        "//java/dev/enola/web",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_errorprone_error_prone_type_annotations",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:info_picocli_picocli",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
-        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
 
 junit_tests(
     name = "tests",
-    size = "medium",
-    srcs = glob(
-        ["*Test.java"],
-    ),
-    jvm_flags = ["--enable-preview"],
-    srcs_utils = [
-        "CommandLineSubject.java",
-        "SystemOutErrCapture.java",
-    ],
+    srcs = glob(["**/*Test.java"]),
     deps = [
-        ":enola",
+        ":gen",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/markdown/exec:markdown",
-        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/datatype",
+        "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
-        "//java/dev/enola/thing/gen",
-        "//java/dev/enola/web",
+        "//java/dev/enola/thing:thing_java_proto",
         "//models",
         "//test",
-        "@maven//:info_picocli_picocli",
-        "@maven//:io_github_classgraph_classgraph",
-        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
