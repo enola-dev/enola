@@ -20,6 +20,7 @@ package dev.enola.thing.gen.markdown;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
+import dev.enola.rdf.ProtoThingIntoJsonLdAppendableConverter;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
@@ -36,11 +37,13 @@ class MarkdownThingGenerator {
     private final Templates.Format format;
     private final MetadataProvider metadataProvider;
     private final MarkdownLinkWriter linkWriter;
+    private final ProtoThingIntoJsonLdAppendableConverter jsonLdGenerator;
 
     MarkdownThingGenerator(Templates.Format format, MetadataProvider metadataProvider) {
         this.format = format;
         this.linkWriter = new MarkdownLinkWriter(format);
         this.metadataProvider = metadataProvider;
+        this.jsonLdGenerator = new ProtoThingIntoJsonLdAppendableConverter();
     }
 
     Metadata generate(
@@ -67,6 +70,14 @@ class MarkdownThingGenerator {
         write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI, ts);
 
         if (footer) out.append(DocGenConstants.FOOTER);
+
+        // Skip Template Things with IRIs such as https://example.org/greet/{NUMBER}
+        if (!Templates.hasVariables(thing.getIri())) {
+            out.append("\n");
+            out.append("<script type=\"application/ld+json\">\n");
+            jsonLdGenerator.convertIntoOrThrow(thing, out);
+            out.append("\n</script>\n");
+        }
 
         return meta;
     }

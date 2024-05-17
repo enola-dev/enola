@@ -44,7 +44,7 @@ import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import java.util.HashMap;
 import java.util.Map;
 
-class ThingRdfConverter
+public class ThingRdfConverter
         implements Converter<ThingOrBuilder, Model>, ConverterInto<ThingOrBuilder, RDFHandler> {
 
     private final ValueFactory vf;
