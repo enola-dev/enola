@@ -20,6 +20,7 @@ package dev.enola.ai.ollama;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.resource.stream.GlobResourceProvider;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
+
 import io.github.amithkoujalgi.ollama4j.core.OllamaAPI;
 import io.github.amithkoujalgi.ollama4j.core.exceptions.OllamaBaseException;
 import io.github.amithkoujalgi.ollama4j.core.utils.OptionsBuilder;
@@ -64,7 +65,9 @@ public class OllamaMain {
                                 modelName,
                                 "Here is a lot of source code: "
                                         + context
-                                        + "\nNow please answer the following question about this code, and avoid repeating yourself: "
+                                        + "\n"
+                                        + "Now please answer the following question about this"
+                                        + " code, and avoid repeating yourself: "
                                         + prompt,
                                 // "Do not provide any reasoning, just answer the question",
                                 options)

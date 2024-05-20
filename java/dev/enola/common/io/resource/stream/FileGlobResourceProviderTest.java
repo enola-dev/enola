@@ -81,6 +81,12 @@ public class FileGlobResourceProviderTest {
     }
 
     @Test
+    public void globStarStarTXTwithCharset() {
+        // **.txt matches TXT in root and all sub-dirs...
+        check("**.txt?charset=US-ASCII", 3);
+    }
+
+    @Test
     public void globStarCurly() {
         check("**.{txt,json,yaml}", 5);
     }

@@ -19,6 +19,7 @@ package dev.enola.common.io.resource.stream;
 
 import com.google.errorprone.annotations.MustBeClosed;
 
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
@@ -26,7 +27,6 @@ import dev.enola.common.io.resource.ResourceProviders;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.FileSystem;
-import java.nio.file.Path;
 import java.util.stream.Stream;
 
 /**
@@ -52,13 +52,27 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
         if (!globIRI.startsWith("file:")) {
             throw new IllegalArgumentException("Not a file: IRI: " + globIRI);
         }
-        // TODO Don't hard-code this to file: but use MoreFileSystems.URI_SCHEMAS, somehow...
-        var globPath = Path.of(globIRI.substring("file:".length()));
+
+        // NB: We cannot convert globIRI to an java.net.URI, because it may contain invalid
+        // characters (such as {}) which cause an URISyntaxException. We therefore only use String
+        // and Path, but not URI (and have added related String instead of URI variant methods to
+        // the URIs utility class).
+        //
+        // TODO An alternative may be to encode the curly brace ({) character using percent encoding
+        // (%7B) before creating the URI, and then un-encode that again, at the appropriate moment?
+        // This would best be investigated with a more comprehensive URI encoding (and IRI!) look...
+        var queryParameters = URIs.getQueryMap(globIRI);
+        var globPath = URIs.getFilePath(globIRI);
 
         try {
             return FileGlobPathWalker.walk(globPath)
                     .filter(path -> !path.toFile().isDirectory())
-                    .map(path -> fileResourceProvider.getReadableResource(path.toUri()));
+                    .map(
+                            path -> {
+                                var pathString = path.toUri().toString();
+                                var pathWithQuery = URIs.addQuery(pathString, queryParameters);
+                                return fileResourceProvider.getReadableResource(pathWithQuery);
+                            });
 
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to process 'globbed' IRI: " + globIRI, e);

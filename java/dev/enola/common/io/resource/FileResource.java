@@ -27,7 +27,6 @@ import dev.enola.common.io.iri.URIs;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.time.Instant;
 import java.util.Arrays;
@@ -67,43 +66,20 @@ public class FileResource extends BaseResource implements Resource {
     private final Path path;
     private final OpenOption[] openOptions;
 
-    private static Path pathFromURI(URI uri) {
-        // TODO Replace this with return Path.of(uri); but it needs more work...
-        // Both for relative file URIs and query parameters and ZIP files.
-        // Nota bene: https://stackoverflow.com/q/25032716/421602
-        // https://docs.oracle.com/javase/7/docs/technotes/guides/io/fsp/zipfilesystemprovider.html
-        // https://docs.oracle.com/en/java/javase/21/docs/api/jdk.zipfs/module-summary.html
-
-        var path = URIs.getPath(uri);
-        var scheme = uri.getScheme();
-        if ("file".equals(scheme)) {
-            return FileSystems.getDefault().getPath(path);
-        } else
-            try {
-                URI fsURI = new URI(scheme, uri.getAuthority(), "", null, null);
-                var fs = FileSystems.getFileSystem(fsURI);
-                return fs.getPath(path);
-            } catch (URISyntaxException e) {
-                // This is rather unexpected...
-                throw new IllegalStateException(
-                        "Failed to create FileSystem Authority URI: " + uri.toString(), e);
-            }
-    }
-
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
         super(uri, mediaType);
-        this.path = pathFromURI(uri);
+        this.path = URIs.getFilePath(uri);
         this.openOptions = safe(openOptions);
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
-        super(uri, MoreFiles.asByteSource(pathFromURI(uri), openOptions));
-        this.path = pathFromURI(uri);
+        super(uri, MoreFiles.asByteSource(URIs.getFilePath(uri), openOptions));
+        this.path = URIs.getFilePath(uri);
         this.openOptions = safe(openOptions);
     }
 
     private static OpenOption[] safe(OpenOption[] openOptions) {
-        if (openOptions.length == 0) return EMPTY_OPTIONS;
+        if (openOptions.length == 0) return EMPTY_OPTIONS; // skipcq: JAVA-S1049
         else return Arrays.copyOf(openOptions, openOptions.length);
     }
 

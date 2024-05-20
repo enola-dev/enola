@@ -48,8 +48,16 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return getResource(uri);
     }
 
+    default @Nullable ReadableResource getReadableResource(String iri) {
+        return get(iri);
+    }
+
     default @Nullable WritableResource getWritableResource(URI uri) {
         return getResource(uri);
+    }
+
+    default @Nullable WritableResource getWritableResource(String iri) {
+        return get(iri);
     }
 
     // -------------------------------------------

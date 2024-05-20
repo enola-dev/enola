@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
+import com.google.common.truth.Truth8;
 
 import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
@@ -31,12 +32,13 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 
 public class URIsTest {
 
     @Test
     public void testGetQueryMap() throws URISyntaxException {
-        assertThat(URIs.getQueryMap(null)).isEmpty();
+        assertThat(URIs.getQueryMap((URI) null)).isEmpty();
         assertThat(URIs.getQueryMap(URI.create(""))).isEmpty();
         assertThat(URIs.getQueryMap(URI.create("http://www.vorburger.ch"))).isEmpty();
         assertThat(URIs.getQueryMap(URI.create("http://google.com?q=michi#fragment")))
@@ -49,6 +51,11 @@ public class URIsTest {
                 .containsExactly("charset", "ASCII");
         assertThat(URIs.getQueryMap(URI.create("scheme:thing?ping=pong=pang#fragment")))
                 .containsExactly("ping", "pong=pang");
+
+        // Glob URIs
+        assertThat(URIs.getQueryMap("file:/tmp//?.txt")).isEmpty();
+        assertThat(URIs.getQueryMap("file:/tmp//?q=.")).containsExactly("q", ".");
+        // TODO assertThat(URIs.getQueryMap(URI.create("file:/tmp//?.txt"))).isEmpty();
     }
 
     @Test
@@ -95,6 +102,19 @@ public class URIsTest {
                                 "http://host/path?arg1=a",
                                 ImmutableMap.of("arg2", "b", "arg3", "c")))
                 .isEqualTo("http://host/path?arg1=a&arg2=b&arg3=c");
+    }
+
+    @Test
+    public void testAddQueryGivenOriginalUriWithQuery() {
+        var uri1 = URI.create("http://host/pathX");
+        var uri2 = URI.create("http://host/pathY?arg1=a");
+        var uri3 = URI.create("http://host/pathZ?arg2=b");
+        var uri4 = URI.create("http://host/pathZ");
+
+        assertThat(URIs.addQuery(uri1, uri2)).isEqualTo(URI.create("http://host/pathX?arg1=a"));
+        assertThat(URIs.addQuery(uri2, uri3)).isEqualTo(uri2);
+        assertThat(URIs.addQuery(uri1, uri4)).isEqualTo(uri1);
+        assertThat(URIs.addQuery(uri2, uri4)).isEqualTo(uri2);
     }
 
     @Test
@@ -187,5 +207,37 @@ public class URIsTest {
         assertThat(URIs.getPath(URI.create("whatever:/place/something.test")))
                 .isEqualTo("/place/something.test");
         assertThat(URIs.getPath(URI.create("whatever:something.test"))).isEqualTo("something.test");
+
+        // Glob URIs
+        assertThat(URIs.getPath("file:/tmp//?.txt")).isEqualTo("/tmp//?.txt");
+        assertThat(URIs.getPath("file:/tmp//{xy}?q=.")).isEqualTo("/tmp//{xy}");
+    }
+
+    @Test
+    public void testGetFilePath() {
+        // Truth8.assertThat(Path.of("/tmp//{xy}?.txt#yo"))
+        //        .isEqualTo(Path.of("/tmp/?.txt")); // TODO rm
+
+        Truth8.assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
+
+        // Glob URIs
+        Truth8.assertThat(URIs.getFilePath("file:/tmp//?.txt")).isEqualTo(Path.of("/tmp/?.txt"));
+        Truth8.assertThat(URIs.getFilePath("file:/tmp//{xy}?q=.")).isEqualTo(Path.of("/tmp/{xy}"));
+    }
+
+    @Test
+    public void testGetScheme() {
+        assertThat(URIs.getScheme("test:something")).isEqualTo("test");
+        assertThat(URIs.getScheme("rela/tive")).isEqualTo("");
+        assertThat(URIs.getScheme("/absolute/rela/tive")).isEqualTo("");
+        assertThat(URIs.getScheme(null)).isEqualTo("");
+    }
+
+    @Test
+    public void testGetSchemeSpecificPart() {
+        assertThat(URIs.getSchemeSpecificPart("test:something")).isEqualTo("something");
+        assertThat(URIs.getSchemeSpecificPart("rela/tive")).isEqualTo("");
+        assertThat(URIs.getSchemeSpecificPart("/absolute/rela/tive")).isEqualTo("");
+        assertThat(URIs.getSchemeSpecificPart(null)).isEqualTo("");
     }
 }
