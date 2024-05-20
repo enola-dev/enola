@@ -17,20 +17,27 @@
  */
 package dev.enola.common.io.iri;
 
+import static java.util.Collections.emptyMap;
+
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class URIs {
     // see also class dev.enola.common.io.iri.IRIs
+
+    // TODO Review if all this String instead of URI-based processing could be removed and replaced
+    // with first encoding invalid special characters in URIs; see the related TBD in
+    // FileGlobResourceProvider.
 
     // URI Query Parameter Names
     private static final String MEDIA_TYPE = "mediaType";
@@ -64,6 +71,20 @@ public final class URIs {
         return uri;
     }
 
+    /**
+     * Returns an URI with everything except the query parameters of the uri (1st) parameter, but
+     * the query parameters of originalUriWithQuery (2nd) parameter - IFF the uri (1st) parameter
+     * has no query; otherwise just returns the uri (1st) parameter as-is.
+     *
+     * <p>See {@link URIsTest#testAddQueryGivenOriginalUriWithQuery()} for example.
+     */
+    public static URI addQuery(URI uri, URI originalUriWithQuery) {
+        if (Strings.isNullOrEmpty(originalUriWithQuery.getQuery())) return uri;
+        if (!Strings.isNullOrEmpty(uri.getQuery())) return uri;
+
+        return URI.create(uri.toString() + "?" + originalUriWithQuery.getQuery());
+    }
+
     public static String addQuery(String string, Map<String, String> parameters) {
         return addQuery(URI.create(string), parameters).toString();
     }
@@ -90,30 +111,47 @@ public final class URIs {
     }
 
     // package-local not public (for now)
-    static Map<String, String> getQueryMap(URI uri) {
-        if (uri == null) return Collections.emptyMap();
-        Map<String, String> map = new HashMap<>();
-        String query = uri.getQuery();
-        if (Strings.isNullOrEmpty(query)) {
-            var part = uri.getSchemeSpecificPart();
-            var qp = part.indexOf('?');
-            if (qp > -1) {
-                var fp = part.indexOf('#');
-                if (fp == -1) {
-                    query = part.substring(qp + 1);
-                } else {
-                    query = part.substring(qp + 1, fp);
-                }
+    static String getQueryString(String uri) {
+        var qp = uri.indexOf('?');
+        if (qp > -1) {
+            // Handle Glob URIs, like e.g. "file:/tmp//?.txt"
+            if (uri.indexOf('=', qp) == -1) return "";
+            var fp = uri.indexOf('#');
+            if (fp == -1) {
+                return uri.substring(qp + 1);
+            } else {
+                return uri.substring(qp + 1, fp);
             }
         }
+        return "";
+    }
+
+    public static Map<String, String> getQueryMap(String uri) {
+        return getQueryMapGivenQueryString(getQueryString(uri));
+    }
+
+    static Map<String, String> getQueryMapGivenQueryString(String query) {
         if (Strings.isNullOrEmpty(query)) {
-            return Collections.emptyMap();
+            return emptyMap();
         }
-        AMPERSAND_SPLITTER.split(query).forEach(queryParameter -> put(uri, queryParameter, map));
+        Map<String, String> map = new HashMap<>();
+        AMPERSAND_SPLITTER.split(query).forEach(queryParameter -> put(queryParameter, map));
         return map;
     }
 
-    private static void put(URI uri, String queryParameter, Map<String, String> map) {
+    // package-local not public (for now)
+    static Map<String, String> getQueryMap(URI uri) {
+        if (uri == null) return emptyMap();
+
+        String query = uri.getQuery();
+        if (Strings.isNullOrEmpty(query)) {
+            var part = uri.getSchemeSpecificPart();
+            query = getQueryString(part);
+        }
+        return getQueryMapGivenQueryString(query);
+    }
+
+    private static void put(String queryParameter, Map<String, String> map) {
         var p = queryParameter.indexOf('=');
         if (p == -1) {
             map.put(queryParameter, null);
@@ -121,10 +159,67 @@ public final class URIs {
             var key = queryParameter.substring(0, p);
             if (map.containsKey(key))
                 throw new IllegalArgumentException(
-                        uri.toString() + " ID URI ?query has duplicate key");
+                        "URI Query Parameter has duplicate key: " + queryParameter);
             var value = queryParameter.substring(p + 1);
             map.put(key.toLowerCase(), value);
         }
+    }
+
+    /**
+     * Get a {@link Path} from an {@link URI}. This method is used internally by {@link
+     * dev.enola.common.io.resource.Resource} framework implementations, and typically shouldn't be
+     * called directly by users. Please see the {@link dev.enola.common.io.resource.FileResource}
+     * for more related background.
+     */
+    public static Path getFilePath(URI uri) {
+        // TODO Replace this with return Path.of(uri); but it needs more work...
+        // Both for relative file URIs and query parameters and ZIP files.
+        // Nota bene: https://stackoverflow.com/q/25032716/421602
+        // https://docs.oracle.com/javase/7/docs/technotes/guides/io/fsp/zipfilesystemprovider.html
+        // https://docs.oracle.com/en/java/javase/21/docs/api/jdk.zipfs/module-summary.html
+
+        var scheme = uri.getScheme();
+        var authority = uri.getAuthority();
+        var path = getPath(uri);
+        return getFilePath(scheme, authority, path);
+    }
+
+    public static Path getFilePath(String uri) {
+        var scheme = getScheme(uri);
+        var authority = ""; // TODO Implement getAuthority(String uri)
+        var path = getPath(uri);
+        return getFilePath(scheme, "", path);
+    }
+
+    private static Path getFilePath(String scheme, String authority, String path) {
+        // TODO Don't hard-code this to file: but use MoreFileSystems.URI_SCHEMAS, somehow...
+        if ("file".equals(scheme)) {
+            return FileSystems.getDefault().getPath(path);
+        } else
+            try {
+                // TODO Better null or "" for path?
+                URI fsURI = new URI(scheme, authority, "", null, null);
+                var fs = FileSystems.getFileSystem(fsURI);
+                return fs.getPath(path);
+            } catch (URISyntaxException e) {
+                // This is rather unexpected...
+                throw new IllegalStateException(
+                        "Failed to create FileSystem Authority URI: " + scheme + ":" + path, e);
+            }
+    }
+
+    static String getScheme(String iri) {
+        if (iri == null) return "";
+        var p = iri.indexOf(':');
+        if (p == -1) return "";
+        return iri.substring(0, p);
+    }
+
+    static String getSchemeSpecificPart(String iri) {
+        if (iri == null) return "";
+        var p = iri.indexOf(':');
+        if (p == -1) return "";
+        return iri.substring(p + 1);
     }
 
     /**
@@ -140,8 +235,16 @@ public final class URIs {
         return chopFragmentAndQuery(uri.getSchemeSpecificPart());
     }
 
+    public static String getPath(String uri) {
+        return chopFragmentAndQuery(getSchemeSpecificPart(uri));
+    }
+
     private static String chopFragmentAndQuery(String ssp) {
         var chop = ssp.indexOf('?', 0);
+
+        // Handle Glob URIs, like e.g. "file:/tmp//?.txt"
+        if (ssp.indexOf('=', chop) == -1) chop = -1;
+
         if (chop == -1) chop = ssp.indexOf('#', 0);
         if (chop == -1) chop = ssp.length();
 
