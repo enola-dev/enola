@@ -23,6 +23,7 @@ java_binary(
     ),
     main_class = "dev.enola.ai.ollama.OllamaMain",
     deps = [
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "@maven//:io_github_amithkoujalgi_ollama4j",
         "@maven//:org_slf4j_slf4j_jdk14",
