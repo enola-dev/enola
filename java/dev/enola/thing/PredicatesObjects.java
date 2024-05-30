@@ -20,6 +20,8 @@ package dev.enola.thing;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -62,8 +64,7 @@ public interface PredicatesObjects {
         if (datatype != null) return datatype;
 
         var object = get(predicateIRI);
-        if (object != null && object instanceof Literal) {
-            Literal literal = (Literal) object;
+        if (object != null && object instanceof Literal literal) {
             return literal.datatypeIRI();
         }
 
@@ -88,10 +89,11 @@ public interface PredicatesObjects {
      */
     default <T> T get(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, klass)
+                // TODO This doesn't handle absent (null) correctly... FIXME!
                 .orElseThrow(
                         () ->
                                 new IllegalArgumentException(
-                                        predicateIRI + " is not " + klass + "\n" + toString()));
+                                        predicateIRI + " is not " + klass + "\n" + this));
     }
 
     /** Object of predicate, with conversion - as Optional (never fails). */
@@ -101,7 +103,9 @@ public interface PredicatesObjects {
         if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
         try {
+            // TODO throw new IllegalArgumentException() instead return empty() ?
             return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+            // TODO Conversion should use Datatype... but how to look one up?! GenJavaThing has..
         } catch (IOException e) {
             // TODO Get rid of throws IOException and remove this.
             // Or better log any exceptions and return just Optional.empty()?
@@ -115,16 +119,18 @@ public interface PredicatesObjects {
 
     // TODO get... other types.
 
-    PredicatesObjects.Builder copy();
+    Builder<? extends PredicatesObjects> copy();
 
-    interface Builder extends dev.enola.common.Builder<PredicatesObjects> {
+    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
+    interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
+            extends dev.enola.common.Builder<PredicatesObjects> {
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder set(String predicateIRI, T value);
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder set(
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
                 String predicateIRI, T value, String datatypeIRI);
 
         @Override
-        PredicatesObjects build();
+        B build();
     }
 }

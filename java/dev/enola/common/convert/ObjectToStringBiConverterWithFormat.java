@@ -24,6 +24,7 @@ import java.text.ParseException;
 
 public class ObjectToStringBiConverterWithFormat implements ObjectToStringBiConverter<Object> {
 
+    @SuppressWarnings("Immutable")
     private final Format format;
 
     public ObjectToStringBiConverterWithFormat(Format format) {

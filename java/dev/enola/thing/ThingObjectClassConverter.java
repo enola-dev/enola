@@ -19,6 +19,7 @@ package dev.enola.thing;
 
 import dev.enola.common.convert.*;
 
+// TODO Make this extensible? E.g. using ServiceLoader.
 class ThingObjectClassConverter extends ObjectClassConverterChain {
 
     static ObjectClassConverter INSTANCE = new ThingObjectClassConverter();
@@ -27,6 +28,11 @@ class ThingObjectClassConverter extends ObjectClassConverterChain {
         super(
                 new IdentityObjectClassConverter(),
                 new ObjectConverter<>(Link.class, String.class, link -> link.iri()),
-                new ObjectConverter<>(LangString.class, String.class, in -> in.text()));
+                new ObjectConverter<>(LangString.class, String.class, in -> in.text()),
+                // TODO Following is all wrong, and only works by chance, because it's last...
+                // ObjectToStringBiConverters must be fixed to consider the type, before toString!
+                // If PredicatesObjects getOptional() would use the Datatype, we wouldn't need this!
+                ObjectToStringBiConverters.INSTANT);
+        // TODO Auto-discover ObjectToStringBiConverters.BOOLEAN, .INT, .URI, .LOCAL_DATE ?
     }
 }

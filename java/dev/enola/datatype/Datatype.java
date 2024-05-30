@@ -17,13 +17,17 @@
  */
 package dev.enola.datatype;
 
+import com.google.errorprone.annotations.Immutable;
+
 import dev.enola.common.convert.ObjectToStringBiConverter;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public interface Datatype<T> /* TODO extends Thing */ {
+@Immutable
+public interface Datatype<T> {
+    // NB: NOT extends Thing; there's a DatatypeThing for that!
 
     /** IRI of this datatype. Always present, never null or empty. */
     String iri();

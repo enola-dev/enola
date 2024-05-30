@@ -28,6 +28,8 @@ import java.net.URI;
 // https://docs.enola.dev/models/datatypes and have a working HTTP redirector.
 public final class Datatypes {
 
+    // TODO Move dev.enola.datatype.Datatypes to dev.enola.model.xsd.Datatypes!
+
     // Nota Bene: There's no NULL here - the absence of a value is not a Datatype!
 
     // TODO MAP, LIST etc. from https://yaml.org/type/
@@ -55,10 +57,6 @@ public final class Datatypes {
                     ObjectToStringBiConverters.URI,
                     URI.class, // TODO Make this URI.class!
                     IRI_PATTERN);
-
-    // TODO public static final Datatype NUMBER = new NumberDatatype();
-
-    // TODO TIMESTAMP
 
     // TODO BINARY ... multibase ... with https://github.com/multiformats/java-multibase, or
     // https://github.com/filip26/copper-multibase, for https://github.com/multiformats/multibase.

@@ -17,10 +17,13 @@
  */
 package dev.enola.common.convert;
 
+import com.google.errorprone.annotations.Immutable;
+
 import java.io.IOException;
 import java.util.Optional;
 
 /** Converts objects of type T to & from String, if it can. */
+@Immutable
 public interface ObjectToStringBiConverter<T>
         extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter {
 

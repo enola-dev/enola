@@ -18,6 +18,7 @@
 package dev.enola.common.convert;
 
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.time.LocalDate;
 
 public final class ObjectToStringBiConverters {
@@ -28,6 +29,10 @@ public final class ObjectToStringBiConverters {
     public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
             new ObjectToStringWithToStringBiConverter<>(
                     Boolean.class, input -> Boolean.valueOf(input));
+
+    public static final ObjectToStringBiConverter<Integer> INT =
+            new ObjectToStringWithToStringBiConverter<>(
+                    Integer.class, input -> Integer.valueOf(input));
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
             new ObjectToStringWithToStringBiConverter<>(
@@ -43,6 +48,10 @@ public final class ObjectToStringBiConverters {
     public static final ObjectToStringBiConverter<LocalDate> LOCAL_DATE =
             new ObjectToStringWithToStringBiConverter<>(
                     LocalDate.class, input -> LocalDate.parse(input));
+
+    public static final ObjectToStringBiConverter<Instant> INSTANT =
+            new ObjectToStringWithToStringBiConverter<>(
+                    Instant.class, input -> Instant.parse(input));
 
     private ObjectToStringBiConverters() {}
 }

@@ -34,6 +34,8 @@ import java.util.function.Function;
 public class ObjectToStringWithToStringBiConverter<T> implements ObjectToStringBiConverter<T> {
 
     private final Class<T> from;
+
+    @SuppressWarnings("Immutable")
     private final Function<String, T> converter;
 
     public ObjectToStringWithToStringBiConverter(Class<T> clazz, Function<String, T> function) {

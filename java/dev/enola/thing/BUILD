@@ -61,7 +61,10 @@ java_library(
     name = "thing_java",
     srcs = glob(
         ["**/*.java"],
-        exclude = ["**/*Test.java"],
+        exclude = [
+            "**/*Test.java",
+            "**/Test*.java",
+        ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
@@ -76,6 +79,7 @@ java_library(
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_github_spotbugs_spotbugs_annotations",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_errorprone_error_prone_type_annotations",
@@ -90,6 +94,10 @@ java_library(
 junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
+    srcs_utils = glob(
+        ["**/Test*.java"],
+        exclude = ["**/*Test.java"],
+    ),
     deps = [
         ":thing_java",
         ":thing_java_proto",
@@ -104,6 +112,8 @@ junit_tests(
         "//java/dev/enola/rdf",
         "//models",
         "//test",
+        "@maven//:com_github_spotbugs_spotbugs_annotations",
+        "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:org_jspecify_jspecify",
     ],
 )

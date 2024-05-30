@@ -22,28 +22,32 @@ import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import org.jspecify.annotations.Nullable;
+
 import java.util.Objects;
 
 @Immutable
 @ThreadSafe
-public final class ImmutableThing extends ImmutablePredicatesObjects implements IImmutableThing {
+public class ImmutableThing extends ImmutablePredicatesObjects implements IImmutableThing {
 
     private final String iri;
 
-    public static Thing.Builder builder() {
-        return new Builder();
-    }
-
-    public static Thing.Builder builderWithExpectedSize(int expectedSize) {
-        return new Builder(expectedSize);
-    }
-
-    private ImmutableThing(
+    protected ImmutableThing(
             String iri,
             ImmutableMap<String, Object> properties,
             ImmutableMap<String, String> datatypes) {
         super(properties, datatypes);
         this.iri = Objects.requireNonNull(iri, "iri");
+    }
+
+    public static Thing.Builder<? extends ImmutableThing> builder() {
+        return new Builder<>();
+    }
+
+    public static Thing.Builder builderWithExpectedSize(int expectedSize) {
+        return new Builder(expectedSize);
     }
 
     @Override
@@ -56,8 +60,7 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
         if (obj == this) return true;
         // NO NEED: if (obj == null) return false;
         // NOT:     if (getClass() != obj.getClass()) return false;
-        if (!(obj instanceof ImmutableThing)) return false;
-        final ImmutableThing other = (ImmutableThing) obj;
+        if (!(obj instanceof ImmutableThing other)) return false;
         return Objects.equals(this.iri, other.iri)
                 && Objects.equals(this.properties(), other.properties())
                 && Objects.equals(this.datatypes(), other.datatypes());
@@ -78,27 +81,29 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
     }
 
     @Override
-    public Thing.Builder copy() {
-        return new Builder(iri, properties(), datatypes());
+    public Builder<? extends ImmutableThing> copy() {
+        return new Builder<>(iri, properties(), datatypes());
     }
 
-    private static final class Builder implements Thing.Builder {
+    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
+    public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
+            implements Thing.Builder<B> {
 
-        private String iri;
-        private final ImmutableMap.Builder<String, Object> properties;
-        private final ImmutableMap.Builder<String, String> datatypes;
+        protected final ImmutableMap.Builder<String, Object> properties;
+        protected final ImmutableMap.Builder<String, String> datatypes;
+        protected @Nullable String iri;
 
-        Builder() {
+        private Builder() {
             properties = ImmutableMap.builder();
             datatypes = ImmutableMap.builder();
         }
 
-        Builder(int expectedSize) {
+        protected Builder(int expectedSize) {
             properties = ImmutableMap.builderWithExpectedSize(expectedSize); // exact
             datatypes = ImmutableMap.builderWithExpectedSize(expectedSize); // upper bound
         }
 
-        Builder(
+        protected Builder(
                 String iri,
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
@@ -112,14 +117,14 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
         }
 
         @Override
-        public Thing.Builder iri(String iri) {
+        public Thing.Builder<B> iri(String iri) {
             if (this.iri != null) throw new IllegalStateException("IRI already set: " + this.iri);
             this.iri = iri;
             return this;
         }
 
         @Override
-        public Thing.Builder set(String predicateIRI, Object value) {
+        public Thing.Builder<B> set(String predicateIRI, Object value) {
             if (value instanceof Literal literal)
                 set(predicateIRI, literal.value(), literal.datatypeIRI());
             else properties.put(predicateIRI, value);
@@ -127,16 +132,17 @@ public final class ImmutableThing extends ImmutablePredicatesObjects implements 
         }
 
         @Override
-        public Thing.Builder set(String predicateIRI, Object value, String datatypeIRI) {
+        public Thing.Builder<B> set(String predicateIRI, Object value, String datatypeIRI) {
             properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;
         }
 
         @Override
-        public Thing build() {
+        public B build() {
             if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
-            return new ImmutableThing(iri, properties.build(), datatypes.build());
+            // TODO Remove (B) type cast
+            return (B) new ImmutableThing(iri, properties.build(), datatypes.build());
         }
     }
 }
