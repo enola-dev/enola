@@ -17,6 +17,8 @@
  */
 package dev.enola.thing;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Thing is the central data structure of Enola.
  *
@@ -32,17 +34,19 @@ public interface Thing extends PredicatesObjects {
 
     String iri();
 
-    Builder copy();
+    @Override
+    Builder<? extends Thing> copy();
 
-    public interface Builder extends PredicatesObjects.Builder {
+    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
+    interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
 
-        Builder iri(String iri);
+        Builder<B> iri(String iri);
 
-        Builder set(String predicateIRI, Object value);
+        Builder<B> set(String predicateIRI, Object value);
 
-        Builder set(String predicateIRI, Object value, String datatypeIRI);
+        Builder<B> set(String predicateIRI, Object value, String datatypeIRI);
 
         @Override
-        Thing build();
+        B build();
     }
 }

@@ -32,6 +32,7 @@ import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.proto.Value.KindCase;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,7 @@ public final class ThingAdapter implements Thing {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(String predicateIRI) {
+    public <T> @Nullable T get(String predicateIRI) {
         var value = proto.getFieldsMap().get(predicateIRI);
         if (value != null) return (T) value(value);
         else return null;
@@ -96,7 +97,7 @@ public final class ThingAdapter implements Thing {
     }
 
     @Override
-    public Builder copy() {
+    public Builder<Thing> copy() {
         // TODO Alternatively to this approach, we could also wrap a Proto Thing Builder
         var properties = properties();
         var builder = ImmutableThing.builderWithExpectedSize(properties.size());
@@ -161,8 +162,7 @@ public final class ThingAdapter implements Thing {
         if (obj == this) return true;
         // NO NEED: if (obj == null) return false;
         // NOT:     if (getClass() != obj.getClass()) return false;
-        if (!(obj instanceof ThingAdapter)) return false;
-        final ThingAdapter other = (ThingAdapter) obj;
+        if (!(obj instanceof ThingAdapter other)) return false;
         return this.proto.equals(other.proto)
                 && this.datatypeRepository.equals(other.datatypeRepository);
     }

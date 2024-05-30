@@ -13,6 +13,4 @@ derive_targets_from_directories: true
 workspace_type: java
 
 additional_languages:
-  go
   kotlin
-  typescript

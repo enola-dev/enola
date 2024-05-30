@@ -15,9 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common;
+package dev.enola.thing.datatype;
 
-public interface Builder<B> {
+import dev.enola.datatype.Datatype;
+import dev.enola.thing.Thing;
 
-    B build();
-}
+// TODO Implement properly, like TestThing...
+public abstract class DatatypeThing implements Datatype, Thing {}

@@ -20,31 +20,36 @@ package dev.enola.thing;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
+import com.google.errorprone.annotations.ThreadSafe;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Objects;
 
 @Immutable
+@ThreadSafe
 public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     // Suppressed because of @ImmutableTypeParameter T in PredicatesObjects.Builder#set:
     @SuppressWarnings("Immutable")
-    private final ImmutableMap<String, Object> properties;
+    protected final ImmutableMap<String, Object> properties;
 
-    private final ImmutableMap<String, String> datatypes;
-
-    public static PredicatesObjects.Builder builder() {
-        return new ImmutablePredicatesObjects.Builder();
-    }
-
-    public static PredicatesObjects.Builder builderWithExpectedSize(int expectedSize) {
-        return new ImmutablePredicatesObjects.Builder(expectedSize);
-    }
+    protected final ImmutableMap<String, String> datatypes;
 
     protected ImmutablePredicatesObjects(
             ImmutableMap<String, Object> properties, ImmutableMap<String, String> datatypes) {
         this.properties = properties;
         this.datatypes = datatypes;
+    }
+
+    public static PredicatesObjects.Builder<? extends ImmutablePredicatesObjects> builder() {
+        return new ImmutablePredicatesObjects.Builder<>();
+    }
+
+    public static PredicatesObjects.Builder<? extends ImmutablePredicatesObjects>
+            builderWithExpectedSize(int expectedSize) {
+        return new ImmutablePredicatesObjects.Builder<>(expectedSize);
     }
 
     @Override
@@ -59,7 +64,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(String predicateIRI) {
+    public <T> @Nullable T get(String predicateIRI) {
         return (T) properties.get(predicateIRI);
     }
 
@@ -68,7 +73,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     }
 
     @Override
-    public String datatype(String predicateIRI) {
+    public @Nullable String datatype(String predicateIRI) {
         return datatypes.get(predicateIRI);
     }
 
@@ -77,8 +82,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         if (obj == this) return true;
         // NO NEED: if (obj == null) return false;
         // NOT:     if (getClass() != obj.getClass()) return false;
-        if (!(obj instanceof ImmutablePredicatesObjects)) return false;
-        final ImmutablePredicatesObjects other = (ImmutablePredicatesObjects) obj;
+        if (!(obj instanceof ImmutablePredicatesObjects other)) return false;
         return Objects.equals(this.properties, other.properties)
                 && Objects.equals(this.datatypes, other.datatypes);
     }
@@ -97,11 +101,12 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     }
 
     @Override
-    public PredicatesObjects.Builder copy() {
-        return new ImmutablePredicatesObjects.Builder(properties(), datatypes());
+    public PredicatesObjects.Builder<? extends ImmutablePredicatesObjects> copy() {
+        return new Builder<>(properties(), datatypes());
     }
 
-    private static final class Builder implements PredicatesObjects.Builder {
+    private static final class Builder<B extends PredicatesObjects>
+            implements PredicatesObjects.Builder<B> {
 
         private final ImmutableMap.Builder<String, Object> properties;
         private final ImmutableMap.Builder<String, String> datatypes;
@@ -144,8 +149,9 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         }
 
         @Override
-        public PredicatesObjects build() {
-            return new ImmutablePredicatesObjects(properties.build(), datatypes.build());
+        public B build() {
+            // TODO Remove (B) type cast
+            return (B) new ImmutablePredicatesObjects(properties.build(), datatypes.build());
         }
     }
 }

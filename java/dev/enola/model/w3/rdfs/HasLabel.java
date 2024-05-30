@@ -15,9 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common;
+package dev.enola.model.w3.rdfs;
 
-public interface Builder<B> {
+import dev.enola.thing.KIRI;
+import dev.enola.thing.java.IRI;
 
-    B build();
+public interface HasLabel {
+
+    @IRI(KIRI.RDFS.LABEL)
+    String getLabel();
 }
