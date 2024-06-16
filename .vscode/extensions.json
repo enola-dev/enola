@@ -17,7 +17,8 @@
     "timonwong.shellcheck",
     "stardog-union.vscode-langserver-turtle",
     "zazuko.vscode-rdf-sketch",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "gruntfuggly.todo-tree"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
