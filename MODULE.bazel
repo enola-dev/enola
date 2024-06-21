@@ -26,4 +26,6 @@ bazel_dep(name = "rules_go", version = "0.48.1")
 bazel_dep(name = "gazelle", version = "0.37.0")
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.host()
+
+# Do NOT use go_sdk.host(), see https://github.com/enola-dev/enola/issues/713
+go_sdk.download(version = "1.22.4")
