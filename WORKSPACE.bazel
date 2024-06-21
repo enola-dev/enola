@@ -148,6 +148,7 @@ maven_install(
         "com.squareup.okhttp3:logging-interceptor:4.12.0",
         "dev.dirs:directories:26",
         "io.github.amithkoujalgi:ollama4j:1.0.70",
+        "com.github.spotbugs:spotbugs-annotations:4.8.6",
     ],
     duplicate_version_warning = "error",
     excluded_artifacts = [
