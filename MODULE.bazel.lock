@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 6,
-  "moduleFileHash": "103b47634a7129e8113d30b5035a71356ba9e043a2b60c98768ae5faeba9e408",
+  "moduleFileHash": "d9d746a66297229461a2e43a3d5eb4c2cbefcc44d317e3e7a777efe8e093c55f",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -37,13 +37,15 @@
           "devImports": [],
           "tags": [
             {
-              "tagName": "host",
-              "attributeValues": {},
+              "tagName": "download",
+              "attributeValues": {
+                "version": "1.22.4"
+              },
               "devDependency": false,
               "location": {
                 "file": "@@//:MODULE.bazel",
-                "line": 29,
-                "column": 12
+                "line": 31,
+                "column": 16
               }
             }
           ],
