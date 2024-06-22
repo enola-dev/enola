@@ -88,12 +88,7 @@ public interface PredicatesObjects {
      * dev.enola.common.convert.ObjectClassConverter}.
      */
     default <T> T get(String predicateIRI, Class<T> klass) {
-        return getOptional(predicateIRI, klass)
-                // TODO This doesn't handle absent (null) correctly... FIXME!
-                .orElseThrow(
-                        () ->
-                                new IllegalArgumentException(
-                                        predicateIRI + " is not " + klass + "\n" + this));
+        return getOptional(predicateIRI, klass).orElse(null);
     }
 
     /** Object of predicate, with conversion - as Optional (never fails). */
@@ -103,9 +98,9 @@ public interface PredicatesObjects {
         if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
         try {
-            // TODO throw new IllegalArgumentException() instead return empty() ?
-            return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
             // TODO Conversion should use Datatype... but how to look one up?! GenJavaThing has..
+            // NB: Do NOT e.g. throw new IllegalArgumentException if conversion !isPresent()
+            return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
         } catch (IOException e) {
             // TODO Get rid of throws IOException and remove this.
             // Or better log any exceptions and return just Optional.empty()?

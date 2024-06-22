@@ -105,7 +105,7 @@ public class TestThingTest {
         assertThat(thing.get(TestThing.NUMBER_URI, Integer.class)).isEqualTo(43);
         assertThat(ething.get(EXTRA, String.class)).isEqualTo(INSTANT.toString());
 
-        // TODO assertThat(thing.get("n/a", String.class)).isNull();
+        assertThat(thing.get("n/a", String.class)).isNull();
     }
 
     @Test
