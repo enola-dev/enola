@@ -22,11 +22,8 @@ import java.time.LocalDate;
 
 public final class ObjectToStringBiConverters {
 
-    private static class IdentityObjectToStringBiConverter
-            implements ObjectToStringBiConverter<String>, IdentityConverter<String> {}
-
     public static final ObjectToStringBiConverter<String> STRING =
-            new IdentityObjectToStringBiConverter();
+            new ObjectToStringWithToStringBiConverter<>(String.class, input -> input);
 
     public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
             new ObjectToStringWithToStringBiConverter<>(

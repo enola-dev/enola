@@ -41,7 +41,7 @@ public class ObjectToStringBiConvertersTest {
     @Test
     public void STRING_convertToType() throws IOException {
         ObjectClassConverter occ = ObjectToStringBiConverters.STRING;
-        // TODO assertThat(occ.convertToType(Integer.valueOf(123), String.class)).isEmpty();
+        assertThat(occ.convertToType(Integer.valueOf(123), String.class)).isEmpty();
         assertThat(occ.convertToType("hello, world", URI.class)).isEmpty();
     }
 
