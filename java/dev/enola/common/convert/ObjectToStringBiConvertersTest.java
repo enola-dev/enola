@@ -35,7 +35,7 @@ public class ObjectToStringBiConvertersTest {
         assertThat(occ.convertToType(Boolean.FALSE, URI.class)).isEmpty();
         assertThat(occ.convertToType(null, String.class)).isEmpty();
         assertThat(occ.convertToType(Integer.valueOf(123), URI.class)).isEmpty();
-        // TODO assertThat(occ.convertToType(Integer.valueOf(123), String.class)).isEmpty();
+        assertThat(occ.convertToType(Integer.valueOf(123), String.class)).isEmpty();
     }
 
     @Test

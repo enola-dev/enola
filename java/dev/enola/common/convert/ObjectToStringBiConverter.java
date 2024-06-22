@@ -34,7 +34,6 @@ public interface ObjectToStringBiConverter<T>
     @SuppressWarnings("unchecked")
     // TODO Remove throws IOException again (together with rm from super type)
     default <X> Optional<X> convertToType(Object input, Class<X> type) throws IOException {
-        // TODO WE MUST ALSO CHECK from.equals(input.getClass()) !!
         // See also ObjectConverter's & other similar convertToType() implementations
         // TODO Re-consider class.equals -VS- isAssignableFrom, here & in ObjectConverter
         if (input != null && String.class.equals(type))
