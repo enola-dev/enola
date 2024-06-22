@@ -17,6 +17,8 @@
  */
 package dev.enola.common.convert;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Bi-directional alternative to {@link Converter}.
  *
@@ -24,7 +26,7 @@ package dev.enola.common.convert;
  */
 public interface BiConverter<A, B> {
 
-    B convertTo(A input) throws ConversionException;
+    @Nullable B convertTo(@Nullable A input) throws ConversionException;
 
-    A convertFrom(B input) throws ConversionException;
+    @Nullable A convertFrom(@Nullable B input) throws ConversionException;
 }

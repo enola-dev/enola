@@ -19,6 +19,8 @@ package dev.enola.common.convert;
 
 import com.google.common.collect.ImmutableList;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -35,7 +37,8 @@ public class ObjectClassConverterChain implements ObjectClassConverter {
     }
 
     @Override
-    public <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException {
+    public <T> Optional<T> convertToType(@Nullable Object input, Class<T> type) throws IOException {
+        if (input == null) return Optional.empty();
         for (ObjectClassConverter converter : converters) {
             Optional<T> converted = converter.convertToType(input, type);
             if (converted.isPresent()) {
