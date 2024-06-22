@@ -17,6 +17,8 @@
  */
 package dev.enola.common.convert;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 
@@ -28,22 +30,26 @@ public final class ObjectToStringBiConverters {
     public static final ObjectToStringBiConverter<String> STRING =
             new IdentityObjectToStringBiConverter();
 
+    // public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
+    //        new TypeCheckingObjectStringWithToStringBiConverter<>(
+    //                Boolean.class, input -> input != null ? Boolean.valueOf(input) : null);
+
     public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
-            new ObjectToStringToStringBiConverter<Boolean>() {
+            new ObjectToStringToStringBiConverter<>() {
 
                 @Override
-                public Boolean convertFrom(String input) throws ConversionException {
-                    return Boolean.valueOf(input);
+                public Boolean convertFrom(@Nullable String input) throws ConversionException {
+                    return input != null ? Boolean.valueOf(input) : null;
                 }
             };
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
-            new ObjectToStringToStringBiConverter<java.net.URI>() {
+            new ObjectToStringToStringBiConverter<>() {
 
                 @Override
-                public java.net.URI convertFrom(String input) throws ConversionException {
+                public java.net.URI convertFrom(@Nullable String input) throws ConversionException {
                     try {
-                        return new java.net.URI(input);
+                        return input != null ? new java.net.URI(input) : null;
                     } catch (URISyntaxException e) {
                         throw new ConversionException(input, e);
                     }
@@ -51,18 +57,49 @@ public final class ObjectToStringBiConverters {
             };
 
     public static final ObjectToStringBiConverter<LocalDate> LOCAL_DATE =
-            new ObjectToStringBiConverter<LocalDate>() {
-
+            new ObjectToStringToStringBiConverter<>() {
                 @Override
-                public String convertTo(LocalDate input) throws ConversionException {
-                    return input.toString();
-                }
-
-                @Override
-                public LocalDate convertFrom(String input) throws ConversionException {
-                    return LocalDate.parse(input);
+                public LocalDate convertFrom(@Nullable String input) throws ConversionException {
+                    return input != null ? LocalDate.parse(input) : null;
                 }
             };
+
+    /**
+     * An ObjectToStringBiConverter which uses {@link Object#toString()} for {@link
+     * ObjectToStringBiConverter#convertTo(Object)}, and which also checks the type to convert from.
+     */
+    /*
+        private static class TypeCheckingObjectStringWithToStringBiConverter<T>
+                extends ObjectConverter<String, T> implements ObjectToStringBiConverter<T> {
+
+            public TypeCheckingObjectStringWithToStringBiConverter(
+                    Class<T> to, Function<String, T> converter) {
+                super(String.class, to, converter);
+            }
+
+            @Override
+            public @Nullable String convertTo(@Nullable T input) throws ConversionException {
+                return input != null ? input.toString() : null;
+            }
+
+            @Override
+            public @Nullable T convertFrom(@Nullable String input) throws ConversionException {
+                try {
+                    return convertFromType(input, to).orElse(null);
+                } catch (IOException e) {
+                    throw new ConversionException("Failed to convert: " + input, e);
+                }
+            }
+
+            // TODO @Override
+            public <T> Optional<T> convertFromType(String input, Class<T> type) throws IOException {
+                if (to.equals(type) && input != null && from.equals(input.getClass())) {
+                    return Optional.of((T) converter.apply((String) input));
+                }
+                return Optional.empty();
+            }
+        }
+    */
 
     /**
      * An ObjectToStringBiConverter which uses {@link Object#toString()} for {@link
@@ -71,8 +108,8 @@ public final class ObjectToStringBiConverters {
     private abstract static class ObjectToStringToStringBiConverter<T>
             implements ObjectToStringBiConverter<T> {
         @Override
-        public String convertTo(T input) throws ConversionException {
-            return input.toString();
+        public final String convertTo(@Nullable T input) throws ConversionException {
+            return input != null ? input.toString() : null;
         }
     }
 

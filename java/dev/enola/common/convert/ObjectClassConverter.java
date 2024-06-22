@@ -17,6 +17,8 @@
  */
 package dev.enola.common.convert;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -25,5 +27,5 @@ public interface ObjectClassConverter {
     // TODO Why?! ObjectClassConverter<I> convertToType(I input, Class<T> type)
 
     // TODO Remove throws IOException again, as this seems dumb...
-    <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException;
+    <T> Optional<T> convertToType(@Nullable Object input, Class<T> type) throws IOException;
 }

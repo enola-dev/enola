@@ -17,10 +17,7 @@
  */
 package dev.enola.thing;
 
-import dev.enola.common.convert.IdentityObjectClassConverter;
-import dev.enola.common.convert.ObjectClassConverter;
-import dev.enola.common.convert.ObjectClassConverterChain;
-import dev.enola.common.convert.ObjectConverter;
+import dev.enola.common.convert.*;
 
 class ThingObjectClassConverter extends ObjectClassConverterChain {
 

@@ -20,6 +20,7 @@ package dev.enola.common.convert;
 import java.io.IOException;
 import java.util.Optional;
 
+/** Converts objects of type T to & from String, if it can. */
 public interface ObjectToStringBiConverter<T>
         extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter {
 
@@ -31,8 +32,13 @@ public interface ObjectToStringBiConverter<T>
 
     @Override
     @SuppressWarnings("unchecked")
-    default <X> Optional<X> convertToType(Object input, Class<X> type) {
-        if (String.class.equals(type)) return (Optional<X>) Optional.of(convertTo((T) input));
+    // TODO Remove throws IOException again (together with rm from super type)
+    default <X> Optional<X> convertToType(Object input, Class<X> type) throws IOException {
+        // TODO WE MUST ALSO CHECK from.equals(input.getClass()) !!
+        // See also ObjectConverter's & other similar convertToType() implementations
+        // TODO Re-consider class.equals -VS- isAssignableFrom, here & in ObjectConverter
+        if (input != null && String.class.equals(type))
+            return (Optional<X>) Optional.of(convertTo((T) input));
         return Optional.empty();
     }
 }

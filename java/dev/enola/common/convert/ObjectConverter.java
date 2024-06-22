@@ -35,6 +35,8 @@ public class ObjectConverter<X, Y> implements ObjectClassConverter {
 
     @Override
     public <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException {
+        // See also ObjectToStringBiConverter's & other similar convertToType() implementations
+        // TODO Re-consider class.equals -VS- isAssignableFrom, here & in ObjectToStringBiConverter
         if (to.equals(type) && input != null && from.equals(input.getClass())) {
             return Optional.of((T) converter.apply((X) input));
         }
