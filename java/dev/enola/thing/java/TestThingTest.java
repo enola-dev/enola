@@ -31,13 +31,13 @@ public class TestThingTest {
 
     final TestThing thing = TestThing.create("https://enola.dev/test1", "hello, world", 43);
     final TestThing thing2 = TestThing.create("https://enola.dev/test1", "hello, world", 43);
-    final TestThing bthing =
+    final TestThing bthing = // Thing from Builder with static setter methods
             TestThing.builder()
                     .iri("https://enola.dev/test1")
                     .label("hello, world")
                     .number(43)
                     .build();
-    final TestThing dthing =
+    final TestThing dthing = // Thing from Builder with "dynamic" set()
             TestThing.builder()
                     .iri("https://enola.dev/test1")
                     .set(KIRI.RDFS.LABEL, "hello, world")
@@ -46,13 +46,23 @@ public class TestThingTest {
 
     final String EXTRA = "https://enola.dev/another-predicate";
     final Instant INSTANT = Instant.parse("2023-10-26T15:29:31.123456-05:00");
-    final TestThing ething =
+    final TestThing
+            ething = // Thing from Builder with an EXTRA predicate, which is not a static field
             TestThing.builder()
-                    .iri("https://enola.dev/test1")
-                    .label("hello, world")
-                    .number(43)
-                    .set(EXTRA, INSTANT, Datatypes.DATE_TIME.iri())
-                    .build();
+                            .iri("https://enola.dev/test1")
+                            .label("hello, world")
+                            .number(43)
+                            .set(EXTRA, INSTANT, Datatypes.DATE_TIME.iri())
+                            .build();
+
+    final TestThing
+            mthing = // Thing without one of the static (TestThing.NUMBER_URI predicate) fields set!
+            TestThing.builder()
+                            .iri("https://enola.dev/test1")
+                            .label("hello, world")
+                            // NO .number(43)
+                            .set(EXTRA, INSTANT, Datatypes.DATE_TIME.iri())
+                            .build();
 
     @Test
     public void iri() {
@@ -60,6 +70,7 @@ public class TestThingTest {
         assertThat(bthing.iri()).isEqualTo("https://enola.dev/test1");
         assertThat(dthing.iri()).isEqualTo("https://enola.dev/test1");
         assertThat(ething.iri()).isEqualTo("https://enola.dev/test1");
+        assertThat(mthing.iri()).isEqualTo("https://enola.dev/test1");
     }
 
     @Test
@@ -67,10 +78,12 @@ public class TestThingTest {
         assertThat(thing.label()).isEqualTo("hello, world");
         assertThat(bthing.label()).isEqualTo("hello, world");
         assertThat(dthing.label()).isEqualTo("hello, world");
+        assertThat(mthing.label()).isEqualTo("hello, world");
 
         assertThat(thing.number()).isEqualTo(43);
         assertThat(bthing.number()).isEqualTo(43);
         assertThat(dthing.number()).isEqualTo(43);
+        assertThat(mthing.number()).isNull();
     }
 
     @Test
@@ -80,6 +93,7 @@ public class TestThingTest {
         assertThat(dthing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, TestThing.NUMBER_URI);
         assertThat(ething.predicateIRIs())
                 .containsExactly(KIRI.RDFS.LABEL, TestThing.NUMBER_URI, EXTRA);
+        assertThat(mthing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, EXTRA);
     }
 
     @Test
@@ -87,16 +101,20 @@ public class TestThingTest {
         assertThat((String) thing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
         assertThat((String) bthing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
         assertThat((String) dthing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
+        assertThat((String) mthing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
 
         assertThat((Integer) thing.get(TestThing.NUMBER_URI)).isEqualTo(43);
         assertThat((Integer) bthing.get(TestThing.NUMBER_URI)).isEqualTo(43);
         assertThat((Integer) dthing.get(TestThing.NUMBER_URI)).isEqualTo(43);
+        assertThat((Integer) mthing.get(TestThing.NUMBER_URI)).isNull();
 
         assertThat((Integer) thing.get("n/a")).isNull();
         assertThat((Integer) bthing.get("n/a")).isNull();
         assertThat((Integer) dthing.get("n/a")).isNull();
+        assertThat((Integer) mthing.get("n/a")).isNull();
 
         assertThat((Instant) ething.get(EXTRA)).isEqualTo(INSTANT);
+        assertThat((Instant) mthing.get(EXTRA)).isEqualTo(INSTANT);
     }
 
     @Test
@@ -106,6 +124,7 @@ public class TestThingTest {
         assertThat(ething.get(EXTRA, String.class)).isEqualTo(INSTANT.toString());
 
         assertThat(thing.get("n/a", String.class)).isNull();
+        assertThat(mthing.get(TestThing.NUMBER_URI, Integer.class)).isNull();
     }
 
     @Test
@@ -119,6 +138,8 @@ public class TestThingTest {
         assertThat(ething.properties())
                 .containsExactly(
                         KIRI.RDFS.LABEL, "hello, world", TestThing.NUMBER_URI, 43, EXTRA, INSTANT);
+        assertThat(mthing.properties())
+                .containsExactly(KIRI.RDFS.LABEL, "hello, world", EXTRA, INSTANT);
     }
 
     @Test
@@ -150,6 +171,13 @@ public class TestThingTest {
                         dev.enola.datatype.Datatypes.STRING.iri(),
                         TestThing.NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri(),
+                        EXTRA,
+                        Datatypes.DATE_TIME.iri());
+
+        assertThat(mthing.datatypes())
+                .containsExactly(
+                        KIRI.RDFS.LABEL,
+                        dev.enola.datatype.Datatypes.STRING.iri(),
                         EXTRA,
                         Datatypes.DATE_TIME.iri());
     }
@@ -186,7 +214,6 @@ public class TestThingTest {
     public void copy() {
         // TODO assertThat(thing.copy().build()).isEqualTo(thing);
         // TODO assertThat(ething.copy().build()).isEqualTo(ething);
+        // TODO assertThat(mthing.copy().build()).isEqualTo(mthing);
     }
-
-    // TODO missing number - should not be in properties!
 }

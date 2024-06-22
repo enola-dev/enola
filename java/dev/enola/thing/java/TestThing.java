@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
+import dev.enola.datatype.Datatype;
 import dev.enola.thing.*;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -47,17 +48,17 @@ public class TestThing extends GenJavaThing {
             @Nullable Integer number,
             ImmutableMap<String, Object> dynamic_properties,
             ImmutableMap<String, String> dynamic_datatypes) {
-        super(
-                iri,
-                ImmutableMap.of(
-                        KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING,
-                        NUMBER_URI,
-                        dev.enola.model.xsd.Datatypes.INT),
-                dynamic_properties,
-                dynamic_datatypes);
+        super(iri, datatypesOfNonNullFields(label, number), dynamic_properties, dynamic_datatypes);
         this.label = label;
         this.number = number;
+    }
+
+    private static ImmutableMap<String, Datatype<?>> datatypesOfNonNullFields(
+            @Nullable String label, @Nullable Integer number) {
+        var builder = ImmutableMap.<String, Datatype<?>>builderWithExpectedSize(2);
+        if (label != null) builder.put(KIRI.RDFS.LABEL, dev.enola.datatype.Datatypes.STRING);
+        if (number != null) builder.put(NUMBER_URI, dev.enola.model.xsd.Datatypes.INT);
+        return builder.build();
     }
 
     public static TestThing create(String iri, String label, int number) {
@@ -83,12 +84,10 @@ public class TestThing extends GenJavaThing {
         // TODO Compute this lazily once only, and cache it in a field?
         if (super.properties.isEmpty())
             return ImmutableMap.of(KIRI.RDFS.LABEL, label, NUMBER_URI, number);
-        else
-            return ImmutableMap.<String, Object>builder()
-                    .putAll(super.properties)
-                    .put(KIRI.RDFS.LABEL, label)
-                    .put(NUMBER_URI, number)
-                    .build();
+        var builder = ImmutableMap.<String, Object>builder().putAll(super.properties);
+        if (label != null) builder.put(KIRI.RDFS.LABEL, label);
+        if (number != null) builder.put(NUMBER_URI, number);
+        return builder.build();
     }
 
     @Override
