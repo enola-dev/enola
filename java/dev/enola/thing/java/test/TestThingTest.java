@@ -19,6 +19,8 @@ package dev.enola.thing.java.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.thing.java.test.TestThing.NUMBER_URI;
+
 import dev.enola.model.xsd.Datatypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.java.test.gen.ImmutableTestThing;
@@ -44,7 +46,7 @@ public class TestThingTest {
             ImmutableTestThing.builder()
                     .iri("https://enola.dev/test1")
                     .set(KIRI.RDFS.LABEL, "hello, world")
-                    .set(ImmutableTestThing.NUMBER_URI, 43)
+                    .set(NUMBER_URI, 43)
                     .build();
 
     final String EXTRA = "https://enola.dev/another-predicate";
@@ -92,14 +94,10 @@ public class TestThingTest {
 
     @Test
     public void predicateIRIs() {
-        assertThat(thing.predicateIRIs())
-                .containsExactly(KIRI.RDFS.LABEL, ImmutableTestThing.NUMBER_URI);
-        assertThat(bthing.predicateIRIs())
-                .containsExactly(KIRI.RDFS.LABEL, ImmutableTestThing.NUMBER_URI);
-        assertThat(dthing.predicateIRIs())
-                .containsExactly(KIRI.RDFS.LABEL, ImmutableTestThing.NUMBER_URI);
-        assertThat(ething.predicateIRIs())
-                .containsExactly(KIRI.RDFS.LABEL, ImmutableTestThing.NUMBER_URI, EXTRA);
+        assertThat(thing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, NUMBER_URI);
+        assertThat(bthing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, NUMBER_URI);
+        assertThat(dthing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, NUMBER_URI);
+        assertThat(ething.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, NUMBER_URI, EXTRA);
         assertThat(mthing.predicateIRIs()).containsExactly(KIRI.RDFS.LABEL, EXTRA);
     }
 
@@ -110,10 +108,10 @@ public class TestThingTest {
         assertThat((String) dthing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
         assertThat((String) mthing.get(KIRI.RDFS.LABEL)).isEqualTo("hello, world");
 
-        assertThat((Integer) thing.get(ImmutableTestThing.NUMBER_URI)).isEqualTo(43);
-        assertThat((Integer) bthing.get(ImmutableTestThing.NUMBER_URI)).isEqualTo(43);
-        assertThat((Integer) dthing.get(ImmutableTestThing.NUMBER_URI)).isEqualTo(43);
-        assertThat((Integer) mthing.get(ImmutableTestThing.NUMBER_URI)).isNull();
+        assertThat((Integer) thing.get(NUMBER_URI)).isEqualTo(43);
+        assertThat((Integer) bthing.get(NUMBER_URI)).isEqualTo(43);
+        assertThat((Integer) dthing.get(NUMBER_URI)).isEqualTo(43);
+        assertThat((Integer) mthing.get(NUMBER_URI)).isNull();
 
         assertThat((Integer) thing.get("n/a")).isNull();
         assertThat((Integer) bthing.get("n/a")).isNull();
@@ -127,32 +125,23 @@ public class TestThingTest {
     @Test
     public void thing_getters_asclass() {
         assertThat(thing.get(KIRI.RDFS.LABEL, String.class)).isEqualTo("hello, world");
-        assertThat(thing.get(ImmutableTestThing.NUMBER_URI, Integer.class)).isEqualTo(43);
+        assertThat(thing.get(NUMBER_URI, Integer.class)).isEqualTo(43);
         assertThat(ething.get(EXTRA, String.class)).isEqualTo(INSTANT.toString());
 
         assertThat(thing.get("n/a", String.class)).isNull();
-        assertThat(mthing.get(ImmutableTestThing.NUMBER_URI, Integer.class)).isNull();
+        assertThat(mthing.get(NUMBER_URI, Integer.class)).isNull();
     }
 
     @Test
     public void properties() {
         assertThat(thing.properties())
-                .containsExactly(
-                        KIRI.RDFS.LABEL, "hello, world", ImmutableTestThing.NUMBER_URI, 43);
+                .containsExactly(KIRI.RDFS.LABEL, "hello, world", NUMBER_URI, 43);
         assertThat(bthing.properties())
-                .containsExactly(
-                        KIRI.RDFS.LABEL, "hello, world", ImmutableTestThing.NUMBER_URI, 43);
+                .containsExactly(KIRI.RDFS.LABEL, "hello, world", NUMBER_URI, 43);
         assertThat(dthing.properties())
-                .containsExactly(
-                        KIRI.RDFS.LABEL, "hello, world", ImmutableTestThing.NUMBER_URI, 43);
+                .containsExactly(KIRI.RDFS.LABEL, "hello, world", NUMBER_URI, 43);
         assertThat(ething.properties())
-                .containsExactly(
-                        KIRI.RDFS.LABEL,
-                        "hello, world",
-                        ImmutableTestThing.NUMBER_URI,
-                        43,
-                        EXTRA,
-                        INSTANT);
+                .containsExactly(KIRI.RDFS.LABEL, "hello, world", NUMBER_URI, 43, EXTRA, INSTANT);
         assertThat(mthing.properties())
                 .containsExactly(KIRI.RDFS.LABEL, "hello, world", EXTRA, INSTANT);
     }
@@ -163,28 +152,28 @@ public class TestThingTest {
                 .containsExactly(
                         KIRI.RDFS.LABEL,
                         dev.enola.datatype.Datatypes.STRING.iri(),
-                        ImmutableTestThing.NUMBER_URI,
+                        NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(bthing.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
                         dev.enola.datatype.Datatypes.STRING.iri(),
-                        ImmutableTestThing.NUMBER_URI,
+                        NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(dthing.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
                         dev.enola.datatype.Datatypes.STRING.iri(),
-                        ImmutableTestThing.NUMBER_URI,
+                        NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(ething.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
                         dev.enola.datatype.Datatypes.STRING.iri(),
-                        ImmutableTestThing.NUMBER_URI,
+                        NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri(),
                         EXTRA,
                         Datatypes.DATE_TIME.iri());
@@ -206,12 +195,9 @@ public class TestThingTest {
         assertThat(dthing.datatype(KIRI.RDFS.LABEL))
                 .isEqualTo(dev.enola.datatype.Datatypes.STRING.iri());
 
-        assertThat(thing.datatype(ImmutableTestThing.NUMBER_URI))
-                .isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
-        assertThat(bthing.datatype(ImmutableTestThing.NUMBER_URI))
-                .isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
-        assertThat(dthing.datatype(ImmutableTestThing.NUMBER_URI))
-                .isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
+        assertThat(thing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
+        assertThat(bthing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
+        assertThat(dthing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(ething.datatype(EXTRA)).isEqualTo(Datatypes.DATE_TIME.iri());
     }
