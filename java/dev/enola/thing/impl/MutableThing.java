@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.impl;
+
+import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
@@ -27,10 +29,9 @@ import java.util.Set;
  * Implementation of {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
  *
  * <p>This implementation is pretty inefficient, for both its runtime performance and a memory
- * consumption, and should only be used "short lived"; prefer {@link
- * dev.enola.thing.IImmutableThing} implementations, such as (typically) the {@link
- * dev.enola.thing.ImmutableThing} or its generated subclasses, for any objects which will be "kept
- * around".
+ * consumption, and should only be used "short lived"; prefer {@link IImmutableThing}
+ * implementations, such as (typically) the {@link ImmutableThing} or its generated subclasses, for
+ * any objects which will be "kept around".
  *
  * <p>This implementation is not thread safe, obviously.
  */

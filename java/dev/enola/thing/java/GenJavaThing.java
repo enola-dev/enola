@@ -23,7 +23,7 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.datatype.Datatype;
-import dev.enola.thing.ImmutableThing;
+import dev.enola.thing.impl.ImmutableThing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

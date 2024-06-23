@@ -20,8 +20,8 @@ package dev.enola.thing.message;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.thing.OnlyIRIThing;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.repo.ThingProvider;
 
 import java.io.UncheckedIOException;

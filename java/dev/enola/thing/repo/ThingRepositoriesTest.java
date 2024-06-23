@@ -23,6 +23,7 @@ import static org.junit.Assert.assertThrows;
 
 import dev.enola.data.Store;
 import dev.enola.thing.*;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;

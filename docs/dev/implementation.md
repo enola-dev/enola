@@ -36,7 +36,7 @@ ETs have a number of different (but ultimately semantically equivalent) represen
 
 * Java Type: `dev.enola.thing.Thing` <!-- TODO https://github.com/enola-dev/enola/issues/491: Link to Java Doc -->
 
-The Java `Thing` API is an _interface_ which has several available implementations. The simplest one is the `dev.enola.thing.ImmutableThing` with its _Builder._
+The Java `Thing` API is an _interface_ which has several available implementations. The simplest one is the `dev.enola.thing.impl.ImmutableThing` with its _Builder._
 
 #### Proto Thing
 
