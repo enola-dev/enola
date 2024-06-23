@@ -23,6 +23,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.datatype.Datatype;
 import dev.enola.thing.*;
+import dev.enola.thing.java.GenJavaThing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

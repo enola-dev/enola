@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java.test;
+package dev.enola.thing.java;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -35,8 +35,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
                 "equals() and hashCode() are intentionally not overriden, because it works as-is")
 // skipcq: JAVA-W0100
 public abstract class GenJavaThing extends ImmutableThing {
-
-    // TODO Move this class (back) to thing.java from .test...
 
     // TODO Try to remove this field; it technically duplicates something we inherit from
     // ImmutablePredicatesObjects#properties already; so this field ideally shouldn't be needed...
