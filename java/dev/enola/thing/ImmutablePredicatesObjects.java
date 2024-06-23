@@ -19,12 +19,12 @@ package dev.enola.thing;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Objects;
 
 @Immutable
@@ -58,7 +58,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
+    public ImmutableSet<String> predicateIRIs() {
         return properties.keySet();
     }
 

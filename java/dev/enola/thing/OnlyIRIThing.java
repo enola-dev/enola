@@ -18,11 +18,9 @@
 package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import org.jspecify.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.List;
 
 /** {@link Thing} with only an IRI and no properties (optimized). */
 public class OnlyIRIThing implements IImmutableThing {
@@ -43,8 +41,8 @@ public class OnlyIRIThing implements IImmutableThing {
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
-        return List.of();
+    public ImmutableSet<String> predicateIRIs() {
+        return ImmutableSet.of();
     }
 
     @Override

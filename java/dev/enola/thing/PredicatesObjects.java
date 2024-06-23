@@ -26,9 +26,9 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * PredicatesObjects is a "struct" of Predicates and their Objects.
@@ -48,7 +48,8 @@ public interface PredicatesObjects {
     Map<String, Object> properties();
 
     /** IRIs of the Predicates of this Thing. */
-    Collection<String> predicateIRIs();
+    // TODO Reconsider if this method is really required? Why not just #properties().keySet()?
+    Set<String> predicateIRIs();
 
     /**
      * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype

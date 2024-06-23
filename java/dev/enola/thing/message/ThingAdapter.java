@@ -36,8 +36,8 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * ThingAdapter adapts a {@link dev.enola.thing.proto.Thing} to a {@link dev.enola.thing.Thing}.
@@ -67,7 +67,7 @@ public final class ThingAdapter implements Thing {
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
+    public Set<String> predicateIRIs() {
         return proto.getFieldsMap().keySet();
     }
 
