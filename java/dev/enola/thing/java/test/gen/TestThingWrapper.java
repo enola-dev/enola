@@ -15,36 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java.test;
+package dev.enola.thing.java.test.gen;
 
 import dev.enola.thing.KIRI;
-import dev.enola.thing.MutableThing;
+import dev.enola.thing.Thing;
+import dev.enola.thing.java.DelegatingThing;
+import dev.enola.thing.java.test.TestThing;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * Implementation of {@link TestThing} based on {@link MutableThing} (with the same limitations).
- *
- * <p>Prefer using {@link ImmutableTestThing} in general.
- */
-public class MutableTestThing extends MutableThing<MutableTestThing>
-        implements TestThing, TestThing.Builder<MutableTestThing> {
+public class TestThingWrapper extends DelegatingThing implements TestThing {
 
-    // TODO This class, like ImmutableTestThing, should (eventually) be generated...
+    // TODO This class, like MutableTestThing & ImmutableTestThing, should be generated...
 
-    @Override
-    public TestThing.Builder label(String label) {
-        set(KIRI.RDFS.LABEL, label);
-        return this;
+    public TestThingWrapper(Thing delegate) {
+        super(delegate);
     }
 
-    @Override
-    public TestThing.Builder number(Integer number) {
-        set(NUMBER_URI, number);
-        return this;
-    }
-
-    // NB: Getters are exactly the same in TestThingWrapper
+    // NB: Getters are exactly the same in MutableTestThing
 
     @Override
     public @Nullable String label() {
@@ -54,5 +42,10 @@ public class MutableTestThing extends MutableThing<MutableTestThing>
     @Override
     public @Nullable Integer number() {
         return get(NUMBER_URI, Integer.class);
+    }
+
+    @Override
+    public Thing.Builder<? extends Thing> copy() {
+        throw new UnsupportedOperationException("TODO");
     }
 }

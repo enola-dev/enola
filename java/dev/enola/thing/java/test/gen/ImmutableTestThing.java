@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java.test;
+package dev.enola.thing.java.test.gen;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
@@ -24,6 +24,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 import dev.enola.datatype.Datatype;
 import dev.enola.thing.*;
 import dev.enola.thing.java.GenJavaThing;
+import dev.enola.thing.java.test.TestThing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
