@@ -19,6 +19,8 @@ package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -35,7 +37,10 @@ import java.util.Set;
  *
  * <p>This implementation is not thread safe, obviously.
  */
-public class MutableThing<B extends MutableThing> implements Thing, Thing.Builder<B> {
+@SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
+// skipcq: JAVA-W0100
+public class MutableThing<B extends MutableThing> extends AbstractThing
+        implements Thing, Thing.Builder<B> {
 
     protected @Nullable String iri;
     protected final Map<String, Object> properties;
@@ -93,6 +98,11 @@ public class MutableThing<B extends MutableThing> implements Thing, Thing.Builde
     @Override
     public @Nullable String datatype(String predicateIRI) {
         return datatypes.get(predicateIRI);
+    }
+
+    @Override
+    public Map<String, String> datatypes() {
+        return datatypes;
     }
 
     @Override

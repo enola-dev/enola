@@ -17,23 +17,22 @@
  */
 package dev.enola.thing.impl;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.errorprone.annotations.Immutable;
-import com.google.errorprone.annotations.ThreadSafe;
+import dev.enola.thing.Thing;
 
-import dev.enola.thing.PredicatesObjects;
-
-@Immutable
-@ThreadSafe
-public interface IImmutablePredicatesObjects extends PredicatesObjects {
+public abstract class AbstractThing implements Thing {
 
     @Override
-    ImmutableMap<String, Object> properties();
+    public final int hashCode() {
+        return ThingHashCodeEqualsToString.hashCode(this);
+    }
 
     @Override
-    ImmutableSet<String> predicateIRIs();
+    public final boolean equals(Object obj) {
+        return ThingHashCodeEqualsToString.equals(this, obj);
+    }
 
     @Override
-    ImmutableMap<String, String> datatypes();
+    public final String toString() {
+        return ThingHashCodeEqualsToString.toString(this);
+    }
 }

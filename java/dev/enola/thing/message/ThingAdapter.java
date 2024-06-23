@@ -36,6 +36,7 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -85,6 +86,17 @@ public final class ThingAdapter implements Thing {
         var builder = ImmutableMap.<String, Object>builderWithExpectedSize(predicateIRIs.size());
         for (var predicateIRI : predicateIRIs) {
             builder.put(predicateIRI, get(predicateIRI));
+        }
+        return builder.build();
+    }
+
+    @Override
+    public Map<String, String> datatypes() {
+        var predicateIRIs = predicateIRIs();
+        var builder = ImmutableMap.<String, String>builderWithExpectedSize(predicateIRIs.size());
+        for (var predicateIRI : predicateIRIs) {
+            var datatype = datatype(predicateIRI);
+            if (datatype != null) builder.put(predicateIRI, datatype);
         }
         return builder.build();
     }

@@ -22,10 +22,14 @@ import com.google.common.collect.ImmutableSet;
 
 import dev.enola.thing.Thing;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.jspecify.annotations.Nullable;
 
 /** {@link Thing} with only an IRI and no properties (optimized). */
-public class OnlyIRIThing implements IImmutableThing {
+@SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
+// skipcq: JAVA-W0100
+public class OnlyIRIThing extends AbstractThing implements IImmutableThing {
     private final String iri;
 
     public OnlyIRIThing(String iri) {
@@ -50,6 +54,11 @@ public class OnlyIRIThing implements IImmutableThing {
     @Override
     public @Nullable String datatype(String predicateIRI) {
         return null;
+    }
+
+    @Override
+    public ImmutableMap<String, String> datatypes() {
+        return ImmutableMap.of();
     }
 
     @Override
