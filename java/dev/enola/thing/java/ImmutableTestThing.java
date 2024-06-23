@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
 
 @Immutable
 @ThreadSafe
-public class TestThing extends GenJavaThing {
+public class ImmutableTestThing extends GenJavaThing {
 
     // TODO This, and similar, classes should (eventually) be automagically code generated...
     // TODO Consider if an existing Beans code generator could be used? E.g. AutoValue, or
@@ -42,7 +42,7 @@ public class TestThing extends GenJavaThing {
     private final @Nullable String label;
     private final @Nullable Integer number;
 
-    protected TestThing(
+    protected ImmutableTestThing(
             String iri,
             @Nullable String label,
             @Nullable Integer number,
@@ -61,11 +61,11 @@ public class TestThing extends GenJavaThing {
         return builder.build();
     }
 
-    public static TestThing create(String iri, String label, int number) {
-        return new TestThing(iri, label, number, ImmutableMap.of(), ImmutableMap.of());
+    public static ImmutableTestThing create(String iri, String label, int number) {
+        return new ImmutableTestThing(iri, label, number, ImmutableMap.of(), ImmutableMap.of());
     }
 
-    public static Builder<? extends TestThing> builder() {
+    public static Builder<? extends ImmutableTestThing> builder() {
         return new Builder<>();
     }
 
@@ -99,15 +99,15 @@ public class TestThing extends GenJavaThing {
     }
 
     @Override
-    public Builder<? extends TestThing> copy() {
+    public Builder<? extends ImmutableTestThing> copy() {
         // TODO Implement copy() correctly... see TestThingTest#copy(), it illustrates why NOK
         //  return new Builder<>(iri(), label, number, super.properties, datatypes());
         throw new UnsupportedOperationException("TODO");
     }
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    public static class Builder<B extends TestThing> // skipcq: JAVA-E0169
-            extends ImmutableThing.Builder<TestThing> {
+    public static class Builder<B extends ImmutableTestThing> // skipcq: JAVA-E0169
+            extends ImmutableThing.Builder<ImmutableTestThing> {
 
         private @Nullable String label;
         private @Nullable Integer number;
@@ -144,7 +144,8 @@ public class TestThing extends GenJavaThing {
         }
 
         @Override
-        public Thing.Builder<TestThing> set(String predicateIRI, Object value, String datatypeIRI) {
+        public Thing.Builder<ImmutableTestThing> set(
+                String predicateIRI, Object value, String datatypeIRI) {
             // NB: Must be kept in sync with get(String predicateIRI)
             if (KIRI.RDFS.LABEL.equals(predicateIRI)) {
                 label = (String) value;
@@ -156,7 +157,7 @@ public class TestThing extends GenJavaThing {
         }
 
         @Override
-        public Thing.Builder<TestThing> set(String predicateIRI, Object value) {
+        public Thing.Builder<ImmutableTestThing> set(String predicateIRI, Object value) {
             return this.set(predicateIRI, value, null);
         }
 
@@ -164,7 +165,9 @@ public class TestThing extends GenJavaThing {
         public B build() {
             if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
             // TODO Remove (B) type cast
-            return (B) new TestThing(iri, label, number, properties.build(), datatypes.build());
+            return (B)
+                    new ImmutableTestThing(
+                            iri, label, number, properties.build(), datatypes.build());
         }
     }
 }

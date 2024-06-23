@@ -20,5 +20,5 @@ package dev.enola.thing.datatype;
 import dev.enola.datatype.Datatype;
 import dev.enola.thing.Thing;
 
-// TODO Implement properly, like TestThing...
+// TODO Implement properly, like ImmutableTestThing...
 public abstract class DatatypeThing implements Datatype, Thing {}

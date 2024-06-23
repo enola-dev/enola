@@ -62,7 +62,7 @@ java_library(
     srcs = glob(
         ["**/*.java"],
         exclude = [
-            "**/*Test.java",
+            "**/*Test*.java",
             "**/Test*.java",
         ],
     ),
@@ -95,7 +95,7 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     srcs_utils = glob(
-        ["**/Test*.java"],
+        ["**/*Test*.java"],
         exclude = ["**/*Test.java"],
     ),
     deps = [
