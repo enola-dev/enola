@@ -29,7 +29,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.rdf.RdfMediaTypes;
-import dev.enola.thing.ThingMediaTypes;
+import dev.enola.thing.io.ThingMediaTypes;
 
 import org.junit.Test;
 

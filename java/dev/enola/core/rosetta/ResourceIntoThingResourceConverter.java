@@ -22,7 +22,7 @@ import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.rdf.RdfResourceIntoProtoThingConverter;
-import dev.enola.thing.ThingMediaTypes;
+import dev.enola.thing.io.ThingMediaTypes;
 
 public class ResourceIntoThingResourceConverter implements CatchingResourceConverter {
 
