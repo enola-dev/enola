@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.impl;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
@@ -60,27 +59,17 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        // NO NEED: if (obj == null) return false;
-        // NOT:     if (getClass() != obj.getClass()) return false;
-        if (!(obj instanceof ImmutableThing other)) return false;
-        return Objects.equals(this.iri, other.iri)
-                && Objects.equals(this.properties(), other.properties())
-                && Objects.equals(this.datatypes(), other.datatypes());
+        return ThingHashCodeEqualsToString.equals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(iri, properties(), datatypes());
+        return ThingHashCodeEqualsToString.hashCode(this);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("iri", iri)
-                .add("properties", properties())
-                .add("datatypes", datatypes())
-                .toString();
+        return ThingHashCodeEqualsToString.toString(this);
     }
 
     @Override

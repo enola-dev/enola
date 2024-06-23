@@ -18,6 +18,9 @@
 package dev.enola.thing.java;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.AbstractThing;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
@@ -25,7 +28,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class DelegatingThing implements Thing {
+@SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
+// skipcq: JAVA-W0100
+public abstract class DelegatingThing extends AbstractThing implements Thing {
 
     private final Thing delegate;
 
@@ -46,6 +51,11 @@ public abstract class DelegatingThing implements Thing {
     @Override
     public Set<String> predicateIRIs() {
         return delegate.predicateIRIs();
+    }
+
+    @Override
+    public Map<String, String> datatypes() {
+        return delegate.datatypes();
     }
 
     @Override

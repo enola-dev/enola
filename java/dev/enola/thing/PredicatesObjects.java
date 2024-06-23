@@ -59,6 +59,8 @@ public interface PredicatesObjects {
      */
     @Nullable String datatype(String predicateIRI);
 
+    Map<String, String> datatypes();
+
     @Deprecated // TODO Remove once record Literal is gone
     default @Nullable String datatypeLEGACY(String predicateIRI) {
         var datatype = datatype(predicateIRI);

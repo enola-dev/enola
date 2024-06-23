@@ -30,7 +30,7 @@ import org.junit.Test;
 
 public class ThingRepositoriesTest {
 
-    public static Thing TEST_THING =
+    public static final Thing TEST_THING =
             ImmutableThing.builder()
                     .iri("http://example.com")
                     .set("http://example.com/message", "hello")

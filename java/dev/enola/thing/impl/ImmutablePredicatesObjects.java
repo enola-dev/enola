@@ -71,6 +71,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         return (T) properties.get(predicateIRI);
     }
 
+    @Override
     public ImmutableMap<String, String> datatypes() {
         return datatypes;
     }
