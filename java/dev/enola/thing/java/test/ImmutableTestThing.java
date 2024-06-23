@@ -23,7 +23,6 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.datatype.Datatype;
 import dev.enola.thing.*;
-import dev.enola.thing.java.IRI;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -31,14 +30,11 @@ import org.jspecify.annotations.Nullable;
 
 @Immutable
 @ThreadSafe
-public class ImmutableTestThing extends GenJavaThing {
+public class ImmutableTestThing extends GenJavaThing implements TestThing {
 
     // TODO This, and similar, classes should (eventually) be automagically code generated...
     // TODO Consider if an existing Beans code generator could be used? E.g. AutoValue, or
     // Immutables.org?
-
-    // NB: This is only here like this for TestThingTest; otherwise this would be inlined in @IRI!
-    static final String NUMBER_URI = "https://enola.dev/test/number";
 
     private final @Nullable String label;
     private final @Nullable Integer number;
@@ -70,12 +66,12 @@ public class ImmutableTestThing extends GenJavaThing {
         return new Builder<>();
     }
 
-    @IRI(NUMBER_URI)
+    @Override
     public @Nullable Integer number() {
         return number;
     }
 
-    @IRI(KIRI.RDFS.LABEL)
+    @Override
     public @Nullable String label() {
         return label;
     }
@@ -108,7 +104,8 @@ public class ImmutableTestThing extends GenJavaThing {
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     public static class Builder<B extends ImmutableTestThing> // skipcq: JAVA-E0169
-            extends ImmutableThing.Builder<ImmutableTestThing> {
+            extends ImmutableThing.Builder<ImmutableTestThing>
+            implements TestThing.Builder<ImmutableTestThing> {
 
         private @Nullable String label;
         private @Nullable Integer number;
@@ -134,11 +131,13 @@ public class ImmutableTestThing extends GenJavaThing {
             return this;
         }
 
+        @Override
         public Builder<B> label(String label) {
             this.label = label;
             return this;
         }
 
+        @Override
         public Builder<B> number(Integer number) {
             this.number = number;
             return this;
