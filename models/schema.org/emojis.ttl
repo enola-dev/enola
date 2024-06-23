@@ -1,6 +1,11 @@
 @prefix schema: <https://schema.org/>.
 @prefix enola:  <https://enola.dev/>.
 
+# TODO Rename this now from emojis.ttl to schema.org.ttl
+
+# TODO schema: enola:import "https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/schema.ttl "
+# Note Bene: We're using "quotes" not <link> because it's an URL import needs to fetch, not an IRI link to a Thing!
+
 schema:name enola:emoji "🏷️".
 schema:description enola:emoji "📜".
 schema:image enola:emoji "🖼️".
@@ -8,3 +13,9 @@ schema:url enola:emoji "🔗".
 schema:identifier enola:emoji "🆔".
 schema:email enola:emoji "📨".
 schema:sameAs enola:emoji "🪞".
+
+schema:Text enola:term "Text".
+
+schema:URL
+  enola:term "URL";
+  enola:identityOf enola:Resource.
