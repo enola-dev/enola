@@ -27,6 +27,7 @@ import dev.enola.common.MoreIterables;
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.iri.template.VariableMaps;
 import dev.enola.thing.*;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingRepository;
 
 import org.jspecify.annotations.Nullable;

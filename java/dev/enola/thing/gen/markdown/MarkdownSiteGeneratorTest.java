@@ -35,6 +35,7 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.*;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.proto.Thing;

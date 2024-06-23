@@ -29,7 +29,7 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.model.schemaorg.Datatypes;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
-import dev.enola.thing.ImmutableThing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;

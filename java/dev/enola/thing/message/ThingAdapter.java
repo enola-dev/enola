@@ -26,10 +26,10 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.proto.Value.KindCase;
 
 import org.jspecify.annotations.Nullable;

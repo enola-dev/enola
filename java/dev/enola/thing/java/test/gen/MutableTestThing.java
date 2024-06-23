@@ -18,7 +18,7 @@
 package dev.enola.thing.java.test.gen;
 
 import dev.enola.thing.KIRI;
-import dev.enola.thing.MutableThing;
+import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.test.TestThing;
 
 import org.jspecify.annotations.Nullable;

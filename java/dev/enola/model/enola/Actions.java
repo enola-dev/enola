@@ -17,8 +17,8 @@
  */
 package dev.enola.model.enola;
 
-import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 
 public final class Actions {
 

@@ -15,11 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.impl;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.thing.ThingConverterInto;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Test;

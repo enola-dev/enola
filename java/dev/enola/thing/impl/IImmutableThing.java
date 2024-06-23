@@ -15,20 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.impl;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
-import com.google.errorprone.annotations.ThreadSafe;
+
+import dev.enola.thing.Thing;
 
 @Immutable
-@ThreadSafe
-public interface IImmutablePredicatesObjects extends PredicatesObjects {
-
-    @Override
-    ImmutableMap<String, Object> properties();
-
-    @Override
-    ImmutableSet<String> predicateIRIs();
-}
+public interface IImmutableThing extends Thing, IImmutablePredicatesObjects {}

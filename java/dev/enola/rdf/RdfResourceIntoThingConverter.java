@@ -22,9 +22,9 @@ import com.google.common.collect.ImmutableList;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.thing.ImmutableThing;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 

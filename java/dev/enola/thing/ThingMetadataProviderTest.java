@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingProvider;
 
 import org.jspecify.annotations.Nullable;
