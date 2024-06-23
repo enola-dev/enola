@@ -73,13 +73,13 @@ Any [Protocol Buffer](https://protobuf.dev) can be [converted](#conversions) to 
 
 #### Proto Thing YAML
 
-* Media Type: `text/enola.dev#thing+yaml` (from `dev.enola.thing.ThingMediaTypes`)
+* Media Type: `text/enola.dev#thing+yaml` (from `dev.enola.thing.io.ThingMediaTypes`)
 * Filename extension: `.thing.yaml`
 * Example: [picasso.thing.yaml](//test/picasso.thing.yaml)
 
 #### Proto Thing Text
 
-* Media Type: `text/protobuf?proto-message=dev.enola.thing.Thing` (from `dev.enola.thing.ThingMediaTypes`)
+* Media Type: `text/protobuf?proto-message=dev.enola.thing.Thing` (from `dev.enola.thing.io.ThingMediaTypes`)
 * Filename extension: `.textproto`
 
 ### Conversions
