@@ -20,6 +20,7 @@ package dev.enola.thing;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Test;
 

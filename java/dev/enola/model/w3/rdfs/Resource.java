@@ -19,7 +19,7 @@ package dev.enola.model.w3.rdfs;
 
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.ThingProvider;
+import dev.enola.thing.repo.ThingProvider;
 
 public interface Resource extends Thing {
 

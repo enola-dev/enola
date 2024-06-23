@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.repo;
 
 import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
+import dev.enola.thing.Thing;
 
 /**
  * Builds a read-only Repository of {@link Thing}s.

@@ -35,12 +35,12 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.ImmutableThing;
-import dev.enola.thing.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.template.TemplateThingRepository;
 
 import org.jspecify.annotations.Nullable;

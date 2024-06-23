@@ -46,8 +46,8 @@ import dev.enola.core.thing.ThingConnectorService;
 import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.data.Repository;
-import dev.enola.thing.ThingRepository;
 import dev.enola.thing.proto.Things;
+import dev.enola.thing.repo.ThingRepository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;

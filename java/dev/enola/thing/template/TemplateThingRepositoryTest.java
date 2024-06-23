@@ -27,9 +27,10 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
-import dev.enola.thing.ThingMemoryRepositoryRW;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.repo.ThingMemoryRepositoryRW;
+import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +41,7 @@ import java.util.stream.Stream;
  * {@link TemplateThingRepository} Test.
  *
  * <p>This only tests template functionality; as non-regression testing of the wrapping delegation
- * is covered in the {@link dev.enola.thing.ThingRepositoriesTest}.
+ * is covered in the {@link ThingRepositoriesTest}.
  */
 public class TemplateThingRepositoryTest {
 

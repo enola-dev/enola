@@ -18,7 +18,7 @@
 package dev.enola.core.thing;
 
 import dev.enola.thing.Thing;
-import dev.enola.thing.ThingRepository;
+import dev.enola.thing.repo.ThingRepository;
 
 import java.util.Collections;
 

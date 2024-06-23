@@ -31,9 +31,9 @@ import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.thing.ThingConnectorsProvider;
 import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.ThingProvider;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.repo.ThingProvider;
 
 import org.junit.Test;
 

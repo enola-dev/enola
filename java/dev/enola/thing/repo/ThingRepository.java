@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.repo;
 
 import dev.enola.data.Repository;
+import dev.enola.thing.Thing;
 
 public interface ThingRepository extends Repository<Thing>, ThingProvider {}

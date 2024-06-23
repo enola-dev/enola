@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.repo;
 
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.data.MemoryRepositoryRW;
 import dev.enola.data.Repository;
 import dev.enola.data.Store;
+import dev.enola.thing.Thing;
 
 /**
  * ThingMemoryRepositoryRW is an in-memory read & write (i.e. both a {@link Store} and a {@link
