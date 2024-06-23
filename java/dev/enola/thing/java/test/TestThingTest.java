@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.model.xsd.Datatypes;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.java.test.gen.ImmutableTestThing;
 
 import org.junit.Ignore;
 import org.junit.Test;
