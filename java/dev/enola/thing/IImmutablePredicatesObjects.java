@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
@@ -27,4 +28,7 @@ public interface IImmutablePredicatesObjects extends PredicatesObjects {
 
     @Override
     ImmutableMap<String, Object> properties();
+
+    @Override
+    ImmutableSet<String> predicateIRIs();
 }

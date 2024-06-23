@@ -27,8 +27,6 @@ import dev.enola.thing.ImmutableThing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import java.util.Collection;
-
 @Immutable
 @ThreadSafe
 @SuppressFBWarnings(
@@ -71,7 +69,7 @@ public abstract class GenJavaThing extends ImmutableThing {
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
+    public ImmutableSet<String> predicateIRIs() {
         return predicateIRIs;
     }
 }

@@ -19,9 +19,9 @@ package dev.enola.thing;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
@@ -85,7 +85,7 @@ public class MutableThing<B extends MutableThing> implements Thing, Thing.Builde
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
+    public Set<String> predicateIRIs() {
         return properties.keySet();
     }
 

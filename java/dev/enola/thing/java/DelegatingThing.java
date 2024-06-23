@@ -21,9 +21,9 @@ import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public abstract class DelegatingThing implements Thing {
 
@@ -44,7 +44,7 @@ public abstract class DelegatingThing implements Thing {
     }
 
     @Override
-    public Collection<String> predicateIRIs() {
+    public Set<String> predicateIRIs() {
         return delegate.predicateIRIs();
     }
 
