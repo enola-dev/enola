@@ -31,8 +31,8 @@ import dev.enola.core.resource.ResourceEnolaService;
 import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
-import dev.enola.thing.ThingRepository;
 import dev.enola.thing.message.ProtoThingRepository;
+import dev.enola.thing.repo.ThingRepository;
 
 import java.util.Map;
 

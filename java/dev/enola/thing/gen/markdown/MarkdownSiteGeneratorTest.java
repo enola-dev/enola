@@ -38,6 +38,8 @@ import dev.enola.thing.*;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.TemplateThingRepository;
 

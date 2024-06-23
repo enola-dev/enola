@@ -19,9 +19,9 @@ package dev.enola.core.thing;
 
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.thing.ThingProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
+import dev.enola.thing.repo.ThingProvider;
 
 /**
  * ThingConnectorsProvider implements {@link ThingProvider} by delegating to a list of {@link

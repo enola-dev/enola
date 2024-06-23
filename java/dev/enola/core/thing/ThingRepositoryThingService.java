@@ -24,8 +24,8 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.thing.ThingRepository;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
+import dev.enola.thing.repo.ThingRepository;
 
 import java.util.Map;
 

@@ -15,20 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.repo;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
 import dev.enola.data.Store;
+import dev.enola.thing.*;
 import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
 public class ThingRepositoriesTest {
 
-    static Thing TEST_THING =
+    public static Thing TEST_THING =
             ImmutableThing.builder()
                     .iri("http://example.com")
                     .set("http://example.com/message", "hello")

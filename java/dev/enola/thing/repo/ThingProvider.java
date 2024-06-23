@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.repo;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.thing.Thing;
 import dev.enola.thing.message.ProtoThingProvider;
 
 import org.jspecify.annotations.Nullable;

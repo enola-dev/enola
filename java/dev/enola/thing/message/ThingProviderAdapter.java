@@ -22,7 +22,7 @@ import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.OnlyIRIThing;
 import dev.enola.thing.Thing;
-import dev.enola.thing.ThingProvider;
+import dev.enola.thing.repo.ThingProvider;
 
 import java.io.UncheckedIOException;
 

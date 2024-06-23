@@ -20,7 +20,7 @@ package dev.enola.thing.message;
 import com.google.protobuf.Any;
 
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.thing.ThingProvider;
+import dev.enola.thing.repo.ThingProvider;
 
 import org.jspecify.annotations.Nullable;
 
