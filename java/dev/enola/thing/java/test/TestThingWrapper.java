@@ -19,25 +19,32 @@ package dev.enola.thing.java.test;
 
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
+import dev.enola.thing.java.DelegatingThing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface TestThing extends Thing {
+public class TestThingWrapper extends DelegatingThing implements TestThing {
 
-    // NB: This is only here like this for TestThingTest; otherwise this would be inlined in @IRI!
-    String NUMBER_URI = "https://enola.dev/test/number";
+    // TODO This class, like MutableTestThing & ImmutableTestThing, should be generated...
 
-    @IRI(NUMBER_URI)
-    @Nullable Integer number();
+    public TestThingWrapper(Thing delegate) {
+        super(delegate);
+    }
 
-    @IRI(KIRI.RDFS.LABEL)
-    @Nullable String label();
+    // NB: Getters are exactly the same in MutableTestThing
 
-    interface Builder<B extends TestThing> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+    @Override
+    public @Nullable String label() {
+        return get(KIRI.RDFS.LABEL, String.class);
+    }
 
-        Builder label(String label);
+    @Override
+    public @Nullable Integer number() {
+        return get(NUMBER_URI, Integer.class);
+    }
 
-        Builder number(Integer number);
+    @Override
+    public Thing.Builder<? extends Thing> copy() {
+        throw new UnsupportedOperationException("TODO");
     }
 }

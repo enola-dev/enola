@@ -20,4 +20,4 @@ package dev.enola.thing;
 import com.google.errorprone.annotations.Immutable;
 
 @Immutable
-public interface IImmutableThing extends Thing {}
+public interface IImmutableThing extends Thing, IImmutablePredicatesObjects {}

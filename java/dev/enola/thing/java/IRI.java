@@ -19,4 +19,6 @@ package dev.enola.thing.java;
 
 public @interface IRI {
     String value();
+
+    String datatype() default "";
 }

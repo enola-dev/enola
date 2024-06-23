@@ -17,7 +17,6 @@
  */
 package dev.enola.thing;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -28,6 +27,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -45,7 +45,7 @@ public interface PredicatesObjects {
      * The Map's key is the IRI of a predicate, and the value is as would be returned by {@link
      * #get(String)}.
      */
-    ImmutableMap<String, Object> properties();
+    Map<String, Object> properties();
 
     /** IRIs of the Predicates of this Thing. */
     Collection<String> predicateIRIs();

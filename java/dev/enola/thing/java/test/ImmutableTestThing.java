@@ -168,6 +168,8 @@ public class ImmutableTestThing extends GenJavaThing implements TestThing {
             return (B)
                     new ImmutableTestThing(
                             iri, label, number, properties.build(), datatypes.build());
+
+            // TODO If properties & datatypes isEmpty(), we could return a smaller object...
         }
     }
 }
