@@ -17,9 +17,14 @@
  */
 package dev.enola.thing;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
 @Immutable
 @ThreadSafe
-public interface IImmutablePredicatesObjects extends PredicatesObjects {}
+public interface IImmutablePredicatesObjects extends PredicatesObjects {
+
+    @Override
+    ImmutableMap<String, Object> properties();
+}

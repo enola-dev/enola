@@ -58,7 +58,7 @@ public class OnlyIRIThing implements IImmutableThing {
     }
 
     @Override
-    public Builder<Thing> copy() {
+    public Thing.Builder<Thing> copy() {
         throw new UnsupportedOperationException("TODO");
     }
 }

@@ -38,6 +38,10 @@ import java.util.Collection;
 // skipcq: JAVA-W0100
 public abstract class GenJavaThing extends ImmutableThing {
 
+    // TODO Move this class (back) to thing.java from .test...
+
+    // TODO Try to remove this field; it technically duplicates something we inherit from
+    // ImmutablePredicatesObjects#properties already; so this field ideally shouldn't be needed...
     private final ImmutableSet<String> predicateIRIs;
 
     protected GenJavaThing(
