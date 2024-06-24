@@ -15,6 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.thing.java;
 
-public interface Class extends Typed {}
+public @interface JThing {
+    String value();
+}

@@ -20,5 +20,5 @@ package dev.enola.thing.java;
 public @interface IRI {
     String value();
 
-    String datatype() default "";
+    // TODO Derive from Java type? String datatype() default "";
 }

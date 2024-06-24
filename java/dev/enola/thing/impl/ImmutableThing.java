@@ -85,7 +85,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         protected final ImmutableMap.Builder<String, String> datatypes;
         protected @Nullable String iri;
 
-        private Builder() {
+        protected Builder() {
             properties = ImmutableMap.builder();
             datatypes = ImmutableMap.builder();
         }

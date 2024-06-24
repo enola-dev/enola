@@ -79,7 +79,10 @@ public interface PredicatesObjects {
      * be a {@link Link} (or {@link URI}) with an IRI or another PredicatesObjects (for an "inline
      * embedded/expanded blank node") or a {@link java.util.List} of such items. The object is
      * immutable. May be null if Thing has no such predicate.
+     *
+     * @deprecated Use {@link #get(String, Class)} instead.
      */
+    @Deprecated // TODO Remove after replacing all usages with #get(String, Class)
     <T> @Nullable T get(String predicateIRI);
 
     /**

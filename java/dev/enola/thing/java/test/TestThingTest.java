@@ -36,13 +36,13 @@ public class TestThingTest {
             ImmutableTestThing.create("https://enola.dev/test1", "hello, world", 43);
     final ImmutableTestThing thing2 =
             ImmutableTestThing.create("https://enola.dev/test1", "hello, world", 43);
-    final ImmutableTestThing bthing = // Thing from Builder with static setter methods
+    final ImmutableTestThing bthing = // JThing from Builder with static setter methods
             ImmutableTestThing.builder()
                     .iri("https://enola.dev/test1")
                     .label("hello, world")
                     .number(43)
                     .build();
-    final ImmutableTestThing dthing = // Thing from Builder with "dynamic" set()
+    final ImmutableTestThing dthing = // JThing from Builder with "dynamic" set()
             ImmutableTestThing.builder()
                     .iri("https://enola.dev/test1")
                     .set(KIRI.RDFS.LABEL, "hello, world")
@@ -52,7 +52,7 @@ public class TestThingTest {
     final String EXTRA = "https://enola.dev/another-predicate";
     final Instant INSTANT = Instant.parse("2023-10-26T15:29:31.123456-05:00");
     final ImmutableTestThing
-            ething = // Thing from Builder with an EXTRA predicate, which is not a static field
+            ething = // JThing from Builder with an EXTRA predicate, which is not a static field
             ImmutableTestThing.builder()
                             .iri("https://enola.dev/test1")
                             .label("hello, world")
@@ -61,7 +61,7 @@ public class TestThingTest {
                             .build();
 
     final ImmutableTestThing
-            mthing = // Thing without one of the static (ImmutableTestThing.NUMBER_URI predicate)
+            mthing = // JThing without one of the static (ImmutableTestThing.NUMBER_URI predicate)
                     // fields set!
                     ImmutableTestThing.builder()
                             .iri("https://enola.dev/test1")

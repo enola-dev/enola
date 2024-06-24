@@ -71,7 +71,7 @@ enola:rfc a rdf:Property;
 
 enolaj:type a rdfs:Class;
   schema:name "Java Type";
-  schema:description "Type (Class, Interface, Enum, Record, Primitives, Array, Void) in the Java Virtual Machine (JVM).";
+  schema:description "Type (Class, Interface, Enum, Record, Primitive, Array, Void) in the Java Virtual Machine (JVM).";
   enola:example "https://enola.dev/java/type/java.lang.Object";
   enola:iriTemplate "https://enola.dev/java/type/{FQN}";
   # TODO JavaDoc site base URI should be configurable via some sort of global variable
