@@ -166,7 +166,7 @@ public class ImmutableTestThing extends GenJavaThing implements TestThing {
 
         @Override
         public B build() {
-            if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
+            if (iri == null) throw new IllegalStateException("Cannot build JThing without IRI");
             // TODO Remove (B) type cast
             return (B)
                     new ImmutableTestThing(

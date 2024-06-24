@@ -15,6 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "model",
@@ -32,5 +33,13 @@ java_library(
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["**/*Test.java"]),
+    deps = [
+        ":model",
     ],
 )

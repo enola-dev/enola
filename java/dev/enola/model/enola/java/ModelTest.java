@@ -15,6 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.java;
 
-public interface Class extends Typed {}
+import org.junit.Test;
+
+public class ModelTest {
+
+    @Test
+    public void model() {}
+}

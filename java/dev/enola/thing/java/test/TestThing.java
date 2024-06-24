@@ -20,9 +20,11 @@ package dev.enola.thing.java.test;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.java.IRI;
+import dev.enola.thing.java.JThing;
 
 import org.jspecify.annotations.Nullable;
 
+@JThing("https://enola.dev/TestThing")
 public interface TestThing extends Thing {
 
     // NB: This is only here like this for TestThingTest; otherwise this would be inlined in @IRI!
@@ -35,9 +37,8 @@ public interface TestThing extends Thing {
     @Nullable String label();
 
     interface Builder<B extends TestThing> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        Builder<B> label(String label);
 
-        Builder label(String label);
-
-        Builder number(Integer number);
+        Builder<B> number(Integer number);
     }
 }

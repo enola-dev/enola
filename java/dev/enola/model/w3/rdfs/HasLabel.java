@@ -18,10 +18,13 @@
 package dev.enola.model.w3.rdfs;
 
 import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
 import dev.enola.thing.java.IRI;
 
-public interface HasLabel {
+public interface HasLabel extends Thing {
 
     @IRI(KIRI.RDFS.LABEL)
-    String getLabel();
+    default String label() {
+        return get(KIRI.RDFS.LABEL, String.class);
+    }
 }

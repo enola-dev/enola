@@ -19,11 +19,17 @@ package dev.enola.model.w3.rdfs;
 
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.java.IRI;
 import dev.enola.thing.repo.ThingProvider;
 
-public interface Resource extends Thing {
+public interface Typed extends Thing {
+
+    @IRI(KIRI.RDF.TYPE)
+    Class type();
 
     default Class type(ThingProvider tp) {
-        return (Class) tp.get(getString(KIRI.RDFS.CLASS));
+        return (Class) tp.get(getString(KIRI.RDF.TYPE));
     }
+
+    // TODO Use ThingProviderThreadLocal ... here, or in a Converter?
 }

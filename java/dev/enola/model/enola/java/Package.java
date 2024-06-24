@@ -15,6 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.java;
 
-public interface Class extends Typed {}
+import dev.enola.model.w3.rdfs.HasLabel;
+import dev.enola.model.w3.rdfs.Typed;
+import dev.enola.thing.java.IRI;
+
+/** 📦 <a href="https://docs.enola.dev/models/enola.dev/java/package/">Java Package</a>. */
+@IRI("https://enola.dev/java/Package/{FQN}")
+public interface Package
+        extends Typed, HasLabel { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
+}
