@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE rdf:RDF [
-     <!ENTITY vin  "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#" >
-     <!ENTITY food "http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#" >
-     <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-     <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
-   ]>
+  <!ENTITY vin "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#" >
+  <!ENTITY food "http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#" >
+  <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+  <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+]>
 
 <rdf:RDF
-  xmlns     = "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
-  xmlns:vin = "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
-  xml:base  = "http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
-  xmlns:food= "http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#"
-  xmlns:owl = "http://www.w3.org/2002/07/owl#"
-  xmlns:rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  xmlns:rdfs= "http://www.w3.org/2000/01/rdf-schema#"
-  xmlns:xsd = "http://www.w3.org/2001/XMLSchema#">
+  xmlns="http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
+  xmlns:vin="http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
+  xml:base="http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#"
+  xmlns:food="http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 
   <owl:Ontology rdf:about="">
     <rdfs:comment>An example OWL ontology</rdfs:comment>
     <owl:priorVersion>
-      <owl:Ontology rdf:about="http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine"/>
+      <owl:Ontology rdf:about="http://www.w3.org/TR/2003/CR-owl-guide-20030818/wine" />
     </owl:priorVersion>
-    <owl:imports rdf:resource="http://www.w3.org/TR/2003/PR-owl-guide-20031209/food"/>
+    <owl:imports rdf:resource="http://www.w3.org/TR/2003/PR-owl-guide-20031209/food" />
     <rdfs:comment>Derived from the DAML Wine ontology at
       http://ontolingua.stanford.edu/doc/chimaera/ontologies/wines.daml
       Substantially changed, in particular the Region based relations.
@@ -34,19 +34,19 @@
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="#hasMaker" />
-	<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+        <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="#hasMaker" />
-	<owl:allValuesFrom rdf:resource="#Winery" />
+        <owl:allValuesFrom rdf:resource="#Winery" />
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
         <owl:onProperty rdf:resource="#madeFromGrape" />
- 	<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+        <owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:subClassOf>
@@ -75,8 +75,8 @@
     </rdfs:subClassOf>
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty rdf:resource="#locatedIn"/>
-        <owl:someValuesFrom rdf:resource="&vin;Region"/>
+        <owl:onProperty rdf:resource="#locatedIn" />
+        <owl:someValuesFrom rdf:resource="&vin;Region" />
       </owl:Restriction>
     </rdfs:subClassOf>
     <rdfs:label xml:lang="en">wine</rdfs:label>
@@ -86,7 +86,7 @@
   <owl:Class rdf:ID="Vintage">
     <rdfs:subClassOf>
       <owl:Restriction>
-        <owl:onProperty rdf:resource="#hasVintageYear"/>
+        <owl:onProperty rdf:resource="#hasVintageYear" />
         <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
       </owl:Restriction>
     </rdfs:subClassOf>
@@ -220,7 +220,7 @@
 
   <owl:DatatypeProperty rdf:ID="yearValue">
     <rdfs:domain rdf:resource="#VintageYear" />
-    <rdfs:range  rdf:resource="&xsd;positiveInteger" />
+    <rdfs:range rdf:resource="&xsd;positiveInteger" />
   </owl:DatatypeProperty>
 
   <VintageYear rdf:ID="Year1998">
@@ -230,7 +230,7 @@
   <owl:ObjectProperty rdf:ID="hasVintageYear">
     <rdf:type rdf:resource="&owl;FunctionalProperty" />
     <rdfs:domain rdf:resource="#Vintage" />
-    <rdfs:range  rdf:resource="#VintageYear" />
+    <rdfs:range rdf:resource="#VintageYear" />
   </owl:ObjectProperty>
 
   <owl:ObjectProperty rdf:ID="madeFromGrape">
@@ -245,7 +245,7 @@
 
   <owl:ObjectProperty rdf:ID="hasWineDescriptor">
     <rdfs:domain rdf:resource="#Wine" />
-    <rdfs:range  rdf:resource="#WineDescriptor" />
+    <rdfs:range rdf:resource="#WineDescriptor" />
   </owl:ObjectProperty>
 
   <owl:ObjectProperty rdf:ID="hasSugar">
@@ -1721,12 +1721,12 @@
   <WineSugar rdf:ID="Dry" />
 
   <WineSugar rdf:ID="OffDry">
-    <owl:differentFrom rdf:resource="#Dry"/>
-    <owl:differentFrom rdf:resource="#Sweet"/>
+    <owl:differentFrom rdf:resource="#Dry" />
+    <owl:differentFrom rdf:resource="#Sweet" />
   </WineSugar>
 
   <WineSugar rdf:ID="Sweet">
-    <owl:differentFrom rdf:resource="#Dry"/>
+    <owl:differentFrom rdf:resource="#Dry" />
   </WineSugar>
 
   <owl:AllDifferent>
@@ -1779,10 +1779,10 @@
 
   <Chardonnay rdf:ID="BancroftChardonnay">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#Bancroft" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Bancroft" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Chardonnay>
 
   <Region rdf:ID="BeaujolaisRegion">
@@ -1802,7 +1802,7 @@
   <Winery rdf:ID="ChateauChevalBlanc" />
 
   <StEmilion rdf:ID="ChateauChevalBlancStEmilion">
-    <hasMaker  rdf:resource="#ChateauChevalBlanc" />
+    <hasMaker rdf:resource="#ChateauChevalBlanc" />
   </StEmilion>
 
   <Winery rdf:ID="ChateauDYchem" />
@@ -1811,24 +1811,24 @@
     <madeFromGrape rdf:resource="#SauvignonBlancGrape" />
     <madeFromGrape rdf:resource="#SemillonGrape" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasMaker  rdf:resource="#ChateauDYchem" />
+    <hasMaker rdf:resource="#ChateauDYchem" />
   </Sauternes>
 
   <Winery rdf:ID="ChateauDeMeursault" />
 
   <Meursault rdf:ID="ChateauDeMeursaultMeursault">
     <hasFlavor rdf:resource="#Moderate" />
-    <hasMaker  rdf:resource="#ChateauDeMeursault" />
+    <hasMaker rdf:resource="#ChateauDeMeursault" />
   </Meursault>
 
   <Winery rdf:ID="ChateauLafiteRothschild" />
 
   <Pauillac rdf:ID="ChateauLafiteRothschildPauillac">
-    <hasMaker  rdf:resource="#ChateauLafiteRothschild" />
+    <hasMaker rdf:resource="#ChateauLafiteRothschild" />
   </Pauillac>
 
   <Margaux rdf:ID="ChateauMargaux">
-    <hasMaker  rdf:resource="#ChateauMargauxWinery" />
+    <hasMaker rdf:resource="#ChateauMargauxWinery" />
   </Margaux>
 
   <Winery rdf:ID="ChateauMargauxWinery" />
@@ -1836,7 +1836,7 @@
   <Winery rdf:ID="ChateauMorgon" />
 
   <Beaujolais rdf:ID="ChateauMorgonBeaujolais">
-    <hasMaker  rdf:resource="#ChateauMorgon" />
+    <hasMaker rdf:resource="#ChateauMorgon" />
   </Beaujolais>
 
   <WineGrape rdf:ID="CheninBlancGrape" />
@@ -1844,8 +1844,8 @@
   <WineGrape rdf:ID="ZinfandelGrape" />
 
   <Chianti rdf:ID="ChiantiClassico">
-    <hasBody   rdf:resource="#Medium" />
-    <hasMaker  rdf:resource="#McGuinnesso" />
+    <hasBody rdf:resource="#Medium" />
+    <hasMaker rdf:resource="#McGuinnesso" />
   </Chianti>
 
   <Region rdf:ID="ChiantiRegion">
@@ -1855,57 +1855,57 @@
   <Winery rdf:ID="ClosDeLaPoussie" />
 
   <Sancerre rdf:ID="ClosDeLaPoussieSancerre">
-    <hasMaker  rdf:resource="#ClosDeLaPoussie" />
+    <hasMaker rdf:resource="#ClosDeLaPoussie" />
   </Sancerre>
 
   <Winery rdf:ID="ClosDeVougeot" />
 
   <CotesDOr rdf:ID="ClosDeVougeotCotesDOr">
-    <hasMaker  rdf:resource="#ClosDeVougeot" />
+    <hasMaker rdf:resource="#ClosDeVougeot" />
   </CotesDOr>
 
   <Winery rdf:ID="CongressSprings" />
 
   <Semillon rdf:ID="CongressSpringsSemillon">
-    <hasMaker  rdf:resource="#CongressSprings" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#CongressSprings" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Semillon>
 
   <Winery rdf:ID="Corbans" />
 
   <Riesling rdf:ID="CorbansDryWhiteRiesling">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Corbans" />
-    <hasSugar  rdf:resource="#OffDry" />
+    <hasMaker rdf:resource="#Corbans" />
+    <hasSugar rdf:resource="#OffDry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Riesling>
 
   <SauvignonBlanc rdf:ID="CorbansPrivateBinSauvignonBlanc">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Corbans" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Corbans" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </SauvignonBlanc>
 
   <SauvignonBlanc rdf:ID="CorbansSauvignonBlanc">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Corbans" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Corbans" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </SauvignonBlanc>
 
   <Winery rdf:ID="CortonMontrachet" />
 
   <WhiteBurgundy rdf:ID="CortonMontrachetWhiteBurgundy">
-    <hasMaker  rdf:resource="#CortonMontrachet" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#CortonMontrachet" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </WhiteBurgundy>
 
   <Region rdf:ID="CotesDOrRegion">
@@ -1916,10 +1916,10 @@
 
   <Zinfandel rdf:ID="CotturiZinfandel">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#Cotturi" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Cotturi" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </Zinfandel>
 
   <Winery rdf:ID="DAnjou" />
@@ -1932,38 +1932,38 @@
 
   <Zinfandel rdf:ID="ElyseZinfandel">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#Elyse" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Elyse" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </Zinfandel>
 
   <Winery rdf:ID="Forman" />
 
   <CabernetSauvignon rdf:ID="FormanCabernetSauvignon">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#Forman" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Forman" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </CabernetSauvignon>
 
   <Chardonnay rdf:ID="FormanChardonnay">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#Forman" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Forman" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </Chardonnay>
 
   <Winery rdf:ID="Foxen" />
 
   <CheninBlanc rdf:ID="FoxenCheninBlanc">
     <locatedIn rdf:resource="#SantaBarbaraRegion" />
-    <hasMaker  rdf:resource="#Foxen" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Foxen" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </CheninBlanc>
 
   <WineGrape rdf:ID="GamayGrape" />
@@ -1972,10 +1972,10 @@
 
   <Merlot rdf:ID="GaryFarrellMerlot">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#GaryFarrell" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#GaryFarrell" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Merlot>
 
   <Region rdf:ID="GermanyRegion" />
@@ -1985,39 +1985,39 @@
   <Winery rdf:ID="KalinCellars" />
 
   <Semillon rdf:ID="KalinCellarsSemillon">
-    <hasMaker  rdf:resource="#KalinCellars" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#KalinCellars" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </Semillon>
 
   <Winery rdf:ID="KathrynKennedy" />
 
   <Meritage rdf:ID="KathrynKennedyLateral">
-    <hasMaker  rdf:resource="#KathrynKennedy" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#KathrynKennedy" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Delicate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Meritage>
 
   <Winery rdf:ID="LaneTanner" />
 
   <PinotNoir rdf:ID="LaneTannerPinotNoir">
     <locatedIn rdf:resource="#SantaBarbaraRegion" />
-    <hasMaker  rdf:resource="#LaneTanner" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#LaneTanner" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Delicate" />
-    <hasBody   rdf:resource="#Light" />
+    <hasBody rdf:resource="#Light" />
   </PinotNoir>
 
   <Winery rdf:ID="Longridge" />
 
   <Merlot rdf:ID="LongridgeMerlot">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Longridge" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Longridge" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Light" />
+    <hasBody rdf:resource="#Light" />
   </Merlot>
 
   <WineGrape rdf:ID="MalbecGrape" />
@@ -2030,34 +2030,34 @@
 
   <CabernetSauvignon rdf:ID="MariettaCabernetSauvignon">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#Marietta" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Marietta" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </CabernetSauvignon>
 
   <RedTableWine rdf:ID="MariettaOldVinesRed">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#Marietta" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Marietta" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </RedTableWine>
 
   <PetiteSyrah rdf:ID="MariettaPetiteSyrah">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#Marietta" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Marietta" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </PetiteSyrah>
 
   <Zinfandel rdf:ID="MariettaZinfandel">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#Marietta" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Marietta" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Zinfandel>
 
   <Winery rdf:ID="McGuinnesso" />
@@ -2077,44 +2077,44 @@
 
   <Chardonnay rdf:ID="MountEdenVineyardEdnaValleyChardonnay">
     <locatedIn rdf:resource="#EdnaValleyRegion" />
-    <hasMaker  rdf:resource="#MountEdenVineyard" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#MountEdenVineyard" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Chardonnay>
 
   <PinotNoir rdf:ID="MountEdenVineyardEstatePinotNoir">
     <locatedIn rdf:resource="#EdnaValleyRegion" />
-    <hasMaker  rdf:resource="#MountEdenVineyard" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#MountEdenVineyard" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </PinotNoir>
 
   <Winery rdf:ID="Mountadam" />
 
   <Chardonnay rdf:ID="MountadamChardonnay">
     <locatedIn rdf:resource="#SouthAustraliaRegion" />
-    <hasMaker  rdf:resource="#Mountadam" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Mountadam" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </Chardonnay>
 
   <PinotNoir rdf:ID="MountadamPinotNoir">
     <locatedIn rdf:resource="#SouthAustraliaRegion" />
-    <hasMaker  rdf:resource="#Mountadam" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Mountadam" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </PinotNoir>
 
   <DryRiesling rdf:ID="MountadamRiesling">
     <locatedIn rdf:resource="#SouthAustraliaRegion" />
-    <hasMaker  rdf:resource="#Mountadam" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Mountadam" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Delicate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </DryRiesling>
 
   <Region rdf:ID="MuscadetRegion">
@@ -2131,10 +2131,10 @@
 
   <CabernetSauvignon rdf:ID="PageMillWineryCabernetSauvignon">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#PageMillWinery" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#PageMillWinery" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </CabernetSauvignon>
 
   <Region rdf:ID="PauillacRegion">
@@ -2145,10 +2145,10 @@
 
   <Chardonnay rdf:ID="PeterMccoyChardonnay">
     <locatedIn rdf:resource="#SonomaRegion" />
-    <hasMaker  rdf:resource="#PeterMccoy" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#PeterMccoy" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Chardonnay>
 
   <WineGrape rdf:ID="PetiteSyrahGrape" />
@@ -2164,16 +2164,16 @@
   <Winery rdf:ID="PulignyMontrachet" />
 
   <WhiteBurgundy rdf:ID="PulignyMontrachetWhiteBurgundy">
-    <hasMaker  rdf:resource="#PulignyMontrachet" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#PulignyMontrachet" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </WhiteBurgundy>
 
   <WineGrape rdf:ID="RieslingGrape" />
 
   <Anjou rdf:ID="RoseDAnjou">
-    <hasMaker  rdf:resource="#DAnjou" />
+    <hasMaker rdf:resource="#DAnjou" />
   </Anjou>
 
   <Region rdf:ID="SancerreRegion">
@@ -2190,10 +2190,10 @@
 
   <CabernetSauvignon rdf:ID="SantaCruzMountainVineyardCabernetSauvignon">
     <locatedIn rdf:resource="#SantaCruzMountainsRegion" />
-    <hasMaker  rdf:resource="#SantaCruzMountainVineyard" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#SantaCruzMountainVineyard" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </CabernetSauvignon>
 
   <Region rdf:ID="CentralTexasRegion">
@@ -2204,8 +2204,8 @@
 
   <WhiteWine rdf:ID="StGenevieveTexasWhite">
     <locatedIn rdf:resource="#CentralTexasRegion" />
-    <hasMaker  rdf:resource="#StGenevieve" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#StGenevieve" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
   </WhiteWine>
 
@@ -2217,19 +2217,19 @@
 
   <Zinfandel rdf:ID="SaucelitoCanyonZinfandel">
     <locatedIn rdf:resource="#ArroyoGrandeRegion" />
-    <hasMaker  rdf:resource="#SaucelitoCanyon" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#SaucelitoCanyon" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Zinfandel>
 
   <Zinfandel rdf:ID="SaucelitoCanyonZinfandel1998">
     <locatedIn rdf:resource="#ArroyoGrandeRegion" />
     <hasVintageYear rdf:resource="#Year1998" />
-    <hasMaker  rdf:resource="#SaucelitoCanyon" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#SaucelitoCanyon" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </Zinfandel>
 
   <Region rdf:ID="SauterneRegion">
@@ -2242,48 +2242,48 @@
 
   <SweetRiesling rdf:ID="SchlossRothermelTrochenbierenausleseRiesling">
     <locatedIn rdf:resource="#GermanyRegion" />
-    <hasMaker  rdf:resource="#SchlossRothermel" />
-    <hasSugar  rdf:resource="#Sweet" />
+    <hasMaker rdf:resource="#SchlossRothermel" />
+    <hasSugar rdf:resource="#Sweet" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </SweetRiesling>
 
   <Winery rdf:ID="SchlossVolrad" />
 
   <SweetRiesling rdf:ID="SchlossVolradTrochenbierenausleseRiesling">
-    <locatedIn rdf:resource ="#GermanyRegion" />
-    <hasMaker  rdf:resource="#SchlossVolrad" />
-    <hasSugar  rdf:resource="#Sweet" />
+    <locatedIn rdf:resource="#GermanyRegion" />
+    <hasMaker rdf:resource="#SchlossVolrad" />
+    <hasSugar rdf:resource="#Sweet" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </SweetRiesling>
 
   <Winery rdf:ID="SeanThackrey" />
 
   <PetiteSyrah rdf:ID="SeanThackreySiriusPetiteSyrah">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#SeanThackrey" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#SeanThackrey" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Strong" />
-    <hasBody   rdf:resource="#Full" />
+    <hasBody rdf:resource="#Full" />
   </PetiteSyrah>
 
   <Winery rdf:ID="Selaks" />
 
   <IceWine rdf:ID="SelaksIceWine">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Selaks" />
+    <hasMaker rdf:resource="#Selaks" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
     <hasColor rdf:resource="#White" />
   </IceWine>
 
   <SauvignonBlanc rdf:ID="SelaksSauvignonBlanc">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Selaks" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Selaks" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </SauvignonBlanc>
 
   <WineGrape rdf:ID="SemillonGrape" />
@@ -2291,7 +2291,7 @@
   <Winery rdf:ID="SevreEtMaine" />
 
   <Muscadet rdf:ID="SevreEtMaineMuscadet">
-    <hasMaker  rdf:resource="#SevreEtMaine" />
+    <hasMaker rdf:resource="#SevreEtMaine" />
   </Muscadet>
 
   <Region rdf:ID="SonomaRegion">
@@ -2310,16 +2310,16 @@
 
   <SauvignonBlanc rdf:ID="StonleighSauvignonBlanc">
     <locatedIn rdf:resource="#NewZealandRegion" />
-    <hasMaker  rdf:resource="#Stonleigh" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#Stonleigh" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Delicate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </SauvignonBlanc>
 
   <Winery rdf:ID="Taylor" />
 
   <Port rdf:ID="TaylorPort">
-    <hasMaker  rdf:resource="#Taylor" />
+    <hasMaker rdf:resource="#Taylor" />
   </Port>
 
   <Region rdf:ID="ToursRegion">
@@ -2330,27 +2330,27 @@
 
   <CheninBlanc rdf:ID="VentanaCheninBlanc">
     <locatedIn rdf:resource="#CentralCoastRegion" />
-    <hasMaker  rdf:resource="#Ventana" />
-    <hasSugar  rdf:resource="#OffDry" />
+    <hasMaker rdf:resource="#Ventana" />
+    <hasSugar rdf:resource="#OffDry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </CheninBlanc>
 
   <Winery rdf:ID="WhitehallLane" />
 
   <CabernetFranc rdf:ID="WhitehallLaneCabernetFranc">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasMaker  rdf:resource="#WhitehallLane" />
-    <hasSugar  rdf:resource="#Dry" />
+    <hasMaker rdf:resource="#WhitehallLane" />
+    <hasSugar rdf:resource="#Dry" />
     <hasFlavor rdf:resource="#Moderate" />
-    <hasBody   rdf:resource="#Medium" />
+    <hasBody rdf:resource="#Medium" />
   </CabernetFranc>
 
   <DessertWine rdf:ID="WhitehallLanePrimavera">
     <locatedIn rdf:resource="#NapaRegion" />
-    <hasSugar  rdf:resource="#Sweet" />
+    <hasSugar rdf:resource="#Sweet" />
     <hasFlavor rdf:resource="#Delicate" />
-    <hasBody   rdf:resource="#Light" />
+    <hasBody rdf:resource="#Light" />
   </DessertWine>
 
   <owl:AllDifferent>
