@@ -41,7 +41,14 @@ class ThingMerger {
                         // TODO Implement merging both into a List, with test coverage!
                     } else
                         throw new IllegalStateException(
-                                "Cannot merge " + predicate + " of two " + existing.iri());
+                                "Cannot merge "
+                                        + predicate
+                                        + " of an "
+                                        + existing.iri()
+                                        + " from "
+                                        + existing.getString(KIRI.E.ORIGIN)
+                                        + " and "
+                                        + update.getString(KIRI.E.ORIGIN));
                 });
         return merged.build();
     }
