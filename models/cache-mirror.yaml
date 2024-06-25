@@ -29,3 +29,10 @@ models/example.org/wine.rdf:
     - https://protegewiki.stanford.edu/wiki/Ontology101
   mirrors:
     - https://github.com/UCDavisLibrary/wine-ontology/blob/master/ontologies/www.example.org/wine.owl.xml
+
+models/schema.org/schemaorg.owl:
+  origin: https://raw.githubusercontent.com/schemaorg/schemaorg/main/data/releases/27.01/schemaorg.owl
+  mirrors:
+    - https://schema.org/docs/schemaorg.owl
+  contexts:
+    - https://schema.org/docs/developers.html#owl
