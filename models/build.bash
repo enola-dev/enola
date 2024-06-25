@@ -28,6 +28,9 @@ rm docs/models/{BUILD,build.bash}
 
 ./enola -vvv docgen --load=file:"docs/models/**.ttl" --output=file://"$PWD"/docs/models/
 
+# Work around Schema.org TTL containing rdfs:comment like "See [documentation](/docs/cdc-covid.html) for details"
+find docs/models/schema.org/ -type f -not -path '*/\.*' -name "*.md" -exec sed -i 's/\/docs\//https:\/\/schema.org\/docs\//g' {} +
+
 # TODO Support GLOBs in rosetta like in docgen? (Low priority, because DocGen will gen. embedded JSON-LD anyway.)
 ./enola -v rosetta --in=file:models/enola.ttl --out=file:docs/models/enola.jsonld
 
