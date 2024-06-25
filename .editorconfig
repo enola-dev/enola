@@ -72,6 +72,9 @@ generated_code = true
 indent_size = unset
 max_line_length = unset
 
+[*.owl]
+max_line_length = unset
+
 [test-random-binary]
 insert_final_newline = false
 
