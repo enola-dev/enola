@@ -25,6 +25,10 @@ class ThingMerger {
 
     public static Thing merge(Thing existing, Thing update) {
         if (!existing.iri().equals(update.iri())) throw new IllegalArgumentException();
+
+        if (existing.predicateIRIs().isEmpty()) return update;
+        if (update.predicateIRIs().isEmpty()) return existing;
+
         var merged = existing.copy();
         var properties = update.properties();
         properties.forEach(
