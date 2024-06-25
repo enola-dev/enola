@@ -71,6 +71,7 @@ java_library(
     deps = [
         ":thing_java_proto",
         "//java/dev/enola/common",
+        "//java/dev/enola/common/collect",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",

@@ -120,7 +120,10 @@ public interface PredicatesObjects {
 
     // TODO get... other types.
 
+    // TODO Remove un-used copy()
     Builder<? extends PredicatesObjects> copy();
+
+    Builder<? extends PredicatesObjects> newBuilder();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
@@ -129,7 +132,7 @@ public interface PredicatesObjects {
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
-                String predicateIRI, T value, String datatypeIRI);
+                String predicateIRI, T value, @Nullable String datatypeIRI);
 
         @Override
         B build();
