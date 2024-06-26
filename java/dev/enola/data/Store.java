@@ -52,4 +52,10 @@ public interface Store<B, T> {
     /** Store multiple Ts; see {@link #store(Object)}. */
     @CanIgnoreReturnValue
     B store(Iterable<T> items);
+
+    default void store(T... items) {
+        for (T item : items) {
+            store(item);
+        }
+    }
 }

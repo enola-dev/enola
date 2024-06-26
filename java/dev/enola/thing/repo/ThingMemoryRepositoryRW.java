@@ -31,7 +31,8 @@ import dev.enola.thing.Thing;
  * <p>{@link ThingMemoryRepositoryROBuilder} is one of possibly several other alternatives for this.
  */
 @ThreadSafe
-public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing> implements ThingRepository {
+public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
+        implements ThingRepositoryRW {
 
     @Override
     protected String getIRI(Thing value) {

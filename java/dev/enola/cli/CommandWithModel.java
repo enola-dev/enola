@@ -42,9 +42,12 @@ import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.template.TemplateThingRepository;
+import dev.enola.thing.validation.LoggingCollector;
+import dev.enola.thing.validation.Validators;
 
 import org.jspecify.annotations.Nullable;
 
+import picocli.CommandLine;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -60,6 +63,15 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
     @ArgGroup(multiplicity = "1")
     ModelOrServer group;
+
+    @CommandLine.Option(
+            names = {"--validate"},
+            negatable = true,
+            required = true,
+            defaultValue = "false", // TODO Enable Model validation by default
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Whether validation errors in loaded models should stop & exit")
+    boolean validate;
 
     private EnolaServiceBlockingStub gRPCService;
 
@@ -88,8 +100,21 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                     loader.convertIntoOrThrow(stream, store);
                 }
             }
-            TemplateThingRepository templateThingRepository =
-                    new TemplateThingRepository(store.build());
+
+            var repo = store.build();
+            var c = new LoggingCollector();
+            var v = new Validators(repo);
+            v.validate(repo, c);
+            if (c.hasMessages()) {
+                System.err.println("Loaded models have validation errors; use -v to show them");
+                if (validate) {
+                    System.exit(7);
+                } else {
+                    System.err.println("Use --no-validate to continue anyway");
+                }
+            }
+
+            TemplateThingRepository templateThingRepository = new TemplateThingRepository(repo);
             templateService = templateThingRepository;
             // NB: Copy/pasted below...
             ekr = new EntityKindRepository();
