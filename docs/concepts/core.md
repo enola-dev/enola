@@ -46,7 +46,7 @@ or something like [Amazon Ion](https://amazon-ion.github.io/ion-docs/) or [other
 
 ## Schemas
 
-Enola currently uses [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
+Enola currently uses [RDFS](../models/example.org/class.md) and (TBD) [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
 Schema language. It is conceptually open to supporting other kinds of schemas in the future; perhaps e.g.
 [JSON Schema](https://github.com/enola-dev/enola/issues/313), or [Cap’n Proto](https://capnproto.org/language.html), or [TypeScript](https://www.typescriptlang.org/docs/handbook/2/objects.html) (à la [Typson](https://github.com/lbovet/typson)), or [XML Schema](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) (XSD), or [YANG](https://en.wikipedia.org/wiki/YANG) or [FHIR](https://www.hl7.org/fhir/) or [Varlink](https://varlink.org/Interface-Definition) or [Web IDL](https://webidl.spec.whatwg.org) or
 [ASN.1](https://en.m.wikipedia.org/wiki/ASN.1) or [GNU poke](https://www.gnu.org/software/poke/).

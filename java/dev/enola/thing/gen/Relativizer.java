@@ -70,6 +70,7 @@ public final class Relativizer {
         return dropSchemeAddExtension(URI.create(Templates.dropVariableMarkers(iri)), extension);
     }
 
+    // skipcq: JAVA-R1000 TODO Simplify this overly complex function!
     public static URI dropSchemeAddExtension(final URI thingIRI, final String extension) {
         var scheme = thingIRI.getScheme();
         if (scheme == null) return thingIRI;

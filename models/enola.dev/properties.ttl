@@ -1,10 +1,63 @@
 @prefix enola:  <https://enola.dev/>.
 @prefix enolay: <https://enola.dev/yaml/>.
 @prefix enolaj: <https://enola.dev/java/>.
+@prefix owl:    <http://www.w3.org/2002/07/owl#>.
 @prefix schema: <https://schema.org/>.
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+
+enola:ontology a owl:Ontology;
+  rdfs:label "Enola.dev's base/core Ontology.".
+
+enola:Embedded a rdfs:Class;
+  rdfs:comment "Parent (abstract) Class for things which have no IRI identity of their own and which thus should only ever appear in 'RDF blank nodes'. (Like owl:hasValue _:bNode on an owl:DatatypeProperty; without OWL dependency. Or like a sh:nodeKind sh:BlankNode SHACL shape.)".
+
+# NOT enola:Timestamped a rdfs:Class;
+
+enola:Event a rdfs:Class;
+  rdfs:comment "Parent (abstract) Class for anything which happened at the specified #timestamp dateTime.".
+
+enola:timestamp a rdf:Property;
+  rdfs:range xsd:dateTime;
+  rdfs:domain enola:Event;
+  rdfs:comment "Instant at which this happened.";
+  enola:emoji "🕑".
+
+enola:TimeIntervaled a rdfs:Class;
+  rdfs:comment "Parent (abstract) Class for anything which has a start & end #timestamp dateTime.".
+
+enola:startedAt a rdf:Property;
+  rdfs:subPropertyOf enola:timestamp;
+  rdfs:domain enola:TimeIntervaled.
+
+enola:endedAt a rdf:Property;
+  rdfs:subPropertyOf enola:timestamp;
+  rdfs:domain enola:TimeIntervaled.
+
+enola:createdAt a rdf:Property;
+  rdfs:subPropertyOf enola:timestamp;
+  rdfs:domain enola:File.
+
+enola:modifiedAt a rdf:Property;
+  rdfs:subPropertyOf enola:timestamp;
+  rdfs:domain enola:File.
+
+enola:Hardware a rdfs:Class;
+  rdfs:comment "Parent (abstract) Class for 'hard ware', i.e. 'physical computer stuff' - you can touch this!";
+  enola:wikipedia "Computer_hardware". # https://en.wikipedia.org/wiki/Computer_hardware
+
+enola:Software a rdfs:Class;
+  rdfs:comment "Parent (abstract) Class for 'soft ware', i.e. 'virtual computer stuff' - you can think of but cannot physically touch this.";
+  enola:wikipedia "Software". # https://en.wikipedia.org/wiki/Software
+
+enola:SoftwareWithURL a rdfs:Class;
+  rdfs:subClassOf enola:Software;
+  rdfs:comment "Parent (abstract) Class for a piece of [[Software]] which has a URL that you can type into a web browser to look at (the UI of) it.".
+
+# TODO Fix https://github.com/enola-dev/enola/pull/735 and un-comment this:
+# TODO Discuss with someone smart if this is a good idea? Given "Open World" assumption, this seems "fair game" - hopefully?
+# schema:url schema:domainIncludes enola:SoftwareWithURL.
 
 enola:emoji a rdf:Property;
   schema:name "Emoji";
@@ -12,6 +65,16 @@ enola:emoji a rdf:Property;
   schema:description "Emoji 😃 of a Thing, from Unicode or <a href='https://www.nerdfonts.com'>Nerdfonts</a>.";
   enola:emoji "😃".
 
+enola:parent a rdf:Property;
+  rdfs:range schema:Thing;
+  rdfs:comment "A 'hierarchical' parent. This is typically subclassed - and thus there could be several different kinds of parents. Similar to https://schema.org/isPartOf; but that's specific to CreativeWork, while this is not.".
+
+# Similar to https://schema.org/hasPart; but that's specific to CreativeWork, this is not
+enola:children a rdf:Property;
+  schema:inverseOf enola:parent.
+
+# TODO schema:source?
+# TODO Rename origin to origins, because the Statements of one Thing could come from various places.
 enola:origin a rdf:Property;
   schema:name "Origin";
   rdfs:range xsd:anyURI;
@@ -20,6 +83,7 @@ enola:origin a rdf:Property;
 
 # TODO Split Q & P...
 enola:wikidata a rdf:Property;
+  # TODO This, and other, images should be a String, not a link, and the UI needs to be coded to handle it... validate!
   schema:image <https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikidata-logo.svg>;
   # https://www.wikidata.org/wiki/Wikidata:Data_access#Linked_Data_Interface_(URI)
   schema:url "http://www.wikidata.org/entity/{VALUE}"^^enola:IRITemplate;
@@ -27,6 +91,7 @@ enola:wikidata a rdf:Property;
   # TODO Range (?) is a RegExp like [QP][0-9]+ or so...
 
 enola:wikipedia a rdf:Property;
+  # TODO This, and other, images should be a String, not a link, and the UI needs to be coded to handle it... validate!
   schema:image <https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg>;
   schema:description "Wikipedia EN page ID (not URL), e.g. 'Wikipedia' (for https://en.wikipedia.org/wiki/Wikipedia)";
   schema:url "https://en.wikipedia.org/wiki/{VALUE}"^^enola:IRITemplate.
@@ -68,26 +133,3 @@ enola:GKG a rdfs:Datatype;
 enola:rfc a rdf:Property;
   rdfs:range xsd:positiveInteger;
   schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
-
-enolaj:type a rdfs:Class;
-  schema:name "Java Type";
-  schema:description "Type (Class, Interface, Enum, Record, Primitive, Array, Void) in the Java Virtual Machine (JVM).";
-  enola:example "https://enola.dev/java/type/java.lang.Object";
-  enola:iriTemplate "https://enola.dev/java/type/{FQN}";
-  # TODO JavaDoc site base URI should be configurable via some sort of global variable
-  enola:javaDoc "https://docs.oracle.com/en/java/javase/21/docs/api/{MODULE | DotToSlash }/{FQN | DotToSlash }.html"^^enola:Template;
-  enola:emoji "☕".
-
-enolaj:module a rdfs:Class;
-  schema:name "Java Module";
-  enola:example "https://enola.dev/java/module/java.base";
-  enola:iriTemplate "https://enola.dev/java/module/{FQN}";
-  enola:emoji "📦".
-
-enolay:uri a rdf:Property;
-  rdfs:range xsd:anyURI;
-  schema:description "The URI of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".
-
-enolay:shorthand a rdf:Property;
-  rdfs:range xsd:NCName;
-  schema:description "The Shorthand of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".

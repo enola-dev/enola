@@ -86,6 +86,10 @@ public class MarkdownSiteGenerator {
             var outputIRI = base.resolve(relativeThingIRI);
             LOG.info("Generating (base={}, thingIRI={}): {}", base, thingIRI, outputIRI);
             var outputResource = rp.getWritableResource(outputIRI);
+            if (outputResource == null) {
+                LOG.error("ResourceProvider cannot provide a WritableResource: {}", outputIRI);
+                continue;
+            }
             try (var writer = outputResource.charSink().openBufferedStream()) {
                 var meta =
                         mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts, footer);

@@ -1,0 +1,14 @@
+@prefix enola:  <https://enola.dev/>.
+@prefix enolay: <https://enola.dev/yaml/>.
+@prefix schema: <https://schema.org/>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+
+enolay:uri a rdf:Property;
+  rdfs:range xsd:anyURI;
+  schema:description "The URI of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".
+
+enolay:shorthand a rdf:Property;
+  rdfs:range xsd:NCName;
+  schema:description "The Shorthand of a YAML `!!Tag` Type; see e.g. https://yaml.org/type/.".
