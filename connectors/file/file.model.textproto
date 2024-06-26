@@ -1,0 +1,87 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2023 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# proto-file: dev/enola/core/meta/enola_meta.proto
+# proto-message: EntityKinds
+
+# TODO This should disappear and be read from extensions in file.proto
+
+# TODO Add some VERBS, e.g. from
+# https://en.m.wikipedia.org/wiki/Computer_file#Operations
+
+kinds {
+  emoji: "🗎"
+  label: "File"
+  doc_url: "https://en.m.wikipedia.org/wiki/Computer_file"
+  # TODO This won't quite work yet (as paths are currently still fixed length)
+  id: { ns: "enola" entity: "file" paths: "name" }
+  related {
+    key: "parent"
+    value: {
+      id: { ns: "enola" entity: "directory" }
+      label: "Parent Folder"
+      description: "Folder which this File is in."
+    }
+  }
+  data {
+    key: "metadata"
+    value: {
+      label: "Metadata"
+      description: "Information about this File"
+      type_url: "model.enola.dev/dev.enola.file.Metadata"
+    }
+  }
+  link {
+    key: "content"
+    value: { uri_template: "file:" }
+  }
+  connectors {
+    # TODO Ideally a user should be able to decide if using this in-process or
+    # remote...
+    java_class: "dev.enola.file.FileConnector"
+    # grpc: "localhost:9090"
+  }
+}
+
+kinds {
+  emoji: "📁"
+  label: "Folder"
+  doc_url: "https://en.m.wikipedia.org/wiki/Directory_(computing)"
+  # TODO This won't quite work yet (as paths are currently still fixed length)
+  id: { ns: "enola" entity: "directory" paths: "name" }
+  related {
+    key: "parent"
+    value: {
+      id: { ns: "enola" entity: "directory" }
+      label: "Parent Folder"
+      description: "Folder which this File is in."
+    }
+  }
+  data {
+    key: "metadata"
+    value: {
+      label: "Metadata"
+      description: "Information about this File"
+      type_url: "model.enola.dev/dev.enola.file.Metadata"
+    }
+  }
+  connectors {
+    # TODO Ideally a user should be able to decide if using this in-process or
+    # remote...
+    java_class: "dev.enola.file.FileConnector"
+    # grpc: "localhost:9090"
+  }
+}
