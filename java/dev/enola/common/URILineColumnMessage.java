@@ -26,19 +26,33 @@ public record URILineColumnMessage(String message, URI uri, long line, long colu
     }
 
     public String format() {
-        // TODO Have some way of configuring output format
-        return forGCC();
+        // TODO Have some way of globally configuring default output format
+        return format(Format.GCC);
     }
 
-    protected String forGCC() {
-        return uri().toString() + ":" + line + optionalColumn(":") + ": " + message;
+    public String format(Format format) {
+        return switch (format) {
+            case GCC -> forGCC();
+            case VS -> forVS();
+            case JSON -> asJSON();
+        };
     }
 
-    protected String forVS() {
-        return uri().toString() + "(" + line + optionalColumn(",") + "): " + message;
+    public enum Format {
+        GCC,
+        VS,
+        JSON
     }
 
-    protected String asJSON() {
+    private String forGCC() {
+        return uri() + ":" + line + optionalColumn(":") + ": " + message;
+    }
+
+    private String forVS() {
+        return uri() + "(" + line + optionalColumn(",") + "): " + message;
+    }
+
+    private String asJSON() {
         var sb = new StringBuilder("{ \"file\": \"").append(uri);
         sb.append("\", \"line\": ").append(line);
         if (column > -1) {
