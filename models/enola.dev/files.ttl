@@ -1,0 +1,71 @@
+@prefix enola:  <https://enola.dev/>.
+@prefix owl:    <http://www.w3.org/2002/07/owl#>.
+@prefix schema: <https://schema.org/>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
+
+enola:fileOntology a owl:Ontology;
+  rdfs:label "An Ontology by Enola.dev about Files on Computers.".
+
+enola:File a rdfs:Class;
+  rdfs:isDefinedBy enola:fileOntology;
+  rdfs:subClassOf enola:SoftwareWithURL;
+  enola:example <https://enola.dev/file/localhost/tmp/example.txt>;
+  enola:iriTemplate "https://enola.dev/file/{FILESYSTEM}/{PATH}";
+  enola:filesystem "fs:{FILESYSTEM}"^^enola:IRITemplate;
+  # TODO https://github.com/enola-dev/enola/issues/739
+  # enola:path "{PATH}"^^enola:IRITemplate; # ^^enola:Template ??
+  enola:wikipedia "Computer_file"; # https://en.wikipedia.org/wiki/Computer_file
+  enola:emoji "🗎".
+
+enola:Folder a rdfs:Class;
+  rdfs:subClassOf enola:SoftwareWithURL;
+  enola:wikipedia "Directory_(computing)"; # https://en.wikipedia.org/wiki/Directory_(computing)
+  enola:emoji "📁".
+
+enola:parentFolder a rdf:Property;
+  rdfs:subPropertyOf enola:parent;
+  rdfs:range enola:Folder;
+  rdfs:domain enola:File, enola:Folder;
+  rdfs:comment "Parent Folder which this File or Folder is in".
+
+enola:Filesystem a rdfs:Class.
+
+enola:LocalhostRootFilesystem a rdfs:Class;
+  rdfs:subClassOf enola:Filesystem;
+  rdfs:comment "The Class of the (single) Filesystem serving / on localhost.".
+
+enola:filesystem a rdf:Property;
+  rdfs:range enola:Filesystem;
+  rdfs:domain enola:File.
+
+enola:path a rdf:Property;
+  rdfs:range xsd:string;
+  rdfs:domain enola:File.
+
+enola:size a rdf:Property;
+ rdfs:range xsd:unsignedLong; # TODO Use a Datatype which permits KiB/MB etc. (from UoM?)
+ rdfs:domain enola:File.
+
+enola:MediaType a rdfs:Datatype;
+  rdfs:comment "Internet Media Type, also known as a MIME Type or Content Type.";
+  enola:rfc "6838";
+  rdfs:subClassOf xsd:token.
+
+enola:mediaType a rdf:Property;
+  rdfs:range enola:MediaType;
+  rdfs:domain enola:File.
+
+<https://enola.dev/file/localhost/tmp/example.txt> a enola:File;
+  schema:url "file://localhost/tmp/example.txt";
+  # Automagic: enola:path "/tmp/example.txt";
+  # Automagic: enola:filesystem <localhost>;
+  enola:size "123"^^xsd:unsignedLong;
+  enola:createdAt "2024-05-12T18:58:02.123+00:00"^^xsd:dateTime;
+  enola:modifiedAt "2024-06-07T22:17:02.123+00:00"^^xsd:dateTime;
+  enola:mediaType "text/plain;charset=UTF-8";
+.
+
+<fs:localhost> a enola:LocalhostRootFilesystem;
+  rdfs:comment "The Filesystem serving / on localhost.".
