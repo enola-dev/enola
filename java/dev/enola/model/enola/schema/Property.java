@@ -15,11 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.datatype;
+package dev.enola.model.enola.schema;
 
-import dev.enola.datatype.Datatype;
-import dev.enola.thing.Thing;
+public interface Property extends Type {
 
-// TODO Replace with dev.enola.model.enola.schema.Datatype
-// TODO Implement properly, like ImmutableTestThing...
-public abstract class DatatypeThing implements Datatype, Thing {}
+    // TODO @IRI(KIRI.E.META.PARENT)
+    Property parent();
+
+    // TODO @IRI(KIRI.E.META.DATATYPE)
+    Datatype datatype();
+
+    // TODO @IRI(KIRI.E.META.MULTIPLICITY)
+    Multiplicity multiplicity();
+
+    enum Multiplicity {
+        Single,
+        Set,
+        List
+    }
+}

@@ -15,11 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.datatype;
+package dev.enola.model.enola;
 
-import dev.enola.datatype.Datatype;
 import dev.enola.thing.Thing;
 
-// TODO Replace with dev.enola.model.enola.schema.Datatype
-// TODO Implement properly, like ImmutableTestThing...
-public abstract class DatatypeThing implements Datatype, Thing {}
+import java.net.URI;
+
+public interface HasURL extends Thing {
+
+    // TODO @IRI(KIRI.E.URL) ?
+    URI url();
+}
