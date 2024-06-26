@@ -54,6 +54,7 @@ nav:
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
+      - Roadmap: concepts/roadmap.md
       - Singularity: concepts/singularity.md
       - URL & ID: concepts/uri.md
   - Developers:
