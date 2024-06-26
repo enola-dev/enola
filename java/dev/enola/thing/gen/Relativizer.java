@@ -72,38 +72,48 @@ public final class Relativizer {
 
     public static URI dropSchemeAddExtension(final URI thingIRI, final String extension) {
         var scheme = thingIRI.getScheme();
-        if (scheme != null && scheme.startsWith("http")) {
-            var authority = nullToEmpty(thingIRI.getAuthority());
-            if (authority == "") throw new IllegalArgumentException(thingIRI.toString());
+        if (scheme == null) return thingIRI;
 
-            var ssp = authority + nullToEmpty(thingIRI.getPath());
-            var fragment = thingIRI.getFragment();
-            if (fragment != null) {
-                ssp = ssp + "/" + fragment;
-            }
+        // TODO Keep or remove this special case handling?
+        if (scheme.equals("file")) return thingIRI;
 
-            var query = thingIRI.getQuery();
-            if (query != null) query = "?" + query;
-            else query = "";
+        // TODO #performance Use StringBuilder instead String ssp!
+        String ssp;
 
-            var dotExtension = !extension.isEmpty() ? "." + extension : "";
+        // Scheme
+        if (!scheme.startsWith("http")) ssp = scheme;
+        else ssp = "";
 
-            if (ssp.startsWith("//")) {
-                if (ssp.length() > 2)
-                    return URI.create(nos(ssp.substring(2)) + "." + extension + query);
-                else return URI.create(dotExtension + query); // TODO ???
-            } else if (ssp.startsWith("/")) {
-                if (ssp.length() > 1)
-                    return URI.create(nos(ssp.substring(1)) + "." + extension + query);
-                else return URI.create(dotExtension + query); // TODO ???
-            } else return URI.create(nos(ssp) + dotExtension + query);
+        // Authority
+        var authority = nullToEmpty(thingIRI.getAuthority());
+        if (!authority.isEmpty()) ssp = ssp + (!ssp.isEmpty() ? "/" : "") + authority;
 
-        } else {
-            // Intentionally WITHOUT adding extension, here;
-            // this is typically a https://enola.dev/origin property value like file:///.../some.ttl
-            // TODO Review ... this seems inconsistent! Must have been for good reason... test?! ;)
-            return thingIRI;
+        // Path
+        var path = nullToEmpty(thingIRI.getPath());
+        if (!path.isEmpty()) ssp = ssp + path;
+        else if (!scheme.startsWith("http")) ssp = ssp + "/" + thingIRI.getSchemeSpecificPart();
+
+        // Fragment
+        var fragment = thingIRI.getFragment();
+        if (fragment != null) {
+            ssp = ssp + "/" + fragment;
         }
+
+        var query = thingIRI.getQuery();
+        if (query != null) query = "?" + query;
+        else query = "";
+
+        var dotExtension = !extension.isEmpty() ? "." + extension : "";
+
+        if (ssp.startsWith("//")) {
+            if (ssp.length() > 2)
+                return URI.create(nos(ssp.substring(2)) + "." + extension + query);
+            else return URI.create(dotExtension + query); // TODO ???
+        } else if (ssp.startsWith("/")) {
+            if (ssp.length() > 1)
+                return URI.create(nos(ssp.substring(1)) + "." + extension + query);
+            else return URI.create(dotExtension + query); // TODO ???
+        } else return URI.create(nos(ssp) + dotExtension + query);
     }
 
     /** No Slash! */

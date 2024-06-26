@@ -20,6 +20,7 @@ package dev.enola.common;
 import java.util.Collection;
 import java.util.OptionalInt;
 
+// TODO Move this into package dev.enola.common.collect
 public final class MoreIterables {
 
     /**
