@@ -68,8 +68,6 @@ public class RelativizerTest {
         check("https://enola.dev", "enola.dev.md");
         check("https://x", "x.md");
 
-        check("file:///source.ttl", "file:///source.ttl");
-
         check(
                 "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                 "www.w3.org/1999/02/22-rdf-syntax-ns/type.md");
@@ -81,6 +79,10 @@ public class RelativizerTest {
                 "example.org/greetingNUMBER.md?NUMBER=42");
         // TODO check("https://example.org/greetingNUMBER?NUMBER=42#frag",
         // "example.org/greetingNUMBER.md?NUMBER=42#frag");
+
+        check("fs:localhost", "fs/localhost.md");
+
+        check("file:///source.ttl", "file:///source.ttl");
 
         // TODO The following are technically illegal and unexpected, of course; but just in case:
         // check("http:/enola.dev/ett", "enola.dev/ett.md");

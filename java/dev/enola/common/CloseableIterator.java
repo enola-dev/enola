@@ -20,4 +20,5 @@ package dev.enola.common;
 import java.io.Closeable;
 import java.util.Iterator;
 
+// TODO Move this into package dev.enola.common.collect
 public interface CloseableIterator<T> extends Closeable, Iterator<T> {}

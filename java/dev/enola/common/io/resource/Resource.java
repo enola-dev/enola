@@ -17,4 +17,15 @@
  */
 package dev.enola.common.io.resource;
 
+/**
+ * Resource.
+ *
+ * <p>Resource represent "the bytes that are at the {@link #uri()} - with their {@link
+ * #mediaType()}, and a way to read from / write to them via {@link #byteSource()} and {@link
+ * #byteSink()}.
+ *
+ * <p>PS: Nota bene that this <i>Resource</i> (of Enola's Java API) is <b>NOT</b> the same as the <a
+ * href="https://docs.enola.dev/models/www.w3.org/2000/01/rdf-schema/Resource/"><tt>rdfs:Resource</tt></a>,
+ * which is a {@link dev.enola.thing.Thing} in Enola's Java API.
+ */
 public interface Resource extends ReadableResource, WritableResource {}
