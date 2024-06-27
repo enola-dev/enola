@@ -28,8 +28,8 @@ final class Lifecycle {
 
     static void start() {
         LOG.info(
-                "Hi! \uD83D\uDC4B I'm https://Enola.dev v{}. "
-                        + "\uD83D\uDC7D \uD83D\uDC7E Resistance is futile. We are ONE. "
+                "Hi! \uD83D\uDC4B I'm https://Enola.dev {}. "
+                        + "\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE. "
                         + "What's your goal, today?\n",
                 Version.get());
     }
