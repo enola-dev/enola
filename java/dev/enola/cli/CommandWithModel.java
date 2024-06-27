@@ -96,7 +96,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             var loader = new Loader(ritc);
             var fgrp = new GlobResourceProviders();
             for (var globIRI : group.load) {
-                try (var stream = fgrp.get(globIRI.toString())) {
+                try (var stream = fgrp.get(globIRI)) {
                     loader.convertIntoOrThrow(stream, store);
                 }
             }
@@ -171,7 +171,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 names = {"--load", "-l"},
                 required = true,
                 description = "URI Glob of Models to load (e.g. file:\"**.ttl\")")
-        java.util.List<URI> load;
+        java.util.List<String> load;
 
         @Option(
                 names = {"--model", "-m"},
