@@ -35,9 +35,9 @@ import picocli.CommandLine.Mixin;
         subcommands = {
             HelpCommand.class,
             AutoComplete.GenerateCompletion.class,
-            DocGen.class,
-            List.class,
-            Get.class,
+            DocGenCommand.class,
+            ListCommand.class,
+            GetCommand.class,
             RosettaCommand.class,
             ServerCommand.class,
             ExecMdCommand.class,

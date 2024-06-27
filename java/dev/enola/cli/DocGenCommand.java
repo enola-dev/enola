@@ -49,7 +49,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Command(name = "docgen", description = "Generate Markdown Documentation")
-public class DocGen extends CommandWithModelAndOutput {
+public class DocGenCommand extends CommandWithModelAndOutput {
 
     @Option(
             names = {"--diagram", "-d"},
