@@ -141,6 +141,11 @@ Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself -
 
 Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
+* RDF4j [In-Memory](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/memory/MemoryStore.html),
+  or [native B-Tree](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/nativerdf/NativeStore.html),
+  or [LMDB](https://rdf4j.org/documentation/programming/lmdb-store/),
+  or [ElasticSearch](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/elasticsearchstore/ElasticsearchStore.html) #LMDB #RDF #RDF4j
+* [Tinkerpop](https://tinkerpop.apache.org) with [SPARQL-Gremlin](https://tinkerpop.apache.org/docs/current/reference/#sparql-gremlin) (also NB [Sqlg](https://www.sqlg.org)) #opensource
 * [qEndpoint](https://github.com/the-qa-company/qEndpoint) #RDF #RDF4j #HDT #GeoSPARQL #SPARQL #opensource
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
 * [Apache Jena's TDB](https://jena.apache.org) #opensource
@@ -157,7 +162,6 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
-* [Tinkerpop](https://tinkerpop.apache.org) #opensource
 * [JanusGraph](https://janusgraph.org) #opensource
 * [Neo4j](https://neo4j.com), with [neosemantics](https://neo4j.com/labs/neosemantics/) for RDF
 * [Tiger](https://www.tigergraph.com) #commercial #ML
