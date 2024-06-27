@@ -1,6 +1,12 @@
 # PLEASE only use fixed (package)==(version)
 
+# https://pre-commit.com
 pre-commit==3.7.1
+
+# https://github.com/fcivaner/hashdir
+hashdir==0.24
+
+# MkDocs
 mkdocs-material==9.5.25
 mkdocs-git-committers-plugin-2==2.3.0
 mkdocs-git-revision-date-localized-plugin==1.2.6
