@@ -44,7 +44,7 @@
     1. [Exec](https://github.com/enola-dev/enola/issues/167)
     1. gRPC
 
-1. Stores & Query
+1. [Stores & Query](other.md##persistence)
     1. `--store memory:` (default) - no queries
     1. `--store memory:rdf --query "SELECT * WHERE { ?s ?p ?o }"`
     1. `--load greeting1.ttl --store lmdb:greetings.db/`
