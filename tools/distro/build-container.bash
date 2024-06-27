@@ -15,15 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
-
-CWD=$(pwd)
-ROOT="$(realpath "$(dirname "$0")")"
-cd /tmp
-
-# shellcheck disable=SC1091
-source "$ROOT"/bazel-java-tool-chain.bash
-
-java_home
-
-cd "$CWD"
+# Build the Container Image
+# NB: This must work both on Docker (which turns it into docker buildx build) and Podman!
+docker build -t localhost/enola:latest .

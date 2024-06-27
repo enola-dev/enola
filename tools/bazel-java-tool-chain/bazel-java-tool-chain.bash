@@ -32,7 +32,7 @@ function cleanup {
 #   * https://github.com/salesforce/bazel-eclipse/blob/888bcd333ac7bd4166fdb411562b74c2b54514d5/bundles/com.salesforce.bazel.eclipse.core/src/com/salesforce/bazel/eclipse/core/model/discovery/BaseProvisioningStrategy.java#L945-L960
 #   * https://stackoverflow.com/questions/78057833/how-to-query-bazel-for-the-absolute-jave-home-like-path-to-the-remote-jdk-of
 
-function java_binary {
+function java_home {
   local ROOT
   ROOT="$(realpath "$(dirname "${BASH_SOURCE[0]}"/)")"
   cd "$ROOT" || exit 9
@@ -42,10 +42,12 @@ function java_binary {
   mkdir -p "$CACHE_DIR"
   local CACHE="$CACHE_DIR/bazel-java-tool-chain"
   local JAVA
-  JAVA=$(cat "$CACHE")
-  if [ -f "$JAVA" ]; then
-    echo "$JAVA"
-    exit 0
+  if [ -f "$CACHE" ]; then
+    JAVA=$(cat "$CACHE")
+    if [ -f "$JAVA"/bin/java ]; then
+      echo "$JAVA"
+      exit 0
+    fi
   fi
 
   # Hide Bazel output, unless it failed (same also in //enola script)
@@ -71,7 +73,7 @@ function java_binary {
   fi
 
   # https://github.com/enola-dev/enola/issues/751
-  JAVA="$output_base/$current_java_runtime/bin/java"
+  local JAVA="$output_base/$current_java_runtime/"
   echo "$JAVA" >"$CACHE"
 
   # This echo must be last, as that's how we return what we found to the caller which sources this file and runs this Bash function
