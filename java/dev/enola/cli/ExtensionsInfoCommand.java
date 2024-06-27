@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
 import picocli.CommandLine.Command;

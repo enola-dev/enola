@@ -19,6 +19,7 @@ package dev.enola.cli;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.resource.*;
 
 import picocli.CommandLine;

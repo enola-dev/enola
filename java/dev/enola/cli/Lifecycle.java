@@ -27,7 +27,7 @@ final class Lifecycle {
     private static final Logger LOG = LoggerFactory.getLogger(Lifecycle.class);
 
     static void start() {
-        LOG.info(
+        LOG.error(
                 "Hi! \uD83D\uDC4B I'm https://Enola.dev {}. "
                         + "\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE. "
                         + "What's your goal, today?\n",
