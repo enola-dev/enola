@@ -32,7 +32,7 @@ if [ -x "$(command -v hashdir)" ]; then
   mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
   hashdir --quiet java/ > "$ROOT"/.cache/java.hash
   set +e
-  diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null
+  diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
   DIFF="$?"
   set -e
 else

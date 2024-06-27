@@ -26,7 +26,7 @@ find models/ -type d -exec mkdir -p docs/{} \;
 find models/ -type f -exec ln -f {} docs/{} \;
 rm docs/models/{BUILD,build.bash}
 
-./enola -vvv docgen --load=file:"docs/models/**.ttl" --output=file://"$PWD"/docs/models/
+./enola -vvv docgen --load=file:"docs/models/**.{ttl,owl,rdf}" --output=file://"$PWD"/docs/models/
 
 # TODO Support GLOBs in rosetta like in docgen? (Low priority, because DocGen will gen. embedded JSON-LD anyway.)
 ./enola -v rosetta --in=file:models/enola.ttl --out=file:docs/models/enola.jsonld
