@@ -62,6 +62,8 @@ public class LoggingMixin {
 
         configureJUL(level);
 
+        Lifecycle.start();
+
         // And now back to and onwards with the default execution strategy
         return new CommandLine.RunLast().execute(parseResult);
     }
