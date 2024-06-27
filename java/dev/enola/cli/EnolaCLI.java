@@ -53,6 +53,10 @@ public class EnolaCLI {
     boolean[] verbosity = {};
 
     static CLI cli(String... args) {
+        // TODO This runs "too early" (before parameter parsing and logging initialization of it)...
+        // see https://stackoverflow.com/q/78679524/421602
+        Lifecycle.start();
+
         var enola = new EnolaCLI();
         return new CLI(
                 args,
