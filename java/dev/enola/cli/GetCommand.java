@@ -18,25 +18,24 @@
 package dev.enola.cli;
 
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.core.proto.GetThingRequest;
 
 import picocli.CommandLine.Command;
 
-@Command(name = "list", description = "List Entities")
-public class List extends CommandWithEntityID {
-
-    // With EntityKind name asks connector to list (first N?) entity IDs
-    // With path asks connector, and behavior is connector specific; FileRepoConnector appends a *
+@Command(name = "get", description = "Get Entity")
+public class GetCommand extends CommandWithEntityID {
 
     @Override
-    protected void run(EnolaServiceBlockingStub service, String eri) throws Exception {
-        // TODO Add CLI support for related_filter
-        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
-        var response = service.listEntities(request);
-
-        for (var entity : response.getEntitiesList()) {
-            write(entity);
-            spec.commandLine().getOut().println();
+    protected void run(EnolaServiceBlockingStub service, String iri) throws Exception {
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
+        var response = service.getThing(request);
+        if (response.hasThing()) {
+            var any = response.getThing();
+            var message = enolaMessages.toMessage(any);
+            write(message);
+        } else {
+            spec.commandLine().getErr().println(iri + " has nothing!");
+            spec.commandLine().getErr().flush();
         }
         spec.commandLine().getOut().flush();
     }
