@@ -33,13 +33,24 @@ function cleanup {
 #   * https://stackoverflow.com/questions/78057833/how-to-query-bazel-for-the-absolute-jave-home-like-path-to-the-remote-jdk-of
 
 function java_binary {
-  local current_java_runtime
-
+  local ROOT
   ROOT="$(realpath "$(dirname "${BASH_SOURCE[0]}"/)")"
   cd "$ROOT" || exit 9
 
-  # Hide Bazel output, unlike it failed (same also in //enola)
+  # https://github.com/enola-dev/enola/issues/751
+  local CACHE_DIR="$ROOT"/../../.cache/
+  mkdir -p "$CACHE_DIR"
+  local CACHE="$CACHE_DIR/bazel-java-tool-chain"
+  local JAVA
+  JAVA=$(cat "$CACHE")
+  if [ -f "$JAVA" ]; then
+    echo "$JAVA"
+    exit 0
+  fi
+
+  # Hide Bazel output, unless it failed (same also in //enola script)
   LOG=$(mktemp)
+  local current_java_runtime
   if ! current_java_runtime="$(bazelisk cquery @bazel_tools//tools/jdk:current_java_runtime \
     --output starlark --starlark:file "$ROOT"/bazel-java-tool-chain.bzl 2>"$LOG")"; then
     cat "$LOG"
@@ -49,6 +60,7 @@ function java_binary {
     rm "$LOG"
   fi
 
+  local LOG
   LOG=$(mktemp)
   if ! output_base="$(bazel info output_base 2>"$LOG")"; then
     cat "$LOG"
@@ -58,5 +70,10 @@ function java_binary {
     rm "$LOG"
   fi
 
-  echo "$output_base/$current_java_runtime/bin/java"
+  # https://github.com/enola-dev/enola/issues/751
+  JAVA="$output_base/$current_java_runtime/bin/java"
+  echo "$JAVA" >"$CACHE"
+
+  # This echo must be last, as that's how we return what we found to the caller which sources this file and runs this Bash function
+  echo "$JAVA"
 }
