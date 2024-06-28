@@ -65,7 +65,7 @@ repos:
           - --fuzzy-match-generates-todo
           - --use-current-year
       - id: insert-license
-        files: \.(bash|bazel|textproto|yaml)$
+        files: \.(bash|bazel|textproto|ttl|yaml)$
         exclude: ^docs/use|test/
         args:
           - --comment-style
