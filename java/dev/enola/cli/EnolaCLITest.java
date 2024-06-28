@@ -38,6 +38,8 @@ import java.nio.file.Path;
 
 public class EnolaCLITest {
 
+    private static final String MODEL = "classpath:enola.dev/enola.ttl";
+
     private static CLI cli;
 
     private static CLI cli(String... args) {
@@ -94,14 +96,7 @@ public class EnolaCLITest {
     public void docGenEmojiThing() throws IOException {
         Path dir = Files.createTempDirectory("EnolaTest");
 
-        var exec =
-                cli(
-                        "-vvv",
-                        "docgen",
-                        "--load",
-                        "classpath:enola.dev/properties.ttl",
-                        "--output",
-                        dir.toUri().toString());
+        var exec = cli("-vvv", "docgen", "--load", MODEL, "--output", dir.toUri().toString());
 
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0).out().isEmpty();
@@ -217,26 +212,14 @@ public class EnolaCLITest {
 
     @Test
     public void getLoadedThing() {
-        var exec =
-                cli(
-                        "-vvv",
-                        "get",
-                        "--load",
-                        "classpath:enola.dev/properties.ttl",
-                        "https://enola.dev/emoji");
+        var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/emoji");
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0);
     }
 
     @Test
     public void getNonExistentThing() {
-        var exec =
-                cli(
-                        "-vvv",
-                        "get",
-                        "--load",
-                        "classpath:enola.dev/properties.ttl",
-                        "https://docs.enola.dev/non-existent");
+        var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent");
         assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent has nothing!\n");
         assertThat(exec).out().isEmpty();
         assertThat(exec).hasExitCode(0);
@@ -244,13 +227,7 @@ public class EnolaCLITest {
 
     @Test
     public void getNonExistentTemplateIRIThing() {
-        var exec =
-                cli(
-                        "-vvv",
-                        "get",
-                        "--load",
-                        "classpath:enola.dev/properties.ttl",
-                        "https://docs.enola.dev/non-existent/{ID}");
+        var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent/{ID}");
         assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent/{ID} has nothing!\n");
         assertThat(exec).out().isEmpty();
         assertThat(exec).hasExitCode(0);
@@ -258,7 +235,7 @@ public class EnolaCLITest {
 
     @Test
     public void getList() {
-        var exec = cli("-vvv", "get", "--load", "classpath:enola.dev/properties.ttl", "enola:/");
+        var exec = cli("-vvv", "get", "--load", MODEL, "enola:/");
         assertThat(exec).err().isEmpty();
         assertThat(exec).hasExitCode(0).out().contains("https://enola.dev/emoji");
     }
