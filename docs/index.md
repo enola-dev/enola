@@ -49,5 +49,5 @@ of environments by modeling concepts from private environments and writing bespo
 Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub>
 
 <script type="application/ld+json">
-{% include "models/enola.jsonld" %}
+{% include "models/enola.dev.jsonld" %}
 </script>

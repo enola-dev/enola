@@ -25,6 +25,7 @@ enola:fileOntology a owl:Ontology;
   rdfs:label "An Ontology by Enola.dev about Files on Computers.".
 
 enola:File a rdfs:Class;
+  rdfs:comment "File holds [[Data]], identified by a [[Path]] on a [[Filesystem]], with a [[MediaType]].";
   rdfs:isDefinedBy enola:fileOntology;
   rdfs:subClassOf enola:SoftwareWithURL;
   enola:example <https://enola.dev/file/localhost/tmp/example.txt>;
@@ -36,6 +37,7 @@ enola:File a rdfs:Class;
   enola:emoji "🗎".
 
 enola:Folder a rdfs:Class;
+  rdfs:comment "Folder is a [[Container]] of other Folders and [[File]]s";
   rdfs:subClassOf enola:SoftwareWithURL;
   enola:wikipedia "Directory_(computing)"; # https://en.wikipedia.org/wiki/Directory_(computing)
   enola:emoji "📁".
@@ -61,8 +63,9 @@ enola:path a rdf:Property;
   rdfs:domain enola:File.
 
 enola:size a rdf:Property;
- rdfs:range xsd:unsignedLong; # TODO Use a Datatype which permits KiB/MB etc. (from UoM?)
- rdfs:domain enola:File.
+  rdfs:comment "Number of bytes of data.";
+  rdfs:range xsd:unsignedLong; # TODO Use a Datatype which permits KiB/MB etc. (from UoM?)
+  rdfs:domain enola:File.
 
 enola:MediaType a rdfs:Datatype;
   rdfs:comment "Internet Media Type, also known as a MIME Type or Content Type.";

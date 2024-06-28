@@ -3,6 +3,9 @@
 # https://pre-commit.com
 pre-commit==3.7.1
 
+# https://linkml.io
+linkml==1.7.10
+
 # https://github.com/fcivaner/hashdir
 hashdir==0.24
 
