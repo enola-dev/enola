@@ -22,14 +22,13 @@ set -euox pipefail
 # shellcheck source=/dev/null
 source tools/asdf/install.bash
 
-rm -rf docs/models/
-
-# TODO Run all this only when model inputs change
-tools/protoc/protoc.bash
+# Installs all Python packages already (some of which models/build needs)
+source tools/pre-commit/install.bash
 
 # This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
 models/build.bash
 
+# Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 ./test.bash
 
 # No files (which are not on .gitigore) should have been modified!

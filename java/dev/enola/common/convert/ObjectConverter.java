@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 public class ObjectConverter<X, Y> implements ObjectClassConverter {
 
-    // See also similar ObjectToStringWithToStringBiConverter
+    // See also ObjectToStringWithToStringBiConverter, which is similar, but the "opposite"
 
     private final Class<Y> to;
     private final Class<X> from;

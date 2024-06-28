@@ -91,12 +91,16 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 
 ### Visualization
 
-Enola 🕵🏾‍♀️ visualizes the relationships of its _Entities_ using:
+Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ using:
 
 * [yEd](https://www.yworks.com) (yFiles) #commercial #sdk #freemium
 * [Graphviz](https://graphviz.org) #available
 * [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned #ToDo
 * [D3js.org](https://d3js.org) also has [Graphs](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf))
+* [vis.js](https://visjs.org)
+* [Mermaid](https://mermaid.js.org)
+* [PlantUML](https://plantuml.com)
+* [yuml](https://yuml.me)
 
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 

@@ -28,10 +28,10 @@ import java.util.function.Function;
 /**
  * An ObjectToStringBiConverter which uses {@link Object#toString()} for {@link
  * ObjectToStringBiConverter#convertTo(Object)}, and which also checks the type to convert from.
- *
- * <p>See also {@link ObjectConverter}, which is kind of similar to this. (TODO Unify them?)
  */
 public class ObjectToStringWithToStringBiConverter<T> implements ObjectToStringBiConverter<T> {
+
+    // See also ObjectConverter, which is similar to this, but the "opposite" (can't unify them)
 
     private final Class<T> from;
 
