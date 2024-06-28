@@ -57,6 +57,9 @@ public class ProtoThingIntoJavaThingBuilderConverter
         for (var entry : from.getFieldsMap().entrySet()) {
             var iri = entry.getKey();
             var value = entry.getValue();
+            if (Value.KindCase.KIND_NOT_SET.equals(value.getKindCase()))
+                throw new IllegalArgumentException(iri);
+
             if (dev.enola.thing.proto.Value.KindCase.LITERAL.equals(value.getKindCase())) {
                 var datatypeValue = value.getLiteral().getValue();
                 var datatypeIRI = value.getLiteral().getDatatype();
@@ -76,6 +79,10 @@ public class ProtoThingIntoJavaThingBuilderConverter
         switch (protoThingValue.getKindCase()) {
             case STRING:
                 return protoThingValue.getString();
+            case LITERAL:
+                // TODO Rework things to this can use Thing.set(value, datatype) instead Literal
+                var literal = protoThingValue.getLiteral();
+                return new Literal(literal.getValue(), literal.getDatatype());
             case LINK:
                 return new Link(protoThingValue.getLink());
             case LANG_STRING:
@@ -100,12 +107,14 @@ public class ProtoThingIntoJavaThingBuilderConverter
                     for (var entry : protoStruct.getFieldsMap().entrySet()) {
                         var iri = entry.getKey();
                         var value = entry.getValue();
+                        if (Value.KindCase.KIND_NOT_SET.equals(value.getKindCase()))
+                            throw new IllegalArgumentException(iri);
                         mapBuilder.put(iri, object(value));
                     }
                     return mapBuilder.build();
                 }
             default:
-                throw new IllegalArgumentException(protoThingValue.getKindCase().name());
+                throw new IllegalArgumentException(protoThingValue.toString());
         }
     }
 }
