@@ -25,7 +25,6 @@ CWD=$(pwd)
 ROOT="$(realpath "$(dirname "$0")")"
 
 cd "$ROOT"
-LOG=$(mktemp)
 
 if [ -x "$(command -v hashdir)" ]; then
   mkdir -p "$ROOT"/.cache
@@ -39,12 +38,15 @@ else
   DIFF=3
 fi
 
+LOG=$(mktemp)
 if [ "$DIFF" -ne 0 ]; then
+  set +e
   tools/distro/build-execjar.bash >"$LOG" 2>&1
   exit_code="$?"
-  rm "$LOG"
+  set -e
 else
   exit_code=0
+  rm "$LOG"
 fi
 
 if [[ "$exit_code" == "0" ]]; then
