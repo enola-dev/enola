@@ -63,5 +63,10 @@ public final class TLC {
         threadLocalContext.set(context);
     }
 
+    /* package-local, always keep; never make public! */
+    static Context get() {
+        return threadLocalContext.get();
+    }
+
     private TLC() {}
 }
