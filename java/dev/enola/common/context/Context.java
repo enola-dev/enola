@@ -20,9 +20,15 @@ package dev.enola.common.context;
 import static java.util.Objects.requireNonNull;
 
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /**
  * Contexts 🧿 put things into perspective!
+ *
+ * <p>Contexts are "hierarchical", and child contexts "mask" keys in their parent.
  *
  * <p>This class is NOT thread safe. Might you want to use {@link TLC} instead?
  *
@@ -30,9 +36,11 @@ import org.jspecify.annotations.Nullable;
  */
 public class Context implements AutoCloseable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Context.class);
+
     private final @Nullable Context parent;
 
-    private @Nullable Entry last = null;
+    @Nullable Entry last = null;
     private boolean closed = false;
 
     public Context(Context parent) {
@@ -46,9 +54,11 @@ public class Context implements AutoCloseable {
     /**
      * Push, but not too hard…
      *
-     * @param key Key, which must implement {@link #equals(Object)} correctly, and should have a
-     *     useful {@link #toString()}} implementation; in practice, it often IS actually simply a
-     *     {@link String} (but it technically does not necessarily have to be).
+     * <p>Both the key and the value arguments should have useful {@link #toString()}}
+     * implementations; in practice, at least the key often IS actually simply a {@link String} (but
+     * it technically does not necessarily have to be).
+     *
+     * @param key Key, which must implement {@link #equals(Object)} correctly.
      * @param value Value to associate with the key.
      * @return this, for chaining.
      */
@@ -75,13 +85,42 @@ public class Context implements AutoCloseable {
     // Nota bene: This (kind of) Stack-like data structure (intentionally)
     // does not have (need) any pop() ("goes the weasel”) kind of method!
 
+    void append(Appendable a, String indent) {
+        try {
+            var current = last;
+            while (current != null) {
+                a.append(indent);
+                a.append(current.key.toString());
+                a.append(" => ");
+                a.append(current.value.toString());
+                a.append('\n');
+                current = current.previous;
+            }
+            if (parent != null) parent.append(a, indent + ContextualizedException.INDENT);
+        } catch (IOException e) {
+            LOG.error("append() hit an IOException", e);
+        }
+    }
+
+    String toString(String indent) {
+        var sb = new StringBuilder();
+        append(sb, indent);
+        return sb.toString();
+    }
+
+    public String toString() {
+        return toString("");
+    }
+
     /** Close this context. Don't use it anymore! */
     @Override
     public void close() {
         closed = true;
-        // Free up memory!
-        last = null;
         TLC.reset(parent);
+
+        // NB: It's tempting to do "last = null" here, intending to free up memory;
+        // but doing so breaks e.g. the ContextsTest#exceptionWithContext(). We do
+        // NOT have to do it to free memory, because Context (should) will be GC.
     }
 
     private void check() {

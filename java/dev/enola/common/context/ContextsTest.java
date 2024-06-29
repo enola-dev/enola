@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
-public class TLCTest {
+public class ContextsTest {
 
     @Test
     public void empty() {
@@ -52,6 +52,27 @@ public class TLCTest {
             }
 
             assertThat(TLC.get("foo")).isEqualTo("bar");
+        }
+    }
+
+    @Test
+    public void exceptionWithContext() {
+        try (var ctx1 = TLC.open()) {
+            ctx1.push("foo", "bar");
+            try (var ctx2 = TLC.open()) {
+                ctx2.push("foo", "baz");
+                // try {
+                // TODO throw new ContextualizedException("TEST");
+                // } catch (ContextualizedException e) {
+                // var sw = new StringWriter();
+                // PrintWriter pw = new PrintWriter(sw);
+                // e.printStackTrace(pw);
+                // var stackTrace = sw.toString();
+                // assertThat(stackTrace).contains("foo");
+                // assertThat(stackTrace).contains("bar");
+                // assertThat(stackTrace).contains("baz");
+                // }
+            }
         }
     }
 
