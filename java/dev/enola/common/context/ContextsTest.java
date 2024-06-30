@@ -23,6 +23,9 @@ import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class ContextsTest {
 
     @Test
@@ -59,19 +62,24 @@ public class ContextsTest {
     public void exceptionWithContext() {
         try (var ctx1 = TLC.open()) {
             ctx1.push("foo", "bar");
+
             try (var ctx2 = TLC.open()) {
                 ctx2.push("foo", "baz");
-                // try {
-                // TODO throw new ContextualizedException("TEST");
-                // } catch (ContextualizedException e) {
-                // var sw = new StringWriter();
-                // PrintWriter pw = new PrintWriter(sw);
-                // e.printStackTrace(pw);
-                // var stackTrace = sw.toString();
-                // assertThat(stackTrace).contains("foo");
-                // assertThat(stackTrace).contains("bar");
-                // assertThat(stackTrace).contains("baz");
-                // }
+
+                try {
+                    throw new ContextualizedException("TEST");
+
+                } catch (ContextualizedException e) {
+                    // TODO ThrowableSuject is missing this:
+                    var sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    e.printStackTrace(pw);
+                    var stackTrace = sw.toString();
+
+                    assertThat(stackTrace).contains("foo");
+                    assertThat(stackTrace).contains("bar");
+                    assertThat(stackTrace).contains("baz");
+                }
             }
         }
     }
