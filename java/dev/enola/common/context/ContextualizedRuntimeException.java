@@ -39,11 +39,6 @@ public class ContextualizedRuntimeException extends RuntimeException {
         context = TLC.get();
     }
 
-    public ContextualizedRuntimeException(Throwable cause) {
-        super(cause);
-        context = TLC.get();
-    }
-
     @Override
     public void printStackTrace(PrintStream s) {
         super.printStackTrace(s);
