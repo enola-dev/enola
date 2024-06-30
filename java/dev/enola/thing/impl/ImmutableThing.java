@@ -44,6 +44,15 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         this.iri = Objects.requireNonNull(iri, "iri");
     }
 
+    public static ImmutableThing copyOf(Thing thing) {
+        if (thing instanceof ImmutableThing immutableThing) return immutableThing;
+
+        return new ImmutableThing(
+                thing.iri(),
+                ImmutableMap.copyOf(thing.properties()),
+                ImmutableMap.copyOf(thing.datatypes()));
+    }
+
     public static Thing.Builder<? extends ImmutableThing> builder() {
         return new Builder<>();
     }
@@ -124,7 +133,8 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         }
 
         @Override
-        public Thing.Builder<B> set(String predicateIRI, Object value, String datatypeIRI) {
+        public Thing.Builder<B> set(
+                String predicateIRI, Object value, @Nullable String datatypeIRI) {
             properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;

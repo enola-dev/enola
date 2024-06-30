@@ -17,39 +17,59 @@
  */
 package dev.enola.thing.repo;
 
+import static dev.enola.common.collect.Immutables.join;
+
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.impl.MutableThing;
+
+import java.util.List;
 
 class ThingMerger {
     // TODO Implement missing ThingMergerTest coverage!
 
-    public static Thing merge(Thing existing, Thing update) {
-        if (!existing.iri().equals(update.iri())) throw new IllegalArgumentException();
+    public static Thing merge(Thing t1, Thing t2) {
+        if (!t1.iri().equals(t2.iri())) throw new IllegalArgumentException();
 
-        if (existing.predicateIRIs().isEmpty()) return update;
-        if (update.predicateIRIs().isEmpty()) return existing;
+        var t1predis = t1.predicateIRIs();
+        var t2predis = t2.predicateIRIs();
+        if (t1predis.isEmpty()) return t2;
+        if (t2predis.isEmpty()) return t1;
 
-        var merged = existing.copy();
-        var properties = update.properties();
-        properties.forEach(
-                (predicate, value) -> {
-                    var old = existing.get(predicate);
-                    if (old == null) merged.set(predicate, value, update.datatype(predicate));
-                    else if (old.equals(value)) {
-                        // That's fine!
-                    } else if (predicate.equals(KIRI.E.ORIGIN)) {
-                        // TODO Implement merging both into a List, with test coverage!
-                    } else
-                        throw new IllegalStateException(
-                                "Cannot merge "
-                                        + predicate
-                                        + " of an "
-                                        + existing.iri()
-                                        + " from "
-                                        + existing.getString(KIRI.E.ORIGIN)
-                                        + " and "
-                                        + update.getString(KIRI.E.ORIGIN));
-                });
-        return merged.build();
+        // TODO Use copy() instead of new MutableThing + ImmutableThing.copyOf()
+
+        var merged = new MutableThing<>(t2predis.size());
+        t2.properties()
+                .forEach(
+                        (predicate, t2obj) -> {
+                            var t1obj = t1.get(predicate);
+                            var t1dt = t1.datatype(predicate);
+                            var t2dt = t2.datatype(predicate);
+                            var sameDt = t1dt != null && t1dt.equals(t2dt);
+
+                            if (t1obj == null) merged.set(predicate, t2obj, t2dt);
+                            else if (t1obj.equals(t2obj) && sameDt)
+                                merged.set(predicate, t2obj, t2dt);
+                            // skipcq: JAVA-C1003
+                            else if (t1obj instanceof List t1list && t2obj instanceof List t2list) {
+                                merged.set(predicate, join(t1list, t2list));
+                            } else
+                                throw new IllegalStateException(
+                                        "Cannot merge "
+                                                + predicate
+                                                + " of an "
+                                                + t1.iri()
+                                                + " from "
+                                                + t1.getString(KIRI.E.ORIGIN)
+                                                + " and "
+                                                + t2.getString(KIRI.E.ORIGIN));
+                        });
+
+        try {
+            return ImmutableThing.copyOf(merged.build());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new IllegalArgumentException("Cannot merge " + t1.iri(), e);
+        }
     }
 }

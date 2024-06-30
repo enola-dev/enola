@@ -19,6 +19,8 @@ package dev.enola.thing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Thing is the central data structure of Enola.
  *
@@ -34,17 +36,25 @@ public interface Thing extends PredicatesObjects {
 
     String iri();
 
+    // TODO @Override Builder<? extends Thing> newBuilder();
+
     @Override
-    Builder<? extends Thing> copy();
+    Builder<? extends Thing> copy(); // TODO Remove un-used copy()
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
+
+        default Builder<B> copy(Thing thing) {
+            iri(thing.iri());
+            thing.properties().forEach((p, v) -> set(p, v, thing.datatype(p)));
+            return this;
+        }
 
         Builder<B> iri(String iri);
 
         Builder<B> set(String predicateIRI, Object value);
 
-        Builder<B> set(String predicateIRI, Object value, String datatypeIRI);
+        Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI);
 
         @Override
         B build();

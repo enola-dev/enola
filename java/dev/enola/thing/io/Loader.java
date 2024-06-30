@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, Thing>> {
@@ -58,7 +59,7 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
             things.get()
                     .forEach(
                             thingBuilder -> {
-                                thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
+                                thingBuilder.set(KIRI.E.ORIGIN, List.of(resource.uri()));
                                 var thing = thingBuilder.build();
                                 store.merge(thing);
                             });
