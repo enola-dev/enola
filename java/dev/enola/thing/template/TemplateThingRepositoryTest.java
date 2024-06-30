@@ -27,6 +27,7 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
+import dev.enola.thing.Thing;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
@@ -48,7 +49,7 @@ public class TemplateThingRepositoryTest {
     @Test
     public void greetingN() {
         DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
-        ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(dtr);
+        ResourceIntoThingConverter<Thing> ritc = new RdfResourceIntoThingConverter<>(dtr);
         var loader = new Loader(ritc);
 
         var store = new ThingMemoryRepositoryRW();

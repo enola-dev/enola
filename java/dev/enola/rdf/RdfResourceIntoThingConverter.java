@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class RdfResourceIntoThingConverter implements ResourceIntoThingConverter {
+public class RdfResourceIntoThingConverter<T extends Thing>
+        implements ResourceIntoThingConverter<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
 
@@ -44,26 +45,27 @@ public class RdfResourceIntoThingConverter implements ResourceIntoThingConverter
 
     private final ProtoThingIntoJavaThingBuilderConverter protoThingIntoJavaThingBuilderConverter;
 
-    private final Supplier<Builder> builderSupplier;
+    private final Supplier<Builder<T>> builderSupplier;
 
     public RdfResourceIntoThingConverter(
-            DatatypeRepository datatypeRepository, Supplier<Thing.Builder> builderSupplier) {
+            DatatypeRepository datatypeRepository, Supplier<Thing.Builder<T>> builderSupplier) {
         this.protoThingIntoJavaThingBuilderConverter =
                 new ProtoThingIntoJavaThingBuilderConverter(datatypeRepository);
         this.builderSupplier = builderSupplier;
     }
 
+    @SuppressWarnings("unchecked")
     public RdfResourceIntoThingConverter(DatatypeRepository datatypeRepository) {
-        this(datatypeRepository, ImmutableThing::builder);
+        this(datatypeRepository, () -> (Builder<T>) ImmutableThing.builder());
     }
 
     @Override
-    public Optional<List<Builder>> convert(ReadableResource input) throws ConversionException {
+    public Optional<List<Builder<T>>> convert(ReadableResource input) throws ConversionException {
         var optProtoList = rdfResourceIntoProtoThingConverter.convert(input);
         if (!optProtoList.isPresent()) return Optional.empty();
 
         var protoList = optProtoList.get();
-        var listBuilder = ImmutableList.<Thing.Builder>builderWithExpectedSize(protoList.size());
+        var listBuilder = ImmutableList.<Thing.Builder<T>>builderWithExpectedSize(protoList.size());
 
         for (var protoThing : protoList) {
             try {
@@ -75,7 +77,6 @@ public class RdfResourceIntoThingConverter implements ResourceIntoThingConverter
                 LOG.error("Failed to convert Thing in: " + input.uri(), e);
             }
         }
-
         return Optional.of(listBuilder.build());
     }
 }

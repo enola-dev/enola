@@ -30,27 +30,28 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, Thing>> {
+public class Loader<T extends Thing>
+        implements ConverterInto<Stream<ReadableResource>, Store<?, T>> {
 
     // TODO Do this multi-threaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
 
-    private final ResourceIntoThingConverter resourceIntoThingConverter;
+    private final ResourceIntoThingConverter<T> resourceIntoThingConverter;
 
-    public Loader(ResourceIntoThingConverter resourceIntoThingConverter) {
+    public Loader(ResourceIntoThingConverter<T> resourceIntoThingConverter) {
         this.resourceIntoThingConverter = resourceIntoThingConverter;
     }
 
     @Override
-    public boolean convertInto(Stream<ReadableResource> stream, Store<?, Thing> store)
+    public boolean convertInto(Stream<ReadableResource> stream, Store<?, T> store)
             throws ConversionException, IOException {
 
         stream.forEach(resource -> load(resource, store));
         return true;
     }
 
-    private void load(ReadableResource resource, Store<?, Thing> store) {
+    private void load(ReadableResource resource, Store<?, T> store) {
         LOG.info("Loading {}...", resource);
         var things = resourceIntoThingConverter.convert(resource);
         if (!things.isPresent()) LOG.error("No Things in loaded: {}", resource);
