@@ -58,7 +58,8 @@ public class Context implements AutoCloseable {
      * implementations; in practice, at least the key often IS actually simply a {@link String} (but
      * it technically does not necessarily have to be).
      *
-     * @param key Key, which must implement {@link #equals(Object)} correctly.
+     * @param key Key, which must implement {@link #equals(Object)} correctly. By convention, often
+     *     a String formatted like <tt>getClass().getName() + "#METHOD/PARAMETER"</tt>.
      * @param value Value to associate with the key.
      * @return this, for chaining.
      */
@@ -68,7 +69,7 @@ public class Context implements AutoCloseable {
         return this;
     }
 
-    /** Get the value for the given key from this or its parent context. */
+    /** Get the value for the given key, from this or its parent context. May be wnull. */
     public @Nullable Object get(Object key) {
         check();
         var current = last;
@@ -80,6 +81,31 @@ public class Context implements AutoCloseable {
         }
         if (parent != null) return parent.get(key);
         else return null;
+    }
+
+    public <T> Context push(Class<T> key, T value) {
+        push(key, (Object) value); // NOT .getName()
+        return this;
+    }
+
+    /**
+     * Gets the instance of Class, from this or its parent context. Never null, may throw
+     * IllegalStateException.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T get(Class<T> klass) {
+        var key = klass; // NOT .getName();
+        if (isEmpty()) throw new IllegalStateException("Context is empty");
+        var object = get((Object) key);
+        if (object == null)
+            throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
+        if (klass.isInstance(object)) return (T) object;
+        throw new IllegalStateException(
+                "Context's " + key + " is a " + object.getClass() + " instead of " + klass);
+    }
+
+    private boolean isEmpty() {
+        return last == null && parent == null;
     }
 
     // Nota bene: This (kind of) Stack-like data structure (intentionally)
@@ -102,7 +128,7 @@ public class Context implements AutoCloseable {
         }
     }
 
-    String toString(String indent) {
+    private String toString(String indent) {
         var sb = new StringBuilder();
         append(sb, indent);
         return sb.toString();

@@ -18,6 +18,7 @@
 package dev.enola.common.convert;
 
 import dev.enola.common.URILineColumnMessage;
+import dev.enola.common.context.ContextualizedRuntimeException;
 
 import java.net.URI;
 
@@ -25,7 +26,7 @@ import java.net.URI;
  * Failures encountered by {@link ConverterInto}, {@link Converter} and {@link BiConverter}
  * implementations.
  */
-public class ConversionException extends RuntimeException {
+public class ConversionException extends ContextualizedRuntimeException {
     // TODO Re-try making this extends Exception instead Runtime, now that I have 👟 MoreStreams
 
     public ConversionException(String message, URI uri, long line, long column, Throwable cause) {

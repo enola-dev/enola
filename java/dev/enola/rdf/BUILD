@@ -29,6 +29,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
@@ -58,11 +59,13 @@ junit_tests(
     srcs_utils = glob(["*Subject.java"]),
     deps = [
         ":rdf",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/protobuf:test_java_proto",
         "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//test",

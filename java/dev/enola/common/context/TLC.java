@@ -51,11 +51,20 @@ public final class TLC {
 
     /** See {@link dev.enola.common.context.Context#get(java.lang.Object). */
     public static @Nullable Object get(Object key) {
+        return context().get(key);
+    }
+
+    /** See {@link dev.enola.common.context.Context#get(java.lang.Class). */
+    public static <T> T get(Class<T> klass) {
+        return context().get(klass);
+    }
+
+    private static Context context() {
         var tlc = threadLocalContext.get();
         if (tlc == null) {
-            throw new IllegalStateException("open() first!");
+            throw new IllegalStateException("Missing TLC.open() in call chain!");
         }
-        return tlc.get(key);
+        return tlc;
     }
 
     /* package-local, always keep; never make public! */

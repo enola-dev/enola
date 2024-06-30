@@ -35,7 +35,6 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.ThingMetadataProvider;
-import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ThingProviderAdapter;
@@ -91,8 +90,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
             DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
             ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
-            ResourceIntoThingConverter ritc =
-                    new RdfResourceIntoThingConverter(dtr, ImmutableThing::builder);
+            ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(dtr);
             var loader = new Loader(ritc);
             var fgrp = new GlobResourceProviders();
             for (var globIRI : group.load) {

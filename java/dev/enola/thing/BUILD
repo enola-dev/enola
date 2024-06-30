@@ -60,6 +60,7 @@ java_proto_library(
 java_library(
     name = "thing_java",
     srcs = glob(
+        # TODO Separate BUILD for each sub-package
         ["**/*.java"],
         exclude = [
             "**/*Test*.java",
@@ -71,6 +72,8 @@ java_library(
     deps = [
         ":thing_java_proto",
         "//java/dev/enola/common",
+        "//java/dev/enola/common/collect",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",

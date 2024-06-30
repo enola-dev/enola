@@ -15,23 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common;
+package dev.enola.common.collect;
 
-import java.util.Collection;
-import java.util.OptionalInt;
+import java.util.Iterator;
 
-// TODO Move this into package dev.enola.common.collect
-public final class MoreIterables {
+public final class MoreIterators {
 
-    /**
-     * Size of an {@link Iterable}, if there is an efficient way of obtaining it. Useful for
-     * optimizations. See also {@link com.google.common.collect.Iterables#size(Iterable)}.
-     */
-    public static OptionalInt sizeIfKnown(Iterable<?> iterable) {
-        return (iterable instanceof Collection)
-                ? OptionalInt.of(((Collection<?>) iterable).size())
-                : OptionalInt.empty();
+    public static <T> Iterable<T> toIterable(Iterator<T> iterator) {
+        return () -> iterator;
     }
 
-    private MoreIterables() {}
+    private MoreIterators() {}
 }
