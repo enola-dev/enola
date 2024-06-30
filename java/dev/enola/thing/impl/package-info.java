@@ -15,13 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.io;
+@NullMarked
+package dev.enola.thing.impl;
 
-import dev.enola.common.convert.OptionalConverter;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.thing.Thing;
-
-import java.util.List;
-
-public interface ResourceIntoThingConverter<T extends Thing>
-        extends OptionalConverter<ReadableResource, List<Thing.Builder<T>>> {}
+import org.jspecify.annotations.NullMarked;
