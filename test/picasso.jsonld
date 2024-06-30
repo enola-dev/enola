@@ -1,6 +1,6 @@
 [
   {
-    "@id": "_:f034741e5da3451ead5b5972d6cf75311",
+    "@id": "http://example.enola.dev/Picasso",
     "http://example.enola.dev/city": [
       {
         "@value": "Barcelona"
