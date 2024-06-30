@@ -24,9 +24,15 @@ import java.util.stream.Stream;
 /** Static utility methods related to {@code Stream} instances. {@link Streams} has more. */
 public final class MoreStreams {
 
+    // TODO Move to package dev.enola.common.collect (but must figure out Sneaker relationship)
+
     // TODO Eventually adopting one of (but which?) real reactive frameworks in Enola overall
     // and rm this may be better? (That would likely be better than doing something such as e.g.
     // https://stackoverflow.com/questions/30117134/aggregate-runtime-exceptions-in-java-8-streams)
+
+    public static <T> Iterable<T> toIterable(Stream<T> stream) {
+        return stream::iterator;
+    }
 
     // While waiting for e.g. something like https://bugs.openjdk.org/browse/JDK-8148917
     public static <T, E extends Exception> void forEach(

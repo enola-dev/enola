@@ -17,8 +17,10 @@
  */
 package dev.enola.rdf;
 
+import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.datatype.DatatypeRepository;
@@ -35,6 +37,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+@SuppressWarnings("rawtypes")
+@AutoService(ResourceIntoThingConverter.class)
 public class RdfResourceIntoThingConverter<T extends Thing>
         implements ResourceIntoThingConverter<T> {
 
@@ -56,7 +60,12 @@ public class RdfResourceIntoThingConverter<T extends Thing>
 
     @SuppressWarnings("unchecked")
     public RdfResourceIntoThingConverter(DatatypeRepository datatypeRepository) {
+        // TODO Instead ImmutableThing.builder() it should look-up GenJavaThing subclass, if any
         this(datatypeRepository, () -> (Builder<T>) ImmutableThing.builder());
+    }
+
+    public RdfResourceIntoThingConverter() {
+        this(TLC.get(DatatypeRepository.class));
     }
 
     @Override

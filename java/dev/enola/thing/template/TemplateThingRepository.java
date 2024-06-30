@@ -23,7 +23,7 @@ import com.github.fge.uritemplate.URITemplateParseException;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
-import dev.enola.common.MoreIterables;
+import dev.enola.common.collect.MoreIterables;
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.iri.template.VariableMaps;
 import dev.enola.thing.*;
@@ -37,7 +37,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 
 public class TemplateThingRepository implements ThingRepository, TemplateService {
 
-    private final record Match(String iriTemplate, Function<Map<String, String>, Thing> function) {}
+    private record Match(String iriTemplate, Function<Map<String, String>, Thing> function) {}
 
     private final ThingRepository delegate;
     private final URITemplateMatcherChain<Match> iriTemplateChain;
