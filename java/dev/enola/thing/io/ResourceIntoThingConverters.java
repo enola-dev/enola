@@ -32,6 +32,10 @@ import java.util.stream.Stream;
 public class ResourceIntoThingConverters<T extends Thing>
         implements Converter<ReadableResource, List<Thing.Builder<T>>> {
 
+    // TODO Reconsider use of generics here -VS- in ThingIO
+
+    // TODO Support a more "streaming" API...
+
     private final ImmutableList<ResourceIntoThingConverter<T>> converters;
 
     public ResourceIntoThingConverters(Iterable<ResourceIntoThingConverter<T>> converters) {

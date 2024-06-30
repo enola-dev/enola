@@ -87,6 +87,9 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
         // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
         ServiceProvider grpc = null;
         if (group.load != null) {
+            // TODO Use (new) ThingIO / ResourceIntoThingConverters infra here! (With TLC.open(),
+            // similar to how it's done in RdfResourceIntoThingConverterTest; but needs more
+            // thought.)
             // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
             DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
             ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
