@@ -141,6 +141,16 @@ jobs:
         with:
           path: "site/"
 
+  test-devcontainer:
+    # https://github.com/devcontainers/ci/
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run dev container task
+        uses: devcontainers/ci@v0.3
+        with:
+          runCmd: ./test.bash
+
   deploy-website:
     needs: build
     if: ${{ github.event_name == 'push' }}
