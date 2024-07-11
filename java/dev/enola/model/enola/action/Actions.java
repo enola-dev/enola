@@ -15,22 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.action;
 
-public interface Property extends Type {
+import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 
-    // TODO @IRI(KIRI.E.META.PARENT)
-    Property parent();
+public final class Actions {
 
-    // TODO @IRI(KIRI.E.META.DATATYPE)
-    Datatype datatype();
+    public static final Thing GET = ImmutableThing.builder().iri(Get.IRI).build();
 
-    // TODO @IRI(KIRI.E.META.MULTIPLICITY)
-    Multiplicity multiplicity();
-
-    enum Multiplicity {
-        Single,
-        Set,
-        List
-    }
+    private Actions() {}
 }

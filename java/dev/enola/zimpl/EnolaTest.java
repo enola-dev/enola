@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.Enola;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.StringResource;
-import dev.enola.model.enola.Actions;
+import dev.enola.model.enola.action.Actions;
 
 import org.junit.Ignore;
 import org.junit.Test;

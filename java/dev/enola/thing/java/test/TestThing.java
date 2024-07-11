@@ -36,6 +36,7 @@ public interface TestThing extends Thing {
     @IRI(KIRI.RDFS.LABEL)
     @Nullable String label();
 
+    // TODO Generate this (needs moving into separate top-level class)
     interface Builder<B extends TestThing> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         Builder<B> label(String label);
 

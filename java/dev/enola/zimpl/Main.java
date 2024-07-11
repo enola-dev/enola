@@ -18,7 +18,7 @@
 package dev.enola.zimpl;
 
 import dev.enola.Enola;
-import dev.enola.model.enola.Get;
+import dev.enola.model.enola.action.Get;
 
 /**
  * Enola CLI demo MVP.

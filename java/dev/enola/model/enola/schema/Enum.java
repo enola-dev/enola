@@ -19,7 +19,7 @@ package dev.enola.model.enola.schema;
 
 import java.util.Set;
 
-public interface Enum extends Type {
+public interface Enum extends Datatype {
 
     // TODO @IRI(KIRI.E.META.VALUES)
     Set<EnumValue> values();

@@ -17,4 +17,7 @@
  */
 package dev.enola.model.enola.schema;
 
-public interface EnumValue extends Type {}
+public interface EnumValue extends Type {
+
+    Object value();
+}

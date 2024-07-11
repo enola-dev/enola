@@ -25,6 +25,6 @@ public interface Class extends Type {
     Set<Class> parents();
 
     // TODO @IRI(KIRI.E.META.PROPERTIES)
-    // Cannot be properties() due to conflict
-    Set<Property> fields();
+    // Cannot be properties() due to conflict with PredicatesObjects#properties()
+    Set<Field> fields();
 }
