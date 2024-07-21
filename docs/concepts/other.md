@@ -18,6 +18,8 @@
 
 # Other Tools
 
+[Awesome Semantic Web](https://github.com/semantalytics/awesome-semantic-web) has similar related links.
+
 ## SRE & DevOps
 
 Enola 🕵🏾‍♀️ is not an Observability / Monitoring _(Application Performance Management, APM)_ tool. There are already many great ones, e.g. Prometheus, [Thanos](https://thanos.io), etc.

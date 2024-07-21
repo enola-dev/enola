@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "firstName": "http://xmlns.com/foaf/0.1/firstName",
+    "birthDate": {
+      "@id": "https://schema.org/birthDate",
+      "@type": "https://schema.org/Date"
+    },
+    "location": {
+      "@id": "http://www.w3.org/ns/locn#location",
+      "@language": "en"
+    },
+    "homeAddress": {
+      "@id": "http://example.enola.dev/homeAddress",
+      "@context": {
+        "city": "http://example.enola.dev/city",
+        "street": "http://example.enola.dev/street"
+      }
+    }
+  }
+}

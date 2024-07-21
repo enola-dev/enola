@@ -31,6 +31,9 @@ models/build.bash
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 ./test.bash
 
+# Run test-jsonld before Git Test
+tools/test-jsonld/test-jsonld.bash
+
 # No files (which are not on .gitigore) should have been modified!
 tools/git/test.bash
 

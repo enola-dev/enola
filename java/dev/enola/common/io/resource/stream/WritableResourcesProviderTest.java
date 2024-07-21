@@ -40,12 +40,22 @@ public class WritableResourcesProviderTest {
     }
 
     @Test
-    public void separate() {
+    public void directory() {
         assertThat(
                         wrp.getWritableResource(
-                                        URI.create("file:/tmp/test"),
+                                        URI.create("file:/tmp/test/"),
                                         URI.create("file:/etc/hello.txt"))
                                 .uri())
                 .isEqualTo(URI.create("file:/tmp/test/etc/hello.txt"));
+    }
+
+    @Test
+    public void file() {
+        assertThat(
+                        wrp.getWritableResource(
+                                        URI.create("file:/tmp/hello.txt"),
+                                        URI.create("file:/etc/hello.txt"))
+                                .uri())
+                .isEqualTo(URI.create("file:/tmp/hello.txt"));
     }
 }

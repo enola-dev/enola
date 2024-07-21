@@ -33,7 +33,7 @@ public class WritableResourcesProvider {
 
     public WritableResource getWritableResource(URI base, URI uri) {
         if (FileDescriptorResource.STDOUT_URI.equals(base)) return rp.getWritableResource(base);
-        if (!base.toString().endsWith("/")) base = URI.create(base + "/");
+        if (!base.toString().endsWith("/")) return rp.getWritableResource(base);
         return rp.getWritableResource(base.resolve(uri.getPath().substring(1)));
     }
 

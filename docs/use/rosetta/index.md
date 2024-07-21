@@ -18,12 +18,15 @@
 
 # Rosetta
 
+<!-- Show (include) each example's input/output... maybe split onto separate pages? -->
+
 Rosetta, inspired by
 [the Rosetta Stone](https://en.wikipedia.org/wiki/Rosetta_Stone), transforms
 e.g. between:
 
-* Text Encodings
+* Text Encodings (e.g. [UTF-8](https://en.wikipedia.org/wiki/UTF-8) ⇔ [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) etc.)
 * RDF Turtle ⇔ JSON-LD ⇔ YAML-LD ⇔ Enola Things
+<!-- TODO * YAML & JSON ⇔ RDF Turtle, with JSON-LD Contexts -->
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
 _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
@@ -79,7 +82,7 @@ $ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.thing.yaml
 ...
 ```
 
-## UTF-8 to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1)
+## [UTF-8](https://en.wikipedia.org/wiki/UTF-8) to [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1)
 
 ```bash cd ../.././..
 $ file docs/use/rosetta/hello.txt
