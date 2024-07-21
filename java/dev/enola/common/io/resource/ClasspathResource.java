@@ -27,7 +27,7 @@ import java.nio.charset.Charset;
 
 public class ClasspathResource extends UrlResource {
 
-    // TODO This *MUST* have a mandatory "allowed packages" sort of argument!
+    // TODO Security: This *MUST* have a mandatory "allowed packages" sort of argument!
 
     public static class Provider implements ResourceProvider {
 

@@ -20,6 +20,7 @@ package dev.enola.cli;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
+import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
@@ -92,7 +93,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
             ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(dtr);
             var loader = new Loader(ritc);
-            var fgrp = new GlobResourceProviders();
+            var fgrp = new GlobResourceProviders(rp);
             for (var globIRI : group.load) {
                 try (var stream = fgrp.get(globIRI)) {
                     loader.convertIntoOrThrow(stream, store);
@@ -163,13 +164,16 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     protected abstract void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
             throws Exception;
 
-    static class ModelOrServer {
+    static class LoadableModelURIs {
 
         @Option(
                 names = {"--load", "-l"},
                 required = true,
                 description = "URI Glob of Models to load (e.g. file:\"**.ttl\")")
         java.util.List<String> load;
+    }
+
+    static class ModelOrServer extends LoadableModelURIs {
 
         @Option(
                 names = {"--model", "-m"},
@@ -183,5 +187,20 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 required = true,
                 description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
         @Nullable String server;
+    }
+
+    static class Output {
+        // Default command output destination is STDOUT.
+        // NB: "fd:1" normally (in ResourceProviders) is FileDescriptorResource,
+        // but CommandWithEntityID "hacks" this and uses WriterResource, for "testability".
+        static final URI DEFAULT_OUTPUT_URI = FileDescriptorResource.STDOUT_URI;
+
+        @Option(
+                names = {"--output", "-o"},
+                required = true,
+                defaultValue = FileDescriptorResource.STDOUT,
+                showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+                description = "URI (base) of where to write output/s")
+        URI output;
     }
 }

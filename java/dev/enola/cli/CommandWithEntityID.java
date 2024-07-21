@@ -61,10 +61,11 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
 
         // See CommandWithModelAndOutput
-        if (output.equals(DEFAULT_OUTPUT_URI)) {
+        if (output == null || output.output.equals(Output.DEFAULT_OUTPUT_URI)) {
             resource = new WriterResource(spec.commandLine().getOut(), format.toMediaType());
         } else {
-            resource = rp.getWritableResource(URIs.addMediaType(output, format.toMediaType()));
+            resource =
+                    rp.getWritableResource(URIs.addMediaType(output.output, format.toMediaType()));
         }
 
         run(service, iri);

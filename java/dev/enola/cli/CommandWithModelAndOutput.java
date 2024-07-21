@@ -18,23 +18,8 @@
 package dev.enola.cli;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Option;
-
-import java.net.URI;
 
 public abstract class CommandWithModelAndOutput extends CommandWithModel {
 
-    // Default command output destination is STDOUT.
-    // NB: "fd:1" normally (in ResourceProviders) is FileDescriptorResource,
-    // but CommandWithEntityID "hacks" this and uses WriterResource, for "testability".
-    protected static final String DEFAULT_OUTPUT = "fd:1";
-    protected static final URI DEFAULT_OUTPUT_URI = URI.create(DEFAULT_OUTPUT);
-
-    @Option(
-            names = {"--output", "-o"},
-            required = true,
-            defaultValue = DEFAULT_OUTPUT,
-            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-            description = "URI of where to write output (of get or docgen)")
-    URI output;
+    @CommandLine.ArgGroup CommandWithModel.Output output;
 }

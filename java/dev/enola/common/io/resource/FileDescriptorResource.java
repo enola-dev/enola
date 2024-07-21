@@ -38,6 +38,10 @@ import java.nio.charset.Charset;
  */
 public class FileDescriptorResource extends BaseResource implements Resource {
 
+    public static final String STDOUT = "fd:1?charset=UTF-8";
+
+    public static final URI STDOUT_URI = URI.create(STDOUT);
+
     public static class Provider implements ResourceProvider {
 
         @Override

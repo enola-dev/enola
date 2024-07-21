@@ -17,20 +17,17 @@
  */
 package dev.enola.common.yamljson;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class JSON {
     private JSON() {}
 
     public static Object readObject(String json) {
+        if ("".equals(json)) return ""; // NOT Collections.emptyMap();
         return new GsonBuilder().create().fromJson(json, Object.class);
     }
 
@@ -40,12 +37,19 @@ public final class JSON {
     }
 
     public static String write(Object root) {
+        if ("".equals(root)) return "";
         return new GsonBuilder().create().toJson(root);
     }
 
-    // TODO normalize() should ideally do away with order differences by sorting map keys
+    /**
+     * Canonicalize JSON, inspired by <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC 8785</a>,
+     * but not 100% fully compliant; because Java uses e.g. 1.0E30 instead of 1e+30, and a few other
+     * such differences.
+     *
+     * @see dev.enola.common.canonicalize.Canonicalizer
+     */
     @SuppressWarnings("rawtypes")
-    public static String normalize(String json) {
+    public static String canonicalize(String json) {
         return write(sortByKeyIfMap(readObject(json)));
     }
 
@@ -54,13 +58,14 @@ public final class JSON {
         if (object instanceof Map) {
             var map = (Map<String, Object>) object;
             return sortByKey(map);
-        } else if (object instanceof List) {
-            var list = (List) object;
-            var newList = ImmutableList.builderWithExpectedSize(list.size());
+        } else if (object instanceof List list) {
+            // NB: We cannot use an ImmutableList here, because null is permitted!
+            var newList = new ArrayList<>(list.size());
             for (var element : list) {
-                newList.add(sortByKeyIfMap(element));
+                var sorted = sortByKeyIfMap(element);
+                newList.add(sorted);
             }
-            return newList.build();
+            return newList;
         }
         return object;
     }

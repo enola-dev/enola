@@ -21,14 +21,18 @@ import com.google.errorprone.annotations.MustBeClosed;
 
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.io.resource.ResourceProviders;
 
 import java.util.stream.Stream;
 
 public class GlobResourceProviders implements GlobResourceProvider {
 
-    private final GlobResourceProvider fileGlobResourceProvider = new FileGlobResourceProvider();
-    private final ResourceProvider resourceProvider = new ResourceProviders();
+    private final ResourceProvider resourceProvider;
+    private final GlobResourceProvider fileGlobResourceProvider;
+
+    public GlobResourceProviders(ResourceProvider resourceProvider) {
+        this.resourceProvider = resourceProvider;
+        this.fileGlobResourceProvider = new FileGlobResourceProvider(resourceProvider);
+    }
 
     @Override
     @MustBeClosed

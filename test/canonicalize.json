@@ -1,0 +1,14 @@
+{
+  "numbers": [333333333.33333329, 1E30, 4.50,
+    2e-3, 0.000000000000000000000000001],
+  "string": "\u20ac$\u000F\u000aA'\u0042\u0022\u005c\\\"\/",
+  "literals": [null, true, false],
+
+  "\u20ac": "Euro Sign",
+  "\r": "Carriage Return",
+  "\ufb33": "Hebrew Letter Dalet With Dagesh",
+  "1": "One",
+  "\ud83d\ude00": "Emoji: Grinning Face",
+  "\u0080": "Control",
+  "\u00f6": "Latin Small Letter O With Diaeresis"
+}
