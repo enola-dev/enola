@@ -48,6 +48,7 @@ nav:
       - Connectors: use/connector/index.md
       - Server: use/server/index.md
       - Rosetta: use/rosetta/index.md
+      - Canonicalize: use/canonicalize/index.md
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
   - Models: models/index.md

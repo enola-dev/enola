@@ -39,7 +39,7 @@ else
 fi
 
 LOG=$(mktemp)
-if [ "$DIFF" -ne 0 ]; then
+if [ "$DIFF" -ne 0 ] || [ ! -f site/download/latest/enola ]; then
   set +e
   tools/distro/build-execjar.bash >"$LOG" 2>&1
   exit_code="$?"
