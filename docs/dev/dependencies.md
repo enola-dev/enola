@@ -43,8 +43,7 @@ It should be regularly (manually) run by maintainers of this project. Where poss
 ## GitHub Action Cache
 
 The [`.github/workflows/ci.yaml`](//.github/workflows/ci.yaml) uses the
-https://github.com/actions/cache to
-This speeds up the Continuous Integration (CI) builds of PRs on GitHub.
+https://github.com/actions/cache to speed up the Continuous Integration (CI) builds of PRs on GitHub.
 
 It is **normal** and intentional that every time the files listed above are changed this cache is _entirely_ invalidated, and thus a longer "full build" runs. PRs which do not change dependencies will still build noticeably faster.
 
