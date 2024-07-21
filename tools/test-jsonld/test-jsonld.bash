@@ -25,9 +25,7 @@ npx jsonld-cli@2.0.0 lint test/*.jsonld
 
 # TODO https://github.com/digitalbazaar/jsonld-cli/pull/28: --context=test/picasso-context.jsonld
 # NB https://github.com/digitalbazaar/jsonld-cli/issues/15
-cd test
-npx jsonld-cli@2.0.0 flatten picasso.json | tee /tmp/picasso.jsonld
-cd ..
+npx jsonld-cli@2.0.0 flatten --base=test/ test/picasso.json | tee /tmp/picasso.jsonld
 
 # TODO https://github.com/digitalbazaar/jsonld-cli/pull/27: npx jsonld-cli@2.0.0 diff test/picasso.jsonld /tmp/picasso.jsonld
 ./enola canonicalize --pretty --load=file:test/picasso.jsonld --output=file:/tmp/picasso-expected.canonicalized.jsonld
