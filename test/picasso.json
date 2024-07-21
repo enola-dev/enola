@@ -1,6 +1,6 @@
 [
   {
-    "@context": "test/picasso-context.jsonld",
+    "@context": "picasso-context.jsonld",
 
     "@id": "http://example.enola.dev/Picasso",
     "@type": "http://example.enola.dev/Artist",
@@ -11,7 +11,7 @@
     "homeAddress": { "city": "Barcelona", "street": "31 Art Gallery" }
   },
   {
-    "@context": "test/picasso-context.jsonld",
+    "@context": "picasso-context.jsonld",
 
     "@id": "http://example.enola.dev/Dalí",
     "@type": "http://example.enola.dev/Artist",
