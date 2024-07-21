@@ -33,6 +33,8 @@ import java.nio.charset.StandardCharsets;
 
 public class Canonicalizer implements ResourceConverter {
 
+    // TODO Implement https://www.w3.org/TR/rdf-canon/
+
     public static final String PRETTY_QUERY_PARAMETER = "pretty";
 
     public static void canonicalize(ReadableResource in, WritableResource out, boolean pretty)

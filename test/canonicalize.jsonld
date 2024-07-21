@@ -1,0 +1,18 @@
+[
+  {
+    "@id": "http://example.enola.dev/Picasso",
+    "https://schema.org/name": [
+      {
+        "@value": "Pablo Picasso"
+      }
+    ]
+  },
+  {
+    "https://schema.org/name": [
+      {
+        "@value": "Salvador Domingo Felipe Jacinto Dalí"
+      }
+    ],
+    "@id": "http://example.enola.dev/Dalí"
+  }
+]

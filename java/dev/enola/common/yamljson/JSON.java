@@ -58,6 +58,8 @@ public final class JSON {
      */
     @SuppressWarnings("rawtypes")
     public static String canonicalize(String json, boolean format) {
+        // TODO Consider instead using
+        // https://github.com/filip26/titanium-json-ld/blob/5c2c02c1f65b8e885fb689a460efba3f6925b479/src/main/java/com/apicatalog/jsonld/json/JsonCanonicalizer.java#L39
         return write(sortByKeyIfMap(readObject(json)), format);
     }
 
@@ -73,6 +75,8 @@ public final class JSON {
                 var sorted = sortByKeyIfMap(element);
                 newList.add(sorted);
             }
+            // TODO Do this only when canonicalizing JSON-LD, not any JSON:
+            sortListByID(newList);
             return newList;
         }
         return object;
@@ -87,6 +91,22 @@ public final class JSON {
             newMap.put(key, sortByKeyIfMap(map.get(key)));
         }
         return newMap.build();
+    }
+
+    private static void sortListByID(List<Object> list) {
+        Collections.sort(
+                list,
+                (o1, o2) -> {
+                    // skipcq: JAVA-C1003
+                    if (o1 instanceof Map m1 && o2 instanceof Map m2) {
+                        var oid1 = m1.get("@id");
+                        var oid2 = m2.get("@id");
+                        // skipcq: JAVA-C1003
+                        if (oid1 instanceof String id1 && oid2 instanceof String id2)
+                            return id1.compareTo(id2);
+                        return 0;
+                    } else return 0;
+                });
     }
 
     private JSON() {}

@@ -76,11 +76,22 @@ public class CanonicalizerTest {
 
     @Test
     public void rfc8785() throws IOException {
-        var in = new ClasspathResource("canonicalize.json", MediaType.JSON_UTF_8);
+        var in = new ClasspathResource("canonicalize.json");
         var out = new MemoryResource(MediaType.JSON_UTF_8);
         Canonicalizer.canonicalize(in, out, false);
 
         var expected = new ClasspathResource("canonicalize.json.expected", MediaType.JSON_UTF_8);
+        assertThat(out.charSource().read()).isEqualTo(expected.charSource().read());
+    }
+
+    @Test
+    public void jsonld() throws IOException {
+        var md = MediaType.parse("application/ld+json").withCharset(UTF_8);
+        var in = new ClasspathResource("canonicalize.jsonld", md);
+        var out = new MemoryResource(MediaType.JSON_UTF_8);
+        Canonicalizer.canonicalize(in, out, true);
+
+        var expected = new ClasspathResource("canonicalize.jsonld.expected", MediaType.JSON_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expected.charSource().read());
     }
 }
