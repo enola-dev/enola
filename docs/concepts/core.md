@@ -40,13 +40,13 @@ URLs like HTTP links, which models can use to create hyperlinks to UIs of applic
 Enola currently has [built-in interchangeable support](../use/rosetta/index.md) for RDF 🐢 Turtle, JSON, YAML, and Text proto & Binary Protocol Buffers
 [wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for Things. It is conceptually open to supporting other formats in the future;
 likely [RDF4j's Binary Format](https://rdf4j.org/documentation/reference/rdf4j-binary/), maybe also e.g. [CBOR](https://github.com/enola-dev/enola/issues/603)
-(perhaps [RDF CBOR](https://openengiadina.codeberg.page/rdf-cbor/)?),
+(perhaps [RDF CBOR](https://openengiadina.codeberg.page/rdf-cbor/)?), or [IPFS IPLD Codecs](https://github.com/enola-dev/enola/issues/777)
 or something like [Amazon Ion](https://amazon-ion.github.io/ion-docs/) or [others](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats).
 <!-- TODO Maybe also ... FHIR? Blockchain EVM format? What else? -->
 
 ## Schemas
 
-Enola (currently) uses [LinkML](https://linkml.io) with [RDFS](../models/example.org/class.md) and (TBD) [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
+Enola is currently exploring using [LinkML](https://linkml.io) or [yml2vocab](https://w3c.github.io/yml2vocab/) with [RDFS](../models/example.org/class.md) and (TBD) [Proto 3](https://protobuf.dev/programming-guides/proto3/) as its
 Schema languages. It is conceptually open to supporting other kinds of schemas in the future; perhaps e.g.
-[JSON Schema](https://github.com/enola-dev/enola/issues/313), or [Cap’n Proto](https://capnproto.org/language.html), or [TypeScript](https://www.typescriptlang.org/docs/handbook/2/objects.html) (à la [Typson](https://github.com/lbovet/typson)), or [XML Schema](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) (XSD), or [YANG](https://en.wikipedia.org/wiki/YANG) or [FHIR](https://www.hl7.org/fhir/) or [Varlink](https://varlink.org/Interface-Definition) or [Web IDL](https://webidl.spec.whatwg.org) or
-[ASN.1](https://en.m.wikipedia.org/wiki/ASN.1) or [GNU poke](https://www.gnu.org/software/poke/).
+[JSON Schema](https://github.com/enola-dev/enola/issues/313), or [CBOR's RFC #8610 CDDL](https://datatracker.ietf.org/doc/html/rfc8610) or [IPFS IPLD Schemas](https://ipld.io/docs/schemas/) (see #[777](https://github.com/enola-dev/enola/issues/777)) or [Cap’n Proto](https://capnproto.org/language.html), or [TypeScript](https://www.typescriptlang.org/docs/handbook/2/objects.html) (à la [Typson](https://github.com/lbovet/typson)), or [XML Schema](https://en.wikipedia.org/wiki/XML_Schema_(W3C)) (XSD), or [YANG](https://en.wikipedia.org/wiki/YANG) or [FHIR](https://www.hl7.org/fhir/) or [Varlink](https://varlink.org/Interface-Definition) or [Web IDL](https://webidl.spec.whatwg.org) or
+[ASN.1](https://en.m.wikipedia.org/wiki/ASN.1) or [GNU poke](https://www.gnu.org/software/poke/) or other [Interface Description Languages (IDL)](https://en.m.wikipedia.org/wiki/Interface_description_language).
