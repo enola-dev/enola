@@ -86,7 +86,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v18.1.4
+    rev: v18.1.8
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -99,7 +99,7 @@ repos:
 
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
-    rev: v0.49.6
+    rev: v0.50.3
     hooks:
       - id: protolint
 
@@ -108,7 +108,7 @@ repos:
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
   # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.13.0
+    rev: v2.14.0
     hooks:
       - id: pretty-format-java
         # Keep this version in sync with the same version in .vscode/settings.json
@@ -122,7 +122,7 @@ repos:
 
     # Until https://github.com/DavidAnson/markdownlint/issues/121
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.12.1
+    rev: v3.12.2
     hooks:
       - id: markdown-link-check
         exclude: (models/|test/|docs/use/docgen/docgen.md|docs/use/server/index.md)
@@ -130,7 +130,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 6.4.0
+    rev: 6.4.0.1
     hooks:
       - id: buildifier
         args: &args
@@ -168,7 +168,7 @@ repos:
         exclude: mvnw
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.2
+    rev: 0.29.0
     hooks:
       - id: check-github-actions
         args: ["--verbose"]
