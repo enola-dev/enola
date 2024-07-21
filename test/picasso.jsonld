@@ -1,6 +1,6 @@
 [
   {
-    "@id": "_:f034741e5da3451ead5b5972d6cf75311",
+    "@id": "_:b0",
     "http://example.enola.dev/city": [
       {
         "@value": "Barcelona"
@@ -56,7 +56,7 @@
     ],
     "http://example.enola.dev/homeAddress": [
       {
-        "@id": "_:f034741e5da3451ead5b5972d6cf75311"
+        "@id": "_:b0"
       }
     ]
   }

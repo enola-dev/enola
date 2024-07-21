@@ -83,7 +83,7 @@ public class RdfReaderWriterTest {
     }
 
     @Test
-    @Ignore // TODO Implement this comme il faut... but perhaps first the equivalent in JSON?
+    @Ignore // TODO Implement this with JSON-LD, but *AFTER* the equivalent in JSON in readJson()
     public void readYaml() throws ConversionException {
         var model = new RdfReaderConverter().convert(PICASSO_YAML_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
