@@ -87,6 +87,22 @@ $ ./enola help rosetta
 ...
 ```
 
+## Canonicalize
+
+[Canonicalize](../canonicalize/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help canonicalize
+...
+```
+
+## Validate
+
+```bash cd ../.././..
+$ ./enola help validate
+...
+```
+
 ## Info
 
 [Info](../info/index.md) has the following options:
