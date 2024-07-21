@@ -43,6 +43,16 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
 
     @CommandLine.ArgGroup CommandWithModel.Output output;
 
+    @CommandLine.Option(
+            names = {"--pretty"},
+            negatable = true,
+            required = true,
+            defaultValue = "false",
+            fallbackValue = "true",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Whether to 'pretty print' (format) output")
+    boolean pretty;
+
     private WritableResourcesProvider wrp;
 
     @Override
@@ -60,6 +70,6 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
 
     private void canonicalize(ReadableResource r) throws IOException {
         var out = wrp.getWritableResource(output != null ? output.output : STDOUT_URI, r.uri());
-        Canonicalizer.canonicalize(r, out);
+        Canonicalizer.canonicalize(r, out, pretty);
     }
 }

@@ -18,27 +18,35 @@
 package dev.enola.common.yamljson;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.*;
 
 public final class JSON {
-    private JSON() {}
+
+    private static GsonBuilder newBuilder() {
+        return new GsonBuilder().disableJdkUnsafe().disableHtmlEscaping();
+    }
+
+    private static final Gson read = newBuilder().create();
 
     public static Object readObject(String json) {
         if ("".equals(json)) return ""; // NOT Collections.emptyMap();
-        return new GsonBuilder().create().fromJson(json, Object.class);
+        return read.fromJson(json, Object.class);
     }
 
     public static Map<String, Object> readMap(String json) {
         TypeToken<Map<String, Object>> mapType = new TypeToken<Map<String, Object>>() {};
-        return new GsonBuilder().create().fromJson(json, mapType);
+        return read.fromJson(json, mapType);
     }
 
-    public static String write(Object root) {
+    public static String write(Object root, boolean format) {
         if ("".equals(root)) return "";
-        return new GsonBuilder().create().toJson(root);
+        var builder = newBuilder();
+        if (format) builder.setPrettyPrinting();
+        return builder.create().toJson(root);
     }
 
     /**
@@ -49,8 +57,8 @@ public final class JSON {
      * @see dev.enola.common.canonicalize.Canonicalizer
      */
     @SuppressWarnings("rawtypes")
-    public static String canonicalize(String json) {
-        return write(sortByKeyIfMap(readObject(json)));
+    public static String canonicalize(String json, boolean format) {
+        return write(sortByKeyIfMap(readObject(json)), format);
     }
 
     @SuppressWarnings("unchecked")
@@ -80,4 +88,6 @@ public final class JSON {
         }
         return newMap.build();
     }
+
+    private JSON() {}
 }

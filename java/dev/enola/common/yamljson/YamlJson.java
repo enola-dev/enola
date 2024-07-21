@@ -64,6 +64,6 @@ public class YamlJson {
         if (list.size() == 1) {
             root = list.get(0);
         }
-        return JSON.write(root);
+        return JSON.write(root, false);
     }
 }

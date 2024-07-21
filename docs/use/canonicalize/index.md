@@ -25,6 +25,7 @@ This process is dependent on the type of the resource, but typically includes th
 * Formatting based on a fixed standard
 * Sorting keys which do not (should not) change semantics
 * Rewriting literal values
+* Fixed Encoding
 
 This is sometimes useful e.g. when testing, to compare output to a fixed expected outcome.
 
@@ -38,10 +39,17 @@ It also has an application in [cryptography](https://github.com/enola-dev/enola/
 {% include "../../../test/canonicalize.json" %}
 ```
 
-into this:
+into this, using an [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) _JSON Canonicalization Scheme_ (JCS) -inspired (but currently not fully compliant) algorithm:
 
 ```bash cd ../.././..
 $ ./enola canonicalize --load=file:test/canonicalize.json
+...
+```
+
+or more nicely (`--pretty`) formatted:
+
+```bash cd ../.././..
+$ ./enola canonicalize --pretty --load=file:test/canonicalize.json
 ...
 ```
 

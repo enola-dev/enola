@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/yamljson",
         "@maven//:com_google_guava_guava",

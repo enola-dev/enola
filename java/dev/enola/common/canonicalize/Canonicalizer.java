@@ -19,22 +19,28 @@ package dev.enola.common.canonicalize;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.yamljson.JSON;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class Canonicalizer {
+public class Canonicalizer implements ResourceConverter {
 
-    public static void canonicalize(ReadableResource in, WritableResource out) throws IOException {
+    public static final String PRETTY_QUERY_PARAMETER = "pretty";
+
+    public static void canonicalize(ReadableResource in, WritableResource out, boolean pretty)
+            throws IOException {
         var inMT = in.mediaType();
         var isJSON = MediaTypes.normalizedNoParamsEquals(inMT, MediaType.JSON_UTF_8);
         if (isJSON) {
             var json = in.charSource().read();
-            var canonicalized = JSON.canonicalize(json);
+            var canonicalized = JSON.canonicalize(json, pretty);
 
             // Force UTF-8, see https://www.rfc-editor.org/rfc/rfc8785#name-utf-8-generation
             // This intentionally completely ignores the WritableResource out's mediaType charset.
@@ -42,5 +48,15 @@ public class Canonicalizer {
         } else {
             throw new IllegalArgumentException("TODO Implement canonicalization for: " + inMT);
         }
+    }
+
+    @Override
+    public boolean convertInto(ReadableResource from, WritableResource into)
+            throws ConversionException, IOException {
+
+        var outQueryMap = URIs.getQueryMap(into.uri().toString());
+        var pretty = Boolean.valueOf(outQueryMap.getOrDefault(PRETTY_QUERY_PARAMETER, "false"));
+        canonicalize(from, into, pretty);
+        return true;
     }
 }
