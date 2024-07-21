@@ -32,7 +32,7 @@ import java.io.IOException;
 @CommandLine.Command(
         name = "canonicalize",
         description = {
-            "Canonicalize Resources",
+            "Canonicalize (AKA normalize) resources",
             "using e.g. RFC 8785 JSON Canonicalization Scheme (JCS) inspired approach",
             "(but this implementation is currently not yet fully compliant with that RFC)"
         })

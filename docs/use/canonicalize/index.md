@@ -16,9 +16,9 @@
     limitations under the License.
 -->
 
-# Canonicalize
+# Canonicalize (AKA Normalize)
 
-_Canonicalization_ transforms a resource into a "standard" representation.
+_Canonicalization,_ which is also called _normalization,_ transforms a resource into a "standard" representation.
 
 This process is dependent on the type of the resource, but typically includes things such as:
 
@@ -27,7 +27,7 @@ This process is dependent on the type of the resource, but typically includes th
 * Rewriting literal values
 * Fixed Encoding
 
-This is sometimes useful e.g. when testing, to compare output to a fixed expected outcome.
+This is useful e.g. when testing, to compare output to a fixed expected outcome.
 
 It also has an application in [cryptography](https://github.com/enola-dev/enola/issues/284), and is useful when _"signing"_ things.
 
@@ -54,3 +54,24 @@ $ ./enola canonicalize --pretty --load=file:test/canonicalize.json
 ```
 
 Note how the order of the keys in the JSON changes, among other changes.
+
+## JSON-LD
+
+`enola canonicalize` for JSON-LD transforms this `canonicalize.jsonld`:
+
+```json
+{% include "../../../test/canonicalize.jsonld" %}
+```
+
+```bash cd ../.././..
+$ ./enola canonicalize --pretty --load=file:test/canonicalize.jsonld --output=file:test/canonicalize.jsonld.expected
+...
+```
+
+into this - note how the 🎨 painters' order was swapped, because not just all map keys but the list itself was also ordered alphabetically by `@id`:
+
+```json
+{% include "../../../test/canonicalize.jsonld.expected" %}
+```
+
+Future versions may implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/).
