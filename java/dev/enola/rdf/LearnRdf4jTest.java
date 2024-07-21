@@ -58,7 +58,7 @@ public class LearnRdf4jTest {
         model.add(picasso, LOCN.LOCATION, Values.literal("Spain", "en"));
         // TODO model.add(picasso, LOCN.LOCATION, Values.literal("España", "es"));
 
-        BNode address = Values.bnode("f034741e5da3451ead5b5972d6cf75311");
+        BNode address = Values.bnode("b0");
         model.add(picasso, Values.iri(ex, "homeAddress"), address);
         model.add(address, Values.iri(ex, "street"), Values.literal("31 Art Gallery"));
         model.add(address, Values.iri(ex, "city"), Values.literal("Barcelona"));
@@ -79,7 +79,7 @@ public class LearnRdf4jTest {
     }
 
     Model picasso2() {
-        BNode address = Values.bnode("f034741e5da3451ead5b5972d6cf75311");
+        BNode address = Values.bnode("b0");
         return new ModelBuilder()
                 .setNamespace("ex", "http://example.enola.dev/")
                 .setNamespace(FOAF.NS)

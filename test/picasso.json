@@ -6,7 +6,6 @@
     "@type": "http://example.enola.dev/Artist",
 
     "firstName": "Pablo",
-    "birthDate": "1904-05-11",
     "location": "Spain",
     "homeAddress": { "city": "Barcelona", "street": "31 Art Gallery" }
   },
@@ -16,6 +15,7 @@
     "@id": "http://example.enola.dev/Dalí",
     "@type": "http://example.enola.dev/Artist",
 
-    "firstName": ["Salvador", "Domingo", "Felipe", "Jacinto"]
+    "firstName": ["Salvador", "Domingo", "Felipe", "Jacinto"],
+    "birthDate": "1904-05-11"
   }
 ]
