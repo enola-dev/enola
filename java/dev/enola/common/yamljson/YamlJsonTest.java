@@ -56,13 +56,15 @@ public class YamlJsonTest {
 
     @Test
     public void canonicalizeJSON() {
-        assertThat(JSON.canonicalize(" {  'a':\n37}")).isEqualTo("{\"a\":37.0}");
-        assertThat(JSON.canonicalize(" {\"b\":\"hi\", \"a\":37.0}"))
+        assertThat(JSON.canonicalize(" {  'a':\n37}", false)).isEqualTo("{\"a\":37.0}");
+        assertThat(JSON.canonicalize(" {\"b\":\"hi\", \"a\":37.0}", false))
                 .isEqualTo("{\"a\":37.0,\"b\":\"hi\"}");
-        assertThat(JSON.canonicalize("[{\"b\":\"hi\", \"a\":37.0}]"))
+        assertThat(JSON.canonicalize("[{\"b\":\"hi\", \"a\":37.0}]", false))
                 .isEqualTo("[{\"a\":37.0,\"b\":\"hi\"}]");
-        assertThat(JSON.canonicalize("[null, 0, 1]")).isEqualTo("[null,0.0,1.0]");
-        assertThat(JSON.canonicalize("[ ]")).isEqualTo("[]");
-        assertThat(JSON.canonicalize("")).isEqualTo("");
+        assertThat(JSON.canonicalize("[{\"b\":\"hi\", \"a\":37}]", true))
+                .isEqualTo("[\n  {\n    \"a\": 37.0,\n    \"b\": \"hi\"\n  }\n]");
+        assertThat(JSON.canonicalize("[null, 0, 1]", false)).isEqualTo("[null,0.0,1.0]");
+        assertThat(JSON.canonicalize("[ ]", false)).isEqualTo("[]");
+        assertThat(JSON.canonicalize("", false)).isEqualTo("");
     } // TODO See also CanonicalizerTest
 }

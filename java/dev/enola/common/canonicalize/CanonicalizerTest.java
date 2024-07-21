@@ -41,14 +41,15 @@ public class CanonicalizerTest {
     public void unknown() throws IOException {
         var in = new EmptyResource(MediaType.MICROSOFT_WORD);
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        assertThrows(IllegalArgumentException.class, () -> Canonicalizer.canonicalize(in, out));
+        assertThrows(
+                IllegalArgumentException.class, () -> Canonicalizer.canonicalize(in, out, false));
     }
 
     @Test
     public void emptyJSON() throws IOException {
         var in = new EmptyResource(MediaType.JSON_UTF_8.withoutParameters());
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out);
+        Canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource().read()).isEmpty(); // NOT .isEqualTo("{}".getBytes(UTF_8));
     }
 
@@ -56,7 +57,7 @@ public class CanonicalizerTest {
     public void simpleJSON() throws IOException {
         var in = StringResource.of(" {\"b\":\"hi\", \"a\":37.0}", MediaType.JSON_UTF_8);
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out);
+        Canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource().read()).isEqualTo("{\"a\":37.0,\"b\":\"hi\"}".getBytes(UTF_8));
     }
 
@@ -66,7 +67,7 @@ public class CanonicalizerTest {
                 StringResource.of(
                         "{\"b\":\"hi\"}", MediaType.JSON_UTF_8.withCharset(Charsets.UTF_16));
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out);
+        Canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource()).isNotEqualTo(in.byteSource());
         assertThat(in.charSource().read()).isEqualTo(new String(out.byteSource().read(), UTF_8));
         assertThat(out.byteSource().size()).isLessThan(in.byteSource().size());
@@ -77,7 +78,7 @@ public class CanonicalizerTest {
     public void rfc8785() throws IOException {
         var in = new ClasspathResource("canonicalize.json", MediaType.JSON_UTF_8);
         var out = new MemoryResource(MediaType.JSON_UTF_8);
-        Canonicalizer.canonicalize(in, out);
+        Canonicalizer.canonicalize(in, out, false);
 
         var expected = new ClasspathResource("canonicalize.json.expected", MediaType.JSON_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expected.charSource().read());
