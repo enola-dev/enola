@@ -44,7 +44,9 @@ public class YamlJson {
     public static String jsonToYaml(String json) {
         Object object = JSON.readObject(json);
 
-        if (object == null || object instanceof Map && ((Map<?, ?>) object).isEmpty()) {
+        if (object == null
+                || object == ""
+                || object instanceof Map && ((Map<?, ?>) object).isEmpty()) {
             return "";
         }
 

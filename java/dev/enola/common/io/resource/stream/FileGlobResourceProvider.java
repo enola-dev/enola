@@ -22,7 +22,6 @@ import com.google.errorprone.annotations.MustBeClosed;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.io.resource.ResourceProviders;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -44,7 +43,11 @@ import java.util.stream.Stream;
  */
 public class FileGlobResourceProvider implements GlobResourceProvider {
 
-    private final ResourceProvider fileResourceProvider = new ResourceProviders();
+    private final ResourceProvider fileResourceProvider;
+
+    public FileGlobResourceProvider(ResourceProvider fileResourceProvider) {
+        this.fileResourceProvider = fileResourceProvider;
+    }
 
     @Override
     @MustBeClosed

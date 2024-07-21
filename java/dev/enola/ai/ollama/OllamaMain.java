@@ -18,6 +18,7 @@
 package dev.enola.ai.ollama;
 
 import dev.enola.common.function.MoreStreams;
+import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResourceProvider;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 
@@ -77,7 +78,8 @@ public class OllamaMain {
 
     private static String suckFiles(String globURI) throws IOException {
         var sb = new StringBuilder();
-        GlobResourceProvider globResourceProvider = new GlobResourceProviders();
+        var rps = new ResourceProviders();
+        GlobResourceProvider globResourceProvider = new GlobResourceProviders(rps);
         try (var resources = globResourceProvider.get(globURI)) {
             MoreStreams.forEach(resources, r -> sb.append(r.charSource().read()));
         }

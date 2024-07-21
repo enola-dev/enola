@@ -19,6 +19,8 @@ package dev.enola.common.io.resource.stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.resource.ResourceProviders;
+
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -33,7 +35,7 @@ public class FileGlobResourceProviderTest {
     @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
     protected GlobResourceProvider newGlobResourceProvider() {
-        return new FileGlobResourceProvider();
+        return new FileGlobResourceProvider(new ResourceProviders());
     }
 
     protected void checkGlobIRI(String globIRI, int expectedFiles) {
@@ -59,7 +61,7 @@ public class FileGlobResourceProviderTest {
     }
 
     private void check(String suffix, int expectedFiles) {
-        var globIRI = tempFolder.getRoot().getAbsoluteFile().toURI().toString() + "/" + suffix;
+        var globIRI = tempFolder.getRoot().getAbsoluteFile().toURI() + "/" + suffix;
         checkGlobIRI(globIRI, expectedFiles);
     }
 

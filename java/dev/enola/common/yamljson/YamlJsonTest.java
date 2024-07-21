@@ -55,12 +55,14 @@ public class YamlJsonTest {
     }
 
     @Test
-    public void normalizeJSON() {
-        assertThat(JSON.normalize(" {  'a':\n37}")).isEqualTo("{\"a\":37.0}");
-        assertThat(JSON.normalize(" {\"b\":\"hi\", \"a\":37.0}"))
+    public void canonicalizeJSON() {
+        assertThat(JSON.canonicalize(" {  'a':\n37}")).isEqualTo("{\"a\":37.0}");
+        assertThat(JSON.canonicalize(" {\"b\":\"hi\", \"a\":37.0}"))
                 .isEqualTo("{\"a\":37.0,\"b\":\"hi\"}");
-        assertThat(JSON.normalize("[{\"b\":\"hi\", \"a\":37.0}]"))
+        assertThat(JSON.canonicalize("[{\"b\":\"hi\", \"a\":37.0}]"))
                 .isEqualTo("[{\"a\":37.0,\"b\":\"hi\"}]");
-        assertThat(JSON.normalize("[ ]")).isEqualTo("[]");
-    }
+        assertThat(JSON.canonicalize("[null, 0, 1]")).isEqualTo("[null,0.0,1.0]");
+        assertThat(JSON.canonicalize("[ ]")).isEqualTo("[]");
+        assertThat(JSON.canonicalize("")).isEqualTo("");
+    } // TODO See also CanonicalizerTest
 }

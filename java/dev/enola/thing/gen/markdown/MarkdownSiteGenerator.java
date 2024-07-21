@@ -52,6 +52,7 @@ public class MarkdownSiteGenerator {
             MetadataProvider metadataProvider,
             Templates.Format format) {
         this.base = base;
+        // TODO Re-use the (newer) WritableResourcesProvider here...
         if (!MoreFileSystems.URI_SCHEMAS.contains(base.getScheme()))
             throw new IllegalArgumentException(
                     "Must pass an existing (!) directory as --output=file:... not: " + base);

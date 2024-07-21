@@ -10,6 +10,10 @@ max_line_length = 120
 tab_width = 2
 trim_trailing_whitespace = true
 
+[*.expected]
+insert_final_newline = false
+max_line_length = unset
+
 [*.md]
 indent_size = unset
 # See, and must match, the .markdownlint.yaml MD013: line_length

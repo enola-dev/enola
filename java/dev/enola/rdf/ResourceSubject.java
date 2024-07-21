@@ -58,8 +58,8 @@ public final class ResourceSubject extends Subject {
 
     public void hasJSONEqualTo(ReadableResource resource) throws IOException {
         check("charSourceAsJSON")
-                .that(JSON.normalize(actual.charSource().read()))
-                .isEqualTo(JSON.normalize(resource.charSource().read()));
+                .that(JSON.canonicalize(actual.charSource().read()))
+                .isEqualTo(JSON.canonicalize(resource.charSource().read()));
     }
 
     // TODO other checks?

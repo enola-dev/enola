@@ -15,28 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.resource.stream;
+@NullMarked
+package dev.enola.common.canonicalize;
 
-import dev.enola.common.io.resource.ResourceProviders;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
-
-    @Override
-    protected GlobResourceProvider newGlobResourceProvider() {
-        return new GlobResourceProviders(new ResourceProviders());
-    }
-
-    @Test
-    public void nonGlobClasspath() {
-        checkGlobIRI("classpath:test.md", 1);
-    }
-
-    @Test
-    @Ignore // TODO Write a test, and fix the code, to glob over a JAR file...
-    public void globOnZIP() {
-        // ...
-    }
-}
+import org.jspecify.annotations.NullMarked;

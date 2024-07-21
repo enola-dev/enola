@@ -17,24 +17,25 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import com.google.errorprone.annotations.MustBeClosed;
-
-import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.data.ProviderFromIRI;
+import dev.enola.common.io.resource.WritableResource;
 
-import java.nio.file.FileSystem;
-import java.util.stream.Stream;
+import java.net.URI;
 
-/**
- * Resource Provider similar to the basic {@link ResourceProvider} - but for multiple resources,
- * collected using an IRI with a "glob" (e.g. à la Java's {@link FileSystem#getPathMatcher
- * getPathMatcher}).
- */
-public interface GlobResourceProvider extends ProviderFromIRI<Stream<ReadableResource>> {
-    // TODO Think through relationship to and integration of with ResourceRepository...
+public class WritableResourcesProvider {
 
-    @Override
-    @MustBeClosed
-    Stream<ReadableResource> get(String globIRI);
+    private final ResourceProvider rp;
+
+    public WritableResourcesProvider(ResourceProvider rp) {
+        this.rp = rp;
+    }
+
+    public WritableResource getWritableResource(URI base, URI uri) {
+        if (FileDescriptorResource.STDOUT_URI.equals(base)) return rp.getWritableResource(base);
+        if (!base.toString().endsWith("/")) base = URI.create(base + "/");
+        return rp.getWritableResource(base.resolve(uri.getPath().substring(1)));
+    }
+
+    // TODO Extend and use this also in DocGen and other CommandWithModelAndOutput
 }
