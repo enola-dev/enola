@@ -17,11 +17,12 @@
  */
 package dev.enola.common.canonicalize;
 
+import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.ResourceConverter;
@@ -37,8 +38,9 @@ public class Canonicalizer implements ResourceConverter {
     public static void canonicalize(ReadableResource in, WritableResource out, boolean pretty)
             throws IOException {
         var inMT = in.mediaType();
-        var isJSON = MediaTypes.normalizedNoParamsEquals(inMT, MediaType.JSON_UTF_8);
-        if (isJSON) {
+        var isJSON = normalizedNoParamsEquals(inMT, MediaType.JSON_UTF_8);
+        var hasJSON = inMT.subtype().endsWith("+json"); // e.g. "application/ld+json" et al.
+        if (isJSON || hasJSON) {
             var json = in.charSource().read();
             var canonicalized = JSON.canonicalize(json, pretty);
 

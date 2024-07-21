@@ -50,7 +50,7 @@ public class RosettaCommand extends CommandWithResourceProvider {
     URI in;
 
     @CommandLine.Option(
-            names = {"--out"},
+            names = {"--out", "--output", "-o"},
             required = true,
             description = "URI to Output (e.g. file:model.yaml)")
     URI out;

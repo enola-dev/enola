@@ -38,6 +38,8 @@ import java.io.IOException;
         })
 public class CanonicalizeCommand extends CommandWithResourceProvider {
 
+    // TODO Merge this completely with RosettaCommand ?!
+
     @CommandLine.ArgGroup(multiplicity = "1")
     CommandWithModel.LoadableModelURIs resources;
 
