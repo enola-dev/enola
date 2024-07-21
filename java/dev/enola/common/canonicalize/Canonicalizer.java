@@ -55,7 +55,7 @@ public class Canonicalizer implements ResourceConverter {
             throws ConversionException, IOException {
 
         var outQueryMap = URIs.getQueryMap(into.uri().toString());
-        var pretty = Boolean.valueOf(outQueryMap.getOrDefault(PRETTY_QUERY_PARAMETER, "false"));
+        var pretty = outQueryMap.get(PRETTY_QUERY_PARAMETER) != null;
         canonicalize(from, into, pretty);
         return true;
     }
