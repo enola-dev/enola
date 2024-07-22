@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
-import com.google.common.truth.Truth8;
+import com.google.common.truth.Truth;
 
 import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
@@ -215,14 +215,14 @@ public class URIsTest {
 
     @Test
     public void testGetFilePath() {
-        // Truth8.assertThat(Path.of("/tmp//{xy}?.txt#yo"))
+        // Truth.assertThat(Path.of("/tmp//{xy}?.txt#yo"))
         //        .isEqualTo(Path.of("/tmp/?.txt")); // TODO rm
 
-        Truth8.assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
+        Truth.assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
 
         // Glob URIs
-        Truth8.assertThat(URIs.getFilePath("file:/tmp//?.txt")).isEqualTo(Path.of("/tmp/?.txt"));
-        Truth8.assertThat(URIs.getFilePath("file:/tmp//{xy}?q=.")).isEqualTo(Path.of("/tmp/{xy}"));
+        Truth.assertThat(URIs.getFilePath("file:/tmp//?.txt")).isEqualTo(Path.of("/tmp/?.txt"));
+        Truth.assertThat(URIs.getFilePath("file:/tmp//{xy}?q=.")).isEqualTo(Path.of("/tmp/{xy}"));
     }
 
     @Test
