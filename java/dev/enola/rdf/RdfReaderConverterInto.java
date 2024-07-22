@@ -40,8 +40,6 @@ import no.hasmac.jsonld.loader.DocumentLoaderOptions;
 import org.eclipse.rdf4j.rio.*;
 import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
 import org.eclipse.rdf4j.rio.helpers.JSONLDSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -50,8 +48,6 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 public class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandler> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(RdfReaderConverterInto.class);
 
     public static final String CONTEXT_QUERY_PARAMETER = "context";
 
