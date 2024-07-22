@@ -17,6 +17,8 @@
  */
 package dev.enola.common.context;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
@@ -27,7 +29,7 @@ import java.io.PrintWriter;
  */
 public class ContextualizedRuntimeException extends RuntimeException {
 
-    private final Context context;
+    private final @Nullable Context context;
 
     public ContextualizedRuntimeException(String message) {
         super(message);
@@ -42,16 +44,20 @@ public class ContextualizedRuntimeException extends RuntimeException {
     @Override
     public void printStackTrace(PrintStream s) {
         super.printStackTrace(s);
-        if (context.last != null) s.println("Context:");
-        context.append(s, ContextualizedException.INDENT);
-        s.flush();
+        if (context != null) {
+            if (context.last != null) s.println("Context:");
+            context.append(s, ContextualizedException.INDENT);
+            s.flush();
+        }
     }
 
     @Override
     public void printStackTrace(PrintWriter s) {
         super.printStackTrace(s);
-        if (context.last != null) s.println("Context:");
-        context.append(s, ContextualizedException.INDENT);
-        s.flush();
+        if (context != null) {
+            if (context.last != null) s.println("Context:");
+            context.append(s, ContextualizedException.INDENT);
+            s.flush();
+        }
     }
 }
