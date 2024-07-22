@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-greeting2:
-  message: "hello"
-  object: world
+id: greeting2
+message: "hello"
+object: world
 
-world:
-  wikipedia: https://en.wikipedia.org/wiki/Earth
+---
+id: world
+wikipedia: https://en.wikipedia.org/wiki/Earth

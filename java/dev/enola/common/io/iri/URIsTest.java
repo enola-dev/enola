@@ -19,6 +19,8 @@ package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static java.net.URI.create;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
@@ -252,5 +254,11 @@ public class URIsTest {
         assertThat(uri.getScheme()).isEqualTo("scheme");
         assertThat(uri.getPath()).isEqualTo("/thing");
         assertThat(uri.toString()).isEqualTo(text);
+    }
+
+    @Test
+    public void testDropQuery() {
+        var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
+        assertThat(URIs.dropQueryAndFragment(uri)).isEqualTo(create("file:/tmp/test/picasso.yaml"));
     }
 }

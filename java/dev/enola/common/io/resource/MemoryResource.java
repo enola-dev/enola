@@ -26,11 +26,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryResource extends BaseResource implements Resource {
 
-    private static AtomicLong counter = new AtomicLong();
+    private static final AtomicLong counter = new AtomicLong();
 
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
-    protected MemoryResource(MediaType mediaType, URI uri) {
+    public MemoryResource(MediaType mediaType, URI uri) {
         super(uri, mediaType);
     }
 

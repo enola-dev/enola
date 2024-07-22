@@ -20,11 +20,28 @@
 
 Are you tired of using 🐢 Turtles to write models? You are more familiar with JSON and YAML!
 
-[JSON-LD](https://json-ld.org/) is a W3C standard to map JSON (and therefore YAML) to the RDF data model.
+[JSON-LD](https://json-ld.org/) is a W3C standard to map JSON (and therefore YAML) to the RDF linked data model.
 
 ## YAML
 
-TODO
+We can rewrite the [`greeting2.ttl`](greeting2.ttl) from the [Linked Data](linked.md) chapter as this [`greeting2.yaml`](greeting2.yaml):
+
+```yaml
+{% include "./greeting2.yaml" %}
+```
+
+Of course, we lost what uniquely identified our things... but JSON-LD Contexts can re-provide that, using this [`greeting-context.jsonld`](greeting-context.jsonld): <!-- TODO Write greeting-context.jsonld as greeting-context.yamlld ... -->
+
+```json
+{% include "./greeting-context.jsonld" %}
+```
+
+Combining these, Enola can recreate the same data model, and generating documentation will look the same as in the original [Linked Data](linked.md) chapter, using this:
+
+```bash cd .././.././..
+$ ./enola docgen --load="file:$PWD/models/example.org/greeting2.yaml?context=file:models/example.org/greeting-context.jsonld" --output=file:///tmp/models/ --no-index
+...
+```
 
 ## More
 

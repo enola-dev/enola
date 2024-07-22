@@ -26,7 +26,6 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.*;
 
 import org.eclipse.rdf4j.model.Model;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -47,9 +46,10 @@ public class RdfReaderWriterTest {
     private static final Resource PICASSO_JSON_RESOURCE =
             rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
 
-    private static final Resource PICASSO_YAMLLD_RESOURCE = rp.get("classpath:/picasso.yamlld");
+    private static final Resource PICASSO_YAML_RESOURCE =
+            rp.get("classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld");
 
-    private static final Resource PICASSO_YAML_RESOURCE = rp.get("classpath:/picasso.yaml");
+    private static final Resource PICASSO_YAMLLD_RESOURCE = rp.get("classpath:/picasso.yamlld");
 
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
@@ -84,16 +84,16 @@ public class RdfReaderWriterTest {
     }
 
     @Test
-    public void readJson() throws ConversionException {
+    public void readJsonWithContext() throws ConversionException {
         assertThat(PICASSO_JSON_RESOURCE.uri().getQuery()).isNotEmpty();
         var model = new RdfReaderConverter(rp).convert(PICASSO_JSON_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
-    @Ignore // TODO Implement this with JSON-LD, but *AFTER* the equivalent in JSON in readJson()
-    public void readYaml() throws ConversionException {
+    public void readYamlWithContext() throws ConversionException {
         var model = new RdfReaderConverter(rp).convert(PICASSO_YAML_RESOURCE).get();
+
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 

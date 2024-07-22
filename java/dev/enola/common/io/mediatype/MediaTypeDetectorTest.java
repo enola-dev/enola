@@ -26,7 +26,10 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 
+import static java.net.URI.create;
+
 import com.google.common.base.Charsets;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.EmptyResource;
@@ -36,7 +39,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 
 public class MediaTypeDetectorTest {
     MediaTypeDetector md = new MediaTypeDetector();
@@ -52,10 +54,10 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect("text/plain", "ascii", null))
                 .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(Charsets.US_ASCII));
 
-        assertThat(md.detect("text/plain", null, URI.create("http://server/hello.yaml")))
+        assertThat(md.detect("text/plain", null, create("http://server/hello.yaml")))
                 .isEqualTo(YAML_UTF_8);
 
-        assertThat(md.detect("application/octet-stream", null, URI.create("hello.txt")))
+        assertThat(md.detect("application/octet-stream", null, create("hello.txt")))
                 .isEqualTo(OCTET_STREAM);
 
         assertThat(md.detect(null, null, new File("hello.txt").toURI()))
@@ -67,11 +69,11 @@ public class MediaTypeDetectorTest {
                 .isEqualTo(PROTOBUF_TEXTPROTO_UTF_8);
 
         // Test that TestMediaTypes was correctly registered
-        assertThat(md.detect(null, null, URI.create("whatever:something.test")))
+        assertThat(md.detect(null, null, create("whatever:something.test")))
                 .isEqualTo(MediaTypesTest.TEST);
 
         // TODO Assert.assertThrows() ?
-        md.detect(null, null, URI.create("bad-URI-without-scheme"));
+        md.detect(null, null, create("bad-URI-without-scheme"));
     }
 
     // TODO Rewrite more from above in this new style (to test BOM sniffing)
@@ -93,6 +95,12 @@ public class MediaTypeDetectorTest {
 
         // TODO Make this work... it requires using the MediaTypeDetector directly in MemoryResource
         // assertThat(r.charSource().read()).isEqualTo(YAML_UTF_8);
+    }
+
+    @Test
+    public void testURI() {
+        var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
+        assertThat(md.detect(uri, ByteSource.empty())).isEqualTo(YAML_UTF_8);
     }
 
     // TODO Add mising test coverage for the BOM detection from YamlMediaType

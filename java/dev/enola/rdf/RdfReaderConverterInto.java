@@ -17,14 +17,22 @@
  */
 package dev.enola.rdf;
 
+import static com.google.common.net.MediaType.JSON_UTF_8;
+
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.rdf.RdfMediaTypeYamlLd.YAML_LD;
+import static dev.enola.rdf.RdfMediaTypes.JSON_LD;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypes;
+import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.yamljson.YamlJson;
 
 import no.hasmac.jsonld.JsonLdError;
 import no.hasmac.jsonld.loader.DocumentLoaderOptions;
@@ -32,6 +40,8 @@ import no.hasmac.jsonld.loader.DocumentLoaderOptions;
 import org.eclipse.rdf4j.rio.*;
 import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
 import org.eclipse.rdf4j.rio.helpers.JSONLDSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -40,6 +50,8 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 public class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandler> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RdfReaderConverterInto.class);
 
     public static final String CONTEXT_QUERY_PARAMETER = "context";
 
@@ -51,6 +63,19 @@ public class RdfReaderConverterInto implements ConverterInto<ReadableResource, R
 
     @Override
     public boolean convertInto(ReadableResource from, RDFHandler into) throws ConversionException {
+        // RDF4j doesn't dig YAML, yet; so until it supports https://json-ld.github.io/yaml-ld/
+        // we just Rosetta transform YAML to JSON and then pass that through to RDF4j:
+        var mt = from.mediaType();
+        if (MediaTypes.normalizedNoParamsEquals(mt, YAML_UTF_8)) {
+            var json = new MemoryResource(JSON_UTF_8, from.uri());
+            YamlJson.YAML_TO_JSON.convertInto(from, json);
+            from = json;
+        } else if (MediaTypes.normalizedNoParamsEquals(mt, YAML_LD)) {
+            var json = new MemoryResource(JSON_LD, from.uri());
+            YamlJson.YAML_TO_JSON.convertInto(from, json);
+            from = json;
+        }
+
         var parserFormat = Rio.getParserFormatForMIMEType(from.mediaType().toString());
         if (!parserFormat.isPresent()) {
             parserFormat = Rio.getParserFormatForFileName(from.uri().toString());

@@ -153,4 +153,14 @@ public class RosettaTest {
         assertThat(out.byteSource().size()).isGreaterThan(500);
         assertThat(out.charSource().read()).contains("firstName> \"Salvador\"");
     }
+
+    @Test
+    public void testYamlToTurtle() throws Exception {
+        var in = rp.get("classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld");
+        var out = new MemoryResource(RdfMediaTypes.TURTLE);
+        rosetta.convertInto(in, out);
+
+        assertThat(out.byteSource().size()).isGreaterThan(350);
+        assertThat(out.charSource().read()).contains("firstName> \"Salvador\"");
+    }
 }

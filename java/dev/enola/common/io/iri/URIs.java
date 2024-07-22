@@ -37,6 +37,7 @@ public final class URIs {
     // see also class dev.enola.common.io.iri.IRIs
 
     // TODO Review if all this String instead of URI-based processing could be removed and replaced
+    // perhaps by fully adopting https://github.com/enola-dev/enola/issues/797; and/or alternatively
     // with first encoding invalid special characters in URIs; see the related TBD in
     // FileGlobResourceProvider.
 
@@ -327,6 +328,22 @@ public final class URIs {
 
         String relativePath = uri.getSchemeSpecificPart();
         return Path.of(relativePath).toAbsolutePath().toUri();
+    }
+
+    public static URI dropQueryAndFragment(URI uri) {
+        if (uri.getRawQuery() == null && uri.getRawFragment() == null) return uri;
+        try {
+            return new URI(
+                    uri.getScheme(),
+                    uri.getUserInfo(),
+                    uri.getHost(),
+                    uri.getPort(),
+                    uri.getPath(),
+                    null,
+                    null);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("TODO FIXME" + uri, e);
+        }
     }
 
     // NB: There is intentionally no URI create(String uri) method here!

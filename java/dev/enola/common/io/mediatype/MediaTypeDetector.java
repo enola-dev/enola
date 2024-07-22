@@ -102,7 +102,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                         && ("file".equalsIgnoreCase(uri.getScheme())
                                 || fileSystemProviderSchemes.contains(
                                         uri.getScheme().toLowerCase()))) {
-                    var path = Path.of(uri);
+                    var path = Path.of(URIs.dropQueryAndFragment(uri));
                     try {
                         var contentType = Files.probeContentType(path);
                         if (contentType != null) {
@@ -170,8 +170,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
         var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
         var detected = detect(mt.toString(), charsetName, uri);
-        if (resource instanceof ReadableResource) {
-            var readableResource = (ReadableResource) resource;
+        if (resource instanceof ReadableResource readableResource) {
             detected = detectCharset(resource.uri(), readableResource.byteSource(), detected);
         }
 
