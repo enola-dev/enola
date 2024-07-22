@@ -38,7 +38,7 @@ import java.nio.file.Path;
 
 public class EnolaCLITest {
 
-    private static final String MODEL = "classpath:enola.dev/enola.ttl";
+    private static final String MODEL = "classpath:/enola.dev/enola.ttl";
 
     private static CLI cli;
 
@@ -83,7 +83,7 @@ public class EnolaCLITest {
                             "--test-scheme",
                             "--classpath-scheme",
                             "--model",
-                            "classpath:cli-test-model.textproto",
+                            "classpath:/cli-test-model.textproto",
                             "--output",
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
@@ -123,7 +123,7 @@ public class EnolaCLITest {
                         "--variables",
                         "HTML",
                         "--load",
-                        "classpath:example.org/greetingN.ttl",
+                        "classpath:/example.org/greetingN.ttl",
                         "--output",
                         dir.toUri().toString());
 
@@ -146,7 +146,7 @@ public class EnolaCLITest {
                         "list",
                         "enola.entity_kind",
                         "--model",
-                        "classpath:cli-test-model.textproto");
+                        "classpath:/cli-test-model.textproto");
         assertThat(exec).err().isEmpty();
         var out = assertThat(exec).hasExitCode(0).out();
         out.contains("enola.entity_kind");
@@ -172,7 +172,7 @@ public class EnolaCLITest {
                         "--format",
                         "TextProto",
                         "--model",
-                        "classpath:cli-test-model.textproto",
+                        "classpath:/cli-test-model.textproto",
                         "test.foobar/helo");
         assertThat(exec).err().isEmpty();
         assertThat(exec)
@@ -200,7 +200,7 @@ public class EnolaCLITest {
                             "--output",
                             r.uri().toString(),
                             "--model",
-                            "classpath:cli-test-model.textproto",
+                            "classpath:/cli-test-model.textproto",
                             "test.foobar/helo");
             assertThat(exec).err().isEmpty();
             assertThat(exec).out().isEmpty();
@@ -247,7 +247,7 @@ public class EnolaCLITest {
                         "-v",
                         "server",
                         "--model",
-                        "classpath:cli-test-model.textproto",
+                        "classpath:/cli-test-model.textproto",
                         "--httpPort=0",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
@@ -264,7 +264,7 @@ public class EnolaCLITest {
                         "-v",
                         "server",
                         "--model",
-                        "classpath:cli-test-model.textproto",
+                        "classpath:/cli-test-model.textproto",
                         "--httpPort=0",
                         "--immediateExitOnlyForTest=true");
         assertThat(exec).err().isEmpty();
@@ -280,7 +280,7 @@ public class EnolaCLITest {
                         "-v",
                         "server",
                         "--model",
-                        "classpath:cli-test-model.textproto",
+                        "classpath:/cli-test-model.textproto",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
         assertThat(exec).err().isEmpty();
@@ -300,7 +300,7 @@ public class EnolaCLITest {
                             "--schema",
                             "EntityKinds",
                             "--in",
-                            "classpath:cli-test-model.textproto",
+                            "classpath:/cli-test-model.textproto",
                             "--out",
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
