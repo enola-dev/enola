@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <grpc.version>1.61.0</grpc.version>
-    <errorprone.version>2.26.1</errorprone.version>
+    <errorprone.version>2.29.2</errorprone.version>
     <protobuf.version>4.0.0-rc-2</protobuf.version>
     <rdf4j.version>5.0.1</rdf4j.version>
   </properties>
