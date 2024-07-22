@@ -25,7 +25,7 @@ _Things_ can be represented in a variety of _[Formats](../../concepts/core.md#fo
 Let's start with this [`greeting1.ttl`](greeting1.ttl):
 
 ```turtle
-{% include "./greeting1.ttl" %}
+{% include "./greeting1.ttl" start="# limitations under the License.\n" %}
 ```
 
 This means that `https://example.org/greeting1` identifies some _Thing_ which has a `message` that is _"hello, world"._ Pretty simple, right?

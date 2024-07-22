@@ -21,7 +21,7 @@
 Are you bored with `greeting1`, `greeting2` & `greeting3` by now? 😼 Fear not - Enola has a way to define **ALL** _Greetings!_ 😸 To learn how, check out [`greetingN.ttl`](greetingN.ttl):
 
 ```turtle
-{% include "./greetingN.ttl" %}
+{% include "./greetingN.ttl" start="# limitations under the License.\n" %}
 ```
 
 This means:

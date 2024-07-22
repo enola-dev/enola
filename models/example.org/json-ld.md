@@ -27,7 +27,7 @@ Are you tired of using 🐢 Turtles to write models? You are more familiar with 
 We can rewrite the [`greeting2.ttl`](greeting2.ttl) from the [Linked Data](linked.md) chapter as this [`greeting2.yaml`](greeting2.yaml):
 
 ```yaml
-{% include "./greeting2.yaml" %}
+{% include "./greeting2.yaml" start="# limitations under the License.\n" %}
 ```
 
 Of course, we lost what uniquely identified our things... but JSON-LD Contexts can re-provide that, using this [`greeting-context.jsonld`](greeting-context.jsonld): <!-- TODO Write greeting-context.jsonld as greeting-context.yamlld ... -->
