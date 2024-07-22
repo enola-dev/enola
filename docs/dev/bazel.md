@@ -34,8 +34,11 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 PS: Use `b query "@maven//:*"` to see all targets.
 
-PPS: Consult the [`maven_install.json`](//maven_install.json) to see artifacts versions, dependencies, and packages.
-
 ### Update Existing Maven dependencies
 
     ./update.bash
+
+### Dependency Tree
+
+The equivalent of [`mvn dependency:tree`](https://maven.apache.org/plugins/maven-dependency-plugin/tree-mojo.html) is easily visible
+in the [`maven_install.json`](//maven_install.json), which lists all `artifacts` versions, transitive `dependencies`, and Java `packages`.

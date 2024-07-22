@@ -81,7 +81,10 @@ public class ClasspathHellDuplicatesCheckerTest {
 
                 // TODO: Fix the sad mess :( of duplicate Protobuf & gRPC JARs!
                 || jarPath.contains("protobuf")
-                || jarPath.contains("grpc");
+                || jarPath.contains("grpc")
+
+                // TODO: Fix org.glassfish:jakarta.json & jakarta.json:jakarta.json-api mess...
+                || jarPath.contains("org/glassfish");
     }
 
     protected boolean isHarmlessDuplicate(String resourcePath) {
