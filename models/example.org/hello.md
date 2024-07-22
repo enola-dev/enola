@@ -20,7 +20,7 @@
 
 Enola captures knowledge about _Things,_ and the relationships (links) between them.
 
-_Things_ can be represented in a variety of _[Formats](../../concepts/core.md#formats)._ In this tutorial, we'll use the RDF 🐢 Turtle format.
+_Things_ can be represented in a variety of _[Formats](../../concepts/core.md#formats)._ In this 1st step, we'll use the RDF 🐢 Turtle format.
 
 Let's start with this [`greeting1.ttl`](greeting1.ttl):
 
