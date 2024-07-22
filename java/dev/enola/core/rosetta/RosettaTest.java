@@ -27,6 +27,7 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UT
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.rdf.RdfMediaTypes;
 import dev.enola.thing.io.ThingMediaTypes;
@@ -36,7 +37,9 @@ import org.junit.Test;
 import java.nio.charset.StandardCharsets;
 
 public class RosettaTest {
-    private static final Rosetta rosetta = new Rosetta(iri -> null);
+
+    private static final ResourceProvider rp = new ClasspathResource.Provider();
+    private static final Rosetta rosetta = new Rosetta(rp);
 
     // These intentionally only test some cases; more detailed tests are done e.g. in YamlJsonTest,
     // and in ProtoIOTest and (indirectly) EntityKindRepositoryTest, and other tests.
@@ -139,5 +142,15 @@ public class RosettaTest {
         rosetta.convertInto(in, out);
 
         assertThat(out.byteSource().size()).isGreaterThan(800);
+    }
+
+    @Test
+    public void testJsonToTurtle() throws Exception {
+        var in = rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
+        var out = new MemoryResource(RdfMediaTypes.TURTLE);
+        rosetta.convertInto(in, out);
+
+        assertThat(out.byteSource().size()).isGreaterThan(500);
+        assertThat(out.charSource().read()).contains("firstName> \"Salvador\"");
     }
 }

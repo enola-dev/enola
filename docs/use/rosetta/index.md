@@ -26,7 +26,7 @@ e.g. between:
 
 * Text Encodings (e.g. [UTF-8](https://en.wikipedia.org/wiki/UTF-8) ⇔ [ISO 8859-1](https://en.wikipedia.org/wiki/ISO/IEC_8859-1) etc.)
 * RDF Turtle ⇔ JSON-LD ⇔ YAML-LD ⇔ Enola Things
-<!-- TODO * YAML & JSON ⇔ RDF Turtle, with JSON-LD Contexts -->
+* YAML & JSON ⇔ RDF Turtle [with JSON-LD Contexts](../json-ld/index.md)
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
 _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
@@ -74,6 +74,10 @@ The `model.binpb` now contains _[binary protocol buffer wire format](https://pro
 $ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.jsonld
 ...
 ```
+
+## JSON & YAML to Turtle 🐢 via JSON-LD
+
+[See JSON-LD](../json-ld/index.md).
 
 ## Turtle 🐢 to Things ⛓️
 

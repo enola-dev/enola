@@ -32,6 +32,7 @@ nav:
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md
           - Templates: models/example.org/templates.md
+          - JSON-LD: models/example.org/json-ld.md
       - News (Blog):
           - April 2024 News: blog/posts/2024-04.md
           - Linked Thing UI: blog/posts/ui1.md
@@ -48,6 +49,7 @@ nav:
       - Connectors: use/connector/index.md
       - Server: use/server/index.md
       - Rosetta: use/rosetta/index.md
+      - JSON-LD: use/json-ld/index.md
       - Canonicalize: use/canonicalize/index.md
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
