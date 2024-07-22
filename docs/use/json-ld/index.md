@@ -26,7 +26,13 @@ Enola can directly `--load` JSON & YAML, given a JSON-LD Context; [see Tutorial]
 
 ## Conversions
 
-[Enola Rosetta](../rosetta/index.md) can convert model resources among different formats using JSON-LD; e.g. from `picasso.json`:
+[Enola Rosetta](../rosetta/index.md) can convert model resources among different formats using JSON-LD; e.g. from `picasso.yaml`:
+
+```json
+{% include "../../../test/picasso.yaml" %}
+```
+
+or from `picasso.json`:
 
 ```json
 {% include "../../../test/picasso.json" %}
@@ -35,8 +41,16 @@ Enola can directly `--load` JSON & YAML, given a JSON-LD Context; [see Tutorial]
 with a `picasso-context.jsonld`:
 
 ```json
-{% include "../../../test/-context.json" %}
+{% include "../../../test/picasso-context.jsonld" %}
 ```
+
+### YAML to RDF Turtle 🐢
+
+```bash cd ../.././..
+./enola rosetta --in="file:$PWD/test/picasso.yaml?context=file:test/picasso-context.jsonld" --out="fd:1?mediaType=text/turtle"
+```
+
+PS: The `$PWD` in `file:` is required until [issue #797](https://github.com/enola-dev/enola/issues/797) is resolved.
 
 ### JSON to RDF Turtle 🐢
 

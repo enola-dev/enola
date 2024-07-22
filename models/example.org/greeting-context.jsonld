@@ -1,0 +1,14 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://example.org/",
+    "@base": "https://example.org/",
+    "id": "@id",
+    "object": {
+      "@type": "@id"
+    },
+    "wikipedia": {
+      "@type": "@id"
+    }
+  }
+}

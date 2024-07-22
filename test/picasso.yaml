@@ -26,3 +26,4 @@ homeAddress:
 id: http://example.enola.dev/Dalí
 type: http://example.enola.dev/Artist
 firstName: ["Salvador", "Domingo", "Felipe", "Jacinto"]
+birthDate: "1904-05-11"

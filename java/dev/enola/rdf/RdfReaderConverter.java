@@ -17,15 +17,10 @@
  */
 package dev.enola.rdf;
 
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.OptionalConverter;
-import dev.enola.common.io.mediatype.MediaTypes;
-import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.yamljson.YamlJson;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.DynamicModel;
@@ -43,19 +38,10 @@ public class RdfReaderConverter implements OptionalConverter<ReadableResource, M
     }
 
     @Override
-    public Optional<Model> convert(ReadableResource input) throws ConversionException {
-        // RDF4j doesn't dig YAML, yet; so until it supports https://json-ld.github.io/yaml-ld/
-        // we just Rosetta transform YAML to JSON and then pass that through to RDF4j:
-        if (MediaTypes.normalizedNoParamsEquals(
-                input.mediaType(), RdfMediaTypeYamlLd.YAML_LD, YAML_UTF_8)) {
-            var json = new MemoryResource(RdfMediaTypes.JSON_LD);
-            YamlJson.YAML_TO_JSON.convertInto(input, json);
-            input = json;
-        }
-
+    public Optional<Model> convert(ReadableResource from) throws ConversionException {
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
-        if (converterInto.convertInto(input, handler)) {
+        if (converterInto.convertInto(from, handler)) {
             return Optional.of(model);
         } else {
             return Optional.empty();

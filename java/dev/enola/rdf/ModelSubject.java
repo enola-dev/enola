@@ -47,6 +47,7 @@ public final class ModelSubject extends Subject {
 
     public void isEqualTo(Model expected) {
         if (!Models.isomorphic(actual, expected)) {
+            // TODO Canonicalizer-like sorting of Statements by IRI
             Truth.assertThat(actual).isEqualTo(expected);
         }
     }
