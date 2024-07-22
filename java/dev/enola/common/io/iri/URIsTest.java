@@ -240,4 +240,17 @@ public class URIsTest {
         assertThat(URIs.getSchemeSpecificPart("/absolute/rela/tive")).isEqualTo("");
         assertThat(URIs.getSchemeSpecificPart(null)).isEqualTo("");
     }
+
+    @Test
+    public void testCreate() {
+        // Nota bene: The / is important! At least in Java. Without it, everything that follows
+        // is just one single "schemeSpecificPart"; only with it does it get broken up (in Java).
+        var text = "scheme:/thing?ping=pong=pang#fragment";
+        var uri = URI.create(text);
+        assertThat(uri.getQuery()).isEqualTo("ping=pong=pang");
+        assertThat(uri.getFragment()).isEqualTo("fragment");
+        assertThat(uri.getScheme()).isEqualTo("scheme");
+        assertThat(uri.getPath()).isEqualTo("/thing");
+        assertThat(uri.toString()).isEqualTo(text);
+    }
 }

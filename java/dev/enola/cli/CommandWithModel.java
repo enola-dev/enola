@@ -91,7 +91,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
             DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
             ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
-            ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(dtr);
+            ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(rp, dtr);
             var loader = new Loader(ritc);
             var fgrp = new GlobResourceProviders(rp);
             for (var globIRI : group.load) {

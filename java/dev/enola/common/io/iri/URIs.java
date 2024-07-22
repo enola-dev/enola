@@ -25,6 +25,7 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
@@ -46,7 +47,7 @@ public final class URIs {
     private static final Splitter AMPERSAND_SPLITTER =
             Splitter.on('&').omitEmptyStrings().trimResults();
 
-    public static record MediaTypeAndOrCharset(String mediaType, String charset) {}
+    public record MediaTypeAndOrCharset(String mediaType, String charset) {}
 
     public static boolean hasQueryParameter(URI uri, String key) {
         var queryMap = getQueryMap(uri);
@@ -82,11 +83,11 @@ public final class URIs {
         if (Strings.isNullOrEmpty(originalUriWithQuery.getQuery())) return uri;
         if (!Strings.isNullOrEmpty(uri.getQuery())) return uri;
 
-        return URI.create(uri.toString() + "?" + originalUriWithQuery.getQuery());
+        return java.net.URI.create(uri + "?" + originalUriWithQuery.getQuery());
     }
 
     public static String addQuery(String string, Map<String, String> parameters) {
-        return addQuery(URI.create(string), parameters).toString();
+        return addQuery(java.net.URI.create(string), parameters).toString();
     }
 
     private static URI addQueryParameter(URI uri, String key, String value) {
@@ -103,7 +104,7 @@ public final class URIs {
         } else {
             connector = "&";
         }
-        return URI.create(uri + connector + key + "=" + encodeQueryParameterValue(value));
+        return java.net.URI.create(uri + connector + key + "=" + encodeQueryParameterValue(value));
     }
 
     private static String encodeQueryParameterValue(String value) {
@@ -139,8 +140,7 @@ public final class URIs {
         return map;
     }
 
-    // package-local not public (for now)
-    static Map<String, String> getQueryMap(URI uri) {
+    public static Map<String, String> getQueryMap(URI uri) {
         if (uri == null) return emptyMap();
 
         String query = uri.getQuery();
@@ -240,12 +240,12 @@ public final class URIs {
     }
 
     private static String chopFragmentAndQuery(String ssp) {
-        var chop = ssp.indexOf('?', 0);
+        var chop = ssp.indexOf('?');
 
         // Handle Glob URIs, like e.g. "file:/tmp//?.txt"
         if (ssp.indexOf('=', chop) == -1) chop = -1;
 
-        if (chop == -1) chop = ssp.indexOf('#', 0);
+        if (chop == -1) chop = ssp.indexOf('#');
         if (chop == -1) chop = ssp.length();
 
         return ssp.substring(0, chop);
@@ -285,7 +285,8 @@ public final class URIs {
                 }
             }
         } else if ("jar".equals(scheme)) {
-            return chopFragmentAndQuery(getFilename(URI.create(uri.getSchemeSpecificPart())));
+            return chopFragmentAndQuery(
+                    getFilename(java.net.URI.create(uri.getSchemeSpecificPart())));
         } else if ("http".equals(scheme) || "https".equals(scheme)) {
             path = chopFragmentAndQuery(uri.getPath());
         } else {
@@ -307,6 +308,14 @@ public final class URIs {
         return p > -1 ? chopLastSlash(path.substring(p + 1)) : chopLastSlash(path);
     }
 
+    public static URI create(URL url) {
+        try {
+            return url.toURI();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid Syntax: " + url, e);
+        }
+    }
+
     /**
      * This converts e.g. "file:relative.txt" to "file:///tmp/.../relative.txt" (depending on the
      * current working directory, obviously). It looses any query parameters and fragment.
@@ -319,6 +328,32 @@ public final class URIs {
         String relativePath = uri.getSchemeSpecificPart();
         return Path.of(relativePath).toAbsolutePath().toUri();
     }
+
+    // NB: There is intentionally no URI create(String uri) method here!
+    // Do simply use {@link URI#create(String)} or {@link URI#URI(String)}.
+    // If you find that it does not correctly set the URI's Query, just use
+    // "scheme:/thing?ping=pong=pang#fragment" instead of "scheme:thing?ping=pong=pang#fragment".
+    /*
+        public static URI create(String uri) {
+            String scheme = getScheme(uri);
+            String authority = null;
+            String path = getPath(uri);
+            String query = getQueryString(uri);
+            String fragment = getFragment(uri);
+            try {
+                // This fails if path doesn't start with '/' so this entire method is pointless!
+                return new URI(scheme, authority, path, query, fragment);
+            } catch (URISyntaxException e) {
+                throw new IllegalArgumentException("Invalid Syntax: " + uri, e);
+            }
+        }
+
+        private static String getFragment(String uri) {
+            return uri.lastIndexOf('#') == -1 ? uri : uri.substring(uri.lastIndexOf('#') + 1);
+        }
+    */
+
+    // TODO Review if getScheme(), getPath(), getQueryString(), getFragment() are *REALLY* needed?!
 
     private URIs() {}
 }

@@ -22,6 +22,7 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import org.slf4j.Logger;
@@ -41,13 +42,15 @@ import java.nio.charset.Charset;
  * Resource implemented with {@link URL#openStream()}.
  *
  * <p>Consider using {@link OkHttpResource} instead.
+ *
+ * <p>This also the base class of {@link ClasspathResource}.
  */
 public class UrlResource extends BaseResource implements ReadableResource {
 
-    public static enum Scheme {
+    public enum Scheme {
         jar,
         http
-    };
+    }
 
     public static class Provider implements ResourceProvider {
 
@@ -81,19 +84,34 @@ public class UrlResource extends BaseResource implements ReadableResource {
 
     private final URL url;
 
-    public UrlResource(URL url) {
-        super(URI.create(url.toString()), mediaType(url, null));
+    /**
+     * Constructor.
+     *
+     * @param uri URI of Resource; may be "logical", and e.g. include query parameters.
+     * @param url URL to read; must be "physical", and typically does not include query parameters.
+     * @param mediaType MediaType (incl. Charset)
+     */
+    public UrlResource(URI uri, URL url, MediaType mediaType) {
+        super(uri, mediaType);
         this.url = url;
     }
 
+    public UrlResource(URI uri, URL url) {
+        this(uri, url, mediaType(url, null));
+    }
+
+    public UrlResource(URL url) {
+        this(URIs.create(url), url, mediaType(url, null));
+    }
+
     public UrlResource(URL url, MediaType mediaType) {
-        super(URI.create(url.toString()), mediaType);
+        super(URIs.create(url), mediaType);
         this.url = url;
     }
 
     @Deprecated // TODO Remove, as un-used and pointless? Review Test Coverage #1st...
     public UrlResource(URL url, Charset charset) {
-        super(URI.create(url.toString()), mediaType(url, charset));
+        super(URIs.create(url), mediaType(url, charset));
         this.url = url;
     }
 

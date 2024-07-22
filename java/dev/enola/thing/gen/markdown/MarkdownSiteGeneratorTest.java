@@ -118,7 +118,7 @@ public class MarkdownSiteGeneratorTest {
     }
 
     private ImmutableSet<Thing> load(ReadableResource cpr) {
-        var rdf4jModel = new RdfReaderConverter().convert(cpr).get();
+        var rdf4jModel = new RdfReaderConverter(iri -> null).convert(cpr).get();
         var protoThingStream = new RdfThingConverter().convert(rdf4jModel);
         return protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
     }

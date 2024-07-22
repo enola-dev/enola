@@ -46,7 +46,7 @@ public class RdfThingConverterTest {
     private final ReadableResource daliYaml = new ClasspathResource("dali.thing.yaml");
 
     private final ProtoIO protoReader = new ProtoIO();
-    private final RdfReaderConverter rdfReader = new RdfReaderConverter();
+    private final RdfReaderConverter rdfReader = new RdfReaderConverter(iri -> null);
     private final RdfThingConverter rdfToThingConverter = new RdfThingConverter();
     private final ThingRdfConverter thingToRdfConverter = new ThingRdfConverter();
 

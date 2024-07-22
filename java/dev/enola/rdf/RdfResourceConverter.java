@@ -18,6 +18,7 @@
 package dev.enola.rdf;
 
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
@@ -31,8 +32,12 @@ public class RdfResourceConverter implements CatchingResourceConverter {
 
     // TODO Add conversion to/from Thing (incl. "chaining" to Thing YAML/JSON/BinPB)
 
-    private final RdfReaderConverterInto reader = new RdfReaderConverterInto();
+    private final RdfReaderConverterInto reader;
     private final RdfWriterConverter writer = new RdfWriterConverter();
+
+    public RdfResourceConverter(ResourceProvider resourceProvider) {
+        this.reader = new RdfReaderConverterInto(resourceProvider);
+    }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)

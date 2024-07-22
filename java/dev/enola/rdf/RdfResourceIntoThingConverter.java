@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableList;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
@@ -44,28 +45,31 @@ public class RdfResourceIntoThingConverter<T extends Thing>
 
     private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
 
-    private final RdfResourceIntoProtoThingConverter rdfResourceIntoProtoThingConverter =
-            new RdfResourceIntoProtoThingConverter();
+    private final RdfResourceIntoProtoThingConverter rdfResourceIntoProtoThingConverter;
 
     private final ProtoThingIntoJavaThingBuilderConverter protoThingIntoJavaThingBuilderConverter;
 
     private final Supplier<Builder<T>> builderSupplier;
 
     public RdfResourceIntoThingConverter(
-            DatatypeRepository datatypeRepository, Supplier<Thing.Builder<T>> builderSupplier) {
+            ResourceProvider rp,
+            DatatypeRepository datatypeRepository,
+            Supplier<Thing.Builder<T>> builderSupplier) {
+        this.rdfResourceIntoProtoThingConverter = new RdfResourceIntoProtoThingConverter(rp);
         this.protoThingIntoJavaThingBuilderConverter =
                 new ProtoThingIntoJavaThingBuilderConverter(datatypeRepository);
         this.builderSupplier = builderSupplier;
     }
 
     @SuppressWarnings("unchecked")
-    public RdfResourceIntoThingConverter(DatatypeRepository datatypeRepository) {
+    public RdfResourceIntoThingConverter(
+            ResourceProvider rp, DatatypeRepository datatypeRepository) {
         // TODO Instead ImmutableThing.builder() it should look-up GenJavaThing subclass, if any
-        this(datatypeRepository, () -> (Builder<T>) ImmutableThing.builder());
+        this(rp, datatypeRepository, () -> (Builder<T>) ImmutableThing.builder());
     }
 
     public RdfResourceIntoThingConverter() {
-        this(TLC.get(DatatypeRepository.class));
+        this(TLC.get(ResourceProvider.class), TLC.get(DatatypeRepository.class));
     }
 
     @Override

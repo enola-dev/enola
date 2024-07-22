@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
@@ -34,6 +35,8 @@ public class RdfResourceIntoThingConverterTest {
     public void convert() {
         try (var ctx = TLC.open()) {
             ctx.push(DatatypeRepository.class, new DatatypeRepositoryBuilder().build());
+            ctx.push(ResourceProvider.class, iri -> null);
+
             ResourceIntoThingConverters<Thing> c = new ResourceIntoThingConverters<>();
             var thing = c.convert(new ClasspathResource("picasso.ttl")).getFirst().build();
             assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");

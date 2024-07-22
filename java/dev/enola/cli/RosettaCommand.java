@@ -33,7 +33,7 @@ import java.net.URI;
         })
 public class RosettaCommand extends CommandWithResourceProvider {
 
-    private final Rosetta rosetta = new Rosetta();
+    private Rosetta rosetta;
 
     @CommandLine.Option(
             names = {"--schema"},
@@ -58,6 +58,8 @@ public class RosettaCommand extends CommandWithResourceProvider {
     @Override
     public void run() throws Exception {
         super.run();
+
+        rosetta = new Rosetta(rp);
 
         var inResource = rp.getReadableResource(in);
         var outResource = rp.getWritableResource(out);

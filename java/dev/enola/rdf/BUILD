@@ -42,6 +42,7 @@ java_library(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:no_hasmac_hasmac_json_ld",
         "@maven//:org_eclipse_rdf4j_rdf4j_common_io",
         "@maven//:org_eclipse_rdf4j_rdf4j_model",
         "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
@@ -72,5 +73,6 @@ junit_tests(
         "@maven//:org_eclipse_rdf4j_rdf4j_model",
         "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
         "@maven//:org_eclipse_rdf4j_rdf4j_model_vocabulary",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )

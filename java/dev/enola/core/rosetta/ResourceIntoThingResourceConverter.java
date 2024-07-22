@@ -18,6 +18,7 @@
 package dev.enola.core.rosetta;
 
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
@@ -27,9 +28,12 @@ import dev.enola.thing.io.ThingMediaTypes;
 public class ResourceIntoThingResourceConverter implements CatchingResourceConverter {
 
     private final ThingMediaTypes thingMediaTypes = new ThingMediaTypes();
-    private final RdfResourceIntoProtoThingConverter ritc =
-            new RdfResourceIntoProtoThingConverter();
+    private final RdfResourceIntoProtoThingConverter ritc;
     private final ProtoIO protoIO = new ProtoIO();
+
+    public ResourceIntoThingResourceConverter(ResourceProvider rp) {
+        this.ritc = new RdfResourceIntoProtoThingConverter(rp);
+    }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)

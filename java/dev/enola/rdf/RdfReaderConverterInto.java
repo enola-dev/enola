@@ -17,18 +17,37 @@
  */
 package dev.enola.rdf;
 
+import com.google.common.net.MediaType;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
+import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 
-import org.eclipse.rdf4j.rio.RDFHandler;
-import org.eclipse.rdf4j.rio.RDFParseException;
-import org.eclipse.rdf4j.rio.Rio;
+import no.hasmac.jsonld.JsonLdError;
+import no.hasmac.jsonld.loader.DocumentLoaderOptions;
+
+import org.eclipse.rdf4j.rio.*;
+import org.eclipse.rdf4j.rio.helpers.BasicParserSettings;
+import org.eclipse.rdf4j.rio.helpers.JSONLDSettings;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 
 public class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandler> {
+
+    public static final String CONTEXT_QUERY_PARAMETER = "context";
+
+    private final JsonLdDocumentLoader jsonLdDocumentLoader;
+
+    public RdfReaderConverterInto(ResourceProvider rp) {
+        jsonLdDocumentLoader = new JsonLdDocumentLoader(rp);
+    }
 
     @Override
     public boolean convertInto(ReadableResource from, RDFHandler into) throws ConversionException {
@@ -36,13 +55,45 @@ public class RdfReaderConverterInto implements ConverterInto<ReadableResource, R
         if (!parserFormat.isPresent()) {
             parserFormat = Rio.getParserFormatForFileName(from.uri().toString());
         }
+        if (!parserFormat.isPresent())
+            if (MediaTypes.normalizedNoParamsEquals(from.mediaType(), MediaType.JSON_UTF_8)) {
+                parserFormat = Optional.of(RDFFormat.JSONLD);
+            }
         if (parserFormat.isPresent()) {
             String baseURI = from.uri().toString();
             try (Reader reader = from.charSource().openStream()) {
                 var parser = Rio.createParser(parserFormat.get());
+                var config = parser.getParserConfig();
+
+                var context = URIs.getQueryMap(from.uri()).get(CONTEXT_QUERY_PARAMETER);
+                if (context != null) {
+                    try {
+                        var contextURI = new URI(context);
+                        var opts = new DocumentLoaderOptions();
+                        var document = jsonLdDocumentLoader.loadDocument(contextURI, opts);
+                        config.set(JSONLDSettings.EXPAND_CONTEXT, document);
+
+                    } catch (URISyntaxException e) {
+                        throw new ConversionException("Invalid URI syntax: " + context, e);
+                    } catch (JsonLdError e) {
+                        throw new ConversionException(
+                                "Failed loading JSON-LD Context: " + context, e);
+                    }
+                }
+
+                // TODO https://github.com/eclipse-rdf4j/rdf4j/issues/5080:
+                //   config.set(JSONLDSettings.DOCUMENT_LOADER, jsonLdDocumentLoader);
+
+                // TODO Should this be made configurable via an ?preserve_bnode_ids=true, and
+                // default to false? It's fine (and required) for initial testing, but later when
+                // merging into a store, will they automagically get adapted to avoid dupes, or
+                // not?
+                config.set(BasicParserSettings.PRESERVE_BNODE_IDS, true);
+
                 parser.setRDFHandler(into);
                 parser.parse(reader, baseURI);
                 return true;
+
             } catch (IOException e) {
                 throw new ConversionException("Failing reading from : " + from, e);
             } catch (RDFParseException e) {
