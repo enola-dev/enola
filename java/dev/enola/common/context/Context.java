@@ -36,6 +36,8 @@ import java.io.IOException;
  */
 public class Context implements AutoCloseable {
 
+    // TODO Offer more type-safe signatures, with (Key<T> key, T value)
+
     private static final Logger LOG = LoggerFactory.getLogger(Context.class);
 
     private final @Nullable Context parent;

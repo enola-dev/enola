@@ -17,13 +17,15 @@
  */
 package dev.enola.common.context;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /** {@link Exception} with {@link Context}. */
 public class ContextualizedException extends Exception {
 
-    private final Context context;
+    private final @Nullable Context context;
 
     public ContextualizedException(String message) {
         super(message);
@@ -38,17 +40,21 @@ public class ContextualizedException extends Exception {
     @Override
     public void printStackTrace(PrintStream s) {
         super.printStackTrace(s);
-        if (context.last != null) s.println("Context:");
-        context.append(s, INDENT);
-        s.flush();
+        if (context != null) {
+            if (context.last != null) s.println("Context:");
+            context.append(s, INDENT);
+            s.flush();
+        }
     }
 
     @Override
     public void printStackTrace(PrintWriter s) {
         super.printStackTrace(s);
-        if (context.last != null) s.println("Context:");
-        context.append(s, INDENT);
-        s.flush();
+        if (context != null) {
+            if (context.last != null) s.println("Context:");
+            context.append(s, INDENT);
+            s.flush();
+        }
     }
 
     static final String INDENT = "  ";

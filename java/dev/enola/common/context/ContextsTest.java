@@ -70,12 +70,7 @@ public class ContextsTest {
                     throw new ContextualizedException("TEST");
 
                 } catch (ContextualizedException e) {
-                    // TODO ThrowableSuject is missing this:
-                    var sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    var stackTrace = sw.toString();
-
+                    var stackTrace = stackTrace(e);
                     assertThat(stackTrace).contains("foo");
                     assertThat(stackTrace).contains("bar");
                     assertThat(stackTrace).contains("baz");
@@ -85,9 +80,24 @@ public class ContextsTest {
     }
 
     @Test
+    public void exceptionsWithoutContext() {
+        // Just to make sure that printStackTrace() doesn't throw a NullPointerException if no TLC
+        stackTrace(new ContextualizedException("TEST"));
+        stackTrace(new ContextualizedRuntimeException("TEST"));
+    }
+
+    @Test
     public void useAfterClose() {
         Context ctx = TLC.open();
         ctx.close();
         assertThrows(IllegalStateException.class, () -> ctx.get("whatever"));
+    }
+
+    // TODO ThrowableSubject is missing throwable support; add it!
+    private String stackTrace(Throwable e) {
+        var sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
     }
 }

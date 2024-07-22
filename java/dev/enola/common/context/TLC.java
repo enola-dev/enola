@@ -34,8 +34,8 @@ public final class TLC {
     /**
      * Opens a new (!) {@link Context}, "stacked" over the current one (if any).
      *
-     * <p>This is typically invoked from a try-with-resources, as she returned context must be
-     * closed again at some point; so .
+     * <p>This is typically invoked from a try-with-resources, as the returned context must be
+     * closed again at some point; so the typical usage is: <tt>try (var ctx = TLC.open()) {</tt>.
      */
     public static Context open() {
         Context next;
@@ -73,7 +73,7 @@ public final class TLC {
     }
 
     /* package-local, always keep; never make public! */
-    static Context get() {
+    static @Nullable Context get() {
         return threadLocalContext.get();
     }
 
