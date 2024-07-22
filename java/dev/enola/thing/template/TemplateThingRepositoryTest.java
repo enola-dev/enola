@@ -49,7 +49,8 @@ public class TemplateThingRepositoryTest {
     @Test
     public void greetingN() {
         DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
-        ResourceIntoThingConverter<Thing> ritc = new RdfResourceIntoThingConverter<>(dtr);
+        ResourceIntoThingConverter<Thing> ritc =
+                new RdfResourceIntoThingConverter<>(iri -> null, dtr);
         var loader = new Loader(ritc);
 
         var store = new ThingMemoryRepositoryRW();

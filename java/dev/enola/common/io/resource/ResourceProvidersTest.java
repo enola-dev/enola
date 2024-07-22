@@ -145,7 +145,7 @@ public class ResourceProvidersTest {
 
     @Test
     public void testClasspath() throws IOException {
-        var uri = URI.create(ClasspathResource.SCHEME + ":test-emoji.txt");
+        var uri = URI.create(ClasspathResource.SCHEME + ":/test-emoji.txt");
         var emoji = new ResourceProviders().getReadableResource(uri).charSource().read();
         assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
     }

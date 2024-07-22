@@ -129,7 +129,7 @@ public class EnolaGrpcServerTest {
 
     private void checkGetYAML(EnolaServiceBlockingStub client)
             throws InvalidProtocolBufferException {
-        var things = getThings(client, "classpath:picasso.ttl");
+        var things = getThings(client, "classpath:/picasso.ttl");
         assertThat(things.getThingsList()).hasSize(2);
         // TODO assertThat it contains Dalí & Picasso from picasso.thing.yaml
     }

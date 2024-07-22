@@ -29,6 +29,8 @@ import org.jspecify.annotations.Nullable;
 @ThreadSafe
 public final class TLC {
 
+    // TODO Offer more type-safe signatures, with (Key<T> key, T value)
+
     private static final ThreadLocal<Context> threadLocalContext = new ThreadLocal<>();
 
     /**

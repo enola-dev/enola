@@ -56,7 +56,7 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
     }
 
     public ResourceEnolaService(ResourceProvider rp) {
-        this(rp, new RdfResourceIntoProtoThingConverter());
+        this(rp, new RdfResourceIntoProtoThingConverter(rp));
     }
 
     @Override

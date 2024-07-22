@@ -44,7 +44,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             fallbackValue = "true",
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
             description =
-                    "Whether classpath: resource scheme to access internal JAR content is allowed")
+                    "Whether classpath:/ resource scheme to access internal JAR content is allowed")
     boolean classpath;
 
     @CommandLine.Option(
@@ -54,7 +54,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             defaultValue = "true",
             fallbackValue = "true",
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-            description = "Whether file: resource scheme to access local filesystem is allowed")
+            description = "Whether file:/ resource scheme to access local filesystem is allowed")
     boolean file;
 
     @CommandLine.Option(
@@ -65,7 +65,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             defaultValue = "false",
             fallbackValue = "true",
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-            description = "Whether test: resource scheme is allowed")
+            description = "Whether test:/ resource scheme is allowed")
     boolean test;
 
     protected ResourceProvider rp;

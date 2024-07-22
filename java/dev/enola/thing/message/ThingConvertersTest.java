@@ -49,7 +49,7 @@ public class ThingConvertersTest {
     @Test
     public void picasso() throws IOException {
         var cpr = new ClasspathResource("picasso.ttl");
-        var rdf4jModel = new RdfReaderConverter().convert(cpr).get();
+        var rdf4jModel = new RdfReaderConverter(iri -> null).convert(cpr).get();
         var inProtoThingStream = new RdfThingConverter().convert(rdf4jModel);
         forEach(inProtoThingStream, inProtoThing -> check(inProtoThing.build()));
     }

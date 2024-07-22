@@ -34,7 +34,8 @@ import java.io.Writer;
  * <tt>*Builder</tt>), {@link ByteSink}, {@link CharSink}, {@link OutputStream}, or {@link Writer}
  * or some similar such kind of thing.
  *
- * <p>The "context" of the conversion, if any, must be part of I.
+ * <p>The "context" of the conversion, if any, must be part of I (or available via {@link
+ * dev.enola.common.context.TLC}).
  *
  * @see Converter
  */
@@ -59,15 +60,11 @@ public interface ConverterInto<I, O> {
         try {
             if (!convertInto(from, into)) {
                 throw new ConversionException(
-                        this.toString() + " could not convert " + from + " into " + into);
+                        this + " could not convert " + from + " into " + into);
             }
         } catch (IOException e) {
             throw new ConversionException(
-                    "Caught IOException while converting "
-                            + from.toString()
-                            + " to "
-                            + into.toString(),
-                    e);
+                    "Caught IOException while converting " + from + " to " + into, e);
         }
     }
 }

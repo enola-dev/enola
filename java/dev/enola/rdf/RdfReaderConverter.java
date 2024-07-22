@@ -24,6 +24,7 @@ import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.yamljson.YamlJson;
 
 import org.eclipse.rdf4j.model.Model;
@@ -35,12 +36,16 @@ import java.util.Optional;
 
 public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
 
-    private final RdfReaderConverterInto converterInto = new RdfReaderConverterInto();
+    private final RdfReaderConverterInto converterInto;
+
+    public RdfReaderConverter(ResourceProvider rp) {
+        this.converterInto = new RdfReaderConverterInto(rp);
+    }
 
     @Override
     public Optional<Model> convert(ReadableResource input) throws ConversionException {
-        // RDJ4j doesn't dig YAML, yet; so until it supports https://json-ld.github.io/yaml-ld/
-        // we just Rosetta transform YAML to JSON and then pass that through to RDJ4j:
+        // RDF4j doesn't dig YAML, yet; so until it supports https://json-ld.github.io/yaml-ld/
+        // we just Rosetta transform YAML to JSON and then pass that through to RDF4j:
         if (MediaTypes.normalizedNoParamsEquals(
                 input.mediaType(), RdfMediaTypeYamlLd.YAML_LD, YAML_UTF_8)) {
             var json = new MemoryResource(RdfMediaTypes.JSON_LD);

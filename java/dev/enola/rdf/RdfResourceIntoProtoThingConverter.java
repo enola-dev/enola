@@ -22,6 +22,7 @@ import com.google.protobuf.Message;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
@@ -34,8 +35,12 @@ public class RdfResourceIntoProtoThingConverter
     // TODO Also implement e.g. an MarkdownResourceIntoThingConverter
     // TODO Also implement e.g. JavaResourceIntoThingConverter
 
-    private final RdfReaderConverter rdfReaderConverter = new RdfReaderConverter();
+    private final RdfReaderConverter rdfReaderConverter;
     private final RdfThingConverter rdfThingConverter = new RdfThingConverter();
+
+    public RdfResourceIntoProtoThingConverter(ResourceProvider rp) {
+        this.rdfReaderConverter = new RdfReaderConverter(rp);
+    }
 
     @Override
     public Optional<List<Thing.Builder>> convert(ReadableResource from) throws ConversionException {

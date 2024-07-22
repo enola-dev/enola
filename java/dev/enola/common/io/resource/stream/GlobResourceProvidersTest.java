@@ -31,7 +31,7 @@ public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
 
     @Test
     public void nonGlobClasspath() {
-        checkGlobIRI("classpath:test.md", 1);
+        checkGlobIRI("classpath:/test.md", 1);
     }
 
     @Test

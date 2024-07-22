@@ -20,11 +20,11 @@ package dev.enola.common.io.resource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.iri.URIs;
-
 import java.net.URI;
+import java.net.URL;
 import java.nio.charset.Charset;
 
+/** {@link ReadableResource} on Java Classpath; e.g. <tt>classpath:/hello.txt</tt>. */
 public class ClasspathResource extends UrlResource {
 
     // TODO Security: This *MUST* have a mandatory "allowed packages" sort of argument!
@@ -34,8 +34,7 @@ public class ClasspathResource extends UrlResource {
         @Override
         public Resource getResource(URI uri) {
             if (SCHEME.equals(uri.getScheme()))
-                return new ReadableButNotWritableDelegatingResource(
-                        new ClasspathResource(URIs.getPath(uri)));
+                return new ReadableButNotWritableDelegatingResource(new ClasspathResource(uri));
             else return null;
         }
     }
@@ -53,5 +52,19 @@ public class ClasspathResource extends UrlResource {
 
     public ClasspathResource(String path) {
         super(Resources.getResource(path));
+    }
+
+    public ClasspathResource(URI uri) {
+        super(uri, convert(uri));
+    }
+
+    private static URL convert(URI uri) {
+        var path = uri.getPath();
+        if (path == null)
+            throw new IllegalArgumentException(
+                    "URI must be classpath:/resource.ext, missing '/': " + uri);
+        if (!path.startsWith("/"))
+            throw new IllegalStateException("TODO Review implementation; should be impossible");
+        return Resources.getResource(path.substring(1));
     }
 }

@@ -17,13 +17,13 @@
  */
 package dev.enola.rdf;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import static dev.enola.rdf.ModelSubject.assertThat;
 import static dev.enola.rdf.ResourceSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.MemoryResource;
-import dev.enola.common.io.resource.Resource;
+import dev.enola.common.io.resource.*;
 
 import org.eclipse.rdf4j.model.Model;
 import org.junit.Ignore;
@@ -35,20 +35,21 @@ public class RdfReaderWriterTest {
 
     private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
 
-    private static final ClasspathResource PICASSO_TURTLE_RESOURCE =
-            new ClasspathResource("picasso.ttl");
+    private static final ResourceProvider rp = new ClasspathResource.Provider();
 
-    private static final ClasspathResource PICASSO_TURTLE_WRITTEN_RESOURCE =
-            new ClasspathResource("picasso.written.ttl");
+    private static final Resource PICASSO_TURTLE_RESOURCE = rp.get("classpath:/picasso.ttl");
 
-    private static final ClasspathResource PICASSO_JSONLD_RESOURCE =
-            new ClasspathResource("picasso.jsonld");
+    private static final Resource PICASSO_TURTLE_WRITTEN_RESOURCE =
+            rp.get("classpath:/picasso.written.ttl");
 
-    private static final ClasspathResource PICASSO_YAMLLD_RESOURCE =
-            new ClasspathResource("picasso.yamlld");
+    private static final Resource PICASSO_JSONLD_RESOURCE = rp.get("classpath:/picasso.jsonld");
 
-    private static final ClasspathResource PICASSO_YAML_RESOURCE =
-            new ClasspathResource("picasso.yaml");
+    private static final Resource PICASSO_JSON_RESOURCE =
+            rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
+
+    private static final Resource PICASSO_YAMLLD_RESOURCE = rp.get("classpath:/picasso.yamlld");
+
+    private static final Resource PICASSO_YAML_RESOURCE = rp.get("classpath:/picasso.yaml");
 
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
@@ -62,7 +63,7 @@ public class RdfReaderWriterTest {
 
     @Test
     public void readTurtle() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_TURTLE_RESOURCE).get();
+        var model = new RdfReaderConverter(rp).convert(PICASSO_TURTLE_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
@@ -78,20 +79,27 @@ public class RdfReaderWriterTest {
 
     @Test
     public void readJsonLD() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_JSONLD_RESOURCE).get();
+        var model = new RdfReaderConverter(rp).convert(PICASSO_JSONLD_RESOURCE).get();
+        assertThat(model).isEqualTo(PICASSO_MODEL);
+    }
+
+    @Test
+    public void readJson() throws ConversionException {
+        assertThat(PICASSO_JSON_RESOURCE.uri().getQuery()).isNotEmpty();
+        var model = new RdfReaderConverter(rp).convert(PICASSO_JSON_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
     @Ignore // TODO Implement this with JSON-LD, but *AFTER* the equivalent in JSON in readJson()
     public void readYaml() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_YAML_RESOURCE).get();
+        var model = new RdfReaderConverter(rp).convert(PICASSO_YAML_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
     public void readYamlLD() throws ConversionException {
-        var model = new RdfReaderConverter().convert(PICASSO_YAMLLD_RESOURCE).get();
+        var model = new RdfReaderConverter(rp).convert(PICASSO_YAMLLD_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 }

@@ -22,6 +22,7 @@ import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CharResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
@@ -38,7 +39,7 @@ import java.io.IOException;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
- * different model formats.
+ * different model resource formats.
  */
 public class Rosetta implements ResourceConverter {
 
@@ -73,14 +74,18 @@ public class Rosetta implements ResourceConverter {
     private final MessageResourceConverter messageResourceConverter =
             new MessageResourceConverter(protoIO, DESCRIPTOR_PROVIDER);
 
-    private final ResourceConverterChain resourceConverterChain =
-            new ResourceConverterChain(
-                    ImmutableList.of(
-                            new ResourceIntoThingResourceConverter(),
-                            new RdfResourceConverter(),
-                            messageResourceConverter,
-                            new YamlJsonResourceConverter(),
-                            new CharResourceConverter()));
+    private final ResourceConverterChain resourceConverterChain;
+
+    public Rosetta(ResourceProvider rp) {
+        this.resourceConverterChain =
+                new ResourceConverterChain(
+                        ImmutableList.of(
+                                new ResourceIntoThingResourceConverter(rp),
+                                new RdfResourceConverter(rp),
+                                messageResourceConverter,
+                                new YamlJsonResourceConverter(),
+                                new CharResourceConverter()));
+    }
 
     @Override
     public boolean convertInto(ReadableResource from, WritableResource into)

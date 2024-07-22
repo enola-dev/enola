@@ -102,8 +102,7 @@ public class Context implements AutoCloseable {
         if (object == null)
             throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
         if (klass.isInstance(object)) return (T) object;
-        throw new IllegalStateException(
-                "Context's " + key + " is a " + object.getClass() + " instead of " + klass);
+        throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
     }
 
     private boolean isEmpty() {
