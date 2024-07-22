@@ -101,6 +101,7 @@ public class ExecMD {
             }
 
             exec(dir, preamble, command.toString(), outScript, outMD);
+            if (!endsWith(outMD, '\n')) outMD.append("\n");
             outMD.append("```\n");
         }
 
@@ -110,6 +111,10 @@ public class ExecMD {
         pair.markdown = outMD.toString();
         pair.script = outScript.toString();
         return pair;
+    }
+
+    private boolean endsWith(CharSequence cs, char trailing) {
+        return cs.charAt(cs.length() - 1) == trailing;
     }
 
     int exec(Path dir, String preamble, String command, Appendable script, Appendable md)
