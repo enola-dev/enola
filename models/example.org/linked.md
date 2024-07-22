@@ -21,7 +21,7 @@
 Now check out the [`greeting2.ttl`](greeting2.ttl):
 
 ```turtle
-{% include "./greeting2.ttl" %}
+{% include "./greeting2.ttl" start="# limitations under the License.\n" %}
 ```
 
 Let's generate documentation:

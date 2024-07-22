@@ -23,7 +23,7 @@ You can tell that the `greeting1` and `greeting2` from the previous steps are bo
 [`greeting3.ttl`](greeting3.ttl) illustrates how you can make more _"classy"_ greetings:
 
 ```turtle
-{% include "./greeting3.ttl" %}
+{% include "./greeting3.ttl" start="# limitations under the License.\n" %}
 ```
 
 This simply expresses that `greeting3` _"is a"_ `Salutation`. We're also adding an Emoji to the _Class,_ which Enola always displays for both that class itself and its instances. You can generate documentation:
