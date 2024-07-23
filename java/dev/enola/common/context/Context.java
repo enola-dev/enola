@@ -36,7 +36,42 @@ import java.io.IOException;
  */
 public class Context implements AutoCloseable {
 
-    // TODO Offer more type-safe signatures, with (Key<T> key, T value)
+    public abstract static class Key<T> {
+        private final String name;
+
+        protected Key(String id) {
+            this.name = getCallingClassName() + "#" + id;
+        }
+
+        private static String getCallingClassName() {
+            StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
+            for (int i = 1; i < stElements.length; i++) {
+                StackTraceElement ste = stElements[i];
+                if (!ste.getClassName().equals(Key.class.getName())
+                        && !ste.getClassName().startsWith("java.lang")) {
+                    return ste.getClassName();
+                }
+            }
+            throw new IllegalStateException("TODO");
+        }
+
+        // NB: Subclasses intentionally cannot @Override these anymore:
+
+        @Override
+        public final String toString() {
+            return name;
+        }
+
+        @Override
+        public final int hashCode() {
+            return super.hashCode();
+        }
+
+        @Override
+        public final boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger(Context.class);
 
@@ -56,23 +91,45 @@ public class Context implements AutoCloseable {
     /**
      * Push, but not too hard…
      *
-     * <p>Both the key and the value arguments should have useful {@link #toString()}}
-     * implementations; in practice, at least the key often IS actually simply a {@link String} (but
-     * it technically does not necessarily have to be).
-     *
-     * @param key Key, which must implement {@link #equals(Object)} correctly. By convention, often
-     *     a String formatted like <tt>getClass().getName() + "#METHOD/PARAMETER"</tt>.
+     * @param key Key.
      * @param value Value to associate with the key.
      * @return this, for chaining.
      */
-    public Context push(Object key, Object value) {
+    public <T> Context push(Key<T> key, T value) {
+        return _push(key, value);
+    }
+
+    public <T> Context push(Class<T> key, T value) {
+        _push(key, value); // NOT .getName()
+        return this;
+    }
+
+    private Context _push(Object key, Object value) {
         check();
         last = new Entry(key, value, last);
         return this;
     }
 
-    /** Get the value for the given key, from this or its parent context. May be wnull. */
-    public @Nullable Object get(Object key) {
+    /** Get the value for the given key, from this or its parent context. May be null. */
+    public <T> @Nullable T get(Key<T> key) {
+        return (T) _get(key);
+    }
+
+    /**
+     * Gets the instance of Class, from this or its parent context. Never null, may throw
+     * IllegalStateException.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> @Nullable T get(Class<T> key) {
+        if (isEmpty()) throw new IllegalStateException("Context is empty");
+        var object = _get(key);
+        if (object == null)
+            throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
+        if (key.isInstance(object)) return (T) object;
+        throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
+    }
+
+    private @Nullable Object _get(Object key) {
         check();
         var current = last;
         while (current != null) {
@@ -81,28 +138,8 @@ public class Context implements AutoCloseable {
             }
             current = current.previous;
         }
-        if (parent != null) return parent.get(key);
+        if (parent != null) return parent._get(key);
         else return null;
-    }
-
-    public <T> Context push(Class<T> key, T value) {
-        push(key, (Object) value); // NOT .getName()
-        return this;
-    }
-
-    /**
-     * Gets the instance of Class, from this or its parent context. Never null, may throw
-     * IllegalStateException.
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T get(Class<T> klass) {
-        var key = klass; // NOT .getName();
-        if (isEmpty()) throw new IllegalStateException("Context is empty");
-        var object = get((Object) key);
-        if (object == null)
-            throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
-        if (klass.isInstance(object)) return (T) object;
-        throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
     }
 
     private boolean isEmpty() {
@@ -156,12 +193,8 @@ public class Context implements AutoCloseable {
         }
     }
 
-    private static class Entry {
-        final Object key;
-        final Object value;
-        final @Nullable Entry previous;
-
-        Entry(Object key, Object value, @Nullable Entry previous) {
+    private record Entry(Object key, Object value, @Nullable Entry previous) {
+        private Entry(Object key, Object value, @Nullable Entry previous) {
             this.key = key;
             this.value = value;
             this.previous = previous;
