@@ -29,8 +29,6 @@ import org.jspecify.annotations.Nullable;
 @ThreadSafe
 public final class TLC {
 
-    // TODO Offer more type-safe signatures, with (Key<T> key, T value)
-
     private static final ThreadLocal<Context> threadLocalContext = new ThreadLocal<>();
 
     /**
@@ -51,13 +49,13 @@ public final class TLC {
         return next;
     }
 
-    /** See {@link dev.enola.common.context.Context#get(java.lang.Object). */
-    public static @Nullable Object get(Object key) {
+    /** See {@link dev.enola.common.context.Context#get(Class)} . */
+    public static <T> @Nullable T get(Context.Key<T> key) {
         return context().get(key);
     }
 
     /** See {@link dev.enola.common.context.Context#get(java.lang.Class). */
-    public static <T> T get(Class<T> klass) {
+    public static <T> @Nullable T get(Class<T> klass) {
         return context().get(klass);
     }
 

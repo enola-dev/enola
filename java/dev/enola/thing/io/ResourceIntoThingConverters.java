@@ -19,6 +19,7 @@ package dev.enola.thing.io;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
@@ -50,7 +51,7 @@ public class ResourceIntoThingConverters<T extends Thing>
 
     public List<Thing.Builder<T>> convert(ReadableResource input) throws ConversionException {
         try (var ctx = TLC.open()) {
-            ctx.push(getClass().getName() + "#convert/input", input);
+            ctx.push(INPUT, input);
             for (var converter : converters) {
                 var opt = converter.convert(input);
                 if (opt.isPresent()) return opt.get();
@@ -59,4 +60,6 @@ public class ResourceIntoThingConverters<T extends Thing>
         throw new ConversionException(
                 "None of the registered Thing converters could read: " + input);
     }
+
+    private static final Context.Key<ReadableResource> INPUT = new Context.Key<>("INPUT") {};
 }

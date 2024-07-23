@@ -28,50 +28,55 @@ import java.io.StringWriter;
 
 public class ContextsTest {
 
+    private static final Context.Key<String> FOO = new Context.Key<>("FOO") {};
+    private static final Context.Key<Long> OTHER = new Context.Key<>("OTHER") {};
+
     @Test
     public void empty() {
-        assertThrows(IllegalStateException.class, () -> TLC.get("whatever"));
+        assertThrows(IllegalStateException.class, () -> TLC.get(OTHER));
     }
 
     @Test
     public void one() {
         try (var ctx = TLC.open()) {
-            assertThat(ctx.get("unset")).isNull();
-            ctx.push("foo", "bar");
-            assertThat(TLC.get("foo")).isEqualTo("bar");
-            assertThat(ctx.get("unset")).isNull();
+            assertThat(ctx.get(OTHER)).isNull();
+            ctx.push(FOO, "bar");
+            String foo = TLC.get(FOO);
+            assertThat(foo).isEqualTo("bar");
+            assertThat(ctx.get(OTHER)).isNull();
         }
     }
 
     @Test
     public void nested() {
         try (var ctx1 = TLC.open()) {
-            ctx1.push("foo", "bar");
-            assertThat(TLC.get("foo")).isEqualTo("bar");
+            ctx1.push(FOO, "bar");
+            assertThat(TLC.get(FOO)).isEqualTo("bar");
 
             try (var ctx2 = TLC.open()) {
-                ctx2.push("foo", "baz");
-                assertThat(TLC.get("foo")).isEqualTo("baz");
+                ctx2.push(FOO, "baz");
+                assertThat(TLC.get(FOO)).isEqualTo("baz");
             }
 
-            assertThat(TLC.get("foo")).isEqualTo("bar");
+            assertThat(TLC.get(FOO)).isEqualTo("bar");
         }
     }
 
     @Test
     public void exceptionWithContext() {
         try (var ctx1 = TLC.open()) {
-            ctx1.push("foo", "bar");
+            ctx1.push(FOO, "bar");
 
             try (var ctx2 = TLC.open()) {
-                ctx2.push("foo", "baz");
+                ctx2.push(FOO, "baz");
 
                 try {
                     throw new ContextualizedException("TEST");
 
                 } catch (ContextualizedException e) {
                     var stackTrace = stackTrace(e);
-                    assertThat(stackTrace).contains("foo");
+                    assertThat(stackTrace).contains("ContextsTest");
+                    assertThat(stackTrace).contains("FOO");
                     assertThat(stackTrace).contains("bar");
                     assertThat(stackTrace).contains("baz");
                 }
@@ -90,7 +95,7 @@ public class ContextsTest {
     public void useAfterClose() {
         Context ctx = TLC.open();
         ctx.close();
-        assertThrows(IllegalStateException.class, () -> ctx.get("whatever"));
+        assertThrows(IllegalStateException.class, () -> ctx.get(OTHER));
     }
 
     // TODO ThrowableSubject is missing throwable support; add it!
