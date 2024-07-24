@@ -15,22 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta;
 
-public interface Property extends Type {
+import org.junit.Test;
 
-    // TODO @IRI(KIRI.E.META.PARENT)
-    Property parent();
+public class MetaTest {
 
-    // TODO @IRI(KIRI.E.META.DATATYPE)
-    Datatype datatype();
-
-    // TODO @IRI(KIRI.E.META.MULTIPLICITY)
-    Multiplicity multiplicity();
-
-    enum Multiplicity {
-        Single,
-        Set,
-        List
-    }
+    @Test
+    public void readYAML() {}
 }

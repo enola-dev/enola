@@ -15,12 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta;
 
-import java.util.Set;
+import dev.enola.model.enola.HasDescription;
+import dev.enola.model.enola.HasIcon;
+import dev.enola.model.enola.HasName;
+import dev.enola.model.w3.rdfs.HasLabel;
+import dev.enola.model.w3.rdfs.Typed;
 
-public interface Enum extends Type {
+public interface Common extends Typed, HasName, HasLabel, HasDescription, HasIcon {
 
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Set<EnumValue> values();
+    // skipcq: JAVA-E0169
+    interface Builder<B extends Common>
+            extends HasName.Builder, HasLabel.Builder, HasDescription.Builder, HasIcon.Builder {}
 }

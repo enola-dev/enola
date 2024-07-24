@@ -17,7 +17,14 @@
  */
 package dev.enola.model.enola;
 
-import dev.enola.model.w3.rdfs.HasLabel;
-import dev.enola.model.w3.rdfs.Typed;
+import dev.enola.thing.Thing;
 
-public interface Common extends Typed, HasLabel, HasIcon, HasDescription {}
+public interface HasName extends Thing {
+
+    // TODO @IRI(KIRI.E.NAME)
+    String name();
+
+    interface Builder<B extends HasName> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        B name(String name);
+    }
+}

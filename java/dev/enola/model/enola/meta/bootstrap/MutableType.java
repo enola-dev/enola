@@ -15,15 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta.bootstrap;
 
-import java.util.regex.Pattern;
+import dev.enola.model.enola.meta.Type;
 
-public interface Datatype extends Type {
-
-    // TODO @IRI(KIRI.E.META.PARENT)
-    // Intentionally only singular instead of multiple
-    Datatype parent();
-
-    Pattern regExp();
-}
+public abstract class MutableType extends MutableCommon implements Type, Type.Builder {}

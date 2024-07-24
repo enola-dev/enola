@@ -15,6 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta;
 
-public interface EnumValue extends Type {}
+import dev.enola.model.enola.HasName;
+
+public interface Type extends Common, HasName {
+
+    interface Builder<B extends Type> // skipcq: JAVA-E0169
+            extends Common.Builder<B>, HasName.Builder {}
+}

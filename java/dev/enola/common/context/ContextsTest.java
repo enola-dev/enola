@@ -19,6 +19,9 @@ package dev.enola.common.context;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.ContextsTest.TestContextLongKeys.OTHER;
+import static dev.enola.common.context.ContextsTest.TestContextStringKeys.FOO;
+
 import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
@@ -39,42 +42,42 @@ public class ContextsTest {
 
     @Test
     public void empty() {
-        assertThrows(IllegalStateException.class, () -> TLC.get(TestContextLongKeys.OTHER));
+        assertThrows(IllegalStateException.class, () -> TLC.get(OTHER));
     }
 
     @Test
     public void one() {
         try (var ctx = TLC.open()) {
-            assertThat(ctx.get(TestContextLongKeys.OTHER)).isNull();
-            ctx.push(TestContextStringKeys.FOO, "bar");
-            String foo = TLC.get(TestContextStringKeys.FOO);
+            assertThat(ctx.get(OTHER)).isNull();
+            ctx.push(FOO, "bar");
+            String foo = TLC.get(FOO);
             assertThat(foo).isEqualTo("bar");
-            assertThat(ctx.get(TestContextLongKeys.OTHER)).isNull();
+            assertThat(ctx.get(OTHER)).isNull();
         }
     }
 
     @Test
     public void nested() {
         try (var ctx1 = TLC.open()) {
-            ctx1.push(TestContextStringKeys.FOO, "bar");
-            assertThat(TLC.get(TestContextStringKeys.FOO)).isEqualTo("bar");
+            ctx1.push(FOO, "bar");
+            assertThat(TLC.get(FOO)).isEqualTo("bar");
 
             try (var ctx2 = TLC.open()) {
-                ctx2.push(TestContextStringKeys.FOO, "baz");
-                assertThat(TLC.get(TestContextStringKeys.FOO)).isEqualTo("baz");
+                ctx2.push(FOO, "baz");
+                assertThat(TLC.get(FOO)).isEqualTo("baz");
             }
 
-            assertThat(TLC.get(TestContextStringKeys.FOO)).isEqualTo("bar");
+            assertThat(TLC.get(FOO)).isEqualTo("bar");
         }
     }
 
     @Test
     public void exceptionWithContext() {
         try (var ctx1 = TLC.open()) {
-            ctx1.push(TestContextStringKeys.FOO, "bar");
+            ctx1.push(FOO, "bar");
 
             try (var ctx2 = TLC.open()) {
-                ctx2.push(TestContextStringKeys.FOO, "baz");
+                ctx2.push(FOO, "baz");
 
                 try {
                     throw new ContextualizedException("TEST");
@@ -101,10 +104,10 @@ public class ContextsTest {
     public void useAfterClose() {
         Context ctx = TLC.open();
         ctx.close();
-        assertThrows(IllegalStateException.class, () -> ctx.get(TestContextLongKeys.OTHER));
+        assertThrows(IllegalStateException.class, () -> ctx.get(OTHER));
     }
 
-    // TODO ThrowableSubject is missing throwable support; add it!
+    // TODO Truth's ThrowableSubject is missing throwable support; add it!
     private String stackTrace(Throwable e) {
         var sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

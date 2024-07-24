@@ -17,7 +17,7 @@
  */
 package dev.enola.model.enola.java;
 
-import dev.enola.model.w3.rdfs.HasLabel;
+import dev.enola.model.enola.HasName;
 import dev.enola.thing.Thing;
 import dev.enola.thing.java.IRI;
 import dev.enola.thing.java.JThing;
@@ -31,7 +31,7 @@ import dev.enola.thing.java.JThing;
 @JThing("https://enola.dev/java/type")
 // ? @IRI("https://enola.dev/java/type/{FQN}")
 public interface Type
-        extends /*Typed,*/ HasLabel { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
+        extends /*Typed,*/ HasName { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
 
     @IRI("https://enola.dev/java/package")
     Package pkg();

@@ -1,0 +1,53 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Java
+id: dev.enola.java
+iri: https://enola.dev/java/
+java:package: dev.enola.model.enola.java
+
+imports:
+  enola: common.yaml
+
+properties:
+  module:
+    iri: https://enola.dev/java/package
+    type: Package
+  package:
+    iri: https://enola.dev/java/package
+    type: Package
+  type:
+    iri: https://enola.dev/java/type
+    type: Type
+
+classes:
+  Type:
+    description: Type (Class, Interface, Enum, Record, Primitive, Array, Void) in the Java Virtual Machine (JVM).
+    iri_template: https://enola.dev/java/type/{fqn}
+    enola:example: https://enola.dev/java/type/java.lang.Object
+    enola:emoji: ☕
+    ids:
+      fqn: name
+    properties:
+      package:
+  Package:
+    ids:
+      fqn: name
+    properties:
+      types:
+        type: Type*
+        inverse: package
+  # TODO Module

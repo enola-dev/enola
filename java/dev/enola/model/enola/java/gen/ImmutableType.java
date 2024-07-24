@@ -34,6 +34,11 @@ public class ImmutableType extends ImmutableThing implements Type {
     }
 
     @Override
+    public String name() {
+        return get("https://schema.org/name", String.class);
+    }
+
+    @Override
     public Kind kind() {
         return get("https://enola.dev/java/type-kind", Kind.class);
     }

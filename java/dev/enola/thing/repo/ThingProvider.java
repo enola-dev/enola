@@ -38,8 +38,6 @@ import java.io.UncheckedIOException;
  */
 public interface ThingProvider extends ProviderFromIRI<Thing> {
 
-    // TODO What if this were @NonNull and always returned at least an OnlyIRIThing ?!
-
     /**
      * Get the Thing.
      *
@@ -48,10 +46,14 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      * @throws IOException if there was something at that IRI, but it could not be read
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
+    // TODO Remove ConversionException? It's weird, and should never happen anymore (here)...
     @Override
+    // TODO Change @Nullable Thing to Optional<Thing>, or always return at least an OnlyIRIThing ?!
     @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException;
+
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
-    // TODO Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
+
+    // NOT Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
 }

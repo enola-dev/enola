@@ -15,16 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta;
 
-import java.util.Set;
+public interface Datatype extends Type {
 
-public interface Class extends Type {
+    Class java();
 
-    // TODO @IRI(KIRI.E.META.PARENTS) ?
-    Set<Class> parents();
+    // TODO @IRI(KIRI.E.META.PARENT)
+    // Intentionally only singular instead of multiple
+    Datatype parent();
 
-    // TODO @IRI(KIRI.E.META.PROPERTIES)
-    // Cannot be properties() due to conflict
-    Set<Property> fields();
+    // TODO Pattern regExp();
+
+    interface Builder<B extends Datatype> extends Type.Builder<B> { // skipcq: JAVA-E0169
+
+        B parent(Datatype datatype);
+
+        B java(Class datatype);
+    }
 }
