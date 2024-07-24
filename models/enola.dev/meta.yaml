@@ -1,0 +1,85 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Meta
+id: dev.enola.meta
+iri: https://enola.dev/meta
+description: Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, LinkML, JSON Schema, et al.
+java:package: dev.enola.model.enola.meta
+
+imports:
+  enola: common.yaml
+  java: java.yaml
+
+properties:
+
+classes:
+  Common:
+    properties:
+      - name
+      - label
+      - description
+
+  Schema:
+    ids:
+      iri:
+    parents: [Common]
+    properties:
+      java:package:
+      datatypes: # Nota Bene, implies iri: https://enola.dev/meta/Vocabulary/datatypes
+        type: Datatype*
+        inverse: schema
+      properties:
+        type: Property*
+        inverse: schema
+      classes:
+        type: Class*
+        inverse: schema
+
+  Type:
+    ids:
+      schema: Schema
+      name:
+    parents: [Common]
+    properties:
+      iri:
+
+  Datatype:
+    parents: [Type]
+    properties:
+      java:type:
+      parent: Datatype
+
+  Enum:
+    type: [Datatype]
+    properties:
+      values: EnumValue*
+
+  EnumValue:
+    parents: [Type]
+
+  Property:
+    parents: [Type]
+    properties:
+      parents: Property*
+      datatype: Datatype
+
+  Class:
+    parents: [Type]
+    properties:
+      parents: Class*
+      iri_template:
+      properties: Property*

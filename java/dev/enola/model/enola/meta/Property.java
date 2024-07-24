@@ -15,14 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.meta;
 
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
+public interface Property extends Type {
 
-public interface Typed extends Thing {
+    // TODO @IRI(KIRI.E.META.PARENT)
+    Property parent();
 
-    @IRI(KIRI.RDF.TYPE)
-    Class type();
+    // TODO @IRI(KIRI.E.META.DATATYPE)
+    Datatype datatype();
+
+    // TODO @IRI(KIRI.E.META.MULTIPLICITY)
+    Multiplicity multiplicity();
+
+    enum Multiplicity {
+        Single,
+
+        /** Multiple, unordered */
+        Set,
+
+        // TODO List, for Multiple, ordered?
+    }
+
+    interface Builder<B extends Property> extends Type.Builder<B> { // skipcq: JAVA-E0169
+
+        B parent(Property parent);
+
+        B datatype(Datatype datatype);
+
+        B multiplicity(Multiplicity multiplicity);
+    }
 }

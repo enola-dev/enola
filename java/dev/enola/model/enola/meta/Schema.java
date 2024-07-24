@@ -15,14 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.meta;
 
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
+import java.util.Set;
 
-public interface Typed extends Thing {
+public interface Schema extends Common {
 
-    @IRI(KIRI.RDF.TYPE)
-    Class type();
+    String java_package();
+
+    Set<Datatype> schemaDatatypes();
+
+    Set<Property> schemaProperties();
+
+    Set<Class> schemaClasses();
+
+    interface Builder<B extends Schema> extends Common.Builder<B> { // skipcq: JAVA-E0169
+
+        Builder<B> java_package(String java_package);
+
+        Builder<B> addSchemaDatatype(Datatype datatype);
+
+        Builder<B> addSchemaProperty(Property property);
+
+        Builder<B> addSchemaClass(Class clazz);
+    }
 }

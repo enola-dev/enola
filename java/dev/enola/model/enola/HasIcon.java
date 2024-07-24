@@ -30,4 +30,11 @@ public interface HasIcon extends Thing {
 
     // TODO @IRI(KIRI.E.IMAGE)
     URI image();
+
+    interface Builder<B extends HasIcon> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+
+        B emoji(String emoji);
+
+        B image(URI image);
+    }
 }

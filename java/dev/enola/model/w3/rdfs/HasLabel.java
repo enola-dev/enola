@@ -24,7 +24,9 @@ import dev.enola.thing.java.IRI;
 public interface HasLabel extends Thing {
 
     @IRI(KIRI.RDFS.LABEL)
-    default String label() {
-        return get(KIRI.RDFS.LABEL, String.class);
+    String label();
+
+    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        B label(String label);
     }
 }

@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.meta;
 
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
+import java.util.Set;
 
-public interface Typed extends Thing {
+public interface Enum extends Type {
 
-    @IRI(KIRI.RDF.TYPE)
-    Class type();
+    // TODO @IRI(KIRI.E.META.VALUES)
+    Set<EnumValue> values();
 }

@@ -15,9 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.schema;
+package dev.enola.model.enola.meta;
 
-import dev.enola.model.enola.Common;
-import dev.enola.model.enola.Named;
+import java.util.Set;
 
-public interface Type extends Common, Named {}
+// skipcq: JAVA-E0169
+public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
+
+    // TODO @IRI(KIRI.E.META.PARENTS) ?
+    Set<Class> parents();
+
+    // TODO @IRI(KIRI.E.META.PROPERTIES)
+    // Cannot be properties() due to conflict
+    Set<Property> classProperties();
+
+    String iriTemplate();
+
+    interface Builder<B extends Class> extends Type.Builder<B> { // skipcq: JAVA-E0169
+
+        Builder<B> addParent(Class parent);
+
+        Builder<B> addClassProperty(Property property);
+
+        Builder<B> iriTemplate(String iriTemplate);
+    }
+}

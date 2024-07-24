@@ -15,12 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola;
+package dev.enola.model.enola.meta;
 
-import dev.enola.thing.Thing;
-
-public interface Named extends Thing {
-
-    // TODO @IRI(KIRI.E.NAME)
-    String name();
-}
+public interface EnumValue extends Type {}
