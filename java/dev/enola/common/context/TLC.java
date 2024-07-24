@@ -50,7 +50,7 @@ public final class TLC {
     }
 
     /** See {@link dev.enola.common.context.Context#get(Class)} . */
-    public static <T> @Nullable T get(Context.Key<T> key) {
+    public static <K extends Enum<K> & Context.Key<T>, T> @Nullable T get(K key) {
         return context().get(key);
     }
 

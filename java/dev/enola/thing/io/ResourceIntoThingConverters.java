@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.io;
 
+import static dev.enola.thing.io.ResourceIntoThingConverters.ContextKey.INPUT;
+
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.Context;
@@ -61,5 +63,8 @@ public class ResourceIntoThingConverters<T extends Thing>
                 "None of the registered Thing converters could read: " + input);
     }
 
-    private static final Context.Key<ReadableResource> INPUT = new Context.Key<>("INPUT") {};
+    // TODO Actually TLC.get(INPUT) *read* this somewhere... ;-) else remove again later.
+    enum ContextKey implements Context.Key<ReadableResource> {
+        INPUT
+    }
 }
