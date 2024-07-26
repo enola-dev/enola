@@ -17,20 +17,34 @@
  */
 package dev.enola.model.enola.meta;
 
+import java.net.URI;
+
 public interface Datatype extends Type {
 
-    Class java();
+    String CLASS_IRI = "https://enola.dev/meta/Datatype";
+
+    String java();
 
     // TODO @IRI(KIRI.E.META.PARENT)
     // Intentionally only singular instead of multiple
     Datatype parent();
 
+    URI xsd();
+
     // TODO Pattern regExp();
 
-    interface Builder<B extends Datatype> extends Type.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Datatype> extends Datatype, Type.Builder<B> { // skipcq: JAVA-E0169
 
-        B parent(Datatype datatype);
+        @Override
+        Datatype.Builder<B> schema(Schema schema);
 
-        B java(Class datatype);
+        @Override
+        Datatype.Builder<B> name(String name);
+
+        Datatype.Builder<B> parent(Datatype datatype);
+
+        Datatype.Builder<B> java(String datatype);
+
+        Datatype.Builder<B> xsd(URI xsd);
     }
 }

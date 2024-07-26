@@ -24,7 +24,7 @@ public interface HasName extends Thing {
     // TODO @IRI(KIRI.E.NAME)
     String name();
 
-    interface Builder<B extends HasName> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends HasName> extends HasName, Thing.Builder<B> { // skipcq: JAVA-E0169
         B name(String name);
     }
 }

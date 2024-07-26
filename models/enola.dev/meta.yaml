@@ -20,66 +20,85 @@ iri: https://enola.dev/meta
 description: Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, LinkML, JSON Schema, et al.
 java:package: dev.enola.model.enola.meta
 
-imports:
-  enola: common.yaml
-  java: java.yaml
-
-properties:
+# .imports:
+#   enola: common.yaml
+#   java: java.yaml
 
 classes:
+  Namespace:
+    properties:
+      prefix: enola:Name
+      iri: enola:IRI
+
   Common:
     properties:
-      - name
-      - label
-      - description
+      # TODO Remove String, after imports work
+      enola:name: enola:Name
+      enola:label: enola:String
+      enola:description: enola:String
+      enola:emoji: enola:String
 
   Schema:
-    ids:
-      iri:
     parents: [Common]
+    iri_template: https://enola.dev/Schema/{id}
+    ids:
+      id: enola:Names
     properties:
       java:package:
       datatypes: # Nota Bene, implies iri: https://enola.dev/meta/Vocabulary/datatypes
         type: Datatype*
-        inverse: schema
+        # inverse: schema
+      prefixes:
+        type: Namespace*
+        # inverse: schema
+      # TODO imports: type: Import*
+      # TODO Enum & EnumValue
       properties:
         type: Property*
-        inverse: schema
+        # inverse: schema
       classes:
         type: Class*
-        inverse: schema
+        # inverse: schema
 
   Type:
+    parents: [Common]
+    # ? ids_separator: .
     ids:
       schema: Schema
       name:
-    parents: [Common]
-    properties:
-      iri:
+    properties: # iri: is implicit!
 
   Datatype:
     parents: [Type]
+    iri_template: https://enola.dev/Datatype/{schema}.{name}
     properties:
+      # TODO parent: Datatype
       java:type:
-      parent: Datatype
+      xsd: enola:IRI
 
   Enum:
-    type: [Datatype]
+    parents: [Type]
+    # ? type: [Datatype]
+    iri_template: https://enola.dev/Enum/{schema}.{name}
     properties:
       values: EnumValue*
 
   EnumValue:
     parents: [Type]
+    iri_template: https://enola.dev/EnumValue/{schema}.{name}
 
   Property:
     parents: [Type]
+    iri_template: https://enola.dev/Property/{schema}.{name}
     properties:
       parents: Property*
       datatype: Datatype
 
   Class:
     parents: [Type]
+    iri_template: https://enola.dev/Class/{schema}.{name}
     properties:
       parents: Class*
       iri_template:
       properties: Property*
+      ids: Property*

@@ -20,16 +20,19 @@ package dev.enola.model.enola.meta.bootstrap;
 import dev.enola.model.enola.meta.Common;
 import dev.enola.thing.Thing;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 
+// NB: This hand-written class may eventually get replaced by a code-generated one!
 public abstract class MutableCommon extends ThrowingThing implements Common, Common.Builder {
 
     private String iri;
     private String name;
-    private String label;
-    private String description;
-    private String emoji;
-    private URI image;
+    private @Nullable String label;
+    private @Nullable String description;
+    private @Nullable String emoji;
+    private @Nullable URI image;
 
     @Override
     public String iri() {
@@ -48,7 +51,7 @@ public abstract class MutableCommon extends ThrowingThing implements Common, Com
     }
 
     @Override
-    public MutableCommon name(String name) {
+    public Common.Builder name(String name) {
         this.name = name;
         return this;
     }

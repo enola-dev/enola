@@ -15,10 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.meta;
+package dev.enola.thing.repo.id;
 
-public interface Enum extends Type { // TODO extends Datatype ?!
+import dev.enola.thing.Thing;
 
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Iterable<EnumValue> values();
+public interface ThingByIdProvider { // extends Provider<ID, Thing> {
+
+    // Thing get(String classID, Object[] ids);
+
+    // NB: Implementations would use the ids_separator:
+    <T extends Thing> T get(Class<T> clazz, String id);
+
+    // <T extends Thing> T get(Class<T> clazz, Object id1);
+    // <T extends Thing> T get(Class<T> clazz, Object id1, Object id2);
+    // <T extends Thing> T get(Class<T> clazz, Object... ids);
+
+    // @Override
+    // default Thing get(ID id) {
+    //    return get(id.classID(), id.ids());
+    // }
 }

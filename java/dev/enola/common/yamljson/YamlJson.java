@@ -21,9 +21,6 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
-import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
-
 import java.util.List;
 import java.util.Map;
 
@@ -54,10 +51,7 @@ public class YamlJson {
     }
 
     public static String yamlToJson(String yaml) {
-        LoadSettings settings = LoadSettings.builder().build();
-        Load load = new Load(settings);
-        Iterable<Object> iterable = load.loadAllFromString(yaml);
-        List<Object> list = ImmutableList.copyOf(iterable);
+        List<Object> list = ImmutableList.copyOf(YAML.read(yaml));
         if (list.isEmpty()) return "";
 
         Object root = list;

@@ -15,10 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.meta;
+package dev.enola.common.io.iri.namespace;
 
-public interface Enum extends Type { // TODO extends Datatype ?!
+import org.jspecify.annotations.Nullable;
 
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Iterable<EnumValue> values();
+import java.util.Collections;
+import java.util.Optional;
+
+public final class EmptyNamespaceRepository implements NamespaceRepository {
+
+    public static final NamespaceRepository INSTANCE = new EmptyNamespaceRepository();
+
+    private EmptyNamespaceRepository() {}
+
+    @Override
+    public Optional<String> getIRI(String prefix) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Iterable<String> listIRI() {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public @Nullable Namespace get(String iri) {
+        return null;
+    }
 }

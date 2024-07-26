@@ -40,14 +40,16 @@ classes:
     enola:example: https://enola.dev/java/type/java.lang.Object
     enola:emoji: ☕
     ids:
-      fqn: name
+      fqn: Names
     properties:
       package:
+
   Package:
     ids:
-      fqn: name
+      fqn: Names
     properties:
       types:
         type: Type*
         inverse: package
+
   # TODO Module

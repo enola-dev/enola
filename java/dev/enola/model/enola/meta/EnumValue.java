@@ -17,4 +17,7 @@
  */
 package dev.enola.model.enola.meta;
 
-public interface EnumValue extends Type {}
+public interface EnumValue extends Type {
+
+    // TODO Object/String (?) value();
+}

@@ -24,6 +24,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 import java.util.Set;
 
+// TODO Remove this class, once the hand-written classes are replaced by code-generated ones!
 public abstract class ThrowingThing implements Thing, Thing.Builder {
 
     @Override

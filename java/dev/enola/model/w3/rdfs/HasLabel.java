@@ -27,6 +27,6 @@ public interface HasLabel extends Thing {
     String label();
 
     interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        B label(String label);
+        Builder<B> label(String label);
     }
 }

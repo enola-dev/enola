@@ -27,5 +27,9 @@ public interface Common extends Typed, HasName, HasLabel, HasDescription, HasIco
 
     // skipcq: JAVA-E0169
     interface Builder<B extends Common>
-            extends HasName.Builder, HasLabel.Builder, HasDescription.Builder, HasIcon.Builder {}
+            extends Common,
+                    HasName.Builder,
+                    HasLabel.Builder,
+                    HasDescription.Builder,
+                    HasIcon.Builder {}
 }

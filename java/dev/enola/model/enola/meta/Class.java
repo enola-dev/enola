@@ -17,26 +17,36 @@
  */
 package dev.enola.model.enola.meta;
 
-import java.util.Set;
-
 // skipcq: JAVA-E0169
 public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
 
+    String CLASS_IRI = "https://enola.dev/meta/Class";
+
     // TODO @IRI(KIRI.E.META.PARENTS) ?
-    Set<Class> parents();
+    Iterable<Class> parents();
 
     // TODO @IRI(KIRI.E.META.PROPERTIES)
     // Cannot be properties() due to conflict
-    Set<Property> classProperties();
+    Iterable<Property> classProperties();
+
+    Iterable<Property> classIdProperties();
 
     String iriTemplate();
 
-    interface Builder<B extends Class> extends Type.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Class> extends Class, Type.Builder<B> { // skipcq: JAVA-E0169
 
-        Builder<B> addParent(Class parent);
+        @Override
+        Class.Builder<B> schema(Schema schema);
 
-        Builder<B> addClassProperty(Property property);
+        @Override
+        Class.Builder<B> name(String name);
 
-        Builder<B> iriTemplate(String iriTemplate);
+        Class.Builder<B> addParent(Class parent);
+
+        Class.Builder<B> addClassProperty(Property property);
+
+        Class.Builder<B> addClassIdProperty(Property property);
+
+        Class.Builder<B> iriTemplate(String iriTemplate);
     }
 }
