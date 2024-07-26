@@ -15,14 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola;
+package dev.enola.common.yamljson;
 
-import dev.enola.thing.Thing;
-import dev.enola.thing.impl.ImmutableThing;
+import static com.google.common.truth.Truth.assertThat;
 
-public final class Actions {
+import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.resource.StringResource;
 
-    public static final Thing GET = ImmutableThing.builder().iri(Get.IRI).build();
+import org.junit.Test;
 
-    private Actions() {}
+import java.io.IOException;
+
+public class YAMLTest {
+
+    @Test
+    public void readResource() throws IOException {
+        var resource = StringResource.of("name: it", YamlMediaType.YAML_UTF_8);
+        YAML.readSingleMap(resource, map -> assertThat(map).containsExactly("name", "it"));
+    }
 }

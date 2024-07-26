@@ -15,10 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.meta;
+package dev.enola.model.enola.meta.io;
 
-public interface Enum extends Type { // TODO extends Datatype ?!
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
+import dev.enola.model.enola.meta.Schema;
+import dev.enola.thing.repo.id.ThingByIdProvider;
 
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Iterable<EnumValue> values();
-}
+public record Context(Schema schema, NamespaceConverter nsc, ThingByIdProvider tp) {}

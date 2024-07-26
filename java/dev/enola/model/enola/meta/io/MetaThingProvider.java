@@ -15,31 +15,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java.test;
+package dev.enola.model.enola.meta.io;
 
-import dev.enola.thing.KIRI;
+import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
-import dev.enola.thing.java.JThing;
+import dev.enola.thing.repo.ThingRepository;
 
 import org.jspecify.annotations.Nullable;
 
-@JThing("https://enola.dev/TestThing")
-public interface TestThing extends Thing {
+import java.io.UncheckedIOException;
 
-    // NB: This is only here like this for TestThingTest; otherwise this would be inlined in @IRI!
-    String NUMBER_URI = "https://enola.dev/test/number";
+public class MetaThingProvider implements ThingRepository {
 
-    @IRI(NUMBER_URI)
-    @Nullable Integer number();
+    // TODO Implement this with the IRI Template matcher thingie... meta-specific, or generic?
 
-    @IRI(KIRI.RDFS.LABEL)
-    @Nullable String label();
+    private final MetaThingByIdProvider metaThingByIdProvider;
 
-    // TODO Generate this, with APT? (Needs moving into separate top-level class.) Or gen. all?
-    interface Builder<B extends TestThing> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        Builder<B> label(String label);
+    public MetaThingProvider(MetaThingByIdProvider metaThingByIdProvider) {
+        this.metaThingByIdProvider = metaThingByIdProvider;
+    }
 
-        Builder<B> number(Integer number);
+    @Override
+    public @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException {
+        return null;
+    }
+
+    @Override
+    public Iterable<String> listIRI() {
+        return null;
     }
 }

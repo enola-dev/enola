@@ -20,37 +20,67 @@ package dev.enola.model.enola.meta.bootstrap;
 import dev.enola.common.context.TLC;
 import dev.enola.model.enola.meta.Class;
 import dev.enola.model.enola.meta.Datatype;
+import dev.enola.model.enola.meta.Schema;
 import dev.enola.thing.repo.ThingProvider;
 
+import java.net.URI;
+
+// NB: This hand-written class may eventually get replaced by a code-generated one!
 public class MutableDatatype extends MutableType implements Datatype, Datatype.Builder {
 
-    private Class java;
-    private Datatype datatype;
+    private String java;
+    private URI xsd;
+
+    // TODO Use String IDs instead of Datatype, and use TLC/TP get() in accessors?!
+    private Datatype parent;
 
     @Override
     public Class type() {
-        return (Class) TLC.get(ThingProvider.class).get("https://enola.dev/meta/Datatype");
+        return TLC.get(ThingProvider.class).get(Datatype.CLASS_IRI, Class.class);
     }
 
     @Override
-    public Class java() {
+    public String java() {
         return java;
     }
 
     @Override
-    public Datatype java(Class java) {
+    public Datatype.Builder java(String java) {
         this.java = java;
         return this;
     }
 
     @Override
     public Datatype parent() {
-        return null;
+        return parent;
     }
 
     @Override
-    public Datatype parent(Datatype datatype) {
-        this.datatype = datatype;
+    public Datatype.Builder parent(Datatype datatype) {
+        this.parent = datatype;
+        return this;
+    }
+
+    @Override
+    public URI xsd() {
+        return xsd;
+    }
+
+    @Override
+    public Datatype.Builder xsd(URI xsd) {
+        this.xsd = xsd;
+        return this;
+    }
+
+    @Override
+    public Datatype.Builder schema(Schema schema) {
+        super.schema(schema);
+        return this;
+    }
+
+    @Override
+    public Datatype.Builder name(String name) {
+        super.name(name);
         return this;
     }
 

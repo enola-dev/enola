@@ -26,6 +26,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/io",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_code_gson_gson",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
@@ -38,5 +39,6 @@ junit_tests(
     srcs = glob(["**/*Test.java"]),
     deps = [
         ":yamljson",
+        "//java/dev/enola/common/io",
     ],
 )

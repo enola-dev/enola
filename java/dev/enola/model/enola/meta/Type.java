@@ -21,6 +21,11 @@ import dev.enola.model.enola.HasName;
 
 public interface Type extends Common, HasName {
 
+    Schema schema();
+
     interface Builder<B extends Type> // skipcq: JAVA-E0169
-            extends Common.Builder<B>, HasName.Builder {}
+            extends Type, Common.Builder<B> {
+
+        Type.Builder<B> schema(Schema schema);
+    }
 }

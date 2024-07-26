@@ -30,7 +30,7 @@ import dev.enola.common.io.resource.StringResource;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
-import dev.enola.model.enola.Get;
+import dev.enola.model.enola.action.Get;
 
 public class EnolaProvider {
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola;
+package dev.enola.model.enola.action;
 
 import com.google.common.reflect.TypeToken;
 

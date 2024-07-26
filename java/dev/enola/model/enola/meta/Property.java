@@ -19,6 +19,8 @@ package dev.enola.model.enola.meta;
 
 public interface Property extends Type {
 
+    String CLASS_IRI = "https://enola.dev/meta/Property";
+
     // TODO @IRI(KIRI.E.META.PARENT)
     Property parent();
 
@@ -37,12 +39,18 @@ public interface Property extends Type {
         // TODO List, for Multiple, ordered?
     }
 
-    interface Builder<B extends Property> extends Type.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Property> extends Property, Type.Builder<B> { // skipcq: JAVA-E0169
 
-        B parent(Property parent);
+        @Override
+        Property.Builder<B> schema(Schema schema);
 
-        B datatype(Datatype datatype);
+        @Override
+        Property.Builder<B> name(String name);
 
-        B multiplicity(Multiplicity multiplicity);
+        Property.Builder<B> parent(Property parent);
+
+        Property.Builder<B> datatype(Datatype datatype);
+
+        Property.Builder<B> multiplicity(Multiplicity multiplicity);
     }
 }

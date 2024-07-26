@@ -257,6 +257,14 @@ public class URIsTest {
     }
 
     @Test
+    public void testPreserveEmptyFragment() {
+        var text = "http://www.w3.org/2001/XMLSchema#";
+        var uri = URI.create(text);
+        assertThat(uri.getFragment()).isEqualTo("");
+        assertThat(uri.toString()).isEqualTo(text);
+    }
+
+    @Test
     public void testDropQuery() {
         var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
         assertThat(URIs.dropQueryAndFragment(uri)).isEqualTo(create("file:/tmp/test/picasso.yaml"));

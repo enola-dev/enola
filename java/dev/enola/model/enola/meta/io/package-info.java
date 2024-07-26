@@ -15,10 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.meta;
+@NullMarked
+package dev.enola.model.enola.meta.io;
 
-public interface Enum extends Type { // TODO extends Datatype ?!
-
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Iterable<EnumValue> values();
-}
+import org.jspecify.annotations.NullMarked;

@@ -17,6 +17,23 @@
  */
 package dev.enola.model.enola.meta.bootstrap;
 
+import dev.enola.model.enola.meta.Schema;
 import dev.enola.model.enola.meta.Type;
 
-public abstract class MutableType extends MutableCommon implements Type, Type.Builder {}
+// NB: This hand-written class may eventually get replaced by a code-generated one!
+public abstract class MutableType extends MutableCommon implements Type, Type.Builder {
+
+    // TODO Use String ID instead of Schema, and use TLC/TP get() in accessors?!
+    private Schema schema;
+
+    @Override
+    public Schema schema() {
+        return schema;
+    }
+
+    @Override
+    public Type.Builder schema(Schema schema) {
+        this.schema = schema;
+        return this;
+    }
+}

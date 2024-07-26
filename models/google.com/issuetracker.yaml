@@ -1,0 +1,127 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: GoogleIssueTracker
+label: Google Issue Tracker
+id: dev.enola.google.issuetracker
+
+# .imports:
+#   enola: common.yaml
+
+datatypes:
+  Issue:
+    description: Issue reference, e.g. b/123.
+    # TODO regexp: "^b/(<ID>[0-9_]+)$"
+    enola:iri_template: https://issuetracker.google.com/issues/{ID}
+
+enums:
+  Priority:
+    description: See <https://developers.google.com/issue-tracker/concepts/issues#priority>.
+    type: enola:Byte
+    values:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+
+  Type:
+    description: See <https://developers.google.com/issue-tracker/concepts/issues#type>.
+    type: enola:String
+    values:
+      - Bug
+      - Feature Request
+      - Customer Issue
+      - Internal Cleanup
+      - Process
+      - Vulnerability
+      - Project
+      - Milestone
+      - Feature
+      - Epic
+      - Story
+      - Task
+      - Program
+
+  Status:
+    description: See <https://developers.google.com/issue-tracker/concepts/issues#status>.
+    type: enola:String
+    values:
+      # Open
+      - New
+      - Assigned
+      - Accepted
+      # Fixed
+      - Fixed
+      - Verified
+      # Won't fix
+      - Not reproducible
+      - Intended behavior (WAI)
+      - Obsolete
+      - Infeasible
+      - Duplicate
+
+classes:
+  User:
+    ids:
+      enola:email:
+    properties:
+      name: enola:String
+
+  Component:
+    ids:
+      id: enola:Long # TODO Is it?
+    properties:
+      name: enola:String
+      enola:description:
+      enola:parent: Component
+      enola:children:
+        type: Component
+        inverse: enola:parent
+
+  Issue:
+    description: See <https://developers.google.com/issue-tracker/references/glossary-of-fields>.
+    ids:
+      id: enola:PositiveLong # TODO Is it?
+    properties:
+      type: Type
+      title:
+        type: enola:Text
+        lang: en
+      enola:description: enola:Markdown
+      status: enola:Markdown
+      assignee: User
+      reporter: User
+      verifier: User
+      CC: User*
+      collaborators: User*
+      priority: Priority
+      severity: Priority
+      blockedBy: Issue*
+      blocking:
+        type: Issue*
+        inverse: blockedBy
+      duplicateOf: Issue
+      # TODO duplicatedBy: Issue* inverse: duplicateOf
+      component: Component
+      created: enola:Timestamp
+      modified: enola:Timestamp
+      resolved: enola:Timestamp
+      verified: enola:Timestamp
+      start: enola:Timestamp
+      end: enola:Timestamp
+      dupes: enola:PositiveLong # TODO Is it?
+      votes: enola:PositiveLong # TODO Is it?

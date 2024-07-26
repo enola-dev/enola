@@ -199,7 +199,7 @@ public class ProtoIO {
         private final URI uri;
 
         public TextParseException(URI uri, TextFormat.ParseException e) {
-            super(e.getLine(), e.getColumn(), uri.toString() + ":" + e.getMessage());
+            super(e.getLine(), e.getColumn(), uri + ":" + e.getMessage());
             this.uri = uri;
         }
 

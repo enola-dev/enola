@@ -20,24 +20,30 @@ package dev.enola.model.enola.meta.bootstrap;
 import dev.enola.common.context.TLC;
 import dev.enola.model.enola.meta.Class;
 import dev.enola.model.enola.meta.Property;
+import dev.enola.model.enola.meta.Schema;
 import dev.enola.thing.repo.ThingProvider;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
+// NB: This hand-written class may eventually get replaced by a code-generated one!
 public class MutableClass extends MutableType implements Class, Class.Builder {
 
-    private final Set<Class> parents = new HashSet<>();
-    private final Set<Property> properties = new HashSet<>();
-    private String iriTemplate;
+    // TODO Use String IDs instead of Class & Property, and use TLC/TP get() in accessors?!
+    private final List<Class> parents = new ArrayList<>();
+    private final List<Property> idProperties = new ArrayList<>();
+    private final List<Property> properties = new ArrayList<>();
+    private @Nullable String iriTemplate;
 
     @Override
     public Class type() {
-        return (Class) TLC.get(ThingProvider.class).get("https://enola.dev/meta/Class");
+        return TLC.get(ThingProvider.class).get(Class.CLASS_IRI, Class.class);
     }
 
     @Override
-    public Set<Class> parents() {
+    public Iterable<Class> parents() {
         return parents;
     }
 
@@ -48,7 +54,18 @@ public class MutableClass extends MutableType implements Class, Class.Builder {
     }
 
     @Override
-    public Set<Property> classProperties() {
+    public Iterable<Property> classIdProperties() {
+        return idProperties;
+    }
+
+    @Override
+    public Class.Builder addClassIdProperty(Property property) {
+        idProperties.add(property);
+        return this;
+    }
+
+    @Override
+    public Iterable<Property> classProperties() {
         return properties;
     }
 
@@ -66,6 +83,18 @@ public class MutableClass extends MutableType implements Class, Class.Builder {
     @Override
     public Class.Builder iriTemplate(String iriTemplate) {
         this.iriTemplate = iriTemplate;
+        return this;
+    }
+
+    @Override
+    public Class.Builder schema(Schema schema) {
+        super.schema(schema);
+        return this;
+    }
+
+    @Override
+    public Class.Builder name(String name) {
+        super.name(name);
         return this;
     }
 

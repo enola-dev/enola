@@ -16,38 +16,102 @@
 
 name: Common
 id: dev.enola.common
-iri: https://enola.dev/
-java_package: dev.enola.model.enola.common
+iri: https://enola.dev/common
+java:package: dev.enola.model.enola.common
+
+.prefixes:
+  xsd: http://www.w3.org/2001/XMLSchema#
 
 datatypes:
   String:
+    description:
+      Any text string, incl. spaces and newlines etc. No HTML or Markdown though. Use sparingly; prefer more specific
+      types!
+    iri: https://enola.dev/String
+    java:type: java.lang.String
+    xsd: xsd:string
+  Text:
+    description:
+      Text incl. spaces and newlines etc. which is meaningful to humans (and LLMs), in a specific syntax such as a human
+      or programming language.
     iri: https://schema.org/Text
-    java_type: java.lang.String
+    parent: String
+  Text1:
+    description: Text in a single paragraph, without newlines.
+    iri: https://enola.dev/Text1
+    parent: Text
+  Markdown:
+    description: Text which is interpreted as Markdown.
+    iri: https://enola.dev/Markdown
+    parent: Text
+  Identifier:
+    description: String which identifies things to machines; not necessarily globally unique.
+    iri: https://enola.dev/Identifier
+    parent: String
+  Name:
+    description: Camel Case, with underscores OK, but no spaces or dots or colons or hyphens.
+    iri: https://enola.dev/Name
+    parent: Identifier
+    # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_]*$"
+    xsd: xsd:NCName
+  # TODO Having both Names & ID is a bit confusing... can we get rid of one of them?!
+  Names:
+    description: With underscores and dots, but no spaces or colons or hyphens.
+    iri: https://enola.dev/Names
+    parent: Identifier
+    # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_.]*$"
+    xsd: xsd:NMTOKEN
+  ID:
+    description: With underscores and dots and colons, but no spaces or hyphens or slashes.
+    iri: https://enola.dev/ID
+    parent: Identifier
+    # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_.:]*$"
+    xsd: xsd:ID
   IRI:
-    iri: https://enola.org/IRI
-    java_type: java.net.URI
+    # TODO Reconsider later if this is *really* needed...
+    description:
+      Logical (may not "resolve") absolute or relative IRI. Do NOT use this when you can instead better use a strongly
+      typed real link!
+    iri: https://enola.dev/IRI
+    parent: Identifier
+    java:type: java.net.URI
+    xsd: xsd:anyURI
   URL:
+    description: Physical (typically "resolves") absolute or relative IRI.
     iri: https://schema.org/URL
-    java_type: java.net.URI
-    parents: String
+    parent: Identifier
+    java:type: java.net.URI
+    xsd: xsd:anyURI
   MediaType:
-    iri: https://enola.org/MediaType
-    java_type: com.google.common.net.MediaType
-    parents: String
+    iri: https://enola.dev/MediaType
+    java:type: com.google.common.net.MediaType
+  Timestamp:
+    description: Date and Time; global, without timezone.
+    iri: https://enola.dev/Timestamp
+    java:type: java.time.Instant
+    xsd: xsd:dateTime
+    enola:emoji: 🕑
 
 properties:
   name:
-    iri: https://schema.org/name
-    parents: label
+    type: Name
+    description: Name of Thing. When part of an ID, often its (and IRI's) last segment.
+    iri: https://enola.dev/name
   label:
+    type: String
     iri: https://www.w3.org/TR/rdf-schema/#ch_label
-    type: String
+    description: Label of Thing. For humans, may have spaces etc.
+    parent: name
   description:
+    type: String
     iri: https://schema.org/description
-    type: String
+    description: Description of Thing. Basically a longer label.
   emoji:
-    iri: https://enola.org/emoji
     type: String
+    iri: https://enola.dev/emoji
+  iri_template:
+    type: String # Templates are *NOT* valid IRI (or URL)
+    iri: https://enola.org/IRITemplate
   example:
-    iri: https://enola.org/example
     type: IRI
+    iri: https://enola.dev/example

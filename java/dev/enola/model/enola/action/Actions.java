@@ -15,17 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola;
+package dev.enola.model.enola.action;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 
-public final class Types {
+public final class Actions {
 
-    public static final Thing ACTION =
-            ImmutableThing.builder().iri("https://enola.dev/Action").build();
+    public static final Thing GET = ImmutableThing.builder().iri(Get.IRI).build();
 
-    public static final Thing GET = ImmutableThing.builder().iri("https://enola.dev/Get").build();
-
-    private Types() {}
+    private Actions() {}
 }

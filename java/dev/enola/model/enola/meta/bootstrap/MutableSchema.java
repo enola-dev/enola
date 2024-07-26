@@ -24,19 +24,33 @@ import dev.enola.model.enola.meta.Property;
 import dev.enola.model.enola.meta.Schema;
 import dev.enola.thing.repo.ThingProvider;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+// NB: This hand-written class may eventually get replaced by a code-generated one!
 public class MutableSchema extends MutableCommon implements Schema, Schema.Builder {
 
+    private String id;
     private String java_package;
-    private final Set<Datatype> schemaDatatypes = new HashSet<>();
-    private final Set<Property> schemaProperties = new HashSet<>();
-    private final Set<Class> schemaClasses = new HashSet<>();
+
+    // TODO Use String IDs instead of Datatype/Property/Class, and use TLC/TP get() in accessors?!
+    private final List<Datatype> schemaDatatypes = new ArrayList<>();
+    private final List<Property> schemaProperties = new ArrayList<>();
+    private final List<Class> schemaClasses = new ArrayList<>();
 
     @Override
     public Class type() {
-        return (Class) TLC.get(ThingProvider.class).get("https://enola.dev/meta/Schema");
+        return TLC.get(ThingProvider.class).get(Schema.CLASS_IRI, Class.class);
+    }
+
+    @Override
+    public String id() {
+        return id;
+    }
+
+    @Override
+    public Schema.Builder id(String id) {
+        this.id = id;
+        return this;
     }
 
     @Override
@@ -51,17 +65,17 @@ public class MutableSchema extends MutableCommon implements Schema, Schema.Build
     }
 
     @Override
-    public Set<Datatype> schemaDatatypes() {
+    public Iterable<Datatype> schemaDatatypes() {
         return schemaDatatypes;
     }
 
     @Override
-    public Set<Property> schemaProperties() {
+    public Iterable<Property> schemaProperties() {
         return schemaProperties;
     }
 
     @Override
-    public Set<Class> schemaClasses() {
+    public Iterable<Class> schemaClasses() {
         return schemaClasses;
     }
 

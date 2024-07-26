@@ -55,5 +55,14 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     // TODO Thing getThings(String iri, int depth) throws IOException;
 
+    default <T extends Thing> T get(String iri, Class<T> thingClass)
+            throws UncheckedIOException, ConversionException {
+        Thing thing = get(iri);
+        if (!thingClass.isInstance(thing))
+            throw new IllegalArgumentException(
+                    iri + " is " + thing.getClass() + ", not " + thingClass);
+        return (T) thing;
+    }
+
     // NOT Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
 }

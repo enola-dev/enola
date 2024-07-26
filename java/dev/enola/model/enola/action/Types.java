@@ -15,10 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.meta;
+package dev.enola.model.enola.action;
 
-public interface Enum extends Type { // TODO extends Datatype ?!
+import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 
-    // TODO @IRI(KIRI.E.META.VALUES)
-    Iterable<EnumValue> values();
+public final class Types {
+
+    public static final Thing ACTION =
+            ImmutableThing.builder().iri("https://enola.dev/Action").build();
+
+    public static final Thing GET = ImmutableThing.builder().iri("https://enola.dev/Get").build();
+
+    private Types() {}
 }

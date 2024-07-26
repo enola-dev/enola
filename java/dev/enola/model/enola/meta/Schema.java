@@ -17,26 +17,33 @@
  */
 package dev.enola.model.enola.meta;
 
-import java.util.Set;
-
 public interface Schema extends Common {
+
+    String CLASS_IRI = "https://enola.dev/meta/Schema";
+
+    String id();
 
     String java_package();
 
-    Set<Datatype> schemaDatatypes();
+    Iterable<Datatype> schemaDatatypes();
 
-    Set<Property> schemaProperties();
+    Iterable<Property> schemaProperties();
 
-    Set<Class> schemaClasses();
+    Iterable<Class> schemaClasses();
 
-    interface Builder<B extends Schema> extends Common.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Schema> extends Schema, Common.Builder<B> { // skipcq: JAVA-E0169
 
-        Builder<B> java_package(String java_package);
+        Schema.Builder<B> id(String id);
 
-        Builder<B> addSchemaDatatype(Datatype datatype);
+        Schema.Builder<B> java_package(String java_package);
 
-        Builder<B> addSchemaProperty(Property property);
+        Schema.Builder<B> addSchemaDatatype(Datatype datatype);
 
-        Builder<B> addSchemaClass(Class clazz);
+        Schema.Builder<B> addSchemaProperty(Property property);
+
+        Schema.Builder<B> addSchemaClass(Class clazz);
+
+        @Override
+        Schema build();
     }
 }
