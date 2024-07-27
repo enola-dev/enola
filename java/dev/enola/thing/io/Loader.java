@@ -33,6 +33,8 @@ import java.util.stream.Stream;
 public class Loader<T extends Thing>
         implements ConverterInto<Stream<ReadableResource>, Store<?, T>> {
 
+    // TODO This must simply use the (new) ResourceIntoThingConverters !
+
     // TODO Do this multi-threaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
@@ -59,6 +61,7 @@ public class Loader<T extends Thing>
             things.get()
                     .forEach(
                             thingBuilder -> {
+                                // TODO Move this into ResourceIntoThingConverters
                                 thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
                                 var thing = thingBuilder.build();
                                 store.merge(thing);
