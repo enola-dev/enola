@@ -200,7 +200,15 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 required = true,
                 defaultValue = FileDescriptorResource.STDOUT,
                 showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
-                description = "URI (base) of where to write output/s")
+                description =
+                        "URI (base) of where to write output/s; e.g. file:/tmp or "
+                                + FileDescriptorResource.STDOUT)
         URI output;
+
+        static URI get(Output output) {
+            if (output == null) return FileDescriptorResource.STDOUT_URI;
+            if (output != null && output.output == null) return FileDescriptorResource.STDOUT_URI;
+            return output.output;
+        }
     }
 }
