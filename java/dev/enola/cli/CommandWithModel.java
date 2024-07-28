@@ -17,10 +17,12 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.FileDescriptorResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
@@ -34,10 +36,9 @@ import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.io.ResourceIntoThingConverters;
 import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
@@ -80,69 +81,76 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
     @Override
     public final void run() throws Exception {
-        super.run();
+        try (var ctx = TLC.open()) {
 
-        // TODO Fix design; as-is, this may stay null if --server instead of --model is used
-        EntityKindRepository ekr = null;
+            super.run();
+            ctx.push(ResourceProvider.class, rp);
 
-        // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
-        ServiceProvider grpc = null;
-        if (group.load != null) {
-            // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
-            DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
-            ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
-            ResourceIntoThingConverter ritc = new RdfResourceIntoThingConverter(rp, dtr);
-            var loader = new Loader(ritc);
-            var fgrp = new GlobResourceProviders(rp);
-            for (var globIRI : group.load) {
-                try (var stream = fgrp.get(globIRI)) {
-                    loader.convertIntoOrThrow(stream, store);
+            // TODO Fix design; as-is, this may stay null if --server instead of --model is used
+            EntityKindRepository ekr = null;
+
+            // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
+            ServiceProvider grpc = null;
+            if (group.load != null) {
+                // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
+                DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
+                ctx.push(DatatypeRepository.class, dtr);
+
+                ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
+
+                ResourceIntoThingConverters ritc = new ResourceIntoThingConverters();
+                var loader = new Loader(ritc);
+                var fgrp = new GlobResourceProviders(rp);
+                for (var globIRI : group.load) {
+                    try (var stream = fgrp.get(globIRI)) {
+                        loader.convertIntoOrThrow(stream, store);
+                    }
                 }
+
+                var repo = store.build();
+                var c = new LoggingCollector();
+                var v = new Validators(repo);
+                v.validate(repo, c);
+                if (c.hasMessages()) {
+                    System.err.println("Loaded models have validation errors; use -v to show them");
+                    if (validate) {
+                        System.exit(7);
+                    } else {
+                        System.err.println("Use --no-validate to continue anyway");
+                    }
+                }
+
+                TemplateThingRepository templateThingRepository = new TemplateThingRepository(repo);
+                templateService = templateThingRepository;
+                // NB: Copy/pasted below...
+                ekr = new EntityKindRepository();
+                Repository<Type> tyr = new TypeRepositoryBuilder().build();
+                esp = new EnolaServiceProvider(ekr, tyr, templateThingRepository, rp);
+                var enolaService = esp.getEnolaService();
+                grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
+                gRPCService = grpc.get();
+
+            } else if (group.model != null) {
+                var modelResource = rp.getReadableResource(group.model);
+                ekr = new EntityKindRepository();
+                ekr.load(modelResource);
+                // NB: Copy/paste from above...
+                Repository<Type> tyr = new TypeRepositoryBuilder().build();
+                esp = new EnolaServiceProvider(ekr, tyr, rp);
+                var enolaService = esp.getEnolaService();
+                grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
+                gRPCService = grpc.get();
+
+            } else if (group.server != null) {
+                grpc = new EnolaGrpcClientProvider(group.server, false); // direct, single-threaded!
+                gRPCService = grpc.get();
             }
 
-            var repo = store.build();
-            var c = new LoggingCollector();
-            var v = new Validators(repo);
-            v.validate(repo, c);
-            if (c.hasMessages()) {
-                System.err.println("Loaded models have validation errors; use -v to show them");
-                if (validate) {
-                    System.exit(7);
-                } else {
-                    System.err.println("Use --no-validate to continue anyway");
-                }
+            try {
+                run(ekr, gRPCService);
+            } finally {
+                grpc.close();
             }
-
-            TemplateThingRepository templateThingRepository = new TemplateThingRepository(repo);
-            templateService = templateThingRepository;
-            // NB: Copy/pasted below...
-            ekr = new EntityKindRepository();
-            Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            esp = new EnolaServiceProvider(ekr, tyr, templateThingRepository, rp);
-            var enolaService = esp.getEnolaService();
-            grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
-            gRPCService = grpc.get();
-
-        } else if (group.model != null) {
-            var modelResource = rp.getReadableResource(group.model);
-            ekr = new EntityKindRepository();
-            ekr.load(modelResource);
-            // NB: Copy/paste from above...
-            Repository<Type> tyr = new TypeRepositoryBuilder().build();
-            esp = new EnolaServiceProvider(ekr, tyr, rp);
-            var enolaService = esp.getEnolaService();
-            grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
-            gRPCService = grpc.get();
-
-        } else if (group.server != null) {
-            grpc = new EnolaGrpcClientProvider(group.server, false); // direct, single-threaded!
-            gRPCService = grpc.get();
-        }
-
-        try {
-            run(ekr, gRPCService);
-        } finally {
-            grpc.close();
         }
     }
 

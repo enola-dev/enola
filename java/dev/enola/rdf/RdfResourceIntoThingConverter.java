@@ -51,7 +51,7 @@ public class RdfResourceIntoThingConverter<T extends Thing>
 
     private final Supplier<Builder<T>> builderSupplier;
 
-    public RdfResourceIntoThingConverter(
+    private RdfResourceIntoThingConverter(
             ResourceProvider rp,
             DatatypeRepository datatypeRepository,
             Supplier<Thing.Builder<T>> builderSupplier) {
