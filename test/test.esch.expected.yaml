@@ -1,0 +1,32 @@
+&id001
+description: Test Schema. This is intentionally minimal - one of each testable concept.
+id: dev.enola.test
+iri: https://enola.dev/test
+java_package: dev.enola.model.enola.test
+name: Test
+schemaClasses:
+  - idProperties:
+      - datatype: &id002
+          emoji: 😸
+          iri: https://enola.dev/test/HappyInt
+          name: HappyInt
+          parent:
+            name: common:Integer32
+            schema: *id001
+          schema: *id001
+        name: number
+        schema: *id001
+    iri: https://enola.dev/test/Test
+    name: Test
+    parents:
+      - name: Base
+        schema: *id001
+    properties:
+      - datatype:
+          name: common:String
+          schema: *id001
+        name: label
+        schema: *id001
+    schema: *id001
+schemaDatatypes:
+  - *id002

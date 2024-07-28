@@ -29,6 +29,7 @@ datatypes:
       types!
     iri: https://enola.dev/String
     java:type: java.lang.String
+    proto: string
     xsd: xsd:string
   Text:
     description:
@@ -41,7 +42,7 @@ datatypes:
     iri: https://enola.dev/Text1
     parent: Text
   Markdown:
-    description: Text which is interpreted as Markdown.
+    description-md: Text which is interpreted as [Common Markdown](https://commonmark.org) syntax.
     iri: https://enola.dev/Markdown
     parent: Text
   Identifier:
@@ -49,20 +50,20 @@ datatypes:
     iri: https://enola.dev/Identifier
     parent: String
   Name:
-    description: Camel Case, with underscores OK, but no spaces or dots or colons or hyphens.
+    description: Identifier with CamelCase, with underscores OK, but no spaces or dots or colons or hyphens etc.
     iri: https://enola.dev/Name
     parent: Identifier
     # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_]*$"
     xsd: xsd:NCName
   # TODO Having both Names & ID is a bit confusing... can we get rid of one of them?!
   Names:
-    description: With underscores and dots, but no spaces or colons or hyphens.
+    description: Identifier with underscores and dots, but no spaces or colons or hyphens etc.
     iri: https://enola.dev/Names
     parent: Identifier
     # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_.]*$"
     xsd: xsd:NMTOKEN
   ID:
-    description: With underscores and dots and colons, but no spaces or hyphens or slashes.
+    description: Identifier with underscores and dots and colons, but no spaces or hyphens or slashes.
     iri: https://enola.dev/ID
     parent: Identifier
     # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_.:]*$"
@@ -84,19 +85,109 @@ datatypes:
     xsd: xsd:anyURI
   MediaType:
     iri: https://enola.dev/MediaType
+    description: Internet Media Type, also known as a MIME Type or Content Type.
     java:type: com.google.common.net.MediaType
+    # TODO enola:rfc: 6838
+  Binary:
+    java:type: dev.enola.common.io.ByteSourcer
+    proto: bytes
+    xsd: xsd:base64Binary
+  Boolean:
+    java:type: java.lang.Boolean
+    proto: bool
+    xsd: xsd:boolean
+  Long:
+    description: Number between -9223372036854776000 (-2^63) and 9223372036854776000 (2^63 - 1)
+    java:type: java.lang.Long
+    proto: sint64
+    xsd: xsd:long
+  UnsignedLong:
+    description: Number between 0 and 18446744073709551615 (2^64 − 1).
+    java:type: java.lang.Long
+    proto: uint64
+    xsd: xsd:unsignedLong
+  Integer32:
+    description: Number between -2147483648 (-2^31) and 2147483647 (2^31 - 1). Not to confuse with BigInteger.
+    java:type: java.lang.Integer
+    proto: sint32
+    xsd: xsd:int # NOT xsd:integer!
+  UnsignedInteger32:
+    description: Number between 0 and 4294967295 (2^32 - 1). Not to confuse with BigInteger.
+    java:type: java.lang.Integer
+    proto: uint32
+    xsd: xsd:unsignedInt # NOT xsd:negativeInteger!
+  Short:
+    description: Number between -32768 (-2^15) and 32767 (2^15 - 1).
+    java:type: java.lang.Short
+    proto: sint32 # ProtoBuf has no Short
+    xsd: xsd:short
+  UnsignedShort:
+    description: Number between 0 and 65536 (2^16).
+    java:type: java.lang.Short
+    proto: unit32 # ProtoBuf has no Short
+    xsd: xsd:unsignedShort
+  Byte:
+    description: Number between -256 (-2^8) and 255 (2^8 - 1).
+    java:type: java.lang.Byte
+    proto: sint32 # ProtoBuf has no Byte
+    xsd: xsd:byte
+  UnsignedByte:
+    description: Number between 0 and 256 (2^8).
+    java:type: java.lang.Byte
+    proto: uint32 # ProtoBuf has no Byte
+    xsd: xsd:unsignedByte
+  BigInteger:
+    description:
+      Number without dot (.) without any lower or upper bound; AKA an arbitrary-precision signed integer number. E.g.
+      -123456789012345678901234567890.
+    java:type: java.math.BigInteger
+    # ProtoBuf does not have this!
+    xsd: xsd:integer
+  Decimal:
+    description:
+      Number possibly with dot (.) without any lower or upper bound; AKA an arbitrary-precision signed decimal
+      number.  E.g. -123456789012345678901234567890.123.
+    java:type: java.math.BigDecimal
+    # ProtoBuf does not have this!
+    xsd: xsd:decimal
+  Double:
+    description:
+      Number that's a double-precision 64-bit IEEE 754 floating point, including Not-a-Number (NaN), both -0 and +1, and
+      +/- ♾️ infinity.
+    java:type: java.lang.Double
+    proto: double
+    xsd: xsd:double
+  Float:
+    description:
+      Number that's a single-precision 32-bit IEEE 754 floating point, including Not-a-Number (NaN), both -0 and +1, and
+      +/- ♾️ infinity.
+    java:type: java.lang.Float
+    proto: float
+    xsd: xsd:float
   Timestamp:
     description: Date and Time; global, without timezone.
     iri: https://enola.dev/Timestamp
     java:type: java.time.Instant
+    proto: google.protobuf.Timestamp
     xsd: xsd:dateTime
     enola:emoji: 🕑
+  HTML:
+    parent: rdf:HTML
+    description: HTML data.
+    java:type: org.jsoup.nodes.Document
+  JSON:
+    description: JSON data.
+  YAML:
+    description: YAML data.
+  XML:
+    parent: rdf:XMLLiteral
+    description: XML data.
+    java:type: org.w3c.dom.Document
 
 properties:
   name:
     type: Name
     description: Name of Thing. When part of an ID, often its (and IRI's) last segment.
-    iri: https://enola.dev/name
   label:
     type: String
     iri: https://www.w3.org/TR/rdf-schema/#ch_label
@@ -106,12 +197,27 @@ properties:
     type: String
     iri: https://schema.org/description
     description: Description of Thing. Basically a longer label.
+  description_md:
+    type: Markdown
+    parent: description
+    iri: https://enola.dev/description_md
+    description: Description of Thing, in Markdown format. Basically a longer label.
   emoji:
     type: String
-    iri: https://enola.dev/emoji
   iri_template:
     type: String # Templates are *NOT* valid IRI (or URL)
     iri: https://enola.org/IRITemplate
   example:
     type: IRI
-    iri: https://enola.dev/example
+  enid:
+    description:
+      Enola Numeric ID. Identifier of Thing which is unique within a given Enola instance (only, not globally).
+    type: UnsignedLong
+  origin:
+    description: What something is "based on", e.g. where it "comes from".
+    enola:emoji: "🏺"
+    type: IRI
+  origins:
+    description: What something is "based on", e.g. where it "comes from".
+    enola:emoji: "🏺"
+    type: IRI*

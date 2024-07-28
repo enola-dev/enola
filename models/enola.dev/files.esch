@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This syntax is LOW #priority ... files.yaml is just fine, to start!
+# This syntax is LOW #priority ... files.esch.yaml is just fine, to start!
 # TODO Write a parser for this syntax; e.g. using https://www.antlr.org
 # TODO Write an editor for this DSL, e.g. using https://langium.org
 
 schema Files
-iri https://enola.dev/Files
+iri https://enola.dev/files
 
 class Node
   iri_template file://{host}/{parent}/{name}?filesystem={filesystem}

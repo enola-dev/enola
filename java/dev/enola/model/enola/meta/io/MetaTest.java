@@ -17,8 +17,11 @@
  */
 package dev.enola.model.enola.meta.io;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.yamljson.test.TestYaml;
+import dev.enola.model.enola.meta.Schema;
 
 import org.junit.Test;
 
@@ -26,20 +29,30 @@ import java.io.IOException;
 
 public class MetaTest {
 
-    private void check(String name) throws IOException {
-        new SchemaIO()
-                .readYAML(
-                        new ClasspathResource("enola.dev/" + name + ".yaml"),
-                        schema -> TestYaml.assertEqualsToResource(schema, name + ".expected.yaml"));
+    private Schema read(String name) throws IOException {
+        return new SchemaIO().readYAML(new ClasspathResource(name + ".yaml"));
+    }
+
+    private Schema expected(String name) throws IOException {
+        var schema = read(name);
+        TestYaml.assertEqualsToResource(schema, name + ".expected.yaml");
+        return schema;
     }
 
     @Test
     public void readCommonYAML() throws IOException {
-        check("common");
+        read("enola.dev/common");
     }
 
     @Test
     public void readMetaSchemaYAML() throws IOException {
-        check("meta");
+        read("enola.dev/meta");
+    }
+
+    @Test
+    public void testSchemaYAML() throws IOException {
+        var test = expected("test.esch");
+        assertThat(test.name()).isEqualTo("Test");
+        // NB: We're not asserting on every attribute, because test.esch.expected.yaml did!
     }
 }

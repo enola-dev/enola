@@ -27,6 +27,8 @@ import org.jspecify.annotations.Nullable;
 @JThing("https://enola.dev/TestThing")
 public interface TestThing extends Thing {
 
+    // TODO Replace with code gen. from test.esch.yaml
+
     // NB: This is only here like this for TestThingTest; otherwise this would be inlined in @IRI!
     String NUMBER_URI = "https://enola.dev/test/number";
 

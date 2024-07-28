@@ -28,8 +28,9 @@ import java.net.URI;
 // NB: This hand-written class may eventually get replaced by a code-generated one!
 public class MutableDatatype extends MutableType implements Datatype, Datatype.Builder {
 
-    private String java;
     private URI xsd;
+    private String java;
+    private String proto;
 
     // TODO Use String IDs instead of Datatype, and use TLC/TP get() in accessors?!
     private Datatype parent;
@@ -37,6 +38,17 @@ public class MutableDatatype extends MutableType implements Datatype, Datatype.B
     @Override
     public Class type() {
         return TLC.get(ThingProvider.class).get(Datatype.CLASS_IRI, Class.class);
+    }
+
+    @Override
+    public Datatype parent() {
+        return parent;
+    }
+
+    @Override
+    public Datatype.Builder parent(Datatype datatype) {
+        this.parent = datatype;
+        return this;
     }
 
     @Override
@@ -51,13 +63,13 @@ public class MutableDatatype extends MutableType implements Datatype, Datatype.B
     }
 
     @Override
-    public Datatype parent() {
-        return parent;
+    public String proto() {
+        return proto;
     }
 
     @Override
-    public Datatype.Builder parent(Datatype datatype) {
-        this.parent = datatype;
+    public Datatype.Builder proto(String proto) {
+        this.proto = proto;
         return this;
     }
 
