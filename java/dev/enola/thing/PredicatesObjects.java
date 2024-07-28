@@ -124,7 +124,7 @@ public interface PredicatesObjects {
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
-            extends dev.enola.common.Builder<PredicatesObjects> {
+            extends dev.enola.common.Builder<B> {
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 

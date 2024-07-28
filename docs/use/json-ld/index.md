@@ -47,22 +47,20 @@ with a `picasso-context.jsonld`:
 ### YAML to RDF Turtle 🐢
 
 ```bash cd ../.././..
-$ ./enola rosetta --in="file:$PWD/test/picasso.yaml?context=file:test/picasso-context.jsonld" --out="fd:1?mediaType=text/turtle"
+$ ./enola rosetta --in="test/picasso.yaml?context=test/picasso-context.jsonld" --out="fd:1?mediaType=text/turtle"
 ...
 ```
-
-PS: The `$PWD` in `file:` is required until [issue #797](https://github.com/enola-dev/enola/issues/797) is resolved.
 
 ### JSON to RDF Turtle 🐢
 
 ```bash cd ../.././..
-$ ./enola rosetta --in="file:test/picasso.json?context=file:test/picasso-context.jsonld" --out="fd:1?mediaType=text/turtle"
+$ ./enola rosetta --in="test/picasso.json?context=test/picasso-context.jsonld" --out="fd:1?mediaType=text/turtle"
 ...
 ```
 
 ### JSON to JSON-LD
 
 ```bash cd ../.././..
-$ ./enola rosetta --in="file:test/picasso.json?context=file:test/picasso-context.jsonld" --out="fd:1?mediaType=application/ld+json" | head -7
+$ ./enola rosetta --in="test/picasso.json?context=test/picasso-context.jsonld" --out="fd:1?mediaType=application/ld+json" | head -7
 ...
 ```

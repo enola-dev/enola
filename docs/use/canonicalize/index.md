@@ -42,14 +42,14 @@ It also has an application in [cryptography](https://github.com/enola-dev/enola/
 into this, using an [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) _JSON Canonicalization Scheme_ (JCS) -inspired (but currently not fully compliant) algorithm:
 
 ```bash cd ../.././..
-$ ./enola canonicalize --load=file:test/canonicalize.json
+$ ./enola canonicalize --load=test/canonicalize.json
 ...
 ```
 
 or more nicely (`--pretty`) formatted:
 
 ```bash cd ../.././..
-$ ./enola canonicalize --pretty --load=file:test/canonicalize.json
+$ ./enola canonicalize --pretty --load=test/canonicalize.json
 ...
 ```
 
@@ -64,7 +64,7 @@ Note how the order of the keys in the JSON changes, among other changes.
 ```
 
 ```bash cd ../.././..
-$ ./enola canonicalize --pretty --load=file:test/canonicalize.jsonld --output=file:test/canonicalize.jsonld.expected
+$ ./enola canonicalize --pretty --load=test/canonicalize.jsonld --output=test/canonicalize.jsonld.expected
 ...
 ```
 

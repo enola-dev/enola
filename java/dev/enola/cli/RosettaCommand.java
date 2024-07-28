@@ -17,13 +17,17 @@
  */
 package dev.enola.cli;
 
+import static dev.enola.common.protobuf.ProtobufMediaTypes.setProtoMessageFQN;
+
+import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.DelegatingResource;
-import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.core.rosetta.Rosetta;
 
 import picocli.CommandLine;
 
 import java.net.URI;
+import java.nio.file.Paths;
 
 @CommandLine.Command(
         name = "rosetta",
@@ -59,19 +63,21 @@ public class RosettaCommand extends CommandWithResourceProvider {
     public void run() throws Exception {
         super.run();
 
-        rosetta = new Rosetta(rp);
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            rosetta = new Rosetta(rp);
 
-        var inResource = rp.getReadableResource(in);
-        var outResource = rp.getWritableResource(out);
+            var inResource = rp.getReadableResource(in);
+            var outResource = rp.getWritableResource(out);
 
-        if (schema != null) {
-            // required if in is a *.textproto to determine its type (until header sniffing is
-            // implemented)
-            var mt = ProtobufMediaTypes.setProtoMessageFQN(inResource.mediaType(), schema.protoFQN);
-            inResource = new DelegatingResource(inResource, mt);
+            if (schema != null) {
+                // required if in is a *.textproto to determine its type
+                // until header sniffing is implemented
+                var mt = setProtoMessageFQN(inResource.mediaType(), schema.protoFQN);
+                inResource = new DelegatingResource(inResource, mt);
+            }
+
+            rosetta.convertIntoOrThrow(inResource, outResource);
         }
-
-        rosetta.convertIntoOrThrow(inResource, outResource);
     }
 
     public enum Schema {

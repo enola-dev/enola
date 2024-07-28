@@ -49,6 +49,8 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     // TODO Better cache failed URLs instead of keep retrying! (If it is? Test...)
 
+    // TODO https://github.com/mizosoft/methanol as alternative?
+
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
 
     // https://square.github.io/okhttp/features/caching/

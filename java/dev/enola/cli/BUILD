@@ -41,6 +41,7 @@ java_binary(
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/model",
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",

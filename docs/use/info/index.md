@@ -35,7 +35,7 @@ $ ./enola info detect --http-scheme https://www.google.com
 or:
 
 ```bash cd ../.././..
-$ ./enola info detect --file-scheme file:picasso.thing.yaml
+$ ./enola info detect --file-scheme picasso.thing.yaml
 ...
 ```
 

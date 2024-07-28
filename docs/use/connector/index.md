@@ -64,7 +64,7 @@ with this `demo.book_kind/0-13-140731-7.yaml`:
 will cause:
 
 ```bash cd ../.././..
-$ ./enola get --model file:docs/use/connector/model-fs.yaml demo.book_kind/0-13-140731-7
+$ ./enola get --model docs/use/connector/model-fs.yaml demo.book_kind/0-13-140731-7
 ...
 ```
 
@@ -104,7 +104,7 @@ this `model-error.yaml`:
 will cause:
 
 ```bash $? cd ../.././..
-$ ./enola get --model file:docs/use/connector/model-error.yaml demo.book_kind/0-13-140731-7
+$ ./enola get --model docs/use/connector/model-error.yaml demo.book_kind/0-13-140731-7
 ...
 ```
 
@@ -122,7 +122,7 @@ like this:
 which will cause:
 
 ```bash $? cd ../.././..
-$ ./enola get --model file:docs/use/connector/model-java.yaml demo.book_kind/0-13-140731-7
+$ ./enola get --model docs/use/connector/model-java.yaml demo.book_kind/0-13-140731-7
 ...
 ```
 

@@ -23,6 +23,7 @@ java_library(
         ["**/*.java"],
         exclude = ["**/*Test.java"],
     ),
+    plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola",
@@ -34,6 +35,7 @@ java_library(
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
@@ -48,6 +50,7 @@ junit_tests(
         ":model",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/yamljson/test",
+        "//java/dev/enola/thing:thing_java",
         "//models",
         "//test",
     ],

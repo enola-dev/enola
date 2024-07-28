@@ -26,6 +26,7 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 public class ResourceProvidersTest {
 
@@ -71,20 +73,20 @@ public class ResourceProvidersTest {
         Resource r;
         var rp = new ResourceProviders();
 
-        r = rp.getResource(URI.create("file:test.yaml"));
+        r = rp.getResource(URI.create("file:/test.yaml"));
         assertThat(r.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
 
-        r = rp.getResource(URI.create("file:yamlisjson.yaml?mediaType=application/json"));
+        r = rp.getResource(URI.create("file:/yamlisjson.yaml?mediaType=application/json"));
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
 
-        r = rp.getResource(URI.create("file:noextension?mediaType=application/json"));
+        r = rp.getResource(URI.create("file:/noextension?mediaType=application/json"));
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
 
-        r = rp.getResource(URI.create("file:noextension?charset=UTF-16BE"));
+        r = rp.getResource(URI.create("file:/noextension?charset=UTF-16BE"));
         assertThat(r.mediaType())
                 .isEqualTo(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_16BE));
 
-        r = rp.getResource(URI.create("file:test.json?charset=UTF-16BE"));
+        r = rp.getResource(URI.create("file:/test.json?charset=UTF-16BE"));
         assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8.withCharset(Charsets.UTF_16BE));
     }
 
@@ -108,11 +110,14 @@ public class ResourceProvidersTest {
 
     @Test
     public void testReadRelativeFile() throws IOException {
-        checkReadFile(new File("relative"), URI.create("file:relative"));
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            checkReadFile(new File("relative"), URI.create("relative"));
 
-        var f = new File("folder/relative");
-        f.getParentFile().mkdir();
-        checkReadFile(f, URI.create("file:folder/relative"));
+            var f = new File("folder/relative");
+            f.getParentFile().mkdir();
+
+            checkReadFile(f, URI.create("folder/relative"));
+        }
     }
 
     private void checkWriteFile(File f, Charset cs, URI uri) throws IOException {
@@ -137,10 +142,12 @@ public class ResourceProvidersTest {
 
     @Test
     public void testWriteRelativeFileMediaTypeEncoding() throws IOException {
-        var cs = StandardCharsets.UTF_16LE;
-        var f = new File("testWriteFileMediaTypeEncoding.txt");
-        checkWriteFile(f, cs, f.toURI());
-        checkWriteFile(f, cs, URI.create("file:relative"));
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            var cs = StandardCharsets.UTF_16LE;
+            var f = new File("testWriteFileMediaTypeEncoding.txt");
+            checkWriteFile(f, cs, f.toURI());
+            checkWriteFile(f, cs, URI.create("relative"));
+        }
     }
 
     @Test
@@ -213,7 +220,7 @@ public class ResourceProvidersTest {
     public void testNoScheme() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new ResourceProviders().getResource(URI.create("test")));
+                () -> new ResourceProviders().getResource(URI.create("test:something")));
     }
 
     @Test

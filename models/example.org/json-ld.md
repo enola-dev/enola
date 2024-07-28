@@ -39,7 +39,7 @@ Of course, we lost what uniquely identified our things... but JSON-LD Contexts c
 Combining these, Enola can recreate the same data model, and generating documentation will look the same as in the original [Linked Data](linked.md) chapter, using this:
 
 ```bash cd .././.././..
-$ ./enola docgen --load="file:$PWD/models/example.org/greeting2.yaml?context=file:models/example.org/greeting-context.jsonld" --output=file:///tmp/models/ --no-index
+$ ./enola docgen --load="models/example.org/greeting2.yaml?context=models/example.org/greeting-context.jsonld" --output=/tmp/models/ --no-index
 ...
 ```
 

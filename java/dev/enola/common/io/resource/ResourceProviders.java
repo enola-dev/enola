@@ -17,12 +17,11 @@
  */
 package dev.enola.common.io.resource;
 
-import static java.util.Objects.requireNonNull;
-
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
-import org.jspecify.annotations.NonNull;
+import dev.enola.common.io.iri.URIs;
+
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,19 +71,16 @@ public class ResourceProviders implements ResourceProvider {
     }
 
     @Override
-    @NonNull
-    public Resource getResource(URI uri) {
-        String scheme = requireNonNull(uri, "uri").getScheme();
-        if (Strings.isNullOrEmpty(scheme)) {
-            throw new IllegalArgumentException("URI is missing a scheme: " + uri);
-        }
+    public @Nullable Resource getResource(final URI uri) {
+        var resolvedURI = URIs.absolutify(uri);
 
         for (ResourceProvider resourceProvider : resourceProviders) {
-            var resource = resourceProvider.getResource(uri);
+            var resource = resourceProvider.getResource(resolvedURI);
             if (resource != null) return resource;
         }
 
-        LOG.debug("Unknown URI scheme '" + scheme + "' in: {}", uri);
+        // TODO warn instead of debug - or does that create a shitload of logging?
+        LOG.debug("Unsupported URI: {}", resolvedURI);
         return null;
     }
 }

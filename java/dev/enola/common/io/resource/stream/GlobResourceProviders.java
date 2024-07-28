@@ -19,6 +19,8 @@ package dev.enola.common.io.resource.stream;
 
 import com.google.errorprone.annotations.MustBeClosed;
 
+import dev.enola.common.io.MoreFileSystems;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
@@ -36,9 +38,10 @@ public class GlobResourceProviders implements GlobResourceProvider {
 
     @Override
     @MustBeClosed
-    public Stream<ReadableResource> get(String globIRI) {
-        // TODO Don't hard-code this to file: but use MoreFileSystems.URI_SCHEMAS, somehow...
-        if (globIRI.startsWith("file:")) return fileGlobResourceProvider.get(globIRI);
+    public Stream<ReadableResource> get(String globReference) {
+        var globIRI = URIs.absolutify(globReference);
+        if (MoreFileSystems.URI_SCHEMAS.contains(URIs.getScheme(globIRI)))
+            return fileGlobResourceProvider.get(globIRI);
         else return Stream.of(resourceProvider.get(globIRI));
     }
 }

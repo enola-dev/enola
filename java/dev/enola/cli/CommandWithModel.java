@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
@@ -36,6 +37,7 @@ import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.datatype.Datatypes;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.ResourceIntoThingConverters;
@@ -55,6 +57,7 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
+import java.nio.file.Paths;
 
 public abstract class CommandWithModel extends CommandWithResourceProvider {
 
@@ -82,9 +85,9 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     @Override
     public final void run() throws Exception {
         try (var ctx = TLC.open()) {
-
             super.run();
             ctx.push(ResourceProvider.class, rp);
+            ctx.push(URIs.ContextKeys.BASE, Paths.get("").toUri());
 
             // TODO Fix design; as-is, this may stay null if --server instead of --model is used
             EntityKindRepository ekr = null;
@@ -93,11 +96,13 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             ServiceProvider grpc = null;
             if (group.load != null) {
                 // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
-                DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
+                DatatypeRepository dtr =
+                        new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
                 ctx.push(DatatypeRepository.class, dtr);
 
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
 
+                // TODO Explicitly add ResourceIntoThingConverter, depending on CLI feature flags
                 ResourceIntoThingConverters ritc = new ResourceIntoThingConverters();
                 var loader = new Loader(ritc);
                 var fgrp = new GlobResourceProviders(rp);
@@ -216,7 +221,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
         static URI get(Output output) {
             if (output == null) return FileDescriptorResource.STDOUT_URI;
             if (output != null && output.output == null) return FileDescriptorResource.STDOUT_URI;
-            return output.output;
+            return URIs.absolutify(output.output);
         }
     }
 }

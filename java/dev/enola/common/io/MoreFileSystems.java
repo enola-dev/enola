@@ -33,7 +33,14 @@ public final class MoreFileSystems {
     private static ImmutableSet<String> getFileSystemSchemes() {
         var builder = ImmutableSet.<String>builder();
         for (FileSystemProvider provider : FileSystemProvider.installedProviders()) {
-            builder.add(provider.getScheme());
+            // TODO Add full support for the jar: FileSystem? It's intentionally not supported,
+            // yet... because it would need more work; see
+            // https://stackoverflow.com/q/25032716/421602
+            // https://docs.oracle.com/javase/7/docs/technotes/guides/io/fsp/zipfilesystemprovider.html
+            // https://docs.oracle.com/en/java/javase/21/docs/api/jdk.zipfs/module-summary.html
+            if (!provider.getScheme().equals("jar")) {
+                builder.add(provider.getScheme());
+            }
         }
         return builder.build();
     }

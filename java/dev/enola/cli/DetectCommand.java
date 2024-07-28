@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
 import picocli.CommandLine;
@@ -25,6 +27,7 @@ import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
+import java.nio.file.Paths;
 
 @Command(
         name = "detect",
@@ -40,10 +43,13 @@ public class DetectCommand extends CommandWithResourceProvider {
     public void run() throws Exception {
         super.run();
 
-        var resource = rp.getResource(new URI(iri));
-        var mediaType = MediaTypeProviders.SINGLETON.detect(resource).orElse(resource.mediaType());
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            var resource = rp.getResource(new URI(iri));
+            var mediaType =
+                    MediaTypeProviders.SINGLETON.detect(resource).orElse(resource.mediaType());
 
-        var pw = spec.commandLine().getOut();
-        pw.println(mediaType);
+            var pw = spec.commandLine().getOut();
+            pw.println(mediaType);
+        }
     }
 }

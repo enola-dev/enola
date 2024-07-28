@@ -21,6 +21,8 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * TLC is the Thread Local {@link Context}. (Also known as "Tender Loving Care".)
  *
@@ -54,9 +56,21 @@ public final class TLC {
         return context().get(key);
     }
 
+    public static <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key) {
+        var tlc = threadLocalContext.get();
+        if (tlc == null) return Optional.empty();
+        return Optional.ofNullable(tlc.get(key));
+    }
+
     /** See {@link dev.enola.common.context.Context#get(java.lang.Class). */
     public static <T> @Nullable T get(Class<T> klass) {
         return context().get(klass);
+    }
+
+    public static <T> Optional<T> optional(Class<T> klass) {
+        var tlc = threadLocalContext.get();
+        if (tlc == null) return Optional.empty();
+        return tlc.optional(klass);
     }
 
     private static Context context() {

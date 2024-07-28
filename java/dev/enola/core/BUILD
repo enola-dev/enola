@@ -159,6 +159,7 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/concurrent",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",

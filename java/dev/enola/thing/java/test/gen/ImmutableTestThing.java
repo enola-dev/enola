@@ -65,7 +65,7 @@ public class ImmutableTestThing extends GenJavaThing implements TestThing {
         return new ImmutableTestThing(iri, label, number, ImmutableMap.of(), ImmutableMap.of());
     }
 
-    public static Builder<? extends ImmutableTestThing> builder() {
+    public static Builder<ImmutableTestThing> builder() {
         return new Builder<>();
     }
 

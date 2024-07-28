@@ -37,9 +37,9 @@ mv .built/linkml docs/models/
 
 # TODO Support --load *.rdf application/rdf+xml : That's quite simple, really; just requires piping through RIO.
 # TODO Support --load *.owl : Could map it into enola.meta.Schema? But... what's the priority of this, really?
-./enola -vvv docgen --load=file:"docs/models/**.{ttl}" --output=file://"$PWD"/docs/models/
+./enola -vvv docgen --load="docs/models/**.{ttl}" --output=docs/models/
 
 # TODO Support GLOBs in rosetta like in docgen? (Low priority, because DocGen will gen. embedded JSON-LD anyway.)
-./enola -v rosetta --in=file:models/enola.dev.ttl --out=file:docs/models/enola.dev.jsonld
+./enola -v rosetta --in=models/enola.dev.ttl --out=docs/models/enola.dev.jsonld
 
-# TODO RDF* --load=file:"models/**.ttl[s?]"
+# TODO RDF* --load="models/**.ttl[s?]"

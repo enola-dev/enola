@@ -69,7 +69,6 @@ datatypes:
     # TODO regexp: "^[a-zA-Z][a-zA-Z0-9_.:]*$"
     xsd: xsd:ID
   IRI:
-    # TODO Reconsider later if this is *really* needed...
     description:
       Logical (may not "resolve") absolute or relative IRI. Do NOT use this when you can instead better use a strongly
       typed real link!
@@ -77,6 +76,17 @@ datatypes:
     parent: Identifier
     java:type: java.net.URI
     xsd: xsd:anyURI
+  IRITemplate:
+    parent: String
+    label: IRI Template
+    description: Datatype for RFC 6570 URI Templates. Used e.g. in an iriTemplate Class property.
+    iri: https://enola.dev/IRITemplate
+    enola:emoji: {}
+    # TODO enola:wikipedia "URI_Template";
+    # TODO enola:wikidata "2467760";
+    # TODO enola:rfc "6570";
+    # TODO enola:gkg "m/05q4zt_";
+    # TODO rdfs:seeAlso iriTemplate
   URL:
     description: Physical (typically "resolves") absolute or relative IRI.
     iri: https://schema.org/URL
@@ -84,55 +94,67 @@ datatypes:
     java:type: java.net.URI
     xsd: xsd:anyURI
   MediaType:
-    iri: https://enola.dev/MediaType
     description: Internet Media Type, also known as a MIME Type or Content Type.
+    iri: https://enola.dev/MediaType
     java:type: com.google.common.net.MediaType
     # TODO enola:rfc: 6838
   Binary:
+    description: Unbounded sequence of 0s and 1s. Use sparingly; prefer more specific types!
+    iri: https://enola.dev/Binary
     java:type: dev.enola.common.io.ByteSourcer
     proto: bytes
     xsd: xsd:base64Binary
   Boolean:
+    description: True, or False - that is the question...
+    iri: https://enola.dev/Boolean
     java:type: java.lang.Boolean
     proto: bool
     xsd: xsd:boolean
   Long:
     description: Number between -9223372036854776000 (-2^63) and 9223372036854776000 (2^63 - 1)
+    iri: https://enola.dev/Long
     java:type: java.lang.Long
     proto: sint64
     xsd: xsd:long
   UnsignedLong:
     description: Number between 0 and 18446744073709551615 (2^64 − 1).
-    java:type: java.lang.Long
+    iri: https://enola.dev/UnsignedLong
+    java:type: com.google.common.primitives.UnsignedLong
     proto: uint64
     xsd: xsd:unsignedLong
   Integer32:
     description: Number between -2147483648 (-2^31) and 2147483647 (2^31 - 1). Not to confuse with BigInteger.
+    iri: https://enola.dev/Integer32
     java:type: java.lang.Integer
     proto: sint32
     xsd: xsd:int # NOT xsd:integer!
   UnsignedInteger32:
     description: Number between 0 and 4294967295 (2^32 - 1). Not to confuse with BigInteger.
-    java:type: java.lang.Integer
+    iri: https://enola.dev/UnsignedInteger32
+    java:type: com.google.common.primitives.UnsignedInteger
     proto: uint32
     xsd: xsd:unsignedInt # NOT xsd:negativeInteger!
   Short:
     description: Number between -32768 (-2^15) and 32767 (2^15 - 1).
+    iri: https://enola.dev/Short
     java:type: java.lang.Short
     proto: sint32 # ProtoBuf has no Short
     xsd: xsd:short
   UnsignedShort:
     description: Number between 0 and 65536 (2^16).
+    iri: https://enola.dev/UnsignedShort
     java:type: java.lang.Short
     proto: unit32 # ProtoBuf has no Short
     xsd: xsd:unsignedShort
   Byte:
     description: Number between -256 (-2^8) and 255 (2^8 - 1).
+    iri: https://enola.dev/Byte
     java:type: java.lang.Byte
     proto: sint32 # ProtoBuf has no Byte
     xsd: xsd:byte
   UnsignedByte:
     description: Number between 0 and 256 (2^8).
+    iri: https://enola.dev/UnsignedByte
     java:type: java.lang.Byte
     proto: uint32 # ProtoBuf has no Byte
     xsd: xsd:unsignedByte
@@ -140,6 +162,7 @@ datatypes:
     description:
       Number without dot (.) without any lower or upper bound; AKA an arbitrary-precision signed integer number. E.g.
       -123456789012345678901234567890.
+    iri: https://enola.dev/BigInteger
     java:type: java.math.BigInteger
     # ProtoBuf does not have this!
     xsd: xsd:integer
@@ -147,6 +170,7 @@ datatypes:
     description:
       Number possibly with dot (.) without any lower or upper bound; AKA an arbitrary-precision signed decimal
       number.  E.g. -123456789012345678901234567890.123.
+    iri: https://enola.dev/Decimal
     java:type: java.math.BigDecimal
     # ProtoBuf does not have this!
     xsd: xsd:decimal
@@ -154,6 +178,7 @@ datatypes:
     description:
       Number that's a double-precision 64-bit IEEE 754 floating point, including Not-a-Number (NaN), both -0 and +1, and
       +/- ♾️ infinity.
+    iri: https://enola.dev/Double
     java:type: java.lang.Double
     proto: double
     xsd: xsd:double
@@ -161,6 +186,7 @@ datatypes:
     description:
       Number that's a single-precision 32-bit IEEE 754 floating point, including Not-a-Number (NaN), both -0 and +1, and
       +/- ♾️ infinity.
+    iri: https://enola.dev/Float
     java:type: java.lang.Float
     proto: float
     xsd: xsd:float
@@ -171,27 +197,39 @@ datatypes:
     proto: google.protobuf.Timestamp
     xsd: xsd:dateTime
     enola:emoji: 🕑
+  FileTime:
+    description:
+      Date and Time; global, without timezone. This can store points on the time-line further in the future and further
+      in the past than Timestamp.
+    iri: https://enola.dev/FileTime
+    java:type: java.nio.file.attribute.FileTime
+    enola:emoji: 🕑
   HTML:
     parent: rdf:HTML
     description: HTML data.
+    iri: https://enola.dev/HTML
     java:type: org.jsoup.nodes.Document
   JSON:
     description: JSON data.
+    iri: https://enola.dev/JSON
   YAML:
     description: YAML data.
+    iri: https://enola.dev/YAML
   XML:
     parent: rdf:XMLLiteral
     description: XML data.
+    iri: https://enola.dev/XML
     java:type: org.w3c.dom.Document
 
 properties:
   name:
     type: Name
     description: Name of Thing. When part of an ID, often its (and IRI's) last segment.
+    iri: https://enola.dev/name
   label:
     type: String
-    iri: https://www.w3.org/TR/rdf-schema/#ch_label
     description: Label of Thing. For humans, may have spaces etc.
+    iri: https://www.w3.org/TR/rdf-schema/#ch_label
     parent: name
   description:
     type: String
@@ -204,20 +242,25 @@ properties:
     description: Description of Thing, in Markdown format. Basically a longer label.
   emoji:
     type: String
+    iri: https://enola.dev/emoji
   iri_template:
-    type: String # Templates are *NOT* valid IRI (or URL)
-    iri: https://enola.org/IRITemplate
+    type: IRITemplate # Templates are *NOT* valid IRI (or URL)
+    iri: https://enola.org/iriTemplate
   example:
     type: IRI
+    iri: https://enola.dev/example
   enid:
     description:
       Enola Numeric ID. Identifier of Thing which is unique within a given Enola instance (only, not globally).
     type: UnsignedLong
+    iri: https://enola.dev/enid
   origin:
     description: What something is "based on", e.g. where it "comes from".
+    iri: https://enola.dev/origin
     enola:emoji: "🏺"
     type: IRI
   origins:
     description: What something is "based on", e.g. where it "comes from".
+    iri: https://enola.dev/origins
     enola:emoji: "🏺"
     type: IRI*

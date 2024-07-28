@@ -25,7 +25,7 @@
      but this would be confusing for readers. TODO: Add support to hide
      CLI flags to Executable Markdown... ;-) -->
 
-    $ ./enola server --model file:docs/use/library/model.yaml --httpPort=8080
+    $ ./enola server --model docs/use/library/model.yaml --httpPort=8080
     HTTP JSON REST API + HTML UI server started; open http://0:0:0:0:0:0:0:0:8080/ui ...
 
 You can now open e.g. <http://localhost:8080/ui/demo.book/ABC/0-13-140731-7/1>
@@ -44,7 +44,7 @@ The `--grpcPort` flag starts [the Enola gRPC API](../../dev/proto/core.md#enolas
 
 This can be used by the Enola CLI Client's `--server` flag, instead of passing a `--model` file, like so:
 
-    $ ./enola server --model file:docs/use/library/model.yaml --grpcPort=7070
+    $ ./enola server --model docs/use/library/model.yaml --grpcPort=7070
     gRPC API server now available on port 9090
 
     $ ./enola get --server localhost:7070 demo.book/ABC/0-13-140731-7/1
@@ -70,7 +70,7 @@ related:
 
 This is the same as a direct "in-process" [Get Entity](../get/index.md) would have:
 
-    ./enola get --model file:docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
+    ./enola get --model docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
 
 <!-- TODO Add an E2E Integration Test for what's described above,
      by Rebasing and fix https://github.com/enola-dev/enola/pull/301, so that it's testable. -->

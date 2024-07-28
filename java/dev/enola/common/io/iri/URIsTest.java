@@ -19,21 +19,26 @@ package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import static java.net.URI.create;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
-import com.google.common.truth.Truth;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
 public class URIsTest {
@@ -167,7 +172,7 @@ public class URIsTest {
         assertName(URI.create("whatever:place/something.test"), "something.test");
         assertName(URI.create("whatever:something.test"), "something.test");
 
-        Assert.assertThrows(NullPointerException.class, () -> URI.create(null));
+        assertThrows(NullPointerException.class, () -> URI.create(null));
     }
 
     private void assertName(URI uri, String expectedFilename) {
@@ -216,15 +221,24 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetFilePath() {
-        // Truth.assertThat(Path.of("/tmp//{xy}?.txt#yo"))
-        //        .isEqualTo(Path.of("/tmp/?.txt")); // TODO rm
+    public void testGetFilePathFromURI() {
+        assertThat(URIs.getFilePath(URI.create("file:/tmp/"))).isEqualTo(Path.of("/tmp"));
+        assertThat(URIs.getFilePath(URI.create("file:/tmp/file"))).isEqualTo(Path.of("/tmp/file"));
 
-        Truth.assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
+        assertThat(URIs.getFilePath(URI.create("file:/tmp/file?mediaType=application/json")))
+                .isEqualTo(Path.of("/tmp/file"));
+
+        assertThat(URIs.getFilePath(URI.create("file:/tmp/file?q=p#fragment")))
+                .isEqualTo(Path.of("/tmp/file"));
+    }
+
+    @Test
+    public void testGetFilePathFromString() {
+        assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
 
         // Glob URIs
-        Truth.assertThat(URIs.getFilePath("file:/tmp//?.txt")).isEqualTo(Path.of("/tmp/?.txt"));
-        Truth.assertThat(URIs.getFilePath("file:/tmp//{xy}?q=.")).isEqualTo(Path.of("/tmp/{xy}"));
+        assertThat(URIs.getFilePath("file:/tmp//?.txt")).isEqualTo(Path.of("/tmp/?.txt"));
+        assertThat(URIs.getFilePath("file:/tmp//{xy}?q=.")).isEqualTo(Path.of("/tmp/{xy}"));
     }
 
     @Test
@@ -268,5 +282,32 @@ public class URIsTest {
     public void testDropQuery() {
         var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
         assertThat(URIs.dropQueryAndFragment(uri)).isEqualTo(create("file:/tmp/test/picasso.yaml"));
+    }
+
+    @Test
+    public void jimURI() throws IOException {
+        try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
+            Path path1 = fs.getPath("/directory/file");
+            URI uri = path1.toUri();
+            Path path2 = URIs.getFilePath(uri);
+            assertThat(path2).isEqualTo(path1);
+        }
+    }
+
+    @Test
+    public void absolutifyURIs() {
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/"))) {
+            assertThat(URIs.absolutify(URI.create("test")))
+                    .isEqualTo(URI.create("ascheme://authority/test"));
+        }
+        assertThrows(IllegalStateException.class, () -> URIs.absolutify(URI.create("test")));
+    }
+
+    @Test
+    public void absolutifyStringURIs() {
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/"))) {
+            assertThat(URIs.absolutify("test")).isEqualTo("ascheme://authority/test");
+        }
+        assertThrows(IllegalStateException.class, () -> URIs.absolutify("test"));
     }
 }
