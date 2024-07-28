@@ -17,8 +17,10 @@
  */
 package dev.enola.common.io.resource;
 
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -37,6 +39,8 @@ import java.nio.file.Path;
 
 public class FileResourceTest {
 
+    // ResourceProvidersTest has more, notably coverage for relative file URIs
+
     @Test
     public void testWriteRead() throws IOException {
         var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
@@ -49,10 +53,10 @@ public class FileResourceTest {
     @Test
     public void testWriteFileInNonExistingDirectory() throws IOException {
         var tmp = System.getProperty("java.io.tmpdir");
-        var dir = new File(tmp, "FileResourceTest-" + Long.toString(System.nanoTime()));
+        var dir = new File(tmp, "FileResourceTest-" + System.nanoTime());
         assertThat(dir.exists()).isFalse();
         var file = new File(dir, "text.txt");
-        var r = new FileResource(file.toURI(), MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(file.toURI(), PLAIN_TEXT_UTF_8);
         r.charSink().write("hello, world");
         assertThat(file.delete()).isTrue();
         assertThat(dir.delete()).isTrue();
@@ -60,7 +64,7 @@ public class FileResourceTest {
 
     @Test(expected = NoSuchFileException.class)
     public void readNonExisting() throws IOException {
-        var r = new FileResource(URI.create("file:does-not-exist.txt"), MediaType.PLAIN_TEXT_UTF_8);
+        var r = new FileResource(URI.create("file:/does-not-exist.txt"), PLAIN_TEXT_UTF_8);
         r.charSource().read();
     }
 
@@ -76,37 +80,52 @@ public class FileResourceTest {
 
     @Test // https://github.com/google/jimfs
     public void testBasicJimFS() throws IOException {
-        FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
-        Path foo = fs.getPath("/testBasicJimFS");
-        Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
+        try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
+            Path foo = fs.getPath("/testBasicJimFS");
+            Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
 
-        var r = new FileResource(hello.toUri(), MediaType.PLAIN_TEXT_UTF_8);
-        check(r);
+            var r = new FileResource(hello.toUri(), PLAIN_TEXT_UTF_8);
+            check(r);
+        }
     }
 
     @Test // https://github.com/google/jimfs
     public void testPathToURIonJimFSwithNewName() throws IOException {
-        FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
-        Path foo = fs.getPath("/testPathToURIonJimFSwithNewName");
+        try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
+            Path foo = fs.getPath("/testPathToURIonJimFSwithNewName");
 
-        var uriString = foo.toUri().toString() + "/hello.txt";
-        assertThat(uriString).startsWith("jimfs://");
-        assertThat(uriString).endsWith("/hello.txt");
-        var uri = URI.create(uriString);
+            var uriString = foo.toUri() + "/hello.txt";
+            assertThat(uriString).startsWith("jimfs://");
+            assertThat(uriString).endsWith("/hello.txt");
+            var uri = URI.create(uriString);
 
-        // Nota Bene: Do *NOT* use Path here, only URI! Path loses the jimfs: scheme!
+            // Nota Bene: Do *NOT* use Path here, only URI! Path loses the jimfs: scheme!
 
-        var r = new FileResource(uri, MediaType.PLAIN_TEXT_UTF_8);
-        check(r);
+            var r = new FileResource(uri, PLAIN_TEXT_UTF_8);
+            check(r);
 
-        // To make sure it didn't just work because it was something like:
-        // file:///tmp/bazel-working-directory/_main/bazel-out/k8-fastbuild/bin/common/common/src/test/java/dev/enola/common/io/resource/FileResourceTest.runfiles/_main/jimfs:/dc113772-abe6-4ffd-be54-eeaecdc34414/testPathToURIonJimJS/hello.txt
-        // let's double-check:
-        assertThat(r.uri().getScheme()).isEqualTo("jimfs");
+            // To make sure it didn't just work because it was something like:
+            // file:///tmp/bazel-working-directory/_main/bazel-out/k8-fastbuild/bin/common/common/src/test/java/dev/enola/common/io/resource/FileResourceTest.runfiles/_main/jimfs:/dc113772-abe6-4ffd-be54-eeaecdc34414/testPathToURIonJimJS/hello.txt
+            // let's double-check:
+            assertThat(r.uri().getScheme()).isEqualTo("jimfs");
+        }
     }
 
     private void check(Resource r) throws IOException {
         r.charSink().write("hello, world");
         assertThat(r.charSource().read()).isEqualTo("hello, world");
+    }
+
+    @Test // https://github.com/google/jimfs
+    public void testSeparatePathJimFS() throws IOException {
+        try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
+            Path folder = fs.getPath("/testSeparatePathJimFS");
+            Files.createDirectories(folder);
+            Path hello = folder.resolve("hello.txt");
+            Files.writeString(hello, "hello, world", Charsets.UTF_8);
+
+            var r = new FileResource(hello.toUri(), PLAIN_TEXT_UTF_8);
+            assertThat(r.charSource().read()).isEqualTo("hello, world");
+        }
     }
 }

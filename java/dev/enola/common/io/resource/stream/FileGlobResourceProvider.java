@@ -33,10 +33,10 @@ import java.util.stream.Stream;
  *
  * <p>See {@link FileSystem#getPathMatcher(String)} for the full (Java) documentation of globs.
  *
- * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or
- * <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories of /tmp, but excluding /tmp
- * itself), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and sub-directories), or
- * similar.
+ * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or <tt>file:/tmp/**</tt>
+ * (for everything under /tmp), or <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories
+ * of /tmp, but excluding /tmp itself), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and
+ * sub-directories), or similar.
  *
  * <p>It is also valid to use a file: IRI which is not actually a glob; in that case, it is
  * interpreted as just the given single file (if it is a file, or empty if that's a directory).
@@ -51,7 +51,9 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
 
     @Override
     @MustBeClosed
-    public Stream<ReadableResource> get(String globIRI) {
+    public Stream<ReadableResource> get(String globReference) {
+        var globIRI = URIs.absolutify(globReference);
+
         if (!globIRI.startsWith("file:")) {
             throw new IllegalArgumentException("Not a file: IRI: " + globIRI);
         }

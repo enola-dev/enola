@@ -60,6 +60,7 @@ public class ResourceIntoThingConverters<T extends Thing>
             ctx.push(INPUT, input);
             for (var converter : converters) {
                 var opt = converter.convert(input);
+                // TODO Don't return after the 1st one, but run all, and merge
                 if (opt.isPresent()) return opt.get();
             }
         }

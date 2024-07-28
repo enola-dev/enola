@@ -45,7 +45,7 @@ set -euox pipefail
 
 # WITH ./enola itself!
 # NB: For TESTING, use: --out="fd:1?mediaType=application/ld+json"
-./enola rosetta --in="file:test/picasso.json?context=file:test/picasso-context.jsonld" --out=file:/tmp/picasso-enola.jsonld
+./enola rosetta -v --in="test/picasso.json?context=test/picasso-context.jsonld" --out=file:/tmp/picasso-enola.jsonld
 ./enola canonicalize --pretty --load=file:/tmp/picasso-enola.jsonld --output=file:/tmp/picasso-enola.canonicalized.jsonld
 diff /tmp/picasso-enola.canonicalized.jsonld /tmp/picasso-expected.canonicalized.jsonld
 # TODO ./enola rosetta should directly support ?canonicalize=true&pretty=true

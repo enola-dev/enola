@@ -35,7 +35,7 @@ This means:
 Check it out by generating documentation:
 
 ```bash cd .././.././..
-$ ./enola docgen --load "file:docs/models/example.org/greetingN.ttl" --output=file:///tmp/models/ --no-index
+$ ./enola docgen --load docs/models/example.org/greetingN.ttl --output=/tmp/models/ --no-index
 ...
 ```
 

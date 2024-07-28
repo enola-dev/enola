@@ -19,6 +19,8 @@ package dev.enola.datatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.primitives.UnsignedLong;
+
 import dev.enola.common.convert.ConversionException;
 
 import org.junit.Test;
@@ -54,6 +56,14 @@ public class DatatypesTest {
         assertThat(datatype.javaType()).hasValue(URI.class);
         assertThat(datatype.stringConverter().convertFrom("https://enola.dev"))
                 .isEqualTo(URI.create("https://enola.dev"));
+    }
+
+    public @Test void unsignedLong() throws ConversionException {
+        var datatype = Datatypes.UNSIGNED_LONG;
+        checkInvariants(datatype);
+        assertThat(datatype.javaType()).hasValue(UnsignedLong.class);
+        assertThat(datatype.stringConverter().convertTo(UnsignedLong.MAX_VALUE))
+                .isEqualTo("18446744073709551615");
     }
 
     void checkInvariants(Datatype<?> datatype) {

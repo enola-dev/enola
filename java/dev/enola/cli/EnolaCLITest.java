@@ -311,28 +311,28 @@ public class EnolaCLITest {
 
     @Test
     public void noStacktraceWithoutVerbose() {
-        var exec = cli("docgen", "--model", "file:nonexistant.yaml");
+        var exec = cli("docgen", "--model", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
-        assertThat(exec).hasExitCode(1).err().contains("NoSuchFileException: nonexistant.yaml\n");
+        assertThat(exec).hasExitCode(1).err().contains("NoSuchFileException: /nonexistant.yaml\n");
     }
 
     @Test
     public void stacktraceWithGlobalVerbose() {
-        var exec = cli("-v", "docgen", "--model", "file:nonexistant.yaml");
+        var exec = cli("-v", "docgen", "--model", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .startsWith("java.nio.file.NoSuchFileException: nonexistant.yaml\n\tat ");
+                .startsWith("java.nio.file.NoSuchFileException: /nonexistant.yaml\n\tat ");
     }
 
     @Test
     public void stacktraceWithSubcommandVerbose() {
-        var exec = cli("docgen", "-v", "--model", "file:nonexistant.yaml");
+        var exec = cli("docgen", "-v", "--model", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .startsWith("java.nio.file.NoSuchFileException: nonexistant.yaml\n\tat ");
+                .startsWith("java.nio.file.NoSuchFileException: /nonexistant.yaml\n\tat ");
     }
 }

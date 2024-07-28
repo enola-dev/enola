@@ -36,7 +36,7 @@ Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but req
 ## YAML to JSON
 
 ```bash cd ../.././..
-$ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.json --schema=EntityKinds
+$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.json --schema=EntityKinds
 ...
 ```
 
@@ -49,7 +49,7 @@ The `model.json` file now contains:
 ## YAML to TextProto
 
 ```bash cd ../.././..
-$ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.textproto --schema=EntityKinds
+$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.textproto --schema=EntityKinds
 ...
 ```
 
@@ -62,7 +62,7 @@ The `model.textproto` file now contains:
 ## YAML to Binary Protocol Buffer
 
 ```bash cd ../.././..
-$ ./enola rosetta --in=file:docs/use/library/model.yaml --out=file:docs/use/library/model.binpb --schema=EntityKinds
+$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.binpb --schema=EntityKinds
 ...
 ```
 
@@ -71,7 +71,7 @@ The `model.binpb` now contains _[binary protocol buffer wire format](https://pro
 ## Turtle 🐢 to JSON-LD 🔗
 
 ```bash cd ../.././..
-$ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.jsonld
+$ ./enola rosetta --in test/picasso.ttl --out picasso.jsonld
 ...
 ```
 
@@ -82,7 +82,7 @@ $ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.jsonld
 ## Turtle 🐢 to Things ⛓️
 
 ```bash cd ../.././..
-$ ./enola rosetta --in file:test/picasso.ttl --out file:picasso.thing.yaml
+$ ./enola rosetta --in test/picasso.ttl --out picasso.thing.yaml
 ...
 ```
 
@@ -99,7 +99,7 @@ $ cat docs/use/rosetta/hello.txt
 ```
 
 ```bash cd ../.././..
-$ ./enola rosetta --in='file:docs/use/rosetta/hello.txt?charset=UTF-8' --out='file:/tmp/hello-windows.txt?charset=ISO-8859-1'
+$ ./enola rosetta --in='docs/use/rosetta/hello.txt?charset=UTF-8' --out='/tmp/hello-windows.txt?charset=ISO-8859-1'
 ...
 ```
 

@@ -23,6 +23,9 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.Context;
+import dev.enola.common.context.TLC;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,6 +35,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class URIs {
     // see also class dev.enola.common.io.iri.IRIs
@@ -173,16 +177,13 @@ public final class URIs {
      * for more related background.
      */
     public static Path getFilePath(URI uri) {
-        // TODO Replace this with return Path.of(uri); but it needs more work...
-        // Both for relative file URIs and query parameters and ZIP files.
-        // Nota bene: https://stackoverflow.com/q/25032716/421602
-        // https://docs.oracle.com/javase/7/docs/technotes/guides/io/fsp/zipfilesystemprovider.html
-        // https://docs.oracle.com/en/java/javase/21/docs/api/jdk.zipfs/module-summary.html
-
-        var scheme = uri.getScheme();
-        var authority = uri.getAuthority();
-        var path = getPath(uri);
-        return getFilePath(scheme, authority, path);
+        uri = absolutify(uri);
+        uri = dropQueryAndFragment(uri);
+        try {
+            return Path.of(uri);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid URI: " + uri, e);
+        }
     }
 
     public static Path getFilePath(String uri) {
@@ -198,8 +199,7 @@ public final class URIs {
             return FileSystems.getDefault().getPath(path);
         } else
             try {
-                // TODO Better null or "" for path?
-                URI fsURI = new URI(scheme, authority, "", null, null);
+                URI fsURI = new URI(scheme, authority, null, null, null);
                 var fs = FileSystems.getFileSystem(fsURI);
                 return fs.getPath(path);
             } catch (URISyntaxException e) {
@@ -209,11 +209,19 @@ public final class URIs {
             }
     }
 
-    static String getScheme(String iri) {
+    public static String getScheme(String iri) {
         if (iri == null) return "";
         var p = iri.indexOf(':');
         if (p == -1) return "";
         return iri.substring(0, p);
+    }
+
+    private static boolean hasScheme(String iri) {
+        return iri.indexOf(':') > 0;
+    }
+
+    private static boolean hasScheme(URI uri) {
+        return !Strings.isNullOrEmpty(uri.getScheme());
     }
 
     static String getSchemeSpecificPart(String iri) {
@@ -232,6 +240,8 @@ public final class URIs {
      *
      * <p>TODO Is this really required?! Re-review which tests URI#getPath() fails, and why...
      */
+    @Deprecated // Get rid of this, it's stupid, buggy, and bad.
+    // TODO This doesn't corrrectly handle URIs with an authority!
     public static String getPath(URI uri) {
         return chopFragmentAndQuery(uri.getSchemeSpecificPart());
     }
@@ -321,6 +331,7 @@ public final class URIs {
      * This converts e.g. "file:relative.txt" to "file:///tmp/.../relative.txt" (depending on the
      * current working directory, obviously). It looses any query parameters and fragment.
      */
+    @Deprecated // TODO Get rid of the support for the fake "file:relative.txt" syntax
     public static URI rel2abs(URI uri) {
         if (uri == null) return uri;
         if (!"file".equals(uri.getScheme())) return uri;
@@ -328,6 +339,21 @@ public final class URIs {
 
         String relativePath = uri.getSchemeSpecificPart();
         return Path.of(relativePath).toAbsolutePath().toUri();
+    }
+
+    public static URI absolutify(URI uri) {
+        if (hasScheme(uri)) return uri;
+        return TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri)).resolve(uri);
+    }
+
+    public static String absolutify(String uri) {
+        if (hasScheme(uri)) return uri;
+        return TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri)) + uri;
+    }
+
+    private static Supplier<IllegalStateException> ex(Object uri) {
+        return () ->
+                new IllegalStateException("Missing ContextKeys.BASE on TLC to resolve: " + uri);
     }
 
     public static URI dropQueryAndFragment(URI uri) {
@@ -373,4 +399,15 @@ public final class URIs {
     // TODO Review if getScheme(), getPath(), getQueryString(), getFragment() are *REALLY* needed?!
 
     private URIs() {}
+
+    public enum ContextKeys implements Context.Key<URI> {
+
+        /**
+         * Base URI. Used to resolve <a
+         * href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#URI_references">relative
+         * reference URIs</a> which don't have a scheme.
+         */
+        // TODO Support for this is new and emerging, and not yet fully comprehensive...
+        BASE
+    }
 }

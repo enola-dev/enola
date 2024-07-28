@@ -19,6 +19,8 @@ package dev.enola.common.io.resource.stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ResourceProviders;
 
 import org.junit.BeforeClass;
@@ -29,6 +31,7 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class FileGlobResourceProviderTest {
 
@@ -113,14 +116,16 @@ public class FileGlobResourceProviderTest {
         check("x.txt", 1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void relativeGlobWithoutScheme() {
-        try (var stream = newGlobResourceProvider().get("*.ttl")) {
-            assertThat(stream).isEmpty();
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            try (var stream = newGlobResourceProvider().get("*.ttl")) {
+                assertThat(stream).isEmpty();
+            }
         }
     }
 
-    @Test
+    @Test // TODO Remove when support for (fake, wrong) file:*.ttl syntax is removed
     public void relativeGlobWithFileScheme() {
         try (var stream = newGlobResourceProvider().get("file:*.ttl")) {
             assertThat(stream).isEmpty();

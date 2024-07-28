@@ -27,15 +27,17 @@ imports:
 
 classes:
   Node:
-  iri_template: file://{host}/{parent}/{name}?filesystem={filesystem}
-  ids:
-    host: net:Hostname
-    filesystem: Filesystem
-    parent: Directory
-    name: String
-  properties:
-    createdAt: Instant
-    modifiedAt: Instant
+    # TODO iri_template: file://{host}/{parent}/{name}?filesystem={filesystem}
+    # This ^^^ is actually problematic, because we do also want to support e.g.
+    # jimfs://c98ff514-82f9-460d-9abc-92232804260c/folder/hello.txt et all.
+    ids:
+      host: net:Hostname
+      filesystem: Filesystem
+      parent: Directory
+      name: String
+    properties:
+      createdAt: Instant
+      modifiedAt: Instant
 
   File:
     parents: Node

@@ -19,6 +19,7 @@ package dev.enola.core.thing;
 
 import com.google.protobuf.Any;
 
+import dev.enola.common.context.TLC;
 import dev.enola.core.EnolaException;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
@@ -40,8 +41,10 @@ public class ThingRepositoryThingService implements ThingService {
 
     public ThingRepositoryThingService(ThingRepository thingRepository) {
         this.thingRepository = thingRepository;
-        // TODO Replace empty DatatypeRepository with one which looks up in ThingRepository
-        DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
+        // TODO Implement looking up Datatypes in ThingRepository!
+        DatatypeRepository datatypeRepository =
+                TLC.optional(DatatypeRepository.class)
+                        .orElseGet(() -> new DatatypeRepositoryBuilder().build());
         this.javaThingToProtoThingConverter =
                 new JavaThingToProtoThingConverter(datatypeRepository);
     }

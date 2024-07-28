@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Contexts 🧿 put things into perspective!
@@ -85,13 +86,17 @@ public class Context implements AutoCloseable {
      * IllegalStateException.
      */
     @SuppressWarnings("unchecked")
-    public <T> @Nullable T get(Class<T> key) {
+    public <T> T get(Class<T> key) {
         if (isEmpty()) throw new IllegalStateException("Context is empty");
         var object = _get(key);
         if (object == null)
             throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
         if (key.isInstance(object)) return (T) object;
         throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
+    }
+
+    public <T> Optional<T> optional(Class<T> key) {
+        return Optional.ofNullable((T) _get(key));
     }
 
     private @Nullable Object _get(Object key) {

@@ -27,6 +27,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",
         "@maven//:com_github_java_json_tools_uri_template",
@@ -46,6 +47,7 @@ junit_tests(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     deps = [
         ":io",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/protobuf",
         "//test",
         "@maven//:com_github_java_json_tools_uri_template",

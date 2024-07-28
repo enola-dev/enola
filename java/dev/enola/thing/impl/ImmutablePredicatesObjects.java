@@ -46,7 +46,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         this.datatypes = datatypes;
     }
 
-    public static PredicatesObjects.Builder<? extends ImmutablePredicatesObjects> builder() {
+    public static <T extends PredicatesObjects> PredicatesObjects.Builder<T> builder() {
         return new ImmutablePredicatesObjects.Builder<>();
     }
 

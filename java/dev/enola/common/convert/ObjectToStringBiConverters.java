@@ -17,7 +17,13 @@
  */
 package dev.enola.common.convert;
 
+import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
+
+import org.jspecify.annotations.Nullable;
+
 import java.net.URISyntaxException;
+import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -30,9 +36,40 @@ public final class ObjectToStringBiConverters {
             new ObjectToStringWithToStringBiConverter<>(
                     Boolean.class, input -> Boolean.valueOf(input));
 
+    public static final ObjectToStringBiConverter<Byte> BYTE =
+            new ObjectToStringWithToStringBiConverter<>(Byte.class, input -> Byte.valueOf(input));
+
+    public static final ObjectToStringBiConverter<Short> SHORT =
+            new ObjectToStringWithToStringBiConverter<>(Short.class, input -> Short.valueOf(input));
+
+    // TODO UNSIGNED_BYTE
+
+    public static final ObjectToStringBiConverter<Short> UNSIGNED_SHORT =
+            new ObjectToStringBiConverter<>() {
+                @Override
+                public @Nullable String convertTo(@Nullable Short input)
+                        throws ConversionException {
+                    return Integer.toString(Short.toUnsignedInt(input));
+                }
+
+                @Override
+                public @Nullable Short convertFrom(@Nullable String input)
+                        throws ConversionException {
+                    throw new IllegalStateException("TODO: Not implemented yet, add tests!");
+                }
+            };
+
     public static final ObjectToStringBiConverter<Integer> INT =
             new ObjectToStringWithToStringBiConverter<>(
                     Integer.class, input -> Integer.valueOf(input));
+
+    public static final ObjectToStringBiConverter<UnsignedInteger> UNSIGNED_INTEGER =
+            new ObjectToStringWithToStringBiConverter<>(
+                    UnsignedInteger.class, input -> UnsignedInteger.valueOf(input));
+
+    public static final ObjectToStringBiConverter<UnsignedLong> UNSIGNED_LONG =
+            new ObjectToStringWithToStringBiConverter<>(
+                    UnsignedLong.class, input -> UnsignedLong.valueOf(input));
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
             new ObjectToStringWithToStringBiConverter<>(
@@ -52,6 +89,12 @@ public final class ObjectToStringBiConverters {
     public static final ObjectToStringBiConverter<Instant> INSTANT =
             new ObjectToStringWithToStringBiConverter<>(
                     Instant.class, input -> Instant.parse(input));
+
+    public static final ObjectToStringBiConverter<FileTime> FILE_TIME =
+            new ObjectToStringWithToStringBiConverter<>(
+                    // TODO According to FileTime#Instant(), it "can store points on the time-line
+                    // further in the future and further in the past than Instant" - so no good?!
+                    FileTime.class, input -> FileTime.from(Instant.parse(input)));
 
     private ObjectToStringBiConverters() {}
 }

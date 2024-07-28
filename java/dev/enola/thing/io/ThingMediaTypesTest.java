@@ -37,7 +37,7 @@ public class ThingMediaTypesTest {
 
     @Test
     public void thingYaml() throws URISyntaxException {
-        var resource = new ResourceProviders().getResource(new URI("file:picasso.thing.yaml"));
+        var resource = new ResourceProviders().getResource(new URI("file:/picasso.thing.yaml"));
         var mediaType = MediaTypeProviders.SINGLETON.detect(resource).get();
         assertThat(mediaType).isEqualTo(YamlMediaType.YAML_UTF_8);
         // TODO assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);

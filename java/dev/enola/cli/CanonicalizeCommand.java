@@ -18,7 +18,9 @@
 package dev.enola.cli;
 
 import dev.enola.common.canonicalize.Canonicalizer;
+import dev.enola.common.context.TLC;
 import dev.enola.common.function.MoreStreams;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.stream.GlobResourceProviders;
 import dev.enola.common.io.resource.stream.WritableResourcesProvider;
@@ -26,6 +28,7 @@ import dev.enola.common.io.resource.stream.WritableResourcesProvider;
 import picocli.CommandLine;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 @CommandLine.Command(
         name = "canonicalize",
@@ -58,12 +61,13 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
     @Override
     public void run() throws Exception {
         super.run();
-
-        wrp = new WritableResourcesProvider(rp);
-        var fgrp = new GlobResourceProviders(rp);
-        for (var globIRI : resources.load) {
-            try (var stream = fgrp.get(globIRI)) {
-                MoreStreams.forEach(stream, r -> canonicalize(r));
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            wrp = new WritableResourcesProvider(rp);
+            var fgrp = new GlobResourceProviders(rp);
+            for (var globIRI : resources.load) {
+                try (var stream = fgrp.get(globIRI)) {
+                    MoreStreams.forEach(stream, r -> canonicalize(r));
+                }
             }
         }
     }

@@ -110,7 +110,14 @@ public class JavaThingToProtoThingConverter
                 var datatype = datatypeRepository.get(datatypeIRI);
                 if (datatype == null)
                     throw new IllegalStateException(
-                            "TODO: Implement support for: " + object.getClass() + " :: " + object);
+                            "TODO: Implement support for: "
+                                    + datatypeIRI
+                                    + " ("
+                                    + object.getClass()
+                                    + ") :: "
+                                    + object
+                                    + " in "
+                                    + datatypeRepository.list());
                 String valueAsString = datatype.stringConverterFromObject().convertTo(object);
                 protoValue.setLiteral(toProtoLiteral(valueAsString, datatype.iri()));
         }

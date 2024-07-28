@@ -107,6 +107,18 @@ public class ContextsTest {
         assertThrows(IllegalStateException.class, () -> ctx.get(OTHER));
     }
 
+    @Test
+    public void optionalNoTLC() {
+        assertThat(TLC.optional(OTHER)).isEmpty();
+    }
+
+    @Test
+    public void optionalNoKey() {
+        try (var ctx = TLC.open()) {
+            assertThat(TLC.optional(OTHER)).isEmpty();
+        }
+    }
+
     // TODO Truth's ThrowableSubject is missing throwable support; add it!
     private String stackTrace(Throwable e) {
         var sw = new StringWriter();
