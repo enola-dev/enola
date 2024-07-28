@@ -37,10 +37,10 @@ public class Loader<T extends Thing>
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
 
-    private final ResourceIntoThingConverter<T> resourceIntoThingConverter;
+    private final ResourceIntoThingConverters<T> resourceIntoThingConverters;
 
-    public Loader(ResourceIntoThingConverter<T> resourceIntoThingConverter) {
-        this.resourceIntoThingConverter = resourceIntoThingConverter;
+    public Loader(ResourceIntoThingConverters<T> resourceIntoThingConverters) {
+        this.resourceIntoThingConverters = resourceIntoThingConverters;
     }
 
     @Override
@@ -53,16 +53,12 @@ public class Loader<T extends Thing>
 
     private void load(ReadableResource resource, Store<?, T> store) {
         LOG.info("Loading {}...", resource);
-        var things = resourceIntoThingConverter.convert(resource);
-        if (!things.isPresent()) LOG.error("No Things in loaded: {}", resource);
-        else {
-            things.get()
-                    .forEach(
-                            thingBuilder -> {
-                                thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
-                                var thing = thingBuilder.build();
-                                store.merge(thing);
-                            });
-        }
+        var things = resourceIntoThingConverters.convert(resource);
+        things.forEach(
+                thingBuilder -> {
+                    thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
+                    var thing = thingBuilder.build();
+                    store.merge(thing);
+                });
     }
 }

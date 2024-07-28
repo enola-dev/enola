@@ -41,6 +41,10 @@ public class ResourceIntoThingConverters<T extends Thing>
         this.converters = ImmutableList.copyOf(converters);
     }
 
+    public ResourceIntoThingConverters(ResourceIntoThingConverter... converters) {
+        this(ImmutableList.copyOf(converters));
+    }
+
     public ResourceIntoThingConverters() {
         this(ServiceLoader.load(ResourceIntoThingConverter.class).stream());
     }
