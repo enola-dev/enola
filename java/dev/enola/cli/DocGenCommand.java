@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import static dev.enola.common.io.resource.FileDescriptorResource.STDOUT_URI;
 import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -99,7 +98,7 @@ public class DocGenCommand extends CommandWithModelAndOutput {
     private void multipleMDDocsForThings(
             EnolaServiceBlockingStub service, boolean generateIndexFile) throws Exception {
         var mdp = getMetadataProvider(new EnolaThingProvider(service));
-        var mdsg = new MarkdownSiteGenerator(output.output, rp, mdp, variables);
+        var mdsg = new MarkdownSiteGenerator(Output.get(output), rp, mdp, variables);
 
         var things = getThings(service, ENOLA_ROOT_LIST_THINGS);
 
@@ -129,7 +128,7 @@ public class DocGenCommand extends CommandWithModelAndOutput {
         var options = new Options();
         options.diagram = diagram;
 
-        var resource = rp.getWritableResource(output != null ? output.output : STDOUT_URI);
+        var resource = rp.getWritableResource(Output.get(output));
         var header = rp.getReadableResource(headerURI).charSource().read();
 
         try (var writer = resource.charSink().openBufferedStream()) {

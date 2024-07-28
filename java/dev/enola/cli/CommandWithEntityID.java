@@ -65,7 +65,8 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
             resource = new WriterResource(spec.commandLine().getOut(), format.toMediaType());
         } else {
             resource =
-                    rp.getWritableResource(URIs.addMediaType(output.output, format.toMediaType()));
+                    rp.getWritableResource(
+                            URIs.addMediaType(Output.get(output), format.toMediaType()));
         }
 
         run(service, iri);

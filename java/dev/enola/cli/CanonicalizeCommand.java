@@ -17,8 +17,6 @@
  */
 package dev.enola.cli;
 
-import static dev.enola.common.io.resource.FileDescriptorResource.STDOUT_URI;
-
 import dev.enola.common.canonicalize.Canonicalizer;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.resource.ReadableResource;
@@ -71,7 +69,7 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
     }
 
     private void canonicalize(ReadableResource r) throws IOException {
-        var out = wrp.getWritableResource(output != null ? output.output : STDOUT_URI, r.uri());
+        var out = wrp.getWritableResource(CommandWithModel.Output.get(output), r.uri());
         Canonicalizer.canonicalize(r, out, pretty);
     }
 }
