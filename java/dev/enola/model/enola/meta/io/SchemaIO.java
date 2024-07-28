@@ -32,14 +32,21 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class SchemaIO {
 
-    // TODO Use dev.enola.thing.validation instead of throw new IllegalArgumentException
+    // TODO Use dev.enola.thing.validation and errors.esch.yaml instead of IllegalArgumentException
 
-    // TODO Schema readYAML(ReadableResource resource)
+    public Schema readYAML(ReadableResource resource) throws IOException {
+        // TODO Avoid AtomicReference
+        AtomicReference<Schema> schema = new AtomicReference<>();
+        readYAML(resource, schema1 -> schema.set(schema1));
+        return schema.get();
+    }
+
     public void readYAML(ReadableResource resource, Consumer<Schema> schemay) throws IOException {
         var repo = new MetaThingByIdProvider.Builder();
         YAML.readSingleMap(
@@ -126,6 +133,7 @@ public class SchemaIO {
                     var datatype = repo.datatype(schema, name);
                     readCommon(datatypeMap, datatype, schema.iri());
                     datatype.java(getRemoveString(datatypeMap, "java:type"));
+                    datatype.proto(getRemoveString(datatypeMap, "proto"));
 
                     var xsd = getRemoveString(datatypeMap, "xsd");
                     // TODO Resolve CURIE, if it is one - but how do we know?
@@ -201,6 +209,8 @@ public class SchemaIO {
 
         common.label(getRemoveString(map, "label"));
         common.description(getRemoveString(map, "description"));
+        // TODO Handle description-md VS description...
+        common.description(getRemoveString(map, "description-md"));
         // TODO Resolve enola:emoji vs label / description (without enola:) inconsistency...
         common.emoji(getRemoveString(map, "enola:emoji"));
     }
@@ -251,10 +261,10 @@ public class SchemaIO {
     private @Nullable List<?> asList(@Nullable Object object) {
         if (object == null) return null;
         if (object instanceof List<?> list) return list;
-        throw new IllegalArgumentException(
-                "Should be List, but is: " + object.getClass() + " " + object);
+        return List.of(object);
     }
 
+    // TODO Remove when finally fully switching to Thing, where it's *OK* to have extra!
     private void checkEmpty(Map<?, ?> map) {
         if (!map.isEmpty()) {
             throw new IllegalArgumentException("Unknown properties: " + map);

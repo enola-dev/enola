@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Errors
+id: dev.enola.errors
+iri: https://enola.dev/errors
+java:package: dev.enola.model.enola.errors
+
+# .imports:
+#   enola: common.yaml
+
+datatypes:
+
+properties:
+
+classes:
+  Error:
+    description:
+      Errors are anomalies in some "current state" which in a "perfect world" likely ought to be corrected to achieve an
+      expected "correct" goal state.
+    properties:
+      message: enola:Text1
+      enola:origin:
+      severity:
+        type: enola:UnsignedByte
+        description_md:
+          Severity; where 0 = unset, 1 = [The End Of The World](https://www.youtube.com/watch?v=Z0GFRcFm-aY), ~100 =
+          perhaps better fix it, 255 = oh well.
+
+  SyntaxError:
+    parents: [Error]
+    # TODO Use URILineColumnMessage to format...
+    properties:
+      line: enola:PositiveLong
+      column: enola:UnsignedLong

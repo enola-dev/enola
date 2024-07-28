@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO Remove, later. It's currently still used in TypeRepositoryTest, but that
+# will eventually be removed as well; this is being replaced with test.esch.yaml
+
 # Switch from YAML to MD (with YAML in "header")
 
 types:

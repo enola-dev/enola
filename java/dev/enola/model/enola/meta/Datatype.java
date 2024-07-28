@@ -23,11 +23,13 @@ public interface Datatype extends Type {
 
     String CLASS_IRI = "https://enola.dev/meta/Datatype";
 
-    String java();
-
     // TODO @IRI(KIRI.E.META.PARENT)
     // Intentionally only singular instead of multiple
     Datatype parent();
+
+    String java();
+
+    String proto();
 
     URI xsd();
 
@@ -44,6 +46,8 @@ public interface Datatype extends Type {
         Datatype.Builder<B> parent(Datatype datatype);
 
         Datatype.Builder<B> java(String datatype);
+
+        Datatype.Builder<B> proto(String proto);
 
         Datatype.Builder<B> xsd(URI xsd);
     }

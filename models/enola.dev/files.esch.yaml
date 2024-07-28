@@ -14,12 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Write a parser for this syntax; e.g. using https://www.antlr.org
-# TODO Write an editor for this DSL, e.g. using https://langium.org
+# TODO Remove this once we can generate it (in-memory) from files.esch
 
 name: Files
 id: dev.enola.files
-iri: https://enola.dev/Files
+iri: https://enola.dev/files
+description: Model of Files in Directories of File Systems.
+java:package: dev.enola.model.enola.files
 
 imports:
   enola: common.yaml
@@ -43,14 +44,16 @@ classes:
     enola:wikipedia: https://en.wikipedia.org/wiki/Computer_file
     enola:example: file://localhost/tmp/dir/hello.txt?filesystem=default
     properties:
-      size: Long
+      size:
+        type: enola:Long # TODO Use a Datatype which permits KiB/MB etc. (from UoM?)
+        description: Number of bytes of data.
       mediaType: MediaType
 
   Directory:
     parents: Node
     enola:emoji: 📁
     description: "Directory is a [[Container]] of other Directories and [[File]]s."
-    enola:wikipedia: enola:wikipedia https://en.wikipedia.org/wiki/Directory_(computing)
+    enola:wikipedia: https://en.wikipedia.org/wiki/Directory_(computing)
     properties:
       children:
         type: Node*

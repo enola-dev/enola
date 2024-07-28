@@ -17,12 +17,15 @@
 name: Meta
 id: dev.enola.meta
 iri: https://enola.dev/meta
-description: Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, LinkML, JSON Schema, et al.
+description:
+  Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, Meta Content Framework (MCF), Schema.org, EMF,
+  LinkML, JSON Schema, et al.
 java:package: dev.enola.model.enola.meta
 
 # .imports:
 #   enola: common.yaml
 #   java: java.yaml
+#   proto: proto.esch.yaml
 
 classes:
   Namespace:
@@ -31,11 +34,13 @@ classes:
       iri: enola:IRI
 
   Common:
+    # TODO Permit multi-lingual label & description language keyed Maps (incl. MD) - but not name
     properties:
       # TODO Remove String, after imports work
       enola:name: enola:Name
       enola:label: enola:String
       enola:description: enola:String
+      enola:description_md: enola:Markdown
       enola:emoji: enola:String
 
   Schema:
@@ -74,10 +79,15 @@ classes:
     properties:
       # TODO parent: Datatype
       java:type:
-      xsd: enola:IRI
+      xsd:
+        description: Equivalent XML Schema (not Enola) Datatype.
+        type: enola:IRI
+      proto:
+        description: Equivalent Protocol Buffers (https://protobuf.dev) Value Type.
+        type: proto:FullName
 
   Enum:
-    parents: [Type]
+    parents: [Datatype]
     # ? type: [Datatype]
     iri_template: https://enola.dev/Enum/{schema}.{name}
     properties:
@@ -86,13 +96,15 @@ classes:
   EnumValue:
     parents: [Type]
     iri_template: https://enola.dev/EnumValue/{schema}.{name}
+    # TODO properties: enum: Enum inverse: values
 
   Property:
     parents: [Type]
     iri_template: https://enola.dev/Property/{schema}.{name}
     properties:
       parents: Property*
-      datatype: Datatype
+      type: Type # NOT datatype: Datatype
+      multiplicity: common:Boolean # TODO Enum instead of Boolean!
 
   Class:
     parents: [Type]
