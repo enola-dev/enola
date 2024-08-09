@@ -47,6 +47,7 @@ final class FileGlobPathWalker {
             var matcher = fs.getPathMatcher("glob:" + globString);
             return Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
                     .filter(path -> matcher.matches(path))
+                    // .git/ contains weird files which have "standard" extensions but not content
                     .filter(path -> !path.toString().contains("/.git/"));
         } else {
             return Stream.of(globPath);
