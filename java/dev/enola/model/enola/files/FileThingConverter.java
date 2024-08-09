@@ -36,6 +36,9 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,6 +51,8 @@ import java.util.Optional;
 @SuppressWarnings("rawtypes")
 @AutoService(ResourceIntoThingConverter.class)
 public class FileThingConverter implements ResourceIntoThingConverter<ImmutableThing> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);
 
     // TODO Use Node/File/Directory/Link instead of Thing, once files.esch.yaml is code generated...
 
@@ -62,6 +67,8 @@ public class FileThingConverter implements ResourceIntoThingConverter<ImmutableT
         // TODO I'm surprised we don't have to skip *.ttl, until ResourceIntoThingConverters merges
 
         if (!MoreFileSystems.URI_SCHEMAS.contains(input.uri().getScheme())) return Optional.empty();
+
+        LOG.debug("Converting {}", input);
 
         try {
             var node = convert(input.uri(), input.mediaType());
