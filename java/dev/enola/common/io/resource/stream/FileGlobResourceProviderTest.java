@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.resource.ResourceProviders;
 
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -37,8 +36,8 @@ public class FileGlobResourceProviderTest {
 
     @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    protected GlobResourceProvider newGlobResourceProvider() {
-        return new FileGlobResourceProvider(new ResourceProviders());
+    protected GlobResolver newGlobResourceProvider() {
+        return new FileGlobResolver();
     }
 
     protected void checkGlobIRI(String globIRI, int expectedFiles) {
@@ -63,14 +62,14 @@ public class FileGlobResourceProviderTest {
         Files.createFile(new File(tempRoot, "subdir.txt/e.txt").toPath());
     }
 
-    private void check(String suffix, int expectedFiles) {
+    private void check(String suffix, int expectedURIs) {
         var globIRI = tempFolder.getRoot().getAbsoluteFile().toURI() + "/" + suffix;
-        checkGlobIRI(globIRI, expectedFiles);
+        checkGlobIRI(globIRI, expectedURIs);
     }
 
     @Test
     public void globStarTXT() {
-        check("*.txt", 2);
+        check("*.txt", 3);
     }
 
     @Test
@@ -82,18 +81,18 @@ public class FileGlobResourceProviderTest {
     @Test
     public void globStarStarTXT() {
         // **.txt matches TXT in root and all sub-dirs...
-        check("**.txt", 3);
+        check("**.txt", 4);
     }
 
     @Test
     public void globStarStarTXTwithCharset() {
         // **.txt matches TXT in root and all sub-dirs...
-        check("**.txt?charset=US-ASCII", 3);
+        check("**.txt?charset=US-ASCII", 4);
     }
 
     @Test
     public void globStarCurly() {
-        check("**.{txt,json,yaml}", 5);
+        check("**.{txt,json,yaml}", 6);
     }
 
     @Test

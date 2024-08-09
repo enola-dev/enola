@@ -17,16 +17,14 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import dev.enola.common.io.resource.ResourceProviders;
-
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
 
     @Override
-    protected GlobResourceProvider newGlobResourceProvider() {
-        return new GlobResourceProviders(new ResourceProviders());
+    protected GlobResolver newGlobResourceProvider() {
+        return new GlobResourceProviders();
     }
 
     @Test

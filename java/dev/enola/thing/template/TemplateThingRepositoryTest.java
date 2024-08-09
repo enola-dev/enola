@@ -51,11 +51,11 @@ public class TemplateThingRepositoryTest {
         ResourceIntoThingConverters ritc =
                 new ResourceIntoThingConverters(
                         new RdfResourceIntoThingConverter<>(iri -> null, dtr));
-        var loader = new Loader(ritc);
+        var loader = new Loader(new ClasspathResource.Provider(), ritc);
 
         var store = new ThingMemoryRepositoryRW();
         var greetingN = new ClasspathResource("example.org/greetingN.ttl");
-        loader.convertIntoOrThrow(Stream.of(greetingN), store);
+        loader.convertIntoOrThrow(Stream.of(greetingN.uri()), store);
         var repo = new TemplateThingRepository(store);
 
         var classIRI = "https://example.org/greeting";

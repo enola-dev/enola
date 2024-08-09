@@ -23,6 +23,6 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.Repository;
 
 // TODO Think this through... e.g. directories, writeable ZIPs, remote SSH FS - ThingRepository!!
-// TODO Thing through relationship to and integration of with GlobResourceProvider...
+// TODO Thing through relationship to and integration of with GlobResolver...
 public interface ResourceRepository
         extends AbstractResource, Repository<Resource>, ResourceProvider {}

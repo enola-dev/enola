@@ -21,27 +21,24 @@ import com.google.errorprone.annotations.MustBeClosed;
 
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.ResourceProvider;
 
+import java.net.URI;
 import java.util.stream.Stream;
 
-public class GlobResourceProviders implements GlobResourceProvider {
+public class GlobResourceProviders implements GlobResolver {
 
-    private final ResourceProvider resourceProvider;
-    private final GlobResourceProvider fileGlobResourceProvider;
+    private final FileGlobResolver fileGlobResolver;
 
-    public GlobResourceProviders(ResourceProvider resourceProvider) {
-        this.resourceProvider = resourceProvider;
-        this.fileGlobResourceProvider = new FileGlobResourceProvider(resourceProvider);
+    public GlobResourceProviders() {
+        this.fileGlobResolver = new FileGlobResolver();
     }
 
     @Override
     @MustBeClosed
-    public Stream<ReadableResource> get(String globReference) {
+    public Stream<URI> get(String globReference) {
         var globIRI = URIs.absolutify(globReference);
         if (MoreFileSystems.URI_SCHEMAS.contains(URIs.getScheme(globIRI)))
-            return fileGlobResourceProvider.get(globIRI);
-        else return Stream.of(resourceProvider.get(globIRI));
+            return fileGlobResolver.get(globIRI);
+        else return Stream.of(URI.create(globIRI));
     }
 }

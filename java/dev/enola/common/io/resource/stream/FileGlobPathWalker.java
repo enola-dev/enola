@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 final class FileGlobPathWalker {
 
     // TODO This should also take an URI argument, not a Path
-    /** See the {@link FileGlobResourceProvider} documentation for glob path description. */
+    /** See the {@link FileGlobResolver} documentation for glob path description. */
     static Stream<Path> walk(Path globPath) throws IOException {
         var globString = globPath.toString();
         var starPos = globString.indexOf('*');

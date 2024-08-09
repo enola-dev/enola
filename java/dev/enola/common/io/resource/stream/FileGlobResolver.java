@@ -20,16 +20,15 @@ package dev.enola.common.io.resource.stream;
 import com.google.errorprone.annotations.MustBeClosed;
 
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.util.stream.Stream;
 
 /**
- * FileGlobResourceProvider is a GlobResourceProvider for a "globbed" file: IRI.
+ * FileGlobResolver is a GlobResolver for a "globbed" file: IRI.
  *
  * <p>See {@link FileSystem#getPathMatcher(String)} for the full (Java) documentation of globs.
  *
@@ -39,19 +38,13 @@ import java.util.stream.Stream;
  * sub-directories), or similar.
  *
  * <p>It is also valid to use a file: IRI which is not actually a glob; in that case, it is
- * interpreted as just the given single file (if it is a file, or empty if that's a directory).
+ * interpreted as just the given single file or directory.
  */
-public class FileGlobResourceProvider implements GlobResourceProvider {
-
-    private final ResourceProvider fileResourceProvider;
-
-    public FileGlobResourceProvider(ResourceProvider fileResourceProvider) {
-        this.fileResourceProvider = fileResourceProvider;
-    }
+public class FileGlobResolver implements GlobResolver {
 
     @Override
     @MustBeClosed
-    public Stream<ReadableResource> get(String globReference) {
+    public Stream<URI> get(String globReference) {
         var globIRI = URIs.absolutify(globReference);
 
         if (!globIRI.startsWith("file:")) {
@@ -71,12 +64,11 @@ public class FileGlobResourceProvider implements GlobResourceProvider {
 
         try {
             return FileGlobPathWalker.walk(globPath)
-                    .filter(path -> !path.toFile().isDirectory())
                     .map(
                             path -> {
                                 var pathString = path.toUri().toString();
                                 var pathWithQuery = URIs.addQuery(pathString, queryParameters);
-                                return fileResourceProvider.getReadableResource(pathWithQuery);
+                                return URI.create(pathWithQuery);
                             });
 
         } catch (IOException e) {

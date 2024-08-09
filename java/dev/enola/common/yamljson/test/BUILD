@@ -26,6 +26,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/io",
+        "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_yaml_snakeyaml",

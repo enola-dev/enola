@@ -43,7 +43,7 @@ public final class URIs {
     // TODO Review if all this String instead of URI-based processing could be removed and replaced
     // perhaps by fully adopting https://github.com/enola-dev/enola/issues/797; and/or alternatively
     // with first encoding invalid special characters in URIs; see the related TBD in
-    // FileGlobResourceProvider.
+    // FileGlobResolver.
 
     // URI Query Parameter Names
     private static final String MEDIA_TYPE = "mediaType";
