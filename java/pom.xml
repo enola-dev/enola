@@ -13,7 +13,7 @@
     <project.build.outputTimestamp>2024-03-27T22:39:07Z</project.build.outputTimestamp>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <grpc.version>1.61.0</grpc.version>
+    <grpc.version>1.66.0</grpc.version>
     <errorprone.version>2.29.2</errorprone.version>
     <protobuf.version>4.0.0-rc-2</protobuf.version>
     <rdf4j.version>5.0.1</rdf4j.version>
