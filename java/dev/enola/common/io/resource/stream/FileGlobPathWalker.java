@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 /** FileGlobPathWalker is a utility to enumerate files matching a glob pattern. */
 final class FileGlobPathWalker {
 
-    // TODO This should also take an URI argument, not a Path
     /** See the {@link FileGlobResolver} documentation for glob path description. */
     static Stream<Path> walk(Path globPath) throws IOException {
         var globString = globPath.toString();

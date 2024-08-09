@@ -17,24 +17,28 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import com.google.errorprone.annotations.MustBeClosed;
 
-public class GlobResourceProvidersTest extends FileGlobResourceProviderTest {
+import dev.enola.common.io.MoreFileSystems;
+import dev.enola.common.io.iri.URIs;
+
+import java.net.URI;
+import java.util.stream.Stream;
+
+public class GlobResolvers implements GlobResolver {
+
+    private final FileGlobResolver fileGlobResolver;
+
+    public GlobResolvers() {
+        this.fileGlobResolver = new FileGlobResolver();
+    }
 
     @Override
-    protected GlobResolver newGlobResourceProvider() {
-        return new GlobResourceProviders();
-    }
-
-    @Test
-    public void nonGlobClasspath() {
-        checkGlobIRI("classpath:/test.md", 1);
-    }
-
-    @Test
-    @Ignore // TODO Write a test, and fix the code, to glob over a JAR file...
-    public void globOnZIP() {
-        // ...
+    @MustBeClosed
+    public Stream<URI> get(String globReference) {
+        var globIRI = URIs.absolutify(globReference);
+        if (MoreFileSystems.URI_SCHEMAS.contains(URIs.getScheme(globIRI)))
+            return fileGlobResolver.get(globIRI);
+        else return Stream.of(URI.create(globIRI));
     }
 }

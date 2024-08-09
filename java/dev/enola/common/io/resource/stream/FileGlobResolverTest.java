@@ -32,16 +32,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileGlobResourceProviderTest {
+public class FileGlobResolverTest {
 
     @ClassRule public static final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    protected GlobResolver newGlobResourceProvider() {
+    protected GlobResolver newGlobResolver() {
         return new FileGlobResolver();
     }
 
     protected void checkGlobIRI(String globIRI, int expectedFiles) {
-        try (var stream = newGlobResourceProvider().get(globIRI)) {
+        try (var stream = newGlobResolver().get(globIRI)) {
             assertThat(stream).hasSize(expectedFiles);
         }
     }
@@ -118,7 +118,7 @@ public class FileGlobResourceProviderTest {
     @Test
     public void relativeGlobWithoutScheme() {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            try (var stream = newGlobResourceProvider().get("*.ttl")) {
+            try (var stream = newGlobResolver().get("*.ttl")) {
                 assertThat(stream).isEmpty();
             }
         }
@@ -126,7 +126,7 @@ public class FileGlobResourceProviderTest {
 
     @Test // TODO Remove when support for (fake, wrong) file:*.ttl syntax is removed
     public void relativeGlobWithFileScheme() {
-        try (var stream = newGlobResourceProvider().get("file:*.ttl")) {
+        try (var stream = newGlobResolver().get("file:*.ttl")) {
             assertThat(stream).isEmpty();
         }
     }

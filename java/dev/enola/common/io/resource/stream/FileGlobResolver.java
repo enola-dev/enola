@@ -34,8 +34,8 @@ import java.util.stream.Stream;
  *
  * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or <tt>file:/tmp/**</tt>
  * (for everything under /tmp), or <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories
- * of /tmp, but excluding /tmp itself), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and
- * sub-directories), or similar.
+ * of /tmp), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and sub-directories), or
+ * similar.
  *
  * <p>It is also valid to use a file: IRI which is not actually a glob; in that case, it is
  * interpreted as just the given single file or directory.

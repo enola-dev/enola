@@ -24,7 +24,7 @@ import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.io.resource.stream.GlobResourceProviders;
+import dev.enola.common.io.resource.stream.GlobResolvers;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
@@ -104,7 +104,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
                 UriIntoThingConverters ritc = new UriIntoThingConverters();
                 var loader = new Loader(ritc);
-                var fgrp = new GlobResourceProviders();
+                var fgrp = new GlobResolvers();
                 for (var globIRI : group.load) {
                     try (var stream = fgrp.get(globIRI)) {
                         loader.convertIntoOrThrow(stream, store);
