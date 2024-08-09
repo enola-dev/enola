@@ -46,7 +46,8 @@ final class FileGlobPathWalker {
             var fs = basePath.getFileSystem();
             var matcher = fs.getPathMatcher("glob:" + globString);
             return Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
-                    .filter(path -> matcher.matches(path));
+                    .filter(path -> matcher.matches(path))
+                    .filter(path -> !path.toString().contains("/.git/"));
         } else {
             return Stream.of(globPath);
         }
