@@ -54,9 +54,9 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
         var existing = map.putIfAbsent(iri, item);
         if (existing != null)
             throw new IllegalArgumentException(
-                    item.toString()
+                    item
                             + " cannot replace "
-                            + existing.toString()
+                            + existing
                             + "; but consider using merge() instead of store()");
         return (B) this;
     }
@@ -109,6 +109,11 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
         @Override
         public ImmutableCollection<T> list() {
             return items.values();
+        }
+
+        @Override
+        public String toString() {
+            return "RepositoryImpl{" + "items=" + items.keySet() + '}';
         }
     }
 }

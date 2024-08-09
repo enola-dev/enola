@@ -19,13 +19,10 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
-import dev.enola.thing.io.ResourceIntoThingConverters;
 
 import org.junit.Test;
 
@@ -33,13 +30,13 @@ public class RdfResourceIntoThingConverterTest {
 
     @Test
     public void convert() {
-        try (var ctx = TLC.open()) {
-            ctx.push(DatatypeRepository.class, new DatatypeRepositoryBuilder().build());
-            ctx.push(ResourceProvider.class, iri -> null);
+        var datatypeRepository = new DatatypeRepositoryBuilder().build();
+        ResourceProvider resourceProvider = iri -> null;
+        var c = new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
 
-            ResourceIntoThingConverters<Thing> c = new ResourceIntoThingConverters<>();
-            var thing = c.convert(new ClasspathResource("picasso.ttl")).getFirst().build();
-            assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
-        }
+        var thing = c.convert(new ClasspathResource("picasso.ttl")).get().getFirst().build();
+        assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
+
+        assertThat(c.convert(new ClasspathResource("empty.yaml"))).isEmpty();
     }
 }

@@ -83,4 +83,9 @@ public class ResourceProviders implements ResourceProvider {
         LOG.debug("Unsupported URI: {}", resolvedURI);
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceProviders{" + "resourceProviders=" + resourceProviders + '}';
+    }
 }

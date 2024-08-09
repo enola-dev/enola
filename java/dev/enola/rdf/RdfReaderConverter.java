@@ -27,6 +27,7 @@ import org.eclipse.rdf4j.model.impl.DynamicModel;
 import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
@@ -39,6 +40,12 @@ public class RdfReaderConverter implements OptionalConverter<ReadableResource, M
 
     @Override
     public Optional<Model> convert(ReadableResource from) throws ConversionException {
+        try {
+            if (from.byteSource().isEmpty()) return Optional.empty();
+        } catch (IOException e) {
+            throw new ConversionException("isEmpty failed: " + from.uri(), e);
+        }
+
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
         if (converterInto.convertInto(from, handler)) {
