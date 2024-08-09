@@ -26,18 +26,22 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.repo.ThingsBuilder;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public class ResourceIntoThingConverters<T extends Thing>
-        implements Converter<ReadableResource, List<Thing.Builder<T>>> {
+public class ResourceIntoThingConverters
+        implements Converter<ReadableResource, Iterable<Thing.Builder<?>>> {
 
-    private final ImmutableList<ResourceIntoThingConverter<T>> converters;
+    // TODO Load a resource with different converters multi-threaded, in parallel...
 
-    public ResourceIntoThingConverters(Iterable<ResourceIntoThingConverter<T>> converters) {
+    private final ImmutableList<ResourceIntoThingConverter> converters;
+
+    public ResourceIntoThingConverters(Iterable<ResourceIntoThingConverter> converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
@@ -52,20 +56,21 @@ public class ResourceIntoThingConverters<T extends Thing>
     @SuppressWarnings({"rawtypes", "unchecked"})
     private ResourceIntoThingConverters(
             Stream<ServiceLoader.Provider<ResourceIntoThingConverter>> providers) {
-        this(providers.map(p -> (ResourceIntoThingConverter<T>) p.get()).toList());
+        this(providers.map(p -> p.get()).toList());
     }
 
-    public List<Thing.Builder<T>> convert(ReadableResource input) throws ConversionException {
+    public Iterable<Thing.Builder<?>> convert(ReadableResource input) throws ConversionException {
+        ThingsBuilder thingsBuilder = new ThingsBuilder();
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, input);
             for (var converter : converters) {
-                var opt = converter.convert(input);
-                // TODO Don't return after the 1st one, but run all, and merge
-                if (opt.isPresent()) return opt.get();
+                converter.convertInto(input, thingsBuilder);
             }
+            for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input.uri());
+            return thingsBuilder.builders();
+        } catch (IOException e) {
+            throw new ConversionException("IOException on " + input, e);
         }
-        throw new ConversionException(
-                "None of the registered Thing converters could read: " + input);
     }
 
     // TODO Actually TLC.get(INPUT) *read* this somewhere... ;-) else remove again later.

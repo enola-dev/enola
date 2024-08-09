@@ -24,8 +24,8 @@ import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.*;
-import dev.enola.thing.Thing;
 import dev.enola.thing.io.ResourceIntoThingConverters;
+import dev.enola.thing.repo.ThingsBuilder;
 
 import org.junit.Test;
 
@@ -36,7 +36,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
-import java.util.List;
 
 public class FileThingConverterTest {
 
@@ -59,15 +58,17 @@ public class FileThingConverterTest {
         var rp = new ResourceProviders(new ClasspathResource.Provider());
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
-        var list = converter.convert(resource);
-        assertThat(list).isEmpty();
+        var thingsBuilder = new ThingsBuilder();
+        converter.convertInto(resource, thingsBuilder);
+        assertThat(thingsBuilder.builders()).isEmpty();
     }
 
     @Test // jar:file:
     public void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
-        var list = converter.convert(new ClasspathResource("test.png"));
-        assertThat(list).isEmpty();
+        var thingsBuilder = new ThingsBuilder();
+        converter.convertInto(new ClasspathResource("test.png"), thingsBuilder);
+        assertThat(thingsBuilder.builders()).isEmpty();
     }
 
     private void check(Path root) throws IOException {
@@ -84,8 +85,8 @@ public class FileThingConverterTest {
         // Convert
         var mt = MediaType.PLAIN_TEXT_UTF_8;
         var ritc = new ResourceIntoThingConverters(); // includes FileThingConverter
-        List<Thing.Builder> list = ritc.convert(new FileResource(hello.toUri(), mt));
-        var thing = list.get(0).build();
+        var list = ritc.convert(new FileResource(hello.toUri(), mt));
+        var thing = list.iterator().next().build();
 
         // Assert expected Thing
         URI iri = URI.create(thing.iri());

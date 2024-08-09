@@ -35,6 +35,7 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.repo.ThingsBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +46,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("rawtypes")
 @AutoService(ResourceIntoThingConverter.class)
-public class FileThingConverter implements ResourceIntoThingConverter<ImmutableThing> {
+public class FileThingConverter implements ResourceIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);
 
@@ -61,31 +60,31 @@ public class FileThingConverter implements ResourceIntoThingConverter<ImmutableT
     // Perhaps it could offer BOTH auto-loading and explicitly adding converters?
 
     @Override
-    public Optional<List<Thing.Builder<ImmutableThing>>> convert(ReadableResource input)
-            throws ConversionException {
+    public boolean convertInto(ReadableResource input, ThingsBuilder into)
+            throws ConversionException, IOException {
 
         // TODO I'm surprised we don't have to skip *.ttl, until ResourceIntoThingConverters merges
 
-        if (!MoreFileSystems.URI_SCHEMAS.contains(input.uri().getScheme())) return Optional.empty();
+        if (!MoreFileSystems.URI_SCHEMAS.contains(input.uri().getScheme())) return false;
 
         LOG.debug("Converting {}", input);
 
         try {
-            var node = convert(input.uri(), input.mediaType());
-            // TODO How to fix stuff so that this type cast isn't required?!
-            return Optional.of(List.of((Thing.Builder<ImmutableThing>) node));
+            convert(input.uri(), input.mediaType(), into);
+            return true;
 
-        } catch (IOException | URISyntaxException e) {
+        } catch (URISyntaxException e) {
             throw new ConversionException("Exception for " + input, e);
         }
     }
 
-    private Thing.Builder<? extends ImmutableThing> convert(URI uri, MediaType mediaType)
+    private void convert(URI uri, MediaType mediaType, ThingsBuilder into)
             throws IOException, URISyntaxException {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 
-        Thing.Builder<? extends ImmutableThing> node = ImmutableThing.builder();
+        Thing.Builder<? extends ImmutableThing> node =
+                (Thing.Builder<? extends ImmutableThing>) into.get(getIRI(uri));
 
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);
@@ -110,23 +109,19 @@ public class FileThingConverter implements ResourceIntoThingConverter<ImmutableT
         }
 
         // Common to File, Directory, Link, and Other
-        setIRI(node, uri);
         node.set(Node.parent_IRI, path.getParent().toUri());
         node.set(Node.createdAt_IRI, attrs.creationTime(), Datatypes.FILE_TIME.iri());
         node.set(Node.modifiedAt_IRI, attrs.lastModifiedTime(), Datatypes.FILE_TIME.iri());
         node.set(Node.lastAccessAt_IRI, attrs.lastAccessTime(), Datatypes.FILE_TIME.iri());
 
         // node.set("https://enola.dev/files/Node/fileKey", attrs.fileKey().toString());
-
-        return node;
     }
 
-    private void setIRI(Thing.Builder<? extends ImmutableThing> node, URI uri)
-            throws URISyntaxException {
+    private String getIRI(URI uri) throws URISyntaxException {
         if (Strings.isNullOrEmpty(uri.getHost())) {
             var host = Hostnames.LOCAL;
             uri = new URI(uri.getScheme(), host, uri.getPath(), uri.getFragment());
         }
-        node.iri(uri.toString());
+        return uri.toString();
     }
 }

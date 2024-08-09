@@ -110,7 +110,9 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
         @Override
         public Thing.Builder<B> iri(String iri) {
-            if (this.iri != null) throw new IllegalStateException("IRI already set: " + this.iri);
+            if (this.iri != null && !this.iri.equals((iri)))
+                throw new IllegalStateException(
+                        "IRI already set: " + this.iri + ", cannot set to: " + iri);
             this.iri = iri;
             return this;
         }

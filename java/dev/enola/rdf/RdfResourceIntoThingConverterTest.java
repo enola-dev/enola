@@ -20,23 +20,38 @@ package dev.enola.rdf;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
+import dev.enola.thing.repo.ThingsBuilder;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class RdfResourceIntoThingConverterTest {
 
+    DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
+    ResourceProvider resourceProvider = iri -> null;
+    RdfResourceIntoThingConverter c =
+            new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
+
     @Test
-    public void convert() {
-        var datatypeRepository = new DatatypeRepositoryBuilder().build();
-        ResourceProvider resourceProvider = iri -> null;
-        var c = new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
-
-        var thing = c.convert(new ClasspathResource("picasso.ttl")).get().getFirst().build();
+    public void picasso() throws IOException {
+        var thing = convert(new ClasspathResource("picasso.ttl")).iterator().next().build();
         assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
+    }
 
-        assertThat(c.convert(new ClasspathResource("empty.yaml"))).isEmpty();
+    @Test
+    public void emptyYAML() throws IOException {
+        assertThat(convert(new ClasspathResource("empty.yaml"))).isEmpty();
+    }
+
+    private Iterable<Thing.Builder<?>> convert(ReadableResource resource) throws IOException {
+        var thingsBuilder = new ThingsBuilder();
+        c.convertInto(resource, thingsBuilder);
+        return thingsBuilder.builders();
     }
 }
