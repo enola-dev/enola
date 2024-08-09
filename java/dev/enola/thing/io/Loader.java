@@ -53,12 +53,18 @@ public class Loader<T extends Thing>
 
     private void load(ReadableResource resource, Store<?, T> store) {
         LOG.info("Loading {}...", resource);
-        var things = resourceIntoThingConverters.convert(resource);
-        things.forEach(
-                thingBuilder -> {
-                    thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
-                    var thing = thingBuilder.build();
-                    store.merge(thing);
-                });
+        try {
+            var things = resourceIntoThingConverters.convert(resource);
+            things.forEach(
+                    thingBuilder -> {
+                        thingBuilder.set(KIRI.E.ORIGIN, resource.uri());
+                        var thing = thingBuilder.build();
+                        store.merge(thing);
+                    });
+
+        } catch (Exception e) {
+            LOG.error("Failed to load: {}", resource, e);
+            // Don't rethrow, let loading other resources continue
+        }
     }
 }
