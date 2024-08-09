@@ -75,9 +75,6 @@ public final class Relativizer {
         var scheme = thingIRI.getScheme();
         if (scheme == null) return thingIRI;
 
-        // TODO Keep or remove this special case handling?
-        if (scheme.equals("file")) return thingIRI;
-
         // TODO #performance Use StringBuilder instead String ssp!
         String ssp;
 
