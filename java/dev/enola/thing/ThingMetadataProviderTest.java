@@ -95,4 +95,12 @@ public class ThingMetadataProviderTest {
         assertThat(meta.descriptionHTML()).isEmpty();
         assertThat(meta.imageHTML()).isEmpty();
     }
+
+    @Test
+    public void labelOfFileDirectory() {
+        var meta = new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get("file:///tmp/");
+        assertThat(meta.label()).isEqualTo("tmp");
+        assertThat(meta.descriptionHTML()).isEmpty();
+        assertThat(meta.imageHTML()).isEmpty();
+    }
 }

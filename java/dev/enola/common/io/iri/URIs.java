@@ -287,14 +287,7 @@ public final class URIs {
         String path;
         var scheme = uri.getScheme();
         if ("file".equals(scheme)) {
-            path = uri.getPath();
-            if (path != null) {
-                if (path.endsWith("/")) {
-                    return "";
-                } else {
-                    return chopFragmentAndQuery(new java.io.File(path).getName());
-                }
-            }
+            path = chopFragmentAndQuery(uri.getPath());
         } else if ("jar".equals(scheme)) {
             return chopFragmentAndQuery(
                     getFilename(java.net.URI.create(uri.getSchemeSpecificPart())));
