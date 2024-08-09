@@ -17,6 +17,7 @@
  */
 package dev.enola.common.yamljson.test;
 
+import com.google.common.net.MediaType;
 import com.google.common.truth.Truth;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -26,7 +27,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class TestYaml {
 
@@ -50,7 +50,7 @@ public class TestYaml {
     }
 
     public static void assertEqualsToResource(Object object, String resourceName) {
-        var resource = new ClasspathResource(resourceName, StandardCharsets.UTF_8);
+        var resource = new ClasspathResource(resourceName, MediaType.PLAIN_TEXT_UTF_8);
         try {
             var actualYAML = write(object);
             var expectedYAML = resource.charSource().read();

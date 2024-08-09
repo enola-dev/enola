@@ -63,10 +63,10 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
         super.run();
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             wrp = new WritableResourcesProvider(rp);
-            var fgrp = new GlobResourceProviders(rp);
+            var fgrp = new GlobResourceProviders();
             for (var globIRI : resources.load) {
                 try (var stream = fgrp.get(globIRI)) {
-                    MoreStreams.forEach(stream, r -> canonicalize(r));
+                    MoreStreams.forEach(stream, uri -> canonicalize(rp.getResource(uri)));
                 }
             }
         }

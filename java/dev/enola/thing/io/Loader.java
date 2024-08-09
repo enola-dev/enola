@@ -19,7 +19,7 @@ package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.Store;
 import dev.enola.thing.Thing;
 
@@ -27,31 +27,35 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.stream.Stream;
 
-public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, Thing>> {
+public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
 
     // TODO Load resources multi-threaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
 
+    private final ResourceProvider rp;
     private final ResourceIntoThingConverters resourceIntoThingConverters;
 
-    public Loader(ResourceIntoThingConverters resourceIntoThingConverters) {
+    public Loader(ResourceProvider rp, ResourceIntoThingConverters resourceIntoThingConverters) {
         this.resourceIntoThingConverters = resourceIntoThingConverters;
+        this.rp = rp;
     }
 
     @Override
-    public boolean convertInto(Stream<ReadableResource> stream, Store<?, Thing> store)
+    public boolean convertInto(Stream<URI> stream, Store<?, Thing> store)
             throws ConversionException, IOException {
 
         stream.forEach(resource -> load(resource, store));
         return true;
     }
 
-    private void load(ReadableResource resource, Store<?, Thing> store) {
-        LOG.info("Loading {}...", resource);
+    private void load(URI uri, Store<?, Thing> store) {
+        LOG.info("Loading {}...", uri);
         try {
+            var resource = rp.getResource(uri);
             var things = resourceIntoThingConverters.convert(resource);
             things.forEach(
                     thingBuilder -> {
@@ -60,7 +64,7 @@ public class Loader implements ConverterInto<Stream<ReadableResource>, Store<?, 
                     });
 
         } catch (Exception e) {
-            LOG.error("Failed to load: {}", resource, e);
+            LOG.error("Failed to load: {}", uri, e);
             // Don't rethrow, let loading other resources continue
         }
     }

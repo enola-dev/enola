@@ -21,8 +21,8 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 /** {@link ReadableResource} on Java Classpath; e.g. <tt>classpath:/hello.txt</tt>. */
 public class ClasspathResource extends UrlResource {
@@ -42,20 +42,23 @@ public class ClasspathResource extends UrlResource {
     public static final String SCHEME = "classpath";
 
     public ClasspathResource(String path, MediaType mediaType) {
-        super(Resources.getResource(path), mediaType);
-    }
-
-    @Deprecated // TODO Remove, as un-used and pointless? Review Test Coverage #1st...
-    public ClasspathResource(String path, Charset charset) {
-        super(Resources.getResource(path), charset);
+        super(classpathURI(path), Resources.getResource(path), mediaType);
     }
 
     public ClasspathResource(String path) {
-        super(Resources.getResource(path));
+        super(classpathURI(path), Resources.getResource(path));
     }
 
     public ClasspathResource(URI uri) {
         super(uri, convert(uri));
+    }
+
+    private static URI classpathURI(String path) {
+        try {
+            return new URI(SCHEME, "/" + path, null);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(path, e);
+        }
     }
 
     private static URL convert(URI uri) {

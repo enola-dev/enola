@@ -19,6 +19,8 @@ package dev.enola.core.meta.docgen;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import com.google.common.net.MediaType;
+
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.protobuf.ValidationException;
@@ -28,7 +30,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 public class MarkdownDocGeneratorTest {
     @Test
@@ -41,7 +42,7 @@ public class MarkdownDocGeneratorTest {
         var got = sb.toString();
 
         var expected =
-                new ClasspathResource("demo-model-docgen.md", StandardCharsets.UTF_8)
+                new ClasspathResource("demo-model-docgen.md", MediaType.PLAIN_TEXT_UTF_8)
                         .charSource()
                         .read();
         if (!got.equals(expected)) {

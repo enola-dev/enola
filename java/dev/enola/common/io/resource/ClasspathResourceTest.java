@@ -124,4 +124,11 @@ public class ClasspathResourceTest {
         assertThat(r.uri().getQuery()).isEqualTo(uri.getQuery());
         assertThat(r.uri().getQuery()).isNotEmpty();
     }
+
+    @Test
+    public void viaProvider() throws IOException {
+        var r = new ClasspathResource("test.json");
+        var rp = new ClasspathResource.Provider();
+        assertThat(rp.getResource(r.uri()).charSource().read()).isEqualTo("{}\n");
+    }
 }

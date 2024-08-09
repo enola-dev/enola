@@ -19,22 +19,19 @@ package dev.enola.common.io.resource.stream;
 
 import com.google.errorprone.annotations.MustBeClosed;
 
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 
+import java.net.URI;
 import java.nio.file.FileSystem;
 import java.util.stream.Stream;
 
 /**
- * Resource Provider similar to the basic {@link ResourceProvider} - but for multiple resources,
- * collected using an IRI with a "glob" (e.g. à la Java's {@link FileSystem#getPathMatcher
- * getPathMatcher}).
+ * GlobResolver "expands" an URI with a "glob" to a Stream of URIs. (E.g. à la Java's {@link
+ * FileSystem#getPathMatcher} - but not File / Path specific.)
  */
-public interface GlobResourceProvider extends ProviderFromIRI<Stream<ReadableResource>> {
-    // TODO Think through relationship to and integration of with ResourceRepository...
+public interface GlobResolver extends ProviderFromIRI<Stream<URI>> {
 
     @Override
     @MustBeClosed
-    Stream<ReadableResource> get(String globIRI);
+    Stream<URI> get(String globIRI);
 }

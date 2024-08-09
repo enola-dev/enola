@@ -104,8 +104,8 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
                 // TODO Explicitly add ResourceIntoThingConverter, depending on CLI feature flags
                 ResourceIntoThingConverters ritc = new ResourceIntoThingConverters();
-                var loader = new Loader(ritc);
-                var fgrp = new GlobResourceProviders(rp);
+                var loader = new Loader(rp, ritc);
+                var fgrp = new GlobResourceProviders();
                 for (var globIRI : group.load) {
                     try (var stream = fgrp.get(globIRI)) {
                         loader.convertIntoOrThrow(stream, store);
