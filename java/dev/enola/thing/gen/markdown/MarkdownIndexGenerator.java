@@ -31,6 +31,7 @@ import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Value;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
 
@@ -131,14 +132,7 @@ class MarkdownIndexGenerator {
         } else {
             var protoValue = thing.getFieldsMap().get(KIRI.RDF.TYPE);
             if (protoValue != null) {
-                String typeIRI;
-                var list = protoValue.getList();
-                if (list != null && !list.getValuesList().isEmpty()) {
-                    // Hack...
-                    typeIRI = list.getValuesList().get(0).getLink();
-                } else typeIRI = protoValue.getLink();
-                if (Strings.isNullOrEmpty(typeIRI))
-                    throw new IllegalArgumentException(protoValue.toString());
+                String typeIRI = getTypeIRI(protoValue);
                 parent = new ThingOrHeading(null, metadataProvider.get(typeIRI));
                 if (!Iterables.contains(tree.successors(node), parent)) {
                     tree.addChild(node, parent);
@@ -149,6 +143,20 @@ class MarkdownIndexGenerator {
         }
 
         tree.addChild(parent, new ThingOrHeading(metadata, null));
+    }
+
+    private static String getTypeIRI(Value protoValue) {
+        String typeIRI = "";
+        var list = protoValue.getList();
+        if (list != null && !list.getValuesList().isEmpty()) {
+            // Hack...
+            typeIRI = list.getValuesList().get(0).getLink();
+        } else if (protoValue.hasLink()) typeIRI = protoValue.getLink();
+        // TODO It technically should never be a String... pre-Validation should catch this, later?
+        else if (protoValue.hasString()) typeIRI = protoValue.getString();
+        if (Strings.isNullOrEmpty(typeIRI))
+            throw new IllegalArgumentException(protoValue.toString());
+        return typeIRI;
     }
 
     @Immutable
