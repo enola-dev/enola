@@ -19,9 +19,7 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.*;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
@@ -30,28 +28,35 @@ import dev.enola.thing.repo.ThingsBuilder;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class RdfResourceIntoThingConverterTest {
 
     DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
-    ResourceProvider resourceProvider = iri -> null;
+    ResourceProvider resourceProvider =
+            new ResourceProviders(new ClasspathResource.Provider(), new FileResource.Provider());
     RdfResourceIntoThingConverter c =
             new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
 
     @Test
     public void picasso() throws IOException {
-        var thing = convert(new ClasspathResource("picasso.ttl")).iterator().next().build();
+        var thing = convert(new ClasspathResource("picasso.ttl").uri()).iterator().next().build();
         assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
     }
 
     @Test
     public void emptyYAML() throws IOException {
-        assertThat(convert(new ClasspathResource("empty.yaml"))).isEmpty();
+        assertThat(convert(new ClasspathResource("empty.yaml").uri())).isEmpty();
     }
 
-    private Iterable<Thing.Builder<?>> convert(ReadableResource resource) throws IOException {
+    @Test
+    public void directory() throws IOException {
+        assertThat(convert(URI.create("file:/tmp/"))).isEmpty();
+    }
+
+    private Iterable<Thing.Builder<?>> convert(URI uri) throws IOException {
         var thingsBuilder = new ThingsBuilder();
-        c.convertInto(resource, thingsBuilder);
+        c.convertInto(uri, thingsBuilder);
         return thingsBuilder.builders();
     }
 }

@@ -20,6 +20,8 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -126,6 +128,21 @@ public class FileResourceTest {
 
             var r = new FileResource(hello.toUri(), PLAIN_TEXT_UTF_8);
             assertThat(r.charSource().read()).isEqualTo("hello, world");
+        }
+    }
+
+    @Test
+    public void testDirectoriesAreNotFileResources() throws IOException {
+        try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
+            Path folder = fs.getPath("/testSeparatePathJimFS");
+            Files.createDirectories(folder);
+            var uri = folder.toUri();
+
+            assertThrows(IllegalArgumentException.class, () -> new FileResource(uri));
+
+            var rp = new FileResource.Provider();
+            var resource = rp.getResource(uri);
+            assertThat(resource).isNull();
         }
     }
 }

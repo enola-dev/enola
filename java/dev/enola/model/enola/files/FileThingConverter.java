@@ -23,16 +23,14 @@ import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.google.common.net.MediaType;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.datatype.Datatypes;
 import dev.enola.model.enola.net.Hostnames;
 import dev.enola.thing.KIRI;
-import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
 import org.slf4j.Logger;
@@ -46,29 +44,29 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 @SuppressWarnings("rawtypes")
-@AutoService(ResourceIntoThingConverter.class)
-public class FileThingConverter implements ResourceIntoThingConverter {
+@AutoService(UriIntoThingConverter.class)
+public class FileThingConverter implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);
 
     // TODO Use Node/File/Directory/Link instead of Thing, once files.esch.yaml is code generated...
 
     // TODO #high #SECURITY This probably shouldn't be auto-enabled, but gated with a --file-loader
-    // This requires making ResourceIntoThingConverters no longer use ServiceLoader @AutoService.
+    // This requires making UriIntoThingConverters no longer use ServiceLoader @AutoService.
     // Perhaps it could offer BOTH auto-loading and explicitly adding converters?
 
     @Override
-    public boolean convertInto(ReadableResource input, ThingsBuilder into)
+    public boolean convertInto(URI input, ThingsBuilder into)
             throws ConversionException, IOException {
 
-        // TODO I'm surprised we don't have to skip *.ttl, until ResourceIntoThingConverters merges
+        // TODO I'm surprised we don't have to skip *.ttl, until UriIntoThingConverters merges
 
-        if (!MoreFileSystems.URI_SCHEMAS.contains(input.uri().getScheme())) return false;
+        if (!MoreFileSystems.URI_SCHEMAS.contains(input.getScheme())) return false;
 
         LOG.debug("Converting {}", input);
 
         try {
-            convert(input.uri(), input.mediaType(), into);
+            convert(input, into);
             return true;
 
         } catch (URISyntaxException e) {
@@ -76,8 +74,7 @@ public class FileThingConverter implements ResourceIntoThingConverter {
         }
     }
 
-    private void convert(URI uri, MediaType mediaType, ThingsBuilder into)
-            throws IOException, URISyntaxException {
+    private void convert(URI uri, ThingsBuilder into) throws IOException, URISyntaxException {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 
@@ -85,7 +82,7 @@ public class FileThingConverter implements ResourceIntoThingConverter {
 
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);
-            node.set(File.mediaType_IRI, mediaType.toString());
+            // node.set(File.mediaType_IRI, mediaType.toString());
             node.set(File.size_IRI, attrs.size(), "https://enola.dev/UnsignedLong");
 
         } else if (attrs.isDirectory()) {

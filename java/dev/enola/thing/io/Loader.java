@@ -19,7 +19,6 @@ package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.Store;
 import dev.enola.thing.Thing;
 
@@ -36,12 +35,10 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
 
-    private final ResourceProvider rp;
-    private final ResourceIntoThingConverters resourceIntoThingConverters;
+    private final UriIntoThingConverters uriIntoThingConverters;
 
-    public Loader(ResourceProvider rp, ResourceIntoThingConverters resourceIntoThingConverters) {
-        this.resourceIntoThingConverters = resourceIntoThingConverters;
-        this.rp = rp;
+    public Loader(UriIntoThingConverters uriIntoThingConverters) {
+        this.uriIntoThingConverters = uriIntoThingConverters;
     }
 
     @Override
@@ -55,8 +52,7 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
     private void load(URI uri, Store<?, Thing> store) {
         LOG.info("Loading {}...", uri);
         try {
-            var resource = rp.getResource(uri);
-            var things = resourceIntoThingConverters.convert(resource);
+            var things = uriIntoThingConverters.convert(uri);
             things.forEach(
                     thingBuilder -> {
                         var thing = thingBuilder.build();

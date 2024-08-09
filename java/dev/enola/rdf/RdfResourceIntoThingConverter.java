@@ -21,13 +21,12 @@ import com.google.auto.service.AutoService;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.impl.ImmutableThing;
-import dev.enola.thing.io.ResourceIntoThingConverter;
+import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
@@ -35,11 +34,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.function.Supplier;
 
 @SuppressWarnings("rawtypes")
-@AutoService(ResourceIntoThingConverter.class)
-public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceIntoThingConverter {
+@AutoService(UriIntoThingConverter.class)
+public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
 
@@ -48,6 +48,7 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceI
     private final ProtoThingIntoJavaThingBuilderConverter protoThingIntoJavaThingBuilderConverter;
 
     private final Supplier<Builder<T>> builderSupplier;
+    private final ResourceProvider rp;
 
     private RdfResourceIntoThingConverter(
             ResourceProvider rp,
@@ -57,6 +58,7 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceI
         this.protoThingIntoJavaThingBuilderConverter =
                 new ProtoThingIntoJavaThingBuilderConverter(datatypeRepository);
         this.builderSupplier = builderSupplier;
+        this.rp = rp;
     }
 
     @SuppressWarnings("unchecked")
@@ -71,9 +73,12 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceI
     }
 
     @Override
-    public boolean convertInto(ReadableResource input, ThingsBuilder into)
+    public boolean convertInto(URI uri, ThingsBuilder into)
             throws ConversionException, IOException {
-        var optProtoList = rdfResourceIntoProtoThingConverter.convert(input);
+        var resource = rp.getResource(uri);
+        if (resource == null) return false;
+
+        var optProtoList = rdfResourceIntoProtoThingConverter.convert(resource);
         if (!optProtoList.isPresent()) return false;
 
         var protoList = optProtoList.get();
@@ -84,7 +89,7 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceI
                 protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(
                         protoThing, thingBuilder);
             } catch (ConversionException e) {
-                LOG.error("Failed to convert Thing in: " + input.uri(), e);
+                LOG.error("Failed to convert Thing in: " + uri, e);
             }
         }
         return true;
