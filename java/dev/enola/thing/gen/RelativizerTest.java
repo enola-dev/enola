@@ -82,7 +82,9 @@ public class RelativizerTest {
 
         check("fs:localhost", "fs/localhost.md");
 
-        check("file:///source.ttl", "file:///source.ttl");
+        check("file:/tmp/astronomy.ttl", "file/tmp/astronomy.ttl.md");
+        check("file:///tmp/astronomy.ttl", "file/tmp/astronomy.ttl.md");
+        check("file://hostname/tmp/astronomy.ttl", "file/hostname/tmp/astronomy.ttl.md");
 
         // TODO The following are technically illegal and unexpected, of course; but just in case:
         // check("http:/enola.dev/ett", "enola.dev/ett.md");
