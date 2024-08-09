@@ -21,14 +21,12 @@ import static java.nio.file.Files.readAttributes;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.datatype.Datatypes;
-import dev.enola.model.enola.net.Hostnames;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
@@ -112,10 +110,13 @@ public class FileThingConverter implements UriIntoThingConverter {
     }
 
     private String getIRI(URI uri) throws URISyntaxException {
-        if (Strings.isNullOrEmpty(uri.getHost())) {
-            var host = Hostnames.LOCAL;
-            uri = new URI(uri.getScheme(), host, uri.getPath(), uri.getFragment());
-        }
+        // TODO Uncomment adding Hostnames.LOCAL as file: authority (and in *Test)
+        // The problem is that this needs to "match" KIRI.E.ORIGIN in UriIntoThingConverters
+        //
+        // if (Strings.isNullOrEmpty(uri.getHost())) {
+        //    var host = Hostnames.LOCAL;
+        //    uri = new URI(uri.getScheme(), host, uri.getPath(), uri.getFragment());
+        // }
         return uri.toString();
     }
 }
