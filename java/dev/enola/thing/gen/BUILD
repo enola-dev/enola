@@ -49,6 +49,7 @@ junit_tests(
         ":gen",
         "//java/dev/enola/common/io",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/model",
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",

@@ -82,5 +82,8 @@ public final class Datatypes {
     public static final Iterable<Datatype<?>> ALL =
             ImmutableList.of(BOOLEAN, IRI, STRING, UNSIGNED_LONG, FILE_TIME);
 
+    public static final DatatypeRepository DTR =
+            new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
+
     private Datatypes() {}
 }

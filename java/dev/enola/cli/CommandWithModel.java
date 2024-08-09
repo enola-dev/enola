@@ -96,8 +96,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             ServiceProvider grpc = null;
             if (group.load != null) {
                 // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
-                DatatypeRepository dtr =
-                        new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
+                DatatypeRepository dtr = Datatypes.DTR;
                 ctx.push(DatatypeRepository.class, dtr);
 
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();

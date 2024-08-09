@@ -99,6 +99,8 @@ public class ThingMetadataProvider implements MetadataProvider {
         try {
             var fallbackURI = IRIs.toURI(fallbackIRI);
             var filename = URIs.getFilenameOrLastPathSegmentOrHost(fallbackURI);
+            if (filename == null) return fallbackIRI;
+
             // TODO Should we consider any ?query=arg as part of a "label"?!
             var fragment = fallbackURI.getFragment();
             if (fragment != null) return filename + "#" + fragment;

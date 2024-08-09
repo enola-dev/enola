@@ -26,12 +26,14 @@ import com.google.common.collect.ImmutableSet;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.datatype.Datatypes;
+import dev.enola.model.enola.files.FileThingConverter;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.*;
@@ -41,14 +43,17 @@ import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingProvider;
+import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -56,23 +61,43 @@ public class MarkdownSiteGeneratorTest {
 
     ThingProvider NO_THING_PROVIDER = iri -> null;
 
+    DatatypeRepository dtr = Datatypes.DTR;
+
     NamespaceConverter nc =
             new NamespaceConverterWithRepository(NamespaceRepositoryEnolaDefaults.INSTANCE);
+
+    MetadataProvider metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
 
     ResourceProvider rp = new ResourceProviders();
 
     @Test
     public void picasso() throws Exception {
-        var things = load(new ClasspathResource("picasso.ttl"));
-
-        var metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
+        var protoThings = load(new ClasspathResource("picasso.ttl"));
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
-        mdDocsGen.generate(things, iri -> null, iri -> false, TemplateService.NONE, true, false);
+        mdDocsGen.generate(
+                protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");
+    }
+
+    @Test
+    public void directory() throws Exception {
+        var c = new FileThingConverter();
+        var b = new ThingsBuilder();
+        c.convertIntoOrThrow(URI.create("file:/tmp/"), b);
+        var javaThing = b.builders().iterator().next().build();
+        var protoThing = new JavaThingToProtoThingConverter(dtr).convert(javaThing).build();
+        var protoThings = Set.of(protoThing);
+
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Directory");
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
+        mdDocsGen.generate(
+                protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
+
+        // TODO check(dir, "???.md", "tmp.md");
     }
 
     @Test // ~same (as integration instead of unit test) also in
@@ -91,7 +116,6 @@ public class MarkdownSiteGeneratorTest {
     }
 
     private void generate(Path dir, String classpathResource) throws IOException {
-        DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
         var converterP2J = new ProtoThingIntoJavaThingBuilderConverter(dtr);
         var loadedProtoThings = load(new ClasspathResource(classpathResource));
         var repoBuilder = new ThingMemoryRepositoryROBuilder();
