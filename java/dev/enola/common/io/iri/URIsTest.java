@@ -181,6 +181,9 @@ public class URIsTest {
 
     @Test
     public void testGetFilenameOrLastPathSegment() {
+        assertThat(URIs.getFilenameOrLastPathSegmentOrHost(URI.create("file:///tmp/")))
+                .isEqualTo("tmp");
+
         assertThat(URIs.getFilenameOrLastPathSegmentOrHost(URI.create("https://vorburger.ch/")))
                 .isEqualTo("vorburger.ch");
 
