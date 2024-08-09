@@ -22,7 +22,7 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.common.io.resource.stream.GlobResourceProviders;
+import dev.enola.common.io.resource.stream.GlobResolvers;
 import dev.enola.common.io.resource.stream.WritableResourcesProvider;
 
 import picocli.CommandLine;
@@ -63,7 +63,7 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
         super.run();
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             wrp = new WritableResourcesProvider(rp);
-            var fgrp = new GlobResourceProviders();
+            var fgrp = new GlobResolvers();
             for (var globIRI : resources.load) {
                 try (var stream = fgrp.get(globIRI)) {
                     MoreStreams.forEach(stream, uri -> canonicalize(rp.getResource(uri)));

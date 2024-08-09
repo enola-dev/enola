@@ -21,7 +21,7 @@ import static dev.enola.common.function.MoreStreams.forEach;
 
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResolver;
-import dev.enola.common.io.resource.stream.GlobResourceProviders;
+import dev.enola.common.io.resource.stream.GlobResolvers;
 
 import io.github.amithkoujalgi.ollama4j.core.OllamaAPI;
 import io.github.amithkoujalgi.ollama4j.core.exceptions.OllamaBaseException;
@@ -80,7 +80,7 @@ public class OllamaMain {
     private static String suckFiles(String globURI) throws IOException {
         var sb = new StringBuilder();
         var rps = new ResourceProviders();
-        GlobResolver globResolver = new GlobResourceProviders();
+        GlobResolver globResolver = new GlobResolvers();
         try (var resources = globResolver.get(globURI)) {
             forEach(resources, uri -> sb.append(rps.getResource(uri).charSource().read()));
         }
