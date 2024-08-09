@@ -18,7 +18,6 @@
 package dev.enola.rdf;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
@@ -28,6 +27,7 @@ import dev.enola.common.io.mediatype.MediaTypeProvider;
 import org.eclipse.rdf4j.common.lang.FileFormat;
 import org.eclipse.rdf4j.rio.RDFFormat;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,10 +37,12 @@ import java.util.Set;
 public class RdfMediaTypes implements MediaTypeProvider {
 
     public static final MediaType TURTLE =
-            MediaType.parse(RDFFormat.TURTLE.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
+            MediaType.parse(RDFFormat.TURTLE.getDefaultMIMEType())
+                    .withCharset(StandardCharsets.UTF_8);
 
     public static final MediaType JSON_LD =
-            MediaType.parse(RDFFormat.JSONLD.getDefaultMIMEType()).withCharset(Charsets.UTF_8);
+            MediaType.parse(RDFFormat.JSONLD.getDefaultMIMEType())
+                    .withCharset(StandardCharsets.UTF_8);
 
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
     private final Map<String, MediaType> extensionsToTypes;

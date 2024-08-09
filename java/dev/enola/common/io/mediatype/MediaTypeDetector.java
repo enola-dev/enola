@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.mediatype;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
@@ -36,6 +35,7 @@ import java.net.FileNameMap;
 import java.net.URI;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
@@ -215,14 +215,14 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
             // TODO Replace this with a more "pluggable" instead of this initial hard-coded design
             if (mediaType.is(MediaType.ANY_TEXT_TYPE)) {
                 // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
-                mediaType = mediaType.withCharset(Charsets.UTF_8);
+                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
                 // TODO This should move into a TBD JsonMediaType implements ResourceCharsetDetector
             } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
                 // TODO See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
                 // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
-                mediaType = mediaType.withCharset(Charsets.UTF_8);
+                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
             } else if (mediaType.subtype().endsWith("+json")) {
-                mediaType = mediaType.withCharset(Charsets.UTF_8);
+                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
             }
             // TODO NOT if (mediaType.subtype().endsWith("+yaml")) { but via YamlMediaType
         }

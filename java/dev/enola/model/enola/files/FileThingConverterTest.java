@@ -19,7 +19,6 @@ package dev.enola.model.enola.files;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.base.Charsets;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
@@ -32,6 +31,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,7 +72,7 @@ public class FileThingConverterTest {
 
     private void check(Path root) throws IOException {
         // Setup
-        var cs = Charsets.UTF_8;
+        var cs = StandardCharsets.UTF_8;
         var folder = root.resolve("folder");
         var hello = folder.resolve("hello.txt");
         Files.createDirectories(folder);

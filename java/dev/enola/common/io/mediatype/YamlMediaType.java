@@ -20,7 +20,6 @@ package dev.enola.common.io.mediatype;
 import static com.google.common.net.MediaType.create;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
@@ -28,6 +27,7 @@ import com.google.common.net.MediaType;
 
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -44,7 +44,7 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
     // https://stackoverflow.com/questions/488694/how-to-set-the-character-encoding-in-a-yaml-file
 
     public static final MediaType YAML_UTF_8 =
-            create("application", "yaml").withCharset(Charsets.UTF_8);
+            create("application", "yaml").withCharset(StandardCharsets.UTF_8);
 
     @Override
     public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
@@ -65,7 +65,7 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
     @SuppressWarnings("ComparisonOutOfRange") // TX ErrorProne, but it's OK here!
     public Optional<Charset> detectCharset(URI uri, ByteSource source) {
         byte[] header = peek(4, uri, source);
-        if (header.length != 4) return Optional.of(Charsets.UTF_8);
+        if (header.length != 4) return Optional.of(StandardCharsets.UTF_8);
 
         // TODO Add test coverage for this to MediaTypeDetectorTest. Do BOMs have to be skipped?!
         // See https://yaml.org/spec/1.2.2/#52-character-encodings
@@ -81,17 +81,17 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
         if (header[1] == 0 && header[2] == 0 && header[3] == 0)
             return Optional.of(MoreCharsets.UTF_32LE);
 
-        if (header[0] == 0xFE && header[1] == 0xFF) return Optional.of(Charsets.UTF_16BE);
+        if (header[0] == 0xFE && header[1] == 0xFF) return Optional.of(StandardCharsets.UTF_16BE);
 
-        if (header[0] == 0 && header[1] == 0xFF) return Optional.of(Charsets.UTF_16BE);
+        if (header[0] == 0 && header[1] == 0xFF) return Optional.of(StandardCharsets.UTF_16BE);
 
-        if (header[0] == 0xFF && header[1] == 0xFE) return Optional.of(Charsets.UTF_16LE);
+        if (header[0] == 0xFF && header[1] == 0xFE) return Optional.of(StandardCharsets.UTF_16LE);
 
-        if (header[1] == 0) return Optional.of(Charsets.UTF_16LE);
+        if (header[1] == 0) return Optional.of(StandardCharsets.UTF_16LE);
 
         if (header[0] == 0xEF && header[1] == 0xBB && header[3] == 0xBF)
-            return Optional.of(Charsets.UTF_8);
+            return Optional.of(StandardCharsets.UTF_8);
 
-        return Optional.of(Charsets.UTF_8);
+        return Optional.of(StandardCharsets.UTF_8);
     }
 }

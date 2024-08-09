@@ -17,11 +17,10 @@
  */
 package dev.enola.cli;
 
-import com.google.common.base.Charsets;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utility to capture System.out and System.err in unit tests. Note that this doesn't work well
@@ -31,7 +30,7 @@ import java.nio.charset.Charset;
 // TODO Try if LogManager.getLogManager().reset(); could fix ^^^ this?
 public class SystemOutErrCapture implements AutoCloseable {
 
-    private static final Charset CHARSET = Charsets.UTF_8;
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     private final PrintStream originalOut;
     private final PrintStream originalErr;

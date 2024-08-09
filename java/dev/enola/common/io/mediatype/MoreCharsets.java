@@ -21,11 +21,11 @@ import java.nio.charset.Charset;
 
 /**
  * See JDK's {@link java.nio.charset.StandardCharsets} and Guava's {@link
- * com.google.common.base.Charsets}.
+ * java.nio.charset.StandardCharsets}.
  */
 public final class MoreCharsets {
 
-    // TODO with & without BOM byote order mark... see
+    // TODO with & without BOM byte order mark... see
     // https://docs.oracle.com/javase/8/docs/technotes/guides/intl/encoding.doc.html
 
     public static final Charset UTF_32BE = Charset.forName("UTF-32BE");

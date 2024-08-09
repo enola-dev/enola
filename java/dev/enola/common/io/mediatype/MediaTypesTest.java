@@ -21,13 +21,13 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.auto.service.AutoService;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,27 +54,27 @@ public class MediaTypesTest implements MediaTypeProvider {
     public void testNormalizeMediaTypesParseWithCharsetParameter() {
         var alternative = MediaTypes.parse("application/test-alternative");
         var alternativeWithCharset =
-                MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE));
-        assertThat(alternativeWithCharset).isEqualTo(TEST.withCharset(Charsets.UTF_16BE));
+                MediaTypes.normalize(alternative.withCharset(StandardCharsets.UTF_16BE));
+        assertThat(alternativeWithCharset).isEqualTo(TEST.withCharset(StandardCharsets.UTF_16BE));
     }
 
     @Test
     public void testNormalizeMediaTypeParseWithCharsetParameter() {
         var alternative = MediaType.parse("application/test-alternative");
         assertThat(MediaTypes.normalize(alternative)).isEqualTo(TEST);
-        assertThat(MediaTypes.normalize(alternative.withCharset(Charsets.UTF_16BE)))
-                .isEqualTo(TEST.withCharset(Charsets.UTF_16BE));
+        assertThat(MediaTypes.normalize(alternative.withCharset(StandardCharsets.UTF_16BE)))
+                .isEqualTo(TEST.withCharset(StandardCharsets.UTF_16BE));
     }
 
     @Test
     public void testToString() {
-        var mediaType = TEST.withCharset(Charsets.UTF_16BE);
+        var mediaType = TEST.withCharset(StandardCharsets.UTF_16BE);
         assertThat(mediaType.toString()).isEqualTo("application/test; charset=utf-16be");
     }
 
     @Test
     public void testParseWithCharset() {
-        var expected = TEST.withCharset(Charsets.UTF_16BE);
+        var expected = TEST.withCharset(StandardCharsets.UTF_16BE);
 
         // https://www.ietf.org/rfc/rfc2045.txt format:
         assertThat(MediaTypes.parse("application/test-alternative; charset=utf-16be"))

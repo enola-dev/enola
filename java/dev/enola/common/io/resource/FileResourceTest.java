@@ -20,7 +20,6 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -32,6 +31,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -122,7 +122,7 @@ public class FileResourceTest {
             Path folder = fs.getPath("/testSeparatePathJimFS");
             Files.createDirectories(folder);
             Path hello = folder.resolve("hello.txt");
-            Files.writeString(hello, "hello, world", Charsets.UTF_8);
+            Files.writeString(hello, "hello, world", StandardCharsets.UTF_8);
 
             var r = new FileResource(hello.toUri(), PLAIN_TEXT_UTF_8);
             assertThat(r.charSource().read()).isEqualTo("hello, world");
