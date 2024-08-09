@@ -32,8 +32,6 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.datatype.Datatypes;
 import dev.enola.model.enola.net.Hostnames;
 import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
@@ -83,8 +81,7 @@ public class FileThingConverter implements ResourceIntoThingConverter {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 
-        Thing.Builder<? extends ImmutableThing> node =
-                (Thing.Builder<? extends ImmutableThing>) into.get(getIRI(uri));
+        var node = into.get(getIRI(uri));
 
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);
