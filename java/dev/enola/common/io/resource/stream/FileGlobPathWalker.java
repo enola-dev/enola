@@ -44,10 +44,14 @@ final class FileGlobPathWalker {
             // Inspired by File.newDirectoryStream(), but matching full path, not just getFileName()
             var fs = basePath.getFileSystem();
             var matcher = fs.getPathMatcher("glob:" + globString);
-            return Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
-                    .filter(path -> matcher.matches(path))
-                    // .git/ contains weird files which have "standard" extensions but not content
-                    .filter(path -> !path.toString().contains("/.git/"));
+            var stream =
+                    Files.walk(basePath, FileVisitOption.FOLLOW_LINKS)
+                            .filter(path -> matcher.matches(path))
+                            // .git/ contains weird files which have "standard" extensions but not
+                            // content
+                            .filter(path -> !path.toString().contains("/.git/"));
+            // Add basePath, useful as "root dir", used e.g. in models/** DocGen FileThingConverter
+            return Stream.concat(Stream.of(basePath), stream);
         } else {
             return Stream.of(globPath);
         }
