@@ -27,6 +27,7 @@ java_binary(
             "SystemOutErrCapture.java",
         ],
     ),
+    jvm_flags = ["--enable-preview"],
     main_class = "dev.enola.cli.EnolaCLI",
     deps = [
         "//java/dev/enola/common",
