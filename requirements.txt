@@ -4,7 +4,7 @@
 pre-commit==3.8.0
 
 # https://linkml.io
-linkml==1.7.10
+linkml==1.8.1
 
 # https://github.com/fcivaner/hashdir
 hashdir==0.24
