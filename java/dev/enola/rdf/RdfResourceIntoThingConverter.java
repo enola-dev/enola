@@ -18,7 +18,6 @@
 package dev.enola.rdf;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
@@ -30,18 +29,17 @@ import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ResourceIntoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
+import dev.enola.thing.repo.ThingsBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
 import java.util.function.Supplier;
 
 @SuppressWarnings("rawtypes")
 @AutoService(ResourceIntoThingConverter.class)
-public class RdfResourceIntoThingConverter<T extends Thing>
-        implements ResourceIntoThingConverter<T> {
+public class RdfResourceIntoThingConverter<T extends Thing> implements ResourceIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
 
@@ -73,23 +71,22 @@ public class RdfResourceIntoThingConverter<T extends Thing>
     }
 
     @Override
-    public Optional<List<Builder<T>>> convert(ReadableResource input) throws ConversionException {
+    public boolean convertInto(ReadableResource input, ThingsBuilder into)
+            throws ConversionException, IOException {
         var optProtoList = rdfResourceIntoProtoThingConverter.convert(input);
-        if (!optProtoList.isPresent()) return Optional.empty();
+        if (!optProtoList.isPresent()) return false;
 
         var protoList = optProtoList.get();
-        var listBuilder = ImmutableList.<Thing.Builder<T>>builderWithExpectedSize(protoList.size());
 
         for (var protoThing : protoList) {
             try {
-                var thingBuilder = builderSupplier.get();
+                var thingBuilder = into.get(protoThing.getIri());
                 protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(
                         protoThing, thingBuilder);
-                listBuilder.add(thingBuilder);
             } catch (ConversionException e) {
                 LOG.error("Failed to convert Thing in: " + input.uri(), e);
             }
         }
-        return Optional.of(listBuilder.build());
+        return true;
     }
 }

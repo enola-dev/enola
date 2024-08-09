@@ -15,11 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.io;
+package dev.enola.thing.repo;
 
-import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.io.resource.ReadableResource;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 
-public interface ResourceIntoThingConverter
-        extends ConverterInto<ReadableResource, ThingsBuilder> {}
+import java.util.HashMap;
+import java.util.Map;
+
+public class ThingsBuilder {
+
+    private final Map<String, Thing.Builder<?>> map = new HashMap<>();
+
+    public Thing.Builder<?> get(String iri) {
+        return map.computeIfAbsent(iri, _iri -> ImmutableThing.builder().iri(_iri));
+    }
+
+    public Iterable<Thing.Builder<?>> builders() {
+        return map.values();
+    }
+}
