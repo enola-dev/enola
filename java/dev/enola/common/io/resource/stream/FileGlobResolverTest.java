@@ -69,40 +69,40 @@ public class FileGlobResolverTest {
 
     @Test
     public void globStarTXT() {
-        check("*.txt", 3);
+        check("*.txt", 4);
     }
 
     @Test
     public void globStarStarSlashStarTXT() {
-        // **/*.txt only matches sub-dirs...
-        check("**/*.txt", 1);
+        // **/*.txt only matches sub-dirs... (and root)
+        check("**/*.txt", 2);
     }
 
     @Test
     public void globStarStarTXT() {
         // **.txt matches TXT in root and all sub-dirs...
-        check("**.txt", 4);
+        check("**.txt", 5);
     }
 
     @Test
     public void globStarStarTXTwithCharset() {
-        // **.txt matches TXT in root and all sub-dirs...
-        check("**.txt?charset=US-ASCII", 4);
+        // **.txt matches TXT in root and all sub-dirs, and root...
+        check("**.txt?charset=US-ASCII", 5);
     }
 
     @Test
     public void globStarCurly() {
-        check("**.{txt,json,yaml}", 6);
+        check("**.{txt,json,yaml}", 7);
     }
 
     @Test
     public void globQuestionMarkButWithoutAnyStar() {
-        check("?.txt", 2);
+        check("?.txt", 3);
     }
 
     @Test
     public void globSquareBracketButWithoutAnyStar() {
-        check("[a-d].txt", 2);
+        check("[a-d].txt", 3);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class FileGlobResolverTest {
     public void relativeGlobWithoutScheme() {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             try (var stream = newGlobResolver().get("*.ttl")) {
-                assertThat(stream).isEmpty();
+                assertThat(stream).hasSize(1); // root directory
             }
         }
     }
@@ -127,7 +127,7 @@ public class FileGlobResolverTest {
     @Test // TODO Remove when support for (fake, wrong) file:*.ttl syntax is removed
     public void relativeGlobWithFileScheme() {
         try (var stream = newGlobResolver().get("file:*.ttl")) {
-            assertThat(stream).isEmpty();
+            assertThat(stream).hasSize(1); // root directory
         }
     }
 }
