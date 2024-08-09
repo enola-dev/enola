@@ -28,7 +28,7 @@ import dev.enola.rdf.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.ResourceIntoThingConverters;
+import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
@@ -47,25 +47,26 @@ public class TemplateThingRepositoryTest {
 
     @Test
     public void greetingN() {
+        var rp = new ClasspathResource.Provider();
         DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
-        ResourceIntoThingConverters ritc =
-                new ResourceIntoThingConverters(
-                        new RdfResourceIntoThingConverter<>(iri -> null, dtr));
-        var loader = new Loader(new ClasspathResource.Provider(), ritc);
+        var ritc = new UriIntoThingConverters(new RdfResourceIntoThingConverter<>(rp, dtr));
+        var loader = new Loader(ritc);
+
+        var classIRI = "https://example.org/greeting";
+        var templateIRI = "https://example.org/greet/{NUMBER}";
 
         var store = new ThingMemoryRepositoryRW();
         var greetingN = new ClasspathResource("example.org/greetingN.ttl");
         loader.convertIntoOrThrow(Stream.of(greetingN.uri()), store);
+        assertThat(store.listIRI()).containsExactly(classIRI);
+
         var repo = new TemplateThingRepository(store);
-
-        var classIRI = "https://example.org/greeting";
-        var templateIRI = "https://example.org/greet/{NUMBER}";
-        var exampleIRI = "https://example.org/greet/42";
-        var yoPropertyIRI = "https://example.org/yo";
-
         assertThat(repo.listIRI()).containsExactly(classIRI, templateIRI);
 
         // NB: We do not test/cover classIRI here - that's "as usual" (and tested elsewhere)
+
+        var exampleIRI = "https://example.org/greet/42";
+        var yoPropertyIRI = "https://example.org/yo";
 
         var template = repo.get(templateIRI);
         assertThat(template.iri()).isEqualTo(templateIRI);

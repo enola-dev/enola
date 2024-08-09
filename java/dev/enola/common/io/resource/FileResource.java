@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 /**
- * {@link Resource} for a file at a {@link Path} on a {@link FileSystem}.
+ * {@link Resource} for a file (not a directory) at a {@link Path} on a {@link FileSystem}.
  *
  * <p>Note that a {@link Path} object instance is associated to a FileSystem, see {@link
  * Path#getFileSystem()}. But in its text-form ({@link Path#of(String, String...)} and {@link
@@ -56,7 +56,8 @@ public class FileResource extends BaseResource implements Resource {
             // here. The UrlResource accepts jar: scheme though - and can read (but not write) them.
             if ("jar".equals(uri.getScheme())) return null;
 
-            if (MoreFileSystems.URI_SCHEMAS.contains(uri.getScheme())) return new FileResource(uri);
+            if (MoreFileSystems.URI_SCHEMAS.contains(uri.getScheme())
+                    && isValid(URIs.getFilePath(uri))) return new FileResource(uri);
             else return null;
         }
     }
@@ -68,14 +69,25 @@ public class FileResource extends BaseResource implements Resource {
 
     public FileResource(URI uri, MediaType mediaType, OpenOption... openOptions) {
         super(uri, mediaType);
-        this.path = URIs.getFilePath(uri);
+        this.path = checkValid(URIs.getFilePath(uri));
         this.openOptions = safe(openOptions);
     }
 
     public FileResource(URI uri, OpenOption... openOptions) {
         super(uri, MoreFiles.asByteSource(URIs.getFilePath(uri), openOptions));
-        this.path = URIs.getFilePath(uri);
+        this.path = checkValid(URIs.getFilePath(uri));
         this.openOptions = safe(openOptions);
+    }
+
+    private static Path checkValid(Path path) {
+        if (isValid(path)) return path;
+        throw new IllegalArgumentException(
+                "Exists, but is a directory; thus cannot be a Resource: " + path);
+    }
+
+    private static boolean isValid(Path path) {
+        if (Files.notExists(path)) return true;
+        return !Files.isDirectory(path);
     }
 
     private static OpenOption[] safe(OpenOption[] openOptions) {

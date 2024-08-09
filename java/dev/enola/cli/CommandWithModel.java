@@ -40,7 +40,7 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.datatype.Datatypes;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.ResourceIntoThingConverters;
+import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
@@ -102,9 +102,9 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
 
-                // TODO Explicitly add ResourceIntoThingConverter, depending on CLI feature flags
-                ResourceIntoThingConverters ritc = new ResourceIntoThingConverters();
-                var loader = new Loader(rp, ritc);
+                // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
+                UriIntoThingConverters ritc = new UriIntoThingConverters();
+                var loader = new Loader(ritc);
                 var fgrp = new GlobResourceProviders();
                 for (var globIRI : group.load) {
                     try (var stream = fgrp.get(globIRI)) {

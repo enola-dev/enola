@@ -18,8 +18,8 @@
 package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.thing.repo.ThingsBuilder;
 
-public interface ResourceIntoThingConverter
-        extends ConverterInto<ReadableResource, ThingsBuilder> {}
+import java.net.URI;
+
+public interface UriIntoThingConverter extends ConverterInto<URI, ThingsBuilder> {}

@@ -17,7 +17,7 @@
  */
 package dev.enola.thing.io;
 
-import static dev.enola.thing.io.ResourceIntoThingConverters.ContextKey.INPUT;
+import static dev.enola.thing.io.UriIntoThingConverters.ContextKey.INPUT;
 
 import com.google.common.collect.ImmutableList;
 
@@ -25,48 +25,47 @@ import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
-public class ResourceIntoThingConverters
-        implements Converter<ReadableResource, Iterable<Thing.Builder<?>>> {
+public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<?>>> {
 
     // TODO Load a resource with different converters multi-threaded, in parallel...
 
-    private final ImmutableList<ResourceIntoThingConverter> converters;
+    private final ImmutableList<UriIntoThingConverter> converters;
 
-    public ResourceIntoThingConverters(Iterable<ResourceIntoThingConverter> converters) {
+    public UriIntoThingConverters(Iterable<UriIntoThingConverter> converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public ResourceIntoThingConverters(ResourceIntoThingConverter... converters) {
+    public UriIntoThingConverters(UriIntoThingConverter... converters) {
         this(ImmutableList.copyOf(converters));
     }
 
-    public ResourceIntoThingConverters() {
-        this(ServiceLoader.load(ResourceIntoThingConverter.class).stream());
+    public UriIntoThingConverters() {
+        this(ServiceLoader.load(UriIntoThingConverter.class).stream());
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private ResourceIntoThingConverters(
-            Stream<ServiceLoader.Provider<ResourceIntoThingConverter>> providers) {
+    private UriIntoThingConverters(
+            Stream<ServiceLoader.Provider<UriIntoThingConverter>> providers) {
         this(providers.map(p -> p.get()).toList());
     }
 
-    public Iterable<Thing.Builder<?>> convert(ReadableResource input) throws ConversionException {
+    public Iterable<Thing.Builder<?>> convert(URI input) throws ConversionException {
         ThingsBuilder thingsBuilder = new ThingsBuilder();
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, input);
             for (var converter : converters) {
                 converter.convertInto(input, thingsBuilder);
             }
-            for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input.uri());
+            for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input);
             return thingsBuilder.builders();
         } catch (IOException e) {
             throw new ConversionException("IOException on " + input, e);
@@ -74,7 +73,7 @@ public class ResourceIntoThingConverters
     }
 
     // TODO Actually TLC.get(INPUT) *read* this somewhere... ;-) else remove again later.
-    enum ContextKey implements Context.Key<ReadableResource> {
+    enum ContextKey implements Context.Key<URI> {
         INPUT
     }
 }

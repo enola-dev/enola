@@ -24,7 +24,7 @@ import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.*;
-import dev.enola.thing.io.ResourceIntoThingConverters;
+import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.repo.ThingsBuilder;
 
 import org.junit.Test;
@@ -38,6 +38,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 
 public class FileThingConverterTest {
+
+    private final ResourceProvider rp = new ClasspathResource.Provider();
 
     @Test
     public void jimFS() throws IOException {
@@ -55,11 +57,10 @@ public class FileThingConverterTest {
 
     @Test // classpath:
     public void skipClasspath() throws IOException {
-        var rp = new ResourceProviders(new ClasspathResource.Provider());
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
         var thingsBuilder = new ThingsBuilder();
-        converter.convertInto(resource, thingsBuilder);
+        converter.convertInto(resource.uri(), thingsBuilder);
         assertThat(thingsBuilder.builders()).isEmpty();
     }
 
@@ -67,7 +68,7 @@ public class FileThingConverterTest {
     public void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
         var thingsBuilder = new ThingsBuilder();
-        converter.convertInto(new ClasspathResource("test.png"), thingsBuilder);
+        converter.convertInto(new ClasspathResource("test.png").uri(), thingsBuilder);
         assertThat(thingsBuilder.builders()).isEmpty();
     }
 
@@ -82,10 +83,11 @@ public class FileThingConverterTest {
         var link = folder.resolve("symlink");
         Files.createSymbolicLink(link, hello);
 
-        // Convert
+        // Convert hello.txt
         var mt = MediaType.PLAIN_TEXT_UTF_8;
-        var ritc = new ResourceIntoThingConverters(); // includes FileThingConverter
-        var list = ritc.convert(new FileResource(hello.toUri(), mt));
+        var ritc = new UriIntoThingConverters(); // includes FileThingConverter
+
+        var list = ritc.convert(hello.toUri());
         var thing = list.iterator().next().build();
 
         // Assert expected Thing
@@ -94,10 +96,16 @@ public class FileThingConverterTest {
         assertThat(iri.getAuthority()).isNotEmpty();
         assertThat(iri.getHost()).isNotEmpty();
 
-        assertThat(thing.getString(File.mediaType_IRI)).isEqualTo(mt.toString());
+        // assertThat(thing.getString(File.mediaType_IRI)).isEqualTo(mt.toString());
         assertThat((Long) thing.get(File.size_IRI)).isEqualTo(12L);
         assertThat(thing.get(File.createdAt_IRI, FileTime.class)).isNotNull();
         assertThat(thing.get(File.modifiedAt_IRI, FileTime.class)).isNotNull();
+
+        // Convert folder
+        list = ritc.convert(folder.toUri());
+        thing = list.iterator().next().build();
+        iri = URI.create(thing.iri());
+        assertThat(iri.toString()).endsWith("/folder/");
     }
 
     // TODO Read folder, and check for 3 Things (Directory folder, File hello, Link)

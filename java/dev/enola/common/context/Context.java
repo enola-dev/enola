@@ -87,7 +87,7 @@ public class Context implements AutoCloseable {
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
-        if (isEmpty()) throw new IllegalStateException("Context is empty");
+        if (isEmpty()) throw new IllegalStateException("Context is empty, no: " + key);
         var object = _get(key);
         if (object == null)
             throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
