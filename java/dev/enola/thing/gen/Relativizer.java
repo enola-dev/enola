@@ -76,25 +76,25 @@ public final class Relativizer {
         if (scheme == null) return thingIRI;
 
         // TODO #performance Use StringBuilder instead String ssp!
-        String ssp;
+        StringBuilder ssp = new StringBuilder();
 
         // Scheme
-        if (!scheme.startsWith("http")) ssp = scheme;
-        else ssp = "";
+        if (!scheme.startsWith("http")) ssp.append(scheme);
 
         // Authority
         var authority = nullToEmpty(thingIRI.getAuthority());
-        if (!authority.isEmpty()) ssp = ssp + (!ssp.isEmpty() ? "/" : "") + authority;
+        if (!authority.isEmpty()) ssp.append(!ssp.isEmpty() ? "/" : "").append(authority);
 
         // Path
         var path = nullToEmpty(thingIRI.getPath());
-        if (!path.isEmpty()) ssp = ssp + path;
-        else if (!scheme.startsWith("http")) ssp = ssp + "/" + thingIRI.getSchemeSpecificPart();
+        if (!path.isEmpty()) ssp.append(path);
+        else if (!scheme.startsWith("http"))
+            ssp.append('/').append(thingIRI.getSchemeSpecificPart());
 
         // Fragment
         var fragment = thingIRI.getFragment();
         if (fragment != null) {
-            ssp = ssp + "/" + fragment;
+            ssp.append('/').append(fragment);
         }
 
         var query = thingIRI.getQuery();
@@ -103,15 +103,15 @@ public final class Relativizer {
 
         var dotExtension = !extension.isEmpty() ? "." + extension : "";
 
-        if (ssp.startsWith("//")) {
+        if (ssp.charAt(0) == '/' && ssp.charAt(1) == '/') {
             if (ssp.length() > 2)
                 return URI.create(nos(ssp.substring(2)) + "." + extension + query);
             else return URI.create(dotExtension + query); // TODO ???
-        } else if (ssp.startsWith("/")) {
+        } else if (ssp.charAt(0) == '/') {
             if (ssp.length() > 1)
                 return URI.create(nos(ssp.substring(1)) + "." + extension + query);
             else return URI.create(dotExtension + query); // TODO ???
-        } else return URI.create(nos(ssp) + dotExtension + query);
+        } else return URI.create(nos(ssp.toString()) + dotExtension + query);
     }
 
     /** No Slash! */
