@@ -17,11 +17,12 @@
  */
 package dev.enola.core.meta;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.io.FileWriteMode.APPEND;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;

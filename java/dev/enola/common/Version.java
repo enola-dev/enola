@@ -17,9 +17,8 @@
  */
 package dev.enola.common;
 
-import com.google.common.base.Charsets;
-
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class Version {
 
@@ -32,7 +31,7 @@ public final class Version {
         try (var inputStream = classLoader.getResourceAsStream("VERSION")) {
             if (inputStream == null) return DEFAULT;
             var bytes = inputStream.readAllBytes();
-            return new String(bytes, Charsets.US_ASCII);
+            return new String(bytes, StandardCharsets.US_ASCII);
         } catch (IOException e) {
             return DEFAULT;
         }

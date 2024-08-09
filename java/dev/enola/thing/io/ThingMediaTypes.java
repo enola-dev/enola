@@ -20,7 +20,6 @@ package dev.enola.thing.io;
 import static java.util.Collections.emptySet;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
@@ -28,6 +27,7 @@ import dev.enola.common.io.mediatype.MediaTypeProvider;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.thing.proto.Thing;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,13 +46,13 @@ public class ThingMediaTypes implements MediaTypeProvider {
     private static final String THING_SUBTYPE = "enola.dev#thing";
 
     public static final MediaType THING_JSON_UTF_8 =
-            MediaType.create("text", THING_SUBTYPE + "+json").withCharset(Charsets.UTF_8);
+            MediaType.create("text", THING_SUBTYPE + "+json").withCharset(StandardCharsets.UTF_8);
 
     public static final MediaType THING_YAML_UTF_8 =
-            MediaType.create("text", THING_SUBTYPE + "+yaml").withCharset(Charsets.UTF_8);
+            MediaType.create("text", THING_SUBTYPE + "+yaml").withCharset(StandardCharsets.UTF_8);
 
     public static final MediaType THING_HTML_UTF_8 =
-            MediaType.create("text", THING_SUBTYPE + "+html").withCharset(Charsets.UTF_8);
+            MediaType.create("text", THING_SUBTYPE + "+html").withCharset(StandardCharsets.UTF_8);
 
     @Override
     public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {

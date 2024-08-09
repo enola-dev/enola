@@ -28,7 +28,6 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 
 import static java.net.URI.create;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
@@ -39,6 +38,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class MediaTypeDetectorTest {
     MediaTypeDetector md = new MediaTypeDetector();
@@ -52,7 +52,7 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect("application/test-alternative", null, null))
                 .isEqualTo(MediaType.parse("application/test"));
         assertThat(md.detect("text/plain", "ascii", null))
-                .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(Charsets.US_ASCII));
+                .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.US_ASCII));
 
         assertThat(md.detect("text/plain", null, create("http://server/hello.yaml")))
                 .isEqualTo(YAML_UTF_8);
@@ -90,7 +90,7 @@ public class MediaTypeDetectorTest {
         // A .YAML without header and just some ASCII is still UTF-8
         var text = "hello: world";
         var r = new MemoryResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
-        r.byteSink().write(text.getBytes(Charsets.US_ASCII));
+        r.byteSink().write(text.getBytes(StandardCharsets.US_ASCII));
         assertThat(md.detect(r)).hasValue(YAML_UTF_8);
 
         // TODO Make this work... it requires using the MediaTypeDetector directly in MemoryResource

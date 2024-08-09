@@ -20,7 +20,6 @@ package dev.enola.common.protobuf;
 import static java.util.Collections.emptySet;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
@@ -28,6 +27,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 import dev.enola.common.io.mediatype.MediaTypes;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -63,18 +63,18 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     // TODO Support "sniffing" proto-message from header in comment of ReadableResource
 
     public static final MediaType PROTO_UTF_8 =
-            MediaType.create("text", "proto").withCharset(Charsets.UTF_8);
+            MediaType.create("text", "proto").withCharset(StandardCharsets.UTF_8);
 
     public static final MediaType PROTOBUF_TEXTPROTO_UTF_8 =
-            MediaType.create("text", "protobuf").withCharset(Charsets.UTF_8);
+            MediaType.create("text", "protobuf").withCharset(StandardCharsets.UTF_8);
 
     // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf JSON" really just JSON?!
     public static final MediaType PROTOBUF_JSON_UTF_8 =
-            MediaType.create("text", "protobuf+json").withCharset(Charsets.UTF_8);
+            MediaType.create("text", "protobuf+json").withCharset(StandardCharsets.UTF_8);
 
     // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf YAML" really just YAML?!
     public static final MediaType PROTOBUF_YAML_UTF_8 =
-            MediaType.create("text", "protobuf+yaml").withCharset(Charsets.UTF_8);
+            MediaType.create("text", "protobuf+yaml").withCharset(StandardCharsets.UTF_8);
 
     // https://datatracker.ietf.org/doc/html/draft-rfernando-protocol-buffers-00
     public static final MediaType PROTOBUF_BINARY = MediaType.create("application", "protobuf");

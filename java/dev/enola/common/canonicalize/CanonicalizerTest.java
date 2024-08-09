@@ -23,7 +23,6 @@ import static org.junit.Assert.assertThrows;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.ClasspathResource;
@@ -34,6 +33,7 @@ import dev.enola.common.io.resource.StringResource;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class CanonicalizerTest {
 
@@ -65,7 +65,8 @@ public class CanonicalizerTest {
     public void canonicalJSON_is_UTF8() throws IOException {
         var in =
                 StringResource.of(
-                        "{\"b\":\"hi\"}", MediaType.JSON_UTF_8.withCharset(Charsets.UTF_16));
+                        "{\"b\":\"hi\"}",
+                        MediaType.JSON_UTF_8.withCharset(StandardCharsets.UTF_16));
         var out = new MemoryResource(MediaType.ANY_TYPE);
         Canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource()).isNotEqualTo(in.byteSource());

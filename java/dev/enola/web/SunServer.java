@@ -17,9 +17,9 @@
  */
 package dev.enola.web;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.io.ByteSource;

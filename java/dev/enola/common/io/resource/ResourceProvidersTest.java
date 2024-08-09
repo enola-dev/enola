@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
@@ -87,7 +86,8 @@ public class ResourceProvidersTest {
                 .isEqualTo(MediaType.OCTET_STREAM.withCharset(StandardCharsets.UTF_16BE));
 
         r = rp.getResource(URI.create("file:/test.json?charset=UTF-16BE"));
-        assertThat(r.mediaType()).isEqualTo(MediaType.JSON_UTF_8.withCharset(Charsets.UTF_16BE));
+        assertThat(r.mediaType())
+                .isEqualTo(MediaType.JSON_UTF_8.withCharset(StandardCharsets.UTF_16BE));
     }
 
     private void checkReadFile(File file, URI uri) throws IOException {

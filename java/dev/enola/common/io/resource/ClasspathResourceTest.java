@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.resource;
 
-import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,7 +25,8 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 
 import static org.junit.Assert.assertThrows;
 
-import com.google.common.base.Charsets;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
@@ -89,25 +89,25 @@ public class ClasspathResourceTest {
 
         checkText(
                 "test-hello-ascii.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
+                PLAIN_TEXT_UTF_8.withCharset(UTF_8),
+                Optional.of(UTF_8),
                 "hello, world\n");
         checkText(
                 "test-french.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
+                PLAIN_TEXT_UTF_8.withCharset(UTF_8),
+                Optional.of(UTF_8),
                 "Ça va?\n");
         checkText(
                 "test-emoji.txt",
-                PLAIN_TEXT_UTF_8.withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
+                PLAIN_TEXT_UTF_8.withCharset(UTF_8),
+                Optional.of(UTF_8),
                 "🕵🏾‍♀️\n");
 
         var md = "# Markdown\n\n❤️\n";
         checkText(
                 "test.md",
-                MediaType.create("text", "markdown").withCharset(Charsets.UTF_8),
-                Optional.of(Charsets.UTF_8),
+                MediaType.create("text", "markdown").withCharset(UTF_8),
+                Optional.of(UTF_8),
                 md);
         var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
         assertThat(resource.charSource().read()).isEqualTo(md);

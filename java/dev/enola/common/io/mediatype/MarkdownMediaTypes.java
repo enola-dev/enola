@@ -19,11 +19,11 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.net.MediaType.create;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,7 +37,7 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
     // https://www.iana.org/assignments/markdown-variants/markdown-variants.xhtml
 
     public static final MediaType MARKDOWN_UTF_8 =
-            create("text", "markdown").withCharset(Charsets.UTF_8);
+            create("text", "markdown").withCharset(StandardCharsets.UTF_8);
     ;
 
     @Override

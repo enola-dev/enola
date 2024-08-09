@@ -18,12 +18,12 @@
 package dev.enola.rdf;
 
 import com.google.auto.service.AutoService;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +33,7 @@ import java.util.Set;
 public class RdfMediaTypeYamlLd implements MediaTypeProvider {
 
     public static final MediaType YAML_LD =
-            MediaType.create("application", "ld+yaml").withCharset(Charsets.UTF_8);
+            MediaType.create("application", "ld+yaml").withCharset(StandardCharsets.UTF_8);
 
     @Override
     public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
