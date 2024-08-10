@@ -17,11 +17,15 @@
  */
 package dev.enola.thing.gen.graphviz;
 
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
+
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterIntoAppendable;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
+import dev.enola.common.io.resource.WritableResource;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.StackedThingProvider;
@@ -57,6 +61,13 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
 
     public GraphvizGenerator(MetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
+    }
+
+    public void convertIntoOrThrow(Iterable<Thing> things, WritableResource into)
+            throws ConversionException, IOException {
+        try (var out = into.charSink().openBufferedStream()) {
+            convertIntoOrThrow(things, out);
+        }
     }
 
     @Override
@@ -104,18 +115,25 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
         out.append("<TABLE BORDER=\"0\" CELLBORDER=\"1\" CELLSPACING=\"0\">\n");
         if (thingLabel != null) {
             out.append("    <TR><TD COLSPAN=\"2\">");
-            out.append(thingLabel);
+            out.append(html(thingLabel));
             out.append("</TD></TR>\n");
         }
         for (var p : thing.predicateIRIs()) {
             if (thing.isLink(p)) continue;
             var pLabel = label(metadataProvider.get(p));
             out.append("    <TR><TD ALIGN=\"left\">");
-            out.append(pLabel);
+            out.append(html(pLabel));
             out.append("</TD><TD>");
-            out.append(thing.getString(p));
+            var value = thing.getString(p);
+            if (value != null) out.append(html(value));
             out.append("</TD></TR>\n");
         }
         out.append("  </TABLE>");
+    }
+
+    private static final Escaper htmlEscaper = HtmlEscapers.htmlEscaper();
+
+    private String html(String text) {
+        return htmlEscaper.escape(text);
     }
 }

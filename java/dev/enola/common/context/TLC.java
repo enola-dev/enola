@@ -53,7 +53,7 @@ public final class TLC {
 
     /** See {@link dev.enola.common.context.Context#get(Class)} . */
     public static <K extends Enum<K> & Context.Key<T>, T> @Nullable T get(K key) {
-        return context().get(key);
+        return context(key).get(key);
     }
 
     public static <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key) {
@@ -64,7 +64,7 @@ public final class TLC {
 
     /** See {@link dev.enola.common.context.Context#get(java.lang.Class). */
     public static <T> @Nullable T get(Class<T> klass) {
-        return context().get(klass);
+        return context(klass).get(klass);
     }
 
     public static <T> Optional<T> optional(Class<T> klass) {
@@ -73,10 +73,11 @@ public final class TLC {
         return tlc.optional(klass);
     }
 
-    private static Context context() {
+    private static Context context(Object debug) {
         var tlc = threadLocalContext.get();
         if (tlc == null) {
-            throw new IllegalStateException("Missing TLC.open() in call chain!");
+            throw new IllegalStateException(
+                    "Missing TLC.open() in call chain, can't get: " + debug);
         }
         return tlc;
     }

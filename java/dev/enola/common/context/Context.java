@@ -65,7 +65,7 @@ public class Context implements AutoCloseable {
         return _push(key, value);
     }
 
-    public <T, K extends Enum<K>> Context push(Class<T> key, T value) {
+    public <T> Context push(Class<T> key, T value) {
         _push(key, value); // NOT .getName()
         return this;
     }
