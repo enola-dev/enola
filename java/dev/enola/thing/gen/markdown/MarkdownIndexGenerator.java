@@ -67,7 +67,8 @@ class MarkdownIndexGenerator {
 
     void generate(Writer writer, URI outputIRI, URI base, TemplateService ts) throws IOException {
         var tree = new ImmutableTreeBuilder<ThingOrHeading>();
-        var rootMetadata = new ThingOrHeading(null, new Metadata("fake:/", "☸", "", "Things", ""));
+        var rootMetadata =
+                new ThingOrHeading(null, new Metadata("fake:/", "☸", "", "☸", "", "Things", ""));
         tree.root(rootMetadata);
 
         for (var metadata : metas) {

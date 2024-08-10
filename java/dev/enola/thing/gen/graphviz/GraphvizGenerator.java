@@ -72,7 +72,7 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
     }
 
     private String label(Metadata metadata) {
-        return metadata.imageHTML() + metadata.label();
+        return metadata.emoji() + metadata.label();
     }
 
     private void printThing(Thing thing, Appendable out) throws IOException {

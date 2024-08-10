@@ -72,13 +72,25 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     private Metadata get(@Nullable Thing thing, String fallbackIRI) {
+        var imageURL = getImageURL_(thing);
+        if (imageURL == null) imageURL = "";
+
+        var emoji = getEmoji_(thing);
+        if (emoji == null) emoji = "";
+
         var imageHTML = getImageHTML(thing);
         var descriptionHTML = getDescriptionHTML(thing);
         var curie = ns.toCURIE(fallbackIRI);
         var label = getLabel(thing, curie, fallbackIRI);
         var curieIfDifferentFromFallbackIRI = !curie.equals(fallbackIRI) ? curie : "";
         return new Metadata(
-                fallbackIRI, imageHTML, curieIfDifferentFromFallbackIRI, label, descriptionHTML);
+                fallbackIRI,
+                imageHTML,
+                imageURL,
+                emoji,
+                curieIfDifferentFromFallbackIRI,
+                label,
+                descriptionHTML);
     }
 
     /**
@@ -149,21 +161,44 @@ public class ThingMetadataProvider implements MetadataProvider {
         var thingImage = getImageHTML_(thing);
         if (thingImage != null) return thingImage;
 
-        thingImage = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getImageHTML_(thingX));
-        if (thingImage != null) return thingImage;
-
-        thingImage = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getImageHTML_(thingX));
-        if (thingImage != null) return thingImage;
-
         return "";
     }
 
     private @Nullable String getImageHTML_(Thing thing) {
         if (thing == null) return null;
 
+        var emoji = getEmoji_(thing);
+        if (emoji != null) return emoji;
+
+        var imageURL = getImageURL_(thing);
+        if (imageURL != null) return html(imageURL);
+
+        // TODO Also support (and test) https://schema.org/ImageObject
+        // for https://schema.org/thumbnail and https://schema.org/logo
+
+        return null;
+    }
+
+    private @Nullable String getEmoji_(Thing thing) {
         var emoji = getString(thing, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
 
+        emoji = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getEmoji_(thingX));
+        if (emoji != null) return emoji;
+
+        emoji = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getEmoji_(thingX));
+        return emoji;
+    }
+
+    private @Nullable String getImageURL_(Thing thing) {
+        var imageURL = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getImageURL__(thingX));
+        if (imageURL != null) return imageURL;
+
+        imageURL = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getImageURL__(thingX));
+        return imageURL;
+    }
+
+    private @Nullable String getImageURL__(Thing thing) {
         var imageURL = getString(thing, KIRI.SCHEMA.IMG);
         if (imageURL != null) return html(imageURL);
 
@@ -173,8 +208,6 @@ public class ThingMetadataProvider implements MetadataProvider {
         imageURL = getString(thing, KIRI.SCHEMA.THUMBNAIL_URL);
         if (imageURL != null) return html(imageURL);
 
-        // TODO Also support (and test) https://schema.org/ImageObject
-        // for https://schema.org/thumbnail and https://schema.org/logo
         return null;
     }
 
@@ -186,7 +219,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     private @Nullable String getAlternative(
             Thing thing, String viaPropertyIRI, Function<Thing, String> alt) {
         var alternativeThingIRI = getString(thing, viaPropertyIRI);
-        if (alternativeThingIRI != null) {
+        if (alternativeThingIRI != null && !alternativeThingIRI.equals(thing.iri())) {
             var alternativeThing = tp.get(alternativeThingIRI);
             if (alternativeThing != null) {
                 var alternativeSource = alt.apply(alternativeThing);
