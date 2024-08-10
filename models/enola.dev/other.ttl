@@ -17,9 +17,9 @@
 @base           <https://docs.enola.dev/concepts/other/#>.
 @prefix :       <https://docs.enola.dev/concepts/other/#>.
 
-@prefix awe:    <https://enola.dev/awesome>.
-@prefix github: <https://enola.dev/github>.
-@prefix todo:   <https://enola.dev/todo>.
+@prefix awe:    <https://enola.dev/awesome/>.
+@prefix github: <https://enola.dev/github/>.
+@prefix todo:   <https://enola.dev/todo/>.
 @prefix enola:  <https://enola.dev/>.
 @prefix schema: <https://schema.org/>.
 
@@ -90,7 +90,7 @@
 
 <https://flix.dev> a schema:SoftwareApplication, enola:ToDo;
   awe:tags schema:ComputerLanguage, :datalog, :vscode;
-  awe:links <file://WORKSPACE/flix/>;
+  # awe:links <file://WORKSPACE/flix/>;
   schema:license enola:OpenSource;
   todo:prio todo:high.
 

@@ -21,7 +21,6 @@ import static java.nio.file.Files.readAttributes;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ConversionException;
@@ -89,11 +88,12 @@ public class FileThingConverter implements UriIntoThingConverter {
 
         } else if (attrs.isDirectory()) {
             node.set(KIRI.RDF.TYPE, Directory.Type_IRI);
-            var childrenIRIs = new ImmutableList.Builder<URI>();
-            try (var stream = Files.list(path)) {
-                stream.forEach(child -> childrenIRIs.add(child.toUri()));
-            }
-            node.set(Directory.children_IRI, childrenIRIs.build());
+            // TODO Re-enable!
+            // var childrenIRIs = new ImmutableList.Builder<URI>();
+            // try (var stream = Files.list(path)) {
+            //    stream.forEach(child -> childrenIRIs.add(child.toUri()));
+            // }
+            // node.set(Directory.children_IRI, childrenIRIs.build());
 
         } else if (attrs.isSymbolicLink()) {
             node.set(KIRI.RDF.TYPE, Link.Type_IRI);
@@ -105,7 +105,10 @@ public class FileThingConverter implements UriIntoThingConverter {
         }
 
         // Common to File, Directory, Link, and Other
-        node.set(Node.parent_IRI, path.getParent().toUri());
+        // TODO Re-enable File (or Directory) parent!
+        // (This was temporarily disabled in order to re-enable mkdocs --strict.)
+        // node.set(Node.parent_IRI, path.getParent().toUri());
+
         node.set(
                 Node.createdAt_IRI,
                 attrs.creationTime(),
