@@ -21,7 +21,7 @@ set -euo pipefail
 # comes with several Java versions pre-installed by SDKMAN already,
 # let's wipe everything, and (re)install only the one we want below
 # (via ASDF, for consistency), to avoid confusion:
-# TODO Remove this when .devcontainer/devcontainer.json switched to a ligher base image
+# TODO Remove this when .devcontainer/devcontainer.json switched to a lighter base image
 rm -rf /usr/local/sdkman/candidates/java/
 
 if ! [ -x "$(command -v asdf)" ]; then

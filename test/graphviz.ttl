@@ -10,7 +10,7 @@
   enola:emoji "👋".
 
 :greeting3 a :Salutation;
-  :message "hello, world";
+  :message "hello, world > 42"; # The '>' needs escaping in GV HTML-like Labels
   :object :world.
 
 :world

@@ -18,14 +18,19 @@
 package dev.enola.thing.gen.markdown;
 
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Iterables;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.gen.Relativizer;
+import dev.enola.thing.gen.graphviz.GraphvizGenerator;
+import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
@@ -35,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 
 /** Generates a "site" of Markdown files, given some Things. */
 public class MarkdownSiteGenerator {
@@ -45,6 +51,7 @@ public class MarkdownSiteGenerator {
     private final MarkdownThingGenerator mtg;
     private final MetadataProvider metadataProvider;
     private final Templates.Format format;
+    private final GraphvizGenerator graphvizGenerator;
 
     public MarkdownSiteGenerator(
             URI base,
@@ -66,6 +73,7 @@ public class MarkdownSiteGenerator {
         this.metadataProvider = metadataProvider;
         this.mtg = new MarkdownThingGenerator(format, metadataProvider);
         this.rp = rp;
+        this.graphvizGenerator = new GraphvizGenerator(metadataProvider);
     }
 
     public void generate(
@@ -76,6 +84,8 @@ public class MarkdownSiteGenerator {
             boolean generateIndexFile,
             boolean footer)
             throws IOException {
+
+        generateGraphviz(things);
 
         var metas = ImmutableSortedSet.orderedBy(Metadata.IRI_Comparator);
 
@@ -112,5 +122,18 @@ public class MarkdownSiteGenerator {
                 mig.generate(writer, indexURI, base, ts);
             }
         }
+    }
+
+    private void generateGraphviz(Iterable<Thing> protoThings) throws IOException {
+        var graphvizOutputIRI = base.resolve("graphviz.gv");
+        var graphVizOutputResource = rp.getWritableResource(graphvizOutputIRI);
+
+        var dtr = TLC.get(DatatypeRepository.class);
+        var javaThings = new ArrayList<dev.enola.thing.Thing>(Iterables.size(protoThings));
+        for (var protoThing : protoThings) {
+            javaThings.add(new ThingAdapter(protoThing, dtr));
+        }
+
+        graphvizGenerator.convertIntoOrThrow(javaThings, graphVizOutputResource);
     }
 }

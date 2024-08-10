@@ -53,7 +53,9 @@ nav:
       - Canonicalize: use/canonicalize/index.md
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
-  - Models: models/index.md
+  - Models:
+      - Index: models/index.md
+      - Graph: concepts/graph.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md

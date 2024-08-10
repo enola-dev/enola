@@ -48,6 +48,12 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      # https://github.com/marketplace/actions/cache-apt-packages
+      - uses: awalsh128/cache-apt-pkgs-action@a6c3917cc929dd0345bfb2d3feaf9101823370ad
+        with:
+          packages: graphviz
+          version: 1.0
+
       - name: Cache Bazel
         uses: actions/cache@v4
         with:

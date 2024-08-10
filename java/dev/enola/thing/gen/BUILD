@@ -21,7 +21,10 @@ java_library(
     name = "gen",
     srcs = glob(
         ["**/*.java"],
-        exclude = ["**/*Test.java"],
+        exclude = [
+            "**/*Test.java",
+            "**/Test*.java",
+        ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
@@ -33,6 +36,7 @@ java_library(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/tree",
         "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
         # TODO Remove Proto dependency, switch to pure Java API
@@ -48,9 +52,16 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob([
+        "**/*Test.java",
+    ]),
+    srcs_utils = glob(
+        ["**/*Test*.java"],
+        exclude = ["**/*Test.java"],
+    ),
     deps = [
         ":gen",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",

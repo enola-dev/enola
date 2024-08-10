@@ -8,7 +8,7 @@ digraph {
 
   "https://example.org/greeting3" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
-    <TR><TD ALIGN="left">ex:message</TD><TD>hello, world</TD></TR>
+    <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>
   </TABLE>>]
   "https://example.org/greeting3" -> "https://example.org/Salutation" [label="rdf:type"]
   "https://example.org/greeting3" -> "https://example.org/world" [label="ex:object"]

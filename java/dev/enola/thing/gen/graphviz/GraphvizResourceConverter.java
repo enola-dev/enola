@@ -50,9 +50,7 @@ public class GraphvizResourceConverter implements CatchingResourceConverter {
         }
 
         var things = store.build().list();
-        try (var out = into.charSink().openBufferedStream()) {
-            graphvizGenerator.convertIntoOrThrow(things, out);
-            return true;
-        }
+        graphvizGenerator.convertIntoOrThrow(things, into);
+        return true;
     }
 }

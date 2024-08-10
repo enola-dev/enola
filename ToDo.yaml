@@ -74,6 +74,11 @@ items:
       items:
         - ? Write `todo.esch.yaml` & `todo-context.jsonld` in `models/enola.dev/todo/`
 
+  - Visualize Graphs in 3D:
+      links:
+        - https://graphviz.org/docs/outputs/pov/
+        - https://graphviz.org/docs/outputs/vrml/
+
   - Validation:
       depends: [*metaJavaCodegen]
 

@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.thing.template.Templates.Format.Mustache;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
@@ -47,7 +48,9 @@ import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.TemplateThingRepository;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.io.IOException;
 import java.net.URI;
@@ -58,6 +61,10 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class MarkdownSiteGeneratorTest {
+
+    @Rule
+    public TestRule tlcRule =
+            new TestTLCRule(ImmutableMap.of(DatatypeRepository.class, Datatypes.DTR));
 
     ThingProvider NO_THING_PROVIDER = iri -> null;
 
