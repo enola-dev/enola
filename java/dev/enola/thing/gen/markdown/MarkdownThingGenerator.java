@@ -59,9 +59,15 @@ class MarkdownThingGenerator {
         out.append("# ");
         var meta = metadataProvider.get(thing, thingIRI);
         linkWriter.writeLabel(meta, out);
-        out.append("\n\n<");
-        out.append(Templates.convertToAnotherFormat(thingIRI, format));
-        out.append(">\n\n");
+
+        var iri = Templates.convertToAnotherFormat(thingIRI, format);
+        // NB: mkdocs does not render <file:///...> correctly, but [file:///...](file:///...) works:
+        out.append("\n\n[");
+        out.append(iri);
+        out.append("](");
+        out.append(iri);
+        out.append(")\n\n");
+
         if (!meta.descriptionHTML().isEmpty()) {
             out.append(meta.descriptionHTML());
             out.append("\n\n");
