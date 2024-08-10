@@ -299,8 +299,15 @@ public class URIsTest {
 
     @Test
     public void absolutifyURIs() {
-        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/"))) {
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme:///root/"))) {
+            assertThat(URIs.absolutify("test")).isEqualTo("ascheme:///root/test");
+            assertThat(URIs.absolutify("/test")).isEqualTo("ascheme:///test");
+        }
+        try (var ctx =
+                TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/root/"))) {
             assertThat(URIs.absolutify(URI.create("test")))
+                    .isEqualTo(URI.create("ascheme://authority/root/test"));
+            assertThat(URIs.absolutify(URI.create("/test")))
                     .isEqualTo(URI.create("ascheme://authority/test"));
         }
         assertThrows(IllegalStateException.class, () -> URIs.absolutify(URI.create("test")));
@@ -308,8 +315,14 @@ public class URIsTest {
 
     @Test
     public void absolutifyStringURIs() {
-        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/"))) {
-            assertThat(URIs.absolutify("test")).isEqualTo("ascheme://authority/test");
+        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme:///root/"))) {
+            assertThat(URIs.absolutify("test")).isEqualTo("ascheme:///root/test");
+            assertThat(URIs.absolutify("/test")).isEqualTo("ascheme:///test");
+        }
+        try (var ctx =
+                TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme://authority/root/"))) {
+            assertThat(URIs.absolutify("test")).isEqualTo("ascheme://authority/root/test");
+            // TODO assertThat(URIs.absolutify("/test")).isEqualTo("ascheme://authority/test");
         }
         assertThrows(IllegalStateException.class, () -> URIs.absolutify("test"));
     }

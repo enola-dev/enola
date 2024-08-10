@@ -336,12 +336,19 @@ public final class URIs {
 
     public static URI absolutify(URI uri) {
         if (hasScheme(uri)) return uri;
-        return TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri)).resolve(uri);
+        var base = TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri));
+        return base.resolve(uri);
     }
 
     public static String absolutify(String uri) {
         if (hasScheme(uri)) return uri;
-        return TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri)) + uri;
+        var base = TLC.optional(ContextKeys.BASE).orElseThrow(ex(uri));
+        return resolve(base.toString(), uri);
+    }
+
+    private static String resolve(String base, String child) {
+        if (!child.startsWith("/")) return base + child;
+        return getScheme(base) + "://" + child;
     }
 
     private static Supplier<IllegalStateException> ex(Object uri) {
