@@ -40,8 +40,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
-import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.DatatypeRepositoryBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -52,9 +50,6 @@ public class UI implements WebHandler {
 
     private static final ReadableResource HTML_FRAME =
             new ClasspathResource("templates/index.html");
-
-    private final DatatypeRepository datatypeRepository =
-            new DatatypeRepositoryBuilder().build(); // TODO look up in global repository!
 
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
