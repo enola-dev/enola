@@ -17,6 +17,7 @@
  */
 package dev.enola.common.protobuf;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.protobuf.Any;
 import com.google.protobuf.BoolValue;
@@ -96,6 +97,8 @@ public class Messages {
 
     public Message toMessage(Any any) {
         var typeURL = any.getTypeUrl();
+        if (Strings.isNullOrEmpty(typeURL))
+            throw new IllegalArgumentException("Any missing typeURL: " + any);
         var builder = newBuilder(typeURL);
         try {
             builder.mergeFrom(any.getValue(), extensionRegistry);

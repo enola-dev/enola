@@ -19,6 +19,7 @@ package dev.enola.web;
 
 import static com.google.common.net.MediaType.HTML_UTF_8;
 
+import com.google.common.base.Strings;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.Descriptors.DescriptorValidationException;
@@ -95,32 +96,47 @@ public class UI implements WebHandler {
         var path = uri.getPath();
         if (path.startsWith("/ui/")) {
             var eri = path.substring("/ui/".length());
-            return getEntityHTML(eri, false);
+            return getEntityHTML(eri);
         } else {
             // TODO Create HTML page “frame” from template, with body from another template
             return new ClasspathResource("static/404.html").charSource().read();
         }
     }
 
-    private String getEntityHTML(String iri, boolean usingNewAPI)
+    private String getEntityHTML(String iri)
             throws EnolaException, IOException, ConversionException {
+        var thing = thingProvider.get(iri);
+        var thingHTML =
+                thing != null
+                        ? thingUI.html(thing).toString()
+                        : "Not found: <code>"
+                                + iri
+                                + "</code>; try e.g. <a href=\"/ui/enola:/\"><code>enola:/</code>"
+                                + " for the index</a>...";
+
+        return new ReplacingResource(
+                        HTML_FRAME,
+                        "%%ERI%%",
+                        iri,
+                        "%%THING%%",
+                        thingHTML,
+                        "%%YAML%%",
+                        getYAML(iri))
+                .charSource()
+                .read();
+    }
+
+    private String getYAML(String iri) throws IOException {
+        // TODO Replace this with a *.yaml (et al.) link in the UI!
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         var any = response.getThing();
+        if (Strings.isNullOrEmpty(any.getTypeUrl())) return "";
+
         var message = enolaMessages.toMessage(any);
-
-        var thing = thingProvider.get(iri);
-        var thingHTML = thingUI.html(thing).toString();
-
-        // TODO Replace this with a *.yaml (et al.) link in the UI!
         var yamlResource = new MemoryResource(ProtobufMediaTypes.PROTOBUF_YAML_UTF_8);
         getProtoIO().write(message, yamlResource);
-        var thingYAML = yamlResource.charSource().read();
-
-        return new ReplacingResource(
-                        HTML_FRAME, "%%ERI%%", iri, "%%THING%%", thingHTML, "%%YAML%%", thingYAML)
-                .charSource()
-                .read();
+        return yamlResource.charSource().read();
     }
 
     private ProtoIO getProtoIO() {
