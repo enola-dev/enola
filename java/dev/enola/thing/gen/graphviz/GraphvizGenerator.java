@@ -121,7 +121,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
                     }
                 }
             } else if (thing.isStruct(p)) {
-                out.append("...");
+                out.append("..."); // TODO Dig in, or fine as is?
             } else {
                 var value = thing.getString(p);
                 if (value != null) out.append(html(value));
