@@ -23,9 +23,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
 
-    <title>🕵🏾‍♀️ Enola</title>
-
-    <script src="/ui/static/main.js"></script>
+    <title>Enola</title>
 
     <link href="/ui/static/main.css" media="screen" rel="stylesheet" type="text/css" />
 
@@ -41,30 +39,21 @@
   </head>
   <body>
     <div class="app-bar">
-      <span class="material-symbols-outlined">menu</span>
+      <!-- <span class="material-symbols-outlined">menu</span> -->
       <span>Enola 🕵🏾‍♀️</span>
-      <span style="width: 100%">
-        <input incremental="true" name="q" placeholder="Search..." size="70" type="search" />
+      <span>
+        <input incremental="true" name="q" placeholder="Search..." type="search" />
       </span>
-      <a href="https://www.enola.dev"
-        ><span class="material-symbols-outlined" style="float: right; color: #ccc"> help </span></a
-      >
+      <a href="https://www.enola.dev"><span class="material-symbols-outlined help"> help </span></a>
     </div>
 
     <div class="main">
-      <div style="float: right; padding-top: 1em"><a href="#">name</a>: <input value="demo" /></div>
-
-      <div style="float: let">
+      <div style="float: left">
         <h1>😞 404 💀</h1>
 
-        <p>Invalid path in URL, instead try:</p>
-
-        <ul>
-          <li>
-            <tt>/ui/{ns}/{entity}/{paths+}</tt>, e.g.
-            <a href="/ui/demo.book/ABC/0-13-140731-7/1">demo.book_kind/ABC/0-13-140731-7/1</a>
-          </li>
-        </ul>
+        <p>
+          Invalid path in URL, instead try e.g. <a href="/ui/enola:/"><code>enola:/</code> for the index</a>...
+        </p>
       </div>
     </div>
   </body>
