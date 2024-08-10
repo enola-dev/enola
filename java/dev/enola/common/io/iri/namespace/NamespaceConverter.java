@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.iri.namespace;
 
+import dev.enola.common.context.TLC;
+
 /**
  * NamespaceConverter converts "compact" <a
  * href="https://en.m.wikipedia.org/wiki/CURIE">CURIE</a>-like IRIs (i.e. an IRI with a short
@@ -32,4 +34,17 @@ public interface NamespaceConverter {
     String toCURIE(String iri);
 
     String toIRI(String curie);
+
+    NamespaceConverter CTX =
+            new NamespaceConverter() {
+                @Override
+                public String toCURIE(String iri) {
+                    return TLC.get(NamespaceConverter.class).toCURIE(iri);
+                }
+
+                @Override
+                public String toIRI(String curie) {
+                    return TLC.get(NamespaceConverter.class).toIRI(curie);
+                }
+            };
 }

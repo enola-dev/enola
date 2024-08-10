@@ -1,0 +1,18 @@
+
+# TODO Remove this from here, and load greeting2.ttl & greeting3.ttl in RosettaTest
+
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/>.
+@prefix :       <https://example.org/>.
+
+:Salutation a rdfs:Class;
+  enola:emoji "👋".
+
+:greeting3 a :Salutation;
+  :message "hello, world";
+  :object :world.
+
+:world
+  enola:wikipedia "https://en.wikipedia.org/wiki/Earth";
+  schema:image "https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg".

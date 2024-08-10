@@ -63,6 +63,7 @@ junit_tests(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/protobuf:test_java_proto",
         "//java/dev/enola/common/yamljson",

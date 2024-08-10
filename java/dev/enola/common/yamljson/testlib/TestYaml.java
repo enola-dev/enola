@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.yamljson.test;
+package dev.enola.common.yamljson.testlib;
 
 import com.google.common.net.MediaType;
 import com.google.common.truth.Truth;

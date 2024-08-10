@@ -45,11 +45,18 @@ public interface PredicatesObjects {
      * The Map's key is the IRI of a predicate, and the value is as would be returned by {@link
      * #get(String)}.
      */
+    @Deprecated // TODO Re-think API... I would like to avoid exposing Object - can we remove this
+    // method?
     Map<String, Object> properties();
 
     /** IRIs of the Predicates of this Thing. */
     // TODO Reconsider if this method is really required? Why not just #properties().keySet()?
     Set<String> predicateIRIs();
+
+    default boolean isLink(String predicateIRI) {
+        var value = get(predicateIRI);
+        return value instanceof URI || value instanceof Link;
+    }
 
     /**
      * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype
@@ -59,6 +66,7 @@ public interface PredicatesObjects {
      */
     @Nullable String datatype(String predicateIRI);
 
+    @Deprecated // TODO Is this really useful? In which use case scenario? Remove...
     Map<String, String> datatypes();
 
     @Deprecated // TODO Remove once record Literal is gone

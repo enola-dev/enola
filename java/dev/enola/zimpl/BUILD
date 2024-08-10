@@ -40,6 +40,7 @@ java_binary(
     ],
 )
 
+# TODO Use load("//tools/bazel:junit.bzl", "junit_tests")
 java_test(
     name = "EnolaTest",
     size = "small",

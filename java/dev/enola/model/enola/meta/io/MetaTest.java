@@ -20,7 +20,7 @@ package dev.enola.model.enola.meta.io;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.yamljson.test.TestYaml;
+import dev.enola.common.yamljson.testlib.TestYaml;
 import dev.enola.model.enola.meta.Schema;
 
 import org.junit.Test;

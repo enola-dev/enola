@@ -49,7 +49,7 @@ junit_tests(
     deps = [
         ":model",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/yamljson/test",
+        "//java/dev/enola/common/yamljson/testlib",
         "//java/dev/enola/thing:thing_java",
         "//models",
         "//test",
