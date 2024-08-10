@@ -38,7 +38,8 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
-                        new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
+                        new Metadata(
+                                "https://example.org/greeting42", "", "", "", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -54,6 +55,8 @@ public class MarkdownLinkWriterTest {
                 .writeMarkdownLink(
                         new Metadata(
                                 "https://example.org/greeting42",
+                                "",
+                                "",
                                 "",
                                 "ex:greeting42",
                                 "greeting42",
@@ -74,6 +77,8 @@ public class MarkdownLinkWriterTest {
                         new Metadata(
                                 "https://example.org/greeting42",
                                 "",
+                                "",
+                                "",
                                 "ex:greeting42",
                                 "Da Greeting! ;)",
                                 ""),
@@ -91,7 +96,8 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
-                        new Metadata("https://unknown.org/whatever", "", "", "whatever", ""),
+                        new Metadata(
+                                "https://unknown.org/whatever", "", "", "", "", "whatever", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -105,7 +111,7 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
-                        new Metadata("https://enola.dev/emoji", "", "", "emoji", ""),
+                        new Metadata("https://enola.dev/emoji", "", "", "", "", "emoji", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),
@@ -120,7 +126,8 @@ public class MarkdownLinkWriterTest {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
-                        new Metadata("https://example.org/greeting42", "", "", "greeting42", ""),
+                        new Metadata(
+                                "https://example.org/greeting42", "", "", "", "", "greeting42", ""),
                         sb,
                         URI.create("file:///out/greeting.md"),
                         URI.create("file:///out/"),

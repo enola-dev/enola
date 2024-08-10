@@ -30,6 +30,10 @@ import java.util.Comparator;
  * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon or something
  *     like that; or an 😃 Emoji!
  *     <p>Always returns something (never null), but may be empty String.
+ * @param imageURL URL (not HTML) of an image for the IRI, but never the 😃 Emoji.
+ *     <p>Always returns something (never null), but may be empty String.
+ * @param emoji An 😃 Emoji for the IRI, as String (not URL or HTML).
+ *     <p>Always returns something (never null), but may be empty String.
  * @param curie An IRI converted to a "CURIE" (e.g. rdfs:Class), if available.
  *     <p>Always returns something (never null), but may be empty String if no suitable CURIE could
  *     be determined.
@@ -42,7 +46,13 @@ import java.util.Comparator;
 @Immutable
 // TODO Metadata implements Thing!
 public record Metadata(
-        String iri, String imageHTML, String curie, String label, String descriptionHTML) {
+        String iri,
+        String imageHTML,
+        String imageURL,
+        String emoji,
+        String curie,
+        String label,
+        String descriptionHTML) {
 
     public static final Comparator<Metadata> IRI_Comparator =
             (o1, o2) ->
@@ -50,9 +60,17 @@ public record Metadata(
                             .compare(o1.iri, o2.iri);
 
     public Metadata(
-            String iri, String imageHTML, String curie, String label, String descriptionHTML) {
+            String iri,
+            String imageHTML,
+            String imageURL,
+            String emoji,
+            String curie,
+            String label,
+            String descriptionHTML) {
         this.iri = requireNonEmpty(iri, "iri", iri);
         this.imageHTML = requireNonNull(imageHTML, () -> "imageHTML of " + iri).trim();
+        this.imageURL = requireNonNull(imageURL, () -> "imageURL of " + iri).trim();
+        this.emoji = requireNonNull(emoji, () -> "emoji of " + iri).trim();
         this.curie = requireNonNull(curie, () -> "curie of " + iri);
         this.label = requireNonEmpty(label, "label", iri);
         this.descriptionHTML =

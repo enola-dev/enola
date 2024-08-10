@@ -15,4 +15,4 @@
 
 :world
   enola:wikipedia "https://en.wikipedia.org/wiki/Earth";
-  schema:image "https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg".
+  schema:image "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg".

@@ -15,9 +15,9 @@ digraph {
   "https://example.org/greeting3" -> "classpath:/graphviz.ttl" [label="enola:origin"]
 
   "https://example.org/world" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-    <TR><TD COLSPAN="2"><img src="https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg" style="max-height: 1em;">ex:world</TD></TR>
+    <TR><TD COLSPAN="2">ex:world</TD></TR>
     <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.org/wiki/Earth</TD></TR>
-    <TR><TD ALIGN="left">schema:image</TD><TD>https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg</TD></TR>
+    <TR><TD ALIGN="left">schema:image</TD><TD>https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg</TD></TR>
   </TABLE>>]
   "https://example.org/world" -> "classpath:/graphviz.ttl" [label="enola:origin"]
 
