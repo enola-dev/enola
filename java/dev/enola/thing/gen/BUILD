@@ -27,13 +27,17 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
+        "//java/dev/enola/common/context",
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/tree",
         "//java/dev/enola/data",
         "//java/dev/enola/rdf",
         "//java/dev/enola/thing:thing_java",
+        # TODO Remove Proto dependency, switch to pure Java API
         "//java/dev/enola/thing:thing_java_proto",
+        "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_errorprone_error_prone_type_annotations",
         "@maven//:com_google_guava_guava",

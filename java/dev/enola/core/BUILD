@@ -200,8 +200,10 @@ junit_tests(
         # "//connectors/demo",
         # "//connectors/demo:demo_java_proto",
         "//java/dev/enola/common/concurrent",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//java/dev/enola/core",
@@ -210,6 +212,7 @@ junit_tests(
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/rdf",
+        "//java/dev/enola/thing/gen",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//test",

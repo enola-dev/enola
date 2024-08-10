@@ -16,6 +16,6 @@
  * limitations under the License.
  */
 @NullMarked
-package dev.enola.common.yamljson.test;
+package dev.enola.thing.gen.graphviz;
 
 import org.jspecify.annotations.NullMarked;

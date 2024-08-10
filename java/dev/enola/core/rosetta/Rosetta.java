@@ -20,7 +20,9 @@ package dev.enola.core.rosetta;
 import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
@@ -33,13 +35,19 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.Datatypes;
 import dev.enola.rdf.RdfResourceConverter;
+import dev.enola.thing.ThingMetadataProvider;
+import dev.enola.thing.gen.graphviz.GraphvizGenerator;
+import dev.enola.thing.gen.graphviz.GraphvizResourceConverter;
+import dev.enola.thing.repo.ThingProvider;
 
 import java.io.IOException;
 
 /**
  * <a href="https://en.wikipedia.org/wiki/Rosetta_Stone">Rosetta Stone</a> for converting between
- * different model resource formats.
+ * different model resource and other formats.
  */
 public class Rosetta implements ResourceConverter {
 
@@ -75,8 +83,11 @@ public class Rosetta implements ResourceConverter {
             new MessageResourceConverter(protoIO, DESCRIPTOR_PROVIDER);
 
     private final ResourceConverterChain resourceConverterChain;
+    private final ResourceProvider rp;
 
     public Rosetta(ResourceProvider rp) {
+        this.rp = rp;
+        var tmp = new ThingMetadataProvider(ThingProvider.CTX, NamespaceConverter.CTX);
         this.resourceConverterChain =
                 new ResourceConverterChain(
                         ImmutableList.of(
@@ -84,19 +95,25 @@ public class Rosetta implements ResourceConverter {
                                 new RdfResourceConverter(rp),
                                 messageResourceConverter,
                                 new YamlJsonResourceConverter(),
+                                new GraphvizResourceConverter(new GraphvizGenerator(tmp)),
                                 new CharResourceConverter()));
     }
 
     @Override
     public boolean convertInto(ReadableResource from, WritableResource into)
             throws ConversionException, IOException {
-        if (!resourceConverterChain.convertInto(from, into)) {
-            throw new ConversionException(
-                    "No Converter (registered on the Chain) accepted to transform from "
-                            + from
-                            + " into "
-                            + into);
+        try (var ctx = TLC.open()) {
+            ctx.push(ResourceProvider.class, rp);
+            if (ctx.optional(DatatypeRepository.class).isEmpty())
+                ctx.push(DatatypeRepository.class, Datatypes.DTR);
+            if (!resourceConverterChain.convertInto(from, into)) {
+                throw new ConversionException(
+                        "No Converter (registered on the Chain) accepted to transform from "
+                                + from
+                                + " into "
+                                + into);
+            }
+            return true;
         }
-        return true;
     }
 }

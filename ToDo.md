@@ -20,6 +20,8 @@
 
 ## High Priority (Next Features)
 
+1. Merge this with [`ToDo.yaml`](ToDo.yaml)
+
 1. Support top-level `namespace: "demo"` in `docs/use/library/model.textproto` and rm others
 
 ### UI

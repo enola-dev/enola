@@ -19,6 +19,7 @@ package dev.enola.cli;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
@@ -36,7 +37,6 @@ import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.datatype.Datatypes;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
@@ -99,6 +99,11 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 DatatypeRepository dtr = Datatypes.DTR;
                 ctx.push(DatatypeRepository.class, dtr);
 
+                // TODO This must be configurable & dynamic...
+                var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+                var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+                ctx.push(NamespaceConverter.class, namespaceConverter);
+
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
 
                 // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
@@ -160,15 +165,9 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
     // TODO Move this to class EnolaProvider?
     protected MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
-        // TODO look up in global repository!
-        var datatypeRepository = new DatatypeRepositoryBuilder().build();
-
-        // TODO This must be configurable & dynamic...
-        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
-        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
-
         return new ThingMetadataProvider(
-                new ThingProviderAdapter(thingProvider, datatypeRepository), namespaceConverter);
+                new ThingProviderAdapter(thingProvider, DatatypeRepository.CTX),
+                NamespaceConverter.CTX);
     }
 
     // TODO Pass only the EnolaServiceBlockingStub through, remove the EntityKindRepository from

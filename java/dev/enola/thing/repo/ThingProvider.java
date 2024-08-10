@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.repo;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.Thing;
@@ -36,13 +37,16 @@ import java.io.UncheckedIOException;
  *
  * <p>See {@link ProtoThingProvider} for a Proto Thing variant (this is for the Java Thing).
  */
+@FunctionalInterface
 public interface ThingProvider extends ProviderFromIRI<Thing> {
+
+    ThingProvider CTX = iri -> TLC.get(ThingProvider.class).get(iri);
 
     /**
      * Get the Thing.
      *
      * @param iri an IRI
-     * @return a Thing, never null; but may be an empty Thing for an unknown IRI
+     * @return a Thing [TODO: never null; but may be an empty Thing for an unknown IRI]
      * @throws IOException if there was something at that IRI, but it could not be read
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */

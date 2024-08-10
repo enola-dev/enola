@@ -19,8 +19,8 @@ package dev.enola.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.rdf.ModelSubject.assertThat;
-import static dev.enola.rdf.ResourceSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.*;

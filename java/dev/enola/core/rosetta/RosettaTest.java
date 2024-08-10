@@ -22,15 +22,25 @@ import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 
+import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
+import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.rdf.RdfMediaTypes;
+import dev.enola.thing.Thing;
+import dev.enola.thing.gen.graphviz.GraphvizMediaType;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ThingMediaTypes;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingProvider;
 
 import org.junit.Test;
 
@@ -86,7 +96,7 @@ public class RosettaTest {
                          'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}
                         """,
                         YAML_UTF_8);
-        assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
+        assertThat(out).hasCharsEqualTo(expectedOut);
     }
 
     @Test
@@ -162,5 +172,30 @@ public class RosettaTest {
 
         assertThat(out.byteSource().size()).isGreaterThan(350);
         assertThat(out.charSource().read()).contains("firstName> \"Salvador\"");
+    }
+
+    @Test
+    public void testGraphviz() throws Exception {
+        var in = rp.get("classpath:/graphviz.ttl");
+        var out = new MemoryResource(GraphvizMediaType.GV);
+
+        try (var ctx = TLC.open()) {
+            // This tests that StackedThingProvider in GraphvizGenerator works;
+            // if it did not "shadow", then we would have an empty Salutation.
+            assertThat(ctx.optional(ThingProvider.class)).isEmpty();
+            Thing rdfsClass =
+                    ImmutableThing.builder().iri("https://example.org/Salutation").build();
+            var tp = new ThingMemoryRepositoryROBuilder().store(rdfsClass).build();
+            ctx.push(ThingProvider.class, tp);
+
+            var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+            var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+            ctx.push(NamespaceConverter.class, namespaceConverter);
+
+            rosetta.convertInto(in, out);
+        }
+
+        var expectedOut = rp.get("classpath:/graphviz.expected.gv");
+        assertThat(out).hasCharsEqualTo(expectedOut);
     }
 }

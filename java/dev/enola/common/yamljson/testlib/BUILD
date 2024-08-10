@@ -18,20 +18,18 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "datatype",
+    name = "testlib",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/context",
-        "//java/dev/enola/common/convert",
-        "//java/dev/enola/data",
-        "@maven//:com_google_errorprone_error_prone_annotations",
+        "//java/dev/enola/common/io",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_truth",
         "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_yaml_snakeyaml",
     ],
 )
 
@@ -39,7 +37,6 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     deps = [
-        ":datatype",
-        "//java/dev/enola/common/convert",
+        ":testlib",
     ],
 )

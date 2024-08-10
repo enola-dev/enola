@@ -1,0 +1,24 @@
+digraph {
+  "https://example.org/Salutation" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">👋ex:Salutation</TD></TR>
+    <TR><TD ALIGN="left">enola:emoji</TD><TD>👋</TD></TR>
+  </TABLE>>]
+  "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [label="rdf:type"]
+  "https://example.org/Salutation" -> "classpath:/graphviz.ttl" [label="enola:origin"]
+
+  "https://example.org/greeting3" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
+    <TR><TD ALIGN="left">ex:message</TD><TD>hello, world</TD></TR>
+  </TABLE>>]
+  "https://example.org/greeting3" -> "https://example.org/Salutation" [label="rdf:type"]
+  "https://example.org/greeting3" -> "https://example.org/world" [label="ex:object"]
+  "https://example.org/greeting3" -> "classpath:/graphviz.ttl" [label="enola:origin"]
+
+  "https://example.org/world" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2"><img src="https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg" style="max-height: 1em;">ex:world</TD></TR>
+    <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.org/wiki/Earth</TD></TR>
+    <TR><TD ALIGN="left">schema:image</TD><TD>https://en.wikipedia.org/wiki/Earth#/media/File:The_Blue_Marble_(remastered).jpg</TD></TR>
+  </TABLE>>]
+  "https://example.org/world" -> "classpath:/graphviz.ttl" [label="enola:origin"]
+
+}

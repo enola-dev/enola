@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 class GraphvizGenerator {
+
+    // NB: This is the (old) GraphvizGenerator for the *OLD* (EntityKind) model;
+    // the (new) GraphvizGenerator for Things is in dev.enola.thing.gen.graphviz!
+    // TODO Remove this, as part of the overall EntityKind etc. clean-up.
+
     static void renderGraphviz(Iterable<EntityKind> kinds, Appendable md) throws IOException {
         md.append("```dot\n");
         md.append("digraph {\n");

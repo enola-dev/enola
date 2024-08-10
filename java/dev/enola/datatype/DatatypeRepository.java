@@ -17,11 +17,32 @@
  */
 package dev.enola.datatype;
 
+import dev.enola.common.context.TLC;
 import dev.enola.data.Repository;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 
 public interface DatatypeRepository extends Repository<Datatype<?>> {
 
     Optional<Datatype<?>> match(String text);
+
+    DatatypeRepository CTX =
+            new DatatypeRepository() {
+                @Override
+                public Optional<Datatype<?>> match(String text) {
+                    return TLC.get(DatatypeRepository.class).match(text);
+                }
+
+                @Override
+                public Iterable<String> listIRI() {
+                    return TLC.get(DatatypeRepository.class).listIRI();
+                }
+
+                @Override
+                public @Nullable Datatype<?> get(String iri) {
+                    return TLC.get(DatatypeRepository.class).get(iri);
+                }
+            };
 }

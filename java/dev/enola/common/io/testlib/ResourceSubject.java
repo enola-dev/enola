@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.common.io.testlib;
 
 import static com.google.common.truth.Truth.assertAbout;
 
@@ -28,8 +28,6 @@ import dev.enola.common.yamljson.JSON;
 import java.io.IOException;
 
 public final class ResourceSubject extends Subject {
-
-    // TODO Move this class to a //common/testlib
 
     public static ResourceSubject assertThat(ReadableResource actual) {
         return assertAbout(resources()).that(actual);

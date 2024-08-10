@@ -1,0 +1,128 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+label: Enola.dev ToDo
+type: https://enola.dev/todo/List
+items:
+  - GraphViz Diagrams: &graphviz
+      owner: vorburger
+      target: 2024-08-11
+      status: WIP
+      tags: [visualization, ui, docgen, rosetta]
+      items:
+        - ? Rosetta `*.gv` GraphViz
+        - HTML UI GraphViz:
+            links: ["https://visjs.github.io/vis-network/docs/network/#importDot"]
+        - ? Document GraphViz on https://docs.enola.dev/use/rosetta/ via file:docs/use/rosetta/index.md
+        - ? Document GraphViz in Tutorial via "Graphs" section
+        - ? Use GraphViz to put big graph on https://docs.enola.dev/models/
+        - ? Use shorter IDs in Graphviz *.gv; generated numerically ad-hoc, not GUID
+
+  - Re-design Thing Java API:
+      description: Factor out is/Not/Link from GraphvizGenerator; re-think API.
+
+  - Timeline Diagrams:
+      tags: [visualization, ui, docgen, rosetta]
+      depends: [*graphviz]
+
+  - Meta YAML reader:
+      status: TBD
+
+  - Inference with LLM:
+      description: What files are in directory xyz? Is abc under xyz, even indirectly?
+      tags: [ml]
+
+  - Document UI in Tutorial:
+      tags: [doc]
+
+  - Clean Up all old model related code & doc:
+      tags: [clean, doc]
+
+  - ? Queries with SparQL
+
+  - ? Persistent Store
+
+  - Kubernetes Model:
+      target: 2024-09-15
+
+  - Meta Java Code Generator: &metaJavaCodegen
+
+  - Remove (?) LinkML:
+      tags: [clean]
+
+  - Markdown Model: &modelMarkdown
+      links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
+      depends: [*metaJavaCodegen]
+
+  - Implement ToDo Model: &modelToDo
+      links: https://github.com/enola-dev/dora/tree/main/TODO
+      description: Make this very file (ToDo.yaml) `--load`-able, and visualizable as Graph, and DocGen-able as MD.
+      tags: [model]
+      items:
+        - ? Write `todo.esch.yaml` & `todo-context.jsonld` in `models/enola.dev/todo/`
+
+  - Validation:
+      depends: [*metaJavaCodegen]
+
+  - ? Merge this `ToDo.yaml` with [`ToDo.md`](ToDo.md)
+
+  - Make Rosetta --load multiple inputs instead of --in: &rosettaLoad
+
+  - Unify DocGen into Rosetta:
+      tags: [ui, docgen, rosetta]
+      depends: [*rosettaLoad]
+
+  - Unify UI with Rosetta:
+      tags: [ui, rosetta]
+
+  - Replace TLC for Classes with @Inject DI:
+      description:
+        With [Dagger](https://dagger.dev)? But how suitable is it for different *Test VS e.g. CLI set-up? (Keep TLC for
+        per-request Locale, TZ, etc.)
+      tags: [ui, rosetta]
+
+  - JetBrains Gateway with Dev Container:
+      links: https://www.jetbrains.com/help/idea/connect-to-devcontainer.html
+      tags: [contributors, doc]
+
+  - Document Enola Things YAML/JSON/HTML (?) Format: &docRosettaThingsYAML
+      description: java:RosettaTest#testTurtleToThings should be documented in file:docs/use/rosetta/index.md
+      tags: [doc]
+
+  - Close all [open old PRs](https://github.com/enola-dev/enola/pulls):
+      tags: [contributors]
+
+  - Gephi/SigmaJS Network Graph Format:
+      depends: [*graphviz]
+      tags: [visualization, ui, docgen, rosetta]
+      links:
+        - https://www.sigmajs.org
+        - https://docs.enola.dev/concepts/other/#visualization
+        - https://visjs.github.io/vis-network/docs/network/#importGephi
+
+  - Graphviz in Java fully integrated into Enola binary:
+      links:
+        - https://github.com/jamisonjiang/graph-support
+        - https://github.com/nidi3/graphviz-java
+
+tags:
+  - clean
+  - doc
+  - docgen
+  - ui
+  - rosetta
+  - model
+  - visualization
