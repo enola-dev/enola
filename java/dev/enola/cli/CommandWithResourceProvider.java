@@ -19,10 +19,19 @@ package dev.enola.cli;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.context.Context;
 import dev.enola.common.function.CheckedRunnable;
+import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
+import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.*;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.datatype.Datatypes;
 
 import picocli.CommandLine;
+
+import java.nio.file.Paths;
 
 public abstract class CommandWithResourceProvider implements CheckedRunnable {
 
@@ -83,5 +92,19 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
         if (test) builder.add(new TestResource.Provider());
         if (classpath) builder.add(new ClasspathResource.Provider());
         rp = new ResourceProviders(builder.build());
+    }
+
+    protected void setup(Context ctx) {
+        ctx.push(ResourceProvider.class, rp);
+        ctx.push(URIs.ContextKeys.BASE, Paths.get("").toUri());
+
+        // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
+        DatatypeRepository dtr = Datatypes.DTR;
+        ctx.push(DatatypeRepository.class, dtr);
+
+        // TODO This must be configurable & dynamic...
+        var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
+        ctx.push(NamespaceConverter.class, namespaceConverter);
     }
 }

@@ -19,17 +19,13 @@ type: https://enola.dev/todo/List
 items:
   - GraphViz Diagrams: &graphviz
       owner: vorburger
-      target: 2024-08-11
+      done: 2024-08-10
       status: WIP
       tags: [visualization, ui, docgen, rosetta]
-      items:
-        - ? Rosetta `*.gv` GraphViz
-        - HTML UI GraphViz:
-            links: ["https://visjs.github.io/vis-network/docs/network/#importDot"]
-        - ? Document GraphViz on https://docs.enola.dev/use/rosetta/ via file:docs/use/rosetta/index.md
-        - ? Document GraphViz in Tutorial via "Graphs" section
-        - ? Use GraphViz to put big graph on https://docs.enola.dev/models/
-        - ? Use shorter IDs in Graphviz *.gv; generated numerically ad-hoc, not GUID
+
+  - GraphViz in HTML Web UI, via VisJS:
+      links: ["https://visjs.github.io/vis-network/docs/network/#importDot"]
+      target: 2024-08-11
 
   - Re-design Thing Java API:
       description: Factor out is/Not/Link from GraphvizGenerator; re-think API.

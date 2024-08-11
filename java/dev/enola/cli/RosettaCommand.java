@@ -20,14 +20,12 @@ package dev.enola.cli;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.setProtoMessageFQN;
 
 import dev.enola.common.context.TLC;
-import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.DelegatingResource;
 import dev.enola.core.rosetta.Rosetta;
 
 import picocli.CommandLine;
 
 import java.net.URI;
-import java.nio.file.Paths;
 
 @CommandLine.Command(
         name = "rosetta",
@@ -62,10 +60,10 @@ public class RosettaCommand extends CommandWithResourceProvider {
     @Override
     public void run() throws Exception {
         super.run();
+        try (var ctx = TLC.open()) {
+            setup(ctx);
 
-        try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             rosetta = new Rosetta(rp);
-
             var inResource = rp.getReadableResource(in);
             var outResource = rp.getWritableResource(out);
 

@@ -60,6 +60,9 @@ max_line_length = unset
 [*.ttls]
 max_line_length = 140
 
+[*.gv]
+max_line_length = unset
+
 [LICENSE]
 indent_size = unset
 

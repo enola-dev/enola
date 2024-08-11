@@ -42,7 +42,6 @@ public class DetectCommand extends CommandWithResourceProvider {
     @Override
     public void run() throws Exception {
         super.run();
-
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var resource = rp.getResource(new URI(iri));
             var mediaType =
