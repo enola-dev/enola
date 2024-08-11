@@ -41,8 +41,8 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
 
     // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
 
-    // TODO ex:object /world World Earth Image <<IMG>> ?
     // TODO Lists of Links
+    // TODO Link Datatypes, with ports
     // TODO Mouseover full Thing & predicate IRI
     // TODO Thing IRI as direct URL Link
     // TODO wikipedia <https://en.wikipedia.org/wiki/Earth>
@@ -126,6 +126,16 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
             out.append("</TD><TD>");
             var value = thing.getString(p);
             if (value != null) out.append(html(value));
+            else {
+                var iterable = thing.get(p, Iterable.class);
+                if (iterable != null) {
+                    for (var element : iterable) {
+                        // TODO Convert using datatype
+                        out.append(html(element.toString()));
+                        out.append("<BR/>");
+                    }
+                }
+            }
             out.append("</TD></TR>\n");
         }
         out.append("  </TABLE>");

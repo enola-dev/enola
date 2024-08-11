@@ -1,6 +1,4 @@
 
-# TODO Remove this from here, and load greeting2.ttl & greeting3.ttl in RosettaTest
-
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix enola:  <https://enola.dev/>.
 @prefix schema: <https://schema.org/>.
@@ -11,8 +9,11 @@
 
 :greeting3 a :Salutation;
   :message "hello, world > 42"; # The '>' needs escaping in GV HTML-like Labels
+  :created "2024-08-11T01:50:56.737412406Z"^^enola:FileTime;
+  :firstName "Salvador", "Domingo", "Felipe", "Jacinto";
   :object :world.
 
 :world
   enola:wikipedia "https://en.wikipedia.org/wiki/Earth";
-  schema:image "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg".
+  schema:image "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg";
+  :population "18446744073709551615"^^enola:UnsignedLong.
