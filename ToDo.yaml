@@ -28,6 +28,7 @@ items:
       status: DONE
 
   - Hierarchy API: &hierarchyAPI
+      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
 
   - GEXF: &gexf
       target: 2024-08-11
