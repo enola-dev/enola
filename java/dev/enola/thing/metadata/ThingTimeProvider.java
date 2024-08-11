@@ -32,6 +32,9 @@ public class ThingTimeProvider {
     /**
      * Provides the (non-overlapping) {@link Interval}s (plural!) during which the Thing at this IRI
      * "exists".
+     *
+     * <p>This always returns at least 1 Interval, never none (or null) - but it may well be the
+     * {@link Interval#ALL} if the Thing has no temporal metadata.
      */
     public Iterable<Interval> existance(Thing thing) {
         // TODO The following is intentionally hard-coded initially, but the thinking is that

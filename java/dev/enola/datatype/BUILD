@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",

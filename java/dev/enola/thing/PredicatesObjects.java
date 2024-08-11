@@ -55,6 +55,9 @@ public interface PredicatesObjects {
     // TODO Reconsider if this method is really required? Why not just #properties().keySet()?
     Set<String> predicateIRIs();
 
+    // TODO These is*() methods could be replaced with a Visitor - but how-to for nested Structs?!
+    // Look into e.g. how EMF does Visitors...
+
     default boolean isLink(String predicateIRI) {
         var value = get(predicateIRI);
         return value instanceof URI || value instanceof Link;

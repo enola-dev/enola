@@ -35,11 +35,11 @@ import java.util.Map;
 @AutoService(MediaTypeProvider.class)
 public class GexfMediaType implements MediaTypeProvider {
 
-    public static final MediaType GV =
+    public static final MediaType GEXF =
             MediaType.create("application", "gexf+xml").withCharset(StandardCharsets.UTF_8);
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("gexf", GV);
+        return ImmutableMap.of("gexf", GEXF);
     }
 }

@@ -17,10 +17,13 @@
  */
 package dev.enola.thing.io;
 
+import com.google.common.collect.Iterables;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.data.Store;
 import dev.enola.thing.Thing;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,23 +48,42 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
     public boolean convertInto(Stream<URI> stream, Store<?, Thing> store)
             throws ConversionException, IOException {
 
-        stream.forEach(resource -> load(resource, store));
+        stream.forEach(resource -> loadCatching(resource, store));
+        // TODO Should check if at least one URI successfully loaded anything
         return true;
     }
 
-    private void load(URI uri, Store<?, Thing> store) {
-        LOG.info("Loading {}...", uri);
+    public boolean loadCatching(URI uri, Store<?, Thing> store) {
         try {
-            var things = uriIntoThingConverters.convert(uri);
-            things.forEach(
-                    thingBuilder -> {
-                        var thing = thingBuilder.build();
-                        store.merge(thing);
-                    });
-
+            return load(uri, store);
         } catch (Exception e) {
             LOG.error("Failed to load: {}", uri, e);
             // Don't rethrow, let loading other resources continue
+            return false;
         }
+    }
+
+    public boolean load(URI uri, Store<?, Thing> store) {
+        LOG.info("Loading {}...", uri);
+        var things = uriIntoThingConverters.convert(uri);
+        if (Iterables.isEmpty(things)) return false;
+        things.forEach(
+                thingBuilder -> {
+                    var thing = thingBuilder.build();
+                    store.merge(thing);
+                });
+        return true;
+    }
+
+    public Iterable<Thing> loadThings(URI uri) {
+        var store = new ThingMemoryRepositoryROBuilder();
+        load(uri, store);
+        return store.build().list();
+    }
+
+    public Iterable<Thing> loadAtLeastOneThing(URI uri) {
+        var things = loadThings(uri);
+        if (Iterables.isEmpty(things)) throw new ConversionException("Nothing loaded from: " + uri);
+        return things;
     }
 }

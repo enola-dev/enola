@@ -23,7 +23,7 @@ import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
-import dev.enola.thing.repo.ThingRepositoryRW;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.junit.Test;
 
@@ -48,7 +48,7 @@ public class LinksValidatorTest {
                     .set("http://example.com/property1", "hi", "http://example.com/MISSING")
                     .build();
 
-    ThingRepositoryRW repo = new ThingMemoryRepositoryRW();
+    ThingRepositoryStore repo = new ThingMemoryRepositoryRW();
     TestCollector collector = new TestCollector();
     Validators v = new Validators(new LinksValidator(repo));
 

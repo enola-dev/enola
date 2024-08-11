@@ -22,12 +22,10 @@ import com.google.common.html.HtmlEscapers;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.ConverterIntoAppendable;
-import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
-import dev.enola.common.io.resource.WritableResource;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
+import dev.enola.thing.gen.ThingsIntoAppendableConverter;
 import dev.enola.thing.repo.StackedThingProvider;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -35,7 +33,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 
-public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing>> {
+public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
@@ -63,13 +61,6 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
         this.metadataProvider = metadataProvider;
     }
 
-    public void convertIntoOrThrow(Iterable<Thing> things, WritableResource into)
-            throws ConversionException, IOException {
-        try (var out = into.charSink().openBufferedStream()) {
-            convertIntoOrThrow(things, out);
-        }
-    }
-
     @Override
     public boolean convertInto(Iterable<Thing> from, Appendable out)
             throws ConversionException, IOException {
@@ -80,10 +71,6 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
         }
         out.append("}\n");
         return true;
-    }
-
-    private String label(Metadata metadata) {
-        return metadata.emoji() + metadata.label();
     }
 
     private void printThing(Thing thing, Appendable out) throws IOException {
@@ -101,7 +88,7 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
             out.append("\" -> \"");
             out.append(thing.getString(p));
             out.append("\" [label=\"");
-            out.append(label(metadataProvider.get(p)));
+            out.append(html(label(metadataProvider.get(p))));
             out.append("\"]\n");
         }
         out.append('\n');

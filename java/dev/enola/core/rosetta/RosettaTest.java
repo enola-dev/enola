@@ -41,6 +41,7 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.rdf.RdfMediaTypes;
 import dev.enola.thing.Thing;
+import dev.enola.thing.gen.gexf.GexfMediaType;
 import dev.enola.thing.gen.graphviz.GraphvizMediaType;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ThingMediaTypes;
@@ -186,10 +187,8 @@ public class RosettaTest {
     }
 
     @Test
-    public void testGraphviz() throws Exception {
-        var in = rp.get("classpath:/graphviz.ttl");
-        var out = new MemoryResource(GraphvizMediaType.GV);
-
+    public void testGraphvizAndGexf() throws Exception {
+        var in = rp.get("classpath:/graph.ttl");
         try (var ctx = TLC.open()) {
             // This tests that StackedThingProvider in GraphvizGenerator works;
             // if it did not "shadow", then we would have an empty Salutation.
@@ -203,10 +202,14 @@ public class RosettaTest {
             var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
             ctx.push(NamespaceConverter.class, namespaceConverter);
 
-            rosetta.convertInto(in, out);
-        }
+            var gexf = new MemoryResource(GexfMediaType.GEXF);
+            rosetta.convertInto(in, gexf);
+            assertThat(gexf)
+                    .hasCharsEqualTo(rp.get("classpath:/graph.expected.gexf.xml?charset=UTF-8"));
 
-        var expectedOut = rp.get("classpath:/graphviz.expected.gv");
-        assertThat(out).hasCharsEqualTo(expectedOut);
+            var gv = new MemoryResource(GraphvizMediaType.GV);
+            rosetta.convertInto(in, gv);
+            assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected.gv"));
+        }
     }
 }
