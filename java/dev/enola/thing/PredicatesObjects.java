@@ -19,6 +19,9 @@ package dev.enola.thing;
 
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
+import dev.enola.common.context.TLC;
+import dev.enola.datatype.DatatypeRepository;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
@@ -112,9 +115,17 @@ public interface PredicatesObjects {
         if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
         try {
-            // TODO Conversion should use Datatype... but how to look one up?! GenJavaThing has..
-            // NB: Do NOT e.g. throw new IllegalArgumentException if conversion !isPresent()
-            return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+            var dtIRI = datatypeLEGACY(predicateIRI);
+            // TODO Find Datatype via object Java class lookup in DatatypeRepository
+            if (dtIRI == null)
+                // if (klass.equals(String.class)) return Optional.of((T) object.toString());
+                /*else*/ return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+            var dtr = TLC.get(DatatypeRepository.class);
+            var dt = dtr.get(dtIRI);
+            // TODO As above, don't do this anymore, eventually
+            if (dt == null) return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+            return dt.stringConverter().convertToType(object, klass);
+
         } catch (IOException e) {
             // TODO Get rid of throws IOException and remove this.
             // Or better log any exceptions and return just Optional.empty()?

@@ -19,15 +19,20 @@ package dev.enola.thing.java.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.datatype.Datatypes.*;
 import static dev.enola.thing.java.test.TestThing.NUMBER_URI;
 
+import dev.enola.common.context.TLC;
+import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.xsd.Datatypes;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.impl.ImmutablePredicatesObjects;
 import dev.enola.thing.java.test.gen.ImmutableTestThing;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 
 public class TestThingTest {
@@ -124,12 +129,14 @@ public class TestThingTest {
 
     @Test
     public void thing_getters_asclass() {
-        assertThat(thing.get(KIRI.RDFS.LABEL, String.class)).isEqualTo("hello, world");
-        assertThat(thing.get(NUMBER_URI, Integer.class)).isEqualTo(43);
-        assertThat(ething.get(EXTRA, String.class)).isEqualTo(INSTANT.toString());
+        try (var ctx = TLC.open().push(DatatypeRepository.class, DTR)) {
+            assertThat(thing.get(KIRI.RDFS.LABEL, String.class)).isEqualTo("hello, world");
+            assertThat(thing.get(NUMBER_URI, Integer.class)).isEqualTo(43);
+            assertThat(ething.get(EXTRA, String.class)).isEqualTo(INSTANT.toString());
 
-        assertThat(thing.get("n/a", String.class)).isNull();
-        assertThat(mthing.get(NUMBER_URI, Integer.class)).isNull();
+            assertThat(thing.get("n/a", String.class)).isNull();
+            assertThat(mthing.get(NUMBER_URI, Integer.class)).isNull();
+        }
     }
 
     @Test
@@ -151,55 +158,63 @@ public class TestThingTest {
         assertThat(thing.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING.iri(),
+                        STRING.iri(),
                         NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(bthing.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING.iri(),
+                        STRING.iri(),
                         NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(dthing.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING.iri(),
+                        STRING.iri(),
                         NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(ething.datatypes())
                 .containsExactly(
                         KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING.iri(),
+                        STRING.iri(),
                         NUMBER_URI,
                         dev.enola.model.xsd.Datatypes.INT.iri(),
                         EXTRA,
                         Datatypes.DATE_TIME.iri());
 
         assertThat(mthing.datatypes())
-                .containsExactly(
-                        KIRI.RDFS.LABEL,
-                        dev.enola.datatype.Datatypes.STRING.iri(),
-                        EXTRA,
-                        Datatypes.DATE_TIME.iri());
+                .containsExactly(KIRI.RDFS.LABEL, STRING.iri(), EXTRA, Datatypes.DATE_TIME.iri());
     }
 
     @Test
     public void datatype() {
-        assertThat(thing.datatype(KIRI.RDFS.LABEL))
-                .isEqualTo(dev.enola.datatype.Datatypes.STRING.iri());
-        assertThat(bthing.datatype(KIRI.RDFS.LABEL))
-                .isEqualTo(dev.enola.datatype.Datatypes.STRING.iri());
-        assertThat(dthing.datatype(KIRI.RDFS.LABEL))
-                .isEqualTo(dev.enola.datatype.Datatypes.STRING.iri());
+        assertThat(thing.datatype(KIRI.RDFS.LABEL)).isEqualTo(STRING.iri());
+        assertThat(bthing.datatype(KIRI.RDFS.LABEL)).isEqualTo(STRING.iri());
+        assertThat(dthing.datatype(KIRI.RDFS.LABEL)).isEqualTo(STRING.iri());
 
         assertThat(thing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
         assertThat(bthing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
         assertThat(dthing.datatype(NUMBER_URI)).isEqualTo(dev.enola.model.xsd.Datatypes.INT.iri());
 
         assertThat(ething.datatype(EXTRA)).isEqualTo(Datatypes.DATE_TIME.iri());
+    }
+
+    @Test
+    public void convertFileTime() {
+        var text = "2024-08-11T00:45:47.770163738Z";
+        var iri = "https://enola.dev/files/Node/createdAt";
+        var fileTime = FileTime.from(Instant.parse(text));
+        var ftDtIRI = FILE_TIME.iri();
+
+        var thing = ImmutablePredicatesObjects.builder().set(iri, fileTime, ftDtIRI).build();
+
+        try (var ctx = TLC.open().push(DatatypeRepository.class, DTR)) {
+            var actual = thing.getString(iri);
+            assertThat(actual).isEqualTo(text);
+        }
     }
 
     @Test

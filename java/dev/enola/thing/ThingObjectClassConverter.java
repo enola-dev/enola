@@ -19,6 +19,7 @@ package dev.enola.thing;
 
 import dev.enola.common.convert.*;
 
+@Deprecated // TODO Get rid of this...
 class ThingObjectClassConverter extends ObjectClassConverterChain {
 
     static ObjectClassConverter INSTANCE = new ThingObjectClassConverter();
