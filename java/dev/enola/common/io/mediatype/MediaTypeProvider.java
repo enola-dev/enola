@@ -21,6 +21,7 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -30,7 +31,9 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
     // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
 
     /** Maps "canoncial" (primary) Media Types to a set of its "also known as alternatives". */
-    Map<MediaType, Set<MediaType>> knownTypesWithAlternatives();
+    default Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return Collections.emptyMap();
+    }
 
     /** Maps URI path extensions to a "canonical" Media Types */
     Map<String, MediaType> extensionsToTypes();
