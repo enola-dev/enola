@@ -59,6 +59,10 @@ enola:modifiedAt a rdf:Property;
   rdfs:subPropertyOf enola:timestamp;
   rdfs:domain enola:File.
 
+enola:deletedAt a rdf:Property;
+  rdfs:subPropertyOf enola:timestamp;
+  rdfs:domain enola:File.
+
 enola:Hardware a rdfs:Class;
   rdfs:comment "Parent (abstract) Class for 'hard ware', i.e. 'physical computer stuff' - you can touch this!";
   enola:wikipedia "Computer_hardware". # https://en.wikipedia.org/wiki/Computer_hardware

@@ -31,6 +31,7 @@ class Node
   properties
     createdAt: Instant
     modifiedAt: Instant
+    deletedAt: Instant
 
 🗎
 "File holds [[Data]], identified by a [[Path]] on a [[Filesystem]], with a [[MediaType]]."
