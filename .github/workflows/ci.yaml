@@ -48,11 +48,10 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
-      # https://github.com/marketplace/actions/cache-apt-packages
-      - uses: awalsh128/cache-apt-pkgs-action@a6c3917cc929dd0345bfb2d3feaf9101823370ad
-        with:
-          packages: graphviz
-          version: 1.0
+      - name: Install graphviz
+        # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
+        run: sudo apt-get install -y graphviz && dot -V
+        shell: bash
 
       - name: Cache Bazel
         uses: actions/cache@v4
@@ -125,14 +124,17 @@ jobs:
           # Keep this asdf_branch version in sync with //tools/asdf/install.bash
           asdf_branch: v0.14.0
       - name: Reshim installed ASDF tools
-        shell: bash
         run: asdf reshim
+        shell: bash
 
       - run: ./tools/test-ci/test.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
       - name: Build Docs Site
         run: ./tools/docs/build.bash
+
+      - name: pre-commit run --all-files
+        run: .venv/bin/pre-commit run --all-files
 
       # The following steps deploy site/ (using GitHub Pages)
       # to https://enola-dev.github.io = https://docs.enola.dev

@@ -20,11 +20,8 @@ package dev.enola.cli;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
-import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.FileDescriptorResource;
-import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.stream.GlobResolvers;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
@@ -37,7 +34,6 @@ import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.Datatypes;
 import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
@@ -57,7 +53,6 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
-import java.nio.file.Paths;
 
 public abstract class CommandWithModel extends CommandWithResourceProvider {
 
@@ -84,10 +79,9 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
     @Override
     public final void run() throws Exception {
+        super.run();
         try (var ctx = TLC.open()) {
-            super.run();
-            ctx.push(ResourceProvider.class, rp);
-            ctx.push(URIs.ContextKeys.BASE, Paths.get("").toUri());
+            setup(ctx);
 
             // TODO Fix design; as-is, this may stay null if --server instead of --model is used
             EntityKindRepository ekr = null;
@@ -95,15 +89,6 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
             if (group.load != null) {
-                // TODO Replace DatatypeRepository with store itself, once a Datatype is a Thing
-                DatatypeRepository dtr = Datatypes.DTR;
-                ctx.push(DatatypeRepository.class, dtr);
-
-                // TODO This must be configurable & dynamic...
-                var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
-                var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
-                ctx.push(NamespaceConverter.class, namespaceConverter);
-
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
 
                 // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags

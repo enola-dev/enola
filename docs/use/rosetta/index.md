@@ -29,9 +29,23 @@ e.g. between:
 * YAML & JSON ⇔ RDF Turtle [with JSON-LD Contexts](../json-ld/index.md)
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
 [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
-_[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats.
+_[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats
+* [Graph Diagrams](../../models/example.org/graph.md)
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
+
+## Graphviz
+
+```bash cd ../.././..
+$ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gv && dot -Tsvg -O docs/BUILT/picasso.gv
+...
+```
+
+produces this:
+
+![Graph of Painters](../../BUILT/picasso.gv.svg)
+
+[DocGen](../docgen/index.md) also generates Graphviz, see [Tutorial](../../models/example.org/graph.md).
 
 ## YAML to JSON
 

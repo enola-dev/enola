@@ -62,13 +62,12 @@ echo
 # do run on all files, even if a bit slower.
 # This prevents "cheating" and tech debt.
 #
-# PS: models/build.bash must have run already... TODO automate dependency, with Bazel?
+# PS: models/build.bash & ./tools/docs/build.bash must have run already... TODO automate dependency, with Bazel?
 if [ -z "${CI:-""}" ]; then
   echo "$ pre-commit run (locally, only changed files)"
   .venv/bin/pre-commit run
 else
-  echo "$ pre-commit run --all-files (on CI)"
-  .venv/bin/pre-commit run --all-files
+  echo "Skip running pre-commit --all-files on CI, it will run after tools/docs/build.bash Build Docs Site"
 fi
 
 tools/git/install-hooks.bash

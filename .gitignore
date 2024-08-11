@@ -32,6 +32,9 @@ docs/use/**/script
 docs/use/**/*.svg
 docs/use/**/*.output
 
+# Generated Docs
+docs/BUILT/**
+
 # Node.JS
 node_modules/
 
