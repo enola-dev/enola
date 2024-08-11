@@ -42,8 +42,8 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 
 import org.junit.Test;
