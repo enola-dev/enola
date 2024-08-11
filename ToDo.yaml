@@ -23,8 +23,25 @@ items:
       status: WIP
       tags: [visualization, ui, docgen, rosetta]
 
-  - GraphViz in HTML Web UI, via VisJS:
-      links: ["https://visjs.github.io/vis-network/docs/network/#importDot"]
+  - Time API: &timeAPI
+
+  - Hierarchy API: &hierarchyAPI
+
+  - GEXF: &gexf
+      target: 2024-08-11
+      description: "https://gexf.net equivalent of Graphviz"
+      depends: [*graphviz, *hierarchyAPI, *timeAPI]
+      tags: [visualization, ui, docgen, rosetta]
+      items:
+        - GEXF 1.3 Java API? Or just write out Text?:
+            links: https://github.com/francesco-ficarola/gexf4j
+
+  - Graphs in HTML Web UI:
+      description:
+        "The goal is to have a https://www.sigmajs.org/demo/index.html like view of
+        https://docs.enola.dev/concepts/graph/."
+      links: ["https://github.com/visjs/vis-network/issues/505#issuecomment-2282725937"]
+      depends: [*gexf]
       target: 2024-08-11
 
   - Re-design Thing Java API:
@@ -32,7 +49,7 @@ items:
 
   - Timeline Diagrams:
       tags: [visualization, ui, docgen, rosetta]
-      depends: [*graphviz]
+      depends: [*graphviz, *timeAPI]
 
   - Meta YAML reader:
       status: TBD
@@ -50,6 +67,12 @@ items:
   - ? Queries with SparQL
 
   - ? Persistent Store
+
+  - Genealogy: &genealogy
+    description:
+      Re-create https://github.com/vorburger/kingraph of [Simpsons &
+      Potters](https://github.com/vorburger/kingraph/tree/main/examples) with Enola
+    tags: [model, genealogy, helpwanted]
 
   - Kubernetes Model:
       target: 2024-09-15
@@ -88,6 +111,10 @@ items:
 
   - Unify UI with Rosetta:
       tags: [ui, rosetta]
+
+  - Marvel: &marvel
+    description: Re-create https://www.marvel-graphs.net with Enola
+    tags: [model, helpwanted]
 
   - Replace TLC for Classes with @Inject DI:
       description:

@@ -51,6 +51,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 * [SBB](https://data.sbb.ch) The Swiss trains schedule
 * [Musicbrainz's LinkedBrainz](https://wiki.musicbrainz.org/LinkedBrainz)
 * [qudt.org](https://www.qudt.org) has RDF for [UCUM OoM](https://ucum.org) units
+* [LOD Cloud](https://lod-cloud.net)
 
 #### Academic
 
@@ -97,12 +98,16 @@ Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ usi
 
 * [yEd](https://www.yworks.com) (yFiles) #commercial #sdk #freemium
 * [Graphviz](https://graphviz.org) #available
-* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #planned #ToDo
+* [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #dynamicGraph #web #active #planned #ToDo
 * [D3js.org](https://d3js.org) also has [Graphs](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf))
 * [vis.js](https://visjs.org)
-* [Mermaid](https://mermaid.js.org)
-* [PlantUML](https://plantuml.com)
-* [yuml](https://yuml.me)
+* [Cytoscape](https://cytoscape.org) #opensource #graph #desktop #[plugins](https://apps.cytoscape.org/)
+* [Cytoscape.js](https://js.cytoscape.org/) #graph #library #web
+* [Mermaid](https://mermaid.js.org) #opensource
+* [PlantUML](https://plantuml.com) #opensource
+* [GraphStream](https://graphstream-project.org) #opensource #dynamicGraph #java #swing #desktop #inactive
+* [Vega Lite](https://vega.github.io/vega-lite/) & [Vega](https://vega.github.io/vega/) #opensource
+* [yuml](https://yuml.me) #UML
 
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
@@ -112,7 +117,7 @@ Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
 Web-based:
 
-* **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** #RDF
+* **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** is #RDF #[opensource](https://github.com/LodLive/LodLive)
 * [isSemantic's RDF Visualizer](https://issemantic.net/rdf-visualizer)
 * [Triply's Yasgui](https://docs.triply.cc/yasgui-api/)
 * [Zazuko's Trifid](https://github.com/zazuko/trifid)
@@ -147,14 +152,14 @@ Enola 🕵🏾‍♀️ might not ever become a (persistent) "database" itself -
 
 Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
-* RDF4j [In-Memory](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/memory/MemoryStore.html),
+* RDF4j (formerly known as OpenRDF Sesame) [In-Memory](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/memory/MemoryStore.html),
   or [native B-Tree](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/nativerdf/NativeStore.html),
   or [LMDB](https://rdf4j.org/documentation/programming/lmdb-store/),
   or [ElasticSearch](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/elasticsearchstore/ElasticsearchStore.html) #LMDB #RDF #RDF4j
 * [Tinkerpop](https://tinkerpop.apache.org) with [SPARQL-Gremlin](https://tinkerpop.apache.org/docs/current/reference/#sparql-gremlin) (also NB [Sqlg](https://www.sqlg.org)) #opensource
 * [qEndpoint](https://github.com/the-qa-company/qEndpoint) #RDF #RDF4j #HDT #GeoSPARQL #SPARQL #opensource
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
-* [Apache Jena's TDB](https://jena.apache.org) #opensource
+* [Apache Jena's TDB](https://jena.apache.org) (Fuseki?) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
 * [Stardog](https://www.stardog.com) #freemium #commercial #GraphML? #LLM?
 * [Virtuoso](https://virtuoso.openlinksw.com) #opensource
@@ -165,6 +170,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [BadWolf](https://github.com/google/badwolf) #temporal #Google #opensource
 * [Neptune](https://aws.amazon.com/neptune/) #AWS #cloud #commercial #SaaS
 * [Cosmos](https://azure.microsoft.com/en-us/products/cosmos-db/) #Azure #cloud #commercial #SaaS
+* [4store](https://github.com/4store/4store) #opensource
 
 ### [Graph DB](https://en.wikipedia.org/wiki/Graph_database)
 
