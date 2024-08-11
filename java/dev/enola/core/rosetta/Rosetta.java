@@ -38,9 +38,9 @@ import dev.enola.core.proto.Entity;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.Datatypes;
 import dev.enola.rdf.RdfResourceConverter;
-import dev.enola.thing.ThingMetadataProvider;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizResourceConverter;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.ThingProvider;
 
 import java.io.IOException;

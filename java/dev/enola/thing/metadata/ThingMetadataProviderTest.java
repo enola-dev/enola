@@ -15,12 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.thing.metadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingProvider;
 
