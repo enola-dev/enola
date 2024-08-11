@@ -18,7 +18,7 @@
 package dev.enola.thing.metadata;
 
 import dev.enola.common.time.Interval;
-import dev.enola.thing.repo.ThingProvider;
+import dev.enola.thing.Thing;
 
 import java.time.Instant;
 import java.util.List;
@@ -29,20 +29,11 @@ import java.util.List;
  */
 public class ThingTimeProvider {
 
-    private final ThingProvider tp;
-
-    public ThingTimeProvider(ThingProvider tp) {
-        this.tp = tp;
-    }
-
     /**
      * Provides the (non-overlapping) {@link Interval}s (plural!) during which the Thing at this IRI
      * "exists".
      */
-    public Iterable<Interval> existance(String iri) {
-        var thing = tp.get(iri);
-        if (thing == null) return List.of();
-
+    public Iterable<Interval> existance(Thing thing) {
         // TODO The following is intentionally hard-coded initially, but the thinking is that
         // eventually the IRIs of these properties should be inferred e.g. using Enola Meta schema
         // rdfs:subPropertyOf ...
