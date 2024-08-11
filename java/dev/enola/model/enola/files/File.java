@@ -23,4 +23,6 @@ public class File extends Node {
 
     public static final String mediaType_IRI = "https://enola.dev/files/File/mediaType";
     public static final String size_IRI = "https://enola.dev/files/File/size";
+
+    // TODO public void size(UnsignedLong size) {}
 }

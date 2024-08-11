@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.datatype.Datatypes.*;
 import static dev.enola.thing.java.test.TestThing.NUMBER_URI;
 
+import com.google.common.primitives.UnsignedLong;
+
 import dev.enola.common.context.TLC;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.xsd.Datatypes;
@@ -203,17 +205,23 @@ public class TestThingTest {
     }
 
     @Test
-    public void convertFileTime() {
-        var text = "2024-08-11T00:45:47.770163738Z";
-        var iri = "https://enola.dev/files/Node/createdAt";
-        var fileTime = FileTime.from(Instant.parse(text));
+    public void convertSpecialDatatypes() {
+        var builder = ImmutablePredicatesObjects.builder();
+
+        var ftText = "2024-08-11T00:45:47.770163738Z";
+        var ftIRI = "https://enola.dev/files/Node/createdAt";
+        var fileTime = FileTime.from(Instant.parse(ftText));
         var ftDtIRI = FILE_TIME.iri();
+        builder.set(ftIRI, fileTime, ftDtIRI);
 
-        var thing = ImmutablePredicatesObjects.builder().set(iri, fileTime, ftDtIRI).build();
+        var ulong = UnsignedLong.valueOf(291);
+        var ulongIRI = "https://enola.dev/files/File/size";
+        builder.set(ulongIRI, ulong, UNSIGNED_LONG.iri());
 
+        var thing = builder.build();
         try (var ctx = TLC.open().push(DatatypeRepository.class, DTR)) {
-            var actual = thing.getString(iri);
-            assertThat(actual).isEqualTo(text);
+            assertThat(thing.getString(ulongIRI)).isEqualTo("291");
+            assertThat(thing.getString(ftIRI)).isEqualTo(ftText);
         }
     }
 

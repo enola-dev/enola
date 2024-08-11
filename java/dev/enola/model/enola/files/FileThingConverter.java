@@ -22,6 +22,7 @@ import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.MoreFileSystems;
@@ -81,7 +82,10 @@ public class FileThingConverter implements UriIntoThingConverter {
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);
             // node.set(File.mediaType_IRI, mediaType.toString());
-            node.set(File.size_IRI, attrs.size(), "https://enola.dev/UnsignedLong");
+            node.set(
+                    File.size_IRI,
+                    UnsignedLong.valueOf(attrs.size()),
+                    "https://enola.dev/UnsignedLong");
 
         } else if (attrs.isDirectory()) {
             node.set(KIRI.RDF.TYPE, Directory.Type_IRI);

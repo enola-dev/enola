@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
+import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.io.resource.*;
 import dev.enola.thing.io.UriIntoThingConverters;
@@ -97,7 +98,8 @@ public class FileThingConverterTest {
         // TODO assertThat(iri.getHost()).isNotEmpty();
 
         // assertThat(thing.getString(File.mediaType_IRI)).isEqualTo(mt.toString());
-        assertThat((Long) thing.get(File.size_IRI)).isEqualTo(12L);
+        assertThat(thing.get(File.size_IRI, UnsignedLong.class))
+                .isEqualTo(UnsignedLong.valueOf(12));
         assertThat(thing.get(File.createdAt_IRI, FileTime.class)).isNotNull();
         assertThat(thing.get(File.modifiedAt_IRI, FileTime.class)).isNotNull();
 

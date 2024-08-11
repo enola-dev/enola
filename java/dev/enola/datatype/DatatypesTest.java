@@ -25,6 +25,7 @@ import dev.enola.common.convert.ConversionException;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 
 public class DatatypesTest {
@@ -58,12 +59,14 @@ public class DatatypesTest {
                 .isEqualTo(URI.create("https://enola.dev"));
     }
 
-    public @Test void unsignedLong() throws ConversionException {
+    public @Test void unsignedLong() throws ConversionException, IOException {
         var datatype = Datatypes.UNSIGNED_LONG;
         checkInvariants(datatype);
         assertThat(datatype.javaType()).hasValue(UnsignedLong.class);
         assertThat(datatype.stringConverter().convertTo(UnsignedLong.MAX_VALUE))
                 .isEqualTo("18446744073709551615");
+        assertThat(datatype.stringConverter().convertToType(UnsignedLong.MAX_VALUE, String.class))
+                .hasValue("18446744073709551615");
     }
 
     void checkInvariants(Datatype<?> datatype) {
