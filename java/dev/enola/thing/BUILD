@@ -104,6 +104,7 @@ junit_tests(
     deps = [
         ":thing_java",
         ":thing_java_proto",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
