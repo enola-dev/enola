@@ -21,9 +21,7 @@ import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 @AutoService(MediaTypeProvider.class)
 public class StandardMediaTypes implements MediaTypeProvider {
@@ -36,10 +34,5 @@ public class StandardMediaTypes implements MediaTypeProvider {
                 .putAll(ImmutableMap.of("css", MediaType.CSS_UTF_8))
                 .putAll(ImmutableMap.of("js", MediaType.JAVASCRIPT_UTF_8))
                 .build();
-    }
-
-    @Override
-    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return Collections.emptyMap();
     }
 }

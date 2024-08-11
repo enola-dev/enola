@@ -24,9 +24,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 
 /** MediaType of https://json-ld.github.io/yaml-ld/ and https://json-ld.github.io/yaml-ld/spec/ */
 @AutoService(MediaTypeProvider.class)
@@ -34,11 +32,6 @@ public class RdfMediaTypeYamlLd implements MediaTypeProvider {
 
     public static final MediaType YAML_LD =
             MediaType.create("application", "ld+yaml").withCharset(StandardCharsets.UTF_8);
-
-    @Override
-    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return Collections.emptyMap();
-    }
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {

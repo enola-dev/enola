@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.gen.graphviz;
+package dev.enola.thing.gen.gexf;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
@@ -27,20 +27,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- * MediaType of the <code>text/vnd.graphviz</code> <a
- * href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)">Graph Description
- * Language</a> DOT (<code>*.gv</code>) for <a
- * href="https://en.wikipedia.org/wiki/Graphviz">Graphviz</a>, in <a
- * href="https://graphviz.org/doc/info/lang.html#character-encodings">UTF-8 Character Encoding</a>.
+ * MediaType of the <code>application/gexf+xml</code> <a href="https://gexf.net">Graph Exchange XML
+ * Format</a> (GEXF) <code>*.gexf
+ * </code> in UTF-8 Character Encoding, based on §2.2 (encoding) and §8 (content-type) of <a
+ * href="https://gexf.net/primer.html">GEXF Primer</a>.
  */
 @AutoService(MediaTypeProvider.class)
-public class GraphvizMediaType implements MediaTypeProvider {
+public class GexfMediaType implements MediaTypeProvider {
 
     public static final MediaType GV =
-            MediaType.create("text", "vnd.graphviz").withCharset(StandardCharsets.UTF_8);
+            MediaType.create("application", "gexf+xml").withCharset(StandardCharsets.UTF_8);
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("gv", GV);
+        return ImmutableMap.of("gexf", GV);
     }
 }
