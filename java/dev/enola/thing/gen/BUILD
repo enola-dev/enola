@@ -34,6 +34,7 @@ java_library(
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/time",
         "//java/dev/enola/common/tree",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",

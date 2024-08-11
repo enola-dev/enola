@@ -56,4 +56,6 @@ public interface Datatype<T> {
     Optional<Class<T>> javaType();
 
     // TODO Optional<TypeToken<T>> javaTypeToken();
+
+    DatatypeBuilder<T> child();
 }

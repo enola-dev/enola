@@ -29,6 +29,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.gen.Relativizer;
+import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.proto.Thing;
@@ -52,6 +53,7 @@ public class MarkdownSiteGenerator {
     private final MetadataProvider metadataProvider;
     private final Templates.Format format;
     private final GraphvizGenerator graphvizGenerator;
+    private final GexfGenerator gexfGenerator;
 
     public MarkdownSiteGenerator(
             URI base,
@@ -74,10 +76,11 @@ public class MarkdownSiteGenerator {
         this.mtg = new MarkdownThingGenerator(format, metadataProvider);
         this.rp = rp;
         this.graphvizGenerator = new GraphvizGenerator(metadataProvider);
+        this.gexfGenerator = new GexfGenerator(metadataProvider);
     }
 
     public void generate(
-            Iterable<Thing> things,
+            Iterable<Thing> protoThings,
             ProviderFromIRI<Thing> thingProvider,
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts,
@@ -85,12 +88,14 @@ public class MarkdownSiteGenerator {
             boolean footer)
             throws IOException {
 
-        generateGraphviz(things);
+        var javaThings = proto2java(protoThings);
+        generateGEXF(javaThings);
+        generateGraphviz(javaThings);
 
         var metas = ImmutableSortedSet.orderedBy(Metadata.IRI_Comparator);
 
         // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
-        for (var thing : things) {
+        for (var thing : protoThings) {
             LOG.debug("Thing {}", thing);
             var thingIRI = thing.getIri();
             var relativeThingIRI = Relativizer.dropSchemeAddExtension(thingIRI, "md");
@@ -124,16 +129,22 @@ public class MarkdownSiteGenerator {
         }
     }
 
-    private void generateGraphviz(Iterable<Thing> protoThings) throws IOException {
-        var graphvizOutputIRI = base.resolve("graphviz.gv");
-        var graphVizOutputResource = rp.getWritableResource(graphvizOutputIRI);
-
+    private Iterable<dev.enola.thing.Thing> proto2java(Iterable<Thing> protoThings) {
         var dtr = TLC.get(DatatypeRepository.class);
         var javaThings = new ArrayList<dev.enola.thing.Thing>(Iterables.size(protoThings));
         for (var protoThing : protoThings) {
             javaThings.add(new ThingAdapter(protoThing, dtr));
         }
+        return javaThings;
+    }
 
+    private void generateGEXF(Iterable<dev.enola.thing.Thing> javaThings) throws IOException {
+        var gexfOutputResource = rp.getWritableResource(base.resolve("graph.gexf"));
+        gexfGenerator.convertIntoOrThrow(javaThings, gexfOutputResource);
+    }
+
+    private void generateGraphviz(Iterable<dev.enola.thing.Thing> javaThings) throws IOException {
+        var graphVizOutputResource = rp.getWritableResource(base.resolve("graphviz.gv"));
         graphvizGenerator.convertIntoOrThrow(javaThings, graphVizOutputResource);
     }
 }

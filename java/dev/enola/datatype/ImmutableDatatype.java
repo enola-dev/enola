@@ -62,4 +62,9 @@ public record ImmutableDatatype<T>(
             String pattern) {
         this(iri, stringConverter, javaType, Pattern.compile(pattern));
     }
+
+    @Override
+    public DatatypeBuilder<T> child() {
+        return new DatatypeBuilder<>(this);
+    }
 }

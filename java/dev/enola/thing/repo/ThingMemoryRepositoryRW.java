@@ -32,7 +32,7 @@ import dev.enola.thing.Thing;
  */
 @ThreadSafe
 public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
-        implements ThingRepositoryRW {
+        implements ThingRepositoryStore {
 
     @Override
     protected String getIRI(Thing value) {

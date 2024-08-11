@@ -25,11 +25,18 @@ import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
 import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 
 /** Enola's built-in core datatypes. */
 // TODO Doc: <p>See https://enola.dev/datatypes --- once we put something on
 // https://docs.enola.dev/models/datatypes and have a working HTTP redirector.
 public final class Datatypes {
+
+    public static final Datatype<Instant> TIMESTAMP =
+            dev.enola.model.xsd.Datatypes.DATE_TIME
+                    .child()
+                    .iri("https://enola.dev/Timestamp")
+                    .build();
 
     public static final Datatype<UnsignedLong> UNSIGNED_LONG =
             new ImmutableDatatype<>(
@@ -50,7 +57,8 @@ public final class Datatypes {
     // Replace use of Base64.getEncoder().encodeToString() in MessageToThingConverter#b64()
 
     // Beware: The order here matters very much, for DatatypeRepository#match()
-    public static final Iterable<Datatype<?>> ALL = ImmutableList.of(UNSIGNED_LONG, FILE_TIME);
+    public static final Iterable<Datatype<?>> ALL =
+            ImmutableList.of(UNSIGNED_LONG, TIMESTAMP, FILE_TIME);
 
     private Datatypes() {}
 }

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.gen.graphviz;
+package dev.enola.thing.gen.gexf;
 
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
@@ -24,22 +24,22 @@ import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
 
-public class GraphvizResourceConverter implements CatchingResourceConverter {
+public class GexfResourceConverter implements CatchingResourceConverter {
 
-    private final GraphvizGenerator graphvizGenerator;
+    private final GexfGenerator gexfGenerator;
 
-    public GraphvizResourceConverter(GraphvizGenerator graphvizGenerator) {
-        this.graphvizGenerator = graphvizGenerator;
+    public GexfResourceConverter(GexfGenerator gexfGenerator) {
+        this.gexfGenerator = gexfGenerator;
     }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
-        if (!MediaTypes.normalizedNoParamsEquals(into.mediaType(), GraphvizMediaType.GV))
+        if (!MediaTypes.normalizedNoParamsEquals(into.mediaType(), GexfMediaType.GEXF))
             return false;
 
         var things = new Loader(new UriIntoThingConverters()).loadAtLeastOneThing(from.uri());
-        graphvizGenerator.convertIntoOrThrow(things, into);
+        gexfGenerator.convertIntoOrThrow(things, into);
         return true;
     }
 }

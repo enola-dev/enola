@@ -99,11 +99,11 @@ Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ usi
 * [yEd](https://www.yworks.com) (yFiles) #commercial #sdk #freemium
 * [Graphviz](https://graphviz.org) #available
 * [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #dynamicGraph #web #active #planned #ToDo
-* [D3js.org](https://d3js.org) also has [Graphs](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf))
-* [vis.js](https://visjs.org)
+* [D3js.org](https://d3js.org), and [Observable Plot](https://observablehq.com/plot/) has #[graph](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf)) #[timeline](https://observablehq.com/@observablehq/plot-civilizations-timeline?intent=fork)
+* [vis.js](https://visjs.org) #opensource #graph #timeline #web
 * [Cytoscape](https://cytoscape.org) #opensource #graph #desktop #[plugins](https://apps.cytoscape.org/)
 * [Cytoscape.js](https://js.cytoscape.org/) #graph #library #web
-* [Mermaid](https://mermaid.js.org) #opensource
+* [Mermaid](https://mermaid.js.org) #graph #[timeline](https://mermaid.js.org/syntax/timeline.html) #opensource
 * [PlantUML](https://plantuml.com) #opensource
 * [GraphStream](https://graphstream-project.org) #opensource #dynamicGraph #java #swing #desktop #inactive
 * [Vega Lite](https://vega.github.io/vega-lite/) & [Vega](https://vega.github.io/vega/) #opensource

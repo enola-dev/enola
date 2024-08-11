@@ -15,9 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.repo;
+package dev.enola.common.time;
 
-import dev.enola.data.RepositoryRW;
-import dev.enola.thing.Thing;
+import static com.google.common.truth.Truth.assertThat;
 
-public interface ThingRepositoryRW extends ThingRepository, RepositoryRW<Thing> {}
+import org.junit.Test;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+public class TimesTest {
+
+    @Test
+    public void beginningOfTimeInstantToString() {
+        var instant = Instant.MIN.plus(1, ChronoUnit.DAYS);
+        var text = "-1000000000-01-02T00:00:00Z";
+        assertThat(instant.toString()).isEqualTo(text);
+    }
+
+    @Test
+    public void endOfTimeWithInstantParse() {
+        // NB: The + prefix is mandatory if it's not 4 YYYY digits
+        Instant.parse("+300000-12-30T23:59:59Z");
+    }
+}

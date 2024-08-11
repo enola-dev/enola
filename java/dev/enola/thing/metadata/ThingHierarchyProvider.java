@@ -31,6 +31,8 @@ import java.util.List;
  */
 public class ThingHierarchyProvider {
 
+    // TODO Is a single "primary" parent selection required & more useful?
+
     public Iterable<String> parents(Thing iri) {
         // TODO Same as in ThingTimeProvider, this eventually won't be hard-coded anymore
         var parentIRI = "https://enola.dev/parent";

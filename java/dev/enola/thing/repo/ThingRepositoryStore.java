@@ -15,22 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.schemaorg;
+package dev.enola.thing.repo;
 
-import com.google.common.collect.ImmutableList;
+import dev.enola.data.RepositoryRW;
+import dev.enola.thing.Thing;
 
-import dev.enola.datatype.Datatype;
-
-import java.time.LocalDate;
-
-/** Datatypes for <a href="https://schema.org/">Schema.org</a>. */
-public final class Datatypes {
-
-    public static final Datatype<LocalDate> DATE =
-            dev.enola.model.xsd.Datatypes.DATE.child().iri("https://schema.org/Date").build();
-
-    // Beware: The order here may matter very much, for DatatypeRepository#match()
-    public static final Iterable<Datatype<?>> ALL = ImmutableList.of(DATE);
-
-    private Datatypes() {}
-}
+public interface ThingRepositoryStore extends ThingRepository, RepositoryRW<Thing> {}
