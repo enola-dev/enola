@@ -24,6 +24,8 @@ items:
       tags: [visualization, ui, docgen, rosetta]
 
   - Time API: &timeAPI
+      done: 2024-08-11
+      status: DONE
 
   - Hierarchy API: &hierarchyAPI
 

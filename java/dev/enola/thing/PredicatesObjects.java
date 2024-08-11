@@ -104,7 +104,7 @@ public interface PredicatesObjects {
      * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
      * dev.enola.common.convert.ObjectClassConverter}.
      */
-    default <T> T get(String predicateIRI, Class<T> klass) {
+    default <T> @Nullable T get(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, klass).orElse(null);
     }
 

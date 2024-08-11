@@ -15,17 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.metadata;
+@NullMarked
+package dev.enola.common.time;
 
-import dev.enola.data.ProviderFromIRI;
-
-import org.jspecify.annotations.Nullable;
-
-/** Provider of {@link Metadata}, given an IRI. */
-public interface MetadataProvider extends ProviderFromIRI<Metadata> {
-
-    @Override
-    Metadata get(String iri);
-
-    Metadata get(@Nullable Object object, String iri);
-}
+import org.jspecify.annotations.NullMarked;

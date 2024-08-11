@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.metadata;
+package dev.enola.common.time;
 
-import dev.enola.data.ProviderFromIRI;
+import static com.google.common.truth.Truth.assertThat;
 
-import org.jspecify.annotations.Nullable;
+import org.junit.Test;
 
-/** Provider of {@link Metadata}, given an IRI. */
-public interface MetadataProvider extends ProviderFromIRI<Metadata> {
+public class IntervalTest {
 
-    @Override
-    Metadata get(String iri);
-
-    Metadata get(@Nullable Object object, String iri);
+    @Test
+    public void toStringALL() {
+        assertThat(Interval.ALL.toString())
+                .isEqualTo("-1000000000-01-01T00:00:00Z/+1000000000-12-31T23:59:59.999999999Z");
+    }
 }
