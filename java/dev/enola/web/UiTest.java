@@ -42,7 +42,7 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 
@@ -114,7 +114,8 @@ public class UiTest {
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
 
         return new ThingMetadataProvider(
-                new ThingProviderAdapter(thingProvider, datatypeRepository), namespaceConverter);
+                new AlwaysThingProviderAdapter(thingProvider, datatypeRepository),
+                namespaceConverter);
     }
 
     private static class TestService implements EnolaService {

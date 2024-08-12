@@ -36,7 +36,7 @@ import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
-import dev.enola.thing.message.ThingProviderAdapter;
+import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
@@ -151,7 +151,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     // TODO Move this to class EnolaProvider?
     protected MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
         return new ThingMetadataProvider(
-                new ThingProviderAdapter(thingProvider, DatatypeRepository.CTX),
+                new AlwaysThingProviderAdapter(thingProvider, DatatypeRepository.CTX),
                 NamespaceConverter.CTX);
     }
 
