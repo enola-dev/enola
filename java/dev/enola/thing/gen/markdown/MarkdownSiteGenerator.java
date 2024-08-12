@@ -97,6 +97,22 @@ public class MarkdownSiteGenerator {
             boolean footer)
             throws IOException {
 
+        // TODO Remove, if not needed, after all?!
+        // TODO If needed anywhere else, factor out...
+        // Like AlwaysThingProvider (but for Proto Thing)
+        /*
+                final var originalThingProvider = thingProvider;
+                thingProvider =
+                        new ProviderFromIRI<Thing>() {
+                            @Override
+                            public @Nullable Thing get(String iri) {
+                                var thing = originalThingProvider.get(iri);
+                                if (thing == null) return Thing.newBuilder().setIri(iri).build();
+                                else return thing;
+                            }
+                        };
+        */
+
         var javaThings = proto2java(protoThings);
         generateGEXF(javaThings);
         generateGraphviz(javaThings);
@@ -122,7 +138,7 @@ public class MarkdownSiteGenerator {
             }
         }
 
-        // NB: This must be AFTER above (TODO Debug and document why this is so? Or fix!)
+        // NB: This must be AFTER above (because metas gets populated above, first)
         if (generateIndexFile) {
             var typeParents = new ThingHierarchyProvider("By Type:", List.of(KIRI.RDF.TYPE));
             generateIndexMD(thingProvider, ts, footer, metas, typeParents, TYPES_MD);
