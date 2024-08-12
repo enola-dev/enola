@@ -23,3 +23,5 @@
 Best viewed with right-click to _Open image in new tab,_ and scrolling.
 
 Interactive graph [coming up](https://github.com/enola-dev/enola/issues/502).
+
+See [Tutorial](../models/example.org/graph.md) and [Reference](../use/rosetta/index.md) for more.
