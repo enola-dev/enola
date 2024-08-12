@@ -68,11 +68,11 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 
 The `model.json` file now contains:
 
+<!-- @formatter:off -->
 ```json
-{
-    % include "../library/model.json" %
-}
+{% include "../library/model.json" %}
 ```
+<!-- @formatter:on -->
 
 ## YAML to TextProto
 
@@ -83,9 +83,11 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 
 The `model.textproto` file now contains:
 
+<!-- @formatter:off -->
 ```yaml
-{ % include "../library/model.textproto" % }
+{% include "../library/model.textproto" %}
 ```
+<!-- @formatter:on -->
 
 ## YAML to Binary Protocol Buffer
 
@@ -94,7 +96,8 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 ...
 ```
 
-The `model.binpb` now contains_[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
+The `model.binpb` now contains
+_[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
 
 ## Turtle 🐢 to JSON-LD 🔗
 

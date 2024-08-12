@@ -77,13 +77,18 @@ public class Context implements AutoCloseable {
     }
 
     /** Get the value for the given key, from this or its parent context. May be null. */
+    // TODO Introduce <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key)
+    // TODO Context.get(K key) should not be @Nullable, but throws IllegalStateException
     public <K extends Enum<K> & Key<T>, T> @Nullable T get(K key) {
         return (T) _get(key);
     }
 
     /**
-     * Gets the instance of Class, from this or its parent context. Never null, may throw
-     * IllegalStateException.
+     * Gets the instance of Class, from this or its parent context.
+     *
+     * <p>Never null, but may throw IllegalStateException if not available.
+     *
+     * <p>Use {@link #optional(Class)} to check if key is available in Context.
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
@@ -95,6 +100,11 @@ public class Context implements AutoCloseable {
         throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
     }
 
+    /**
+     * Gets the instance of Class, from this or its parent context, if available.
+     *
+     * <p>Use {@link #get(Class)} if key must be available in Context.
+     */
     public <T> Optional<T> optional(Class<T> key) {
         return Optional.ofNullable((T) _get(key));
     }

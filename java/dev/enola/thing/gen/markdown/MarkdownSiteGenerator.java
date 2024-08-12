@@ -28,10 +28,12 @@ import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.message.ThingAdapter;
+import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
@@ -42,6 +44,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Generates a "site" of Markdown files, given some Things. */
 public class MarkdownSiteGenerator {
@@ -51,6 +54,7 @@ public class MarkdownSiteGenerator {
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
     private final MetadataProvider metadataProvider;
+    private final DatatypeRepository datatypeRepository;
     private final Templates.Format format;
     private final GraphvizGenerator graphvizGenerator;
     private final GexfGenerator gexfGenerator;
@@ -59,6 +63,7 @@ public class MarkdownSiteGenerator {
             URI base,
             ResourceProvider rp,
             MetadataProvider metadataProvider,
+            DatatypeRepository datatypeRepository,
             Templates.Format format) {
         this.base = base;
         // TODO Re-use the (newer) WritableResourcesProvider here...
@@ -73,6 +78,7 @@ public class MarkdownSiteGenerator {
 
         this.format = format;
         this.metadataProvider = metadataProvider;
+        this.datatypeRepository = datatypeRepository;
         this.mtg = new MarkdownThingGenerator(format, metadataProvider);
         this.rp = rp;
         this.graphvizGenerator = new GraphvizGenerator(metadataProvider);
@@ -113,20 +119,44 @@ public class MarkdownSiteGenerator {
             }
         }
 
+        // NB: This must be AFTER above (TODO Debug and document why this is so? Or fix!)
+        if (generateIndexFile) {
+            var typeParents = new ThingHierarchyProvider("By Type:", List.of(KIRI.RDF.TYPE));
+            generateIndexMD(thingProvider, ts, footer, metas, typeParents, "index.md");
+
+            var allParents = new ThingHierarchyProvider();
+            // TODO Fix grouping by rdfs:subPropertyOf rdfs:subClassOf in the Tree
+            generateIndexMD(thingProvider, ts, footer, metas, allParents, "hierarchy.md");
+        }
+    }
+
+    private void generateIndexMD(
+            ProviderFromIRI<Thing> thingProvider,
+            TemplateService ts,
+            boolean footer,
+            ImmutableSortedSet.Builder<Metadata> metas,
+            ThingHierarchyProvider hierarchyProvider,
+            String filename)
+            throws IOException {
         var mig =
                 new MarkdownIndexGenerator(
-                        metas.build(), metadataProvider, thingProvider, footer, format);
-        if (generateIndexFile) {
-            // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
-            // something like existing index pages which were already generated from RDF Turtle,
-            // e.g. https://docs.enola.dev/models/www.w3.org/1999/02/22-rdf-syntax-ns/
+                        metas.build(),
+                        metadataProvider,
+                        hierarchyProvider,
+                        thingProvider,
+                        datatypeRepository,
+                        footer,
+                        format);
+        // TODO When generating finer-grained per-domain sub-indexes, it should not overwrite
+        // something like existing index pages which were already generated from RDF Turtle,
+        // e.g. https://docs.enola.dev/models/www.w3.org/1999/02/22-rdf-syntax-ns/
 
-            var indexURI = base.resolve("index.md");
-            var indexResource = rp.getWritableResource(indexURI);
-            try (var writer = indexResource.charSink().openBufferedStream()) {
-                mig.generate(writer, indexURI, base, ts);
-            }
+        var indexURI = base.resolve(filename);
+        var indexResource = rp.getWritableResource(indexURI);
+        try (var writer = indexResource.charSink().openBufferedStream()) {
+            mig.generate(writer, indexURI, base, ts);
         }
+        LOG.info("Wrote {}", indexResource);
     }
 
     private Iterable<dev.enola.thing.Thing> proto2java(Iterable<Thing> protoThings) {

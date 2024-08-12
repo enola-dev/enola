@@ -31,6 +31,7 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
+import dev.enola.model.Datatypes;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
 import dev.enola.thing.message.MoreThings;
 import dev.enola.thing.proto.Thing;
@@ -98,7 +99,7 @@ public class DocGenCommand extends CommandWithModelAndOutput {
     private void multipleMDDocsForThings(
             EnolaServiceBlockingStub service, boolean generateIndexFile) throws Exception {
         var mdp = getMetadataProvider(new EnolaThingProvider(service));
-        var mdsg = new MarkdownSiteGenerator(Output.get(output), rp, mdp, variables);
+        var mdsg = new MarkdownSiteGenerator(Output.get(output), rp, mdp, Datatypes.DTR, variables);
 
         var things = getThings(service, ENOLA_ROOT_LIST_THINGS);
 

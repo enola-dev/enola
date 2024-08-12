@@ -17,10 +17,13 @@
  */
 package dev.enola.thing.metadata;
 
+import com.google.common.collect.ImmutableList;
+
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Provider of _"hierarchical"_ (e.g. parent / child) relationships between Things.
@@ -29,34 +32,63 @@ import java.util.List;
  */
 public class ThingHierarchyProvider {
 
-    // TODO Is a single "primary" parent selection required & more useful?
+    private final String description;
+    private final Iterable<String> propertyIRIs;
+
+    public ThingHierarchyProvider() {
+        // TODO Same as in ThingTimeProvider, properties eventually won't be hard-coded anymore
+        this(
+                "By Parent Hierarchy:",
+                ImmutableList.of(
+                        "https://enola.dev/parent",
+                        "https://enola.dev/files/Node/parent", // TODO Node.parent_IRI,
+                        KIRI.RDF.TYPE,
+                        "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+                        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf"));
+    }
+
+    public ThingHierarchyProvider(String description, Iterable<String> propertyIRIs) {
+        this.description = description;
+        this.propertyIRIs = propertyIRIs;
+    }
+
+    public String description() {
+        return description;
+    }
 
     public Iterable<String> parents(Thing thing) {
-        // TODO Same as in ThingTimeProvider, this eventually won't be hard-coded anymore
-        var parentIRI = "https://enola.dev/parent";
-        var fileParent = "https://enola.dev/files/Node/parent/";
-        var rdfType = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
-        var rdfsSubClassOf = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
-        var rdfsSubPropertyOf = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf";
-
         var list = new ArrayList<String>();
-        add(list, thing, parentIRI);
-        add(list, thing, fileParent);
-        add(list, thing, rdfType);
-        add(list, thing, rdfsSubClassOf);
-        add(list, thing, rdfsSubPropertyOf);
+        for (var propertyIRI : propertyIRIs) {
+            if (thing.isIterable(propertyIRI)) {
+                var parents = thing.get(propertyIRI, Iterable.class);
+                if (parents == null) continue;
+                for (var parent : parents) {
+                    // TODO Same story as in GraphvizGenerator
+                    list.add(parent.toString());
+                }
+            } else {
+                var parent = thing.getString(propertyIRI);
+                if (parent != null) list.add(parent);
+            }
+        }
         return list;
     }
 
-    private void add(List<String> list, Thing thing, String propertyIRI) {
-        if (thing.isIterable(propertyIRI)) {
-            for (var element : thing.get(propertyIRI, Iterable.class)) {
+    public Optional<String> parent(Thing thing) {
+        for (var propertyIRI : propertyIRIs) {
+            if (thing.isIterable(propertyIRI)) {
+                var parents = thing.get(propertyIRI, Iterable.class);
+                if (parents == null) continue;
+                var iterator = parents.iterator();
+                if (!iterator.hasNext()) continue;
+                var parent = iterator.next();
                 // TODO Same story as in GraphvizGenerator
-                list.add(element.toString());
+                return Optional.of(parent.toString());
+            } else {
+                var parent = thing.getString(propertyIRI);
+                if (parent != null) return Optional.of(parent);
             }
-        } else {
-            var string = thing.getString(propertyIRI);
-            if (string != null) list.add(string);
         }
+        return Optional.empty();
     }
 }
