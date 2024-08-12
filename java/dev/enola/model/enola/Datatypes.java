@@ -15,14 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.datatype;
+package dev.enola.model.enola;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ObjectToStringBiConverters;
+import dev.enola.datatype.Datatype;
+import dev.enola.datatype.ImmutableDatatype;
 
-import java.net.URI;
 import java.nio.file.attribute.FileTime;
 
 /** Enola's built-in core datatypes. */
@@ -30,43 +31,13 @@ import java.nio.file.attribute.FileTime;
 // https://docs.enola.dev/models/datatypes and have a working HTTP redirector.
 public final class Datatypes {
 
-    // TODO Rethink and clear-up the current mix between XSD and Enola IRIs...
-
-    // TODO Move dev.enola.datatype.Datatypes to dev.enola.model.xsd.Datatypes!
-
-    // Nota Bene: There's no NULL here - the absence of a value is not a Datatype!
-
-    // TODO MAP, LIST etc. from https://yaml.org/type/
-
-    public static final Datatype<String> STRING =
-            new ImmutableDatatype<>(
-                    "http://www.w3.org/2001/XMLSchema#string",
-                    ObjectToStringBiConverters.STRING,
-                    String.class,
-                    "(?s).*");
-
-    public static final Datatype<Boolean> BOOLEAN =
-            new ImmutableDatatype<>(
-                    "http://www.w3.org/2001/XMLSchema#boolean",
-                    ObjectToStringBiConverters.BOOLEAN,
-                    Boolean.class,
-                    // Subset of https://yaml.org/type/bool.html
-                    "true|True|TRUE|false|False|FALSE");
-
-    private static final String IRI_PATTERN =
-            "(<([a-zA-Z][a-zA-Z+-\\.]*:\\S+)>)|([a-zA-Z][a-zA-Z+-\\.]*:\\S+)";
-    public static final Datatype<URI> IRI =
-            new ImmutableDatatype<>(
-                    "http://www.w3.org/2001/XMLSchema#anyURI",
-                    ObjectToStringBiConverters.URI,
-                    URI.class, // TODO Make this URI.class!
-                    IRI_PATTERN);
-
     public static final Datatype<UnsignedLong> UNSIGNED_LONG =
             new ImmutableDatatype<>(
                     "https://enola.dev/UnsignedLong",
                     ObjectToStringBiConverters.UNSIGNED_LONG,
                     UnsignedLong.class);
+
+    // IRI_TEMPLATE "https://enola.dev/IRITemplate" isn't really required.
 
     public static final Datatype<FileTime> FILE_TIME =
             new ImmutableDatatype<>(
@@ -79,11 +50,7 @@ public final class Datatypes {
     // Replace use of Base64.getEncoder().encodeToString() in MessageToThingConverter#b64()
 
     // Beware: The order here matters very much, for DatatypeRepository#match()
-    public static final Iterable<Datatype<?>> ALL =
-            ImmutableList.of(BOOLEAN, IRI, STRING, UNSIGNED_LONG, FILE_TIME);
-
-    public static final DatatypeRepository DTR =
-            new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
+    public static final Iterable<Datatype<?>> ALL = ImmutableList.of(UNSIGNED_LONG, FILE_TIME);
 
     private Datatypes() {}
 }

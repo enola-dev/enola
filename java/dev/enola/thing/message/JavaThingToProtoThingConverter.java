@@ -23,12 +23,11 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.Literal;
+import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.proto.Value;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class JavaThingToProtoThingConverter
         implements Converter<dev.enola.thing.Thing, dev.enola.thing.proto.Thing.Builder> {
@@ -44,22 +43,21 @@ public class JavaThingToProtoThingConverter
             throws ConversionException {
         var protoBuilder = dev.enola.thing.proto.Thing.newBuilder();
         protoBuilder.setIri(javaThing.iri());
-        map2proto(protoBuilder, javaThing.properties().entrySet(), javaThing);
+        java2proto(protoBuilder, javaThing);
         return protoBuilder;
     }
 
-    private void map2proto(
+    private void java2proto(
             dev.enola.thing.proto.Thing.Builder protoBuilder,
-            Iterable<Entry<String, Object>> properties,
-            dev.enola.thing.Thing javaThing) {
-        for (var property : properties) {
-            var iri = property.getKey();
-            var object = property.getValue();
+            dev.enola.thing.PredicatesObjects javaThing) {
+        for (var iri : javaThing.predicateIRIs()) {
+            var object = javaThing.get(iri);
             protoBuilder.putFields(iri, toValue(object, iri, javaThing));
         }
     }
 
-    private Value toValue(Object object, String propertyIRI, dev.enola.thing.Thing javaThing) {
+    private Value toValue(
+            Object object, String propertyIRI, dev.enola.thing.PredicatesObjects javaThing) {
         var protoValue = dev.enola.thing.proto.Value.newBuilder();
         // javaThing == null when it's for a Map (from Blank Node)
         // TODO remove null check once fully switching to PredicatesObjects instead Map
@@ -87,11 +85,10 @@ public class JavaThingToProtoThingConverter
                 protoValue.setList(protoList);
                 break;
 
-            case Map<?, ?> map: // TODO Replace Map with PredicatesObjects, see below
-                var propertiesMap = (Map<String, Object>) map;
+            case PredicatesObjects predicatesObjects:
                 var protoThing = dev.enola.thing.proto.Thing.newBuilder();
                 // TODO Fix NULL... Must be a PredicatesObjects instead of Map eventually
-                map2proto(protoThing, propertiesMap.entrySet(), null);
+                java2proto(protoThing, predicatesObjects);
                 protoValue.setStruct(protoThing);
                 break;
 

@@ -26,7 +26,10 @@ import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.context.TLC;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
@@ -34,6 +37,8 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.model.Datatypes;
 import dev.enola.rdf.RdfMediaTypes;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.graphviz.GraphvizMediaType;
@@ -42,11 +47,17 @@ import dev.enola.thing.io.ThingMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingProvider;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.nio.charset.StandardCharsets;
 
 public class RosettaTest {
+
+    @Rule
+    public TestRule tlcRule =
+            new TestTLCRule(ImmutableMap.of(DatatypeRepository.class, Datatypes.DTR));
 
     private static final ResourceProvider rp = new ClasspathResource.Provider();
     private static final Rosetta rosetta = new Rosetta(rp);

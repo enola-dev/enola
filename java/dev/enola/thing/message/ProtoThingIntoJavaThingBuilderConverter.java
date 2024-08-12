@@ -18,7 +18,6 @@
 package dev.enola.thing.message;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
@@ -102,16 +101,7 @@ public class ProtoThingIntoJavaThingBuilderConverter
                 {
                     // Nota Bene: We ignore "inner" IRIs of proto Thing, because it should be empty!
                     var protoStruct = protoThingValue.getStruct();
-                    var mapSize = protoStruct.getFieldsMap().size();
-                    var mapBuilder = ImmutableMap.builderWithExpectedSize(mapSize);
-                    for (var entry : protoStruct.getFieldsMap().entrySet()) {
-                        var iri = entry.getKey();
-                        var value = entry.getValue();
-                        if (Value.KindCase.KIND_NOT_SET.equals(value.getKindCase()))
-                            throw new IllegalArgumentException(iri);
-                        mapBuilder.put(iri, object(value));
-                    }
-                    return mapBuilder.build();
+                    return new PredicatesObjectsAdapter(protoStruct, datatypeRepository);
                 }
             default:
                 throw new IllegalArgumentException(protoThingValue.toString());

@@ -49,7 +49,7 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
     // TODO Shorten long texts, and use e.g. TITLE ?
     // TODO Thing IRI as alternative Link to Enola localhost UI
     // TODO Custom attributes, e.g. Node & Edge color, style etc.
-    // TODO Nested blank nodes via https://graphviz.org/doc/info/shapes.html#record ? Or Table?
+    // TODO Nested blank nodes as Labels, instead just "..."
     // TODO Links from within nested blank nodes with ports?
     // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
     // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
@@ -124,17 +124,20 @@ public class GraphvizGenerator implements ConverterIntoAppendable<Iterable<Thing
             out.append("    <TR><TD ALIGN=\"left\">");
             out.append(html(pLabel));
             out.append("</TD><TD>");
-            var value = thing.getString(p);
-            if (value != null) out.append(html(value));
-            else {
+            if (thing.isIterable(p)) {
                 var iterable = thing.get(p, Iterable.class);
                 if (iterable != null) {
                     for (var element : iterable) {
-                        // TODO Convert using datatype
+                        // TODO Convert using datatype; needs thing.get(p, n, String.class)
                         out.append(html(element.toString()));
                         out.append("<BR/>");
                     }
                 }
+            } else if (thing.isStruct(p)) {
+                out.append("...");
+            } else {
+                var value = thing.getString(p);
+                if (value != null) out.append(html(value));
             }
             out.append("</TD></TR>\n");
         }

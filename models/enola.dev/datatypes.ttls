@@ -2,7 +2,7 @@
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#>.
 
-# TODO Generate (some of) this (in-memory & live) by "reading" dev.enola.datatype.Datatypes#list() ...
+# TODO Generate (some of) this (in-memory & live) by "reading" dev.enola.model.Datatypes#list() ...
 # TODO Is (some of) such a XSD string etc. definition in RDF already available somewhere else?
 xsd:string a rdfs:Datatype;
   <enola:yaml/uri> <tag:yaml.org,2002:str>;

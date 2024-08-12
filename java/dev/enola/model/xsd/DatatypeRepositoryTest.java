@@ -15,9 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.datatype;
+package dev.enola.model.xsd;
 
 import static com.google.common.truth.Truth.assertThat;
+
+import dev.enola.datatype.DatatypeRepositoryBuilder;
 
 import org.junit.Test;
 
@@ -25,7 +27,7 @@ public class DatatypeRepositoryTest {
 
     @Test
     public void match() {
-        var r = Datatypes.DTR;
+        var r = new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
         assertThat(r.match("hello, world")).hasValue(Datatypes.STRING);
         assertThat(r.match("hello,\n\tworld")).hasValue(Datatypes.STRING);
 

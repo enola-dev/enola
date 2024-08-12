@@ -22,6 +22,7 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.datatype.Datatype;
+import dev.enola.model.xsd.Datatypes;
 import dev.enola.thing.*;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.GenJavaThing;
@@ -56,7 +57,7 @@ public class ImmutableTestThing extends GenJavaThing implements TestThing {
     private static ImmutableMap<String, Datatype<?>> datatypesOfNonNullFields(
             @Nullable String label, @Nullable Integer number) {
         var builder = ImmutableMap.<String, Datatype<?>>builderWithExpectedSize(2);
-        if (label != null) builder.put(KIRI.RDFS.LABEL, dev.enola.datatype.Datatypes.STRING);
+        if (label != null) builder.put(KIRI.RDFS.LABEL, Datatypes.STRING);
         if (number != null) builder.put(NUMBER_URI, dev.enola.model.xsd.Datatypes.INT);
         return builder.build();
     }

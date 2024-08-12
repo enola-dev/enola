@@ -35,8 +35,6 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
-import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.Datatypes;
 import dev.enola.rdf.RdfResourceConverter;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizResourceConverter;
@@ -104,8 +102,6 @@ public class Rosetta implements ResourceConverter {
             throws ConversionException, IOException {
         try (var ctx = TLC.open()) {
             ctx.push(ResourceProvider.class, rp);
-            if (ctx.optional(DatatypeRepository.class).isEmpty())
-                ctx.push(DatatypeRepository.class, Datatypes.DTR);
             if (!resourceConverterChain.convertInto(from, into)) {
                 throw new ConversionException(
                         "No Converter (registered on the Chain) accepted to transform from "

@@ -120,6 +120,7 @@ class MarkdownThingGenerator {
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts)
             throws IOException {
+
         switch (value.getKindCase()) {
             case LINK:
                 var link = value.getLink();

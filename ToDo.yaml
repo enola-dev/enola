@@ -106,6 +106,9 @@ items:
 
   - ? Merge this `ToDo.yaml` with [`ToDo.md`](ToDo.md)
 
+  - Split Datatype pure-RegExp (with TLC, configurable in Repo) from Java Converter (with DI with @AutoService, fix):
+      tags: [clean]
+
   - Make Rosetta --load multiple inputs instead of --in: &rosettaLoad
 
   - Unify DocGen into Rosetta:

@@ -17,17 +17,50 @@
  */
 package dev.enola.model.xsd;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.common.convert.ObjectToStringBiConverters;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
+import java.net.URI;
 import java.time.Instant;
 import java.time.LocalDate;
 
 /** Datatypes for <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema (XSD)</a>. */
 public final class Datatypes {
-    // TODO Eventually replace this class with a declarative models/schema.org/datatypes.ttl ?
-    // TODO Hack sth. which scans for an @Things and introspects constants and writes them out?!
+
+    public static final Datatype<String> STRING =
+            new ImmutableDatatype<>(
+                    "http://www.w3.org/2001/XMLSchema#string",
+                    ObjectToStringBiConverters.STRING,
+                    String.class,
+                    "(?s).*");
+
+    private static final String IRI_PATTERN =
+            "(<([a-zA-Z][a-zA-Z+-\\.]*:\\S+)>)|([a-zA-Z][a-zA-Z+-\\.]*:\\S+)";
+    public static final Datatype<URI> IRI =
+            new ImmutableDatatype<>(
+                    "http://www.w3.org/2001/XMLSchema#anyURI",
+                    ObjectToStringBiConverters.URI,
+                    URI.class, // TODO Make this URI.class!
+                    IRI_PATTERN);
+
+    public static final Datatype<Boolean> BOOLEAN =
+            new ImmutableDatatype<>(
+                    "http://www.w3.org/2001/XMLSchema#boolean",
+                    ObjectToStringBiConverters.BOOLEAN,
+                    Boolean.class,
+                    // Subset of https://yaml.org/type/bool.html
+                    "true|True|TRUE|false|False|FALSE");
+
+    public static final Datatype<Integer> INT =
+            new ImmutableDatatype<>(
+                    "http://www.w3.org/2001/XMLSchema#int",
+                    ObjectToStringBiConverters.INT,
+                    Integer.class,
+                    // TODO Test coverage for this INT RegExp...
+                    "-?0*(?:214748364[0-7]|21474836[0-3]\\d|2147483[0-5]\\d{2}|214748[0-2]\\d{3}|21474[0-7]\\d{4}|2147[0-3]\\d{5}|214[0-6]\\d{6}|21[0-3]\\d{7}|20\\d{8}|1\\d{9}|[1-9]\\d{1,8}|0)");
 
     public static final Datatype<LocalDate> DATE =
             new ImmutableDatatype<>(
@@ -38,14 +71,6 @@ public final class Datatypes {
                     // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s07.html
                     "(?<year>[0-9]{4})-?(?<month>1[0-2]|0[1-9])-?(?<day>3[01]|0[1-9]|[12][0-9])");
 
-    public static final Datatype<Integer> INT =
-            new ImmutableDatatype<>(
-                    "http://www.w3.org/2001/XMLSchema#int",
-                    ObjectToStringBiConverters.INT,
-                    Integer.class,
-                    // TODO Test coverage for this INT RegExp...
-                    "-?0*(?:214748364[0-7]|21474836[0-3]\\d|2147483[0-5]\\d{2}|214748[0-2]\\d{3}|21474[0-7]\\d{4}|2147[0-3]\\d{5}|214[0-6]\\d{6}|21[0-3]\\d{7}|20\\d{8}|1\\d{9}|[1-9]\\d{1,8}|0)");
-
     public static final Datatype<Instant> DATE_TIME =
             new ImmutableDatatype<>(
                     "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -53,6 +78,10 @@ public final class Datatypes {
                     Instant.class,
                     // TODO Test coverage for this INT RegExp...
                     "(\\d{4})-(\\d{2})-(\\d{2})T([0-9:]+)(Z|([+-])(\\d{2})(:(\\d{2})?)?)?");
+
+    // Beware: The order here matters very much, for DatatypeRepository#match()
+    public static final Iterable<Datatype<?>> ALL =
+            ImmutableList.of(DATE_TIME, DATE, BOOLEAN, INT, IRI, STRING);
 
     private Datatypes() {}
 }

@@ -19,7 +19,10 @@ package dev.enola.thing.java.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.datatype.Datatypes.*;
+import static dev.enola.model.Datatypes.*;
+import static dev.enola.model.enola.Datatypes.FILE_TIME;
+import static dev.enola.model.enola.Datatypes.UNSIGNED_LONG;
+import static dev.enola.model.xsd.Datatypes.STRING;
 import static dev.enola.thing.java.test.TestThing.NUMBER_URI;
 
 import com.google.common.primitives.UnsignedLong;

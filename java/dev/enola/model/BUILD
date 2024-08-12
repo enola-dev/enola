@@ -48,8 +48,10 @@ junit_tests(
     srcs = glob(["**/*Test.java"]),
     deps = [
         ":model",
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/yamljson/testlib",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//models",
         "//test",

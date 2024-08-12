@@ -24,6 +24,7 @@ import static dev.enola.thing.template.Templates.Format.Mustache;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
@@ -33,7 +34,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.Datatypes;
+import dev.enola.model.Datatypes;
 import dev.enola.model.enola.files.FileThingConverter;
 import dev.enola.rdf.RdfReaderConverter;
 import dev.enola.rdf.RdfThingConverter;
