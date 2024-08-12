@@ -58,6 +58,12 @@
                    :URL ;
   rdfs:comment "An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]." .
 
+:email a rdf:Property ;
+  rdfs:label "email" ;
+  :domainIncludes :ContactPoint, :Organization, :Person ;
+  :rangeIncludes :Text ;
+  rdfs:comment "Email address." .
+
 :URL a rdfs:Class ;
   rdfs:label "URL" ;
   rdfs:comment "Data type: URL." ;

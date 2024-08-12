@@ -34,6 +34,8 @@ import java.util.Map;
 /** Generates the Markdown showing details about one Thing. */
 class MarkdownThingGenerator {
 
+    // TODO Switch this from Proto Thing to Java Thing
+
     private final Templates.Format format;
     private final MetadataProvider metadataProvider;
     private final MarkdownLinkWriter linkWriter;
