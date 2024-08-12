@@ -51,7 +51,17 @@ public final class ResourceSubject extends Subject {
     }
 
     public void containsCharsOf(ReadableResource resource) throws IOException {
-        check("charSource").that(actual.charSource().read()).contains(resource.charSource().read());
+        var expected = resource.charSource().read();
+        if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
+        check("charSource").that(actual.charSource().read()).contains(expected);
+    }
+
+    public void containsCharsOfIgnoreEOL(ReadableResource resource) throws IOException {
+        var expected = resource.charSource().read();
+        if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
+        check("charSource")
+                .that(trimLineEndWhitespace(actual.charSource().read()))
+                .contains(expected);
     }
 
     public void hasJSONEqualTo(ReadableResource resource) throws IOException {
@@ -61,4 +71,8 @@ public final class ResourceSubject extends Subject {
     }
 
     // TODO other checks?
+
+    private String trimLineEndWhitespace(String string) {
+        return string.replaceAll("(?m) +$", "");
+    }
 }

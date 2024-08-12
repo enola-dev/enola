@@ -50,6 +50,9 @@ import java.util.List;
 public class MarkdownSiteGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(MarkdownSiteGenerator.class);
 
+    static final String TYPES_MD = "index.md";
+    static final String HIERARCHY_MD = "hierarchy.md";
+
     private final URI base;
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
@@ -122,11 +125,11 @@ public class MarkdownSiteGenerator {
         // NB: This must be AFTER above (TODO Debug and document why this is so? Or fix!)
         if (generateIndexFile) {
             var typeParents = new ThingHierarchyProvider("By Type:", List.of(KIRI.RDF.TYPE));
-            generateIndexMD(thingProvider, ts, footer, metas, typeParents, "index.md");
+            generateIndexMD(thingProvider, ts, footer, metas, typeParents, TYPES_MD);
 
             var allParents = new ThingHierarchyProvider();
             // TODO Fix grouping by rdfs:subPropertyOf rdfs:subClassOf in the Tree
-            generateIndexMD(thingProvider, ts, footer, metas, allParents, "hierarchy.md");
+            generateIndexMD(thingProvider, ts, footer, metas, allParents, HIERARCHY_MD);
         }
     }
 

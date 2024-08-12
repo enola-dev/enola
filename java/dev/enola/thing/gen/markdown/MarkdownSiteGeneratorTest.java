@@ -17,8 +17,7 @@
  */
 package dev.enola.thing.gen.markdown;
 
-import static com.google.common.truth.Truth.assertThat;
-
+import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.thing.template.Templates.Format.Mustache;
 
 import com.google.common.collect.ImmutableMap;
@@ -89,6 +88,10 @@ public class MarkdownSiteGeneratorTest {
 
         check(dir, "example.enola.dev/Picasso.md", "picasso.md");
         check(dir, "example.enola.dev/Dalí.md", "dali.md");
+
+        // Cover MarkdownIndexGenerator
+        check(dir, MarkdownSiteGenerator.TYPES_MD, "picasso.index.md");
+        check(dir, MarkdownSiteGenerator.HIERARCHY_MD, "picasso.hierarchy.md");
     }
 
     @Test
@@ -104,8 +107,6 @@ public class MarkdownSiteGeneratorTest {
         var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
         mdDocsGen.generate(
                 protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
-
-        // TODO check(dir, "???.md", "tmp.md");
     }
 
     @Test // ~same (as integration instead of unit test) also in
@@ -157,14 +158,8 @@ public class MarkdownSiteGeneratorTest {
 
     private void check(Path dir, String generated, String expected) throws IOException {
         var genMdFileURI = dir.resolve(generated).toUri();
-        var generatedMarkdown = rp.getReadableResource(genMdFileURI).charSource().read();
-        var trimmedGeneratedMarkdown = trimLineEndWhitespace(generatedMarkdown);
-
-        var expectedMarkdown = new ClasspathResource(expected).charSource().read();
-        assertThat(trimmedGeneratedMarkdown).contains(expectedMarkdown);
-    }
-
-    private String trimLineEndWhitespace(String string) {
-        return string.replaceAll("(?m) +$", "");
+        var generatedMarkdownResource = rp.getReadableResource(genMdFileURI);
+        var expectedMarkdownResource = new ClasspathResource(expected);
+        assertThat(generatedMarkdownResource).containsCharsOfIgnoreEOL(expectedMarkdownResource);
     }
 }

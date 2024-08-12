@@ -109,7 +109,7 @@ class MarkdownIndexGenerator {
 
         if (top) {
             writer.append(Integer.toString(Iterables.size(metas)));
-            writer.append(" Things!");
+            writer.append(" Things! ");
             writer.append(hierarchyProvider.description());
             writer.append("\n\n");
         }
