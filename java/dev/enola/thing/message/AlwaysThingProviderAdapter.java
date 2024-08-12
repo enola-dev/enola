@@ -27,15 +27,15 @@ import dev.enola.thing.repo.ThingProvider;
 import java.io.UncheckedIOException;
 
 /**
- * ThingProviderAdapter is a {@link ThingProvider} which delegates to any {@link ProviderFromIRI} of
- * proto Thing, and then wraps the results with a {@link ThingAdapter}.
+ * AlwaysThingProviderAdapter is a {@link ThingProvider} which delegates to any {@link
+ * ProviderFromIRI} of proto Thing, and then wraps the results with a {@link ThingAdapter}.
  */
-public class ThingProviderAdapter implements ThingProvider {
+public class AlwaysThingProviderAdapter implements ThingProvider {
 
     private final ProviderFromIRI<dev.enola.thing.proto.Thing> protoThingProvider;
     private final DatatypeRepository datatypeRepository;
 
-    public ThingProviderAdapter(
+    public AlwaysThingProviderAdapter(
             ProviderFromIRI<dev.enola.thing.proto.Thing> protoThingProvider,
             DatatypeRepository datatypeRepository) {
         this.protoThingProvider = protoThingProvider;

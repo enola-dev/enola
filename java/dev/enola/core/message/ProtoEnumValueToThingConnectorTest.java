@@ -30,8 +30,8 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.thing.ThingConnectorsProvider;
+import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.message.ProtoTypes;
-import dev.enola.thing.message.ThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -55,7 +55,7 @@ public class ProtoEnumValueToThingConnectorTest {
         var thingConnector = new ProtoEnumValueToThingConnector(dp);
 
         ThingProvider tp =
-                new ThingProviderAdapter(
+                new AlwaysThingProviderAdapter(
                         new ThingConnectorsProvider(ImmutableList.of(thingConnector)), null);
 
         MetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
