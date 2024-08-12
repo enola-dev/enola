@@ -44,6 +44,12 @@ import java.net.URI;
 /** Generates a Markdown "index" page with links to details. */
 class MarkdownIndexGenerator {
 
+    // TODO Get rid of ThingOrHeading - or is that *REALLY* needed here?! For... what, actually?
+
+    // TODO Actually produce the intended "tree" - as-is, this doesn't yet fully do as designed
+
+    // TODO Factor out addToTree() into a testable dev.enola.common.tree.Treeifier (parent Function)
+
     private final MetadataProvider metadataProvider;
     private final ThingHierarchyProvider hierarchyProvider;
     private final DatatypeRepository datatypeRepository;
@@ -52,7 +58,10 @@ class MarkdownIndexGenerator {
     private final Iterable<Metadata> metas;
     private final boolean footer;
 
-    public MarkdownIndexGenerator(
+    // NB: The constructor vs generate() arguments split seems a bit random here?
+    // TODO Make "Services" (later @Inject) constructor arguments, and "data" generate() args?
+
+    MarkdownIndexGenerator(
             Iterable<Metadata> metas,
             MetadataProvider metadataProvider,
             ThingHierarchyProvider hierarchyProvider,

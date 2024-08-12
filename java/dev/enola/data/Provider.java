@@ -29,6 +29,6 @@ public interface Provider<K, V> {
      * @param key Key, never null
      * @return value, or null if there is no Value for the given key
      */
-    // TODO @Nullable (from JSpecify)
+    // TODO @Nullable (from JSpecify) ? Or not... AlwaysThingProvider!
     V get(K key);
 }
