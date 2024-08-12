@@ -15,49 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.datatype;
+package dev.enola.model.enola;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.datatype.Datatype;
 
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class DatatypesTest {
-
-    public @Test void testImplementationWithOnlyIRI() throws ConversionException {
-        checkInvariants(new ImmutableDatatype<>("http://test/"));
-    }
-
-    public @Test void string() throws ConversionException {
-        var datatype = Datatypes.STRING;
-        checkInvariants(datatype);
-        assertThat(datatype.pattern()).isPresent();
-        assertThat(datatype.javaType()).hasValue(String.class);
-        assertThat(datatype.stringConverter().convertFrom("hello")).isEqualTo("hello");
-    }
-
-    public @Test void bool() throws ConversionException {
-        var datatype = Datatypes.BOOLEAN;
-        checkInvariants(datatype);
-        assertThat(datatype.pattern()).isPresent();
-        assertThat(datatype.javaType()).hasValue(Boolean.class);
-        assertThat(datatype.stringConverter().convertFrom("TrUE")).isEqualTo(true);
-    }
-
-    public @Test void iri() throws ConversionException {
-        var datatype = Datatypes.IRI;
-        checkInvariants(datatype);
-        assertThat(datatype.pattern()).isPresent();
-        assertThat(datatype.javaType()).hasValue(URI.class);
-        assertThat(datatype.stringConverter().convertFrom("https://enola.dev"))
-                .isEqualTo(URI.create("https://enola.dev"));
-    }
 
     public @Test void unsignedLong() throws ConversionException, IOException {
         var datatype = Datatypes.UNSIGNED_LONG;

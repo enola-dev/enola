@@ -27,7 +27,7 @@ import com.google.common.primitives.UnsignedLong;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.datatype.Datatypes;
+import dev.enola.model.enola.Datatypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
@@ -106,7 +106,10 @@ public class FileThingConverter implements UriIntoThingConverter {
 
         // Common to File, Directory, Link, and Other
         node.set(Node.parent_IRI, path.getParent().toUri());
-        node.set(Node.createdAt_IRI, attrs.creationTime(), Datatypes.FILE_TIME.iri());
+        node.set(
+                Node.createdAt_IRI,
+                attrs.creationTime(),
+                dev.enola.model.enola.Datatypes.FILE_TIME.iri());
         node.set(Node.modifiedAt_IRI, attrs.lastModifiedTime(), Datatypes.FILE_TIME.iri());
         node.set(Node.lastAccessAt_IRI, attrs.lastAccessTime(), Datatypes.FILE_TIME.iri());
 

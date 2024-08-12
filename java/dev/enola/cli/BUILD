@@ -73,6 +73,7 @@ junit_tests(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/model",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/gen",
         "//java/dev/enola/web",

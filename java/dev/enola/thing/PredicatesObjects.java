@@ -20,6 +20,7 @@ package dev.enola.thing;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -27,7 +28,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -48,8 +48,7 @@ public interface PredicatesObjects {
      * The Map's key is the IRI of a predicate, and the value is as would be returned by {@link
      * #get(String)}.
      */
-    @Deprecated // TODO Re-think API... I would like to avoid exposing Object - can we remove this
-    // method?
+    @Deprecated // TODO Re-think API... I would like to avoid exposing Object - remove this?
     Map<String, Object> properties();
 
     /** IRIs of the Predicates of this Thing. */
@@ -60,6 +59,20 @@ public interface PredicatesObjects {
         var value = get(predicateIRI);
         return value instanceof URI || value instanceof Link;
     }
+
+    default boolean isIterable(String predicateIRI) {
+        var value = get(predicateIRI);
+        return value instanceof Iterable;
+    }
+
+    default boolean isStruct(String predicateIRI) {
+        var value = get(predicateIRI);
+        return value instanceof PredicatesObjects;
+    }
+
+    // TODO isLangString(String predicateIRI) needed? How would it be used?
+
+    // NB: isLiteral(String predicateIRI) is not needed; Datatype conversion handles that.
 
     /**
      * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype
@@ -108,28 +121,54 @@ public interface PredicatesObjects {
         return getOptional(predicateIRI, klass).orElse(null);
     }
 
-    /** Object of predicate, with conversion - as Optional (never fails). */
+    /**
+     * Object of predicate, with type conversion - as Optional.
+     *
+     * @return property as type, if set
+     * @throws IllegalStateException if Datatype is not found, but needed
+     * @throws ConversionException if known Datatype failed to convert
+     */
     @SuppressWarnings("unchecked")
     default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
         if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
+        if (String.class.equals(klass)) {
+            if (object instanceof Literal literal) return Optional.of((T) literal.value());
+            if (object instanceof URI uri) return Optional.of((T) uri.toString());
+            if (object instanceof Link link) return Optional.of((T) link.iri());
+            // TODO Ideally, it should look up the "right" text, using a Lang Ctx Key from the TLC
+            if (object instanceof LangString langString) return Optional.of((T) langString.text());
+        }
         try {
             var dtIRI = datatypeLEGACY(predicateIRI);
-            // TODO Find Datatype via object Java class lookup in DatatypeRepository
+            // TODO Find Datatype via object Java class lookup in DatatypeRepository?
             if (dtIRI == null)
-                // if (klass.equals(String.class)) return Optional.of((T) object.toString());
-                /*else*/ return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+                throw new IllegalStateException(
+                        predicateIRI
+                                + " has no Datatype; cannot convert "
+                                + object
+                                + " of "
+                                + object.getClass()
+                                + " to "
+                                + klass);
             var dtr = TLC.get(DatatypeRepository.class);
             var dt = dtr.get(dtIRI);
-            // TODO As above, don't do this anymore, eventually
-            if (dt == null) return ThingObjectClassConverter.INSTANCE.convertToType(object, klass);
+            if (dt == null)
+                throw new IllegalStateException(
+                        dtIRI
+                                + " not found; cannot convert "
+                                + object
+                                + " of "
+                                + object.getClass()
+                                + " to "
+                                + klass);
             return dt.stringConverter().convertToType(object, klass);
 
         } catch (IOException e) {
             // TODO Get rid of throws IOException and remove this.
             // Or better log any exceptions and return just Optional.empty()?
-            throw new UncheckedIOException("Failed to convert " + object + " to " + klass, e);
+            throw new ConversionException("Failed to convert " + object + " to " + klass, e);
         }
     }
 

@@ -233,7 +233,9 @@ public class ThingMetadataProvider implements MetadataProvider {
 
     private @Nullable String getString(Thing thing, String propertyIRI) {
         if (thing == null) return null;
-        var string = thing.getString(propertyIRI);
+        String string = null;
+        if (!thing.isIterable(propertyIRI)) string = thing.getString(propertyIRI);
+        // TODO Implement supporting e.g. multiple types
         if (string == null) {
             log.trace("No {} on {}:\n{}", propertyIRI, thing.iri(), thing);
         }

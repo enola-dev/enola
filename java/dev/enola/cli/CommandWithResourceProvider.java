@@ -27,7 +27,7 @@ import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.*;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.datatype.Datatypes;
+import dev.enola.model.Datatypes;
 
 import picocli.CommandLine;
 

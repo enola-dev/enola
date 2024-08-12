@@ -17,12 +17,14 @@
  */
 package dev.enola.model.schemaorg;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
 import java.time.LocalDate;
 
-/** Datatypes for <a href="https://schema.org/">Schema.org</a> */
+/** Datatypes for <a href="https://schema.org/">Schema.org</a>. */
 public final class Datatypes {
 
     // TODO How-to copy/paste even less from dev.enola.model.xsd.Datatypes.DATE?
@@ -32,6 +34,9 @@ public final class Datatypes {
                     dev.enola.model.xsd.Datatypes.DATE.stringConverter(),
                     LocalDate.class,
                     dev.enola.model.xsd.Datatypes.DATE.pattern().get());
+
+    // Beware: The order here may matter very much, for DatatypeRepository#match()
+    public static final Iterable<Datatype<?>> ALL = ImmutableList.of(DATE);
 
     private Datatypes() {}
 }

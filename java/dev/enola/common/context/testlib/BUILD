@@ -21,22 +21,21 @@ java_library(
     name = "testlib",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test.java"],
+        exclude = ["**/*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/common/context",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
         "@maven//:org_jspecify_jspecify",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(["*Test.java"]),
+    srcs = glob(["**/*Test.java"]),
     deps = [
         ":testlib",
         "//java/dev/enola/common/io",

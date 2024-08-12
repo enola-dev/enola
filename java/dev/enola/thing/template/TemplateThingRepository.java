@@ -47,7 +47,8 @@ public class TemplateThingRepository implements ThingRepository, TemplateService
         int size = MoreIterables.sizeIfKnown(delegate.list()).orElse(42);
         var iriTemplateChainBuilder = URITemplateMatcherChain.<Match>builderWithExpectedSize(size);
         for (var thing : delegate.list()) {
-            if (KIRI.RDFS.CLASS.equals(thing.getString(KIRI.RDF.TYPE))) {
+            if (!thing.isIterable(KIRI.RDF.TYPE)
+                    && KIRI.RDFS.CLASS.equals(thing.getString(KIRI.RDF.TYPE))) {
                 thing.getOptional(KIRI.E.IRI_TEMPLATE_PROPERTY, String.class)
                         .ifPresent(
                                 iriTemplate ->

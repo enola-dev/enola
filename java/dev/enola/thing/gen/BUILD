@@ -62,6 +62,7 @@ junit_tests(
     deps = [
         ":gen",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",

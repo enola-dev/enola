@@ -17,7 +17,6 @@
  */
 package dev.enola.thing;
 
-import dev.enola.datatype.Datatypes;
 import dev.enola.thing.proto.Value.Literal;
 
 /**
@@ -170,12 +169,13 @@ public final class KIRI {
      * 1.1 Concepts XSD datatypes</a>, based (of course) on the <a
      * href="https://www.w3.org/TR/xmlschema11-2/">XML Schema 1.1 datatypes</a>.
      */
+    // TODO One fine day this should be generated
     public static final class XSD {
         private static final String NS = "http://www.w3.org/2001/XMLSchema#";
 
-        public static final String STRING = Datatypes.STRING.iri();
-        public static final String IRI = Datatypes.IRI.iri();
-        public static final String BOOL = Datatypes.BOOLEAN.iri();
+        public static final String STRING = NS + "string";
+        public static final String IRI = NS + "anyURI";
+        public static final String BOOL = NS + "boolean";
 
         public static final String DOUBLE = NS + "double";
         public static final String FLOAT = NS + "float";

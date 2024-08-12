@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.gen.markdown;
+package dev.enola.common.context.testlib;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -26,8 +26,6 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class TestTLCRule implements TestRule {
-
-    // TODO Move this class into a new context.testlib package
 
     private final ImmutableMap<Class<?>, ?> pushes;
 
