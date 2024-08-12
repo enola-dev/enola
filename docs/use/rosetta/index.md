@@ -28,24 +28,36 @@ e.g. between:
 * RDF Turtle ⇔ JSON-LD ⇔ YAML-LD ⇔ Enola Things
 * YAML & JSON ⇔ RDF Turtle [with JSON-LD Contexts](../json-ld/index.md)
 * [`YAML`](https://yaml.org) ⇔ [`JSON`](https://www.json.org) ⇔
-[`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
-_[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats
-* [Graph Diagrams](../../models/example.org/graph.md)
+  [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
+  _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats
+* Graph Diagrams from RDF et al.
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
 
-## Graphviz
+## Graph Diagrams
+
+Enola can generate [Graph Diagrams like this](../../models/example.org/graph.md), through [DocGen](../docgen/index.md) (see
+[Tutorial](../../models/example.org/graph.md)), or Rosetta.
+
+### Graphviz
 
 ```bash cd ../.././..
 $ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gv && dot -Tsvg -O docs/BUILT/picasso.gv
 ...
 ```
 
-produces this:
+produces [`picasso.gv`](../../BUILT/picasso.gv) and [`picasso.gv.svg`](../../BUILT/picasso.gv.svg):
 
 ![Graph of Painters](../../BUILT/picasso.gv.svg)
 
-[DocGen](../docgen/index.md) also generates Graphviz, see [Tutorial](../../models/example.org/graph.md).
+### GEXF
+
+```bash cd ../.././..
+$ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gexf
+...
+```
+
+produces [`picasso.gexf`](../../BUILT/picasso.gexf) in [GEXF format](https://gexf.net), which can be opened e.g. in [Gephi Lite](https://gephi.org/gephi-lite/).
 
 ## YAML to JSON
 
@@ -57,7 +69,9 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 The `model.json` file now contains:
 
 ```json
-{% include "../library/model.json" %}
+{
+    % include "../library/model.json" %
+}
 ```
 
 ## YAML to TextProto
@@ -70,7 +84,7 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 The `model.textproto` file now contains:
 
 ```yaml
-{% include "../library/model.textproto" %}
+{ % include "../library/model.textproto" % }
 ```
 
 ## YAML to Binary Protocol Buffer
@@ -80,7 +94,7 @@ $ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.
 ...
 ```
 
-The `model.binpb` now contains _[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
+The `model.binpb` now contains_[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
 
 ## Turtle 🐢 to JSON-LD 🔗
 

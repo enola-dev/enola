@@ -18,7 +18,9 @@
 
 # DocGen
 
-We can generate nice Markdown documentation for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or Graphwiz format.
+We can generate nice Markdown documentation as seen in [the tutorial](../../models/example.org/class.md)
+or for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or
+[Graphwiz](../rosetta/index.md#graphviz) or [GEXF](../rosetta/index.md#gexf) format.
 
 ```bash cd ../.././..
 $ ./enola docgen --model docs/use/library/model.yaml --diagram=mermaid >docs/use/docgen/docgen.md
