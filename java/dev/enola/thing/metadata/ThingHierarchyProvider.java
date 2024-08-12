@@ -19,8 +19,6 @@ package dev.enola.thing.metadata;
 
 import dev.enola.thing.Thing;
 
-import org.jspecify.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class ThingHierarchyProvider {
 
     // TODO Is a single "primary" parent selection required & more useful?
 
-    public Iterable<String> parents(Thing iri) {
+    public Iterable<String> parents(Thing thing) {
         // TODO Same as in ThingTimeProvider, this eventually won't be hard-coded anymore
         var parentIRI = "https://enola.dev/parent";
         var fileParent = "https://enola.dev/files/Node/parent/";
@@ -42,15 +40,23 @@ public class ThingHierarchyProvider {
         var rdfsSubPropertyOf = "http://www.w3.org/2000/01/rdf-schema#subPropertyOf";
 
         var list = new ArrayList<String>();
-        add(list, iri.getString(parentIRI));
-        add(list, iri.getString(fileParent));
-        add(list, iri.getString(rdfType));
-        add(list, iri.getString(rdfsSubClassOf));
-        add(list, iri.getString(rdfsSubPropertyOf));
+        add(list, thing, parentIRI);
+        add(list, thing, fileParent);
+        add(list, thing, rdfType);
+        add(list, thing, rdfsSubClassOf);
+        add(list, thing, rdfsSubPropertyOf);
         return list;
     }
 
-    private void add(List<String> list, @Nullable String string) {
-        if (string != null) list.add(string);
+    private void add(List<String> list, Thing thing, String propertyIRI) {
+        if (thing.isIterable(propertyIRI)) {
+            for (var element : thing.get(propertyIRI, Iterable.class)) {
+                // TODO Same story as in GraphvizGenerator
+                list.add(element.toString());
+            }
+        } else {
+            var string = thing.getString(propertyIRI);
+            if (string != null) list.add(string);
+        }
     }
 }

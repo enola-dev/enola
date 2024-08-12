@@ -27,6 +27,7 @@ import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.time.Interval;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
+import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.metadata.ThingTimeProvider;
 import dev.enola.thing.repo.StackedThingProvider;
 import dev.enola.thing.repo.ThingProvider;
@@ -35,7 +36,6 @@ import java.io.IOException;
 
 public class GexfGenerator implements ThingsIntoAppendableConverter {
 
-    // TODO Use ThingHierarchyProvider to cluster
     // TODO Write Attributes
     // TODO How to treat blank nodes? Attributes, or Nodes, with parent?
     // TODO Custom Node color, shape & size
@@ -43,8 +43,7 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
 
     private final MetadataProvider metadataProvider;
     private final ThingTimeProvider timeProvider = new ThingTimeProvider();
-
-    // TODO private final ThingHierarchyProvider hierarchyProvider = new ThingHierarchyProvider();
+    private final ThingHierarchyProvider hierarchyProvider = new ThingHierarchyProvider();
 
     public GexfGenerator(MetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
@@ -83,13 +82,15 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
     private void printThingNode(Thing thing, Appendable out) throws IOException {
         var id = thing.iri();
         var metadata = metadataProvider.get(thing, thing.iri());
-        var intervals = timeProvider.existance(thing);
 
         out.append("      <node id=\"");
         xmlAttribute(id, out);
         out.append("\" label=\"");
         xmlAttribute(label(metadata), out);
         out.append("\"");
+        boolean mustClose = true;
+
+        var intervals = timeProvider.existance(thing);
         if (!Iterables.isEmpty(intervals)) {
             if (Iterables.size(intervals) == 1) {
                 var interval = intervals.iterator().next();
@@ -97,29 +98,52 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
 
             } else {
                 out.append(">\n");
+                mustClose = false;
                 out.append("        <spells>\n");
                 for (var interval : intervals) {
                     out.append("          <spell");
                     printInterval(interval, out);
                 }
                 out.append("        </spells>\n");
-                out.append("      </node>");
             }
-        } else out.append("/>\n");
+        }
+
+        var parents = hierarchyProvider.parents(thing);
+        if (!Iterables.isEmpty(parents)) {
+            if (mustClose && Iterables.size(parents) == 1) {
+                var parent = parents.iterator().next();
+                out.append(" pid=\"");
+                xmlAttribute(parent, out);
+                out.append("\"");
+
+            } else {
+                out.append(">\n");
+                mustClose = false;
+                out.append("        <parents>\n");
+                for (var parent : parents) {
+                    out.append("          <parent for=\"");
+                    xmlAttribute(parent, out);
+                    out.append("\"/>\n");
+                }
+                out.append("        </parents>\n");
+            }
+        }
+
+        if (mustClose) out.append("/>\n");
+        else out.append("      </node>\n");
     }
 
     private void printInterval(Interval interval, Appendable out) throws IOException {
         if (!interval.isUnboundedStart()) {
             out.append(" start=\"");
-            out.append(interval.start().toString());
+            xmlAttribute(interval.start().toString(), out);
             out.append("\"");
         }
         if (!interval.isUnboundedEnd()) {
             out.append(" end=\"");
-            out.append(interval.end().toString());
+            xmlAttribute(interval.end().toString(), out);
             out.append("\"");
         }
-        out.append("/>\n");
     }
 
     private void printThingEdges(Thing thing, Appendable out) throws IOException {

@@ -5,6 +5,7 @@
 @prefix :       <https://example.org/>.
 
 :Salutation a rdfs:Class;
+  rdfs:subClassOf schema:TextObject;
   enola:emoji "👋".
 
 :greeting3 a :Salutation;
