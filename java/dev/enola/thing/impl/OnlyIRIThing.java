@@ -26,7 +26,11 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-/** {@link Thing} with only an IRI and no properties (optimized). */
+/**
+ * {@link Thing} with only an IRI and no properties (optimized).
+ *
+ * <p>See {@link dev.enola.thing.repo.AlwaysThingProvider}.
+ */
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class OnlyIRIThing extends AbstractThing implements IImmutableThing {

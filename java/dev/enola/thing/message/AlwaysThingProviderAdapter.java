@@ -17,35 +17,19 @@
  */
 package dev.enola.thing.message;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.thing.Thing;
-import dev.enola.thing.impl.OnlyIRIThing;
-import dev.enola.thing.repo.ThingProvider;
-
-import java.io.UncheckedIOException;
+import dev.enola.thing.repo.AlwaysThingProvider;
 
 /**
- * AlwaysThingProviderAdapter is a {@link ThingProvider} which delegates to any {@link
- * ProviderFromIRI} of proto Thing, and then wraps the results with a {@link ThingAdapter}.
+ * AlwaysThingProviderAdapter is a {@link ThingProviderAdapter} which is an {@link
+ * AlwaysThingProvider}.
  */
-public class AlwaysThingProviderAdapter implements ThingProvider {
-
-    private final ProviderFromIRI<dev.enola.thing.proto.Thing> protoThingProvider;
-    private final DatatypeRepository datatypeRepository;
+public class AlwaysThingProviderAdapter extends AlwaysThingProvider {
 
     public AlwaysThingProviderAdapter(
             ProviderFromIRI<dev.enola.thing.proto.Thing> protoThingProvider,
             DatatypeRepository datatypeRepository) {
-        this.protoThingProvider = protoThingProvider;
-        this.datatypeRepository = datatypeRepository;
-    }
-
-    @Override
-    public Thing get(String iri) throws UncheckedIOException, ConversionException {
-        var protoThing = protoThingProvider.get(iri);
-        if (protoThing != null) return new ThingAdapter(protoThing, datatypeRepository);
-        else return new OnlyIRIThing(iri);
+        super(new ThingProviderAdapter(protoThingProvider, datatypeRepository));
     }
 }

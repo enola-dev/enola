@@ -36,9 +36,13 @@ import java.io.UncheckedIOException;
  * may well not, and just "conjure up" new Things out of thin air, based solely on the IRI!
  *
  * <p>See {@link ProtoThingProvider} for a Proto Thing variant (this is for the Java Thing).
+ *
+ * <p>See {@link AlwaysThingProvider} for a {@link org.jspecify.annotations.NonNull} variant.
  */
 @FunctionalInterface
 public interface ThingProvider extends ProviderFromIRI<Thing> {
+
+    // TODO Eventually migrate everyting to AlwaysThingProvider...
 
     ThingProvider CTX = iri -> TLC.get(ThingProvider.class).get(iri);
 
@@ -52,7 +56,6 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      */
     // TODO Remove ConversionException? It's weird, and should never happen anymore (here)...
     @Override
-    // TODO Change @Nullable Thing to Optional<Thing>, or always return at least an OnlyIRIThing ?!
     @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException;
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
