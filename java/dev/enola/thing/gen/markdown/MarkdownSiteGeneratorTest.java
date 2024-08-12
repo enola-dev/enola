@@ -83,7 +83,7 @@ public class MarkdownSiteGeneratorTest {
         var protoThings = load(new ClasspathResource("picasso.ttl"));
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
         mdDocsGen.generate(
                 protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
@@ -101,7 +101,7 @@ public class MarkdownSiteGeneratorTest {
         var protoThings = Set.of(protoThing);
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Directory");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
         mdDocsGen.generate(
                 protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
@@ -143,7 +143,7 @@ public class MarkdownSiteGeneratorTest {
                         .map(javaThing -> converterJ2P.convert(javaThing).build())
                         .collect(Collectors.toUnmodifiableSet());
 
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, Mustache);
+        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
 
         mdDocsGen.generate(
                 templatedThings, iri -> null, iri -> ttr.get(iri) != null, ttr, true, false);

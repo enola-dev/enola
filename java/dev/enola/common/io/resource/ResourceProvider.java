@@ -55,6 +55,7 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return get(iri);
     }
 
+    // TODO getWritableResource() not @Nullable, but throws UnregisteredURISchemeException
     default @Nullable WritableResource getWritableResource(URI uri) {
         return getResource(uri);
     }

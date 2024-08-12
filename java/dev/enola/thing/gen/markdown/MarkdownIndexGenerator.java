@@ -19,7 +19,6 @@ package dev.enola.thing.gen.markdown;
 
 import static com.google.common.collect.Iterables.filter;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.Immutable;
 
@@ -28,10 +27,11 @@ import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.tree.ImmutableTreeBuilder;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.thing.KIRI;
+import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.gen.DocGenConstants;
+import dev.enola.thing.message.ThingAdapter;
+import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.proto.Thing;
-import dev.enola.thing.proto.Value;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
 
@@ -44,9 +44,9 @@ import java.net.URI;
 /** Generates a Markdown "index" page with links to details. */
 class MarkdownIndexGenerator {
 
-    // TODO Group by rdfs:subPropertyOf rdfs:subClassOf in the Tree
-
     private final MetadataProvider metadataProvider;
+    private final ThingHierarchyProvider hierarchyProvider;
+    private final DatatypeRepository datatypeRepository;
     private final ProviderFromIRI<Thing> thingProvider;
     private final MarkdownLinkWriter linkWriter;
     private final Iterable<Metadata> metas;
@@ -55,11 +55,15 @@ class MarkdownIndexGenerator {
     public MarkdownIndexGenerator(
             Iterable<Metadata> metas,
             MetadataProvider metadataProvider,
+            ThingHierarchyProvider hierarchyProvider,
             ProviderFromIRI<Thing> thingProvider,
+            DatatypeRepository datatypeRepository,
             boolean footer,
             Templates.Format format) {
         this.metadataProvider = metadataProvider;
+        this.hierarchyProvider = hierarchyProvider;
         this.thingProvider = thingProvider;
+        this.datatypeRepository = datatypeRepository;
         this.metas = metas;
         this.footer = footer;
         this.linkWriter = new MarkdownLinkWriter(format);
@@ -96,11 +100,19 @@ class MarkdownIndexGenerator {
             writer.write('#');
         }
         writer.write(' ');
-        if (!node.heading.iri().equals("/"))
+        boolean top = level == 1;
+        if (!top)
             linkWriter.writeMarkdownLink(
                     node.heading.iri(), node.heading, writer, outputIRI, base, isDocumentedIRI, ts);
         else writer.append(node.heading.label());
         writer.append("\n\n");
+
+        if (top) {
+            writer.append(Integer.toString(Iterables.size(metas)));
+            writer.append(" Things!");
+            writer.append(hierarchyProvider.description());
+            writer.append("\n\n");
+        }
 
         var successors = tree.successors(node);
         var thingMetas = filter(successors, thingOrHeading -> thingOrHeading.thing() != null);
@@ -131,10 +143,11 @@ class MarkdownIndexGenerator {
             parent = tree.root();
 
         } else {
-            var protoValue = thing.getFieldsMap().get(KIRI.RDF.TYPE);
-            if (protoValue != null) {
-                String typeIRI = getTypeIRI(protoValue);
-                parent = new ThingOrHeading(null, metadataProvider.get(typeIRI));
+            var javaThing = new ThingAdapter(thing, datatypeRepository);
+            var optParentIRI = hierarchyProvider.parent(javaThing);
+            if (optParentIRI.isPresent()) {
+                var parentIRI = optParentIRI.get();
+                parent = new ThingOrHeading(null, metadataProvider.get(parentIRI));
                 if (!Iterables.contains(tree.successors(node), parent)) {
                     tree.addChild(node, parent);
                 }
@@ -144,20 +157,6 @@ class MarkdownIndexGenerator {
         }
 
         tree.addChild(parent, new ThingOrHeading(metadata, null));
-    }
-
-    private static String getTypeIRI(Value protoValue) {
-        String typeIRI = "";
-        var list = protoValue.getList();
-        if (list != null && !list.getValuesList().isEmpty()) {
-            // Hack...
-            typeIRI = list.getValuesList().get(0).getLink();
-        } else if (protoValue.hasLink()) typeIRI = protoValue.getLink();
-        // TODO It technically should never be a String... pre-Validation should catch this, later?
-        else if (protoValue.hasString()) typeIRI = protoValue.getString();
-        if (Strings.isNullOrEmpty(typeIRI))
-            throw new IllegalArgumentException(protoValue.toString());
-        return typeIRI;
     }
 
     @Immutable

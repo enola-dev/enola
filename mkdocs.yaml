@@ -55,7 +55,8 @@ nav:
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
   - Models:
-      - Index: models/index.md
+      - By Type: models/index.md
+      - By Parent: models/hierarchy.md
       - Graph: concepts/graph.md
   - Concepts:
       - Core: concepts/core.md
