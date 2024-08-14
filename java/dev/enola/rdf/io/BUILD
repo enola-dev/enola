@@ -18,7 +18,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "rdf",
+    name = "io",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -35,6 +35,7 @@ java_library(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/rdf/proto",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
@@ -60,7 +61,7 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     srcs_utils = glob(["*Subject.java"]),
     deps = [
-        ":rdf",
+        ":io",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
@@ -69,6 +70,7 @@ junit_tests(
         "//java/dev/enola/common/protobuf:test_java_proto",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/rdf/proto",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//test",

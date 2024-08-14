@@ -35,7 +35,7 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.core.meta.proto.EntityKinds;
 import dev.enola.core.proto.Entity;
-import dev.enola.rdf.RdfResourceConverter;
+import dev.enola.rdf.io.RdfResourceConverter;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.gexf.GexfResourceConverter;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;

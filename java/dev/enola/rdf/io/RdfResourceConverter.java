@@ -15,44 +15,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
-import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
-import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.DynamicModel;
 import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
-import java.io.IOException;
-import java.util.Optional;
+public class RdfResourceConverter implements CatchingResourceConverter {
 
-/** Reads a {@link ReadableResource} into an RDFJ4j {@link org.eclipse.rdf4j.model.Model}. */
-public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
+    // TODO Add missing tests for this this class (it may well not work as-is yet)
 
-    private final RdfReaderConverterInto converterInto;
+    // TODO Add conversion to/from Thing (incl. "chaining" to Thing YAML/JSON/BinPB)
 
-    public RdfReaderConverter(ResourceProvider rp) {
-        this.converterInto = new RdfReaderConverterInto(rp);
+    private final RdfReaderConverterInto reader;
+    private final RdfWriterConverter writer = new RdfWriterConverter();
+
+    public RdfResourceConverter(ResourceProvider resourceProvider) {
+        this.reader = new RdfReaderConverterInto(resourceProvider);
     }
 
     @Override
-    public Optional<Model> convert(ReadableResource from) throws ConversionException {
-        try {
-            if (from.byteSource().isEmpty()) return Optional.empty();
-        } catch (IOException e) {
-            throw new ConversionException("isEmpty failed: " + from.uri(), e);
-        }
+    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
+            throws Exception {
 
+        // TODO It's probably possible to do this "bridging" more #efficiently ?
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
-        if (converterInto.convertInto(from, handler)) {
-            return Optional.of(model);
-        } else {
-            return Optional.empty();
-        }
+        if (reader.convertInto(from, handler)) {
+            return writer.convertInto(model, into);
+        } else return false;
     }
 }

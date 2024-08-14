@@ -15,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
-
-import dev.enola.thing.KIRI;
 
 import org.eclipse.rdf4j.model.base.CoreDatatype.RDF;
 import org.eclipse.rdf4j.model.vocabulary.RDFS;
@@ -27,7 +25,7 @@ import org.eclipse.rdf4j.model.vocabulary.XSD;
 import org.junit.Test;
 
 /** Tests IRIs defined in {@link KIRI}, by comparing them against their RDF4j equivalents. */
-public class WellKnownIRIsTest {
+public class KIRITest {
 
     @Test
     public void XSD() {
