@@ -73,7 +73,7 @@ class MarkdownThingGenerator {
             out.append("\n\n");
         }
 
-        write("", thing.getFieldsMap(), out, outputIRI, base, isDocumentedIRI, ts);
+        write("", thing.getPropertiesMap(), out, outputIRI, base, isDocumentedIRI, ts);
 
         if (footer) out.append(DocGenConstants.FOOTER);
 
@@ -158,7 +158,7 @@ class MarkdownThingGenerator {
                 out.append('\n');
                 write(
                         indent + "    ",
-                        value.getStruct().getFieldsMap(),
+                        value.getStruct().getPropertiesMap(),
                         out,
                         outputIRI,
                         base,

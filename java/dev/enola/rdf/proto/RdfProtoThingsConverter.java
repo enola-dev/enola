@@ -102,7 +102,7 @@ public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Bu
             var statements = input.filter(subject, predicate, null);
             if (statements.size() == 1) {
                 var value = convert(input, thing, predicate, statement.getObject(), deferred);
-                thing.putFields(predicate.stringValue(), value.build());
+                thing.putProperties(predicate.stringValue(), value.build());
             } else {
                 // TODO Should distinguish List vs Set with 'ordered' in Thing.proto ...
                 var protoValueList = dev.enola.thing.proto.Value.List.newBuilder();
@@ -112,7 +112,7 @@ public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Bu
                     protoValueList.addValues(protoValue);
                 }
                 var value = Value.newBuilder().setList(protoValueList);
-                thing.putFields(statement.getPredicate().stringValue(), value.build());
+                thing.putProperties(statement.getPredicate().stringValue(), value.build());
             }
         }
 
@@ -179,7 +179,7 @@ public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Bu
                             }
                             value.setList(protoValueList);
                         }
-                        thing.putFields(predicate.stringValue(), value.build());
+                        thing.putProperties(predicate.stringValue(), value.build());
                     });
 
         } else if (rdfValue.isTriple()) {

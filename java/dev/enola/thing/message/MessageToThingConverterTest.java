@@ -62,22 +62,24 @@ public class MessageToThingConverterTest {
 
     Thing.Builder simpleThing =
             Thing.newBuilder()
-                    .putFields(
+                    .putProperties(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.TEXT_FIELD_NUMBER),
                             c.toValue("hello").build())
-                    .putFields(
+                    .putProperties(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.NUMBER_FIELD_NUMBER),
-                            c.toLiteral("4294967295", KIRI.XSD.UINT32).build())
-                    .putFields(
+                            MessageToThingConverter.toLiteral("4294967295", KIRI.XSD.UINT32)
+                                    .build())
+                    .putProperties(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.TS_FIELD_NUMBER),
-                            c.toLiteral(Timestamps.toString(ts), KIRI.XSD.TS).build())
-                    .putFields(
+                            MessageToThingConverter.toLiteral(Timestamps.toString(ts), KIRI.XSD.TS)
+                                    .build())
+                    .putProperties(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.BYTES_FIELD_NUMBER),
-                            c.toLiteral("mAQID", KIRI.XSD.BIN64).build())
-                    .putFields(
+                            MessageToThingConverter.toLiteral("mAQID", KIRI.XSD.BIN64).build())
+                    .putProperties(
                             getFieldIRI(
                                     TestSimple.getDescriptor(), TestSimple.AN_ENUM_FIELD_NUMBER),
-                            c.toLink(
+                            MessageToThingConverter.toLink(
                                             ProtoTypes.getEnumValueERI(
                                                     TestEnum.TEST_ENUM_B.getValueDescriptor()))
                                     .build());
@@ -103,7 +105,7 @@ public class MessageToThingConverterTest {
         var repeated = TestRepeated.newBuilder().addLines("one").addLines("two");
         var repeatedThing =
                 Thing.newBuilder()
-                        .putFields(
+                        .putProperties(
                                 "enola:/enola.dev/proto/field/dev.enola.protobuf.test.TestRepeated/1",
                                 c.toList(c.toValue("one"), c.toValue("two")).build());
         var repeatedThingWithProto = headers(repeatedThing, repeated);
@@ -116,12 +118,12 @@ public class MessageToThingConverterTest {
                 TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);
         var complexThing =
                 Thing.newBuilder()
-                        .putFields(
+                        .putProperties(
                                 getFieldIRI(
                                         TestComplex.getDescriptor(),
                                         TestComplex.SIMPLE_FIELD_NUMBER),
                                 struct(simpleThing).build())
-                        .putFields(
+                        .putProperties(
                                 getFieldIRI(
                                         TestComplex.getDescriptor(),
                                         TestComplex.SIMPLES_FIELD_NUMBER),

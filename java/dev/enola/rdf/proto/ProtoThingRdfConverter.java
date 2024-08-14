@@ -93,7 +93,7 @@ public class ProtoThingRdfConverter
         } else {
             throw new IllegalStateException(from.toString());
         }
-        for (var field : from.getFieldsMap().entrySet()) {
+        for (var field : from.getPropertiesMap().entrySet()) {
             IRI predicate = createIRI(field.getKey());
             for (var object : convert(field.getValue(), containedThings)) {
                 Statement statement = vf.createStatement(subject, predicate, object);

@@ -48,7 +48,7 @@ public class ThingUI {
 
     public CharSequence html(ThingOrBuilder thing) {
         // TODO Print/include thing.getIri() on of HTML, but with initial / link
-        return table(thing.getFieldsMap(), "thing");
+        return table(thing.getPropertiesMap(), "thing");
     }
 
     private CharSequence value(Value value, String tableCssClass) {
@@ -56,7 +56,7 @@ public class ThingUI {
             case STRING -> s(value.getString());
             case LINK -> link(value.getLink());
             case LITERAL -> literal(value.getLiteral());
-            case STRUCT -> table(value.getStruct().getFieldsMap(), tableCssClass);
+            case STRUCT -> table(value.getStruct().getPropertiesMap(), tableCssClass);
             case LIST -> list(value.getList());
             case KIND_NOT_SET -> "";
             default ->

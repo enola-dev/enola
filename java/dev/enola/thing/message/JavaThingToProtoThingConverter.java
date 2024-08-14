@@ -52,7 +52,7 @@ public class JavaThingToProtoThingConverter
             dev.enola.thing.PredicatesObjects javaThing) {
         for (var iri : javaThing.predicateIRIs()) {
             var object = javaThing.get(iri);
-            protoBuilder.putFields(iri, toValue(object, iri, javaThing));
+            protoBuilder.putProperties(iri, toValue(object, iri, javaThing));
         }
     }
 

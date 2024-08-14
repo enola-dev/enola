@@ -27,11 +27,11 @@ public final class ThingExt {
 
     public static void setString(Thing.Builder thing, String propertyIRI, String string) {
         var value = Value.newBuilder().setString(string).build();
-        thing.putFields(propertyIRI, value);
+        thing.putProperties(propertyIRI, value);
     }
 
     public static String getString(ThingOrBuilder thing, String propertyIRI) {
-        var value = thing.getFieldsMap().get(propertyIRI);
+        var value = thing.getPropertiesMap().get(propertyIRI);
         if (value == null) return null;
         return value.getString();
     }

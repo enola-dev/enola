@@ -57,13 +57,13 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
 
     @Override
     public Set<String> predicateIRIs() {
-        return proto.getFieldsMap().keySet();
+        return proto.getPropertiesMap().keySet();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> @Nullable T get(String predicateIRI) {
-        var value = proto.getFieldsMap().get(predicateIRI);
+        var value = proto.getPropertiesMap().get(predicateIRI);
         if (value != null) return (T) value(value);
         else return null;
     }
@@ -92,7 +92,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
 
     @Override
     public @Nullable String datatype(String predicateIRI) {
-        var value = proto.getFieldsMap().get(predicateIRI);
+        var value = proto.getPropertiesMap().get(predicateIRI);
         if (Value.KindCase.LITERAL.equals(value.getKindCase()))
             return value.getLiteral().getDatatype();
         else return null;
