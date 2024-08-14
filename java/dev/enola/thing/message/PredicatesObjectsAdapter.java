@@ -73,7 +73,8 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         var predicateIRIs = predicateIRIs();
         var builder = ImmutableMap.<String, Object>builderWithExpectedSize(predicateIRIs.size());
         for (var predicateIRI : predicateIRIs) {
-            builder.put(predicateIRI, get(predicateIRI));
+            var value = get(predicateIRI);
+            if (value != null) builder.put(predicateIRI, value);
         }
         return builder.build();
     }
@@ -90,14 +91,14 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
     }
 
     @Override
-    public String datatype(String predicateIRI) {
+    public @Nullable String datatype(String predicateIRI) {
         var value = proto.getFieldsMap().get(predicateIRI);
         if (Value.KindCase.LITERAL.equals(value.getKindCase()))
             return value.getLiteral().getDatatype();
         else return null;
     }
 
-    private Object value(dev.enola.thing.proto.Value value) {
+    private @Nullable Object value(dev.enola.thing.proto.Value value) {
         return switch (value.getKindCase()) {
             case STRING -> value.getString();
             case LITERAL -> literal(value.getLiteral());
@@ -113,7 +114,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         return new LangString(proto.getText(), proto.getLang());
     }
 
-    private Object literal(dev.enola.thing.proto.Value.Literal literal) {
+    private @Nullable Object literal(dev.enola.thing.proto.Value.Literal literal) {
         var literalValue = literal.getValue();
         var datatypeIRI = literal.getDatatype();
         var datatype = datatypeRepository.get(datatypeIRI);
@@ -130,8 +131,9 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         // TODO Make this lazier... only convert object when they're actually used
         var protoValues = list.getValuesList();
         var listBuilder = ImmutableList.builderWithExpectedSize(protoValues.size());
-        for (var value : protoValues) {
-            listBuilder.add(value(value));
+        for (var protoValue : protoValues) {
+            var value = value(protoValue);
+            if (value != null) listBuilder.add(value);
         }
         return listBuilder.build();
     }
@@ -155,7 +157,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
             Builder<? extends ImmutablePredicatesObjects> builder,
             String predicate,
             Object value,
-            String datatype) {
+            @Nullable String datatype) {
         builder.set(predicate, value, datatype);
     }
 

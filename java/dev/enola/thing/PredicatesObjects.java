@@ -190,7 +190,7 @@ public interface PredicatesObjects {
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
-                String predicateIRI, T value, String datatypeIRI);
+                String predicateIRI, T value, @Nullable String datatypeIRI);
 
         @Override
         B build();

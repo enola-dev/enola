@@ -126,7 +126,8 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         }
 
         @Override
-        public Thing.Builder<B> set(String predicateIRI, Object value, String datatypeIRI) {
+        public Thing.Builder<B> set(
+                String predicateIRI, Object value, @Nullable String datatypeIRI) {
             properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;
