@@ -84,7 +84,6 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
             var predicate = statement.getPredicate();
             var statements = input.filter(subject, predicate, null);
             if (statements.size() == 1) {
-                convertAndPut(thing, predicate, statement.getObject(), deferred);
                 var value = convert(thing, predicate, statement.getObject(), deferred);
                 thing.putFields(predicate.stringValue(), value.build());
             } else {
@@ -106,16 +105,6 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
         }
 
         return roots.values().stream();
-    }
-
-    // TODO Remove this again?
-    private static void convertAndPut(
-            Builder thing,
-            IRI predicate,
-            org.eclipse.rdf4j.model.Value object,
-            List<Consumer<Map<String, Builder>>> deferred) {
-        var value = convert(thing, predicate, object, deferred);
-        thing.putFields(predicate.stringValue(), value.build());
     }
 
     private static dev.enola.thing.proto.Value.Builder convert(
