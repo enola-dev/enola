@@ -45,7 +45,7 @@ public final class ResourceSubject extends Subject {
     }
 
     public void hasCharsEqualTo(ReadableResource resource) throws IOException {
-        check("charSource")
+        check(resource.toString())
                 .that(actual.charSource().read())
                 .isEqualTo(resource.charSource().read());
     }
@@ -53,19 +53,19 @@ public final class ResourceSubject extends Subject {
     public void containsCharsOf(ReadableResource resource) throws IOException {
         var expected = resource.charSource().read();
         if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
-        check("charSource").that(actual.charSource().read()).contains(expected);
+        check(resource.toString()).that(actual.charSource().read()).contains(expected);
     }
 
     public void containsCharsOfIgnoreEOL(ReadableResource resource) throws IOException {
         var expected = resource.charSource().read();
         if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
-        check("charSource")
+        check(resource.toString())
                 .that(trimLineEndWhitespace(actual.charSource().read()))
                 .contains(expected);
     }
 
     public void hasJSONEqualTo(ReadableResource resource) throws IOException {
-        check("charSourceAsJSON")
+        check(resource.toString())
                 .that(JSON.canonicalize(actual.charSource().read(), true))
                 .isEqualTo(JSON.canonicalize(resource.charSource().read(), true));
     }

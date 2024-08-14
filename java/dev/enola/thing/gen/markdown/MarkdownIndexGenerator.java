@@ -160,6 +160,7 @@ class MarkdownIndexGenerator {
                 if (!Iterables.contains(tree.successors(node), parent)) {
                     tree.addChild(node, parent);
                 }
+                // TODO Augment the Tree only here, instead of in MarkdownSiteGenerator#augment()
             } else {
                 parent = tree.root();
             }

@@ -24,6 +24,7 @@ import dev.enola.thing.Thing;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Provider of _"hierarchical"_ (e.g. parent / child) relationships between Things.
@@ -90,5 +91,13 @@ public class ThingHierarchyProvider {
             }
         }
         return Optional.empty();
+    }
+
+    public Function<Thing, Iterable<String>> parentsFunction() {
+        return this::parents;
+    }
+
+    public Function<Thing, Optional<String>> parentFunction() {
+        return this::parent;
     }
 }

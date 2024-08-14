@@ -17,7 +17,8 @@
  */
 package dev.enola.thing.gen.markdown;
 
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Iterables;
 
 import dev.enola.common.context.TLC;
@@ -44,11 +45,14 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /** Generates a "site" of Markdown files, given some Things. */
 public class MarkdownSiteGenerator {
     private static final Logger LOG = LoggerFactory.getLogger(MarkdownSiteGenerator.class);
+
+    // TODO Switch this from Proto Thing to Java Thing
 
     static final String TYPES_MD = "index.md";
     static final String HIERARCHY_MD = "hierarchy.md";
@@ -117,7 +121,7 @@ public class MarkdownSiteGenerator {
         generateGEXF(javaThings);
         generateGraphviz(javaThings);
 
-        var metas = ImmutableSortedSet.orderedBy(Metadata.IRI_Comparator);
+        var metasB = ImmutableSortedMap.<String, Metadata>naturalOrder();
 
         // TODO Do this multi-threaded, in parallel... (but BEWARE ImmutableMap not thread safe!)
         for (var thing : protoThings) {
@@ -134,32 +138,80 @@ public class MarkdownSiteGenerator {
             try (var writer = outputResource.charSink().openBufferedStream()) {
                 var meta =
                         mtg.generate(thing, writer, outputIRI, base, isDocumentedIRI, ts, footer);
-                metas.add(meta);
+                metasB.put(meta.iri(), meta);
             }
         }
+        var metas = metasB.build();
 
         // NB: This must be AFTER above (because metas gets populated above, first)
         if (generateIndexFile) {
+            var protoThingsMap = protoThingsMap(protoThings);
+
             var typeParents = new ThingHierarchyProvider("By Type:", List.of(KIRI.RDF.TYPE));
-            generateIndexMD(thingProvider, ts, footer, metas, typeParents, TYPES_MD);
+            generateIndexMD(
+                    protoThingsMap, thingProvider, ts, footer, metas, typeParents, TYPES_MD);
 
             var allParents = new ThingHierarchyProvider();
             // TODO Fix grouping by rdfs:subPropertyOf rdfs:subClassOf in the Tree
-            generateIndexMD(thingProvider, ts, footer, metas, allParents, HIERARCHY_MD);
+            generateIndexMD(
+                    protoThingsMap, thingProvider, ts, footer, metas, allParents, HIERARCHY_MD);
         }
     }
 
+    private ImmutableMap<String, Thing> protoThingsMap(Iterable<Thing> protoThings) {
+        var builder = ImmutableMap.<String, Thing>builder();
+        for (var protoThing : protoThings) builder.put(protoThing.getIri(), protoThing);
+        return builder.build();
+    }
+
+    /** Augments the Metadata map with any missing thing returned by the ThingHierarchyProvider. */
+    private ImmutableSortedMap<String, Metadata> augment(
+            ImmutableMap<String, Thing> protoThingsMap,
+            ImmutableSortedMap<String, Metadata> metas,
+            ProviderFromIRI<Thing> thingProvider,
+            ThingHierarchyProvider hierarchyProvider) {
+        var dtr = TLC.get(DatatypeRepository.class);
+        var augmentedMetas = new HashMap<>(metas);
+
+        // TODO Doing this here somewhat in-efficient; could this be done in MarkdownIndexGenerator?
+
+        for (var meta : metas.values()) {
+            var iri = meta.iri();
+            // TODO This is the x3 time we're doing proto2java... ;-) #unify #simplify
+            var protoThing = thingProvider.get(iri);
+            if (protoThing == null) protoThing = protoThingsMap.get(iri);
+            if (protoThing == null) throw new IllegalStateException(iri);
+            var javaThing = new ThingAdapter(protoThing, dtr);
+            var optParentIRI = hierarchyProvider.parent(javaThing);
+            if (optParentIRI.isEmpty()) continue;
+            var parentIRI = optParentIRI.get();
+            if (!metas.containsKey(parentIRI)) {
+                var parentMetadata = metadataProvider.get(parentIRI);
+                if (!augmentedMetas.containsKey(parentMetadata.iri()))
+                    augmentedMetas.put(parentIRI, parentMetadata);
+            }
+        }
+
+        var metasB = ImmutableSortedMap.<String, Metadata>naturalOrder();
+        metasB.putAll(augmentedMetas);
+        return metasB.build();
+    }
+
     private void generateIndexMD(
+            ImmutableMap<String, Thing> protoThingsMap,
             ProviderFromIRI<Thing> thingProvider,
             TemplateService ts,
             boolean footer,
-            ImmutableSortedSet.Builder<Metadata> metas,
+            ImmutableSortedMap<String, Metadata> metas,
             ThingHierarchyProvider hierarchyProvider,
             String filename)
             throws IOException {
+
+        metas = augment(protoThingsMap, metas, thingProvider, hierarchyProvider);
+
         var mig =
                 new MarkdownIndexGenerator(
-                        metas.build(),
+                        metas.values(),
                         metadataProvider,
                         hierarchyProvider,
                         thingProvider,
