@@ -149,7 +149,7 @@ public class ImmutableTestThing extends GenJavaThing implements TestThing {
 
         @Override
         public Thing.Builder<ImmutableTestThing> set(
-                String predicateIRI, Object value, String datatypeIRI) {
+                String predicateIRI, Object value, @Nullable String datatypeIRI) {
             // NB: Must be kept in sync with get(String predicateIRI)
             if (KIRI.RDFS.LABEL.equals(predicateIRI)) {
                 label = (String) value;

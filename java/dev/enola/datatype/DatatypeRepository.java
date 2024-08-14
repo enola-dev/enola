@@ -22,11 +22,30 @@ import dev.enola.data.Repository;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.Optional;
 
 public interface DatatypeRepository extends Repository<Datatype<?>> {
 
     Optional<Datatype<?>> match(String text);
+
+    DatatypeRepository EMPTY =
+            new DatatypeRepository() {
+                @Override
+                public Optional<Datatype<?>> match(String text) {
+                    return Optional.empty();
+                }
+
+                @Override
+                public Iterable<String> listIRI() {
+                    return Collections.emptySet();
+                }
+
+                @Override
+                public @Nullable Datatype<?> get(String iri) {
+                    return null;
+                }
+            };
 
     DatatypeRepository CTX =
             new DatatypeRepository() {
