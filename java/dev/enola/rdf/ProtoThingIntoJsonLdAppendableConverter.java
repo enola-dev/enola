@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class ProtoThingIntoJsonLdAppendableConverter implements ConverterIntoAppendable<Thing> {
 
-    private final ThingRdfConverter thingRdfConverter = new ThingRdfConverter();
+    private final ProtoThingRdfConverter thingRdfConverter = new ProtoThingRdfConverter();
     private final RdfWriterConverter rdfWriterConverter = new RdfWriterConverter();
 
     @Override
