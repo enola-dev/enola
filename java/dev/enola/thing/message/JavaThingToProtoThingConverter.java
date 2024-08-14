@@ -58,10 +58,13 @@ public class JavaThingToProtoThingConverter
 
     private Value toValue(
             Object object, String propertyIRI, dev.enola.thing.PredicatesObjects javaThing) {
+        if (object == null) throw new IllegalArgumentException(javaThing + propertyIRI);
         var protoValue = dev.enola.thing.proto.Value.newBuilder();
+
         // javaThing == null when it's for a Map (from Blank Node)
         // TODO remove null check once fully switching to PredicatesObjects instead Map
         var datatypeIRI = javaThing != null ? javaThing.datatype(propertyIRI) : null;
+
         switch (object) {
             case String string:
                 if (datatypeIRI == null) protoValue.setString(string);

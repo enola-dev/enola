@@ -30,6 +30,7 @@ import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import java.io.IOException;
 import java.util.Optional;
 
+/** Reads a {@link ReadableResource} into an RDFJ4j {@link org.eclipse.rdf4j.model.Model}. */
 public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
 
     private final RdfReaderConverterInto converterInto;
