@@ -36,7 +36,7 @@ public class RdfResourceIntoProtoThingConverter
     // TODO Also implement e.g. JavaResourceIntoThingConverter
 
     private final RdfReaderConverter rdfReaderConverter;
-    private final RdfThingConverter rdfThingConverter = new RdfThingConverter();
+    private final RdfProtoThingsConverter rdfThingConverter = new RdfProtoThingsConverter();
 
     public RdfResourceIntoProtoThingConverter(ResourceProvider rp) {
         this.rdfReaderConverter = new RdfReaderConverter(rp);
