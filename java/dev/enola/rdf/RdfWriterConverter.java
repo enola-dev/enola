@@ -29,6 +29,10 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URISyntaxException;
 
+/**
+ * Writes RDFJ4j {@link Statement}s (like {@link org.eclipse.rdf4j.model.Model}) into a {@link
+ * WritableResource}.
+ */
 public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
 
     @Override

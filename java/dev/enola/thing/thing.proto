@@ -90,6 +90,9 @@ message Value {
     // List of Values.
     List list = 6;
 
+    // TODO Set set = 7; // Or as a "bool ordered = 1;" attribute on List
+    // renamed to Collection
+
     // NB: There are currently intentionally no other "basic types" than
     // string here; because as-is this is primarily mostly intended for end-user
     // viewing (so we convert it before, but preserve the origin via Literal's
@@ -134,7 +137,8 @@ message Value {
     string lang = 2;
   }
 
-  message List {
+  message List {  // TODO Rename to Collection
+    // TODO bool ordered = 1;
     repeated Value values = 1;
   }
 }

@@ -27,16 +27,21 @@ import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.base.CoreDatatype;
+import org.eclipse.rdf4j.model.util.RDFCollections;
+import org.eclipse.rdf4j.model.vocabulary.RDF;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+/**
+ * Converts RDF4j Model into (Proto) Things.
+ *
+ * <p>See {@link ThingsRdfConverter} for the "opposite" of this (and {@link RdfWriterConverter} for
+ * related I/O).
+ */
 public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
-    // TODO Rename RdfThingConverter to RdfProtoThingConverter for clarity (as that's what this is)
+    // TODO Rename RdfThingConverter to RdfProtoThingsConverter for clarity (as that's what this is)
 
     // TODO In general, an RDF stream of statements is not "ordered"; there could be "later updates"
     // to "previous things" at any time. The design of this current default implementation takes
@@ -52,20 +57,28 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
         return convert(input).toList();
     }
 
+    record Pair(Map<String, Thing.Builder> structs, Map<String, BNode> collectionsFirsts) {}
+
     @Override
     public Stream<Thing.Builder> convert(Model input) {
         // These are the "root" Things; i.e. the Statements where Subject is an IRI.
         final Map<IRI, Thing.Builder> roots = new HashMap<>();
 
         // These are the "contained" Things, which are inside "struct" of another Thing; i.e. the
-        // Statements where the Subject is a BNode with an ID (which is the key of this
+        // Statements where the Subject is a BNode with an IRI (which is the key of this
         // Map).
         Map<String, Thing.Builder> structs = new HashMap<>();
 
-        List<Consumer<Map<String, Thing.Builder>>> deferred = new ArrayList<>();
+        // These are the RDF Collections; the key is again a BNode IRI
+        Map<String, BNode> collectionsFirsts = new HashMap<>();
+
+        Pair pair = new Pair(structs, collectionsFirsts);
+
+        List<Consumer<Pair>> deferred = new ArrayList<>();
 
         for (var statement : input) {
             Thing.Builder thing;
+            var predicate = statement.getPredicate();
             var subject = statement.getSubject();
             if (subject.isIRI()) {
                 var subjectIRI = (IRI) subject;
@@ -76,53 +89,48 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
             } else if (subject.isBNode()) {
                 var subjectBNode = (BNode) subject;
                 var subjectBNodeID = subjectBNode.getID();
+                if (predicate.equals(RDF.FIRST)) {
+                    collectionsFirsts.put(subjectBNodeID, subjectBNode);
+                    continue;
+                } else if (predicate.equals(RDF.REST)) {
+                    // Ignore, because the use of RDFCollections.asValues() handles this, see above.
+                    continue;
+                }
                 thing = structs.computeIfAbsent(subjectBNodeID, id -> Thing.newBuilder());
 
             } else throw new UnsupportedOperationException("TODO: " + subject);
 
             // The goal of this is to turn an RDF Object List into a Thing List Value
-            var predicate = statement.getPredicate();
             var statements = input.filter(subject, predicate, null);
             if (statements.size() == 1) {
-                convertAndPut(thing, predicate, statement.getObject(), deferred);
-                var value = convert(thing, predicate, statement.getObject(), deferred);
+                var value = convert(input, thing, predicate, statement.getObject(), deferred);
                 thing.putFields(predicate.stringValue(), value.build());
             } else {
-                var valueList = dev.enola.thing.proto.Value.List.newBuilder();
+                // TODO Should distinguish List vs Set with 'ordered' in Thing.proto ...
+                var protoValueList = dev.enola.thing.proto.Value.List.newBuilder();
                 for (var subStatement : statements) {
                     var object = subStatement.getObject();
-                    var value = convert(thing, predicate, object, deferred);
-                    valueList.addValues(value);
+                    var protoValue = convert(input, thing, predicate, object, deferred);
+                    protoValueList.addValues(protoValue);
                 }
-                var value = Value.newBuilder().setList(valueList);
+                var value = Value.newBuilder().setList(protoValueList);
                 thing.putFields(statement.getPredicate().stringValue(), value.build());
             }
-            // TODO It's surprising that this this really works (test pass) as-is?
-            // What causes it not to repeat (duplicate) values?
         }
 
         for (var action : deferred) {
-            action.accept(structs);
+            action.accept(pair);
         }
 
         return roots.values().stream();
     }
 
-    // TODO Remove this again?
-    private static void convertAndPut(
-            Builder thing,
-            IRI predicate,
-            org.eclipse.rdf4j.model.Value object,
-            List<Consumer<Map<String, Builder>>> deferred) {
-        var value = convert(thing, predicate, object, deferred);
-        thing.putFields(predicate.stringValue(), value.build());
-    }
-
     private static dev.enola.thing.proto.Value.Builder convert(
+            Model model,
             Builder thing,
             IRI predicate,
             org.eclipse.rdf4j.model.Value rdfValue,
-            List<Consumer<Map<String, Builder>>> deferred) {
+            List<Consumer<Pair>> deferred) {
         var value = Value.newBuilder();
         if (rdfValue.isIRI()) {
             value.setLink(rdfValue.stringValue());
@@ -150,12 +158,29 @@ public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>
         } else if (rdfValue.isBNode()) {
             var bNodeID = ((BNode) rdfValue).getID();
             deferred.add(
-                    map -> {
-                        var containedThing = map.get(bNodeID);
-                        if (containedThing == null)
-                            throw new IllegalStateException(
-                                    bNodeID + " not found: " + map.keySet());
-                        value.setStruct(containedThing);
+                    pair -> {
+                        var containedThing = pair.structs.get(bNodeID);
+                        if (containedThing != null) {
+                            value.setStruct(containedThing);
+
+                        } else {
+                            var collectionStatement = pair.collectionsFirsts.get(bNodeID);
+                            if (collectionStatement == null)
+                                throw new IllegalStateException(
+                                        bNodeID
+                                                + " not found, neither in structs nor in"
+                                                + " collectionsFirsts");
+
+                            var rdfValueList = new ArrayList<org.eclipse.rdf4j.model.Value>(0);
+                            RDFCollections.asValues(model, collectionStatement, rdfValueList);
+                            var protoValueList = dev.enola.thing.proto.Value.List.newBuilder();
+                            for (var rdf4jValue : rdfValueList) {
+                                var protoValue =
+                                        convert(model, thing, predicate, rdf4jValue, deferred);
+                                protoValueList.addValues(protoValue);
+                            }
+                            value.setList(protoValueList);
+                        }
                         thing.putFields(predicate.stringValue(), value.build());
                     });
 

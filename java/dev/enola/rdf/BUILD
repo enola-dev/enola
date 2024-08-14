@@ -46,6 +46,7 @@ java_library(
         "@maven//:org_eclipse_rdf4j_rdf4j_common_io",
         "@maven//:org_eclipse_rdf4j_rdf4j_model",
         "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model_vocabulary",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_jsonld",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_turtle",
