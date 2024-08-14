@@ -83,7 +83,7 @@ public class ListThingService implements ThingService {
             var value = Value.newBuilder().setList(list);
             var thing = Thing.newBuilder();
             thing.setIri(ENOLA_ROOT_LIST_IRIS);
-            thing.putFields(ENOLA_ROOT_LIST_PROPERTY, value.build());
+            thing.putProperties(ENOLA_ROOT_LIST_PROPERTY, value.build());
             return Any.pack(thing.build());
         }
     }

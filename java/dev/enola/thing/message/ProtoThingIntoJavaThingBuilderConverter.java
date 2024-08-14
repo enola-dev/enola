@@ -53,7 +53,7 @@ public class ProtoThingIntoJavaThingBuilderConverter
     public boolean convertInto(ThingOrBuilder from, Builder into)
             throws ConversionException, IOException {
         into.iri(from.getIri());
-        for (var entry : from.getFieldsMap().entrySet()) {
+        for (var entry : from.getPropertiesMap().entrySet()) {
             var iri = entry.getKey();
             var value = entry.getValue();
             if (Value.KindCase.KIND_NOT_SET.equals(value.getKindCase()))

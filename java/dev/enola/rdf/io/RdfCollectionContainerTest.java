@@ -97,7 +97,7 @@ public class RdfCollectionContainerTest {
         Thing expectedProtoThing =
                 Thing.newBuilder()
                         .setIri(thingIRI)
-                        .putFields(
+                        .putProperties(
                                 propertyIRI,
                                 Value.newBuilder()
                                         .setList(

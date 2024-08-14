@@ -70,7 +70,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
         for (var field : message.getAllFields().entrySet()) {
             var descriptor = field.getKey();
             var key = ProtoTypes.getFieldERI(descriptor);
-            thing.putFields(key, listToThing(field.getValue(), descriptor, message).build());
+            thing.putProperties(key, listToThing(field.getValue(), descriptor, message).build());
         }
         return thing;
     }
@@ -114,8 +114,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
 
     private static final ObjectToValueConverter timestampValueConverter =
             input -> {
-                if (!(input instanceof Timestamp)) return Optional.empty();
-                Timestamp ts = (Timestamp) input;
+                if (!(input instanceof Timestamp ts)) return Optional.empty();
                 return Optional.of(toLiteral(Timestamps.toString(ts), KIRI.XSD.TS));
             };
 

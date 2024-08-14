@@ -48,7 +48,7 @@ public class ProtoTypes {
         // the "$etype" or (https://json-schema.org) "$schema", or other schemas by Enola's
         // "multi-schema support".
         var messageDescriptor = message.getDescriptorForType();
-        thing.putFields(
+        thing.putProperties(
                 MESSAGE_DESCRIPTOR_PREDICATE_IRI, toThingValueLink(messageDescriptor).build());
         return thing;
     }

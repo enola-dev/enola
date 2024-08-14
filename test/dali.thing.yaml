@@ -15,7 +15,7 @@
 # limitations under the License.
 
 iri: http://example.enola.dev/Dalí
-fields:
+properties:
   http://xmlns.com/foaf/0.1/firstName:
     { list: { values: [{ string: "Salvador" }, { string: "Domingo" }, { string: "Felipe" }, { string: "Jacinto" }] } }
   http://www.w3.org/1999/02/22-rdf-syntax-ns#type: { link: "http://example.enola.dev/Artist" }
