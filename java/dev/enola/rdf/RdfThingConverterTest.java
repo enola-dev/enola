@@ -48,7 +48,7 @@ public class RdfThingConverterTest {
     private final ProtoIO protoReader = new ProtoIO();
     private final RdfReaderConverter rdfReader = new RdfReaderConverter(iri -> null);
     private final RdfProtoThingsConverter rdfToThingConverter = new RdfProtoThingsConverter();
-    private final ThingRdfConverter thingToRdfConverter = new ThingRdfConverter();
+    private final ProtoThingRdfConverter thingToRdfConverter = new ProtoThingRdfConverter();
 
     private Model rdf;
     private Thing picassoThing;

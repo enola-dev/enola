@@ -44,16 +44,16 @@ import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ThingRdfConverter
+public class ProtoThingRdfConverter
         implements Converter<ThingOrBuilder, Model>, ConverterInto<ThingOrBuilder, RDFHandler> {
 
     private final ValueFactory vf;
 
-    public ThingRdfConverter(ValueFactory vf) {
+    public ProtoThingRdfConverter(ValueFactory vf) {
         this.vf = vf;
     }
 
-    public ThingRdfConverter() {
+    public ProtoThingRdfConverter() {
         // just like in Values.VALUE_FACTORY
         this(new ValidatingValueFactory(SimpleValueFactory.getInstance()));
     }
