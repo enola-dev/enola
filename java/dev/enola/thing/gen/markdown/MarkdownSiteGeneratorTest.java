@@ -35,8 +35,8 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.model.enola.files.FileThingConverter;
+import dev.enola.rdf.RdfProtoThingsConverter;
 import dev.enola.rdf.RdfReaderConverter;
-import dev.enola.rdf.RdfThingConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
@@ -152,7 +152,7 @@ public class MarkdownSiteGeneratorTest {
 
     private ImmutableSet<Thing> load(ReadableResource cpr) {
         var rdf4jModel = new RdfReaderConverter(iri -> null).convert(cpr).get();
-        var protoThingStream = new RdfThingConverter().convert(rdf4jModel);
+        var protoThingStream = new RdfProtoThingsConverter().convert(rdf4jModel);
         return protoThingStream.map(Thing.Builder::build).collect(ImmutableSet.toImmutableSet());
     }
 

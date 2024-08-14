@@ -40,8 +40,7 @@ import java.util.stream.Stream;
  * <p>See {@link ThingsRdfConverter} for the "opposite" of this (and {@link RdfWriterConverter} for
  * related I/O).
  */
-public class RdfThingConverter implements Converter<Model, Stream<Thing.Builder>> {
-    // TODO Rename RdfThingConverter to RdfProtoThingsConverter for clarity (as that's what this is)
+public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Builder>> {
 
     // TODO In general, an RDF stream of statements is not "ordered"; there could be "later updates"
     // to "previous things" at any time. The design of this current default implementation takes

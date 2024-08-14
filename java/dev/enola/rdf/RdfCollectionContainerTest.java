@@ -70,7 +70,7 @@ public class RdfCollectionContainerTest {
         ResourceProvider rp = iri -> null;
 
         var rrc = new RdfReaderConverter(rp);
-        var rdc = new RdfThingConverter();
+        var rdc = new RdfProtoThingsConverter();
 
         var resource = StringResource.of(rdf, RdfMediaTypes.TURTLE);
         var model = rrc.convert(resource).get();
