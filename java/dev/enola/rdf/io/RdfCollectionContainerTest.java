@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,6 +24,7 @@ import com.google.common.truth.extensions.proto.ProtoTruth;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.Link;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ThingAdapter;

@@ -15,39 +15,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.io.resource.WritableResource;
-import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
+import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.DynamicModel;
 import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
-public class RdfResourceConverter implements CatchingResourceConverter {
+import java.io.IOException;
+import java.util.Optional;
 
-    // TODO Add missing tests for this this class (it may well not work as-is yet)
+/** Reads a {@link ReadableResource} into an RDFJ4j {@link org.eclipse.rdf4j.model.Model}. */
+public class RdfReaderConverter implements OptionalConverter<ReadableResource, Model> {
 
-    // TODO Add conversion to/from Thing (incl. "chaining" to Thing YAML/JSON/BinPB)
+    private final RdfReaderConverterInto converterInto;
 
-    private final RdfReaderConverterInto reader;
-    private final RdfWriterConverter writer = new RdfWriterConverter();
-
-    public RdfResourceConverter(ResourceProvider resourceProvider) {
-        this.reader = new RdfReaderConverterInto(resourceProvider);
+    public RdfReaderConverter(ResourceProvider rp) {
+        this.converterInto = new RdfReaderConverterInto(rp);
     }
 
     @Override
-    public boolean convertIntoThrows(ReadableResource from, WritableResource into)
-            throws Exception {
+    public Optional<Model> convert(ReadableResource from) throws ConversionException {
+        try {
+            if (from.byteSource().isEmpty()) return Optional.empty();
+        } catch (IOException e) {
+            throw new ConversionException("isEmpty failed: " + from.uri(), e);
+        }
 
-        // TODO It's probably possible to do this "bridging" more #efficiently ?
         var model = new DynamicModel(new LinkedHashModelFactory());
         var handler = new StatementCollector(model);
-        if (reader.convertInto(from, handler)) {
-            return writer.convertInto(model, into);
-        } else return false;
+        if (converterInto.convertInto(from, handler)) {
+            return Optional.of(model);
+        } else {
+            return Optional.empty();
+        }
     }
 }

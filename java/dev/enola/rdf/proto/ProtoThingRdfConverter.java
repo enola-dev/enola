@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.proto;
 
 import static java.util.Collections.singleton;
 
@@ -44,6 +44,12 @@ import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Converts a Proto {@link Thing} to an RDF4j {@link Model} or into an RDF4j {@link
+ * org.eclipse.rdf4j.rio.RDFHandler}.
+ *
+ * <p>See {@link RdfProtoThingsConverter} for the "opposite" of this.
+ */
 public class ProtoThingRdfConverter
         implements Converter<ThingOrBuilder, Model>, ConverterInto<ThingOrBuilder, RDFHandler> {
 

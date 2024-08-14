@@ -20,7 +20,7 @@ package dev.enola.thing.gen.markdown;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
-import dev.enola.rdf.ProtoThingIntoJsonLdAppendableConverter;
+import dev.enola.rdf.io.ProtoThingIntoJsonLdAppendableConverter;
 import dev.enola.thing.gen.DocGenConstants;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;

@@ -15,12 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterIntoAppendable;
 import dev.enola.common.io.resource.AppendableResource;
 import dev.enola.common.io.resource.WritableResource;
+import dev.enola.rdf.proto.ProtoThingRdfConverter;
 import dev.enola.thing.proto.Thing;
 
 import java.io.IOException;

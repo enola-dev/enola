@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
-import static dev.enola.rdf.ModelSubject.assertThat;
+import static dev.enola.rdf.io.ModelSubject.assertThat;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.*;

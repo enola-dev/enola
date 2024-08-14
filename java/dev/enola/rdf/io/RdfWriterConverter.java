@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
@@ -33,7 +33,7 @@ import java.net.URISyntaxException;
  * Writes RDFJ4j {@link Statement}s (like {@link org.eclipse.rdf4j.model.Model}) into a {@link
  * WritableResource}.
  */
-public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
+class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
 
     @Override
     public boolean convertInto(Iterable<Statement> from, WritableResource into)

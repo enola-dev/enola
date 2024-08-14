@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.proto;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
@@ -35,10 +35,9 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
- * Converts RDF4j Model into (Proto) Things.
+ * Converts RDF4j {@link Model} into Proto {@link Thing}s.
  *
- * <p>See {@link ThingsRdfConverter} for the "opposite" of this (and {@link RdfWriterConverter} for
- * related I/O).
+ * <p>See {@link ProtoThingRdfConverter} for the "opposite" of this.
  */
 public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Builder>> {
 

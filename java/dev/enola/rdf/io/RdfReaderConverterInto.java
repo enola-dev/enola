@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import static com.google.common.net.MediaType.JSON_UTF_8;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-import static dev.enola.rdf.RdfMediaTypeYamlLd.YAML_LD;
-import static dev.enola.rdf.RdfMediaTypes.JSON_LD;
+import static dev.enola.rdf.io.RdfMediaTypeYamlLd.YAML_LD;
+import static dev.enola.rdf.io.RdfMediaTypes.JSON_LD;
 
 import com.google.common.net.MediaType;
 
@@ -47,7 +47,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-public class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandler> {
+class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandler> {
 
     public static final String CONTEXT_QUERY_PARAMETER = "context";
 

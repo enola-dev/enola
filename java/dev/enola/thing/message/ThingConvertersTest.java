@@ -27,8 +27,8 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.model.schemaorg.Datatypes;
-import dev.enola.rdf.RdfProtoThingsConverter;
-import dev.enola.rdf.RdfReaderConverter;
+import dev.enola.rdf.io.RdfReaderConverter;
+import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.proto.Thing;
 

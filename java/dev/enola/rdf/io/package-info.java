@@ -16,6 +16,6 @@
  * limitations under the License.
  */
 @NullMarked
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import org.jspecify.annotations.NullMarked;

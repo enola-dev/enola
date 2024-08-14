@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
-import dev.enola.rdf.RdfResourceIntoThingConverter;
+import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.io.Loader;

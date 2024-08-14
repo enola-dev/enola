@@ -39,7 +39,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
-import dev.enola.rdf.RdfMediaTypes;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.gexf.GexfMediaType;
 import dev.enola.thing.gen.graphviz.GraphvizMediaType;

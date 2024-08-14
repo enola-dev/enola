@@ -15,23 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+@NullMarked
+package dev.enola.rdf.proto;
 
-import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.ConverterInto;
-import dev.enola.thing.Thing;
-
-import org.eclipse.rdf4j.model.Model;
-
-import java.io.IOException;
-
-/** Converts an Enola {@link Thing} API into an RDF4j {@link Model}. */
-public class ThingsRdfConverter implements ConverterInto<Thing, Model> {
-
-    // TODO Implement ThingsRdfConverter (directly from [new] Java Thing API, no longer Proto Thing)
-
-    @Override
-    public boolean convertInto(Thing from, Model into) throws ConversionException, IOException {
-        throw new IllegalStateException("TODO Implement me! ;-)");
-    }
-}
+import org.jspecify.annotations.NullMarked;

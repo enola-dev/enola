@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import static no.hasmac.jsonld.JsonLdErrorCode.LOADING_REMOTE_CONTEXT_FAILED;
 
@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.URI;
 
-public class JsonLdDocumentLoader implements no.hasmac.jsonld.loader.DocumentLoader {
+class JsonLdDocumentLoader implements no.hasmac.jsonld.loader.DocumentLoader {
 
     private final ResourceProvider rp;
 

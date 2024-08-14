@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf;
+package dev.enola.rdf.io;
 
 import com.google.protobuf.Message;
 
@@ -23,6 +23,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
