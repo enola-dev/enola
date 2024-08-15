@@ -10,11 +10,11 @@
 
 :greeting3 a :Salutation;
   :message "hello, world > 42"; # The '>' needs escaping in GV HTML-like Labels
-  <https://enola.dev/files/Node/createdAt> "2024-08-11T01:50:56.737412406Z"^^enola:FileTime;
+  <https://enola.dev/files/Node/deletedAt> "2024-08-11T01:50:56.737412406Z"^^enola:FileTime;
   :firstName "Salvador", "Domingo", "Felipe", "Jacinto";
   :object :world.
 
-:world
+:world a :Planet;
   enola:wikipedia "https://en.wikipedia.org/wiki/Earth";
   schema:image "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg";
   # https://en.wikipedia.org/wiki/Dating_creation#Egyptian ;-)
@@ -22,3 +22,6 @@
   # https://en.wikipedia.org/wiki/List_of_dates_predicted_for_apocalyptic_events#Far_future_predictions
   enola:endedAt "+300000-12-31T00:00:00Z"^^enola:Timestamp;
   :population "18446744073709551615"^^enola:UnsignedLong.
+
+:orphan # !a - has no parent
+  enola:emoji "👋".

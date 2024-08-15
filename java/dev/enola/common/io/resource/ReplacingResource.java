@@ -22,6 +22,8 @@ import java.io.IOException;
 /** {@link ReadableResource} which replaces text. */
 public class ReplacingResource extends DelegatingReadableResource {
 
+    // TODO Implement this more streaming-ly, without an intermediate String?
+
     public ReplacingResource(ReadableResource delegate, String... replacements) throws IOException {
         super(replace(delegate, replacements));
     }
@@ -35,6 +37,9 @@ public class ReplacingResource extends DelegatingReadableResource {
         for (int i = 0; i < replacements.length; i += 2) {
             template = template.replace(replacements[i], replacements[i + 1]);
         }
-        return StringResource.of(template, delegate.mediaType());
+        // NOT: return StringResource.of(template, delegate.mediaType());
+        var replaced = new MemoryResource(delegate.mediaType());
+        replaced.charSink().write(template);
+        return replaced;
     }
 }

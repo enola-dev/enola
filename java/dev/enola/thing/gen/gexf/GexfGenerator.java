@@ -54,8 +54,8 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
             throws ConversionException, IOException {
         out.append(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                        + "<gexf xmlns=\"http://gexf.net/1.3\""
-                        + " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                        + "<gexf xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                        + " xmlns=\"http://gexf.net/1.3\""
                         + " xsi:schemaLocation=\"http://gexf.net/1.3 http://gexf.net/1.3/gexf.xsd\""
                         + " version=\"1.3\">\n");
         out.append("  <meta><creator>Enola.dev</creator></meta>\n");

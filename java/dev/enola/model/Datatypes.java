@@ -33,6 +33,8 @@ public final class Datatypes {
 
     // Nota Bene: There's no NULL here - the absence of a value is not a Datatype!
 
+    // TODO Compose ALL using Auto-Service
+
     // TODO Eventually replace this class with a declarative models/schema.org/datatypes.ttl ?
 
     // TODO MAP, LIST etc. from https://yaml.org/type/
@@ -44,8 +46,15 @@ public final class Datatypes {
                     dev.enola.model.enola.Datatypes.ALL,
                     dev.enola.model.schemaorg.Datatypes.ALL);
 
+    /**
+     * {@link DatatypeRepository} of fixed known built-in datatypes.
+     *
+     * <p>This is primarily intended for unit tests; real applications typically use another
+     * implementation, which may well permit more "dynamic" datatypes.
+     */
+    @SuppressWarnings("unchecked")
     public static final DatatypeRepository DTR =
-            new DatatypeRepositoryBuilder().store(Datatypes.ALL).build();
+            new DatatypeRepositoryBuilder().storeAll(Datatypes.ALL).build();
 
     private Datatypes() {}
 }

@@ -19,6 +19,8 @@ package dev.enola.common.convert;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.errorprone.annotations.Immutable;
+
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ import java.util.function.Function;
  * An ObjectToStringBiConverter which uses {@link Object#toString()} for {@link
  * ObjectToStringBiConverter#convertTo(Object)}, and which also checks the type to convert from.
  */
+@Immutable
 public class ObjectToStringWithToStringBiConverter<T> implements ObjectToStringBiConverter<T> {
 
     // See also ObjectConverter, which is similar to this, but the "opposite" (can't unify them)
@@ -44,7 +47,7 @@ public class ObjectToStringWithToStringBiConverter<T> implements ObjectToStringB
     }
 
     @Override
-    public <X> Optional<X> convertToType(Object input, Class<X> type) throws IOException {
+    public <X> Optional<X> convertToType(T input, Class<X> type) throws IOException {
         if (input != null && from.equals(input.getClass()))
             return ObjectToStringBiConverter.super.convertToType(input, type);
         else return Optional.empty();

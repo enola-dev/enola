@@ -55,7 +55,7 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     @Override
     @CanIgnoreReturnValue
-    public final Void store(Iterable<T> items) {
+    public final Void storeAll(Iterable<T> items) {
         for (T item : items) {
             store(item);
         }

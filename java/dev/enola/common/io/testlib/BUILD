@@ -25,6 +25,8 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/canonicalize",
+        "//java/dev/enola/common/diff/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/yamljson",
         "@maven//:com_google_errorprone_error_prone_annotations",

@@ -25,6 +25,7 @@ java_library(
     ),
     javacopts = ["--enable-preview"],
     resource_strip_prefix = "java/dev/enola/web/resources/",
+    # TODO Use **/*.html instead of **/* here (like in gen/BUILD)
     resources = glob(["resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [

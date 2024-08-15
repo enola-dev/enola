@@ -26,6 +26,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -39,6 +40,8 @@ import java.util.function.Supplier;
 
 public final class URIs {
     // see also class dev.enola.common.io.iri.IRIs
+
+    // TODO Eventually completely replace all this with the intended new IRI class!
 
     // TODO Review if all this String instead of URI-based processing could be removed and replaced
     // perhaps by fully adopting https://github.com/enola-dev/enola/issues/797; and/or alternatively
@@ -151,7 +154,11 @@ public final class URIs {
         String query = uri.getQuery();
         if (Strings.isNullOrEmpty(query)) {
             var part = uri.getSchemeSpecificPart();
-            query = getQueryString(part);
+            try {
+                query = getQueryString(part);
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new IllegalStateException(uri.toString(), e);
+            }
         }
         return getQueryMapGivenQueryString(query);
     }
@@ -369,6 +376,25 @@ public final class URIs {
                     null);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("TODO FIXME" + uri, e);
+        }
+    }
+
+    public static URI getBase(URI uri) throws IOException {
+        try {
+            var path = uri.getPath();
+            if (path == null)
+                // throw new IllegalArgumentException("Cannot get Path from: " + uri);
+                return URI.create("");
+            if (path.endsWith("/"))
+                if (uri.getQuery() == null && uri.getFragment() == null) return uri;
+                // NB: Both query as well as fragment are *intentionally* dropped in this case!
+                else return new URI(uri.getScheme(), uri.getAuthority(), path, null);
+
+            path = path.substring(0, path.lastIndexOf('/'));
+            // Again, same as above, we're ignoring query & fragment
+            return new URI(uri.getScheme(), uri.getAuthority(), path, null);
+        } catch (URISyntaxException e) {
+            throw new IOException("TODO Why is this new URI invalid: " + uri, e);
         }
     }
 

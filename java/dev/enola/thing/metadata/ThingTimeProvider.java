@@ -41,20 +41,22 @@ public class ThingTimeProvider {
         // eventually the IRIs of these properties should be inferred e.g. using Enola Meta schema
         // rdfs:subPropertyOf ...
 
+        var timestampIRI = "https://enola.dev/timestamp";
         var createdAtIRI = "https://enola.dev/createdAt";
         var startedAtIRI = "https://enola.dev/startedAt";
         var fileCreatedAt = "https://enola.dev/files/Node/createdAt";
         var start =
-                thing.getOptional(createdAtIRI, Instant.class)
+                thing.getOptional(timestampIRI, Instant.class)
+                        .or(() -> thing.getOptional(createdAtIRI, Instant.class))
                         .or(() -> thing.getOptional(startedAtIRI, Instant.class))
                         .or(() -> thing.getOptional(fileCreatedAt, Instant.class))
                         .orElse(Instant.MIN);
 
-        var deleteAtIRI = "https://enola.dev/deletedAt";
+        var deletedAtIRI = "https://enola.dev/deletedAt";
         var endedAtIRI = "https://enola.dev/endedAt";
         var fileDeletedAt = "https://enola.dev/files/Node/deletedAt";
         var end =
-                thing.getOptional(deleteAtIRI, Instant.class)
+                thing.getOptional(deletedAtIRI, Instant.class)
                         .or(() -> thing.getOptional(endedAtIRI, Instant.class))
                         .or(() -> thing.getOptional(fileDeletedAt, Instant.class))
                         .orElse(Instant.MAX);

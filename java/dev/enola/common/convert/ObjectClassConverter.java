@@ -23,9 +23,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 /** Converts an object to a requested (other) class, if it can. */
-public interface ObjectClassConverter {
-    // TODO Why?! ObjectClassConverter<I> convertToType(I input, Class<T> type)
+public interface ObjectClassConverter<I> {
 
     // TODO Remove throws IOException again, as this seems dumb...
-    <T> Optional<T> convertToType(@Nullable Object input, Class<T> type) throws IOException;
+    <X> Optional<X> convertToType(@Nullable I input, Class<X> type) throws IOException;
 }

@@ -25,7 +25,7 @@ import java.util.Optional;
 /** Converts objects of type T to & from String, if it can. */
 @Immutable
 public interface ObjectToStringBiConverter<T>
-        extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter {
+        extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter<T> {
 
     @Override
     default boolean convertInto(T from, Appendable into) throws ConversionException, IOException {
@@ -36,11 +36,16 @@ public interface ObjectToStringBiConverter<T>
     @Override
     @SuppressWarnings("unchecked")
     // TODO Remove throws IOException again (together with rm from super type)
-    default <X> Optional<X> convertToType(Object input, Class<X> type) throws IOException {
+    default <X> Optional<X> convertToType(T input, Class<X> type) throws IOException {
         // See also ObjectConverter's & other similar convertToType() implementations
         // TODO Re-consider class.equals -VS- isAssignableFrom, here & in ObjectConverter
         if (input != null && String.class.equals(type))
-            return (Optional<X>) Optional.of(convertTo((T) input));
+            return (Optional<X>) Optional.of(convertTo(input));
         return Optional.empty();
+    }
+
+    @SuppressWarnings("unchecked")
+    default <X> Optional<X> convertObjectToType(Object input, Class<X> type) throws IOException {
+        return convertToType((T) input, type);
     }
 }

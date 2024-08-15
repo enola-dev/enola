@@ -24,7 +24,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ObjectClassConverterChain implements ObjectClassConverter {
+public class ObjectClassConverterChain implements ObjectClassConverter<Object> {
 
     private final Iterable<ObjectClassConverter> converters;
 

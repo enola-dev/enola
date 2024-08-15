@@ -22,12 +22,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.time.Instant;
 import java.util.*;
 
 public final class JSON {
 
     private static GsonBuilder newBuilder() {
-        return new GsonBuilder().disableJdkUnsafe().disableHtmlEscaping();
+        return new GsonBuilder()
+                .disableJdkUnsafe()
+                .disableHtmlEscaping()
+                .registerTypeHierarchyAdapter(Instant.class, new InstantTypeAdapter());
     }
 
     private static final Gson read = newBuilder().create();

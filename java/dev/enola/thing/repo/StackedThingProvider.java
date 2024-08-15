@@ -41,7 +41,7 @@ public class StackedThingProvider implements ThingProvider {
     }
 
     public StackedThingProvider(Iterable<Thing> things) {
-        this(new ThingMemoryRepositoryROBuilder().store(things).build());
+        this(new ThingMemoryRepositoryROBuilder().storeAll(things).build());
     }
 
     @Override

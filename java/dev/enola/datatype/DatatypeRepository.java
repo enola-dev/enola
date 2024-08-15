@@ -25,10 +25,18 @@ import org.jspecify.annotations.Nullable;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * {@link Repository} of {@link Datatype}.
+ *
+ * <p>Applications may have an implementation of this which permits "dynamic" datatypes.
+ *
+ * <p>Tests might want to use the fixed {@link dev.enola.model.Datatypes#DTR}.
+ */
 public interface DatatypeRepository extends Repository<Datatype<?>> {
 
     Optional<Datatype<?>> match(String text);
 
+    /** DatatypeRepository which is always empty. */
     DatatypeRepository EMPTY =
             new DatatypeRepository() {
                 @Override
@@ -42,11 +50,12 @@ public interface DatatypeRepository extends Repository<Datatype<?>> {
                 }
 
                 @Override
-                public @Nullable Datatype<?> get(String iri) {
+                public @Nullable Datatype<Object> get(String iri) {
                     return null;
                 }
             };
 
+    /** DatatypeRepository from {@link TLC}. */
     DatatypeRepository CTX =
             new DatatypeRepository() {
                 @Override

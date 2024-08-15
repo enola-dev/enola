@@ -22,52 +22,83 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
+import dev.enola.common.canonicalize.Canonicalizer;
+import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.yamljson.JSON;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 
+/**
+ * <a href="https://github.com/google/truth">Google Truth</a> custom <code>Subject</code> for {@link
+ * dev.enola.common.io.resource.Resource}.
+ *
+ * <p>Resource content is <i>canonicalized</i> (AKA <i>normalized</i>), based on <code>mediaType
+ * </code>, before comparisons.
+ */
 public final class ResourceSubject extends Subject {
 
-    public static ResourceSubject assertThat(ReadableResource actual) {
+    public static ResourceSubject assertThat(@Nullable ReadableResource actual) {
         return assertAbout(resources()).that(actual);
     }
 
-    public static Factory<ResourceSubject, ReadableResource> resources() {
+    private static Factory<ResourceSubject, ReadableResource> resources() {
         return ResourceSubject::new;
     }
 
-    private final ReadableResource actual;
+    private final @Nullable ReadableResource actual;
 
-    public ResourceSubject(FailureMetadata metadata, ReadableResource actual) {
+    public ResourceSubject(FailureMetadata metadata, @Nullable ReadableResource actual) {
         super(metadata, actual);
         this.actual = actual;
     }
 
-    public void hasCharsEqualTo(ReadableResource resource) throws IOException {
-        check("charSource")
-                .that(actual.charSource().read())
-                .isEqualTo(resource.charSource().read());
+    private String canonicalize(@Nullable ReadableResource resource) throws IOException {
+        if (resource == null) return "";
+        if (resource.byteSource().isEmpty()) return "";
+        var canonicalized = new MemoryResource(resource.mediaType(), resource.uri());
+        Canonicalizer.canonicalize(resource, canonicalized, true);
+        return canonicalized.charSource().read();
     }
 
-    public void containsCharsOf(ReadableResource resource) throws IOException {
-        var expected = resource.charSource().read();
-        if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
-        check("charSource").that(actual.charSource().read()).contains(expected);
+    // TODO drop *Chars* - after making it work for any Resource - even just binary
+    public void hasCharsEqualTo(ReadableResource expected) throws IOException {
+        var actualChars = canonicalize(actual);
+        var expectedChars = canonicalize(expected);
+        check("charSource").that(actualChars).isEqualTo(expectedChars);
+        // TODO The DiffingStringSubject as-is makes it HARDER instead of easier to see... :-(
+        // DiffingStringSubject.assertThat(actualChars).isEqualTo(expectedChars);
     }
 
-    public void containsCharsOfIgnoreEOL(ReadableResource resource) throws IOException {
-        var expected = resource.charSource().read();
-        if (expected.isBlank()) throw new IllegalArgumentException(resource + " is blank");
-        check("charSource")
-                .that(trimLineEndWhitespace(actual.charSource().read()))
-                .contains(expected);
+    // TODO drop *Chars* - after making it work for any Resource - even just binary
+    public void containsCharsOf(ReadableResource expected) throws IOException {
+        var actualChars = canonicalize(actual);
+        var expectedChars = canonicalize(expected);
+        if (expectedChars.isBlank()) throw new IllegalArgumentException(expected + " is blank");
+        check("charSource").that(actualChars).contains(expectedChars);
     }
 
-    public void hasJSONEqualTo(ReadableResource resource) throws IOException {
+    // TODO Make sure canonicalize always either adds or does not add EOL, and get rid of this!
+    public void containsCharsOfIgnoreEOL(ReadableResource expected) throws IOException {
+        var actualChars = canonicalize(actual);
+        var expectedChars = canonicalize(expected);
+        if (expectedChars.isBlank()) throw new IllegalArgumentException(expected + " is blank");
+        check("charSource").that(trimLineEndWhitespace(actualChars)).contains(expectedChars);
+    }
+
+    /**
+     * @deprecated Normally, this should be able to be replaced with hasCharsEqualTo now?
+     */
+    @Deprecated
+    // TODO Test if this everything works as intended and remove this if replacement is OK?
+    public void hasJSONEqualTo(ReadableResource expected) throws IOException {
+        var actualChars = canonicalize(actual);
+        var expectedChars = canonicalize(expected);
         check("charSourceAsJSON")
-                .that(JSON.canonicalize(actual.charSource().read(), true))
-                .isEqualTo(JSON.canonicalize(resource.charSource().read(), true));
+                .that(JSON.canonicalize(actualChars, true))
+                .isEqualTo(JSON.canonicalize(expectedChars, true));
     }
 
     // TODO other checks?

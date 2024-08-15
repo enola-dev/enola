@@ -55,6 +55,7 @@ MD033:
   allowed_elements:
     - "sub"
     - "script"
+    - "iframe"
 
 # Bare URL are OK
 MD034: false

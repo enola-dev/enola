@@ -34,6 +34,10 @@ import java.util.stream.Stream;
 
 public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
 
+    // TODO Move Glob-based loading from CommandWithModel into here!
+
+    // TODO Support a --strict mode, using a TBD global Strictness TLC
+
     // TODO Load resources multi-threaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
@@ -42,6 +46,10 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
 
     public Loader(UriIntoThingConverters uriIntoThingConverters) {
         this.uriIntoThingConverters = uriIntoThingConverters;
+    }
+
+    public Loader() {
+        this(new UriIntoThingConverters());
     }
 
     @Override

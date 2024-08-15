@@ -26,6 +26,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/datatype",
+        "//java/dev/enola/model",
+        "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:junit_junit",
