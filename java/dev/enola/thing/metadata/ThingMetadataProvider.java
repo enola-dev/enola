@@ -55,6 +55,10 @@ public class ThingMetadataProvider implements MetadataProvider {
         this.ns = ns;
     }
 
+    public Metadata get(Thing thing) {
+        return get(thing, thing.iri());
+    }
+
     @Override
     public Metadata get(String iri) {
         Thing thing = null;

@@ -23,10 +23,14 @@ import java.net.URISyntaxException;
 /**
  * Utility methods for Internationalized Resource Identifiers (IRIs).
  *
- * <p>See <a href="https://datatracker.ietf.org/doc/html/rfc3987">RFC 3987</a>.
+ * <p>See <a href="https://datatracker.ietf.org/doc/html/rfc3987">RFC 3987</a>. (TODO Or perhaps
+ * better rather see <a href="https://url.spec.whatwg.org">WHATWG URL Living Standard</a>, actually?
+ * ;-)
  */
 public final class IRIs {
     // see also class dev.enola.common.io.iri.URIs
+
+    // TODO This is crap; replace all this with the intended new IRI class!
 
     /**
      * Resolves an IRI reference against a base IRI and returns the resulting IRI as a String.

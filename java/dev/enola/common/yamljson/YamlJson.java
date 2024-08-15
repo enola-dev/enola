@@ -24,7 +24,7 @@ import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import java.util.List;
 import java.util.Map;
 
-public class YamlJson {
+public final class YamlJson {
 
     public static final CatchingResourceConverter JSON_TO_YAML =
             (from, into) -> {
@@ -60,4 +60,6 @@ public class YamlJson {
         }
         return JSON.write(root, false);
     }
+
+    private YamlJson() {}
 }

@@ -19,13 +19,18 @@ package dev.enola.thing.impl;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.model.Datatypes;
 import dev.enola.thing.ThingConverterInto;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 
 public class ImmutableThingTest {
 
@@ -74,5 +79,21 @@ public class ImmutableThingTest {
         var testThing = ThingRepositoriesTest.TEST_THING;
         assertThat(testThing.datatype("http://example.com/lit")).isEqualTo("test:type");
         assertThat(testThing.getString("http://example.com/lit")).isEqualTo("k&ç#'");
+    }
+
+    @Test
+    public void fileTimeAsInstant() {
+        var instant = Instant.now();
+        var p = "https://enola.dev/files/Node/createdAt";
+        var thing =
+                ImmutableThing.builder()
+                        .iri("http://example.org")
+                        .set(p, FileTime.from(instant), "https://enola.dev/FileTime")
+                        .build();
+        try (var ctx = TLC.open()) {
+            ctx.push(DatatypeRepository.class, Datatypes.DTR);
+            var actual = thing.get(p, Instant.class);
+            assertThat(actual).isEqualTo(instant);
+        }
     }
 }

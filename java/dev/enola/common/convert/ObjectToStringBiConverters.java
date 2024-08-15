@@ -22,10 +22,12 @@ import com.google.common.primitives.UnsignedLong;
 
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public final class ObjectToStringBiConverters {
 
@@ -94,7 +96,16 @@ public final class ObjectToStringBiConverters {
             new ObjectToStringWithToStringBiConverter<>(
                     // TODO According to FileTime#Instant(), it "can store points on the time-line
                     // further in the future and further in the past than Instant" - so no good?!
-                    FileTime.class, input -> FileTime.from(Instant.parse(input)));
+                    FileTime.class, input -> FileTime.from(Instant.parse(input))) {
+                @Override
+                @SuppressWarnings("unchecked")
+                public <X> Optional<X> convertToType(FileTime input, Class<X> type)
+                        throws IOException {
+                    if (Instant.class.equals(type))
+                        return (Optional<X>) Optional.of(input.toInstant());
+                    return super.convertToType(input, type);
+                }
+            };
 
     private ObjectToStringBiConverters() {}
 }

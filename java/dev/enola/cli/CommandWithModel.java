@@ -20,7 +20,6 @@ package dev.enola.cli;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.stream.GlobResolvers;
 import dev.enola.core.EnolaServiceProvider;
@@ -149,7 +148,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     }
 
     // TODO Move this to class EnolaProvider?
-    protected MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
+    protected ThingMetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
         return new ThingMetadataProvider(
                 new AlwaysThingProviderAdapter(thingProvider, DatatypeRepository.CTX),
                 NamespaceConverter.CTX);

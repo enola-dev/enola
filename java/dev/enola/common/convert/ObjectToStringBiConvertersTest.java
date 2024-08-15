@@ -23,6 +23,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
+import java.util.Optional;
 
 public class ObjectToStringBiConvertersTest {
 
@@ -58,5 +61,13 @@ public class ObjectToStringBiConvertersTest {
         assertThat(bic.convertFrom("true")).isEqualTo(Boolean.TRUE);
         assertThat(bic.convertFrom("false")).isEqualTo(Boolean.FALSE);
         assertThat(bic.convertFrom(null)).isEqualTo(null);
+    }
+
+    @Test
+    public void FILE_TIME_convertTo_Instant() throws IOException {
+        var instant = Instant.now();
+        var fileTime = FileTime.from(instant);
+        var actual = ObjectToStringBiConverters.FILE_TIME.convertToType(fileTime, Instant.class);
+        assertThat(actual).isEqualTo(Optional.of(instant));
     }
 }

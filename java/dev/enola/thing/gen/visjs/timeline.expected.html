@@ -1,0 +1,90 @@
+<!--
+    SPDX-License-Identifier: Apache-2.0
+
+    Copyright 2024 The Enola <https://enola.dev> Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Things Timeline, by Enola.dev</title>
+
+    <style>
+      body,
+      html {
+        font-family: sans-serif;
+      }
+    </style>
+
+    <!-- TODO Use fixed versions! -->
+    <!-- TODO Don't load from unpkg.com, but have local copies in a //third_party module -->
+    <script src="https://unpkg.com/moment@latest" type="text/javascript"></script>
+    <script src="https://unpkg.com/vis-data@latest/peer/umd/vis-data.min.js" type="text/javascript"></script>
+    <script
+      src="https://unpkg.com/vis-timeline@latest/peer/umd/vis-timeline-graph2d.min.js"
+      type="text/javascript"></script>
+    <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="timeline"></div>
+
+    <script type="text/javascript">
+      var container = document.getElementById("timeline")
+
+      var groups = [
+  {
+    "id": "https://example.org/Salutation",
+    "content": "ex:Salutation"
+  },
+  {
+    "id": "https://example.org/Planet",
+    "content": "ex:Planet"
+  }
+]
+      var items = [
+  {
+    "id": "https://example.org/greeting3",
+    "group": "https://example.org/Salutation",
+    "label": "ex:greeting3",
+    "start": "2024-08-11T01:50:56.737412406Z"
+  },
+  {
+    "id": "https://example.org/world",
+    "group": "https://example.org/Planet",
+    "label": "ex:world",
+    "start": "-1000000000-01-02T00:00:00Z",
+    "end": "+300000-12-31T00:00:00Z"
+  }
+]
+
+      var options = {
+        template: function (item, element, data) {
+          if (!item.url) return item.label
+          else return '<a href="' + item.url + '">' + item.label + "</a>"
+        },
+        /*
+      moment: function(date) {
+        // TODO Read TZ from &tz=... URL argument
+        // TODO Does using offset prevent needing to use moment-timezone?
+        // TODO return vis.moment(date).tz('America/Los_Angeles');
+        return date;
+      } */
+      }
+
+      var timeline = new vis.Timeline(container, items, groups, options)
+    </script>
+  </body>
+</html>

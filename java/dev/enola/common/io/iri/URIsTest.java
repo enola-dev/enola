@@ -32,6 +32,7 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -325,5 +326,46 @@ public class URIsTest {
             // TODO assertThat(URIs.absolutify("/test")).isEqualTo("ascheme://authority/test");
         }
         assertThrows(IllegalStateException.class, () -> URIs.absolutify("test"));
+    }
+
+    @Test
+    public void baseOfURI() throws IOException {
+        assertThat(
+                        URIs.getBase(
+                                URI.create(
+                                        "https://www.vorburger.ch/projects/alt/index.html?q=abc#f")))
+                .isEqualTo(URI.create("https://www.vorburger.ch/projects/alt"));
+
+        assertThat(URIs.getBase(URI.create("https://www.vorburger.ch/projects/alt/")))
+                .isEqualTo(URI.create("https://www.vorburger.ch/projects/alt/"));
+
+        assertThat(URIs.getBase(URI.create("https://www.vorburger.ch/projects/alt/?q=abc#f")))
+                .isEqualTo(URI.create("https://www.vorburger.ch/projects/alt/"));
+    }
+
+    @Test
+    @Ignore // TODO FIXME, see class IRIs
+    public void baseOfIRI() throws IOException {
+        assertThat(URIs.getBase(URI.create("https://dév.dev/projects/alt/index.html?q=abc#f")))
+                .isEqualTo(URI.create("https://dév.dev/projects/alt"));
+
+        assertThat(URIs.getBase(URI.create("https://dév.dev/projects/alt/")))
+                .isEqualTo(URI.create("https://dév.dev/projects/alt"));
+
+        assertThat(URIs.getBase(URI.create("https://dév.dev/projects/alt/?q=abc#f")))
+                .isEqualTo(URI.create("https://dév.dev/projects/alt"));
+    }
+
+    @Test
+    @Ignore // TODO FIXME, see class IRIs
+    public void baseOfIRIwithPort() throws IOException {
+        assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/index.html?q=abc#f")))
+                .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
+
+        assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/")))
+                .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
+
+        assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/?q=abc#f")))
+                .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
     }
 }

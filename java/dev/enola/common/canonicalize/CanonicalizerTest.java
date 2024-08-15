@@ -19,7 +19,7 @@ package dev.enola.common.canonicalize;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -40,9 +40,9 @@ public class CanonicalizerTest {
     @Test
     public void unknown() throws IOException {
         var in = new EmptyResource(MediaType.MICROSOFT_WORD);
-        var out = new MemoryResource(MediaType.ANY_TYPE);
-        assertThrows(
-                IllegalArgumentException.class, () -> Canonicalizer.canonicalize(in, out, false));
+        var out = new MemoryResource(MediaType.MICROSOFT_WORD);
+        Canonicalizer.canonicalize(in, out, false);
+        assertThat(out).hasCharsEqualTo(in);
     }
 
     @Test

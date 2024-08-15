@@ -26,7 +26,9 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/convert",
+        "//java/dev/enola/common/html",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/xml",
         "//java/dev/enola/common/yamljson",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
@@ -39,6 +41,7 @@ junit_tests(
     deps = [
         ":canonicalize",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/testlib",
         "//test",
     ],
 )

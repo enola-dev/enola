@@ -27,6 +27,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CharResourceConverter;
+import dev.enola.common.io.resource.convert.IdempotentCopyingResourceNonConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -51,7 +52,9 @@ import java.io.IOException;
  */
 public class Rosetta implements ResourceConverter {
 
-    // TODO This class is in dev.enola.core.rosetta only for now, in order to have classpath access
+    // TODO Merge this with Canonicalizer (and move into dev.enola.common.canonicalize)
+
+    // This class is in dev.enola.core.rosetta only for now, in order to have classpath access
     // to Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below.
     // Eventually it could be moved e.g. to a new dev.enola[.common?].rosetta instead, and use a
     // DescriptorProvider as generic proto Descriptor registry.
@@ -85,6 +88,10 @@ public class Rosetta implements ResourceConverter {
     private final ResourceConverterChain resourceConverterChain;
     private final ResourceProvider rp;
 
+    public Rosetta() {
+        this(ResourceProvider.CTX);
+    }
+
     public Rosetta(ResourceProvider rp) {
         this.rp = rp;
         var tmp = new ThingMetadataProvider(ThingProvider.CTX, NamespaceConverter.CTX);
@@ -97,7 +104,8 @@ public class Rosetta implements ResourceConverter {
                                 new YamlJsonResourceConverter(),
                                 new GraphvizResourceConverter(new GraphvizGenerator(tmp)),
                                 new GexfResourceConverter(new GexfGenerator(tmp)),
-                                new CharResourceConverter()));
+                                new CharResourceConverter(),
+                                new IdempotentCopyingResourceNonConverter()));
     }
 
     @Override

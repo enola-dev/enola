@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public interface ObjectWithTypeTokenConverter
-        extends ObjectClassConverter,
+        extends ObjectClassConverter<Object>,
                 ConverterInto<ObjectWithTypeToken<?>, MutableObjectWithTypeToken<?>> {
 
     @Override

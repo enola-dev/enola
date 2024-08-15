@@ -20,7 +20,7 @@ package dev.enola.common.convert;
 import java.io.IOException;
 import java.util.Optional;
 
-public class IdentityObjectClassConverter implements ObjectClassConverter {
+public class IdentityObjectClassConverter implements ObjectClassConverter<Object> {
 
     @Override
     public <T> Optional<T> convertToType(Object input, Class<T> type) throws IOException {

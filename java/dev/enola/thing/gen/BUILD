@@ -27,6 +27,8 @@ java_library(
         ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
+    resource_strip_prefix = "java/",
+    resources = glob(["**/*.html"]),
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
@@ -36,6 +38,7 @@ java_library(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/time",
         "//java/dev/enola/common/tree",
+        "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "//java/dev/enola/rdf/io",

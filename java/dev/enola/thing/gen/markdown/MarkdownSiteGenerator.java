@@ -24,7 +24,6 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
@@ -32,8 +31,10 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
+import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
 import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
@@ -56,16 +57,17 @@ public class MarkdownSiteGenerator {
     private final URI base;
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
-    private final MetadataProvider metadataProvider;
+    private final ThingMetadataProvider metadataProvider;
     private final DatatypeRepository datatypeRepository;
     private final Templates.Format format;
     private final GraphvizGenerator graphvizGenerator;
     private final GexfGenerator gexfGenerator;
+    private final VisJsTimelineGenerator timelineGenerator;
 
     public MarkdownSiteGenerator(
             URI base,
             ResourceProvider rp,
-            MetadataProvider metadataProvider,
+            ThingMetadataProvider metadataProvider,
             DatatypeRepository datatypeRepository,
             Templates.Format format) {
         this.base = base;
@@ -86,6 +88,7 @@ public class MarkdownSiteGenerator {
         this.rp = rp;
         this.graphvizGenerator = new GraphvizGenerator(metadataProvider);
         this.gexfGenerator = new GexfGenerator(metadataProvider);
+        this.timelineGenerator = new VisJsTimelineGenerator(metadataProvider);
     }
 
     public void generate(
@@ -114,8 +117,12 @@ public class MarkdownSiteGenerator {
         */
 
         var javaThings = proto2java(protoThings);
-        generateGEXF(javaThings);
-        generateGraphviz(javaThings);
+        timelineGenerator.convertIntoOrThrow(
+                javaThings, rp.getWritableResource(base.resolve("timeline.html")));
+        gexfGenerator.convertIntoOrThrow(
+                javaThings, rp.getWritableResource(base.resolve("graph.gexf")));
+        graphvizGenerator.convertIntoOrThrow(
+                javaThings, rp.getWritableResource(base.resolve("graphviz.gv")));
 
         var metas = ImmutableSortedSet.orderedBy(Metadata.IRI_Comparator);
 
@@ -185,15 +192,5 @@ public class MarkdownSiteGenerator {
             javaThings.add(new ThingAdapter(protoThing, dtr));
         }
         return javaThings;
-    }
-
-    private void generateGEXF(Iterable<dev.enola.thing.Thing> javaThings) throws IOException {
-        var gexfOutputResource = rp.getWritableResource(base.resolve("graph.gexf"));
-        gexfGenerator.convertIntoOrThrow(javaThings, gexfOutputResource);
-    }
-
-    private void generateGraphviz(Iterable<dev.enola.thing.Thing> javaThings) throws IOException {
-        var graphVizOutputResource = rp.getWritableResource(base.resolve("graphviz.gv"));
-        graphvizGenerator.convertIntoOrThrow(javaThings, graphVizOutputResource);
     }
 }

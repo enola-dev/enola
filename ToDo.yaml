@@ -47,15 +47,25 @@ items:
       depends: [*gexf]
       target: 2024-08-11
 
-  - Re-design Thing Java API:
-      description: Factor out is/Not/Link from GraphvizGenerator; re-think API.
-
   - Timeline Diagrams:
       tags: [visualization, ui, docgen, rosetta]
       depends: [*graphviz, *timeAPI]
 
+  - Format: &format
+      description: ./enola format **/* = Canonicalizer for in-place bulk formatting
+
+  - Kubernetes Model:
+      target: 2024-09-15
+
+  - ? Queries with SparQL
+
+  - ? Persistent Store
+
   - Meta YAML reader:
       status: TBD
+
+  - Re-design Thing Java API:
+      description: Factor out is/Not/Link from GraphvizGenerator; re-think API.
 
   - Inference with LLM:
       description: What files are in directory xyz? Is abc under xyz, even indirectly?
@@ -67,18 +77,11 @@ items:
   - Clean Up all old model related code & doc:
       tags: [clean, doc]
 
-  - ? Queries with SparQL
-
-  - ? Persistent Store
-
   - Genealogy: &genealogy
     description:
       Re-create https://github.com/vorburger/kingraph of [Simpsons &
       Potters](https://github.com/vorburger/kingraph/tree/main/examples) with Enola
     tags: [model, genealogy, helpwanted]
-
-  - Kubernetes Model:
-      target: 2024-09-15
 
   - Meta Java Code Generator: &metaJavaCodegen
 
@@ -117,6 +120,10 @@ items:
 
   - Unify UI with Rosetta:
       tags: [ui, rosetta]
+
+  - Support `data:` scheme:
+      links:
+        - https://datatracker.ietf.org/doc/html/rfc2397
 
   - Marvel: &marvel
     description: Re-create https://www.marvel-graphs.net with Enola

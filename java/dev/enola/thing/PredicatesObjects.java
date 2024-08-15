@@ -166,7 +166,11 @@ public interface PredicatesObjects {
                                 + object.getClass()
                                 + " to "
                                 + klass);
-            return dt.stringConverter().convertToType(object, klass);
+            var opt = dt.stringConverter().convertObjectToType(object, klass);
+            if (opt.isEmpty())
+                throw new IllegalStateException(
+                        object + " of " + object.getClass() + " to " + klass);
+            return opt;
 
         } catch (IOException e) {
             // TODO Get rid of throws IOException and remove this.

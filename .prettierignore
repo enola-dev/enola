@@ -5,3 +5,6 @@
 # Markdown is formatted by markdownlint not Prettier (see docs/dev/style.md)
 # (If ever this is removed after all, note https://github.com/DavidAnson/markdownlint/blob/main/doc/Prettier.md)
 *.md
+
+# Test expected output should not be formatted
+*.expected*

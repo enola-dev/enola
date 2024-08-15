@@ -58,6 +58,7 @@ nav:
       - By Type: models/index.md
       - By Parent: models/hierarchy.md
       - Graph: concepts/graph.md
+      - Timeline: concepts/timeline.md
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md

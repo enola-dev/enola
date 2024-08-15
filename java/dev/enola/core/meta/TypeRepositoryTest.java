@@ -41,7 +41,7 @@ public class TypeRepositoryTest {
         new ProtoIO().read(resource, types, Types.class);
 
         var trb = new TypeRepositoryBuilder();
-        trb.store(types.getTypesList());
+        trb.storeAll(types.getTypesList());
         Repository<Type> tyr = trb.build();
         assertThat(tyr.get("enola.dev/test1")).isNotNull();
         assertThat(tyr.list()).hasSize(2);
