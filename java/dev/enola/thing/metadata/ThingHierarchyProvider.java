@@ -44,7 +44,8 @@ public class ThingHierarchyProvider {
                         "https://enola.dev/files/Node/parent", // TODO Node.parent_IRI,
                         KIRI.RDF.TYPE,
                         "http://www.w3.org/2000/01/rdf-schema#subClassOf",
-                        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf"));
+                        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
+                        "https://enola.dev/origin"));
     }
 
     public ThingHierarchyProvider(String description, Iterable<String> propertyIRIs) {
