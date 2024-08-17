@@ -42,11 +42,14 @@ import java.util.List;
 
 public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
-    // TODO Integrate into Web UI, as /ui/timeline?things=enola:/
+    // TODO "Define a start and an end in the timeline options. This will improve initial loading."
     // TODO Add clickable URLs to all Things
+
     // TODO Try it all out with more interesting real data
 
-    // TODO "Define a start and an end in the timeline options. This will improve initial loading."
+    // TODO https://github.com/javdome/timeline-arrows
+
+    // TODO Integrate into Web UI, as /ui/timeline?things=enola:/
 
     // TODO #feature Support Timezone, but don't convert in Java, but purely client side in HTML
 

@@ -109,6 +109,9 @@ Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ usi
 * [GraphStream](https://graphstream-project.org) #opensource #dynamicGraph #java #swing #desktop #inactive
 * [Vega Lite](https://vega.github.io/vega-lite/) & [Vega](https://vega.github.io/vega/) #opensource
 * [yuml](https://yuml.me) #UML
+* [amCharts](https://www.amcharts.com/demos/force-directed-network/) #network #commercial
+* [KronoGraph](https://cambridge-intelligence.com/kronograph/features/) #network #timeline #commercial
+* [Ruimdetijd/timeline](https://github.com/Ruimdetijd/timeline) #timeline #gpl #broken
 
 Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
