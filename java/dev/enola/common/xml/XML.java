@@ -35,16 +35,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.*;
-import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 public final class XML {
 
-    // TODO IndentingXMLEventWriter doesn't print self-closing tags.. use SAX, after all?
-
     // TODO Should also order attributes of all elements alphabetically
+
+    // TODO Could #later re-implement this with StAX or SAX instead of DOM, for less memory use? But
+    // DOM is just easier to manipulate in code - and StAX is a PITA lacking a built-in indenting
+    // formatter.
 
     public static void canonicalize(ReadableResource in, WritableResource out) throws IOException {
         try (var inputStream = in.byteSource().openBufferedStream()) {
@@ -83,37 +84,6 @@ public final class XML {
         NodeList childNodes = node.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             normalizeWhitespace(childNodes.item(i));
-        }
-    }
-
-    static void canonicalizeWithStax(ReadableResource in, WritableResource out) throws IOException {
-        XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        try (var inputStream = in.byteSource().openBufferedStream()) {
-            XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
-
-            XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-            XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-            // NOT outputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, true);
-
-            try (var writer = out.charSink().openBufferedStream()) {
-                XMLEventWriter eventWriter =
-                        new IndentingXMLEventWriter(
-                                outputFactory.createXMLEventWriter(writer), "  ");
-
-                while (eventReader.hasNext()) {
-                    XMLEvent event = eventReader.nextEvent();
-
-                    if (event.isCharacters()) {
-                        String data = event.asCharacters().getData();
-                        event = eventFactory.createCharacters(data.trim());
-                    }
-
-                    eventWriter.add(event);
-                }
-            }
-
-        } catch (XMLStreamException e) {
-            throw new IOException("XML error", e);
         }
     }
 

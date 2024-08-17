@@ -80,6 +80,7 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 * [Dendron](https://github.com/dendronhq/dendron) #opensource #vsc
 * [Obsidian](https://obsidian.md) #freeware
 * [Logseq](https://logseq.com) #opensource #ToDo
+* [deepdwn](https://billiam.itch.io/deepdwn) #commercial
 * [Cosma](https://cosma.arthurperret.fr) #opensource
 * [Org Mode](https://orgmode.org) #opensource
 * [The Brain](https://thebrain.com)
