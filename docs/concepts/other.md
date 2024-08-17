@@ -208,6 +208,10 @@ Vector _("Embedding")_ databases of possible future interest:
 
 ## AI
 
+### Retrieval-Augmented Generation (RAG) and [Entity Resolution](https://github.com/GavinMendelGleason/blog/blob/main/entries/entity_resolution.md)
+
+* [TerminusDB VectorLink](https://terminusdb.com/vectorlink/), see [Overview](https://terminusdb.com/blog/terminusdb-internals/) #commercial #[opensource](https://github.com/terminusdb/terminusdb) #trial
+
 ### Symbolic AI Reasoning (GOFAI?)
 
 [Semantic Reasoning](https://en.wikipedia.org/wiki/Semantic_reasoner) through [modus ponens](https://en.wikipedia.org/wiki/Modus_ponens) of an [Inference Engine](https://en.wikipedia.org/wiki/Inference_engine) by
@@ -215,6 +219,7 @@ _Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
 [TBD](https://en.wikipedia.org/wiki/Symbolic_artificial_intelligence)._
 
 * [Mangle](https://github.com/google/mangle) #OpenSource #Google
+* [Leuchtkraft](https://github.com/Wuelle/Leuchtkraft) #OpenSource
 
 ## Platforms
 

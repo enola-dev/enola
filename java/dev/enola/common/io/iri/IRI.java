@@ -18,7 +18,6 @@
 package dev.enola.common.io.iri;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.net.HostAndPort;
 import com.google.common.net.HostSpecifier;
 import com.google.common.net.InetAddresses;
@@ -45,10 +44,10 @@ import java.util.Objects;
  * <p>This class strictly speaking represents an <i>IRI <b>Reference</b></i>, not just an
  * <i>IRI</i>; meaning that it can either an absolute with a <code>scheme:</code>, or relative.
  *
- * <p>This class is logically (but not technically, for efficiency) immutable. It has a {@link
- * Builder} to programmatically configure instances of it. You can also just construct it from a
- * String with {@link #parseUnencoded(String)}. To modify, use {@link #newBuilder()}, set what you
- * need, and {@link Builder#build()} it.
+ * <p>This class is thread safe, because it is logically (but not technically, for efficiency)
+ * immutable. It has a {@link Builder} to programmatically configure instances of it. You can also
+ * just construct it from a String with {@link #parseUnencoded(String)}. To modify, use {@link
+ * #newBuilder()}, set what you need, and {@link Builder#build()} it.
  *
  * <p>This class never throws any runtime exceptions for supposedly "invalid" input. It allows e.g.
  * "http://example.org/~{username}" (e.g. URI Templates à la RFC 6570, or other similar syntaxes) or
@@ -81,6 +80,9 @@ import java.util.Objects;
  * add support for that, if you need it.
  *
  * <p>This class if null-safe. Its accessor methods never return null, but empty Strings instead.
+ * This means callers cannot distinguish e.g. between "schema:" and "schema:/" and "schema:/?" and
+ * "schema:/?#"; but this is an intentional design decision, for a simpler and more convenient null
+ * friendly API.
  *
  * <p>This class never makes any network access! (Yes, looking at you, {@link
  * java.net.URL#equals(Object)} - OMG!)
@@ -111,6 +113,8 @@ public final class IRI implements Comparable<IRI> {
     // TODO Actually fully read https://url.spec.whatwg.org first.. :=)
 
     // TODO Research existing implementations for inspiration...
+    // - https://developer.android.com/reference/android/net/Uri, with
+    // https://cs.android.com/android/platform/superproject/main/+/main:frameworks/base/core/java/android/net/Uri.java
     // - https://github.com/square/okhttp/issues/1486
     // - https://github.com/palominolabs/url-builder
     // - https://github.com/dmfs/uri-toolkit
@@ -233,67 +237,69 @@ public final class IRI implements Comparable<IRI> {
     // TODO private @Nullable Multimap<String, String> queryMap;
     private @Nullable String fragment;
     private @Nullable String string;
+    private @Nullable IRI normalized;
 
+    // TODO Naming? android.net.Uri calls this buildUpon() ...
     public Builder newBuilder() {
         var builder = new Builder();
+        builder.scheme(scheme());
+        builder.authority(authority());
+        builder.path(path());
+        builder.query(query());
+        builder.fragment(fragment());
         return builder;
     }
 
     public String scheme() {
-        if (scheme == null) scheme = find_scheme();
+        if (scheme == null) parse();
         return scheme;
     }
 
-    private String find_scheme() {
-        return null; // TODO
-    }
-
     public boolean hasScheme(String scheme) {
-        // TODO Implement more optimized
-        return scheme().equals(scheme);
+        assert scheme.contains(":");
+        return normalizeScheme(scheme()).equals(normalizeScheme(scheme));
     }
 
     public boolean isAbsolute() {
         return !scheme().isBlank();
     }
 
-    // /** Scheme specific part is just everything after the : colon of the scheme. */
-    /* public CharSequence schemeSpecificPart() {
-        return null; // TODO
-    } */
+    public boolean isRelative() {
+        return !isAbsolute();
+    }
 
     public String authority() {
-        return null; // TODO
+        if (authority == null) parse();
+        return authority;
     }
 
     public String path() {
-        return null; // TODO
+        if (path == null) parse();
+        return path;
     }
 
     public String query() {
-        return null; // TODO
+        if (query == null) parse();
+        return query;
     }
 
     public String fragment() {
-        return null; // TODO
+        if (fragment == null) parse();
+        return fragment;
     }
 
-    // TODO Allow both & and ; as query delimiters?!
-    public ImmutableMultimap<String, String> queryMap() {
-        return null; // TODO
-    }
+    // Allows (interprets) only '&' and not ';' as query delimiter!
+    // public ImmutableMultimap<String, String> queryMap() { return null; } // TODO needed?
 
-    public ImmutableMultimap<String, String> queryParameter(String key) {
-        return null; // TODO
-    }
+    // public ImmutableMultimap<String, String> queryParameter(String key) { return null; } // TODO?
 
     public IRI base() {
-        return null; // TODO as in URIs.base()
+        throw new UnsupportedOperationException("TODO"); // TODO as in URIs.base()
     }
 
     /** Resolve, e.g. as in {@link URI#resolve(URI)}. */
     public IRI resolve(IRI iri) {
-        return null; // TODO
+        throw new UnsupportedOperationException("TODO"); // TODO
     }
 
     /** Resolve, e.g. as in {@link URI#resolve(URI)}. */
@@ -303,17 +309,105 @@ public final class IRI implements Comparable<IRI> {
 
     /** Relativize, e.g. as in {@link URI#relativize(URI)}. */
     public IRI relativize(IRI iri) {
-        return null; // TODO
+        throw new UnsupportedOperationException("TODO"); // TODO
+    }
+
+    private void parse() {
+        try {
+            parse_();
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("TODO FIXME: " + string, e);
+        }
+    }
+
+    private void parse_() {
+        if (string == null) {
+            scheme = "";
+            authority = "";
+            path = "";
+            query = "";
+            fragment = "";
+            return;
+        }
+
+        // Scheme! Note it [must be] is (very limited) ASCII, only; there's no decoding for scheme.
+        int end = string.indexOf(':');
+        if (end == -1) scheme = "";
+        else scheme = normalizeScheme(string.substring(0, end).trim());
+
+        // Authority! TODO Decoding..
+        var len = string.length();
+        var start = end + 1;
+        if (start >= len) authority = "";
+        else {
+            while (start < len) {
+                if (string.charAt(start) == '/') ++start;
+                else break;
+            }
+            end = start + 1;
+            while (end < len) {
+                if (string.charAt(end) != '/') ++end;
+                else break;
+            }
+            authority = string.substring(start, end);
+        }
+
+        // Path! TODO Decoding..
+        start = end;
+        if (start >= len) path = "";
+        else {
+            end = start + 1;
+            while (end < len) {
+                if (string.charAt(end) != '?' && string.charAt(end) != '#') ++end;
+                else break;
+            }
+            path = string.substring(start, end);
+        }
+
+        // Query! TODO Decoding..
+        start = end + 1;
+        if (start >= len) query = "";
+        else {
+            end = start + 1;
+            while (end < len) {
+                if (string.charAt(end) != '#') ++end;
+                else break;
+            }
+            query = string.substring(start, end);
+        }
+
+        // Fragment! TODO Decoding..
+        if (end >= len) fragment = "";
+        else fragment = string.substring(end + 1);
     }
 
     @Override
     public String toString() {
-        if (string == null) string = stringify();
+        // TODO Encoding! Offer x2 different toString!
+        if (string == null) {
+            var sb = new StringBuilder();
+            if (!scheme().isBlank()) {
+                sb.append(scheme());
+                sb.append(':');
+            }
+            if (!authority().isBlank()) {
+                sb.append("//");
+                sb.append(authority());
+            }
+            if (!path().isBlank()) {
+                sb.append(path);
+            } else sb.append('/');
+            if (!query().isBlank()) {
+                sb.append('?');
+                sb.append(query());
+            }
+            if (!fragment().isBlank()) {
+                sb.append('#');
+                sb.append(fragment());
+            }
+            string = sb.toString();
+        }
         return string;
-    }
-
-    private String stringify() {
-        return "TODO";
     }
 
     public URI toURI() throws URISyntaxException {
@@ -321,12 +415,19 @@ public final class IRI implements Comparable<IRI> {
     }
 
     public IRI normalize() {
-        // TODO Keep result in a lazily initialized field? But... memory?!
-        var builder = newBuilder();
-        builder.scheme(scheme().toLowerCase(Locale.ROOT));
-        // TODO ... FIXME
-        // TODO Should we drop default ports for a few well-known schemes?
-        return builder.build();
+        if (normalized == null) {
+            // TODO Keep result in a lazily initialized field? But... memory?!
+            var builder = newBuilder();
+            builder.scheme(normalizeScheme(scheme()));
+            // TODO ... FIXME
+            // TODO Should we drop default ports for a few well-known schemes?
+            normalized = builder.build();
+        }
+        return normalized;
+    }
+
+    private static String normalizeScheme(String scheme) {
+        return scheme.toLowerCase(Locale.ROOT);
     }
 
     /** Equality check, with {@link #normalize()}-ation. */
@@ -364,7 +465,7 @@ public final class IRI implements Comparable<IRI> {
         var scheme = scheme();
         if (isAbsolute() && scheme.isBlank()) throw new ValidationException(this, "Blank scheme");
         if (isAbsolute() && !CharAscii.INSTANCE.matchesAllOf(scheme))
-            throw new ValidationException(this, "Invalid scheme: " + scheme);
+            throw new ValidationException(this, "Invalid non-ASCII [a-zA-Z0-9] scheme: " + scheme);
 
         try {
             var authority = authority();
