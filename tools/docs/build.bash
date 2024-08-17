@@ -36,6 +36,13 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# Copy Third Party JS & CSS into docs/BUILT/THIRD_PARTY
+rm -rf docs/BUILT/third_party
+mkdir docs/BUILT/third_party
+find third_party/web/ -type d -exec mkdir -p docs/BUILT/{} \;
+find third_party/web/ -type f -exec ln -f {} docs/BUILT/{} \;
+rm -f docs/BUILT/third_party/{BUILD*,*.bash}
+
 # Fix up //... links in docs/**/*.md link to GitHub (instead of docs.enola.dev)
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'

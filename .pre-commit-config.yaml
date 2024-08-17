@@ -39,7 +39,7 @@ repos:
       - id: destroyed-symlinks
       - id: end-of-file-fixer
         # https://github.com/Lucas-C/pre-commit-hooks/issues/70
-        exclude: ^(LICENSE-header.txt|.*test-random-binary|.*svg|.*.expected)$
+        exclude: ^(LICENSE-header.txt|.*test-random-binary|.*.svg|.*.expected|third_party/.*)$
       - id: trailing-whitespace
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -56,6 +56,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(java|js)$
+        exclude: ^(third_party/.*)$
         args:
           - --no-extra-eol
           - --comment-style
@@ -144,7 +145,7 @@ repos:
       - id: prettier
         # NOT markdown, because we use markdownlint for that
         types_or: [css, html, javascript, json, json5, scss, ts, tsx, yaml]
-        exclude: ^docs/use|test/|.devcontainer/devcontainer.json
+        exclude: ^docs/use|test/|.devcontainer/devcontainer.json|third_party/
         additional_dependencies:
           - prettier@3.2.4
 
