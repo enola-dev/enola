@@ -52,7 +52,10 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
     // TODO Use numeric (long) group & item id: instead of String IRI
 
-    // TODO HTML Fragment composition
+    // TODO HTML Fragment composition - "emit" to x3 "slots" (?) for HTML, JS & CSS...
+    // Perhaps inspired by e.g. https://nbformat.readthedocs.io/en/latest/format_description.html ?
+    // It should separate "fixed" (static) JS libs, from the "dynamic" data dependant output.
+    // With a class HTML, maybe?
 
     // TODO Nested SubGroups, using ThingHierarchyProvider - instead of only by Thing rdf:type
     // TODO Load groups & items as JSON from URL, instead of embedding in page

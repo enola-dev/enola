@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# See also (higher-level) https://docs.enola.dev/concepts/roadmap/ (TODO merge)
+
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
@@ -50,6 +52,7 @@ items:
   - Timeline Diagrams:
       tags: [visualization, ui, docgen, rosetta]
       depends: [*graphviz, *timeAPI]
+      done: 2024-08-16
 
   - Format: &format
       description: ./enola format **/* = Canonicalizer for in-place bulk formatting
@@ -91,6 +94,10 @@ items:
   - Markdown Model: &modelMarkdown
       links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
       depends: [*metaJavaCodegen]
+
+  - Render `enola:Markdown` Datatype correctly in Browser:
+      links:
+        - https://github.com/markedjs/marked
 
   - Implement ToDo Model: &modelToDo
       links: https://github.com/enola-dev/dora/tree/main/TODO
