@@ -31,7 +31,8 @@ import dev.enola.thing.java.JThing;
 @JThing("https://enola.dev/java/type")
 // ? @IRI("https://enola.dev/java/type/{FQN}")
 public interface Type
-        extends /*Typed,*/ HasName { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
+        extends /*Resource,*/ HasName { // NOT dev.enola.model.w3.rdfs.Class; these are the
+    // instances
 
     @IRI("https://enola.dev/java/package")
     Package pkg();

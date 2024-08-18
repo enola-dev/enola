@@ -27,4 +27,4 @@ package dev.enola.thing;
 // TODO Abandon this and just use java.net.URI in Things instead?!
 //   Or change this record to a class and have an URI field, for 1 time conversion.
 // TODO Make it extend Thing; and voilà, it's a Property Graph!
-public final record Link(String iri) {}
+public record Link(String iri) implements HasIRI {}

@@ -30,8 +30,9 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * Data</i>, such as also described by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
-public interface Thing extends PredicatesObjects {
+public interface Thing extends HasIRI, PredicatesObjects {
 
+    @Override
     String iri();
 
     @Override

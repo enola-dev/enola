@@ -17,4 +17,23 @@
  */
 package dev.enola.model.w3.rdfs;
 
-public interface Class extends Typed {}
+import com.google.common.collect.Iterables;
+
+import dev.enola.model.w3.rdf.Property;
+
+public interface Class extends Resource {
+
+    default boolean isClass() {
+        return Iterables.contains(typesIRI(), IRI.Class.Class);
+    }
+
+    // TODO Multiple, or single?
+    default Iterable<Class> subClassOfs() {
+        return getThings(IRI.Predicate.subClassOf, Class.class);
+    }
+
+    /** This is the inverse of {@link Property#domain()}. */
+    default Iterable<Property> propertyRange() {
+        throw new IllegalStateException("TODO Implement!");
+    }
+}

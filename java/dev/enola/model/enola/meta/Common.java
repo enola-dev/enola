@@ -21,9 +21,9 @@ import dev.enola.model.enola.HasDescription;
 import dev.enola.model.enola.HasIcon;
 import dev.enola.model.enola.HasName;
 import dev.enola.model.w3.rdfs.HasLabel;
-import dev.enola.model.w3.rdfs.Typed;
+import dev.enola.model.w3.rdfs.Resource;
 
-public interface Common extends Typed, HasName, HasLabel, HasDescription, HasIcon {
+public interface Common extends Resource, HasName, HasLabel, HasDescription, HasIcon {
 
     // skipcq: JAVA-E0169
     interface Builder<B extends Common>

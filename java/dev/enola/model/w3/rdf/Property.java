@@ -15,14 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.java;
+package dev.enola.model.w3.rdf;
 
-import dev.enola.model.w3.rdfs.HasLabel;
+import dev.enola.model.w3.rdfs.Class;
 import dev.enola.model.w3.rdfs.Resource;
-import dev.enola.thing.java.IRI;
 
-/** 📦 <a href="https://docs.enola.dev/models/enola.dev/java/package/">Java Package</a>. */
-@IRI("https://enola.dev/java/Package/{FQN}")
-public interface Package
-        extends Resource, HasLabel { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
+import java.util.Optional;
+
+public interface Property extends Resource {
+
+    default Optional<Property> subPropertyOf() {
+        return getThing("http://www.w3.org/2000/01/rdf-schema#subPropertyOf", Property.class);
+    }
+
+    default Optional<Class> domain() {
+        return getThing("http://www.w3.org/2000/01/rdf-schema#domain", Class.class);
+    }
+
+    default Optional<Class> range() {
+        return getThing("http://www.w3.org/2000/01/rdf-schema#domain", Class.class);
+    }
 }

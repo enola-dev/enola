@@ -15,14 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.w3.rdfs.gen;
 
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
-
-public interface Typed extends Thing {
-
-    @IRI(KIRI.RDF.TYPE)
-    Class type();
-}
+public class JavaGenerator {}
