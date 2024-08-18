@@ -114,7 +114,7 @@ It's important to understand that with this syntax the names are **unordered**.
 
 ## Collection
 
-The `(...)` instead of `,` syntax preserves order (and it internally represented differently):
+The `(...)` instead of `,` syntax preserves order (and it is represented differently internally):
 
 ```turtle
 @prefix : <http://example.org/>.
@@ -126,7 +126,7 @@ The `(...)` instead of `,` syntax preserves order (and it internally represented
 
 ## Nest
 
-The `[...]` syntax make this _Thing_ contain another nested _Thing_ (which is "anonymous", and internally represented using a _"blank node"):
+The `[...]` syntax make this _Thing_ contain another nested _Thing_ (which is "anonymous", and internally represented using a _"blank node"):_
 
 ```turtle
 @prefix : <http://example.org/>.

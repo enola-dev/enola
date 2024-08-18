@@ -19,6 +19,7 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.net.MediaType.create;
 
+import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
@@ -31,14 +32,34 @@ import java.util.Set;
  * The "text/markdown" media type, as per <a href="https://www.rfc-editor.org/rfc/rfc7763.html">RFC
  * 7763</a> (and <a href="https://www.rfc-editor.org/rfc/rfc7764.html">RFC 7764</a>).
  */
+@AutoService(MediaTypeProvider.class)
 public class MarkdownMediaTypes implements MediaTypeProvider {
 
     // TODO Distinguish https://commonmark.org from GFH et al. via a variant parameter; see
     // https://www.iana.org/assignments/markdown-variants/markdown-variants.xhtml
 
+    private static final String VARIANT = "variant";
+
     public static final MediaType MARKDOWN_UTF_8 =
             create("text", "markdown").withCharset(StandardCharsets.UTF_8);
-    ;
+
+    /**
+     * <a href="https://www.iana.org/assignments/markdown-variants/CommonMark">CommonMark</a>
+     * variant, see <a href="https://commonmark.org">CommonMark.org</a>.
+     */
+    public static final MediaType COMMON_MARKDOWN_UTF_8 =
+            create("text", "markdown")
+                    .withCharset(StandardCharsets.UTF_8)
+                    .withParameter(VARIANT, "CommonMark");
+
+    /**
+     * <a href="https://www.iana.org/assignments/markdown-variants/GFM">GitHub Flavored Markdown
+     * (GFM)</a>.
+     */
+    public static final MediaType GFM_MARKDOWN_UTF_8 =
+            create("text", "markdown")
+                    .withCharset(StandardCharsets.UTF_8)
+                    .withParameter(VARIANT, "GFM");
 
     @Override
     public Map<String, MediaType> extensionsToTypes() {
