@@ -35,9 +35,10 @@ find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 gen-project -X p
 # TODO https://linkml.io/linkml/generators/linkml.html ?
 mv .built/linkml docs/models/
 
+# TODO Parent directories' Things are missing? Perhaps load them "on-demand" automagically, with flag?
 # TODO Support --load *.rdf application/rdf+xml : That's quite simple, really; just requires piping through RIO.
 # TODO Support --load *.owl : Could map it into enola.meta.Schema? But... what's the priority of this, really?
-./enola -vvv docgen --load="docs/models/**" --output=docs/models/
+./enola -vvv docgen --load="docs/models/**.{ttl}" --output=docs/models/
 dot -Tsvg -O docs/models/graphviz.gv
 
 # TODO Support GLOBs in rosetta like in docgen? (Low priority, because DocGen will gen. embedded JSON-LD anyway.)
