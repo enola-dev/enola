@@ -19,18 +19,72 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
+  - Inference with Datalog:
+      created: 2024-08-18
+      links:
+        - https://docs.enola.dev/concepts/other/#datalog
+      tags: [datalog, infer]
+
+  - Retry writing this in TTL instead YAML, using `@base`:
+      links: //docs/concepts/turtle.md
+
+  - Meta Java Code Generator: &metaJavaCodegen
+      links: https://github.com/enola-dev/enola/pull/839
+      tags: [java]
+
+  - Close all [open old PRs](https://github.com/enola-dev/enola/pulls):
+      tags: [contributors]
+
+  - Inference with LLM:
+      description: What files are in directory xyz? Is abc under xyz, even indirectly?
+      tags: [ml, infer]
+
+  - Extract, load and validate TTL from code blocks in Markdown by parsing MD:
+      tags: [markdown]
+
+  - Markdown Model: &modelMarkdown
+      description: "oad Markdown files and their interlinks as Things!"
+      links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
+      depends: [*metaJavaCodegen]
+      tags: [markdown]
+
+  - YAML (and TextProto) Things I/O: &yamlThing
+      description:
+        Read & write a Turtle-like YAML (and TextProto, see TextThings in things.proto) syntax reader & writer. This is
+        NOT the same as the JSON-LD context support, although perhaps this could be based on that - TBC.
+      links:
+        - https://github.com/enola-dev/enola/pull/607/files
+        - https://github.com/enola-dev/enola/pull/765/files
+
+  - Extract Thing from Markdown YAML frontmatter:
+      depends: [*yamlThing]
+      tags: [markdown]
+      links:
+        - docs/concepts/turtle.md
+
+  - Finish writing v1.0 of new Java Url/URI/IRI class:
+      java: dev.enola.common.io.iri.IRI
+      links: https://github.com/enola-dev/enola/pull/837
+
+  - Try [rdflib](https://rdflib.readthedocs.io/)'s `rdf2dot` and `rdfs2dot`:
+      created: 2024-08-18
+      links:
+        - https://rdflib.readthedocs.io/en/stable/_modules/rdflib/tools/rdf2dot.html
+        - https://rdflib.readthedocs.io/en/stable/_modules/rdflib/tools/rdfs2dot.html
+
   - GraphViz Diagrams: &graphviz
       owner: vorburger
       done: 2024-08-10
       status: WIP
       tags: [visualization, ui, docgen, rosetta]
 
+  - Hierarchy API: &hierarchyAPI
+      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
+      status: WIP
+
   - Time API: &timeAPI
       done: 2024-08-11
       status: DONE
-
-  - Hierarchy API: &hierarchyAPI
-      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
 
   - GEXF: &gexf
       target: 2024-08-11
@@ -53,6 +107,7 @@ items:
       tags: [visualization, ui, docgen, rosetta]
       depends: [*graphviz, *timeAPI]
       done: 2024-08-16
+      status: WIP
 
   - Format: &format
       description: ./enola format **/* = Canonicalizer for in-place bulk formatting
@@ -70,10 +125,6 @@ items:
   - Re-design Thing Java API:
       description: Factor out is/Not/Link from GraphvizGenerator; re-think API.
 
-  - Inference with LLM:
-      description: What files are in directory xyz? Is abc under xyz, even indirectly?
-      tags: [ml]
-
   - Document UI in Tutorial:
       tags: [doc]
 
@@ -86,14 +137,8 @@ items:
       Potters](https://github.com/vorburger/kingraph/tree/main/examples) with Enola
     tags: [model, genealogy, helpwanted]
 
-  - Meta Java Code Generator: &metaJavaCodegen
-
   - Remove (?) LinkML:
       tags: [clean]
-
-  - Markdown Model: &modelMarkdown
-      links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
-      depends: [*metaJavaCodegen]
 
   - Render `enola:Markdown` Datatype correctly in Browser:
       links:
@@ -150,9 +195,6 @@ items:
       description: java:RosettaTest#testTurtleToThings should be documented in file:docs/use/rosetta/index.md
       tags: [doc]
 
-  - Close all [open old PRs](https://github.com/enola-dev/enola/pulls):
-      tags: [contributors]
-
   - Gephi/SigmaJS Network Graph Format:
       depends: [*graphviz]
       tags: [visualization, ui, docgen, rosetta]
@@ -165,6 +207,8 @@ items:
       links:
         - https://github.com/jamisonjiang/graph-support
         - https://github.com/nidi3/graphviz-java
+
+# Archive of all "fully done" stuff. (File order doesn't matter, just moved here to be out of the way above.)
 
 tags:
   - clean

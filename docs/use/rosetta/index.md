@@ -41,6 +41,8 @@ Enola can generate [Graph Diagrams like this](../../models/example.org/graph.md)
 
 ### Graphviz
 
+Similarly to e.g. [rdflib](https://rdflib.readthedocs.io/)'s `rdf2dot` (and `rdfs2dot`):
+
 ```bash cd ../.././..
 $ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gv && dot -Tsvg -O docs/BUILT/picasso.gv
 ...
