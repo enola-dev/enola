@@ -65,6 +65,7 @@ nav:
       - Roadmap: concepts/roadmap.md
       - Singularity: concepts/singularity.md
       - URL & ID: concepts/uri.md
+      - Turtle: concepts/turtle.md
   - Developers:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md

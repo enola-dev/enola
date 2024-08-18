@@ -37,7 +37,7 @@ URLs like HTTP links, which models can use to create hyperlinks to UIs of applic
 
 ## Formats
 
-Enola currently has [built-in interchangeable support](../use/rosetta/index.md) for RDF 🐢 Turtle, JSON, YAML, and Text proto & Binary Protocol Buffers
+Enola currently has [built-in interchangeable support](../use/rosetta/index.md) for [RDF 🐢 Turtle](turtle.md), JSON, YAML, and Text proto & Binary Protocol Buffers
 [wire formats](https://en.m.wikipedia.org/wiki/Comparison_of_data-serialization_formats) for Things. It is conceptually open to supporting other formats in the future;
 likely [RDF4j's Binary Format](https://rdf4j.org/documentation/reference/rdf4j-binary/), maybe also e.g. [CBOR](https://github.com/enola-dev/enola/issues/603)
 (perhaps [RDF CBOR](https://openengiadina.codeberg.page/rdf-cbor/)?), or [IPFS IPLD Codecs](https://github.com/enola-dev/enola/issues/777)
