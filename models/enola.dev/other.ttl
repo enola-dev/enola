@@ -85,14 +85,14 @@
 <https://github.com/kevinawalsh/datalog> a schema:SoftwareApplication;
   schema:license enola:OpenSource;
   awe:tags :go, :datalog;
-  enola:modifiedAt "2011-01-11";
+  enola:modifiedAt "2011-01-11T12:00:00Z"^^enola:Timestamp;
   github:stars 33.
 
 <https://github.com/wernsey/Jatalog> a schema:SoftwareApplication;
   schema:license enola:OpenSource;
   awe:tags :java, :datalog;
   github:stars 75;
-  enola:modifiedAt "2016-07-20".
+  enola:modifiedAt "2016-07-20T12:00:00Z"^^enola:Timestamp.
 
 <https://souffle-lang.github.io/> a schema:SoftwareApplication, enola:ToDo;
   schema:sameAs <https://github.com/souffle-lang/souffle>;
@@ -103,7 +103,7 @@
   enola:seeAlso <https://github.com/souffle-lang/souffle-lsp-plugin>, <https://github.com/souffle-lang/intellij-datalog>;
   awe:tags :datalog, :java, :swig, :emacs, :idea, :vscode;
   # TODO Automatically fetch both stars & last modified date via GitHub API!
-  enola:modifiedAt "2024-07-03";
+  enola:modifiedAt "2024-07-03T12:00:00Z"^^enola:Timestamp;
   github:stars 896.
 
 <https://github.com/google/mangle> a schema:SoftwareApplication, enola:ToDo;
@@ -115,5 +115,5 @@
   schema:sameAs <https://github.com/HarvardPL/AbcDatalog>;
   schema:license <http://spdx.org/licenses/BSD>;
   awe:tags :datalog, :java;
-  enola:modifiedAt "2024-02-12";
+  enola:modifiedAt "2024-02-12T12:00:00Z"^^enola:Timestamp;
   github:stars 46.
