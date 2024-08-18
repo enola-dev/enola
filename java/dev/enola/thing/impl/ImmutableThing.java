@@ -23,6 +23,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.thing.Literal;
 import dev.enola.thing.Thing;
+import dev.enola.thing.java2.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -51,6 +52,16 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     public static Thing.Builder builderWithExpectedSize(int expectedSize) {
         return new Builder(expectedSize);
     }
+
+    public static final TBF FACTORY =
+            new TBF() {
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T extends Thing, B extends Thing.Builder<T>> B create(
+                        Class<B> builderClass, Class<T> thingClass) {
+                    return (B) builder();
+                }
+            };
 
     @Override
     public String iri() {
