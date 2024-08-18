@@ -41,6 +41,10 @@ public class ThingTimeProvider {
         // eventually the IRIs of these properties should be inferred e.g. using Enola Meta schema
         // rdfs:subPropertyOf ...
 
+        // Note that the orders, for both start & end, are intentionally by priority we're
+        // considering; i.e. if something has a :timestamp, that's considered before a :createdAt;
+        // but a :modifiedAt is considered only AFTER we don't find e.g. an :endedAt.
+
         var timestampIRI = "https://enola.dev/timestamp";
         var createdAtIRI = "https://enola.dev/createdAt";
         var startedAtIRI = "https://enola.dev/startedAt";
@@ -55,10 +59,12 @@ public class ThingTimeProvider {
         var deletedAtIRI = "https://enola.dev/deletedAt";
         var endedAtIRI = "https://enola.dev/endedAt";
         var fileDeletedAt = "https://enola.dev/files/Node/deletedAt";
+        var modifiedAtIRI = "https://enola.dev/modifiedAt";
         var end =
                 thing.getOptional(deletedAtIRI, Instant.class)
                         .or(() -> thing.getOptional(endedAtIRI, Instant.class))
                         .or(() -> thing.getOptional(fileDeletedAt, Instant.class))
+                        .or(() -> thing.getOptional(modifiedAtIRI, Instant.class))
                         .orElse(Instant.MAX);
 
         return List.of(Interval.of(start, end));
