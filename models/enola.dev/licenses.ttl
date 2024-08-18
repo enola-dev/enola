@@ -19,9 +19,9 @@
 
 :License a schema:CreativeWork.
 
-:Proprietary a enola:License.
+:Proprietary a :License.
 
-:OpenSource a enola:License.
+:OpenSource a :License.
 
 # TODO Write inference rule that all http://spdx.org/licenses/* are :OpenSource
 
