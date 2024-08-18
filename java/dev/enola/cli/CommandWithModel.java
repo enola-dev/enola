@@ -99,17 +99,17 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                         loader.convertIntoOrThrow(stream, store);
                     }
                 }
-
                 var repo = store.build();
-                var c = new LoggingCollector();
-                var v = new Validators(repo);
-                v.validate(repo, c);
-                if (c.hasMessages()) {
-                    System.err.println("Loaded models have validation errors; use -v to show them");
-                    if (validate) {
+
+                if (validate) {
+                    var c = new LoggingCollector();
+                    var v = new Validators(repo);
+                    v.validate(repo, c);
+                    if (c.hasMessages()) {
+                        System.err.println(
+                                "Loaded models have validation errors; use -v to show them (or use"
+                                        + " --no-validate to disable)");
                         System.exit(7);
-                    } else {
-                        System.err.println("Use --no-validate to continue anyway");
                     }
                 }
 
