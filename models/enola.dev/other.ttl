@@ -42,7 +42,7 @@
 
 :inference a enola:Topic.
 
-:datalog a schema.org:ComputerLanguage, enola:Topic, enola:ToDo;
+:datalog a schema:ComputerLanguage, enola:Topic, enola:ToDo;
   enola:parent :inference;
   # TODO Fetch related tuples from wikidata!!
   enola:wikipedia "Datalog";
@@ -77,7 +77,7 @@
   awe:tags :datalog, :jena.
 
 <https://flix.dev> a schema:SoftwareApplication, enola:ToDo;
-  awe:tags schema.org:ComputerLanguage, :datalog, :vscode;
+  awe:tags schema:ComputerLanguage, :datalog, :vscode;
   awe:links <file://WORKSPACE/flix/>;
   schema:license enola:OpenSource;
   todo:prio todo:high.
