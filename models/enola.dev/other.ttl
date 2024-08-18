@@ -1,0 +1,119 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+@base           <https://docs.enola.dev/concepts/other/#>.
+@prefix :       <https://docs.enola.dev/concepts/other/#>.
+
+@prefix awe:    <https://enola.dev/awesome>.
+@prefix github: <https://enola.dev/github>.
+@prefix todo:   <https://enola.dev/todo>.
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/>.
+
+# This is the (future...) //docs/concepts/other.md equivalent in machine-readable form.
+
+# TODO Write a generator (template, probably) to generate other.md from this!
+# TODO Write a //models/enola.dev/awesome/awesome.linkml.yaml and validate this against that?
+# TODO Convert this from TTL to Enola RDF YAML format? Write a //models/enola.dev/awesome/awesome-context.jsonld?
+# TODO After YAML, make it hierarchical - like an Awesome list typically is.
+
+# This file technically is "just documentation" and not a ('core') "Enola model",
+# but to avoid hard-coding more in the shell scripts for now it's
+# here in //models/enola.dev/ instead of in docs/ next to other.md
+
+:java a awe:Tag;
+  schema:sameAs enola:Java.
+
+:go a awe:Tag;
+  enola:seeAlso <https://go.dev>.
+
+:inference a enola:Topic.
+
+:datalog a schema.org:ComputerLanguage, enola:Topic, enola:ToDo;
+  enola:parent :inference;
+  # TODO Fetch related tuples from wikidata!!
+  enola:wikipedia "Datalog";
+  todo:prio todo:high.
+
+<https://en.m.wikipedia.org/wiki/Datalog#Datalog_engines>
+  awe:tags :datalog.
+
+:store a enola:Topic.
+
+<https://www.oxfordsemantic.tech/> a schema:SoftwareApplication, schema:Organization;
+  schema:memberOf <https://www.samsung.com/>;
+  schema:license enola:Proprietary;
+  awe:tags :store, :platform, :datalog, :rdf, :RDFox;
+  enola:seeAlso <https://docs.oxfordsemantic.tech/reasoning.html>.
+
+<https://www.datomic.com> a schema:SoftwareApplication;
+  awe:tags :store, :datalog, :clojure;
+  schema:creator <https://nubank.com.br/>;
+  # TODO Make this *.ttls instead of *.ttl and then "annotate" license with:
+  # enola:origin <https://blog.datomic.com/2023/04/datomic-is-free.html>
+  # enola:quote "Is it Open Source? No."
+  schema:license enola:Proprietary.
+
+<https://nubank.com.br/> a schema:Organization.
+
+<https://www.w3.org/submissions/SWRL/> a enola:ToDo;
+  awe:tags :datalog.
+
+<https://jena.apache.org/documentation/inference/> a schema:SoftwareApplication;
+  schema:license <http://spdx.org/licenses/Apache-2.0>;
+  awe:tags :datalog, :jena.
+
+<https://flix.dev> a schema:SoftwareApplication, enola:ToDo;
+  awe:tags schema.org:ComputerLanguage, :datalog, :vscode;
+  awe:links <file://WORKSPACE/flix/>;
+  schema:license enola:OpenSource;
+  todo:prio todo:high.
+
+<https://github.com/kevinawalsh/datalog> a schema:SoftwareApplication;
+  schema:license enola:OpenSource;
+  awe:tags :go, :datalog;
+  enola:modifiedAt "2011-01-11";
+  github:stars 33.
+
+<https://github.com/wernsey/Jatalog> a schema:SoftwareApplication;
+  schema:license enola:OpenSource;
+  awe:tags :java, :datalog;
+  github:stars 75;
+  enola:modifiedAt "2016-07-20".
+
+<https://souffle-lang.github.io/> a schema:SoftwareApplication, enola:ToDo;
+  schema:sameAs <https://github.com/souffle-lang/souffle>;
+  # TODO Build a connector which fetches label/name & description by HTML scraping!
+  schema:name "Soufflé";
+  # TODO Infer that any Thing with an https://github.com/X/Y IRI has schema:license enola:OpenSource!
+  schema:license enola:OpenSource;
+  enola:seeAlso <https://github.com/souffle-lang/souffle-lsp-plugin>, <https://github.com/souffle-lang/intellij-datalog>;
+  awe:tags :datalog, :java, :swig, :emacs, :idea, :vscode;
+  # TODO Automatically fetch both stars & last modified date via GitHub API!
+  enola:modifiedAt "2024-07-03";
+  github:stars 896.
+
+<https://github.com/google/mangle> a schema:SoftwareApplication, enola:ToDo;
+  schema:license <http://spdx.org/licenses/Apache-2.0>;
+  awe:tags :go, :datalog, :google. # TODO Java?
+
+<https://harvardpl.github.io/AbcDatalog/> a schema:SoftwareApplication, enola:ToDo;
+  # TODO Automatically infer (something like) this, given URL pattern matching...
+  schema:sameAs <https://github.com/HarvardPL/AbcDatalog>;
+  schema:license <http://spdx.org/licenses/BSD>;
+  awe:tags :datalog, :java;
+  enola:modifiedAt "2024-02-12";
+  github:stars 46.

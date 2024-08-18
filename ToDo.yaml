@@ -14,41 +14,93 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# See also (higher-level) https://docs.enola.dev/concepts/roadmap/ (TODO merge)
+# TODO Merge this with (higher-level) https://docs.enola.dev/concepts/roadmap/ (and gen. that from this!)
+# TODO Merge old ToDo.md into this (and gen. a MD from this, put on the site)
 
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
-  - Inference with Datalog:
-      created: 2024-08-18
+  - Inference; hard-coded, or with Datalog:
+      items:
+        - RDFS class properties inverse.. hard-coded in Java? With a SparQL query? With Datalog?
+        - Is this an RDFS specific inference rule, or can we write it meta - for all owl:inverseOf properties?!
+        - Infer enola:seeAlso mutually reverse bi-directional
       links:
+        # @seeAlso other.ttl
         - https://docs.enola.dev/concepts/other/#datalog
+      created: 2024-08-18
       tags: [datalog, infer]
 
-  - Retry writing this in TTL instead YAML, using `@base`:
-      links: //docs/concepts/turtle.md
+  - Explore https://Flix.dev: &flix
+      description:
+        First, see if it can be used simply as a "strongly typed" TTL or YAML alternative? Is it reflective, can I gen.
+        TTL from it? Specifically its Datalog support... how would this work? Can it read ext. data?
+      tags: [datalog, infer]
+      created: 2024-08-18
 
   - Meta Java Code Generator: &metaJavaCodegen
+      created: 2024-08-17
       links: https://github.com/enola-dev/enola/pull/839
       tags: [java]
 
-  - Close all [open old PRs](https://github.com/enola-dev/enola/pulls):
-      tags: [contributors]
+  - Hierarchy API: &hierarchyAPI
+      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
+      status: WIP
 
   - Inference with LLM:
+      created: 2024-05-19
       description: What files are in directory xyz? Is abc under xyz, even indirectly?
       tags: [ml, infer]
+
+  - Bazel model: &bazel
+      created: 2024-08-18
+
+  - Strict Build, with `--load --strict`:
+      created: 2024-08-18
+      links:
+        - fix (build): Re-enable mkdocs --strict again #820
+
+  - Close all [open old PRs](https://github.com/enola-dev/enola/pulls):
+      created: 2024-01-01
+      tags: [contributors]
+
+  - Finish writing v1.0 of new Java Url/URI/IRI class: &iri
+      created: 2024-08-17
+      java: dev.enola.common.io.iri.IRI
+      links: https://github.com/enola-dev/enola/pull/837
+
+  - Kubernetes Model:
+      target: 2024-09-15
+
+  - ? Queries with SparQL
+
+  - ? Persistent Store
 
   - Extract, load and validate TTL from code blocks in Markdown by parsing MD:
       tags: [markdown]
 
   - Markdown Model: &modelMarkdown
-      description: "oad Markdown files and their interlinks as Things!"
+      created: 2024-02-18
+      description: "Load Markdown files and their interlinks as Things!"
       links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
       depends: [*metaJavaCodegen]
       tags: [markdown]
 
+  - Automatically infer `enola:parent` for each path segment of a Thing's IRI; add enola:hide=true:
+      created: 2024-08-18
+
+  - Automatically add `owl:sameAs` for each normalized Thing IRI, if it's any different:
+      description: "Also follow HTTP redirects, and also add those as sameAs."
+      created: 2024-08-18
+      depends: [*iri]
+
+  - Add properties about URL domain to all Things:
+      description: "E.g. https://nubank.com.br/en/ should be associated with geoname:brazil! Also geo-resolve IPs."
+      created: 2024-08-18
+      depends: [*iri]
+
   - YAML (and TextProto) Things I/O: &yamlThing
+      created: 2024-03-23
       description:
         Read & write a Turtle-like YAML (and TextProto, see TextThings in things.proto) syntax reader & writer. This is
         NOT the same as the JSON-LD context support, although perhaps this could be based on that - TBC.
@@ -57,14 +109,11 @@ items:
         - https://github.com/enola-dev/enola/pull/765/files
 
   - Extract Thing from Markdown YAML frontmatter:
+      created: 2024-08-18
       depends: [*yamlThing]
       tags: [markdown]
       links:
         - docs/concepts/turtle.md
-
-  - Finish writing v1.0 of new Java Url/URI/IRI class:
-      java: dev.enola.common.io.iri.IRI
-      links: https://github.com/enola-dev/enola/pull/837
 
   - Try [rdflib](https://rdflib.readthedocs.io/)'s `rdf2dot` and `rdfs2dot`:
       created: 2024-08-18
@@ -77,10 +126,6 @@ items:
       done: 2024-08-10
       status: WIP
       tags: [visualization, ui, docgen, rosetta]
-
-  - Hierarchy API: &hierarchyAPI
-      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
-      status: WIP
 
   - Time API: &timeAPI
       done: 2024-08-11
@@ -111,13 +156,6 @@ items:
 
   - Format: &format
       description: ./enola format **/* = Canonicalizer for in-place bulk formatting
-
-  - Kubernetes Model:
-      target: 2024-09-15
-
-  - ? Queries with SparQL
-
-  - ? Persistent Store
 
   - Meta YAML reader:
       status: TBD
@@ -203,10 +241,19 @@ items:
         - https://docs.enola.dev/concepts/other/#visualization
         - https://visjs.github.io/vis-network/docs/network/#importGephi
 
+  - LSP for YAML format, to validate and auto-complete like Turtle Editors doc:
+      description: UNLESS Flix.dev makes this unnecessary...
+      depends: [*yamlThing, *flix]
+
+  - VSC Extension:
+      description: Package Enola.dev CLI up into a Visual Studio Code extension that can installed from Marketplace!
+      todo:prio: todo:low
+
   - Graphviz in Java fully integrated into Enola binary:
       links:
         - https://github.com/jamisonjiang/graph-support
         - https://github.com/nidi3/graphviz-java
+      todo:prio: todo:very-low
 
 # Archive of all "fully done" stuff. (File order doesn't matter, just moved here to be out of the way above.)
 

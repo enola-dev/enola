@@ -25,10 +25,11 @@
     1. Clean Up Tech Debt, incl. removing ancient original cruft
 
 1. Models
-    1. [Linux](https://github.com/enola-dev/enola/issues/738)
-    1. [GitHub](https://github.com/enola-dev/enola/pull/477)
+    1. Bazel
     1. [Kubernetes](https://github.com/enola-dev/enola/issues/580)
     1. [Markdown](https://github.com/enola-dev/enola/issues/503)
+    1. [Linux](https://github.com/enola-dev/enola/issues/738)
+    1. [GitHub](https://github.com/enola-dev/enola/pull/477)
     1. [Java](https://github.com/enola-dev/enola/issues/727)
     1. [😺](https://github.com/enola-dev/enola/issues/611)
 
@@ -49,6 +50,8 @@
     1. `--store memory:rdf --query "SELECT * WHERE { ?s ?p ?o }"`
     1. `--load greeting1.ttl --store lmdb:greetings.db/`
     1. Graph Databases?
+
+1. Inference
 
 1. Web UI
     1. [HTMx](https://htmx.org)

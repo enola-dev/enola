@@ -35,7 +35,9 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ## Knowledge Management
 
-<!-- TODO https://github.com/enola-dev/dora/tree/main/awesome:
+<!-- TODO //models/enola.dev/other.ttl as source of this!
+
+     As outlined in https://github.com/enola-dev/dora/tree/main/awesome:
      It would be fun to capture in a structured format, with Enola... ;-)
      Actually this may be a (kind of) "citations" background?! And e.g. Zotero has RDF... hm!
      This is kind of like an https://github.com/sindresorhus/awesome/blob/main/awesome.md ?
@@ -209,6 +211,8 @@ Vector _("Embedding")_ databases of possible future interest:
 ## AI
 
 ### Symbolic AI Reasoning (GOFAI?)
+
+<!-- other.ttl has Datalog related research... TODO generate this from that! -->
 
 [Semantic Reasoning](https://en.wikipedia.org/wiki/Semantic_reasoner) through [modus ponens](https://en.wikipedia.org/wiki/Modus_ponens) of an [Inference Engine](https://en.wikipedia.org/wiki/Inference_engine) by
 _Forward Chaining; also see Backward Chaining, Backtracking, Backpropagation -
