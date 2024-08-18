@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.repo;
 
+import com.google.common.collect.Iterables;
+
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
@@ -69,6 +71,10 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);
         return (T) thing;
+    }
+
+    default <T extends Thing> Iterable<T> get(Iterable<String> iris, Class<T> thingClass) {
+        return Iterables.transform(iris, iri -> get(iri, thingClass));
     }
 
     // NOT Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider

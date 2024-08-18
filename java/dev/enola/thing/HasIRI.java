@@ -15,14 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.java;
+package dev.enola.thing;
 
-import dev.enola.model.w3.rdfs.HasLabel;
-import dev.enola.model.w3.rdfs.Resource;
-import dev.enola.thing.java.IRI;
+public interface HasIRI {
 
-/** 📦 <a href="https://docs.enola.dev/models/enola.dev/java/package/">Java Package</a>. */
-@IRI("https://enola.dev/java/Package/{FQN}")
-public interface Package
-        extends Resource, HasLabel { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
+    String iri();
 }

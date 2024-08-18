@@ -17,11 +17,13 @@
  */
 package dev.enola.thing;
 
+import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.thing.repo.ThingProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -85,6 +87,10 @@ public interface PredicatesObjects {
      */
     @Nullable String datatype(String predicateIRI);
 
+    default @Nullable String datatype(HasPredicateIRI predicateIRI) {
+        return datatype(predicateIRI.iri());
+    }
+
     @Deprecated // TODO Is this really useful? In which use case scenario? Remove...
     Map<String, String> datatypes();
 
@@ -122,6 +128,16 @@ public interface PredicatesObjects {
      */
     default <T> @Nullable T get(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, klass).orElse(null);
+    }
+
+    @SuppressWarnings("unchecked")
+    default <T> @Nullable T get(String predicateIRI, TypeToken<T> typeToken) {
+        return (T) get(predicateIRI, typeToken.getRawType());
+    }
+
+    @SuppressWarnings("unchecked")
+    default <T> Optional<T> getOptional(String predicateIRI, TypeToken<T> typeToken) {
+        return (Optional<T>) getOptional(predicateIRI, typeToken.getRawType());
     }
 
     /**
@@ -181,6 +197,33 @@ public interface PredicatesObjects {
 
     default @Nullable String getString(String predicateIRI) {
         return getOptional(predicateIRI, String.class).orElse(null);
+    }
+
+    default <T> Optional<T> getOptional(HasPredicateIRI predicateIRI, Class<T> klass) {
+        return getOptional(predicateIRI.iri(), klass);
+    }
+
+    default <T> Optional<T> getOptional(HasPredicateIRI predicateIRI, TypeToken<T> typeToken) {
+        return getOptional(predicateIRI.iri(), typeToken);
+    }
+
+    default @Nullable String getString(HasPredicateIRI predicateIRI) {
+        return getString(predicateIRI.iri());
+    }
+
+    default <T extends Thing> Optional<T> getThing(String predicateIRI, Class<T> klass) {
+        return getOptional(predicateIRI, String.class)
+                .map(linkIRI -> ThingProvider.CTX.get(linkIRI, klass));
+    }
+
+    @SuppressWarnings("unchecked")
+    default <T extends Thing> Iterable<T> getThings(String predicateIRI, Class<T> klass) {
+        var iris = getOptional(predicateIRI, Iterable.class).orElse(Set.of());
+        return ThingProvider.CTX.get(iris, klass);
+    }
+
+    default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicateIRI, Class<T> klass) {
+        return getThings(predicateIRI.iri(), klass);
     }
 
     // TODO get... other types.

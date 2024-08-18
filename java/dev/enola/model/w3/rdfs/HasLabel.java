@@ -17,14 +17,16 @@
  */
 package dev.enola.model.w3.rdfs;
 
-import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
+
+import org.jspecify.annotations.Nullable;
 
 public interface HasLabel extends Thing {
 
-    @IRI(KIRI.RDFS.LABEL)
-    String label();
+    // @IRI(KIRI.RDFS.LABEL)
+    default @Nullable String label() {
+        return getString(IRI.Predicate.label);
+    }
 
     interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         Builder<B> label(String label);
