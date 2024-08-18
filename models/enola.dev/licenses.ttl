@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+@prefix :  <https://enola.dev/>.
+@prefix schema: <https://schema.org/>.
+
+:License a schema:CreativeWork.
+
+:Proprietary a enola:License.
+
+:OpenSource a enola:License.
+
+# TODO Write inference rule that all http://spdx.org/licenses/* are :OpenSource
+
+# TODO Does SPDX have some thingie which given a text can match it to a unique license?
+
+# https://github.com/spdx/license-list-data/tree/main/rdfturtle ...

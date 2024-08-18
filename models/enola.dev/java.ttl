@@ -21,6 +21,12 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
 
+enola:Java a schema.org:ComputerLanguage;
+  enola:wikipedia "Java_(programming_language)";
+  enola:seeAlso enolaj:.
+
+enolaj: a owl:Ontology.
+
 enolaj:type a rdfs:Class;
             schema:name "Java Type";
             schema:description "Type (Class, Interface, Enum, Record, Primitive, Array, Void) in the Java Virtual Machine (JVM).";

@@ -153,3 +153,6 @@ enola:GKG a rdfs:Datatype;
 enola:rfc a rdf:Property;
   rdfs:range xsd:positiveInteger;
   schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
+
+enola:seeAlso a rdfs:Property;
+  rdfs:subPropertyOf rdfs:seeAlso.
