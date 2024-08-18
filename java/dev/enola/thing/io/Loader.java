@@ -36,8 +36,6 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
 
     // TODO Move Glob-based loading from CommandWithModel into here!
 
-    // TODO Support a --strict mode, using a TBD global Strictness TLC
-
     // TODO Load resources multi-threaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
@@ -56,19 +54,9 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
     public boolean convertInto(Stream<URI> stream, Store<?, Thing> store)
             throws ConversionException, IOException {
 
-        stream.forEach(resource -> loadCatching(resource, store));
-        // TODO Should check if at least one URI successfully loaded anything
+        stream.forEach(resource -> load(resource, store));
+        // TODO Should check if at least one URI successfully loaded anything?
         return true;
-    }
-
-    public boolean loadCatching(URI uri, Store<?, Thing> store) {
-        try {
-            return load(uri, store);
-        } catch (Exception e) {
-            LOG.error("Failed to load: {}", uri, e);
-            // Don't rethrow, let loading other resources continue
-            return false;
-        }
     }
 
     public boolean load(URI uri, Store<?, Thing> store) {
