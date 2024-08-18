@@ -37,6 +37,7 @@ public class ThingTimeProvider {
      * {@link Interval#ALL} if the Thing has no temporal metadata.
      */
     public Iterable<Interval> existance(Thing thing) {
+
         // TODO The following is intentionally hard-coded initially, but the thinking is that
         // eventually the IRIs of these properties should be inferred e.g. using Enola Meta schema
         // rdfs:subPropertyOf ...
@@ -45,26 +46,26 @@ public class ThingTimeProvider {
         // considering; i.e. if something has a :timestamp, that's considered before a :createdAt;
         // but a :modifiedAt is considered only AFTER we don't find e.g. an :endedAt.
 
-        var timestampIRI = "https://enola.dev/timestamp";
-        var createdAtIRI = "https://enola.dev/createdAt";
-        var startedAtIRI = "https://enola.dev/startedAt";
-        var fileCreatedAt = "https://enola.dev/files/Node/createdAt";
+        var timestamp = "https://enola.dev/timestamp";
+        var created = "https://enola.dev/createdAt";
+        var started = "https://enola.dev/startedAt";
+        var fileCreated = "https://enola.dev/files/Node/createdAt";
         var start =
-                thing.getOptional(timestampIRI, Instant.class)
-                        .or(() -> thing.getOptional(createdAtIRI, Instant.class))
-                        .or(() -> thing.getOptional(startedAtIRI, Instant.class))
-                        .or(() -> thing.getOptional(fileCreatedAt, Instant.class))
+                thing.getOptional(timestamp, Instant.class)
+                        .or(() -> thing.getOptional(created, Instant.class))
+                        .or(() -> thing.getOptional(started, Instant.class))
+                        .or(() -> thing.getOptional(fileCreated, Instant.class))
                         .orElse(Instant.MIN);
 
-        var deletedAtIRI = "https://enola.dev/deletedAt";
-        var endedAtIRI = "https://enola.dev/endedAt";
-        var fileDeletedAt = "https://enola.dev/files/Node/deletedAt";
-        var modifiedAtIRI = "https://enola.dev/modifiedAt";
+        var deleted = "https://enola.dev/deletedAt";
+        var ended = "https://enola.dev/endedAt";
+        var fileDeleted = "https://enola.dev/files/Node/deletedAt";
+        var modified = "https://enola.dev/modifiedAt";
         var end =
-                thing.getOptional(deletedAtIRI, Instant.class)
-                        .or(() -> thing.getOptional(endedAtIRI, Instant.class))
-                        .or(() -> thing.getOptional(fileDeletedAt, Instant.class))
-                        .or(() -> thing.getOptional(modifiedAtIRI, Instant.class))
+                thing.getOptional(deleted, Instant.class)
+                        .or(() -> thing.getOptional(ended, Instant.class))
+                        .or(() -> thing.getOptional(fileDeleted, Instant.class))
+                        .or(() -> thing.getOptional(modified, Instant.class))
                         .orElse(Instant.MAX);
 
         return List.of(Interval.of(start, end));
