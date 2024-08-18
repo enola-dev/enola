@@ -108,7 +108,7 @@
 
 <https://github.com/google/mangle> a schema:SoftwareApplication, enola:ToDo;
   schema:license <http://spdx.org/licenses/Apache-2.0>;
-  awe:tags :go, :datalog, :google. # TODO Java?
+  awe:tags :go, :datalog, :google. # TODO https://github.com/google/mangle/issues/36 Java?
 
 <https://harvardpl.github.io/AbcDatalog/> a schema:SoftwareApplication, enola:ToDo;
   # TODO Automatically infer (something like) this, given URL pattern matching...
