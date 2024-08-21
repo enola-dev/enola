@@ -53,7 +53,7 @@
     schema:releaseNotes        <https://github.com/enola-dev/enola/commits/main/> ; # ;-)
     schema:softwareHelp        <https://docs.enola.dev/> ;
     schema:author              <https://enola.dev#organization> ;
-    schema:license             <https://github.com/enola-dev/enola/blob/main/LICENSE> ;
+    schema:license             <http://spdx.org/licenses/Apache-2.0> ;
     schema:copyrightYear       2023 ;
     schema:aggregateRating     [ a schema:AggregateRating;
                                  schema:ratingValue "5";

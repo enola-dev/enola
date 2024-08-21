@@ -32,6 +32,7 @@ nav:
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md
           - Graph: models/example.org/graph.md
+          - Timeline: models/example.org/timeline.md
           - Templates: models/example.org/templates.md
           - JSON-LD: models/example.org/json-ld.md
       - News (Blog):

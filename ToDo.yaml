@@ -20,6 +20,33 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
+  - ? Document Web Server in Tutorial
+  - ? Expose Timeline HTML in Web Server
+
+  - Don'? t load JS from unpkg.com, but use the local copies from the //third_party module
+
+  - Last `null` NPE: &https://github.com/enola-dev/enola/issues/845
+
+  - How map (only) nested properties in JSON-LD?:
+      links:
+        - https://www.w3.org/TR/json-ld/#nested-properties
+        - https://docs.enola.dev/concepts/json-ld/
+        - https://docs.enola.dev/models/example.org/json-ld/
+
+  - How to map @id with URL in JSON-LD? No templates, but possible to concat at end?:
+      links:
+        - https://www.w3.org/TR/json-ld/
+        - https://gemini.google.com
+
+  - ? Timeline links to Things pages; both for DocGen and in UI
+    tags: [ui, docgen]
+
+  - Exec Connector!:
+      tags: [exec]
+
+  - Re-evaluate LinkML:
+      tags: [clean]
+
   - Load directories as needed, protected by a flag; use an enola:hide=true:
       created: 2024-08-18
       tags: [model, docs]
@@ -34,13 +61,6 @@ items:
         - https://docs.enola.dev/concepts/other/#datalog
       created: 2024-08-18
       tags: [datalog, infer]
-
-  - Explore https://Flix.dev: &flix
-      description:
-        First, see if it can be used simply as a "strongly typed" TTL or YAML alternative? Is it reflective, can I gen.
-        TTL from it? Specifically its Datalog support... how would this work? Can it read ext. data?
-      tags: [datalog, infer]
-      created: 2024-08-18
 
   - Meta Java Code Generator: &metaJavaCodegen
       created: 2024-08-17
@@ -179,9 +199,6 @@ items:
       Potters](https://github.com/vorburger/kingraph/tree/main/examples) with Enola
     tags: [model, genealogy, helpwanted]
 
-  - Remove (?) LinkML:
-      tags: [clean]
-
   - Render `enola:Markdown` Datatype correctly in Browser:
       links:
         - https://github.com/markedjs/marked
@@ -192,6 +209,11 @@ items:
       tags: [model]
       items:
         - ? Write `todo.esch.yaml` & `todo-context.jsonld` in `models/enola.dev/todo/`
+
+  - Things on Blockchains: &blockchain
+      links:
+        - https://github.com/enola-dev/enola/issues/777
+      tags: [ipld]
 
   - Visualize Graphs in 3D:
       links:
@@ -221,7 +243,7 @@ items:
 
   - Marvel: &marvel
     description: Re-create https://www.marvel-graphs.net with Enola
-    tags: [model, helpwanted]
+    tags: [model, helpwanted, demo]
 
   - Replace TLC for Classes with @Inject DI:
       description:
@@ -235,6 +257,8 @@ items:
 
   - Document Enola Things YAML/JSON/HTML (?) Format: &docRosettaThingsYAML
       description: java:RosettaTest#testTurtleToThings should be documented in file:docs/use/rosetta/index.md
+      links:
+        - https://github.com/enola-dev/enola/pull/607
       tags: [doc]
 
   - Gephi/SigmaJS Network Graph Format:
@@ -246,8 +270,7 @@ items:
         - https://visjs.github.io/vis-network/docs/network/#importGephi
 
   - LSP for YAML format, to validate and auto-complete like Turtle Editors doc:
-      description: UNLESS Flix.dev makes this unnecessary...
-      depends: [*yamlThing, *flix]
+      depends: [*yamlThing]
 
   - VSC Extension:
       description: Package Enola.dev CLI up into a Visual Studio Code extension that can installed from Marketplace!
@@ -258,14 +281,48 @@ items:
         - https://github.com/jamisonjiang/graph-support
         - https://github.com/nidi3/graphviz-java
       todo:prio: todo:very-low
+      tags: [func]
+
+  - Start over and rewrite it all ;-) using https://Flix.dev: &flix
+      description:
+        First, see if it can be used simply as a "strongly typed" TTL or YAML alternative? Is it reflective, can I gen.
+        TTL from it? Specifically its Datalog support... how would this work? Can it read ext. data?
+      tags: [tech, datalog, infer]
+      created: 2024-08-18
 
 # Archive of all "fully done" stuff. (File order doesn't matter, just moved here to be out of the way above.)
 
 tags:
-  - clean
-  - doc
-  - docgen
-  - ui
-  - rosetta
-  - model
-  - visualization
+  func:
+    rosetta:
+    format:
+      turtle:
+      jsonld:
+    connect:
+      http:
+      exec:
+    model:
+      file:
+      net:
+      bazel:
+      html:
+      markdown:
+      java:
+    gen:
+      docgen:
+        mdgen:
+      visualization:
+        graph:
+          graphviz:
+          gexf:
+          sigmajs:
+        timeline:
+          visjs:
+    ui:
+    blockchain:
+      ipfs:
+        ipld:
+    demo:
+      doc:
+  tech:
+    clean:

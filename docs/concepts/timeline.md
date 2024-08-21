@@ -18,6 +18,6 @@
 
 # Timeline
 
-[Open Timeline](../../models/timeline.html)...
+[Open Timeline](../../models/timeline.html)... this is generated as `timeline.html` by [DocGen](../use/docgen/index.md).
 
 <iframe src="../../models/timeline.html" width=100% height=100%></iframe>
