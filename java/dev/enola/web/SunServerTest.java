@@ -23,6 +23,8 @@ import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.Context;
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.StringResource;
 
@@ -52,38 +54,55 @@ public class SunServerTest {
                     throw new IllegalArgumentException("oink");
                 });
 
+        server.register(
+                "/context",
+                uri -> immediateFuture(StringResource.of(TLC.get(TestCtxKey.MAGIC).toString())));
+
         server.start();
         return server;
     }
 
     @Test
     public void testServer() throws IOException {
-        try (var server = start()) {
-            var prefix = "http://localhost:" + server.getInetAddress().getPort();
-            var rp = new ResourceProviders();
 
-            // IPv6 NOK :( var uri = URI.create("http://" + server.getInetAddress() + "/hello");
-            var uri1 = URI.create(prefix + "/hello");
-            var response1 = rp.getResource(uri1);
-            assertThat(response1.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
-            assertThat(response1.charSource().read()).isEqualTo("hello, world");
+        try (var ctx = TLC.open()) {
+            ctx.push(TestCtxKey.MAGIC, 123);
 
-            var uri2 = URI.create(prefix + "/abc/xyz/hello.txt");
-            var response2 = rp.getResource(uri2);
-            assertThat(response2.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
-            assertThat(response2.charSource().read()).isEqualTo("hi, you\n");
+            try (var server = start()) {
+                var prefix = "http://localhost:" + server.getInetAddress().getPort();
+                var rp = new ResourceProviders();
 
-            var error1 = URI.create(prefix + "/error1");
-            Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error1));
-            // var errorResponse1 = rp.getResource(error1);
-            // Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
+                // IPv6 NOK :( var uri = URI.create("http://" + server.getInetAddress() + "/hello");
+                var uri1 = URI.create(prefix + "/hello");
+                var response1 = rp.getResource(uri1);
+                assertThat(response1.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
+                assertThat(response1.charSource().read()).isEqualTo("hello, world");
 
-            var error2 = URI.create(prefix + "/error2");
-            Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error2));
-            // var errorResponse2 = rp.getResource(error2);
-            // Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
+                var contextURI = URI.create(prefix + "/context");
+                // TODO !?! var responseFromTLC = rp.getResource(contextURI);
+                // TODO !?! assertThat(responseFromTLC.charSource().read()).isEqualTo("123");
 
-            // TODO expect HTTP Error 500
+                var uri2 = URI.create(prefix + "/abc/xyz/hello.txt");
+                var response2 = rp.getResource(uri2);
+                assertThat(response2.mediaType()).isEqualTo(MediaType.PLAIN_TEXT_UTF_8);
+                assertThat(response2.charSource().read()).isEqualTo("hi, you\n");
+
+                var error1 = URI.create(prefix + "/error1");
+                Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error1));
+                // var errorResponse1 = rp.getResource(error1);
+                // Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
+
+                var error2 = URI.create(prefix + "/error2");
+                Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error2));
+                // var errorResponse2 = rp.getResource(error2);
+                // Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
+
+                // TODO expect HTTP Error 500
+            }
         }
+    }
+
+    private enum TestCtxKey implements Context.Key<Integer> {
+        MAGIC
     }
 }

@@ -47,8 +47,12 @@ public final class TLC {
         } else {
             next = new Context();
         }
-        threadLocalContext.set(next);
+        setThreadLocalContext(next);
         return next;
+    }
+
+    /* package local! */ static void setThreadLocalContext(Context context) {
+        threadLocalContext.set(context);
     }
 
     /**

@@ -56,6 +56,7 @@ public class UiTest {
     public void testUi() throws Exception {
         var addr = new InetSocketAddress(0);
         try (var server = new SunServer(addr)) {
+            // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
             var rp = new ResourceProviders();
             var ekr = new EntityKindRepository();
             var esp = new EnolaServiceProvider(ekr, rp);
