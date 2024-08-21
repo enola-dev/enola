@@ -102,7 +102,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
         DatatypeRepository dtr = Datatypes.DTR;
         ctx.push(DatatypeRepository.class, dtr);
 
-        // TODO This must be configurable & dynamic...
+        // TODO This must be configurable & dynamic... but shouldn't be configured in package cli?
         var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
         ctx.push(NamespaceConverter.class, namespaceConverter);

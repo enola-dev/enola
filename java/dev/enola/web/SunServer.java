@@ -47,10 +47,10 @@ public class SunServer implements WebServer {
     private static final Logger LOG = LoggerFactory.getLogger(SunServer.class);
 
     private static final Executor SERVER_EXECUTOR =
-            Executors.newListeningCachedThreadPool("Server", LOG);
+            Executors.newListeningCachedThreadPool("HttpServer", LOG);
 
     private static final Executor HANDLER_EXECUTOR =
-            Executors.newListeningSingleThreadExecutor("Handler", LOG);
+            Executors.newListeningSingleThreadExecutor("HttpHandler", LOG);
 
     private final HttpServer sun;
 

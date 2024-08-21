@@ -57,6 +57,7 @@ junit_tests(
     ],
     deps = [
         ":web",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/core",

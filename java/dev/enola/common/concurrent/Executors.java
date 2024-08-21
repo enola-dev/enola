@@ -22,6 +22,8 @@ import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import dev.enola.common.context.ContextAwareThreadFactory;
+
 import org.slf4j.Logger;
 
 import java.util.concurrent.ExecutorService;
@@ -31,9 +33,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Additional factory and utility methods for executors.
  *
- * <p>Use this instead of {@link java.util.concurrent.Executors}, because it ensures that the
- * returned Executor uses a {@link ThreadFactory} that is named, has a logging
- * UncaughtExceptionHandler, and returns (Guava's) ListenableFuture.
+ * <p>Use this instead of {@link java.util.concurrent.Executors}, because it ensures that:
+ *
+ * <ul>
+ *   <li></b>the {@link dev.enola.common.context.TLC} is correctly propagated</b>
+ *   <li>the returned Executor uses a {@link ThreadFactory} that is named,
+ *   <li>has a logging UncaughtExceptionHandler,
+ *   <li>returns (Guava's) ListenableFuture.
+ * </ul>
  *
  * @author Michael Vorburger.ch, originally for https://www.opendaylight.org
  */
@@ -63,8 +70,8 @@ public final class Executors {
      * Creates a single thread executor with a {@link ThreadFactory} that uses the provided prefix
      * for its thread names and logs uncaught exceptions with the specified {@link Logger}.
      *
-     * @param namePrefix Prefix for threads from this executor. For example, "rpc-pool", to create *
-     *     "rpc-pool-1/2/3" named threads. Note that this is a prefix, not a format, * so you pass
+     * @param namePrefix Prefix for threads from this executor. For example, "rpc-pool", to create
+     *     "rpc-pool-1/2/3" named threads. Note that this is a prefix, not a format, so you pass
      *     just "rpc-pool" instead of e.g. "rpc-pool-%d".
      * @param logger Logger used to log uncaught exceptions from new threads created from this.
      * @see java.util.concurrent.Executors#newSingleThreadExecutor()
@@ -129,7 +136,8 @@ public final class Executors {
                         .setUncaughtExceptionHandler(
                                 dev.enola.common.concurrent.LoggingThreadUncaughtExceptionHandler
                                         .toLogger(logger))
-                        .setDaemon(true);
+                        .setDaemon(true)
+                        .setThreadFactory(new ContextAwareThreadFactory());
         // priority.ifPresent(guavaBuilder::setPriority);
         logger.info("ThreadFactory created: {}", namePrefix);
         return guavaBuilder.build();
