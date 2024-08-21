@@ -30,6 +30,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import dev.enola.common.concurrent.Executors;
 import dev.enola.common.io.resource.ReadableResource;
 
 import org.slf4j.Logger;
@@ -39,15 +40,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /** {@link WebServer} API implementation using {@link HttpServer} from com.sun. */
 public class SunServer implements WebServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(SunServer.class);
 
-    private static final Executor SERVER_EXECUTOR = Executors.newCachedThreadPool();
-    private static final Executor HANDLER_EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final Executor SERVER_EXECUTOR =
+            Executors.newListeningCachedThreadPool("Server", LOG);
+
+    private static final Executor HANDLER_EXECUTOR =
+            Executors.newListeningSingleThreadExecutor("Handler", LOG);
 
     private final HttpServer sun;
 

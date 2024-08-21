@@ -29,6 +29,7 @@ java_library(
     resources = glob(["resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
