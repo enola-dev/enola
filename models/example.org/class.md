@@ -26,7 +26,11 @@ You can tell that the `greeting1` and `greeting2` from the previous steps are bo
 {% include "./greeting3.ttl" start="# limitations under the License.\n" %}
 ```
 
-This simply expresses that `greeting3` _"is a"_ `Salutation`. We're also adding an Emoji to the _Class,_ which Enola always displays for both that class itself and its instances. You can generate documentation:
+This simply expresses that `greeting3` _"is a"_ `Salutation`. We're also adding an Emoji to the _Class,_ which Enola always displays for both that class itself and its instances.
+
+This concludes our introduction about 🐢 Turtle; more detailed information about it is available in [our Turtle Reference documentation](../../concepts/turtle.md).
+
+You can now e.g. re-generate documentation:
 
 ```bash cd ../../..
 $ ./enola docgen --load docs/models/example.org/greeting3.ttl --output=/tmp/models/ --no-index

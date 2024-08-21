@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023-2024 The Enola <https://enola.dev> Authors
+    Copyright 2024 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,18 +16,10 @@
     limitations under the License.
 -->
 
-# DocGen
+# Timeline
 
-We can generate nice Markdown documentation as seen in [the tutorial](../../models/example.org/class.md)
-or for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or
-[Graphwiz](../rosetta/index.md#graphviz) or [GEXF](../rosetta/index.md#gexf) format, and
-[a Timeline](../../models/example.org/timeline.md).
+Enola can visualize Things on “timeline” diagrams with <!-- TODO [Rosetta](../../use/rosetta/index.md#graphviz) and --> [DocGen](../../use/docgen/index.md).
 
-```bash cd ../.././..
-$ ./enola docgen --model docs/use/library/model.yaml --diagram=mermaid >docs/use/docgen/docgen.md
-...
-```
+<!-- Write a short but illustrative example TTL, with both start & end, only timestamp, and neither; and link, after integrating https://github.com/javdome/timeline-arrows -->
 
-## docgen.md
-
-{% include "./docgen.md" %}
+[Here](../../concepts/timeline.md) is an example.

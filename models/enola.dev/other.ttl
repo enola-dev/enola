@@ -40,6 +40,18 @@
 :go a awe:Tag;
   enola:seeAlso <https://go.dev>.
 
+:cncf  a awe:Tag;
+  enola:seeAlso <https://www.cncf.io>.
+
+<https://backstage.io> a schema:SoftwareApplication, schema:Organization;
+  schema:license <http://spdx.org/licenses/Apache-2.0>;
+  awe:tags :api, :cncf.
+
+<https://open-metadata.org>  a schema:SoftwareApplication, schema:Organization, enola:ToDo;
+  schema:license <http://spdx.org/licenses/Apache-2.0>;
+  # TODO Automagically fetch the tags from https://github.com/open-metadata/OpenMetadata
+  awe:tags :metadata, :governance, :repository.
+
 :inference a enola:Topic.
 
 :datalog a schema:ComputerLanguage, enola:Topic, enola:ToDo;
