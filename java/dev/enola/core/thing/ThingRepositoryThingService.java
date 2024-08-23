@@ -21,8 +21,6 @@ import com.google.protobuf.Any;
 
 import dev.enola.common.context.TLC;
 import dev.enola.core.EnolaException;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
@@ -68,11 +66,5 @@ public class ThingRepositoryThingService implements ThingService {
         }
         var protoThing = javaThingToProtoThingConverter.convert(javaThing);
         return Any.pack(protoThing.build());
-    }
-
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        throw new UnsupportedOperationException(
-                "listEntities() will be removed, and never implemented here");
     }
 }

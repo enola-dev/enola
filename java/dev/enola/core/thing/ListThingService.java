@@ -21,8 +21,6 @@ import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.thing.message.ProtoThingRepository;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
@@ -97,11 +95,5 @@ public class ListThingService implements ThingService {
             thing.putProperties(ENOLA_ROOT_LIST_PROPERTY, value.build());
             return Any.pack(thing.build());
         }
-    }
-
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        throw new UnsupportedOperationException(
-                "listEntities() will be removed, and never implemented here");
     }
 }

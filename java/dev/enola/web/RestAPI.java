@@ -31,7 +31,6 @@ import dev.enola.core.EnolaException;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.ListEntitiesRequest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -66,9 +65,6 @@ public class RestAPI implements WebHandler {
         if (path.startsWith("/api/entity/")) {
             var eri = path.substring("/api/entity/".length());
             getEntityJSON(eri, resource);
-        } else if (path.startsWith("/api/entities/")) {
-            var eri = path.substring("/api/entities/".length());
-            listEntityJSON(eri, resource);
         } else {
             // TODO 404 instead 500 (needs API changes)
             throw new IllegalArgumentException("404 - Unknown URI!");
@@ -82,15 +78,6 @@ public class RestAPI implements WebHandler {
         var thing = response.getThing();
 
         getProtoIO().write(thing, resource);
-    }
-
-    private void listEntityJSON(String eri, WritableResource resource)
-            throws EnolaException, IOException {
-        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
-        var response = service.listEntities(request);
-        for (var entity : response.getEntitiesList()) {
-            getProtoIO().write(entity, resource);
-        }
     }
 
     private ProtoIO getProtoIO() {

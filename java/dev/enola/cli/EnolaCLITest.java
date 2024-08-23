@@ -28,7 +28,6 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
-import dev.enola.thing.gen.DocGenConstants;
 
 import org.junit.Test;
 
@@ -71,25 +70,6 @@ public class EnolaCLITest {
         assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
         assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
         // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
-    }
-
-    @Test
-    public void docGenEntity() throws IOException {
-        try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
-            var exec =
-                    cli(
-                            "-v",
-                            "docgen",
-                            "--test-scheme",
-                            "--classpath-scheme",
-                            "--model",
-                            "classpath:/cli-test-model.textproto",
-                            "--output",
-                            r.uri().toString());
-            assertThat(exec).err().isEmpty();
-            assertThat(exec).hasExitCode(0).out().isEmpty();
-            assertThat(r.charSource().read()).endsWith(DocGenConstants.FOOTER);
-        }
     }
 
     @Test
@@ -136,31 +116,6 @@ public class EnolaCLITest {
         var expectedGreetingNumberMD =
                 new ClasspathResource("greet-NUMBER_var-HTML.md").charSource().read();
         assertThatFileContains(dir, "example.org/greet/_NUMBER.md", expectedGreetingNumberMD);
-    }
-
-    @Test
-    public void listKind() {
-        var exec =
-                cli(
-                        "-v",
-                        "list",
-                        "enola.entity_kind",
-                        "--model",
-                        "classpath:/cli-test-model.textproto");
-        assertThat(exec).err().isEmpty();
-        var out = assertThat(exec).hasExitCode(0).out();
-        out.contains("enola.entity_kind");
-        out.contains("test.foobar");
-    }
-
-    @Test
-    public void listSchemas() {
-        var exec =
-                cli("-v", "list", "enola.schema", "--model", "empty:?mediaType=application/json");
-        assertThat(exec).err().isEmpty();
-        var out = assertThat(exec).hasExitCode(0).out();
-        out.contains("type.googleapis.com/google.protobuf.DescriptorProto");
-        out.contains("paths: [dev.enola.core.meta.EntityKind]");
     }
 
     @Test

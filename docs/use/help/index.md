@@ -51,15 +51,6 @@ $ ./enola help get
 ...
 ```
 
-## List
-
-[List Entities](../list/index.md) has the following options:
-
-```bash cd ../.././..
-$ ./enola help list
-...
-```
-
 ## Server
 
 [The built-in HTTP Web Server](../server/index.md) has the following options:

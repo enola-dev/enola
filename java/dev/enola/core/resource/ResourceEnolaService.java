@@ -29,6 +29,7 @@ import dev.enola.thing.message.ProtoThingProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.Templates;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +59,7 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
         this(rp, new RdfResourceIntoProtoThingConverter(rp));
     }
 
-    public List<Thing.Builder> getThingsAsBuilderList(String iri) {
+    public @Nullable List<Thing.Builder> getThingsAsBuilderList(String iri) {
         if (Templates.hasVariables(iri)) return null;
         var uri = URI.create(iri); // TODO IRIs.toURI(iri);
         var resource = rp.getReadableResource(uri);
@@ -77,15 +78,21 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
     @Override
     public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
         var responseBuilder = GetThingsResponse.newBuilder();
-        for (var thingBuilder : getThingsAsBuilderList(r.getIri())) {
-            responseBuilder.addThings(thingBuilder.build());
+        List<Thing.Builder> things = getThingsAsBuilderList(r.getIri());
+        if (things != null) {
+            for (var thingBuilder : things) {
+                responseBuilder.addThings(thingBuilder.build());
+            }
         }
         return responseBuilder.build();
     }
 
     @Override
-    public Any get(String iri) {
-        var message = resourceToThingConverter.asMessage(getThingsAsBuilderList(iri)).build();
+    public @Nullable Any get(String iri) {
+        var things = getThingsAsBuilderList(iri);
+        if (things == null) return null;
+
+        var message = resourceToThingConverter.asMessage(things).build();
         return Any.pack(message);
     }
 
@@ -95,10 +102,5 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
         var any = get(r.getIri());
         if (any != null) builder.setThing(any);
         return builder.build();
-    }
-
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        throw new UnsupportedOperationException("listEntities will eventually be removed");
     }
 }

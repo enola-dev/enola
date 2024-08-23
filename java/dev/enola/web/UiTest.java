@@ -126,10 +126,5 @@ public class UiTest {
             var entity = Entity.newBuilder().setId(id).setTs(now).build();
             return GetThingResponse.newBuilder().setThing(Any.pack(entity)).build();
         }
-
-        @Override
-        public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-            return ListEntitiesResponse.newBuilder().build();
-        }
     }
 }

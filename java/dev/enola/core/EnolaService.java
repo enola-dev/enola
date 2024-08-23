@@ -26,7 +26,4 @@ public interface EnolaService {
 
     // TODO Convert all callers to getThings, and remove this
     GetThingResponse getThing(GetThingRequest r) throws EnolaException;
-
-    // TODO Convert all callers to getThings, and remove this
-    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

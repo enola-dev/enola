@@ -40,7 +40,6 @@ import dev.enola.core.meta.proto.Link;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
 // import dev.enola.demo.Server;
 
 import org.junit.Test;
@@ -194,9 +193,5 @@ public class EntityServiceProviderTest {
         var thing = getResponse.getThing();
         var entity = thing.unpack(Entity.class);
         assertWithMessage("data.schema").that(entity.getDataOrThrow("schema")).isNotNull();
-
-        var listRequest = ListEntitiesRequest.newBuilder().setEri(eri).build();
-        var listResponse = service.listEntities(listRequest);
-        assertThat(listResponse.getEntitiesList()).hasSize(2);
     }
 }

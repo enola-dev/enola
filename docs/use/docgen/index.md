@@ -22,12 +22,3 @@ We can generate nice Markdown documentation as seen in [the tutorial](../../mode
 or for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or
 [Graphwiz](../rosetta/index.md#graphviz) or [GEXF](../rosetta/index.md#gexf) format, and
 [a Timeline](../../models/example.org/timeline.md).
-
-```bash cd ../.././..
-$ ./enola docgen --model docs/use/library/model.yaml --diagram=mermaid >docs/use/docgen/docgen.md
-...
-```
-
-## docgen.md
-
-{% include "./docgen.md" %}

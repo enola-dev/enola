@@ -31,7 +31,6 @@ import dev.enola.core.IDs;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
 
 import org.junit.Test;
 
@@ -43,15 +42,6 @@ public class SchemaAspectTest {
     ID.Builder schemaKindID = SchemaAspect.idBuilderTemplate;
 
     public SchemaAspectTest() throws ValidationException, EnolaException {}
-
-    @Test
-    public void list() throws ValidationException, EnolaException {
-        var eri = IDs.toPath(schemaKindID);
-        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
-        var response = service.listEntities(request);
-
-        assertThat(response.getEntitiesList().size()).isAtLeast(38);
-    }
 
     @Test
     public void get() throws ValidationException, EnolaException, InvalidProtocolBufferException {
