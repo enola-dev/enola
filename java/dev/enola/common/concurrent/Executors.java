@@ -46,6 +46,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class Executors {
 
+    // TODO Offer variants which don't return (Guava's) ListenableFuture but just std. JDK
+
     public static final long DEFAULT_TIMEOUT_FOR_SHUTDOWN = 10;
     public static final TimeUnit DEFAULT_TIMEOUT_UNIT_FOR_SHUTDOWN = TimeUnit.SECONDS;
 

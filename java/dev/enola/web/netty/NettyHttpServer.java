@@ -19,6 +19,7 @@ package dev.enola.web.netty;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.concurrent.Executors;
 import dev.enola.web.WebHandler;
 import dev.enola.web.WebServer;
 
@@ -62,13 +63,24 @@ public class NettyHttpServer implements WebServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(NettyHttpServer.class);
 
-    private final ImmutableMap.Builder<String, WebHandler> handlersBuilder = ImmutableMap.builder();
-    private final NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
-    private final EventLoopGroup workerGroup = new NioEventLoopGroup();
     private InetSocketAddress inetSocketAddress;
+    private final ImmutableMap.Builder<String, WebHandler> handlersBuilder = ImmutableMap.builder();
+    private final NioEventLoopGroup connectionsGroup;
+    private final EventLoopGroup handlerGroup;
 
     public NettyHttpServer(int port) {
         this.inetSocketAddress = new InetSocketAddress(port);
+
+        // Accepts connections
+        var connectExecutor =
+                Executors.newListeningSingleThreadExecutor("NettyHttpServer-Connect", LOG);
+        connectionsGroup = new NioEventLoopGroup(1, connectExecutor);
+
+        // Handles I/O for connected clients
+        // TODO Use newListeningFixedThreadPool() to avoid unbounded growth? But how to choose size?
+        var handlerExecutor =
+                Executors.newListeningCachedThreadPool("NettyHttpServer-Handler", LOG);
+        handlerGroup = new NioEventLoopGroup(0, handlerExecutor);
     }
 
     @Override
@@ -80,7 +92,9 @@ public class NettyHttpServer implements WebServer {
     public void start() throws InterruptedException {
         ServerBootstrap b = new ServerBootstrap();
         b.option(ChannelOption.SO_BACKLOG, 1024);
-        b.group(bossGroup, workerGroup)
+        // TODO Configure additional ChannelOption ?
+
+        b.group(connectionsGroup, handlerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new OurChannelInitializer(handlersBuilder.build()));
@@ -97,8 +111,8 @@ public class NettyHttpServer implements WebServer {
     @Override
     public void close() {
         try {
-            bossGroup.shutdownGracefully().get();
-            workerGroup.shutdownGracefully().get();
+            connectionsGroup.shutdownGracefully().get();
+            handlerGroup.shutdownGracefully().get();
         } catch (InterruptedException | ExecutionException e) {
             LOG.error("Failed to close()", e);
         }
