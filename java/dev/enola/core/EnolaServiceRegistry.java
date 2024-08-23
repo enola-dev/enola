@@ -22,24 +22,24 @@ import com.google.protobuf.Any;
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.meta.proto.Type;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
-import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.proto.*;
 import dev.enola.core.resource.ResourceEnolaService;
 import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
+import dev.enola.thing.Thing;
+import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingRepository;
 import dev.enola.thing.repo.ThingRepository;
+import dev.enola.thing.repo.ThingsProvider;
 
 import java.util.Map;
 
 class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
 
     private final URITemplateMatcherChain<ThingService> matcher;
-    private ResourceEnolaService resourceEnolaService;
+    private final ResourceEnolaService resourceEnolaService;
+    private final JavaThingToProtoThingConverter converter;
 
     public static Builder builder() {
         return new Builder();
@@ -50,6 +50,29 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             ResourceEnolaService resourceEnolaService) {
         this.matcher = matcherChain;
         this.resourceEnolaService = resourceEnolaService;
+        this.converter = new JavaThingToProtoThingConverter();
+    }
+
+    @Override
+    public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
+        var iri = r.getIri();
+        var builder = GetThingsResponse.newBuilder();
+        var opt = matcher.match(iri);
+        if (opt.isPresent()) {
+            var entry = opt.get();
+            var delegate = entry.getKey();
+            var parameters = entry.getValue();
+            try {
+                var javaThings = delegate.getThings(iri, parameters);
+                for (var javaThing : javaThings) {
+                    builder.addThings(converter.convert(javaThing));
+                }
+
+            } catch (EnolaException e) {
+                throw new EnolaException(e);
+            }
+        }
+        return builder.build();
     }
 
     @Override
@@ -116,12 +139,17 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             return new ThingService() {
 
                 @Override
+                public Iterable<Thing> getThings(String iri, Map<String, String> parameters)
+                        throws EnolaException {
+                    return service.getThings(iri, parameters);
+                }
+
+                @Override
                 public Any getThing(String iri, Map<String, String> parameters) {
                     try {
                         return service.getThing(iri, parameters);
                     } catch (RuntimeException e) {
-                        throw new RuntimeException(
-                                service.toString() + " failed to get: " + iri, e);
+                        throw new RuntimeException(service + " failed to get: " + iri, e);
                     }
                 }
 
@@ -137,8 +165,9 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             b.add(type.getUri(), wrap(service));
         }
 
-        public void register(ThingRepository thingRepository) {
-            var thingRepositoryThingService = new ThingRepositoryThingService(thingRepository);
+        public void register(ThingRepository thingRepository, ThingsProvider thingsProvider) {
+            var thingRepositoryThingService =
+                    new ThingRepositoryThingService(thingsProvider, thingRepository);
             for (var iri : thingRepository.listIRI()) {
                 b.add(iri, wrap(thingRepositoryThingService));
             }

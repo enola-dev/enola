@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 public class EnolaThingProvider implements Repository<Thing> {
 
+    // TODO Replace everywhere with EnolaServiceProtoThingsProvider
     // TODO implements ProtoThingRepository, ProtoThingProvider
     // TODO Move into dev.enola.core.thing where it probably belongs, more logically?
     // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector

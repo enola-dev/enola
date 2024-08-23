@@ -25,6 +25,7 @@ import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.thing.Thing;
 import dev.enola.thing.proto.Things;
 
 import java.util.Map;
@@ -41,6 +42,13 @@ public class ThingConnectorService implements ThingService {
 
     public ThingConnectorService(Type type, ThingConnector aspect, EnolaMessages enolaMessages) {
         this.aspects = ImmutableList.of(aspect);
+    }
+
+    @Override
+    public Iterable<Thing> getThings(String iri, Map<String, String> parameters)
+            throws EnolaException {
+        throw new UnsupportedOperationException(
+                "Not implemented, because this class is about to be removed anyways!");
     }
 
     @Override

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
@@ -23,6 +24,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 proto_library(
     name = "thing_proto",
     srcs = ["thing.proto"],
+    visibility = ["//:__subpackages__"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
     ],
@@ -55,6 +57,14 @@ java_proto_library(
     name = "thing_java_proto",
     visibility = ["//:__subpackages__"],
     deps = ["thing_proto"],
+)
+
+go_proto_library(
+    name = "thing_go_proto",
+    importpath = "dev/enola/thing",
+    protos = [":thing_proto"],
+    visibility = ["//:__subpackages__"],
+    deps = [],
 )
 
 java_library(

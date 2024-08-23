@@ -39,6 +39,7 @@ import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingsProvider;
 import dev.enola.thing.template.TemplateThingRepository;
 import dev.enola.thing.validation.LoggingCollector;
 import dev.enola.thing.validation.Validators;
@@ -118,7 +119,16 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 // NB: Copy/pasted below...
                 ekr = new EntityKindRepository();
                 Repository<Type> tyr = new TypeRepositoryBuilder().build();
-                esp = new EnolaServiceProvider(ekr, tyr, templateThingRepository, rp);
+                ThingsProvider thingsProvider =
+                        new ThingsProvider() {
+                            @Override
+                            public Iterable<dev.enola.thing.Thing> get(String iri) {
+                                throw new UnsupportedOperationException("TODO");
+                            }
+                        };
+                esp =
+                        new EnolaServiceProvider(
+                                ekr, tyr, thingsProvider, templateThingRepository, rp);
                 var enolaService = esp.getEnolaService();
                 grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
                 gRPCService = grpc.get();

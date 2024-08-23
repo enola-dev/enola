@@ -34,6 +34,10 @@ public class JavaThingToProtoThingConverter
 
     private final DatatypeRepository datatypeRepository;
 
+    public JavaThingToProtoThingConverter() {
+        this(DatatypeRepository.CTX);
+    }
+
     public JavaThingToProtoThingConverter(DatatypeRepository datatypeRepository) {
         this.datatypeRepository = datatypeRepository;
     }

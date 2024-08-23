@@ -20,13 +20,7 @@ package dev.enola.core.grpc;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
-import dev.enola.core.proto.EnolaServiceGrpc;
-import dev.enola.core.proto.GetFileDescriptorSetRequest;
-import dev.enola.core.proto.GetFileDescriptorSetResponse;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.proto.*;
 
 import io.grpc.stub.StreamObserver;
 
@@ -38,6 +32,18 @@ public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
     public EnolaGrpcService(EnolaServiceProvider esp, EnolaService service) {
         this.enola = service;
         this.esp = esp;
+    }
+
+    @Override
+    public void getThings(
+            GetThingsRequest request, StreamObserver<GetThingsResponse> responseObserver) {
+        try {
+            var response = enola.getThings(request);
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        } catch (EnolaException e) {
+            responseObserver.onError(e);
+        }
     }
 
     @Override

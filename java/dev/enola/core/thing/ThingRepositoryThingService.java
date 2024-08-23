@@ -25,8 +25,10 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.thing.Thing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.repo.ThingRepository;
+import dev.enola.thing.repo.ThingsProvider;
 
 import java.util.Map;
 
@@ -36,10 +38,13 @@ import java.util.Map;
  */
 public class ThingRepositoryThingService implements ThingService {
 
+    private final ThingsProvider thingsProvider;
     private final ThingRepository thingRepository;
     private final JavaThingToProtoThingConverter javaThingToProtoThingConverter;
 
-    public ThingRepositoryThingService(ThingRepository thingRepository) {
+    public ThingRepositoryThingService(
+            ThingsProvider thingsProvider, ThingRepository thingRepository) {
+        this.thingsProvider = thingsProvider;
         this.thingRepository = thingRepository;
         // TODO Implement looking up Datatypes in ThingRepository!
         DatatypeRepository datatypeRepository =
@@ -47,6 +52,12 @@ public class ThingRepositoryThingService implements ThingService {
                         .orElseGet(() -> new DatatypeRepositoryBuilder().build());
         this.javaThingToProtoThingConverter =
                 new JavaThingToProtoThingConverter(datatypeRepository);
+    }
+
+    @Override
+    public Iterable<Thing> getThings(String iri, Map<String, String> parameters)
+            throws EnolaException {
+        return thingsProvider.get(iri);
     }
 
     @Override

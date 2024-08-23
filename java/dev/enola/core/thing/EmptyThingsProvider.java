@@ -17,23 +17,16 @@
  */
 package dev.enola.core.thing;
 
-import com.google.protobuf.Any;
-
-import dev.enola.core.EnolaException;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.thing.Thing;
+import dev.enola.thing.repo.ThingsProvider;
 
-import java.util.Map;
+import java.util.Collections;
 
-public interface ThingService {
-    // TODO Replace usages with ProtoThingProvider, once listEntities() is gone
+@Deprecated // Remove when no longer needed
+public class EmptyThingsProvider implements ThingsProvider {
 
-    Iterable<Thing> getThings(String iri, Map<String, String> parameters) throws EnolaException;
-
-    // TODO Convert all callers to getThings, and remove this
-    Any getThing(String iri, Map<String, String> parameters);
-
-    // TODO Convert all callers to getThings, and remove this
-    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
+    @Override
+    public Iterable<Thing> get(String iri) {
+        return Collections.emptySet();
+    }
 }

@@ -49,6 +49,7 @@ proto_library(
     srcs = ["enola_core.proto"],
     deps = [
         ":ext_proto",
+        "//java/dev/enola/thing:thing_proto",
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:struct_proto",
@@ -234,7 +235,10 @@ go_proto_library(
     importpath = "dev/enola/core",
     protos = [":core_proto"],
     visibility = [],
-    deps = [":ext_go_proto"],
+    deps = [
+        ":ext_go_proto",
+        "//java/dev/enola/thing:thing_go_proto",
+    ],
 )
 
 go_proto_library(

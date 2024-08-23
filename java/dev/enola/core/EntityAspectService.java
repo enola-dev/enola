@@ -27,6 +27,7 @@ import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.thing.ThingService;
+import dev.enola.thing.Thing;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -40,6 +41,13 @@ class EntityAspectService implements ThingService {
     public EntityAspectService(EntityKind entityKind, ImmutableList<EntityAspect> aspects) {
         this.entityKind = entityKind;
         this.registry = aspects;
+    }
+
+    @Override
+    public Iterable<Thing> getThings(String iri, Map<String, String> parameters)
+            throws EnolaException {
+        throw new UnsupportedOperationException(
+                "Not implemented, because this class is about to be removed anyways!");
     }
 
     @Override
