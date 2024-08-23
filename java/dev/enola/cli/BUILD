@@ -78,6 +78,7 @@ junit_tests(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/gen",
         "//java/dev/enola/web",
+        "//java/dev/enola/web/netty",
         "//models",
         "//test",
         "@maven//:info_picocli_picocli",
