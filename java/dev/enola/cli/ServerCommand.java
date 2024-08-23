@@ -22,10 +22,9 @@ import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.*;
+import dev.enola.web.netty.NettyHttpServer;
 
 import picocli.CommandLine;
-
-import java.net.InetSocketAddress;
 
 @CommandLine.Command(name = "server", description = "Start HTTP and/or gRPC Server/s")
 public class ServerCommand extends CommandWithModel {
@@ -65,7 +64,7 @@ public class ServerCommand extends CommandWithModel {
 
         // HTML UI + JSON REST API
         if (ports.httpPort != null) {
-            httpServer = new SunServer(new InetSocketAddress(ports.httpPort));
+            httpServer = new NettyHttpServer(ports.httpPort);
             new UI(service, getMetadataProvider(new EnolaThingProvider(service)))
                     .register(httpServer);
             new RestAPI(service).register(httpServer);

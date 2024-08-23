@@ -37,18 +37,17 @@ import dev.enola.core.proto.GetThingResponse;
 import dev.enola.core.proto.ID;
 import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.web.netty.NettyHttpServer;
 
 import org.junit.Test;
 
-import java.net.InetSocketAddress;
 import java.time.Instant;
 
 public class RestTest {
 
     @Test
     public void getAndList() throws Exception {
-        var addr = new InetSocketAddress(0);
-        try (var server = new SunServer(addr)) {
+        try (var server = new NettyHttpServer(0)) {
             // Setup
             var rp = new ResourceProviders();
             var ekr = new EntityKindRepository();
