@@ -72,14 +72,12 @@ public class NettyHttpServer implements WebServer {
         this.inetSocketAddress = new InetSocketAddress(port);
 
         // Accepts connections
-        var connectExecutor =
-                Executors.newListeningSingleThreadExecutor("NettyHttpServer-Connect", LOG);
+        var connectExecutor = Executors.newSingleThreadExecutor("NettyHttpServer-Connect", LOG);
         connectionsGroup = new NioEventLoopGroup(1, connectExecutor);
 
         // Handles I/O for connected clients
         // TODO Use newListeningFixedThreadPool() to avoid unbounded growth? But how to choose size?
-        var handlerExecutor =
-                Executors.newListeningCachedThreadPool("NettyHttpServer-Handler", LOG);
+        var handlerExecutor = Executors.newCachedThreadPool("NettyHttpServer-Handler", LOG);
         handlerGroup = new NioEventLoopGroup(0, handlerExecutor);
     }
 
