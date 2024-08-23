@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.thing.repo;
 
-import dev.enola.core.proto.*;
+import dev.enola.thing.Thing;
 
-public interface EnolaService {
-    // TODO Merge this "local" API with the ("remote") dev.enola.core.grpc.EnolaGrpcService
+public interface ThingsProvider {
 
-    GetThingsResponse getThings(GetThingsRequest r) throws EnolaException;
-
-    // TODO Convert all callers to getThings, and remove this
-    GetThingResponse getThing(GetThingRequest r) throws EnolaException;
-
-    // TODO Convert all callers to getThings, and remove this
-    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
+    // TODO Reactive Stream, or Mutiny Multi, instead Iterable
+    Iterable<Thing> get(String iri);
 }

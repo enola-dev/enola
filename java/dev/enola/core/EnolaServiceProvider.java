@@ -41,6 +41,7 @@ import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.SchemaAspect;
 import dev.enola.core.meta.proto.Type;
 import dev.enola.core.thing.EmptyThingRepository;
+import dev.enola.core.thing.EmptyThingsProvider;
 import dev.enola.core.thing.ThingConnector;
 import dev.enola.core.thing.ThingConnectorService;
 import dev.enola.core.type.TypeRepositoryBuilder;
@@ -48,6 +49,7 @@ import dev.enola.core.view.EnolaMessages;
 import dev.enola.data.Repository;
 import dev.enola.thing.proto.Things;
 import dev.enola.thing.repo.ThingRepository;
+import dev.enola.thing.repo.ThingsProvider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
@@ -81,17 +83,18 @@ public class EnolaServiceProvider {
     @Deprecated // replace all usages with the new non-deprecated constructor (below)
     public EnolaServiceProvider(EntityKindRepository ekr, Repository<Type> tyr, ResourceProvider rp)
             throws ValidationException, EnolaException {
-        this(ekr, tyr, new EmptyThingRepository(), rp);
+        this(ekr, tyr, new EmptyThingsProvider(), new EmptyThingRepository(), rp);
     }
 
     public EnolaServiceProvider(
             EntityKindRepository ekr,
             Repository<Type> tyr,
+            ThingsProvider thingsProvider,
             ThingRepository thingRepository,
             ResourceProvider rp)
             throws ValidationException, EnolaException {
         var esb = EnolaServiceRegistry.builder();
-        esb.register(thingRepository);
+        esb.register(thingRepository, thingsProvider);
 
         var trb = TypeRegistryWrapper.newBuilder();
         trb.add(Things.getDescriptor());

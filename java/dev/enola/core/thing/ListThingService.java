@@ -37,6 +37,8 @@ import java.util.Map;
 public class ListThingService implements ThingService {
     private static final Logger LOG = LoggerFactory.getLogger(ListThingService.class);
 
+    // See also dev.enola.data.AllQuery
+    // TODO Change to e.g. https://enola.dev/ql/all?inline=true&limit=7
     public static final String ENOLA_ROOT_LIST_IRIS = "enola:/";
     // TODO "enola:/?inline" would be nicer than "enola:/inline" but fails to match
     public static final String ENOLA_ROOT_LIST_THINGS = "enola:/inline";
@@ -49,6 +51,13 @@ public class ListThingService implements ThingService {
     }
 
     // Nota bene: The "decoder" (inverse) of this is (currently) in EnolaThingProvider!
+
+    @Override
+    public Iterable<dev.enola.thing.Thing> getThings(String iri, Map<String, String> parameters)
+            throws EnolaException {
+        throw new UnsupportedOperationException(
+                "TODO implement after switching from Proto to Java Thing");
+    }
 
     @Override
     public Any getThing(String iri, Map<String, String> parameters) {

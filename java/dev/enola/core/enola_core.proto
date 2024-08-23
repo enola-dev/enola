@@ -22,6 +22,7 @@ import "google/protobuf/any.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 // import "java/dev/enola/core/enola_ext.proto";
+import "java/dev/enola/thing/thing.proto";
 
 option java_string_check_utf8 = true;
 option java_package = "dev.enola.core.proto";
@@ -108,6 +109,17 @@ message GetThingResponse {
   google.protobuf.Any thing = 1;
 }
 
+message GetThingsRequest {
+  // IRI of a Thing to get, or query for Things; e.g.
+  // https://enola.dev/query/all?inline=true&limit=7, or sparql: or sql:
+  // something else like that.
+  string iri = 1;
+}
+
+message GetThingsResponse {
+  repeated dev.enola.thing.Thing things = 1;
+}
+
 // Request for a list of entities.
 // For the https://docs.enola.dev/use/library/ example model, examples could be:
 //   A. Set 'kind' to 'book_kind', without the 'isbn' path - list all
@@ -155,5 +167,7 @@ service EnolaService {
   rpc GetFileDescriptorSet(GetFileDescriptorSetRequest)
       returns (GetFileDescriptorSetResponse) {}
   rpc GetThing(GetThingRequest) returns (/* TODO stream */ GetThingResponse) {}
+  rpc GetThings(GetThingsRequest)
+      returns (/* TODO stream */ GetThingsResponse) {}
   rpc ListEntities(ListEntitiesRequest) returns (ListEntitiesResponse) {}
 }

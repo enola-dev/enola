@@ -23,18 +23,17 @@ import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.proto.*;
 import dev.enola.rdf.io.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.message.ProtoThingProvider;
+import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.Templates;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * ResourceEnolaService implements {@link EnolaService} by fetching bytes from a {@link
@@ -59,8 +58,7 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
         this(rp, new RdfResourceIntoProtoThingConverter(rp));
     }
 
-    @Override
-    public Any get(String iri) {
+    public List<Thing.Builder> getThingsAsBuilderList(String iri) {
         if (Templates.hasVariables(iri)) return null;
         var uri = URI.create(iri); // TODO IRIs.toURI(iri);
         var resource = rp.getReadableResource(uri);
@@ -73,8 +71,21 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
             LOG.warn("Unknown format, no parser for " + resource.mediaType() + " from " + iri);
             return null;
         }
-        var thingsList = opt.get();
-        var message = resourceToThingConverter.asMessage(thingsList).build();
+        return opt.get();
+    }
+
+    @Override
+    public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
+        var responseBuilder = GetThingsResponse.newBuilder();
+        for (var thingBuilder : getThingsAsBuilderList(r.getIri())) {
+            responseBuilder.addThings(thingBuilder.build());
+        }
+        return responseBuilder.build();
+    }
+
+    @Override
+    public Any get(String iri) {
+        var message = resourceToThingConverter.asMessage(getThingsAsBuilderList(iri)).build();
         return Any.pack(message);
     }
 

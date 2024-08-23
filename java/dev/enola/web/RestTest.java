@@ -31,12 +31,7 @@ import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.GetThingResponse;
-import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
+import dev.enola.core.proto.*;
 import dev.enola.web.netty.NettyHttpServer;
 
 import org.junit.Test;
@@ -80,6 +75,11 @@ public class RestTest {
     }
 
     private static class TestService implements EnolaService {
+        @Override
+        public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
+            return GetThingsResponse.newBuilder().build();
+        }
+
         @Override
         public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
             return GetThingResponse.newBuilder().setThing(Any.pack(newEntity("123"))).build();
