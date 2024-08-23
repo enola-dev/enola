@@ -77,8 +77,8 @@ public abstract class WebServerTestAbstract {
                 assertThat(response1.charSource().read()).isEqualTo("hello, world");
 
                 var contextURI = URI.create(prefix + "/context");
-                // TODO !?! var responseFromTLC = rp.getResource(contextURI);
-                // TODO !?! assertThat(responseFromTLC.charSource().read()).isEqualTo("123");
+                var responseFromTLC = rp.getResource(contextURI);
+                assertThat(responseFromTLC.charSource().read()).isEqualTo("123");
 
                 var uri2 = URI.create(prefix + "/abc/xyz/hello.txt");
                 var response2 = rp.getResource(uri2);
