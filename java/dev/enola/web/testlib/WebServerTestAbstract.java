@@ -60,7 +60,7 @@ public abstract class WebServerTestAbstract {
     }
 
     @Test
-    public void testServer() throws IOException {
+    public void testServer() throws IOException, InterruptedException {
         try (var ctx = TLC.open()) {
             ctx.push(TestCtxKey.MAGIC, 123);
             try (var server = create()) {
