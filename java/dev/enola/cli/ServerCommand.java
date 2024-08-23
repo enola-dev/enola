@@ -64,10 +64,11 @@ public class ServerCommand extends CommandWithModel {
 
         // HTML UI + JSON REST API
         if (ports.httpPort != null) {
-            httpServer = new NettyHttpServer(ports.httpPort);
+            var handlers = new WebHandlers();
             new UI(service, getMetadataProvider(new EnolaThingProvider(service)))
-                    .register(httpServer);
-            new RestAPI(service).register(httpServer);
+                    .register(handlers);
+            handlers.register("/api", new RestAPI(service));
+            httpServer = new NettyHttpServer(ports.httpPort, handlers);
             httpServer.start();
             out.println(
                     "HTTP JSON REST API + HTML UI server started; open http:/"

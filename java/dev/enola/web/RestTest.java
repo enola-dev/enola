@@ -47,14 +47,14 @@ public class RestTest {
 
     @Test
     public void getAndList() throws Exception {
-        try (var server = new NettyHttpServer(0)) {
-            // Setup
-            var rp = new ResourceProviders();
-            var ekr = new EntityKindRepository();
-            var esp = new EnolaServiceProvider(ekr, rp);
-            try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
-                var testGrpcService = grpc.get();
-                new RestAPI(testGrpcService).register(server);
+        // Setup
+        var rp = new ResourceProviders();
+        var ekr = new EntityKindRepository();
+        var esp = new EnolaServiceProvider(ekr, rp);
+        try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
+            var testGrpcService = grpc.get();
+            var handlers = new WebHandlers().register("/api", new RestAPI(testGrpcService));
+            try (var server = new NettyHttpServer(0, handlers)) {
                 server.start();
                 var port = server.getInetAddress().getPort();
                 var prefix = "http://localhost:" + port;

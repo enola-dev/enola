@@ -36,7 +36,7 @@ import dev.enola.core.proto.ListEntitiesRequest;
 import java.io.IOException;
 import java.net.URI;
 
-// TODO Merge this with class UI in /ui/ module, to re-use code better
+// TODO Merge this with class UI, to re-use code better
 public class RestAPI implements WebHandler {
 
     private final EnolaServiceBlockingStub service;
@@ -50,12 +50,8 @@ public class RestAPI implements WebHandler {
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
     }
 
-    public void register(WebServer server) {
-        server.register("/api", this);
-    }
-
     @Override
-    public ListenableFuture<ReadableResource> get(URI uri) {
+    public ListenableFuture<ReadableResource> handle(URI uri) {
         try {
             var resource = new MemoryResource(MediaType.JSON_UTF_8);
             writeJSON(uri, resource);

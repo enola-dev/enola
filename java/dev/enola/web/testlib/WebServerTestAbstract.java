@@ -28,6 +28,7 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.web.StaticWebHandler;
+import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 
 import org.junit.Assert;
@@ -38,33 +39,36 @@ import java.net.URI;
 
 public abstract class WebServerTestAbstract {
 
-    protected abstract WebServer create() throws IOException;
+    protected abstract WebServer create(WebHandlers handlers) throws IOException;
 
-    private void configure(WebServer server) {
+    private final WebHandlers handlers() {
+        var handlers = new WebHandlers();
+
         var hello = StringResource.of("hello, world", MediaType.PLAIN_TEXT_UTF_8);
-        server.register("/hello", uri -> immediateFuture(hello));
+        handlers.register("/hello", uri -> immediateFuture(hello));
 
-        server.register("/abc/xyz/", new StaticWebHandler("/abc/xyz/", "static"));
+        handlers.register("/abc/xyz/", new StaticWebHandler("/abc/xyz/", "static"));
 
-        server.register(
+        handlers.register(
                 "/error1", uri -> immediateFailedFuture(new IllegalArgumentException("oink")));
-        server.register(
+        handlers.register(
                 "/error2",
                 uri -> {
                     throw new IllegalArgumentException("oink");
                 });
 
-        server.register(
+        handlers.register(
                 "/context",
                 uri -> immediateFuture(StringResource.of(TLC.get(TestCtxKey.MAGIC).toString())));
+
+        return handlers;
     }
 
     @Test
     public void testServer() throws IOException, InterruptedException {
         try (var ctx = TLC.open()) {
             ctx.push(TestCtxKey.MAGIC, 123);
-            try (var server = create()) {
-                configure(server);
+            try (var server = create(handlers())) {
                 server.start();
 
                 var prefix = "http://localhost:" + server.getInetAddress().getPort();

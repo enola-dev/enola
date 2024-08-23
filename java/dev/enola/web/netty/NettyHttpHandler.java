@@ -28,10 +28,9 @@ import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
-import dev.enola.web.WebHandler;
+import dev.enola.web.WebHandlers;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -41,7 +40,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +52,9 @@ class NettyHttpHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     private static final Logger LOG = LoggerFactory.getLogger(NettyHttpHandler.class);
 
-    private final ImmutableMap<String, WebHandler> handlers;
+    private final WebHandlers handlers;
 
-    public NettyHttpHandler(ImmutableMap<String, WebHandler> handlerMap) {
+    public NettyHttpHandler(WebHandlers handlerMap) {
         this.handlers = handlerMap;
     }
 
@@ -66,15 +64,13 @@ class NettyHttpHandler extends SimpleChannelInboundHandler<HttpObject> {
 
             if (!HttpMethod.GET.equals(req.method())) return;
 
-            var uri = req.uri();
-            WebHandler handler = find(uri);
-            if (handler == null) return;
+            var uri = new URI(req.uri());
 
             ByteBuf content;
             HttpResponseStatus status;
             MediaType mediaType;
             try {
-                var futureResource = handler.get(URI.create(uri));
+                var futureResource = handlers.handle(uri);
                 // TODO Futures.addCallback() for futureResource.addListener(); to Async this!
                 // TODO does Netty timeout requests after a while as well?
                 // TODO Make this "streaming", for "big" Resources!
@@ -120,16 +116,6 @@ class NettyHttpHandler extends SimpleChannelInboundHandler<HttpObject> {
         }
     }
 
-    private @Nullable WebHandler find(String uri) {
-        var webHandler = handlers.get(uri);
-        if (webHandler != null) return webHandler;
-
-        for (var entry : handlers.entrySet()) {
-            if (uri.startsWith(entry.getKey())) return entry.getValue();
-        }
-        return null;
-    }
-
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
@@ -138,6 +124,7 @@ class NettyHttpHandler extends SimpleChannelInboundHandler<HttpObject> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         LOG.warn("HTTP handling error", cause);
+        // TODO Shouldn't this also close, as above?
         ignore(ctx.close());
     }
 

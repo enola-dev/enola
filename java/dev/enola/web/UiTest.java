@@ -52,20 +52,24 @@ import org.junit.Test;
 import java.time.Instant;
 
 public class UiTest {
+
     @Test
     public void testUi() throws Exception {
-        try (var server = new NettyHttpServer(0)) {
-            // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
-            var rp = new ResourceProviders();
-            var ekr = new EntityKindRepository();
-            var esp = new EnolaServiceProvider(ekr, rp);
-            var service = new TestService();
-            try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
-                var testGrpcService = grpc.get();
-                new UI(
-                                testGrpcService,
-                                getMetadataProvider(new EnolaThingProvider(testGrpcService)))
-                        .register(server);
+        // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
+        var rp = new ResourceProviders();
+        var ekr = new EntityKindRepository();
+        var esp = new EnolaServiceProvider(ekr, rp);
+        var service = new TestService();
+        try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
+            var testGrpcService = grpc.get();
+            var ui =
+                    new UI(
+                            testGrpcService,
+                            getMetadataProvider(new EnolaThingProvider(testGrpcService)));
+            var handlers = new WebHandlers();
+            ui.register(handlers);
+            try (var server = new NettyHttpServer(0, handlers)) {
+
                 server.start();
                 var port = server.getInetAddress().getPort();
                 var prefix = "http://localhost:" + port;

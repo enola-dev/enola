@@ -17,10 +17,8 @@
  */
 package dev.enola.web.netty;
 
-import com.google.common.collect.ImmutableMap;
-
 import dev.enola.common.concurrent.Executors;
-import dev.enola.web.WebHandler;
+import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -63,13 +61,14 @@ public class NettyHttpServer implements WebServer {
 
     private static final Logger LOG = LoggerFactory.getLogger(NettyHttpServer.class);
 
+    private final WebHandlers handlers;
     private InetSocketAddress inetSocketAddress;
-    private final ImmutableMap.Builder<String, WebHandler> handlersBuilder = ImmutableMap.builder();
     private final NioEventLoopGroup connectionsGroup;
     private final EventLoopGroup handlerGroup;
 
-    public NettyHttpServer(int port) {
+    public NettyHttpServer(int port, WebHandlers handlers) {
         this.inetSocketAddress = new InetSocketAddress(port);
+        this.handlers = handlers;
 
         // Accepts connections
         var connectExecutor = Executors.newSingleThreadExecutor("NettyHttpServer-Connect", LOG);
@@ -82,11 +81,6 @@ public class NettyHttpServer implements WebServer {
     }
 
     @Override
-    public void register(String path, WebHandler handler) {
-        handlersBuilder.put(path, handler);
-    }
-
-    @Override
     public void start() throws InterruptedException {
         ServerBootstrap b = new ServerBootstrap();
         b.option(ChannelOption.SO_BACKLOG, 1024);
@@ -95,7 +89,7 @@ public class NettyHttpServer implements WebServer {
         b.group(connectionsGroup, handlerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                .childHandler(new OurChannelInitializer(handlersBuilder.build()));
+                .childHandler(new OurChannelInitializer(handlers));
 
         inetSocketAddress =
                 (InetSocketAddress) b.bind(inetSocketAddress).sync().channel().localAddress();
@@ -117,9 +111,9 @@ public class NettyHttpServer implements WebServer {
     }
 
     private static class OurChannelInitializer extends ChannelInitializer<SocketChannel> {
-        private final ImmutableMap<String, WebHandler> handlers;
+        private final WebHandlers handlers;
 
-        OurChannelInitializer(ImmutableMap<String, WebHandler> handlers) {
+        OurChannelInitializer(WebHandlers handlers) {
             this.handlers = handlers;
         }
 
