@@ -71,13 +71,13 @@ public class UI implements WebHandler {
         thingUI = new ThingUI(metadataProvider);
     }
 
-    public void register(WebServer server) {
-        server.register("/ui", this);
-        server.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
+    public void register(WebHandlers handlers) {
+        handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
+        handlers.register("/ui", this);
     }
 
     @Override
-    public ListenableFuture<ReadableResource> get(URI uri) {
+    public ListenableFuture<ReadableResource> handle(URI uri) {
         try {
             String html = getHTML(uri);
             var resource = StringResource.of(html, HTML_UTF_8);

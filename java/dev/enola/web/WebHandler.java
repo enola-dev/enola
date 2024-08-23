@@ -32,6 +32,6 @@ public interface WebHandler {
 
     // TODO Rename WebHandler to dev.enola.common.net.http.HttpHandler
 
-    // TODO String instead of URI is better here, because more performant; URI has no use
-    ListenableFuture<ReadableResource> get(URI uri);
+    // TODO Use our own new dev.enola.common.io.iri.IRI instead of URI, when it's available
+    ListenableFuture<ReadableResource> handle(URI uri);
 }

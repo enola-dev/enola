@@ -17,6 +17,7 @@
  */
 package dev.enola.web.netty;
 
+import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 import dev.enola.web.testlib.WebServerTestAbstract;
 
@@ -27,8 +28,8 @@ import java.io.IOException;
 public class NettyHttpServerTest extends WebServerTestAbstract {
 
     @Override
-    protected WebServer create() throws IOException {
-        return new NettyHttpServer(0);
+    protected WebServer create(WebHandlers handlers) throws IOException {
+        return new NettyHttpServer(0, handlers);
     }
 
     @Test

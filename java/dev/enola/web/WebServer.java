@@ -31,8 +31,6 @@ public interface WebServer extends AutoCloseable {
     // TODO Rename WebServer to HttpServer
     // TODO Move package dev.enola.web to dev.enola.common.net.http
 
-    void register(String path, WebHandler handler);
-
     void start() throws InterruptedException;
 
     InetSocketAddress getInetAddress();

@@ -43,7 +43,7 @@ public class StaticWebHandler implements WebHandler {
     }
 
     @Override
-    public ListenableFuture<ReadableResource> get(URI uri) {
+    public ListenableFuture<ReadableResource> handle(URI uri) {
         var path = uri.getPath();
         if (path.contains("..")) {
             throw new IllegalArgumentException("URI cannot contain '..':" + path);
