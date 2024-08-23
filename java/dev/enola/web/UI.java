@@ -18,6 +18,7 @@
 package dev.enola.web;
 
 import static com.google.common.net.MediaType.HTML_UTF_8;
+import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.Futures;
@@ -74,6 +75,8 @@ public class UI implements WebHandler {
     public void register(WebHandlers handlers) {
         handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
         handlers.register("/ui", this);
+        // TODO Create HTML page “frame” from template, with body from another template
+        handlers.register("", uri -> immediateFuture(new ClasspathResource("static/404.html")));
     }
 
     @Override
@@ -81,7 +84,7 @@ public class UI implements WebHandler {
         try {
             String html = getHTML(uri);
             var resource = StringResource.of(html, HTML_UTF_8);
-            return Futures.immediateFuture(resource);
+            return immediateFuture(resource);
         } catch (EnolaException | IOException | ConversionException e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -89,13 +92,8 @@ public class UI implements WebHandler {
 
     private String getHTML(URI uri) throws EnolaException, IOException, ConversionException {
         var path = uri.getPath();
-        if (path.startsWith("/ui/")) {
-            var eri = path.substring("/ui/".length());
-            return getEntityHTML(eri);
-        } else {
-            // TODO Create HTML page “frame” from template, with body from another template
-            return new ClasspathResource("static/404.html").charSource().read();
-        }
+        var eri = path.substring("/ui/".length());
+        return getEntityHTML(eri);
     }
 
     private String getEntityHTML(String iri)

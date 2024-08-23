@@ -28,6 +28,7 @@ import java.net.URI;
  *
  * @see WebServer
  */
+@FunctionalInterface
 public interface WebHandler {
 
     // TODO Rename WebHandler to dev.enola.common.net.http.HttpHandler
