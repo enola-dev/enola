@@ -39,6 +39,7 @@ import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
+import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
@@ -72,7 +73,9 @@ public class MarkdownSiteGeneratorTest {
     NamespaceConverter nc =
             new NamespaceConverterWithRepository(NamespaceRepositoryEnolaDefaults.INSTANCE);
 
-    ThingMetadataProvider metadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
+    ThingMetadataProvider thingMetadataProvider = new ThingMetadataProvider(NO_THING_PROVIDER, nc);
+    ProtoThingMetadataProvider protoThingMetadataProvider =
+            new ProtoThingMetadataProvider(thingMetadataProvider);
 
     ResourceProvider rp = new ResourceProviders();
 
@@ -81,7 +84,14 @@ public class MarkdownSiteGeneratorTest {
         var protoThings = load(new ClasspathResource("picasso.ttl"));
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
+        var mdDocsGen =
+                new MarkdownSiteGenerator(
+                        dir.toUri(),
+                        rp,
+                        thingMetadataProvider,
+                        protoThingMetadataProvider,
+                        dtr,
+                        Mustache);
         mdDocsGen.generate(
                 protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
 
@@ -103,7 +113,14 @@ public class MarkdownSiteGeneratorTest {
         var protoThings = Set.of(protoThing);
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Directory");
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
+        var mdDocsGen =
+                new MarkdownSiteGenerator(
+                        dir.toUri(),
+                        rp,
+                        thingMetadataProvider,
+                        protoThingMetadataProvider,
+                        dtr,
+                        Mustache);
         mdDocsGen.generate(
                 protoThings, iri -> null, iri -> false, TemplateService.NONE, true, false);
     }
@@ -135,7 +152,7 @@ public class MarkdownSiteGeneratorTest {
         var repo = repoBuilder.build();
 
         var ttr = new TemplateThingRepository(repo);
-        var metadataProvider = new ThingMetadataProvider(ttr, nc);
+        var metadataProvider = new ProtoThingMetadataProvider(new ThingMetadataProvider(ttr, nc));
 
         var converterJ2P = new JavaThingToProtoThingConverter(dtr);
         var templatedThings =
@@ -143,7 +160,14 @@ public class MarkdownSiteGeneratorTest {
                         .map(javaThing -> converterJ2P.convert(javaThing).build())
                         .collect(Collectors.toUnmodifiableSet());
 
-        var mdDocsGen = new MarkdownSiteGenerator(dir.toUri(), rp, metadataProvider, dtr, Mustache);
+        var mdDocsGen =
+                new MarkdownSiteGenerator(
+                        dir.toUri(),
+                        rp,
+                        thingMetadataProvider,
+                        protoThingMetadataProvider,
+                        dtr,
+                        Mustache);
 
         mdDocsGen.generate(
                 templatedThings, iri -> null, iri -> ttr.get(iri) != null, ttr, true, false);

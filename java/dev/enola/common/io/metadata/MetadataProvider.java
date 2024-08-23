@@ -17,15 +17,18 @@
  */
 package dev.enola.common.io.metadata;
 
-import dev.enola.data.ProviderFromIRI;
-
 import org.jspecify.annotations.Nullable;
 
 /** Provider of {@link Metadata}, given an IRI. */
-public interface MetadataProvider extends ProviderFromIRI<Metadata> {
+public interface MetadataProvider<T> /* extends ProviderFromIRI<Metadata> */ {
 
-    @Override
+    // TODO Simplify this?
+
+    // @Override
     Metadata get(String iri);
 
-    Metadata get(@Nullable Object object, String iri);
+    Metadata get(T object);
+
+    // TODO Get rid of this variant?
+    Metadata get(@Nullable T object, String iri);
 }

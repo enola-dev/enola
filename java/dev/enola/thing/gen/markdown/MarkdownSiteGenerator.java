@@ -32,6 +32,7 @@ import dev.enola.thing.gen.Relativizer;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
+import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
@@ -57,7 +58,8 @@ public class MarkdownSiteGenerator {
     private final URI base;
     private final ResourceProvider rp;
     private final MarkdownThingGenerator mtg;
-    private final ThingMetadataProvider metadataProvider;
+    private final ThingMetadataProvider thingMetadataProvider;
+    private final ProtoThingMetadataProvider protoThingMetadataProvider;
     private final DatatypeRepository datatypeRepository;
     private final Templates.Format format;
     private final GraphvizGenerator graphvizGenerator;
@@ -67,7 +69,8 @@ public class MarkdownSiteGenerator {
     public MarkdownSiteGenerator(
             URI base,
             ResourceProvider rp,
-            ThingMetadataProvider metadataProvider,
+            ThingMetadataProvider thingMetadataProvider,
+            ProtoThingMetadataProvider protoThingMetadataProvider,
             DatatypeRepository datatypeRepository,
             Templates.Format format) {
         this.base = base;
@@ -82,13 +85,14 @@ public class MarkdownSiteGenerator {
                             + base);
 
         this.format = format;
-        this.metadataProvider = metadataProvider;
+        this.thingMetadataProvider = thingMetadataProvider;
+        this.protoThingMetadataProvider = protoThingMetadataProvider;
         this.datatypeRepository = datatypeRepository;
-        this.mtg = new MarkdownThingGenerator(format, metadataProvider);
+        this.mtg = new MarkdownThingGenerator(format, protoThingMetadataProvider);
         this.rp = rp;
-        this.graphvizGenerator = new GraphvizGenerator(metadataProvider);
-        this.gexfGenerator = new GexfGenerator(metadataProvider);
-        this.timelineGenerator = new VisJsTimelineGenerator(metadataProvider);
+        this.graphvizGenerator = new GraphvizGenerator(thingMetadataProvider);
+        this.gexfGenerator = new GexfGenerator(thingMetadataProvider);
+        this.timelineGenerator = new VisJsTimelineGenerator(thingMetadataProvider);
     }
 
     public void generate(
@@ -167,7 +171,7 @@ public class MarkdownSiteGenerator {
         var mig =
                 new MarkdownIndexGenerator(
                         metas.build(),
-                        metadataProvider,
+                        protoThingMetadataProvider,
                         hierarchyProvider,
                         thingProvider,
                         datatypeRepository,

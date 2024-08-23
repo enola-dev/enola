@@ -35,11 +35,11 @@ import java.util.Map;
 class MarkdownThingGenerator {
 
     private final Templates.Format format;
-    private final MetadataProvider metadataProvider;
+    private final MetadataProvider<Thing> metadataProvider;
     private final MarkdownLinkWriter linkWriter;
     private final ProtoThingIntoJsonLdAppendableConverter jsonLdGenerator;
 
-    MarkdownThingGenerator(Templates.Format format, MetadataProvider metadataProvider) {
+    MarkdownThingGenerator(Templates.Format format, MetadataProvider<Thing> metadataProvider) {
         this.format = format;
         this.linkWriter = new MarkdownLinkWriter(format);
         this.metadataProvider = metadataProvider;

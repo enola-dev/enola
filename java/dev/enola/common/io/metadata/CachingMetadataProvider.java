@@ -23,7 +23,7 @@ import com.google.common.cache.LoadingCache;
 
 import org.jspecify.annotations.Nullable;
 
-public class CachingMetadataProvider implements MetadataProvider {
+public abstract class CachingMetadataProvider<T> implements MetadataProvider<T> {
 
     // This isn't used anywhere, yet - because it doesn't seem to actually really make
     // e.g. "time models/build.bash" any noticeable faster... optimizations in OkHttpResource are
@@ -32,7 +32,7 @@ public class CachingMetadataProvider implements MetadataProvider {
 
     // TODO Make Guava Cache configurable...
 
-    private final MetadataProvider delegate;
+    private final MetadataProvider<T> delegate;
 
     private final LoadingCache<String, Metadata> getIRICache =
             CacheBuilder.newBuilder()
@@ -45,18 +45,18 @@ public class CachingMetadataProvider implements MetadataProvider {
                                 }
                             });
 
-    private final LoadingCache<ObjectIRI, Metadata> getObjectIRICache =
+    private final LoadingCache<ObjectIRI<T>, Metadata> getObjectIRICache =
             CacheBuilder.newBuilder()
                     .maximumSize(12345)
                     .build(
                             new CacheLoader<>() {
                                 @Override
-                                public Metadata load(ObjectIRI objectIRI) throws Exception {
+                                public Metadata load(ObjectIRI<T> objectIRI) throws Exception {
                                     return delegate.get(objectIRI.object, objectIRI.iri);
                                 }
                             });
 
-    public CachingMetadataProvider(MetadataProvider delegate) {
+    public CachingMetadataProvider(MetadataProvider<T> delegate) {
         this.delegate = delegate;
     }
 
@@ -66,9 +66,9 @@ public class CachingMetadataProvider implements MetadataProvider {
     }
 
     @Override
-    public Metadata get(@Nullable Object object, String iri) {
-        return getObjectIRICache.getUnchecked(new ObjectIRI(object, iri));
+    public Metadata get(@Nullable T object, String iri) {
+        return getObjectIRICache.getUnchecked(new ObjectIRI<T>(object, iri));
     }
 
-    private record ObjectIRI(@Nullable Object object, String iri) {}
+    private record ObjectIRI<T>(@Nullable T object, String iri) {}
 }

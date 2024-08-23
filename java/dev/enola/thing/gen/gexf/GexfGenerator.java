@@ -23,11 +23,11 @@ import com.google.common.xml.XmlEscapers;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.time.Interval;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.metadata.ThingTimeProvider;
 import dev.enola.thing.repo.StackedThingProvider;
 import dev.enola.thing.repo.ThingProvider;
@@ -41,11 +41,11 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
     // TODO Custom Node color, shape & size
     // TODO Custom Edge color, thickness, shape
 
-    private final MetadataProvider metadataProvider;
+    private final ThingMetadataProvider metadataProvider;
     private final ThingTimeProvider timeProvider = new ThingTimeProvider();
     private final ThingHierarchyProvider hierarchyProvider = new ThingHierarchyProvider();
 
-    public GexfGenerator(MetadataProvider metadataProvider) {
+    public GexfGenerator(ThingMetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
     }
 

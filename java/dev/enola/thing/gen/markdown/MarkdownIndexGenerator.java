@@ -24,11 +24,11 @@ import com.google.errorprone.annotations.Immutable;
 
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.metadata.Metadata;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.tree.ImmutableTreeBuilder;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.gen.DocGenConstants;
+import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.proto.Thing;
@@ -50,7 +50,7 @@ class MarkdownIndexGenerator {
 
     // TODO Factor out addToTree() into a testable dev.enola.common.tree.Treeifier (parent Function)
 
-    private final MetadataProvider metadataProvider;
+    private final ProtoThingMetadataProvider metadataProvider;
     private final ThingHierarchyProvider hierarchyProvider;
     private final DatatypeRepository datatypeRepository;
     private final ProviderFromIRI<Thing> thingProvider;
@@ -63,7 +63,7 @@ class MarkdownIndexGenerator {
 
     MarkdownIndexGenerator(
             Iterable<Metadata> metas,
-            MetadataProvider metadataProvider,
+            ProtoThingMetadataProvider metadataProvider,
             ThingHierarchyProvider hierarchyProvider,
             ProviderFromIRI<Thing> thingProvider,
             DatatypeRepository datatypeRepository,

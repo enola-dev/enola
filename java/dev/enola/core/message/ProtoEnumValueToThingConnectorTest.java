@@ -25,7 +25,6 @@ import com.google.protobuf.ProtocolMessageEnum;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.meta.proto.FileSystemRepository;
@@ -58,7 +57,7 @@ public class ProtoEnumValueToThingConnectorTest {
                 new AlwaysThingProviderAdapter(
                         new ThingConnectorsProvider(ImmutableList.of(thingConnector)), null);
 
-        MetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
+        ThingMetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
         var label = mp.get(iri).label();
 
         assertThat(label).isEqualTo(enumValue.getValueDescriptor().getName());
