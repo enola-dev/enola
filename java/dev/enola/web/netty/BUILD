@@ -41,7 +41,7 @@ java_library(
 
 junit_tests(
     name = "tests",
-    # TODO size = "medium",
+    size = "medium",
     srcs = glob(["*Test.java"]),
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",
