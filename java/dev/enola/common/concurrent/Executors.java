@@ -39,21 +39,15 @@ import java.util.concurrent.TimeUnit;
  *   <li></b>the {@link dev.enola.common.context.TLC} is correctly propagated</b>
  *   <li>the returned Executor uses a {@link ThreadFactory} that is named,
  *   <li>has a logging UncaughtExceptionHandler,
- *   <li>returns (Guava's) ListenableFuture.
+ *   <li>can return (Guava's) ListenableFuture.
  * </ul>
  *
  * @author Michael Vorburger.ch, originally for https://www.opendaylight.org
  */
 public final class Executors {
 
-    // TODO Offer variants which don't return (Guava's) ListenableFuture but just std. JDK
-
     public static final long DEFAULT_TIMEOUT_FOR_SHUTDOWN = 10;
     public static final TimeUnit DEFAULT_TIMEOUT_UNIT_FOR_SHUTDOWN = TimeUnit.SECONDS;
-
-    private Executors() {
-        // Hidden on purpose
-    }
 
     /**
      * Creates an executor service that runs each task in the thread that invokes execute/submit.
@@ -85,6 +79,11 @@ public final class Executors {
                         createThreadFactory(namePrefix, logger)));
     }
 
+    public static ExecutorService newSingleThreadExecutor(String namePrefix, Logger logger) {
+        return java.util.concurrent.Executors.newSingleThreadExecutor(
+                createThreadFactory(namePrefix, logger));
+    }
+
     /**
      * @see java.util.concurrent.Executors#newFixedThreadPool(int)
      */
@@ -95,6 +94,11 @@ public final class Executors {
                         size, createThreadFactory(namePrefix, logger)));
     }
 
+    public static ExecutorService newFixedThreadPool(int size, String namePrefix, Logger logger) {
+        return java.util.concurrent.Executors.newFixedThreadPool(
+                size, createThreadFactory(namePrefix, logger));
+    }
+
     /**
      * @see java.util.concurrent.Executors#newCachedThreadPool()
      */
@@ -103,6 +107,11 @@ public final class Executors {
         return MoreExecutors.listeningDecorator(
                 java.util.concurrent.Executors.newCachedThreadPool(
                         createThreadFactory(namePrefix, logger)));
+    }
+
+    public static ExecutorService newCachedThreadPool(String namePrefix, Logger logger) {
+        return java.util.concurrent.Executors.newCachedThreadPool(
+                createThreadFactory(namePrefix, logger));
     }
 
     /**
@@ -144,4 +153,6 @@ public final class Executors {
         logger.info("ThreadFactory created: {}", namePrefix);
         return guavaBuilder.build();
     }
+
+    private Executors() {}
 }
