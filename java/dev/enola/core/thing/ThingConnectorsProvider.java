@@ -25,7 +25,7 @@ import dev.enola.thing.repo.ThingProvider;
 
 /**
  * ThingConnectorsProvider implements {@link ThingProvider} by delegating to a list of {@link
- * ThingCon nector}.
+ * ThingConnector}.
  */
 public class ThingConnectorsProvider
         implements ProviderFromIRI<Thing> /* TODO implements ThingProvider ? */ {
@@ -37,7 +37,7 @@ public class ThingConnectorsProvider
     public ThingConnectorsProvider(Iterable<ThingConnector> connectors) {
         var builder = URITemplateMatcherChain.<ThingConnector>builder();
         for (var connector : connectors) {
-            builder.add(connector.type().getUri(), connector);
+            builder.add(connector.iri(), connector);
         }
 
         this.matcher = builder.build();

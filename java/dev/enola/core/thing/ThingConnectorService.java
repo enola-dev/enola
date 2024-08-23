@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Any;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.thing.Thing;
 import dev.enola.thing.proto.Things;
@@ -34,11 +33,11 @@ public class ThingConnectorService implements ThingService {
     private final ImmutableList<ThingConnector> aspects;
 
     public ThingConnectorService(
-            Type type, ImmutableList<ThingConnector> aspects, EnolaMessages enolaMessages) {
+            ImmutableList<ThingConnector> aspects, EnolaMessages enolaMessages) {
         this.aspects = aspects;
     }
 
-    public ThingConnectorService(Type type, ThingConnector aspect, EnolaMessages enolaMessages) {
+    public ThingConnectorService(ThingConnector aspect, EnolaMessages enolaMessages) {
         this.aspects = ImmutableList.of(aspect);
     }
 
@@ -51,6 +50,11 @@ public class ThingConnectorService implements ThingService {
 
     @Override
     public Any getThing(String iri, Map<String, String> parameters) {
+        return Any.pack(getProtoThings(iri, parameters));
+    }
+
+    private dev.enola.thing.proto.Things getProtoThings(
+            String iri, Map<String, String> parameters) {
         // Builder thing = enolaMessages.newBuilder(type.getProto());
         Things.Builder things = Things.newBuilder();
 
@@ -58,6 +62,6 @@ public class ThingConnectorService implements ThingService {
             aspect.augment(things, iri, parameters);
         }
 
-        return Any.pack(things.build());
+        return things.build();
     }
 }

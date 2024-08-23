@@ -22,7 +22,6 @@ import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.function.CheckedPredicate;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.meta.docgen.Options;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
@@ -83,13 +82,8 @@ public class DocGenCommand extends CommandWithModelAndOutput {
     boolean generateIndexFile;
 
     @Override
-    public void run(EntityKindRepository ekr, EnolaServiceBlockingStub service) throws Exception {
-        if (group.model != null) {
-            throw new UnsupportedOperationException(
-                    "This is no longer supported, and about to fully removed");
-        } else {
-            multipleMDDocsForThings(service, generateIndexFile);
-        }
+    public void run(EnolaServiceBlockingStub service) throws Exception {
+        multipleMDDocsForThings(service, generateIndexFile);
     }
 
     private void multipleMDDocsForThings(

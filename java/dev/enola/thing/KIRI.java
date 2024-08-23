@@ -43,6 +43,11 @@ public final class KIRI {
     public static final class E {
         private static final String NS = "https://enola.dev/";
 
+        // TODO Change to e.g. https://enola.dev/ql/all?inline=true&limit=7
+        // TODO "enola:/?inline" would be nicer than "enola:/inline" but fails to match
+        public static final String LIST_THINGS = "enola:/inline";
+        public static final String LIST_IRIS = "enola:/";
+
         /**
          * Emoji 😃 of a Thing, from Unicode or <a href="https://www.nerdfonts.com">Nerdfonts</a>.
          *

@@ -53,26 +53,6 @@ proto_library(
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
-)
-
-proto_library(
-    name = "connector_proto",
-    srcs = ["connector/enola_connector.proto"],
-    deps = [
-        ":core_proto",
-        "@com_google_protobuf//:descriptor_proto",
-    ],
-)
-
-proto_library(
-    name = "meta_proto",
-    srcs = ["meta/enola_meta.proto"],
-    deps = [
-        ":core_proto",
-        ":ext_proto",
-        "@com_google_protobuf//:empty_proto",
     ],
 )
 
@@ -88,10 +68,8 @@ java_proto_library(
     name = "core_java_proto",
     visibility = ["//:__subpackages__"],
     deps = [
-        "connector_proto",
         "core_proto",
         "ext_proto",
-        "meta_proto",
         "util_proto",
     ],
 )
@@ -105,22 +83,11 @@ java_grpc_library(
     deps = [":core_java_proto"],
 )
 
-java_grpc_library(
-    name = "connector_java_grpc",
-    srcs = [
-        "connector_proto",
-    ],
-    visibility = ["//:__subpackages__"],
-    deps = [":core_java_proto"],
-)
-
 doc_markdown_compile(
     name = "core_proto_doc",
     protos = [
-        "connector_proto",
         "core_proto",
         "ext_proto",
-        "meta_proto",
         "util_proto",
     ],
 )
@@ -133,10 +100,8 @@ buf_proto_lint_test(
         "PACKAGE_DIRECTORY_MATCH",
     ],
     protos = [
-        "connector_proto",
         "core_proto",
         # "ext_proto",
-        "meta_proto",
         "util_proto",
     ],
     use_rules = [
@@ -166,7 +131,6 @@ java_library(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/protobuf:validation_proto_java_library",
         "//java/dev/enola/common/yamljson",
-        "//java/dev/enola/core:connector_java_grpc",
         "//java/dev/enola/core:core_java_grpc",
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
@@ -198,27 +162,24 @@ junit_tests(
         "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
-        # "//connectors/demo",
-        # "//connectors/demo:demo_java_proto",
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
-        "//java/dev/enola/model",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//java/dev/enola/core",
-        "//java/dev/enola/core:connector_java_grpc",
         "//java/dev/enola/core:core_java_grpc",
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/model",
         "//java/dev/enola/rdf/io",
-        "//java/dev/enola/thing/gen",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/thing/gen",
         "//test",
     ],
 )
@@ -238,25 +199,6 @@ go_proto_library(
     deps = [
         ":ext_go_proto",
         "//java/dev/enola/thing:thing_go_proto",
-    ],
-)
-
-go_proto_library(
-    name = "connector_go_proto",
-    importpath = "dev/enola/core/connector",
-    protos = [":connector_proto"],
-    visibility = [],
-    deps = [":core_go_proto"],
-)
-
-go_proto_library(
-    name = "meta_go_proto",
-    importpath = "dev/enola/core/meta",
-    protos = [":meta_proto"],
-    visibility = [],
-    deps = [
-        ":core_go_proto",
-        ":ext_go_proto",
     ],
 )
 

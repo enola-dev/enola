@@ -104,10 +104,10 @@ public class UI implements WebHandler {
     private String getHTML(URI uri) throws EnolaException, IOException, ConversionException {
         var path = uri.getPath();
         var eri = (path.length() > 4) ? path.substring("/ui/".length()) : "";
-        return getEntityHTML(eri);
+        return getThingHTML(eri);
     }
 
-    private String getEntityHTML(String iri)
+    private String getThingHTML(String iri)
             throws EnolaException, IOException, ConversionException {
         var thing = thingProvider.get(iri);
         var thingHTML =

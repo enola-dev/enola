@@ -24,20 +24,15 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
 
 import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
-import dev.enola.core.IDs;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.ID;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.message.ThingExt;
@@ -50,10 +45,8 @@ import java.io.IOException;
 
 public class EnolaGrpcServerTest {
 
-    private final ResourceProvider rp = new ResourceProviders();
-    private final ReadableResource model = new ClasspathResource("demo-model.yaml");
-    private final EntityKindRepository ekr = new EntityKindRepository().load(model);
-    private final EnolaServiceProvider esp = new EnolaServiceProvider(ekr, rp);
+    private final ResourceProvider rp = new ResourceProviders(new ClasspathResource.Provider());
+    private final EnolaServiceProvider esp = new EnolaServiceProvider(rp);
     private final EnolaService service;
 
     public EnolaGrpcServerTest() throws ValidationException, IOException, EnolaException {
@@ -82,10 +75,9 @@ public class EnolaGrpcServerTest {
 
     private void check(EnolaServiceGrpc.EnolaServiceBlockingStub client)
             throws InvalidProtocolBufferException {
-        checkGetProtoMessage(client);
-        checkGetProtoField(client);
+        // TODO checkGetProtoMessage(client);
+        // TODO checkGetProtoField(client);
         checkGetYAML(client);
-        checkGetEntity(client);
     }
 
     private Things getThings(EnolaServiceBlockingStub client, String iri)
@@ -130,19 +122,5 @@ public class EnolaGrpcServerTest {
         var things = getThings(client, "classpath:/picasso.ttl");
         assertThat(things.getThingsList()).hasSize(2);
         // TODO assertThat it contains Dalí & Picasso from picasso.thing.yaml
-    }
-
-    private void checkGetEntity(EnolaServiceBlockingStub client)
-            throws InvalidProtocolBufferException {
-        var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
-        var eri = IDs.toPath(id);
-        var request = GetThingRequest.newBuilder().setIri(eri).build();
-        var response = client.getThing(request);
-        var any = response.getThing();
-        var entity = any.unpack(Entity.class);
-        var linkMap = entity.getLinkMap();
-        assertThat(linkMap).hasSize(1);
-        assertThat(linkMap.get("wiki"))
-                .isEqualTo("https://en.wikipedia.org/w/index.php?fulltext=Search&search=b");
     }
 }

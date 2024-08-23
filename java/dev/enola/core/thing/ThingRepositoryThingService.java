@@ -55,7 +55,7 @@ public class ThingRepositoryThingService implements ThingService {
     @Override
     public Iterable<Thing> getThings(String iri, Map<String, String> parameters)
             throws EnolaException {
-        return thingsProvider.get(iri);
+        return thingsProvider.getThings(iri).toList();
     }
 
     @Override

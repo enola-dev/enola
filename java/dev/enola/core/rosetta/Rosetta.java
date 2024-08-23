@@ -34,8 +34,6 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
-import dev.enola.core.meta.proto.EntityKinds;
-import dev.enola.core.proto.Entity;
 import dev.enola.rdf.io.RdfResourceConverter;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.gexf.GexfResourceConverter;
@@ -54,10 +52,11 @@ public class Rosetta implements ResourceConverter {
 
     // TODO Merge this with Canonicalizer (and move into dev.enola.common.canonicalize)
 
-    // This class is in dev.enola.core.rosetta only for now, in order to have classpath access
+    // This class orig. was in dev.enola.core.rosetta originally, in order to have classpath access
     // to Entities.getDescriptor() and EntityKinds.getDescriptor() in the lookupDescriptor() below.
-    // Eventually it could be moved e.g. to a new dev.enola[.common?].rosetta instead, and use a
-    // DescriptorProvider as generic proto Descriptor registry.
+    // But all of this has meanwhile been removed, so this could now moved e.g. to a new
+    // dev.enola[.common?].rosetta instead, and use a DescriptorProvider as generic proto Descriptor
+    // registry. TODO Move dev.enola.core.rosetta to dev.enola.action.rosetta?
 
     private final ProtoIO protoIO = new ProtoIO();
 
@@ -66,12 +65,6 @@ public class Rosetta implements ResourceConverter {
 
                 @Override
                 public Descriptor findByName(String messageTypeURL) {
-                    switch (messageTypeURL) {
-                        case "dev.enola.core.Entity":
-                            return Entity.getDescriptor();
-                        case "dev.enola.core.meta.EntityKinds":
-                            return EntityKinds.getDescriptor();
-                    }
                     throw new IllegalArgumentException(
                             "TODO Cannot find Descriptor for: " + messageTypeURL);
                 }

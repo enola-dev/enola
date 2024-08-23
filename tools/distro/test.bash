@@ -23,10 +23,10 @@ tools/distro/build.bash
 # TODO Test output
 site/download/latest/enola help
 site/download/latest/enola --version
-site/download/latest/enola get --model docs/use/library/model.yaml demo.book_kind/0-13-140731-7
+site/download/latest/enola get --load test/picasso.ttl http://example.enola.dev/Picasso
 
 # TODO Test output
 ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac help
 ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac --version
 ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac \
-  get --model docs/use/library/model.yaml demo.book_kind/0-13-140731-7
+  get --load test/picasso.ttl http://example.enola.dev/Picasso

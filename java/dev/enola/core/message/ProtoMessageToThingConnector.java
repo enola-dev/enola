@@ -17,10 +17,7 @@
  */
 package dev.enola.core.message;
 
-import com.google.protobuf.DescriptorProtos.DescriptorProto;
-
 import dev.enola.common.protobuf.DescriptorProvider;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.ProtoTypes;
@@ -37,14 +34,21 @@ public class ProtoMessageToThingConnector extends ProtoToThingConnector {
     }
 
     @Override
-    public Type type() {
-        return Type.newBuilder()
-                .setEmoji("🕵🏾‍♀️")
-                .setName("enola.dev/proto/message")
-                .setUri(ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX + "{FQN}")
-                .setProto(DescriptorProto.getDescriptor().getFullName())
-                .build();
+    public String iri() {
+        return ProtoTypes.MESSAGE_DESCRIPTOR_ERI_PREFIX + "{FQN}";
     }
+
+    /*
+        @Override
+        public Type type() {
+            return Type.newBuilder()
+                    .setEmoji("🕵🏾‍♀️")
+                    .setName("enola.dev/proto/message")
+                    .setUri(iri())
+                    .setProto(DescriptorProto.getDescriptor().getFullName())
+                    .build();
+        }
+    */
 
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {

@@ -17,7 +17,6 @@
  */
 package dev.enola.core;
 
-import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.Descriptors.GenericDescriptor;
 import com.google.protobuf.ExtensionRegistry;
@@ -27,32 +26,15 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.common.protobuf.TypeRegistryWrapper.Builder;
 import dev.enola.common.protobuf.ValidationException;
-import dev.enola.core.aspects.ErrorTestAspect;
-import dev.enola.core.aspects.FilestoreRepositoryAspect;
-import dev.enola.core.aspects.GrpcAspect;
-import dev.enola.core.aspects.TimestampAspect;
-import dev.enola.core.aspects.UriTemplateAspect;
-import dev.enola.core.aspects.ValidationAspect;
 import dev.enola.core.message.ProtoEnumValueToThingConnector;
 import dev.enola.core.message.ProtoFieldToThingConnector;
 import dev.enola.core.message.ProtoMessageToThingConnector;
-import dev.enola.core.meta.EntityAspectWithRepository;
-import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.SchemaAspect;
-import dev.enola.core.meta.proto.Type;
-import dev.enola.core.thing.EmptyThingRepository;
-import dev.enola.core.thing.EmptyThingsProvider;
 import dev.enola.core.thing.ThingConnector;
-import dev.enola.core.thing.ThingConnectorService;
-import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.core.view.EnolaMessages;
-import dev.enola.data.Repository;
 import dev.enola.thing.proto.Things;
+import dev.enola.thing.repo.EmptyThingsRepository;
 import dev.enola.thing.repo.ThingRepository;
 import dev.enola.thing.repo.ThingsProvider;
-
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Path;
 
 public class EnolaServiceProvider {
 
@@ -74,143 +56,37 @@ public class EnolaServiceProvider {
     private final EnolaServiceRegistry enolaService;
     private final EnolaMessages enolaMessages;
 
-    @Deprecated // replace all usages with the new non-deprecated constructor (below)
-    public EnolaServiceProvider(EntityKindRepository ekr, ResourceProvider rp)
-            throws ValidationException, EnolaException {
-        this(ekr, new TypeRepositoryBuilder().build(), rp);
-    }
-
-    @Deprecated // replace all usages with the new non-deprecated constructor (below)
-    public EnolaServiceProvider(EntityKindRepository ekr, Repository<Type> tyr, ResourceProvider rp)
-            throws ValidationException, EnolaException {
-        this(ekr, tyr, new EmptyThingsProvider(), new EmptyThingRepository(), rp);
+    public EnolaServiceProvider(ResourceProvider rp) throws ValidationException, EnolaException {
+        this(new EmptyThingsRepository(), new EmptyThingsRepository(), rp);
     }
 
     public EnolaServiceProvider(
-            EntityKindRepository ekr,
-            Repository<Type> tyr,
-            ThingsProvider thingsProvider,
-            ThingRepository thingRepository,
-            ResourceProvider rp)
+            ThingsProvider thingsProvider, ThingRepository thingRepository, ResourceProvider rp)
             throws ValidationException, EnolaException {
         var esb = EnolaServiceRegistry.builder();
         esb.register(thingRepository, thingsProvider);
 
         var trb = TypeRegistryWrapper.newBuilder();
         trb.add(Things.getDescriptor());
-        process(esb, ekr, trb);
-        process(esb, tyr, trb);
-        this.typeRegistry = trb.build();
-        this.enolaService = esb.build(rp);
-        this.enolaMessages = new EnolaMessages(typeRegistry, ExtensionRegistry.getEmptyRegistry());
-    }
-
-    private void process(
-            EnolaServiceRegistry.Builder esb,
-            EntityKindRepository ekr,
-            TypeRegistryWrapper.Builder trb)
-            throws ValidationException, EnolaException {
-        for (var ek : ekr.list()) {
-            var aspectsBuilder = ImmutableList.<EntityAspect>builder();
-
-            // The order in which we add Aspects (AKA Connectors) here matters, a lot!
-            // First come the end users custom (and possibly remove...) connectors.
-            // Then come our hard-coded fix internal ones - in a particular order.
-
-            for (var c : ek.getConnectorsList()) {
-                switch (c.getTypeCase()) {
-                    case ERROR:
-                        aspectsBuilder.add(new ErrorTestAspect(c.getError()));
-                        break;
-
-                    case JAVA_CLASS:
-                        var className = c.getJavaClass();
-                        try {
-                            var clazz = Class.forName(className);
-                            var object = clazz.getDeclaredConstructor().newInstance();
-                            EntityAspect connector = (EntityAspect) object;
-                            if (connector instanceof EntityAspectWithRepository) {
-                                ((EntityAspectWithRepository) connector)
-                                        .setEntityKindRepository(ekr);
-                            }
-                            if (connector instanceof SchemaAspect) {
-                                ((SchemaAspect) connector).setESP(this);
-                            }
-                            aspectsBuilder.add(connector);
-                            break;
-
-                        } catch (ClassNotFoundException
-                                | NoSuchMethodException
-                                | InstantiationException
-                                | IllegalAccessException
-                                | InvocationTargetException e) {
-                            // TODO Full ValidationException instead of IllegalArgumentException
-                            throw new IllegalArgumentException(
-                                    "Java Class Connector failure for EntityKind: " + ek.getId(),
-                                    e);
-                        }
-
-                        // TODO JAVA_GUICE Registry lookup?
-
-                    case FS:
-                        var fs = c.getFs();
-                        aspectsBuilder.add(
-                                new FilestoreRepositoryAspect(
-                                        Path.of(fs.getPath()), fs.getFormat()));
-                        break;
-
-                    case GRPC:
-                        aspectsBuilder.add(new GrpcAspect(c.getGrpc()));
-                        break;
-
-                    case TYPE_NOT_SET:
-                        // TODO Full ValidationException instead of IllegalArgumentException
-                        throw new IllegalArgumentException(
-                                "Connector Type not set in EntityKind: " + ek.getId());
-                }
-            }
-
-            aspectsBuilder.add(new UriTemplateAspect(ek));
-            aspectsBuilder.add(new TimestampAspect());
-            aspectsBuilder.add(new ValidationAspect());
-
-            var aspects = aspectsBuilder.build();
-            var s = new EntityAspectService(ek, aspects);
-            esb.register(ek.getId(), s);
-
-            for (var aspect : aspects) {
-                trb.add(aspect.getDescriptors());
-            }
-        }
-    }
-
-    private void process(EnolaServiceRegistry.Builder esb, Repository<Type> tyr, Builder trb)
-            throws EnolaException {
-        for (var type : tyr.list()) {
-            var aspectsBuilder = ImmutableList.<ThingConnector>builder();
-            // TODO Read ... something from Type to create aspect/s!
-            var aspects = aspectsBuilder.build();
-
-            var s = new ThingConnectorService(type, aspects, enolaMessages);
-            esb.register(type, s);
-
-            for (var aspect : aspects) {
-                trb.add(aspect.getDescriptors());
-            }
-        }
 
         // Register a bunch of hard-coded built-in Thing Connectors
         register(new ProtoMessageToThingConnector(descriptorProvider), esb, trb);
         register(new ProtoFieldToThingConnector(descriptorProvider), esb, trb);
         register(new ProtoEnumValueToThingConnector(descriptorProvider), esb, trb);
+
+        this.typeRegistry = trb.build();
+        this.enolaService = esb.build(rp);
+        this.enolaMessages = new EnolaMessages(typeRegistry, ExtensionRegistry.getEmptyRegistry());
     }
 
     private void register(
             ThingConnector thingConnector, EnolaServiceRegistry.Builder esb, Builder trb)
             throws EnolaException {
-        var type = thingConnector.type();
-        var s = new ThingConnectorService(type, thingConnector, enolaMessages);
-        esb.register(type, s);
+        /* TODO !!!
+               var iri = thingConnector.iri();
+               var thingsRepository = new ThingsRepositoryAdapter(thingConnector);
+               esb.register(thingsRepository);
+        */
         trb.add(thingConnector.getDescriptors());
     }
 

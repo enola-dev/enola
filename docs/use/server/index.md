@@ -25,52 +25,32 @@
      but this would be confusing for readers. TODO: Add support to hide
      CLI flags to Executable Markdown... ;-) -->
 
-    $ ./enola server --model docs/use/library/model.yaml --httpPort=8080
-    HTTP JSON REST API + HTML UI server started; open http://0:0:0:0:0:0:0:0:8080/ui ...
+    $ ./enola server --load="docs/models/example.org/*.ttl" --httpPort=8080
+    HTTP JSON REST API + HTML UI server started; open http://[0:0:0:0:0:0:0:0]:8080/ui ...
 
-You can now open e.g. <http://localhost:8080/ui/demo.book/ABC/0-13-140731-7/1>
-to view this `demo.book` _Entity._ When you click on the _Related_ `kind` you will
-see its `demo.book_kind`, where you can click e.g. on its `google` _Link._
+You can now open e.g. <http://localhost:8080/ui>
+to view the UI, and navigate its links e.g. from e.g. <http://[::]:8080/ui/https://example.org/greeting2> to <http://[::]:8080/ui/https://example.org/world>.
 
 ## REST
 
 There is also a REST API which returns JSON if you replace `ui` with `api` in the URL,
-so e.g. on <http://localhost:8080/api/entity/demo.book/ABC/0-13-140731-7/1>.
+so e.g. on <http://[::]:8080/api/https://example.org/greeting2>.
 <!-- TODO Clean Up: /ui/ dropped /entity/ but API kept it, due to /entities/ ... -->
 
 ## gRPC
 
 The `--grpcPort` flag starts [the Enola gRPC API](../../dev/proto/core.md#enolaservice).
 
-This can be used by the Enola CLI Client's `--server` flag, instead of passing a `--model` file, like so:
+This can be used by the Enola CLI Client's `--server` flag, instead of passing a `--load` file, like so:
 
-    $ ./enola server --model docs/use/library/model.yaml --grpcPort=7070
+    $ ./enola server --load="docs/models/example.org/*.ttl" --grpcPort=7070
     gRPC API server now available on port 9090
 
-    $ ./enola get --server localhost:7070 demo.book/ABC/0-13-140731-7/1
-
-which will output:
-
-```yaml
-id:
-  ns: demo
-  entity: book
-  paths: [ABC, 0-13-140731-7, '1']
-ts: 2023-12-02T20:51:44.134467Z
-related:
-  library:
-    ns: demo
-    entity: library
-    paths: [ABC]
-  kind:
-    ns: demo
-    entity: book_kind
-    paths: [0-13-140731-7]
-```
+    $ ./enola get --server localhost:7070 enola:/
 
 This is the same as a direct "in-process" [Get Entity](../get/index.md) would have:
 
-    ./enola get --model docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
+    ./enola get --load="docs/models/example.org/*.ttl" enola:/
 
 <!-- TODO Add an E2E Integration Test for what's described above,
      by Rebasing and fix https://github.com/enola-dev/enola/pull/301, so that it's testable. -->

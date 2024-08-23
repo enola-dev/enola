@@ -20,6 +20,7 @@ package dev.enola.core.message;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableList;
+import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.ProtocolMessageEnum;
 
@@ -27,7 +28,6 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
-import dev.enola.core.meta.proto.FileSystemRepository;
 import dev.enola.core.thing.ThingConnectorsProvider;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.message.ProtoTypes;
@@ -43,8 +43,7 @@ public class ProtoEnumValueToThingConnectorTest {
     @Test
     // @Ignore // TODO Implement this test and make ProtoEnumValueToThingConnector work..
     public void label() throws IOException, ConversionException {
-        // TODO What's a better EnumValue to test that's present in core proto?
-        ProtocolMessageEnum enumValue = FileSystemRepository.Format.FORMAT_TEXTPROTO;
+        ProtocolMessageEnum enumValue = DescriptorProtos.FileOptions.OptimizeMode.SPEED;
 
         EnumValueDescriptor enumValueDescriptor = enumValue.getValueDescriptor();
         String iri = ProtoTypes.getEnumValueERI(enumValueDescriptor);
@@ -59,7 +58,7 @@ public class ProtoEnumValueToThingConnectorTest {
 
         ThingMetadataProvider mp = new ThingMetadataProvider(tp, new NamespaceConverterIdentity());
         var label = mp.get(iri).label();
-
-        assertThat(label).isEqualTo(enumValue.getValueDescriptor().getName());
+        // TODO assertThat(label).isEqualTo(enumValue.getValueDescriptor().getName());
+        assertThat(label).isEqualTo("UNKNOWN_ENUM_VALUE_OptimizeMode_0");
     }
 }

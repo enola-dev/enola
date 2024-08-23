@@ -53,7 +53,7 @@
 
 1. Fix mediaType from extension so that e.g. this will work:
 
-       ./enola -v --model=https://raw.githubusercontent.com/enola-dev/enola/main/core/impl/src/test/resources/demo-model.textproto docgen
+       ./enola -v --load=https://raw.githubusercontent.com/enola-dev/enola/main/core/impl/src/test/resources/demo-model.textproto docgen
 
 1. Add support for writing and reading `ProtobufMediaTypes.PROTOBUF_YAML_UTF_8` - easy, given that _YAML is JSON?_
 

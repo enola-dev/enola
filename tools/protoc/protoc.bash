@@ -41,8 +41,7 @@ protoc \
   --jsonschema_opt=file_extension=schema.json \
   --jsonschema_opt=disallow_additional_properties \
   --jsonschema_out=docs/models/enola/schemas/ \
-  java/dev/enola/thing/thing.proto \
-  java/dev/enola/core/meta/enola_meta.proto
+  java/dev/enola/thing/thing.proto
 
 # TODO Add core/lib/src/main/java/dev/enola/core/enola_core.proto
 # when https://github.com/chrusty/protoc-gen-jsonschema/issues/180 is fixed

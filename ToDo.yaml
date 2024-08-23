@@ -191,9 +191,6 @@ items:
   - Document UI in Tutorial:
       tags: [doc]
 
-  - Clean Up all old model related code & doc:
-      tags: [clean, doc]
-
   - Genealogy: &genealogy
     description:
       Re-create https://github.com/vorburger/kingraph of [Simpsons &
@@ -291,8 +288,13 @@ items:
       tags: [tech, datalog, infer]
       created: 2024-08-18
 
-# Archive of all "fully done" stuff. (File order doesn't matter, just moved here to be out of the way above.)
+  # Archive of all "fully done" stuff. (File order doesn't matter, just moved here to be out of the way above.)
 
+  - Clean Up all old model related code & doc:
+      tags: [clean, doc]
+      done: 2024-08-24
+
+# Tags!
 tags:
   func:
     rosetta:

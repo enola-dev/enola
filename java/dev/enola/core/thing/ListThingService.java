@@ -21,6 +21,7 @@ import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.core.EnolaException;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.message.ProtoThingRepository;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
@@ -36,10 +37,8 @@ public class ListThingService implements ThingService {
     private static final Logger LOG = LoggerFactory.getLogger(ListThingService.class);
 
     // See also dev.enola.data.AllQuery
-    // TODO Change to e.g. https://enola.dev/ql/all?inline=true&limit=7
-    public static final String ENOLA_ROOT_LIST_IRIS = "enola:/";
-    // TODO "enola:/?inline" would be nicer than "enola:/inline" but fails to match
-    public static final String ENOLA_ROOT_LIST_THINGS = "enola:/inline";
+    public static final String ENOLA_ROOT_LIST_IRIS = KIRI.E.LIST_IRIS;
+    public static final String ENOLA_ROOT_LIST_THINGS = KIRI.E.LIST_THINGS;
     public static final String ENOLA_ROOT_LIST_PROPERTY = "https://enola.dev/thing-iri-list";
 
     private ProtoThingRepository protoThingRepository;
@@ -65,9 +64,6 @@ public class ListThingService implements ThingService {
             for (var thingIRI : thingIRIs) {
                 if (ENOLA_ROOT_LIST_IRIS.equals(thingIRI)) continue;
                 if (ENOLA_ROOT_LIST_THINGS.equals(thingIRI)) continue;
-                if (thingIRI.startsWith("enola."))
-                    // TODO Fix enola.* hack... (get enola.entity_kind & enola.schema doesn't work)
-                    continue;
                 var any = protoThingRepository.get(thingIRI);
                 if (any.getTypeUrl().endsWith("Thing")) {
                     try {

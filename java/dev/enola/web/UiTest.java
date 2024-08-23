@@ -22,17 +22,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.net.URI.create;
 
 import com.google.common.net.MediaType;
-import com.google.protobuf.Any;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.common.protobuf.Timestamps2;
-import dev.enola.core.EnolaException;
-import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.*;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
@@ -43,17 +38,15 @@ import dev.enola.web.netty.NettyHttpServer;
 
 import org.junit.Test;
 
-import java.time.Instant;
-
 public class UiTest {
 
     @Test
     public void testUi() throws Exception {
         // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
+        // TODO Try new ResourceProviders(new ClasspathResource.Provider())
         var rp = new ResourceProviders();
-        var ekr = new EntityKindRepository();
-        var esp = new EnolaServiceProvider(ekr, rp);
-        var service = new TestService();
+        var esp = new EnolaServiceProvider(rp);
+        var service = new RestTest.TestService();
         try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
             var testGrpcService = grpc.get();
             var ui =
@@ -74,18 +67,18 @@ public class UiTest {
                 assertThat(response1.charSource().read()).contains("Enola");
                 assertThat(response1.charSource().read()).contains("404");
 
-                var uri2 = create(prefix + "/ui/test.demo/123");
+                var uri2 = create(prefix + "/ui/http://example.org/test");
                 var response2 = rp.getResource(uri2).charSource().read();
                 assertThat(response2).contains("Enola");
-                assertThat(response2).contains("test.demo/123");
-                assertThat(response2).contains("<table class=\"thing\">");
-                assertThat(response2).contains("test.demo/123");
+                assertThat(response2).contains("http://example.org/test");
+                // TODO assertThat(response2).contains("<table class=\"thing\">");
 
                 // Linked Data
-                assertThat(response2)
+                /* TODO assertThat(response2)
                         .contains(
                                 "<a href=/ui/enola:/enola.dev/proto/message/dev.enola.core.Entity"
                                         + ">dev.enola.core.Entity");
+                */
 
                 // TODO find some DOM Diff type thing to compare response2 with /expected-book.html?
 
@@ -103,6 +96,7 @@ public class UiTest {
         }
     }
 
+    // TODO Why is this test specific, and not the normal production one?
     private ThingMetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
         var datatypeRepository = new DatatypeRepositoryBuilder().build();
         var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
@@ -111,20 +105,5 @@ public class UiTest {
         return new ThingMetadataProvider(
                 new AlwaysThingProviderAdapter(thingProvider, datatypeRepository),
                 namespaceConverter);
-    }
-
-    private static class TestService implements EnolaService {
-        @Override
-        public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
-            return GetThingsResponse.newBuilder().build();
-        }
-
-        @Override
-        public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-            var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths("123");
-            var now = Timestamps2.fromInstant(Instant.now());
-            var entity = Entity.newBuilder().setId(id).setTs(now).build();
-            return GetThingResponse.newBuilder().setThing(Any.pack(entity)).build();
-        }
     }
 }

@@ -31,11 +31,9 @@ import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
-import dev.enola.core.IDs;
 import dev.enola.core.connector.proto.AugmentRequest;
 import dev.enola.core.connector.proto.ConnectorServiceGrpc;
 import dev.enola.core.connector.proto.ConnectorServiceListRequest;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
@@ -105,7 +103,7 @@ public class ServerTest {
         var model =
                 new ReplacingResource(
                         new ClasspathResource("demo-connector-model.textproto"), "9090", sPort);
-        // As in dev.enola.cli.CommandWithModel + dev.enola.cli.CommandWithEntityID
+        // As in dev.enola.cli.CommandWithModel + dev.enola.cli.CommandWithIRI
         ekr = new EntityKindRepository();
         ekr.load(model);
 

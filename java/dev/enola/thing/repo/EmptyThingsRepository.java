@@ -15,23 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core.thing;
+package dev.enola.thing.repo;
 
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.ThingRepository;
 
-import java.util.Collections;
+import java.util.stream.Stream;
 
-@Deprecated // Remove when no longer needed
-public class EmptyThingRepository implements ThingRepository {
+public class EmptyThingsRepository implements ThingsRepository {
 
     @Override
-    public Iterable<String> listIRI() {
-        return Collections.emptySet();
-    }
-
-    @Override
-    public Thing get(String iri) {
-        return null;
+    public Stream<Thing> getThings(String iri) {
+        return Stream.empty();
     }
 }
