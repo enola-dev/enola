@@ -32,6 +32,8 @@ import java.net.URI;
  */
 public class StaticWebHandler implements WebHandler {
 
+    // TODO Rename StaticWebHandler to dev.enola.common.net.http.HttpClasspathResourceHandler
+
     private final String uriPrefix;
     private final String classpathPrefix;
 

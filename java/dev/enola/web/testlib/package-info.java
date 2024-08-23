@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web;
+@NullMarked
+package dev.enola.web.testlib;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
-import dev.enola.common.io.resource.ReadableResource;
-
-import java.net.URI;
-
-/**
- * Handler for Web Request.
- *
- * @see WebServer
- */
-public interface WebHandler {
-
-    // TODO Rename WebHandler to dev.enola.common.net.http.HttpHandler
-
-    ListenableFuture<ReadableResource> get(URI uri);
-}
+import org.jspecify.annotations.NullMarked;

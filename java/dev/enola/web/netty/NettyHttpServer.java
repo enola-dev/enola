@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.web;
+package dev.enola.web.netty;
 
-import com.google.common.util.concurrent.ListenableFuture;
+import dev.enola.web.WebHandler;
+import dev.enola.web.WebServer;
 
-import dev.enola.common.io.resource.ReadableResource;
+import java.net.InetSocketAddress;
 
-import java.net.URI;
+public class NettyHttpServer implements WebServer {
 
-/**
- * Handler for Web Request.
- *
- * @see WebServer
- */
-public interface WebHandler {
+    @Override
+    public void register(String path, WebHandler h) {}
 
-    // TODO Rename WebHandler to dev.enola.common.net.http.HttpHandler
+    @Override
+    public void start() {}
 
-    ListenableFuture<ReadableResource> get(URI uri);
+    @Override
+    public InetSocketAddress getInetAddress() {
+        return null;
+    }
+
+    @Override
+    public void close() {}
 }
