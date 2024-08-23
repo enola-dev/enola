@@ -22,15 +22,10 @@ import static dev.enola.core.thing.ListThingService.ENOLA_ROOT_LIST_THINGS;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.function.CheckedPredicate;
-import dev.enola.core.IDs;
 import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.docgen.MarkdownDocGenerator;
 import dev.enola.core.meta.docgen.Options;
-import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
-import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.model.Datatypes;
 import dev.enola.thing.gen.markdown.MarkdownSiteGenerator;
 import dev.enola.thing.message.MoreThings;
@@ -45,7 +40,6 @@ import picocli.CommandLine.Option;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -91,7 +85,8 @@ public class DocGenCommand extends CommandWithModelAndOutput {
     @Override
     public void run(EntityKindRepository ekr, EnolaServiceBlockingStub service) throws Exception {
         if (group.model != null) {
-            singleMDDocForEntities(service);
+            throw new UnsupportedOperationException(
+                    "This is no longer supported, and about to fully removed");
         } else {
             multipleMDDocsForThings(service, generateIndexFile);
         }
@@ -119,25 +114,5 @@ public class DocGenCommand extends CommandWithModelAndOutput {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         return MoreThings.fromAny(response.getThing());
-    }
-
-    private void singleMDDocForEntities(EnolaServiceBlockingStub service) throws Exception {
-        var eks = new ArrayList<EntityKind>();
-        var ekid = ID.newBuilder().setNs("enola").setEntity("entity_kind").build();
-        var eri = IDs.toPath(ekid);
-        var response = service.listEntities(ListEntitiesRequest.newBuilder().setEri(eri).build());
-        for (var entity : response.getEntitiesList()) {
-            eks.add(entity.getDataOrThrow("schema").unpack(EntityKind.class));
-        }
-
-        var options = new Options();
-        options.diagram = diagram;
-
-        var resource = rp.getWritableResource(Output.get(output));
-        var header = rp.getReadableResource(headerURI).charSource().read();
-
-        try (var writer = resource.charSink().openBufferedStream()) {
-            new MarkdownDocGenerator(options, true).render(eks, header, writer);
-        }
     }
 }

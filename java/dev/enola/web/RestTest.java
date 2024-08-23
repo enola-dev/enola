@@ -62,14 +62,6 @@ public class RestTest {
                                 "{\"@type\":\"type.googleapis.com/dev.enola.core.Entity\","
                                     + "\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
                 assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
-
-                // List
-                var uri2 = create(prefix + "/api/entities/test.demo");
-                var response2 = rp.getResource(uri2);
-                assertThat(response2.charSource().read())
-                        .startsWith(
-                                "{\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
-                assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
             }
         }
     }
@@ -83,14 +75,6 @@ public class RestTest {
         @Override
         public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
             return GetThingResponse.newBuilder().setThing(Any.pack(newEntity("123"))).build();
-        }
-
-        @Override
-        public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-            return ListEntitiesResponse.newBuilder()
-                    .addEntities(newEntity("123"))
-                    .addEntities(newEntity("456"))
-                    .build();
         }
 
         private Entity newEntity(String path) {

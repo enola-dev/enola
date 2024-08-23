@@ -20,8 +20,6 @@ package dev.enola.core.thing;
 import com.google.protobuf.Any;
 
 import dev.enola.core.EnolaException;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.thing.Thing;
 
 import java.util.Map;
@@ -33,7 +31,4 @@ public interface ThingService {
 
     // TODO Convert all callers to getThings, and remove this
     Any getThing(String iri, Map<String, String> parameters);
-
-    // TODO Convert all callers to getThings, and remove this
-    ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException;
 }

@@ -38,7 +38,6 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.Entity;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.proto.ID;
-import dev.enola.core.proto.ListEntitiesRequest;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.message.ThingExt;
@@ -87,7 +86,6 @@ public class EnolaGrpcServerTest {
         checkGetProtoField(client);
         checkGetYAML(client);
         checkGetEntity(client);
-        checkList(client);
     }
 
     private Things getThings(EnolaServiceBlockingStub client, String iri)
@@ -146,14 +144,5 @@ public class EnolaGrpcServerTest {
         assertThat(linkMap).hasSize(1);
         assertThat(linkMap.get("wiki"))
                 .isEqualTo("https://en.wikipedia.org/w/index.php?fulltext=Search&search=b");
-    }
-
-    private void checkList(EnolaServiceBlockingStub client) {
-        var id = ID.newBuilder().setNs("demo").setEntity("bar").addPaths("a").addPaths("b").build();
-        var eri = IDs.toPath(id);
-        var request = ListEntitiesRequest.newBuilder().setEri(eri).build();
-        var response = client.listEntities(request);
-        assertThat(response.getEntitiesList()).isEmpty();
-        // TODO Make this more interesting!
     }
 }

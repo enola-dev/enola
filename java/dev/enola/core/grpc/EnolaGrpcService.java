@@ -59,18 +59,6 @@ public class EnolaGrpcService extends EnolaServiceGrpc.EnolaServiceImplBase {
     }
 
     @Override
-    public void listEntities(
-            ListEntitiesRequest request, StreamObserver<ListEntitiesResponse> responseObserver) {
-        try {
-            var response = enola.listEntities(request);
-            responseObserver.onNext(response);
-            responseObserver.onCompleted();
-        } catch (EnolaException e) {
-            responseObserver.onError(e);
-        }
-    }
-
-    @Override
     public void getFileDescriptorSet(
             GetFileDescriptorSetRequest request,
             io.grpc.stub.StreamObserver<GetFileDescriptorSetResponse> responseObserver) {

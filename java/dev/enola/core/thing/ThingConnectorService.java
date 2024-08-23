@@ -22,8 +22,6 @@ import com.google.protobuf.Any;
 
 import dev.enola.core.EnolaException;
 import dev.enola.core.meta.proto.Type;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.thing.Thing;
 import dev.enola.thing.proto.Things;
@@ -61,11 +59,5 @@ public class ThingConnectorService implements ThingService {
         }
 
         return Any.pack(things.build());
-    }
-
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        // TODO This doesn't make any sense for Things, and needs to be removed in future clean-up!
-        return ListEntitiesResponse.newBuilder().build();
     }
 }

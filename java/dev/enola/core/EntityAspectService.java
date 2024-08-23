@@ -21,15 +21,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.protobuf.Any;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.core.connector.proto.ConnectorServiceListRequest;
 import dev.enola.core.meta.proto.EntityKind;
 import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.ListEntitiesRequest;
-import dev.enola.core.proto.ListEntitiesResponse;
 import dev.enola.core.thing.ThingService;
 import dev.enola.thing.Thing;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 // TODO Move (refactor) this into a package dev.enola.core.entity.
@@ -66,27 +62,6 @@ class EntityAspectService implements ThingService {
         }
 
         return Any.pack(entity.build());
-    }
-
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        var id = IDs.parse(r.getEri());
-        var entities = new ArrayList<Entity.Builder>();
-        var connectorRequest =
-                ConnectorServiceListRequest.newBuilder()
-                        .setId(id)
-                        .putAllRelatedFilter(r.getRelatedFilterMap())
-                        .build();
-
-        for (var aspect : registry) {
-            aspect.list(connectorRequest, entityKind, entities);
-        }
-
-        var responseBuilder = ListEntitiesResponse.newBuilder();
-        for (var entity : entities) {
-            responseBuilder.addEntities(entity);
-        }
-        return responseBuilder.build();
     }
 
     @Override

@@ -110,14 +110,6 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
         return matcher.listTemplates();
     }
 
-    @Override
-    public ListEntitiesResponse listEntities(ListEntitiesRequest r) throws EnolaException {
-        var opt = matcher.match(r.getEri());
-        if (opt.isEmpty())
-            throw new UnsupportedOperationException("listEntities will eventually be removed");
-        return opt.get().getKey().listEntities(r);
-    }
-
     public static class Builder {
         private final URITemplateMatcherChain.Builder<ThingService> b =
                 URITemplateMatcherChain.builder();
@@ -151,12 +143,6 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
                     } catch (RuntimeException e) {
                         throw new RuntimeException(service + " failed to get: " + iri, e);
                     }
-                }
-
-                @Override
-                public ListEntitiesResponse listEntities(ListEntitiesRequest r)
-                        throws EnolaException {
-                    return service.listEntities(r);
                 }
             };
         }
