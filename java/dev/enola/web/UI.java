@@ -27,7 +27,6 @@ import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
@@ -41,6 +40,10 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
+import dev.enola.thing.message.ProtoThingMetadataProvider;
+import dev.enola.thing.metadata.ThingMetadataProvider;
+import dev.enola.thing.repo.ThingRepository;
 
 import java.io.IOException;
 import java.net.URI;
@@ -57,9 +60,10 @@ public class UI implements WebHandler {
     private final EnolaMessages enolaMessages;
     private final EnolaThingProvider /* TODO ThingProvider*/ thingProvider;
     private final ThingUI thingUI;
+    private final ThingsConverterWrapperHandler timelineHandler;
     private ProtoIO protoIO;
 
-    public UI(EnolaServiceBlockingStub service, MetadataProvider metadataProvider)
+    public UI(EnolaServiceBlockingStub service, ThingMetadataProvider metadataProvider)
             throws DescriptorValidationException {
         this.service = service;
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
@@ -69,12 +73,19 @@ public class UI implements WebHandler {
         enolaMessages = new EnolaMessages(typeRegistryWrapper, extensionRegistry);
         thingProvider = new EnolaThingProvider(service);
 
-        thingUI = new ThingUI(metadataProvider);
+        var protoThingMetadataProvider = new ProtoThingMetadataProvider(metadataProvider);
+        thingUI = new ThingUI(protoThingMetadataProvider);
+
+        ThingRepository thingRepository = new ProtoToThingRepository(thingProvider);
+        timelineHandler =
+                new ThingsConverterWrapperHandler(
+                        thingRepository, new VisJsTimelineGenerator(metadataProvider));
     }
 
     public void register(WebHandlers handlers) {
         handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
         handlers.register("/ui", this);
+        handlers.register("/timeline", timelineHandler);
         // TODO Create HTML page “frame” from template, with body from another template
         handlers.register("", uri -> immediateFuture(new ClasspathResource("static/404.html")));
     }
@@ -102,10 +113,12 @@ public class UI implements WebHandler {
         var thingHTML =
                 thing != null
                         ? thingUI.html(thing).toString()
+                        // TODO Remove copy/paste duplication :( from here and in 404.html
                         : "Not found: <code>"
                                 + iri
                                 + "</code>; try e.g. <a href=\"/ui/enola:/\"><code>enola:/</code>"
-                                + " for the index</a>...";
+                                + " for the index</a> or e.g. <a"
+                                + " href=\"/timeline?q=enola:/inline\">the Timeline</a>...";
 
         return new ReplacingResource(
                         HTML_FRAME,

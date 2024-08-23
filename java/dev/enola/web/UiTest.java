@@ -26,7 +26,6 @@ import com.google.protobuf.Any;
 
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
@@ -109,11 +108,8 @@ public class UiTest {
         }
     }
 
-    private MetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
-        // TODO look up in global repository!
+    private ThingMetadataProvider getMetadataProvider(ProviderFromIRI<Thing> thingProvider) {
         var datatypeRepository = new DatatypeRepositoryBuilder().build();
-
-        // TODO This must be configurable & dynamic...
         var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
 

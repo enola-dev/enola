@@ -49,8 +49,6 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
     // TODO https://github.com/javdome/timeline-arrows
 
-    // TODO Integrate into Web UI, as /ui/timeline?things=enola:/
-
     // TODO #feature Support Timezone, but don't convert in Java, but purely client side in HTML
 
     // TODO Use numeric (long) group & item id: instead of String IRI
