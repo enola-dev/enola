@@ -54,6 +54,8 @@ public class ThingUI {
     private CharSequence value(Value value, String tableCssClass) {
         return switch (value.getKindCase()) {
             case STRING -> s(value.getString());
+            case LANG_STRING ->
+                    s(value.getLangString().getText() + "@" + value.getLangString().getLang());
             case LINK -> link(value.getLink());
             case LITERAL -> literal(value.getLiteral());
             case STRUCT -> table(value.getStruct().getPropertiesMap(), tableCssClass);
