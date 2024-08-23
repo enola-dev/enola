@@ -17,11 +17,9 @@
  */
 package dev.enola.core.message;
 
-import com.google.protobuf.DescriptorProtos.FieldDescriptorProto;
 import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.protobuf.DescriptorProvider;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.ProtoTypes;
@@ -38,14 +36,21 @@ public class ProtoFieldToThingConnector extends ProtoToThingConnector {
     }
 
     @Override
-    public Type type() {
-        return Type.newBuilder()
-                .setEmoji("🏒")
-                .setName("enola.dev/proto/field")
-                .setUri(ProtoTypes.FIELD_DESCRIPTOR_ERI_PREFIX + "{FQN}/{NUMBER}")
-                .setProto(FieldDescriptorProto.getDescriptor().getFullName())
-                .build();
+    public String iri() {
+        return ProtoTypes.FIELD_DESCRIPTOR_ERI_PREFIX + "{FQN}/{NUMBER}";
     }
+
+    /*
+        @Override
+        public Type type() {
+            return Type.newBuilder()
+                    .setEmoji("🏒")
+                    .setName("enola.dev/proto/field")
+                    .setUri(iri())
+                    .setProto(FieldDescriptorProto.getDescriptor().getFullName())
+                    .build();
+        }
+    */
 
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {

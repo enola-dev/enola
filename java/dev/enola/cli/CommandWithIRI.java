@@ -25,7 +25,6 @@ import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.WriterResource;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.view.EnolaMessages;
@@ -34,7 +33,7 @@ import picocli.CommandLine;
 
 import java.io.IOException;
 
-public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
+public abstract class CommandWithIRI extends CommandWithModelAndOutput {
 
     @CommandLine.Option(
             names = {"--format", "-f"},
@@ -44,7 +43,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
     Format format;
 
     // TODO @Parameters(index = "0..*") List<String> eris;
-    @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI of Entity")
+    @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI of Thing")
     String iri;
 
     private WritableResource resource;
@@ -52,8 +51,7 @@ public abstract class CommandWithEntityID extends CommandWithModelAndOutput {
     protected EnolaMessages enolaMessages;
 
     @Override
-    protected final void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
-            throws Exception {
+    protected final void run(EnolaServiceBlockingStub service) throws Exception {
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);

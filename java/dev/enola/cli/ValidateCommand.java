@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 
 import picocli.CommandLine;
@@ -26,6 +25,5 @@ import picocli.CommandLine;
 public class ValidateCommand extends CommandWithModel {
 
     @Override
-    protected void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
-            throws Exception {}
+    protected void run(EnolaServiceGrpc.EnolaServiceBlockingStub service) throws Exception {}
 }

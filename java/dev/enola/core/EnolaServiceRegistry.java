@@ -21,7 +21,6 @@ import com.google.protobuf.Any;
 
 import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.*;
 import dev.enola.core.resource.ResourceEnolaService;
 import dev.enola.core.thing.ListThingService;
@@ -114,19 +113,6 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
         private final URITemplateMatcherChain.Builder<ThingService> b =
                 URITemplateMatcherChain.builder();
 
-        public Builder register(ID ekid, ThingService service) {
-            // URI for get():
-            var uriTemplateWithPath = IDs.toURITemplate(ekid);
-            b.add(uriTemplateWithPath, service);
-
-            // URI for list():
-            var ekidWithoutPath = IDs.withoutPath(ekid);
-            var uriTemplateWithoutPath = IDs.toURITemplate(ekidWithoutPath);
-            b.add(uriTemplateWithoutPath, service);
-
-            return this;
-        }
-
         private ThingService wrap(ThingService service) {
             return new ThingService() {
 
@@ -147,8 +133,8 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             };
         }
 
-        public void register(Type type, ThingService service) {
-            b.add(type.getUri(), wrap(service));
+        public void register(ThingsRepositoryAdapter thingsRepository) {
+            register(thingsRepository, thingsRepository);
         }
 
         public void register(ThingRepository thingRepository, ThingsProvider thingsProvider) {

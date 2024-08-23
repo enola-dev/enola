@@ -21,7 +21,6 @@ import com.google.protobuf.Descriptors;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.core.EnolaException;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.proto.Things;
 
 import java.io.UncheckedIOException;
@@ -38,7 +37,8 @@ import java.util.Map;
 public interface ThingConnector {
     // TODO Move to lib?
 
-    Type type();
+    // TODO Type type();
+    String iri();
 
     void augment(Things.Builder thingsBuilder, String iri, Map<String, String> parameters)
             throws UncheckedIOException, ConversionException;

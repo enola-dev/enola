@@ -18,6 +18,10 @@
 
 # Library Model
 
+??? warning
+
+    _This page needs to be updated to match the new architecture._
+
 Enola's _Entities_ are modeled with _Entity Kinds,_ as described [in the architecture](../../concepts/core-arch.md).
 
 Different formats are supported, and can be converted using [Rosetta](../rosetta/index.md).

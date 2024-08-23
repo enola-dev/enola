@@ -19,8 +19,10 @@ package dev.enola.thing.repo;
 
 import dev.enola.thing.Thing;
 
+import java.util.stream.Stream;
+
 public interface ThingsProvider {
 
-    // TODO Reactive Stream, or Mutiny Multi, instead Iterable
-    Iterable<Thing> get(String iri);
+    // TODO Reactive Stream, or Mutiny Multi, instead of JDK Stream
+    Stream<Thing> getThings(String iri);
 }

@@ -62,8 +62,6 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
 
-    // TODO Thing getThings(String iri, int depth) throws IOException;
-
     default <T extends Thing> T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
         Thing thing = get(iri);

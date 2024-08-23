@@ -24,28 +24,28 @@ import static java.net.URI.create;
 import com.google.common.net.MediaType;
 import com.google.protobuf.Any;
 
+import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.OkHttpResource;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.common.protobuf.Timestamps2;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.*;
+import dev.enola.thing.proto.Thing;
 import dev.enola.web.netty.NettyHttpServer;
 
 import org.junit.Test;
-
-import java.time.Instant;
 
 public class RestTest {
 
     @Test
     public void getAndList() throws Exception {
         // Setup
-        var rp = new ResourceProviders();
-        var ekr = new EntityKindRepository();
-        var esp = new EnolaServiceProvider(ekr, rp);
+        var rp =
+                new ResourceProviders(
+                        new ClasspathResource.Provider(), new OkHttpResource.Provider());
+        var esp = new EnolaServiceProvider(rp);
         try (EnolaGrpcInProcess grpc = new EnolaGrpcInProcess(esp, new TestService(), false)) {
             var testGrpcService = grpc.get();
             var handlers = new WebHandlers().register("/api", new RestAPI(testGrpcService));
@@ -55,32 +55,30 @@ public class RestTest {
                 var prefix = "http://localhost:" + port;
 
                 // Get
-                var uri1 = create(prefix + "/api/entity/test.demo/123");
+                var uri1 = create(prefix + "/api/http://example.enola.dev/Dalí");
                 var response1 = rp.getResource(uri1);
                 assertThat(response1.charSource().read())
                         .startsWith(
-                                "{\"@type\":\"type.googleapis.com/dev.enola.core.Entity\","
-                                    + "\"id\":{\"ns\":\"test\",\"entity\":\"demo\",\"paths\":[\"123\"]},\"ts\":\"");
+                                "{\"@type\":\"type.googleapis.com/dev.enola.thing.Thing\","
+                                        + "\"iri\":\"http://example.org/test\"");
                 assertThat(response1.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
             }
         }
     }
 
-    private static class TestService implements EnolaService {
+    // TODO Replace with e.g. picasso.ttl
+    static class TestService implements EnolaService {
+
+        Thing thing = Thing.newBuilder().setIri("http://example.org/test").build();
+
         @Override
         public GetThingsResponse getThings(GetThingsRequest r) throws EnolaException {
-            return GetThingsResponse.newBuilder().build();
+            return GetThingsResponse.newBuilder().addThings(thing).build();
         }
 
         @Override
         public GetThingResponse getThing(GetThingRequest r) throws EnolaException {
-            return GetThingResponse.newBuilder().setThing(Any.pack(newEntity("123"))).build();
-        }
-
-        private Entity newEntity(String path) {
-            var id = ID.newBuilder().setNs("test").setEntity("demo").addPaths(path);
-            var now = Timestamps2.fromInstant(Instant.now());
-            return Entity.newBuilder().setId(id).setTs(now).build();
+            return GetThingResponse.newBuilder().setThing(Any.pack(thing)).build();
         }
     }
 }

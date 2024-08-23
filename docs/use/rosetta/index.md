@@ -64,42 +64,9 @@ produces [`picasso.gexf`](../../BUILT/picasso.gexf) in [GEXF format](https://gex
 ## YAML to JSON
 
 ```bash cd ../.././..
-$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.json --schema=EntityKinds
+$ ./enola rosetta --in test/picasso.yaml --out /tmp/picasso.json
 ...
 ```
-
-The `model.json` file now contains:
-
-<!-- @formatter:off -->
-```json
-{% include "../library/model.json" %}
-```
-<!-- @formatter:on -->
-
-## YAML to TextProto
-
-```bash cd ../.././..
-$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.textproto --schema=EntityKinds
-...
-```
-
-The `model.textproto` file now contains:
-
-<!-- @formatter:off -->
-```yaml
-{% include "../library/model.textproto" %}
-```
-<!-- @formatter:on -->
-
-## YAML to Binary Protocol Buffer
-
-```bash cd ../.././..
-$ ./enola rosetta --in=docs/use/library/model.yaml --out=docs/use/library/model.binpb --schema=EntityKinds
-...
-```
-
-The `model.binpb` now contains
-_[binary protocol buffer wire format](https://protobuf.dev/programming-guides/encoding/)._
 
 ## Turtle 🐢 to JSON-LD 🔗
 
@@ -132,7 +99,7 @@ $ cat docs/use/rosetta/hello.txt
 ```
 
 ```bash cd ../.././..
-$ ./enola rosetta --in='docs/use/rosetta/hello.txt?charset=UTF-8' --out='/tmp/hello-windows.txt?charset=ISO-8859-1'
+$ ./enola rosetta --in 'docs/use/rosetta/hello.txt?charset=UTF-8' --out '/tmp/hello-windows.txt?charset=ISO-8859-1'
 ...
 ```
 

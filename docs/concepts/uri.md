@@ -18,6 +18,10 @@
 
 # Enola Resource Identifier URIs (ERIs)
 
+??? warning
+
+    _This page needs some updates to fully match the current code._
+
 ## Introduction
 
 Enola's [CLI](../use/help/index.md) (and [Web UI](../use/server/index.md))

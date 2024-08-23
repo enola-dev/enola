@@ -22,7 +22,6 @@ import com.google.protobuf.ExtensionRegistryLite;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.protobuf.TypeRegistryWrapper;
-import dev.enola.core.entity.IDValueConverter;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
@@ -46,7 +45,7 @@ public class EnolaThingProvider implements Repository<Thing> {
     // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector
     // TODO Resolve (some) overlap this class has with abstract class ThingConnectorsProvider
 
-    private final MessageToThingConverter m2t = new MessageToThingConverter(new IDValueConverter());
+    private final MessageToThingConverter m2t = new MessageToThingConverter();
     private final EnolaServiceBlockingStub service;
     private final EnolaMessages enolaMessages;
 

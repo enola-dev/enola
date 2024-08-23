@@ -45,9 +45,8 @@ nav:
       - Help: use/help/index.md
       - Example Model: use/library/index.md
       - DocGen: use/docgen/index.md
-      - Get Entity: use/get/index.md
+      - Get Thing: use/get/index.md
       - List Schemas: use/list/schema.md
-      - Connectors: use/connector/index.md
       - Server: use/server/index.md
       - Rosetta: use/rosetta/index.md
       - JSON-LD: use/json-ld/index.md

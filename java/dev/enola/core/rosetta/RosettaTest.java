@@ -23,8 +23,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
-import static dev.enola.common.protobuf.ProtobufMediaTypes.PARAMETER_PROTO_MESSAGE;
-import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -63,8 +61,8 @@ public class RosettaTest {
     private static final ResourceProvider rp = new ClasspathResource.Provider();
     private static final Rosetta rosetta = new Rosetta(rp);
 
-    // These intentionally only test some cases; more detailed tests are done e.g. in YamlJsonTest,
-    // and in ProtoIOTest and (indirectly) EntityKindRepositoryTest, and other tests.
+    // These intentionally only test some cases; more detailed tests
+    // are done e.g. in YamlJsonTest and in ProtoIOTest.
 
     @Test
     public void testJsonToYaml() throws Exception {
@@ -80,48 +78,6 @@ public class RosettaTest {
         var out = new MemoryResource(JSON_UTF_8);
         rosetta.convertInto(in, out);
         assertThat(out.charSource().read()).isEqualTo("{\"value\":123}");
-    }
-
-    @Test
-    public void testTextprotoToYaml() throws Exception {
-        var in =
-                new ClasspathResource(
-                        "bar-abc-def.textproto",
-                        PROTOBUF_TEXTPROTO_UTF_8.withParameter(
-                                PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
-        var out = new MemoryResource(YAML_UTF_8);
-        rosetta.convertInto(in, out);
-
-        var expectedOut =
-                StringResource.of(
-                        """
-                        id:
-                          ns: demo
-                          entity: bar
-                          paths: [abc, def]
-                        related:
-                          one:
-                            ns: demo
-                            entity: baz
-                            paths: [uvw]
-                        link: {wiki:\
-                         'https://en.wikipedia.org/w/index.php?fulltext=Search&search=def'}
-                        """,
-                        YAML_UTF_8);
-        assertThat(out).hasCharsEqualTo(expectedOut);
-    }
-
-    @Test
-    public void testYamlToTextproto() throws Exception {
-        var in =
-                new ClasspathResource(
-                        "bar-abc-def.yaml",
-                        YAML_UTF_8.withParameter(PARAMETER_PROTO_MESSAGE, "dev.enola.core.Entity"));
-        var out = new MemoryResource(PROTOBUF_TEXTPROTO_UTF_8);
-        rosetta.convertInto(in, out);
-
-        var expectedOut = new ClasspathResource("bar-abc-def.textproto");
-        assertThat(out.charSource().read()).isEqualTo(expectedOut.charSource().read());
     }
 
     @Test

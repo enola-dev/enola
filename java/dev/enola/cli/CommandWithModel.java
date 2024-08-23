@@ -26,12 +26,8 @@ import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcClientProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.grpc.ServiceProvider;
-import dev.enola.core.meta.EntityKindRepository;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
-import dev.enola.core.type.TypeRepositoryBuilder;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.data.Repository;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
@@ -53,6 +49,7 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
+import java.util.stream.Stream;
 
 public abstract class CommandWithModel extends CommandWithResourceProvider {
 
@@ -82,9 +79,6 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
         super.run();
         try (var ctx = TLC.open()) {
             setup(ctx);
-
-            // TODO Fix design; as-is, this may stay null if --server instead of --model is used
-            EntityKindRepository ekr = null;
 
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
@@ -116,30 +110,14 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
 
                 TemplateThingRepository templateThingRepository = new TemplateThingRepository(repo);
                 templateService = templateThingRepository;
-                // NB: Copy/pasted below...
-                ekr = new EntityKindRepository();
-                Repository<Type> tyr = new TypeRepositoryBuilder().build();
                 ThingsProvider thingsProvider =
                         new ThingsProvider() {
                             @Override
-                            public Iterable<dev.enola.thing.Thing> get(String iri) {
+                            public Stream<dev.enola.thing.Thing> getThings(String iri) {
                                 throw new UnsupportedOperationException("TODO");
                             }
                         };
-                esp =
-                        new EnolaServiceProvider(
-                                ekr, tyr, thingsProvider, templateThingRepository, rp);
-                var enolaService = esp.getEnolaService();
-                grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
-                gRPCService = grpc.get();
-
-            } else if (group.model != null) {
-                var modelResource = rp.getReadableResource(group.model);
-                ekr = new EntityKindRepository();
-                ekr.load(modelResource);
-                // NB: Copy/paste from above...
-                Repository<Type> tyr = new TypeRepositoryBuilder().build();
-                esp = new EnolaServiceProvider(ekr, tyr, rp);
+                esp = new EnolaServiceProvider(thingsProvider, templateThingRepository, rp);
                 var enolaService = esp.getEnolaService();
                 grpc = new EnolaGrpcInProcess(esp, enolaService, false); // direct, single-threaded!
                 gRPCService = grpc.get();
@@ -150,7 +128,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             }
 
             try {
-                run(ekr, gRPCService);
+                run(gRPCService);
             } finally {
                 grpc.close();
             }
@@ -164,10 +142,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 NamespaceConverter.CTX);
     }
 
-    // TODO Pass only the EnolaServiceBlockingStub through, remove the EntityKindRepository from
-    // here
-    protected abstract void run(EntityKindRepository ekr, EnolaServiceBlockingStub service)
-            throws Exception;
+    protected abstract void run(EnolaServiceBlockingStub service) throws Exception;
 
     static class LoadableModelURIs {
 
@@ -181,13 +156,6 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     static class ModelOrServer extends LoadableModelURIs {
 
         @Option(
-                names = {"--model", "-m"},
-                required = true,
-                description = "URI to EntityKinds (e.g. file:model.yaml)")
-        // TODO Simple integrate this into --load eventually...
-        @Nullable URI model;
-
-        @Option(
                 names = {"--server", "-s"},
                 required = true,
                 description = "Target of an Enola gRPC Server (e.g. localhost:7070)")
@@ -197,7 +165,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
     static class Output {
         // Default command output destination is STDOUT.
         // NB: "fd:1" normally (in ResourceProviders) is FileDescriptorResource,
-        // but CommandWithEntityID "hacks" this and uses WriterResource, for "testability".
+        // but CommandWithIRI "hacks" this and uses WriterResource, for "testability".
         static final URI DEFAULT_OUTPUT_URI = FileDescriptorResource.STDOUT_URI;
 
         @Option(

@@ -30,7 +30,7 @@ import java.net.URI;
 @CommandLine.Command(
         name = "rosetta",
         description = {
-            "Transform YAML <=> JSON <=> TextProto",
+            "Transform YAML <=> JSON <=> TextProto <=> PB <=> RDF TTL <=> JSON-LD etc.",
             "(see https://en.wikipedia.org/wiki/Rosetta_Stone)"
         })
 public class RosettaCommand extends CommandWithResourceProvider {
@@ -38,12 +38,10 @@ public class RosettaCommand extends CommandWithResourceProvider {
     private Rosetta rosetta;
 
     @CommandLine.Option(
-            names = {"--schema"},
+            names = {"--protoFQN"},
             required = false,
-            description =
-                    "Schema (${COMPLETION-CANDIDATES}); optional for YAML <=> JSON, required if"
-                            + " --in is *.textproto")
-    Schema schema;
+            description = "Proto FQN; optional for YAML <=> JSON, required if --in is *.textproto")
+    String protoFQN;
 
     @CommandLine.Option(
             names = {"--in"},
@@ -67,25 +65,14 @@ public class RosettaCommand extends CommandWithResourceProvider {
             var inResource = rp.getReadableResource(in);
             var outResource = rp.getWritableResource(out);
 
-            if (schema != null) {
+            if (protoFQN != null) {
                 // required if in is a *.textproto to determine its type
                 // until header sniffing is implemented
-                var mt = setProtoMessageFQN(inResource.mediaType(), schema.protoFQN);
+                var mt = setProtoMessageFQN(inResource.mediaType(), protoFQN);
                 inResource = new DelegatingResource(inResource, mt);
             }
 
             rosetta.convertIntoOrThrow(inResource, outResource);
-        }
-    }
-
-    public enum Schema {
-        Entity("dev.enola.core.Entity"),
-        EntityKinds("dev.enola.core.meta.EntityKinds");
-
-        final String protoFQN;
-
-        Schema(String protoFQN) {
-            this.protoFQN = protoFQN;
         }
     }
 }

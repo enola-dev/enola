@@ -23,10 +23,6 @@ import com.google.protobuf.Message;
 
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.Messages;
-import dev.enola.core.meta.proto.EntityKind;
-import dev.enola.core.meta.proto.EntityKinds;
-import dev.enola.core.proto.Entity;
-import dev.enola.core.proto.ID;
 
 public class EnolaMessages extends Messages {
 
@@ -44,14 +40,6 @@ public class EnolaMessages extends Messages {
                 .put(
                         dev.enola.thing.proto.Things.getDescriptor().getFullName(),
                         dev.enola.thing.proto.Things.getDefaultInstance())
-
-                // enola_core.proto
-                .put(Entity.getDescriptor().getFullName(), Entity.getDefaultInstance())
-                .put(ID.getDescriptor().getFullName(), ID.getDefaultInstance())
-
-                // enola_meta.proto
-                .put(EntityKinds.getDescriptor().getFullName(), EntityKinds.getDefaultInstance())
-                .put(EntityKind.getDescriptor().getFullName(), EntityKind.getDefaultInstance())
                 .build();
     }
 }

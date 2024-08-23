@@ -62,18 +62,18 @@ public class RestAPI implements WebHandler {
 
     private void writeJSON(URI uri, WritableResource resource) throws EnolaException, IOException {
         var path = uri.getPath();
-        if (path.startsWith("/api/entity/")) {
-            var eri = path.substring("/api/entity/".length());
-            getEntityJSON(eri, resource);
+        if (path.startsWith("/api/")) {
+            var iri = path.substring("/api/".length());
+            getThingJSON(iri, resource);
         } else {
             // TODO 404 instead 500 (needs API changes)
-            throw new IllegalArgumentException("404 - Unknown URI!");
+            throw new IllegalArgumentException("404 - Unknown URI: " + uri);
         }
     }
 
-    private void getEntityJSON(String eri, WritableResource resource)
+    private void getThingJSON(String iri, WritableResource resource)
             throws EnolaException, IOException {
-        var request = GetThingRequest.newBuilder().setIri(eri).build();
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
         var response = service.getThing(request);
         var thing = response.getThing();
 

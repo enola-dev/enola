@@ -20,7 +20,7 @@ package dev.enola.cli;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.cli.CommandLineSubject.assertThat;
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.thing.io.ThingMediaTypes.THING_YAML_UTF_8;
 
 import com.google.common.net.MediaType;
 
@@ -119,26 +119,26 @@ public class EnolaCLITest {
     }
 
     @Test
-    public void getEntity() {
+    public void getThing() {
         var exec =
                 cli(
                         "-v",
                         "get",
                         "--format",
                         "TextProto",
-                        "--model",
-                        "classpath:/cli-test-model.textproto",
-                        "test.foobar/helo");
+                        "--load",
+                        "classpath:/picasso.ttl",
+                        "http://example.enola.dev/Picasso");
         assertThat(exec).err().isEmpty();
         assertThat(exec)
                 .hasExitCode(0)
                 .out()
                 .startsWith(
                         """
-                        id {
-                          ns: "test"
-                          entity: "foobar"
-                          paths: "helo"
+                        iri: "http://example.enola.dev/Picasso"
+                        properties {
+                          key: "http://example.enola.dev/homeAddress"
+                          value {
                         """);
     }
 
@@ -154,9 +154,9 @@ public class EnolaCLITest {
                             "BinaryPB",
                             "--output",
                             r.uri().toString(),
-                            "--model",
-                            "classpath:/cli-test-model.textproto",
-                            "test.foobar/helo");
+                            "--load",
+                            "classpath:/picasso.ttl",
+                            "http://example.enola.dev/Picasso");
             assertThat(exec).err().isEmpty();
             assertThat(exec).out().isEmpty();
             assertThat(exec).hasExitCode(0);
@@ -201,8 +201,8 @@ public class EnolaCLITest {
                 cli(
                         "-v",
                         "server",
-                        "--model",
-                        "classpath:/cli-test-model.textproto",
+                        "--load",
+                        "classpath:/picasso.ttl",
                         "--httpPort=0",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
@@ -218,8 +218,8 @@ public class EnolaCLITest {
                 cli(
                         "-v",
                         "server",
-                        "--model",
-                        "classpath:/cli-test-model.textproto",
+                        "--load",
+                        "classpath:/picasso.ttl",
                         "--httpPort=0",
                         "--immediateExitOnlyForTest=true");
         assertThat(exec).err().isEmpty();
@@ -234,8 +234,8 @@ public class EnolaCLITest {
                 cli(
                         "-v",
                         "server",
-                        "--model",
-                        "classpath:/cli-test-model.textproto",
+                        "--load",
+                        "classpath:/picasso.ttl",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
         assertThat(exec).err().isEmpty();
@@ -244,50 +244,52 @@ public class EnolaCLITest {
         out.doesNotContain("HTML");
     }
 
-    @Test
+    @Test // NB: RosettaTest has more
     public void rosetta() throws IOException {
-        try (var r = TestResource.create(YAML_UTF_8)) {
+        try (var r = TestResource.create(THING_YAML_UTF_8)) {
             var exec =
                     cli(
                             "-v",
                             "rosetta",
                             "--test-scheme",
-                            "--schema",
-                            "EntityKinds",
                             "--in",
-                            "classpath:/cli-test-model.textproto",
+                            "classpath:/picasso.ttl",
                             "--out",
                             r.uri().toString());
             assertThat(exec).err().isEmpty();
             assertThat(exec).hasExitCode(0).out().isEmpty();
-            assertThat(r.charSource().read()).startsWith("kinds:\n");
+            assertThat(r.charSource().read())
+                    .startsWith("things:\n- iri: http://example.enola.dev/Dalí");
         }
     }
 
     @Test
     public void noStacktraceWithoutVerbose() {
-        var exec = cli("docgen", "--model", "file:/nonexistant.yaml");
+        var exec = cli("docgen", "--load", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec).hasExitCode(1).err().contains("NoSuchFileException: /nonexistant.yaml\n");
     }
 
     @Test
     public void stacktraceWithGlobalVerbose() {
-        var exec = cli("-v", "docgen", "--model", "file:/nonexistant.yaml");
+        var exec = cli("-v", "docgen", "--load", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .startsWith("java.nio.file.NoSuchFileException: /nonexistant.yaml\n\tat ");
+                .contains("ConversionException: IOException on file:///nonexistant.yaml\n\tat ");
     }
 
     @Test
     public void stacktraceWithSubcommandVerbose() {
-        var exec = cli("docgen", "-v", "--model", "file:/nonexistant.yaml");
+        var exec = cli("docgen", "-v", "--load", "file:/nonexistant.yaml");
         assertThat(exec).out().isEmpty();
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .startsWith("java.nio.file.NoSuchFileException: /nonexistant.yaml\n\tat ");
+                .startsWith(
+                        "dev.enola.common.convert.ConversionException: IOException on"
+                                + " file:///nonexistant.yaml\n"
+                                + "\tat ");
     }
 }

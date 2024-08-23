@@ -22,8 +22,8 @@ import dev.enola.core.proto.GetThingRequest;
 
 import picocli.CommandLine.Command;
 
-@Command(name = "get", description = "Get Entity")
-public class GetCommand extends CommandWithEntityID {
+@Command(name = "get", description = "Get Thing")
+public class GetCommand extends CommandWithIRI {
 
     @Override
     protected void run(EnolaServiceBlockingStub service, String iri) throws Exception {

@@ -17,11 +17,9 @@
  */
 package dev.enola.core.message;
 
-import com.google.protobuf.DescriptorProtos.EnumValueDescriptorProto;
 import com.google.protobuf.Descriptors.EnumDescriptor;
 
 import dev.enola.common.protobuf.DescriptorProvider;
-import dev.enola.core.meta.proto.Type;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.ProtoTypes;
@@ -38,14 +36,21 @@ public class ProtoEnumValueToThingConnector extends ProtoToThingConnector {
     }
 
     @Override
+    public String iri() {
+        return ProtoTypes.FIELD_ENUM_VALUE_ERI_PREFIX + "{FQN}/{NUMBER}";
+    }
+
+    /*
+    @Override
     public Type type() {
         return Type.newBuilder()
                 .setEmoji("🔂")
                 .setName("enola.dev/proto/enum-value")
-                .setUri(ProtoTypes.FIELD_ENUM_VALUE_ERI_PREFIX + "{FQN}/{NUMBER}")
+                .setUri(iri())
                 .setProto(EnumValueDescriptorProto.getDescriptor().getFullName())
                 .build();
     }
+    */
 
     @Override
     public void augment(Things.Builder things, String iri, Map<String, String> parameters) {

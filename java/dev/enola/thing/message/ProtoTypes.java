@@ -36,6 +36,8 @@ public class ProtoTypes {
     @VisibleForTesting
     static final String MESSAGE_DESCRIPTOR_PREDICATE_IRI = "http://enola.dev/proto/message";
 
+    // TODO Change enola:/enola.dev/proto/ to https://enola.dev/proto/
+
     public static final String MESSAGE_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/message/";
 
     public static final String FIELD_DESCRIPTOR_ERI_PREFIX = "enola:/enola.dev/proto/field/";

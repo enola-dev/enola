@@ -16,9 +16,7 @@
     limitations under the License.
 -->
 
-# Get Entity
-
-`enola get` will retrieve an _entity_ from its [connectors](../connector/index.md).
+# Get Thing
 
 ## Screencast (Asciinema)
 
@@ -41,24 +39,3 @@ Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/enola
 $ ./enola get --load models/enola.dev/enola.ttl https://enola.dev/emoji | head --lines=3
 ...
 ```
-
-## Get Book
-
-Get a `book` - note how the _related_ `kind` and `library` ID are set, based on the template
-[from the model](../library/index.md):
-
-```bash cd ../.././..
-$ ./enola get --model docs/use/library/model.yaml demo.book/ABC/0-13-140731-7/1
-...
-```
-
-Get a `book_kind` - note how the `google` _link_ was set, based on the template
-[from the model](../library/index.md):
-
-```bash cd ../.././..
-$ ./enola get --model docs/use/library/model.yaml demo.book_kind/0-13-140731-7
-...
-```
-
-If the entity contains `data` fields, the `Any` protos are displayed correctly "unwrapped".
-This can be seen in [the gRPC Demo Connector](../connector/index.md#grpc).

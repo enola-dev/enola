@@ -39,10 +39,6 @@ import java.util.Optional;
 
 public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.Builder> {
 
-    // TODO Fully replace "old" dev.enola.core.view.Things with this new API
-
-    // TODO com.google.protobuf.Struct support!
-
     private final OptionalConverter<Object, Value.Builder> converter;
 
     public MessageToThingConverter(OptionalConverter<Object, Value.Builder> converter) {
@@ -51,7 +47,7 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     public MessageToThingConverter() {
-        this.converter = input -> Optional.empty();
+        this.converter = new OptionalConverterChain<>(ImmutableList.of(timestampValueConverter));
     }
 
     @Override

@@ -20,7 +20,6 @@ package dev.enola.core;
 
 import "google/protobuf/any.proto";
 import "google/protobuf/descriptor.proto";
-import "google/protobuf/timestamp.proto";
 // import "java/dev/enola/core/enola_ext.proto";
 import "java/dev/enola/thing/thing.proto";
 
@@ -29,83 +28,14 @@ option java_package = "dev.enola.core.proto";
 option java_multiple_files = true;
 option go_package = "dev/enola/core";
 
-// ID of an Entity known to Enola, fully qualified.
-// Can be formatted to and parsed from several different string text forms,
-// see Java class dev.enola.core.IDs.java
-message ID {
-  // Namespace.
-  // Serves to distinguish same entity names (below).
-  // This is optional if in your use of Enola you avoid name conflicts.
-  // It's like in C# or "package" in Java or Go or the xmlns: from XML Schema,
-  // or whatever the hell confusing thing ;) that Python is doing about this.
-  // Validated to only contain [a-z0-9_.] characters, so it's safe in URLs.
-  // By convention can contain '.' for sub-namespacing, but does not have to.
-  // The namespace of an Entity is always the same as its EntityKind.
-  string ns = 1;
-
-  // Entity Kind Name.
-  // This is mandatory and thus always present.
-  // This refers to an EntityKind and not an individual Entity, despite the
-  // name. (In practice this is just shorter and clearer for people to
-  // understand.) Validated to only contain [a-z0-9_] characters, so it's safe
-  // in URLs.
-  string entity = 2;
-
-  // Path.
-  // This is mandatory and thus always present with at least 1 element.
-  // Think of this as what would typically uniquely identify this entity IRL;
-  // e.g. a "hostname" or some UUID or a S/N or whatever is its "primary key".
-  // Validated to only contain [a-z0-9_-.] characters, so it's safe in URLs.
-  // (This restriction could in theory be relaxed, if there was a strong need
-  // to support it; as long as sufficient test coverage is added for correct
-  // encoding in URIs, see https://en.m.wikipedia.org/wiki/URL_encoding.)
-  // Multiple "segments" are supported for "composed keys", for example a
-  // network/context/namespace/name kind of ID.
-  repeated string paths = 3;
-}
-
-message Entity {
-  ID id = 1;
-  google.protobuf.Timestamp ts = 2;
-
-  // Related Enola Entities.
-  // Intended for consumption by both machines as well as humans.
-  // Key is EntityKind#related.key (modeled by EntityRelationship), value is ID.
-  map<string, ID> related = 5;
-
-  // URIs linked to this entity providing additional information about it on
-  // other systems.
-  //
-  // Key is EntityKind#link.key, value is an URI, often pointing to "back-end"
-  // state information, used e.g. to determine an Entity's status, etc.
-  //
-  // If http[s]: then these are informational and destined to be displayed to a
-  // human on a UI, but not "machine readable" for interpretation. Any other URI
-  // scheme is intended to be (only) machine readable and up to the client to
-  // interpret. This URI may well be specific to the respective schema
-  // connector.
-  //
-  // These can be requested to be "inlined" in responses.
-  map<string, string> link = 7;
-
-  // Data about the Entity, in machine readable form.
-  // Key is EntityKind#data.key, value is an Any protobuf.
-  map<string, google.protobuf.Any> data = 9;
-}
-
 message GetThingRequest {
   // IRI of Thing to get. This may use an enola: scheme, see
   // https://docs.enola.dev/concepts/uri.
   string iri = 1;
-
-  // Request to inline Entity#link, by the same string key as used there.
-  // (Conceptually inspired by e.g. GraphQL architecture.)
-  // TODO repeated string inline_links = 2;
 }
 
 message GetThingResponse {
-  // TODO Just directly return Things, instead of Any!
-  // (Or oneOf Things | Entity - but remove that, first!)
+  // TODO Remove Any support by replacing this GetThingsResponse
   google.protobuf.Any thing = 1;
 }
 
@@ -128,8 +58,7 @@ message GetFileDescriptorSetResponse {
   google.protobuf.FileDescriptorSet protos = 1;
 }
 
-// TODO rpc watch(), for a time series WatchRequest/Response with repeated
-// Entity?
+// TODO rpc watch(), for a time series WatchRequest/Response with *N Things?
 //   google.protobuf.Timestamp ts = 2;
 //   google.protobuf.Timestamp start = 2;
 //   google.protobuf.Timestamp end = 3;

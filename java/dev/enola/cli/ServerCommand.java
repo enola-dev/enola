@@ -19,7 +19,6 @@ package dev.enola.cli;
 
 import dev.enola.common.context.TLC;
 import dev.enola.core.grpc.EnolaGrpcServer;
-import dev.enola.core.meta.EntityKindRepository;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.*;
 import dev.enola.web.netty.NettyHttpServer;
@@ -42,17 +41,14 @@ public class ServerCommand extends CommandWithModel {
     private WebServer httpServer;
 
     @Override
-    protected void run(EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
-            throws Exception {
+    protected void run(EnolaServiceGrpc.EnolaServiceBlockingStub service) throws Exception {
         try (var ctx = TLC.open()) {
             setup(ctx);
-            runInContext(ekr, service);
+            runInContext(service);
         }
     }
 
-    private void runInContext(
-            EntityKindRepository ekr, EnolaServiceGrpc.EnolaServiceBlockingStub service)
-            throws Exception {
+    private void runInContext(EnolaServiceGrpc.EnolaServiceBlockingStub service) throws Exception {
         var out = spec.commandLine().getOut();
 
         // gRPC API
