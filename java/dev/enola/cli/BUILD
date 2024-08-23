@@ -48,6 +48,7 @@ java_binary(
         "//java/dev/enola/thing:thing_java_proto",
         "//java/dev/enola/thing/gen",
         "//java/dev/enola/web",
+        "//java/dev/enola/web/netty",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:info_picocli_picocli",

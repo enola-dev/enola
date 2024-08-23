@@ -45,17 +45,16 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
+import dev.enola.web.netty.NettyHttpServer;
 
 import org.junit.Test;
 
-import java.net.InetSocketAddress;
 import java.time.Instant;
 
 public class UiTest {
     @Test
     public void testUi() throws Exception {
-        var addr = new InetSocketAddress(0);
-        try (var server = new SunServer(addr)) {
+        try (var server = new NettyHttpServer(0)) {
             // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
             var rp = new ResourceProviders();
             var ekr = new EntityKindRepository();

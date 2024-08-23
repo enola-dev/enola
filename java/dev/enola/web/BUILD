@@ -66,6 +66,7 @@ junit_tests(
         "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/web/netty",
         "//java/dev/enola/web/testlib",
     ],
 )
