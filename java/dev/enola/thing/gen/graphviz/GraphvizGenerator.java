@@ -22,10 +22,10 @@ import com.google.common.html.HtmlEscapers;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.StackedThingProvider;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -55,9 +55,9 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // FYI: We're intentionally *NOT* showing the Datatype of properties
 
-    private final MetadataProvider metadataProvider;
+    private final ThingMetadataProvider metadataProvider;
 
-    public GraphvizGenerator(MetadataProvider metadataProvider) {
+    public GraphvizGenerator(ThingMetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
     }
 

@@ -33,6 +33,10 @@ import dev.enola.thing.impl.ImmutableThing;
 @ThreadSafe
 public final class ThingAdapter extends PredicatesObjectsAdapter implements Thing {
 
+    public ThingAdapter(dev.enola.thing.proto.Thing proto) {
+        this(proto, DatatypeRepository.CTX);
+    }
+
     public ThingAdapter(dev.enola.thing.proto.Thing proto, DatatypeRepository datatypeRepository) {
         super(proto, datatypeRepository);
     }

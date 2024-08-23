@@ -43,7 +43,7 @@ import java.util.function.Function;
  * not want to fail operations "just" because Metadata could not be obtained; all the methods have
  * fallbacks.
  */
-public class ThingMetadataProvider implements MetadataProvider {
+public class ThingMetadataProvider implements MetadataProvider<Thing> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -72,12 +72,7 @@ public class ThingMetadataProvider implements MetadataProvider {
     }
 
     @Override
-    public Metadata get(@Nullable Object object, String iri) {
-        if (object instanceof Thing) return get((Thing) object, iri);
-        else return get(iri);
-    }
-
-    private Metadata get(@Nullable Thing thing, String fallbackIRI) {
+    public Metadata get(@Nullable Thing thing, String fallbackIRI) {
         var imageURL = getImageURL_(thing);
         if (imageURL == null) imageURL = "";
 
