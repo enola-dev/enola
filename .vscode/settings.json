@@ -163,6 +163,8 @@
     "test": false,
     "tools": false,
     "web": false,
-    "BUILT": false
+    "BUILT": false,
+    ".built": true,
+    "third_party": false
   }
 }
