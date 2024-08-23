@@ -18,30 +18,16 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "web",
+    name = "netty",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test*.java"],
+        exclude = ["*Test.java"],
     ),
-    javacopts = ["--enable-preview"],
-    resource_strip_prefix = "java/dev/enola/web/resources/",
-    # TODO Use **/*.html instead of **/* here (like in gen/BUILD)
-    resources = glob(["resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/concurrent",
-        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/protobuf",
-        "//java/dev/enola/core",
-        "//java/dev/enola/core:core_java_grpc",
-        "//java/dev/enola/core:core_java_proto",
-        "//java/dev/enola/data",
-        "//java/dev/enola/datatype",
-        "//java/dev/enola/thing:thing_java",
-        "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/web",
         "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
@@ -49,23 +35,15 @@ java_library(
 
 junit_tests(
     name = "tests",
-    size = "medium",
+    # TODO size = "medium",
     srcs = glob(["*Test.java"]),
-    jvm_flags = ["--enable-preview"],
-    srcs_utils = glob(["*Abstract.java"]),
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
-        ":web",
+        ":netty",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/protobuf",
-        "//java/dev/enola/core",
-        "//java/dev/enola/core:core_java_proto",
-        "//java/dev/enola/data",
-        "//java/dev/enola/datatype",
-        "//java/dev/enola/thing:thing_java",
-        "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/web",
         "//java/dev/enola/web/testlib",
     ],
 )
