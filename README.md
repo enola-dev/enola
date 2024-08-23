@@ -18,7 +18,7 @@
 
 # Enola.dev 🕵🏾‍♀️ [![CI](https://github.com/enola-dev/enola/actions/workflows/ci.yaml/badge.svg)](https://github.com/enola-dev/enola/actions/workflows/ci.yaml) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-%E2%9C%85-grey)](https://conventionalcommits.org)
 
-Enola is a Graph-based analytics system for exploring relationships between common objects.
+[Enola](https://enola.dev) is a Graph-based analytics system for exploring relationships between common objects.
 
 1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ --> and please ⭐ on GitHub
 1. Read the [user guide](https://docs.enola.dev/use/) documentation

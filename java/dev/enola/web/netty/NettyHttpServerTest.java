@@ -20,7 +20,6 @@ package dev.enola.web.netty;
 import dev.enola.web.WebServer;
 import dev.enola.web.testlib.WebServerTestAbstract;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,15 +28,11 @@ public class NettyHttpServerTest extends WebServerTestAbstract {
 
     @Override
     protected WebServer create() throws IOException {
-        return new NettyHttpServer();
+        return new NettyHttpServer(0);
     }
 
     @Test
-    @Ignore // TODO
-    public void testServer() throws IOException {
+    public void testServer() throws IOException, InterruptedException {
         super.testServer();
     }
-
-    @Test
-    public void empty() {}
 }
