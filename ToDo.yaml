@@ -20,14 +20,7 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
-  - ? Document Web Server in Tutorial
-  - ? Expose Timeline HTML in Web Server
-
-  - Don'? t load JS from unpkg.com, but use the local copies from the //third_party module
-
-  - Last `null` NPE: &https://github.com/enola-dev/enola/issues/845
-
-  - How map (only) nested properties in JSON-LD?:
+  - How to map (only) nested properties in JSON-LD?:
       links:
         - https://www.w3.org/TR/json-ld/#nested-properties
         - https://docs.enola.dev/concepts/json-ld/
@@ -38,14 +31,22 @@ items:
         - https://www.w3.org/TR/json-ld/
         - https://gemini.google.com
 
-  - ? Timeline links to Things pages; both for DocGen and in UI
-    tags: [ui, docgen]
+  - Timeline links to Things pages; both for DocGen and in UI:
+      tags: [ui, docgen]
+
+  - Don't load JS from unpkg.com, but use the local copies from the //third_party module:
+      tags: [google]
 
   - Exec Connector!:
       tags: [exec]
 
+  - Last `null` NPE: &https://github.com/enola-dev/enola/issues/845
+
   - Re-evaluate LinkML:
       tags: [clean]
+
+  - Document Web Server in Tutorial:
+      tags: [docs]
 
   - Load directories as needed, protected by a flag; use an enola:hide=true:
       created: 2024-08-18

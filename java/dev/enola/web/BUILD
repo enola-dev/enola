@@ -40,6 +40,7 @@ java_library(
         "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/thing/gen",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:org_jspecify_jspecify",

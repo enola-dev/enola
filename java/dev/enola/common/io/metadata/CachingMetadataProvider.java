@@ -56,7 +56,7 @@ public abstract class CachingMetadataProvider<T> implements MetadataProvider<T> 
                                 }
                             });
 
-    public CachingMetadataProvider(MetadataProvider<T> delegate) {
+    protected CachingMetadataProvider(MetadataProvider<T> delegate) {
         this.delegate = delegate;
     }
 

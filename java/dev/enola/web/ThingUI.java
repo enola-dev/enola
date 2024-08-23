@@ -22,7 +22,7 @@ import static java.lang.StringTemplate.STR;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
-import dev.enola.common.io.metadata.MetadataProvider;
+import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
 import dev.enola.thing.proto.Value.List;
@@ -40,9 +40,9 @@ public class ThingUI {
 
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
-    private final MetadataProvider metadataProvider;
+    private final ProtoThingMetadataProvider metadataProvider;
 
-    public ThingUI(MetadataProvider metadataProvider) {
+    public ThingUI(ProtoThingMetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
     }
 

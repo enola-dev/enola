@@ -48,6 +48,8 @@ public class ListThingService implements ThingService {
         this.protoThingRepository = protoThingRepository;
     }
 
+    // Nota bene: The "decoder" (inverse) of this is (currently) in EnolaThingProvider!
+
     @Override
     public Any getThing(String iri, Map<String, String> parameters) {
         var thingIRIs = protoThingRepository.listIRI();

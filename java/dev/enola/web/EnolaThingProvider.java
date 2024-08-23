@@ -19,14 +19,16 @@ package dev.enola.web;
 
 import com.google.protobuf.Descriptors.DescriptorValidationException;
 import com.google.protobuf.ExtensionRegistryLite;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.entity.IDValueConverter;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
+import dev.enola.core.thing.ListThingService;
 import dev.enola.core.view.EnolaMessages;
-import dev.enola.data.ProviderFromIRI;
+import dev.enola.data.Repository;
 import dev.enola.thing.message.MessageToThingConverter;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.message.MoreThings;
@@ -34,9 +36,11 @@ import dev.enola.thing.proto.Thing;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 
-public class EnolaThingProvider
-        implements ProviderFromIRI<Thing> /* TODO implements ProtoThingProvider */ {
+public class EnolaThingProvider implements Repository<Thing> {
+
+    // TODO implements ProtoThingRepository, ProtoThingProvider
     // TODO Move into dev.enola.core.thing where it probably belongs, more logically?
     // TODO Resolve (some) overlap this class has with abstract class ProtoToThingConnector
     // TODO Resolve (some) overlap this class has with abstract class ThingConnectorsProvider
@@ -78,5 +82,37 @@ public class EnolaThingProvider
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    @Override
+    public Iterable<Thing> list() {
+        var iri = ListThingService.ENOLA_ROOT_LIST_THINGS;
+        var request = GetThingRequest.newBuilder().setIri(iri).build();
+        var response = service.getThing(request);
+        if (!response.hasThing()) throw new IllegalArgumentException();
+        var any = response.getThing();
+        try {
+            return MoreThings.fromAny(any);
+        } catch (InvalidProtocolBufferException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    @Override
+    public Iterable<String> listIRI() {
+        var listProtoThing = get(ListThingService.ENOLA_ROOT_LIST_IRIS);
+        var valueList =
+                listProtoThing
+                        .getPropertiesMap()
+                        .get(ListThingService.ENOLA_ROOT_LIST_PROPERTY)
+                        .getList()
+                        .getValuesList();
+        var iriList = new ArrayList<String>(valueList.size());
+        for (var value : valueList) {
+            if (value.hasLink()) {
+                iriList.add(value.getLink());
+            }
+        }
+        return iriList;
     }
 }
