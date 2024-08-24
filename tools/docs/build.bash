@@ -56,6 +56,9 @@ if [ $# -eq 0 ]; then
     npm install -g svg-term-cli
   fi
 
+  # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
+  ./enola execmd -vvvi "docs/use/**/*.md"
+
   # shellcheck disable=SC2016
   # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
   find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | \
