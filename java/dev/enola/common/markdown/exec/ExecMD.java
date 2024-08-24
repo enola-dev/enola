@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExecMD {
@@ -33,16 +32,8 @@ public class ExecMD {
     private static final String LS = System.lineSeparator();
     private final Runner runner = new VorburgerExecRunner(); // NuProcessRunner();
 
-    public int process(List<File> mdFiles, boolean inplace)
+    public void process(File mdFile, boolean inplace)
             throws IOException, MarkdownProcessingException {
-        for (var file : mdFiles) {
-            // TODO Parallelize instead of blocking?
-            process(file, inplace);
-        }
-        return 0;
-    }
-
-    void process(File mdFile, boolean inplace) throws IOException, MarkdownProcessingException {
         var markdownIn = Files.asCharSource(mdFile, UTF_8).read();
         var directory = mdFile.getAbsoluteFile().getParentFile();
         var output = process(directory.toPath(), markdownIn);
