@@ -50,14 +50,14 @@ find docs/ -type f -name "*.md" -print0 \
 cp bazel-bin/java/dev/enola/thing/thing_proto_doc/thing_proto_doc.md docs/dev/proto/thing.md
 cp bazel-bin/java/dev/enola/core/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md
 
+# Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
+./enola execmd -vvvi "docs/use/**/*.md"
+
 # Skip (lengthy!) demo screencasts build if this script is called with any argument (handy during dev)
 if [ $# -eq 0 ]; then
   if ! [ -x "$(command -v svg-term)" ]; then
     npm install -g svg-term-cli
   fi
-
-  # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
-  ./enola execmd -vvvi "docs/use/**/*.md"
 
   # shellcheck disable=SC2016
   # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
@@ -65,7 +65,7 @@ if [ $# -eq 0 ]; then
     xargs -n 1 -0 sh -c 'tools/demo/build.bash $0 || exit 255'
 fi
 
-# models/build.bash could be run at this point, but during we (have to) ran it in test-ci/test.bash already.
+# models/build.bash could be run at this point, but we (have to) ran it in test-ci/test.bash already.
 
 TOOLS_DIR=$(realpath "$(dirname "$0")")
 ENOLA="$TOOLS_DIR"/../../enola
