@@ -21,15 +21,12 @@ set -euo pipefail
 # for both sub-directories of the project, as well as if it's anywhere else.
 # (This is handy e.g. when invoking it on models files that are stored outside of this project.)
 
-CWD=$(pwd)
-ROOT="$(realpath "$(dirname "$0")")"
-
-cd "$ROOT"
+ROOT="$(dirname "$(realpath "$0")")"
 
 if [ -x "$(command -v hashdir)" ]; then
   mkdir -p "$ROOT"/.cache
   mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
-  hashdir --quiet java/ > "$ROOT"/.cache/java.hash
+  hashdir --quiet "$ROOT"/java/ > "$ROOT"/.cache/java.hash
   set +e
   diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
   DIFF="$?"
@@ -39,9 +36,9 @@ else
 fi
 
 LOG=$(mktemp)
-if [ "$DIFF" -ne 0 ] || [ ! -f site/download/latest/enola ]; then
+if [ "$DIFF" -ne 0 ] || [ ! -f "$ROOT"/site/download/latest/enola ]; then
   set +e
-  tools/distro/build-execjar.bash >"$LOG" 2>&1
+  "$ROOT"/tools/distro/build-execjar.bash >"$LOG" 2>&1
   exit_code="$?"
   set -e
 else
@@ -52,11 +49,10 @@ fi
 if [[ "$exit_code" == "0" ]]; then
   source "$ROOT"/tools/bazel-java-tool-chain/bazel-java-tool-chain.bash
   JAVA=$(java_home)
-  PATH="$JAVA"/bin:"$PATH" site/download/latest/enola "$@"
+  PATH="$JAVA"/bin:"$PATH" "$ROOT"/site/download/latest/enola "$@"
 
 else
   cat "$LOG" && echo >&2 && echo >&2
   rm "$LOG"
-  cd "$CWD"
   exit "$exit_code"
 fi
