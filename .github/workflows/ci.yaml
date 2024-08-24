@@ -130,7 +130,12 @@ jobs:
       - run: ./tools/test-ci/test.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
-      - name: Build Docs Site
+      - name:
+          Build Docs Site (but skip [slow] screencast recording, because on PR)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: ./tools/docs/build.bash --without-demo-screencasts
+      - name: Build Docs Site, now with Screencasts (because on branch)
+        if: ${{ github.event_name == 'push' }}
         run: ./tools/docs/build.bash
 
       - name: pre-commit run --all-files
