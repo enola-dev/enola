@@ -29,6 +29,7 @@ import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -291,5 +292,21 @@ public class EnolaCLITest {
                         "dev.enola.common.convert.ConversionException: IOException on"
                                 + " file:///nonexistant.yaml\n"
                                 + "\tat ");
+    }
+
+    @Test
+    @Ignore // JUST for debugging
+    public void modelsDocGen() {
+        var exec =
+                assertThat(
+                        cli(
+                                "-vvv",
+                                "docgen",
+                                "--load",
+                                "/home/vorburger/git/github.com/enola-dev/enola/docs/models/**.{ttl}",
+                                "--output",
+                                "/tmp/EnolaCLITest/modelsDocGen/"));
+        exec.err().isEmpty();
+        exec.hasExitCode(0);
     }
 }

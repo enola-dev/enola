@@ -20,8 +20,10 @@ package dev.enola.thing.metadata;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -83,8 +85,18 @@ public class ThingHierarchyProvider {
                 var iterator = parents.iterator();
                 if (!iterator.hasNext()) continue;
                 var parent = iterator.next();
-                // TODO Same story as in GraphvizGenerator
-                return Optional.of(parent.toString());
+                return switch (parent) {
+                        // TODO This is a kind of converter, and shouldn't be here?
+                    case String string -> Optional.of(string);
+                    case URI uri -> Optional.of(uri.toString());
+                    case Link link -> Optional.of(link.iri());
+                    default ->
+                            throw new IllegalStateException(
+                                    "Parent of unexpected type: "
+                                            + parent.getClass()
+                                            + " : "
+                                            + parent);
+                };
             } else {
                 var parent = thing.getString(propertyIRI);
                 if (parent != null) return Optional.of(parent);
