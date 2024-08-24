@@ -67,6 +67,12 @@ public record Metadata(
             String curie,
             String label,
             String descriptionHTML) {
+        if (!iri.contains("{")) {
+            if (iri.contains("[")) {
+                throw new IllegalArgumentException(iri);
+            }
+            // JUST for temporary debugging: URI.create(iri);
+        }
         this.iri = requireNonEmpty(iri, "iri", iri);
         this.imageHTML = requireNonNull(imageHTML, () -> "imageHTML of " + iri).trim();
         this.imageURL = requireNonNull(imageURL, () -> "imageURL of " + iri).trim();
