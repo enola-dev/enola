@@ -103,9 +103,10 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
             // TODO How to best handle Things with multiple parent types...
             if (thing.isIterable(KIRI.RDF.TYPE)) continue;
-            // TODO Get rid of this bad fake "NO-TYPE" IRI again!
-            var type = thing.getOptional(KIRI.RDF.TYPE, String.class).orElse("NO-TYPE");
-            var typeLabel = label(metadataProvider.get(type));
+
+            var NO_TYPE = "NO-TYPE";
+            var type = thing.getOptional(KIRI.RDF.TYPE, String.class).orElse(NO_TYPE);
+            var typeLabel = !type.equals("NO-TYPE") ? label(metadataProvider.get(type)) : NO_TYPE;
 
             var intervals = timeProvider.existance(thing);
             // TODO Factor this out - but how & into where?
