@@ -29,19 +29,23 @@ Enola can directly `--load` JSON & YAML, given a JSON-LD Context; [see Tutorial]
 [Enola Rosetta](../rosetta/index.md) can convert model resources among different formats using JSON-LD; e.g. from `picasso.yaml`:
 
 ```yaml
-{% include "../../../test/picasso.yaml" start="# limitations under the License.\n" %}
+{ % include "../../../test/picasso.yaml" start="# limitations under the License.\n" % }
 ```
 
 or from `picasso.json`:
 
 ```json
-{% include "../../../test/picasso.json" %}
+{
+    % include "../../../test/picasso.json" %
+}
 ```
 
 with a `picasso-context.jsonld`:
 
 ```json
-{% include "../../../test/picasso-context.jsonld" %}
+{
+    % include "../../../test/picasso-context.jsonld" %
+}
 ```
 
 ### YAML to RDF Turtle 🐢
@@ -67,9 +71,27 @@ $ ./enola rosetta --in="test/picasso.json?context=test/picasso-context.jsonld" -
 
 ## Tips
 
+### String to Link
+
+Use something like this to map a string, e.g. a machine hostname in a JSON, to a link in RDF:
+
+```json
+{
+    "@context": {
+        "@version": 1.1,
+        ...
+        "machine": {
+            "@id": "http://example.org/host",
+            "@type": "@id",
+            "@context": {
+                "@base": "http://example.org/host/"
+
+```
+
 ### Override Nested
 
-In order to _"override"_ the mapping for a _"nested"_ JSON property, JSON-LD lets us define _embedded sub-contexts,_ for example like this, if some _"contained"_ `id` is not really an `@id`:
+In order to _"override"_ the mapping for a _"nested"_ JSON property, JSON-LD lets us define _embedded
+sub-contexts,_ for example like this, if some _"contained"_ `id` is not really an `@id`:
 
 ```json
 {
@@ -80,10 +102,6 @@ In order to _"override"_ the mapping for a _"nested"_ JSON property, JSON-LD let
         "something": {
             "@context": {
                 "id": "id"
-            }
-        }
-    }
-}
 ```
 
 You could also consider using `@propagate false` in the context.
