@@ -31,8 +31,6 @@ import dev.enola.thing.repo.ThingsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ServiceLoader;
-import java.util.stream.Stream;
 
 // TODO Make UriIntoThingConverters actually implement UriIntoThingConverter itself (less confusing)
 public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<?>>> {
@@ -47,12 +45,6 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
 
     public UriIntoThingConverters(UriIntoThingConverter... converters) {
         this.converters = ImmutableList.copyOf(converters);
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private UriIntoThingConverters(
-            Stream<ServiceLoader.Provider<UriIntoThingConverter>> providers) {
-        this(providers.map(p -> p.get()).toList());
     }
 
     public Iterable<Thing.Builder<?>> convert(URI input) throws ConversionException {
