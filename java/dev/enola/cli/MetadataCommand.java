@@ -17,10 +17,22 @@
  */
 package dev.enola.cli;
 
-import picocli.CommandLine.Command;
+import dev.enola.core.proto.EnolaServiceGrpc;
+import dev.enola.web.EnolaThingProvider;
 
-@Command(
-        name = "info",
-        description = "Provides various information",
-        subcommands = {ExtensionsInfoCommand.class, DetectCommand.class, MetadataCommand.class})
-public class InfoCommand {}
+import picocli.CommandLine;
+
+@CommandLine.Command(name = "metadata", description = "Provides metadata for a given IRI")
+public class MetadataCommand extends CommandWithModel {
+
+    @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI")
+    String iri;
+
+    @Override
+    protected void run(EnolaServiceGrpc.EnolaServiceBlockingStub service) throws Exception {
+        var mdp = getMetadataProvider(new EnolaThingProvider(service));
+
+        var metadata = mdp.get(iri);
+        spec.commandLine().getOut().println(metadata);
+    }
+}

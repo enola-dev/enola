@@ -39,16 +39,12 @@ public class ThingMetadataProviderTest {
     private final String THING_LABEL = "DaThang!";
 
     private final ThingProvider test =
-            new ThingProvider() {
-
-                @Override
-                public @Nullable Thing get(String iri) {
-                    var builder = ImmutableThing.builder();
-                    builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
-                    builder.set(KIRI.DC.DESCRIPTION, "...");
-                    builder.iri(THING_IRI);
-                    return builder.build();
-                }
+            iri -> {
+                var builder = ImmutableThing.builder();
+                builder.set(KIRI.SCHEMA.NAME, THING_LABEL);
+                builder.set(KIRI.DC.DESCRIPTION, "...");
+                builder.iri(THING_IRI);
+                return builder.build();
             };
 
     private final ThingProvider error =

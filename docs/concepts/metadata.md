@@ -27,6 +27,8 @@ Enola uses Metadata about all of its _Things_ when rendering them:
 * image of a logo; e.g. from [favicon](https://de.wikipedia.org/wiki/Favicon) or something like that; or an 😃 Emoji!
 * curie is a compact URI; a shorter form of the original "long" IRI of the Thing.
 
+[The `info metadata` sub-command](../use/info/index.md) is a handy tool to test this.
+
 <!-- The following documents the dev.enola.thing.metadata.ThingMetadataProvider service; keep it updated, if it ever changes. -->
 
 ## Label
