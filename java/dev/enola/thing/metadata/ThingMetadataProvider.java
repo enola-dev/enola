@@ -200,13 +200,13 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
     }
 
     private @Nullable String getImageURL__(Thing thing) {
-        var imageURL = getString(thing, KIRI.SCHEMA.IMG);
-        if (imageURL != null) return html(imageURL);
-
-        imageURL = getString(thing, KIRI.SCHEMA.LOGO);
+        var imageURL = getString(thing, KIRI.SCHEMA.LOGO);
         if (imageURL != null) return html(imageURL);
 
         imageURL = getString(thing, KIRI.SCHEMA.THUMBNAIL_URL);
+        if (imageURL != null) return html(imageURL);
+
+        imageURL = getString(thing, KIRI.SCHEMA.IMG);
         if (imageURL != null) return html(imageURL);
 
         return null;
