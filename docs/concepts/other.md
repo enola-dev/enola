@@ -148,6 +148,7 @@ Vaguely related other such tools include:
 
 ## Documentation Generation
 
+* [LEXREX](https://lexrex.web.app) semantic vocabulary visual builder and manager, by [APICatalog.com](https://apicatalog.com)
 * [Snowman](https://github.com/glaciers-in-archives/snowman) _static site generator for SPARQL_
 
 ## Persistence

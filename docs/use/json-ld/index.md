@@ -64,3 +64,26 @@ $ ./enola rosetta --in="test/picasso.json?context=test/picasso-context.jsonld" -
 $ ./enola rosetta --in="test/picasso.json?context=test/picasso-context.jsonld" --out="fd:1?mediaType=application/ld+json" | head -7
 ...
 ```
+
+## Tips
+
+### Override Nested
+
+In order to _"override"_ the mapping for a _"nested"_ JSON property, JSON-LD lets us define _embedded sub-contexts,_ for example like this, if some _"contained"_ `id` is not really an `@id`:
+
+```json
+{
+    "@context": {
+        "@version": 1.1,
+        ...
+        "id": "@id",
+        "something": {
+            "@context": {
+                "id": "id"
+            }
+        }
+    }
+}
+```
+
+You could also consider using `@propagate false` in the context.

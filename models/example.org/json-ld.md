@@ -36,7 +36,14 @@ Of course, we lost what uniquely identified our things... but JSON-LD Contexts c
 {% include "./greeting-context.jsonld" %}
 ```
 
-Combining these, Enola can recreate the same data model, and generating documentation will look the same as in the original [Linked Data](linked.md) chapter, using this:
+Combining these, Enola can recreate the same data model:
+
+```bash cd .././.././..
+$ ./enola get --load="models/example.org/greeting2.yaml?context=models/example.org/greeting-context.jsonld" https://example.org/greeting2
+...
+```
+
+Generating documentation will look the same as in the original [Linked Data](linked.md) chapter, using this:
 
 ```bash cd .././.././..
 $ ./enola docgen --load="models/example.org/greeting2.yaml?context=models/example.org/greeting-context.jsonld" --output=/tmp/models/ --no-index
