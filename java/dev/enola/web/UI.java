@@ -54,7 +54,10 @@ public class UI implements WebHandler {
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
     private static final ReadableResource HTML_FRAME =
-            new ClasspathResource("templates/index.html");
+            new ClasspathResource("templates/index.html", HTML_UTF_8);
+
+    private static final ClasspathResource FOUR_O_FOUR =
+            new ClasspathResource("static/404.html", HTML_UTF_8);
 
     private final EnolaServiceBlockingStub service;
     private final TypeRegistryWrapper typeRegistryWrapper;
@@ -90,7 +93,7 @@ public class UI implements WebHandler {
         handlers.register("/ui", this);
         handlers.register("/timeline", timelineHandler);
         // TODO Create HTML page “frame” from template, with body from another template
-        handlers.register("", uri -> immediateFuture(new ClasspathResource("static/404.html")));
+        handlers.register("", uri -> immediateFuture(FOUR_O_FOUR));
     }
 
     @Override

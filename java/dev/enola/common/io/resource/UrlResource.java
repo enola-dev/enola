@@ -119,7 +119,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
         // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
-            LOG.debug("mediaType: openConnection {}", url);
+            LOG.trace("mediaType: openConnection {}", url);
             c = url.openConnection();
             c.connect(); // MUST connect(), else failures are ignored!
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
@@ -148,7 +148,6 @@ public class UrlResource extends BaseResource implements ReadableResource {
 
     @Override
     public ByteSource byteSource() {
-        LOG.debug("byteSource: Resources.asByteSource {}", url);
         return Resources.asByteSource(url);
     }
 }
