@@ -22,10 +22,6 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.setProtoMessageFQN;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.DelegatingResource;
 import dev.enola.core.rosetta.Rosetta;
-import dev.enola.model.enola.files.FileThingConverter;
-import dev.enola.rdf.io.RdfResourceIntoThingConverter;
-import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.UriIntoThingConverters;
 
 import picocli.CommandLine;
 
@@ -37,7 +33,7 @@ import java.net.URI;
             "Transform YAML <=> JSON <=> TextProto <=> PB <=> RDF TTL <=> JSON-LD etc.",
             "(see https://en.wikipedia.org/wiki/Rosetta_Stone)"
         })
-public class RosettaCommand extends CommandWithResourceProvider {
+public class RosettaCommand extends CommandWithResourceProviderAndLoader {
 
     private Rosetta rosetta;
 
@@ -65,13 +61,7 @@ public class RosettaCommand extends CommandWithResourceProvider {
         try (var ctx = TLC.open()) {
             setup(ctx);
 
-            // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
-            UriIntoThingConverters ritc =
-                    new UriIntoThingConverters(
-                            new RdfResourceIntoThingConverter<>(), new FileThingConverter());
-            var loader = new Loader(ritc);
-
-            rosetta = new Rosetta(rp, loader);
+            rosetta = new Rosetta(rp, loader());
             var inResource = rp.getReadableResource(in);
             var outResource = rp.getWritableResource(out);
 

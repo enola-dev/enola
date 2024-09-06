@@ -278,7 +278,7 @@ public class EnolaCLITest {
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .contains("ConversionException: IOException on file:///nonexistant.yaml\n\tat ");
+                .contains("Caused by: java.nio.file.NoSuchFileException: /nonexistant.yaml");
     }
 
     @Test
@@ -288,10 +288,7 @@ public class EnolaCLITest {
         assertThat(exec)
                 .hasExitCode(1)
                 .err()
-                .startsWith(
-                        "dev.enola.common.convert.ConversionException: IOException on"
-                                + " file:///nonexistant.yaml\n"
-                                + "\tat ");
+                .contains("Caused by: java.nio.file.NoSuchFileException: /nonexistant.yaml");
     }
 
     @Test
