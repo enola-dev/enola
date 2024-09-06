@@ -40,7 +40,7 @@ public class Canonicalizer implements ResourceConverter {
     // TODO Unify this with Rosetta!! Because of the dependency tree, Rosetta first
     //  needs to be made AutoService-based, then moved here, then merged with this.
 
-    // TODO Implement https://www.w3.org/TR/rdf-canon/
+    // TODO Implement https://www.w3.org/TR/rdf-canon/, using https://github.com/setl/rdf-urdna ?
 
     public static final String PRETTY_QUERY_PARAMETER = "pretty";
 
