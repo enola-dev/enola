@@ -19,17 +19,24 @@ package dev.enola.thing.metadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.io.Loader;
+import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 
 import org.jspecify.annotations.Nullable;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ThingMetadataProviderTest {
+
+    @Rule public TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
 
     private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
 
@@ -78,6 +85,16 @@ public class ThingMetadataProviderTest {
 
         assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).label())
                 .isEqualTo(THING_LABEL);
+    }
+
+    @Test
+    public void labelViaAlternativeLabelProperty() {
+        var uri = java.net.URI.create("classpath:/metadata-label-property.ttl");
+        var repo = new ThingMemoryRepositoryRW();
+        var things = new Loader().load(uri, repo);
+        var metadataProvider = new ThingMetadataProvider(repo, NONS);
+        var metadata = metadataProvider.get("https://example.org/test-metadata-label-property");
+        assertThat(metadata.label()).isEqualTo("LABEL");
     }
 
     @Test

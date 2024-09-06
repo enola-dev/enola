@@ -41,6 +41,9 @@ This is read from a number of "typical" properties; in order of priority:
 
 If the thing itself doesn't have any of these, it will check if its [RDFS range](../models/www.w3.org/2000/01/rdf-schema/range.md) has any.
 
+Alternatively, the (RDFS) `Class` of a Thing's (RDF) `type` can specify an [https://enola.dev/labelProperty](../models/enola.dev/labelProperty.md)
+to specify the IRI of a "custom" property to use a label, if present; see `test/metadata-label-property.ttl` for an example illustrating how to use this.
+
 This is always available; if a Thing has none of the above, then it will fallback to the CURIE, or else just the last part of its IRI.
 
 ## Description

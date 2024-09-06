@@ -37,7 +37,8 @@ import java.util.function.Function;
 
 /**
  * {@link MetadataProvider} implementation based on looking at {@link Things}s obtained via {@link
- * ThingProvider}.
+ * ThingProvider}; see also related <a href="https://docs.enola.dev/concepts/metadata/>end-user
+ * documentation</a>.
  *
  * <p>Logs errors, but does not propagate exceptions from the <tt>ThingProvider</tt>, because we do
  * not want to fail operations "just" because Metadata could not be obtained; all the methods have
@@ -101,10 +102,13 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
      * as-is.
      */
     private String getLabel(@Nullable Thing thing, String curie, String fallbackIRI) {
-        var label = getLabel_(thing);
+        var label = getAlternative(thing, KIRI.RDF.TYPE, type -> getLabelViaProperty(thing, type));
         if (label != null) return label;
 
-        label = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getLabel_(thingX));
+        label = getLabel_(thing);
+        if (label != null) return label;
+
+        label = getAlternative(thing, KIRI.RDFS.RANGE, range -> getLabel_(range));
         if (label != null) return label;
 
         if (!curie.equals(fallbackIRI)) return curie;
@@ -121,6 +125,13 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
         } catch (URISyntaxException e) {
             return fallbackIRI;
         }
+    }
+
+    private @Nullable String getLabelViaProperty(@Nullable Thing thing, Thing type) {
+        if (thing == null) return null;
+        var typesLabelProperty = type.getString(KIRI.E.LABEL_PROPERTY);
+        if (typesLabelProperty == null) return null;
+        return thing.getString(typesLabelProperty);
     }
 
     private @Nullable String getLabel_(@Nullable Thing thing) {
@@ -184,18 +195,18 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
         var emoji = getString(thing, KIRI.E.EMOJI);
         if (emoji != null) return emoji;
 
-        emoji = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getEmoji_(thingX));
+        emoji = getAlternative(thing, KIRI.RDFS.RANGE, range -> getEmoji_(range));
         if (emoji != null) return emoji;
 
-        emoji = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getEmoji_(thingX));
+        emoji = getAlternative(thing, KIRI.RDF.TYPE, type -> getEmoji_(type));
         return emoji;
     }
 
     private @Nullable String getImageURL_(Thing thing) {
-        var imageURL = getAlternative(thing, KIRI.RDFS.RANGE, thingX -> getImageURL__(thingX));
+        var imageURL = getAlternative(thing, KIRI.RDFS.RANGE, range -> getImageURL__(range));
         if (imageURL != null) return imageURL;
 
-        imageURL = getAlternative(thing, KIRI.RDF.TYPE, thingX -> getImageURL__(thingX));
+        imageURL = getAlternative(thing, KIRI.RDF.TYPE, type -> getImageURL__(type));
         return imageURL;
     }
 

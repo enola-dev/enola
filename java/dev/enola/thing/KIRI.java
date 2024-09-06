@@ -66,6 +66,7 @@ public final class KIRI {
 
         public static final String IRI_TEMPLATE_PROPERTY = NS + "iriTemplate";
         public static final String IRI_TEMPLATE_DATATYPE = NS + "IRITemplate";
+        public static final String LABEL_PROPERTY = NS + "labelProperty";
     }
 
     /** Schema.org Properties. */
