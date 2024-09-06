@@ -29,10 +29,6 @@ import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
-import dev.enola.model.enola.files.FileThingConverter;
-import dev.enola.rdf.io.RdfResourceIntoThingConverter;
-import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
@@ -53,7 +49,7 @@ import picocli.CommandLine.Spec;
 import java.net.URI;
 import java.util.stream.Stream;
 
-public abstract class CommandWithModel extends CommandWithResourceProvider {
+public abstract class CommandWithModel extends CommandWithResourceProviderAndLoader {
 
     protected EnolaServiceProvider esp;
 
@@ -86,13 +82,7 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
             ServiceProvider grpc = null;
             if (group.load != null) {
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
-
-                // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
-                UriIntoThingConverters ritc =
-                        new UriIntoThingConverters(
-                                new RdfResourceIntoThingConverter<>(), new FileThingConverter());
-                var loader = new Loader(ritc);
-
+                var loader = loader();
                 var fgrp = new GlobResolvers();
                 for (var globIRI : group.load) {
                     try (var stream = fgrp.get(globIRI)) {
