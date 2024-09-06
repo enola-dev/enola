@@ -37,6 +37,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.function.Supplier;
 
+/**
+ * RdfResourceIntoThingConverter "converts" (loads, really) RDF resources (e.g. *.ttl, et al.) into
+ * Things.
+ */
 @SuppressWarnings("rawtypes")
 @AutoService(UriIntoThingConverter.class)
 public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoThingConverter {

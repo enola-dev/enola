@@ -24,10 +24,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 
-import com.google.common.collect.ImmutableMap;
-
 import dev.enola.common.context.TLC;
-import dev.enola.common.context.testlib.TestTLCRule;
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
@@ -35,8 +33,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
-import dev.enola.datatype.DatatypeRepository;
-import dev.enola.model.Datatypes;
+import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.gexf.GexfMediaType;
@@ -46,6 +43,7 @@ import dev.enola.thing.io.ThingMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingProvider;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -54,15 +52,19 @@ import java.nio.charset.StandardCharsets;
 
 public class RosettaTest {
 
-    @Rule
-    public TestRule tlcRule =
-            new TestTLCRule(ImmutableMap.of(DatatypeRepository.class, Datatypes.DTR));
-
-    private static final ResourceProvider rp = new ClasspathResource.Provider();
-    private static final Rosetta rosetta = new Rosetta(rp);
-
     // These intentionally only test some cases; more detailed tests
     // are done e.g. in YamlJsonTest and in ProtoIOTest.
+
+    private static final ResourceProvider rp = new ClasspathResource.Provider();
+
+    @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
+
+    private Rosetta rosetta;
+
+    @Before
+    public void before() {
+        rosetta = new Rosetta(rp, new RdfLoader());
+    }
 
     @Test
     public void testJsonToYaml() throws Exception {
@@ -148,7 +150,6 @@ public class RosettaTest {
         try (var ctx = TLC.open()) {
             // This tests that StackedThingProvider in GraphvizGenerator works;
             // if it did not "shadow", then we would have an empty Salutation.
-            assertThat(ctx.optional(ThingProvider.class)).isEmpty();
             Thing rdfsClass =
                     ImmutableThing.builder().iri("https://example.org/Salutation").build();
             var tp = new ThingMemoryRepositoryROBuilder().store(rdfsClass).build();

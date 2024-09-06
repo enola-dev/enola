@@ -22,6 +22,10 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.setProtoMessageFQN;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.resource.DelegatingResource;
 import dev.enola.core.rosetta.Rosetta;
+import dev.enola.model.enola.files.FileThingConverter;
+import dev.enola.rdf.io.RdfResourceIntoThingConverter;
+import dev.enola.thing.io.Loader;
+import dev.enola.thing.io.UriIntoThingConverters;
 
 import picocli.CommandLine;
 
@@ -61,7 +65,13 @@ public class RosettaCommand extends CommandWithResourceProvider {
         try (var ctx = TLC.open()) {
             setup(ctx);
 
-            rosetta = new Rosetta(rp);
+            // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
+            UriIntoThingConverters ritc =
+                    new UriIntoThingConverters(
+                            new RdfResourceIntoThingConverter<>(), new FileThingConverter());
+            var loader = new Loader(ritc);
+
+            rosetta = new Rosetta(rp, loader);
             var inResource = rp.getReadableResource(in);
             var outResource = rp.getWritableResource(out);
 

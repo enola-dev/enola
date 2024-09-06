@@ -22,14 +22,15 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.UriIntoThingConverters;
 
 public class GexfResourceConverter implements CatchingResourceConverter {
 
     private final GexfGenerator gexfGenerator;
+    private final Loader loader;
 
-    public GexfResourceConverter(GexfGenerator gexfGenerator) {
+    public GexfResourceConverter(Loader loader, GexfGenerator gexfGenerator) {
         this.gexfGenerator = gexfGenerator;
+        this.loader = loader;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class GexfResourceConverter implements CatchingResourceConverter {
         if (!MediaTypes.normalizedNoParamsEquals(into.mediaType(), GexfMediaType.GEXF))
             return false;
 
-        var things = new Loader(new UriIntoThingConverters()).loadAtLeastOneThing(from.uri());
+        var things = loader.loadAtLeastOneThing(from.uri());
         gexfGenerator.convertIntoOrThrow(things, into);
         return true;
     }

@@ -28,8 +28,8 @@ import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.rdf.io.RdfLoader;
 import dev.enola.thing.gen.LinkTransformer;
-import dev.enola.thing.io.Loader;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 
 import org.junit.Rule;
@@ -46,7 +46,7 @@ public class VisJsTimelineGeneratorTest {
 
     @Test
     public void html() throws IOException {
-        var things = new Loader().loadAtLeastOneThing(URI.create("classpath:/graph.ttl"));
+        var things = new RdfLoader().loadAtLeastOneThing(URI.create("classpath:/graph.ttl"));
         assertThat(things).isNotEmpty();
         var actual = new MemoryResource(MediaType.HTML_UTF_8);
 

@@ -86,7 +86,7 @@ public class FileThingConverterTest {
 
         // Convert hello.txt
         var mt = MediaType.PLAIN_TEXT_UTF_8;
-        var ritc = new UriIntoThingConverters(); // includes FileThingConverter
+        var ritc = new UriIntoThingConverters(new FileThingConverter());
 
         var list = ritc.convert(hello.toUri());
         var thing = list.iterator().next().build();

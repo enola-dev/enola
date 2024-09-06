@@ -34,6 +34,7 @@ import java.net.URI;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
+// TODO Make UriIntoThingConverters actually implement UriIntoThingConverter itself (less confusing)
 public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<?>>> {
 
     // TODO Load a resource with different converters multi-threaded, in parallel...
@@ -45,11 +46,7 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
     }
 
     public UriIntoThingConverters(UriIntoThingConverter... converters) {
-        this(ImmutableList.copyOf(converters));
-    }
-
-    public UriIntoThingConverters() {
-        this(ServiceLoader.load(UriIntoThingConverter.class).stream());
+        this.converters = ImmutableList.copyOf(converters);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
