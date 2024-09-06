@@ -29,6 +29,8 @@ import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.model.enola.files.FileThingConverter;
+import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
@@ -86,8 +88,11 @@ public abstract class CommandWithModel extends CommandWithResourceProvider {
                 ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
 
                 // TODO Explicitly add UriIntoThingConverter, depending on CLI feature flags
-                UriIntoThingConverters ritc = new UriIntoThingConverters();
+                UriIntoThingConverters ritc =
+                        new UriIntoThingConverters(
+                                new RdfResourceIntoThingConverter<>(), new FileThingConverter());
                 var loader = new Loader(ritc);
+
                 var fgrp = new GlobResolvers();
                 for (var globIRI : group.load) {
                     try (var stream = fgrp.get(globIRI)) {

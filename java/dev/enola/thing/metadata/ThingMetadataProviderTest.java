@@ -23,10 +23,10 @@ import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
+import dev.enola.rdf.io.RdfLoader;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
-import dev.enola.thing.io.Loader;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -91,7 +91,7 @@ public class ThingMetadataProviderTest {
     public void labelViaAlternativeLabelProperty() {
         var uri = java.net.URI.create("classpath:/metadata-label-property.ttl");
         var repo = new ThingMemoryRepositoryRW();
-        var things = new Loader().load(uri, repo);
+        var things = new RdfLoader().load(uri, repo);
         var metadataProvider = new ThingMetadataProvider(repo, NONS);
         var metadata = metadataProvider.get("https://example.org/test-metadata-label-property");
         assertThat(metadata.label()).isEqualTo("LABEL");

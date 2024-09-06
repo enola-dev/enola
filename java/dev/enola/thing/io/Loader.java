@@ -46,10 +46,6 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
         this.uriIntoThingConverters = uriIntoThingConverters;
     }
 
-    public Loader() {
-        this(new UriIntoThingConverters());
-    }
-
     @Override
     public boolean convertInto(Stream<URI> stream, Store<?, Thing> store)
             throws ConversionException, IOException {

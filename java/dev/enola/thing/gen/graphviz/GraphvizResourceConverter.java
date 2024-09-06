@@ -22,14 +22,15 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.UriIntoThingConverters;
 
 public class GraphvizResourceConverter implements CatchingResourceConverter {
 
     private final GraphvizGenerator graphvizGenerator;
+    private final Loader loader;
 
-    public GraphvizResourceConverter(GraphvizGenerator graphvizGenerator) {
+    public GraphvizResourceConverter(Loader loader, GraphvizGenerator graphvizGenerator) {
         this.graphvizGenerator = graphvizGenerator;
+        this.loader = loader;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class GraphvizResourceConverter implements CatchingResourceConverter {
         if (!MediaTypes.normalizedNoParamsEquals(into.mediaType(), GraphvizMediaType.GV))
             return false;
 
-        var things = new Loader(new UriIntoThingConverters()).loadAtLeastOneThing(from.uri());
+        var things = loader.loadAtLeastOneThing(from.uri());
         graphvizGenerator.convertIntoOrThrow(things, into);
         return true;
     }

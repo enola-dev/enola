@@ -39,6 +39,7 @@ import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.gexf.GexfResourceConverter;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizResourceConverter;
+import dev.enola.thing.io.Loader;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -80,13 +81,15 @@ public class Rosetta implements ResourceConverter {
 
     private final ResourceConverterChain resourceConverterChain;
     private final ResourceProvider rp;
+    private final Loader loader;
 
-    public Rosetta() {
-        this(ResourceProvider.CTX);
+    public Rosetta(Loader loader) {
+        this(ResourceProvider.CTX, loader);
     }
 
-    public Rosetta(ResourceProvider rp) {
+    public Rosetta(ResourceProvider rp, Loader loader) {
         this.rp = rp;
+        this.loader = loader;
         var tmp = new ThingMetadataProvider(ThingProvider.CTX, NamespaceConverter.CTX);
         this.resourceConverterChain =
                 new ResourceConverterChain(
@@ -95,8 +98,8 @@ public class Rosetta implements ResourceConverter {
                                 new RdfResourceConverter(rp),
                                 messageResourceConverter,
                                 new YamlJsonResourceConverter(),
-                                new GraphvizResourceConverter(new GraphvizGenerator(tmp)),
-                                new GexfResourceConverter(new GexfGenerator(tmp)),
+                                new GraphvizResourceConverter(loader, new GraphvizGenerator(tmp)),
+                                new GexfResourceConverter(loader, new GexfGenerator(tmp)),
                                 new CharResourceConverter(),
                                 new IdempotentCopyingResourceNonConverter()));
     }

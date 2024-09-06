@@ -44,7 +44,6 @@ import java.util.List;
 public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
     // TODO "Define a start and an end in the timeline options. This will improve initial loading."
-    // TODO Add clickable URLs to all Things
 
     // TODO https://github.com/javdome/timeline-arrows
 
