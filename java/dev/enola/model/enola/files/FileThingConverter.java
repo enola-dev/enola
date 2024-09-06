@@ -20,7 +20,6 @@ package dev.enola.model.enola.files;
 import static java.nio.file.Files.readAttributes;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
-import com.google.auto.service.AutoService;
 import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ConversionException;
@@ -43,7 +42,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 /** FileThingConverter converts <code>file:/</code> URI into File & Directory Things. */
 @SuppressWarnings("rawtypes")
-@AutoService(UriIntoThingConverter.class)
 public class FileThingConverter implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);

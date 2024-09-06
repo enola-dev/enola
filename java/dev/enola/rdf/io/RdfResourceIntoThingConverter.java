@@ -17,8 +17,6 @@
  */
 package dev.enola.rdf.io;
 
-import com.google.auto.service.AutoService;
-
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ResourceProvider;
@@ -42,7 +40,6 @@ import java.util.function.Supplier;
  * Things.
  */
 @SuppressWarnings("rawtypes")
-@AutoService(UriIntoThingConverter.class)
 public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
