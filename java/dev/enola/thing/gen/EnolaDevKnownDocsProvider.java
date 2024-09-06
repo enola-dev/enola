@@ -19,7 +19,6 @@ package dev.enola.thing.gen;
 
 import com.google.common.collect.ImmutableList;
 
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,7 @@ public class EnolaDevKnownDocsProvider implements KnownDocsProvider {
                     "http://www.w3.org/2001/XMLSchema");
 
     @Override
-    public @Nullable String get(String iri) {
+    public String get(String iri) {
         for (var wellKnownPrefix : wellKnownPrefixes) {
             if (iri.startsWith(wellKnownPrefix)) {
                 try {

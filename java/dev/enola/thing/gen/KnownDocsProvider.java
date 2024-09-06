@@ -17,10 +17,6 @@
  */
 package dev.enola.thing.gen;
 
-import dev.enola.data.ProviderFromIRI;
-
-import org.jspecify.annotations.NonNull;
-
 /**
  * KnownDocsProvider offers, if available, a "better URL" to use as link target in generated HTML or
  * Markdown etc. documentation for some known IRIs. For example:
@@ -32,11 +28,5 @@ import org.jspecify.annotations.NonNull;
  *       http://www.w3.org/1999/02/22-rdf-syntax-ns#type (for which we cannot set up any HTTP
  *       redirector; and which is nicer to read than e.g. https://www.w3.org/TR/rdf-schema/#ch_type)
  * </ul>
- *
- * <p>The KnownMetadataProvider (TBD) is related to this, but has a different purpose.
  */
-public interface KnownDocsProvider extends ProviderFromIRI<String> {
-
-    @Override
-    @NonNull String get(String iri);
-}
+public interface KnownDocsProvider extends LinkTransformer {}

@@ -27,6 +27,7 @@ import dev.enola.common.time.Interval;
 import dev.enola.common.yamljson.JSON;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.metadata.ThingTimeProvider;
@@ -44,8 +45,6 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
     // TODO "Define a start and an end in the timeline options. This will improve initial loading."
     // TODO Add clickable URLs to all Things
-
-    // TODO Try it all out with more interesting real data
 
     // TODO https://github.com/javdome/timeline-arrows
 
@@ -66,12 +65,15 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
 
     private final ThingTimeProvider timeProvider = new ThingTimeProvider();
     private final ThingMetadataProvider metadataProvider;
+    private final LinkTransformer linkTransformer;
 
     private static final ReadableResource template =
             new ClasspathResource("dev/enola/thing/gen/visjs/timeline-template.html");
 
-    public VisJsTimelineGenerator(ThingMetadataProvider metadataProvider) {
+    public VisJsTimelineGenerator(
+            ThingMetadataProvider metadataProvider, LinkTransformer linkTransformer) {
         this.metadataProvider = metadataProvider;
+        this.linkTransformer = linkTransformer;
     }
 
     @Override
@@ -97,7 +99,7 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
         var groups = new HashMap<String, Group>();
         var items = new ArrayList<Item>();
         for (var thing : things) {
-            String url = null; // TODO TBD
+            String url = linkTransformer.get(thing.iri());
             var thingLabel = label(metadataProvider.get(thing));
 
             // TODO How to best handle Things with multiple parent types...

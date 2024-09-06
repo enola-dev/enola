@@ -28,6 +28,7 @@ import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 
@@ -49,7 +50,8 @@ public class VisJsTimelineGeneratorTest {
         assertThat(things).isNotEmpty();
         var actual = new MemoryResource(MediaType.HTML_UTF_8);
 
-        var gen = new VisJsTimelineGenerator(TLC.get(ThingMetadataProvider.class));
+        LinkTransformer linkTransformer = iri -> iri;
+        var gen = new VisJsTimelineGenerator(TLC.get(ThingMetadataProvider.class), linkTransformer);
         gen.convertIntoOrThrow(things, actual);
 
         var expected = new ClasspathResource("dev/enola/thing/gen/visjs/timeline.expected.html");

@@ -22,6 +22,7 @@ import static java.lang.StringTemplate.STR;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
+import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value;
@@ -41,9 +42,11 @@ public class ThingUI {
     // TODO Use Appendable-based approach, for better memory efficiency, and less String "trashing"
 
     private final ProtoThingMetadataProvider metadataProvider;
+    private final LinkTransformer linkTransformer;
 
-    public ThingUI(ProtoThingMetadataProvider metadataProvider) {
+    public ThingUI(ProtoThingMetadataProvider metadataProvider, LinkTransformer linkTransformer) {
         this.metadataProvider = metadataProvider;
+        this.linkTransformer = linkTransformer;
     }
 
     public CharSequence html(ThingOrBuilder thing) {
@@ -105,7 +108,7 @@ public class ThingUI {
         sb.append(meta.imageHTML());
         sb.append(' ');
         // TODO s(uri) or not - or another escaping?
-        sb.append("<a href=" + s("/ui/" + iri));
+        sb.append("<a href=" + s(linkTransformer.get(iri)));
         var description = meta.descriptionHTML();
         if (!description.isEmpty()) {
             sb.append(" title=\"");
