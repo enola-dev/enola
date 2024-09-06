@@ -19,7 +19,7 @@
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>.
 
 example:test-metadata-label-property-class a rdfs:Class;
-  enola:label-property enola:altlab.
+  enola:labelProperty enola:altlab.
 
 example:test-metadata-label-property a example:test-metadata-label-property-class;
   enola:altlab "LABEL".
