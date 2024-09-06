@@ -41,6 +41,15 @@ $ ./enola info detect --file-scheme picasso.thing.yaml
 
 Note that this file does not exist, this is fine; the type of its content is determine by the extension (in this case).
 
+## Metadata
+
+```bash cd ../.././..
+$ ./enola info metadata --load=test/metadata-label-property.ttl https://example.org/test-metadata-label-property
+...
+```
+
+[Metadata](../../concepts/metadata.md) explains what this is about.
+
 ## Screencast
 
 ![Demo](script.svg)
