@@ -27,7 +27,7 @@ Enola uses Metadata about all of its _Things_ when rendering them:
 * image of a logo; e.g. from [favicon](https://de.wikipedia.org/wiki/Favicon) or something like that; or an 😃 Emoji!
 * curie is a compact URI; a shorter form of the original "long" IRI of the Thing.
 
-[The `info metadata` sub-command](../use/info/index.md) is a handy tool to test this.
+[The `info metadata` sub-command](../use/info/index.md#metadata) is a handy tool to test this.
 
 <!-- The following documents the dev.enola.thing.metadata.ThingMetadataProvider service; keep it updated, if it ever changes. -->
 
@@ -59,14 +59,14 @@ This is optional and may be empty.
 
 ## Image of Logo
 
-This is read, again in order from:
+This is read, again in order, from:
 
 1. [https://enola.dev/emoji](../models/enola.dev/emoji.md)
 1. https://schema.org/logo
 1. https://schema.org/thumbnailUrl
 1. https://schema.org/image
 
-On the Thing itself, or via its [RDFS range](../models/www.w3.org/2000/01/rdf-schema/range.md) or
+and similarly to above first on the Thing itself, or if none then via its [RDFS range](../models/www.w3.org/2000/01/rdf-schema/range.md) or
 [RDF type](../models/www.w3.org/1999/02/22-rdf-syntax-ns/type.md).
 
 ## CURIE

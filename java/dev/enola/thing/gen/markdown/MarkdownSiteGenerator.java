@@ -28,7 +28,9 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.gen.Relativizer;
+import dev.enola.thing.gen.StaticSiteLinkTransformer;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
@@ -61,6 +63,7 @@ public class MarkdownSiteGenerator {
     private final ThingMetadataProvider thingMetadataProvider;
     private final ProtoThingMetadataProvider protoThingMetadataProvider;
     private final DatatypeRepository datatypeRepository;
+    private final LinkTransformer linkTransformer = new StaticSiteLinkTransformer();
     private final Templates.Format format;
     private final GraphvizGenerator graphvizGenerator;
     private final GexfGenerator gexfGenerator;
@@ -92,7 +95,7 @@ public class MarkdownSiteGenerator {
         this.rp = rp;
         this.graphvizGenerator = new GraphvizGenerator(thingMetadataProvider);
         this.gexfGenerator = new GexfGenerator(thingMetadataProvider);
-        this.timelineGenerator = new VisJsTimelineGenerator(thingMetadataProvider);
+        this.timelineGenerator = new VisJsTimelineGenerator(thingMetadataProvider, linkTransformer);
     }
 
     public void generate(

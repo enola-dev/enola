@@ -40,6 +40,7 @@ import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
 import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
@@ -59,6 +60,7 @@ public class UI implements WebHandler {
     private final TypeRegistryWrapper typeRegistryWrapper;
     private final EnolaMessages enolaMessages;
     private final EnolaThingProvider /* TODO ThingProvider*/ thingProvider;
+    private final LinkTransformer linkTransformer = new UiLinkTransformer();
     private final ThingUI thingUI;
     private final ThingsConverterWrapperHandler timelineHandler;
     private ProtoIO protoIO;
@@ -74,12 +76,13 @@ public class UI implements WebHandler {
         thingProvider = new EnolaThingProvider(service);
 
         var protoThingMetadataProvider = new ProtoThingMetadataProvider(metadataProvider);
-        thingUI = new ThingUI(protoThingMetadataProvider);
+        thingUI = new ThingUI(protoThingMetadataProvider, linkTransformer);
 
         ThingRepository thingRepository = new ProtoToThingRepository(thingProvider);
         timelineHandler =
                 new ThingsConverterWrapperHandler(
-                        thingRepository, new VisJsTimelineGenerator(metadataProvider));
+                        thingRepository,
+                        new VisJsTimelineGenerator(metadataProvider, linkTransformer));
     }
 
     public void register(WebHandlers handlers) {

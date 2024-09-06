@@ -24,9 +24,6 @@ items:
       links:
         - https://github.com/enola-dev/enola/issues/845
 
-  - Timeline links to Things pages; both for DocGen and in UI:
-      tags: [ui, docgen]
-
   - Don't load JS from unpkg.com, but use the local copies from the //third_party module:
       tags: [google]
 

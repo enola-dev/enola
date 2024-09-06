@@ -115,6 +115,7 @@ class MarkdownLinkWriter {
         }
     }
 
+    // TODO Move this into StaticSiteLinkTransformer (?)
     private String rel(
             String linkIRI,
             URI outputIRI,
