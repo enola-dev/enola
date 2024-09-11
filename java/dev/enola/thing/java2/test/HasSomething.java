@@ -29,8 +29,8 @@ public interface HasSomething extends HasA, HasB {
         return getString("https://example.org/test");
     }
 
-    interface Builder<B extends HasSomething>
-            extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends HasSomething> // skipcq: JAVA-E0169
+            extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 
         default Builder<B> test(String test) {
             set("https://example.org/test", test);
