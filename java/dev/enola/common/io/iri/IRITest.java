@@ -18,6 +18,7 @@
 package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertThrows;
 
@@ -28,6 +29,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class IRITest {
+
+    // TODO https://github.com/web-platform-tests/wpt/blob/master/url/resources/urltestdata.json
+    // see  https://github.com/web-platform-tests/wpt/tree/master/url
 
     record TestIRI(
             boolean validIRI,
@@ -40,19 +44,65 @@ public class IRITest {
             String query,
             String fragment) {}
 
-    // TODO Use e.g. a CSV instead of coding these out here?
+    // TODO Instead of coding this out here, use (another) JSON like WHATWG urltestdata.json
     TestIRI[] tests =
             new TestIRI[] {
                 new TestIRI(
                         true,
                         true,
+                        "hTtPs://enola.dev/index.html?query#fragment",
+                        "https://enola.dev/index.html?query#fragment",
+                        "https",
+                        "enola.dev",
+                        "/index.html",
+                        "query",
+                        "fragment"),
+                new TestIRI(
+                        true,
+                        true,
+                        "hTtPs://enola.dev/index.html?query",
+                        "https://enola.dev/index.html?query",
+                        "https",
+                        "enola.dev",
+                        "/index.html",
+                        "query",
+                        ""),
+                // TODO FIXME
+                //                new TestIRI(
+                //                        true,
+                //                        true,
+                //                        "hTtPs://enola.dev/index.html#fragment",
+                //                        "https://enola.dev/index.html#fragment",
+                //                        "https",
+                //                        "enola.dev",
+                //                        "/index.html",
+                //                        "",
+                //                        "fragment"),
+                new TestIRI(
+                        true,
+                        false, // java.net.URI does not append trailing /
                         "https://enola.dev",
                         "https://enola.dev/",
                         "https",
                         "enola.dev",
                         "",
                         "",
-                        "")
+                        ""),
+                new TestIRI(
+                        true,
+                        true,
+                        "schema:authority",
+                        "schema:authority",
+                        "schema",
+                        "authority",
+                        "",
+                        "",
+                        ""),
+                new TestIRI(true, true, "schema:", "schema:", "schema", "", "", "", ""),
+                new TestIRI(true, true, "relative", "relative", "", "", "relative", "", ""),
+                new TestIRI(false, true, "?query", "", "", "", "", "query", ""),
+                new TestIRI(true, true, "#fragment", "", "", "", "", "", "fragment"),
+                new TestIRI(true, true, "", "", "", "", "", "", ""),
             };
 
     // TODO Test handling of + or %20 for space in path, query and fragment
@@ -78,32 +128,33 @@ public class IRITest {
             builder.path(test.path);
             builder.query(test.query);
             builder.fragment(test.fragment);
-            check2(builder.build(), test);
+            check(builder.build(), test, test.normalized);
         }
     }
 
     void check2(IRI iri, TestIRI test) throws URISyntaxException, IRI.ValidationException {
-        check(iri, test);
+        check(iri, test, test.text);
 
         var rebuiltIRI = iri.newBuilder().build();
-        check(rebuiltIRI, test);
+        check(rebuiltIRI, test, test.normalized);
     }
 
-    void check(IRI iri, TestIRI test) throws URISyntaxException, IRI.ValidationException {
-        assertThat(iri.toString()).isEqualTo(test.text);
+    void check(IRI iri, TestIRI test, String string)
+            throws URISyntaxException, IRI.ValidationException {
+        assertThat(iri.toString()).isEqualTo(string);
 
-        assertThat(iri.scheme()).isEqualTo(test.scheme());
-        assertThat(iri.authority()).isEqualTo(test.authority());
-        assertThat(iri.path()).isEqualTo(test.path());
-        assertThat(iri.query()).isEqualTo(test.query());
-        assertThat(iri.fragment()).isEqualTo(test.fragment());
+        assertWithMessage(iri.toString()).that(iri.scheme()).isEqualTo(test.scheme());
+        assertWithMessage(iri.toString()).that(iri.authority()).isEqualTo(test.authority());
+        assertWithMessage(iri.toString()).that(iri.path()).isEqualTo(test.path());
+        assertWithMessage(iri.toString()).that(iri.query()).isEqualTo(test.query());
+        assertWithMessage(iri.toString()).that(iri.fragment()).isEqualTo(test.fragment());
 
         if (test.validIRI) iri.validate();
         else assertThrows(IRI.ValidationException.class, iri::validate);
 
         if (test.validURI) {
-            assertThat(iri.toURI()).isEqualTo(new URI(test.text));
-            assertThat(IRI.from(iri.toURI())).isEqualTo(iri);
+            assertWithMessage(iri.toString()).that(iri.toURI()).isEqualTo(new URI(test.text));
+            assertWithMessage(iri.toString()).that(IRI.from(iri.toURI())).isEqualTo(iri);
         }
     }
 }
