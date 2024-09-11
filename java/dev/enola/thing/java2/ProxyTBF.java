@@ -41,18 +41,9 @@ public class ProxyTBF implements TBF {
                         new BuilderInvocationHandler(ImmutableThing.builder(), thingClass));
     }
 
-    // TODO Convert class to record?!
-    private static class BuilderInvocationHandler implements InvocationHandler {
-
-        private final Thing.Builder<? extends ImmutableThing> immutableThingBuilder;
-        private final Class<?> thingClass;
-
-        BuilderInvocationHandler(
-                Thing.Builder<? extends ImmutableThing> immutableThingBuilder,
-                Class<?> thingClass) {
-            this.immutableThingBuilder = immutableThingBuilder;
-            this.thingClass = thingClass;
-        }
+    private record BuilderInvocationHandler(
+            Thing.Builder<? extends ImmutableThing> immutableThingBuilder, Class<?> thingClass)
+            implements InvocationHandler {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -64,25 +55,15 @@ public class ProxyTBF implements TBF {
                     new Class[] {thingClass},
                     new ThingInvocationHandler(immutableThingBuilder.build()));
         }
-
-        // TODO toString() ?
     }
 
-    // TODO Convert class to record?!
-    private static class ThingInvocationHandler implements InvocationHandler {
-
-        private final ImmutableThing immutableThingBuilder;
-
-        ThingInvocationHandler(ImmutableThing immutableThingBuilder) {
-            this.immutableThingBuilder = immutableThingBuilder;
-        }
+    private record ThingInvocationHandler(ImmutableThing immutableThingBuilder)
+            implements InvocationHandler {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
             return method.invoke(immutableThingBuilder, args);
         }
-
-        // TODO toString() ?
     }
 }
