@@ -102,6 +102,7 @@ public class RdfCollectionContainerTest {
                                 Value.newBuilder()
                                         .setList(
                                                 Value.List.newBuilder()
+                                                        .setOrdered(true)
                                                         .addValues(
                                                                 Value.newBuilder()
                                                                         .setLink(thing1IRI)

@@ -135,8 +135,8 @@ message Value {
   }
 
   message List {  // TODO Rename to Collection
-    // TODO bool ordered = 1;
-    repeated Value values = 1;
+    bool ordered = 1;
+    repeated Value values = 2;
   }
 }
 

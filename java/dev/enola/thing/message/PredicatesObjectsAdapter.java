@@ -20,8 +20,10 @@ package dev.enola.thing.message;
 import static java.util.Objects.requireNonNull;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
@@ -104,7 +106,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
             case LITERAL -> literal(value.getLiteral());
             case LANG_STRING -> langString(value.getLangString());
             case LINK -> new Link(value.getLink());
-            case LIST -> list(value.getList());
+            case LIST -> listOrSet(value.getList());
             case STRUCT -> map(value.getStruct());
             case KIND_NOT_SET -> null;
         };
@@ -127,15 +129,21 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         }
     }
 
-    private java.util.List<?> list(dev.enola.thing.proto.Value.List list) {
+    private java.util.Collection<?> listOrSet(dev.enola.thing.proto.Value.List list) {
         // TODO Make this lazier... only convert object when they're actually used
         var protoValues = list.getValuesList();
-        var listBuilder = ImmutableList.builderWithExpectedSize(protoValues.size());
+        ImmutableCollection.Builder<Object> collectionBuilder;
+        if (list.getOrdered()) {
+            collectionBuilder = ImmutableList.builderWithExpectedSize(protoValues.size());
+        } else {
+            collectionBuilder = ImmutableSet.builderWithExpectedSize(protoValues.size());
+        }
+
         for (var protoValue : protoValues) {
             var value = value(protoValue);
-            if (value != null) listBuilder.add(value);
+            if (value != null) collectionBuilder.add(value);
         }
-        return listBuilder.build();
+        return collectionBuilder.build();
     }
 
     private PredicatesObjects map(dev.enola.thing.proto.Thing struct) {
