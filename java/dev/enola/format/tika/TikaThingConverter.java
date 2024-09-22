@@ -38,7 +38,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class TikaThingConverter implements UriIntoThingConverter {
 
@@ -92,12 +91,8 @@ public class TikaThingConverter implements UriIntoThingConverter {
                             ? ImmutableSet.copyOf(metadata.getValues(name))
                             : metadata.get(name);
 
-            try {
-                var predicate = "https://enola.dev/tika/" + URIs.parse(name);
-                thing.set(predicate, value);
-            } catch (URISyntaxException e) {
-                LOG.error("Invalid: " + name, e);
-            }
+            var predicate = "https://enola.dev/tika/" + URIs.encode(name);
+            thing.set(predicate, value);
         }
     }
 }

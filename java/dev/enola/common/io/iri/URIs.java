@@ -424,8 +424,12 @@ public final class URIs {
 
     // TODO Review if getScheme(), getPath(), getQueryString(), getFragment() are *REALLY* needed?!
 
+    public static String encode(String uri) {
+        return uri.replace(" ", "%20");
+    }
+
     public static URI parse(String uri) throws URISyntaxException {
-        return new URI(uri.replace(" ", "%20"));
+        return new URI(encode(uri));
     }
 
     private URIs() {}
