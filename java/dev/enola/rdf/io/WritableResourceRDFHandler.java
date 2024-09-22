@@ -43,7 +43,10 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
         var rdfWriter = Rio.createWriter(writerFormat.get(), ioWriter, baseURI);
         var writerConfig = new WriterConfig();
         rdfWriter.setWriterConfig(writerConfig);
-        return Optional.of(new WritableResourceRDFHandler(rdfWriter, ioWriter));
+
+        var it = new WritableResourceRDFHandler(rdfWriter, ioWriter);
+        rdfWriter.startRDF();
+        return Optional.of(it);
     }
 
     private final RDFWriter /* IS-A RDFHandler */ rdfWriter;
@@ -57,12 +60,13 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
 
     @Override
     public void close() throws IOException {
+        endRDF();
         ioWriter.close();
     }
 
     @Override
     public void startRDF() throws RDFHandlerException {
-        rdfWriter.startRDF();
+        // SUPPRESS rdfWriter.startRDF();
     }
 
     @Override
