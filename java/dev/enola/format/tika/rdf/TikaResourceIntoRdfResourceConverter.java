@@ -46,7 +46,9 @@ public class TikaResourceIntoRdfResourceConverter implements CatchingResourceCon
         var rdfHandler = WritableResourceRDFHandler.create(into);
         if (rdfHandler.isEmpty()) return false;
 
-        javaToRdfConverter.convertInto(thingsBuilder, rdfHandler.get());
-        return true;
+        try (var closeableRDFHandler = rdfHandler.get()) {
+            javaToRdfConverter.convertInto(thingsBuilder, closeableRDFHandler);
+            return true;
+        }
     }
 }
