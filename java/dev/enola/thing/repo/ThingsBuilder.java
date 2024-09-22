@@ -23,6 +23,7 @@ import dev.enola.thing.impl.ImmutableThing;
 import java.util.HashMap;
 import java.util.Map;
 
+// @NotThreadSafe
 public class ThingsBuilder {
 
     private final Map<String, Thing.Builder<?>> map = new HashMap<>();

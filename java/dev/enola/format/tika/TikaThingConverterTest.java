@@ -19,12 +19,15 @@ package dev.enola.format.tika;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
+import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingsBuilder;
 
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class TikaThingConverterTest {
 
@@ -36,5 +39,24 @@ public class TikaThingConverterTest {
         var r = c.convertInto(EmptyResource.EMPTY_URI, tb);
         assertThat(tb.builders()).isEmpty();
         assertThat(r).isFalse();
+    }
+
+    @Test
+    public void html() throws IOException {
+        var tb = new ThingsBuilder();
+        var c = new TikaThingConverter(new ClasspathResource.Provider());
+
+        var r = c.convertInto(URI.create("classpath:/test.html"), tb);
+        assertThat(r).isTrue();
+        assertThat(tb.builders()).hasSize(1);
+        var thing = tb.builders().iterator().next().build();
+        checkThatAllPredicatesAreAbsoluteURIs(thing);
+    }
+
+    private void checkThatAllPredicatesAreAbsoluteURIs(Thing thing) {
+        for (var predicateIRI : thing.predicateIRIs()) {
+            if (!URI.create(predicateIRI).isAbsolute())
+                throw new IllegalArgumentException(predicateIRI);
+        }
     }
 }
