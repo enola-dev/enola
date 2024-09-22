@@ -41,7 +41,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 /** FileThingConverter converts <code>file:/</code> URI into File & Directory Things. */
-@SuppressWarnings("rawtypes")
 public class FileThingConverter implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);
