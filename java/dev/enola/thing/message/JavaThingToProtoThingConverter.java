@@ -28,6 +28,7 @@ import dev.enola.thing.proto.Value;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 public class JavaThingToProtoThingConverter
         implements Converter<dev.enola.thing.Thing, dev.enola.thing.proto.Thing.Builder> {
@@ -85,11 +86,22 @@ public class JavaThingToProtoThingConverter
 
             case List<?> list:
                 var protoList = dev.enola.thing.proto.Value.List.newBuilder();
+                protoList.setOrdered(true);
                 for (var e : list) {
                     // TODO This assumes the List is heterogenous... which it may not be! Test...
                     protoList.addValues(toValue(e, propertyIRI, javaThing));
                 }
                 protoValue.setList(protoList);
+                break;
+
+            case Set<?> set:
+                var protoSet = dev.enola.thing.proto.Value.List.newBuilder();
+                protoSet.setOrdered(false);
+                for (var e : set) {
+                    // TODO This assumes the List is heterogenous... which it may not be! Test...
+                    protoSet.addValues(toValue(e, propertyIRI, javaThing));
+                }
+                protoValue.setList(protoSet);
                 break;
 
             case PredicatesObjects predicatesObjects:

@@ -172,6 +172,8 @@ public class RdfProtoThingsConverter implements Converter<Model, Stream<Thing.Bu
                             var rdfValueList = new ArrayList<org.eclipse.rdf4j.model.Value>(0);
                             RDFCollections.asValues(model, collectionStatement, rdfValueList);
                             var protoValueList = dev.enola.thing.proto.Value.List.newBuilder();
+                            protoValueList.setOrdered(true);
+
                             for (var rdf4jValue : rdfValueList) {
                                 var protoValue =
                                         convert(model, thing, predicate, rdf4jValue, deferred);

@@ -17,7 +17,9 @@
  */
 package dev.enola.thing.message;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
@@ -91,11 +93,16 @@ public class ProtoThingIntoJavaThingBuilderConverter
                 {
                     var protoList = protoThingValue.getList();
                     var size = protoList.getValuesCount();
-                    var listBuilder = ImmutableList.builderWithExpectedSize(size);
+
+                    ImmutableCollection.Builder<Object> collectionBuilder;
+                    if (protoList.getOrdered())
+                        collectionBuilder = ImmutableList.builderWithExpectedSize(size);
+                    else collectionBuilder = ImmutableSet.builderWithExpectedSize(size);
+
                     for (var protoListValue : protoList.getValuesList()) {
-                        listBuilder.add(object(protoListValue));
+                        collectionBuilder.add(object(protoListValue));
                     }
-                    return listBuilder.build();
+                    return collectionBuilder.build();
                 }
             case STRUCT:
                 {
