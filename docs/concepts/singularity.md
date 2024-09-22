@@ -25,7 +25,7 @@ any human intervention at all.
 
 This is a lofty goal which may or may not ever be fully achieved in any given setup.
 
-An interesting idea is the application of Machine Learning (ML) to this problem domain.
+An interesting idea is the [application of Machine Learning](https://www.vorburger.ch/LearningMachineLearning/) (ML) to this problem domain.
 Enola's initial focus is not yet on this space, but we anticipate that its data model
 could eventually serve as an interesting foundation enabling further exploration
 of an automagic ML angle.
