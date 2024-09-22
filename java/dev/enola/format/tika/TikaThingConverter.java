@@ -20,6 +20,7 @@ package dev.enola.format.tika;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.Thing;
@@ -29,14 +30,19 @@ import dev.enola.thing.repo.ThingsBuilder;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class TikaThingConverter implements UriIntoThingConverter {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TikaThingConverter.class);
 
     private static final AutoDetectParser parser = new AutoDetectParser();
     private final ResourceProvider rp;
@@ -85,7 +91,13 @@ public class TikaThingConverter implements UriIntoThingConverter {
                     metadata.isMultiValued(name)
                             ? ImmutableSet.copyOf(metadata.getValues(name))
                             : metadata.get(name);
-            thing.set("https://enola.dev/tika/" + name, value);
+
+            try {
+                var predicate = "https://enola.dev/tika/" + URIs.parse(name);
+                thing.set(predicate, value);
+            } catch (URISyntaxException e) {
+                LOG.error("Invalid: " + name, e);
+            }
         }
     }
 }
