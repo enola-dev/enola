@@ -145,6 +145,9 @@ maven_install(
         # because it contains package org.apache.commons.logging, which we
         # already get from org.slf4j:jcl-over-slf4j, see https://www.slf4j.org/legacy.html
         "commons-logging:commons-logging",
+
+        # ROME Utils classes appear to also be included in com.rometools:rome - at least via Tika.
+        "com.rometools:rome-utils",
     ],
     fail_if_repin_required = True,
     fetch_sources = True,
