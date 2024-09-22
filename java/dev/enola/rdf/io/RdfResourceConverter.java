@@ -22,10 +22,6 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 
-import org.eclipse.rdf4j.model.impl.DynamicModel;
-import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
-import org.eclipse.rdf4j.rio.helpers.StatementCollector;
-
 public class RdfResourceConverter implements CatchingResourceConverter {
 
     // TODO Add missing tests for this this class (it may well not work as-is yet)
@@ -33,7 +29,6 @@ public class RdfResourceConverter implements CatchingResourceConverter {
     // TODO Add conversion to/from Thing (incl. "chaining" to Thing YAML/JSON/BinPB)
 
     private final RdfReaderConverterInto reader;
-    private final RdfWriterConverter writer = new RdfWriterConverter();
 
     public RdfResourceConverter(ResourceProvider resourceProvider) {
         this.reader = new RdfReaderConverterInto(resourceProvider);
@@ -43,11 +38,11 @@ public class RdfResourceConverter implements CatchingResourceConverter {
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
 
-        // TODO Use WritableResourceRDFHandler to do this "bridging" more #efficiently
-        var model = new DynamicModel(new LinkedHashModelFactory());
-        var handler = new StatementCollector(model);
-        if (reader.convertInto(from, handler)) {
-            return writer.convertInto(model, into);
-        } else return false;
+        var opt = WritableResourceRDFHandler.create(into);
+        if (opt.isEmpty()) return false;
+
+        try (var handler = opt.get()) {
+            return reader.convertInto(from, handler);
+        }
     }
 }
