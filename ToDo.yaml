@@ -97,11 +97,14 @@ items:
   - Extract, load and validate TTL from code blocks in Markdown by parsing MD:
       tags: [markdown]
 
+  - Tika: &tika
+      created: 2024-09-22
+
   - Markdown Model: &modelMarkdown
       created: 2024-02-18
       description: "Load Markdown files and their interlinks as Things!"
       links: ["https://github.com/enola-dev/enola/labels/model%2Fmarkdown"]
-      depends: [*metaJavaCodegen]
+      depends: [*metaJavaCodegen, *tika]
       tags: [markdown]
 
   - Automatically infer `enola:parent` for each path segment of a Thing's IRI; add enola:hide=true:
@@ -214,6 +217,14 @@ items:
   - Validation:
       depends: [*metaJavaCodegen]
 
+  - Geo:
+      depends: [*tika]
+      links:
+        - https://rdf4j.org/documentation/programming/geosparql/
+        - https://github.com/locationtech
+        - https://github.com/enola-dev/enola/issues/611
+        - https://tika.apache.org/3.0.0-BETA2/formats.html#Scientific_formats
+
   - ? Merge this `ToDo.yaml` with [`ToDo.md`](ToDo.md)
 
   - Split Datatype pure-RegExp (with TLC, configurable in Repo) from Java Converter (with DI with @AutoService, fix):
@@ -228,6 +239,18 @@ items:
   - Unify UI with Rosetta:
       tags: [ui, rosetta]
 
+  - Java Model:
+      tags: [model, java]
+      depends: [*tika]
+      links:
+        - https://tika.apache.org/3.0.0-BETA2/formats.html#Java_class_files_and_archives
+        - https://github.com/enola-dev/enola/issues/727
+
+  - Maven Model:
+      tags: [model, maven]
+      links:
+        - https://github.com/enola-dev/enola/issues/726
+
   - Kythe: &kythe
       links:
         - https://github.com/enola-dev/enola/issues/872
@@ -235,6 +258,11 @@ items:
   - Support `data:` scheme:
       links:
         - https://datatracker.ietf.org/doc/html/rfc2397
+
+  - Search:
+      depends: [*tika]
+      links:
+        - https://lucene.apache.org
 
   - Marvel: &marvel
     description: Re-create https://www.marvel-graphs.net with Enola
