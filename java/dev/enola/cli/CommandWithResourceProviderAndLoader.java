@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.format.tika.TikaThingConverter;
 import dev.enola.model.enola.files.FileThingConverter;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.io.Loader;
@@ -39,10 +40,22 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
             description = "Whether file:/ resources create File (or Directory) Things")
     boolean fileLoader;
 
+    @CommandLine.Option(
+            names = {"--tika-loader"},
+            negatable = true,
+            required = true,
+            defaultValue = "true",
+            fallbackValue = "true",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Whether resources are loaded with Tika parsers to create Things")
+    boolean tikaLoader;
+
     protected Loader loader() {
         var uriIntoThingConverters = new ArrayList<UriIntoThingConverter>(2);
         uriIntoThingConverters.add(new RdfResourceIntoThingConverter<>());
         if (fileLoader) uriIntoThingConverters.add(new FileThingConverter());
+        if (tikaLoader) uriIntoThingConverters.add(new TikaThingConverter(rp));
+
         var ritc = new UriIntoThingConverters(uriIntoThingConverters);
         return new Loader(ritc);
     }
