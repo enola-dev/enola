@@ -100,10 +100,12 @@ graph BT
 
   JavaThing<-- "ThingConverterInto" -->JavaThing
 
-  RDF4jModel-- "RdfThingConverter" -->ProtoThing
-  ProtoThing-- "ThingRdfConverter" -->RDF4jModel
+  RDF4jModel-- "RdfProtoThingsConverter" -->ProtoThing
+  ProtoThing-- "ProtoThingRdfConverter" -->RDF4jModel
   RDF4jModel-- "RdfWriterConverter" -->RDFTurtle
   RDFTurtle-- "RdfReaderConverterInto" -->RDF4jModel
+
+  JavaThing-- "JavaThingRdfConverter" -->RDF4jModel
 ```
 
 <!-- TODO Conversion from Java objects, once available -->

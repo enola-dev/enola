@@ -22,3 +22,6 @@ set -euox pipefail
 
 # TODO Add missing documentation for this
 ./enola get --load test/test.html enola:/inline
+
+# TODO Add missing documentation for this
+./enola -v rosetta --in test/test.html --out="fd:2?mediaType=text/turtle"

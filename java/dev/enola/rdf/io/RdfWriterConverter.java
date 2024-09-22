@@ -33,11 +33,14 @@ import java.net.URISyntaxException;
  * Writes RDFJ4j {@link Statement}s (like {@link org.eclipse.rdf4j.model.Model}) into a {@link
  * WritableResource}.
  */
-class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
+public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
+
+    // TODO Replace usages of this with WritableResourceRDFHandler ?
 
     @Override
     public boolean convertInto(Iterable<Statement> from, WritableResource into)
             throws ConversionException {
+        // NB: Similar code in WritableResourceRDFHandler
         var writerFormat =
                 Rio.getWriterFormatForMIMEType(into.mediaType().withoutParameters().toString());
         String baseURI = into.uri().toString();

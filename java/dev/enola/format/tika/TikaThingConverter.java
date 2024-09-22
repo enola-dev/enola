@@ -20,6 +20,7 @@ package dev.enola.format.tika;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
@@ -46,8 +47,13 @@ public class TikaThingConverter implements UriIntoThingConverter {
     @Override
     public boolean convertInto(URI from, ThingsBuilder thingsBuilder)
             throws ConversionException, IOException {
-
         var resource = rp.getReadableResource(from);
+        if (resource == null) return false;
+        return convertInto(resource, thingsBuilder);
+    }
+
+    public boolean convertInto(ReadableResource resource, ThingsBuilder thingsBuilder)
+            throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 
         // TODO rm temporary BodyContentHandler, only for exploration; how to handle?
@@ -56,13 +62,13 @@ public class TikaThingConverter implements UriIntoThingConverter {
 
         try (var is = resource.byteSource().openBufferedStream()) {
             parser.parse(is, handler, metadata);
-            var thing = thingsBuilder.get(from.toString());
+            var thing = thingsBuilder.get(resource.uri().toString());
 
             convertMetadata(metadata, thing);
             return true;
 
         } catch (TikaException | SAXException e) {
-            throw new ConversionException("Tika could not convert: " + from, e);
+            throw new ConversionException("Tika could not convert: " + resource, e);
         }
     }
 
