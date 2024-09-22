@@ -32,7 +32,6 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
 
     public static Optional<WritableResourceRDFHandler> create(WritableResource resource)
             throws IOException, URISyntaxException {
-        // NB: Similar code in RdfWriterConverter
         String baseURI = resource.uri().toString();
         var mediaType = resource.mediaType().withoutParameters().toString();
         var writerFormat = Rio.getWriterFormatForMIMEType(mediaType);

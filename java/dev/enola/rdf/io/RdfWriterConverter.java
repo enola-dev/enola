@@ -21,12 +21,11 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.common.io.resource.WritableResource;
 
+import org.eclipse.rdf4j.model.Namespace;
+import org.eclipse.rdf4j.model.NamespaceAware;
 import org.eclipse.rdf4j.model.Statement;
-import org.eclipse.rdf4j.rio.Rio;
-import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URISyntaxException;
 
 /**
@@ -35,29 +34,27 @@ import java.net.URISyntaxException;
  */
 public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, WritableResource> {
 
-    // TODO Replace usages of this with WritableResourceRDFHandler ?
-
     @Override
     public boolean convertInto(Iterable<Statement> from, WritableResource into)
             throws ConversionException {
-        // NB: Similar code in WritableResourceRDFHandler
-        var writerFormat =
-                Rio.getWriterFormatForMIMEType(into.mediaType().withoutParameters().toString());
-        String baseURI = into.uri().toString();
-        if (!writerFormat.isPresent()) {
-            writerFormat = Rio.getWriterFormatForFileName(baseURI);
-        }
-        if (writerFormat.isPresent()) {
-            try {
-                try (Writer writer = into.charSink().openBufferedStream()) {
-                    Rio.write(from, writer, baseURI, writerFormat.get());
-                    return true;
+
+        try {
+            var opt = WritableResourceRDFHandler.create(into);
+            if (opt.isEmpty()) return false;
+
+            try (var closeableRDFHandler = opt.get()) {
+                if (from instanceof NamespaceAware) {
+                    for (Namespace ns : ((NamespaceAware) from).getNamespaces()) {
+                        closeableRDFHandler.handleNamespace(ns.getPrefix(), ns.getName());
+                    }
                 }
-            } catch (IOException | UnsupportedRDFormatException | URISyntaxException e) {
-                throw new ConversionException("Failed writing to: " + into, e);
+                for (var statement : from) closeableRDFHandler.handleStatement(statement);
+
+                return true;
             }
+
+        } catch (IOException | URISyntaxException e) {
+            throw new ConversionException("WritableResourceRDFHandler.create failed: " + into, e);
         }
-        // NOT throw new ConversionException("No RDFFormat for: " + from);
-        return false;
     }
 }
