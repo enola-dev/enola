@@ -77,14 +77,14 @@ public class ProtoThingRdfConverter
         Resource subject;
         var iri = from.getIri();
         if (!Strings.isNullOrEmpty(iri)) {
-            subject = createIRI(iri);
+            subject = vf.createIRI(iri);
         } else if (!Strings.isNullOrEmpty(bNodeID)) {
             subject = vf.createBNode(bNodeID);
         } else {
             throw new IllegalStateException(from.toString());
         }
         for (var field : from.getPropertiesMap().entrySet()) {
-            IRI predicate = createIRI(field.getKey());
+            IRI predicate = vf.createIRI(field.getKey());
             for (var object : convert(field.getValue(), containedThings)) {
                 Statement statement = vf.createStatement(subject, predicate, object);
                 into.handleStatement(statement);
@@ -104,14 +104,14 @@ public class ProtoThingRdfConverter
     private Iterable<org.eclipse.rdf4j.model.Value> convert(
             dev.enola.thing.proto.Value value, Map<BNode, Thing> containedThings) {
         return switch (value.getKindCase()) {
-            case LINK -> singleton(createIRI(value.getLink()));
+            case LINK -> singleton(vf.createIRI(value.getLink()));
 
             case STRING -> singleton(vf.createLiteral(value.getString()));
 
             case LITERAL -> {
                 var literal = value.getLiteral();
                 yield singleton(
-                        vf.createLiteral(literal.getValue(), createIRI(literal.getDatatype())));
+                        vf.createLiteral(literal.getValue(), vf.createIRI(literal.getDatatype())));
             }
 
             case LANG_STRING -> {
@@ -148,14 +148,5 @@ public class ProtoThingRdfConverter
 
             case KIND_NOT_SET -> throw new IllegalArgumentException(value.toString());
         };
-    }
-
-    // TODO Rm after https://github.com/eclipse-rdf4j/rdf4j/pull/4919 merged, released and we bumped
-    private IRI createIRI(String iri) {
-        try {
-            return vf.createIRI(iri);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(iri, e);
-        }
     }
 }
