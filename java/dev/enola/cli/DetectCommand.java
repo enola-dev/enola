@@ -26,7 +26,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Spec;
 
-import java.net.URI;
 import java.nio.file.Paths;
 
 @Command(
@@ -43,7 +42,7 @@ public class DetectCommand extends CommandWithResourceProvider {
     public void run() throws Exception {
         super.run();
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            var resource = rp.getResource(new URI(iri));
+            var resource = rp.getResource(URIs.parse(iri));
             var mediaType =
                     MediaTypeProviders.SINGLETON.detect(resource).orElse(resource.mediaType());
 

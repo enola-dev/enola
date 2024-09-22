@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+// See also //test-cli.bash
 public class EnolaCLITest {
 
     private static final String MODEL = "classpath:/enola.dev/enola.ttl";

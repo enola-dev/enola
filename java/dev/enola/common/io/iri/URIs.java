@@ -424,6 +424,10 @@ public final class URIs {
 
     // TODO Review if getScheme(), getPath(), getQueryString(), getFragment() are *REALLY* needed?!
 
+    public static URI parse(String uri) throws URISyntaxException {
+        return new URI(uri.replace(" ", "%20"));
+    }
+
     private URIs() {}
 
     public enum ContextKeys implements Context.Key<URI> {
