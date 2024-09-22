@@ -29,8 +29,9 @@ import dev.enola.thing.repo.ThingsBuilder;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.net.URI;
@@ -56,14 +57,16 @@ public class TikaThingConverter implements UriIntoThingConverter {
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 
-        // TODO rm temporary BodyContentHandler, only for exploration; how to handle?
-        BodyContentHandler handler = new BodyContentHandler();
-        Metadata metadata = new Metadata();
+        // TODO Content?
+        // For debugging, e.g. use:
+        // BufferedWriter stdOut = new BufferedWriter(new OutputStreamWriter(System.out));
+        // BodyContentHandler handler = new BodyContentHandler(stdOut);
+        ContentHandler handler = new DefaultHandler();
 
         try (var is = resource.byteSource().openBufferedStream()) {
+            Metadata metadata = new Metadata();
             parser.parse(is, handler, metadata);
             var thing = thingsBuilder.get(resource.uri().toString());
-
             convertMetadata(metadata, thing);
             return true;
 
