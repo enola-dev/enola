@@ -43,10 +43,19 @@ public class TikaThingConverterTest {
 
     @Test
     public void html() throws IOException {
+        check("test.html");
+    }
+
+    @Test
+    public void png() throws IOException {
+        check("test.png");
+    }
+
+    private void check(String classpath) throws IOException {
         var tb = new ThingsBuilder();
         var c = new TikaThingConverter(new ClasspathResource.Provider());
 
-        var r = c.convertInto(URI.create("classpath:/test.html"), tb);
+        var r = c.convertInto(URI.create("classpath:/" + classpath), tb);
         assertThat(r).isTrue();
         assertThat(tb.builders()).hasSize(1);
         var thing = tb.builders().iterator().next().build();
