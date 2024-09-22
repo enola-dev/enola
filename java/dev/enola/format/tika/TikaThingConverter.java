@@ -17,8 +17,11 @@
  */
 package dev.enola.format.tika;
 
+import com.google.common.collect.ImmutableSet;
+
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
@@ -41,25 +44,39 @@ public class TikaThingConverter implements UriIntoThingConverter {
     }
 
     @Override
-    public boolean convertInto(URI from, ThingsBuilder into)
+    public boolean convertInto(URI from, ThingsBuilder thingsBuilder)
             throws ConversionException, IOException {
 
         var resource = rp.getReadableResource(from);
         if (resource.byteSource().isEmpty()) return false;
 
-        // TODO Remove temporary BodyContentHandler & Metadata, only for exploration
+        // TODO rm temporary BodyContentHandler, only for exploration; how to handle?
         BodyContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
 
         try (var is = resource.byteSource().openBufferedStream()) {
             parser.parse(is, handler, metadata);
-            // TODO Thingify instead of this...
-            throw new RuntimeException(handler.toString());
+            var thing = thingsBuilder.get(from.toString());
+
+            convertMetadata(metadata, thing);
+            return true;
 
         } catch (TikaException | SAXException e) {
             throw new ConversionException("Tika could not convert: " + from, e);
         }
+    }
 
-        // TODO return false;
+    private void convertMetadata(Metadata metadata, Thing.Builder<?> thing) {
+        // TODO Do better IRI conversions of some well-known names
+        // ...
+
+        // Fallback
+        for (var name : metadata.names()) {
+            var value =
+                    metadata.isMultiValued(name)
+                            ? ImmutableSet.copyOf(metadata.getValues(name))
+                            : metadata.get(name);
+            thing.set("https://enola.dev/tika/" + name, value);
+        }
     }
 }

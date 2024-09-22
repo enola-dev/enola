@@ -27,6 +27,11 @@ import org.jsoup.nodes.Entities;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+/**
+ * HTML utilities.
+ *
+ * <p>Note that HTML to Thing conversion is done by TikaThingConverter, not here.
+ */
 public final class HTML {
 
     // TODO canonicalize JS inside <script>
