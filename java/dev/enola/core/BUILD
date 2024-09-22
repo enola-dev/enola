@@ -135,6 +135,8 @@ java_library(
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        # TODO Remove tika dependency from core once Rosetta is ServiceLoader-based
+        "//java/dev/enola/format/tika/rdf",
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",

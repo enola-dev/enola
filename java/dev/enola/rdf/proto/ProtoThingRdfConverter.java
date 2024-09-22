@@ -23,7 +23,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.Converter;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.ThingOrBuilder;
@@ -37,9 +36,7 @@ import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.model.ValueFactory;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.model.impl.ValidatingValueFactory;
-import org.eclipse.rdf4j.model.util.ModelBuilder;
 import org.eclipse.rdf4j.rio.RDFHandler;
-import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +48,8 @@ import java.util.Map;
  * <p>See {@link RdfProtoThingsConverter} for the "opposite" of this.
  */
 public class ProtoThingRdfConverter
-        implements Converter<ThingOrBuilder, Model>, ConverterInto<ThingOrBuilder, RDFHandler> {
+        implements AbstractModelConverter<ThingOrBuilder>,
+                ConverterInto<ThingOrBuilder, RDFHandler> {
 
     private final ValueFactory vf;
 
@@ -62,14 +60,6 @@ public class ProtoThingRdfConverter
     public ProtoThingRdfConverter() {
         // just like in Values.VALUE_FACTORY
         this(new ValidatingValueFactory(SimpleValueFactory.getInstance()));
-    }
-
-    @Override
-    public Model convert(ThingOrBuilder input) throws ConversionException {
-        var model = new ModelBuilder().build();
-        var statementCollector = new StatementCollector(model);
-        convertIntoOrThrow(input, statementCollector);
-        return model;
     }
 
     @Override

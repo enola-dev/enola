@@ -34,6 +34,7 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
+import dev.enola.format.tika.rdf.TikaResourceIntoRdfResourceConverter;
 import dev.enola.rdf.io.RdfResourceConverter;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.gexf.GexfResourceConverter;
@@ -81,7 +82,7 @@ public class Rosetta implements ResourceConverter {
 
     private final ResourceConverterChain resourceConverterChain;
     private final ResourceProvider rp;
-    private final Loader loader;
+    private final Loader loader; // TODO Remove!
 
     public Rosetta(Loader loader) {
         this(ResourceProvider.CTX, loader);
@@ -94,8 +95,10 @@ public class Rosetta implements ResourceConverter {
         this.resourceConverterChain =
                 new ResourceConverterChain(
                         ImmutableList.of(
+                                // TODO Use ServiceLoader with @AutoService
                                 new RdfResourceIntoProtoThingResourceConverter(rp),
                                 new RdfResourceConverter(rp),
+                                new TikaResourceIntoRdfResourceConverter(rp),
                                 messageResourceConverter,
                                 new YamlJsonResourceConverter(),
                                 new GraphvizResourceConverter(loader, new GraphvizGenerator(tmp)),

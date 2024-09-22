@@ -15,39 +15,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf.io;
+package dev.enola.format.tika.rdf;
 
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
+import dev.enola.format.tika.TikaThingConverter;
+import dev.enola.rdf.io.JavaThingsBuilderRdfConverter;
+import dev.enola.rdf.io.WritableResourceRDFHandler;
+import dev.enola.thing.repo.ThingsBuilder;
 
-import org.eclipse.rdf4j.model.impl.DynamicModel;
-import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
-import org.eclipse.rdf4j.rio.helpers.StatementCollector;
+public class TikaResourceIntoRdfResourceConverter implements CatchingResourceConverter {
 
-public class RdfResourceConverter implements CatchingResourceConverter {
+    private final TikaThingConverter tikaThingConverter;
+    private final JavaThingsBuilderRdfConverter javaToRdfConverter;
 
-    // TODO Add missing tests for this this class (it may well not work as-is yet)
-
-    // TODO Add conversion to/from Thing (incl. "chaining" to Thing YAML/JSON/BinPB)
-
-    private final RdfReaderConverterInto reader;
-    private final RdfWriterConverter writer = new RdfWriterConverter();
-
-    public RdfResourceConverter(ResourceProvider resourceProvider) {
-        this.reader = new RdfReaderConverterInto(resourceProvider);
+    public TikaResourceIntoRdfResourceConverter(ResourceProvider rp) {
+        this.tikaThingConverter = new TikaThingConverter(rp);
+        this.javaToRdfConverter = new JavaThingsBuilderRdfConverter();
     }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
 
-        // TODO Use WritableResourceRDFHandler to do this "bridging" more #efficiently
-        var model = new DynamicModel(new LinkedHashModelFactory());
-        var handler = new StatementCollector(model);
-        if (reader.convertInto(from, handler)) {
-            return writer.convertInto(model, into);
-        } else return false;
+        ThingsBuilder thingsBuilder = new ThingsBuilder();
+        if (!tikaThingConverter.convertInto(from, thingsBuilder)) return false;
+
+        var rdfHandler = WritableResourceRDFHandler.create(into);
+        if (rdfHandler.isEmpty()) return false;
+
+        javaToRdfConverter.convertInto(thingsBuilder, rdfHandler.get());
+        return true;
     }
 }
