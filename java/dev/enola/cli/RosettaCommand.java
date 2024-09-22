@@ -72,6 +72,13 @@ public class RosettaCommand extends CommandWithResourceProviderAndLoader {
                 inResource = new DelegatingResource(inResource, mt);
             }
 
+            if (inResource == null)
+                throw new IllegalArgumentException(
+                        "Missing --*-scheme flag? Could not open: " + in);
+            if (outResource == null)
+                throw new IllegalArgumentException(
+                        "Missing --*-scheme flag? Could not open: " + out);
+
             rosetta.convertIntoOrThrow(inResource, outResource);
         }
     }

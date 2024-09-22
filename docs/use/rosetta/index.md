@@ -31,6 +31,7 @@ e.g. between:
   [`TextProto`](https://protobuf.dev/reference/protobuf/textformat-spec/) ⇔
   _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats
 * Graph Diagrams from RDF et al.
+* [Many other formats](#tika)!
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
 
@@ -60,6 +61,10 @@ $ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gexf
 ```
 
 produces [`picasso.gexf`](../../BUILT/picasso.gexf) in [GEXF format](https://gexf.net), which can be opened e.g. in [Gephi Lite](https://gephi.org/gephi-lite/).
+
+## Tika
+
+[See here](../../concepts/tika.md)!
 
 ## YAML to JSON
 

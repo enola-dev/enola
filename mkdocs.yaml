@@ -65,6 +65,7 @@ nav:
       - URL & ID: concepts/uri.md
       - Turtle: concepts/turtle.md
       - Metadata: concepts/metadata.md
+      - Tika: concepts/tika.md
   - Developers:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md
