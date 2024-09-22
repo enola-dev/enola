@@ -20,4 +20,5 @@ set -euox pipefail
 # This script tests Enola CLI invocations.
 # See also EnolaCLITest
 
+# TODO Add missing documentation for this
 ./enola get --load test/test.html enola:/inline

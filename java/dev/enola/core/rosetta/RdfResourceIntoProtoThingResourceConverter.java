@@ -25,13 +25,13 @@ import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.rdf.io.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.io.ThingMediaTypes;
 
-public class ResourceIntoThingResourceConverter implements CatchingResourceConverter {
+public class RdfResourceIntoProtoThingResourceConverter implements CatchingResourceConverter {
 
     private final ThingMediaTypes thingMediaTypes = new ThingMediaTypes();
     private final RdfResourceIntoProtoThingConverter ritc;
     private final ProtoIO protoIO = new ProtoIO();
 
-    public ResourceIntoThingResourceConverter(ResourceProvider rp) {
+    public RdfResourceIntoProtoThingResourceConverter(ResourceProvider rp) {
         this.ritc = new RdfResourceIntoProtoThingConverter(rp);
     }
 

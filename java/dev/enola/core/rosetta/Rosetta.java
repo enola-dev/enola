@@ -94,7 +94,7 @@ public class Rosetta implements ResourceConverter {
         this.resourceConverterChain =
                 new ResourceConverterChain(
                         ImmutableList.of(
-                                new ResourceIntoThingResourceConverter(rp),
+                                new RdfResourceIntoProtoThingResourceConverter(rp),
                                 new RdfResourceConverter(rp),
                                 messageResourceConverter,
                                 new YamlJsonResourceConverter(),
