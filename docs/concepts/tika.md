@@ -24,20 +24,26 @@ All of these formats are supported e.g. for conversions with [Rosetta](../use/ro
 
 <!-- TODO Markdown?! With links, not just Metadata? -->
 
+<!-- NB: The following commands are not run through ExecMD! Add to test-cli.bash... -->
+
 ## HTML
 
-```bash cd .././..
-$ ./enola -v rosetta --in test/test.html --out="fd:2?mediaType=text/turtle"
-...
+```bash
+./enola -v rosetta --in test/test.html --out="fd:2?mediaType=text/turtle"
 ```
 
 This works for remote HTTP as well, of course:
 
-```bash cd .././..
-$ ./enola rosetta --http-scheme --in https://docs.enola.dev --out="fd:2?mediaType=text/turtle"
-...
+```bash
+./enola rosetta --http-scheme --in https://docs.enola.dev --out="fd:2?mediaType=text/turtle"
 ```
 
 ## EPUB
 
 Any `*.epub` (`application/epub+zip`).
+
+## Executable
+
+```bash
+./enola -v rosetta --in /usr/lib64/libsane.so.1 --out="fd:2?mediaType=text/turtle"
+```

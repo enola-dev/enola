@@ -20,8 +20,7 @@ set -euox pipefail
 # This script tests Enola CLI invocations.
 # See also EnolaCLITest
 
-# TODO Add missing documentation for this
 ./enola get --load test/test.html enola:/inline
-
-# TODO Add missing documentation for this
 ./enola -v rosetta --in test/test.html --out="fd:2?mediaType=text/turtle"
+
+# PS: Update tika.md with anything (of interest) added here

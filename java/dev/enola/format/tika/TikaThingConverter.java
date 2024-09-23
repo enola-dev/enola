@@ -19,6 +19,7 @@ package dev.enola.format.tika;
 
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.StringBuilderWriter;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
@@ -33,11 +34,12 @@ import dev.enola.thing.repo.ThingsBuilder;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
-import org.xml.sax.ContentHandler;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,17 +70,17 @@ public class TikaThingConverter implements UriIntoThingConverter {
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 
-        // TODO Content?
-        // For debugging, e.g. use:
-        // BufferedWriter stdOut = new BufferedWriter(new OutputStreamWriter(System.out));
-        // BodyContentHandler handler = new BodyContentHandler(stdOut);
-        ContentHandler handler = new DefaultHandler();
+        Writer sw = new StringBuilderWriter();
+        BodyContentHandler handler = new BodyContentHandler(sw);
 
         try (var is = resource.byteSource().openBufferedStream()) {
             Metadata metadata = new Metadata();
-            parser.parse(is, handler, metadata);
+            ParseContext parseContext = new ParseContext();
+            // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
+            parser.parse(is, handler, metadata, parseContext);
             var thing = thingsBuilder.get(resource.uri().toString());
             convertMetadata(metadata, thing);
+            thing.set("https://enola.dev/content-as-text", sw.toString());
             return true;
 
         } catch (TikaException | SAXException e) {
