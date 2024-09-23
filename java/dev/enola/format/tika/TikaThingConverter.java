@@ -21,6 +21,9 @@ import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.iri.namespace.NamespaceConverter;
+import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
+import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.Thing;
@@ -30,24 +33,27 @@ import dev.enola.thing.repo.ThingsBuilder;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TikaThingConverter implements UriIntoThingConverter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TikaThingConverter.class);
 
     private static final AutoDetectParser parser = new AutoDetectParser();
     private final ResourceProvider rp;
 
+    private final NamespaceConverter namespaceConverter;
+
     public TikaThingConverter(ResourceProvider resourceProvider) {
         this.rp = resourceProvider;
+        this.namespaceConverter =
+                new NamespaceConverterWithRepository(NamespaceRepositoryEnolaDefaults.INSTANCE);
     }
 
     @Override
@@ -81,18 +87,38 @@ public class TikaThingConverter implements UriIntoThingConverter {
     }
 
     private void convertMetadata(Metadata metadata, Thing.Builder<?> thing) {
-        // TODO Do better IRI conversions of some well-known names
-        // ...
+        final var properties = new HashMap<String, Object>();
+        final var names = new ArrayList<>(List.of(metadata.names()));
+        while (!names.isEmpty()) {
+            final var name = names.remove(0);
+            if (name.startsWith("X-TIKA")) continue;
 
-        // Fallback
-        for (var name : metadata.names()) {
-            var value =
+            final var value =
                     metadata.isMultiValued(name)
                             ? ImmutableSet.copyOf(metadata.getValues(name))
                             : metadata.get(name);
 
-            var predicate = "https://enola.dev/tika/" + URIs.encode(name);
-            thing.set(predicate, value);
+            final var toClean = CleanMetadata.ALL.get(name);
+            if (toClean != null) {
+                var iri = toClean.iri();
+                if (iri != null) properties.put(iri, value);
+
+                var removeNames = List.of(toClean.removeNames());
+                for (var removeName : removeNames) {
+                    names.remove(removeName);
+                    properties.remove(tikaMetadataNameToEnolaIRI(removeName));
+                }
+
+            } else {
+                var iri = namespaceConverter.toIRI(name);
+                if (!iri.equals(name)) properties.put(iri, value);
+                else properties.put(tikaMetadataNameToEnolaIRI(name), value);
+            }
         }
+        properties.forEach(thing::set);
+    }
+
+    private String tikaMetadataNameToEnolaIRI(String name) {
+        return "https://enola.dev/tika/" + URIs.encode(name);
     }
 }
