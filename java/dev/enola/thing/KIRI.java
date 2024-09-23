@@ -56,6 +56,8 @@ public final class KIRI {
          */
         public static final String EMOJI = NS + "emoji";
 
+        public static final String MEDIA_TYPE = NS + "mediaType";
+
         /**
          * URI of what something is 'based on', e.g. where it 'comes from' (source), such as where
          * e.g. a Thing was originally "loaded" from. This may be a list.
@@ -130,6 +132,9 @@ public final class KIRI {
 
         public static final String TITLE = NS + "title";
         public static final String DESCRIPTION = NS + "description";
+
+        public static final String CREATOR = NS + "creator";
+        public static final String LANGUAGE = NS + "language";
 
         private DC() {}
     }
