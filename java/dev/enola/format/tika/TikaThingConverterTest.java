@@ -51,6 +51,12 @@ public class TikaThingConverterTest {
         check("test.png");
     }
 
+    // TODO @Test public void jpeg() throws IOException {
+
+    // TODO @Test public void tiff() throws IOException {
+
+    // TODO @Test public void epubEBook() throws IOException {
+
     private void check(String classpath) throws IOException {
         var tb = new ThingsBuilder();
         var c = new TikaThingConverter(new ClasspathResource.Provider());

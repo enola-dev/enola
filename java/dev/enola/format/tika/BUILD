@@ -29,6 +29,7 @@ java_library(
         "@maven//:org_apache_tika_tika_parsers_standard_package",
     ],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/thing:thing_java",
