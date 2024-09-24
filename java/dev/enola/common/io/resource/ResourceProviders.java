@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.io.iri.URIs;
 
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +70,7 @@ public class ResourceProviders implements ResourceProvider {
     }
 
     @Override
-    public @Nullable Resource getResource(final URI uri) {
+    public Resource getResource(final URI uri) {
         var resolvedURI = URIs.absolutify(uri);
 
         for (ResourceProvider resourceProvider : resourceProviders) {
@@ -79,9 +78,8 @@ public class ResourceProviders implements ResourceProvider {
             if (resource != null) return resource;
         }
 
-        // TODO warn instead of debug - or does that create a shitload of logging?
-        LOG.debug("Unsupported URI: {}", resolvedURI);
-        return null;
+        throw new IllegalArgumentException(
+                "Unsupported scheme, but try activating one of the --XYZ-scheme flags: " + uri);
     }
 
     @Override

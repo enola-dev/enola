@@ -223,7 +223,7 @@ public class ResourceProvidersTest {
                 () -> new ResourceProviders().getResource(URI.create("test:something")));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testUnknownScheme() {
         assertThat(new ResourceProviders().getResource(URI.create("xyz-unknown:test"))).isNull();
     }

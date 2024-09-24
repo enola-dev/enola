@@ -34,7 +34,7 @@ public class RdfResourceIntoThingConverterTest {
 
     DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
     ResourceProvider resourceProvider =
-            new ResourceProviders(new ClasspathResource.Provider(), new FileResource.Provider());
+            new ResourceProviders(new ClasspathResource.Provider(), new EmptyResource.Provider());
     RdfResourceIntoThingConverter c =
             new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
 
@@ -50,8 +50,8 @@ public class RdfResourceIntoThingConverterTest {
     }
 
     @Test
-    public void directory() throws IOException {
-        assertThat(convert(URI.create("file:/tmp/"))).isEmpty();
+    public void empty() throws IOException {
+        assertThat(convert(EmptyResource.EMPTY_URI)).isEmpty();
     }
 
     private Iterable<Thing.Builder<?>> convert(URI uri) throws IOException {
