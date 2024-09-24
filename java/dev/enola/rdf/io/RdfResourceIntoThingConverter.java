@@ -86,7 +86,7 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
 
         for (var protoThing : protoList) {
             try {
-                var thingBuilder = into.get(protoThing.getIri());
+                var thingBuilder = into.getBuilder(protoThing.getIri());
                 protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(
                         protoThing, thingBuilder);
             } catch (ConversionException e) {

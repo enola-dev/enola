@@ -78,7 +78,7 @@ public class TikaThingConverter implements UriIntoThingConverter {
             ParseContext parseContext = new ParseContext();
             // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
-            var thing = thingsBuilder.get(resource.uri().toString());
+            var thing = thingsBuilder.getBuilder(resource.uri().toString());
             convertMetadata(metadata, thing);
             thing.set("https://enola.dev/content-as-text", sw.toString());
             return true;

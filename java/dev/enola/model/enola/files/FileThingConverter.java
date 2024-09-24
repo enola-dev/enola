@@ -74,7 +74,7 @@ public class FileThingConverter implements UriIntoThingConverter {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 
-        var node = into.get(getIRI(uri));
+        var node = into.getBuilder(getIRI(uri));
 
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);

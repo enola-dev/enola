@@ -28,7 +28,7 @@ public class ThingsBuilder {
 
     private final Map<String, Thing.Builder<?>> map = new HashMap<>();
 
-    public Thing.Builder<?> get(String iri) {
+    public Thing.Builder<?> getBuilder(String iri) {
         return map.computeIfAbsent(iri, _iri -> ImmutableThing.builder().iri(_iri));
     }
 
