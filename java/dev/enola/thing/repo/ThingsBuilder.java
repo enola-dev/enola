@@ -17,14 +17,24 @@
  */
 package dev.enola.thing.repo;
 
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.impl.OnlyIRIThing;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
+/**
+ * Set of {@link Thing.Builder}s.
+ *
+ * <p>This is intended to be used "short-lived", e.g., during incremental thing creation.
+ *
+ * <p>For memory efficiency, do NOT "keep this around".
+ */
 // @NotThreadSafe
-public class ThingsBuilder {
+public class ThingsBuilder implements ThingsRepository {
 
     private final Map<String, Thing.Builder<?>> map = new HashMap<>();
 
@@ -34,5 +44,14 @@ public class ThingsBuilder {
 
     public Iterable<Thing.Builder<?>> builders() {
         return map.values();
+    }
+
+    @Override
+    public Stream<Thing> getThings(String iri) {
+        return switch (iri) {
+            case KIRI.E.LIST_THINGS -> map.values().stream().map(Thing.Builder::build);
+            case KIRI.E.LIST_IRIS -> map.keySet().stream().map(OnlyIRIThing::new);
+            default -> Stream.of(getBuilder(iri).build());
+        };
     }
 }

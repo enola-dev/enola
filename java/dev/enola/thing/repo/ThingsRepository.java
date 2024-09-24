@@ -24,6 +24,8 @@ import java.util.NoSuchElementException;
 
 public interface ThingsRepository extends ThingRepository, ThingsProvider {
 
+    // TODO See note in ThingsProvider, and also get rid of replace this with ThingRepository
+
     @Override
     default Iterable<Thing> list() {
         return getThings(KIRI.E.LIST_THINGS).toList();

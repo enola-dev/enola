@@ -23,6 +23,10 @@ import java.util.stream.Stream;
 
 public interface ThingsProvider {
 
+    // TODO Rethink this... this doesn't make sense, there should only ever be 1 Thing per IRI?!
+    // KIRI.E.LIST_THINGS & KIRI.E.LIST_IRIS just needs to return a Thing with 1 list property...
+    // Switch callers to existing old ThingProvider (NB singular Thing, not ThingsProvider).
+
     // TODO Reactive Stream, or Mutiny Multi, instead of JDK Stream
     Stream<Thing> getThings(String iri);
 }
