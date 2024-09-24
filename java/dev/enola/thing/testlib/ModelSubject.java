@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf.io;
+package dev.enola.thing.testlib;
 
 import static com.google.common.truth.Truth.assertAbout;
 
@@ -28,7 +28,7 @@ import org.eclipse.rdf4j.model.util.Models;
 
 final class ModelSubject extends Subject {
 
-    // TODO Move this class to a //common/testlib (and rm copy/paste in thing.testlib)
+    // TODO Remove this copy/paste duplicate of rdf.io.ModelSubject, once that's in a testlib
 
     public static ModelSubject assertThat(Model actual) {
         return assertAbout(resources()).that(actual);
