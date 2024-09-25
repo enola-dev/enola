@@ -23,6 +23,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.testlib.ThingsSubject;
 
 import org.junit.Test;
 
@@ -58,14 +59,19 @@ public class TikaThingConverterTest {
     // TODO @Test public void epubEBook() throws IOException {
 
     private void check(String classpath) throws IOException {
+        var name = "classpath:/" + classpath;
+
         var tb = new ThingsBuilder();
         var c = new TikaThingConverter(new ClasspathResource.Provider());
 
-        var r = c.convertInto(URI.create("classpath:/" + classpath), tb);
+        var r = c.convertInto(URI.create(name), tb);
         assertThat(r).isTrue();
+
         assertThat(tb.builders()).hasSize(1);
         var thing = tb.builders().iterator().next().build();
         checkThatAllPredicatesAreAbsoluteURIs(thing);
+
+        ThingsSubject.assertThat(tb).isEqualTo(name + ".ttl");
     }
 
     private void checkThatAllPredicatesAreAbsoluteURIs(Thing thing) {

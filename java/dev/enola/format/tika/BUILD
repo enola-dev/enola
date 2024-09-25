@@ -49,6 +49,7 @@ junit_tests(
         ":tika",
         "//java/dev/enola/common/io",
         "//java/dev/enola/thing:thing_java",
+        "//java/dev/enola/thing/testlib",
         "//test",
     ],
 )

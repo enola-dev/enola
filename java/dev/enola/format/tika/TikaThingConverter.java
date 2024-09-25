@@ -80,7 +80,8 @@ public class TikaThingConverter implements UriIntoThingConverter {
             parser.parse(is, handler, metadata, parseContext);
             var thing = thingsBuilder.getBuilder(resource.uri().toString());
             convertMetadata(metadata, thing);
-            thing.set("https://enola.dev/content-as-text", sw.toString());
+            var text = sw.toString().trim();
+            if (!text.isEmpty()) thing.set("https://enola.dev/content-as-text", text);
             return true;
 
         } catch (TikaException | SAXException e) {
