@@ -22,16 +22,18 @@ import dev.enola.thing.repo.ThingsRepository;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class ThingsSubjectTest {
 
     @Test
-    public void empty() {
+    public void empty() throws IOException {
         ThingsRepository r = new ThingsBuilder();
         ThingsSubject.assertThat(r).isEqualTo("classpath:/empty.yaml");
     }
 
     @Test
-    public void ttl() {
+    public void ttl() throws IOException {
         ThingsBuilder r = new ThingsBuilder();
         r.getBuilder("https://example.org/greeting1")
                 .set("https://example.org/message", "hello, world");

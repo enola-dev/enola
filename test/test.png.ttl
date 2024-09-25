@@ -1,0 +1,23 @@
+<classpath:/test.png> <https://enola.dev/tika/Chroma%20ColorSpaceType> "RGB";
+                      <https://enola.dev/tika/Compression%20Lossless> "true";
+                      <https://enola.dev/tika/Data%20SampleFormat> "UnsignedIntegral";
+                      <https://enola.dev/tika/Chroma%20NumChannels> "4";
+                      <https://enola.dev/tika/Transparency%20Alpha> "nonpremultipled";
+                      <https://enola.dev/tika/IHDR> "width=32, height=32, bitDepth=16, colorType=RGBAlpha, compressionMethod=deflate, filterMethod=adaptive, interlaceMethod=none";
+                      <https://enola.dev/tika/imagereader:NumImages> "1";
+                      <https://enola.dev/tika/Dimension%20PixelAspectRatio> "1.0";
+                      <https://enola.dev/tika/Dimension%20ImageOrientation> "Normal";
+                      <https://enola.dev/tika/Data%20PlanarConfiguration> "PixelInterleaved";
+                      <https://enola.dev/tika/width> "32";
+                      <https://enola.dev/tika/Chroma%20Gamma> "1.0";
+                      <https://enola.dev/tika/gAMA> "100000";
+                      <https://enola.dev/mediaType> "image/png";
+                      <https://enola.dev/tika/Compression%20NumProgressiveScans> "1";
+                      <https://enola.dev/tika/Content-Type-Parser-Override> "image/ocr-png";
+                      <https://enola.dev/tika/Data%20BitsPerSample> "16 16 16 16";
+                      <http://ns.adobe.com/tiff/1.0/ImageWidth> "32";
+                      <http://ns.adobe.com/tiff/1.0/ImageLength> "32";
+                      <https://enola.dev/tika/height> "32";
+                      <https://enola.dev/tika/Chroma%20BlackIsZero> "true";
+                      <https://enola.dev/tika/Compression%20CompressionTypeName> "deflate";
+                      <http://ns.adobe.com/tiff/1.0/BitsPerSample> "16 16 16 16".

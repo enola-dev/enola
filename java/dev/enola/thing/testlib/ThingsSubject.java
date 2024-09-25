@@ -24,16 +24,22 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.testlib.ResourceSubject;
 import dev.enola.rdf.io.JavaThingRdfConverter;
 import dev.enola.rdf.io.RdfReaderConverter;
+import dev.enola.rdf.io.RdfWriterConverter;
 import dev.enola.thing.repo.ThingRepository;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.impl.DynamicModel;
 import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
+import org.eclipse.rdf4j.model.util.Models;
 
-final class ThingsSubject extends Subject {
+import java.io.IOException;
+
+public final class ThingsSubject extends Subject {
 
     // TODO add assertThat(Thing actual) - with a SingleThingRepository ?
 
@@ -50,17 +56,22 @@ final class ThingsSubject extends Subject {
     private final Model actualModel;
     private final ResourceProvider rp = new ClasspathResource.Provider();
     private final RdfReaderConverter rdfReaderConverter = new RdfReaderConverter(rp);
-    private final JavaThingRdfConverter javaThingRdfConverter = new JavaThingRdfConverter();
+    private final RdfWriterConverter rdfWriterConverter = new RdfWriterConverter();
 
     public ThingsSubject(FailureMetadata metadata, ThingRepository actual) {
         super(metadata, actual);
+        JavaThingRdfConverter javaThingRdfConverter = new JavaThingRdfConverter();
         actualModel = javaThingRdfConverter.convert(Streams.stream(actual.list()));
     }
 
-    public void isEqualTo(String classpathResourcePath) {
+    public void isEqualTo(String classpathResourcePath) throws IOException {
         var resource = rp.getReadableResource(classpathResourcePath);
         if (resource == null) throw new IllegalArgumentException(classpathResourcePath);
         var expectedModel = rdfReaderConverter.convert(resource).orElse(EMPTY_MODEL);
-        ModelSubject.assertThat(actualModel).isEqualTo(expectedModel);
+        if (!Models.isomorphic(actualModel, expectedModel)) {
+            var actualResource = new MemoryResource(resource.mediaType());
+            rdfWriterConverter.convertInto(actualModel, actualResource);
+            ResourceSubject.assertThat(actualResource).containsCharsOf(resource);
+        }
     }
 }
