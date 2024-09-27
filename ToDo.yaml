@@ -20,11 +20,6 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
-  - https://github.com/enola-dev/enola/pull/887:
-      items:
-        - ThingsSubject Order output of test failure
-        - Actual mismatch where & why?
-
   - Last `null` NPE, for Enola: &lastNPE
       links:
         - https://github.com/enola-dev/enola/issues/845
