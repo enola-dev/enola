@@ -20,17 +20,14 @@ package dev.enola.thing.testlib;
 import static com.google.common.truth.Truth.assertAbout;
 
 import com.google.common.collect.Streams;
-import com.google.common.net.MediaType;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.testlib.ResourceSubject;
 import dev.enola.rdf.io.JavaThingRdfConverter;
-import dev.enola.rdf.io.RdfCanonicalizer;
 import dev.enola.rdf.io.RdfReaderConverter;
 import dev.enola.rdf.io.RdfWriterConverter;
 import dev.enola.thing.repo.ThingRepository;
@@ -67,7 +64,6 @@ public final class ThingsSubject extends Subject {
     private final ResourceProvider rp = new ClasspathResource.Provider();
     private final RdfReaderConverter rdfReaderConverter = new RdfReaderConverter(rp);
     private final RdfWriterConverter rdfWriterConverter = new RdfWriterConverter();
-    private final RdfCanonicalizer rdfCanonicalizer = new RdfCanonicalizer(rp);
 
     public ThingsSubject(FailureMetadata metadata, ThingRepository actual) {
         super(metadata, actual);
@@ -79,22 +75,15 @@ public final class ThingsSubject extends Subject {
         var expectedResource = rp.getReadableResource(expectedResourcePath);
         if (expectedResource == null) throw new IllegalArgumentException(expectedResourcePath);
         var expectedModel = rdfReaderConverter.convert(expectedResource).orElse(EMPTY_MODEL);
+
         if (!Models.isomorphic(actualModel, expectedModel)) {
             var namespaces = expectedModel.getNamespaces();
             for (var namespace : namespaces) actualModel.setNamespace(namespace);
 
-            var mediaType = expectedResource.mediaType();
-            var actualResource = toCanonicalResource(actualModel, mediaType);
-            expectedResource = toCanonicalResource(expectedModel, mediaType);
-
-            ResourceSubject.assertThat(actualResource).hasCharsEqualToOrDiff(expectedResource);
+            var actualResource =
+                    new MemoryResource(expectedResource.mediaType(), expectedResource.uri());
+            rdfWriterConverter.convertIntoOrThrow(actualModel, actualResource);
+            ResourceSubject.assertThat(actualResource).hasCharsEqualTo(expectedResource);
         }
-    }
-
-    private ReadableResource toCanonicalResource(Model model, MediaType mediaType) {
-        var canonicalModel = rdfCanonicalizer.orderStatements(model);
-        var resource = new MemoryResource(mediaType, URI);
-        rdfWriterConverter.convertIntoOrThrow(canonicalModel, resource);
-        return resource;
     }
 }

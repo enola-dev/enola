@@ -76,6 +76,7 @@ public final class ResourceSubject extends Subject {
         check("charSource").that(actualChars).isEqualTo(expectedChars);
     }
 
+    // TODO Improve confusing output for multiline diff
     public void hasCharsEqualToOrDiff(ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
