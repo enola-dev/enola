@@ -13,7 +13,6 @@
                       <https://enola.dev/tika/gAMA> "100000";
                       <https://enola.dev/mediaType> "image/png";
                       <https://enola.dev/tika/Compression%20NumProgressiveScans> "1";
-                      <https://enola.dev/tika/Content-Type-Parser-Override> "image/ocr-png";
                       <https://enola.dev/tika/Data%20BitsPerSample> "16 16 16 16";
                       <http://ns.adobe.com/tiff/1.0/ImageWidth> "32";
                       <http://ns.adobe.com/tiff/1.0/ImageLength> "32";

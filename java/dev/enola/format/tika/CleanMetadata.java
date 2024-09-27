@@ -46,5 +46,7 @@ record CleanMetadata(@Nullable String iri, String... removeNames) {
                     "viewport",
                     new CleanMetadata(),
                     "generator",
-                    new CleanMetadata("https://enola.dev/html/generator"));
+                    new CleanMetadata("https://enola.dev/html/generator"),
+                    "Content-Type-Parser-Override", // Due to flaky ENV dep TikaThingConverterTest
+                    new CleanMetadata());
 }
