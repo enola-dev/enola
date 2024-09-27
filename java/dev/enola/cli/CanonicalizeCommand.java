@@ -21,6 +21,7 @@ import dev.enola.common.canonicalize.Canonicalizer;
 import dev.enola.common.context.TLC;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.resource.DelegatingResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.stream.GlobResolvers;
 import dev.enola.common.io.resource.stream.WritableResourcesProvider;
@@ -77,6 +78,7 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
 
     private void canonicalize(ReadableResource r) throws IOException {
         var out = wrp.getWritableResource(CommandWithModel.Output.get(output), r.uri());
+        out = new DelegatingResource(out, r.mediaType().withoutParameters());
         canonicalizer.canonicalize(r, out, pretty);
     }
 }

@@ -33,6 +33,13 @@ It also has an application in [cryptography](https://github.com/enola-dev/enola/
 
 ## RDF
 
+`enola canonicalize` for RDF order statements by predicate IRI, for example:
+
+```bash cd ../.././..
+$ ./enola -v canonicalize --load=test/picasso.ttl
+...
+```
+
 Future versions may implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/).
 
 ## JSON
