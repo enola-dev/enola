@@ -39,6 +39,10 @@ public class DelegatingResource extends BaseResource implements Resource {
         this.delegate = delegate;
     }
 
+    public DelegatingResource(WritableResource delegate, MediaType mediaType) {
+        this(new WritableButNotReadableDelegatingResource(delegate), mediaType);
+    }
+
     public DelegatingResource(ReadableResource delegate, MediaType mediaType) {
         this(new ReadableButNotWritableDelegatingResource(delegate), mediaType);
     }
