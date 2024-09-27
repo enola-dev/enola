@@ -73,6 +73,7 @@ junit_tests(
     ],
     deps = [
         ":enola",
+        "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
