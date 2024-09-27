@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.testlib;
 
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
 import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.repo.ThingsRepository;
 
@@ -33,10 +35,24 @@ public class ThingsSubjectTest {
     }
 
     @Test
-    public void ttl() throws IOException {
+    public void greeting1ttl() throws IOException {
         ThingsBuilder r = new ThingsBuilder();
         r.getBuilder("https://example.org/greeting1")
                 .set("https://example.org/message", "hello, world");
-        ThingsSubject.assertThat(r).isEqualTo("classpath:/greeting1.ttl");
+        ThingsSubject.assertThat(r).isEqualTo("classpath:/example.org/greeting1.ttl");
+    }
+
+    @Test
+    public void greetingNttl() throws IOException {
+        ThingsBuilder r = new ThingsBuilder();
+        r.getBuilder("https://example.org/greeting")
+                .set(KIRI.E.IRI_TEMPLATE_PROPERTY, "https://example.org/greet/{NUMBER}")
+                .set("https://enola.dev/example", new Link("https://example.org/greet/42"))
+                .set(
+                        "https://example.org/yo",
+                        "http://example.org/hi/{NUMBER}",
+                        KIRI.E.IRI_TEMPLATE_DATATYPE)
+                .set(KIRI.RDF.TYPE, new Link(KIRI.RDFS.CLASS));
+        ThingsSubject.assertThat(r).isEqualTo("classpath:/example.org/greetingN.ttl");
     }
 }

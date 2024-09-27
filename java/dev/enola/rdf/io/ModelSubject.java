@@ -26,6 +26,11 @@ import com.google.common.truth.Truth;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Models;
 
+/**
+ * Truth Subject for RDF4j {@link Model}.
+ *
+ * <p>See also ThingsSubject.
+ */
 final class ModelSubject extends Subject {
 
     // TODO Move this class to a //common/testlib (and rm copy/paste in thing.testlib)

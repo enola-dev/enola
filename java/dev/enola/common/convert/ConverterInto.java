@@ -53,7 +53,7 @@ public interface ConverterInto<I, O> {
      *     I or write to O
      * @throws IOException TODO wrap IOException into ConversionException and remove throws
      */
-    @CheckReturnValue
+    @CheckReturnValue // NB: Use convertIntoOrThrow() instead!
     boolean convertInto(I from, O into) throws ConversionException, IOException;
 
     default void convertIntoOrThrow(I from, O into) throws ConversionException {

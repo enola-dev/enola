@@ -8,8 +8,7 @@ java_library(
         exclude = [
             "BUILD",
             "build.bash",
-            "example.org/**",
         ],
-    ) + ["example.org/greetingN.ttl"],
+    ),
     visibility = ["//:__subpackages__"],
 )

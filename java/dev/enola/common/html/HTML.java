@@ -37,16 +37,21 @@ public final class HTML {
     // TODO canonicalize JS inside <script>
     // TODO canonicalize CSS inside <style>
 
-    public static String canonicalize(ReadableResource html, Charset outCharset)
+    public static String canonicalize(ReadableResource html, Charset outCharset, boolean format)
             throws IOException {
         var baseURI = URIs.getBase(html.uri());
         var dom = read(html);
         var outputSetting = new Document.OutputSettings();
         outputSetting.charset(outCharset);
         outputSetting.escapeMode(Entities.EscapeMode.xhtml);
-        outputSetting.indentAmount(2);
         outputSetting.maxPaddingWidth(-1);
-        outputSetting.outline(true);
+        if (format) {
+            outputSetting.outline(true);
+            outputSetting.indentAmount(2);
+        } else {
+            outputSetting.outline(false);
+            outputSetting.indentAmount(0);
+        }
         outputSetting.prettyPrint(true);
         dom.outputSettings(outputSetting);
         return dom.html();

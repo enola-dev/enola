@@ -17,11 +17,16 @@
  */
 package dev.enola.common.io.iri.namespace;
 
+import dev.enola.common.context.TLC;
 import dev.enola.data.Repository;
 
 import java.util.Optional;
 
 public interface NamespaceRepository extends Repository<Namespace> {
+
+    NamespaceRepository CTX =
+            TLC.optional(NamespaceRepository.class)
+                    .orElse(NamespaceRepositoryEnolaDefaults.INSTANCE);
 
     Optional<String> getIRI(String prefix);
 }

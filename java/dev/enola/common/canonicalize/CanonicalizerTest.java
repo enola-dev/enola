@@ -37,11 +37,13 @@ import java.nio.charset.StandardCharsets;
 
 public class CanonicalizerTest {
 
+    private final Canonicalizer canonicalizer = new Canonicalizer(new ClasspathResource.Provider());
+
     @Test
     public void unknown() throws IOException {
         var in = new EmptyResource(MediaType.MICROSOFT_WORD);
         var out = new MemoryResource(MediaType.MICROSOFT_WORD);
-        Canonicalizer.canonicalize(in, out, false);
+        canonicalizer.canonicalize(in, out, false);
         assertThat(out).hasCharsEqualTo(in);
     }
 
@@ -49,7 +51,7 @@ public class CanonicalizerTest {
     public void emptyJSON() throws IOException {
         var in = new EmptyResource(MediaType.JSON_UTF_8.withoutParameters());
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out, false);
+        canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource().read()).isEmpty(); // NOT .isEqualTo("{}".getBytes(UTF_8));
     }
 
@@ -57,7 +59,7 @@ public class CanonicalizerTest {
     public void simpleJSON() throws IOException {
         var in = StringResource.of(" {\"b\":\"hi\", \"a\":37.0}", MediaType.JSON_UTF_8);
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out, false);
+        canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource().read()).isEqualTo("{\"a\":37.0,\"b\":\"hi\"}".getBytes(UTF_8));
     }
 
@@ -68,7 +70,7 @@ public class CanonicalizerTest {
                         "{\"b\":\"hi\"}",
                         MediaType.JSON_UTF_8.withCharset(StandardCharsets.UTF_16));
         var out = new MemoryResource(MediaType.ANY_TYPE);
-        Canonicalizer.canonicalize(in, out, false);
+        canonicalizer.canonicalize(in, out, false);
         assertThat(out.byteSource()).isNotEqualTo(in.byteSource());
         assertThat(in.charSource().read()).isEqualTo(new String(out.byteSource().read(), UTF_8));
         assertThat(out.byteSource().size()).isLessThan(in.byteSource().size());
@@ -79,7 +81,7 @@ public class CanonicalizerTest {
     public void rfc8785() throws IOException {
         var in = new ClasspathResource("canonicalize.json");
         var out = new MemoryResource(MediaType.JSON_UTF_8);
-        Canonicalizer.canonicalize(in, out, false);
+        canonicalizer.canonicalize(in, out, false);
 
         var expected = new ClasspathResource("canonicalize.json.expected", MediaType.JSON_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expected.charSource().read());
@@ -90,7 +92,7 @@ public class CanonicalizerTest {
         var md = MediaType.parse("application/ld+json").withCharset(UTF_8);
         var in = new ClasspathResource("canonicalize.jsonld", md);
         var out = new MemoryResource(MediaType.JSON_UTF_8);
-        Canonicalizer.canonicalize(in, out, true);
+        canonicalizer.canonicalize(in, out, true);
 
         var expected = new ClasspathResource("canonicalize.jsonld.expected", MediaType.JSON_UTF_8);
         assertThat(out.charSource().read()).isEqualTo(expected.charSource().read());
