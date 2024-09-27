@@ -19,7 +19,6 @@ package dev.enola.rdf.io;
 
 import com.google.common.collect.ComparisonChain;
 
-import dev.enola.common.io.iri.namespace.NamespaceRepository;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
@@ -69,7 +68,6 @@ public class RdfCanonicalizer {
 
     public void canonicalize(ReadableResource in, WritableResource out) {
         var model = rdfReaderConverter.convert(in).orElse(EMPTY_MODEL);
-        NamespaceRepository.CTX.list().forEach(ns -> model.setNamespace(ns.prefix(), ns.iri()));
         var canonicalModel = orderStatements(model);
         rdfWriterConverter.convertIntoOrThrow(canonicalModel, out);
     }
