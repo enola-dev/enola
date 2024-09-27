@@ -23,6 +23,8 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 import com.google.common.truth.Truth;
 
+import dev.enola.common.io.resource.ClasspathResource;
+
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Models;
 
@@ -34,6 +36,9 @@ import org.eclipse.rdf4j.model.util.Models;
 final class ModelSubject extends Subject {
 
     // TODO Move this class to a //common/testlib (and rm copy/paste in thing.testlib)
+
+    private static final RdfCanonicalizer RDF_CANONICALIZER =
+            new RdfCanonicalizer(new ClasspathResource.Provider());
 
     public static ModelSubject assertThat(Model actual) {
         return assertAbout(resources()).that(actual);
@@ -52,8 +57,8 @@ final class ModelSubject extends Subject {
 
     public void isEqualTo(Model expected) {
         if (!Models.isomorphic(actual, expected)) {
-            // TODO Canonicalizer-like sorting of Statements by IRI
-            Truth.assertThat(actual).isEqualTo(expected);
+            Truth.assertThat(RDF_CANONICALIZER.orderStatements(actual))
+                    .isEqualTo(RDF_CANONICALIZER.orderStatements(expected));
         }
     }
 }
