@@ -31,6 +31,10 @@ This is useful e.g. when testing, to compare output to a fixed expected outcome.
 
 It also has an application in [cryptography](https://github.com/enola-dev/enola/issues/284), and is useful when _"signing"_ things.
 
+## RDF
+
+Future versions may implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/).
+
 ## JSON
 
 `enola canonicalize` for JSON transforms e.g. this `canonicalize.json`:
@@ -73,5 +77,3 @@ into this - note how the 🎨 painters' order was swapped, because not just all 
 ```json
 {% include "../../../test/canonicalize.jsonld.expected" %}
 ```
-
-Future versions may implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/).
