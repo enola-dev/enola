@@ -25,12 +25,15 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.html.HTML;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CharResourceConverter;
 import dev.enola.common.io.resource.convert.IdempotentCopyingResourceNonConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.xml.XML;
 import dev.enola.common.yamljson.JSON;
+import dev.enola.rdf.io.RdfCanonicalizer;
+import dev.enola.rdf.io.RdfMediaTypes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +47,13 @@ public class Canonicalizer implements ResourceConverter {
 
     public static final String PRETTY_QUERY_PARAMETER = "pretty";
 
-    public static void canonicalize(ReadableResource in, WritableResource out, boolean pretty)
+    private final RdfCanonicalizer rdfCanonicalizer;
+
+    public Canonicalizer(ResourceProvider rp) {
+        rdfCanonicalizer = new RdfCanonicalizer(rp);
+    }
+
+    public void canonicalize(ReadableResource in, WritableResource out, boolean pretty)
             throws IOException {
         var inMT = in.mediaType();
         // TODO MediaTypes should normalize based on +json/xml-like subtype endings; with "primary"?
@@ -60,17 +69,18 @@ public class Canonicalizer implements ResourceConverter {
 
         } else if (normalizedNoParamsEquals(inMT, MediaType.XML_UTF_8)
                 || inMT.subtype().endsWith("+xml")) {
-            XML.canonicalize(in, out);
+            XML.canonicalize(in, out, pretty);
 
         } else if (normalizedNoParamsEquals(inMT, MediaType.HTML_UTF_8)) {
             var outCharset = out.mediaType().charset().or(StandardCharsets.UTF_8);
-            out.charSink().write(HTML.canonicalize(in, outCharset));
+            out.charSink().write(HTML.canonicalize(in, outCharset, pretty));
 
-            // TODO } else if (normalizedNoParamsEquals(inMT, RdfMediaTypes.TURTLE)) {
-
-            // TODO } else if (normalizedNoParamsEquals(inMT, RdfMediaTypes.JSON_LD)) {
+        } else if (normalizedNoParamsEquals(inMT, RdfMediaTypes.TURTLE)
+                || normalizedNoParamsEquals(inMT, RdfMediaTypes.JSON_LD)) {
+            rdfCanonicalizer.canonicalize(in, out);
 
         } else {
+            // TODO Document char conversion on https://docs.enola.dev/use/canonicalize/
             // TODO new Rosetta().convertIntoOrThrow(in, out);
             if (!(new CharResourceConverter().convertIntoThrows(in, out)))
                 new IdempotentCopyingResourceNonConverter().convertIntoThrows(in, out);

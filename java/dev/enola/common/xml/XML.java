@@ -34,7 +34,6 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -47,15 +46,16 @@ public final class XML {
     // DOM is just easier to manipulate in code - and StAX is a PITA lacking a built-in indenting
     // formatter.
 
-    public static void canonicalize(ReadableResource in, WritableResource out) throws IOException {
+    public static void canonicalize(ReadableResource in, WritableResource out, boolean format)
+            throws IOException {
         try (var inputStream = in.byteSource().openBufferedStream()) {
-            out.charSink().write(normalizeXML(inputStream));
+            out.charSink().write(normalizeXML(inputStream, format));
         } catch (ParserConfigurationException | SAXException | TransformerException e) {
             throw new IOException("XML Error: " + in, e);
         }
     }
 
-    private static String normalizeXML(InputStream inputStream)
+    private static String normalizeXML(InputStream inputStream, boolean format)
             throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true); // #security
@@ -68,8 +68,8 @@ public final class XML {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
 
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        if (format) transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
         StringWriter writer = new StringWriter();
         transformer.transform(new DOMSource(document), new StreamResult(writer));

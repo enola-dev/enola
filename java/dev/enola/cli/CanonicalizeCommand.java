@@ -57,12 +57,15 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
     boolean pretty;
 
     private WritableResourcesProvider wrp;
+    private Canonicalizer canonicalizer;
 
     @Override
     public void run() throws Exception {
         super.run();
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             wrp = new WritableResourcesProvider(rp);
+            canonicalizer = new Canonicalizer(rp);
+
             var fgrp = new GlobResolvers();
             for (var globIRI : resources.load) {
                 try (var stream = fgrp.get(globIRI)) {
@@ -74,6 +77,6 @@ public class CanonicalizeCommand extends CommandWithResourceProvider {
 
     private void canonicalize(ReadableResource r) throws IOException {
         var out = wrp.getWritableResource(CommandWithModel.Output.get(output), r.uri());
-        Canonicalizer.canonicalize(r, out, pretty);
+        canonicalizer.canonicalize(r, out, pretty);
     }
 }

@@ -45,6 +45,7 @@ junit_tests(
         ":testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/thing:thing_java",
+        "//models",
         "//test",
         "@maven//:org_jspecify_jspecify",
     ],

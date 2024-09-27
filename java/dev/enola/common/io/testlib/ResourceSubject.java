@@ -23,8 +23,11 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
 
 import dev.enola.common.canonicalize.Canonicalizer;
+import dev.enola.common.diff.testlib.DiffingStringSubject;
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.yamljson.JSON;
 
 import org.jspecify.annotations.Nullable;
@@ -39,6 +42,9 @@ import java.io.IOException;
  * </code>, before comparisons.
  */
 public final class ResourceSubject extends Subject {
+
+    private static final ResourceProvider rp = new ClasspathResource.Provider();
+    private static final Canonicalizer canonicalizer = new Canonicalizer(rp);
 
     public static ResourceSubject assertThat(@Nullable ReadableResource actual) {
         return assertAbout(resources()).that(actual);
@@ -59,7 +65,7 @@ public final class ResourceSubject extends Subject {
         if (resource == null) return "";
         if (resource.byteSource().isEmpty()) return "";
         var canonicalized = new MemoryResource(resource.mediaType(), resource.uri());
-        Canonicalizer.canonicalize(resource, canonicalized, true);
+        canonicalizer.canonicalize(resource, canonicalized, true);
         return canonicalized.charSource().read();
     }
 
@@ -68,8 +74,12 @@ public final class ResourceSubject extends Subject {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
         check("charSource").that(actualChars).isEqualTo(expectedChars);
-        // TODO The DiffingStringSubject as-is makes it HARDER instead of easier to see... :-(
-        // DiffingStringSubject.assertThat(actualChars).isEqualTo(expectedChars);
+    }
+
+    public void hasCharsEqualToOrDiff(ReadableResource expected) throws IOException {
+        var actualChars = canonicalize(actual);
+        var expectedChars = canonicalize(expected);
+        DiffingStringSubject.assertThat(actualChars).isEqualTo(expectedChars);
     }
 
     // TODO drop *Chars* - after making it work for any Resource - even just binary

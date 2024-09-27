@@ -54,7 +54,8 @@ public class RdfReaderWriterTest {
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
     public void writeTurtle() throws ConversionException, IOException {
-        Resource actual = new MemoryResource(RdfMediaTypes.TURTLE);
+        Resource actual =
+                new MemoryResource(RdfMediaTypes.TURTLE, PICASSO_TURTLE_WRITTEN_RESOURCE.uri());
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
         var expected = PICASSO_TURTLE_WRITTEN_RESOURCE;
