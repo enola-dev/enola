@@ -103,6 +103,7 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
             "@maven//:com_google_truth_extensions_truth_java8_extension",
             "@maven//:com_google_truth_truth",
             "@maven//:com_google_truth_extensions_truth_proto_extension",
+            "@maven//:org_slf4j_slf4j_simple",
             "@maven//:junit_junit",
         ],
         **dict(kwargs, size = size, jvm_flags = jvm_flags)
