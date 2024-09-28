@@ -43,6 +43,7 @@ java_binary(
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "//java/dev/enola/format/tika",
+        "//java/dev/enola/format/xml",
         "//java/dev/enola/model",
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",

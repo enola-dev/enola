@@ -17,9 +17,7 @@
  */
 package dev.enola.common.io.mediatype;
 
-import static com.google.common.net.MediaType.JSON_UTF_8;
-import static com.google.common.net.MediaType.OCTET_STREAM;
-import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
+import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;

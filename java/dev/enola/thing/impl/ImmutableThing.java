@@ -92,6 +92,8 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
             implements Thing.Builder<B> {
 
+        // TODO Make this extend ImmutablePredicatesObjects.Builder instead of copy/paste
+
         protected final ImmutableMap.Builder<String, Object> properties;
         protected final ImmutableMap.Builder<String, String> datatypes;
         protected @Nullable String iri;
@@ -149,6 +151,19 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
             // TODO Remove (B) type cast
             return (B) new ImmutableThing(iri, properties.build(), datatypes.build());
+        }
+
+        @Override
+        public String toString() {
+            // TODO https://github.com/google/guava/issues/7408 to avoid .build()
+            return "Builder{"
+                    + "iri="
+                    + iri
+                    + ", properties="
+                    + properties.build()
+                    + ", datatypes="
+                    + datatypes.build()
+                    + '}';
         }
     }
 }

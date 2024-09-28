@@ -20,6 +20,10 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
+  - Update W3C Wiki with links to Enola docs:
+      links:
+        - https://www.w3.org/wiki/ConverterToRdf
+
   - Last `null` NPE, for Enola: &lastNPE
       links:
         - https://github.com/enola-dev/enola/issues/845

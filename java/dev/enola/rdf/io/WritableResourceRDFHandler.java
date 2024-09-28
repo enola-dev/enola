@@ -21,6 +21,7 @@ import dev.enola.common.io.resource.WritableResource;
 
 import org.eclipse.rdf4j.model.Statement;
 import org.eclipse.rdf4j.rio.*;
+import org.eclipse.rdf4j.rio.helpers.BasicWriterSettings;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -41,6 +42,8 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
         var ioWriter = resource.charSink().openBufferedStream();
         var rdfWriter = Rio.createWriter(writerFormat.get(), ioWriter, baseURI);
         var writerConfig = new WriterConfig();
+        writerConfig.set(BasicWriterSettings.BASE_DIRECTIVE, false);
+        writerConfig.set(BasicWriterSettings.INLINE_BLANK_NODES, true);
         rdfWriter.setWriterConfig(writerConfig);
 
         var it = new WritableResourceRDFHandler(rdfWriter, ioWriter);

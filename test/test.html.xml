@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:schema="https://schema.org/"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd">
+  <!-- https://www.w3.org/TR/xhtml1/ -->
+  <head>
+    <title>Test HTML Title</title>
+    <meta name="author" content="The Enola https://enola.dev Authors"/>
+    <meta name="description" content="This HTML is used to test e.g. the TikaThingConverter."/>
+  </head>
+  <body>
+    <p>hello, world
+      <a href="test.html">Recursive Self Link</a>
+      <a href="https://www.vorburger.ch">Vorburger</a>
+      <schema:dateCreated datatype="xsd:date">2024-09-28</schema:dateCreated>
+    </p>
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <apply>
+        <log/>
+        <logbase>
+          <cn>3</cn>
+        </logbase>
+        <ci>x</ci>
+      </apply>
+    </math>
+  </body>
+</html>

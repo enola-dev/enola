@@ -28,9 +28,6 @@ import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.function.Supplier;
@@ -41,8 +38,6 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("rawtypes")
 public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoThingConverter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(RdfResourceIntoThingConverter.class);
 
     private final RdfResourceIntoProtoThingConverter rdfResourceIntoProtoThingConverter;
 
@@ -85,13 +80,8 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
         var protoList = optProtoList.get();
 
         for (var protoThing : protoList) {
-            try {
-                var thingBuilder = into.getBuilder(protoThing.getIri());
-                protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(
-                        protoThing, thingBuilder);
-            } catch (ConversionException e) {
-                LOG.error("Failed to convert Thing in: " + uri, e);
-            }
+            var thingBuilder = into.getBuilder(protoThing.getIri());
+            protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(protoThing, thingBuilder);
         }
         return true;
     }

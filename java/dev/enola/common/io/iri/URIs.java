@@ -66,6 +66,7 @@ public final class URIs {
         var queryMap = getQueryMap(uri);
         var charsetParameter = queryMap.get(CHARSET);
         var mediaTypeParameter = queryMap.get(MEDIA_TYPE.toLowerCase());
+        if (mediaTypeParameter == null) mediaTypeParameter = queryMap.get(MEDIA_TYPE);
         return new MediaTypeAndOrCharset(mediaTypeParameter, charsetParameter);
     }
 

@@ -1,0 +1,7 @@
+
+<classpath:/test.html.xml> <http://purl.org/dc/elements/1.1/title> "Test HTML Title";
+                       <http://purl.org/dc/elements/1.1/language> "en";
+                       <http://purl.org/dc/elements/1.1/description> "This HTML is used to test e.g. the TikaThingConverter.";
+                       <https://enola.dev/mediaType> "text/html; charset=UTF-8";
+                       <http://purl.org/dc/elements/1.1/creator> "The Enola <https://enola.dev> Authors";
+                       <https://enola.dev/content-as-text> "hello, world\nRecursive Self LinkVorburger".

@@ -54,4 +54,9 @@ public class ThingsBuilder implements ThingsRepository {
             default -> Stream.of(getBuilder(iri).build());
         };
     }
+
+    @Override
+    public String toString() {
+        return "ThingsBuilder{" + map + '}';
+    }
 }
