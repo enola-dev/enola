@@ -41,6 +41,7 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.proto.GetThingRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.thing.gen.LinkTransformer;
+import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
 import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
@@ -66,6 +67,7 @@ public class UI implements WebHandler {
     private final LinkTransformer linkTransformer = new UiLinkTransformer();
     private final ThingUI thingUI;
     private final ThingsConverterWrapperHandler timelineHandler;
+    private final ThingsConverterWrapperHandler gexfHandler;
     private ProtoIO protoIO;
 
     public UI(EnolaServiceBlockingStub service, ThingMetadataProvider metadataProvider)
@@ -86,12 +88,16 @@ public class UI implements WebHandler {
                 new ThingsConverterWrapperHandler(
                         thingRepository,
                         new VisJsTimelineGenerator(metadataProvider, linkTransformer));
+        gexfHandler =
+                new ThingsConverterWrapperHandler(
+                        thingRepository, new GexfGenerator(metadataProvider));
     }
 
     public void register(WebHandlers handlers) {
         handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
         handlers.register("/ui", this);
         handlers.register("/timeline", timelineHandler);
+        handlers.register("/gexf", gexfHandler);
         // TODO Create HTML page “frame” from template, with body from another template
         handlers.register("", uri -> immediateFuture(FOUR_O_FOUR));
     }
