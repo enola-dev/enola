@@ -36,7 +36,7 @@ It also has an application in [cryptography](https://github.com/enola-dev/enola/
 `enola canonicalize` for RDF order statements by predicate IRI, for example:
 
 ```bash cd ../.././..
-$ ./enola -v canonicalize --load=test/picasso.ttl
+$ ./enola canonicalize --load=test/picasso.ttl
 ...
 ```
 

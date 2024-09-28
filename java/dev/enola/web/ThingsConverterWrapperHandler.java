@@ -45,6 +45,7 @@ class ThingsConverterWrapperHandler implements WebHandler {
     @Override
     public ListenableFuture<ReadableResource> handle(URI uri) {
         var query = URIs.getQueryMap(uri).get("q");
+        if (query == null) throw new IllegalArgumentException("Missing ?q=");
         if (!query.equals(ListThingService.ENOLA_ROOT_LIST_THINGS))
             throw new IllegalArgumentException(
                     "Currently (TODO) only supports ?q="
