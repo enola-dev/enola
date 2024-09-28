@@ -18,26 +18,28 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "tika",
+    name = "xml",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test.java"],
+        exclude = [
+            "*Test.java",
+            "Test*.java",
+        ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
+    resource_strip_prefix = "java/",
+    resources = glob(["**/*.html"]),
     visibility = ["//:__subpackages__"],
-    runtime_deps = [
-        "@maven//:org_apache_tika_tika_parsers_standard_package",
-    ],
     deps = [
-        "//java/dev/enola/common",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/format/xml",
+        "//java/dev/enola/common/xml",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_errorprone_error_prone_type_annotations",
         "@maven//:com_google_guava_guava",
-        "@maven//:org_apache_tika_tika_core",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
@@ -45,9 +47,12 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["*Test.java"]),
+    srcs = glob([
+        "*Test.java",
+    ]),
     deps = [
-        ":tika",
+        ":xml",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/testlib",

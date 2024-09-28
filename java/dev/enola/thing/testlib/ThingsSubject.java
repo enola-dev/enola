@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertAbout;
 import com.google.common.collect.Streams;
 import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.Subject;
+import com.google.common.truth.Truth;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
@@ -61,6 +62,8 @@ public final class ThingsSubject extends Subject {
     private static final Model EMPTY_MODEL = new DynamicModel(new LinkedHashModelFactory());
 
     private final Model actualModel;
+    private final ThingRepository actualThings;
+
     private final ResourceProvider rp = new ClasspathResource.Provider();
     private final RdfReaderConverter rdfReaderConverter = new RdfReaderConverter(rp);
     private final RdfWriterConverter rdfWriterConverter = new RdfWriterConverter();
@@ -69,9 +72,12 @@ public final class ThingsSubject extends Subject {
         super(metadata, actual);
         JavaThingRdfConverter javaThingRdfConverter = new JavaThingRdfConverter();
         actualModel = javaThingRdfConverter.convert(Streams.stream(actual.list()));
+        actualThings = actual;
     }
 
     public void isEqualTo(String expectedResourcePath) throws IOException {
+        // TODO ModelSubject.assertThat(actualModel).isEqualTo(expectedResourcePath);
+        // TODO Move all of the following into ModelSubject (once it's in a testlib)
         var expectedResource = rp.getReadableResource(expectedResourcePath);
         if (expectedResource == null) throw new IllegalArgumentException(expectedResourcePath);
         var expectedModel = rdfReaderConverter.convert(expectedResource).orElse(EMPTY_MODEL);
@@ -85,5 +91,14 @@ public final class ThingsSubject extends Subject {
             rdfWriterConverter.convertIntoOrThrow(actualModel, actualResource);
             ResourceSubject.assertThat(actualResource).hasCharsEqualTo(expectedResource);
         }
+    }
+
+    public void hasOnlyEmptyThings() {
+        actualThings.stream()
+                .forEach(
+                        thing -> {
+                            Truth.assertThat(thing.predicateIRIs()).isEmpty();
+                            Truth.assertThat(thing.datatypes()).isEmpty();
+                        });
     }
 }

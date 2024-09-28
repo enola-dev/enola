@@ -46,7 +46,8 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         this.datatypes = datatypes;
     }
 
-    public static <T extends PredicatesObjects> PredicatesObjects.Builder<T> builder() {
+    public static <T extends IImmutablePredicatesObjects>
+            IImmutablePredicatesObjects.Builder<T> builder() {
         return new ImmutablePredicatesObjects.Builder<>();
     }
 
@@ -156,6 +157,17 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         public B build() {
             // TODO Remove (B) type cast
             return (B) new ImmutablePredicatesObjects(properties.build(), datatypes.build());
+        }
+
+        @Override
+        public String toString() {
+            // TODO https://github.com/google/guava/issues/7408 to avoid .build()
+            return "Builder{"
+                    + "properties="
+                    + properties.build()
+                    + ", datatypes="
+                    + datatypes.build()
+                    + '}';
         }
     }
 }

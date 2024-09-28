@@ -57,6 +57,9 @@ public final class XML {
 
     private static String normalizeXML(InputStream inputStream, boolean format)
             throws ParserConfigurationException, IOException, SAXException, TransformerException {
+
+        // TODO Use streaming SAX instead of DOM; and break this up... use XmlResourceParser
+
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true); // #security
         DocumentBuilder builder = factory.newDocumentBuilder();

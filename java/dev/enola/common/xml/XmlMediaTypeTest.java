@@ -27,6 +27,8 @@ import dev.enola.common.io.resource.ClasspathResource;
 
 import org.junit.Test;
 
+import java.net.URI;
+
 public class XmlMediaTypeTest {
 
     @Test
@@ -35,5 +37,16 @@ public class XmlMediaTypeTest {
         var resource = rp.get("classpath:/graph.expected.gexf.xml?charset=UTF-8");
         var mediaType = resource.mediaType();
         assertThat(normalizedNoParamsEquals(resource.mediaType(), MediaType.XML_UTF_8)).isTrue();
+    }
+
+    @Test
+    public void testStrangeBug() {
+        var rp = new ClasspathResource.Provider();
+        var ok = rp.getReadableResource(URI.create("classpath:/greeting1-nested.xml"));
+        assertThat(normalizedNoParamsEquals(ok.mediaType(), MediaType.XML_UTF_8)).isTrue();
+
+        // This XML used to start with <!-- comment and without <?xml and was HTML instead of XML
+        var nok = rp.getReadableResource(URI.create("classpath:/greeting1-attribute.xml"));
+        assertThat(normalizedNoParamsEquals(nok.mediaType(), MediaType.XML_UTF_8)).isTrue();
     }
 }

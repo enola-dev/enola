@@ -103,8 +103,10 @@ public class EnolaCLI {
                 cmd.getErr().print(cmd.getColorScheme().optionText(intro));
                 Throwable e = ex;
                 while (e != null) {
-                    var msg = /*e.getClass().getSimpleName() + ": " + */ e.getMessage();
-                    cmd.getErr().println(cmd.getColorScheme().errorText(msg));
+                    var type = e.getClass().getSimpleName();
+                    var msg = e.getMessage();
+                    var full = type + (msg != null ? ": " + msg : "");
+                    cmd.getErr().println(cmd.getColorScheme().errorText(full));
                     e = e.getCause();
                     if (e != null) {
                         cmd.getErr().print("caused by: ");

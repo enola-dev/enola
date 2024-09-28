@@ -1,0 +1,5 @@
+<greeting1 xmlns="https://example.org">
+  <message>hello, <b>world</b></message>
+  <br/>
+  <message><c>!!!</c>???</message>
+</greeting1>

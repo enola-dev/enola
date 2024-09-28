@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.format.tika.TikaThingConverter;
+import dev.enola.format.xml.XmlThingConverter;
 import dev.enola.model.enola.files.FileThingConverter;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.io.Loader;
@@ -53,6 +54,7 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
     protected Loader loader() {
         var uriIntoThingConverters = new ArrayList<UriIntoThingConverter>(2);
         uriIntoThingConverters.add(new RdfResourceIntoThingConverter<>());
+        uriIntoThingConverters.add(new XmlThingConverter(rp));
         if (fileLoader) uriIntoThingConverters.add(new FileThingConverter());
         if (tikaLoader) uriIntoThingConverters.add(new TikaThingConverter(rp));
 

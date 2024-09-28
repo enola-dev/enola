@@ -61,4 +61,6 @@ final class ModelSubject extends Subject {
                     .isEqualTo(RDF_CANONICALIZER.orderStatements(expected));
         }
     }
+
+    // TODO ThingsSubject: public void isEqualTo(String expectedResourcePath) throws IOException {
 }

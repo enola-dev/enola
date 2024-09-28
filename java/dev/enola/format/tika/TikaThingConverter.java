@@ -18,6 +18,7 @@
 package dev.enola.format.tika;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.net.MediaType;
 
 import dev.enola.common.StringBuilderWriter;
 import dev.enola.common.convert.ConversionException;
@@ -36,6 +37,8 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.sax.TeeContentHandler;
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -44,8 +47,16 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class TikaThingConverter implements UriIntoThingConverter {
+
+    private static final Set<MediaType> IGNORED =
+            ImmutableSet.of(
+                    MediaType.XML_UTF_8.withoutParameters(),
+                    MediaType.parse("application/xml"),
+                    MediaType.parse("text/turtle"),
+                    MediaType.parse("application/x-turtle"));
 
     private static final AutoDetectParser parser = new AutoDetectParser();
     private final ResourceProvider rp;
@@ -69,19 +80,24 @@ public class TikaThingConverter implements UriIntoThingConverter {
     public boolean convertInto(ReadableResource resource, ThingsBuilder thingsBuilder)
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
+        // TODO Improve detection of on when Tika can actually process content...
+        if (IGNORED.contains(resource.mediaType().withoutParameters())) return false;
 
+        var thingBuilder = thingsBuilder.getBuilder(resource.uri().toString());
+        var iri = resource.uri().toString();
         Writer sw = new StringBuilderWriter();
-        BodyContentHandler handler = new BodyContentHandler(sw);
+        // var thingsHandler = new XMLToThingHandler(iri, thingBuilder);
+        ContentHandler handler =
+                new TeeContentHandler(new BodyContentHandler(sw) /* TODO, thingsHandler*/);
 
         try (var is = resource.byteSource().openBufferedStream()) {
             Metadata metadata = new Metadata();
             ParseContext parseContext = new ParseContext();
             // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
-            var thing = thingsBuilder.getBuilder(resource.uri().toString());
-            convertMetadata(metadata, thing);
+            convertMetadata(metadata, thingBuilder);
             var text = sw.toString().trim();
-            if (!text.isEmpty()) thing.set("https://enola.dev/content-as-text", text);
+            if (!text.isEmpty()) thingBuilder.set("https://enola.dev/content-as-text", text);
             return true;
 
         } catch (TikaException | SAXException e) {

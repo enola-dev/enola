@@ -70,7 +70,12 @@ public interface DatatypeRepository extends Repository<Datatype<?>> {
 
                 @Override
                 public @Nullable Datatype<?> get(String iri) {
-                    return TLC.get(DatatypeRepository.class).get(iri);
+                    return TLC.optional(DatatypeRepository.class)
+                            .orElseThrow(
+                                    () ->
+                                            new IllegalStateException(
+                                                    "Need DatatypeRepository in TLC for: " + iri))
+                            .get(iri);
                 }
             };
 }

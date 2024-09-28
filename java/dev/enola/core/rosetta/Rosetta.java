@@ -104,7 +104,9 @@ public class Rosetta implements ResourceConverter {
                                 new GraphvizResourceConverter(loader, new GraphvizGenerator(tmp)),
                                 new GexfResourceConverter(loader, new GexfGenerator(tmp)),
                                 new CharResourceConverter(),
-                                new IdempotentCopyingResourceNonConverter()));
+                                new IdempotentCopyingResourceNonConverter()
+                                // TODO XML... with XmlResourceParser & XMLToThingHandler
+                                ));
     }
 
     @Override

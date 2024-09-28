@@ -21,6 +21,7 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 public interface ThingsRepository extends ThingRepository, ThingsProvider {
 
@@ -29,6 +30,11 @@ public interface ThingsRepository extends ThingRepository, ThingsProvider {
     @Override
     default Iterable<Thing> list() {
         return getThings(KIRI.E.LIST_THINGS).toList();
+    }
+
+    @Override
+    default Stream<Thing> stream() {
+        return getThings(KIRI.E.LIST_THINGS);
     }
 
     @Override

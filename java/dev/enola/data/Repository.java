@@ -18,6 +18,9 @@
 package dev.enola.data;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
+
+import java.util.stream.Stream;
 
 /**
  * Repository is a Provider which, in addition to being able to getting a single T given an IRI, can
@@ -40,6 +43,10 @@ public interface Repository<T> extends ProviderFromIRI<T> {
      * implementation?
      */
     default Iterable<T> list() {
-        return Iterables.transform(listIRI(), iri -> get(iri));
+        return Iterables.transform(listIRI(), this::get);
+    }
+
+    default Stream<T> stream() {
+        return Streams.stream(listIRI()).map(this::get);
     }
 }
