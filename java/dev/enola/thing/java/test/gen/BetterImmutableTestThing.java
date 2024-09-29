@@ -17,43 +17,35 @@
  */
 package dev.enola.thing.java.test.gen;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.errorprone.annotations.Immutable;
+import com.google.errorprone.annotations.ThreadSafe;
+
 import dev.enola.thing.KIRI;
-import dev.enola.thing.impl.MutableThing;
+import dev.enola.thing.impl.IImmutableThing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.test.TestThing;
 
 import org.jspecify.annotations.Nullable;
 
-/**
- * Implementation of {@link TestThing} based on {@link MutableThing} (with the same limitations).
- *
- * <p>Prefer using {@link ImmutableTestThing} in general.
- */
-public class MutableTestThing extends MutableThing<BetterImmutableTestThing>
-        implements TestThing, TestThing.Builder<BetterImmutableTestThing> {
+@Immutable
+@ThreadSafe
+public class BetterImmutableTestThing extends ImmutableThing implements TestThing, IImmutableThing {
 
-    // TODO This class, like ImmutableTestThing, should (eventually) be generated...
-
-    @Override
-    public TestThing.Builder<BetterImmutableTestThing> label(String label) {
-        set(KIRI.RDFS.LABEL, label);
-        return this;
-    }
-
-    @Override
-    public TestThing.Builder<BetterImmutableTestThing> number(Integer number) {
-        set(NUMBER_URI, number);
-        return this;
-    }
-
-    // NB: Getters are exactly the same in TestThingWrapper
-
-    @Override
-    public @Nullable String label() {
-        return get(KIRI.RDFS.LABEL, String.class);
+    BetterImmutableTestThing(
+            String iri,
+            ImmutableMap<String, Object> properties,
+            ImmutableMap<String, String> datatypes) {
+        super(iri, properties, datatypes);
     }
 
     @Override
     public @Nullable Integer number() {
         return get(NUMBER_URI, Integer.class);
+    }
+
+    @Override
+    public @Nullable String label() {
+        return get(KIRI.RDFS.LABEL, String.class);
     }
 }

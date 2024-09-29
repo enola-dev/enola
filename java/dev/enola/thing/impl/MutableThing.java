@@ -39,7 +39,7 @@ import java.util.Set;
  */
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
-public class MutableThing<B extends MutableThing<B>> extends AbstractThing
+public class MutableThing<B extends IImmutableThing> extends AbstractThing
         implements Thing, Thing.Builder<B> {
 
     protected @Nullable String iri;
@@ -64,6 +64,7 @@ public class MutableThing<B extends MutableThing<B>> extends AbstractThing
 
     @Override
     public String iri() {
+        if (iri == null) throw new IllegalStateException();
         return iri;
     }
 
@@ -74,13 +75,15 @@ public class MutableThing<B extends MutableThing<B>> extends AbstractThing
     }
 
     @Override
-    public Builder<B> set(String predicateIRI, Object value, String datatypeIRI) {
+    public Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
         properties.put(predicateIRI, value);
-        datatypes.put(predicateIRI, datatypeIRI);
+        if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
         return this;
     }
 
     @Override
+    @Deprecated
+    @SuppressWarnings("unchecked")
     public <T> @Nullable T get(String predicateIRI) {
         return (T) properties.get(predicateIRI);
     }
@@ -106,14 +109,21 @@ public class MutableThing<B extends MutableThing<B>> extends AbstractThing
     }
 
     @Override
+    @Deprecated
     public Builder<? extends Thing> copy() {
         return this;
     }
 
     @Override
-    // TODO Return an IImmutableThing instead of this here?!
+    @SuppressWarnings("unchecked") // TODO How to remove (B) type cast?!
     public B build() {
-        // TODO Remove (B) type cast
-        return (B) this;
+        var immutableBuilder = ImmutableThing.builderWithExpectedSize(properties.size());
+        immutableBuilder.iri(iri);
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            var predicateIRI = entry.getKey();
+            immutableBuilder.set(predicateIRI, entry.getValue(), datatype(predicateIRI));
+        }
+        IImmutableThing immutableThing = immutableBuilder.build();
+        return (B) immutableThing;
     }
 }
