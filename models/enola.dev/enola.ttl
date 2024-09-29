@@ -175,3 +175,7 @@ enola:seeAlso a rdf:Property;
 enola:content-as-text a rdf:Property;
   rdfs:range xsd:string;
   schema:description "The textual content of e.g. a file, or remote resource, such as PDF, HTML page, EPUB; without any metadata, markup, etc.".
+
+enola:text a rdf:Property;
+  schema:description "The textual content from a (portion of) the conversion of another format; e.g., XML. Prefer using something more specific otherwise.";
+  enola:doc "https://docs.enola.dev/concepts/xml/#text".

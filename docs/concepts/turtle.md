@@ -156,4 +156,4 @@ The `[...]` syntax make this _Thing_ contain another nested _Thing_ (which is "a
 
 * [RDF on Wikipedia](https://en.wikipedia.org/wiki/Resource_Description_Framework)
 * [Turtle on Wikipedia](https://en.wikipedia.org/wiki/Turtle_(syntax))
-* [W3 RDF Turtle Spec](https://www.w3.org/TR/turtle/)
+* [Turtle RDF W3 Spec](https://www.w3.org/TR/turtle/)
