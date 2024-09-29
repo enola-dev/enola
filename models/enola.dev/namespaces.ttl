@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# TODO Move NamespaceRepositoryEnolaDefaults into this, and read it, via TLC Context
+
+@prefix enola:  <https://enola.dev/>.
+@prefix schema: <https://schema.org/>.
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
+
+enola:Namespaces a rdfs:Class;
+  schema:description "Class of namespace prefixes 'catalogs'. There may be several of these; enlola:namespaces is the 'active' one.";
+  rdfs:seeAlso enola:namespaces.
+
+enola:namespaces a enola:Namespaces;
+  schema:description "Active namespace prefixes.";
+  # TODO enola:doc <https://docs.enola.dev/concepts/namespaces/>
+  rdfs:seeAlso <https://lov.linkeddata.es/dataset/lov/>,
+               <https://prefix.cc>,
+               <https://www.w3.org/2011/rdfa-context/rdfa-1.1>,
+               <https://prefix.zazuko.com/prefixes>;
+
+  <http://ns.adobe.com/pdf/1.3/> "pdf";
+  <http://purl.org/dc/elements/1.1/> "dc";
+
+  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "rdf";
+  <http://www.w3.org/2000/01/rdf-schema#> "rdfs";
+  <http://www.w3.org/2001/XMLSchema#> "xsd";
+  <http://www.w3.org/2002/07/owl#> "owl";
+
+  <https://enola.dev/> "enola";
+  <https://schema.org/> "schema";
+.
+
+enola:prefix a rdf:Property;
+  schema:name "Namespace (recommended) Prefix";
+  schema:description "Recommended namespace prefix of an ontology/vocabulary; may be overridden by enola:namespaces.";
+  rdfs:seeAlso enola:namespaces;
+  enola:emoji "▫️".
+
+<http://ns.adobe.com/pdf/1.3/>
+  schema:name "PDF";
+  enola:doc "https://developer.adobe.com/xmp/docs/XMPNamespaces/pdf/".

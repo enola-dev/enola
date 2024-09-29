@@ -27,8 +27,8 @@ import dev.enola.thing.message.ProtoThingProvider;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Optional;
 
 /**
  * Provides {@link Thing}s.
@@ -53,12 +53,17 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      *
      * @param iri an IRI
      * @return a Thing [TODO: never null; but may be an empty Thing for an unknown IRI]
-     * @throws IOException if there was something at that IRI, but it could not be read
+     * @throws UncheckedIOException if there was something at that IRI, but it could not be read
      * @throws ConversionException if there was a problem converting what was at the IRI to a Thing
      */
     // TODO Remove ConversionException? It's weird, and should never happen anymore (here)...
     @Override
     @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException;
+
+    default Optional<Thing> getOptional(String iri)
+            throws UncheckedIOException, ConversionException {
+        return Optional.ofNullable(get(iri));
+    }
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
 
