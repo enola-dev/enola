@@ -63,9 +63,11 @@ nav:
       - Roadmap: concepts/roadmap.md
       - Singularity: concepts/singularity.md
       - URL & ID: concepts/uri.md
-      - Turtle: concepts/turtle.md
       - Metadata: concepts/metadata.md
-      - Tika: concepts/tika.md
+      - Namespaces: concepts/namespaces.md
+      - Formats:
+          - Turtle: concepts/turtle.md
+          - Tika: concepts/tika.md
   - Developers:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md

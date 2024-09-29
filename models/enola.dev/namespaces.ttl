@@ -22,12 +22,13 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 
 enola:Namespaces a rdfs:Class;
-  schema:description "Class of namespace prefixes 'catalogs'. There may be several of these; enlola:namespaces is the 'active' one.";
+  schema:description "Class of namespace prefixes 'catalogs'. There may be several of these; enola:namespaces is the 'active' one.";
+  enola:example enola:namespaces;
   rdfs:seeAlso enola:namespaces.
 
 enola:namespaces a enola:Namespaces;
-  schema:description "Active namespace prefixes.";
-  # TODO enola:doc <https://docs.enola.dev/concepts/namespaces/>
+  schema:description "Active namespace prefixes used in UI or when writing formats with namespace prefix support, such as RDF Turtle (TTL), or XML.";
+  enola:doc <https://docs.enola.dev/concepts/namespaces/>;
   rdfs:seeAlso <https://lov.linkeddata.es/dataset/lov/>,
                <https://prefix.cc>,
                <https://www.w3.org/2011/rdfa-context/rdfa-1.1>,
