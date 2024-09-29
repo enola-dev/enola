@@ -30,16 +30,16 @@ import java.util.Set;
 /**
  * Implementation of {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
  *
- * <p>This implementation is pretty inefficient, for both its runtime performance and a memory
+ * <p>This implementation is pretty inefficient, for both its runtime performance and memory
  * consumption, and should only be used "short lived"; prefer {@link IImmutableThing}
  * implementations, such as (typically) the {@link ImmutableThing} or its generated subclasses, for
- * any objects which will be "kept around".
+ * any objects that will be "kept around".
  *
  * <p>This implementation is not thread safe, obviously.
  */
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
-public class MutableThing<B extends MutableThing> extends AbstractThing
+public class MutableThing<B extends MutableThing<B>> extends AbstractThing
         implements Thing, Thing.Builder<B> {
 
     protected @Nullable String iri;

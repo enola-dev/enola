@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.impl;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.annotations.Immutable;
@@ -27,8 +26,6 @@ import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
 import org.jspecify.annotations.Nullable;
-
-import java.util.Objects;
 
 @Immutable
 @ThreadSafe
@@ -84,25 +81,17 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) return true;
-        // NO NEED: if (obj == null) return false;
-        // NOT:     if (getClass() != obj.getClass()) return false;
-        if (!(obj instanceof ImmutablePredicatesObjects other)) return false;
-        return Objects.equals(this.properties, other.properties)
-                && Objects.equals(this.datatypes, other.datatypes);
+        return ThingHashCodeEqualsToString.equals(this, obj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(properties, datatypes);
+        return ThingHashCodeEqualsToString.hashCode(this);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("properties", properties)
-                .add("datatypes", datatypes)
-                .toString();
+        return ThingHashCodeEqualsToString.toString(this);
     }
 
     @Override
@@ -138,7 +127,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         }
 
         @Override
-        public PredicatesObjects.Builder set(String predicateIRI, Object value) {
+        public PredicatesObjects.Builder<B> set(String predicateIRI, Object value) {
             if (value instanceof Literal literal)
                 set(predicateIRI, literal.value(), literal.datatypeIRI());
             else properties.put(predicateIRI, value);
@@ -146,7 +135,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         }
 
         @Override
-        public PredicatesObjects.Builder set(
+        public PredicatesObjects.Builder<B> set(
                 String predicateIRI, Object value, String datatypeIRI) {
             properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
