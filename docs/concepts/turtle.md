@@ -116,13 +116,13 @@ It's important to understand that with this syntax the names are **unordered**.
 
 ## Collection
 
-The `(...)` instead of `,` syntax preserves order (and it is represented differently internally):
+The `(...)` instead of `,` syntax preserves order (and is represented differently internally):
 
 ```turtle
 @prefix : <http://example.org/>.
 
 :thing1 a :Example;
-  :names ("First Name", "Middle Name", "Last Name");
+  :names ("First Name" "Middle Name" "Last Name");
   :next :thing2.
 ```
 
@@ -141,6 +141,8 @@ The `[...]` syntax make this _Thing_ contain another nested _Thing_ (which is "a
 ```
 
 <!-- TODO ## Graph
+
+     THIS PROBABLY WON'T BELONG HERE, BUT ELSEWHERE... MAYBE EVEN A NEW "Applications" SECTION?
 
           Because Enola can extract Turtle from Markdown, we can produce the following view of the above:
 
