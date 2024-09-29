@@ -35,6 +35,7 @@ java_library(
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/xml",
+        "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",

@@ -46,6 +46,8 @@ public class XMLToThingHandler extends DefaultHandler {
 
     // TODO Consider implementing this via & through the existing JSON[-LD, ctx?] support instead?
 
+    // TODO Support <xsd:boolean>true</xsd:boolean> or <dateValue type="date">2023-12-31</dateValue>
+
     private static final Logger LOG = LoggerFactory.getLogger(XMLToThingHandler.class);
     public static final String TEXT_PROPERTY_IRI = "https://enola.dev/text";
 

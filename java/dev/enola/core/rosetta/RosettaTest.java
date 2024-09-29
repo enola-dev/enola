@@ -145,6 +145,15 @@ public class RosettaTest {
     }
 
     @Test
+    public void testXMLToTurtle() throws Exception {
+        // TODO Make this test all "classpath:/**.xml"...
+        var in = rp.get("classpath:/greeting1-nested.xml");
+        var out = new MemoryResource(RdfMediaTypes.TURTLE);
+        rosetta.convertInto(in, out);
+        assertThat(out.charSource().read()).startsWith("\n<classpath:/");
+    }
+
+    @Test
     public void testGraphvizAndGexf() throws Exception {
         var in = rp.get("classpath:/graph.ttl");
         try (var ctx = TLC.open()) {

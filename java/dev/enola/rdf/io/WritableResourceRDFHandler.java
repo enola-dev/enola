@@ -32,23 +32,28 @@ import java.util.Optional;
 public class WritableResourceRDFHandler implements RDFHandler, Closeable {
 
     public static Optional<WritableResourceRDFHandler> create(WritableResource resource)
-            throws IOException, URISyntaxException {
-        String baseURI = resource.uri().toString();
-        var mediaType = resource.mediaType().withoutParameters().toString();
-        var writerFormat = Rio.getWriterFormatForMIMEType(mediaType);
-        if (writerFormat.isEmpty()) writerFormat = Rio.getWriterFormatForFileName(baseURI);
-        if (writerFormat.isEmpty()) return Optional.empty();
+            throws IOException {
+        try {
+            String baseURI = resource.uri().toString();
+            var mediaType = resource.mediaType().withoutParameters().toString();
+            var writerFormat = Rio.getWriterFormatForMIMEType(mediaType);
+            if (writerFormat.isEmpty()) writerFormat = Rio.getWriterFormatForFileName(baseURI);
+            if (writerFormat.isEmpty()) return Optional.empty();
 
-        var ioWriter = resource.charSink().openBufferedStream();
-        var rdfWriter = Rio.createWriter(writerFormat.get(), ioWriter, baseURI);
-        var writerConfig = new WriterConfig();
-        writerConfig.set(BasicWriterSettings.BASE_DIRECTIVE, false);
-        writerConfig.set(BasicWriterSettings.INLINE_BLANK_NODES, true);
-        rdfWriter.setWriterConfig(writerConfig);
+            var ioWriter = resource.charSink().openBufferedStream();
+            var rdfWriter = Rio.createWriter(writerFormat.get(), ioWriter, baseURI);
+            var writerConfig = new WriterConfig();
+            writerConfig.set(BasicWriterSettings.BASE_DIRECTIVE, false);
+            writerConfig.set(BasicWriterSettings.INLINE_BLANK_NODES, true);
+            rdfWriter.setWriterConfig(writerConfig);
 
-        var it = new WritableResourceRDFHandler(rdfWriter, ioWriter);
-        rdfWriter.startRDF();
-        return Optional.of(it);
+            var it = new WritableResourceRDFHandler(rdfWriter, ioWriter);
+            rdfWriter.startRDF();
+            return Optional.of(it);
+
+        } catch (URISyntaxException e) {
+            throw new IOException("URISyntaxException: " + resource, e);
+        }
     }
 
     private final RDFWriter /* IS-A RDFHandler */ rdfWriter;
