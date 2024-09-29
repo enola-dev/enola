@@ -91,6 +91,15 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
+    public void greeting1nesteds() throws IOException {
+        try (var ctx = TLC.open().push(XmlThingContext.NS, "https://example.org")) {
+            var from = URI.create("classpath:/greeting1-nesteds.xml");
+            assertThat(loader.convertInto(from, thingsBuilder)).isTrue();
+        }
+        ThingsSubject.assertThat(thingsBuilder).isEqualTo("classpath:/greeting1-nesteds.xml.ttl");
+    }
+
+    @Test
     @Ignore // TODO FIXME
     public void xhtml() throws IOException {
         assertThat(loader.convertInto(URI.create("classpath:/test.html.xml"), thingsBuilder))

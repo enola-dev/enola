@@ -1,0 +1,10 @@
+
+<classpath:/greeting1-nesteds.xml>
+  <https://example.org/greeting1> [
+    <https://example.org/lang> "en";
+    <https://example.org/message> "hello, world";
+    <https://example.org/from> [
+      <https://example.org/style> "email";
+      <https://enola.dev/text> "me@me.me";
+    ]
+  ].

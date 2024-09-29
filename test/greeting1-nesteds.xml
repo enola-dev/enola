@@ -1,0 +1,4 @@
+<greeting1 lang="en">
+  <message> hello, world </message>
+  <from style="email">me@me.me</from>
+</greeting1>
