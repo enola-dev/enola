@@ -23,8 +23,10 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
 
-enola:ontology a owl:Ontology;
-  rdfs:label "Enola.dev's base/core Ontology.".
+# NB: Just "enola:" (<https://enola.dev/>) not e.g. "enola:ontology" (like rdf: and rdfs: and owl:)
+enola: a owl:Ontology;
+  rdfs:label "Enola.dev's base/core Ontology.";
+  enola:doc <https://docs.enola.dev/models/enola.dev/>.
 
 enola:Embedded a rdfs:Class;
   rdfs:comment "Parent (abstract) Class for things which have no IRI identity of their own and which thus should only ever appear in 'RDF blank nodes'. (Like owl:hasValue _:bNode on an owl:DatatypeProperty; without OWL dependency. Or like a sh:nodeKind sh:BlankNode SHACL shape.)".
@@ -159,6 +161,13 @@ enola:GKG a rdfs:Datatype;
 enola:rfc a rdf:Property;
   rdfs:range xsd:positiveInteger;
   schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
+
+enola:doc a rdf:Property;
+  schema:name "Documentation";
+  schema:description "The (single) URL to a website for the 'canonical' background reference documentation text for humans (or LLMs) about this thing. Use rdfs:seeAlso to link to other additional information.";
+  rdfs:subPropertyOf rdfs:seeAlso;
+  schema:rangeIncludes schema:URL; # NOT rdfs:range xsd:anyURI;
+  enola:emoji "ℹ️".
 
 enola:seeAlso a rdf:Property;
   rdfs:subPropertyOf rdfs:seeAlso.

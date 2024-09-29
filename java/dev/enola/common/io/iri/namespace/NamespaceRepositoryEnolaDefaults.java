@@ -19,8 +19,17 @@ package dev.enola.common.io.iri.namespace;
 
 public class NamespaceRepositoryEnolaDefaults {
 
-    // TODO Replace this with something which reads e.g. //models/enola.dev/namespaces.ttl
+    // TODO Move to adopting ThingNamespaceRepository, based on //models/enola.dev/namespaces.ttl
     // Add Human Background Documentation Reference URLs to TTL, where IRI don't resolve to URL
+
+    // TODO add https://www.w3.org/2011/rdfa-context/rdfa-1.1
+
+    // TODO add https://github.com/zazuko/rdf-vocabularies/tree/master/ontologies (during build)
+    // see https://prefix.zazuko.com/prefixes
+
+    // TODO add https://prefix.cc/popular/all.sparql by reading that during build
+
+    // TODO add https://lov.linkeddata.es/dataset/lov/
 
     public static final NamespaceRepository INSTANCE =
             new NamespaceRepositoryBuilder()
