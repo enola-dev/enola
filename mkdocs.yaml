@@ -66,8 +66,11 @@ nav:
       - Metadata: concepts/metadata.md
       - Namespaces: concepts/namespaces.md
       - Formats:
-          - Turtle: concepts/turtle.md
-          - Tika: concepts/tika.md
+          - RDF:
+              - Turtle: concepts/turtle.md
+              - RDF XML: concepts/xml-rdf.md
+          - "* Tika": concepts/tika.md
+          - XML: concepts/xml.md
   - Developers:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md
