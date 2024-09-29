@@ -28,10 +28,10 @@ enola:Namespaces a rdfs:Class;
 enola:namespaces a enola:Namespaces;
   schema:description "Active namespace prefixes.";
   # TODO enola:doc <https://docs.enola.dev/concepts/namespaces/>
-  # rdfs:seeAlso <https://lov.linkeddata.es/dataset/lov/>,
-  #             <https://prefix.cc>,
-  #             <https://www.w3.org/2011/rdfa-context/rdfa-1.1>,
-  #             <https://prefix.zazuko.com/prefixes>;
+  rdfs:seeAlso <https://lov.linkeddata.es/dataset/lov/>,
+               <https://prefix.cc>,
+               <https://www.w3.org/2011/rdfa-context/rdfa-1.1>,
+               <https://prefix.zazuko.com/prefixes>;
 
   <http://ns.adobe.com/pdf/1.3/> "pdf";
   <http://purl.org/dc/elements/1.1/> "dc";

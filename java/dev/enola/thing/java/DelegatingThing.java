@@ -65,13 +65,6 @@ public abstract class DelegatingThing extends AbstractThing implements Thing {
     }
 
     @Override
-    @Deprecated
-    @Nullable
-    public String datatypeLEGACY(String predicateIRI) {
-        return delegate.datatypeLEGACY(predicateIRI);
-    }
-
-    @Override
     public <T> @Nullable T get(String predicateIRI) {
         return delegate.get(predicateIRI);
     }
