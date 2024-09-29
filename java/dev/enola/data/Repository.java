@@ -47,6 +47,6 @@ public interface Repository<T> extends ProviderFromIRI<T> {
     }
 
     default Stream<T> stream() {
-        return Streams.stream(listIRI()).map(this::get);
+        return Streams.stream(list());
     }
 }

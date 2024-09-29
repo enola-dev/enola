@@ -44,7 +44,7 @@ import java.util.Optional;
 @FunctionalInterface
 public interface ThingProvider extends ProviderFromIRI<Thing> {
 
-    // TODO Eventually migrate everyting to AlwaysThingProvider...
+    // TODO Eventually migrate everything to AlwaysThingProvider...
 
     ThingProvider CTX = iri -> TLC.get(ThingProvider.class).get(iri);
 
