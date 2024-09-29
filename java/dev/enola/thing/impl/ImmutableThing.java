@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.impl;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
@@ -29,8 +31,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.Objects;
-
 @Immutable
 @ThreadSafe
 public class ImmutableThing extends ImmutablePredicatesObjects implements IImmutableThing {
@@ -42,15 +42,16 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             ImmutableMap<String, Object> properties,
             ImmutableMap<String, String> datatypes) {
         super(properties, datatypes);
-        this.iri = Objects.requireNonNull(iri, "iri");
+        this.iri = requireNonNull(iri, "iri");
     }
 
     public static Thing.Builder<? extends ImmutableThing> builder() {
         return new Builder<>();
     }
 
-    public static Thing.Builder builderWithExpectedSize(int expectedSize) {
-        return new Builder(expectedSize);
+    public static Thing.Builder<? extends ImmutableThing> builderWithExpectedSize(
+            int expectedSize) {
+        return new Builder<>(expectedSize);
     }
 
     public static final TBF FACTORY =
@@ -126,7 +127,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             if (this.iri != null && !this.iri.equals((iri)))
                 throw new IllegalStateException(
                         "IRI already set: " + this.iri + ", cannot set to: " + iri);
-            this.iri = iri;
+            this.iri = requireNonNull(iri);
             return this;
         }
 
