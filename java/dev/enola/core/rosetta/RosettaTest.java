@@ -150,7 +150,10 @@ public class RosettaTest {
         var in = rp.get("classpath:/greeting1-nested.xml");
         var out = new MemoryResource(RdfMediaTypes.TURTLE);
         rosetta.convertInto(in, out);
-        assertThat(out.charSource().read()).startsWith("\n<classpath:/");
+        var ttl = out.charSource().read();
+        assertThat(ttl).contains("\n<classpath:/");
+        // This makes sure that namespace prefixes were used
+        assertThat(ttl).contains("ex:message \"hello, world\"");
     }
 
     @Test
