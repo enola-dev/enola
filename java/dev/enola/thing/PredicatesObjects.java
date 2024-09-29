@@ -173,6 +173,7 @@ public interface PredicatesObjects {
 
     // TODO get... other types.
 
+    @Deprecated
     Builder<? extends PredicatesObjects> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")

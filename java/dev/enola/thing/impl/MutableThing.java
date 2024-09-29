@@ -23,10 +23,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Implementation of {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
  *
@@ -39,25 +35,21 @@ import java.util.Set;
  */
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
-public class MutableThing<B extends IImmutableThing> extends AbstractThing
+public class MutableThing<B extends IImmutableThing> extends MutablePredicatesObjects<B>
         implements Thing, Thing.Builder<B> {
 
     protected @Nullable String iri;
-    protected final Map<String, Object> properties;
-    protected final Map<String, String> datatypes;
 
     public MutableThing() {
-        properties = new HashMap<>();
-        datatypes = new HashMap<>();
+        super();
     }
 
     public MutableThing(int expectedSize) {
-        properties = new HashMap<>(expectedSize); // exact
-        datatypes = new HashMap<>(expectedSize); // upper bound
+        super(expectedSize);
     }
 
     @Override
-    public Builder<B> iri(String iri) {
+    public Thing.Builder<B> iri(String iri) {
         this.iri = iri;
         return this;
     }
@@ -69,49 +61,37 @@ public class MutableThing<B extends IImmutableThing> extends AbstractThing
     }
 
     @Override
-    public Builder<B> set(String predicateIRI, Object value) {
-        properties.put(predicateIRI, value);
+    public Thing.Builder<B> set(String predicateIRI, Object value) {
+        super.set(predicateIRI, value);
         return this;
     }
 
     @Override
-    public Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
-        properties.put(predicateIRI, value);
-        if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
+    public Thing.Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
+        super.set(predicateIRI, value, datatypeIRI);
         return this;
     }
 
     @Override
     @Deprecated
-    @SuppressWarnings("unchecked")
-    public <T> @Nullable T get(String predicateIRI) {
-        return (T) properties.get(predicateIRI);
-    }
-
-    @Override
-    public Map<String, Object> properties() {
-        return properties;
-    }
-
-    @Override
-    public Set<String> predicateIRIs() {
-        return properties.keySet();
-    }
-
-    @Override
-    public @Nullable String datatype(String predicateIRI) {
-        return datatypes.get(predicateIRI);
-    }
-
-    @Override
-    public Map<String, String> datatypes() {
-        return datatypes;
-    }
-
-    @Override
-    @Deprecated
-    public Builder<? extends Thing> copy() {
+    public Thing.Builder<? extends Thing> copy() {
         return this;
+    }
+
+    @Override
+    public final int hashCode() {
+        return ThingHashCodeEqualsToString.hashCode(this);
+    }
+
+    @Override
+    @SuppressWarnings({"EqualsWhichDoesntCheckParameterClass", "EqualsDoesntCheckParameterClass"})
+    public final boolean equals(Object obj) {
+        return ThingHashCodeEqualsToString.equals(this, obj);
+    }
+
+    @Override
+    public final String toString() {
+        return ThingHashCodeEqualsToString.toString(this);
     }
 
     @Override
@@ -119,11 +99,7 @@ public class MutableThing<B extends IImmutableThing> extends AbstractThing
     public B build() {
         var immutableBuilder = ImmutableThing.builderWithExpectedSize(properties.size());
         immutableBuilder.iri(iri);
-        for (Map.Entry<String, Object> entry : properties.entrySet()) {
-            var predicateIRI = entry.getKey();
-            immutableBuilder.set(predicateIRI, entry.getValue(), datatype(predicateIRI));
-        }
-        IImmutableThing immutableThing = immutableBuilder.build();
-        return (B) immutableThing;
+        deepBuildInto(immutableBuilder);
+        return (B) immutableBuilder.build();
     }
 }
