@@ -30,6 +30,7 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.LangString;
 import dev.enola.thing.Link;
 import dev.enola.thing.PredicatesObjects;
+import dev.enola.thing.impl.IImmutablePredicatesObjects;
 import dev.enola.thing.impl.ImmutablePredicatesObjects;
 import dev.enola.thing.proto.Value;
 
@@ -37,17 +38,17 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
-public class PredicatesObjectsAdapter implements PredicatesObjects {
+public class PredicatesObjectsAdapter implements IImmutablePredicatesObjects {
 
     // TODO This is too similar to ProtoThingIntoJavaThingBuilderConverter, and must be merged
 
     private static final Logger LOG = LoggerFactory.getLogger(ThingAdapter.class);
 
     protected final dev.enola.thing.proto.Thing proto;
+
+    @SuppressWarnings("Immutable")
     protected final DatatypeRepository datatypeRepository;
 
     public PredicatesObjectsAdapter(
@@ -58,8 +59,8 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
     }
 
     @Override
-    public Set<String> predicateIRIs() {
-        return proto.getPropertiesMap().keySet();
+    public ImmutableSet<String> predicateIRIs() {
+        return ImmutableSet.copyOf(proto.getPropertiesMap().keySet());
     }
 
     @Override
@@ -82,7 +83,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
     }
 
     @Override
-    public Map<String, String> datatypes() {
+    public ImmutableMap<String, String> datatypes() {
         var predicateIRIs = predicateIRIs();
         var builder = ImmutableMap.<String, String>builderWithExpectedSize(predicateIRIs.size());
         for (var predicateIRI : predicateIRIs) {
@@ -129,7 +130,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         }
     }
 
-    private java.util.Collection<?> listOrSet(dev.enola.thing.proto.Value.List list) {
+    private ImmutableCollection<?> listOrSet(dev.enola.thing.proto.Value.List list) {
         // TODO Make this lazier... only convert object when they're actually used
         var protoValues = list.getValuesList();
         ImmutableCollection.Builder<Object> collectionBuilder;
@@ -146,7 +147,7 @@ public class PredicatesObjectsAdapter implements PredicatesObjects {
         return collectionBuilder.build();
     }
 
-    private PredicatesObjects map(dev.enola.thing.proto.Thing struct) {
+    private PredicatesObjectsAdapter map(dev.enola.thing.proto.Thing struct) {
         return new PredicatesObjectsAdapter(struct, datatypeRepository);
     }
 

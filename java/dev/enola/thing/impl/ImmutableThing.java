@@ -23,7 +23,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
-import dev.enola.thing.Literal;
 import dev.enola.thing.Thing;
 import dev.enola.thing.java2.TBF;
 
@@ -91,35 +90,24 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
-            implements Thing.Builder<B> {
+            extends ImmutablePredicatesObjects.Builder<B> implements Thing.Builder<B> {
 
-        // TODO Make this extend ImmutablePredicatesObjects.Builder instead of copy/paste
-
-        protected final ImmutableMap.Builder<String, Object> properties;
-        protected final ImmutableMap.Builder<String, String> datatypes;
         protected @Nullable String iri;
 
         protected Builder() {
-            properties = ImmutableMap.builder();
-            datatypes = ImmutableMap.builder();
+            super();
         }
 
         protected Builder(int expectedSize) {
-            properties = ImmutableMap.builderWithExpectedSize(expectedSize); // exact
-            datatypes = ImmutableMap.builderWithExpectedSize(expectedSize); // upper bound
+            super(expectedSize);
         }
 
         protected Builder(
                 String iri,
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
+            super(properties, datatypes);
             iri(iri);
-            this.properties =
-                    ImmutableMap.<String, Object>builderWithExpectedSize(properties.size())
-                            .putAll(properties);
-            this.datatypes =
-                    ImmutableMap.<String, String>builderWithExpectedSize(properties.size())
-                            .putAll(datatypes);
         }
 
         @Override
@@ -133,17 +121,14 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
         @Override
         public Thing.Builder<B> set(String predicateIRI, Object value) {
-            if (value instanceof Literal literal)
-                set(predicateIRI, literal.value(), literal.datatypeIRI());
-            else properties.put(predicateIRI, value);
+            super.set(predicateIRI, value);
             return this;
         }
 
         @Override
         public Thing.Builder<B> set(
                 String predicateIRI, Object value, @Nullable String datatypeIRI) {
-            properties.put(predicateIRI, value);
-            if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
+            super.set(predicateIRI, value, datatypeIRI);
             return this;
         }
 

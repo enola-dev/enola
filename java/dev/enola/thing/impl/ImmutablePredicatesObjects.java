@@ -25,6 +25,8 @@ import com.google.errorprone.annotations.ThreadSafe;
 import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.jspecify.annotations.Nullable;
 
 @Immutable
@@ -99,11 +101,12 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         return new Builder<>(properties(), datatypes());
     }
 
-    private static final class Builder<B extends PredicatesObjects>
+    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
+    static class Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             implements PredicatesObjects.Builder<B> {
 
-        private final ImmutableMap.Builder<String, Object> properties;
-        private final ImmutableMap.Builder<String, String> datatypes;
+        protected final ImmutableMap.Builder<String, Object> properties;
+        protected final ImmutableMap.Builder<String, String> datatypes;
 
         Builder() {
             properties = ImmutableMap.builder();
@@ -128,6 +131,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
         @Override
         public PredicatesObjects.Builder<B> set(String predicateIRI, Object value) {
+            ImmutableObjects.check(value);
             if (value instanceof Literal literal)
                 set(predicateIRI, literal.value(), literal.datatypeIRI());
             else properties.put(predicateIRI, value);
@@ -136,7 +140,8 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
         @Override
         public PredicatesObjects.Builder<B> set(
-                String predicateIRI, Object value, String datatypeIRI) {
+                String predicateIRI, Object value, @Nullable String datatypeIRI) {
+            ImmutableObjects.check(value);
             properties.put(predicateIRI, value);
             if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;

@@ -196,8 +196,8 @@ public interface PredicatesObjects {
          * Adds one of possibly several value objects for the given predicate IRI.
          *
          * <p>This is UNORDERED! Insertion order may NOT be preserved. Duplicates are not allowed
-         * and cause an error. It is an error if this property has already been set to anything else
-         * than a {@link Set}.
+         * and will cause an error (possibly only on {@link #build()}). It is an error if this
+         * property has already been set to anything else than a {@link Set}.
          */
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value);
 

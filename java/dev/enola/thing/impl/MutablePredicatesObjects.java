@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.thing.PredicatesObjects;
-import dev.enola.thing.Thing;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -35,11 +34,10 @@ import java.util.Set;
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
-        implements PredicatesObjects, PredicatesObjects.Builder<B> {
+        implements PredicatesObjects, PredicatesObjects.Builder2<B> {
 
-    protected @Nullable String iri;
-    protected final Map<String, Object> properties;
-    protected final Map<String, String> datatypes;
+    private final Map<String, Object> properties;
+    private final Map<String, String> datatypes;
 
     public MutablePredicatesObjects() {
         properties = new HashMap<>();
@@ -52,16 +50,73 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public Builder<B> set(String predicateIRI, Object value) {
+    public Builder2<B> set(String predicateIRI, Object value) {
         properties.put(predicateIRI, value);
         return this;
     }
 
     @Override
-    public Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
+    public Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
         properties.put(predicateIRI, value);
         if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
         return this;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <T> Builder2<B> add(String predicateIRI, T value) {
+        var object = properties.get(predicateIRI);
+        if (object == null) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(value);
+        } else if (object instanceof ImmutableSet.Builder builder) {
+            builder.add(value);
+        } else
+            throw new IllegalStateException(
+                    predicateIRI + " is not an ImmutableSet.Builder: " + object);
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <T> Builder2<B> addOrdered(String predicateIRI, T value) {
+        var object = properties.get(predicateIRI);
+        if (object == null) {
+            var builder = ImmutableList.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(value);
+        } else if (object instanceof ImmutableList.Builder builder) {
+            builder.add(value);
+        } else
+            throw new IllegalStateException(
+                    predicateIRI + " is not an ImmutableList.Builder: " + object);
+        return this;
+    }
+
+    @Override
+    public <T> Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI) {
+        checkCollectionDatatype(predicateIRI, datatypeIRI);
+        add(predicateIRI, value);
+        return this;
+    }
+
+    @Override
+    public <T> Builder2<B> addOrdered(String predicateIRI, T value, @Nullable String datatypeIRI) {
+        checkCollectionDatatype(predicateIRI, datatypeIRI);
+        addOrdered(predicateIRI, value);
+        return this;
+    }
+
+    private void checkCollectionDatatype(String predicateIRI, @Nullable String datatypeIRI) {
+        // Nota bene: This is, of course, actually stricter than what RDF would technically allow...
+        // ... but this is intentional and matches intended strongly type safe generated code.
+        if (datatypeIRI != null) {
+            var previous = datatypes.putIfAbsent(predicateIRI, datatypeIRI);
+            if (!datatypeIRI.equals(previous))
+                throw new IllegalStateException(
+                        predicateIRI + " has another Datatype: " + previous);
+        }
     }
 
     @Override
@@ -93,7 +148,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     @Deprecated
-    public Builder<? extends PredicatesObjects> copy() {
+    public Builder2<? extends PredicatesObjects> copy() {
         return this;
     }
 
@@ -130,9 +185,10 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             var object = entry.getValue();
             if (object instanceof List<?> list) object = ImmutableList.copyOf(list);
             if (object instanceof Set<?> list) object = ImmutableSet.copyOf(list);
-            if (object instanceof Thing) throw new IllegalStateException(object.toString());
             if (object instanceof MutablePredicatesObjects<?> mutablePredicatesObjects)
                 object = mutablePredicatesObjects.build();
+            // Keep these ^^^ conversions in sync with:
+            ImmutableObjects.check(object);
             immutableBuilder.set(predicateIRI, object, datatype(predicateIRI));
         }
     }
