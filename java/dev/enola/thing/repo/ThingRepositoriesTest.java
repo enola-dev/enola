@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.data.Store;
 import dev.enola.thing.*;
 import dev.enola.thing.impl.ImmutableThing;
@@ -37,6 +39,11 @@ public class ThingRepositoriesTest {
                     .set("http://example.com/link", new Link("http://example.com"))
                     .set("http://example.com/mls", new LangString("Saluton", "eo"))
                     .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
+                    .set(
+                            "http://example.com/list",
+                            ImmutableList.of(
+                                    new Link("http://example.com"),
+                                    new Literal("k&ç#'", "test:type")))
                     .build();
 
     private void checkStore(Store<?, Thing> thingStore) {

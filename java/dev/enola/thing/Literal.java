@@ -29,7 +29,6 @@ import dev.enola.datatype.Datatype;
  *
  * <p>This is a LEGACY type which (now) overlaps with {@link Thing#datatype(String predicateIRI)}
  * (and a String value property). Prefer using that than this, which will eventually be removed.
- * Until it's removed, use {@link Thing#datatypeLEGACY(String)} to obtain a property's datatype.
  */
 @Deprecated // TODO Remove this; see above
-public final record Literal(String value, String datatypeIRI) {}
+public record Literal(String value, String datatypeIRI) {}

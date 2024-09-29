@@ -57,6 +57,14 @@ public class ImmutableThingTest {
     }
 
     @Test
+    public void getAllAsString() {
+        var testThing = ThingRepositoriesTest.TEST_THING;
+        for (var predicateIRI : testThing.predicateIRIs()) {
+            assertThat(testThing.get(predicateIRI, String.class)).isNotEmpty();
+        }
+    }
+
+    @Test
     public void message() {
         var testThing = ThingRepositoriesTest.TEST_THING;
         assertThat(testThing.getString("http://example.com/message")).isEqualTo("hello");

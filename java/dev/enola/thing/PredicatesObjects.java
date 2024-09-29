@@ -20,20 +20,15 @@ package dev.enola.thing;
 import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
-import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.repo.ThingProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * PredicatesObjects is a "struct" of Predicates and their Objects.
@@ -94,19 +89,6 @@ public interface PredicatesObjects {
     @Deprecated // TODO Is this really useful? In which use case scenario? Remove...
     Map<String, String> datatypes();
 
-    @Deprecated // TODO Remove once record Literal is gone
-    default @Nullable String datatypeLEGACY(String predicateIRI) {
-        var datatype = datatype(predicateIRI);
-        if (datatype != null) return datatype;
-
-        var object = get(predicateIRI);
-        if (object != null && object instanceof Literal literal) {
-            return literal.datatypeIRI();
-        }
-
-        return null;
-    }
-
     /**
      * Object of predicate. The type is e.g. directly a String, Integer etc. Alternatively, it may
      * be a {@link Link} (or {@link URI}) with an IRI or another PredicatesObjects (for an "inline
@@ -115,7 +97,7 @@ public interface PredicatesObjects {
      *
      * @deprecated Use {@link #get(String, Class)} instead.
      */
-    @Deprecated // TODO Remove after replacing all usages with #get(String, Class)
+    @Deprecated // TODO Remove after replacing all usages with #get(String, aClass | Object.class)
     <T> @Nullable T get(String predicateIRI);
 
     /**
@@ -150,49 +132,7 @@ public interface PredicatesObjects {
     @SuppressWarnings("unchecked")
     default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
-        if (object == null) return Optional.empty();
-        if (klass.isInstance(object)) return Optional.of((T) object);
-        if (String.class.equals(klass)) {
-            if (object instanceof Literal literal) return Optional.of((T) literal.value());
-            if (object instanceof URI uri) return Optional.of((T) uri.toString());
-            if (object instanceof Link link) return Optional.of((T) link.iri());
-            // TODO Ideally, it should look up the "right" text, using a Lang Ctx Key from the TLC
-            if (object instanceof LangString langString) return Optional.of((T) langString.text());
-        }
-        try {
-            var dtIRI = datatypeLEGACY(predicateIRI);
-            // TODO Find Datatype via object Java class lookup in DatatypeRepository?
-            if (dtIRI == null)
-                throw new IllegalStateException(
-                        predicateIRI
-                                + " has no Datatype; cannot convert "
-                                + object
-                                + " of "
-                                + object.getClass()
-                                + " to "
-                                + klass);
-            var dtr = TLC.get(DatatypeRepository.class);
-            var dt = dtr.get(dtIRI);
-            if (dt == null)
-                throw new IllegalStateException(
-                        dtIRI
-                                + " not found; cannot convert "
-                                + object
-                                + " of "
-                                + object.getClass()
-                                + " to "
-                                + klass);
-            var opt = dt.stringConverter().convertObjectToType(object, klass);
-            if (opt.isEmpty())
-                throw new IllegalStateException(
-                        object + " of " + object.getClass() + " to " + klass);
-            return opt;
-
-        } catch (IOException e) {
-            // TODO Get rid of throws IOException and remove this.
-            // Or better log any exceptions and return just Optional.empty()?
-            throw new ConversionException("Failed to convert " + object + " to " + klass, e);
-        }
+        return ObjectConversions.as(object, klass, this, predicateIRI);
     }
 
     default @Nullable String getString(String predicateIRI) {
