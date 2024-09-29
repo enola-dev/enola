@@ -35,6 +35,7 @@ import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
 import dev.enola.format.tika.rdf.TikaResourceIntoRdfResourceConverter;
+import dev.enola.format.xml.XmlResourceConverter;
 import dev.enola.rdf.io.RdfResourceConverter;
 import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.gexf.GexfResourceConverter;
@@ -103,10 +104,9 @@ public class Rosetta implements ResourceConverter {
                                 new YamlJsonResourceConverter(),
                                 new GraphvizResourceConverter(loader, new GraphvizGenerator(tmp)),
                                 new GexfResourceConverter(loader, new GexfGenerator(tmp)),
+                                new XmlResourceConverter(rp),
                                 new CharResourceConverter(),
-                                new IdempotentCopyingResourceNonConverter()
-                                // TODO XML... with XmlResourceParser & XMLToThingHandler
-                                ));
+                                new IdempotentCopyingResourceNonConverter()));
     }
 
     @Override

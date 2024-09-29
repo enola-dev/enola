@@ -32,6 +32,7 @@ e.g. between:
   _[Binary Protocol Buffer "Wire"](https://protobuf.dev/programming-guides/encoding/)_ formats
 * Graph Diagrams from RDF et al.
 * [Many other formats](#tika)!
+* [XML](#xml)
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
 
@@ -83,6 +84,13 @@ $ ./enola rosetta --in test/picasso.ttl --out picasso.jsonld
 ## JSON & YAML to Turtle 🐢 via JSON-LD
 
 [See JSON-LD](../json-ld/index.md).
+
+## XML
+
+```bash cd ../.././..
+$ ./enola rosetta --in test/greeting1-nested.xml --out="fd:1?mediaType=text/turtle"
+...
+```
 
 ## Turtle 🐢 to Things ⛓️
 

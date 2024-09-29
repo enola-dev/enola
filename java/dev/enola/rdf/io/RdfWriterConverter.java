@@ -26,7 +26,6 @@ import org.eclipse.rdf4j.model.NamespaceAware;
 import org.eclipse.rdf4j.model.Statement;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * Writes RDFJ4j {@link Statement}s (like {@link org.eclipse.rdf4j.model.Model}) into a {@link
@@ -53,7 +52,7 @@ public class RdfWriterConverter implements ConverterInto<Iterable<Statement>, Wr
                 return true;
             }
 
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException e) {
             throw new ConversionException("WritableResourceRDFHandler.create failed: " + into, e);
         }
     }
