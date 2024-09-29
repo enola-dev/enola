@@ -55,6 +55,7 @@ junit_tests(
         ":xml",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/xml",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/testlib",
         "//test",

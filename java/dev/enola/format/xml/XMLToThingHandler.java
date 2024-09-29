@@ -18,6 +18,9 @@
 package dev.enola.format.xml;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ListMultimap;
 
 import dev.enola.common.io.iri.namespace.NamespaceRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryBuilder;
@@ -44,12 +47,16 @@ import java.util.Deque;
  */
 public class XMLToThingHandler extends DefaultHandler {
 
+    // TODO Simplify the (historical) thingBuilders & multimaps into 1 single data structure?
+
     // TODO Consider implementing this via & through the existing JSON[-LD, ctx?] support instead?
 
     // TODO Support <xsd:boolean>true</xsd:boolean> or <dateValue type="date">2023-12-31</dateValue>
 
     private static final Logger LOG = LoggerFactory.getLogger(XMLToThingHandler.class);
+
     public static final String TEXT_PROPERTY_IRI = "https://enola.dev/text";
+    public static final String NODES_PROPERTY_IRI = "https://enola.dev/nodes";
 
     private final String defaultNamespaceIRI;
     private final NamespaceRepositoryBuilder nrb = new NamespaceRepositoryBuilder();
@@ -57,6 +64,9 @@ public class XMLToThingHandler extends DefaultHandler {
     private @Nullable String previousElementQName;
     private final Deque<IImmutablePredicatesObjects.Builder<IImmutablePredicatesObjects>>
             thingBuilders = new ArrayDeque<>();
+
+    private final Deque<ListMultimap<String, IImmutablePredicatesObjects>> multimaps =
+            new ArrayDeque<>();
 
     @SuppressWarnings("unchecked")
     public XMLToThingHandler(String baseIRI, Thing.Builder<?> thingBuilder) {
@@ -72,6 +82,7 @@ public class XMLToThingHandler extends DefaultHandler {
         this.defaultNamespaceIRI = defaultNamespaceIRI;
     }
 
+    // TODO This actually isn't used anywhere - yet?
     public NamespaceRepository getNamespaces() {
         return nrb.build();
     }
@@ -105,6 +116,7 @@ public class XMLToThingHandler extends DefaultHandler {
 
         var nested = ImmutablePredicatesObjects.builder();
         thingBuilders.add(nested);
+        multimaps.add(ArrayListMultimap.create());
 
         for (int i = 0; i < attributes.getLength(); i++) {
             var attributeURI = attributes.getURI(i);
@@ -133,18 +145,42 @@ public class XMLToThingHandler extends DefaultHandler {
 
         } else {
             // End same level element
-            // NOOP.
         }
 
-        var nested = thingBuilders.removeLast().build();
-        if (!nested.predicateIRIs().isEmpty())
-            if (nested.predicateIRIs().size() > 1
-                    || !nested.predicateIRIs().iterator().next().equals(TEXT_PROPERTY_IRI))
-                thingBuilders.getLast().set(iri(uri, localName, qName), nested);
-            else {
+        var multimap = multimaps.removeLast();
+        if (!multimap.keys().isEmpty()) {
+            var multimapKeysSize = multimap.keys().size();
+            if (multimapKeysSize > 1
+                    || !multimap.keys().iterator().next().equals(TEXT_PROPERTY_IRI)) {
+                // Are there duplicate keys of the same predicate IRI repeated?
+                if (multimapKeysSize == multimap.keySet().size()) {
+                    var nested = thingBuilders.removeLast().build();
+                    thingBuilders.getLast().set(iri(uri, localName, qName), nested);
+                    multimap.put(iri(uri, localName, qName), nested);
+
+                } else {
+                    // Remove, but do not build() - as it would fail!
+                    thingBuilders.removeLast();
+                    ImmutableList.Builder<ImmutablePredicatesObjects> list =
+                            ImmutableList.builderWithExpectedSize(multimapKeysSize);
+                    // TODO Can this be simplified?
+                    multimap.forEach(
+                            (predicateIRI, predicatesObjects) ->
+                                    list.add(
+                                            ImmutablePredicatesObjects.builderWithExpectedSize(1)
+                                                    .set(predicateIRI, predicatesObjects)
+                                                    .build()));
+                    var builtList = list.build();
+                    thingBuilders.getLast().set(NODES_PROPERTY_IRI, builtList);
+                    // TODO ? multimap.put(iri(uri, localName, qName), builtList);
+                }
+
+            } else {
+                var nested = thingBuilders.removeLast().build();
                 var text = nested.get(TEXT_PROPERTY_IRI, String.class);
                 thingBuilders.getLast().set(iri(uri, localName, qName), text);
             }
+        }
     }
 
     @Override

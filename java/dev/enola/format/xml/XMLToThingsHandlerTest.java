@@ -26,7 +26,6 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.testlib.ThingsSubject;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -100,11 +99,10 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
     public void xhtml() throws IOException {
         assertThat(loader.convertInto(URI.create("classpath:/test.html.xml"), thingsBuilder))
                 .isTrue();
-        throw new IllegalStateException(thingsBuilder.toString());
-        // TODO ThingsSubject.assertThat(thingsBuilder).isEqualTo("classpath:/test.html.xml.ttl");
+        // TODO rm? throw new IllegalStateException(thingsBuilder.toString());
+        ThingsSubject.assertThat(thingsBuilder).isEqualTo("classpath:/test.html.xml.ttl");
     }
 }
