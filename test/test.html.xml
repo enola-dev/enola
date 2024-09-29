@@ -17,6 +17,7 @@
       <a href="test.html">Recursive Self Link</a>
       <a href="https://www.vorburger.ch">Vorburger</a>
       <schema:dateCreated datatype="xsd:date">2024-09-28</schema:dateCreated>
+      .
     </p>
     <math xmlns="http://www.w3.org/1998/Math/MathML">
       <apply>
