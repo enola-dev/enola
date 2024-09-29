@@ -55,6 +55,10 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
         return true;
     }
 
+    public boolean load(String uri, Store<?, Thing> store) {
+        return load(URI.create(uri), store);
+    }
+
     public boolean load(URI uri, Store<?, Thing> store) {
         LOG.info("Loading {}...", uri);
         var things = uriIntoThingConverters.convert(uri);
