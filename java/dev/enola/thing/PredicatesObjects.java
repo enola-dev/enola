@@ -65,6 +65,11 @@ public interface PredicatesObjects {
         return value instanceof Iterable;
     }
 
+    default boolean isOrdered(String predicateIRI) {
+        var value = get(predicateIRI);
+        return value instanceof List;
+    }
+
     default boolean isStruct(String predicateIRI) {
         var value = get(predicateIRI);
         return value instanceof PredicatesObjects;
@@ -177,6 +182,38 @@ public interface PredicatesObjects {
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        @Override
+        B build();
+    }
+
+    // TODO How to best name this, and the equivalent in Thing?
+    interface Builder2<B extends PredicatesObjects> extends PredicatesObjects.Builder<B> {
+
+        /**
+         * Adds one of possibly several value objects for the given predicate IRI.
+         *
+         * <p>This is UNORDERED! Insertion order may NOT be preserved. Duplicates are not allowed
+         * and cause an error. It is an error if this property has already been set to anything else
+         * than a {@link Set}.
+         */
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value);
+
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        /**
+         * Adds one of possibly several value objects for the given predicate IRI - and preserves
+         * order.
+         *
+         * <p>Duplicates ARE allowed. It is an error if this property has already been set to
+         * anything else than a {@link List}.
+         */
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
+                String predicateIRI, T value);
+
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
         @Override

@@ -21,6 +21,8 @@ import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 import dev.enola.web.testlib.WebServerTestAbstract;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -33,7 +35,8 @@ public class NettyHttpServerTest extends WebServerTestAbstract {
     }
 
     @Test
-    public void testServer() throws IOException, InterruptedException {
+    @SuppressFBWarnings("USM_USELESS_SUBCLASS_METHOD")
+    public void testServer() throws IOException, InterruptedException { // skipcq: JAVA-W1016
         super.testServer();
     }
 }
