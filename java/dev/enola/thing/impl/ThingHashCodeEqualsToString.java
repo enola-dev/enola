@@ -31,7 +31,8 @@ final class ThingHashCodeEqualsToString {
     static boolean equals(PredicatesObjects thiz, @Nullable Object obj) {
         if (obj == thiz) return true;
         if (obj == null) return false;
-        // NOT:     if (getClass() != obj.getClass()) return false;
+        // NOT: if (getClass() != obj.getClass()) return false;
+        if (obj instanceof Thing) return false; // TODO is this a good idea? But what's better?
         if (!(obj instanceof ImmutablePredicatesObjects other)) return false;
         return Objects.equals(thiz.properties(), other.properties)
                 && Objects.equals(thiz.datatypes(), other.datatypes);
@@ -40,7 +41,7 @@ final class ThingHashCodeEqualsToString {
     static boolean equals(Thing thiz, @Nullable Object obj) {
         if (obj == thiz) return true;
         if (obj == null) return false;
-        // NOT:     if (getClass() != obj.getClass()) return false;
+        // NOT: if (getClass() != obj.getClass()) return false;
         if (!(obj instanceof Thing other)) return false;
         return Objects.equals(thiz.iri(), other.iri())
                 && Objects.equals(thiz.properties(), other.properties())
