@@ -36,9 +36,9 @@ import org.jspecify.annotations.Nullable;
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutableThing<B extends IImmutableThing> extends MutablePredicatesObjects<B>
-        implements Thing, Thing.Builder<B> {
+        implements Thing, Thing.Builder2<B> {
 
-    protected @Nullable String iri;
+    private @Nullable String iri;
 
     public MutableThing() {
         super();
@@ -49,7 +49,7 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     }
 
     @Override
-    public Thing.Builder<B> iri(String iri) {
+    public Thing.Builder2<B> iri(String iri) {
         this.iri = iri;
         return this;
     }
@@ -61,20 +61,45 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     }
 
     @Override
-    public Thing.Builder<B> set(String predicateIRI, Object value) {
+    public Thing.Builder2<B> set(String predicateIRI, Object value) {
         super.set(predicateIRI, value);
         return this;
     }
 
     @Override
-    public Thing.Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
+    public Thing.Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
         super.set(predicateIRI, value, datatypeIRI);
         return this;
     }
 
     @Override
+    public <T> Thing.Builder2<B> add(String predicateIRI, T value) {
+        super.add(predicateIRI, value);
+        return this;
+    }
+
+    @Override
+    public <T> Thing.Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI) {
+        super.add(predicateIRI, value, datatypeIRI);
+        return this;
+    }
+
+    @Override
+    public <T> Thing.Builder2<B> addOrdered(String predicateIRI, T value) {
+        super.addOrdered(predicateIRI, value);
+        return this;
+    }
+
+    @Override
+    public <T> Thing.Builder2<B> addOrdered(
+            String predicateIRI, T value, @Nullable String datatypeIRI) {
+        super.addOrdered(predicateIRI, value, datatypeIRI);
+        return this;
+    }
+
+    @Override
     @Deprecated
-    public Thing.Builder<? extends Thing> copy() {
+    public Thing.Builder2<? extends Thing> copy() {
         return this;
     }
 
@@ -97,7 +122,7 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     @Override
     @SuppressWarnings("unchecked") // TODO How to remove (B) type cast?!
     public B build() {
-        var immutableBuilder = ImmutableThing.builderWithExpectedSize(properties.size());
+        var immutableBuilder = ImmutableThing.builderWithExpectedSize(predicateIRIs().size());
         immutableBuilder.iri(iri);
         deepBuildInto(immutableBuilder);
         return (B) immutableBuilder.build();
