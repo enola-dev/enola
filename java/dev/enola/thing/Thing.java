@@ -17,7 +17,11 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.ImmutableTypeParameter;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * Thing is the central data structure of Enola.
@@ -45,9 +49,25 @@ public interface Thing extends HasIRI, PredicatesObjects {
 
         Builder<B> set(String predicateIRI, Object value);
 
-        Builder<B> set(String predicateIRI, Object value, String datatypeIRI);
+        Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI);
 
         @Override
         B build();
+    }
+
+    // TODO How to best name this, and the equivalent in PredicatesObjects?
+    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
+    interface Builder2<B extends Thing> // skipcq: JAVA-E0169
+            extends Thing.Builder<B>, PredicatesObjects.Builder2<B> {
+
+        <@ImmutableTypeParameter T> Thing.Builder2<B> add(String predicateIRI, T value);
+
+        <@ImmutableTypeParameter T> Thing.Builder2<B> add(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);
+
+        <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
     }
 }

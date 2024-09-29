@@ -51,5 +51,6 @@ junit_tests(
         "//java/dev/enola/common/io",
         "//java/dev/enola/web",
         "//java/dev/enola/web/testlib",
+        "@maven//:com_github_spotbugs_spotbugs_annotations",
     ],
 )
