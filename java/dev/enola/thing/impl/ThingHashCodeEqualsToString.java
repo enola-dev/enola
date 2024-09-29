@@ -19,15 +19,27 @@ package dev.enola.thing.impl;
 
 import com.google.common.base.MoreObjects;
 
+import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
 final class ThingHashCodeEqualsToString {
 
-    static boolean equals(Thing thiz, Object obj) {
+    static boolean equals(PredicatesObjects thiz, @Nullable Object obj) {
         if (obj == thiz) return true;
-        // NO NEED: if (obj == null) return false;
+        if (obj == null) return false;
+        // NOT:     if (getClass() != obj.getClass()) return false;
+        if (!(obj instanceof ImmutablePredicatesObjects other)) return false;
+        return Objects.equals(thiz.properties(), other.properties)
+                && Objects.equals(thiz.datatypes(), other.datatypes);
+    }
+
+    static boolean equals(Thing thiz, @Nullable Object obj) {
+        if (obj == thiz) return true;
+        if (obj == null) return false;
         // NOT:     if (getClass() != obj.getClass()) return false;
         if (!(obj instanceof Thing other)) return false;
         return Objects.equals(thiz.iri(), other.iri())
@@ -35,8 +47,19 @@ final class ThingHashCodeEqualsToString {
                 && Objects.equals(thiz.datatypes(), other.datatypes());
     }
 
+    static int hashCode(PredicatesObjects thiz) {
+        return Objects.hash(thiz.properties(), thiz.datatypes());
+    }
+
     static int hashCode(Thing thiz) {
         return Objects.hash(thiz.iri(), thiz.properties(), thiz.datatypes());
+    }
+
+    static String toString(PredicatesObjects thiz) {
+        return MoreObjects.toStringHelper(thiz)
+                .add("properties", thiz.properties())
+                .add("datatypes", thiz.datatypes())
+                .toString();
     }
 
     static String toString(Thing thiz) {
