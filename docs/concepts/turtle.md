@@ -84,6 +84,8 @@ There can be several different such prefixes, of course. We can also define (a s
   :next :thing2.
 ```
 
+See [Namespaces](namespaces.md) for more related background.
+
 ## Base
 
 Relative instead of absolute IRIs are allowed. By default, they are interpreted as based on "where the TTL is" (e.g. `file:/...`). What you typically want however is to declare an explicit absolute `@base`; e.g. we could also write our example from above like this if we wanted:
