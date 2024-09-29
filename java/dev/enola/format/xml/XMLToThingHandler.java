@@ -47,6 +47,7 @@ public class XMLToThingHandler extends DefaultHandler {
     // TODO Consider implementing this via & through the existing JSON[-LD, ctx?] support instead?
 
     private static final Logger LOG = LoggerFactory.getLogger(XMLToThingHandler.class);
+    public static final String TEXT_PROPERTY_IRI = "https://enola.dev/text";
 
     private final String defaultNamespaceIRI;
     private final NamespaceRepositoryBuilder nrb = new NamespaceRepositoryBuilder();
@@ -54,7 +55,6 @@ public class XMLToThingHandler extends DefaultHandler {
     private @Nullable String previousElementQName;
     private final Deque<IImmutablePredicatesObjects.Builder<IImmutablePredicatesObjects>>
             thingBuilders = new ArrayDeque<>();
-    private final Deque<String> propertyIRIs = new ArrayDeque<>();
 
     @SuppressWarnings("unchecked")
     public XMLToThingHandler(String baseIRI, Thing.Builder<?> thingBuilder) {
@@ -104,9 +104,6 @@ public class XMLToThingHandler extends DefaultHandler {
         var nested = ImmutablePredicatesObjects.builder();
         thingBuilders.add(nested);
 
-        var propertyIRI = iri(uri, localName, qName);
-        propertyIRIs.add(propertyIRI);
-
         for (int i = 0; i < attributes.getLength(); i++) {
             var attributeURI = attributes.getURI(i);
             var attributeLocalName = attributes.getLocalName(i);
@@ -139,20 +136,22 @@ public class XMLToThingHandler extends DefaultHandler {
 
         var nested = thingBuilders.removeLast().build();
         if (!nested.predicateIRIs().isEmpty())
-            thingBuilders.getLast().set(iri(uri, localName, qName), nested);
-
-        propertyIRIs.pop();
+            if (nested.predicateIRIs().size() > 1
+                    || !nested.predicateIRIs().iterator().next().equals(TEXT_PROPERTY_IRI))
+                thingBuilders.getLast().set(iri(uri, localName, qName), nested);
+            else {
+                var text = nested.get(TEXT_PROPERTY_IRI, String.class);
+                thingBuilders.getLast().set(iri(uri, localName, qName), text);
+            }
     }
 
     @Override
     public void characters(char[] ch, int start, int length) {
-        String text = new String(ch, start, length).trim();
-        String propertyIRI = propertyIRIs.getLast();
-
+        var text = new String(ch, start, length).trim();
         if (!text.isEmpty()) {
             var thingBuilder = thingBuilders.getLast();
             // TODO thingBuilder.get(propertyIRI) check if already set...
-            thingBuilder.set(propertyIRI, text);
+            thingBuilder.set(TEXT_PROPERTY_IRI, text);
         }
     }
 }
