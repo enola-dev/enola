@@ -20,12 +20,18 @@ package dev.enola.common.yamljson;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.*;
 
 public final class JSON {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JSON.class);
 
     private static GsonBuilder newBuilder() {
         return new GsonBuilder()
@@ -36,14 +42,32 @@ public final class JSON {
 
     private static final Gson read = newBuilder().create();
 
+    private static <T> T read(String json, Class<T> classOfT) {
+        try {
+            return read.fromJson(json, classOfT);
+        } catch (JsonParseException e) {
+            LOG.debug("Failed to parse JSON: {}", json, e);
+            throw e;
+        }
+    }
+
+    private static <T> T read(String json, TypeToken<T> typeOfT) {
+        try {
+            return read.fromJson(json, typeOfT);
+        } catch (JsonParseException e) {
+            LOG.debug("Failed to parse JSON: {}", json, e);
+            throw e;
+        }
+    }
+
     public static Object readObject(String json) {
         if ("".equals(json)) return ""; // NOT Collections.emptyMap();
-        return read.fromJson(json, Object.class);
+        return read(json, Object.class);
     }
 
     public static Map<String, Object> readMap(String json) {
         TypeToken<Map<String, Object>> mapType = new TypeToken<Map<String, Object>>() {};
-        return read.fromJson(json, mapType);
+        return read(json, mapType);
     }
 
     public static String write(Object root, boolean format) {
