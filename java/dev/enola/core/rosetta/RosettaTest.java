@@ -33,6 +33,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.common.yamljson.JSON;
 import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
@@ -132,6 +133,16 @@ public class RosettaTest {
 
         assertThat(out.byteSource().size()).isGreaterThan(500);
         assertThat(out.charSource().read()).contains("firstName> \"Salvador\"");
+    }
+
+    @Test
+    public void testJsonToJsonld() throws Exception {
+        var in = rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
+        var out = new MemoryResource(RdfMediaTypes.JSON_LD);
+        rosetta.convertInto(in, out);
+        // This is to detect invalid JSON, which happened during the RDF4j 5.0.1 to 5.0.2 upgrade
+        JSON.readObject(out.charSource().read());
+        assertThat(out.charSource().read()).contains("firstName");
     }
 
     @Test
