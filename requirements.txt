@@ -11,11 +11,7 @@ hashdir==0.24
 
 # MkDocs
 mkdocs-material==9.5.31
-mkdocs-git-committers-plugin-2==2.3.0
 mkdocs-git-revision-date-localized-plugin==1.2.7
-
-# Used by mkdocs.yaml#plugins.git-committers
-lxml==5.2.2
 
 # Used by mkdocs.yaml#plugins.blog, see
 # https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/#+blog.post_readtime
