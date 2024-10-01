@@ -209,11 +209,6 @@ plugins:
   # TODO Activate the following plugin once I will pay $15/month for
   # https://squidfunk.github.io/mkdocs-material/insiders/
 
-  # https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/?h=git#document-contributors
-  # - git-committers:
-  #     repository: enola-dev/enola
-  #     branch: main
-
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-a-blog/
   # - blog
 
