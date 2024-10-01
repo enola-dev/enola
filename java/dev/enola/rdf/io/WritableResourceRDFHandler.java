@@ -67,7 +67,7 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
 
     @Override
     public void close() throws IOException {
-        endRDF();
+        rdfWriter.endRDF();
         ioWriter.close();
     }
 
@@ -78,7 +78,7 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
 
     @Override
     public void endRDF() throws RDFHandlerException {
-        rdfWriter.endRDF();
+        // SUPPRESS rdfWriter.endRDF();
     }
 
     @Override
