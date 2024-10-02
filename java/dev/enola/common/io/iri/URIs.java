@@ -224,7 +224,7 @@ public final class URIs {
         return iri.substring(0, p);
     }
 
-    private static boolean hasScheme(String iri) {
+    public static boolean hasScheme(String iri) {
         return iri.indexOf(':') > 0;
     }
 
