@@ -17,7 +17,8 @@
  */
 package dev.enola.format.tika;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.base.Strings;
+import com.google.common.collect.*;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.StringBuilderWriter;
@@ -37,7 +38,9 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.sax.LinkContentHandler;
 import org.apache.tika.sax.TeeContentHandler;
+import org.apache.tika.sax.XHTMLContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -86,9 +89,11 @@ public class TikaThingConverter implements UriIntoThingConverter {
         var thingBuilder = thingsBuilder.getBuilder(resource.uri().toString());
         var iri = resource.uri().toString();
         Writer sw = new StringBuilderWriter();
-        // var thingsHandler = new XMLToThingHandler(iri, thingBuilder);
+        // TODO var thingsHandler = new XMLToThingHandler(iri, thingBuilder);
+        var linksHandler = new LinkContentHandler(true);
         ContentHandler handler =
-                new TeeContentHandler(new BodyContentHandler(sw) /* TODO, thingsHandler*/);
+                new TeeContentHandler(
+                        new BodyContentHandler(sw), linksHandler /* TODO, thingsHandler*/);
 
         try (var is = resource.byteSource().openBufferedStream()) {
             Metadata metadata = new Metadata();
@@ -96,8 +101,29 @@ public class TikaThingConverter implements UriIntoThingConverter {
             // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
             convertMetadata(metadata, thingBuilder);
+
+            ListMultimap<String, String> multimap =
+                    MultimapBuilder.hashKeys(13).arrayListValues().build();
+            for (var link : linksHandler.getLinks()) {
+                var sb = new StringBuilder(XHTMLContentHandler.XHTML.length() + 17);
+                sb.append(XHTMLContentHandler.XHTML);
+                sb.append('/');
+                sb.append(link.getType());
+                if (!Strings.isNullOrEmpty(link.getRel())) {
+                    sb.append('#');
+                    sb.append(link.getRel());
+                }
+                multimap.put(sb.toString(), link.getUri());
+                // TODO ? link.getTitle()
+            }
+            multimap.asMap()
+                    .forEach(
+                            (predicateIRI, links) ->
+                                    thingBuilder.set(predicateIRI, ImmutableList.of(links)));
+
             var text = sw.toString().trim();
             if (!text.isEmpty()) thingBuilder.set("https://enola.dev/content-as-text", text);
+
             return true;
 
         } catch (TikaException | SAXException e) {
