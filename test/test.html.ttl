@@ -6,4 +6,4 @@
                        <https://enola.dev/mediaType> "text/html; charset=UTF-8";
                        <http://purl.org/dc/elements/1.1/creator> "The Enola <https://enola.dev> Authors";
                        <https://enola.dev/content-as-text> "hello, world\nRecursive Self LinkVorburger";
-                       <http://www.w3.org/1999/xhtml/a> "test.html", "https://www.vorburger.ch".
+                       <http://www.w3.org/1999/xhtml/a> <classpath:/test.html>, <https://www.vorburger.ch>.

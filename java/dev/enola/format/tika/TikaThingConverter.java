@@ -29,6 +29,7 @@ import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
@@ -47,10 +48,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TikaThingConverter implements UriIntoThingConverter {
 
@@ -101,25 +99,7 @@ public class TikaThingConverter implements UriIntoThingConverter {
             // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
             convertMetadata(metadata, thingBuilder);
-
-            ListMultimap<String, String> multimap =
-                    MultimapBuilder.hashKeys(13).arrayListValues().build();
-            for (var link : linksHandler.getLinks()) {
-                var sb = new StringBuilder(XHTMLContentHandler.XHTML.length() + 17);
-                sb.append(XHTMLContentHandler.XHTML);
-                sb.append('/');
-                sb.append(link.getType());
-                if (!Strings.isNullOrEmpty(link.getRel())) {
-                    sb.append('#');
-                    sb.append(link.getRel());
-                }
-                multimap.put(sb.toString(), link.getUri());
-                // TODO ? link.getTitle()
-            }
-            multimap.asMap()
-                    .forEach(
-                            (predicateIRI, links) ->
-                                    thingBuilder.set(predicateIRI, ImmutableList.of(links)));
+            convertLinks(linksHandler, thingBuilder, iri);
 
             var text = sw.toString().trim();
             if (!text.isEmpty()) thingBuilder.set("https://enola.dev/content-as-text", text);
@@ -129,6 +109,38 @@ public class TikaThingConverter implements UriIntoThingConverter {
         } catch (TikaException | SAXException e) {
             throw new ConversionException("Tika could not convert: " + resource, e);
         }
+    }
+
+    private void convertLinks(
+            LinkContentHandler linksHandler, Thing.Builder<?> thing, String base) {
+        ListMultimap<String, String> multimap =
+                MultimapBuilder.hashKeys(13).arrayListValues().build();
+        for (var link : linksHandler.getLinks()) {
+            var sb = new StringBuilder(XHTMLContentHandler.XHTML.length() + 17);
+            sb.append(XHTMLContentHandler.XHTML);
+            sb.append('/');
+            sb.append(link.getType());
+            if (!Strings.isNullOrEmpty(link.getRel())) {
+                sb.append('#');
+                sb.append(link.getRel());
+            }
+            multimap.put(sb.toString(), link.getUri());
+            // TODO ? link.getTitle()
+        }
+        multimap.asMap()
+                .forEach((predicateIRI, links) -> thing.set(predicateIRI, convert(links, base)));
+    }
+
+    private ImmutableList<Link> convert(Collection<String> links, String base) {
+        var baseURI = URI.create(base);
+        return ImmutableList.copyOf(
+                links.stream().map(link -> resolve(baseURI, link)).map(Link::new).toList());
+    }
+
+    private String resolve(URI baseURI, String link) {
+        return URIs.hasScheme(link)
+                ? link // TODO ? URLEncoder.encode(link, UTF_8)
+                : baseURI.resolve(link).toString();
     }
 
     private void convertMetadata(Metadata metadata, Thing.Builder<?> thing) {
