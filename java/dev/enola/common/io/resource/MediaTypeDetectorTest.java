@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
+package dev.enola.common.io.resource;
 
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
@@ -29,8 +29,8 @@ import static java.net.URI.create;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.EmptyResource;
-import dev.enola.common.io.resource.MemoryResource;
+import dev.enola.common.io.mediatype.MediaTypesTest;
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Test;
 
