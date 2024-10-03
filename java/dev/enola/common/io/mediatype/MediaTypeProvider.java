@@ -40,7 +40,7 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
         return Collections.emptyMap();
     }
 
-    /** Maps URI path extensions to a "canonical" Media Types. */
+    /** Maps URI path extensions (without dot) to its "canonical" Media Types. */
     Multimap<String, MediaType> extensionsToTypes();
 
     /**

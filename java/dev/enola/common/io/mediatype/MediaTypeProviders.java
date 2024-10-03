@@ -20,6 +20,7 @@ package dev.enola.common.io.mediatype;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.net.MediaType;
 
 import java.util.Arrays;
@@ -78,12 +79,12 @@ public class MediaTypeProviders implements MediaTypeProvider {
         for (var provider : providers) {
             n += provider.extensionsToTypes().size();
         }
-        var map = ImmutableMultimap.<String, MediaType>builder();
+        Multimap<String, MediaType> map = MultimapBuilder.treeKeys().arrayListValues(1).build();
         for (var provider : providers) {
             var providerMultimap = provider.extensionsToTypes();
             map.putAll(providerMultimap);
         }
-        return map.build();
+        return ImmutableMultimap.copyOf(map);
     }
 
     private Map<MediaType, Set<MediaType>> collectAlternatives(MediaTypeProvider[] providers) {
