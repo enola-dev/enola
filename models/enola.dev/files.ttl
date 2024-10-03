@@ -69,15 +69,6 @@ enola:size a rdf:Property;
   rdfs:range xsd:unsignedLong; # TODO Use a Datatype which permits KiB/MB etc. (from UoM?)
   rdfs:domain enola:File.
 
-enola:MediaType a rdfs:Datatype;
-  rdfs:comment "Internet Media Type, also known as a MIME Type or Content Type.";
-  enola:rfc "6838";
-  rdfs:subClassOf xsd:token.
-
-enola:mediaType a rdf:Property;
-  rdfs:range enola:MediaType;
-  rdfs:domain enola:File.
-
 <https://enola.dev/file/localhost/tmp/example.txt> a enola:File;
   schema:url "file://localhost/tmp/example.txt";
   # Automagic: enola:path "/tmp/example.txt";

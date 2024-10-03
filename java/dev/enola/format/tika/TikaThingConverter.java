@@ -99,6 +99,7 @@ public class TikaThingConverter implements UriIntoThingConverter {
             // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
             convertMetadata(metadata, thingBuilder);
+            // TODO Only convertLinks IFF text/html? Or does Tika use it for other formats?
             convertLinks(linksHandler, thingBuilder, iri);
 
             var text = sw.toString().trim();
@@ -143,6 +144,9 @@ public class TikaThingConverter implements UriIntoThingConverter {
                 : baseURI.resolve(link).toString();
     }
 
+    // TODO This should use Integer instead of String when appropriate, e.g. for tiff:ImageWidth.
+    // TODO This needs to be smarter, but can't Tika do this itself already?!
+    // - Transform https://enola.dev/tika/Exif into exif: (some are already, but many are not)
     private void convertMetadata(Metadata metadata, Thing.Builder<?> thing) {
         final var properties = new HashMap<String, Object>();
         final var names = new ArrayList<>(List.of(metadata.names()));

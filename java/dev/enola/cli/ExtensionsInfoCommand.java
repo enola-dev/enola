@@ -30,6 +30,8 @@ import picocli.CommandLine.Spec;
                 "Provides information about extensions of media types for URI path resource names")
 public class ExtensionsInfoCommand implements CheckedRunnable {
 
+    // TODO Replace this with enola:MediaType's enola:fileExtensions from mediaTypes.ttl
+
     @Spec CommandSpec spec;
 
     @Override

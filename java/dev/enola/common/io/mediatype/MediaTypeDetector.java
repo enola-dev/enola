@@ -46,7 +46,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Utility for detecting a (better) MediaType for a Resource.
+ * Utility for detecting a (better) {@link MediaType} for a Resource.
  *
  * <p>This interface is typically not used directly by {@link Resource} API users (who would just
  * use {@link AbstractResource#mediaType()}), but is used by Resource implementations.
