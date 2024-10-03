@@ -20,26 +20,24 @@ package dev.enola.cli;
 import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
+import picocli.CommandLine;
 
-@Command(
-        name = "extensions",
-        description =
-                "Provides information about extensions of media types for URI path resource names")
-public class ExtensionsInfoCommand implements CheckedRunnable {
+@CommandLine.Command(
+        name = "mediatypes",
+        description = "Provides information about all supported media types for Thing Resource I/O")
+public class MediaTypeInfoCommand implements CheckedRunnable {
 
     // TODO Replace this with enola:MediaType's enola:fileExtensions from mediaTypes.ttl
 
-    @Spec CommandSpec spec;
+    @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @Override
     public void run() throws Exception {
         var pw = spec.commandLine().getOut();
 
-        for (var entry : MediaTypeProviders.SINGLETON.extensionsToTypes().entrySet()) {
-            pw.println("." + entry.getKey() + " " + entry.getValue());
+        for (var entry : MediaTypeProviders.SINGLETON.knownTypesWithAlternatives().entrySet()) {
+            var alt = entry.getValue();
+            pw.println("." + entry.getKey() + (!alt.isEmpty() ? " == " + alt : ""));
         }
     }
 }

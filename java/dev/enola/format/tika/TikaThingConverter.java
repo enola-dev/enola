@@ -81,7 +81,12 @@ public class TikaThingConverter implements UriIntoThingConverter {
     public boolean convertInto(ReadableResource resource, ThingsBuilder thingsBuilder)
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
+
+        // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
+        ParseContext parseContext = new ParseContext();
+
         // TODO Improve detection of on when Tika can actually process content...
+        // parser.getSupportedTypes(parseContext) ... with TikaMediaTypeProvider ?
         if (IGNORED.contains(resource.mediaType().withoutParameters())) return false;
 
         var thingBuilder = thingsBuilder.getBuilder(resource.uri().toString());
@@ -95,8 +100,6 @@ public class TikaThingConverter implements UriIntoThingConverter {
 
         try (var is = resource.byteSource().openBufferedStream()) {
             Metadata metadata = new Metadata();
-            ParseContext parseContext = new ParseContext();
-            // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
             parser.parse(is, handler, metadata, parseContext);
             convertMetadata(metadata, thingBuilder);
             // TODO Only convertLinks IFF text/html? Or does Tika use it for other formats?

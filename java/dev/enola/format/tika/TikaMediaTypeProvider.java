@@ -18,6 +18,8 @@
 package dev.enola.format.tika;
 
 import com.google.auto.service.AutoService;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimaps;
 import com.google.common.net.MediaType;
 
@@ -28,6 +30,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.parser.AutoDetectParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,11 +49,18 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
     private final Map<String, MediaType> extensionsToTypes;
 
     public TikaMediaTypeProvider() {
-        // for (var detector : tika.getDetectors()) {}
-        // TODO Implement this... but how? Looking at
-        // https://github.com/apache/tika/blob/7f7b11b773bdfefe84e1a343f2c07ed2788986ca/tika-app/src/main/java/org/apache/tika/cli/TikaCLI.java#L757
-        // the TikaDetectors don't appear to expose which MediaType they handle?
-        knownTypesWithAlternatives = Map.of();
+        var tikaMediaTypeRegistry = new AutoDetectParser().getMediaTypeRegistry();
+        var tikaMediaTypes = tikaMediaTypeRegistry.getTypes();
+        var knownTypesWithAlternativesBuilder =
+                ImmutableMap.<MediaType, Set<MediaType>>builderWithExpectedSize(
+                        tikaMediaTypes.size());
+        for (var tikaMediaType : tikaMediaTypes) {
+            // TODO Transform tikaMediaTypeRegistry super & child types into alternative?
+            var alt = ImmutableSet.<MediaType>of();
+            knownTypesWithAlternativesBuilder.put(convert(tikaMediaType), alt);
+        }
+        knownTypesWithAlternatives = knownTypesWithAlternativesBuilder.build();
+        // TODO Where does Tika hide its supported file extensions?!
         extensionsToTypes = Map.of();
     }
 
@@ -73,11 +83,11 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
         try {
             if (abstractResource instanceof ReadableResource readableResource) {
                 try (var is = readableResource.byteSource().openBufferedStream()) {
-                    return convert(tika.detect(is, metadata));
+                    return Optional.of(convert(tika.detect(is, metadata)));
                 }
 
             } else {
-                return convert(tika.detect(InputStream.nullInputStream(), metadata));
+                return Optional.of(convert(tika.detect(InputStream.nullInputStream(), metadata)));
             }
 
         } catch (IOException e) {
@@ -86,11 +96,10 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
         }
     }
 
-    private Optional<MediaType> convert(org.apache.tika.mime.MediaType tikaMediaType) {
+    private MediaType convert(org.apache.tika.mime.MediaType tikaMediaType) {
         // Not efficient: return Optional.of(MediaType.parse(tikaMediaType.toString()));
         var guavaMediaType = MediaType.create(tikaMediaType.getType(), tikaMediaType.getSubtype());
         var multiMap = Multimaps.forMap(tikaMediaType.getParameters());
-        guavaMediaType = guavaMediaType.withParameters(multiMap);
-        return Optional.of(guavaMediaType);
+        return guavaMediaType.withParameters(multiMap);
     }
 }
