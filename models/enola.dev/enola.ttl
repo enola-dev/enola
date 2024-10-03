@@ -87,11 +87,28 @@ enola:emoji a rdf:Property;
   schema:description "Emoji 😃 of a Thing, from Unicode or <a href='https://www.nerdfonts.com'>Nerdfonts</a>.";
   enola:emoji "😃".
 
+enola:label a rdf:Property;
+  enola:label "Label";
+  # TODO Multi-lingual NLS @de @fr @it @en ?
+  rdfs:range xsd:string;
+  rdfs:subPropertyOf rdfs:label;
+  enola:description "Label of Thing, a normally fairly short human-readable text; e.g. TITLE of HTML, or something similar.";
+  owl:equivalentProperty schema:name;
+  enola:emoji "🏷️".
+
 enola:labelProperty a rdf:Property;
   schema:name "Label Property";
   rdfs:domain rdfs:Class;
   rdfs:range xsd:anyURI;
   schema:description "The IRI of a property to be used as Label for Things of this Class; see https://docs.enola.dev/concepts/metadata/".
+
+enola:description a rdf:Property;
+  enola:label "Description";
+  # TODO Multi-lingual NLS @de @fr @it @en ?
+  rdfs:range xsd:string;
+  enola:description "Description of Thing, a human-readable text that's longer than the label.";
+  owl:equivalentProperty schema:description;
+  enola:emoji "📜".
 
 enola:parent a rdf:Property;
   rdfs:range schema:Thing;
