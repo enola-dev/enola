@@ -18,6 +18,7 @@
 package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.ThingOrBuilder;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -36,7 +37,7 @@ import org.jspecify.annotations.Nullable;
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutableThing<B extends IImmutableThing> extends MutablePredicatesObjects<B>
-        implements Thing, Thing.Builder2<B> {
+        implements ThingOrBuilder<B> {
 
     private @Nullable String iri;
 
