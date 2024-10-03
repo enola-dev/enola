@@ -52,6 +52,14 @@ import java.util.stream.Collectors;
  */
 public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
+    // TODO This class is weird and its design should be rethought...
+    // because it is implementing ResourceMediaTypeDetector, but is not an
+    // @AutoService(MediaTypeProvider.class) - its "like" it, but actually the higher level entry
+    // point for *Resource implementations; there's a way to make this design more clear.
+    // See also note in the #detect() method... But the problem is that Resource constructors
+    // don't actually have a *Resource instance, yet. Perhaps this class simply should not
+    // (does not actually need to) implements ResourceMediaTypeDetector, and rm #detect() ?
+
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     private static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
@@ -121,7 +129,8 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 }
                 return Optional.empty();
             };
-    // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
+    // This is not extensible (e.g. with java.util.ServiceLoader) - because MediaTypes already is
+    // TODO fileNameMap & probeFileContentType to JdkMediaTypeProvider implements MediaTypeProvider?
     private final List<FromURI> providers =
             ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
 
@@ -135,6 +144,9 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
         return (detected != null) ? detected : DEFAULT;
     }
 
+    /**
+     * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
+     */
     public MediaType overwrite(URI uri, final MediaType originalMediaType) {
         var mediaType = originalMediaType;
 
@@ -171,6 +183,9 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     @Override
     public Optional<MediaType> detect(AbstractResource resource) {
+        // TODO Is this method actually ever called by anyone?!?
+        // Test by making it throw an exception...
+
         var uri = resource.uri();
         var mt = resource.mediaType();
 
