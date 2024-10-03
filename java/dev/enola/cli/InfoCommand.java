@@ -22,5 +22,10 @@ import picocli.CommandLine.Command;
 @Command(
         name = "info",
         description = "Provides various information",
-        subcommands = {ExtensionsInfoCommand.class, DetectCommand.class, MetadataCommand.class})
+        subcommands = {
+            ExtensionsInfoCommand.class,
+            MediaTypeInfoCommand.class,
+            DetectCommand.class,
+            MetadataCommand.class
+        })
 public class InfoCommand {}
