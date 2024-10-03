@@ -17,14 +17,16 @@
  */
 package dev.enola.common.io.resource;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 public class StringResource implements ReadableButNotWritableResource {
     // TODO Replace ReadableButNotWritableResource with ReadableResource #again
@@ -49,19 +51,18 @@ public class StringResource implements ReadableButNotWritableResource {
 
     private final String string;
     private final MediaType mediaType;
-    private final Supplier<URI> uriSupplier;
-    private URI uri;
+    private final URI uri;
 
-    public static Resource of(String text, MediaType mediaType, Supplier<URI> fragmentSupplier) {
-        if (text == null || text.isBlank()) {
-            return new EmptyResource(mediaType, fragmentSupplier);
+    public static Resource of(@Nullable String text, MediaType mediaType, URI fragmentURI) {
+        if (Strings.isNullOrEmpty(text)) {
+            return new EmptyResource(fragmentURI, mediaType);
         } else {
-            return new StringResource(text, mediaType, fragmentSupplier);
+            return new StringResource(text, mediaType, fragmentURI);
         }
     }
 
-    public static Resource of(String text, MediaType mediaType) {
-        if (text == null || text.isBlank()) {
+    public static Resource of(@Nullable String text, MediaType mediaType) {
+        if (Strings.isNullOrEmpty(text)) {
             return new EmptyResource(mediaType);
         } else {
             return new StringResource(text, mediaType);
@@ -73,20 +74,19 @@ public class StringResource implements ReadableButNotWritableResource {
     }
 
     private StringResource(String text, MediaType mediaType) {
-        this(
-                text,
-                mediaType,
-                () -> {
-                    try {
-                        return new URI(SCHEME, text, null);
-                    } catch (URISyntaxException e) {
-                        // This should never happen, if the escaping done within URI is correct...
-                        throw new IllegalArgumentException("String is invalid in URI: " + text, e);
-                    }
-                });
+        this(text, mediaType, createURI(text));
     }
 
-    protected StringResource(String text, MediaType mediaType, Supplier<URI> uriSupplier) {
+    private static URI createURI(String text) {
+        try {
+            return new URI(SCHEME, text, null);
+        } catch (URISyntaxException e) {
+            // This should never happen, if the escaping done within URI is correct...
+            throw new IllegalArgumentException("String is invalid in URI: " + text, e);
+        }
+    }
+
+    protected StringResource(String text, MediaType mediaType, URI uri) {
         this.string = Objects.requireNonNull(text, "text");
         if ("".equals(text)) {
             throw new IllegalArgumentException(
@@ -98,13 +98,11 @@ public class StringResource implements ReadableButNotWritableResource {
             throw new IllegalArgumentException(
                     "MediaType is missing required charset: " + mediaType);
         }
-
-        this.uriSupplier = uriSupplier;
+        this.uri = uri;
     }
 
     @Override
     public URI uri() {
-        if (uri == null) uri = uriSupplier.get();
         return uri;
     }
 

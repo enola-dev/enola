@@ -26,6 +26,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryResource extends BaseResource implements Resource {
 
+    // TODO Provider implements ResourceProvider for memory: ?
+
     private static final AtomicLong counter = new AtomicLong();
 
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();

@@ -26,7 +26,6 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.AbstractResource;
 import dev.enola.common.io.resource.BaseResource;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
 
 import java.io.IOException;
@@ -47,18 +46,10 @@ import java.util.stream.Collectors;
 /**
  * Utility for detecting a (better) {@link MediaType} for a Resource.
  *
- * <p>This interface is typically not used directly by {@link Resource} API users (who would just
- * use {@link AbstractResource#mediaType()}), but is used by Resource implementations.
+ * <p>This class is normally never used directly by {@link Resource} API users (who would just use
+ * {@link AbstractResource#mediaType()}), but is only used by *Resource SPI implementations.
  */
-public class MediaTypeDetector implements ResourceMediaTypeDetector {
-
-    // TODO This class is weird and its design should be rethought...
-    // because it is implementing ResourceMediaTypeDetector, but is not an
-    // @AutoService(MediaTypeProvider.class) - its "like" it, but actually the higher level entry
-    // point for *Resource implementations; there's a way to make this design more clear.
-    // See also note in the #detect() method... But the problem is that Resource constructors
-    // don't actually have a *Resource instance, yet. Perhaps this class simply should not
-    // (does not actually need to) implements ResourceMediaTypeDetector, and rm #detect() ?
+public class MediaTypeDetector {
 
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -160,6 +151,8 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
         if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
             mediaType = mediaType.withCharset(originalMediaType.charset().get());
+        } else {
+            mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
         }
 
         return mediaType;
@@ -167,7 +160,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     private MediaType detectCharset(URI uri, ByteSource byteSource, MediaType detected) {
         if (detected != null && !detected.charset().isPresent()) {
-            // TODO Make YAML just 1 of many detectors...
+            // TODO Make YAML just 1 of many Charset detectors...
             YamlMediaType rcd = new YamlMediaType();
             if (URIs.getFilename(uri).endsWith(".yaml")
                     || MediaTypes.normalizedNoParamsEquals(
@@ -179,23 +172,6 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
             }
         }
         return detected;
-    }
-
-    @Override
-    public Optional<MediaType> detect(AbstractResource resource) {
-        // TODO Is this method actually ever called by anyone?!?
-        // Test by making it throw an exception...
-
-        var uri = resource.uri();
-        var mt = resource.mediaType();
-
-        var charsetName = mt.charset().transform(cs -> cs.name()).orNull();
-        var detected = detect(mt.toString(), charsetName, uri);
-        if (resource instanceof ReadableResource readableResource) {
-            detected = detectCharset(resource.uri(), readableResource.byteSource(), detected);
-        }
-
-        return Optional.ofNullable(detected);
     }
 
     // This is not @Deprecated and used e.g. by UrlResource
