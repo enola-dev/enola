@@ -27,6 +27,8 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.YamlMediaType;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -42,6 +44,12 @@ import java.nio.file.Path;
 public class FileResourceTest {
 
     // ResourceProvidersTest has more, notably coverage for relative file URIs
+
+    @Test
+    public void testYamlMediaType() {
+        var r = new FileResource(URI.create("file:/test.yaml"));
+        assertThat(r.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
+    }
 
     @Test
     public void testWriteRead() throws IOException {
