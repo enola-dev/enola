@@ -22,21 +22,17 @@ import com.google.common.io.CharSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import java.net.URI;
-import java.util.function.Supplier;
 
 /**
  * Read-only resources which when read are always immediately EOF. This is a bit like /dev/null on
  * *NIX OS for reading, but not for writing (because /dev/null ignores writes, whereas this fails).
  *
- * @see NullResource for an alternatives that returns infinite 0s instead of EOF.
+ * @see NullResource for an alternative that returns infinite 0s instead of EOF.
  */
-public class EmptyResource implements ReadableButNotWritableResource {
+public class EmptyResource extends BaseResource implements ReadableButNotWritableResource {
     // TODO Perhaps rename this to VoidResource with void:/ URI?
-
-    // TODO extends BaseResource, like everything else?
 
     public static class Provider implements ResourceProvider {
 
@@ -47,40 +43,20 @@ public class EmptyResource implements ReadableButNotWritableResource {
         }
     }
 
-    private static final MediaTypeDetector mtd = new MediaTypeDetector();
-
     static final String SCHEME = "empty";
     public static final URI EMPTY_URI = URI.create(SCHEME + ":?"); // Maybe :/ is better?
     public static final EmptyResource INSTANCE = new EmptyResource(EMPTY_URI);
 
-    private final MediaType mediaType;
-    private final Supplier<URI> uriSupplier;
-    private URI uri;
-
     public EmptyResource(URI uri) {
-        this(mtd.detect(uri, ByteSource.empty()));
+        super(uri);
     }
 
     public EmptyResource(MediaType mediaType) {
-        this.mediaType = mediaType;
-        this.uri = URIs.addMediaType(EMPTY_URI, mediaType);
-        this.uriSupplier = null;
+        super(URIs.addMediaType(EMPTY_URI, mediaType), mediaType);
     }
 
-    public EmptyResource(MediaType mediaType, Supplier<URI> uriSupplier) {
-        this.mediaType = mediaType;
-        this.uriSupplier = uriSupplier;
-    }
-
-    @Override
-    public URI uri() {
-        if (uri == null) uri = uriSupplier.get();
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
+    public EmptyResource(URI uri, MediaType mediaType) {
+        super(uri, mediaType);
     }
 
     @Override

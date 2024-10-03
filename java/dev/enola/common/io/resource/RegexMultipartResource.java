@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -37,7 +36,7 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
         super(baseResource, split(baseResource, defs));
     }
 
-    protected static final record PartsDef(String regex, Map<String, MediaType> mediaTypes) {}
+    protected record PartsDef(String regex, Map<String, MediaType> mediaTypes) {}
 
     private static ImmutableMap<String, Resource> split(
             ReadableResource baseResource, PartsDef defs) throws IOException {
@@ -56,9 +55,9 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
         if (matcher.find()) {
             for (var key : keys) {
                 String part = matcher.group(key);
-                var fragment = partFragmentURI(baseResource, key);
+                var fragmentURI = partFragmentURI(baseResource, key);
                 var mediaType = mediaType(baseResource, defs.mediaTypes.get(key), key);
-                var resource = StringResource.of(part, mediaType, fragment);
+                var resource = StringResource.of(part, mediaType, fragmentURI);
                 parts.put(key, resource);
                 usedPartNames.add(key);
             }
@@ -66,9 +65,9 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
 
         for (var key : keys) {
             if (!usedPartNames.contains(key)) {
-                var fragment = partFragmentURI(baseResource, key);
+                var fragmentURI = partFragmentURI(baseResource, key);
                 var mediaType = mediaType(baseResource, defs.mediaTypes.get(key), key);
-                var empty = new EmptyResource(mediaType, fragment);
+                var empty = new EmptyResource(fragmentURI, mediaType);
                 parts.put(key, empty);
             }
         }
@@ -76,8 +75,8 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
         return parts.build();
     }
 
-    private static Supplier<URI> partFragmentURI(ReadableResource baseResource, String key) {
-        return () -> URI.create(baseResource.uri().toString() + "#" + key);
+    private static URI partFragmentURI(ReadableResource baseResource, String key) {
+        return baseResource.uri().resolve("#" + key);
     }
 
     private static MediaType mediaType(
@@ -89,7 +88,7 @@ public class RegexMultipartResource extends DelegatingMultipartResource {
             if (baseCharset.isPresent())
                 partMediaType = partMediaType.withCharset(baseCharset.get());
             else {
-                var uri = baseResource.uri().toString() + "#" + key;
+                var uri = baseResource.uri() + "#" + key;
                 throw new IllegalArgumentException(
                         "Missing Charset on both base and part resources for: " + uri);
             }

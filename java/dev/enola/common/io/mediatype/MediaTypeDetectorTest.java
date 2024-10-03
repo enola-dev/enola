@@ -80,7 +80,7 @@ public class MediaTypeDetectorTest {
     public void testEmptyYML() {
         // Empty .YAML is UTF-8
         var r = new EmptyResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
-        assertThat(md.detect(r)).hasValue(YAML_UTF_8);
+        assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
     }
 
     @Test
@@ -89,10 +89,7 @@ public class MediaTypeDetectorTest {
         var text = "hello: world";
         var r = new MemoryResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
         r.byteSink().write(text.getBytes(StandardCharsets.US_ASCII));
-        assertThat(md.detect(r)).hasValue(YAML_UTF_8);
-
-        // TODO Make this work... it requires using the MediaTypeDetector directly in MemoryResource
-        // assertThat(r.charSource().read()).isEqualTo(YAML_UTF_8);
+        assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
     }
 
     @Test

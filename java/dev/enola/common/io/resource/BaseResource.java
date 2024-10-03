@@ -45,6 +45,11 @@ public abstract class BaseResource implements AbstractResource {
         this.mediaType = mtd.overwrite(uri, requireNonNull(mediaType, "mediaType"));
     }
 
+    protected BaseResource(URI uri) {
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType = mtd.detect(uri, ByteSource.empty());
+    }
+
     @Override
     public final URI uri() {
         return uri; // NOT path.toUri();
