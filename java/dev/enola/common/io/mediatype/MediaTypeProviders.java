@@ -82,9 +82,23 @@ public class MediaTypeProviders implements MediaTypeProvider {
         Multimap<String, MediaType> map = MultimapBuilder.treeKeys().arrayListValues(1).build();
         for (var provider : providers) {
             var providerMultimap = provider.extensionsToTypes();
+            // collapse(providerMultimap);
             map.putAll(providerMultimap);
         }
         return ImmutableMultimap.copyOf(map);
+    }
+
+    // TODO Remove?
+    static void collapse(Multimap<String, MediaType> multimap) {
+        for (var entry : multimap.asMap().entrySet()) {
+            var extension = entry.getKey();
+            var mediaTypes = entry.getValue();
+            for (var mediaType : mediaTypes) {
+                if (!mediaType.parameters().isEmpty()) {
+                    var mediaTypeWithoutParameters = mediaType.withoutParameters();
+                }
+            }
+        }
     }
 
     private Map<MediaType, Set<MediaType>> collectAlternatives(MediaTypeProvider[] providers) {
@@ -97,7 +111,8 @@ public class MediaTypeProviders implements MediaTypeProvider {
             // This would not work (overwrite) if different MediaTypeProviders were to return the
             // same primary canonical Media Type, but this shouldn't be a problem in practice.
             // TODO Improve this #later #lowPriority.
-            map.putAll(provider.knownTypesWithAlternatives());
+            var providerMultimap = provider.knownTypesWithAlternatives();
+            map.putAll(providerMultimap);
         }
         return map.build();
     }

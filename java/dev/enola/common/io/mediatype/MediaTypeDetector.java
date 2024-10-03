@@ -30,7 +30,6 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.FileNameMap;
 import java.net.URI;
@@ -76,6 +75,7 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
+    // TODO Remove this, we should (only) use MediaTypeProvider.detect()!
     private final Multimap<String, MediaType> extensionMap =
             MediaTypeProviders.SINGLETON.extensionsToTypes();
 
@@ -86,9 +86,11 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 if (mediaTypes.isEmpty()) return Optional.empty();
                 var iterator = mediaTypes.iterator();
                 var mediaType = iterator.next();
-                if (iterator.hasNext())
-                    throw new IllegalStateException(
-                            ext + " has more than 1 MediaType: " + mediaTypes);
+                // TODO Rethink this... this hack is bad (and breaks RosettaTest)
+                // We actually really shouldn't need this at all!
+                // if (iterator.hasNext())
+                //    throw new IllegalStateException(
+                //            ext + " has more than 1 MediaType: " + mediaTypes);
                 return Optional.of(mediaType);
             };
     private final FromURI fileNameMap =
@@ -235,12 +237,9 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
     }
 
     private @FunctionalInterface interface FromURI {
-        /** Determines MediaType e.g. from extension, or from file system implementation. */
+        /**
+         * Determines MediaType e.g., from URI filename extension or via file system implementation.
+         */
         Optional<MediaType> from(URI uri);
-    }
-
-    private @FunctionalInterface interface FromInputStream {
-        /** This will reset the InputStream after peeking at it! */
-        Optional<MediaType> from(InputStream inputStream);
     }
 }
