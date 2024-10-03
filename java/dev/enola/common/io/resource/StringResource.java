@@ -28,10 +28,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-public class StringResource implements ReadableButNotWritableResource {
+public class StringResource extends BaseResource implements ReadableButNotWritableResource {
     // TODO Replace ReadableButNotWritableResource with ReadableResource #again
-
-    // TODO extends BaseResource, like everything else?
 
     public static class Provider implements ResourceProvider {
 
@@ -50,8 +48,6 @@ public class StringResource implements ReadableButNotWritableResource {
     static final String SCHEME = "string";
 
     private final String string;
-    private final MediaType mediaType;
-    private final URI uri;
 
     public static Resource of(@Nullable String text, MediaType mediaType, URI fragmentURI) {
         if (Strings.isNullOrEmpty(text)) {
@@ -81,34 +77,23 @@ public class StringResource implements ReadableButNotWritableResource {
         try {
             return new URI(SCHEME, text, null);
         } catch (URISyntaxException e) {
-            // This should never happen, if the escaping done within URI is correct...
+            // This should never happen if the escaping done within URI is correct...
             throw new IllegalArgumentException("String is invalid in URI: " + text, e);
         }
     }
 
     protected StringResource(String text, MediaType mediaType, URI uri) {
+        super(uri, mediaType);
         this.string = Objects.requireNonNull(text, "text");
         if ("".equals(text)) {
             throw new IllegalArgumentException(
-                    "Empty string: not supported (because that's an invalid URI)");
+                    "Empty string: not supported (because that's an invalid URI); please use #of()"
+                            + " factory method instead");
         }
-
-        this.mediaType = Objects.requireNonNull(mediaType, "mediaType");
         if (!mediaType.charset().isPresent()) {
             throw new IllegalArgumentException(
                     "MediaType is missing required charset: " + mediaType);
         }
-        this.uri = uri;
-    }
-
-    @Override
-    public URI uri() {
-        return uri;
-    }
-
-    @Override
-    public MediaType mediaType() {
-        return mediaType;
     }
 
     @Override
