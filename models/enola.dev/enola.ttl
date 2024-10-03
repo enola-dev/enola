@@ -89,10 +89,9 @@ enola:emoji a rdf:Property;
 
 enola:label a rdf:Property;
   enola:label "Label";
-  # TODO Multi-lingual NLS @de @fr @it @en ?
-  rdfs:range xsd:string;
+  rdfs:range rdfs:Literal; # NOT xsd:string; so that multi-lingual NLS @de @fr @it @en are possible (but not required)
   rdfs:subPropertyOf rdfs:label;
-  enola:description "Label of Thing, a normally fairly short human-readable text; e.g. TITLE of HTML, or something similar.";
+  enola:description "Label of Thing, a normally fairly short human-readable text, normally without trailing dot; e.g. TITLE of HTML, or something similar.";
   owl:equivalentProperty schema:name;
   enola:emoji "🏷️".
 
@@ -104,9 +103,8 @@ enola:labelProperty a rdf:Property;
 
 enola:description a rdf:Property;
   enola:label "Description";
-  # TODO Multi-lingual NLS @de @fr @it @en ?
-  rdfs:range xsd:string;
-  enola:description "Description of Thing, a human-readable text that's longer than the label.";
+  rdfs:range rdfs:Literal; # NOT xsd:string; so that multi-lingual NLS @de @fr @it @en are possible (but not required)
+  enola:description "Description of Thing, a human-readable full sentence that's longer than the label, often ending with a dot.";
   owl:equivalentProperty schema:description;
   enola:emoji "📜".
 
@@ -157,6 +155,9 @@ enola:IRITemplate a rdfs:Datatype;
   enola:gkg "m/05q4zt_";
   enola:emoji "{}".
   # TODO rdfs:range (?) how to?
+
+enola:thingTemplate a rdf:Property.
+  # TODO see enola:mediaType in mediaTypes.ttl
 
 enola:example a rdf:Property;
   rdfs:domain rdfs:Class;

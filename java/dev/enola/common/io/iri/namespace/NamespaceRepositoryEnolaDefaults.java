@@ -81,7 +81,7 @@ public class NamespaceRepositoryEnolaDefaults {
                     .store("photoshop", "http://ns.adobe.com/photoshop/1.0/")
                     // https://developer.adobe.com/xmp/docs/XMPNamespaces/crs/
                     .store("crs", "http://ns.adobe.com/camera-raw-settings/1.0/")
-                    // http://ns.adobe.com/exif/1.0/
+                    // https://developer.adobe.com/xmp/docs/XMPNamespaces/exif/
                     .store("exif", "http://ns.adobe.com/exif/1.0/")
                     // https://developer.adobe.com/xmp/docs/XMPNamespaces/tiff/
                     .store("tiff", "http://ns.adobe.com/tiff/1.0/")

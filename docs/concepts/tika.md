@@ -38,6 +38,14 @@ This works for remote HTTP as well, of course:
 ./enola rosetta --http-scheme --in https://docs.enola.dev --out="fd:2?mediaType=text/turtle"
 ```
 
+## Image
+
+```bash
+./enola -v get --http-scheme \
+  --load https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg \
+  https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg
+```
+
 ## EPUB
 
 Any `*.epub` (`application/epub+zip`).

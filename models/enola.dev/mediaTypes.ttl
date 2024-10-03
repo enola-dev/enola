@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2024 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+@prefix :        <https://enola.dev/>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix exif:    <http://ns.adobe.com/exif/1.0/>.
+@prefix tiff:    <http://ns.adobe.com/tiff/1.0/>.
+@prefix owl:    <http://www.w3.org/2002/07/owl#>.
+@prefix schema:  <https://schema.org/>.
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#>.
+
+:Format a rdfs:Class;
+  :description "Format of binary data; often of Files, but technically of any bit stream.";
+  :wikipedia "File_format", "List_of_file_formats".
+
+:MediaType a rdfs:Class;
+  rdfs:subClassOf :Format;
+  :label "Internet Media Type";
+  :description "Internet Media Type, also known as a MIME Type or Content Type.";
+  :wikipedia "Media_type";
+  :seeAlso "https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types", "https://www.iana.org/assignments/media-types/media-types.xhtml";
+  :rfc "2046", "6838";
+  # TODO :iriTemplate "https://enola.dev/mediaType/{MEDIA_TYPE}"; # TODO Why does this cause an exception in URITemplateSplitter?!
+  # TODO :mediaType "{MEDIA_TYPE}"^^:IRITemplate; # TODO Test how Enola will know this is a String, not a Link?!
+  owl:equivalentClass dcterms:MediaType;
+  :example <https://enola.dev/mediaType/text/plain>.
+
+:datatype a rdf:Property;
+  :description "RDF Datatype of a MediaType. Only some few but by far not all media types have an equivalent datatype.";
+  rdfs:range rdfs:Datatype;
+  rdfs:domain :MediaType.
+
+:mediaType a rdf:Property;
+  rdfs:range xsd:token; # NOT :MediaType;
+  :thingTemplate "https://enola.dev/mediaType/{IT}"; # TODO !!!
+  rdfs:domain rdfs:Resource; # NOT just :File, :MediaType.
+  rdfs:subPropertyOf dcterms:format, schema:encodingFormat. # BUT more strict; this is NOT a URL!
+
+:fileExtensions a rdf:Property;
+  :label "File Extension";
+  :description "Typical file extensions of this MediaType. Must include trailing dot, if any - some may not!";
+  :wikipedia "Filename_extension", "List_of_filename_extensions";
+  rdfs:range xsd:string;
+  rdfs:domain :MediaType.
+
+<https://enola.dev/mediaType/text/plain> a :MediaType;
+  :fileExtensions ".txt", "README";
+  :datatype xsd:string.
+# TODO How to automagically infer such inverses? OWL??
+xsd:string :mediaType <https://enola.dev/mediaType/text/plain>.
+
+<https://enola.dev/mediaType/text/html> a :MediaType;
+  :fileExtensions ".html", ".htm";
+  :seeAlso "https://html.spec.whatwg.org/";
+  :datatype rdf:HTML.
+rdf:HTML :mediaType <https://enola.dev/mediaType/text/html>.
+
+<https://enola.dev/mediaType/text/xml> a :MediaType;
+  :fileExtensions ".xml";
+  :datatype rdf:XMLLiteral.
+rdf:XMLLiteral :mediaType <https://enola.dev/mediaType/text/xml>.
+
+<https://enola.dev/mediaType/application/xml> owl:equivalentClass <https://enola.dev/mediaType/text/xml>.
+
+<https://enola.dev/mediaType/application/json> a :MediaType;
+  :fileExtensions ".json";
+  :datatype rdf:JSON.
+rdf:JSON :mediaType <https://enola.dev/mediaType/application/json>.
+
+<https://enola.dev/mediaType/image/jpeg> a :MediaType;
+  :label "JPEG".
+
+# Just an example, to illustrate usage:
+<https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg> a schema:ImageObject;
+  :mediaType "image/jpeg"; # TODO Write Thing Test which validates that this is <https://enola.dev/mediaType/image/jpeg>
+  # schema:encodingFormat "image/jpeg" equivalence is inferred, because enola:mediaType dfs:subPropertyOf schema:encodingFormat.
+  schema:contentUrl "https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg";
+  tiff:ImageWidth: 577;
+  tiff:ImageLength: 800;
+  tiff:ExposureTime 0.002680246582685607;
+  exif:PixelXDimension 577;
+  exif:PixelYDimension 401.
