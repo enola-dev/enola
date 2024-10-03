@@ -18,6 +18,41 @@
 
 # Implementation Details
 
+## Modules
+
+<!-- TODO Generate this from a models/enola.dev/modules.ttl ... -->
+
+<!-- TODO When https://github.com/mermaid-js/mermaid/issues/5919 is available, add external links on the third_party block -->
+
+```mermaid
+block-beta
+    columns 1
+    block: ext
+        cli
+        web
+        model
+    end
+    block: core
+        columns 3
+        thing
+        io
+        common
+    end
+    block: third_party
+        columns 5
+        RDF4j
+        Guava
+        Protobuf
+        gRPC
+        Netty
+        SnakeYAML
+        Tika
+        OkHttp
+        PicoCLI
+        ch.vorburger.Exec
+    end
+```
+
 ## Enola Thing (ET 👽)
 
 <!-- TODO Generate (some of) this MD from a machine readable RDF models/enola.dev/et.ttl, using Enola itself?! -->
@@ -26,7 +61,8 @@ All ETs have 0.. n properties. Each such Property is identified by [an IRI](../c
 
 All ET have an IRI. Note that you may see what looks like an exception to this rule with the “nested” ETs, which RDF and LD call "blank nodes”; in Enola we strictly speaking conceptually don't call those things, just "maps of properties”.
 
-All this is, of course, heavily inspired by [TBL’s vision of the _”Semantic Web"_ of _”Linked Data”,_](https://www.w3.org/DesignIssues/LinkedData) such as also expressed by standards such as RDF or JSON-LD.
+All this is, of course, heavily inspired by [TBL’s vision of the _”Semantic Web"_ of _”Linked
+Data”,_](https://www.w3.org/DesignIssues/LinkedData) such as also expressed by standards such as RDF or JSON-LD.
 
 ETs have a number of different (but ultimately semantically equivalent) representations, both internally in Enola's code as well as externally serialized in resources.
 
@@ -36,7 +72,9 @@ ETs have a number of different (but ultimately semantically equivalent) represen
 
 * Java Type: `dev.enola.thing.Thing` <!-- TODO https://github.com/enola-dev/enola/issues/491: Link to Java Doc -->
 
-The Java `Thing` API is an _interface_ which has several available implementations. The simplest one is the `dev.enola.thing.impl.ImmutableThing` with its _Builder._
+The Java `Thing` API is an
+_interface_ which has several available implementations. The simplest one is the `dev.enola.thing.impl.ImmutableThing` with its
+_Builder._
 
 #### Proto Thing
 
