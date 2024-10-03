@@ -88,19 +88,6 @@ public class MediaTypeProviders implements MediaTypeProvider {
         return ImmutableMultimap.copyOf(map);
     }
 
-    // TODO Remove?
-    static void collapse(Multimap<String, MediaType> multimap) {
-        for (var entry : multimap.asMap().entrySet()) {
-            var extension = entry.getKey();
-            var mediaTypes = entry.getValue();
-            for (var mediaType : mediaTypes) {
-                if (!mediaType.parameters().isEmpty()) {
-                    var mediaTypeWithoutParameters = mediaType.withoutParameters();
-                }
-            }
-        }
-    }
-
     private Map<MediaType, Set<MediaType>> collectAlternatives(MediaTypeProvider[] providers) {
         int n = 0;
         for (var provider : providers) {

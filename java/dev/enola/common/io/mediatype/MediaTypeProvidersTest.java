@@ -20,10 +20,6 @@ package dev.enola.common.io.mediatype;
 import static com.google.common.collect.Sets.newHashSet;
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.net.MediaType;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MediaTypeProvidersTest {
@@ -44,17 +40,5 @@ public class MediaTypeProvidersTest {
         assertThat(mtp.extensionsToTypes()).containsEntry("test", MediaTypesTest.TEST);
         assertThat(mtp.knownTypesWithAlternatives())
                 .containsEntry(MediaTypesTest.TEST, newHashSet(MediaTypesTest.TEST_ALTERNATIVE));
-    }
-
-    @Test // TODO Remove?
-    @Ignore
-    public void collapse() {
-        var multimap = LinkedHashMultimap.<String, MediaType>create();
-        var mt1 = MediaType.parse("text/vnd.graphviz");
-        var mt2 = MediaType.parse("text/vnd.graphviz; charset=utf-8");
-        multimap.put("gv", mt1);
-        multimap.put("gv", mt2);
-        // TODO ? MediaTypeProviders.collapse(multimap);
-        assertThat(multimap).containsExactly("gv", mt2);
     }
 }
