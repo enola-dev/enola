@@ -35,6 +35,7 @@ Enola uses Metadata about all of its _Things_ when rendering them:
 
 This is read from a number of "typical" properties; in order of priority:
 
+1. https://enola.dev/label
 1. [http://www.w3.org/2000/01/rdf-schema#label](../models/www.w3.org/2000/01/rdf-schema/label.md)
 1. https://schema.org/name
 1. http://purl.org/dc/elements/1.1/title
@@ -50,6 +51,7 @@ This is always available; if a Thing has none of the above, then it will fallbac
 
 This is also read from a number of "typical" properties; in order of priority:
 
+1. https://enola.dev/description
 1. https://schema.org/description
 1. https://schema.org/abstract
 1. http://purl.org/dc/elements/1.1/description

@@ -102,10 +102,10 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
      * as-is.
      */
     private String getLabel(@Nullable Thing thing, String curie, String fallbackIRI) {
-        var label = getAlternative(thing, KIRI.RDF.TYPE, type -> getLabelViaProperty(thing, type));
+        var label = getLabel_(thing);
         if (label != null) return label;
 
-        label = getLabel_(thing);
+        label = getAlternative(thing, KIRI.RDF.TYPE, type -> getLabelViaProperty(thing, type));
         if (label != null) return label;
 
         label = getAlternative(thing, KIRI.RDFS.RANGE, range -> getLabel_(range));
@@ -135,7 +135,10 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
     }
 
     private @Nullable String getLabel_(@Nullable Thing thing) {
-        var label = getString(thing, KIRI.RDFS.LABEL);
+        var label = getString(thing, KIRI.E.LABEL);
+        if (label != null) return label;
+
+        label = getString(thing, KIRI.RDFS.LABEL);
         if (label != null) return label;
 
         var name = getString(thing, KIRI.SCHEMA.NAME);
@@ -147,7 +150,10 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
 
     /** Returns the Thing's {@link KIRI.SCHEMA#DESC}, if any. */
     private String getDescriptionHTML(Thing thing) {
-        var description = getString(thing, KIRI.SCHEMA.DESC);
+        var description = getString(thing, KIRI.E.DESCRIPTION);
+        if (description != null) return description;
+
+        description = getString(thing, KIRI.SCHEMA.DESC);
         if (description != null) return description;
 
         description = getString(thing, KIRI.SCHEMA.ABSTRACT);
@@ -241,7 +247,7 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
         return null;
     }
 
-    private @Nullable String getString(Thing thing, String propertyIRI) {
+    private @Nullable String getString(@Nullable Thing thing, String propertyIRI) {
         if (thing == null) return null;
         String string = null;
         if (!thing.isIterable(propertyIRI)) string = thing.getString(propertyIRI);

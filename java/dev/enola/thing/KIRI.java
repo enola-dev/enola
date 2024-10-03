@@ -48,6 +48,9 @@ public final class KIRI {
         public static final String LIST_THINGS = "enola:/inline";
         public static final String LIST_IRIS = "enola:/";
 
+        public static final String LABEL = "label";
+        public static final String DESCRIPTION = "description";
+
         /**
          * Emoji 😃 of a Thing, from Unicode or <a href="https://www.nerdfonts.com">Nerdfonts</a>.
          *
