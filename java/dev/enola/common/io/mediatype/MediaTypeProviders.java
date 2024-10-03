@@ -17,16 +17,12 @@
  */
 package dev.enola.common.io.mediatype;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.*;
 import com.google.common.net.MediaType;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
+import dev.enola.common.io.resource.AbstractResource;
+
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -41,6 +37,7 @@ public class MediaTypeProviders implements MediaTypeProvider {
     private final Map<MediaType, MediaType> alternatives;
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
     private final Multimap<String, MediaType> extensionsToTypes;
+    private final Iterable<MediaTypeProvider> providers;
 
     private MediaTypeProviders(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
         this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
@@ -50,6 +47,7 @@ public class MediaTypeProviders implements MediaTypeProvider {
         this.alternatives = createAlternatives(providers);
         this.knownTypesWithAlternatives = collectAlternatives(providers);
         this.extensionsToTypes = collectExtensions(providers);
+        this.providers = ImmutableList.copyOf(providers);
     }
 
     @Override
@@ -60,6 +58,15 @@ public class MediaTypeProviders implements MediaTypeProvider {
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
         return extensionsToTypes;
+    }
+
+    @Override
+    public Optional<MediaType> detect(AbstractResource resource) {
+        for (MediaTypeProvider provider : providers) {
+            Optional<MediaType> detected = provider.detect(resource);
+            if (detected.isPresent()) return detected;
+        }
+        return Optional.empty();
     }
 
     /**

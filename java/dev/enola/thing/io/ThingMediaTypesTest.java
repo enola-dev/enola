@@ -20,7 +20,6 @@ package dev.enola.thing.io;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ResourceProviders;
 
 import org.junit.Test;
@@ -39,8 +38,6 @@ public class ThingMediaTypesTest {
     public void thingYaml() throws URISyntaxException {
         var resource = new ResourceProviders().getResource(new URI("file:/picasso.thing.yaml"));
         var mediaType = MediaTypeProviders.SINGLETON.detect(resource).get();
-        assertThat(mediaType).isEqualTo(YamlMediaType.YAML_UTF_8);
-        // TODO assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
-        // Without ProtobufMediaTypes this ^^^ works... it may be an ordering issue?
+        assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
     }
 }
