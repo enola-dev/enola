@@ -18,10 +18,11 @@
 package dev.enola.common.io.mediatype;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class MediaTypeProviders implements MediaTypeProvider {
 
     private final Map<MediaType, MediaType> alternatives;
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
-    private final Map<String, MediaType> extensionsToTypes;
+    private final Multimap<String, MediaType> extensionsToTypes;
 
     private MediaTypeProviders(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
         this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
@@ -56,7 +57,7 @@ public class MediaTypeProviders implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
+    public Multimap<String, MediaType> extensionsToTypes() {
         return extensionsToTypes;
     }
 
@@ -72,21 +73,15 @@ public class MediaTypeProviders implements MediaTypeProvider {
                 .withParameters(mediaType.parameters());
     }
 
-    private Map<String, MediaType> collectExtensions(MediaTypeProvider[] providers) {
+    private Multimap<String, MediaType> collectExtensions(MediaTypeProvider[] providers) {
         int n = 0;
         for (var provider : providers) {
             n += provider.extensionsToTypes().size();
         }
-        var extensions = new HashSet<String>(n);
-        var map = ImmutableMap.<String, MediaType>builderWithExpectedSize(n);
+        var map = ImmutableMultimap.<String, MediaType>builder();
         for (var provider : providers) {
-            for (var entry : provider.extensionsToTypes().entrySet()) {
-                var extension = entry.getKey();
-                if (extensions.contains(extension))
-                    throw new IllegalArgumentException("Duplicate Extension: " + extension);
-                map.put(entry);
-                extensions.add(extension);
-            }
+            var providerMultimap = provider.extensionsToTypes();
+            map.putAll(providerMultimap);
         }
         return map.build();
     }

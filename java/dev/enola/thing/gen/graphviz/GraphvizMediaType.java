@@ -18,13 +18,13 @@
 package dev.enola.thing.gen.graphviz;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * MediaType of the <code>text/vnd.graphviz</code> <a
@@ -40,7 +40,7 @@ public class GraphvizMediaType implements MediaTypeProvider {
             MediaType.create("text", "vnd.graphviz").withCharset(StandardCharsets.UTF_8);
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("gv", GV);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("gv", GV);
     }
 }

@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.auto.service.AutoService;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
@@ -99,7 +101,7 @@ public class MediaTypesTest implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("test", TEST);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("test", TEST);
     }
 }

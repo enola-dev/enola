@@ -38,8 +38,12 @@ public class ExtensionsInfoCommand implements CheckedRunnable {
     public void run() throws Exception {
         var pw = spec.commandLine().getOut();
 
-        for (var entry : MediaTypeProviders.SINGLETON.extensionsToTypes().entrySet()) {
-            pw.println("." + entry.getKey() + " " + entry.getValue());
+        for (var entry : MediaTypeProviders.SINGLETON.extensionsToTypes().asMap().entrySet()) {
+            var mediaTypes = entry.getValue();
+            pw.println(
+                    entry.getKey()
+                            + ": "
+                            + (mediaTypes.size() == 1 ? mediaTypes.iterator().next() : mediaTypes));
         }
     }
 }

@@ -18,13 +18,13 @@
 package dev.enola.thing.gen.gexf;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * MediaType of the <code>application/gexf+xml</code> <a href="https://gexf.net">Graph Exchange XML
@@ -39,7 +39,7 @@ public class GexfMediaType implements MediaTypeProvider {
             MediaType.create("application", "gexf+xml").withCharset(StandardCharsets.UTF_8);
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("gexf", GEXF);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("gexf", GEXF);
     }
 }

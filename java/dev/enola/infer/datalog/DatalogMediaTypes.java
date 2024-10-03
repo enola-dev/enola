@@ -20,13 +20,13 @@ package dev.enola.infer.datalog;
 import static com.google.common.net.MediaType.create;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * The <code>text/vnd.datalog</code> Media Types for <a
@@ -52,8 +52,8 @@ public class DatalogMediaTypes implements MediaTypeProvider {
             GENERIC_DATALOG_UTF_8.withParameter(DIALECT, "souffle");
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of(
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of(
                 "souffle.dl",
                 SOUFFLE_DATALOG_UTF_8,
                 "dl",

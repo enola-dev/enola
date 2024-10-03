@@ -19,6 +19,7 @@ package dev.enola.common.io.mediatype;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
@@ -40,7 +41,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,15 +76,21 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
-    private final Map<String, MediaType> extensionMap =
+    private final Multimap<String, MediaType> extensionMap =
             MediaTypeProviders.SINGLETON.extensionsToTypes();
 
     private final FromURI fromExtensionMap =
             uri -> {
                 var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
-                return Optional.ofNullable(extensionMap.get(ext));
+                var mediaTypes = extensionMap.get(ext);
+                if (mediaTypes.isEmpty()) return Optional.empty();
+                var iterator = mediaTypes.iterator();
+                var mediaType = iterator.next();
+                if (iterator.hasNext())
+                    throw new IllegalStateException(
+                            ext + " has more than 1 MediaType: " + mediaTypes);
+                return Optional.of(mediaType);
             };
-
     private final FromURI fileNameMap =
             uri -> {
                 var contentTypeFromFileName =
@@ -94,7 +100,6 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 }
                 return Optional.empty();
             };
-
     private final FromURI probeFileContentType =
             uri -> {
                 // This doesn't support
@@ -114,7 +119,6 @@ public class MediaTypeDetector implements ResourceMediaTypeDetector {
                 }
                 return Optional.empty();
             };
-
     // TODO Make this extensible with java.util.ServiceLoader (like MediaTypes)
     private final List<FromURI> providers =
             ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
