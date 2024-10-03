@@ -21,7 +21,6 @@ import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.FreedesktopDirectories;
-import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;

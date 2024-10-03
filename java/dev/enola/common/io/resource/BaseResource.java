@@ -22,8 +22,6 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.MediaTypeDetector;
-
 import java.net.URI;
 
 public abstract class BaseResource implements AbstractResource {

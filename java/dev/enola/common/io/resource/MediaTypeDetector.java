@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
+package dev.enola.common.io.resource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -24,9 +24,9 @@ import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.resource.AbstractResource;
-import dev.enola.common.io.resource.BaseResource;
-import dev.enola.common.io.resource.Resource;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.MediaTypes;
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -46,10 +46,14 @@ import java.util.stream.Collectors;
 /**
  * Utility for detecting a (better) {@link MediaType} for a Resource.
  *
- * <p>This class is normally never used directly by {@link Resource} API users (who would just use
- * {@link AbstractResource#mediaType()}), but is only used by *Resource SPI implementations.
+ * <p>This class is intentionally package private, and should stay so; this is NOT for {@link
+ * Resource} API users (who would just use {@link AbstractResource#mediaType()}); it's only used by
+ * *Resource SPI implementations. (Which technically makes it impossible to {easily} write *Resource
+ * implementations outside of this package; but with the current mono-repo architecture, that's just
+ * fine.)
  */
-public class MediaTypeDetector {
+class MediaTypeDetector {
+    // NB: This class should *NEVER* implement MediaTypeProvider - that's a separate concern!
 
     // Default to "application/octet-stream", as per e.g.
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types

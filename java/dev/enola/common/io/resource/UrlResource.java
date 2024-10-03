@@ -23,7 +23,6 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.mediatype.MediaTypeDetector;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
