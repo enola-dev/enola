@@ -23,7 +23,6 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TikaMediaTypeProviderTest {
@@ -42,7 +41,6 @@ public class TikaMediaTypeProviderTest {
     }
 
     @Test
-    @Ignore // TODO Implement TikaMediaTypeProvider.extensionsToTypes()
     public void extensionsToTypes() {
         var mtp = new TikaMediaTypeProvider();
         assertThat(mtp.extensionsToTypes()).isNotEmpty();

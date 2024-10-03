@@ -21,6 +21,8 @@ import static java.util.Collections.emptySet;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -70,8 +72,8 @@ public class ThingMediaTypes implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of(
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of(
                 "thing.txtpb",
                 THING_TEXTPROTO_UTF_8,
                 "thing.binpb",

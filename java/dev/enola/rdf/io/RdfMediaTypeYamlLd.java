@@ -18,13 +18,13 @@
 package dev.enola.rdf.io;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /** MediaType of https://json-ld.github.io/yaml-ld/ and https://json-ld.github.io/yaml-ld/spec/ */
 @AutoService(MediaTypeProvider.class)
@@ -34,8 +34,8 @@ public class RdfMediaTypeYamlLd implements MediaTypeProvider {
             MediaType.create("application", "ld+yaml").withCharset(StandardCharsets.UTF_8);
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
+    public Multimap<String, MediaType> extensionsToTypes() {
         // *.yamlld as per https://json-ld.github.io/yaml-ld/spec/#application-ld-yaml
-        return ImmutableMap.of("yamlld", YAML_LD);
+        return ImmutableMultimap.of("yamlld", YAML_LD);
     }
 }

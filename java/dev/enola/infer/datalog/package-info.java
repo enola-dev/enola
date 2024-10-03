@@ -15,22 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.mediatype;
 
-import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.net.MediaType;
+/** Enola integration with <a href="https://tika.apache.org">Apache Tika</a>. */
+@NullMarked
+package dev.enola.infer.datalog;
 
-@AutoService(MediaTypeProvider.class)
-public class StandardMediaTypes implements MediaTypeProvider {
-
-    @Override
-    public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of(
-                "html", MediaType.HTML_UTF_8,
-                "json", MediaType.JSON_UTF_8,
-                "css", MediaType.CSS_UTF_8,
-                "js", MediaType.JAVASCRIPT_UTF_8);
-    }
-}
+import org.jspecify.annotations.NullMarked;

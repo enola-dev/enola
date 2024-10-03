@@ -21,7 +21,9 @@ import static java.util.Collections.emptySet;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -98,22 +100,19 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
+    public Multimap<String, MediaType> extensionsToTypes() {
         // https://protobuf.dev/programming-guides/techniques/#suffixes
-        return ImmutableMap.of(
-                "proto",
-                ProtobufMediaTypes.PROTO_UTF_8,
-                // TODO This parameter isn't actually used for anything... yet.
-                "proto.binpb",
-                ProtobufMediaTypes.PROTOBUF_BINARY.withParameter(
-                        PARAMETER_PROTO_MESSAGE, "google.protobuf.FileDescriptorSet"),
-                "binpb",
-                ProtobufMediaTypes.PROTOBUF_BINARY,
-                "pb",
-                ProtobufMediaTypes.PROTOBUF_BINARY,
-                "textproto",
-                ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8,
-                "txtpb",
-                ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8);
+        return ImmutableMultimap.<String, MediaType>builder()
+                .put("proto", ProtobufMediaTypes.PROTO_UTF_8)
+                .put(
+                        // TODO This parameter isn't actually used for anything... yet.
+                        "proto.binpb",
+                        ProtobufMediaTypes.PROTOBUF_BINARY.withParameter(
+                                PARAMETER_PROTO_MESSAGE, "google.protobuf.FileDescriptorSet"))
+                .put("binpb", ProtobufMediaTypes.PROTOBUF_BINARY)
+                .put("pb", ProtobufMediaTypes.PROTOBUF_BINARY)
+                .put("textproto", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
+                .put("txtpb", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
+                .build();
     }
 }

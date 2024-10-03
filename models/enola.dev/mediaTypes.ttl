@@ -59,18 +59,21 @@
   rdfs:domain :MediaType.
 
 <https://enola.dev/mediaType/text/plain> a :MediaType;
+  :label "Text";
   :fileExtensions ".txt", "README";
   :datatype xsd:string.
 # TODO How to automagically infer such inverses? OWL??
 xsd:string :mediaType <https://enola.dev/mediaType/text/plain>.
 
 <https://enola.dev/mediaType/text/html> a :MediaType;
+  :label "HTML";
   :fileExtensions ".html", ".htm";
   :seeAlso "https://html.spec.whatwg.org/";
   :datatype rdf:HTML.
 rdf:HTML :mediaType <https://enola.dev/mediaType/text/html>.
 
 <https://enola.dev/mediaType/text/xml> a :MediaType;
+  :label "XML";
   :fileExtensions ".xml";
   :datatype rdf:XMLLiteral.
 rdf:XMLLiteral :mediaType <https://enola.dev/mediaType/text/xml>.
@@ -78,6 +81,7 @@ rdf:XMLLiteral :mediaType <https://enola.dev/mediaType/text/xml>.
 <https://enola.dev/mediaType/application/xml> owl:equivalentClass <https://enola.dev/mediaType/text/xml>.
 
 <https://enola.dev/mediaType/application/json> a :MediaType;
+  :label "JSON";
   :fileExtensions ".json";
   :datatype rdf:JSON.
 rdf:JSON :mediaType <https://enola.dev/mediaType/application/json>.

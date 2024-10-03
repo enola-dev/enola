@@ -18,9 +18,7 @@
 package dev.enola.format.tika;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimaps;
+import com.google.common.collect.*;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -30,6 +28,8 @@ import dev.enola.common.io.resource.ReadableResource;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
 import org.apache.tika.parser.AutoDetectParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,22 +46,35 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
     private static final Logger LOG = LoggerFactory.getLogger(TikaMediaTypeProvider.class);
     private static final DefaultDetector tika = new DefaultDetector();
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
-    private final Map<String, MediaType> extensionsToTypes;
+    private final Multimap<String, MediaType> extensionsToTypes;
 
     public TikaMediaTypeProvider() {
+        var tikaMimaTypes = MimeTypes.getDefaultMimeTypes();
         var tikaMediaTypeRegistry = new AutoDetectParser().getMediaTypeRegistry();
         var tikaMediaTypes = tikaMediaTypeRegistry.getTypes();
+        var n = tikaMediaTypes.size();
         var knownTypesWithAlternativesBuilder =
-                ImmutableMap.<MediaType, Set<MediaType>>builderWithExpectedSize(
-                        tikaMediaTypes.size());
+                ImmutableMap.<MediaType, Set<MediaType>>builderWithExpectedSize(n);
+        var extensionsToTypesBuilder = ImmutableSetMultimap.<String, MediaType>builder();
         for (var tikaMediaType : tikaMediaTypes) {
-            // TODO Transform tikaMediaTypeRegistry super & child types into alternative?
+            // TODO Transform tikaMediaTypeRegistry super & child types into alternatives?
             var alt = ImmutableSet.<MediaType>of();
-            knownTypesWithAlternativesBuilder.put(convert(tikaMediaType), alt);
+            var enolaMediatype = convert(tikaMediaType);
+            knownTypesWithAlternativesBuilder.put(enolaMediatype, alt);
+
+            var mediaTypeName = tikaMediaType.toString();
+            try {
+                var tikaMimeType = tikaMimaTypes.getRegisteredMimeType(mediaTypeName);
+                if (tikaMimeType == null) continue;
+                for (var additionalExtension : tikaMimeType.getExtensions()) {
+                    extensionsToTypesBuilder.put(additionalExtension, enolaMediatype);
+                }
+            } catch (MimeTypeException e) {
+                LOG.warn("MediaType not found: {}", mediaTypeName, e);
+            }
         }
         knownTypesWithAlternatives = knownTypesWithAlternativesBuilder.build();
-        // TODO Where does Tika hide its supported file extensions?!
-        extensionsToTypes = Map.of();
+        extensionsToTypes = extensionsToTypesBuilder.build();
     }
 
     @Override
@@ -70,7 +83,7 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
+    public Multimap<String, MediaType> extensionsToTypes() {
         return extensionsToTypes;
     }
 

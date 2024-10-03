@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.mediatype;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
@@ -28,6 +30,9 @@ import java.util.Set;
 
 public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
+    // TODO Make MediaTypeProvider more consistent (use Multimap for both; instead of [historical]
+    // difference)
+
     // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
 
     /** Maps "canoncial" (primary) Media Types to a set of its "also known as alternatives". */
@@ -35,8 +40,8 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
         return Collections.emptyMap();
     }
 
-    /** Maps URI path extensions to a "canonical" Media Types */
-    Map<String, MediaType> extensionsToTypes();
+    /** Maps URI path extensions to a "canonical" Media Types. */
+    Multimap<String, MediaType> extensionsToTypes();
 
     /**
      * {@link ResourceMediaTypeDetector#detect(AbstractResource)} implementation using {@link
@@ -66,10 +71,16 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
         // "extensions" with several dots, such as *.schema.yaml etc. which makes it difficult to
         // "extract the extension" from a path.
         var uri = resource.uri().toString();
-        for (var extensionEntry : e2mt.entrySet()) {
-            // System.out.println(uri + " ? " + extensionEntry.getKey());
-            if (uri.endsWith(extensionEntry.getKey()))
-                return Optional.of(extensionEntry.getValue());
+        for (var extensionEntry : e2mt.asMap().entrySet()) {
+            var extension = extensionEntry.getKey();
+            // System.out.println(uri + " ? " + extension);
+            if (uri.endsWith(extension)) {
+                var mediaTypesForExtensions = extensionEntry.getValue();
+                if (Iterables.size(mediaTypesForExtensions) > 1)
+                    throw new IllegalStateException(
+                            extension + " has more than 1 MediaType: " + mediaTypesForExtensions);
+                return Optional.of(mediaTypesForExtensions.iterator().next());
+            }
         }
 
         // TODO if (resource instanceof ReadableResource) ... snif it, like in MediaTypeDetector

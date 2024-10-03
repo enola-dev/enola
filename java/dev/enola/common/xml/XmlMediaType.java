@@ -18,7 +18,8 @@
 package dev.enola.common.xml;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -30,8 +31,8 @@ import java.util.Set;
 public class XmlMediaType implements MediaTypeProvider {
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("xml", MediaType.XML_UTF_8);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("xml", MediaType.XML_UTF_8);
     }
 
     @Override

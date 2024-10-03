@@ -19,7 +19,9 @@ package dev.enola.rdf.io;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
@@ -45,14 +47,14 @@ public class RdfMediaTypes implements MediaTypeProvider {
                     .withCharset(StandardCharsets.UTF_8);
 
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
-    private final Map<String, MediaType> extensionsToTypes;
+    private final Multimap<String, MediaType> extensionsToTypes;
 
     public RdfMediaTypes() {
         this(RDFFormat.TURTLE, RDFFormat.JSONLD);
     }
 
     public RdfMediaTypes(FileFormat... rdf4jFormats) {
-        var extensionsToTypesBuilder = ImmutableMap.<String, MediaType>builder();
+        var extensionsToTypesBuilder = ImmutableMultimap.<String, MediaType>builder();
         var knownTypesWithAlternativesBuilder = ImmutableMap.<MediaType, Set<MediaType>>builder();
 
         for (var fileFormat : rdf4jFormats) {
@@ -82,7 +84,7 @@ public class RdfMediaTypes implements MediaTypeProvider {
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
+    public Multimap<String, MediaType> extensionsToTypes() {
         return extensionsToTypes;
     }
 }

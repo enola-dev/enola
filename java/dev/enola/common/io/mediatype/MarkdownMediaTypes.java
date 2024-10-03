@@ -21,7 +21,9 @@ import static com.google.common.net.MediaType.create;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
 import java.nio.charset.StandardCharsets;
@@ -62,8 +64,8 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
                     .withParameter(VARIANT, "GFM");
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("md", MARKDOWN_UTF_8);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("md", MARKDOWN_UTF_8);
     }
 
     @Override

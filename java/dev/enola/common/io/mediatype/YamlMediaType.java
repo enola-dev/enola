@@ -21,7 +21,9 @@ import static com.google.common.net.MediaType.create;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
@@ -57,8 +59,8 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
     }
 
     @Override
-    public Map<String, MediaType> extensionsToTypes() {
-        return ImmutableMap.of("yaml", YAML_UTF_8, "yml", YAML_UTF_8);
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of("yaml", YAML_UTF_8, "yml", YAML_UTF_8);
     }
 
     @Override
