@@ -67,6 +67,8 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
                 var tikaMimeType = tikaMimaTypes.getRegisteredMimeType(mediaTypeName);
                 if (tikaMimeType == null) continue;
                 for (var additionalExtension : tikaMimeType.getExtensions()) {
+                    if (additionalExtension.startsWith("."))
+                        additionalExtension = additionalExtension.substring(1);
                     extensionsToTypesBuilder.put(additionalExtension, enolaMediatype);
                 }
             } catch (MimeTypeException e) {

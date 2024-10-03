@@ -41,7 +41,8 @@ public class ExtensionsInfoCommand implements CheckedRunnable {
         for (var entry : MediaTypeProviders.SINGLETON.extensionsToTypes().asMap().entrySet()) {
             var mediaTypes = entry.getValue();
             pw.println(
-                    entry.getKey()
+                    "."
+                            + entry.getKey()
                             + ": "
                             + (mediaTypes.size() == 1 ? mediaTypes.iterator().next() : mediaTypes));
         }
