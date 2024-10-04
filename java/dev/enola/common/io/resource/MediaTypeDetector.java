@@ -28,6 +28,8 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.FileNameMap;
@@ -136,7 +138,7 @@ class MediaTypeDetector {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
         detected = detectCharset(uri, byteSource, detected);
-        return (detected != null) ? detected : DEFAULT;
+        return detected;
     }
 
     /**
@@ -163,7 +165,7 @@ class MediaTypeDetector {
     }
 
     private MediaType detectCharset(URI uri, ByteSource byteSource, MediaType detected) {
-        if (detected != null && !detected.charset().isPresent()) {
+        if (!detected.charset().isPresent()) {
             // TODO Make YAML just 1 of many Charset detectors...
             YamlMediaType rcd = new YamlMediaType();
             if (URIs.getFilename(uri).endsWith(".yaml")
@@ -179,7 +181,8 @@ class MediaTypeDetector {
     }
 
     // This is not @Deprecated and used e.g. by UrlResource
-    public MediaType detect(String contentType, String contentEncoding, URI uri) {
+    public MediaType detect(
+            @Nullable String contentType, @Nullable String contentEncoding, URI uri) {
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
@@ -189,7 +192,7 @@ class MediaTypeDetector {
             }
         }
 
-        if (mediaType == null && uri != null) {
+        if (mediaType == null) {
             for (FromURI provider : providers) {
                 mediaType = provider.from(uri).orElse(mediaType);
                 if (mediaType != null) break;
