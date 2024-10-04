@@ -19,6 +19,8 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.io.Files;
@@ -26,9 +28,12 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -39,6 +44,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 public class ResourceProvidersTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     private static final byte[] BYTES = new byte[] {1, 2, 3};
 

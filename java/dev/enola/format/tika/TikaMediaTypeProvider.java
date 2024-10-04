@@ -17,7 +17,6 @@
  */
 package dev.enola.format.tika;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.*;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-@AutoService(MediaTypeProvider.class)
 public class TikaMediaTypeProvider implements MediaTypeProvider {
 
     private static final Set<String> EXCLUDED =
@@ -102,7 +100,8 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
         metadata.set(Metadata.CONTENT_TYPE, original.toString());
 
         try (var is = byteSource.openBufferedStream()) {
-            return convert(tika.detect(is, metadata));
+            var mediaType = convert(tika.detect(is, metadata));
+            return mediaType;
         } catch (IOException e) {
             LOG.debug("IOException for {},", uri, e);
             return original;

@@ -20,16 +20,19 @@ package dev.enola.cli;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.cli.CommandLineSubject.assertThat;
+import static dev.enola.common.context.testlib.SingletonRule.onlyReset;
 import static dev.enola.thing.io.ThingMediaTypes.THING_YAML_UTF_8;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -38,6 +41,8 @@ import java.nio.file.Path;
 
 // See also //test-cli.bash
 public class EnolaCLITest {
+
+    public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
 
     private static final String MODEL = "classpath:/enola.dev/enola.ttl";
 
@@ -59,19 +64,28 @@ public class EnolaCLITest {
     @Test
     public void badArgument() {
         assertThat(cli("--bad")).hasExitCode(1).err().startsWith("Unknown option: '--bad'");
+        rule.doNotReset();
     }
 
     @Test
     public void help() {
-        assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
         assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
     }
 
     @Test
+    public void h() {
+        assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
+    }
+
+    @Test
     public void version() {
-        assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
         assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
         // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
+    }
+
+    @Test
+    public void v() {
+        assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
     }
 
     @Test
@@ -80,8 +94,9 @@ public class EnolaCLITest {
 
         var exec = cli("-vvv", "docgen", "--load", MODEL, "--output", dir.toUri().toString());
 
-        assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0).out().isEmpty();
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        run.hasExitCode(0).out().isEmpty();
         assertThatFileContains(dir, "enola.dev/emoji.md", "Emoji");
     }
 
@@ -109,8 +124,9 @@ public class EnolaCLITest {
                         "--output",
                         dir.toUri().toString());
 
-        assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0).out().isEmpty();
+        var subject = assertThat(exec);
+        subject.err().isEmpty();
+        subject.hasExitCode(0).out().isEmpty();
 
         var expectedGreetingMD = new ClasspathResource("greeting_var-HTML.md").charSource().read();
         assertThatFileContains(dir, "example.org/greeting.md", expectedGreetingMD);
@@ -131,9 +147,9 @@ public class EnolaCLITest {
                         "--load",
                         "classpath:/picasso.ttl",
                         "http://example.enola.dev/Picasso");
-        assertThat(exec).err().isEmpty();
-        assertThat(exec)
-                .hasExitCode(0)
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        run.hasExitCode(0)
                 .out()
                 .startsWith(
                         """
@@ -159,9 +175,10 @@ public class EnolaCLITest {
                             "--load",
                             "classpath:/picasso.ttl",
                             "http://example.enola.dev/Picasso");
-            assertThat(exec).err().isEmpty();
-            assertThat(exec).out().isEmpty();
-            assertThat(exec).hasExitCode(0);
+            var run = assertThat(exec);
+            run.err().isEmpty();
+            run.out().isEmpty();
+            run.hasExitCode(0);
             // Size varies because Entity contains "ts:" Timestamp
             assertThat(r.byteSource().size()).isAtLeast(100);
         }
@@ -170,31 +187,35 @@ public class EnolaCLITest {
     @Test
     public void getLoadedThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/emoji");
-        assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0);
+        var subject = assertThat(exec);
+        subject.err().isEmpty();
+        subject.hasExitCode(0);
     }
 
     @Test
     public void getNonExistentThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent");
-        assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent has nothing!\n");
-        assertThat(exec).out().isEmpty();
-        assertThat(exec).hasExitCode(0);
+        var run = assertThat(exec);
+        run.err().isEqualTo("https://docs.enola.dev/non-existent has nothing!\n");
+        run.out().isEmpty();
+        run.hasExitCode(0);
     }
 
     @Test
     public void getNonExistentTemplateIRIThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent/{ID}");
-        assertThat(exec).err().isEqualTo("https://docs.enola.dev/non-existent/{ID} has nothing!\n");
-        assertThat(exec).out().isEmpty();
-        assertThat(exec).hasExitCode(0);
+        var run = assertThat(exec);
+        run.err().isEqualTo("https://docs.enola.dev/non-existent/{ID} has nothing!\n");
+        run.out().isEmpty();
+        run.hasExitCode(0);
     }
 
     @Test
     public void getList() {
         var exec = cli("-vvv", "get", "--load", MODEL, "enola:/");
-        assertThat(exec).err().isEmpty();
-        assertThat(exec).hasExitCode(0).out().contains("https://enola.dev/emoji");
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        run.hasExitCode(0).out().contains("https://enola.dev/emoji");
     }
 
     @Test
@@ -208,8 +229,9 @@ public class EnolaCLITest {
                         "--httpPort=0",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
-        assertThat(exec).err().isEmpty();
-        var out = assertThat(exec).hasExitCode(0).out();
+        var subject = assertThat(exec);
+        subject.err().isEmpty();
+        var out = subject.hasExitCode(0).out();
         out.startsWith("gRPC API server now available on port ");
         out.contains("HTTP JSON REST API + HTML UI server started; open ");
     }
@@ -224,8 +246,9 @@ public class EnolaCLITest {
                         "classpath:/picasso.ttl",
                         "--httpPort=0",
                         "--immediateExitOnlyForTest=true");
-        assertThat(exec).err().isEmpty();
-        var out = assertThat(exec).hasExitCode(0).out();
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        var out = run.hasExitCode(0).out();
         out.startsWith("HTTP JSON REST API + HTML UI server started; open ");
         out.doesNotContain("gRPC");
     }
@@ -240,8 +263,9 @@ public class EnolaCLITest {
                         "classpath:/picasso.ttl",
                         "--grpcPort=0",
                         "--immediateExitOnlyForTest=true");
-        assertThat(exec).err().isEmpty();
-        var out = assertThat(exec).hasExitCode(0).out();
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        var out = run.hasExitCode(0).out();
         out.startsWith("gRPC API server now available on port ");
         out.doesNotContain("HTML");
     }
@@ -258,8 +282,9 @@ public class EnolaCLITest {
                             "classpath:/picasso.ttl",
                             "--out",
                             r.uri().toString());
-            assertThat(exec).err().isEmpty();
-            assertThat(exec).hasExitCode(0).out().isEmpty();
+            var run = assertThat(exec);
+            run.err().isEmpty();
+            run.hasExitCode(0).out().isEmpty();
             assertThat(r.charSource().read())
                     .startsWith("things:\n- iri: http://example.enola.dev/Dalí");
         }
@@ -268,16 +293,17 @@ public class EnolaCLITest {
     @Test
     public void noStacktraceWithoutVerbose() {
         var exec = cli("docgen", "--load", "file:/nonexistant.yaml");
-        assertThat(exec).out().isEmpty();
-        assertThat(exec).hasExitCode(1).err().contains("NoSuchFileException: /nonexistant.yaml\n");
+        var run = assertThat(exec);
+        run.out().isEmpty();
+        run.hasExitCode(1).err().contains("NoSuchFileException: /nonexistant.yaml\n");
     }
 
     @Test
     public void stacktraceWithGlobalVerbose() {
         var exec = cli("-v", "docgen", "--load", "file:/nonexistant.yaml");
-        assertThat(exec).out().isEmpty();
-        assertThat(exec)
-                .hasExitCode(1)
+        var run = assertThat(exec);
+        run.out().isEmpty();
+        run.hasExitCode(1)
                 .err()
                 .contains("Caused by: java.nio.file.NoSuchFileException: /nonexistant.yaml");
     }
@@ -285,9 +311,9 @@ public class EnolaCLITest {
     @Test
     public void stacktraceWithSubcommandVerbose() {
         var exec = cli("docgen", "-v", "--load", "file:/nonexistant.yaml");
-        assertThat(exec).out().isEmpty();
-        assertThat(exec)
-                .hasExitCode(1)
+        var run = assertThat(exec);
+        run.out().isEmpty();
+        run.hasExitCode(1)
                 .err()
                 .contains("Caused by: java.nio.file.NoSuchFileException: /nonexistant.yaml");
     }

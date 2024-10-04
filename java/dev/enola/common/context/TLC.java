@@ -26,6 +26,11 @@ import java.util.Optional;
 /**
  * TLC is the Thread Local {@link Context}. (Also known as "Tender Loving Care".)
  *
+ * <p>This is useful to hold values that are user- or request-dependent, such as a {@link
+ * java.util.TimeZone}.
+ *
+ * <p>For things which are "global", just use a {@link Singleton} instead.
+ *
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */
 @ThreadSafe

@@ -20,12 +20,20 @@ package dev.enola.common.protobuf;
 import static com.google.common.net.MediaType.create;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.MediaTypes.normalize;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_BINARY;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 public class ProtobufMediaTypesTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
+
     @Test
     public void testProtobufMediaTypesAlternatives() {
         assertThat(normalize(create("application", "vnd.google.protobuf")))

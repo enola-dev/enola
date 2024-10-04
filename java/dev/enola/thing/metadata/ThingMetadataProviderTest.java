@@ -19,11 +19,16 @@ package dev.enola.thing.metadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.rdf.io.RdfLoader;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
@@ -35,6 +40,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 public class ThingMetadataProviderTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Rule public TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
 

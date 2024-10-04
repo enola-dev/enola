@@ -17,16 +17,26 @@
  */
 package dev.enola.thing.testlib;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.repo.ThingsRepository;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class ThingsSubjectTest {
+
+    @Rule
+    public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new YamlMediaType()));
 
     @Test
     public void empty() throws IOException {

@@ -15,26 +15,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf.io;
+package dev.enola.common.context;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
-public class RdfMediaTypeTest {
+public class SingletonTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    // The Singleton(s) would IRL be defined somewhere else than inside the *Test.
+    static Singleton<String> HELLO_SINGLETON = new Singleton<>() {};
+
+    static Singleton<Integer> THE_NUMBER = new Singleton<>() {};
+    @ClassRule public static final SingletonRule r = $(THE_NUMBER.set(43));
 
     @Test
-    public void mediaTypes() {
-        assertThat(new ClasspathResource("picasso.ttl").mediaType())
-                .isEqualTo(RdfMediaTypes.TURTLE);
+    public void staticSingleton() {
+        HELLO_SINGLETON.set("hello, world");
+        assertThat(HELLO_SINGLETON.get()).isEqualTo("hello, world");
+
+        HELLO_SINGLETON.reset();
+        HELLO_SINGLETON.set("hi");
+        assertThat(HELLO_SINGLETON.get()).isEqualTo("hi");
+    }
+
+    @Test
+    public void singletonViaRule1() {
+        assertThat(THE_NUMBER.get()).isEqualTo(43);
+    }
+
+    @Test
+    public void singletonViaRule2() {
+        assertThat(THE_NUMBER.get()).isEqualTo(43);
     }
 }

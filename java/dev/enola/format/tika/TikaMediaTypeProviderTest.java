@@ -20,49 +20,63 @@ package dev.enola.format.tika;
 import static com.google.common.net.MediaType.OCTET_STREAM;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.FileResource;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
 
 public class TikaMediaTypeProviderTest {
 
-    TikaMediaTypeProvider mtp = new TikaMediaTypeProvider();
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new TikaMediaTypeProvider()));
 
     @Test
     public void detectHtml() {
-        var mt = mtp.detect(new ClasspathResource("test.html"));
-        assertThat(mt).hasValue(MediaType.HTML_UTF_8);
+        var r = new ClasspathResource("test.html");
+        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 
     @Test
     public void detectCBL() {
-        var mt = mtp.detect(new FileResource(URI.create("file:///test.CBL")));
-        assertThat(mt).hasValue(MediaType.parse("text/x-cobol"));
+        var r = new FileResource(URI.create("file:///test.CBL"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.parse("text/x-cobol"));
     }
 
     @Test
-    @Ignore // TODO FIXME it detects *.gz instead *.warc.gz (MediaTypeProvider needs a "priority")
+    @Ignore // TODO FIXME Debug and fix why this still doesn't work
     public void detectWarcGz() {
-        var mt = mtp.detect(new FileResource(URI.create("file:///test.warc.gz")));
-        assertThat(mt).hasValue(MediaType.parse("application/warc+gz"));
+        var r = new FileResource(URI.create("file:///test.warc.gz"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.parse("application/warc+gz"));
     }
 
     @Test
     public void knownTypesWithAlternatives() {
-        assertThat(mtp.knownTypesWithAlternatives().keySet()).isNotEmpty();
+        assertThat(MediaTypeProviders.SINGLETON.get().knownTypesWithAlternatives().keySet())
+                .isNotEmpty();
     }
 
     @Test
     public void extensionsToTypes() {
-        assertThat(mtp.extensionsToTypes()).isNotEmpty();
-        assertThat(mtp.extensionsToTypes().keySet().iterator().next().startsWith(".")).isTrue();
+        var mediaTypeProviders = MediaTypeProviders.SINGLETON.get();
+        assertThat(mediaTypeProviders.extensionsToTypes()).isNotEmpty();
+        assertThat(
+                        mediaTypeProviders
+                                .extensionsToTypes()
+                                .keySet()
+                                .iterator()
+                                .next()
+                                .startsWith("."))
+                .isTrue();
     }
 
     @Test
@@ -71,8 +85,9 @@ public class TikaMediaTypeProviderTest {
     }
 
     private void isExcluded(String extension) {
-        assertThat(mtp.extensionsToTypes().keySet()).doesNotContain(extension);
-        assertThat(mtp.detect(new EmptyResource(URI.create("test" + extension))))
+        var mediaTypeProviders = MediaTypeProviders.SINGLETON.get();
+        assertThat(mediaTypeProviders.extensionsToTypes().keySet()).doesNotContain(extension);
+        assertThat(mediaTypeProviders.detect(new EmptyResource(URI.create("test" + extension))))
                 .hasValue(OCTET_STREAM);
     }
 }

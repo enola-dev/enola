@@ -52,10 +52,12 @@ public class NullResource extends BaseResource implements Resource {
     static final String SCHEME = "null";
 
     public NullResource(MediaType mediaType) {
-        super(uri(mediaType), mediaType);
+        super(uri(mediaType), mediaType, true);
     }
 
-    public static URI uri(MediaType mediaType) {
+    private static URI uri(MediaType mediaType) {
+        // TODO Why URI of MediaType, instead of a single hard-coded fixed one?
+        // TODO Why withoutParameters()? To remove spaces? Just encode!
         return URI.create(SCHEME + ":" + mediaType.withoutParameters());
     }
 

@@ -81,6 +81,7 @@ junit_tests(
     deps = [
         ":protobuf",
         ":test_java_proto",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//test",
     ],

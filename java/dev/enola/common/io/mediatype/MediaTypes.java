@@ -37,7 +37,7 @@ public final class MediaTypes {
 
     @Deprecated // Remove and replace (inline) with implementation, for clarity
     public static MediaType normalize(MediaType mediaType) {
-        return MediaTypeProviders.SINGLETON.normalize(mediaType);
+        return MediaTypeProviders.SINGLETON.get().normalize(mediaType);
     }
 
     public static boolean normalizedNoParamsEquals(MediaType actual, MediaType... expecteds) {

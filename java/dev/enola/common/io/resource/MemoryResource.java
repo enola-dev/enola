@@ -32,12 +32,17 @@ public class MemoryResource extends BaseResource implements Resource {
 
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
+    protected MemoryResource(URI uri, MediaType mediaType, boolean fixedMediaType) {
+        super(uri, mediaType, fixedMediaType);
+    }
+
     public MemoryResource(URI uri, MediaType mediaType) {
         super(uri, mediaType);
     }
 
     public MemoryResource(MediaType mediaType) {
-        super(URI.create("memory:" + Long.toHexString(counter.incrementAndGet())), mediaType);
+        // TODO Unify this with TestResource create()
+        this(URI.create("memory:" + Long.toHexString(counter.incrementAndGet())), mediaType);
     }
 
     @Override

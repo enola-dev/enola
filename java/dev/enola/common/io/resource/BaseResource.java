@@ -47,6 +47,12 @@ public abstract class BaseResource implements AbstractResource {
         this.mediaType = mtd.overwrite(uri, requireNonNull(mediaType, "mediaType"));
     }
 
+    protected BaseResource(URI uri, MediaType mediaType, boolean fixedMediaType) {
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType = requireNonNull(mediaType, "mediaType");
+        if (!fixedMediaType) throw new IllegalArgumentException();
+    }
+
     // No need for: protected BaseResource(URI uri, MediaType mediaType, ByteSource byteSource) {
 
     @Override

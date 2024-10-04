@@ -19,7 +19,6 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.net.MediaType.create;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -34,7 +33,6 @@ import java.util.Set;
  * The "text/markdown" media type, as per <a href="https://www.rfc-editor.org/rfc/rfc7763.html">RFC
  * 7763</a> (and <a href="https://www.rfc-editor.org/rfc/rfc7764.html">RFC 7764</a>).
  */
-@AutoService(MediaTypeProvider.class)
 public class MarkdownMediaTypes implements MediaTypeProvider {
 
     // TODO Distinguish https://commonmark.org from GFH et al. via a variant parameter; see

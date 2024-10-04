@@ -19,12 +19,17 @@ package dev.enola.thing.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProvider;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProviders;
 
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
@@ -32,9 +37,18 @@ import java.net.URISyntaxException;
 
 public class ThingMediaTypesTest {
 
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new ThingMediaTypes()));
+
+    @Rule
+    public TestTLCRule rule =
+            TestTLCRule.of(
+                    MediaTypeProviders.class,
+                    new MediaTypeProviders(new ThingMediaTypes(), new YamlMediaType()));
+
     @Test
     public void loaded() {
-        assertThat(MediaTypeProviders.SINGLETON.extensionsToTypes()).containsKey(".thing.yaml");
+        assertThat(MediaTypeProviders.SINGLETON.get().extensionsToTypes())
+                .containsKey(".thing.yaml");
     }
 
     @Test
@@ -43,15 +57,13 @@ public class ThingMediaTypesTest {
     }
 
     @Test
-    @Ignore // TODO This requires supporting an "order" (precedence) in MediaTypeProvider
     public void viaMediaTypeProviders() throws URISyntaxException {
-        check(MediaTypeProviders.SINGLETON);
+        check(MediaTypeProviders.SINGLETON.get());
     }
 
     private void check(MediaTypeProvider mediaTypeProvider) throws URISyntaxException {
         var rp = new ResourceProviders(new FileResource.Provider());
         var resource = rp.getResource(new URI("file:/picasso.thing.yaml"));
-        var mediaType = mediaTypeProvider.detect(resource).get();
-        assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
+        assertThat(resource.mediaType()).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
     }
 }

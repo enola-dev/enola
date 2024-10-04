@@ -19,14 +19,22 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
 public class OkHttpResourceTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     // TODO Use https://square.github.io/okhttp/#mockwebserver
 

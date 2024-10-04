@@ -21,10 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.util.concurrent.Futures.immediateFailedFuture;
 import static com.google.common.util.concurrent.Futures.immediateFuture;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.web.StaticWebHandler;
@@ -32,12 +36,15 @@ import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public abstract class WebServerTestAbstract {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     protected abstract WebServer create(WebHandlers handlers) throws IOException;
 

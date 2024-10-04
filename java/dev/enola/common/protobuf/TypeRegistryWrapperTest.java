@@ -20,6 +20,7 @@ package dev.enola.common.protobuf;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.protobuf.Any.pack;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
 
 import com.google.common.collect.ImmutableList;
@@ -28,16 +29,21 @@ import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.Timestamp;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.NullResource;
 import dev.enola.protobuf.test.TestEnum;
 import dev.enola.protobuf.test.TestSimple;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
 
 public class TypeRegistryWrapperTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
 
     @Test
     public void empty() {

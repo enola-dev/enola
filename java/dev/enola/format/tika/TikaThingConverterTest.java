@@ -19,18 +19,26 @@ package dev.enola.format.tika;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.testlib.ThingsSubject;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class TikaThingConverterTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Test
     public void empty() throws IOException {

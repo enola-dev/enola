@@ -19,16 +19,23 @@ package dev.enola.format.tika.rdf;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.rdf.io.RdfMediaTypes;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class TikaResourceIntoRdfResourceConverterTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     @Test
     public void html() throws IOException {

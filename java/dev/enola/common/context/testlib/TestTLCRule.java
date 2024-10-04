@@ -27,9 +27,16 @@ import org.junit.runners.model.Statement;
 
 public class TestTLCRule implements TestRule {
 
+    // TODO Use https://github.com/google/guava/wiki/NewCollectionTypesExplained#classtoinstancemap
+
+    public static <T> TestTLCRule of(Class<T> klass, T instance) {
+        return new TestTLCRule(ImmutableMap.of(klass, instance));
+    }
+
     private final ImmutableMap<Class<?>, ?> pushes;
 
-    public <K> TestTLCRule(ImmutableMap<Class<?>, ?> pushes) {
+    // TODO turn into static of() method - just because it's shorter to write
+    public TestTLCRule(ImmutableMap<Class<?>, ?> pushes) {
         this.pushes = pushes;
     }
 

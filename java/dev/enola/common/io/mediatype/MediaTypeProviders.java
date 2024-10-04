@@ -21,8 +21,9 @@ import com.google.common.collect.*;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.Singleton;
+
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * Aggregates other {@link MediaTypeProvider}s, either from an explicit list provided to
@@ -30,19 +31,18 @@ import java.util.stream.Stream;
  */
 public class MediaTypeProviders implements MediaTypeProvider {
 
-    public static final MediaTypeProviders SINGLETON =
-            new MediaTypeProviders(ServiceLoader.load(MediaTypeProvider.class).stream());
+    public static final Singleton<MediaTypeProviders> SINGLETON = new Singleton<>() {};
+
+    public static Singleton<MediaTypeProviders> set(MediaTypeProvider... providers) {
+        return SINGLETON.set(new MediaTypeProviders(providers));
+    }
 
     private final Map<MediaType, MediaType> alternatives;
     private final Map<MediaType, Set<MediaType>> knownTypesWithAlternatives;
     private final Multimap<String, MediaType> extensionsToTypes;
     private final Iterable<MediaTypeProvider> providers;
 
-    private MediaTypeProviders(Stream<ServiceLoader.Provider<MediaTypeProvider>> providers) {
-        this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
-    }
-
-    MediaTypeProviders(MediaTypeProvider... providers) {
+    public MediaTypeProviders(MediaTypeProvider... providers) {
         this.alternatives = createAlternatives(providers);
         this.knownTypesWithAlternatives = collectAlternatives(providers);
         this.extensionsToTypes = collectExtensions(providers);

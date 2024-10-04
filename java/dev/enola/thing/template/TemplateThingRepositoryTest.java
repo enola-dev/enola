@@ -19,11 +19,16 @@ package dev.enola.thing.template;
 
 import static com.google.common.truth.Truth.*;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
@@ -33,6 +38,7 @@ import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.stream.Stream;
@@ -44,6 +50,8 @@ import java.util.stream.Stream;
  * is covered in the {@link ThingRepositoriesTest}.
  */
 public class TemplateThingRepositoryTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Test
     public void greetingN() {

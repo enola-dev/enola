@@ -19,7 +19,6 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.net.MediaType.create;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -34,8 +33,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-@AutoService(MediaTypeProvider.class)
 public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTypeProvider {
+    // TODO Rename YamlMediaType to YamlMediaTypeProvider
     // TODO Move this into e.g. dev.enola.format.yaml ?
 
     // TODO How to allow this to express mediaType.subtype().endsWith("+yaml") ?

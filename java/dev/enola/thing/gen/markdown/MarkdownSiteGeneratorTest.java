@@ -17,16 +17,19 @@
  */
 package dev.enola.thing.gen.markdown;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.thing.template.Templates.Format.Mustache;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
@@ -34,8 +37,10 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.model.enola.files.FileThingConverter;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfReaderConverter;
 import dev.enola.rdf.proto.RdfProtoThingsConverter;
+import dev.enola.thing.gen.gexf.GexfMediaType;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
@@ -61,6 +66,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class MarkdownSiteGeneratorTest {
+
+    @Rule
+    public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new GexfMediaType()));
 
     @Rule
     public TestRule tlcRule =

@@ -167,7 +167,7 @@ class MediaTypeDetector {
             }
         }
         if (!isSpecial(detected)) return detected;
-        else return MediaTypeProviders.SINGLETON.detect(uri.toString(), byteSource, detected);
+        else return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
     }
 
     // This is currently still used by both UrlResource & OkHttpResource (and MediaTypeDetectorTest)

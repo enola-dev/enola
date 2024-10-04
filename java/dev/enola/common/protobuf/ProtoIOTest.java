@@ -19,6 +19,8 @@ package dev.enola.common.protobuf;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.net.MediaType;
@@ -27,16 +29,21 @@ import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.TypeRegistry;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class ProtoIOTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
 
     public static final Timestamp TIMESTAMP =
             Timestamp.newBuilder().setSeconds(123).setNanos(456).build();

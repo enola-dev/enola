@@ -17,7 +17,6 @@
  */
 package dev.enola.common.xml;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
@@ -27,7 +26,6 @@ import dev.enola.common.io.mediatype.MediaTypeProvider;
 import java.util.Map;
 import java.util.Set;
 
-@AutoService(MediaTypeProvider.class)
 public class XmlMediaType implements MediaTypeProvider {
 
     @Override

@@ -19,17 +19,23 @@ package dev.enola.common.xml;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.MediaTypes.normalizedNoParamsEquals;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
 
 public class XmlMediaTypeTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new XmlMediaType()));
 
     @Test
     public void xmlMediaType() {

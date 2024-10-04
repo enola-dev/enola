@@ -19,22 +19,21 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.auto.service.AutoService;
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import java.util.Set;
 
-@AutoService(MediaTypeProvider.class)
-public class MediaTypesTest implements MediaTypeProvider {
+public class MediaTypesTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new TestMediaType()));
 
     @Test
     public void testParse() {
@@ -90,18 +89,7 @@ public class MediaTypesTest implements MediaTypeProvider {
     // TODO use example/test instead of application/test (and rename accordingly everywhere...)
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#example
 
-    public static final MediaType TEST = MediaType.create("application", "test");
+    public static final MediaType TEST = TestMediaType.TEST;
 
-    @VisibleForTesting
-    static final MediaType TEST_ALTERNATIVE = MediaType.create("application", "test-alternative");
-
-    @Override
-    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
-        return ImmutableMap.of(TEST, Sets.newHashSet(TEST_ALTERNATIVE));
-    }
-
-    @Override
-    public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of(".test", TEST);
-    }
+    @VisibleForTesting static final MediaType TEST_ALTERNATIVE = TestMediaType.TEST_ALTERNATIVE;
 }

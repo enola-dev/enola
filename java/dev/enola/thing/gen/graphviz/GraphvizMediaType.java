@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.gen.graphviz;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
@@ -33,7 +32,6 @@ import java.nio.charset.StandardCharsets;
  * href="https://en.wikipedia.org/wiki/Graphviz">Graphviz</a>, in <a
  * href="https://graphviz.org/doc/info/lang.html#character-encodings">UTF-8 Character Encoding</a>.
  */
-@AutoService(MediaTypeProvider.class)
 public class GraphvizMediaType implements MediaTypeProvider {
 
     public static final MediaType GV =

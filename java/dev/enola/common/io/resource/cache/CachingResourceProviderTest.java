@@ -19,15 +19,20 @@ package dev.enola.common.io.resource.cache;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.Resource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.common.io.resource.cache.ClasspathCacheResourceProvider.ClasspathLocationWithMediaType;
 
 import org.jspecify.annotations.Nullable;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,6 +40,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class CachingResourceProviderTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
 
     private final URI TEST_URI = URI.create("test:it");
 

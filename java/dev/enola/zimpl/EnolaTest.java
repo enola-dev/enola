@@ -19,17 +19,24 @@ package dev.enola.zimpl;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import dev.enola.Enola;
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.model.enola.action.Actions;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class EnolaTest {
 
     // TODO Replace this with //test/test.enola scripting...
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
 
     Enola e = new EnolaProvider().get();
 
