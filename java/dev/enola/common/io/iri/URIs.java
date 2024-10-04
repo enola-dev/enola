@@ -26,6 +26,8 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,7 +57,7 @@ public final class URIs {
     private static final Splitter AMPERSAND_SPLITTER =
             Splitter.on('&').omitEmptyStrings().trimResults();
 
-    public record MediaTypeAndOrCharset(String mediaType, String charset) {}
+    public record MediaTypeAndOrCharset(@Nullable String mediaType, @Nullable String charset) {}
 
     public static boolean hasQueryParameter(URI uri, String key) {
         var queryMap = getQueryMap(uri);
@@ -378,6 +380,10 @@ public final class URIs {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("TODO FIXME" + uri, e);
         }
+    }
+
+    public static String dropQueryAndFragment(String uri) {
+        return dropQueryAndFragment(URI.create(uri)).toString();
     }
 
     public static URI getBase(URI uri) throws IOException {

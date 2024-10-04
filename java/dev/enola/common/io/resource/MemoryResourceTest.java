@@ -17,15 +17,16 @@
  */
 package dev.enola.common.io.resource;
 
+import static com.google.common.net.MediaType.OCTET_STREAM;
+import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
-import com.google.common.net.MediaType;
-
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class MemoryResourceTest {
     private static final byte[] BYTES = new byte[] {1, 2, 3};
@@ -33,7 +34,7 @@ public class MemoryResourceTest {
 
     @Test
     public void testBinaryMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(MediaType.OCTET_STREAM);
+        MemoryResource resource = new MemoryResource(OCTET_STREAM);
         resource.byteSink().write(BYTES);
         assertThat(resource.byteSource().read()).isEqualTo(BYTES);
 
@@ -43,8 +44,14 @@ public class MemoryResourceTest {
 
     @Test
     public void testTextMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(MediaType.PLAIN_TEXT_UTF_8);
+        MemoryResource resource = new MemoryResource(PLAIN_TEXT_UTF_8);
         resource.charSink().write(TEXT);
         assertThat(resource.charSource().read()).isEqualTo(TEXT);
+    }
+
+    @Test
+    public void testMediaTypePrecedence() throws IOException {
+        MemoryResource resource = new MemoryResource(URI.create("test.html"), PLAIN_TEXT_UTF_8);
+        assertThat(resource.mediaType()).isEqualTo(PLAIN_TEXT_UTF_8);
     }
 }

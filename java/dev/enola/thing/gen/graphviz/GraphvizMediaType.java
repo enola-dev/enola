@@ -41,6 +41,6 @@ public class GraphvizMediaType implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("gv", GV);
+        return ImmutableMultimap.of(".gv", GV);
     }
 }

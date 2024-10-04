@@ -27,20 +27,22 @@ import org.jspecify.annotations.Nullable;
 import java.net.URI;
 import java.util.Map;
 
-public class ClasspathCacheResourceProvider implements ResourceProvider {
+class ClasspathCacheResourceProvider implements ResourceProvider {
 
-    public record ClasspathLocationWithMediaType(String loc, MediaType mt) {}
+    record ClasspathLocationWithMediaType(String loc, MediaType mt) {}
 
     private final ImmutableMap<URI, ReadableResource> cache;
 
-    public ClasspathCacheResourceProvider(Map<URI, ClasspathLocationWithMediaType> map) {
+    ClasspathCacheResourceProvider(Map<URI, ClasspathLocationWithMediaType> map) {
         var builder = ImmutableMap.<URI, ReadableResource>builderWithExpectedSize(map.size());
         map.forEach(
                 (uri, clwmt) ->
                         builder.put(
                                 uri,
                                 new DelegatingResource(
-                                        new ClasspathResource(clwmt.loc), uri, clwmt.mt)));
+                                        new ClasspathResource(clwmt.loc, clwmt.mt),
+                                        uri,
+                                        clwmt.mt)));
         this.cache = builder.build();
     }
 

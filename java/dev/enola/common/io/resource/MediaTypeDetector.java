@@ -19,7 +19,6 @@ package dev.enola.common.io.resource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
@@ -27,6 +26,8 @@ import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
+
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -78,24 +79,6 @@ class MediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
-    // TODO Remove this, we should (only) use MediaTypeProvider.detect()!
-    private final Multimap<String, MediaType> extensionMap =
-            MediaTypeProviders.SINGLETON.extensionsToTypes();
-
-    private final FromURI fromExtensionMap =
-            uri -> {
-                var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
-                var mediaTypes = extensionMap.get(ext);
-                if (mediaTypes.isEmpty()) return Optional.empty();
-                var iterator = mediaTypes.iterator();
-                var mediaType = iterator.next();
-                // TODO Rethink this... this hack is bad (and breaks RosettaTest)
-                // We actually really shouldn't need this at all!
-                // if (iterator.hasNext())
-                //    throw new IllegalStateException(
-                //            ext + " has more than 1 MediaType: " + mediaTypes);
-                return Optional.of(mediaType);
-            };
     private final FromURI fileNameMap =
             uri -> {
                 var contentTypeFromFileName =
@@ -107,7 +90,6 @@ class MediaTypeDetector {
             };
     private final FromURI probeFileContentType =
             uri -> {
-                // This doesn't support
                 if (uri.getScheme() != null
                         && ("file".equalsIgnoreCase(uri.getScheme())
                                 || fileSystemProviderSchemes.contains(
@@ -126,13 +108,13 @@ class MediaTypeDetector {
             };
     // This is not extensible (e.g. with java.util.ServiceLoader) - because MediaTypes already is
     // TODO fileNameMap & probeFileContentType to JdkMediaTypeProvider implements MediaTypeProvider?
-    private final List<FromURI> providers =
-            ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
+    // (Or, when doing this, implements ResourceMediaTypeDetector instead MediaTypeProvider?)
+    private final List<FromURI> providers = ImmutableList.of(fileNameMap, probeFileContentType);
 
     /**
      * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
      */
-    public MediaType detect(URI uri, ByteSource byteSource) {
+    MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
         detected = detectCharset(uri, byteSource, detected);
@@ -142,27 +124,27 @@ class MediaTypeDetector {
     /**
      * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
      */
-    public MediaType overwrite(URI uri, final MediaType originalMediaType) {
+    MediaType overwrite(URI uri, final MediaType originalMediaType) {
         var mediaType = originalMediaType;
 
         var uriCharset = URIs.getMediaTypeAndCharset(uri);
         var uriMediaType = uriCharset.mediaType();
-
         if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
 
         var cs = uriCharset.charset();
         if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
-
-        if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
-            mediaType = mediaType.withCharset(originalMediaType.charset().get());
-        } else {
-            mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
+        else {
+            if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
+                mediaType = mediaType.withCharset(originalMediaType.charset().get());
+            } else {
+                mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
+            }
         }
-
         return mediaType;
     }
 
-    private MediaType detectCharset(URI uri, ByteSource byteSource, MediaType detected) {
+    private @Nullable MediaType detectCharset(
+            URI uri, ByteSource byteSource, @Nullable MediaType detected) {
         if (detected != null && !detected.charset().isPresent()) {
             // TODO Make YAML just 1 of many Charset detectors...
             YamlMediaType rcd = new YamlMediaType();
@@ -175,13 +157,15 @@ class MediaTypeDetector {
                 }
             }
         }
-        return detected;
+        if (detected != null && !detected.equals(MediaType.OCTET_STREAM)) return detected;
+        return MediaTypeProviders.SINGLETON.detect(uri.toString(), byteSource, detected);
     }
 
-    // This is not @Deprecated and used e.g. by UrlResource
-    public MediaType detect(String contentType, String contentEncoding, URI uri) {
+    MediaType detect(
+            @Nullable String contentType, @Nullable String contentEncoding, @Nullable URI uri) {
         // Some of the things we're about to call do Path.of(URI uri) which doesn't like
         // our "fake" relative file: URIs (e.g. "file:relative.txt") so we "fix" them:
+        // TODO Since the introduction of URIs.ContextKeys.BASE, this can be removed?!
         uri = URIs.rel2abs(uri);
 
         MediaType mediaType = null;

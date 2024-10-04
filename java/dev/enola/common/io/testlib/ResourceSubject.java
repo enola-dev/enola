@@ -64,7 +64,7 @@ public final class ResourceSubject extends Subject {
     private String canonicalize(@Nullable ReadableResource resource) throws IOException {
         if (resource == null) return "";
         if (resource.byteSource().isEmpty()) return "";
-        var canonicalized = new MemoryResource(resource.mediaType(), resource.uri());
+        var canonicalized = new MemoryResource(resource.uri(), resource.mediaType());
         canonicalizer.canonicalize(resource, canonicalized, true);
         return canonicalized.charSource().read();
     }

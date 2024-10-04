@@ -36,7 +36,7 @@ public class TestResource extends MemoryResource implements CloseableResource {
     private final long id;
 
     private TestResource(MediaType mediaType, URI uri, long id) {
-        super(mediaType, uri);
+        super(uri, mediaType);
         this.id = id;
     }
 

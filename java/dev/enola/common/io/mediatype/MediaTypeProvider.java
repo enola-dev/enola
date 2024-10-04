@@ -19,72 +19,74 @@ package dev.enola.common.io.mediatype;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.io.iri.URIs;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 public interface MediaTypeProvider extends ResourceMediaTypeDetector {
+
+    // TODO Remove extends ResourceMediaTypeDetector - these are separate concepts.
 
     // TODO Make MediaTypeProvider more consistent (use Multimap for both; instead of [historical]
     // difference)
 
     // TODO An implementation based on enola.dev/mediaType Type YAML/binary!
 
-    /** Maps "canoncial" (primary) Media Types to a set of its "also known as alternatives". */
+    /** Maps "canonical" (primary) Media Types to a set of its "also known as alternatives". */
     default Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
         return Collections.emptyMap();
     }
 
-    /** Maps URI path extensions (without dot) to its "canonical" Media Types. */
+    /**
+     * Maps the URI path "extension" (WITH the dot; or not, filenames such as "README" are also
+     * permitted!) to its "canonical" Media Types. This should only be used for "informational"
+     * listing kind of output. To actually determine a MediaType, please use {@link #detect(String,
+     * ByteSource, MediaType)} instead.
+     */
     Multimap<String, MediaType> extensionsToTypes();
 
     /**
-     * {@link ResourceMediaTypeDetector#detect(AbstractResource)} implementation using {@link
-     * #extensionsToTypes()} and {@link #knownTypesWithAlternatives()}.
+     * {@link ResourceMediaTypeDetector#detect(String, ByteSource, MediaType)} default
+     * implementation using {@link #extensionsToTypes()}. This matches the "longest".
      */
-    // TODO Abandon this, again? Users which need #knownTypesWithAlternatives() should just use
-    // MediaTypes' normalize, typically via normalizedNoParamsEquals()? For users which need
-    // #extensionsToTypes()... well, that one is tricky - who's "right", the Resource mediaType,
     // or the extension of the Resource's URI?!
     @Override
-    default Optional<MediaType> detect(AbstractResource resource) {
+    default MediaType detect(String uri, ByteSource byteSource, MediaType original) {
         var e2mt = extensionsToTypes();
         var mediaTypes = e2mt.values();
-        var resourceMediaType = resource.mediaType();
 
-        if (mediaTypes.contains(resourceMediaType)) return Optional.of(resourceMediaType);
+        if (mediaTypes.contains(original)) return original;
 
         // TODO It's kinda wrong that this uses MediaTypeProviders.SINGLETON; it would be clearer if
         // it only ever used itself. But requires moving normalize() from MediaTypeProviders to...
         // where? Another ABC?! Urgh.
-        var normalized = MediaTypeProviders.SINGLETON.normalize(resourceMediaType);
-        if (!normalized.equals(resourceMediaType)) return Optional.of(normalized);
+        var normalized = MediaTypeProviders.SINGLETON.normalize(original);
+        if (!normalized.equals(original)) return normalized;
 
-        // NB: This looks inefficient, and you could be tempted do this "the other way around"
+        // NB: This looks inefficient, and you could be tempted to do this "the other way around"
         // (instead of checking EACH map entry with uri.endsWith(), the URI extension should be
         // looked up in theMap). However, this is not possible because we want to support
         // "extensions" with several dots, such as *.schema.yaml etc. which makes it difficult to
         // "extract the extension" from a path.
-        var uri = resource.uri().toString();
+        var uriWithoutParametersAndFragment = URIs.dropQueryAndFragment(uri);
         for (var extensionEntry : e2mt.asMap().entrySet()) {
             var extension = extensionEntry.getKey();
-            // System.out.println(uri + " ? " + extension);
-            if (uri.endsWith(extension)) {
+            // TODO Remove this again!
+            if (!extension.startsWith(".")) throw new IllegalStateException(extension);
+            if (uriWithoutParametersAndFragment.endsWith(extension)) {
                 var mediaTypesForExtensions = extensionEntry.getValue();
                 if (Iterables.size(mediaTypesForExtensions) > 1)
                     throw new IllegalStateException(
                             extension + " has more than 1 MediaType: " + mediaTypesForExtensions);
-                return Optional.of(mediaTypesForExtensions.iterator().next());
+                return mediaTypesForExtensions.iterator().next();
             }
         }
 
-        // TODO if (resource instanceof ReadableResource) ... snif it, like in MediaTypeDetector
-
-        return Optional.empty();
+        return original;
     }
 }

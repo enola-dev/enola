@@ -31,7 +31,7 @@ public class ThingMediaTypesTest {
 
     @Test
     public void loaded() {
-        assertThat(MediaTypeProviders.SINGLETON.extensionsToTypes()).containsKey("thing.yaml");
+        assertThat(MediaTypeProviders.SINGLETON.extensionsToTypes()).containsKey(".thing.yaml");
     }
 
     @Test

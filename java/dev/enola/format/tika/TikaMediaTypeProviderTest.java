@@ -64,6 +64,6 @@ public class TikaMediaTypeProviderTest {
     public void extensionsToTypes() {
         var mtp = new TikaMediaTypeProvider();
         assertThat(mtp.extensionsToTypes()).isNotEmpty();
-        assertThat(mtp.extensionsToTypes().keySet().iterator().next().startsWith(".")).isFalse();
+        assertThat(mtp.extensionsToTypes().keySet().iterator().next().startsWith(".")).isTrue();
     }
 }

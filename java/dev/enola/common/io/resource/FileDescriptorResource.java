@@ -54,6 +54,7 @@ public class FileDescriptorResource extends BaseResource implements Resource {
     private final FileDescriptor fileDescriptor;
 
     public FileDescriptorResource(URI uri) {
+        // TODO This doesn't seem right... why hard-code this?!
         super(uri, MediaType.PLAIN_TEXT_UTF_8.withCharset(Charset.defaultCharset()));
 
         if (!"fd".equals(uri.getScheme())) {

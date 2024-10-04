@@ -63,11 +63,11 @@ class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandl
         // we just Rosetta transform YAML to JSON and then pass that through to RDF4j:
         var mt = from.mediaType();
         if (MediaTypes.normalizedNoParamsEquals(mt, YAML_UTF_8)) {
-            var json = new MemoryResource(JSON_UTF_8, from.uri());
+            var json = new MemoryResource(from.uri(), JSON_UTF_8);
             YamlJson.YAML_TO_JSON.convertInto(from, json);
             from = json;
         } else if (MediaTypes.normalizedNoParamsEquals(mt, YAML_LD)) {
-            var json = new MemoryResource(JSON_LD, from.uri());
+            var json = new MemoryResource(from.uri(), JSON_LD);
             YamlJson.YAML_TO_JSON.convertInto(from, json);
             from = json;
         }

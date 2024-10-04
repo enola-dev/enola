@@ -18,9 +18,8 @@
 package dev.enola.common.io.mediatype;
 
 import com.google.common.collect.*;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
-
-import dev.enola.common.io.resource.AbstractResource;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -43,7 +42,7 @@ public class MediaTypeProviders implements MediaTypeProvider {
         this(providers.map(p -> p.get()).toArray(MediaTypeProvider[]::new));
     }
 
-    public MediaTypeProviders(MediaTypeProvider... providers) {
+    MediaTypeProviders(MediaTypeProvider... providers) {
         this.alternatives = createAlternatives(providers);
         this.knownTypesWithAlternatives = collectAlternatives(providers);
         this.extensionsToTypes = collectExtensions(providers);
@@ -61,19 +60,19 @@ public class MediaTypeProviders implements MediaTypeProvider {
     }
 
     @Override
-    public Optional<MediaType> detect(AbstractResource resource) {
+    public MediaType detect(String uri, ByteSource byteSource, MediaType original) {
         for (MediaTypeProvider provider : providers) {
-            Optional<MediaType> detected = provider.detect(resource);
-            if (detected.isPresent()) return detected;
+            MediaType detected = provider.detect(uri, byteSource, original);
+            if (!detected.equals(original)) return detected;
         }
-        return Optional.empty();
+        return original;
     }
 
     /**
      * Attempts to "normalize" using {@link MediaTypeProvider#knownTypesWithAlternatives()}.
      *
      * @param mediaType the one to try to replace
-     * @return a "canoncial" one, if found; else the argument
+     * @return a "canonical" one, if found; else the argument
      */
     public MediaType normalize(MediaType mediaType) {
         return alternatives
@@ -89,7 +88,6 @@ public class MediaTypeProviders implements MediaTypeProvider {
         Multimap<String, MediaType> map = MultimapBuilder.treeKeys().arrayListValues(1).build();
         for (var provider : providers) {
             var providerMultimap = provider.extensionsToTypes();
-            // collapse(providerMultimap);
             map.putAll(providerMultimap);
         }
         return ImmutableMultimap.copyOf(map);
@@ -102,9 +100,9 @@ public class MediaTypeProviders implements MediaTypeProvider {
         }
         var map = ImmutableMap.<MediaType, Set<MediaType>>builderWithExpectedSize(n);
         for (var provider : providers) {
-            // This would not work (overwrite) if different MediaTypeProviders were to return the
-            // same primary canonical Media Type, but this shouldn't be a problem in practice.
-            // TODO Improve this #later #lowPriority.
+            // If different MediaTypeProviders were to return the same primary canonical Media Type,
+            // the ImmutableMap.Builder#build() would throw an IllegalArgumentException, as
+            // duplicate keys would have been added.
             var providerMultimap = provider.knownTypesWithAlternatives();
             map.putAll(providerMultimap);
         }

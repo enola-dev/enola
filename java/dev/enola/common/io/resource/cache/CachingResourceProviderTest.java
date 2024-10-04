@@ -69,7 +69,7 @@ public class CachingResourceProviderTest {
 
     @Test
     public void classpath() throws IOException {
-        var uri = "http://some.where/test";
+        var uri = "http://some.where/testX"; // /test uses MediaTypesTest's application/test!
         var mt = MediaType.PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.US_ASCII);
         var rp =
                 new ClasspathCacheResourceProvider(

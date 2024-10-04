@@ -22,6 +22,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.rdf.io.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.io.ThingMediaTypes;
 
@@ -38,6 +39,9 @@ public class RdfResourceIntoProtoThingResourceConverter implements CatchingResou
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
+        if (!(new ProtobufMediaTypes().knownTypesWithAlternatives().containsKey(into.mediaType())))
+            return false;
+        // TODO Why not just into.mediaType() here?!
         var intoMediaType = thingMediaTypes.detect(into);
         if (intoMediaType.isPresent()) {
             var optThingsList = ritc.convert(from);

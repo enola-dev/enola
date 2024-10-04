@@ -17,9 +17,11 @@
  */
 package dev.enola.common.io.mediatype;
 
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.Resource;
 
 import java.util.Optional;
@@ -33,16 +35,21 @@ import java.util.Optional;
  */
 public interface ResourceMediaTypeDetector {
 
+    @Deprecated
+    // TODO Remove this old signature!
+    default Optional<MediaType> detect(AbstractResource resource) {
+        var byteSource =
+                resource instanceof ReadableResource readableResource
+                        ? readableResource.byteSource()
+                        : ByteSource.empty();
+        return Optional.of(detect(resource.uri().toString(), byteSource, resource.mediaType()));
+    }
+
     /**
-     * Detect the {@link MediaType} of a {@link AbstractResource}. This is (currently) based on
-     * refining an existing {@link AbstractResource#mediaType()} and (if required) e.g., a file name
-     * extension from its {@link AbstractResource#uri()}. (It could also "sniff" the content to
-     * detect "magic numbers" of certain binary file formats in headers, but implementations in this
-     * project currently do not, yet.) Implementations internally may use {@link
+     * Detect the {@link MediaType}. This may look e.g. at the filename extension of the URI. It
+     * could also "sniff" the content to detect "magic numbers" of certain binary file formats in
+     * headers from byteSource; such implementations internally may use {@link
      * ResourceCharsetDetector} (which may "sniff" e.g. BOM headers).
      */
-    // TODO Consider detect(URI uri, ByteSource byteSource) signature, instead?
-    Optional<MediaType> detect(AbstractResource resource);
-    // TODO Replace Optional<MediaType> with just MediaType
-    // and return .orElseGet(() -> resource.mediaType()) ?
+    MediaType detect(String uri, ByteSource byteSource, MediaType original);
 }
