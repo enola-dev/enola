@@ -180,10 +180,6 @@ class MediaTypeDetector {
 
     // This is not @Deprecated and used e.g. by UrlResource
     public MediaType detect(String contentType, String contentEncoding, URI uri) {
-        // Some of the things we're about to call do Path.of(URI uri) which doesn't like
-        // our "fake" relative file: URIs (e.g. "file:relative.txt") so we "fix" them:
-        uri = URIs.rel2abs(uri);
-
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
