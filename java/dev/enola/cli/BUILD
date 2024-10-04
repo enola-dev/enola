@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_java//java:defs.bzl", "java_binary", "java_test")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
@@ -68,6 +68,7 @@ junit_tests(
     size = "medium",
     srcs = glob(
         ["*Test.java"],
+        exclude = ["EnolaLoggingTest.java"],
     ),
     jvm_flags = ["--enable-preview"],
     srcs_utils = [
@@ -92,5 +93,33 @@ junit_tests(
         "@maven//:info_picocli_picocli",
         "@maven//:io_github_classgraph_classgraph",
         "@maven//:org_slf4j_slf4j_jdk14",
+    ],
+)
+
+java_test(
+    name = "EnolaLoggingTest",
+    srcs = [
+        "CommandLineSubject.java",
+        "EnolaLoggingTest.java",
+        "SystemOutErrCapture.java",
+    ],
+    runtime_deps = [
+        "//java/dev/enola/common/canonicalize",
+        "//java/dev/enola/common/function",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/markdown/exec:markdown",
+        "//java/dev/enola/core",
+        "//java/dev/enola/infer/datalog",
+        "//java/dev/enola/web",
+        "@maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@maven//:org_slf4j_slf4j_jdk14",
+    ],
+    deps = [
+        ":enola",
+        "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/thing:thing_java",
+        "@maven//:com_google_truth_truth",
+        "@maven//:info_picocli_picocli",
+        "@maven//:junit_junit",
     ],
 )

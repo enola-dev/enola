@@ -21,14 +21,20 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.cli.CommandLineSubject.assertThat;
 import static dev.enola.cli.EnolaCLI.cli;
+import static dev.enola.common.context.testlib.SingletonRule.onlyReset;
+
+import dev.enola.common.context.testlib.SingletonRule;
 
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.logging.Logger;
 
 public class EnolaLoggingTest {
+
+    public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
 
     // NB: As per JavaDoc of SystemOutErrCapture, this doesn't work that well with JUL,
     // because it retains the System.err in a static which we cannot (easily) clear.
@@ -52,7 +58,7 @@ public class EnolaLoggingTest {
     }
 
     @Test
-    public void testLoggingVerbosity() throws Exception {
+    public void testLoggingVerbosity0() throws Exception {
         assertThat(cli("test-logging")).hasExitCode(0);
         assertThat(capture.getSystemOut()).isEmpty();
         assertThat(capture.getSystemErr()).isEmpty();
@@ -60,20 +66,29 @@ public class EnolaLoggingTest {
 
         var rootLogger = Logger.getLogger("");
         assertThat(rootLogger.getHandlers()).hasLength(1);
+    }
 
+    @Test
+    public void testLoggingVerbosity1() throws Exception {
         assertThat(cli("-v", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
         assertThat(capture.getSystemErr()).doesNotContain("WARN");
         capture.clear();
+    }
 
+    @Test
+    public void testLoggingVerbosity2() throws Exception {
         assertThat(cli("-vv", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
         assertThat(capture.getSystemErr()).contains("SLF WARN");
         assertThat(capture.getSystemErr()).contains("JUL WARNING");
         assertThat(capture.getSystemErr()).doesNotContain("INFO");
+    }
 
+    @Test
+    public void testLoggingVerbosity3() throws Exception {
         assertThat(cli("-vvv", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
@@ -84,7 +99,10 @@ public class EnolaLoggingTest {
         assertThat(capture.getSystemErr()).contains("JUL CONFIG");
         assertThat(capture.getSystemErr()).doesNotContain("DEBUG");
         assertThat(capture.getSystemErr()).doesNotContain("FINE");
+    }
 
+    @Test
+    public void testLoggingVerbosity4() throws Exception {
         assertThat(cli("-vvvv", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
@@ -98,7 +116,10 @@ public class EnolaLoggingTest {
         assertThat(capture.getSystemErr()).doesNotContain("SLF FINE");
         assertThat(capture.getSystemErr()).doesNotContain("TRACE");
         assertThat(capture.getSystemErr()).doesNotContain("FINER");
+    }
 
+    @Test
+    public void testLoggingVerbosity5() throws Exception {
         assertThat(cli("-vvvvv", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
@@ -112,7 +133,10 @@ public class EnolaLoggingTest {
         assertThat(capture.getSystemErr()).contains("JUL FINER");
         assertThat(capture.getSystemErr()).doesNotContain("SLF TRACE");
         assertThat(capture.getSystemErr()).doesNotContain("JUL FINEST");
+    }
 
+    @Test
+    public void testLoggingVerbosity6() throws Exception {
         assertThat(cli("-vvvvvv", "test-logging")).hasExitCode(0);
         assertThat(capture.getSystemErr()).contains("SLF ERROR");
         assertThat(capture.getSystemErr()).contains("JUL SEVERE");
