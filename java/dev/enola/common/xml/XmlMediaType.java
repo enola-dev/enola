@@ -32,7 +32,7 @@ public class XmlMediaType implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("xml", MediaType.XML_UTF_8);
+        return ImmutableMultimap.of(".xml", MediaType.XML_UTF_8);
     }
 
     @Override

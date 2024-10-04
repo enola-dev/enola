@@ -37,7 +37,7 @@ public class MediaTypeProvidersTest {
     public void testMediaType() {
         var mtp = new MediaTypeProviders(new StandardMediaTypes(), new MediaTypesTest());
         assertThat(mtp.normalize(MediaTypesTest.TEST_ALTERNATIVE)).isEqualTo(MediaTypesTest.TEST);
-        assertThat(mtp.extensionsToTypes()).containsEntry("test", MediaTypesTest.TEST);
+        assertThat(mtp.extensionsToTypes()).containsEntry(".test", MediaTypesTest.TEST);
         assertThat(mtp.knownTypesWithAlternatives())
                 .containsEntry(MediaTypesTest.TEST, newHashSet(MediaTypesTest.TEST_ALTERNATIVE));
     }

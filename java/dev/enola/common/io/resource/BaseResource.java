@@ -34,6 +34,10 @@ public abstract class BaseResource implements AbstractResource {
     protected final URI uri;
     protected final MediaType mediaType;
 
+    protected BaseResource(URI uri) {
+        this(uri, ByteSource.empty());
+    }
+
     protected BaseResource(URI uri, ByteSource byteSource) {
         this(uri, mtd.detect(uri, byteSource));
     }
@@ -43,10 +47,7 @@ public abstract class BaseResource implements AbstractResource {
         this.mediaType = mtd.overwrite(uri, requireNonNull(mediaType, "mediaType"));
     }
 
-    protected BaseResource(URI uri) {
-        this.uri = requireNonNull(uri, "uri");
-        this.mediaType = mtd.detect(uri, ByteSource.empty());
-    }
+    // No need for: protected BaseResource(URI uri, MediaType mediaType, ByteSource byteSource) {
 
     @Override
     public final URI uri() {

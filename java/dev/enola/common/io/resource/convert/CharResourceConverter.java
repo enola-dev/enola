@@ -36,6 +36,8 @@ public class CharResourceConverter implements CatchingResourceConverter {
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws IOException {
+        // TODO Test if this couldn't just be written as: (and delete private helpers)
+        // if (!from.mediaType().charset().equals(into.mediaType().charset()) {
         if (hasCharset(from) && hasCharset(into) && !charset(from).equals(charset(into))) {
             from.charSource().copyTo(into.charSink());
             return true;

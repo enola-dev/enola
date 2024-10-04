@@ -19,11 +19,10 @@ package dev.enola.format.tika;
 
 import com.google.auto.service.AutoService;
 import com.google.common.collect.*;
+import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypeProvider;
-import dev.enola.common.io.resource.AbstractResource;
-import dev.enola.common.io.resource.ReadableResource;
 
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.metadata.Metadata;
@@ -35,13 +34,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 @AutoService(MediaTypeProvider.class)
 public class TikaMediaTypeProvider implements MediaTypeProvider {
+
+    private static final Set<String> EXCLUDED =
+            ImmutableSet.of(
+                    // GV conflicts with our GraphvizMediaType (which has UTF_8; Tika's does not)
+                    ".gv");
 
     private static final Logger LOG = LoggerFactory.getLogger(TikaMediaTypeProvider.class);
     private static final DefaultDetector tika = new DefaultDetector();
@@ -67,8 +69,10 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
                 var tikaMimeType = tikaMimaTypes.getRegisteredMimeType(mediaTypeName);
                 if (tikaMimeType == null) continue;
                 for (var additionalExtension : tikaMimeType.getExtensions()) {
-                    if (additionalExtension.startsWith("."))
-                        additionalExtension = additionalExtension.substring(1);
+                    if (EXCLUDED.contains(additionalExtension)) continue;
+                    // TODO This is probably not actually required? Even wrong??
+                    if (!additionalExtension.startsWith("."))
+                        additionalExtension = "." + additionalExtension;
                     extensionsToTypesBuilder.put(additionalExtension, enolaMediatype);
                 }
             } catch (MimeTypeException e) {
@@ -90,24 +94,18 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
     }
 
     @Override
-    public Optional<MediaType> detect(AbstractResource abstractResource) {
+    public MediaType detect(String uri, ByteSource byteSource, MediaType original) {
+        for (var excluded : EXCLUDED) if (uri.endsWith(excluded)) return original;
+
         var metadata = new Metadata();
-        metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, abstractResource.uri().toString());
-        metadata.set(Metadata.CONTENT_TYPE, abstractResource.mediaType().toString());
+        metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, uri);
+        metadata.set(Metadata.CONTENT_TYPE, original.toString());
 
-        try {
-            if (abstractResource instanceof ReadableResource readableResource) {
-                try (var is = readableResource.byteSource().openBufferedStream()) {
-                    return Optional.of(convert(tika.detect(is, metadata)));
-                }
-
-            } else {
-                return Optional.of(convert(tika.detect(InputStream.nullInputStream(), metadata)));
-            }
-
+        try (var is = byteSource.openBufferedStream()) {
+            return convert(tika.detect(is, metadata));
         } catch (IOException e) {
-            LOG.debug("IOException for {},", abstractResource.uri(), e);
-            return Optional.empty();
+            LOG.debug("IOException for {},", uri, e);
+            return original;
         }
     }
 

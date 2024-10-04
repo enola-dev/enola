@@ -102,6 +102,6 @@ public class MediaTypesTest implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("test", TEST);
+        return ImmutableMultimap.of(".test", TEST);
     }
 }

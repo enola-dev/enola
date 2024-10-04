@@ -30,6 +30,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.YamlMediaType;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -130,5 +132,13 @@ public class ClasspathResourceTest {
         var r = new ClasspathResource("test.json");
         var rp = new ClasspathResource.Provider();
         assertThat(rp.getResource(r.uri()).charSource().read()).isEqualTo("{}\n");
+    }
+
+    @Test
+    public void uriWithParameterMediaType() throws IOException {
+        // JSON always works (because it's "standard"), it's YAML (which is "custom") which did not
+        var uri = URI.create("classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld");
+        var r = new ClasspathResource(uri);
+        assertThat(r.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
     }
 }

@@ -46,6 +46,8 @@ import java.nio.charset.Charset;
  */
 public class UrlResource extends BaseResource implements ReadableResource {
 
+    // TODO java.net.http <https://openjdk.org/groups/net/httpclient/intro.html> alternative!
+
     public enum Scheme {
         jar,
         http

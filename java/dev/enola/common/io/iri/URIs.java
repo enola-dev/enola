@@ -382,6 +382,10 @@ public final class URIs {
         }
     }
 
+    public static String dropQueryAndFragment(String uri) {
+        return dropQueryAndFragment(URI.create(uri)).toString();
+    }
+
     public static URI getBase(URI uri) throws IOException {
         try {
             var path = uri.getPath();

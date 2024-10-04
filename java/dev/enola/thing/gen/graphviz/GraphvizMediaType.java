@@ -41,6 +41,8 @@ public class GraphvizMediaType implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("gv", GV);
+        return ImmutableMultimap.of(".gv", GV);
     }
+
+    // TODO Implement detect() to support alternative https://graphviz.org/docs/attrs/charset/ ...
 }

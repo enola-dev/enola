@@ -74,15 +74,15 @@ public class ThingMediaTypes implements MediaTypeProvider {
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
         return ImmutableMultimap.of(
-                "thing.txtpb",
+                ".thing.txtpb",
                 THING_TEXTPROTO_UTF_8,
-                "thing.binpb",
+                ".thing.binpb",
                 THING_BINARYPROTO_UTF_8,
-                "thing.json",
+                ".thing.json",
                 THING_JSON_UTF_8,
-                "thing.yaml",
+                ".thing.yaml",
                 THING_YAML_UTF_8,
-                "thing.html",
+                ".thing.html",
                 THING_HTML_UTF_8);
     }
 }

@@ -64,38 +64,40 @@ public final class ResourceSubject extends Subject {
     private String canonicalize(@Nullable ReadableResource resource) throws IOException {
         if (resource == null) return "";
         if (resource.byteSource().isEmpty()) return "";
-        var canonicalized = new MemoryResource(resource.mediaType(), resource.uri());
+        var canonicalized = new MemoryResource(resource.uri(), resource.mediaType());
         canonicalizer.canonicalize(resource, canonicalized, true);
         return canonicalized.charSource().read();
     }
 
     // TODO drop *Chars* - after making it work for any Resource - even just binary
-    public void hasCharsEqualTo(ReadableResource expected) throws IOException {
+    public void hasCharsEqualTo(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
         check("charSource").that(actualChars).isEqualTo(expectedChars);
     }
 
     // TODO Improve confusing output for multiline diff
-    public void hasCharsEqualToOrDiff(ReadableResource expected) throws IOException {
+    public void hasCharsEqualToOrDiff(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
         DiffingStringSubject.assertThat(actualChars).isEqualTo(expectedChars);
     }
 
     // TODO drop *Chars* - after making it work for any Resource - even just binary
-    public void containsCharsOf(ReadableResource expected) throws IOException {
+    public void containsCharsOf(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
-        if (expectedChars.isBlank()) throw new IllegalArgumentException(expected + " is blank");
+        if (expectedChars.isBlank())
+            throw new IllegalArgumentException("BLANK " + (expected != null ? expected : ""));
         check("charSource").that(actualChars).contains(expectedChars);
     }
 
     // TODO Make sure canonicalize always either adds or does not add EOL, and get rid of this!
-    public void containsCharsOfIgnoreEOL(ReadableResource expected) throws IOException {
+    public void containsCharsOfIgnoreEOL(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
-        if (expectedChars.isBlank()) throw new IllegalArgumentException(expected + " is blank");
+        if (expectedChars.isBlank())
+            throw new IllegalArgumentException("BLANK " + (expected != null ? expected : ""));
         check("charSource").that(trimLineEndWhitespace(actualChars)).contains(expectedChars);
     }
 
@@ -104,7 +106,7 @@ public final class ResourceSubject extends Subject {
      */
     @Deprecated
     // TODO Test if this everything works as intended and remove this if replacement is OK?
-    public void hasJSONEqualTo(ReadableResource expected) throws IOException {
+    public void hasJSONEqualTo(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
         check("charSourceAsJSON")

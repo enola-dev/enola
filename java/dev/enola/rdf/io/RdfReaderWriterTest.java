@@ -21,8 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.rdf.io.ModelSubject.assertThat;
+import static dev.enola.rdf.io.RdfMediaTypeYamlLd.YAML_LD;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.mediatype.MediaTypes;
+import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.*;
 
 import org.eclipse.rdf4j.model.Model;
@@ -55,7 +58,7 @@ public class RdfReaderWriterTest {
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
     public void writeTurtle() throws ConversionException, IOException {
         Resource actual =
-                new MemoryResource(RdfMediaTypes.TURTLE, PICASSO_TURTLE_WRITTEN_RESOURCE.uri());
+                new MemoryResource(PICASSO_TURTLE_WRITTEN_RESOURCE.uri(), RdfMediaTypes.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
         var expected = PICASSO_TURTLE_WRITTEN_RESOURCE;
@@ -93,13 +96,18 @@ public class RdfReaderWriterTest {
 
     @Test
     public void readYamlWithContext() throws ConversionException {
+        var mediaType = PICASSO_YAML_RESOURCE.mediaType();
+        assertThat(mediaType).isEqualTo(YamlMediaType.YAML_UTF_8);
         var model = new RdfReaderConverter(rp).convert(PICASSO_YAML_RESOURCE).get();
-
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
     public void readYamlLD() throws ConversionException {
+        var mediaType = PICASSO_YAMLLD_RESOURCE.mediaType();
+        assertThat(mediaType).isEqualTo(RdfMediaTypeYamlLd.YAML_LD);
+        assertThat(MediaTypes.normalizedNoParamsEquals(mediaType, YAML_LD)).isTrue();
+
         var model = new RdfReaderConverter(rp).convert(PICASSO_YAMLLD_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }

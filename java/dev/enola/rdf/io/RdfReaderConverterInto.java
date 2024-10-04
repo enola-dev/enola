@@ -59,22 +59,26 @@ class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandl
 
     @Override
     public boolean convertInto(ReadableResource from, RDFHandler into) throws ConversionException {
+        var mt = from.mediaType();
+        final var originalFrom = from;
         // RDF4j doesn't dig YAML, yet; so until it supports https://json-ld.github.io/yaml-ld/
         // we just Rosetta transform YAML to JSON and then pass that through to RDF4j:
-        var mt = from.mediaType();
         if (MediaTypes.normalizedNoParamsEquals(mt, YAML_UTF_8)) {
-            var json = new MemoryResource(JSON_UTF_8, from.uri());
+            var json = new MemoryResource(from.uri(), JSON_UTF_8);
             YamlJson.YAML_TO_JSON.convertInto(from, json);
             from = json;
         } else if (MediaTypes.normalizedNoParamsEquals(mt, YAML_LD)) {
-            var json = new MemoryResource(JSON_LD, from.uri());
+            var json = new MemoryResource(from.uri(), JSON_LD);
             YamlJson.YAML_TO_JSON.convertInto(from, json);
             from = json;
         }
 
         var parserFormat = Rio.getParserFormatForMIMEType(from.mediaType().toString());
         if (!parserFormat.isPresent()) {
-            parserFormat = Rio.getParserFormatForFileName(from.uri().toString());
+            // Drop query, in order for Enola's "special" URL formats to work properly; such as:
+            // "classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld"
+            var uriWithoutQueryAndFragment = URIs.dropQueryAndFragment(from.uri()).toString();
+            parserFormat = Rio.getParserFormatForFileName(uriWithoutQueryAndFragment);
         }
         if (!parserFormat.isPresent())
             if (MediaTypes.normalizedNoParamsEquals(from.mediaType(), MediaType.JSON_UTF_8)) {
@@ -118,8 +122,16 @@ class RdfReaderConverterInto implements ConverterInto<ReadableResource, RDFHandl
             } catch (IOException e) {
                 throw new ConversionException("Failing reading from : " + from, e);
             } catch (RDFParseException e) {
+                var content = "";
+                if (!from.equals(originalFrom)) {
+                    try {
+                        content = from.charSource().read();
+                    } catch (IOException ex) {
+                        // Ignore.
+                    }
+                }
                 throw new ConversionException(
-                        "RDFParseException reading from resource",
+                        "RDFParseException reading from resource " + content,
                         from.uri(),
                         e.getLineNumber(),
                         e.getColumnNumber(),

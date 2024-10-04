@@ -19,7 +19,6 @@ package dev.enola.common.io.resource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Multimap;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
@@ -61,16 +60,23 @@ class MediaTypeDetector {
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
     private static final MediaType DEFAULT = com.google.common.net.MediaType.OCTET_STREAM;
 
+    // TODO Merge IGNORE & TRY_FIXING
     // Ignores certain known to be wrong (bad, invalid) content types
     private static final Set<MediaType> IGNORE =
             ImmutableSet.of(
                     // java.net.URLConnection returns this when there is no content-type header
                     MediaType.parse("content/unknown"));
-
     private static final Set<MediaType> TRY_FIXING =
             ImmutableSet.of(
                     // raw.githubusercontent.com returns "text/plain" e.g. for *.yaml
                     MediaType.parse("text/plain"));
+
+    private static boolean isSpecial(MediaType mediaType) {
+        var mediaTypeWithoutParameters = mediaType.withoutParameters();
+        return TRY_FIXING.contains(mediaTypeWithoutParameters)
+                || IGNORE.contains(mediaTypeWithoutParameters)
+                || DEFAULT.equals(mediaTypeWithoutParameters);
+    }
 
     private static final Set<String> fileSystemProviderSchemes =
             FileSystemProvider.installedProviders().stream()
@@ -80,24 +86,6 @@ class MediaTypeDetector {
 
     private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
 
-    // TODO Remove this, we should (only) use MediaTypeProvider.detect()!
-    private final Multimap<String, MediaType> extensionMap =
-            MediaTypeProviders.SINGLETON.extensionsToTypes();
-
-    private final FromURI fromExtensionMap =
-            uri -> {
-                var ext = com.google.common.io.Files.getFileExtension(URIs.getFilename(uri));
-                var mediaTypes = extensionMap.get(ext);
-                if (mediaTypes.isEmpty()) return Optional.empty();
-                var iterator = mediaTypes.iterator();
-                var mediaType = iterator.next();
-                // TODO Rethink this... this hack is bad (and breaks RosettaTest)
-                // We actually really shouldn't need this at all!
-                // if (iterator.hasNext())
-                //    throw new IllegalStateException(
-                //            ext + " has more than 1 MediaType: " + mediaTypes);
-                return Optional.of(mediaType);
-            };
     private final FromURI fileNameMap =
             uri -> {
                 var contentTypeFromFileName =
@@ -109,7 +97,6 @@ class MediaTypeDetector {
             };
     private final FromURI probeFileContentType =
             uri -> {
-                // This doesn't support
                 if (uri.getScheme() != null
                         && ("file".equalsIgnoreCase(uri.getScheme())
                                 || fileSystemProviderSchemes.contains(
@@ -128,13 +115,14 @@ class MediaTypeDetector {
             };
     // This is not extensible (e.g. with java.util.ServiceLoader) - because MediaTypes already is
     // TODO fileNameMap & probeFileContentType to JdkMediaTypeProvider implements MediaTypeProvider?
-    private final List<FromURI> providers =
-            ImmutableList.of(fileNameMap, probeFileContentType, fromExtensionMap);
+    // (Or, when doing this, implements ResourceMediaTypeDetector instead MediaTypeProvider?)
+    private final List<FromURI> providers = ImmutableList.of(fileNameMap, probeFileContentType);
 
     /**
-     * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
+     * This is called by Resource* implementation constructors, typically via {@link BaseResource},
+     * if there is (only) an URI and a ByteSource - but no original/client requested MediaType.
      */
-    public MediaType detect(URI uri, ByteSource byteSource) {
+    MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
         detected = detectCharset(uri, byteSource, detected);
@@ -142,25 +130,26 @@ class MediaTypeDetector {
     }
 
     /**
-     * This is called by Resource* implementation constructors, typically via {@link BaseResource}.
+     * This is called by Resource* implementation constructors, typically via {@link BaseResource},
+     * if there is (only) an URI and an original/client requested MediaType already. In this case,
+     * there is no point in also considering a ByteSource.
      */
-    public MediaType overwrite(URI uri, final MediaType originalMediaType) {
+    MediaType overwrite(URI uri, final MediaType originalMediaType) {
         var mediaType = originalMediaType;
 
         var uriCharset = URIs.getMediaTypeAndCharset(uri);
         var uriMediaType = uriCharset.mediaType();
-
         if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
 
         var cs = uriCharset.charset();
         if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
-
-        if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
-            mediaType = mediaType.withCharset(originalMediaType.charset().get());
-        } else {
-            mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
+        else {
+            if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
+                mediaType = mediaType.withCharset(originalMediaType.charset().get());
+            } else {
+                mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
+            }
         }
-
         return mediaType;
     }
 
@@ -177,12 +166,16 @@ class MediaTypeDetector {
                 }
             }
         }
-        return detected;
+        if (!isSpecial(detected)) return detected;
+        else return MediaTypeProviders.SINGLETON.detect(uri.toString(), byteSource, detected);
     }
 
-    // This is not @Deprecated and used e.g. by UrlResource
-    public MediaType detect(
-            @Nullable String contentType, @Nullable String contentEncoding, URI uri) {
+    // This is currently still used by both UrlResource & OkHttpResource (and MediaTypeDetectorTest)
+    // but this is conceptually the same as the overwrite(URI uri, MediaType originalMediaType)
+    // TODO Switch UrlResource & OkHttpResource to use that instead
+    // TODO Switch MediaTypeDetectorTest to use that instead
+    // TODO Make private (or inline and remove)
+    MediaType detect(@Nullable String contentType, @Nullable String contentEncoding, URI uri) {
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);

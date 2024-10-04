@@ -48,6 +48,8 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     // TODO Better cache failed URLs instead of keep retrying! (If it is? Test...)
 
+    // TODO java.net.http <https://openjdk.org/groups/net/httpclient/intro.html> alternative!
+
     // TODO https://github.com/mizosoft/methanol as alternative?
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
@@ -59,7 +61,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
 
     // This must be increased if there are test failures on slow CI servers :(
-    private static final Duration t = Duration.ofMillis(1500);
+    private static final Duration t = Duration.ofMillis(7500);
 
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
