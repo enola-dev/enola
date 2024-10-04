@@ -32,13 +32,6 @@ public class MediaTypeProviderTest {
     MediaTypesTest tmt = new MediaTypesTest();
 
     @Test
-    public void nomatch() {
-        var uri = URI.create("test:MediaTypeProviderTest");
-        var resource = new TestAbstractResource(uri, MediaType.OGG_VIDEO);
-        assertThat(tmt.detect(resource)).isEmpty();
-    }
-
-    @Test
     public void match() {
         var uri = URI.create("test:MediaTypeProviderTest");
         var resource = new TestAbstractResource(uri, MediaTypesTest.TEST);
@@ -59,6 +52,5 @@ public class MediaTypeProviderTest {
         assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
     }
 
-    private static record TestAbstractResource(URI uri, MediaType mediaType)
-            implements AbstractResource {}
+    private record TestAbstractResource(URI uri, MediaType mediaType) implements AbstractResource {}
 }

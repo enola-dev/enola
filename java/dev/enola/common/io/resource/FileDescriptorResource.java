@@ -54,6 +54,7 @@ public class FileDescriptorResource extends BaseResource implements Resource {
     private final FileDescriptor fileDescriptor;
 
     public FileDescriptorResource(URI uri) {
+        // Default to Text in Platform's (Terminal) default charset
         super(uri, MediaType.PLAIN_TEXT_UTF_8.withCharset(Charset.defaultCharset()));
 
         if (!"fd".equals(uri.getScheme())) {

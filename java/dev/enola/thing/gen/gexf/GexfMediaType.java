@@ -40,6 +40,6 @@ public class GexfMediaType implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("gexf", GEXF);
+        return ImmutableMultimap.of(".gexf", GEXF);
     }
 }

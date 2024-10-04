@@ -27,7 +27,6 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CharResourceConverter;
-import dev.enola.common.io.resource.convert.IdempotentCopyingResourceNonConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
 import dev.enola.common.io.resource.convert.ResourceConverterChain;
 import dev.enola.common.protobuf.DescriptorProvider;
@@ -105,8 +104,8 @@ public class Rosetta implements ResourceConverter {
                                 new GraphvizResourceConverter(loader, new GraphvizGenerator(tmp)),
                                 new GexfResourceConverter(loader, new GexfGenerator(tmp)),
                                 new XmlResourceConverter(rp),
-                                new CharResourceConverter(),
-                                new IdempotentCopyingResourceNonConverter()));
+                                new CharResourceConverter()));
+        // NOT new IdempotentCopyingResourceNonConverter()
     }
 
     @Override

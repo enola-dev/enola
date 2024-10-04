@@ -32,7 +32,7 @@ public class MemoryResource extends BaseResource implements Resource {
 
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
-    public MemoryResource(MediaType mediaType, URI uri) {
+    public MemoryResource(URI uri, MediaType mediaType) {
         super(uri, mediaType);
     }
 

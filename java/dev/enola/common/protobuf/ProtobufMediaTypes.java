@@ -103,16 +103,16 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     public Multimap<String, MediaType> extensionsToTypes() {
         // https://protobuf.dev/programming-guides/techniques/#suffixes
         return ImmutableMultimap.<String, MediaType>builder()
-                .put("proto", ProtobufMediaTypes.PROTO_UTF_8)
+                .put(".proto", ProtobufMediaTypes.PROTO_UTF_8)
                 .put(
+                        ".proto.binpb",
                         // TODO This parameter isn't actually used for anything... yet.
-                        "proto.binpb",
                         ProtobufMediaTypes.PROTOBUF_BINARY.withParameter(
                                 PARAMETER_PROTO_MESSAGE, "google.protobuf.FileDescriptorSet"))
-                .put("binpb", ProtobufMediaTypes.PROTOBUF_BINARY)
-                .put("pb", ProtobufMediaTypes.PROTOBUF_BINARY)
-                .put("textproto", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
-                .put("txtpb", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
+                .put(".binpb", ProtobufMediaTypes.PROTOBUF_BINARY)
+                .put(".pb", ProtobufMediaTypes.PROTOBUF_BINARY)
+                .put(".textproto", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
+                .put(".txtpb", ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8)
                 .build();
     }
 }

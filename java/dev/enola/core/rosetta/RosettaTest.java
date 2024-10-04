@@ -34,6 +34,7 @@ import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.common.yamljson.JSON;
+import dev.enola.common.yamljson.YAML;
 import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
@@ -112,7 +113,7 @@ public class RosettaTest {
         var in = new ClasspathResource("picasso.ttl");
         var out = new MemoryResource(ThingMediaTypes.THING_YAML_UTF_8);
         rosetta.convertInto(in, out);
-
+        assertThat(YAML.read(out.charSource().read())).isNotEmpty();
         assertThat(out.byteSource().size()).isGreaterThan(800);
     }
 

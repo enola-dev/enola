@@ -65,7 +65,7 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("md", MARKDOWN_UTF_8);
+        return ImmutableMultimap.of(".md", MARKDOWN_UTF_8);
     }
 
     @Override

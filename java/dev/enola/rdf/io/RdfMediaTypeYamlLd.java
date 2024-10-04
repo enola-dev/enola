@@ -36,6 +36,6 @@ public class RdfMediaTypeYamlLd implements MediaTypeProvider {
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
         // *.yamlld as per https://json-ld.github.io/yaml-ld/spec/#application-ld-yaml
-        return ImmutableMultimap.of("yamlld", YAML_LD);
+        return ImmutableMultimap.of(".yamlld", YAML_LD);
     }
 }

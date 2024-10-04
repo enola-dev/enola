@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 
 /** This "bridges" RDF4j's MIME Type database to Enola's MediaType registry. */
-// TODO Rename from RdfMediaType to RdfMediaTypes for consistency with other MediaTypeProvider impls
 @AutoService(MediaTypeProvider.class)
 public class RdfMediaTypes implements MediaTypeProvider {
 
@@ -62,7 +61,7 @@ public class RdfMediaTypes implements MediaTypeProvider {
                     MediaType.parse(fileFormat.getDefaultMIMEType())
                             .withCharset(fileFormat.getCharset());
             for (var extension : fileFormat.getFileExtensions()) {
-                extensionsToTypesBuilder.put(extension, primaryMediaType);
+                extensionsToTypesBuilder.put("." + extension, primaryMediaType);
             }
 
             var altMediaTypeNames = fileFormat.getMIMETypes();

@@ -38,6 +38,8 @@ public class RdfResourceIntoProtoThingResourceConverter implements CatchingResou
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
+        if (!(thingMediaTypes.knownTypesWithAlternatives().containsKey(into.mediaType())))
+            return false;
         var intoMediaType = thingMediaTypes.detect(into);
         if (intoMediaType.isPresent()) {
             var optThingsList = ritc.convert(from);

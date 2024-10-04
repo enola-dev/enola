@@ -87,7 +87,7 @@ public final class ThingsSubject extends Subject {
             for (var namespace : namespaces) actualModel.setNamespace(namespace);
 
             var actualResource =
-                    new MemoryResource(expectedResource.mediaType(), expectedResource.uri());
+                    new MemoryResource(expectedResource.uri(), expectedResource.mediaType());
             rdfWriterConverter.convertIntoOrThrow(actualModel, actualResource);
             ResourceSubject.assertThat(actualResource).hasCharsEqualTo(expectedResource);
         }

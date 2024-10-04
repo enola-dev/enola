@@ -60,7 +60,7 @@ public class YamlMediaType extends ResourceCharsetDetectorSPI implements MediaTy
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of("yaml", YAML_UTF_8, "yml", YAML_UTF_8);
+        return ImmutableMultimap.of(".yaml", YAML_UTF_8, ".yml", YAML_UTF_8);
     }
 
     @Override

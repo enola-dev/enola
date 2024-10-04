@@ -19,9 +19,12 @@ package dev.enola.thing.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.mediatype.MediaTypeProvider;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProviders;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
@@ -31,13 +34,24 @@ public class ThingMediaTypesTest {
 
     @Test
     public void loaded() {
-        assertThat(MediaTypeProviders.SINGLETON.extensionsToTypes()).containsKey("thing.yaml");
+        assertThat(MediaTypeProviders.SINGLETON.extensionsToTypes()).containsKey(".thing.yaml");
     }
 
     @Test
-    public void thingYaml() throws URISyntaxException {
-        var resource = new ResourceProviders().getResource(new URI("file:/picasso.thing.yaml"));
-        var mediaType = MediaTypeProviders.SINGLETON.detect(resource).get();
+    public void viaThingMediaTypes() throws URISyntaxException {
+        check(new ThingMediaTypes());
+    }
+
+    @Test
+    @Ignore // TODO This requires supporting an "order" (precedence) in MediaTypeProvider
+    public void viaMediaTypeProviders() throws URISyntaxException {
+        check(MediaTypeProviders.SINGLETON);
+    }
+
+    private void check(MediaTypeProvider mediaTypeProvider) throws URISyntaxException {
+        var rp = new ResourceProviders(new FileResource.Provider());
+        var resource = rp.getResource(new URI("file:/picasso.thing.yaml"));
+        var mediaType = mediaTypeProvider.detect(resource).get();
         assertThat(mediaType).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
     }
 }

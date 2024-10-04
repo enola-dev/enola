@@ -36,7 +36,8 @@ import java.net.URL;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
-    // TODO Change all @Nullable Resource to Optional<Resource>...
+    // TODO Change all @Nullable Resource to Optional<Resource>... or, better, throw exception for
+    // unknown schema
 
     // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
 
