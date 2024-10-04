@@ -36,6 +36,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class MediaTypeDetectorTest {
@@ -43,13 +44,14 @@ public class MediaTypeDetectorTest {
 
     @Test
     public void testDetect() {
-        assertThat(md.detect(null, null, null)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("content/unknown", null, null)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("application/test", null, null))
+        var NADA = URI.create("nada:it");
+        assertThat(md.detect(null, null, NADA)).isEqualTo(OCTET_STREAM);
+        assertThat(md.detect("content/unknown", null, NADA)).isEqualTo(OCTET_STREAM);
+        assertThat(md.detect("application/test", null, NADA))
                 .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("application/test-alternative", null, null))
+        assertThat(md.detect("application/test-alternative", null, NADA))
                 .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("text/plain", "ascii", null))
+        assertThat(md.detect("text/plain", "ascii", NADA))
                 .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.US_ASCII));
 
         assertThat(md.detect("text/plain", null, create("http://server/hello.yaml")))
@@ -98,5 +100,5 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect(uri, ByteSource.empty())).isEqualTo(YAML_UTF_8);
     }
 
-    // TODO Add mising test coverage for the BOM detection from YamlMediaType
+    // TODO Add missing test coverage for the BOM detection from YamlMediaType
 }
