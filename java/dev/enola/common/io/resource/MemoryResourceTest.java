@@ -20,14 +20,23 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import static org.junit.Assert.assertThrows;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class MemoryResourceTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+
     private static final byte[] BYTES = new byte[] {1, 2, 3};
     private static final String TEXT = "hello, world";
 

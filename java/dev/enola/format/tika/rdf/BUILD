@@ -46,6 +46,7 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":rdf",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",

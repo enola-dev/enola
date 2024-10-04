@@ -20,18 +20,23 @@ package dev.enola.thing.message;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.extensions.proto.ProtoTruth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.function.MoreStreams.forEach;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.model.schemaorg.Datatypes;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfReaderConverter;
 import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.proto.Thing;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -42,6 +47,8 @@ import java.time.LocalDate;
  * ProtoThingIntoJavaThingBuilderConverter}.
  */
 public class ThingConvertersTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     private final DatatypeRepository datatypeRepo =
             new DatatypeRepositoryBuilder().store(Datatypes.DATE).build();

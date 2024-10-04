@@ -19,15 +19,22 @@ package dev.enola.thing.gen.graphviz;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
 
 public class GraphvizTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new GraphvizMediaType()));
 
     @Test
     public void mediaType() {

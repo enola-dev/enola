@@ -159,7 +159,8 @@ public class ProtoIO {
                     if (!isEmpty(reader)) {
                         JsonFormat.parser().usingTypeRegistry(typeRegistry).merge(reader, builder);
                     }
-                } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)) {
+                } else if (normalizedNoParamsEquals(mediaType, YAML_UTF_8)
+                        || mediaType.subtype().endsWith("+yaml")) {
                     var yaml = resource.charSource().read();
                     var json = YamlJson.yamlToJson(yaml);
                     if (!json.isEmpty()) {

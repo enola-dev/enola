@@ -31,6 +31,7 @@ import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.*;
 
 public class EnolaTestTLCRules {
+    // TODO Move this to another module (and clean up the BUILD)
 
     private static final NamespaceConverter namespaceConverter =
             new NamespaceConverterWithRepository(NamespaceRepositoryEnolaDefaults.INSTANCE);

@@ -35,7 +35,8 @@ public class MediaTypeInfoCommand implements CheckedRunnable {
     public void run() throws Exception {
         var pw = spec.commandLine().getOut();
 
-        for (var entry : MediaTypeProviders.SINGLETON.knownTypesWithAlternatives().entrySet()) {
+        for (var entry :
+                MediaTypeProviders.SINGLETON.get().knownTypesWithAlternatives().entrySet()) {
             var alt = entry.getValue();
             pw.println("." + entry.getKey() + (!alt.isEmpty() ? " == " + alt : ""));
         }

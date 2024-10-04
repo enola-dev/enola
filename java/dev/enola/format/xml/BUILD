@@ -54,7 +54,10 @@ junit_tests(
     deps = [
         ":xml",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/xml",
+        "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/testlib",
         "//test",

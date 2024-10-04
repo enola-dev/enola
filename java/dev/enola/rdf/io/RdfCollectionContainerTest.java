@@ -19,8 +19,12 @@ package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.truth.extensions.proto.ProtoTruth;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
 import dev.enola.datatype.DatatypeRepository;
@@ -31,6 +35,7 @@ import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
@@ -50,6 +55,8 @@ import java.util.List;
 public class RdfCollectionContainerTest {
 
     // TODO When ThingsRdfConverter is implemented, also test that here, with RdfWriterConverter
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     String rdf = "@prefix : <http://example.org/>. :thing :property ( :thing1 :thing2 ).";
 

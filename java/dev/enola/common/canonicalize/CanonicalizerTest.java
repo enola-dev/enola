@@ -19,23 +19,36 @@ package dev.enola.common.canonicalize;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.StringResource;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class CanonicalizerTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+
+    @Rule
+    public TestTLCRule rule =
+            TestTLCRule.of(
+                    MediaTypeProviders.class, new MediaTypeProviders(new StandardMediaTypes()));
 
     private final Canonicalizer canonicalizer = new Canonicalizer(new ClasspathResource.Provider());
 

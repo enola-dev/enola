@@ -19,14 +19,22 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class EmptyResourceTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
+
     @Test
     public void testEmptyResource() throws IOException {
         var e = new EmptyResource(YamlMediaType.YAML_UTF_8);

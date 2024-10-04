@@ -20,6 +20,7 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 
@@ -30,8 +31,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -40,6 +45,11 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 
 public class ClasspathResourceTest {
+
+    public @Rule SingletonRule r =
+            $(
+                    MediaTypeProviders.SINGLETON.set(
+                            new MediaTypeProviders(new YamlMediaType(), new ProtobufMediaTypes())));
 
     private ReadableResource check(
             String path, MediaType expectedMediaType, Optional<Charset> expectedCharset)

@@ -21,18 +21,23 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.StringResource;
+import dev.enola.common.xml.XmlMediaType;
 import dev.enola.common.yamljson.JSON;
 import dev.enola.common.yamljson.YAML;
 import dev.enola.rdf.io.RdfLoader;
@@ -58,6 +63,16 @@ public class RosettaTest {
     // are done e.g. in YamlJsonTest and in ProtoIOTest.
 
     private static final ResourceProvider rp = new ClasspathResource.Provider();
+
+    @Rule
+    public SingletonRule r =
+            $(
+                    MediaTypeProviders.set(
+                            new RdfMediaTypes(),
+                            new GraphvizMediaType(),
+                            new GexfMediaType(),
+                            new YamlMediaType(),
+                            new XmlMediaType()));
 
     @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
 

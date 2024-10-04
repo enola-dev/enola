@@ -19,16 +19,22 @@ package dev.enola.common.io.resource.stream;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.resource.FileDescriptorResource.STDOUT_URI;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
 
 public class WritableResourcesProviderTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     private final ResourceProvider rp = new ResourceProviders();
     private final WritableResourcesProvider wrp = new WritableResourcesProvider(rp);

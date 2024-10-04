@@ -15,29 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.gen.gexf;
+package dev.enola.common.io.mediatype;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.mediatype.MediaTypeProvider;
+import java.util.Map;
+import java.util.Set;
 
-import java.nio.charset.StandardCharsets;
+public class TestMediaType implements MediaTypeProvider {
 
-/**
- * MediaType of the <code>application/gexf+xml</code> <a href="https://gexf.net">Graph Exchange XML
- * Format</a> (GEXF) <code>*.gexf
- * </code> in UTF-8 Character Encoding, based on §2.2 (encoding) and §8 (content-type) of <a
- * href="https://gexf.net/primer.html">GEXF Primer</a>.
- */
-public class GexfMediaType implements MediaTypeProvider {
+    public static final MediaType TEST = MediaType.create("application", "test");
 
-    public static final MediaType GEXF =
-            MediaType.create("application", "gexf+xml").withCharset(StandardCharsets.UTF_8);
+    @VisibleForTesting
+    static final MediaType TEST_ALTERNATIVE = MediaType.create("application", "test-alternative");
+
+    @Override
+    public Map<MediaType, Set<MediaType>> knownTypesWithAlternatives() {
+        return ImmutableMap.of(TEST, Sets.newHashSet(TEST_ALTERNATIVE));
+    }
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of(".gexf", GEXF);
+        return ImmutableMultimap.of(".test", TEST);
     }
 }

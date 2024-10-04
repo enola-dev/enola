@@ -41,6 +41,7 @@ junit_tests(
     srcs = glob(["**/*Test.java"]),
     deps = [
         ":canonicalize",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/testlib",
         "//test",

@@ -52,7 +52,8 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
     /**
      * {@link ResourceMediaTypeDetector#detect(String, ByteSource, MediaType)} default
-     * implementation using {@link #extensionsToTypes()}. This matches the "longest".
+     * implementation using {@link #extensionsToTypes()}. This matches the "longest" filename
+     * extension (if required).
      */
     // or the extension of the Resource's URI?!
     @Override
@@ -62,10 +63,10 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
         if (mediaTypes.contains(original)) return original;
 
-        // TODO It's kinda wrong that this uses MediaTypeProviders.SINGLETON; it would be clearer if
+        // TODO It's kinda wrong that this uses IMediaTypeProviders.CTX; it would be clearer if
         // it only ever used itself. But requires moving normalize() from MediaTypeProviders to...
         // where? Another ABC?! Urgh.
-        var normalized = MediaTypeProviders.SINGLETON.normalize(original);
+        var normalized = MediaTypeProviders.SINGLETON.get().normalize(original);
         if (!normalized.equals(original)) return normalized;
 
         // NB: This looks inefficient, and you could be tempted to do this "the other way around"
@@ -76,7 +77,7 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
         var uriWithoutParametersAndFragment = URIs.dropQueryAndFragment(uri);
         for (var extensionEntry : e2mt.asMap().entrySet()) {
             var extension = extensionEntry.getKey();
-            // TODO Remove this again!
+            // TODO Remove this again! That would allow supporting files with a fixed name, no ext.
             if (!extension.startsWith(".")) throw new IllegalStateException(extension);
             if (uriWithoutParametersAndFragment.endsWith(extension)) {
                 var mediaTypesForExtensions = extensionEntry.getValue();

@@ -172,6 +172,7 @@ junit_tests(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/common/xml",
         "//java/dev/enola/common/yamljson",  # TODO Remove this once dependencies are cleaned up
         "//java/dev/enola/core",
         "//java/dev/enola/core:core_java_grpc",

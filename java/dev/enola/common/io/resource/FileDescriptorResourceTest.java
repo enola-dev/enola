@@ -19,11 +19,16 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.nio.charset.StandardCharsets.UTF_16BE;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,6 +36,9 @@ import java.net.URI;
 import java.nio.charset.Charset;
 
 public class FileDescriptorResourceTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+
     @Test
     public void testSTDOUTwithoutCharset() throws IOException {
         var FD1 = new FileDescriptorResource(URI.create("fd:1"));

@@ -19,9 +19,14 @@ package dev.enola.thing.namespace;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.iri.namespace.ImmutableNamespace;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.rdf.io.RdfLoader;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 import org.junit.Rule;
@@ -29,6 +34,8 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 
 public class ThingNamespaceRepositoryTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
 

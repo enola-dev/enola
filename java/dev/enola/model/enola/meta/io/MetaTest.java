@@ -19,15 +19,22 @@ package dev.enola.model.enola.meta.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.yamljson.testlib.TestYaml;
 import dev.enola.model.enola.meta.Schema;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class MetaTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
 
     private Schema read(String name) throws IOException {
         return new SchemaIO().readYAML(new ClasspathResource(name + ".yaml"));

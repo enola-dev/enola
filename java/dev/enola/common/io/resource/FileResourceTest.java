@@ -20,6 +20,8 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import static org.junit.Assert.assertThrows;
 
 import com.google.common.io.Resources;
@@ -27,9 +29,12 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -42,6 +47,8 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 public class FileResourceTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     // ResourceProvidersTest has more, notably coverage for relative file URIs
 

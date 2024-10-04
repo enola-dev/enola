@@ -19,38 +19,50 @@ package dev.enola.common.io.mediatype;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.AbstractResource;
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.resource.BaseResource;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.URI;
 
 public class MediaTypeProviderTest {
 
-    MediaTypesTest tmt = new MediaTypesTest();
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new TestMediaType()));
 
     @Test
     public void match() {
         var uri = URI.create("test:MediaTypeProviderTest");
         var resource = new TestAbstractResource(uri, MediaTypesTest.TEST);
-        assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
+        assertThat(resource.mediaType()).isEqualTo(MediaTypesTest.TEST);
     }
 
     @Test
     public void alternative() {
         var uri = URI.create("test:MediaTypeProviderTest");
         var resource = new TestAbstractResource(uri, MediaTypesTest.TEST_ALTERNATIVE);
+        var tmt = MediaTypeProviders.SINGLETON.get();
         assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
+        // TODO assertThat(resource.mediaType()).isEqualTo(MediaTypesTest.TEST);
     }
 
     @Test
     public void extension() {
         var uri = URI.create("test:MediaTypeProviderTest.test");
         var resource = new TestAbstractResource(uri, MediaType.ANY_TYPE);
+        var tmt = MediaTypeProviders.SINGLETON.get();
         assertThat(tmt.detect(resource)).hasValue(MediaTypesTest.TEST);
+        // TODO assertThat(resource.mediaType()).isEqualTo(MediaTypesTest.TEST);
     }
 
-    private record TestAbstractResource(URI uri, MediaType mediaType) implements AbstractResource {}
+    private static class TestAbstractResource extends BaseResource {
+        protected TestAbstractResource(URI uri, MediaType mediaType) {
+            super(uri, mediaType);
+        }
+    }
 }

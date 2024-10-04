@@ -19,7 +19,6 @@ package dev.enola.thing.io;
 
 import static java.util.Collections.emptySet;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -33,7 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
-@AutoService(MediaTypeProvider.class)
 public class ThingMediaTypes implements MediaTypeProvider {
 
     public static final MediaType THING_TEXTPROTO_UTF_8 =

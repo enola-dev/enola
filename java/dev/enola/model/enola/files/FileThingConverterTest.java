@@ -19,15 +19,20 @@ package dev.enola.model.enola.files;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 import com.google.common.primitives.UnsignedLong;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.*;
 import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.repo.ThingsBuilder;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -39,6 +44,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 
 public class FileThingConverterTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set());
 
     private final ResourceProvider rp = new ClasspathResource.Provider();
 

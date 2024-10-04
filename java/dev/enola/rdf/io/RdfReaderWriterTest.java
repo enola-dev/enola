@@ -19,21 +19,30 @@ package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.rdf.io.ModelSubject.assertThat;
 import static dev.enola.rdf.io.RdfMediaTypeYamlLd.YAML_LD;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.*;
 
 import org.eclipse.rdf4j.model.Model;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class RdfReaderWriterTest {
+
+    public static final @ClassRule SingletonRule r =
+            $(
+                    MediaTypeProviders.set(
+                            new RdfMediaTypes(), new RdfMediaTypeYamlLd(), new YamlMediaType()));
 
     private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
 

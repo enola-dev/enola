@@ -20,6 +20,7 @@ package dev.enola.common.io.resource;
 import static com.google.common.net.MediaType.*;
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
@@ -28,9 +29,14 @@ import static java.net.URI.create;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.MediaTypesTest;
+import dev.enola.common.io.mediatype.TestMediaType;
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.protobuf.ProtobufMediaTypes;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
@@ -39,6 +45,12 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class MediaTypeDetectorTest {
+
+    public @Rule SingletonRule r =
+            $(
+                    MediaTypeProviders.set(
+                            new YamlMediaType(), new ProtobufMediaTypes(), new TestMediaType()));
+
     MediaTypeDetector md = new MediaTypeDetector();
 
     @Test

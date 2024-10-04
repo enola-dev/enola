@@ -17,10 +17,14 @@
  */
 package dev.enola.rdf.io;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.common.truth.Truth;
 import com.google.common.truth.extensions.proto.ProtoTruth;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.protobuf.ProtoIO;
@@ -28,6 +32,7 @@ import dev.enola.protobuf.test.TestComplex;
 import dev.enola.protobuf.test.TestSimple;
 import dev.enola.rdf.proto.ProtoThingRdfConverter;
 import dev.enola.rdf.proto.RdfProtoThingsConverter;
+import dev.enola.thing.io.ThingMediaTypes;
 import dev.enola.thing.message.MessageToThingConverter;
 import dev.enola.thing.message.MessageWithIRI;
 import dev.enola.thing.proto.Thing;
@@ -35,11 +40,15 @@ import dev.enola.thing.proto.Thing;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Values;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class RdfThingConverterTest {
+
+    public @Rule SingletonRule r =
+            $(MediaTypeProviders.set(new RdfMediaTypes(), new ThingMediaTypes()));
 
     private final ReadableResource turtle = new ClasspathResource("picasso.ttl");
 

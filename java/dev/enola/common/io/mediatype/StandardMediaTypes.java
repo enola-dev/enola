@@ -17,12 +17,10 @@
  */
 package dev.enola.common.io.mediatype;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
-@AutoService(MediaTypeProvider.class)
 public class StandardMediaTypes implements MediaTypeProvider {
 
     @Override

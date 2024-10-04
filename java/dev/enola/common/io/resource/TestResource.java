@@ -36,11 +36,12 @@ public class TestResource extends MemoryResource implements CloseableResource {
     private final long id;
 
     private TestResource(MediaType mediaType, URI uri, long id) {
-        super(uri, mediaType);
+        super(uri, mediaType, true);
         this.id = id;
     }
 
     public static CloseableResource create(MediaType mediaType) {
+        // TODO Unify this with MemoryResource constructor
         var id = counter.get();
         var uri = URI.create(SCHEME + ":" + id);
         var r = new TestResource(mediaType, uri, id);

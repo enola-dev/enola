@@ -19,16 +19,20 @@ package dev.enola.thing.gen.visjs;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.context.testlib.TestTLCRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.rdf.io.RdfLoader;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 
@@ -39,6 +43,8 @@ import java.io.IOException;
 import java.net.URI;
 
 public class VisJsTimelineGeneratorTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Rule public TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
 

@@ -19,10 +19,14 @@ package dev.enola.core.grpc;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import com.google.protobuf.Descriptors.Descriptor;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
 
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
@@ -33,17 +37,21 @@ import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetThingRequest;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 
 public class EnolaGrpcServerTest {
+
+    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     private final ResourceProvider rp = new ResourceProviders(new ClasspathResource.Provider());
     private final EnolaServiceProvider esp = new EnolaServiceProvider(rp);

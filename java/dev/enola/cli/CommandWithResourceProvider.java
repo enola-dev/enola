@@ -95,6 +95,9 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
     }
 
     protected void setup(Context ctx) {
+        // NB: Singleton are set in class Configuration, invoked by class Lifecycle.
+        // TODO Move this entirely into class Configuration...
+
         ctx.push(ResourceProvider.class, rp);
         ctx.push(URIs.ContextKeys.BASE, Paths.get("").toUri());
 

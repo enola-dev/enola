@@ -39,6 +39,7 @@ junit_tests(
     srcs = glob(["**/*Test.java"]),
     deps = [
         ":xml",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//test",
     ],

@@ -19,7 +19,6 @@ package dev.enola.infer.datalog;
 
 import static com.google.common.net.MediaType.create;
 
-import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
@@ -37,7 +36,6 @@ import java.nio.charset.StandardCharsets;
  * <p>Nota bene, quote, Wikipedia: <i>"There is no unified standard for the specification of Datalog
  * syntax."</i>
  */
-@AutoService(MediaTypeProvider.class)
 public class DatalogMediaTypes implements MediaTypeProvider {
 
     public static final MediaType GENERIC_DATALOG_UTF_8 =
@@ -54,11 +52,11 @@ public class DatalogMediaTypes implements MediaTypeProvider {
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
         return ImmutableMultimap.of(
-                "souffle.dl",
+                ".souffle.dl",
                 SOUFFLE_DATALOG_UTF_8,
-                "dl",
+                ".dl",
                 GENERIC_DATALOG_UTF_8,
-                "dtlg",
+                ".dtlg",
                 GENERIC_DATALOG_UTF_8);
     }
 

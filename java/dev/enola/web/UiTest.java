@@ -19,12 +19,16 @@ package dev.enola.web;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import static java.net.URI.create;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
@@ -36,9 +40,12 @@ import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.web.netty.NettyHttpServer;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 public class UiTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     @Test
     public void testUi() throws Exception {

@@ -19,18 +19,25 @@ package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.*;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingsBuilder;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class RdfResourceIntoThingConverterTest {
+
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
     ResourceProvider resourceProvider =

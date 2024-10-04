@@ -15,26 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.rdf.io;
+package dev.enola.format.tika;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.common.context.testlib.SingletonRule.$;
-
-import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.resource.ClasspathResource;
-
-import org.junit.Rule;
+import org.apache.tika.detect.DefaultDetector;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.metadata.TikaCoreProperties;
+import org.apache.tika.mime.MediaType;
 import org.junit.Test;
 
-public class RdfMediaTypeTest {
+import java.io.IOException;
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+/** Test (and learn using) Tika itself - not its integration with Enola. */
+public class TikaTest {
 
     @Test
-    public void mediaTypes() {
-        assertThat(new ClasspathResource("picasso.ttl").mediaType())
-                .isEqualTo(RdfMediaTypes.TURTLE);
+    public void detectLongerExtension() throws IOException {
+        var metadata = new Metadata();
+        var tika = new DefaultDetector();
+        metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, "file:///test.warc.gz");
+        assertThat(tika.detect(null, metadata)).isEqualTo(new MediaType("application", "warc+gz"));
     }
 }

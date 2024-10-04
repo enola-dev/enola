@@ -159,11 +159,6 @@ public class URIsTest {
 
         // Classpath Resources
         assertName(Resources.getResource("empty").toURI(), "empty");
-        assertName(
-                Resources.getResource(
-                                "META-INF/services/dev.enola.common.io.mediatype.MediaTypeProvider")
-                        .toURI(),
-                "dev.enola.common.io.mediatype.MediaTypeProvider");
 
         // No schema
         assertName(URI.create("test.txt"), "test.txt");

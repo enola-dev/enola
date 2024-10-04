@@ -44,7 +44,10 @@ public class DetectCommand extends CommandWithResourceProvider {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var resource = rp.getResource(URIs.parse(iri));
             var mediaType =
-                    MediaTypeProviders.SINGLETON.detect(resource).orElse(resource.mediaType());
+                    MediaTypeProviders.SINGLETON
+                            .get()
+                            .detect(resource)
+                            .orElse(resource.mediaType());
 
             var pw = spec.commandLine().getOut();
             pw.println(mediaType);

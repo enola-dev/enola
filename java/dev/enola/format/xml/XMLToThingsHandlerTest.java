@@ -19,20 +19,32 @@ package dev.enola.format.xml;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
 import dev.enola.common.context.TLC;
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.xml.XmlMediaType;
+import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.repo.ThingsBuilder;
 import dev.enola.thing.testlib.ThingsSubject;
 
 import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class XMLToThingsHandlerTest {
+
+    public @Rule SingletonRule r =
+            $(
+                    MediaTypeProviders.set(
+                            new MediaTypeProviders(new RdfMediaTypes(), new XmlMediaType())));
 
     ThingsBuilder thingsBuilder = new ThingsBuilder();
     XmlThingConverter loader =
