@@ -201,7 +201,7 @@ public class RosettaTest {
             var gexf = new MemoryResource(GexfMediaType.GEXF);
             rosetta.convertInto(in, gexf);
             assertThat(gexf)
-                    .hasCharsEqualTo(rp.get("classpath:/graph.expected.gexf.xml?charset=UTF-8"));
+                    .hasCharsEqualTo(rp.get("classpath:/graph.expected.gexf?charset=UTF-8"));
 
             var gv = new MemoryResource(GraphvizMediaType.GV);
             rosetta.convertInto(in, gv);

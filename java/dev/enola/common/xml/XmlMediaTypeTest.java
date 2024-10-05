@@ -40,7 +40,7 @@ public class XmlMediaTypeTest {
     @Test
     public void xmlMediaType() {
         var rp = new ClasspathResource.Provider();
-        var resource = rp.get("classpath:/graph.expected.gexf.xml?charset=UTF-8");
+        var resource = rp.get("classpath:/greeting1-attribute.xml");
         var mediaType = resource.mediaType();
         assertThat(normalizedNoParamsEquals(resource.mediaType(), MediaType.XML_UTF_8)).isTrue();
     }
