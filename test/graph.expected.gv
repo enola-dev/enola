@@ -9,8 +9,9 @@ digraph {
 
   "https://example.org/TwoLinks" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">ex:TwoLinks</TD></TR>
-    <TR><TD ALIGN="left">ex:links</TD><TD>Link[iri=https://example.org/greeting3]<BR/>Link[iri=https://example.org/world]<BR/></TD></TR>
   </TABLE>>]
+  "https://example.org/TwoLinks" -> "https://example.org/greeting3" [label="ex:links"]
+  "https://example.org/TwoLinks" -> "https://example.org/world" [label="ex:links"]
   "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [label="enola:origin"]
 
   "https://example.org/greeting3" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">

@@ -42,7 +42,6 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
 
-    // TODO Lists of Links
     // TODO Thing IRI as direct URL Link
     // TODO Thing IRI as alternative Link to Enola localhost UI
     // TODO Custom attributes, e.g. Node & Edge color, style etc.
@@ -100,17 +99,18 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
         out.append(">]\n");
 
         for (var p : thing.predicateIRIs()) {
-            if (!thing.isLink(p)) continue;
-            out.append("  \"");
-            out.append(thing.iri());
-            out.append("\" -> \"");
-            var linkIRI = thing.getString(p);
-            var linkLabel = label(metadataProvider.get(p));
-            out.append(linkIRI);
-            out.append("\" [label=\"");
-            out.append(html(linkLabel));
-            out.append("\"]\n");
-            if (!thingIRIs.contains(linkIRI)) linkIRIs.add(linkIRI);
+            for (var link : thing.getLinks(p)) {
+                out.append("  \"");
+                out.append(thing.iri());
+                out.append("\" -> \"");
+                var linkIRI = link.toString();
+                var linkLabel = label(metadataProvider.get(p));
+                out.append(link.toString());
+                out.append("\" [label=\"");
+                out.append(html(linkLabel));
+                out.append("\"]\n");
+                if (!thingIRIs.contains(linkIRI)) linkIRIs.add(linkIRI);
+            }
         }
         out.append('\n');
     }
@@ -127,7 +127,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             out.append("</TD></TR>\n");
         }
         for (var p : thing.predicateIRIs()) {
-            if (thing.isLink(p)) continue;
+            if (!thing.getLinks(p).isEmpty()) continue;
             var pLabel = label(metadataProvider.get(p));
             out.append("    <TR><TD ALIGN=\"left\">");
             out.append(html(pLabel));
