@@ -55,9 +55,14 @@ public interface PredicatesObjects {
     // TODO These is*() methods could be replaced with a Visitor - but how-to for nested Structs?!
     // Look into e.g. how EMF does Visitors...
 
+    @Deprecated // TODO Replace usages with #getLinks(), and removed (leaving an inline doc note)
     default boolean isLink(String predicateIRI) {
-        var value = get(predicateIRI);
-        return value instanceof URI || value instanceof Link;
+        var object = get(predicateIRI);
+        return isLinkObject(object);
+    }
+
+    default boolean isLinkObject(@Nullable Object object) {
+        return object instanceof URI || object instanceof Link;
     }
 
     default boolean isIterable(String predicateIRI) {
@@ -169,6 +174,29 @@ public interface PredicatesObjects {
 
     default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicateIRI, Class<T> klass) {
         return getThings(predicateIRI.iri(), klass);
+    }
+
+    /**
+     * Links, for predicate.
+     *
+     * <p>This transparently correctly handles if said predicate is not a link, a single link, or an
+     * iterable of which some elements are links.
+     *
+     * @return iterable objects which are links. Never null, but may well be empty. The type of the
+     *     contained elements can vary, and be either {@link String}, {@link URI}, {@link Link};
+     *     it's possible to use {@link Object#toString()} to get the IRI of the link, because {@link
+     *     Link#toString()} is implemented as expected.
+     */
+    // TODO ifStruct(), should it recursive into finding links in nested PredicatesObjects?
+    @SuppressWarnings("unchecked")
+    default Collection<Object> getLinks(String predicateIRI) {
+        if (!isIterable(predicateIRI)) {
+            return getOptional(predicateIRI, Object.class)
+                    .filter(this::isLinkObject)
+                    .map(Set::of)
+                    .orElse(Set.of());
+        } else
+            return get(predicateIRI, Collection.class).stream().filter(this::isLinkObject).toList();
     }
 
     // TODO get... other types.
