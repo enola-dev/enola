@@ -24,11 +24,17 @@
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#>.
 
+:MediaTypeModel a owl:Ontology;
+  :label "Media Types Model";
+  :description "An Enola.dev Model about Media Types. (AKA an Ontology, Vocabulary - incl. instances.)".
+
 :Format a rdfs:Class;
+  rdfs:isDefinedBy :MediaTypeModel;
   :description "Format of binary data; often of Files, but technically of any bit stream.";
   :wikipedia "File_format", "List_of_file_formats".
 
 :MediaType a rdfs:Class;
+  rdfs:isDefinedBy :MediaTypeModel;
   rdfs:subClassOf :Format;
   :label "Internet Media Type";
   :description "Internet Media Type, also known as a MIME Type or Content Type.";
@@ -42,16 +48,19 @@
 
 :datatype a rdf:Property;
   :description "RDF Datatype of a MediaType. Only some few but by far not all media types have an equivalent datatype.";
+  rdfs:isDefinedBy :MediaTypeModel;
   rdfs:range rdfs:Datatype;
   rdfs:domain :MediaType.
 
 :mediaType a rdf:Property;
+  rdfs:isDefinedBy :MediaTypeModel;
   rdfs:range xsd:token; # NOT :MediaType;
   :thingTemplate "https://enola.dev/mediaType/{IT}"; # TODO !!!
   rdfs:domain rdfs:Resource; # NOT just :File, :MediaType.
   rdfs:subPropertyOf dcterms:format, schema:encodingFormat. # BUT more strict; this is NOT a URL!
 
 :fileExtensions a rdf:Property;
+  rdfs:isDefinedBy :MediaTypeModel;
   :label "File Extension";
   :description "Typical file extensions of this MediaType. Must include trailing dot, if any - some may not!";
   :wikipedia "Filename_extension", "List_of_filename_extensions";
@@ -59,6 +68,7 @@
   rdfs:domain :MediaType.
 
 <https://enola.dev/mediaType/text/plain> a :MediaType;
+  rdfs:isDefinedBy :MediaTypeModel;
   :label "Text";
   :fileExtensions ".txt", "README";
   :datatype xsd:string.
@@ -66,6 +76,7 @@
 xsd:string :mediaType <https://enola.dev/mediaType/text/plain>.
 
 <https://enola.dev/mediaType/text/html> a :MediaType;
+  rdfs:isDefinedBy :MediaTypeModel;
   :label "HTML";
   :fileExtensions ".html", ".htm";
   :seeAlso "https://html.spec.whatwg.org/";
@@ -73,6 +84,7 @@ xsd:string :mediaType <https://enola.dev/mediaType/text/plain>.
 rdf:HTML :mediaType <https://enola.dev/mediaType/text/html>.
 
 <https://enola.dev/mediaType/text/xml> a :MediaType;
+  rdfs:isDefinedBy :MediaTypeModel;
   :label "XML";
   :fileExtensions ".xml";
   :datatype rdf:XMLLiteral.

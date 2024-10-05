@@ -57,6 +57,8 @@ nav:
       - By Parent: models/hierarchy.md
       - Graph: concepts/graph.md
       - Timeline: concepts/timeline.md
+      - Enola:
+          - MIME: models/enola.dev/mediaType/graph.gv.svg
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md

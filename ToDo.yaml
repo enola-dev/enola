@@ -23,13 +23,13 @@ items:
   - MIME Model:
       created: 2024-10-05
       items:
-        - https://enola.dev/MediaTypeModel
-        - docs/models/mime.md
-        - --load mediaTypes.ttl => graphviz
+        - Graphviz
+        - GEXF & Gephi
         - interface MediaType.java extends Thing
         - class MediaTypeProviderThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - class TikaMediaTypeThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - infer inverses
+        - docs/models/mime.md
       tags: [exec]
 
   - Gephi/SigmaJS Network Graph Format:
@@ -52,6 +52,9 @@ items:
       owner: vorburger
       done: 2024-08-10
       status: WIP
+      items:
+        - Empty Thing need also to show CURIE instead full IRI
+        - Links in Collection properties don't work
       tags: [visualization, ui, docgen, rosetta]
 
   - Hierarchy API: &hierarchyAPI
@@ -80,6 +83,15 @@ items:
       description:
         "For now, not generic XML, just all flat https://enola.dev/links, or (better) http://www.w3.org/1999/xhtml/a and
         http://www.w3.org/1999/xhtml/link#stylesheet (rel & HREF)."
+
+  - Enola CLI Fish Shell Completion:
+      description: Find, try & document some tool which can auto generate Fish completions from Bash and/or ZSH scripts.
+      links:
+        - https://github.com/remkop/picocli/pull/1925
+        - https://github.com/remkop/picocli/issues/725
+        - https://fishshell.com/docs/current/completions.html
+        - https://github.com/adaszko/complgen
+        - https://docs.enola.dev/use/help/#generate-completion
 
   - YAML (and TextProto) Things I/O: &yamlThing
       created: 2024-03-23
