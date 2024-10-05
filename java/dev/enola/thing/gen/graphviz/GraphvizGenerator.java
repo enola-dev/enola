@@ -41,19 +41,18 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // TODO Lists of Links
     // TODO Link Datatypes, with ports
-    // TODO Mouseover full Thing & predicate IRI
     // TODO Thing IRI as direct URL Link
-    // TODO wikipedia <https://en.wikipedia.org/wiki/Earth>
-    // TODO Shorten long texts, and use e.g. TITLE ?
     // TODO Thing IRI as alternative Link to Enola localhost UI
+    // TODO Thing URLs like Wikipedia <https://en.wikipedia.org/wiki/Earth>
+    // TODO Shorten long texts, and use e.g. TITLE ?
     // TODO Custom attributes, e.g. Node & Edge color, style etc.
     // TODO Nested blank nodes as Labels, instead just "..."
     // TODO Links from within nested blank nodes with ports?
     // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
     // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
-    // TODO compact vs pretty output format
+    // TODO Compact vs pretty output format
 
-    // FYI: We're intentionally *NOT* showing the Datatype of properties
+    // FYI: We're intentionally *NOT* showing the Datatype of properties (it's "too much")
 
     private final ThingMetadataProvider metadataProvider;
 

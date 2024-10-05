@@ -41,6 +41,8 @@
             label="ex:object"/>
       <edge source="https://example.org/greeting3" target="classpath:/graph.ttl" kind="https://enola.dev/origin"
             label="enola:origin"/>
+      <edge source="https://example.org/orphan" target="https://example.org/OnlyIRIThing"
+            kind="https://example.org/link" label="ex:link" />
       <edge source="https://example.org/orphan" target="classpath:/graph.ttl"
             kind="https://enola.dev/origin" label="enola:origin"/>
       <edge source="https://example.org/world" target="https://example.org/Planet"

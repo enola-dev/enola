@@ -21,6 +21,7 @@ digraph {
     <TR><TD COLSPAN="2">👋ex:orphan</TD></TR>
     <TR><TD ALIGN="left">enola:emoji</TD><TD>👋</TD></TR>
   </TABLE>>]
+  "https://example.org/orphan" -> "https://example.org/OnlyIRIThing" [label="ex:link"]
   "https://example.org/orphan" -> "classpath:/graph.ttl" [label="enola:origin"]
 
   "https://example.org/world" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
