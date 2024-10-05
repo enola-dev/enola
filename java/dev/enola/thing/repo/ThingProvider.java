@@ -28,6 +28,7 @@ import dev.enola.thing.message.ProtoThingProvider;
 import org.jspecify.annotations.Nullable;
 
 import java.io.UncheckedIOException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -67,10 +68,11 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
 
-    default <T extends Thing> T get(String iri, Class<T> thingClass)
+    @SuppressWarnings("unchecked")
+    default <T extends Thing> @Nullable T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
-        Thing thing = get(iri);
-        if (!thingClass.isInstance(thing))
+        Thing thing = get(Objects.requireNonNull(iri, "iri"));
+        if (thing != null && !thingClass.isInstance(thing))
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);
         return (T) thing;

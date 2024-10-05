@@ -23,7 +23,6 @@ items:
   - MIME Model:
       created: 2024-10-05
       items:
-        - Graphviz Links & Colors
         - interface MediaType.java extends Thing
         - class MediaTypeProviderThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - class TikaMediaTypeThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
@@ -53,11 +52,9 @@ items:
 
   - GraphViz Diagrams: &graphviz
       owner: vorburger
-      done: 2024-08-10
-      status: WIP
-      items:
-        - Empty Thing need also to show CURIE instead full IRI
-        - Links in Collection properties don't work
+      created: 2024-08-10
+      done: 2024-10-05
+      status: DONE
       tags: [visualization, ui, docgen, rosetta]
 
   - Hierarchy API: &hierarchyAPI

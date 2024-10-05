@@ -1,6 +1,14 @@
 digraph {
-  "https://example.org/Salutation" [shape=plain URL="https://example.org/Salutation" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+  "http://www.w3.org/2000/01/rdf-schema#Class" [shape=plain style=filled fillcolor=lightblue URL="http://www.w3.org/2000/01/rdf-schema#Class" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">rdfs:Class</TD></TR>
+    <TR><TD ALIGN="left">enola:color</TD><TD>lightblue</TD></TR>
+  </TABLE>>]
+  "http://www.w3.org/2000/01/rdf-schema#Class" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+
+  "https://example.org/Salutation" [shape=plain style=filled fillcolor=lightblue URL="https://example.org/Salutation" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:Salutation</TD></TR>
+    <TR><TD ALIGN="left">enola:color</TD><TD>violet</TD></TR>
+    <TR><TD ALIGN="left">enola:text-color</TD><TD>white</TD></TR>
     <TR><TD ALIGN="left">enola:emoji</TD><TD>👋</TD></TR>
   </TABLE>>]
   "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
@@ -14,7 +22,7 @@ digraph {
   "https://example.org/TwoLinks" -> "https://example.org/world" [URL="https://example.org/links" label="ex:links"]
   "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
 
-  "https://example.org/greeting3" [shape=plain URL="https://example.org/greeting3" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+  "https://example.org/greeting3" [shape=plain style=filled fillcolor=violet fontcolor=white URL="https://example.org/greeting3" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
     <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>
     <TR><TD ALIGN="left">enola:files/Node/deletedAt</TD><TD>2024-08-11T01:50:56.737...</TD></TR>
@@ -52,10 +60,6 @@ digraph {
 
   "https://example.org/OnlyIRIThing" [shape=plain URL="https://example.org/OnlyIRIThing" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">ex:OnlyIRIThing</TD></TR>
-  </TABLE>>]
-
-  "http://www.w3.org/2000/01/rdf-schema#Class" [shape=plain URL="http://www.w3.org/2000/01/rdf-schema#Class" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
-    <TR><TD COLSPAN="2">rdfs:Class</TD></TR>
   </TABLE>>]
 
   "https://example.org/Planet" [shape=plain URL="https://example.org/Planet" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">

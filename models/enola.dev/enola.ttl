@@ -23,6 +23,8 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#>.
 
+# TODO Make enola: the default prefix and remove it everywhere!
+
 # NB: Just "enola:" (<https://enola.dev/>) not e.g. "enola:ontology" (like rdf: and rdfs: and owl:)
 enola: a owl:Ontology;
   rdfs:label "Enola.dev's base/core Ontology.";
@@ -197,3 +199,18 @@ enola:content-as-text a rdf:Property;
 enola:text a rdf:Property;
   schema:description "The textual content from a (portion of) the conversion of another format; e.g., XML. Prefer using something more specific otherwise.";
   enola:doc "https://docs.enola.dev/concepts/xml/#text".
+
+enola:color a rdf:Property;
+  enola:emoji "🎨";
+  # TODO rdfs:range should be clearly defined... or documented to permit CSS? But it's also used for Graphviz...
+  enola:description "Color with which a Thing (or Property, TBD) will be shown in different UIs. This is inherited from a Thing's type.".
+
+enola:text-color a rdf:Property; # TODO Could we more automatically figure out a "suitable" text color, given a background color?
+  enola:emoji "🎨";
+  # TODO rdfs:range should be clearly defined... or documented to permit CSS? But it's also used for Graphviz...
+  enola:description "Color of text of a Thing (or Property, TBD) that be shown in different UIs. This is inherited from a Thing's type.".
+
+# https://en.wikipedia.org/wiki/Object_Modeling_in_Color
+rdfs:Class enola:color "lightblue".
+rdf:Property enola:color "yellow".
+rdfs:Datatype enola:color "olive".
