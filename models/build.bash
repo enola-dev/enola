@@ -44,4 +44,7 @@ dot -Tsvg -O docs/models/graphviz.gv
 # TODO Support GLOBs in rosetta like in docgen? (Low priority, because DocGen will gen. embedded JSON-LD anyway.)
 ./enola -v rosetta --in=models/enola.dev.ttl --out=docs/models/enola.dev.jsonld
 
+# NB: --no-file-loader only marginally helps to make the picture clearer; what we need is real sparql: query support, to filter!
+./enola rosetta --no-file-loader --in models/enola.dev/mediaTypes.ttl --out=docs/models/enola.dev/mediaType/graph.gv && dot -Tsvg -O docs/models/enola.dev/mediaType/graph.gv
+
 # TODO RDF* --load="models/**.ttl[s?]"
