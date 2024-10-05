@@ -30,7 +30,10 @@ import java.nio.file.Paths;
 
 @Command(
         name = "detect",
-        description = "Provides information about the media type detected for a given IRI")
+        description =
+                "Provides information about the media type detected for a given URL.\n"
+                    + "This works both for local files (based on extension), and remote HTTP (based"
+                    + " on headers).")
 public class DetectCommand extends CommandWithResourceProvider {
 
     @Spec CommandSpec spec;

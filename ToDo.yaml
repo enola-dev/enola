@@ -20,9 +20,89 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
-  - Update W3C Wiki with links to Enola docs:
+  - MIME Model:
+      created: 2024-10-05
+      items:
+        - https://enola.dev/MediaTypeModel
+        - docs/models/mime.md
+        - --load mediaTypes.ttl => graphviz
+        - interface MediaType.java extends Thing
+        - class MediaTypeProviderThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
+        - class TikaMediaTypeThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
+        - infer inverses
+      tags: [exec]
+
+  - Gephi/SigmaJS Network Graph Format:
+      tags: [visualization, ui, docgen, rosetta]
       links:
-        - https://www.w3.org/wiki/ConverterToRdf
+        - https://www.sigmajs.org
+        - https://docs.enola.dev/concepts/other/#visualization
+        - https://visjs.github.io/vis-network/docs/network/#importGephi
+
+  - Exec Connector!:
+      tags: [exec]
+      links:
+        - https://camel.apache.org/components/4.4.x/exec-component.html
+
+  - Time API: &timeAPI
+      done: 2024-08-11
+      status: DONE
+
+  - GraphViz Diagrams: &graphviz
+      owner: vorburger
+      done: 2024-08-10
+      status: WIP
+      tags: [visualization, ui, docgen, rosetta]
+
+  - Hierarchy API: &hierarchyAPI
+      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
+      status: WIP
+
+  - GEXF: &gexf
+      target: 2024-08-11
+      description: "https://gexf.net equivalent of Graphviz"
+      depends: [*graphviz, *hierarchyAPI, *timeAPI]
+      tags: [visualization, ui, docgen, rosetta]
+      items:
+        - GEXF 1.3 Java API? Or just write out Text?:
+            links: https://github.com/francesco-ficarola/gexf4j
+
+  - Graphs in HTML Web UI:
+      description:
+        "The goal is to have a https://www.sigmajs.org/demo/index.html like view of
+        https://docs.enola.dev/concepts/graph/."
+      links: ["https://github.com/visjs/vis-network/issues/505#issuecomment-2282725937"]
+      depends: [*gexf]
+      target: 2024-08-11
+
+  - HTML Links Loading & Graph Visualization:
+      tags: [html]
+      description:
+        "For now, not generic XML, just all flat https://enola.dev/links, or (better) http://www.w3.org/1999/xhtml/a and
+        http://www.w3.org/1999/xhtml/link#stylesheet (rel & HREF)."
+
+  - YAML (and TextProto) Things I/O: &yamlThing
+      created: 2024-03-23
+      description:
+        Read & write a Turtle-like YAML (and TextProto, see TextThings in things.proto) syntax reader & writer. This is
+        NOT the same as the JSON-LD context support, although perhaps this could be based on that - TBC. Partially done,
+        needs testing, and documentation.
+      links:
+        - https://github.com/enola-dev/enola/pull/607/files
+        - https://github.com/enola-dev/enola/pull/765/files
+
+  - Implement ToDo Model: &modelToDo
+      links: https://github.com/enola-dev/dora/tree/main/TODO
+      description: Make this very file (ToDo.yaml) `--load`-able, and visualizable as Graph, and DocGen-able as MD.
+      depends: *yamlThing
+      tags: [model]
+      items:
+        - ? Write `todo.esch.yaml` & `todo-context.jsonld` in `models/enola.dev/todo/`
+
+  - Enola API Entry Point class:
+      links:
+        - https://tika.apache.org/3.0.0-BETA/api/org/apache/tika/Tika.html
+      tags: [clean]
 
   - Last `null` NPE, for Enola: &lastNPE
       links:
@@ -30,9 +110,6 @@ items:
 
   - Don't load JS from unpkg.com, but use the local copies from the //third_party module:
       tags: [google]
-
-  - Exec Connector!:
-      tags: [exec]
 
   - Re-evaluate LinkML:
       tags: [clean]
@@ -59,10 +136,6 @@ items:
       created: 2024-08-17
       links: https://github.com/enola-dev/enola/pull/839
       tags: [java]
-
-  - Hierarchy API: &hierarchyAPI
-      description: "Cluster Things in (first) GraphViz, and (later) GEXF."
-      status: WIP
 
   - Hierarchy Tree View:
       description:
@@ -124,15 +197,6 @@ items:
       created: 2024-08-18
       depends: [*iri]
 
-  - YAML (and TextProto) Things I/O: &yamlThing
-      created: 2024-03-23
-      description:
-        Read & write a Turtle-like YAML (and TextProto, see TextThings in things.proto) syntax reader & writer. This is
-        NOT the same as the JSON-LD context support, although perhaps this could be based on that - TBC.
-      links:
-        - https://github.com/enola-dev/enola/pull/607/files
-        - https://github.com/enola-dev/enola/pull/765/files
-
   - Extract Thing from Markdown YAML frontmatter:
       created: 2024-08-18
       depends: [*yamlThing]
@@ -145,33 +209,6 @@ items:
       links:
         - https://rdflib.readthedocs.io/en/stable/_modules/rdflib/tools/rdf2dot.html
         - https://rdflib.readthedocs.io/en/stable/_modules/rdflib/tools/rdfs2dot.html
-
-  - GraphViz Diagrams: &graphviz
-      owner: vorburger
-      done: 2024-08-10
-      status: WIP
-      tags: [visualization, ui, docgen, rosetta]
-
-  - Time API: &timeAPI
-      done: 2024-08-11
-      status: DONE
-
-  - GEXF: &gexf
-      target: 2024-08-11
-      description: "https://gexf.net equivalent of Graphviz"
-      depends: [*graphviz, *hierarchyAPI, *timeAPI]
-      tags: [visualization, ui, docgen, rosetta]
-      items:
-        - GEXF 1.3 Java API? Or just write out Text?:
-            links: https://github.com/francesco-ficarola/gexf4j
-
-  - Graphs in HTML Web UI:
-      description:
-        "The goal is to have a https://www.sigmajs.org/demo/index.html like view of
-        https://docs.enola.dev/concepts/graph/."
-      links: ["https://github.com/visjs/vis-network/issues/505#issuecomment-2282725937"]
-      depends: [*gexf]
-      target: 2024-08-11
 
   - Timeline Diagrams:
       tags: [visualization, ui, docgen, rosetta]
@@ -201,12 +238,11 @@ items:
       links:
         - https://github.com/markedjs/marked
 
-  - Implement ToDo Model: &modelToDo
-      links: https://github.com/enola-dev/dora/tree/main/TODO
-      description: Make this very file (ToDo.yaml) `--load`-able, and visualizable as Graph, and DocGen-able as MD.
-      tags: [model]
-      items:
-        - ? Write `todo.esch.yaml` & `todo-context.jsonld` in `models/enola.dev/todo/`
+  - Update W3C Wiki etc. with links to Enola docs:
+      tags: [market]
+      links:
+        - https://www.w3.org/wiki/ConverterToRdf
+        - https://freedesktop.org/wiki/Specifications/shared-mime-info-spec/
 
   - Things on Blockchains: &blockchain
       links:
@@ -288,14 +324,6 @@ items:
         - https://github.com/enola-dev/enola/pull/607
       tags: [doc]
 
-  - Gephi/SigmaJS Network Graph Format:
-      depends: [*graphviz]
-      tags: [visualization, ui, docgen, rosetta]
-      links:
-        - https://www.sigmajs.org
-        - https://docs.enola.dev/concepts/other/#visualization
-        - https://visjs.github.io/vis-network/docs/network/#importGephi
-
   - LSP for YAML format, to validate and auto-complete like Turtle Editors doc:
       depends: [*yamlThing]
 
@@ -340,6 +368,7 @@ tags:
       html:
       markdown:
       java:
+      mime:
     gen:
       docgen:
         mdgen:
@@ -356,5 +385,7 @@ tags:
         ipld:
     demo:
       doc:
+  biz:
+    market:
   tech:
     clean:
