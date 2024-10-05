@@ -38,6 +38,8 @@ import java.util.Set;
 
 public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
+    private static final int MAX_TEXT_LENGTH = 23;
+
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
     // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
@@ -48,13 +50,11 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // TODO Custom attributes, e.g. Node & Edge color, style etc.
     // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
-    // TODO Compact vs pretty output format ... filter, with queries!
     // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
     // TODO Links to other Things (not external HTTP) from within nested blank nodes? With ports??
     // TODO Thing IRI link to "correct" Enola Doc (or UI) site, not just "raw" direct link
     // TODO Fix 'end="+300000-12-31T00:00:00Z"' ==> "The value '+300000-12-31T00:00:00Z' of
     //   attribute 'end' on element 'node' is not valid with respect to its type, 'time-type'."
-    // TODO Shorten long texts, and use e.g. TITLE ?
     // TODO Nested blank nodes as Labels, instead just "..."
 
     // FYI: We're intentionally *NOT* showing the Datatype of properties (it's "too much")
@@ -142,7 +142,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
                 if (iterable != null) {
                     for (var element : iterable) {
                         // TODO Convert using datatype; needs thing.get(p, n, String.class)
-                        out.append(html(element.toString()));
+                        out.append(html(brief(element.toString())));
                         out.append("<BR/>");
                     }
                 }
@@ -150,11 +150,17 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
                 out.append("..."); // TODO Dig in, or fine as is?
             } else {
                 var value = thing.getString(p);
-                if (value != null) out.append(html(value));
+                if (value != null) out.append(html(brief(value)));
             }
             out.append("</TD></TR>\n");
         }
         out.append("  </TABLE>");
+    }
+
+    private String brief(String text) {
+        var trim = text.trim();
+        if (trim.length() > MAX_TEXT_LENGTH) return trim.substring(0, MAX_TEXT_LENGTH) + "...";
+        else return trim;
     }
 
     private static final Escaper htmlEscaper = HtmlEscapers.htmlEscaper();
