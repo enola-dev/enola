@@ -43,19 +43,19 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
 
     // TODO Lists of Links
+    // TODO Thing IRI as direct URL Link
+    // TODO Thing IRI as alternative Link to Enola localhost UI
+    // TODO Custom attributes, e.g. Node & Edge color, style etc.
+    // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
+    // TODO Thing URLs like Wikipedia <https://en.wikipedia.org/wiki/Earth>
+    // TODO Compact vs pretty output format ... filter, with queries!
+    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
+    // TODO Links from within nested blank nodes? With ports??
     // TODO Fix 'end="+300000-12-31T00:00:00Z"' ==> "The value '+300000-12-31T00:00:00Z' of
     //   attribute 'end' on element 'node' is not valid with respect to its type, 'time-type'."
     // TODO Link Datatypes, with ports
-    // TODO Thing IRI as direct URL Link
-    // TODO Thing IRI as alternative Link to Enola localhost UI
-    // TODO Thing URLs like Wikipedia <https://en.wikipedia.org/wiki/Earth>
     // TODO Shorten long texts, and use e.g. TITLE ?
-    // TODO Custom attributes, e.g. Node & Edge color, style etc.
     // TODO Nested blank nodes as Labels, instead just "..."
-    // TODO Links from within nested blank nodes with ports?
-    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
-    // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
-    // TODO Compact vs pretty output format
 
     // FYI: We're intentionally *NOT* showing the Datatype of properties (it's "too much")
 
