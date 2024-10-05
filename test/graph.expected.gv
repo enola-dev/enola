@@ -7,6 +7,12 @@ digraph {
   "https://example.org/Salutation" -> "https://schema.org/TextObject" [label="rdfs:subClassOf"]
   "https://example.org/Salutation" -> "classpath:/graph.ttl" [label="enola:origin"]
 
+  "https://example.org/TwoLinks" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">ex:TwoLinks</TD></TR>
+    <TR><TD ALIGN="left">ex:links</TD><TD>Link[iri=https://example.org/greeting3]<BR/>Link[iri=https://example.org/world]<BR/></TD></TR>
+  </TABLE>>]
+  "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [label="enola:origin"]
+
   "https://example.org/greeting3" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
     <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>

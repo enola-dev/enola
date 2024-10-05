@@ -23,6 +23,8 @@
   enola:endedAt "+300000-12-31T00:00:00Z"^^enola:Timestamp;
   :population "18446744073709551615"^^enola:UnsignedLong.
 
+:TwoLinks :links :greeting3, :world.
+
 :orphan # !a - has no parent
   :link :OnlyIRIThing;
   enola:emoji "👋".
