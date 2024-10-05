@@ -27,11 +27,17 @@ public class MutableThingTest extends ThingTester {
     protected TBF getThingBuilderFactory() {
         return new TBF() {
             @Override
-            @SuppressWarnings("unchecked")
-            public <T extends Thing, B extends Thing.Builder<T>> B create(
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            public <T extends Thing, B extends Thing.Builder<?>> B create(
                     Class<B> builderClass, Class<T> thingClass) {
-                // TODO Resolve raw warning
-                return (B) new MutableThing(3);
+                if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
+                    return (B) new MutableThing(3);
+                else
+                    throw new IllegalArgumentException(
+                            "This implementation does not support "
+                                    + builderClass
+                                    + " and "
+                                    + thingClass);
             }
         };
     }

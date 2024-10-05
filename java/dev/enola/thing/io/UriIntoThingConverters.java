@@ -27,13 +27,15 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.Converter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.impl.MutableThing;
+import dev.enola.thing.java2.ProxyTBF;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
 
 // TODO Make UriIntoThingConverters actually implement UriIntoThingConverter itself (less confusing)
-public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<?>>> {
+public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<Thing>>> {
 
     // TODO Load a resource with different converters multi-threaded, in parallel...
 
@@ -41,22 +43,24 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
         ORIGIN
     }
 
-    private final ImmutableList<UriIntoThingConverter> converters;
+    private final ImmutableList<TypedUriIntoThingConverter<?, ?>> converters;
 
-    public UriIntoThingConverters(Iterable<UriIntoThingConverter> converters) {
+    public UriIntoThingConverters(Iterable<TypedUriIntoThingConverter<?, ?>> converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public UriIntoThingConverters(UriIntoThingConverter... converters) {
+    public UriIntoThingConverters(TypedUriIntoThingConverter<?, ?>... converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public Iterable<Thing.Builder<?>> convert(URI input) throws ConversionException {
-        ThingsBuilder thingsBuilder = new ThingsBuilder();
+    public Iterable<Thing.Builder<Thing>> convert(URI input) throws ConversionException {
+        var thingsBuilder =
+                new TypedThingsBuilder<Thing, Thing.Builder<Thing>>(
+                        new ProxyTBF(MutableThing.FACTORY));
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, input);
             for (var converter : converters) {
-                converter.convertInto(input, thingsBuilder);
+                converter.convertInto(input, (TypedThingsBuilder) thingsBuilder);
             }
             // This is "cool", but "very ugly and overwhelming" e.g. on graph visualizations...
             if (TLC.optional(Flags.ORIGIN).orElse(true))

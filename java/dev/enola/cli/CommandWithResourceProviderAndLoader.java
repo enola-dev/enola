@@ -21,9 +21,10 @@ import dev.enola.common.context.Context;
 import dev.enola.format.tika.TikaThingConverter;
 import dev.enola.format.xml.XmlThingConverter;
 import dev.enola.model.enola.files.FileThingConverter;
+import dev.enola.model.enola.mediatype.TikaMediaTypesThingConverter;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.UriIntoThingConverter;
+import dev.enola.thing.io.TypedUriIntoThingConverter;
 import dev.enola.thing.io.UriIntoThingConverters;
 
 import picocli.CommandLine;
@@ -53,11 +54,13 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
     boolean tikaLoader;
 
     protected Loader loader() {
-        var uriIntoThingConverters = new ArrayList<UriIntoThingConverter>(2);
+        // TODO Move this (and other) initialization out of CLI, to a dev.enola.Enola...
+        var uriIntoThingConverters = new ArrayList<TypedUriIntoThingConverter<?, ?>>(7);
         uriIntoThingConverters.add(new RdfResourceIntoThingConverter<>());
         uriIntoThingConverters.add(new XmlThingConverter(rp));
         if (fileLoader) uriIntoThingConverters.add(new FileThingConverter());
         if (tikaLoader) uriIntoThingConverters.add(new TikaThingConverter(rp));
+        uriIntoThingConverters.add(new TikaMediaTypesThingConverter());
 
         var ritc = new UriIntoThingConverters(uriIntoThingConverters);
         return new Loader(ritc);

@@ -19,6 +19,7 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java2.TBF;
 
 import org.junit.Before;
@@ -33,7 +34,7 @@ public abstract class ThingTester {
 
     protected abstract TBF getThingBuilderFactory();
 
-    private Thing.Builder<Thing> thingBuilder;
+    private Thing.Builder<IImmutableThing> thingBuilder;
 
     @Before
     public void setUp() {

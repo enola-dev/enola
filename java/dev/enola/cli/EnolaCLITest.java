@@ -333,4 +333,12 @@ public class EnolaCLITest {
         exec.err().isEmpty();
         exec.hasExitCode(0);
     }
+
+    @Test
+    public void getLoadTikaMediaTypes() {
+        var exec =
+                assertThat(cli("-vvv", "get", "--load", "enola:TikaMediaTypes", "enola:/inline"));
+        exec.err().isEmpty();
+        exec.hasExitCode(0);
+    }
 }

@@ -38,6 +38,7 @@ java_library(
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
+        "@maven//:org_apache_tika_tika_core",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],

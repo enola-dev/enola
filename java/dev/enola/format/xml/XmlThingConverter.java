@@ -24,7 +24,6 @@ import dev.enola.common.xml.XmlResourceParser;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 
 public class XmlThingConverter implements UriIntoThingConverter {
@@ -37,9 +36,7 @@ public class XmlThingConverter implements UriIntoThingConverter {
     }
 
     @Override
-    public boolean convertInto(URI from, ThingsBuilder into)
-            throws ConversionException, IOException {
-
+    public boolean convertInto(URI from, ThingsBuilder into) throws ConversionException {
         var resource = rp.getReadableResource(from);
         if (resource == null) return false;
 

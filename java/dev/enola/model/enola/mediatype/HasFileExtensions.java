@@ -15,21 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.mediatype;
 
 import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface HasLabel extends Thing {
+import java.util.Set;
 
-    default @Nullable String label() {
-        return getString(IRI.Predicate.label);
+public interface HasFileExtensions extends Thing {
+
+    @SuppressWarnings("unchecked")
+    default @Nullable Set<String> fileExtensions() {
+        return get("https://enola.dev/fileExtensions", Set.class);
     }
 
-    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default Builder<B> label(String label) {
-            set(IRI.Predicate.label.iri(), label);
+    interface Builder<B extends HasFileExtensions> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
+        default HasFileExtensions.Builder<B> addFileExtension(String fileExtension) {
+            add("https://enola.dev/fileExtensions", fileExtension);
             return this;
         }
     }

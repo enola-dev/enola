@@ -27,27 +27,31 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         implements PredicatesObjects, PredicatesObjects.Builder2<B> {
 
+    // TODO Keep the iteration order of this internal maps consistent between the implementation
+    // chosen here, and the one used in ImmutablePredicatesObjects.Builder; this makes switching TBL
+    // implementations easier, and without unexpected property order side effects on tests.
+    //
+    // Because ImmutableMap.Builder behaves like LinkedHashMap, and preserves insertion
+    // order, we have that here, instead of a simple HashMap.
+
     private final Map<String, Object> properties;
     private final Map<String, String> datatypes;
 
     public MutablePredicatesObjects() {
-        properties = new HashMap<>();
-        datatypes = new HashMap<>();
+        properties = new LinkedHashMap<>();
+        datatypes = new LinkedHashMap<>();
     }
 
     public MutablePredicatesObjects(int expectedSize) {
-        properties = new HashMap<>(expectedSize); // exact
-        datatypes = new HashMap<>(expectedSize); // upper bound
+        properties = new LinkedHashMap<>(expectedSize); // exact
+        datatypes = new LinkedHashMap<>(expectedSize); // upper bound
     }
 
     @Override

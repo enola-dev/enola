@@ -17,46 +17,29 @@
  */
 package dev.enola.thing.repo;
 
-import dev.enola.thing.KIRI;
+import com.google.common.reflect.TypeToken;
+
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
-import dev.enola.thing.impl.OnlyIRIThing;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
+/** Untyped variant of {@link TypedThingsBuilder}. */
+public class ThingsBuilder extends TypedThingsBuilder<Thing, Thing.Builder<Thing>> {
 
-/**
- * Set of {@link Thing.Builder}s.
- *
- * <p>This is intended to be used "short-lived", e.g., during incremental thing creation.
- *
- * <p>For memory efficiency, do NOT "keep this around".
- */
-// @NotThreadSafe
-public class ThingsBuilder implements ThingsRepository {
+    // TODO Merge TypedThingsBuilder & ThingsBuilder!
 
-    private final Map<String, Thing.Builder<?>> map = new HashMap<>();
-
-    public Thing.Builder<?> getBuilder(String iri) {
-        return map.computeIfAbsent(iri, _iri -> ImmutableThing.builder().iri(_iri));
+    public ThingsBuilder(TypedThingsBuilder<Thing, Thing.Builder<Thing>> into) {
+        super(into);
     }
 
-    public Iterable<Thing.Builder<?>> builders() {
-        return map.values();
+    public ThingsBuilder() {
+        super(ImmutableThing.FACTORY);
     }
 
-    @Override
-    public Stream<Thing> getThings(String iri) {
-        return switch (iri) {
-            case KIRI.E.LIST_THINGS -> map.values().stream().map(Thing.Builder::build);
-            case KIRI.E.LIST_IRIS -> map.keySet().stream().map(OnlyIRIThing::new);
-            default -> Stream.of(getBuilder(iri).build());
-        };
-    }
-
-    @Override
-    public String toString() {
-        return "ThingsBuilder{" + map + '}';
+    @SuppressWarnings("unchecked")
+    public Thing.Builder<Thing> getBuilder(String iri) {
+        // TODO Is this TypeToken required?!
+        TypeToken<Thing.Builder<Thing>> genericClass = new TypeToken<>(Thing.Builder.class) {};
+        Class<? super Thing.Builder<Thing>> klass = genericClass.getRawType();
+        return getBuilder(iri, (Class<Thing.Builder<Thing>>) klass, Thing.class);
     }
 }

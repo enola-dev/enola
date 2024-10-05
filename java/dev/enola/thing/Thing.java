@@ -64,12 +64,32 @@ public interface Thing extends HasIRI, PredicatesObjects {
 
         <@ImmutableTypeParameter T> Thing.Builder2<B> add(String predicateIRI, T value);
 
+        default <@ImmutableTypeParameter T> Thing.Builder2<B> add(
+                HasPredicateIRI predicate, T value) {
+            return add(predicate.iri(), value);
+        }
+
         <@ImmutableTypeParameter T> Thing.Builder2<B> add(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
+        default <@ImmutableTypeParameter T> Thing.Builder2<B> add(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            return add(predicate.iri(), value, datatypeIRI);
+        }
+
         <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);
+
+        default <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
+                HasPredicateIRI predicate, T value) {
+            return addOrdered(predicate.iri(), value);
+        }
 
         <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        default <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            return addOrdered(predicate.iri(), value, datatypeIRI);
+        }
     }
 }

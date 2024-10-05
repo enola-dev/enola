@@ -49,7 +49,8 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
     private final Multimap<String, MediaType> extensionsToTypes;
 
     public TikaMediaTypeProvider() {
-        var tikaMimaTypes = MimeTypes.getDefaultMimeTypes();
+        // NB: Similar code in TikaMediaTypesThingConverter
+        var tikaMimeTypes = MimeTypes.getDefaultMimeTypes();
         var tikaMediaTypeRegistry = new AutoDetectParser().getMediaTypeRegistry();
         var tikaMediaTypes = tikaMediaTypeRegistry.getTypes();
         var n = tikaMediaTypes.size();
@@ -64,7 +65,7 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
 
             var mediaTypeName = tikaMediaType.toString();
             try {
-                var tikaMimeType = tikaMimaTypes.getRegisteredMimeType(mediaTypeName);
+                var tikaMimeType = tikaMimeTypes.getRegisteredMimeType(mediaTypeName);
                 if (tikaMimeType == null) continue;
                 for (var additionalExtension : tikaMimeType.getExtensions()) {
                     if (EXCLUDED.contains(additionalExtension)) continue;

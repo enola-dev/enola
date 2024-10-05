@@ -19,6 +19,7 @@ package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
+import dev.enola.thing.java2.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -30,7 +31,7 @@ import org.jspecify.annotations.Nullable;
  * <p>When {@link #build()} then it returns an {@link IImmutableThing} copy of this (NOT itself).
  *
  * <p>This implementation is pretty inefficient, for both its runtime performance and memory
- * consumption, and should only be used "short lived"; prefer (building this into a) {@link
+ * consumption, and should only be used "shortly lived"; prefer (building this into a) {@link
  * IImmutableThing} implementations, such as (typically) the {@link ImmutableThing} or its generated
  * subclasses, for any objects that will be "kept around".
  *
@@ -40,6 +41,23 @@ import org.jspecify.annotations.Nullable;
 // skipcq: JAVA-W0100
 public class MutableThing<B extends IImmutableThing> extends MutablePredicatesObjects<B>
         implements ThingOrBuilder<B> {
+
+    public static final TBF FACTORY =
+            new TBF() {
+                @Override
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                public <T extends Thing, TB extends Thing.Builder<?>> TB create(
+                        Class<TB> builderClass, Class<T> thingClass) {
+                    if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
+                        return (TB) new MutableThing();
+                    else
+                        throw new IllegalArgumentException(
+                                "This implementation does not support "
+                                        + builderClass
+                                        + " and "
+                                        + thingClass);
+                }
+            };
 
     private @Nullable String iri;
 

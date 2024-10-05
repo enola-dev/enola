@@ -18,6 +18,7 @@
 package dev.enola.thing.java2;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.IImmutableThing;
 
 /** TBF is a Thing Builder Factory. */
 @FunctionalInterface
@@ -28,11 +29,11 @@ public interface TBF {
      *
      * <p>T may be an interface, not a concrete class.
      */
-    <T extends Thing, B extends Thing.Builder<T>> B create(
+    <T extends Thing, B extends Thing.Builder<?>> B create(
             Class<B> builderClass, Class<T> thingClass);
 
     @SuppressWarnings("unchecked")
-    default Thing.Builder<Thing> create() {
+    default Thing.Builder<IImmutableThing> create() {
         return create(Thing.Builder.class, Thing.class);
     }
 }

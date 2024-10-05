@@ -125,7 +125,10 @@ public class JavaThingToProtoThingConverter
             default:
                 if (datatypeIRI == null)
                     throw new IllegalStateException(
-                            "TODO: Implement support for: " + object.getClass());
+                            "TODO: Implement support for: "
+                                    + object.getClass()
+                                    + " of "
+                                    + javaThing);
                 var datatype = datatypeRepository.get(datatypeIRI);
                 if (datatype == null)
                     throw new IllegalStateException(

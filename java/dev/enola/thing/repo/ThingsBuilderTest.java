@@ -15,22 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.thing.repo;
 
-import dev.enola.thing.Thing;
+import static com.google.common.truth.Truth.assertThat;
 
-import org.jspecify.annotations.Nullable;
+import org.junit.Test;
 
-public interface HasLabel extends Thing {
+public class ThingsBuilderTest {
 
-    default @Nullable String label() {
-        return getString(IRI.Predicate.label);
-    }
+    @Test
+    public void build() {
+        var thingIRI = "http://example.com";
+        var predicateIRI = "http://example.com/predicate";
+        var thingsBuilder = new ThingsBuilder();
 
-    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default Builder<B> label(String label) {
-            set(IRI.Predicate.label.iri(), label);
-            return this;
-        }
+        var builder = thingsBuilder.getBuilder(thingIRI);
+        builder.set(predicateIRI, "hi");
+
+        builder = thingsBuilder.getBuilder(thingIRI);
+        var thing = builder.build();
+
+        assertThat(thing.getString(predicateIRI)).isEqualTo("hi");
     }
 }
