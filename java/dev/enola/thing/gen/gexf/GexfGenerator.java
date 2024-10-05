@@ -148,24 +148,24 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
 
     private void printThingEdges(Thing thing, Appendable out) throws IOException {
         for (var linkPropertyIRI : thing.predicateIRIs()) {
-            if (!thing.isLink(linkPropertyIRI)) continue;
-            var linkIRI = thing.getString(linkPropertyIRI);
-            var linkMetadata = metadataProvider.get(linkPropertyIRI);
+            for (var linkIRI : thing.getLinks(linkPropertyIRI)) {
+                var linkMetadata = metadataProvider.get(linkPropertyIRI);
 
-            var source = thing.iri();
-            var target = linkIRI;
-            var kind = linkPropertyIRI;
-            var label = label(linkMetadata);
+                var source = thing.iri();
+                var target = linkIRI.toString();
+                var kind = linkPropertyIRI;
+                var label = label(linkMetadata);
 
-            out.append("      <edge source=\"");
-            xmlAttribute(source, out);
-            out.append("\" target=\"");
-            xmlAttribute(target, out);
-            out.append("\" kind=\"");
-            xmlAttribute(kind, out);
-            out.append("\" label=\"");
-            xmlAttribute(label, out);
-            out.append("\"/>\n");
+                out.append("      <edge source=\"");
+                xmlAttribute(source, out);
+                out.append("\" target=\"");
+                xmlAttribute(target, out);
+                out.append("\" kind=\"");
+                xmlAttribute(kind, out);
+                out.append("\" label=\"");
+                xmlAttribute(label, out);
+                out.append("\"/>\n");
+            }
         }
     }
 

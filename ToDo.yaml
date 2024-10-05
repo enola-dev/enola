@@ -43,6 +43,10 @@ items:
       links:
         - https://camel.apache.org/components/4.4.x/exec-component.html
 
+  - XML Schema as Meta:
+      links:
+        - https://github.com/lbovet/scardif
+
   - Time API: &timeAPI
       done: 2024-08-11
       status: DONE
