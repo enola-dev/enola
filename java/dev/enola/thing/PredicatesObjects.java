@@ -55,11 +55,7 @@ public interface PredicatesObjects {
     // TODO These is*() methods could be replaced with a Visitor - but how-to for nested Structs?!
     // Look into e.g. how EMF does Visitors...
 
-    @Deprecated // TODO Replace usages with #getLinks(), and removed (leaving an inline doc note)
-    default boolean isLink(String predicateIRI) {
-        var object = get(predicateIRI);
-        return isLinkObject(object);
-    }
+    // boolean isLink(String predicateIRI) is intentionally not available; use #getLinks() instead!
 
     default boolean isLinkObject(@Nullable Object object) {
         return object instanceof URI || object instanceof Link;
