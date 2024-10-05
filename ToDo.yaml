@@ -23,9 +23,6 @@ items:
   - MIME Model:
       created: 2024-10-05
       items:
-        - interface MediaType.java extends Thing
-        - class MediaTypeProviderThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
-        - class TikaMediaTypeThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - infer inverses
         - GEXF & Gephi
       tags: [exec]
@@ -42,7 +39,15 @@ items:
       links:
         - https://camel.apache.org/components/4.4.x/exec-component.html
 
-  - XML Schema as Meta:
+  - Write Thing API implementation directly (natively, no converter) on top of RDF4j:
+      description: "Test it with ThingTester"
+      tags: [rdf, tech]
+
+  - Make ImmutableThing.Builder a Thing.Builder2; then consider (?) to abandon the MutableThing:
+      description: "Test it with ThingTester"
+      tags: [clean, tech]
+
+  - JSON Schema as Meta:
       links:
         - https://github.com/lbovet/scardif
 

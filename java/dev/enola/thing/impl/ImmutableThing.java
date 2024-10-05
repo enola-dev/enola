@@ -57,9 +57,16 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             new TBF() {
                 @Override
                 @SuppressWarnings("unchecked")
-                public <T extends Thing, B extends Thing.Builder<T>> B create(
+                public <T extends Thing, B extends Thing.Builder<?>> B create(
                         Class<B> builderClass, Class<T> thingClass) {
-                    return (B) builder();
+                    if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
+                        return (B) builder();
+                    else
+                        throw new IllegalArgumentException(
+                                "This implementation does not support "
+                                        + builderClass
+                                        + " and "
+                                        + thingClass);
                 }
             };
 

@@ -118,6 +118,10 @@ public interface PredicatesObjects {
         return getOptional(predicateIRI, klass).orElse(null);
     }
 
+    default <T> @Nullable T get(HasPredicateIRI predicate, Class<T> klass) {
+        return get(predicate.iri(), klass);
+    }
+
     @SuppressWarnings("unchecked")
     default <T> @Nullable T get(String predicateIRI, TypeToken<T> typeToken) {
         return (T) get(predicateIRI, typeToken.getRawType());
@@ -145,16 +149,16 @@ public interface PredicatesObjects {
         return getOptional(predicateIRI, String.class).orElse(null);
     }
 
-    default <T> Optional<T> getOptional(HasPredicateIRI predicateIRI, Class<T> klass) {
-        return getOptional(predicateIRI.iri(), klass);
+    default <T> Optional<T> getOptional(HasPredicateIRI predicate, Class<T> klass) {
+        return getOptional(predicate.iri(), klass);
     }
 
-    default <T> Optional<T> getOptional(HasPredicateIRI predicateIRI, TypeToken<T> typeToken) {
-        return getOptional(predicateIRI.iri(), typeToken);
+    default <T> Optional<T> getOptional(HasPredicateIRI predicate, TypeToken<T> typeToken) {
+        return getOptional(predicate.iri(), typeToken);
     }
 
-    default @Nullable String getString(HasPredicateIRI predicateIRI) {
-        return getString(predicateIRI.iri());
+    default @Nullable String getString(HasPredicateIRI predicate) {
+        return getString(predicate.iri());
     }
 
     default <T extends Thing> Optional<T> getThing(String predicateIRI, Class<T> klass) {
@@ -168,8 +172,8 @@ public interface PredicatesObjects {
         return ThingProvider.CTX.get(iris, klass);
     }
 
-    default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicateIRI, Class<T> klass) {
-        return getThings(predicateIRI.iri(), klass);
+    default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicate, Class<T> klass) {
+        return getThings(predicate.iri(), klass);
     }
 
     /**

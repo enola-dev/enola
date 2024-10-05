@@ -24,7 +24,9 @@ enum IRI implements HasIRI {
     RDFS("http://www.w3.org/2000/01/rdf-schema#");
 
     enum Predicate implements HasPredicateIRI {
+        seeAlso(RDFS + "seeAlso"),
         subClassOf(RDFS + "subClassOf"),
+        comment(RDFS + "comment"),
         label(RDFS + "label");
 
         private final String iri;

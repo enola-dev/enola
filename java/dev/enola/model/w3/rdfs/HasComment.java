@@ -21,15 +21,15 @@ import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface HasLabel extends Thing {
+public interface HasComment extends Thing {
 
-    default @Nullable String label() {
-        return getString(IRI.Predicate.label);
+    default @Nullable String comment() {
+        return getString(IRI.Predicate.comment);
     }
 
-    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default Builder<B> label(String label) {
-            set(IRI.Predicate.label.iri(), label);
+    interface Builder<B extends HasComment> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        default HasComment.Builder<B> comment(String label) {
+            set(IRI.Predicate.comment.iri(), label);
             return this;
         }
     }

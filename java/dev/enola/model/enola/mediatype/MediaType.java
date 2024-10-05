@@ -15,22 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola.mediatype;
 
-import dev.enola.thing.Thing;
+import dev.enola.model.w3.rdfs.HasComment;
+import dev.enola.model.w3.rdfs.HasLabel;
+import dev.enola.model.w3.rdfs.HasSeeAlso;
 
-import org.jspecify.annotations.Nullable;
+public interface MediaType extends HasLabel, HasComment, HasFileExtensions, HasSeeAlso {
 
-public interface HasLabel extends Thing {
-
-    default @Nullable String label() {
-        return getString(IRI.Predicate.label);
-    }
-
-    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default Builder<B> label(String label) {
-            set(IRI.Predicate.label.iri(), label);
-            return this;
-        }
-    }
+    // In theory: interface Builder<B extends MediaType> extends ...
+    // In practice, we know we're not going to further extend MediaType, so just:
+    interface Builder // skipcq: JAVA-E0169
+    extends HasLabel.Builder<MediaType>,
+                    HasComment.Builder<MediaType>,
+                    HasFileExtensions.Builder<MediaType>,
+                    HasSeeAlso.Builder<MediaType> {}
 }

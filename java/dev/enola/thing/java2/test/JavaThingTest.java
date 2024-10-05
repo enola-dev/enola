@@ -19,7 +19,10 @@ package dev.enola.thing.java2.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java2.ProxyTBF;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Test;
 
@@ -29,8 +32,9 @@ public class JavaThingTest {
 
     @Test
     public void javaAPI() {
+        var proxyTBF = new ProxyTBF(ImmutableThing.FACTORY);
         HasSomething.Builder<HasSomething> builder =
-                new ProxyTBF().create(HasSomething.Builder.class, HasSomething.class);
+                proxyTBF.create(HasSomething.Builder.class, HasSomething.class);
 
         builder.test("abc").a(123L).b(Instant.now()).iri("https://example.org/thing");
         HasSomething thing = builder.build();
@@ -45,5 +49,28 @@ public class JavaThingTest {
 
         assertThat(thing.get("https://example.org/b", Instant.class)).isInstanceOf(Instant.class);
         assertThat(thing.b()).isInstanceOf(Instant.class);
+    }
+
+    @Test
+    public void typedThingsBuilder() {
+        var typedThingsBuilder =
+                new TypedThingsBuilder<HasSomething, HasSomething.Builder>(
+                        new ProxyTBF(ImmutableThing.FACTORY));
+
+        var builder =
+                typedThingsBuilder.getBuilder(
+                        "https://example.org/thing",
+                        HasSomething.Builder.class,
+                        HasSomething.class);
+        builder.test("hello, world");
+
+        Thing thing = builder.build();
+        assertThat(thing.getString("https://example.org/test")).isEqualTo("hello, world");
+
+        Thing thing2 = builder.build();
+        assertThat(thing2.getString("https://example.org/test")).isEqualTo("hello, world");
+
+        // TODO HasSomething hasSomething = builder.build();
+        // TODO assertThat(hasSomething.test()).isEqualTo("hello, world");
     }
 }

@@ -15,22 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.thing.io;
 
+import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.Thing;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
-import org.jspecify.annotations.Nullable;
+import java.net.URI;
 
-public interface HasLabel extends Thing {
-
-    default @Nullable String label() {
-        return getString(IRI.Predicate.label);
-    }
-
-    interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default Builder<B> label(String label) {
-            set(IRI.Predicate.label.iri(), label);
-            return this;
-        }
-    }
-}
+public interface TypedUriIntoThingConverter<T extends Thing, B extends Thing.Builder<T>>
+        extends ConverterInto<URI, TypedThingsBuilder<T, B>> {}

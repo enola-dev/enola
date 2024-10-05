@@ -26,7 +26,6 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
@@ -56,25 +55,26 @@ public class TemplateThingRepositoryTest {
     @Test
     public void greetingN() {
         var rp = new ClasspathResource.Provider();
-        DatatypeRepository dtr = new DatatypeRepositoryBuilder().build();
+        var dtr = new DatatypeRepositoryBuilder().build();
         var ritc = new UriIntoThingConverters(new RdfResourceIntoThingConverter<>(rp, dtr));
         var loader = new Loader(ritc);
 
         var classIRI = "https://example.org/greeting";
         var templateIRI = "https://example.org/greet/{NUMBER}";
+        var exampleIRI = "https://example.org/greet/42";
+        var yoPropertyIRI = "https://example.org/yo";
 
         var store = new ThingMemoryRepositoryRW();
         var greetingN = new ClasspathResource("example.org/greetingN.ttl");
         loader.convertIntoOrThrow(Stream.of(greetingN.uri()), store);
         assertThat(store.listIRI()).containsExactly(classIRI);
+        assertThat(store.get(classIRI).datatype(yoPropertyIRI))
+                .isEqualTo(KIRI.E.IRI_TEMPLATE_DATATYPE);
 
         var repo = new TemplateThingRepository(store);
         assertThat(repo.listIRI()).containsExactly(classIRI, templateIRI);
 
         // NB: We do not test/cover classIRI here - that's "as usual" (and tested elsewhere)
-
-        var exampleIRI = "https://example.org/greet/42";
-        var yoPropertyIRI = "https://example.org/yo";
 
         var template = repo.get(templateIRI);
         assertThat(template.iri()).isEqualTo(templateIRI);

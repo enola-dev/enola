@@ -42,8 +42,8 @@ public class RdfResourceIntoThingConverterTest {
     DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
     ResourceProvider resourceProvider =
             new ResourceProviders(new ClasspathResource.Provider(), new FileResource.Provider());
-    RdfResourceIntoThingConverter c =
-            new RdfResourceIntoThingConverter<Thing>(resourceProvider, datatypeRepository);
+    RdfResourceIntoThingConverter<Thing> c =
+            new RdfResourceIntoThingConverter<>(resourceProvider, datatypeRepository);
 
     @Test
     public void picasso() throws IOException {
@@ -61,7 +61,7 @@ public class RdfResourceIntoThingConverterTest {
         assertThat(convert(URI.create("file:/tmp/"))).isEmpty();
     }
 
-    private Iterable<Thing.Builder<?>> convert(URI uri) throws IOException {
+    private Iterable<Thing.Builder<Thing>> convert(URI uri) throws IOException {
         var thingsBuilder = new ThingsBuilder();
         c.convertInto(uri, thingsBuilder);
         return thingsBuilder.builders();
