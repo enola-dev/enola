@@ -4,8 +4,13 @@
 @prefix schema: <https://schema.org/>.
 @prefix :       <https://example.org/>.
 
+# Copy/paste from enola.ttl (for self-contained testing, without needing to import that)
+rdfs:Class enola:color "lightblue".
+
 :Salutation a rdfs:Class;
   rdfs:subClassOf schema:TextObject;
+  enola:color "violet";
+  enola:text-color "white";
   enola:emoji "👋".
 
 :greeting3 a :Salutation;

@@ -24,6 +24,13 @@
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#>.
 
+# TODO Remove repeating (copy/paste) this here from enola.ttl;
+# this is temporary, so that we can only load this - until we can "filter", e.g. for Graphviz, probably with sparql:...
+# https://en.wikipedia.org/wiki/Object_Modeling_in_Color
+rdfs:Class :color "lightblue".
+rdf:Property :color "yellow".
+rdfs:Datatype :color "olive".
+
 :MediaTypeModel a owl:Ontology;
   :label "Media Types Model";
   :description "An Enola.dev Model about Media Types. (AKA an Ontology, Vocabulary - incl. instances.)".
@@ -38,6 +45,8 @@
   rdfs:subClassOf :Format;
   :label "Internet Media Type";
   :description "Internet Media Type, also known as a MIME Type or Content Type.";
+  :color "fuchsia";
+  :text-color "white";
   :wikipedia "Media_type";
   :seeAlso "https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types", "https://www.iana.org/assignments/media-types/media-types.xhtml";
   :rfc "2046", "6838";

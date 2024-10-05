@@ -30,3 +30,7 @@ $ ./enola rosetta --in docs/models/example.org/greeting3.ttl --out=docs/BUILT/gr
 produces this:
 
 ![Tutorial Graph](../../BUILT/greetings3.gv.svg)
+
+## Styles
+
+The <https://enola.dev/color> and <https://enola.dev/text-color> predicates can be used to style graphs.

@@ -22,6 +22,7 @@ import com.google.common.html.HtmlEscapers;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.thing.KIRI;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
@@ -42,22 +43,17 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
-    // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
+    // NB: http://magjac.com/graphviz-visual-editor/ is handy for testing!
 
     // NB: Because Graphviz (v12) does NOT support rendering A/HREF inside TABLE of LABEL,
     // we cannot make the propertyIRIs clickable, unfortunately. (Nor any object values which are
     // e.g. http://... (of ^schema:URL Datatype).
 
-    // TODO Custom attributes, e.g. Node & Edge color, style etc.
-    // TODO Custom attributes at the top graph level, via a http://enola.dev/Graphviz ?
-    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
-    // TODO Links to other Things (not external HTTP) from within nested blank nodes? With ports??
-    // TODO Thing IRI link to "correct" Enola Doc (or UI) site, not just "raw" direct link
-    // TODO Fix 'end="+300000-12-31T00:00:00Z"' ==> "The value '+300000-12-31T00:00:00Z' of
-    //   attribute 'end' on element 'node' is not valid with respect to its type, 'time-type'."
-    // TODO Nested blank nodes as Labels, instead just "..."
+    // NB: We're intentionally *NOT* showing the Datatype of properties (it's "too much")-
 
-    // FYI: We're intentionally *NOT* showing the Datatype of properties (it's "too much")
+    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
+
+    // TODO Links to other Things (not external HTTP) from within nested blank nodes? With ports??
 
     private final ThingMetadataProvider metadataProvider;
 
@@ -94,7 +90,17 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             throws IOException {
         out.append("  \"");
         out.append(thing.iri());
-        out.append("\" [shape=plain URL=\"");
+        out.append("\" [shape=plain ");
+
+        // TODO Later use RdfsClass instead of Thing
+        var optClass = thing.getThing(KIRI.RDF.TYPE, Thing.class);
+        if (optClass.isPresent()) {
+            printColors(optClass.get(), out);
+        } else {
+            printColors(thing, out);
+        }
+
+        out.append("URL=\"");
         out.append(thing.iri());
         out.append("\" label=<");
         var metadata = metadataProvider.get(thing, thing.iri());
@@ -118,6 +124,21 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             }
         }
         out.append('\n');
+    }
+
+    private void printColors(Thing thing, Appendable out) throws IOException {
+        var color = thing.get(KIRI.E.COLOR, String.class);
+        if (color != null) {
+            out.append("style=filled fillcolor=");
+            out.append(color);
+            out.append(' ');
+        }
+        var textColor = thing.get(KIRI.E.TEXT_COLOR, String.class);
+        if (textColor != null) {
+            out.append("fontcolor=");
+            out.append(textColor);
+            out.append(' ');
+        }
     }
 
     // NB: This is Graphviz and not an HTML table syntax!

@@ -6,6 +6,7 @@
   </meta>
   <graph defaultedgetype="directed" mode="dynamic" timeformat="dateTime" timerepresentation="interval">
     <nodes>
+      <node id="http://www.w3.org/2000/01/rdf-schema#Class" label="rdfs:Class" pid="classpath:/graph.ttl"/>
       <node id="https://example.org/Salutation" label="👋ex:Salutation">
         <parents>
           <parent for="http://www.w3.org/2000/01/rdf-schema#Class"/>
@@ -30,6 +31,7 @@
       </node>
     </nodes>
     <edges>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="http://www.w3.org/2000/01/rdf-schema#Class" target="classpath:/graph.ttl"/>
       <edge source="https://example.org/Salutation" target="http://www.w3.org/2000/01/rdf-schema#Class"
             kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"/>
       <edge source="https://example.org/Salutation" target="https://schema.org/TextObject"

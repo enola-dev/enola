@@ -24,6 +24,7 @@ import com.google.common.xml.XmlEscapers;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.time.Interval;
+import dev.enola.common.xml.TemporalToXmlStringConverter;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
@@ -36,14 +37,20 @@ import java.io.IOException;
 
 public class GexfGenerator implements ThingsIntoAppendableConverter {
 
-    // TODO Write Attributes
-    // TODO How to treat blank nodes? Attributes, or Nodes, with parent?
-    // TODO Custom Node color, shape & size
-    // TODO Custom Edge color, thickness, shape
+    // TODO Treat blank nodes, same as in GraphvizGenerator
+
+    // TODO Custom Node color, shape & size; re-using logic from GraphvizGenerator
+    // TODO Custom Edge color, thickness, shape; re-using logic from GraphvizGenerator
+
+    // TODO Write Attributes? Or not... too much?
+
+    // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
     private final ThingMetadataProvider metadataProvider;
     private final ThingTimeProvider timeProvider = new ThingTimeProvider();
     private final ThingHierarchyProvider hierarchyProvider = new ThingHierarchyProvider();
+    private final TemporalToXmlStringConverter xmlConverter =
+            new TemporalToXmlStringConverter(false);
 
     public GexfGenerator(ThingMetadataProvider metadataProvider) {
         this.metadataProvider = metadataProvider;
@@ -136,12 +143,12 @@ public class GexfGenerator implements ThingsIntoAppendableConverter {
     private void printInterval(Interval interval, Appendable out) throws IOException {
         if (!interval.isUnboundedStart()) {
             out.append(" start=\"");
-            xmlAttribute(interval.start().toString(), out);
+            xmlAttribute(xmlConverter.convert(interval.start()), out);
             out.append("\"");
         }
         if (!interval.isUnboundedEnd()) {
             out.append(" end=\"");
-            xmlAttribute(interval.end().toString(), out);
+            xmlAttribute(xmlConverter.convert(interval.end()), out);
             out.append("\"");
         }
     }
