@@ -54,6 +54,8 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
             for (var converter : converters) {
                 converter.convertInto(input, thingsBuilder);
             }
+            // TODO Make this configurable? (At least until sparql: query is supported)
+            // This is "cool", but "very ugly and overwhelming" e.g. on graph visualizations...
             for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input);
             return thingsBuilder.builders();
         } catch (IOException e) {

@@ -25,6 +25,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
+import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.StackedThingProvider;
 import dev.enola.thing.repo.ThingProvider;
@@ -42,6 +43,8 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     // PS: http://magjac.com/graphviz-visual-editor/ is handy for testing!
 
     // TODO Lists of Links
+    // TODO Fix 'end="+300000-12-31T00:00:00Z"' ==> "The value '+300000-12-31T00:00:00Z' of
+    //   attribute 'end' on element 'node' is not valid with respect to its type, 'time-type'."
     // TODO Link Datatypes, with ports
     // TODO Thing IRI as direct URL Link
     // TODO Thing IRI as alternative Link to Enola localhost UI
@@ -78,21 +81,12 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             linkIRIs.removeAll(thingIRIs);
             // linkIRIs now contains things which were linked to but that have no properties
             for (String orphanIRI : linkIRIs) {
-                printOrphanThing(orphanIRI, out);
+                var orphanThing = new OnlyIRIThing(orphanIRI);
+                printFullThing(orphanThing, out, thingIRIs, linkIRIs);
             }
         }
         out.append("}\n");
         return true;
-    }
-
-    private void printOrphanThing(String iri, Appendable out) throws IOException {
-        out.append("  \"");
-        out.append(iri);
-        out.append("\" [shape=ellipse label=\""); // TODO Try shape=oval
-        var metadata = metadataProvider.get(iri);
-        var thingLabel = label(metadata);
-        out.append(html(thingLabel));
-        out.append("\"]\n");
     }
 
     private void printFullThing(

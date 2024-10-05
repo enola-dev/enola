@@ -35,9 +35,24 @@ digraph {
   "https://example.org/world" -> "https://example.org/Planet" [label="rdf:type"]
   "https://example.org/world" -> "classpath:/graph.ttl" [label="enola:origin"]
 
-  "classpath:/graph.ttl" [shape=ellipse label="graph.ttl"]
-  "https://schema.org/TextObject" [shape=ellipse label="schema:TextObject"]
-  "https://example.org/OnlyIRIThing" [shape=ellipse label="ex:OnlyIRIThing"]
-  "http://www.w3.org/2000/01/rdf-schema#Class" [shape=ellipse label="rdfs:Class"]
-  "https://example.org/Planet" [shape=ellipse label="ex:Planet"]
+  "classpath:/graph.ttl" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">graph.ttl</TD></TR>
+  </TABLE>>]
+
+  "https://schema.org/TextObject" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">schema:TextObject</TD></TR>
+  </TABLE>>]
+
+  "https://example.org/OnlyIRIThing" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">ex:OnlyIRIThing</TD></TR>
+  </TABLE>>]
+
+  "http://www.w3.org/2000/01/rdf-schema#Class" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">rdfs:Class</TD></TR>
+  </TABLE>>]
+
+  "https://example.org/Planet" [shape=plain label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+    <TR><TD COLSPAN="2">ex:Planet</TD></TR>
+  </TABLE>>]
+
 }
