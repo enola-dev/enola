@@ -24,4 +24,5 @@
   :population "18446744073709551615"^^enola:UnsignedLong.
 
 :orphan # !a - has no parent
+  :link :OnlyIRIThing;
   enola:emoji "👋".
