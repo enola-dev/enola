@@ -18,10 +18,21 @@
 
 # Info
 
+<!-- TODO Link? [The MediaType ("MIME") Model Graph]() might also interest you in this context. -->
+
+[See Tika](../../concepts/tika.md) for more background about some of the formats listed here.
+
 ## Extensions
 
 ```bash cd ../.././..
 $ ./enola info extensions
+...
+```
+
+## Media Types
+
+```bash cd ../.././..
+$ ./enola info mediatypes
 ...
 ```
 

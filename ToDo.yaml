@@ -23,13 +23,12 @@ items:
   - MIME Model:
       created: 2024-10-05
       items:
-        - Graphviz
-        - GEXF & Gephi
+        - Graphviz Links & Colors
         - interface MediaType.java extends Thing
         - class MediaTypeProviderThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - class TikaMediaTypeThingConverter.java implements UriIntoThingConverter for enola:MediaTypes
         - infer inverses
-        - docs/models/mime.md
+        - GEXF & Gephi
       tags: [exec]
 
   - Gephi/SigmaJS Network Graph Format:
