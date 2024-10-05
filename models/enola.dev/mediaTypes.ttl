@@ -103,7 +103,8 @@ rdf:JSON :mediaType <https://enola.dev/mediaType/application/json>.
 
 # Just an example, to illustrate usage:
 <https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg> a schema:ImageObject;
-  :mediaType "image/jpeg"; # TODO Write Thing Test which validates that this is <https://enola.dev/mediaType/image/jpeg>
+  # :mediaType "image/jpeg"; # TODO Write Thing Test which validates that this is <https://enola.dev/mediaType/image/jpeg>
+  :mediaType <https://enola.dev/mediaType/image/jpeg>;
   # schema:encodingFormat "image/jpeg" equivalence is inferred, because enola:mediaType dfs:subPropertyOf schema:encodingFormat.
   schema:contentUrl "https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg";
   tiff:ImageWidth: 577;

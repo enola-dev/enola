@@ -17,7 +17,7 @@ digraph {
   "https://example.org/greeting3" [shape=plain URL="https://example.org/greeting3" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
     <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>
-    <TR><TD ALIGN="left">enola:files/Node/deletedAt</TD><TD>2024-08-11T01:50:56.737412406Z</TD></TR>
+    <TR><TD ALIGN="left">enola:files/Node/deletedAt</TD><TD>2024-08-11T01:50:56.737...</TD></TR>
     <TR><TD ALIGN="left">ex:firstName</TD><TD>Salvador<BR/>Domingo<BR/>Felipe<BR/>Jacinto<BR/></TD></TR>
   </TABLE>>]
   "https://example.org/greeting3" -> "https://example.org/Salutation" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
@@ -33,9 +33,9 @@ digraph {
 
   "https://example.org/world" [shape=plain URL="https://example.org/world" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">ex:world</TD></TR>
-    <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.org/wiki/Earth</TD></TR>
-    <TR><TD ALIGN="left">schema:image</TD><TD>https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg</TD></TR>
-    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-02T00:00:00Z</TD></TR>
+    <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.or...</TD></TR>
+    <TR><TD ALIGN="left">schema:image</TD><TD>https://upload.wikimedi...</TD></TR>
+    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-02T00:00...</TD></TR>
     <TR><TD ALIGN="left">enola:endedAt</TD><TD>+300000-12-31T00:00:00Z</TD></TR>
     <TR><TD ALIGN="left">ex:population</TD><TD>18446744073709551615</TD></TR>
   </TABLE>>]
