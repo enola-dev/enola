@@ -35,4 +35,9 @@ digraph {
   "https://example.org/world" -> "https://example.org/Planet" [label="rdf:type"]
   "https://example.org/world" -> "classpath:/graph.ttl" [label="enola:origin"]
 
+  "classpath:/graph.ttl" [shape=ellipse label="graph.ttl"]
+  "https://schema.org/TextObject" [shape=ellipse label="schema:TextObject"]
+  "https://example.org/OnlyIRIThing" [shape=ellipse label="ex:OnlyIRIThing"]
+  "http://www.w3.org/2000/01/rdf-schema#Class" [shape=ellipse label="rdfs:Class"]
+  "https://example.org/Planet" [shape=ellipse label="ex:Planet"]
 }

@@ -32,6 +32,8 @@ import dev.enola.thing.repo.ThingProvider;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
@@ -63,16 +65,39 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     @Override
     public boolean convertInto(Iterable<Thing> from, Appendable out)
             throws ConversionException, IOException {
+        Set<String> thingIRIs = new HashSet<>();
+        Set<String> linkIRIs = new HashSet<>();
         out.append("digraph {\n");
         try (var ctx = TLC.open()) {
             ctx.push(ThingProvider.class, new StackedThingProvider(from));
-            for (Thing thing : from) printThing(thing, out);
+            for (Thing thing : from) {
+                thingIRIs.add(thing.iri());
+                printFullThing(thing, out, thingIRIs, linkIRIs);
+            }
+            // Remove links to all things which were processed after we processed them
+            linkIRIs.removeAll(thingIRIs);
+            // linkIRIs now contains things which were linked to but that have no properties
+            for (String orphanIRI : linkIRIs) {
+                printOrphanThing(orphanIRI, out);
+            }
         }
         out.append("}\n");
         return true;
     }
 
-    private void printThing(Thing thing, Appendable out) throws IOException {
+    private void printOrphanThing(String iri, Appendable out) throws IOException {
+        out.append("  \"");
+        out.append(iri);
+        out.append("\" [shape=ellipse label=\""); // TODO Try shape=oval
+        var metadata = metadataProvider.get(iri);
+        var thingLabel = label(metadata);
+        out.append(html(thingLabel));
+        out.append("\"]\n");
+    }
+
+    private void printFullThing(
+            Thing thing, Appendable out, Set<String> thingIRIs, Set<String> linkIRIs)
+            throws IOException {
         out.append("  \"");
         out.append(thing.iri());
         out.append("\" [shape=plain label=<");
@@ -85,10 +110,13 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             out.append("  \"");
             out.append(thing.iri());
             out.append("\" -> \"");
-            out.append(thing.getString(p));
+            var linkIRI = thing.getString(p);
+            var linkLabel = label(metadataProvider.get(p));
+            out.append(linkIRI);
             out.append("\" [label=\"");
-            out.append(html(label(metadataProvider.get(p))));
+            out.append(html(linkLabel));
             out.append("\"]\n");
+            if (!thingIRIs.contains(linkIRI)) linkIRIs.add(linkIRI);
         }
         out.append('\n');
     }
