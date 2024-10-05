@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.common.context.Context;
 import dev.enola.format.tika.TikaThingConverter;
 import dev.enola.format.xml.XmlThingConverter;
 import dev.enola.model.enola.files.FileThingConverter;
@@ -60,5 +61,19 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
 
         var ritc = new UriIntoThingConverters(uriIntoThingConverters);
         return new Loader(ritc);
+    }
+
+    @Override
+    protected void setup(Context ctx) {
+        super.setup(ctx);
+
+        // TODO Rethink this in a better way...
+        // This was originally motivated by keeping e.g. the mediaType/graph.gv.svg clean;
+        // because it looks overwhelming and ugly with the links to mediaTypes.ttl, from everything.
+        // Perhaps later when we can properly filter what to render (probably with sparql:...), then
+        // there will be a better way for this, and no need for this slight hack?
+        //
+        // Only set enola:origin if --file-loader was enabled
+        ctx.push(UriIntoThingConverters.Flags.ORIGIN, fileLoader);
     }
 }
