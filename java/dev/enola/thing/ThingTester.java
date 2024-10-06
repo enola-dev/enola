@@ -51,6 +51,8 @@ public abstract class ThingTester {
         thingBuilder.iri(THING_IRI);
         var thing = thingBuilder.build();
         assertThat(thing.getString(PREDICATE_IRI)).isNull();
+        assertThat(thing.datatypes()).isEmpty();
+        assertThat(thing.predicateIRIs()).isEmpty();
     }
 
     @Test
@@ -89,5 +91,21 @@ public abstract class ThingTester {
         thingBuilder.iri(THING_IRI);
         var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
         thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI), datatypeIRI);
+    }
+
+    @Test
+    public void setNullIsIgnored() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, null);
+        var thing = thingBuilder.build();
+        assertThat(thing.predicateIRIs()).isEmpty();
+    }
+
+    @Test
+    public void setEmptyStringIsIgnored() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, "");
+        var thing = thingBuilder.build();
+        assertThat(thing.predicateIRIs()).isEmpty();
     }
 }

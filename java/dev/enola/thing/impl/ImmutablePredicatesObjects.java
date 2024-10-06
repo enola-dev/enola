@@ -135,6 +135,8 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
         @Override
         public PredicatesObjects.Builder<B> set(String predicateIRI, Object value) {
+            if (value == null) return this;
+            if (value instanceof String string && string.isEmpty()) return this;
             ImmutableObjects.check(value);
             if (value instanceof Literal literal)
                 set(predicateIRI, literal.value(), literal.datatypeIRI());
@@ -145,6 +147,8 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         @Override
         public PredicatesObjects.Builder<B> set(
                 String predicateIRI, Object value, @Nullable String datatypeIRI) {
+            if (value == null) return this;
+            if (value instanceof String string && string.isEmpty()) return this;
             ImmutableObjects.check(value);
             if (datatypeIRI != null) {
                 if (value instanceof Literal)

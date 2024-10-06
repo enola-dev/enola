@@ -57,6 +57,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public Builder2<B> set(String predicateIRI, Object value) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         if (value instanceof Literal literal)
             set(predicateIRI, literal.value(), literal.datatypeIRI());
         else properties.put(predicateIRI, value);
@@ -65,6 +67,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         if (datatypeIRI != null) {
             if (value instanceof Literal)
                 throw new IllegalArgumentException("Cannot set Literal AND Datatype");
@@ -77,6 +81,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <T> Builder2<B> add(String predicateIRI, T value) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
             var builder = ImmutableSet.builder();
@@ -93,6 +99,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public <T> Builder2<B> addOrdered(String predicateIRI, T value) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
             var builder = ImmutableList.builder();
@@ -108,6 +116,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public <T> Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         checkCollectionDatatype(predicateIRI, datatypeIRI);
         add(predicateIRI, value);
         return this;
@@ -115,6 +125,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public <T> Builder2<B> addOrdered(String predicateIRI, T value, @Nullable String datatypeIRI) {
+        if (value == null) return this;
+        if (value instanceof String string && string.isEmpty()) return this;
         checkCollectionDatatype(predicateIRI, datatypeIRI);
         addOrdered(predicateIRI, value);
         return this;
