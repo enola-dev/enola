@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.impl;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -194,6 +195,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             var predicateIRI = entry.getKey();
             var object = entry.getValue();
+            if (object instanceof ImmutableCollection.Builder<?> immutableCollectionBuilder)
+                object = immutableCollectionBuilder.build();
             if (object instanceof List<?> list) object = ImmutableList.copyOf(list);
             if (object instanceof Set<?> list) object = ImmutableSet.copyOf(list);
             if (object instanceof MutablePredicatesObjects<?> mutablePredicatesObjects)

@@ -34,7 +34,7 @@ public abstract class ThingTester {
 
     protected abstract TBF getThingBuilderFactory();
 
-    private Thing.Builder<IImmutableThing> thingBuilder;
+    protected Thing.Builder<IImmutableThing> thingBuilder;
 
     @Before
     public void setUp() {

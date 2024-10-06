@@ -17,8 +17,6 @@
  */
 package dev.enola.thing;
 
-import com.google.errorprone.annotations.ImmutableTypeParameter;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
@@ -62,32 +60,32 @@ public interface Thing extends HasIRI, PredicatesObjects {
     interface Builder2<B extends Thing> // skipcq: JAVA-E0169
             extends Thing.Builder<B>, PredicatesObjects.Builder2<B> {
 
-        <@ImmutableTypeParameter T> Thing.Builder2<B> add(String predicateIRI, T value);
+        // TODO It would be cool if we could enforce that T value must be an Immutable.
+        // But using Error Prone's <@ImmutableTypeParameter T> instead of <T> does not work.
 
-        default <@ImmutableTypeParameter T> Thing.Builder2<B> add(
-                HasPredicateIRI predicate, T value) {
+        <T> Thing.Builder2<B> add(String predicateIRI, T value);
+
+        default <T> Thing.Builder2<B> add(HasPredicateIRI predicate, T value) {
             return add(predicate.iri(), value);
         }
 
-        <@ImmutableTypeParameter T> Thing.Builder2<B> add(
-                String predicateIRI, T value, @Nullable String datatypeIRI);
+        <T> Thing.Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI);
 
-        default <@ImmutableTypeParameter T> Thing.Builder2<B> add(
+        default <T> Thing.Builder2<B> add(
                 HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
             return add(predicate.iri(), value, datatypeIRI);
         }
 
-        <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);
+        <T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);
 
-        default <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
-                HasPredicateIRI predicate, T value) {
+        default <T> Thing.Builder2<B> addOrdered(HasPredicateIRI predicate, T value) {
             return addOrdered(predicate.iri(), value);
         }
 
-        <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
+        <T> Thing.Builder2<B> addOrdered(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
-        default <@ImmutableTypeParameter T> Thing.Builder2<B> addOrdered(
+        default <T> Thing.Builder2<B> addOrdered(
                 HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
             return addOrdered(predicate.iri(), value, datatypeIRI);
         }
