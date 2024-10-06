@@ -34,6 +34,7 @@ java_library(
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
+        "//java/dev/enola/format/tika",
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",

@@ -17,19 +17,21 @@
  */
 package dev.enola.model.enola.mediatype;
 
-import dev.enola.model.w3.rdfs.HasComment;
-import dev.enola.model.w3.rdfs.HasLabel;
-import dev.enola.model.w3.rdfs.HasSeeAlso;
+import dev.enola.thing.Thing;
 
-public interface MediaType
-        extends HasLabel, HasComment, HasSeeAlso, HasFileExtensions, HasMediaType {
+import org.jspecify.annotations.Nullable;
 
-    // In theory: interface Builder<B extends MediaType> extends ...
-    // In practice, we know we're not going to further extend MediaType, so just:
-    interface Builder // skipcq: JAVA-E0169
-    extends HasLabel.Builder<MediaType>,
-                    HasComment.Builder<MediaType>,
-                    HasSeeAlso.Builder<MediaType>,
-                    HasFileExtensions.Builder<MediaType>,
-                    HasMediaType.Builder<MediaType> {}
+public interface HasMediaType extends Thing {
+
+    @SuppressWarnings("unchecked")
+    default @Nullable String mediaType() {
+        return get("https://enola.dev/mediaType", String.class);
+    }
+
+    interface Builder<B extends HasMediaType> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
+        default HasMediaType.Builder<B> mediaType(String mediaType) {
+            set("https://enola.dev/mediaType", mediaType);
+            return this;
+        }
+    }
 }
