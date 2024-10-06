@@ -20,6 +20,7 @@ package dev.enola.thing.gen.graphviz;
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
+import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.KIRI;
@@ -50,6 +51,16 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
     private static final int MAX_TEXT_LENGTH = 23;
 
+    public enum Flags implements Context.Key<Boolean> {
+        /**
+         * In "full" mode, we print a table with properties; in "lite" mode we do not.
+         *
+         * <p>Note that many of <a href="Layout Engines">Graphviz's Layout Engines</a> don't seem to
+         * work well with full mode.
+         */
+        FULL
+    }
+
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
     // NB: http://magjac.com/graphviz-visual-editor/ is handy for testing!
@@ -58,7 +69,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     // we cannot make the propertyIRIs clickable, unfortunately. (Nor any object values which are
     // e.g. http://... (of ^schema:URL Datatype).
 
-    // NB: We're intentionally *NOT* showing the Datatype of properties (it's "too much")-
+    // NB: We're intentionally *NOT* showing the Datatype of properties (it's "too much").
 
     private final ThingMetadataProvider metadataProvider;
 
@@ -93,11 +104,14 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     private void printFullThing(
             Thing thing, Appendable out, Set<String> thingIRIs, Set<String> linkIRIs)
             throws IOException {
+        boolean full = TLC.optional(Flags.FULL).orElse(true);
+
         out.append("  \"");
         out.append(thing.iri());
-        out.append("\" [shape=plain ");
+        out.append("\" [");
+        if (full) out.append("shape=plain ");
 
-        // TODO Later use RdfsClass instead of Thing
+        // TODO Later use RdfsClass Java interface instead of Thing API
         var optClass = thing.getThing(KIRI.RDF.TYPE, Thing.class);
         if (optClass.isPresent()) {
             printColors(optClass.get(), out);
@@ -107,10 +121,19 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
         out.append("URL=\"");
         out.append(thing.iri());
-        out.append("\" label=<");
+        out.append("\" label=");
         var metadata = metadataProvider.get(thing, thing.iri());
-        printNonLinkPropertiesTable(label(metadata), thing, out);
-        out.append(">]\n");
+        var label = label(metadata);
+        if (full) {
+            out.append("<");
+            printNonLinkPropertiesTable(label, thing, out);
+            out.append(">");
+        } else {
+            out.append("\"");
+            out.append(label);
+            out.append("\"");
+        }
+        out.append("]\n");
 
         for (var p : thing.predicateIRIs()) {
             for (var link : thing.getLinks(p)) {

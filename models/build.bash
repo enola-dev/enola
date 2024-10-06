@@ -46,7 +46,9 @@ dot -Tsvg -O docs/models/graphviz.gv
 
 # NB: --no-file-loader only marginally helps to make the picture clearer; what we need is real sparql: query support, to filter!
 # TODO Merge these two (once it works & looks well enough); this might need adding support for multiple repeating --load arguments...
-./enola rosetta --no-file-loader --in models/enola.dev/mediaTypes.ttl --out=docs/models/enola.dev/mediaType/graph.gv && dot -Tsvg -O docs/models/enola.dev/mediaType/graph.gv
-./enola -v gen graphviz --no-file-loader --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
+# But for the "smaller" one, the default "dot" layout looks better; for the "full" one, the sfdp https://en.wikipedia.org/wiki/Force-directed_graph_drawing
+# looks "better" (kind of; but not really, it perhaps would be if it were more "dynamic"?).
+./enola rosetta --no-file-loader --in models/enola.dev/mediaTypes.ttl --out="docs/models/enola.dev/mediaType/graph.gv?full=true" && dot -Tsvg -O docs/models/enola.dev/mediaType/graph.gv
+./enola -v gen graphviz --no-file-loader --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Ksfdp -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
 
 # TODO RDF* --load="models/**.ttl[s?]"

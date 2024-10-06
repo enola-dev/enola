@@ -24,6 +24,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
+import static dev.enola.thing.gen.graphviz.GraphvizMediaType.GV;
+import static dev.enola.thing.gen.graphviz.GraphvizResourceConverter.OUT_URI_QUERY_PARAMETER_FULL;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
@@ -203,9 +205,13 @@ public class RosettaTest {
             assertThat(gexf)
                     .hasCharsEqualTo(rp.get("classpath:/graph.expected.gexf?charset=UTF-8"));
 
-            var gv = new MemoryResource(GraphvizMediaType.GV);
+            var gv = new MemoryResource(GV, OUT_URI_QUERY_PARAMETER_FULL + "=true");
             rosetta.convertInto(in, gv);
-            assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected.gv"));
+            assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected-full.gv"));
+
+            gv = new MemoryResource(GV, OUT_URI_QUERY_PARAMETER_FULL + "=false");
+            rosetta.convertInto(in, gv);
+            assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected-short.gv"));
         }
     }
 }
