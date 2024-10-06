@@ -25,6 +25,8 @@ import dev.enola.thing.java2.TBF;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Set;
+
 public abstract class ThingTester {
 
     // TODO Move some of the generic tests from ImmutableThingTest up here
@@ -105,6 +107,14 @@ public abstract class ThingTester {
     public void setEmptyStringIsIgnored() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, "");
+        var thing = thingBuilder.build();
+        assertThat(thing.predicateIRIs()).isEmpty();
+    }
+
+    @Test
+    public void setEmptyCollectionIsIgnored() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, Set.of());
         var thing = thingBuilder.build();
         assertThat(thing.predicateIRIs()).isEmpty();
     }

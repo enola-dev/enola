@@ -15,29 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.w3.rdfs;
+package dev.enola.model.enola;
 
-import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.Set;
+public interface HasParent extends Thing {
 
-public interface HasSeeAlso extends Thing {
-
-    default @Nullable Set<String> seeAlso() {
-        return get(IRI.Predicate.seeAlso, Set.class);
+    default @Nullable String parentIRI() {
+        return getString("https://enola.dev/parent");
     }
 
-    interface Builder<B extends HasSeeAlso> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
-        default HasSeeAlso.Builder<B> addSeeAlso(String seeAlso) {
-            add(IRI.Predicate.seeAlso, seeAlso);
-            return this;
-        }
-
-        default HasSeeAlso.Builder<B> addAllSeeAlso(Iterable<String> seeAlso) {
-            addAll(IRI.Predicate.seeAlso, seeAlso, KIRI.SCHEMA.URL_DATATYPE);
+    interface Builder<B extends HasParent> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        default HasParent.Builder<B> parentIRI(String iri) {
+            set("https://enola.dev/parent", new Link(iri));
             return this;
         }
     }

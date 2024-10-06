@@ -19,6 +19,7 @@ package dev.enola.thing.impl;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
@@ -137,6 +138,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         public PredicatesObjects.Builder<B> set(String predicateIRI, Object value) {
             if (value == null) return this;
             if (value instanceof String string && string.isEmpty()) return this;
+            if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
             ImmutableObjects.check(value);
             if (value instanceof Literal literal)
                 set(predicateIRI, literal.value(), literal.datatypeIRI());
@@ -149,6 +151,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
                 String predicateIRI, Object value, @Nullable String datatypeIRI) {
             if (value == null) return this;
             if (value instanceof String string && string.isEmpty()) return this;
+            if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
             ImmutableObjects.check(value);
             if (datatypeIRI != null) {
                 if (value instanceof Literal)

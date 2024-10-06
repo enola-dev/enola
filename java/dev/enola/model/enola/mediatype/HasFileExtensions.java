@@ -35,5 +35,10 @@ public interface HasFileExtensions extends Thing {
             add("https://enola.dev/fileExtensions", fileExtension);
             return this;
         }
+
+        default HasFileExtensions.Builder<B> addAllFileExtensions(Iterable<String> fileExtensions) {
+            addAll("https://enola.dev/fileExtensions", fileExtensions);
+            return this;
+        }
     }
 }

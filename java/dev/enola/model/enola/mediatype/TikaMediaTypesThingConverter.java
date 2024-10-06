@@ -61,30 +61,48 @@ public class TikaMediaTypesThingConverter
             var mediaTypeName = tikaMediaType.toString();
             try {
                 var tikaMimeType = tikaMimeTypes.getRegisteredMimeType(mediaTypeName);
-                var iri = MediaTypes.toIRI(TikaMediaTypes.toGuava(tikaMediaType));
+                var iri = toIRI(tikaMediaType);
                 MediaType.Builder thing =
                         into.getBuilder(iri, MediaType.Builder.class, MediaType.class);
 
                 thing.mediaType(tikaMimeType.getName());
                 thing.label(tikaMimeType.getAcronym());
                 thing.comment(tikaMimeType.getDescription());
-                // TODO thing.addAllFileExtensions(tikaMimeType.getExtensions());
-                thing.addFileExtension(tikaMimeType.getExtension());
-                // TODO thing.addAllSeeAlso(tikaMimeType.getLinks())
+                thing.addAllFileExtensions(tikaMimeType.getExtensions());
+                thing.addAllSeeAlso(
+                        tikaMimeType.getLinks().stream().map(uri -> uri.toString()).toList());
 
                 // TODO var uniformTypeIdentifier = tikaMimeType.getUniformTypeIdentifier();
                 // TODO var hasMagic = tikaMimeType.hasMagic();
 
-                tikaMediaTypeRegistry.getChildTypes(tikaMediaType);
-                tikaMediaTypeRegistry.getSupertype(tikaMediaType);
+                // TODO Tika hard-codes :( a few special cases, and doesn't e.g. do +json...
+                var superType = tikaMediaTypeRegistry.getSupertype(tikaMediaType);
+                if (superType != null) thing.parentIRI(toIRI(superType));
 
-                var baseType = tikaMediaType.getBaseType();
-                if (!baseType.equals(tikaMediaType)) {}
+                // tikaMediaType.getBaseType() is a superset of getSupertype()
+
+                // TODO Making the following a 1 liner...
+                // TODO Remove this once children are automagically set by generic Inference!!
+                // TODO Uncomment, once GraphvizGenerator more nicely coalesces parent & children
+                /*
+                var children = tikaMediaTypeRegistry.getChildTypes(tikaMediaType);
+                if (!children.isEmpty()) {
+                    var childrenIRI = ImmutableSet.<Link>builderWithExpectedSize(children.size());
+                    for (var child : children) {
+                        childrenIRI.add(new Link(toIRI(child)));
+                    }
+                    thing.childrenIRI(childrenIRI.build());
+                }
+                */
 
             } catch (MimeTypeException e) {
                 LOG.warn("MediaType not found: {}", mediaTypeName, e);
             }
         }
         return true;
+    }
+
+    private String toIRI(org.apache.tika.mime.MediaType tikaMediaType) {
+        return MediaTypes.toIRI(TikaMediaTypes.toGuava(tikaMediaType));
     }
 }

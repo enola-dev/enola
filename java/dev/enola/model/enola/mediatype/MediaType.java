@@ -17,12 +17,20 @@
  */
 package dev.enola.model.enola.mediatype;
 
+import dev.enola.model.enola.HasChildren;
+import dev.enola.model.enola.HasParent;
 import dev.enola.model.w3.rdfs.HasComment;
 import dev.enola.model.w3.rdfs.HasLabel;
 import dev.enola.model.w3.rdfs.HasSeeAlso;
 
 public interface MediaType
-        extends HasLabel, HasComment, HasSeeAlso, HasFileExtensions, HasMediaType {
+        extends HasLabel,
+                HasComment,
+                HasSeeAlso,
+                HasFileExtensions,
+                HasMediaType,
+                HasParent,
+                HasChildren {
 
     // In theory: interface Builder<B extends MediaType> extends ...
     // In practice, we know we're not going to further extend MediaType, so just:
@@ -31,5 +39,7 @@ public interface MediaType
                     HasComment.Builder<MediaType>,
                     HasSeeAlso.Builder<MediaType>,
                     HasFileExtensions.Builder<MediaType>,
-                    HasMediaType.Builder<MediaType> {}
+                    HasMediaType.Builder<MediaType>,
+                    HasParent.Builder<MediaType>,
+                    HasChildren.Builder<MediaType> {}
 }

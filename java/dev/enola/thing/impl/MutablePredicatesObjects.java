@@ -20,6 +20,7 @@ package dev.enola.thing.impl;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 
 import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
@@ -59,6 +60,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     public Builder2<B> set(String predicateIRI, Object value) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
+        if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
         if (value instanceof Literal literal)
             set(predicateIRI, literal.value(), literal.datatypeIRI());
         else properties.put(predicateIRI, value);
@@ -69,6 +71,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     public Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
+        if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
         if (datatypeIRI != null) {
             if (value instanceof Literal)
                 throw new IllegalArgumentException("Cannot set Literal AND Datatype");
@@ -90,6 +93,22 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             builder.add(value);
         } else if (object instanceof ImmutableSet.Builder builder) {
             builder.add(value);
+        } else
+            throw new IllegalStateException(
+                    predicateIRI + " is not an ImmutableSet.Builder: " + object);
+        return this;
+    }
+
+    @Override
+    public <T> Builder2<B> addAll(String predicateIRI, Iterable<T> value) {
+        if (value == null) return this;
+        var object = properties.get(predicateIRI);
+        if (object == null) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(value);
+        } else if (object instanceof ImmutableSet.Builder builder) {
+            builder.addAll(value);
         } else
             throw new IllegalStateException(
                     predicateIRI + " is not an ImmutableSet.Builder: " + object);
@@ -124,6 +143,15 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     }
 
     @Override
+    public <T> Builder2<B> addAll(
+            String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI) {
+        if (value == null) return this;
+        checkCollectionDatatype(predicateIRI, datatypeIRI);
+        addAll(predicateIRI, value);
+        return this;
+    }
+
+    @Override
     public <T> Builder2<B> addOrdered(String predicateIRI, T value, @Nullable String datatypeIRI) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
@@ -137,7 +165,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         // ... but this is intentional and matches intended strongly type safe generated code.
         if (datatypeIRI != null) {
             var previous = datatypes.putIfAbsent(predicateIRI, datatypeIRI);
-            if (!datatypeIRI.equals(previous))
+            if (previous != null && !datatypeIRI.equals(previous))
                 throw new IllegalStateException(
                         predicateIRI + " has another Datatype: " + previous);
         }
