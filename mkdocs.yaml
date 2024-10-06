@@ -58,7 +58,8 @@ nav:
       - Graph: concepts/graph.md
       - Timeline: concepts/timeline.md
       - Enola:
-          - MIME: models/enola.dev/mediaType/graph.gv.svg
+          - MIME Simple: models/enola.dev/mediaType/graph.gv.svg
+          - MIME Full: models/enola.dev/mediaType/graphviz.gv.svg
   - Concepts:
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md

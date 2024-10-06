@@ -19,11 +19,14 @@ package dev.enola.thing.impl;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingTester;
 import dev.enola.thing.java2.TBF;
 
 import org.junit.Test;
+
+import java.util.List;
 
 public class MutableThingTest extends ThingTester {
 
@@ -46,7 +49,9 @@ public class MutableThingTest extends ThingTester {
         };
     }
 
-    @Test // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
+    // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
+
+    @Test
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void add() {
         thingBuilder.iri(THING_IRI);
@@ -57,5 +62,26 @@ public class MutableThingTest extends ThingTester {
         assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
         assertThat(thing.isIterable(PREDICATE_IRI)).isTrue();
         assertThat(thing.isOrdered(PREDICATE_IRI)).isFalse();
+    }
+
+    @Test
+    public void addAll() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2) thingBuilder;
+        thingBuilder2.addAll(PREDICATE_IRI, List.of("a", "b"));
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void addAllWithDatatype() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2) thingBuilder;
+        thingBuilder2.addAll(
+                PREDICATE_IRI, List.of("https://vorburger.ch"), KIRI.SCHEMA.URL_DATATYPE);
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class))
+                .containsExactly("https://vorburger.ch");
+        assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(KIRI.SCHEMA.URL_DATATYPE);
     }
 }

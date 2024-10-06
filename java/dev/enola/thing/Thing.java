@@ -65,15 +65,29 @@ public interface Thing extends HasIRI, PredicatesObjects {
 
         <T> Thing.Builder2<B> add(String predicateIRI, T value);
 
+        <T> Thing.Builder2<B> addAll(String predicateIRI, Iterable<T> value);
+
         default <T> Thing.Builder2<B> add(HasPredicateIRI predicate, T value) {
             return add(predicate.iri(), value);
         }
 
+        default <T> Thing.Builder2<B> addAll(HasPredicateIRI predicate, Iterable<T> value) {
+            return addAll(predicate.iri(), value);
+        }
+
         <T> Thing.Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        <T> Thing.Builder2<B> addAll(
+                String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI);
 
         default <T> Thing.Builder2<B> add(
                 HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
             return add(predicate.iri(), value, datatypeIRI);
+        }
+
+        default <T> Thing.Builder2<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value, @Nullable String datatypeIRI) {
+            return addAll(predicate.iri(), value, datatypeIRI);
         }
 
         <T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);

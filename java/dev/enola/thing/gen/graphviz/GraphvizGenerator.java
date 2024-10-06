@@ -39,6 +39,15 @@ import java.util.Set;
 
 public class GraphvizGenerator implements ThingsIntoAppendableConverter {
 
+    // TODO Coalesce e.g. enola:parent & enola:children (schema:inverseOf) into single dir=both link
+    // This would be useful e.g. for the TikaMediaTypesThingConverter produced graph diagram
+    // Note that strict digraph graphName { concentrate=true does not do this (because of labels;
+    // see https://stackoverflow.com/a/3463332/421602).
+
+    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
+
+    // TODO Links to other Things (not external HTTP) from within nested blank nodes? With ports??
+
     private static final int MAX_TEXT_LENGTH = 23;
 
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
@@ -50,10 +59,6 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     // e.g. http://... (of ^schema:URL Datatype).
 
     // NB: We're intentionally *NOT* showing the Datatype of properties (it's "too much")-
-
-    // TODO Subgraphs? https://graphviz.org/doc/info/lang.html#subgraphs-and-clusters Classes?
-
-    // TODO Links to other Things (not external HTTP) from within nested blank nodes? With ports??
 
     private final ThingMetadataProvider metadataProvider;
 

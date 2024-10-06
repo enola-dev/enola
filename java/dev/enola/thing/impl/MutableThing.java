@@ -100,8 +100,21 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     }
 
     @Override
+    public <T> Thing.Builder2<B> addAll(String predicateIRI, Iterable<T> value) {
+        super.addAll(predicateIRI, value);
+        return this;
+    }
+
+    @Override
     public <T> Thing.Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI) {
         super.add(predicateIRI, value, datatypeIRI);
+        return this;
+    }
+
+    @Override
+    public <T> Thing.Builder2<B> addAll(
+            String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI) {
+        super.addAll(predicateIRI, value, datatypeIRI);
         return this;
     }
 

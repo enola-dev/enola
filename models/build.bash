@@ -47,6 +47,6 @@ dot -Tsvg -O docs/models/graphviz.gv
 # NB: --no-file-loader only marginally helps to make the picture clearer; what we need is real sparql: query support, to filter!
 # TODO Merge these two (once it works & looks well enough); this might need adding support for multiple repeating --load arguments...
 ./enola rosetta --no-file-loader --in models/enola.dev/mediaTypes.ttl --out=docs/models/enola.dev/mediaType/graph.gv && dot -Tsvg -O docs/models/enola.dev/mediaType/graph.gv
-./enola -v gen graphviz --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
+./enola -v gen graphviz --no-file-loader --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
 
 # TODO RDF* --load="models/**.ttl[s?]"

@@ -229,8 +229,14 @@ public interface PredicatesObjects {
          */
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value);
 
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
+                String predicateIRI, Iterable<T> value);
+
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
+                String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI);
 
         /**
          * Adds one of possibly several value objects for the given predicate IRI - and preserves

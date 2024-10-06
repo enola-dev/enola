@@ -24,6 +24,7 @@ package dev.enola.thing;
  * be returned by {@link Thing#get(String)} and distinguished from a String which is not an IRI but
  * text.
  */
+// TODO Consider using a Datatype to indicate link? But which...
 // TODO Abandon this and just use java.net.URI in Things instead?!
 //   Or change this record to a class and have an URI field, for 1 time conversion.
 // TODO Make it extend Thing; and voilà, it's a Property Graph!

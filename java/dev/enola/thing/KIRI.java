@@ -117,12 +117,15 @@ public final class KIRI {
         public static final String LOGO = NS + "logo";
 
         /**
-         * URL 🔗 of the Thing, see https://schema.org/url. You *CAN* always http GET an URL. This
-         * is NOT the same as a logical URI/IRI, and thus not be to confused with the {@link #ID}.
-         * One example of this could be e.g. its use in Thing "metadata" about a file: URL; this
-         * would point to the actual file itself.
+         * IRI of Property for URL 🔗 of the Thing, see https://schema.org/url. You *CAN* always
+         * http GET an URL. This is NOT the same as a logical URI/IRI, and thus not be to confused
+         * with the {@link #ID}. One example of this could be e.g. its use in Thing "metadata" about
+         * a file: URL; this would point to the actual file itself.
          */
         public static final String URL = NS + "url";
+
+        /** IRI of URL Datatype. Used to mark properties which are links to webpages. */
+        public static final String URL_DATATYPE = NS + "URL";
 
         /**
          * IRI of a Thing which is "the 🪞 same as this one", see https://schema.org/sameAs. For
