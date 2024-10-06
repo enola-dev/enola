@@ -15,24 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java2;
+package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.ThingTester;
+import dev.enola.thing.java2.TBF;
 
-/** TBF is a Thing Builder Factory. */
-@FunctionalInterface
-public interface TBF {
+public class MutableThingTest extends ThingTester {
 
-    /**
-     * Creates a new {@link Thing.Builder} instance of (Java) type T.
-     *
-     * <p>T may be an interface, not a concrete class.
-     */
-    <T extends Thing, B extends Thing.Builder<T>> B create(
-            Class<B> builderClass, Class<T> thingClass);
-
-    @SuppressWarnings("unchecked")
-    default Thing.Builder<Thing> create() {
-        return create(Thing.Builder.class, Thing.class);
+    @Override
+    protected TBF getThingBuilderFactory() {
+        return new TBF() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public <T extends Thing, B extends Thing.Builder<T>> B create(
+                    Class<B> builderClass, Class<T> thingClass) {
+                // TODO Resolve raw warning
+                return (B) new MutableThing(3);
+            }
+        };
     }
 }

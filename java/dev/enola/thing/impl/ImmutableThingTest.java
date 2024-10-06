@@ -24,6 +24,8 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.thing.ThingConverterInto;
+import dev.enola.thing.ThingTester;
+import dev.enola.thing.java2.TBF;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Test;
@@ -32,7 +34,14 @@ import java.io.IOException;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 
-public class ImmutableThingTest {
+public class ImmutableThingTest extends ThingTester {
+
+    // TODO Move some of the tests from here up into ThingTester
+
+    @Override
+    protected TBF getThingBuilderFactory() {
+        return ImmutableThing.FACTORY;
+    }
 
     @Test
     public void hashCodeEquals() throws ConversionException, IOException {
