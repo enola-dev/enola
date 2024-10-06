@@ -17,11 +17,22 @@
  */
 package dev.enola.thing.repo;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.ThingConverterInto;
+import dev.enola.thing.impl.MutableThing;
+
+import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 class ThingMerger {
-    // TODO Implement missing ThingMergerTest coverage!
+
+    // TODO This currently only works for the 1st / top-level,
+    //   but later ideally really needs to recurse into all contained PredicatesObjects...
 
     public static Thing merge(Thing existing, Thing update) {
         if (!existing.iri().equals(update.iri())) throw new IllegalArgumentException();
@@ -29,7 +40,9 @@ class ThingMerger {
         if (existing.predicateIRIs().isEmpty()) return update;
         if (update.predicateIRIs().isEmpty()) return existing;
 
-        var merged = existing.copy();
+        var merged = new MutableThing();
+        new ThingConverterInto().convertInto(existing, merged);
+
         var properties = update.properties();
         properties.forEach(
                 (predicate, value) -> {
@@ -37,8 +50,16 @@ class ThingMerger {
                     if (old == null) merged.set(predicate, value, update.datatype(predicate));
                     else if (old.equals(value)) {
                         // That's fine!
-                    } else if (predicate.equals(KIRI.E.ORIGIN)) {
-                        // TODO Implement merging both into a List, with test coverage!
+                    } else if (Objects.equals(
+                            existing.datatype(predicate), update.datatype(predicate))) {
+                        var newCollection =
+                                existing.isOrdered(predicate) || update.isOrdered(predicate)
+                                        ? ImmutableList.builder()
+                                        : ImmutableSet.builder();
+                        newCollection.addAll(collectivize(existing.get(predicate)));
+                        newCollection.addAll(collectivize(update.get(predicate)));
+                        merged.set(predicate, newCollection.build(), update.datatype(predicate));
+
                     } else
                         throw new IllegalStateException(
                                 "Cannot merge "
@@ -51,5 +72,11 @@ class ThingMerger {
                                         + update.getString(KIRI.E.ORIGIN));
                 });
         return merged.build();
+    }
+
+    private static Iterable<?> collectivize(@Nullable Object o) {
+        if (o == null) return ImmutableList.of();
+        if (o instanceof Iterable<?> iterable) return iterable;
+        return ImmutableSet.of(o);
     }
 }

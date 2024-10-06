@@ -46,6 +46,8 @@ import java.net.URI;
 public class TikaMediaTypesThingConverter
         implements TypedUriIntoThingConverter<MediaType, MediaType.Builder> {
 
+    // TODO Make https://enola.dev/fileExtensions be links, not text?
+
     private static final Logger LOG = LoggerFactory.getLogger(TikaMediaTypesThingConverter.class);
 
     public static final URI IRI = URI.create("enola:TikaMediaTypes");
@@ -66,6 +68,7 @@ public class TikaMediaTypesThingConverter
                 var iri = toIRI(tikaMediaType);
                 MediaType.Builder thing =
                         into.getBuilder(iri, MediaType.Builder.class, MediaType.class);
+                thing.type("https://enola.dev/MediaType");
                 thing.mediaType(tikaMimeType.getName());
 
                 var label = tikaMimeType.getAcronym();

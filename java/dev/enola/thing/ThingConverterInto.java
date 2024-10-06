@@ -17,11 +17,8 @@
  */
 package dev.enola.thing;
 
-import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.thing.Thing.Builder;
-
-import java.io.IOException;
 
 /**
  * ThingConverterInto converts a {@link Thing} into an {@link Thing.Builder}.
@@ -31,7 +28,7 @@ import java.io.IOException;
 public class ThingConverterInto implements ConverterInto<Thing, Thing.Builder> {
 
     @Override
-    public boolean convertInto(Thing from, Builder into) throws ConversionException, IOException {
+    public boolean convertInto(Thing from, Builder into) {
         into.iri(from.iri());
         for (var predicateIRI : from.predicateIRIs()) {
             var value = from.get(predicateIRI);
