@@ -55,6 +55,8 @@ rdfs:Datatype :color "olive".
   owl:equivalentClass dcterms:MediaType;
   :example <https://enola.dev/mediaType/text/plain>.
 
+:TikaMediaTypes :description "This is a 'special system IRI' that is used to '--load enola:TikaMediaTypes' all Media Types registered in Tika.".
+
 :datatype a rdf:Property;
   :description "RDF Datatype of a MediaType. Only some few but by far not all media types have an equivalent datatype.";
   rdfs:isDefinedBy :MediaTypeModel;

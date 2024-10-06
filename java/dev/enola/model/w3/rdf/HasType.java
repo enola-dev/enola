@@ -43,6 +43,9 @@ public interface HasType extends Thing {
     }
 
     interface Builder<B extends HasType> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        HasType.Builder<B> type(String typeIRI);
+        default HasType.Builder<B> type(String typeIRI) {
+            set(KIRI.RDF.TYPE, typeIRI);
+            return this;
+        }
     }
 }
