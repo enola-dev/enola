@@ -65,15 +65,19 @@ public class ListThingService implements ThingService {
                 if (ENOLA_ROOT_LIST_IRIS.equals(thingIRI)) continue;
                 if (ENOLA_ROOT_LIST_THINGS.equals(thingIRI)) continue;
                 var any = protoThingRepository.get(thingIRI);
-                if (any.getTypeUrl().endsWith("Thing")) {
-                    try {
-                        var thing = any.unpack(Thing.class);
-                        things.addThings(thing);
-                    } catch (InvalidProtocolBufferException e) {
-                        throw new IllegalStateException("Huh?!", e);
-                    }
-                } else {
+                if (any == null) {
+                    LOG.error("Any null: {}", thingIRI);
+                    continue;
+                }
+                if (!any.getTypeUrl().endsWith("Thing")) {
                     LOG.warn("Skipping non-Thing Any: {}", any);
+                    continue;
+                }
+                try {
+                    var thing = any.unpack(Thing.class);
+                    things.addThings(thing);
+                } catch (InvalidProtocolBufferException e) {
+                    throw new IllegalStateException("Huh?!", e);
                 }
             }
             return Any.pack(things.build());
