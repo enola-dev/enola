@@ -104,7 +104,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     private void printFullThing(
             Thing thing, Appendable out, Set<String> thingIRIs, Set<String> linkIRIs)
             throws IOException {
-        boolean full = TLC.optional(Flags.FULL).orElse(true);
+        boolean full = TLC.optional(Flags.FULL).orElse(false);
 
         out.append("  \"");
         out.append(thing.iri());
