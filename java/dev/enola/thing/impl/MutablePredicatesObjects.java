@@ -20,6 +20,7 @@ package dev.enola.thing.impl;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -51,14 +52,20 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public Builder2<B> set(String predicateIRI, Object value) {
-        properties.put(predicateIRI, value);
+        if (value instanceof Literal literal)
+            set(predicateIRI, literal.value(), literal.datatypeIRI());
+        else properties.put(predicateIRI, value);
         return this;
     }
 
     @Override
     public Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
+        if (datatypeIRI != null) {
+            if (value instanceof Literal)
+                throw new IllegalArgumentException("Cannot set Literal AND Datatype");
+            datatypes.put(predicateIRI, datatypeIRI);
+        }
         properties.put(predicateIRI, value);
-        if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
         return this;
     }
 

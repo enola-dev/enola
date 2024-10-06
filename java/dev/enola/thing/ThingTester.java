@@ -51,4 +51,42 @@ public abstract class ThingTester {
         var thing = thingBuilder.build();
         assertThat(thing.getString(PREDICATE_IRI)).isNull();
     }
+
+    @Test
+    public void insertionOrder() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set("b", "B");
+        thingBuilder.set("a", "A");
+        var thing = thingBuilder.build();
+        assertThat(thing.predicateIRIs()).containsExactly("b", "a").inOrder();
+    }
+
+    @Test
+    public void datatype1() {
+        thingBuilder.iri(THING_IRI);
+        var value = "http://example.org/hi/{NUMBER}";
+        var datatypeIRI = "https://enola.dev/enola:IRITemplate";
+        thingBuilder.set(PREDICATE_IRI, value, datatypeIRI);
+        var thing = thingBuilder.build();
+        assertThat(thing.datatypes()).containsExactly(PREDICATE_IRI, datatypeIRI);
+        assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(datatypeIRI);
+    }
+
+    @Test // TODO This is a mess - Literal should be removed!
+    public void literal() {
+        thingBuilder.iri(THING_IRI);
+        var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
+        thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI));
+        var thing = thingBuilder.build();
+        assertThat(thing.getString(PREDICATE_IRI)).isEqualTo("2024-10-06");
+        assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(datatypeIRI);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    // TODO This is a mess - Literal should be removed!
+    public void literalAndDatatype() {
+        thingBuilder.iri(THING_IRI);
+        var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
+        thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI), datatypeIRI);
+    }
 }

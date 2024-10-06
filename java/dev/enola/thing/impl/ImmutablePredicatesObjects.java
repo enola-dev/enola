@@ -142,8 +142,12 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         public PredicatesObjects.Builder<B> set(
                 String predicateIRI, Object value, @Nullable String datatypeIRI) {
             ImmutableObjects.check(value);
+            if (datatypeIRI != null) {
+                if (value instanceof Literal)
+                    throw new IllegalArgumentException("Cannot set Literal AND Datatype");
+                datatypes.put(predicateIRI, datatypeIRI);
+            }
             properties.put(predicateIRI, value);
-            if (datatypeIRI != null) datatypes.put(predicateIRI, datatypeIRI);
             return this;
         }
 
