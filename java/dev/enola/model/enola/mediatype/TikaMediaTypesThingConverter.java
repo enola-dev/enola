@@ -18,7 +18,8 @@
 package dev.enola.model.enola.mediatype;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.thing.Thing;
+import dev.enola.common.io.mediatype.MediaTypes;
+import dev.enola.format.tika.TikaMediaTypes;
 import dev.enola.thing.io.TypedUriIntoThingConverter;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
@@ -60,12 +61,11 @@ public class TikaMediaTypesThingConverter
             var mediaTypeName = tikaMediaType.toString();
             try {
                 var tikaMimeType = tikaMimeTypes.getRegisteredMimeType(mediaTypeName);
-                var name = tikaMimeType.getName();
-                var iri = "https://enola.dev/mediaType/" + name;
-                Thing.Builder debug =
+                var iri = MediaTypes.toIRI(TikaMediaTypes.toGuava(tikaMediaType));
+                MediaType.Builder thing =
                         into.getBuilder(iri, MediaType.Builder.class, MediaType.class);
-                MediaType.Builder thing = (MediaType.Builder) debug;
 
+                thing.mediaType(tikaMimeType.getName());
                 thing.label(tikaMimeType.getAcronym());
                 thing.comment(tikaMimeType.getDescription());
                 // TODO thing.addAllFileExtensions(tikaMimeType.getExtensions());

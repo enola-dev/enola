@@ -86,6 +86,18 @@ public class MediaTypesTest {
                 .isEqualTo(expected);
     }
 
+    @Test
+    public void toIRI() {
+        assertThat(MediaTypes.toIRI(MediaType.PLAIN_TEXT_UTF_8.withoutParameters()))
+                .isEqualTo("https://enola.dev/mediaType/text/plain");
+        assertThat(MediaTypes.toIRI(MediaType.PLAIN_TEXT_UTF_8))
+                .isEqualTo("https://enola.dev/mediaType/text/plain?charset=utf-8");
+        assertThat(MediaTypes.toIRI(MediaType.PLAIN_TEXT_UTF_8.withParameter("x", "y")))
+                .isEqualTo("https://enola.dev/mediaType/text/plain?charset=utf-8&x=y");
+        assertThat(MediaTypes.toIRI(MediaType.parse("application/dita+xml; format=concept")))
+                .isEqualTo("https://enola.dev/mediaType/application/dita/xml?format=concept");
+    }
+
     // TODO use example/test instead of application/test (and rename accordingly everywhere...)
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types#example
 

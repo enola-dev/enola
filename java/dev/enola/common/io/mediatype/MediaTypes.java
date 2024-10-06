@@ -22,8 +22,10 @@ import com.google.common.net.MediaType;
 import java.util.Optional;
 import java.util.Set;
 
-/** Extension methods for {@link MediaType}. */
+/** Extension methods for (Guava's) {@link MediaType}. */
+// See also dev.enola.format.tika.TikaMediaTypes for its.
 public final class MediaTypes {
+    private MediaTypes() {}
 
     /**
      * Improved version of {@link MediaType#parse(String)} which also invokes {@link
@@ -67,5 +69,26 @@ public final class MediaTypes {
             throw new IllegalArgumentException(
                     "MediaType has multiple '" + name + "' parameters: " + mediaType);
         }
+    }
+
+    /**
+     * Converts a MediaType to an (Enola.dev-defined) IRI. For example, "text/plain" is converted to
+     * "<a
+     * href="https://enola.dev/mediaType/text/plain">https://enola.dev/mediaType/text/plain</a>",
+     * and "application/dita+xml;format=concept" to "<a
+     * href="https://enola.dev/mediaType/application/dita+xml;format=concept">https://enola.dev/mediaType/application/dita/xml?format=concept</a>".
+     */
+    public static String toIRI(MediaType mediaType) {
+        var sb = new StringBuilder("https://enola.dev/mediaType/");
+        sb.append(mediaType.type());
+        sb.append('/');
+        sb.append(mediaType.subtype().replace('+', '/'));
+        var parameters = mediaType.parameters();
+        if (!parameters.isEmpty()) {
+            sb.append('?');
+            parameters.forEach(
+                    (key, value) -> sb.append(key).append('=').append(value).append('&'));
+            return sb.substring(0, sb.length() - 1);
+        } else return sb.toString();
     }
 }

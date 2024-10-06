@@ -60,8 +60,8 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
         for (var tikaMediaType : tikaMediaTypes) {
             // TODO Transform tikaMediaTypeRegistry super & child types into alternatives?
             var alt = ImmutableSet.<MediaType>of();
-            var enolaMediatype = convert(tikaMediaType);
-            knownTypesWithAlternativesBuilder.put(enolaMediatype, alt);
+            var guavaMediaType = TikaMediaTypes.toGuava(tikaMediaType);
+            knownTypesWithAlternativesBuilder.put(guavaMediaType, alt);
 
             var mediaTypeName = tikaMediaType.toString();
             try {
@@ -72,7 +72,7 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
                     // TODO This is probably not actually required? Even wrong??
                     if (!additionalExtension.startsWith("."))
                         additionalExtension = "." + additionalExtension;
-                    extensionsToTypesBuilder.put(additionalExtension, enolaMediatype);
+                    extensionsToTypesBuilder.put(additionalExtension, guavaMediaType);
                 }
             } catch (MimeTypeException e) {
                 LOG.warn("MediaType not found: {}", mediaTypeName, e);
@@ -101,18 +101,11 @@ public class TikaMediaTypeProvider implements MediaTypeProvider {
         metadata.set(Metadata.CONTENT_TYPE, original.toString());
 
         try (var is = byteSource.openBufferedStream()) {
-            var mediaType = convert(tika.detect(is, metadata));
+            var mediaType = TikaMediaTypes.toGuava(tika.detect(is, metadata));
             return mediaType;
         } catch (IOException e) {
             LOG.debug("IOException for {},", uri, e);
             return original;
         }
-    }
-
-    private MediaType convert(org.apache.tika.mime.MediaType tikaMediaType) {
-        // Not efficient: return Optional.of(MediaType.parse(tikaMediaType.toString()));
-        var guavaMediaType = MediaType.create(tikaMediaType.getType(), tikaMediaType.getSubtype());
-        var multiMap = Multimaps.forMap(tikaMediaType.getParameters());
-        return guavaMediaType.withParameters(multiMap);
     }
 }
