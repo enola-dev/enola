@@ -134,7 +134,8 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
         @Override
         public B build() {
-            if (iri == null) throw new IllegalStateException("Cannot build Thing without IRI");
+            if (iri == null)
+                throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
             // TODO Remove (B) type cast
             return (B) new ImmutableThing(iri, properties.build(), datatypes.build());
         }

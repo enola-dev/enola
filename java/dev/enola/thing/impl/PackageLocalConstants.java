@@ -15,24 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java2;
+package dev.enola.thing.impl;
 
-import dev.enola.thing.Thing;
+final class PackageLocalConstants {
+    private PackageLocalConstants() {}
 
-/** TBF is a Thing Builder Factory. */
-@FunctionalInterface
-public interface TBF {
-
-    /**
-     * Creates a new {@link Thing.Builder} instance of (Java) type T.
-     *
-     * <p>T may be an interface, not a concrete class.
-     */
-    <T extends Thing, B extends Thing.Builder<T>> B create(
-            Class<B> builderClass, Class<T> thingClass);
-
-    @SuppressWarnings("unchecked")
-    default Thing.Builder<Thing> create() {
-        return create(Thing.Builder.class, Thing.class);
-    }
+    static String NEEDS_IRI_MESSAGE = "Cannot build Thing without IRI";
 }

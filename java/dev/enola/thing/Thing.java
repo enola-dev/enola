@@ -56,6 +56,7 @@ public interface Thing extends HasIRI, PredicatesObjects {
         B build();
     }
 
+    // TODO Once ImmutableThing.Builder implements Builder2, just fold it into above
     // TODO How to best name this, and the equivalent in PredicatesObjects?
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     interface Builder2<B extends Thing> // skipcq: JAVA-E0169

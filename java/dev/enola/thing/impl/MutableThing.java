@@ -25,12 +25,14 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Implementation of {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
+ * Implementation of both {@link Thing} and its {@link Thing.Builder} which is simple and mutable.
+ *
+ * <p>When {@link #build()} then it returns an {@link IImmutableThing} copy of this (NOT itself).
  *
  * <p>This implementation is pretty inefficient, for both its runtime performance and memory
- * consumption, and should only be used "short lived"; prefer {@link IImmutableThing}
- * implementations, such as (typically) the {@link ImmutableThing} or its generated subclasses, for
- * any objects that will be "kept around".
+ * consumption, and should only be used "short lived"; prefer (building this into a) {@link
+ * IImmutableThing} implementations, such as (typically) the {@link ImmutableThing} or its generated
+ * subclasses, for any objects that will be "kept around".
  *
  * <p>This implementation is not thread safe, obviously.
  */
@@ -124,6 +126,7 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     @SuppressWarnings("unchecked") // TODO How to remove (B) type cast?!
     public B build() {
         var immutableBuilder = ImmutableThing.builderWithExpectedSize(predicateIRIs().size());
+        if (iri == null) throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
         immutableBuilder.iri(iri);
         deepBuildInto(immutableBuilder);
         return (B) immutableBuilder.build();
