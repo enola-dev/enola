@@ -17,9 +17,13 @@
  */
 package dev.enola.thing.impl;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingTester;
 import dev.enola.thing.java2.TBF;
+
+import org.junit.Test;
 
 public class MutableThingTest extends ThingTester {
 
@@ -40,5 +44,18 @@ public class MutableThingTest extends ThingTester {
                                     + thingClass);
             }
         };
+    }
+
+    @Test // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void add() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2) thingBuilder;
+        thingBuilder2.add(PREDICATE_IRI, "a");
+        thingBuilder2.add(PREDICATE_IRI, "b");
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+        assertThat(thing.isIterable(PREDICATE_IRI)).isTrue();
+        assertThat(thing.isOrdered(PREDICATE_IRI)).isFalse();
     }
 }
