@@ -38,11 +38,11 @@ public class GraphvizTest {
 
     @Test
     public void mediaType() {
-        ReadableResource r = new ClasspathResource(URI.create("classpath:/graph.expected.gv"));
+        ReadableResource r = new ClasspathResource(URI.create("classpath:/graph.expected-full.gv"));
         assertThat(r.mediaType()).isEqualTo(GraphvizMediaType.GV);
 
         var rp = new ClasspathResource.Provider();
-        r = rp.get("classpath:/graph.expected.gv");
+        r = rp.get("classpath:/graph.expected-full.gv");
         assertThat(r.mediaType()).isEqualTo(GraphvizMediaType.GV);
 
         r = new MemoryResource(GraphvizMediaType.GV);

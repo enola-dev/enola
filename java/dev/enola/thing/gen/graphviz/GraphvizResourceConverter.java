@@ -17,6 +17,9 @@
  */
 package dev.enola.thing.gen.graphviz;
 
+import static dev.enola.common.io.iri.URIs.getQueryMap;
+
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
@@ -24,6 +27,9 @@ import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.thing.io.Loader;
 
 public class GraphvizResourceConverter implements CatchingResourceConverter {
+
+    /** See {@link GraphvizGenerator.Flags#FULL}. */
+    public static final String OUT_URI_QUERY_PARAMETER_FULL = "full";
 
     private final GraphvizGenerator graphvizGenerator;
     private final Loader loader;
@@ -40,7 +46,13 @@ public class GraphvizResourceConverter implements CatchingResourceConverter {
             return false;
 
         var things = loader.loadAtLeastOneThing(from.uri());
-        graphvizGenerator.convertIntoOrThrow(things, into);
+
+        try (var ctx = TLC.open()) {
+            var full =
+                    Boolean.parseBoolean(getQueryMap(into.uri()).get(OUT_URI_QUERY_PARAMETER_FULL));
+            ctx.push(GraphvizGenerator.Flags.FULL, full);
+            graphvizGenerator.convertIntoOrThrow(things, into);
+        }
         return true;
     }
 }

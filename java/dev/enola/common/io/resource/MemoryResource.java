@@ -30,6 +30,18 @@ public class MemoryResource extends BaseResource implements Resource {
 
     private static final AtomicLong counter = new AtomicLong();
 
+    private static String next() {
+        return "memory:" + Long.toHexString(counter.incrementAndGet());
+    }
+
+    private static URI nextURI() {
+        return URI.create(next());
+    }
+
+    private static URI nextURI(String querySuffix) {
+        return URI.create(next() + "?" + querySuffix);
+    }
+
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
     protected MemoryResource(URI uri, MediaType mediaType, boolean fixedMediaType) {
@@ -42,7 +54,11 @@ public class MemoryResource extends BaseResource implements Resource {
 
     public MemoryResource(MediaType mediaType) {
         // TODO Unify this with TestResource create()
-        this(URI.create("memory:" + Long.toHexString(counter.incrementAndGet())), mediaType);
+        this(nextURI(), mediaType);
+    }
+
+    public MemoryResource(MediaType mediaType, String querySuffix) {
+        this(nextURI(querySuffix), mediaType);
     }
 
     @Override

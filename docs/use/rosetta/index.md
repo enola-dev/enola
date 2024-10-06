@@ -46,13 +46,22 @@ Enola can generate [Graph Diagrams like this](../../models/example.org/graph.md)
 Similarly to e.g. [rdflib](https://rdflib.readthedocs.io/)'s `rdf2dot` (and `rdfs2dot`):
 
 ```bash cd ../.././..
-$ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gv && dot -Tsvg -O docs/BUILT/picasso.gv
+$ ./enola rosetta --in test/picasso.ttl --out "docs/BUILT/picasso.gv?full=true" && dot -Tsvg -O docs/BUILT/picasso.gv
 ...
 ```
 
 produces [`picasso.gv`](../../BUILT/picasso.gv) and [`picasso.gv.svg`](../../BUILT/picasso.gv.svg):
 
 ![Graph of Painters](../../BUILT/picasso.gv.svg)
+
+The `full` URL query string can be used to control appearance, and `--no-file-loader` suppresses the file; see:
+
+```bash cd ../.././..
+$ ./enola rosetta --no-file-loader --in test/picasso.ttl --out "docs/BUILT/picasso-small.gv?full=false" && dot -Tsvg -O docs/BUILT/picasso-small.gv
+...
+```
+
+![Smaller Graph of Painters](../../BUILT/picasso-small.gv.svg)
 
 ### GEXF
 
