@@ -47,6 +47,10 @@ items:
       description: "Test it with ThingTester"
       tags: [clean, tech]
 
+  - Turn Architecture around, make Proto an export format, not the core:
+      description: "Test it with ThingTester"
+      tags: [proto, clean, tech]
+
   - JSON Schema as Meta:
       links:
         - https://github.com/lbovet/scardif

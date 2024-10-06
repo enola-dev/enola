@@ -46,6 +46,8 @@ import java.util.stream.Collectors;
 @Command(name = "docgen", description = "Generate Markdown Documentation")
 public class DocGenCommand extends CommandWithModelAndOutput {
 
+    // TODO Replace "docgen" completely with separate class GenCommand subcommands
+
     @Option(
             names = {"--diagram", "-d"},
             required = true,

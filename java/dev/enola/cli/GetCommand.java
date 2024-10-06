@@ -25,6 +25,8 @@ import picocli.CommandLine.Command;
 @Command(name = "get", description = "Get Thing")
 public class GetCommand extends CommandWithIRI {
 
+    // TODO Add "export" support; e.g. to get as *.ttl
+
     @Override
     protected void run(EnolaServiceBlockingStub service, String iri) throws Exception {
         var request = GetThingRequest.newBuilder().setIri(iri).build();
