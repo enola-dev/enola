@@ -24,8 +24,8 @@ import picocli.CommandLine;
         description = "Generates output from Things",
         subcommands = {
             GenGraphvizCommand.class,
+            GenGexfCommand.class,
             // TODO GenMarkdownCommand.class,
-            // TODO GenGexfCommand.class,
             // TODO GenTimelineHTMLCommand.class,
         })
 public class GenCommand {}

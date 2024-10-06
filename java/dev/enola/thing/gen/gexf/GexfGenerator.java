@@ -37,12 +37,15 @@ import java.io.IOException;
 
 public class GexfGenerator implements ThingsIntoAppendableConverter {
 
-    // TODO Treat blank nodes, same as in GraphvizGenerator
+    // TODO Write Attributes? https://gexf.net/data.html
+    //   - Does this clutter the graph? Or not... too much, all, really?
+    //   - Can it be used as Hierarchy Attribute for Circle Layout on https://gephi.org/gephi-lite/?
 
-    // TODO Custom Node color, shape & size; re-using logic from GraphvizGenerator
-    // TODO Custom Edge color, thickness, shape; re-using logic from GraphvizGenerator
+    // TODO Treat blank nodes same as in GraphvizGenerator
 
-    // TODO Write Attributes? Or not... too much?
+    // TODO Colors, see https://gexf.net/viz.html
+    //   - Custom Node color, shape & size; re-using logic from GraphvizGenerator
+    //   - Custom Edge color, thickness, shape; re-using logic from GraphvizGenerator
 
     // NB: RosettaTest#testGraphviz() is the test coverage for this code
 
