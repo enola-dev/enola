@@ -18,9 +18,7 @@
 package dev.enola.thing.gen.markdown;
 
 import com.google.common.collect.ImmutableSortedSet;
-import com.google.common.collect.Iterables;
 
-import dev.enola.common.context.TLC;
 import dev.enola.common.function.CheckedPredicate;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.metadata.Metadata;
@@ -35,7 +33,7 @@ import dev.enola.thing.gen.gexf.GexfGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.gen.visjs.VisJsTimelineGenerator;
 import dev.enola.thing.message.ProtoThingMetadataProvider;
-import dev.enola.thing.message.ThingAdapter;
+import dev.enola.thing.message.ProtoThings;
 import dev.enola.thing.metadata.ThingHierarchyProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
@@ -47,7 +45,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 /** Generates a "site" of Markdown files, given some Things. */
@@ -123,7 +120,7 @@ public class MarkdownSiteGenerator {
                         };
         */
 
-        var javaThings = proto2java(protoThings);
+        var javaThings = ProtoThings.proto2java(protoThings);
         timelineGenerator.convertIntoOrThrow(
                 javaThings, rp.getWritableResource(base.resolve("timeline.html")));
         gexfGenerator.convertIntoOrThrow(
@@ -190,14 +187,5 @@ public class MarkdownSiteGenerator {
             mig.generate(writer, indexURI, base, ts);
         }
         LOG.info("Wrote {}", indexResource);
-    }
-
-    private Iterable<dev.enola.thing.Thing> proto2java(Iterable<Thing> protoThings) {
-        var dtr = TLC.get(DatatypeRepository.class);
-        var javaThings = new ArrayList<dev.enola.thing.Thing>(Iterables.size(protoThings));
-        for (var protoThing : protoThings) {
-            javaThings.add(new ThingAdapter(protoThing, dtr));
-        }
-        return javaThings;
     }
 }
