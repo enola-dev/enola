@@ -87,21 +87,21 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
             ctx.push(ThingProvider.class, new StackedThingProvider(from));
             for (Thing thing : from) {
                 thingIRIs.add(thing.iri());
-                printFullThing(thing, out, thingIRIs, linkIRIs);
+                printThing(thing, out, thingIRIs, linkIRIs);
             }
             // Remove links to all things which were processed after we processed them
             linkIRIs.removeAll(thingIRIs);
             // linkIRIs now contains things which were linked to but that have no properties
             for (String orphanIRI : linkIRIs) {
                 var orphanThing = new OnlyIRIThing(orphanIRI);
-                printFullThing(orphanThing, out, thingIRIs, linkIRIs);
+                printThing(orphanThing, out, thingIRIs, linkIRIs);
             }
         }
         out.append("}\n");
         return true;
     }
 
-    private void printFullThing(
+    private void printThing(
             Thing thing, Appendable out, Set<String> thingIRIs, Set<String> linkIRIs)
             throws IOException {
         boolean full = TLC.optional(Flags.FULL).orElse(false);
