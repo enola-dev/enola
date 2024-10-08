@@ -1,0 +1,26 @@
+{
+  "edgeTypes": [],
+  "edges": [],
+  "name": "Enola.dev",
+  "nodeTypes": [],
+  "nodes": [
+    {
+      "id": "http://www.w3.org/2000/01/rdf-schema#Class"
+    },
+    {
+      "id": "https://example.org/Salutation"
+    },
+    {
+      "id": "https://example.org/TwoLinks"
+    },
+    {
+      "id": "https://example.org/greeting3"
+    },
+    {
+      "id": "https://example.org/orphan"
+    },
+    {
+      "id": "https://example.org/world"
+    }
+  ]
+}
