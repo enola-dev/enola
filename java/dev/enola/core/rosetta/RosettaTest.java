@@ -35,10 +35,7 @@ import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
-import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.MemoryResource;
-import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.io.resource.StringResource;
+import dev.enola.common.io.resource.*;
 import dev.enola.common.xml.XmlMediaType;
 import dev.enola.common.yamljson.JSON;
 import dev.enola.common.yamljson.YAML;
@@ -46,6 +43,7 @@ import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
 import dev.enola.thing.gen.gexf.GexfMediaType;
+import dev.enola.thing.gen.graphcommons.GraphCommonsMediaType;
 import dev.enola.thing.gen.graphviz.GraphvizMediaType;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ThingMediaTypes;
@@ -57,6 +55,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class RosettaTest {
@@ -72,6 +71,7 @@ public class RosettaTest {
                     MediaTypeProviders.set(
                             new RdfMediaTypes(),
                             new GraphvizMediaType(),
+                            new GraphCommonsMediaType(),
                             new GexfMediaType(),
                             new YamlMediaType(),
                             new XmlMediaType()));
@@ -186,7 +186,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testGraphvizAndGexf() throws Exception {
+    public void testGexfAndGraphvizAndGraphCommons() throws Exception {
         var in = rp.get("classpath:/graph.ttl");
         try (var ctx = TLC.open()) {
             // This tests that StackedThingProvider in GraphvizGenerator works;
@@ -200,18 +200,32 @@ public class RosettaTest {
             var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
             ctx.push(NamespaceConverter.class, namespaceConverter);
 
+            // TODO GexfMediaTypeTest: checkRosettaConvert(in, "classpath:/graph.expected.gexf");
             var gexf = new MemoryResource(GexfMediaType.GEXF);
             rosetta.convertInto(in, gexf);
             assertThat(gexf)
                     .hasCharsEqualTo(rp.get("classpath:/graph.expected.gexf?charset=UTF-8"));
 
+            // TODO checkRosettaConvert(in, "classpath:/graph.expected-full.gv?" +
+            // OUT_URI_QUERY_PARAMETER_FULL + "=true");
             var gv = new MemoryResource(GV, OUT_URI_QUERY_PARAMETER_FULL + "=true");
             rosetta.convertInto(in, gv);
             assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected-full.gv"));
 
+            // TODO checkRosettaConvert(in, "classpath:/graph.expected-full.gv?"
+            //  + OUT_URI_QUERY_PARAMETER_FULL + "=false");
             gv = new MemoryResource(GV, OUT_URI_QUERY_PARAMETER_FULL + "=false");
             rosetta.convertInto(in, gv);
             assertThat(gv).hasCharsEqualTo(rp.get("classpath:/graph.expected-short.gv"));
+
+            checkRosettaConvert(in, "classpath:/graph.expected.graphcommons.json");
         }
+    }
+
+    void checkRosettaConvert(ReadableResource in, String expectedURL) throws IOException {
+        var expected = rp.get(expectedURL);
+        var actual = new MemoryResource(expected.mediaType());
+        rosetta.convertInto(in, actual);
+        assertThat(actual).hasCharsEqualTo(expected);
     }
 }

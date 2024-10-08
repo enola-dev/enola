@@ -36,6 +36,8 @@ import java.net.URL;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
+    // TODO Rename all parameters from iri or uri to url - because that's what these are!
+
     // TODO Change all @Nullable Resource to Optional<Resource>... or, better, throw exception for
     // unknown schema
 

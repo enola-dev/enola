@@ -1,0 +1,167 @@
+{
+  "edgeTypes": [
+    {
+      "color": "#338A22",
+      "directed": true,
+      "id": "https://enola.dev/origin",
+      "name": "enola:origin",
+      "sourceNodeTypeId": "https://enola.dev/UnknownClass",
+      "targetNodeTypeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "color": "#92BE07",
+      "directed": true,
+      "id": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "name": "rdfs:subClassOf",
+      "sourceNodeTypeId": "https://enola.dev/UnknownClass",
+      "targetNodeTypeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "color": "#B2FAE8",
+      "directed": true,
+      "id": "https://example.org/link",
+      "name": "ex:link",
+      "sourceNodeTypeId": "https://enola.dev/UnknownClass",
+      "targetNodeTypeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "color": "#DA28DD",
+      "directed": true,
+      "id": "https://example.org/object",
+      "name": "ex:object",
+      "sourceNodeTypeId": "https://enola.dev/UnknownClass",
+      "targetNodeTypeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "color": "#AC61A5",
+      "directed": true,
+      "id": "https://example.org/links",
+      "name": "ex:links",
+      "sourceNodeTypeId": "https://enola.dev/UnknownClass",
+      "targetNodeTypeId": "https://enola.dev/UnknownClass"
+    }
+  ],
+  "edges": [
+    {
+      "id": "4d1d1849d7b930c01eca3956c96d1f0e",
+      "sourceId": "http://www.w3.org/2000/01/rdf-schema#Class",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
+      "id": "21cfa23a9b722a169c9ac13377aae624",
+      "sourceId": "https://example.org/Salutation",
+      "targetId": "https://schema.org/TextObject",
+      "typeId": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+    },
+    {
+      "id": "229e8eb18b16fe769a1258a912bb982b",
+      "sourceId": "https://example.org/Salutation",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
+      "id": "556e11f833dda2831ed2a02ca5f22ada",
+      "sourceId": "https://example.org/TwoLinks",
+      "targetId": "https://example.org/greeting3",
+      "typeId": "https://example.org/links"
+    },
+    {
+      "id": "2670042a95e2af4f285a16369f4d9a4b",
+      "sourceId": "https://example.org/TwoLinks",
+      "targetId": "https://example.org/world",
+      "typeId": "https://example.org/links"
+    },
+    {
+      "id": "08560fda4c0bc12dab017f669ee0a6e3",
+      "sourceId": "https://example.org/TwoLinks",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
+      "id": "c847cb80d8bea95cdd1af638f9f0979e",
+      "sourceId": "https://example.org/greeting3",
+      "targetId": "https://example.org/world",
+      "typeId": "https://example.org/object"
+    },
+    {
+      "id": "3aa7344ecf2d2d035ebce05032eccf8a",
+      "sourceId": "https://example.org/greeting3",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
+      "id": "2f16d34dd7d019a8b757681ece6dfc4e",
+      "sourceId": "https://example.org/orphan",
+      "targetId": "https://example.org/OnlyIRIThing",
+      "typeId": "https://example.org/link"
+    },
+    {
+      "id": "490ec3136255edf949cccf9af167e406",
+      "sourceId": "https://example.org/orphan",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
+      "id": "fa469a19d47dd9d96d31ff4b2c1a5571",
+      "sourceId": "https://example.org/world",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    }
+  ],
+  "name": "Enola.dev",
+  "nodeTypes": [
+    {
+      "color": "violet",
+      "id": "https://example.org/Salutation",
+      "name": "ex:Salutation"
+    },
+    {
+      "color": "#BCD296",
+      "id": "https://enola.dev/UnknownClass",
+      "name": "enola:UnknownClass"
+    },
+    {
+      "color": "#B6F8A0",
+      "id": "http://www.w3.org/2000/01/rdf-schema#Class",
+      "name": "rdfs:Class"
+    },
+    {
+      "color": "#7CE356",
+      "id": "https://example.org/Planet",
+      "name": "ex:Planet"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "http://www.w3.org/2000/01/rdf-schema#Class",
+      "name": "rdfs:Class",
+      "typeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "id": "https://example.org/Salutation",
+      "name": "ex:Salutation",
+      "typeId": "http://www.w3.org/2000/01/rdf-schema#Class"
+    },
+    {
+      "id": "https://example.org/TwoLinks",
+      "name": "ex:TwoLinks",
+      "typeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "id": "https://example.org/greeting3",
+      "name": "ex:greeting3",
+      "typeId": "https://example.org/Salutation"
+    },
+    {
+      "id": "https://example.org/orphan",
+      "name": "ex:orphan",
+      "typeId": "https://enola.dev/UnknownClass"
+    },
+    {
+      "id": "https://example.org/world",
+      "name": "ex:world",
+      "typeId": "https://example.org/Planet"
+    }
+  ]
+}

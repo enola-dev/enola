@@ -30,6 +30,10 @@ enola: a owl:Ontology;
   rdfs:label "Enola.dev's base/core Ontology.";
   enola:doc <https://docs.enola.dev/models/enola.dev/>.
 
+enola:UnknownClass a rdfs:Class;
+  schema:name "(Unknown)";
+  rdfs:comment "Used when a Thing does not have a rdf:type but one is absolutely required e.g. by some tool.".
+
 enola:Embedded a rdfs:Class;
   rdfs:comment "Parent (abstract) Class for things which have no IRI identity of their own and which thus should only ever appear in 'RDF blank nodes'. (Like owl:hasValue _:bNode on an owl:DatatypeProperty; without OWL dependency. Or like a sh:nodeKind sh:BlankNode SHACL shape.)".
 

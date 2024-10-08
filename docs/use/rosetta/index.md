@@ -36,6 +36,11 @@ e.g. between:
 
 Specifying the `--schema` flag is optional for YAML <=> JSON conversion, but required for TextProto.
 
+Rosetta transforms a (single) input resource into one output resource of another format.
+Alternatively,
+[generate](../gen/index.md) can load (possibly several) resources
+(or "logical IRIs") which contain _Things_ and transform them into (some of) these formats.
+
 ## Graph Diagrams
 
 Enola can generate [Graph Diagrams like this](../../models/example.org/graph.md), through [DocGen](../docgen/index.md) (see
@@ -63,6 +68,16 @@ $ ./enola rosetta --no-file-loader --in test/picasso.ttl --out "docs/BUILT/picas
 
 ![Smaller Graph of Painters](../../BUILT/picasso-small.gv.svg)
 
+<!--
+### Graph Commons
+
+```bash cd ../.././..
+$ ./enola rosetta --in test/picasso.ttl --out /tmp/picasso.graphcommons.json
+...
+```
+
+produces a JSON which can be imported into [GraphCommons.com](https://graphcommons.com/).
+-->
 ### GEXF
 
 ```bash cd ../.././..

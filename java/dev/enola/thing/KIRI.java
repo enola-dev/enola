@@ -74,6 +74,9 @@ public final class KIRI {
         public static final String IRI_TEMPLATE_DATATYPE = NS + "IRITemplate";
         public static final String LABEL_PROPERTY = NS + "labelProperty";
 
+        // Special
+        public static final String UNKNOWN_CLASS = NS + "UnknownClass"; // TODO UnknownClass.IRI
+
         // Style-related stuff...
         public static final String COLOR = NS + "color";
         public static final String TEXT_COLOR = NS + "text-color";
@@ -159,6 +162,8 @@ public final class KIRI {
          */
         public static final String TYPE = NS + "type";
 
+        public static final String PROPERTY = NS + "Property";
+
         /** 📃 */
         public static final String HTML = NS + "HTML";
 
@@ -179,8 +184,11 @@ public final class KIRI {
         /** https://www.w3.org/TR/rdf-schema/#ch_comment */
         public static final String COMMENT = NS + "comment";
 
-        /** http://www.w3.org/2000/01/rdf-schema#range */
-        public static final String RANGE = "range";
+        /** https://www.w3.org/TR/rdf-schema/#ch_domain */
+        public static final String DOMAIN = NS + "domain";
+
+        /** https://www.w3.org/TR/rdf-schema/#ch_range */
+        public static final String RANGE = NS + "range";
 
         private RDFS() {}
     }

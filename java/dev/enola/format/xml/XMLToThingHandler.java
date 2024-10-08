@@ -142,7 +142,7 @@ public class XMLToThingHandler extends DefaultHandler {
                     || !nested.predicateIRIs().iterator().next().equals(TEXT_PROPERTY_IRI))
                 thingBuilders.getLast().set(iri(uri, localName, qName), nested);
             else {
-                var text = nested.get(TEXT_PROPERTY_IRI, String.class);
+                var text = nested.getString(TEXT_PROPERTY_IRI);
                 thingBuilders.getLast().set(iri(uri, localName, qName), text);
             }
     }

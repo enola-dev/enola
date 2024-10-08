@@ -22,3 +22,5 @@ We can generate nice Markdown documentation as seen in [the tutorial](../../mode
 or for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or
 [Graphwiz](../rosetta/index.md#graphviz) or [GEXF](../rosetta/index.md#gexf) format, and
 [a Timeline](../../models/example.org/timeline.md).
+
+`docgen` (old) will later be integrated into (new) [generic `gen markdown`](../gen/index.md#markdown).

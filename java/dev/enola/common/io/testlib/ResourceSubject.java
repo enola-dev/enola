@@ -73,7 +73,7 @@ public final class ResourceSubject extends Subject {
     public void hasCharsEqualTo(@Nullable ReadableResource expected) throws IOException {
         var actualChars = canonicalize(actual);
         var expectedChars = canonicalize(expected);
-        check("charSource").that(actualChars).isEqualTo(expectedChars);
+        check(actualChars).that(actualChars).isEqualTo(expectedChars);
     }
 
     // TODO Improve confusing output for multiline diff

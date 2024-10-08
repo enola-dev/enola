@@ -32,7 +32,9 @@ import org.jspecify.annotations.Nullable;
  * Data</i>, such as also described by standards such has RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
-public interface Thing extends HasIRI, PredicatesObjects {
+public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
+
+    // TODO @Override default <U extends PredicatesObjects<Thing>> U as(Class<U> clazz) {
 
     @Override
     String iri();

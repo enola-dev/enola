@@ -36,6 +36,7 @@ java_export(
     # TODO Fix JavaDoc generation which somehow breaks the build; see https://github.com/enola-dev/enola/issues/491
     tags = ["no-javadocs"],
     visibility = ["//:__subpackages__"],
+    # TODO runtime_deps or exports = [ ?!
     runtime_deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",

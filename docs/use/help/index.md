@@ -42,6 +42,15 @@ $ ./enola help docgen
 ...
 ```
 
+## Gen
+
+[Generation](../gen/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help gen
+...
+```
+
 ## Get
 
 [Get Entity](../get/index.md) has the following options:

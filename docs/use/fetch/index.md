@@ -73,9 +73,28 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 ...
 ```
 
+### File Descriptor
+
+`fd:` is a (non-standard) URL scheme in Enola for reading from or writing to [file descriptors](https://en.wikipedia.org/wiki/File_descriptor), for:
+
+* `fd:0` [STDIN](https://en.wikipedia.org/wiki/Stdin)
+* `fd:1` [STDOUT](https://en.wikipedia.org/wiki/Stdout)
+* `fd:2` [STDERR](https://en.wikipedia.org/wiki/Stderr)
+
+The _Media Type_ of this special resource will be `application/octet-stream` (**not** `application/binary`),
+unless there is [a `?mediaType=` parameter](#media-type).
+
+The _Charset_ will be the default of the JVM,
+unless there is (checked first) [a `?charset=` parameter](#charset) (e.g. `fd:0?charset=UTF-16BE`),
+or the `?mediaType=` parameter includes a charset (e.g. `fd:1?mediaType=application/yaml;charset=utf-16be`).
+
+<!-- If updating ^^^ then also update JavaDoc of dev.enola.common.io.resource.FileDescriptorResource -->
+
+<!-- TODO Support '-' as special URI shortcut for fd:0 STDIN? -->
+
 ### Empty
 
-`empty:` is a (non-standard) URL scheme in Enola for "no content" (as an alternative to `data:,`):
+`empty:` is another (non-standard) URL scheme in Enola for "no content" (as an alternative to `data:,`):
 
 ```bash cd ../.././..
 $ ./enola fetch empty:/
