@@ -58,6 +58,7 @@ nav:
       - Help: use/help/index.md
       - Example Model: use/library/index.md
       - DocGen: use/docgen/index.md
+      - Generate: use/gen/index.md
       - Get Thing: use/get/index.md
       - Server: use/server/index.md
       - Rosetta: use/rosetta/index.md

@@ -30,6 +30,7 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.rdf.io.RdfWriterConverter;
 import dev.enola.rdf.proto.ProtoThingRdfConverter;
+import dev.enola.thing.gen.graphcommons.GraphCommonsJsonGenerator;
 import dev.enola.thing.gen.graphviz.GraphvizGenerator;
 import dev.enola.thing.message.ProtoThings;
 import dev.enola.thing.metadata.ThingMetadataProvider;
@@ -105,6 +106,13 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
         if (Format.Graphviz.equals(format) && thing instanceof Things protoThings) {
             var javaThings = ProtoThings.proto2java(protoThings.getThingsList());
             new GraphvizGenerator(thingMetadataProvider).convertIntoOrThrow(javaThings, resource);
+            return;
+        }
+
+        if (Format.GraphCommons.equals(format) && thing instanceof Things protoThings) {
+            var javaThings = ProtoThings.proto2java(protoThings.getThingsList());
+            new GraphCommonsJsonGenerator(thingMetadataProvider)
+                    .convertIntoOrThrow(javaThings, resource);
             return;
         }
 

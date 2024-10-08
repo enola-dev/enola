@@ -45,6 +45,8 @@ import java.nio.charset.Charset;
  */
 public class FileDescriptorResource extends BaseResource implements Resource {
 
+    // NB: If updating ^^^ then also update docs/use/fetch/index.md
+
     public static final String STDOUT = "fd:1?charset=UTF-8";
 
     public static final URI STDOUT_URI = URI.create(STDOUT);

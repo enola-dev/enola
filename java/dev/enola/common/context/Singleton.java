@@ -56,7 +56,9 @@ public abstract class Singleton<T> implements Supplier<T> {
 
     @Override
     public T get() {
-        if (value == null) throw new IllegalStateException();
+        if (value == null)
+            throw new IllegalStateException(
+                    getClass() + " was never set(); use SingletonRule in tests");
         else return value;
     }
 

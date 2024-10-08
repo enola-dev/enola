@@ -26,6 +26,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
+import dev.enola.thing.gen.Orphanage;
 import dev.enola.thing.gen.ThingsIntoAppendableConverter;
 import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.metadata.ThingMetadataProvider;
@@ -81,29 +82,24 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
     public boolean convertInto(Iterable<Thing> from, Appendable out)
             throws ConversionException, IOException {
         Set<String> thingIRIs = new HashSet<>();
-        Set<String> linkIRIs = new HashSet<>();
+        var orphanage = new Orphanage();
         out.append("digraph {\n");
         try (var ctx = TLC.open()) {
             ctx.push(ThingProvider.class, new StackedThingProvider(from));
             for (Thing thing : from) {
-                thingIRIs.add(thing.iri());
-                printFullThing(thing, out, thingIRIs, linkIRIs);
+                orphanage.nonOrphan(thing.iri());
+                printThing(thing, out, orphanage);
             }
-            // Remove links to all things which were processed after we processed them
-            linkIRIs.removeAll(thingIRIs);
-            // linkIRIs now contains things which were linked to but that have no properties
-            for (String orphanIRI : linkIRIs) {
+            for (String orphanIRI : orphanage.orphans()) {
                 var orphanThing = new OnlyIRIThing(orphanIRI);
-                printFullThing(orphanThing, out, thingIRIs, linkIRIs);
+                printThing(orphanThing, out, orphanage);
             }
         }
         out.append("}\n");
         return true;
     }
 
-    private void printFullThing(
-            Thing thing, Appendable out, Set<String> thingIRIs, Set<String> linkIRIs)
-            throws IOException {
+    private void printThing(Thing thing, Appendable out, Orphanage orphanage) throws IOException {
         boolean full = TLC.optional(Flags.FULL).orElse(false);
 
         out.append("  \"");
@@ -148,7 +144,7 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
                 out.append("\" label=\"");
                 out.append(html(linkLabel));
                 out.append("\"]\n");
-                if (!thingIRIs.contains(linkIRI)) linkIRIs.add(linkIRI);
+                orphanage.candidate(linkIRI);
             }
         }
         out.append('\n');

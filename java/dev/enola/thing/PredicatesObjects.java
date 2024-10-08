@@ -39,7 +39,10 @@ import java.util.*;
  *
  * <p>It is typically used for objects "contained inside" Things (or their nested sub-structs).
  */
-public interface PredicatesObjects {
+public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
+
+    // TODO Write default implementation of as() with ProxyTBF...
+    // default <U extends PredicatesObjects<TT>> U as(Class<U> clazz) {
 
     /**
      * The Map's key is the IRI of a predicate, and the value is as would be returned by {@link
@@ -50,6 +53,8 @@ public interface PredicatesObjects {
 
     /** IRIs of the Predicates of this Thing. */
     // TODO Reconsider if this method is really required? Why not just #properties().keySet()?
+    // ^^^ it's useful to avoid loading a huge Thing entirely into memory...
+    // TODO Use Iterable<> instead Set<>
     Set<String> predicateIRIs();
 
     // TODO These is*() methods could be replaced with a Visitor - but how-to for nested Structs?!
