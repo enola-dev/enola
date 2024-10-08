@@ -63,6 +63,15 @@ $ ./enola rosetta --no-file-loader --in test/picasso.ttl --out "docs/BUILT/picas
 
 ![Smaller Graph of Painters](../../BUILT/picasso-small.gv.svg)
 
+### Graph Commons
+
+```bash cd ../.././..
+$ ./enola rosetta --in enola:TikaMediaTypes --out /tmp/TikaMediaTypes.graphcommons.json
+...
+```
+
+produces a JSON which can be imported into [GraphCommons.com](https://graphcommons.com/).
+
 ### GEXF
 
 ```bash cd ../.././..
