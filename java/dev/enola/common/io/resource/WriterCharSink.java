@@ -48,7 +48,9 @@ class WriterCharSink extends CharSink {
 
         @Override
         public void close() throws IOException {
-            // IGNORE!
+            // Do not close! But do flush in case the writer has a buffer that needs to be sent to
+            // an underlying OutputStream.
+            flush();
         }
     }
 }
