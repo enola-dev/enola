@@ -54,15 +54,14 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);
 
+    // This must be increased if there are test failures on slow CI servers :(
+    private static final Duration t = Duration.ofMillis(7500);
+
     // https://square.github.io/okhttp/features/caching/
     private static final File cacheDir =
             new File(FreedesktopDirectories.CACHE_FILE, OkHttpResource.class.getSimpleName());
     private static final Cache cache = new Cache(cacheDir, 50L * 1024L * 1024L /* 50 MiB */);
     private static final HttpLoggingInterceptor httpLog = new HttpLoggingInterceptor();
-
-    // This must be increased if there are test failures on slow CI servers :(
-    private static final Duration t = Duration.ofMillis(7500);
-
     private static final OkHttpClient client =
             new OkHttpClient.Builder()
                     .cache(cache)
@@ -88,7 +87,6 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     public static class Provider implements ResourceProvider {
-
         @Override
         public @Nullable Resource getResource(URI uri) {
             if (uri.getScheme().startsWith("http")) {
@@ -113,7 +111,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
                 throw new IllegalArgumentException(unsuccessfulMessage(url, response));
             var mt = response.body().contentType();
             if (mt != null) {
-                return mtd.detect(mt.toString(), null, URI.create(url));
+                return mtd.overwrite(URI.create(url), okToGuavaMediaType(mt));
             } else {
                 throw new IllegalStateException("Success, but no Content-Type header: " + url);
             }
@@ -121,6 +119,11 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
         } catch (IOException e) {
             throw new UncheckedIOException("IOException on " + url, e);
         }
+    }
+
+    private static MediaType okToGuavaMediaType(okhttp3.MediaType okMediaType) {
+        // TODO Optimize?
+        return MediaType.parse(okMediaType.toString());
     }
 
     @Override

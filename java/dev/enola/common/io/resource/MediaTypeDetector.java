@@ -73,7 +73,7 @@ class MediaTypeDetector {
      */
     MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
-        var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
+        var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset());
         detected = detectCharsetAndMediaType(uri, byteSource, detected);
         return detected;
     }
@@ -144,11 +144,7 @@ class MediaTypeDetector {
         return mediaType;
     }
 
-    // This is currently still used by both UrlResource & OkHttpResource (and MediaTypeDetectorTest)
-    // but this is conceptually the same as the overwrite(URI uri, MediaType originalMediaType)
-    // TODO Switch OkHttpResource to use that instead
-    // TODO Make private (or inline and remove)
-    MediaType detect(@Nullable String contentType, @Nullable String contentEncoding, URI uri) {
+    private MediaType detect(@Nullable String contentType, @Nullable String contentEncoding) {
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
