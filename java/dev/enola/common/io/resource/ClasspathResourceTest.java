@@ -121,7 +121,7 @@ public class ClasspathResourceTest {
                 MediaType.create("text", "markdown").withCharset(UTF_8),
                 Optional.of(UTF_8),
                 md);
-        var resource = new UrlResource(Resources.getResource("test.md"), UTF_8);
+        var resource = new UrlResource(Resources.getResource("test.md"));
         assertThat(resource.charSource().read()).isEqualTo(md);
     }
 
