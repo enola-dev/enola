@@ -63,8 +63,9 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
         if (mediaTypes.contains(original)) return original;
 
-        // TODO It's kinda wrong that this uses IMediaTypeProviders.CTX; it would be clearer if
-        // it only ever used itself. But requires moving normalize() from MediaTypeProviders to...
+        // TODO It's kinda wrong that this uses MediaTypeProviders.SINGLETON; it would be clearer if
+        // it only ever used itself. But that requires moving normalize() from MediaTypeProviders
+        // to...
         // where? Another ABC?! Urgh.
         var normalized = MediaTypeProviders.SINGLETON.get().normalize(original);
         if (!normalized.equals(original)) return normalized;
