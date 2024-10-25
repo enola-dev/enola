@@ -31,6 +31,7 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Rule;
@@ -45,7 +46,8 @@ import java.nio.file.Paths;
 
 public class ResourceProvidersTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
+    public @Rule SingletonRule r =
+            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     private static final byte[] BYTES = new byte[] {1, 2, 3};
 

@@ -26,6 +26,7 @@ public class StandardMediaTypes implements MediaTypeProvider {
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
         return ImmutableMultimap.of(
+                ".txt", MediaType.PLAIN_TEXT_UTF_8,
                 ".html", MediaType.HTML_UTF_8,
                 ".json", MediaType.JSON_UTF_8,
                 ".css", MediaType.CSS_UTF_8,

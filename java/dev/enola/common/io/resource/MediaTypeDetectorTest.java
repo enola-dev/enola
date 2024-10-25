@@ -30,10 +30,7 @@ import static java.net.URI.create;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.mediatype.MediaTypesTest;
-import dev.enola.common.io.mediatype.TestMediaType;
-import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.mediatype.*;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
 import org.junit.Rule;
@@ -49,7 +46,10 @@ public class MediaTypeDetectorTest {
     public @Rule SingletonRule r =
             $(
                     MediaTypeProviders.set(
-                            new YamlMediaType(), new ProtobufMediaTypes(), new TestMediaType()));
+                            new YamlMediaType(),
+                            new ProtobufMediaTypes(),
+                            new TestMediaType(),
+                            new StandardMediaTypes()));
 
     MediaTypeDetector md = new MediaTypeDetector();
 
@@ -68,20 +68,27 @@ public class MediaTypeDetectorTest {
         assertThat(md.detect("application/octet-stream", null, create("hello.txt")))
                 .isEqualTo(OCTET_STREAM);
 
-        assertThat(md.detect(null, null, new File("hello.txt").toURI()))
-                .isEqualTo(PLAIN_TEXT_UTF_8);
-        assertThat(md.detect(null, null, new File("hello.json").toURI())).isEqualTo(JSON_UTF_8);
-
         assertThat(md.detect(null, null, create("bad-URI-without-scheme")))
                 .isEqualTo(MediaType.OCTET_STREAM);
     }
 
-    // TODO Rewrite all of above in this new style (to test the public API, instead of the
-    // implementation)
+    // TODO Rewrite all of above in this new style (to test the public API, instead implementation)
 
     @Test
     public void emptyOctetStream() {
         assertThat(EmptyResource.INSTANCE.mediaType()).isEqualTo(OCTET_STREAM);
+    }
+
+    @Test
+    public void testTXT() {
+        var r = new EmptyResource(create("whatever:hello.txt"));
+        assertThat(r.mediaType()).isEqualTo(PLAIN_TEXT_UTF_8);
+    }
+
+    @Test
+    public void testJSON() {
+        var r = new EmptyResource(create("whatever:hello.json"));
+        assertThat(r.mediaType()).isEqualTo(JSON_UTF_8);
     }
 
     @Test // Test that TestMediaTypes was correctly registered
