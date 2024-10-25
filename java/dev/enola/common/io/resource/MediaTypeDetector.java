@@ -31,9 +31,7 @@ import org.jspecify.annotations.Nullable;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.spi.FileSystemProvider;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Utility for detecting a (better) {@link MediaType} for a Resource.
@@ -68,12 +66,6 @@ class MediaTypeDetector {
                 || IGNORE.contains(mediaTypeWithoutParameters)
                 || DEFAULT.equals(mediaTypeWithoutParameters);
     }
-
-    private static final Set<String> fileSystemProviderSchemes =
-            FileSystemProvider.installedProviders().stream()
-                    .map(p -> p.getScheme().toLowerCase())
-                    .filter(scheme -> !"jar".equals(scheme))
-                    .collect(Collectors.toSet());
 
     /**
      * This is called by Resource* implementation constructors, typically via {@link BaseResource},
