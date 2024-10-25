@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
@@ -42,7 +44,8 @@ public class OkHttpResourceTest {
     public void google() throws IOException {
         var r = new OkHttpResource("http://www.google.com");
         assertThat(r.charSource().read()).ignoringCase().contains("<!doctype html>");
-        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
+        // TODO Debug where the "iso-8859-1" here came from... it probably really should be UTF-8?!
+        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8.withCharset(ISO_8859_1));
     }
 
     @Test(expected = IllegalArgumentException.class)

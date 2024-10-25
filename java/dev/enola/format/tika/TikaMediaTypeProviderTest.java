@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
@@ -49,7 +51,7 @@ public class TikaMediaTypeProviderTest {
     @Test
     public void detectCBL() {
         var r = new FileResource(URI.create("file:///test.CBL"));
-        assertThat(r.mediaType()).isEqualTo(MediaType.parse("text/x-cobol"));
+        assertThat(r.mediaType()).isEqualTo(MediaType.parse("text/x-cobol").withCharset(UTF_8));
     }
 
     @Test
