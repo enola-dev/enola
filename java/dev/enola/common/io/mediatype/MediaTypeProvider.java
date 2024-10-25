@@ -65,8 +65,7 @@ public interface MediaTypeProvider extends ResourceMediaTypeDetector {
 
         // TODO It's kinda wrong that this uses MediaTypeProviders.SINGLETON; it would be clearer if
         // it only ever used itself. But that requires moving normalize() from MediaTypeProviders
-        // to...
-        // where? Another ABC?! Urgh.
+        // to... where? Another ABC?! Urgh.
         var normalized = MediaTypeProviders.SINGLETON.get().normalize(original);
         if (!normalized.equals(original)) return normalized;
 
