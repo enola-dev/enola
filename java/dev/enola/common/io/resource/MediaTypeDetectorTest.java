@@ -33,6 +33,7 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.*;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -51,25 +52,21 @@ public class MediaTypeDetectorTest {
                             new TestMediaType(),
                             new StandardMediaTypes()));
 
-    MediaTypeDetector md = new MediaTypeDetector();
-
     @Test
-    public void testDetect() {
+    public void testOverwrite() {
+        var md = new MediaTypeDetector();
         var NADA = URI.create("nada:it");
-        assertThat(md.detect(null, null, NADA)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("content/unknown", null, NADA)).isEqualTo(OCTET_STREAM);
-        assertThat(md.detect("application/test", null, NADA))
-                .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("application/test-alternative", null, NADA))
-                .isEqualTo(MediaType.parse("application/test"));
-        assertThat(md.detect("text/plain", "ascii", NADA))
+        var UNKNOWN = parse("content/unknown");
+        assertThat(md.overwrite(NADA, parse("application/test")))
+                .isEqualTo(parse("application/test"));
+        assertThat(md.overwrite(NADA, parse("text/plain").withCharset(StandardCharsets.US_ASCII)))
                 .isEqualTo(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.US_ASCII));
 
-        assertThat(md.detect("application/octet-stream", null, create("hello.txt")))
-                .isEqualTo(OCTET_STREAM);
+        assertThat(md.overwrite(create("hello.txt"), parse("application/octet-stream")))
+                .isEqualTo(PLAIN_TEXT_UTF_8);
 
-        assertThat(md.detect(null, null, create("bad-URI-without-scheme")))
-                .isEqualTo(MediaType.OCTET_STREAM);
+        assertThat(md.overwrite(create("bad-URI-without-scheme"), OCTET_STREAM))
+                .isEqualTo(OCTET_STREAM);
     }
 
     // TODO Rewrite all of above in this new style (to test the public API, instead implementation)
@@ -94,6 +91,14 @@ public class MediaTypeDetectorTest {
     @Test // Test that TestMediaTypes was correctly registered
     public void testTest() {
         var r = new EmptyResource(create("whatever:something.test")); // drop charset!
+        assertThat(r.mediaType()).isEqualTo(MediaTypesTest.TEST);
+    }
+
+    @Test
+    @Ignore // Intentionally not implemented; it's up to the caller to normalize()
+    public void testTestAlternative() {
+        MediaType TEST_ALT = parse("application/test-alternative");
+        var r = new EmptyResource(create("whatever:something.test"), TEST_ALT);
         assertThat(r.mediaType()).isEqualTo(MediaTypesTest.TEST);
     }
 
