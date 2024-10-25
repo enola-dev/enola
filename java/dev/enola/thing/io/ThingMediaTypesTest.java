@@ -51,6 +51,9 @@ public class ThingMediaTypesTest {
                 .containsKey(".thing.yaml");
     }
 
+    // TODO This makes no sense (anymore, now)... check's MediaTypeProvider is un-used!
+    // Remove it, and fold these two separate but (now) really identically tests into a single one.
+
     @Test
     public void viaThingMediaTypes() throws URISyntaxException {
         check(new ThingMediaTypes());

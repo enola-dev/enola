@@ -26,8 +26,9 @@ import dev.enola.common.context.Singleton;
 import java.util.*;
 
 /**
- * Aggregates other {@link MediaTypeProvider}s, either from an explicit list provided to
- * constructor, or found via service discovery. Typically used via {@link #SINGLETON}.
+ * Aggregates other {@link MediaTypeProvider}s, from an explicit list provided to constructor. (This
+ * intentionally does NOT use {@link ServiceLoader}; reasons include requiring a specific priority
+ * order.) Typically used via {@link #SINGLETON}.
  */
 public class MediaTypeProviders implements MediaTypeProvider {
 

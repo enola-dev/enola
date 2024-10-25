@@ -50,8 +50,8 @@ import java.util.stream.Collectors;
  * <p>This class is intentionally package private, and should stay so; this is NOT for {@link
  * Resource} API users (who would just use {@link AbstractResource#mediaType()}); it's only used by
  * *Resource SPI implementations. (Which technically makes it impossible to {easily} write *Resource
- * implementations outside of this package; but with the current mono-repo architecture, that's just
- * fine.)
+ * implementations which do not extend BaseResource outside of this package; but with the current
+ * mono-repo architecture, that's just fine.)
  */
 class MediaTypeDetector {
     // NB: This class should *NEVER* implement MediaTypeProvider - that's a separate concern!
@@ -125,7 +125,7 @@ class MediaTypeDetector {
     MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset(), uri);
-        detected = detectCharset(uri, byteSource, detected);
+        detected = detectCharsetAndMediaType(uri, byteSource, detected);
         return detected;
     }
 
@@ -147,13 +147,14 @@ class MediaTypeDetector {
             if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
                 mediaType = mediaType.withCharset(originalMediaType.charset().get());
             } else {
-                mediaType = detectCharset(uri, ByteSource.empty(), mediaType);
+                mediaType = detectCharsetAndMediaType(uri, ByteSource.empty(), mediaType);
             }
         }
         return mediaType;
     }
 
-    private MediaType detectCharset(URI uri, ByteSource byteSource, MediaType detected) {
+    private MediaType detectCharsetAndMediaType(
+            URI uri, ByteSource byteSource, MediaType detected) {
         if (!detected.charset().isPresent()) {
             // TODO Make YAML just 1 of many Charset detectors...
             YamlMediaType rcd = new YamlMediaType();

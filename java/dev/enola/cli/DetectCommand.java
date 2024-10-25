@@ -32,8 +32,8 @@ import java.nio.file.Paths;
         name = "detect",
         description =
                 "Provides information about the media type detected for a given URL.\n"
-                    + "This works both for local files (based on extension), and remote HTTP (based"
-                    + " on headers).")
+                        + "This works both for local files (based on extension), and remote HTTP (based"
+                        + " on headers).")
 public class DetectCommand extends CommandWithResourceProvider {
 
     @Spec CommandSpec spec;
@@ -46,6 +46,7 @@ public class DetectCommand extends CommandWithResourceProvider {
         super.run();
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var resource = rp.getResource(URIs.parse(iri));
+            // TODO This seems *WRONG* ... here, use ONLY mediaType(), NOT MediaTypeProviders?
             var mediaType =
                     MediaTypeProviders.SINGLETON
                             .get()
