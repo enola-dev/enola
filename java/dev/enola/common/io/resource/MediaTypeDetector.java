@@ -123,7 +123,6 @@ class MediaTypeDetector {
     // This is currently still used by both UrlResource & OkHttpResource (and MediaTypeDetectorTest)
     // but this is conceptually the same as the overwrite(URI uri, MediaType originalMediaType)
     // TODO Switch UrlResource & OkHttpResource to use that instead
-    // TODO Switch MediaTypeDetectorTest to use that instead
     // TODO Make private (or inline and remove)
     MediaType detect(@Nullable String contentType, @Nullable String contentEncoding, URI uri) {
         MediaType mediaType = null;
