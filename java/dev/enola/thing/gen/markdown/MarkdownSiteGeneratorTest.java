@@ -29,7 +29,9 @@ import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
+import dev.enola.common.io.mediatype.MarkdownMediaTypes;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
@@ -41,6 +43,7 @@ import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfReaderConverter;
 import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.gen.gexf.GexfMediaType;
+import dev.enola.thing.gen.graphviz.GraphvizMediaType;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
@@ -68,7 +71,14 @@ import java.util.stream.StreamSupport;
 public class MarkdownSiteGeneratorTest {
 
     @Rule
-    public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new GexfMediaType()));
+    public SingletonRule r =
+            $(
+                    MediaTypeProviders.set(
+                            new RdfMediaTypes(),
+                            new GexfMediaType(),
+                            new GraphvizMediaType(),
+                            new MarkdownMediaTypes(),
+                            new StandardMediaTypes()));
 
     @Rule
     public TestRule tlcRule =

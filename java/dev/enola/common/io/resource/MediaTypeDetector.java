@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.resource;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
@@ -29,18 +28,10 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.FileNameMap;
 import java.net.URI;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.spi.FileSystemProvider;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -83,40 +74,6 @@ class MediaTypeDetector {
                     .map(p -> p.getScheme().toLowerCase())
                     .filter(scheme -> !"jar".equals(scheme))
                     .collect(Collectors.toSet());
-
-    private static final FileNameMap contentTypeMap = URLConnection.getFileNameMap();
-
-    private final FromURI fileNameMap =
-            uri -> {
-                var contentTypeFromFileName =
-                        contentTypeMap.getContentTypeFor(URIs.getFilename(uri));
-                if (contentTypeFromFileName != null) {
-                    return Optional.of(MediaType.parse(contentTypeFromFileName));
-                }
-                return Optional.empty();
-            };
-    private final FromURI probeFileContentType =
-            uri -> {
-                if (uri.getScheme() != null
-                        && ("file".equalsIgnoreCase(uri.getScheme())
-                                || fileSystemProviderSchemes.contains(
-                                        uri.getScheme().toLowerCase()))) {
-                    var path = Path.of(URIs.dropQueryAndFragment(uri));
-                    try {
-                        var contentType = Files.probeContentType(path);
-                        if (contentType != null) {
-                            return Optional.of(MediaType.parse(contentType));
-                        }
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                }
-                return Optional.empty();
-            };
-    // This is not extensible (e.g. with java.util.ServiceLoader) - because MediaTypes already is
-    // TODO fileNameMap & probeFileContentType to JdkMediaTypeProvider implements MediaTypeProvider?
-    // (Or, when doing this, implements ResourceMediaTypeDetector instead MediaTypeProvider?)
-    private final List<FromURI> providers = ImmutableList.of(fileNameMap, probeFileContentType);
 
     /**
      * This is called by Resource* implementation constructors, typically via {@link BaseResource},
@@ -187,13 +144,6 @@ class MediaTypeDetector {
         }
 
         if (mediaType == null) {
-            for (FromURI provider : providers) {
-                mediaType = provider.from(uri).orElse(mediaType);
-                if (mediaType != null) break;
-            }
-        }
-
-        if (mediaType == null) {
             if (contentType == null) mediaType = DEFAULT;
             else {
                 mediaType = MediaTypes.parse(contentType);
@@ -222,12 +172,5 @@ class MediaTypeDetector {
         }
 
         return mediaType;
-    }
-
-    private @FunctionalInterface interface FromURI {
-        /**
-         * Determines MediaType e.g., from URI filename extension or via file system implementation.
-         */
-        Optional<MediaType> from(URI uri);
     }
 }

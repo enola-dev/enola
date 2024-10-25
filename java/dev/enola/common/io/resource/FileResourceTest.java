@@ -31,6 +31,7 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Ignore;
@@ -48,7 +49,8 @@ import java.nio.file.Path;
 
 public class FileResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
+    public @Rule SingletonRule r =
+            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     // ResourceProvidersTest has more, notably coverage for relative file URIs
 
