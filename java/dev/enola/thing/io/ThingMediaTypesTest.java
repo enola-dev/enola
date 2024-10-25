@@ -23,7 +23,6 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.context.testlib.TestTLCRule;
-import dev.enola.common.io.mediatype.MediaTypeProvider;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.FileResource;
@@ -51,20 +50,8 @@ public class ThingMediaTypesTest {
                 .containsKey(".thing.yaml");
     }
 
-    // TODO This makes no sense (anymore, now)... check's MediaTypeProvider is un-used!
-    // Remove it, and fold these two separate but (now) really identically tests into a single one.
-
     @Test
-    public void viaThingMediaTypes() throws URISyntaxException {
-        check(new ThingMediaTypes());
-    }
-
-    @Test
-    public void viaMediaTypeProviders() throws URISyntaxException {
-        check(MediaTypeProviders.SINGLETON.get());
-    }
-
-    private void check(MediaTypeProvider mediaTypeProvider) throws URISyntaxException {
+    public void thingYAML() throws URISyntaxException {
         var rp = new ResourceProviders(new FileResource.Provider());
         var resource = rp.getResource(new URI("file:/picasso.thing.yaml"));
         assertThat(resource.mediaType()).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);
