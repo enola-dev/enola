@@ -24,7 +24,6 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
 
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,11 +98,11 @@ public class UrlResource extends BaseResource implements ReadableResource {
     }
 
     public UrlResource(URI uri, URL url) {
-        this(uri, url, mediaType(url, null));
+        this(uri, url, mediaType(url));
     }
 
     public UrlResource(URL url) {
-        this(URIs.create(url), url, mediaType(url, null));
+        this(URIs.create(url), url, mediaType(url));
     }
 
     public UrlResource(URL url, MediaType mediaType) {
@@ -111,13 +110,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
         this.url = url;
     }
 
-    @Deprecated // TODO Remove, as un-used and pointless? Review Test Coverage #1st...
-    public UrlResource(URL url, Charset charset) {
-        super(URIs.create(url), mediaType(url, charset));
-        this.url = url;
-    }
-
-    private static MediaType mediaType(URL url, @Nullable Charset charset) {
+    private static MediaType mediaType(URL url) {
         // This is slow - but more correct; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
@@ -127,13 +120,6 @@ public class UrlResource extends BaseResource implements ReadableResource {
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options ?
             var contentTypeFromServer = c.getContentType();
             var encodingFromServer = c.getContentEncoding();
-
-            // TODO If encodingFromServer == null, try extracting from contentTypeFromServer
-            // https://stackoverflow.com/questions/3934251/urlconnection-does-not-get-the-charset
-
-            if (encodingFromServer == null && charset != null) {
-                encodingFromServer = charset.name();
-            }
 
             var mediaTypeFromServer = MediaType.parse(contentTypeFromServer);
             if (encodingFromServer != null) {
