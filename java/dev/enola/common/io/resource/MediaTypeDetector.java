@@ -86,6 +86,11 @@ class MediaTypeDetector {
     MediaType overwrite(URI uri, final MediaType originalMediaType) {
         var mediaType = originalMediaType;
 
+        // TODO Move this into UrlResource if "content/unknown" is hard-coded in URLConnection?
+        if (IGNORE.contains(mediaType.withoutParameters())) {
+            mediaType = MediaType.OCTET_STREAM;
+        }
+
         var uriCharset = URIs.getMediaTypeAndCharset(uri);
         var uriMediaType = uriCharset.mediaType();
         if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
@@ -99,6 +104,7 @@ class MediaTypeDetector {
                 mediaType = detectCharsetAndMediaType(uri, ByteSource.empty(), mediaType);
             }
         }
+        mediaType = fixMissingCharset(mediaType);
         return mediaType;
     }
 
@@ -120,9 +126,27 @@ class MediaTypeDetector {
         else return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
     }
 
+    private MediaType fixMissingCharset(MediaType mediaType) {
+        if (mediaType.charset().isPresent()) return mediaType;
+        // TODO Replace this with a more "pluggable" instead of this initial hard-coded design
+        if (mediaType.is(MediaType.ANY_TEXT_TYPE)) {
+            // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
+            mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
+            // TODO This should move into a TBD JsonMediaType implements ResourceCharsetDetector
+        } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
+            // TODO See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
+            // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
+            mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
+        } else if (mediaType.subtype().endsWith("+json")) {
+            mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
+        }
+        // TODO NOT if (mediaType.subtype().endsWith("+yaml")) { but via YamlMediaType
+        return mediaType;
+    }
+
     // This is currently still used by both UrlResource & OkHttpResource (and MediaTypeDetectorTest)
     // but this is conceptually the same as the overwrite(URI uri, MediaType originalMediaType)
-    // TODO Switch UrlResource & OkHttpResource to use that instead
+    // TODO Switch OkHttpResource to use that instead
     // TODO Make private (or inline and remove)
     MediaType detect(@Nullable String contentType, @Nullable String contentEncoding, URI uri) {
         MediaType mediaType = null;
@@ -147,19 +171,7 @@ class MediaTypeDetector {
         if (contentEncoding != null) {
             mediaType = mediaType.withCharset(Charset.forName(contentEncoding));
         } else {
-            // TODO Replace this with a more "pluggable" instead of this initial hard-coded design
-            if (mediaType.is(MediaType.ANY_TEXT_TYPE)) {
-                // TODO Remove this; it's wrong! Generic text cannot just be assumed to be UTF-8!
-                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
-                // TODO This should move into a TBD JsonMediaType implements ResourceCharsetDetector
-            } else if (mediaType.is(MediaType.JSON_UTF_8.withoutParameters())) {
-                // TODO See ResourceCharsetDetector above; implement JSON BOM detection à la §3 from
-                // https://www.ietf.org/rfc/rfc4627.txt in a new class JsonResourceCharsetDetector
-                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
-            } else if (mediaType.subtype().endsWith("+json")) {
-                mediaType = mediaType.withCharset(StandardCharsets.UTF_8);
-            }
-            // TODO NOT if (mediaType.subtype().endsWith("+yaml")) { but via YamlMediaType
+            mediaType = fixMissingCharset(mediaType);
         }
 
         return mediaType;

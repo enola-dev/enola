@@ -24,6 +24,7 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,8 +117,8 @@ public class UrlResource extends BaseResource implements ReadableResource {
         this.url = url;
     }
 
-    private static MediaType mediaType(URL url, Charset charset) {
-        // This is slow - but more accurate; see https://www.baeldung.com/java-file-mime-type
+    private static MediaType mediaType(URL url, @Nullable Charset charset) {
+        // This is slow - but more correct; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;
         try {
             LOG.trace("mediaType: openConnection {}", url);
@@ -134,7 +135,12 @@ public class UrlResource extends BaseResource implements ReadableResource {
                 encodingFromServer = charset.name();
             }
 
-            return mtd.detect(contentTypeFromServer, encodingFromServer, url.toURI());
+            var mediaTypeFromServer = MediaType.parse(contentTypeFromServer);
+            if (encodingFromServer != null) {
+                Charset charsetFromServer = Charset.forName(encodingFromServer);
+                mediaTypeFromServer = mediaTypeFromServer.withCharset(charsetFromServer);
+            }
+            return mtd.overwrite(url.toURI(), mediaTypeFromServer);
 
         } catch (IOException e) {
             throw new UncheckedIOException(e);
