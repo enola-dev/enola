@@ -127,6 +127,9 @@ public class ThingUI {
     // TODO Implement Escaper as StringTemplate.Processor?
     // (See e.g. https://javaalmanac.io/features/stringtemplates/)
     private static String s(String raw) {
-        return htmlEscaper.escape(raw);
+        // Replacement of "#" by "%23" is required so that links such as e.g
+        // http://[::]:8080/ui/http://www.w3.org/1999/02/22-rdf-syntax-ns#subject
+        // et al. work as needed!
+        return htmlEscaper.escape(raw).replace("#", "%23");
     }
 }
