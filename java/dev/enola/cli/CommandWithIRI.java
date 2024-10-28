@@ -38,7 +38,7 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     @CommandLine.Option(
             names = {"--format", "-f"},
             required = true,
-            defaultValue = "YAML",
+            defaultValue = "ProtoYAML",
             description = "Output Format: ${COMPLETION-CANDIDATES}; default=${DEFAULT-VALUE}")
     Format format;
 

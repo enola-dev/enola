@@ -68,11 +68,11 @@ public class ProtobufMediaTypes implements MediaTypeProvider {
     public static final MediaType PROTOBUF_TEXTPROTO_UTF_8 =
             MediaType.create("text", "protobuf").withCharset(StandardCharsets.UTF_8);
 
-    // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf JSON" really just JSON?!
+    /** "ProtoBuf as JSON" - which is different from e.g. a JSON-LD representation of RDF. */
     public static final MediaType PROTOBUF_JSON_UTF_8 =
             MediaType.create("text", "protobuf+json").withCharset(StandardCharsets.UTF_8);
 
-    // TODO Rethink, and doc, what this actually means? Isn't a "ProtoBuf YAML" really just YAML?!
+    /** "ProtoBuf as YAML" - which is different from e.g. a YAML-LD representation of RDF. */
     public static final MediaType PROTOBUF_YAML_UTF_8 =
             MediaType.create("text", "protobuf+yaml").withCharset(StandardCharsets.UTF_8);
 
