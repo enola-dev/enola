@@ -58,6 +58,8 @@ java_binary(
         "@maven//:com_google_protobuf_protobuf_java",
         "@maven//:info_picocli_picocli",
         "@maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
         "@maven//:org_slf4j_slf4j_jdk14",
