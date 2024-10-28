@@ -24,9 +24,9 @@ import dev.enola.common.protobuf.ProtobufMediaTypes;
 public enum Format {
     TextProto,
 
-    YAML,
+    ProtoYAML,
 
-    JSON,
+    ProtoJSON,
 
     BinaryPB;
 
@@ -34,9 +34,9 @@ public enum Format {
         switch (this) {
             case TextProto:
                 return ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
-            case YAML:
+            case ProtoYAML:
                 return ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
-            case JSON:
+            case ProtoJSON:
                 return ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
             case BinaryPB:
                 return ProtobufMediaTypes.PROTOBUF_BINARY;
