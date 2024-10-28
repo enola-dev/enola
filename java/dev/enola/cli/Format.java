@@ -25,6 +25,8 @@ import dev.enola.rdf.io.RdfMediaTypes;
 public enum Format {
     Turtle,
 
+    JSONLD,
+
     TextProto,
 
     ProtoYAML,
@@ -34,19 +36,14 @@ public enum Format {
     BinaryPB;
 
     MediaType toMediaType() {
-        switch (this) {
-            case Turtle:
-                return RdfMediaTypes.TURTLE;
-            case TextProto:
-                return ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
-            case ProtoYAML:
-                return ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
-            case ProtoJSON:
-                return ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
-            case BinaryPB:
-                return ProtobufMediaTypes.PROTOBUF_BINARY;
-            default:
-                throw new IllegalStateException();
-        }
+        return switch (this) {
+            case Turtle -> RdfMediaTypes.TURTLE;
+            case JSONLD -> RdfMediaTypes.JSON_LD;
+
+            case TextProto -> ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
+            case ProtoYAML -> ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;
+            case ProtoJSON -> ProtobufMediaTypes.PROTOBUF_JSON_UTF_8;
+            case BinaryPB -> ProtobufMediaTypes.PROTOBUF_BINARY;
+        };
     }
 }

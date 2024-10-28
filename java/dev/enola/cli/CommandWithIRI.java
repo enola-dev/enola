@@ -76,11 +76,11 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
 
     protected void write(Message thing) throws IOException {
-        if (thing instanceof Thing protoThing) {
-            if (Format.Turtle.equals(format)) {
-                var model = new ProtoThingRdfConverter().convert(protoThing);
-                new RdfWriterConverter().convertIntoOrThrow(model, resource);
-            }
+        if (thing instanceof Thing protoThing
+                && (Format.Turtle.equals(format) || Format.JSONLD.equals(format))) {
+            var model = new ProtoThingRdfConverter().convert(protoThing);
+            new RdfWriterConverter().convertIntoOrThrow(model, resource);
+
         } else new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
     }
 }
