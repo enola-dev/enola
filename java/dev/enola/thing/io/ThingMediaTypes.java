@@ -34,6 +34,8 @@ import java.util.Set;
 
 public class ThingMediaTypes implements MediaTypeProvider {
 
+    // TODO Use vnd.enola.* like e.g. in GraphCommonsMediaType (for consistency)
+
     public static final MediaType THING_TEXTPROTO_UTF_8 =
             ProtobufMediaTypes.setProtoMessageFQN(
                     ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8,

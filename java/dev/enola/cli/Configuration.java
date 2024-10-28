@@ -29,6 +29,7 @@ import dev.enola.infer.datalog.DatalogMediaTypes;
 import dev.enola.rdf.io.RdfMediaTypeYamlLd;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.gen.gexf.GexfMediaType;
+import dev.enola.thing.gen.graphcommons.GraphCommonsMediaType;
 import dev.enola.thing.gen.graphviz.GraphvizMediaType;
 import dev.enola.thing.io.ThingMediaTypes;
 
@@ -46,6 +47,7 @@ class Configuration {
                     new MarkdownMediaTypes(),
                     new GraphvizMediaType(),
                     new GexfMediaType(),
+                    new GraphCommonsMediaType(),
                     new DatalogMediaTypes(),
                     new StandardMediaTypes(),
                     new YamlMediaType(),
