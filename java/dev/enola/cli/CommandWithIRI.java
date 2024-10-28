@@ -37,6 +37,7 @@ import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 import dev.enola.web.EnolaThingProvider;
 
+import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 import org.eclipse.rdf4j.model.util.ModelBuilder;
 import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
@@ -91,7 +92,8 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
             var model = new ModelBuilder().build();
             var statementCollector = new StatementCollector(model);
             if (thing instanceof Thing protoThing) {
-                new ProtoThingRdfConverter().convertInto(protoThing, statementCollector);
+                var vf = SimpleValueFactory.getInstance();
+                new ProtoThingRdfConverter(vf).convertInto(protoThing, statementCollector);
             } else if (thing instanceof Things protoThings) {
                 for (var protoThing : protoThings.getThingsList())
                     new ProtoThingRdfConverter().convertInto(protoThing, statementCollector);
