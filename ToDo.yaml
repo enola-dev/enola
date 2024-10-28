@@ -291,12 +291,6 @@ items:
   - Split Datatype pure-RegExp (with TLC, configurable in Repo) from Java Converter (with DI with @AutoService, fix):
       tags: [clean]
 
-  - Make Rosetta --load multiple inputs instead of --in: &rosettaLoad
-
-  - Unify DocGen into Rosetta:
-      tags: [ui, docgen, rosetta]
-      depends: [*rosettaLoad]
-
   - Unify UI with Rosetta:
       tags: [ui, rosetta]
 

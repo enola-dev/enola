@@ -37,6 +37,9 @@ import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 import dev.enola.web.EnolaThingProvider;
 
+import org.eclipse.rdf4j.model.util.ModelBuilder;
+import org.eclipse.rdf4j.rio.helpers.StatementCollector;
+
 import picocli.CommandLine;
 
 import java.io.IOException;
@@ -84,21 +87,23 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
 
     protected void write(Message thing) throws IOException {
-        if (thing instanceof Thing protoThing) {
-            if (Format.Turtle.equals(format) || Format.JSONLD.equals(format)) {
-                var model = new ProtoThingRdfConverter().convert(protoThing);
-                new RdfWriterConverter().convertIntoOrThrow(model, resource);
-                return;
+        if (Format.Turtle.equals(format) || Format.JSONLD.equals(format)) {
+            var model = new ModelBuilder().build();
+            var statementCollector = new StatementCollector(model);
+            if (thing instanceof Thing protoThing) {
+                new ProtoThingRdfConverter().convertInto(protoThing, statementCollector);
+            } else if (thing instanceof Things protoThings) {
+                for (var protoThing : protoThings.getThingsList())
+                    new ProtoThingRdfConverter().convertInto(protoThing, statementCollector);
             }
+            new RdfWriterConverter().convertIntoOrThrow(model, resource);
+            return;
         }
 
-        if (thing instanceof Things protoThings) {
-            if (Format.Graphviz.equals(format)) {
-                var javaThings = ProtoThings.proto2java(protoThings.getThingsList());
-                new GraphvizGenerator(thingMetadataProvider)
-                        .convertIntoOrThrow(javaThings, resource);
-                return;
-            }
+        if (Format.Graphviz.equals(format) && thing instanceof Things protoThings) {
+            var javaThings = ProtoThings.proto2java(protoThings.getThingsList());
+            new GraphvizGenerator(thingMetadataProvider).convertIntoOrThrow(javaThings, resource);
+            return;
         }
 
         // Otherwise

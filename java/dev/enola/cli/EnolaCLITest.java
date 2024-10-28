@@ -215,7 +215,7 @@ public class EnolaCLITest {
         var exec = cli("-vvv", "get", "--load", MODEL, "enola:/");
         var run = assertThat(exec);
         run.err().isEmpty();
-        run.hasExitCode(0).out().contains("https://enola.dev/emoji");
+        run.hasExitCode(0).out().contains("enola:emoji");
     }
 
     @Test
