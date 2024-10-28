@@ -20,8 +20,11 @@ package dev.enola.cli;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.protobuf.ProtobufMediaTypes;
+import dev.enola.rdf.io.RdfMediaTypes;
 
 public enum Format {
+    Turtle,
+
     TextProto,
 
     ProtoYAML,
@@ -32,6 +35,8 @@ public enum Format {
 
     MediaType toMediaType() {
         switch (this) {
+            case Turtle:
+                return RdfMediaTypes.TURTLE;
             case TextProto:
                 return ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
             case ProtoYAML:

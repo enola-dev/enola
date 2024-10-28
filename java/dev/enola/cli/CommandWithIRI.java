@@ -28,6 +28,9 @@ import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.view.EnolaMessages;
+import dev.enola.rdf.io.RdfWriterConverter;
+import dev.enola.rdf.proto.ProtoThingRdfConverter;
+import dev.enola.thing.proto.Thing;
 
 import picocli.CommandLine;
 
@@ -38,7 +41,7 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     @CommandLine.Option(
             names = {"--format", "-f"},
             required = true,
-            defaultValue = "ProtoYAML",
+            defaultValue = "Turtle",
             description = "Output Format: ${COMPLETION-CANDIDATES}; default=${DEFAULT-VALUE}")
     Format format;
 
@@ -73,6 +76,11 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
 
     protected void write(Message thing) throws IOException {
-        new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
+        if (thing instanceof Thing protoThing) {
+            if (Format.Turtle.equals(format)) {
+                var model = new ProtoThingRdfConverter().convert(protoThing);
+                new RdfWriterConverter().convertIntoOrThrow(model, resource);
+            }
+        } else new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
     }
 }
