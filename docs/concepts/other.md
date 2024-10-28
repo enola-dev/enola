@@ -140,6 +140,7 @@ Vaguely related other such tools include:
 
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API
 * [JGraphT](https://jgrapht.org) Java Library
+* [NetworkX](https://networkx.org/) Python package
 
 [Semantic Triple](https://en.wikipedia.org/wiki/Semantic_triple) Java libraries ([comparison](https://github.com/trellis-ldp/trellis/issues/358)):
 
@@ -189,6 +190,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
 ### GraphML DB
 
+* [ArangoDB](https://arangodb.com) #GraphML #opensource #commercial
 * [LlamaIndex](https://www.llamaindex.ai) #GraphML #opensource? #ToDo
 * [varunshenoy/GraphGPT](https://github.com/varunshenoy/GraphGPT) #GraphML #opensource #demo
 * [HKUDS/GraphGPT](https://github.com/HKUDS/GraphGPT) #GraphML #opensource #paper

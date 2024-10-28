@@ -21,11 +21,14 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 import dev.enola.rdf.io.RdfMediaTypes;
+import dev.enola.thing.gen.graphviz.GraphvizMediaType;
 
 public enum Format {
     Turtle,
 
     JSONLD,
+
+    Graphviz,
 
     TextProto,
 
@@ -39,6 +42,7 @@ public enum Format {
         return switch (this) {
             case Turtle -> RdfMediaTypes.TURTLE;
             case JSONLD -> RdfMediaTypes.JSON_LD;
+            case Graphviz -> GraphvizMediaType.GV;
 
             case TextProto -> ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
             case ProtoYAML -> ProtobufMediaTypes.PROTOBUF_YAML_UTF_8;

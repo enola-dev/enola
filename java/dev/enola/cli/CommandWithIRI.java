@@ -30,7 +30,12 @@ import dev.enola.core.proto.GetFileDescriptorSetRequest;
 import dev.enola.core.view.EnolaMessages;
 import dev.enola.rdf.io.RdfWriterConverter;
 import dev.enola.rdf.proto.ProtoThingRdfConverter;
+import dev.enola.thing.gen.graphviz.GraphvizGenerator;
+import dev.enola.thing.message.ProtoThings;
+import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
+import dev.enola.thing.proto.Things;
+import dev.enola.web.EnolaThingProvider;
 
 import picocli.CommandLine;
 
@@ -52,9 +57,12 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     private WritableResource resource;
     private TypeRegistryWrapper typeRegistryWrapper;
     protected EnolaMessages enolaMessages;
+    private ThingMetadataProvider thingMetadataProvider;
 
     @Override
     protected final void run(EnolaServiceBlockingStub service) throws Exception {
+        thingMetadataProvider = getMetadataProvider(new EnolaThingProvider(service));
+
         var gfdsr = GetFileDescriptorSetRequest.newBuilder().build();
         var fds = service.getFileDescriptorSet(gfdsr).getProtos();
         typeRegistryWrapper = TypeRegistryWrapper.from(fds);
@@ -76,11 +84,24 @@ public abstract class CommandWithIRI extends CommandWithModelAndOutput {
     protected abstract void run(EnolaServiceBlockingStub service, String eri) throws Exception;
 
     protected void write(Message thing) throws IOException {
-        if (thing instanceof Thing protoThing
-                && (Format.Turtle.equals(format) || Format.JSONLD.equals(format))) {
-            var model = new ProtoThingRdfConverter().convert(protoThing);
-            new RdfWriterConverter().convertIntoOrThrow(model, resource);
+        if (thing instanceof Thing protoThing) {
+            if (Format.Turtle.equals(format) || Format.JSONLD.equals(format)) {
+                var model = new ProtoThingRdfConverter().convert(protoThing);
+                new RdfWriterConverter().convertIntoOrThrow(model, resource);
+                return;
+            }
+        }
 
-        } else new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
+        if (thing instanceof Things protoThings) {
+            if (Format.Graphviz.equals(format)) {
+                var javaThings = ProtoThings.proto2java(protoThings.getThingsList());
+                new GraphvizGenerator(thingMetadataProvider)
+                        .convertIntoOrThrow(javaThings, resource);
+                return;
+            }
+        }
+
+        // Otherwise
+        new ProtoIO(typeRegistryWrapper.get()).write(thing, resource);
     }
 }
