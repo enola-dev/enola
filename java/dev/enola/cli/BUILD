@@ -48,6 +48,7 @@ java_binary(
         "//java/dev/enola/infer/datalog",
         "//java/dev/enola/model",
         "//java/dev/enola/rdf/io",
+        "//java/dev/enola/rdf/proto",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//java/dev/enola/thing/gen",
