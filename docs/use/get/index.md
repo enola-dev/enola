@@ -39,3 +39,5 @@ Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/enola
 $ ./enola get --load models/enola.dev/enola.ttl https://enola.dev/emoji | head --lines=3
 ...
 ```
+
+Note that `get` [supports various formats](../help/index.md#get).
