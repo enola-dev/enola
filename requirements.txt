@@ -1,7 +1,7 @@
 # PLEASE only use fixed (package)==(version)
 
 # https://pre-commit.com
-pre-commit==3.8.0
+pre-commit==4.0.1
 
 # https://linkml.io
 linkml==1.8.5
