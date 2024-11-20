@@ -1,0 +1,5 @@
+# TODO https://enola.dev/Emoji is a Datatype with has a RegExp that matches " :.*[a-z ]:"
+
+# TODO https://enola.dev/Emoji/{emoji} is a schema:Identifier subclass, where {emoji} is either ":?crystal ball:?" or 🔮
+
+# TODO https://enola.dev/emoji is the (existing) property, which has range (?) #/Emoji.
