@@ -48,6 +48,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 * [Data Commons](https://datacommons.org), by #Google
 * [Wikidata](https://www.wikidata.org) ([SPARQL query](https://query.wikidata.org))
+* [DBpedia](https://www.dbpedia.org)
 * [European data](https://data.europa.eu), and [Kohesio](https://kohesio.ec.europa.eu)
 * [LINDAS](https://lindas.admin.ch) the Swiss Governments's Ecosystem (also [opendata.swiss](https://opendata.swiss)?)
 * [SBB](https://data.sbb.ch) The Swiss trains schedule
@@ -93,6 +94,10 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 * [The Archive from zettelkasten.de](https://zettelkasten.de/the-archive/)
 * [Zettelkasten history on Wikipedia](https://en.wikipedia.org/wiki/Zettelkasten)
 
+### OSINT
+
+* [Maltego](https://www.maltego.com) #commercial
+
 ## Graph
 
 ### Visualization
@@ -103,6 +108,7 @@ Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ usi
 * [Graphviz](https://graphviz.org) #available
 * [Gephi](https://gephi.org), with [Gephi Lite](https://gephi.org/gephi-lite/) which uses [SigmaJS](https://www.sigmajs.org) on [Graphology](https://graphology.github.io) for JS #[FOSDEM](https://github.com/vorburger/vorburger.ch-Notes/blob/develop/conferences/FOSDEM-2024.md) #dynamicGraph #web #active #planned #ToDo
 * [D3js.org](https://d3js.org), and [Observable Plot](https://observablehq.com/plot/) has #[graph](https://observablehq.com/@d3/force-directed-graph-component?collection=@d3/charts) (and [d3rdf](https://github.com/Rathachai/d3rdf)) #[timeline](https://observablehq.com/@observablehq/plot-civilizations-timeline?intent=fork)
+* [G6](https://github.com/antvis/G6) #opensource #graph #javascript
 * [vis.js](https://visjs.org) #opensource #graph #timeline #web
 * [Cytoscape](https://cytoscape.org) #opensource #graph #desktop #[plugins](https://apps.cytoscape.org/)
 * [Cytoscape.js](https://js.cytoscape.org/) #graph #library #web
@@ -113,6 +119,7 @@ Enola 🕵🏾‍♀️ visualizes (TBD) the relationships of its _Entities_ usi
 * [yuml](https://yuml.me) #UML
 * [amCharts](https://www.amcharts.com/demos/force-directed-network/) #network #commercial
 * [KronoGraph](https://cambridge-intelligence.com/kronograph/features/) #network #timeline #commercial
+* [GoJS](https://gojs.net) #network #tree #commercial
 * [Ruimdetijd/timeline](https://github.com/Ruimdetijd/timeline) #timeline #gpl #broken
 * [Apache Charts](https://echarts.apache.org/examples/en/index.html#chart-type-graph) #graph #opensource @impronta48
 
