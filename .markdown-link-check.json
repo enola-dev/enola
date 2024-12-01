@@ -11,7 +11,8 @@
     { "pattern": "^https://marketplace.visualstudio.com" },
     { "pattern": "^https://www.hl7.org/fhir/" },
     { "pattern": "^https://metaphacts.com" },
-    { "pattern": "^https://kohesio.ec.europa.eu" }
+    { "pattern": "^https://kohesio.ec.europa.eu" },
+    { "pattern": "^https://billiam.itch.io/deepdwn" }
   ],
   "aliveStatusCodes": [504, 503, 502, 405, 200, 0]
 }
