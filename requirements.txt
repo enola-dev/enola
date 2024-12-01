@@ -22,4 +22,4 @@ asciinema==2.4.0
 
 # https://github.com/mondeja/mkdocs-include-markdown-plugin (ASL)
 # Possible alternative: https://github.com/cmacmackin/markdown-include (GPL)
-mkdocs-include-markdown-plugin==6.2.2
+mkdocs-include-markdown-plugin==7.1.2
