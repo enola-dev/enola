@@ -21,8 +21,7 @@
 Enola in addition to RDF 🐢 TTL etc. can also read many other common file formats
 (see [`enola info`](../use/info/index.md)).
 This is courtesy of [Apache Tika](https://tika.apache.org),
-see its [Supported Document Formats
-](https://tika.apache.org/3.0.0-BETA2/formats.html).
+see its [Supported Document Formats](https://tika.apache.org/3.0.0-BETA2/formats.html).
 
 All of these formats are supported e.g. for conversions with [Rosetta](../use/rosetta/index.md) but also `--load` for [Get](../use/get/index.md), [DocGen](../use/docgen/index.md) and [Server](../use/server/index.md), etc.
 
