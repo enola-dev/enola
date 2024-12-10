@@ -17,8 +17,6 @@
  */
 package dev.enola.web;
 
-import static java.lang.StringTemplate.STR;
-
 import com.google.common.escape.Escaper;
 import com.google.common.html.HtmlEscapers;
 
@@ -77,13 +75,13 @@ public class ThingUI {
     private CharSequence table(Map<String, Value> fieldsMap, String cssClass) {
         var sb = new StringBuilder("<table");
         if (!cssClass.isEmpty()) {
-            sb.append(" class=\"" + s(cssClass) + "\"");
+            sb.append(" class=\"").append(s(cssClass)).append("\"");
         }
         sb.append("><tbody>\n");
         for (var nameValue : fieldsMap.entrySet()) {
             sb.append("<tr>\n");
-            sb.append(STR."<td class=\"label\">\{link(nameValue.getKey())}</td>");
-            sb.append(STR."<td>\{value(nameValue.getValue(), "")}</td>");
+            sb.append("<td class=\"label\">").append(link(nameValue.getKey())).append("</td>");
+            sb.append("<td>").append(value(nameValue.getValue(), "")).append("</td>");
             sb.append("</tr>\n");
         }
         sb.append("</tbody></table>\n");

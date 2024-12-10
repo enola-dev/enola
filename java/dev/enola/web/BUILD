@@ -23,7 +23,6 @@ java_library(
         ["*.java"],
         exclude = ["*Test*.java"],
     ),
-    javacopts = ["--enable-preview"],
     resource_strip_prefix = "java/dev/enola/web/resources/",
     # TODO Use **/*.html instead of **/* here (like in gen/BUILD)
     resources = glob(["resources/**/*"]),
@@ -52,7 +51,6 @@ junit_tests(
     name = "tests",
     size = "medium",
     srcs = glob(["*Test.java"]),
-    jvm_flags = ["--enable-preview"],
     srcs_utils = glob(["*Abstract.java"]),
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",

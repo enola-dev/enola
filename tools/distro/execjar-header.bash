@@ -19,7 +19,7 @@
 # BEWARE of https://www.shellcheck.net/wiki/SC3050 (that's why Bash instead of /bin/sh)
 commandToRun="$(printf "%q " "$@")"
 if test "$commandToRun" = "'' "; then
-  eval "exec java -Xmx1G --enable-preview -jar $0"
+  eval "exec java -Xmx1G -jar $0"
 else
-  eval "exec java -Xmx1G --enable-preview -jar $0 $commandToRun"
+  eval "exec java -Xmx1G -jar $0 $commandToRun"
 fi

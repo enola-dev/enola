@@ -17,10 +17,8 @@
  */
 package dev.enola.common.hello;
 
-import static java.lang.StringTemplate.STR;
-
 public class Library {
     public static String helloWithJavaStringTemplate(String planet) {
-        return STR."hello, \{planet}";
+        return "hello, " + planet;
     }
 }
