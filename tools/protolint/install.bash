@@ -25,5 +25,5 @@ set -euo pipefail
 
 if ! [ -x "$(command -v "$(go env GOPATH)/bin/protolint")" ]; then
   # This version must be kept in the sync with the one in .pre-commit-config.yaml
-  go install github.com/yoheimuta/protolint/cmd/protolint@v0.47.5
+  go install github.com/yoheimuta/protolint/cmd/protolint@v0.50.5
 fi

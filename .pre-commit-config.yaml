@@ -23,7 +23,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -87,7 +87,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v18.1.8
+    rev: v19.1.5
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -100,7 +100,8 @@ repos:
 
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
-    rev: v0.50.3
+    # NB: v0.51.0 requires go v1.23 (so Fedora 41 not 40; TODO check GitHub Runner...)
+    rev: v0.50.5
     hooks:
       - id: protolint
 
@@ -116,13 +117,14 @@ repos:
         args: [--autofix, --aosp, --google-java-formatter-version=1.25.1]
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.13.0
+    rev: v0.16.0
     hooks:
       - id: markdownlint-cli2
         exclude: (^.github/|test/|docs/use/docgen/docgen.md)
 
     # Until https://github.com/DavidAnson/markdownlint/issues/121
   - repo: https://github.com/tcort/markdown-link-check
+    # TODO v3.13.6 causes https://github.com/tcort/markdown-link-check/issues/387 ...
     rev: v3.12.2
     hooks:
       - id: markdown-link-check
@@ -131,7 +133,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 6.4.0.1
+    rev: 7.3.1.1
     hooks:
       - id: buildifier
         args: &args
@@ -169,7 +171,7 @@ repos:
         exclude: mvnw
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.0
+    rev: 0.30.0
     hooks:
       - id: check-github-actions
         args: ["--verbose"]
@@ -179,6 +181,7 @@ repos:
         args: ["--verbose"]
       - id: check-renovate
         args: ["--verbose"]
+        additional_dependencies: ["pyjson5==1.6.7"]
       - id: check-metaschema
         files: \.schema\.json$
         args: ["--verbose"]
@@ -197,7 +200,7 @@ repos:
 
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 2.7.3
+    rev: 3.0.3
     hooks:
       - id: editorconfig-checker
         exclude: mvnw
