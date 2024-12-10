@@ -27,7 +27,6 @@ java_binary(
             "SystemOutErrCapture.java",
         ],
     ),
-    jvm_flags = ["--enable-preview"],
     main_class = "dev.enola.cli.EnolaCLI",
     deps = [
         "//java/dev/enola/common",
@@ -73,7 +72,6 @@ junit_tests(
         ["*Test.java"],
         exclude = ["EnolaLoggingTest.java"],
     ),
-    jvm_flags = ["--enable-preview"],
     srcs_utils = [
         "CommandLineSubject.java",
         "SystemOutErrCapture.java",

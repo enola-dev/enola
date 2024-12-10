@@ -17,8 +17,6 @@
  */
 package dev.enola.common.hello;
 
-import static java.lang.StringTemplate.STR;
-
 public class Hello {
     public static void main(String[] args) {
         // System.out.println("hello, world");
@@ -27,6 +25,6 @@ public class Hello {
     }
 
     public static String helloWithJavaStringTemplate(String planet) {
-        return STR."hello, \{planet}";
+        return "hello, " + planet;
     }
 }

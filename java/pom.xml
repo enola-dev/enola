@@ -30,9 +30,6 @@
         <configuration>
           <release>21</release>
           <encoding>UTF-8</encoding>
-          <compilerArgs>
-            <arg>--enable-preview</arg>
-          </compilerArgs>
         </configuration>
       </plugin>
 

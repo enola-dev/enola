@@ -19,8 +19,6 @@ load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 java_binary(
     name = "hello",
     srcs = ["src/main/java/dev/enola/common/hello/Hello.java"],
-    javacopts = ["--enable-preview"],
-    jvm_flags = ["--enable-preview"],
     main_class = "dev.enola.common.hello.Hello",
     deps = [":hello_lib"],
 )
@@ -28,5 +26,4 @@ java_binary(
 java_library(
     name = "hello_lib",
     srcs = ["src/main/java/dev/enola/common/hello/Library.java"],
-    javacopts = ["--enable-preview"],
 )
