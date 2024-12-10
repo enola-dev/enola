@@ -86,7 +86,7 @@ public class ThingHierarchyProvider {
                 if (!iterator.hasNext()) continue;
                 var parent = iterator.next();
                 return switch (parent) {
-                        // TODO This is a kind of converter, and shouldn't be here?
+                    // TODO This is a kind of converter, and shouldn't be here?
                     case String string -> Optional.of(string);
                     case URI uri -> Optional.of(uri.toString());
                     case Link link -> Optional.of(link.iri());
