@@ -54,18 +54,16 @@ jobs:
         shell: bash
 
       - name: Cache Bazel
-        uses: actions/cache@v4
+        uses: bazel-contrib/setup-bazel@0.9.1
         with:
           # KEEP IN SYNC WITH BELOW!
-          # https://github.com/actions/cache/pull/575/files
-          path: |
-            ~/.cache/bazel/
-            ~/.cache/bazelisk/
-            /private/var/tmp/_bazel_runner/
-          key: >
-            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc',
-            'WORKSPACE.bazel', 'MODULE.bazel') }}
-          restore-keys: ${{ runner.os }}-bazel-
+          bazelisk-cache: true
+          bazelisk-version: 1.25.0
+          disk-cache: ${{ github.workflow }}
+          # TODO manifest: npm: package-lock.json ??
+          external-cache: true
+          repository-cache: true
+
       - name: Cache Python
         uses: actions/cache@v4
         with:
@@ -192,18 +190,15 @@ jobs:
           # NB: Repeated above in build: job; must keep in sync!
           java-version: "21"
       - name: Cache Bazel
-        uses: actions/cache@v4
+        uses: bazel-contrib/setup-bazel@0.9.1
         with:
           # KEEP IN SYNC WITH ABOVE!
-          # https://github.com/actions/cache/pull/575/files
-          path: |
-            ~/.cache/bazel/
-            ~/.cache/bazelisk/
-            /private/var/tmp/_bazel_runner/
-          key: >
-            ${{ runner.os }}-bazel-${{ hashFiles('.bazelversion', '.bazelrc',
-            'WORKSPACE.bazel', 'MODULE.bazel') }}
-          restore-keys: ${{ runner.os }}-bazel-
+          bazelisk-cache: true
+          bazelisk-version: 1.25.0
+          disk-cache: ${{ github.workflow }}
+          # TODO manifest: npm: package-lock.json ??
+          external-cache: true
+          repository-cache: true
       - name: Build Container Image # again, because technically it was already built in the 'build' job, but oh well!
         run: ./tools/distro/build.bash
       # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
