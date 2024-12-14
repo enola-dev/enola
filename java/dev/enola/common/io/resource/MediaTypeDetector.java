@@ -172,9 +172,7 @@ class MediaTypeDetector {
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
-            // TODO Use isSpecial() here? But it also includes DEFAULT...
-            if (TRY_FIXING.contains(mediaType.withoutParameters())
-                    || IGNORE.contains(mediaType.withoutParameters())) {
+            if (isSpecial(mediaType)) {
                 mediaType = null;
             }
         }
