@@ -46,7 +46,7 @@ public class ErrorResource extends BaseResource implements Resource {
     public static final ErrorResource INSTANCE = new ErrorResource();
 
     private ErrorResource() {
-        super(ERROR_URI, MEDIA_TYPE, true);
+        super(ERROR_URI, MEDIA_TYPE);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class NullResource extends BaseResource implements Resource {
     static final String SCHEME = "null";
 
     public NullResource(MediaType mediaType) {
-        super(uri(mediaType), mediaType, true);
+        super(uri(mediaType), mediaType);
     }
 
     private static URI uri(MediaType mediaType) {
