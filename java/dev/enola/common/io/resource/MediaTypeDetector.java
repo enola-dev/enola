@@ -58,7 +58,12 @@ class MediaTypeDetector {
     private static final Set<MediaType> TRY_FIXING =
             ImmutableSet.of(
                     // raw.githubusercontent.com returns "text/plain" e.g. for *.yaml
-                    MediaType.parse("text/plain"));
+                    MediaType.parse("text/plain"),
+                    // URLConnection assumes JSON for all *.json but we want "longest
+                    // match" e.g. for ".graphcommons.json"
+                    MediaType.parse("application/json"),
+                    // URLConnection assumes XML for .gexf instead of GexfMediaType (with +xml)
+                    MediaType.parse("application/xml"));
 
     private static boolean isSpecial(MediaType mediaType) {
         var mediaTypeWithoutParameters = mediaType.withoutParameters();
@@ -167,8 +172,7 @@ class MediaTypeDetector {
         MediaType mediaType = null;
         if (contentType != null) {
             mediaType = MediaTypes.parse(contentType);
-            if (TRY_FIXING.contains(mediaType.withoutParameters())
-                    || IGNORE.contains(mediaType.withoutParameters())) {
+            if (isSpecial(mediaType)) {
                 mediaType = null;
             }
         }

@@ -26,6 +26,7 @@ import static org.junit.Assert.assertThrows;
 
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,14 +36,15 @@ import java.net.URI;
 
 public class MemoryResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    // The new YamlMediaType() is required for non-regression of the funkyYamlURL below
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     private static final byte[] BYTES = new byte[] {1, 2, 3};
     private static final String TEXT = "hello, world";
 
     @Test
     public void testBinaryMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(OCTET_STREAM);
+        var resource = new MemoryResource(OCTET_STREAM);
         resource.byteSink().write(BYTES);
         assertThat(resource.byteSource().read()).isEqualTo(BYTES);
 
@@ -52,16 +54,23 @@ public class MemoryResourceTest {
 
     @Test
     public void testTextMemoryResource() throws IOException {
-        MemoryResource resource = new MemoryResource(PLAIN_TEXT_UTF_8);
+        var resource = new MemoryResource(PLAIN_TEXT_UTF_8);
         resource.charSink().write(TEXT);
         assertThat(resource.charSource().read()).isEqualTo(TEXT);
     }
 
     @Test
-    public void testMediaTypePrecedence() throws IOException {
-        // This does not work for PLAIN_TEXT_UTF_8, because that's "special"
+    public void testMediaTypePrecedenceHTML_GZIP() {
+        // TODO Fix to also make this work for PLAIN_TEXT_UTF_8, which is "special"
         // (It's one of a few MediaTypes which MediaTypeDetector always overrides)
-        MemoryResource resource = new MemoryResource(URI.create("test.html"), GZIP);
+        var resource = new MemoryResource(URI.create("test.html"), GZIP);
         assertThat(resource.mediaType()).isEqualTo(GZIP);
+    }
+
+    @Test
+    public void testMediaTypePrecedenceYAML_JSON() {
+        var funkyYamlURL = "classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld";
+        var resource = new MemoryResource(URI.create(funkyYamlURL), JSON_UTF_8);
+        assertThat(resource.mediaType()).isEqualTo(JSON_UTF_8);
     }
 }
