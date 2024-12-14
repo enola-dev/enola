@@ -44,10 +44,6 @@ public class MemoryResource extends BaseResource implements Resource {
 
     private final MemoryByteSink memoryByteSink = new MemoryByteSink();
 
-    protected MemoryResource(URI uri, MediaType mediaType, boolean fixedMediaType) {
-        super(uri, mediaType, fixedMediaType);
-    }
-
     public MemoryResource(URI uri, MediaType mediaType) {
         super(uri, mediaType);
     }
