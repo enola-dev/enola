@@ -25,7 +25,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,26 +39,20 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
 
     private static final String VARIANT = "variant";
 
-    public static final MediaType MARKDOWN_UTF_8 =
-            create("text", "markdown").withCharset(StandardCharsets.UTF_8);
+    public static final MediaType MARKDOWN_UTF_8 = MediaType.MD_UTF_8;
 
     /**
      * <a href="https://www.iana.org/assignments/markdown-variants/CommonMark">CommonMark</a>
      * variant, see <a href="https://commonmark.org">CommonMark.org</a>.
      */
     public static final MediaType COMMON_MARKDOWN_UTF_8 =
-            create("text", "markdown")
-                    .withCharset(StandardCharsets.UTF_8)
-                    .withParameter(VARIANT, "CommonMark");
+            MARKDOWN_UTF_8.withParameter(VARIANT, "CommonMark");
 
     /**
      * <a href="https://www.iana.org/assignments/markdown-variants/GFM">GitHub Flavored Markdown
      * (GFM)</a>.
      */
-    public static final MediaType GFM_MARKDOWN_UTF_8 =
-            create("text", "markdown")
-                    .withCharset(StandardCharsets.UTF_8)
-                    .withParameter(VARIANT, "GFM");
+    public static final MediaType GFM_MARKDOWN_UTF_8 = MARKDOWN_UTF_8.withParameter(VARIANT, "GFM");
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {

@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertThrows;
 
 import static java.net.URI.create;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.io.Resources;
@@ -110,6 +111,20 @@ public class URIsTest {
                                 "http://host/path?arg1=a",
                                 ImmutableMap.of("arg2", "b", "arg3", "c")))
                 .isEqualTo("http://host/path?arg1=a&arg2=b&arg3=c");
+    }
+
+    @Test
+    public void testAddCharsetQueryParameter() {
+        assertThat(URIs.addCharset(URI.create("fd:1?mediaType=application/yaml"), UTF_8))
+                .isEqualTo(URI.create("fd:1?mediaType=application/yaml&charset=UTF-8"));
+    }
+
+    @Test
+    public void testGetCharsetFromMediaTypeOrCharsetQueryParameter() {
+        assertThat(URIs.getCharset(URI.create("fd:1?mediaType=application/yaml&charset=UTF-8")))
+                .isEqualTo("UTF-8");
+        assertThat(URIs.getCharset(URI.create("fd:1?mediaType=application/yaml;charset=UTF-8")))
+                .isEqualTo("UTF-8");
     }
 
     @Test

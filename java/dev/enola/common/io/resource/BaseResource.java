@@ -39,14 +39,16 @@ public abstract class BaseResource implements AbstractResource {
     }
 
     protected BaseResource(URI uri, ByteSource byteSource) {
-        this(uri, mtd.detect(uri, byteSource));
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType = mtd.detect(uri, byteSource);
     }
 
     protected BaseResource(URI uri, MediaType mediaType) {
         this.uri = requireNonNull(uri, "uri");
-        this.mediaType = mtd.overwrite(uri, requireNonNull(mediaType, "mediaType"));
+        this.mediaType = mtd.adjustCharset(uri, requireNonNull(mediaType, "mediaType"));
     }
 
+    // TODO Remove this weird "hacked" constructor with "fake" fixedMediaType parameter...
     protected BaseResource(URI uri, MediaType mediaType, boolean fixedMediaType) {
         this.uri = requireNonNull(uri, "uri");
         this.mediaType = requireNonNull(mediaType, "mediaType");

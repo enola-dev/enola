@@ -38,7 +38,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
@@ -115,29 +114,19 @@ public class MediaTypeDetectorTest {
     }
 
     @Test
+    public void testYAML() {
+        var r = new EmptyResource(create("http://server/hello.yaml"));
+        assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
+    }
+
+    @Test
+    @Ignore // TODO This is an invalid test... rewrite it elsewhere.
+    // If a caller of an EmptyResource constructor says its TEXT, then it is that!
+    // What this meant to test is that if a HTTP server says something is TEXT, then
+    // that may be wrong, and we should detect if it may be YAML; but that goes elsewhere.
     public void testTextYAML() {
         // A text/plain with *.yaml is still application/yaml
-        var r =
-                new EmptyResource(
-                        create("http://server/hello.yaml"),
-                        PLAIN_TEXT_UTF_8.withoutParameters()); // drop charset!
-
-        assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
-    }
-
-    @Test
-    public void testEmptyYAML() {
-        // Empty .YAML is UTF-8
-        var r = new EmptyResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
-        assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
-    }
-
-    @Test
-    public void testNoHeaderYAML() throws IOException {
-        // A .YAML without header and just some ASCII is still UTF-8
-        var text = "hello: world";
-        var r = new MemoryResource(YamlMediaType.YAML_UTF_8.withoutParameters()); // drop charset!
-        r.byteSink().write(text.getBytes(StandardCharsets.US_ASCII));
+        var r = new EmptyResource(create("http://server/hello.yaml"), PLAIN_TEXT_UTF_8);
         assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
     }
 

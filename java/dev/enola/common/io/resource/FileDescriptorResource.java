@@ -19,7 +19,6 @@ package dev.enola.common.io.resource;
 
 import com.google.common.io.ByteSink;
 import com.google.common.io.ByteSource;
-import com.google.common.net.MediaType;
 
 import dev.enola.common.io.iri.URIs;
 
@@ -33,8 +32,16 @@ import java.net.URI;
 import java.nio.charset.Charset;
 
 /**
- * Resource for URIs "fd:0?charset=ASCII" (STDIN), "fd:1?charset=UTF-8" (STDOUT),
- * "fd:2?charset=UTF-16BE" STDERR. Implementation uses {@link FileDescriptor}.
+ * Resource for "fd:0" (STDIN), "fd:1" (STDOUT), "fd:2" (STDERR) URIs.
+ *
+ * <p>The {@link #mediaType()} will be {@link com.google.common.net.MediaType#OCTET_STREAM} (NOT
+ * {@link com.google.common.net.MediaType#APPLICATION_BINARY}!), unless there is a ?mediaType= query
+ * parameter in the URI argument.
+ *
+ * <p>The Charset of that Media Type will be the {@link Charset#defaultCharset()}, unless there is
+ * either (check first) a ?charset= query parameter in the URI argument (e.g. "fd:0?charset=ASCII",
+ * or "fd:1?charset=UTF-8", or "fd:2?charset=UTF-16BE") or the ?mediaType= query parameter includes
+ * a charset (e.g. "fd:1?mediaType=application/yaml;charset=utf-16be").
  */
 public class FileDescriptorResource extends BaseResource implements Resource {
 
@@ -54,8 +61,7 @@ public class FileDescriptorResource extends BaseResource implements Resource {
     private final FileDescriptor fileDescriptor;
 
     public FileDescriptorResource(URI uri) {
-        // Default to Text in Platform's (Terminal) default charset
-        super(uri, MediaType.PLAIN_TEXT_UTF_8.withCharset(Charset.defaultCharset()));
+        super(addDefaultCharsetIfNone(uri));
 
         if (!"fd".equals(uri.getScheme())) {
             throw new IllegalArgumentException(uri.toString());
@@ -71,6 +77,11 @@ public class FileDescriptorResource extends BaseResource implements Resource {
         } else {
             throw new IllegalArgumentException(fd);
         }
+    }
+
+    private static URI addDefaultCharsetIfNone(URI uri) {
+        if (URIs.getCharset(uri) == null) return URIs.addCharset(uri, Charset.defaultCharset());
+        else return uri;
     }
 
     @Override

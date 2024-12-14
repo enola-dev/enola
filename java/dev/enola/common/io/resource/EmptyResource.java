@@ -44,7 +44,7 @@ public class EmptyResource extends BaseResource implements ReadableButNotWritabl
     }
 
     static final String SCHEME = "empty";
-    public static final URI EMPTY_URI = URI.create(SCHEME + ":?"); // Maybe :/ is better?
+    public static final URI EMPTY_URI = URI.create(SCHEME + ":?"); // TODO :/ is probably better?
     public static final EmptyResource INSTANCE = new EmptyResource(EMPTY_URI);
 
     public EmptyResource(URI uri) {

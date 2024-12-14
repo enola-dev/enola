@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource;
 
+import static com.google.common.net.MediaType.OCTET_STREAM;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
@@ -40,11 +41,12 @@ public class FileDescriptorResourceTest {
     public @Rule SingletonRule r = $(MediaTypeProviders.set());
 
     @Test
-    public void testSTDOUTwithoutCharset() throws IOException {
+    public void testSTDOUTwithoutCharsetNorMediaType() throws IOException {
         var FD1 = new FileDescriptorResource(URI.create("fd:1"));
         FD1.byteSink().write(new byte[] {1, 2, 3});
-        FD1.charSink().write("hello");
         assertThat(FD1.mediaType().charset()).hasValue(Charset.defaultCharset());
+        assertThat(FD1.mediaType().withoutParameters()).isEqualTo(OCTET_STREAM.withoutParameters());
+        FD1.charSink().write("hello");
     }
 
     @Test

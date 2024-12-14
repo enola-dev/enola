@@ -103,6 +103,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
         super(uri, mediaType(uri.toString()));
     }
 
+    // See also UrlResource#mediaType(URL url)
     private static MediaType mediaType(String url) {
         Request request = new Request.Builder().url(url).build();
 
