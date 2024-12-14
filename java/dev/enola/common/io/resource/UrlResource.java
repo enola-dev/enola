@@ -110,6 +110,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
         this.url = url;
     }
 
+    // See also OkHttpResource#mediaType(String url)
     private static MediaType mediaType(URL url) {
         // This is slow - but more correct; see https://www.baeldung.com/java-file-mime-type
         URLConnection c = null;

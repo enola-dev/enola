@@ -33,6 +33,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -72,8 +73,23 @@ public final class URIs {
         return new MediaTypeAndOrCharset(mediaTypeParameter, charsetParameter);
     }
 
+    public static @Nullable String getCharset(URI uri) {
+        var mediaTypeAndCharset = getMediaTypeAndCharset(uri);
+        if (mediaTypeAndCharset.charset != null) return mediaTypeAndCharset.charset;
+        if (mediaTypeAndCharset.mediaType != null) {
+            var optMediaTypeCharset = MediaType.parse(mediaTypeAndCharset.mediaType);
+            if (optMediaTypeCharset.charset().isPresent())
+                return optMediaTypeCharset.charset().get().toString();
+        }
+        return null;
+    }
+
     public static URI addMediaType(URI uri, MediaType mediaType) {
         return addQueryParameter(uri, MEDIA_TYPE, mediaType.toString().replace(" ", ""));
+    }
+
+    public static URI addCharset(URI uri, Charset charset) {
+        return addQueryParameter(uri, CHARSET, charset.toString());
     }
 
     public static URI addQuery(URI uri, Map<String, String> parameters) {
@@ -105,13 +121,12 @@ public final class URIs {
         String connector;
         if (uri.getQuery() != null && uri.getQuery().contains(key)) {
             return uri;
-        } else if (uri.getQuery() == null) {
-            if (!uri.getSchemeSpecificPart().contains("?")) {
-                connector = "?";
-            } else {
-                // Special case of "scheme:?"-like URIs with "empty" query
-                connector = "";
-            }
+        } else if (uri.getQuery() == null && !uri.getSchemeSpecificPart().contains("?")) {
+            connector = "?";
+        } else if (uri.getQuery() == null && uri.getSchemeSpecificPart().equals("?")) {
+            // Handle special (but technically invalid cases) of "scheme:?" URIs with "empty" query
+            // This is currently used by EmptyResource.EMPTY_URI (but may be changed later)
+            connector = "";
         } else {
             connector = "&";
         }

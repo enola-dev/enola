@@ -27,6 +27,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
+// TODO Increase test coverage... (this currently only used by YamlMediaType)
 public abstract class ResourceCharsetDetectorSPI implements ResourceCharsetDetector {
 
     private static final Logger LOG = LoggerFactory.getLogger(ResourceCharsetDetectorSPI.class);

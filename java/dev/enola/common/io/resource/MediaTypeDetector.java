@@ -75,23 +75,28 @@ class MediaTypeDetector {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
         var detected = detect(mediaTypeCharset.mediaType(), mediaTypeCharset.charset());
         detected = detectCharsetAndMediaType(uri, byteSource, detected);
+
+        detected = overwrite(uri, detected);
+
         return detected;
     }
 
     /**
      * This is called by Resource* implementation constructors via {@link BaseResource}, if there is
-     * (only) an URI and a server proposed MediaType already. In this case, there is no point in
-     * also considering a ByteSource. This uses a number of hard-coded built-in heuristics to ignore
-     * certain server proposals and try to find a "better" one based on the URI.
+     * (only) an URI and already a MediaType proposed either by a server, or from {@link
+     * #detect(URI, ByteSource)}. In this case, there is no point in also considering a ByteSource.
+     * This uses a number of hard-coded built-in heuristics to ignore certain server proposals and
+     * try to find a "better" one based on the URI.
      */
-    MediaType overwrite(URI uri, final MediaType serverProposedMediaType) {
-        var mediaType = serverProposedMediaType;
+    MediaType overwrite(URI uri, final MediaType proposedMediaType) {
+        var mediaType = proposedMediaType;
 
         // TODO Move this into UrlResource if "content/unknown" is hard-coded in URLConnection?
         if (IGNORE.contains(mediaType.withoutParameters())) {
             mediaType = MediaType.OCTET_STREAM;
         }
 
+        // TODO Reuse #adjust() ?
         var uriCharset = URIs.getMediaTypeAndCharset(uri);
         var uriMediaType = uriCharset.mediaType();
         if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
@@ -99,14 +104,27 @@ class MediaTypeDetector {
         var cs = uriCharset.charset();
         if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
         else {
-            if (!mediaType.charset().isPresent() && serverProposedMediaType.charset().isPresent()) {
-                mediaType = mediaType.withCharset(serverProposedMediaType.charset().get());
+            if (!mediaType.charset().isPresent() && proposedMediaType.charset().isPresent()) {
+                mediaType = mediaType.withCharset(proposedMediaType.charset().get());
             } else {
                 mediaType = detectCharsetAndMediaType(uri, ByteSource.empty(), mediaType);
             }
         }
         mediaType = fixMissingCharset(mediaType);
         return mediaType;
+    }
+
+    /**
+     * This is called by Resource* implementation constructors via {@link BaseResource}, if there is
+     * (only) an URI and a "client" (caller of API) requested MediaType. It generally "respects"
+     * (honors) the clients' wish, does not use any magic heuristics, and only adjusts (only) the it
+     * based on query parameters in the URI (if present).
+     */
+    MediaType adjustCharset(URI uri, final MediaType clientRequestedMediaType) {
+        var charsetParameter = URIs.getCharset(uri);
+        if (charsetParameter != null)
+            return clientRequestedMediaType.withCharset(Charset.forName(charsetParameter));
+        else return clientRequestedMediaType;
     }
 
     private MediaType detectCharsetAndMediaType(
