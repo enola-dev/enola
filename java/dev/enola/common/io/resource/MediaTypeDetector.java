@@ -39,7 +39,7 @@ import java.util.Set;
  * <p>This class is intentionally package private, and should stay so; this is NOT for {@link
  * Resource} API users (who would just use {@link AbstractResource#mediaType()}); it's only used by
  * *Resource SPI implementations. (Which technically makes it impossible to {easily} write *Resource
- * implementations which do not extend BaseResource outside of this package; but with the current
+ * implementations which do not extend BaseResource outside this package; but with the current
  * mono-repo architecture, that's just fine.)
  */
 class MediaTypeDetector {
@@ -68,8 +68,8 @@ class MediaTypeDetector {
     }
 
     /**
-     * This is called by Resource* implementation constructors, typically via {@link BaseResource},
-     * if there is (only) an URI and a ByteSource - but no original/client requested MediaType.
+     * This is called by Resource* implementation constructors via {@link BaseResource}, if there is
+     * (only) an URI and a ByteSource - but no server or client requested MediaType.
      */
     MediaType detect(URI uri, ByteSource byteSource) {
         var mediaTypeCharset = URIs.getMediaTypeAndCharset(uri);
@@ -79,12 +79,13 @@ class MediaTypeDetector {
     }
 
     /**
-     * This is called by Resource* implementation constructors, typically via {@link BaseResource},
-     * if there is (only) an URI and an original/client requested MediaType already. In this case,
-     * there is no point in also considering a ByteSource.
+     * This is called by Resource* implementation constructors via {@link BaseResource}, if there is
+     * (only) an URI and a server proposed MediaType already. In this case, there is no point in
+     * also considering a ByteSource. This uses a number of hard-coded built-in heuristics to ignore
+     * certain server proposals and try to find a "better" one based on the URI.
      */
-    MediaType overwrite(URI uri, final MediaType originalMediaType) {
-        var mediaType = originalMediaType;
+    MediaType overwrite(URI uri, final MediaType serverProposedMediaType) {
+        var mediaType = serverProposedMediaType;
 
         // TODO Move this into UrlResource if "content/unknown" is hard-coded in URLConnection?
         if (IGNORE.contains(mediaType.withoutParameters())) {
@@ -98,8 +99,8 @@ class MediaTypeDetector {
         var cs = uriCharset.charset();
         if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
         else {
-            if (!mediaType.charset().isPresent() && originalMediaType.charset().isPresent()) {
-                mediaType = mediaType.withCharset(originalMediaType.charset().get());
+            if (!mediaType.charset().isPresent() && serverProposedMediaType.charset().isPresent()) {
+                mediaType = mediaType.withCharset(serverProposedMediaType.charset().get());
             } else {
                 mediaType = detectCharsetAndMediaType(uri, ByteSource.empty(), mediaType);
             }
