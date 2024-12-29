@@ -25,7 +25,7 @@ java_binary(
     main_class = "dev.enola.Main",
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola",
+        "//java/dev/enola:api",
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
@@ -50,7 +50,7 @@ java_test(
     ],
     deps = [
         ":zimpl",
-        "//java/dev/enola",
+        "//java/dev/enola:api",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/model",

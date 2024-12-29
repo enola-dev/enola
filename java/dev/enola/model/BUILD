@@ -26,7 +26,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola",
+        "//java/dev/enola:api",
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",

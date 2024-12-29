@@ -15,9 +15,10 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+# TODO load("@rules_jvm_external//:defs.bzl", "java_export")
 
 java_library(
-    name = "enola",
+    name = "api",
     srcs = glob(
         ["*.java"],
     ),
@@ -26,5 +27,46 @@ java_library(
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
+    ],
+)
+
+# TODO java_export
+java_library(
+    name = "enola",
+    # TODO maven_coordinates = "dev.enola:enola:main-SNAPSHOT",
+    visibility = ["//:__subpackages__"],
+    runtime_deps = [
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/canonicalize",
+        "//java/dev/enola/common/context",
+        "//java/dev/enola/common/function",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/markdown/exec:markdown",
+        "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/common/xml",
+        "//java/dev/enola/core",
+        "//java/dev/enola/core:core_java_grpc",
+        "//java/dev/enola/core:core_java_proto",
+        "//java/dev/enola/data",
+        "//java/dev/enola/datatype",
+        "//java/dev/enola/format/tika",
+        "//java/dev/enola/format/xml",
+        "//java/dev/enola/infer/datalog",
+        "//java/dev/enola/model",
+        "//java/dev/enola/rdf/io",
+        "//java/dev/enola/rdf/proto",
+        "//java/dev/enola/thing:thing_java",
+        "//java/dev/enola/thing:thing_java_proto",
+        "//java/dev/enola/thing/gen",
+        "//java/dev/enola/web",
+        "//java/dev/enola/web/netty",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
