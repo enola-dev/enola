@@ -42,13 +42,21 @@ public class DetectCommand extends CommandWithResourceProvider {
     String iri;
 
     @Override
-    public void run() throws Exception {
+    public Integer call() throws Exception {
         super.run();
+        var uri = URIs.parse(iri);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            var resource = rp.getResource(URIs.parse(iri));
+            var resource = rp.getResource(uri);
+            if (resource == null) {
+                System.err.println(
+                        uri.getScheme() + " scheme unknown; try: enola info detect --help");
+                return 1;
+            }
+
             var pw = spec.commandLine().getOut();
             pw.println(resource.mediaType());
             resource.lastModifiedIfKnown().ifPresent(lastModified -> pw.println(lastModified));
+            return 0;
         }
     }
 }
