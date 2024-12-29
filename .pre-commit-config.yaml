@@ -115,6 +115,8 @@ repos:
       - id: pretty-format-java
         # Keep this version in sync with the same version in .vscode/settings.json
         args: [--autofix, --aosp, --google-java-formatter-version=1.25.1]
+        # See https://github.com/google/google-java-format/issues/1216
+        exclude: learn/jbang
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.16.0
