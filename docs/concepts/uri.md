@@ -42,9 +42,7 @@ planned for the future.
 ## Available
 
 An Enola URI was originally defined as an `enola:{ns}.{entity}/path1/path2/...` ID; for example:
-`enola:demo.foo/abc/def`. The namespace (NS) and entity define the "kind" (type)
-of the entity and the paths an instance of it. This is further defined in
-[the Proto API doc](../dev/proto/core.md).
+`enola:demo.foo/abc/def`.
 
 This original `{ns}.{entity}/paths...` syntax has meanwhile been loosened to permit any unique string.
 

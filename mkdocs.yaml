@@ -94,9 +94,6 @@ nav:
       - IDE: dev/ide.md
       - Architecture: concepts/implementation.md
       - Code Conventions: dev/style.md
-      - Protocol Buffer API:
-          - Thing Proto: dev/proto/thing.md
-          - Core Proto: dev/proto/core.md
       - Implementation Details: dev/implementation.md
       - Bazel: dev/bazel.md
       - Dependencies: dev/dependencies.md

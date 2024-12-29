@@ -39,7 +39,7 @@ so e.g. on <http://[::]:8080/api/https://example.org/greeting2>.
 
 ## gRPC
 
-The `--grpcPort` flag starts [the Enola gRPC API](../../dev/proto/core.md#enolaservice).
+The `--grpcPort` flag starts the Enola gRPC API.
 
 This can be used by the Enola CLI Client's `--server` flag, instead of passing a `--load` file, like so:
 

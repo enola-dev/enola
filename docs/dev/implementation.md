@@ -78,7 +78,7 @@ _Builder._
 
 #### Proto Thing
 
-* Defined in: [`common/thing/thing.proto`](//java/dev/enola/thing/thing.proto), see [Proto doc](proto/thing.md#thing)
+* Defined in: [`common/thing/thing.proto`](//java/dev/enola/thing/thing.proto)
 * Java Type: `dev.enola.thing.proto.Thing` <!-- TODO https://github.com/enola-dev/enola/issues/491: Link to Java Doc -->
 
 #### Proto Message
