@@ -44,36 +44,6 @@ http_archive(
 
 load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS")
 
-# https://rules-proto-grpc.com/en/latest/#installation
-http_archive(
-    name = "rules_proto_grpc",
-    sha256 = "2a0860a336ae836b54671cbbe0710eec17c64ef70c4c5a88ccfd47ea6e3739bd",
-    strip_prefix = "rules_proto_grpc-4.6.0",
-    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/releases/download/4.6.0/rules_proto_grpc-4.6.0.tar.gz"],
-)
-
-load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_repos", "rules_proto_grpc_toolchains")
-
-rules_proto_grpc_toolchains()
-
-rules_proto_grpc_repos()
-
-load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
-
-rules_proto_dependencies()
-
-rules_proto_toolchains()
-
-# https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
-load("@rules_proto_grpc//doc:repositories.bzl", rules_proto_grpc_doc_repos = "doc_repos")
-
-rules_proto_grpc_doc_repos()
-
-# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
-load("@rules_proto_grpc//buf:repositories.bzl", rules_proto_grpc_buf_repos = "buf_repos")
-
-rules_proto_grpc_buf_repos()
-
 # https://github.com/bazelbuild/rules_jvm_external#usage
 load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
 

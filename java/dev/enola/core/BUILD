@@ -26,16 +26,6 @@ load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 
-# https://rules-proto-grpc.com/en/latest/lang/buf.html#buf-proto-lint-test
-
-load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
-
-# https://rules-proto-grpc.com/en/latest/lang/doc.html#doc-markdown-compile
-
-load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
-
-# https://rules-proto-grpc.com/en/latest/example.html#step-3-write-a-build-file
-
 proto_library(
     name = "ext_proto",
     srcs = ["enola_ext.proto"],
@@ -81,33 +71,6 @@ java_grpc_library(
     ],
     visibility = ["//:__subpackages__"],
     deps = [":core_java_proto"],
-)
-
-doc_markdown_compile(
-    name = "core_proto_doc",
-    protos = [
-        "core_proto",
-        "ext_proto",
-        "util_proto",
-    ],
-)
-
-buf_proto_lint_test(
-    name = "core_buf_proto_lint",
-    size = "small",
-    except_rules = [
-        "PACKAGE_VERSION_SUFFIX",
-        "PACKAGE_DIRECTORY_MATCH",
-    ],
-    protos = [
-        "core_proto",
-        # "ext_proto",
-        "util_proto",
-    ],
-    use_rules = [
-        "DEFAULT",
-        "COMMENTS",
-    ],
 )
 
 java_library(
