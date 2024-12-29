@@ -22,25 +22,13 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 OUR_GUAVA_VERSION = "33.3.1"
 
+# TODO Introduce a versions.bzl to avoid duplicating the version of "grpc-java" in MODULE.bazel and here...
 GRPC_JAVA_VERSION = "1.69.0"
 
-# NOTE: The GRPC_GUAVA_VERSION needs to be adapted when GRPC_JAVA_VERSION (above) is bumped:
+# NOTE: The GRPC_GUAVA_VERSION needs to be adapted when the version of "grpc-java" in MODULE.bazel is bumped:
 GRPC_GUAVA_VERSION = "33.3.1"
 
 RDF4J_VERSION = "5.0.2"
-
-# https://github.com/grpc/grpc-java/
-# https://github.com/enola-dev/enola/issues/202
-# https://github.com/grpc/grpc-java/issues/10215
-# TODO replace with bazel_dep in MODULE.bazel
-# when https://github.com/bazelbuild/bazel-central-registry/issues/353
-# (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
-http_archive(
-    name = "io_grpc_grpc_java",
-    sha256 = "3874ac920ad86b7a096e94c0fb17e52a9ed00982bf1fb44910d63bd9345a2fe4",
-    strip_prefix = "grpc-java-%s" % GRPC_JAVA_VERSION,
-    url = "https://github.com/grpc/grpc-java/archive/refs/tags/v%s.zip" % GRPC_JAVA_VERSION,
-)
 
 load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS")
 

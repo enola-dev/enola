@@ -20,6 +20,12 @@ bazel_dep(name = "protobuf", version = "29.2", repo_name = "com_google_protobuf"
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "7.12.4")
 
+# https://github.com/grpc/grpc-java/
+# https://registry.bazel.build/modules/grpc-java
+# NOTE: The GRPC_GUAVA_VERSION in WORKSPACE.bazel might have to be adapted when changing version here:
+# TODO Introduce a versions.bzl to avoid duplicating the version of "grpc-java" in MODULE.bazel and here...
+bazel_dep(name = "grpc-java", version = "1.69.0", repo_name = "io_grpc_grpc_java")
+
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 # When bumping the version here, must always run: REPIN=1 bazel run @unpinned_maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.6")
