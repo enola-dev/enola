@@ -24,8 +24,8 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import dev.enola.Enola;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.EmptyResource;
-import dev.enola.common.io.resource.StringResource;
 import dev.enola.model.enola.action.Actions;
 
 import org.junit.Ignore;
@@ -49,8 +49,8 @@ public class EnolaTest {
 
     @Test
     public void stringGet() {
-        var r = e.act(StringResource.of("hello, world").uri(), Actions.GET);
-        assertThat(r).isInstanceOf(StringResource.class);
+        var r = e.act(DataResource.of("hello, world").uri(), Actions.GET);
+        assertThat(r).isInstanceOf(DataResource.class);
         // TODO Test convert to String, assert "hello, world"
     }
 
