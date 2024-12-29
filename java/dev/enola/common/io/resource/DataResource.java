@@ -87,7 +87,7 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
 
         String mediaTypePart = matcher.group(1);
         String encodedData = matcher.group(2);
-        if (encodedData == null) return EMPTY_BYTES;
+        if (encodedData == null) return EMPTY_BYTES; // skipcq: JAVA-S1049
 
         if (mediaTypePart.contains("base64"))
             // We CANNOT use Guava's BaseEncoding.base64Url(), that's different
