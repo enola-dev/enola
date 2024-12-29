@@ -17,8 +17,6 @@
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_proto_grpc//buf:defs.bzl", "buf_proto_lint_test")
-load("@rules_proto_grpc//doc:defs.bzl", "doc_markdown_compile")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 proto_library(
@@ -27,29 +25,6 @@ proto_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
-    ],
-)
-
-buf_proto_lint_test(
-    name = "thing_proto_lint",
-    size = "small",
-    except_rules = [
-        "PACKAGE_VERSION_SUFFIX",
-        "PACKAGE_DIRECTORY_MATCH",
-    ],
-    protos = [
-        "thing_proto",
-    ],
-    use_rules = [
-        "DEFAULT",
-        "COMMENTS",
-    ],
-)
-
-doc_markdown_compile(
-    name = "thing_proto_doc",
-    protos = [
-        "thing_proto",
     ],
 )
 
