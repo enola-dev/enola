@@ -50,7 +50,23 @@ $ ./enola info detect --file-scheme picasso.thing.yaml
 ...
 ```
 
-Note that this file does not exist, this is fine; the type of its content is determine by the extension (in this case).
+Note that this file does not exist; that's fine,
+as the type of its content is determined by the extension (in this case).
+In some cases it may even be part of the URL itself, like for [`data:` URLs](../fetch/index.md#data):
+
+```bash cd ../.././..
+$ ./enola info detect "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22%7D"
+...
+```
+
+It's also possible to "override" the Media Type, like this:
+
+```bash cd ../.././..
+$ ./enola info detect "picasso.thing.yaml?mediaType=application/json"
+...
+```
+
+[`fetch`](../fetch/index.md) is another command to "get the bytes at" an URL.
 
 ## Metadata
 

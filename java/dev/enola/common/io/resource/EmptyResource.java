@@ -26,8 +26,9 @@ import dev.enola.common.io.iri.URIs;
 import java.net.URI;
 
 /**
- * Read-only resources which when read are always immediately EOF. This is a bit like /dev/null on
- * *NIX OS for reading, but not for writing (because /dev/null ignores writes, whereas this fails).
+ * Read-only resources which when read are always immediately EOF (like "data:,"). This is a bit
+ * like /dev/null on *NIX OS for reading, but not for writing (because /dev/null ignores writes,
+ * whereas this fails).
  *
  * @see NullResource for an alternative that returns infinite 0s instead of EOF.
  */
