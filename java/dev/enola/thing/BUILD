@@ -26,7 +26,7 @@ proto_library(
     srcs = ["thing.proto"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "@com_google_protobuf//:timestamp_proto",
+        "@rules_proto_grpc_java//:timestamp_proto",
     ],
 )
 

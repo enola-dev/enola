@@ -21,7 +21,7 @@ proto_library(
     name = "demo_proto",
     srcs = ["src/main/java/dev/enola/demo/demo_data.proto"],
     deps = [
-        "@com_google_protobuf//:timestamp_proto",
+        "@rules_proto_grpc_java//:timestamp_proto",
     ],
 )
 

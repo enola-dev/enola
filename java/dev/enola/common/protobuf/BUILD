@@ -22,7 +22,7 @@ proto_library(
     name = "validation_proto",
     srcs = ["validation.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
+        "@rules_proto_grpc_java//:any_proto",
     ],
 )
 
@@ -38,10 +38,10 @@ proto_library(
     name = "test_proto",
     srcs = ["test.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
+        "@rules_proto_grpc_java//:any_proto",
+        "@rules_proto_grpc_java//:descriptor_proto",
+        "@rules_proto_grpc_java//:struct_proto",
+        "@rules_proto_grpc_java//:timestamp_proto",
     ],
 )
 

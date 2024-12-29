@@ -40,7 +40,7 @@ proto_library(
     name = "ext_proto",
     srcs = ["enola_ext.proto"],
     deps = [
-        "@com_google_protobuf//:descriptor_proto",
+        "@rules_proto_grpc_java//:descriptor_proto",
     ],
 )
 
@@ -50,9 +50,9 @@ proto_library(
     deps = [
         ":ext_proto",
         "//java/dev/enola/thing:thing_proto",
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
+        "@rules_proto_grpc_java//:any_proto",
+        "@rules_proto_grpc_java//:descriptor_proto",
+        "@rules_proto_grpc_java//:struct_proto",
     ],
 )
 
@@ -60,7 +60,7 @@ proto_library(
     name = "util_proto",
     srcs = ["util/enola_util.proto"],
     deps = [
-        "@com_google_protobuf//:timestamp_proto",
+        "@rules_proto_grpc_java//:timestamp_proto",
     ],
 )
 
