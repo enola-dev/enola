@@ -46,7 +46,7 @@ public abstract class ResourceCharsetDetectorSPI implements ResourceCharsetDetec
             return source.slice(0, n).read();
         } catch (IOException e) {
             LOG.warn("Failed to peek at the first {} bytes", n, uri, e);
-            return EMPTY;
+            return EMPTY; // skipcq: JAVA-S1049
         }
     }
 

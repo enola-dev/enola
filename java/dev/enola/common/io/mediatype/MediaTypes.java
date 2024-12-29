@@ -101,6 +101,16 @@ public final class MediaTypes {
         } else return sb.toString();
     }
 
+    // Copy/paste of MediaType#TOKEN_MATCHER() just because that's private
+    private static final CharMatcher TOKEN_MATCHER =
+            ascii().and(javaIsoControl().negate())
+                    .and(CharMatcher.isNot(' '))
+                    .and(CharMatcher.noneOf("()<>@,;:\\\"/[]?="));
+
+    // Copy/paste of MediaType#PARAMETER_JOINER() with "; " replaced by ";"
+    private static final Joiner.MapJoiner PARAMETER_JOINER =
+            Joiner.on(";").withKeyValueSeparator("=");
+
     public static String toStringWithoutSpaces(@Nullable MediaType mediaType) {
         if (mediaType == null) return "";
         // Copy/paste of MediaType#computeToString() with "; " replaced by ";"
@@ -136,14 +146,4 @@ public final class MediaTypes {
         }
         return escaped.append('"').toString();
     }
-
-    // Copy/paste of MediaType#TOKEN_MATCHER() just because that's private
-    private static final CharMatcher TOKEN_MATCHER =
-            ascii().and(javaIsoControl().negate())
-                    .and(CharMatcher.isNot(' '))
-                    .and(CharMatcher.noneOf("()<>@,;:\\\"/[]?="));
-
-    // Copy/paste of MediaType#PARAMETER_JOINER() with "; " replaced by ";"
-    private static final Joiner.MapJoiner PARAMETER_JOINER =
-            Joiner.on(";").withKeyValueSeparator("=");
 }
