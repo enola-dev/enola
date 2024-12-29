@@ -19,10 +19,16 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.net.MediaType.parse;
 
+import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.io.mediatype.MediaTypes;
+
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -90,6 +96,21 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
             return URLDecoder.decode(encodedData, DATA_DEFAULT_CHARSET)
                     .getBytes(DATA_DEFAULT_CHARSET);
     }
+
+    public static Resource of(@Nullable String text, @Nullable MediaType mediaType) {
+        var data = MediaTypes.toStringWithoutSpaces(mediaType) + "," + Strings.nullToEmpty(text);
+        try {
+            return new DataResource(new URI(SCHEME, data, null));
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(data, e);
+        }
+    }
+
+    public static Resource of(@Nullable String text) {
+        return of(text, null);
+    }
+
+    // NB: A DataResource(URI uri, MediaType mediaType) constructor does not make sense here!
 
     public DataResource(URI uri) {
         super(checkSchema(uri), extractMediaType(uri));
