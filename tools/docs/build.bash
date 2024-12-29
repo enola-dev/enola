@@ -47,9 +47,6 @@ rm -f docs/BUILT/third_party/{BUILD*,*.bash}
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
-cp bazel-bin/java/dev/enola/thing/thing_proto_doc/thing_proto_doc.md docs/dev/proto/thing.md
-cp bazel-bin/java/dev/enola/core/core_proto_doc/core_proto_doc.md docs/dev/proto/core.md
-
 # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
 ./enola execmd -vvvi "docs/use/**/*.md"
 
