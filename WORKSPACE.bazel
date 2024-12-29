@@ -39,11 +39,6 @@ http_archive(
 
 load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS")
 
-# load("@io_grpc_grpc_java//:repositories.bzl", "grpc_java_repositories")
-# grpc_java_repositories()
-# load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-# protobuf_deps()
-
 # https://rules-proto-grpc.com/en/latest/#installation
 http_archive(
     name = "rules_proto_grpc",
@@ -166,19 +161,3 @@ compat_repositories()
 load("@maven//:defs.bzl", "pinned_maven_install")
 
 pinned_maven_install()
-
-# https://github.com/bazelbuild/rules_closure/#setup
-# TODO This is only useful after https://github.com/bazelbuild/rules_closure/issues/225
-#http_archive(
-#    name = "io_bazel_rules_closure",
-#    sha256 = "9498e57368efb82b985db1ed426a767cbf1ba0398fd7aed632fc3908654e1b1e",
-#    strip_prefix = "rules_closure-0.12.0",
-#    urls = [
-#        "https://mirror.bazel.build/github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
-#        "https://github.com/bazelbuild/rules_closure/archive/0.12.0.tar.gz",
-#    ],
-#)
-
-# load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
-# rules_closure_dependencies()
-# rules_closure_toolchains()
