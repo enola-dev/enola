@@ -28,6 +28,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+/**
+ * Non-standard Enola specific "string:hello" Resource I/O implementation.
+ *
+ * <p>@deprecated Use {@link DataResource} instead of this!
+ */
+@Deprecated // TODO Replace all original StringResource usages with DataResource, and remove
 public class StringResource extends BaseResource implements ReadableButNotWritableResource {
     // TODO Replace ReadableButNotWritableResource with ReadableResource #again
 
@@ -49,6 +55,7 @@ public class StringResource extends BaseResource implements ReadableButNotWritab
 
     private final String string;
 
+    // TODO Hm, this actually cannot be replaced with DataResource (data: cannot have #fragment)
     public static Resource of(@Nullable String text, MediaType mediaType, URI fragmentURI) {
         if (Strings.isNullOrEmpty(text)) {
             return new EmptyResource(fragmentURI, mediaType);
@@ -57,6 +64,10 @@ public class StringResource extends BaseResource implements ReadableButNotWritab
         }
     }
 
+    /**
+     * @deprecated Replace with {@link DataResource#of(String, MediaType)}
+     */
+    @Deprecated
     public static Resource of(@Nullable String text, MediaType mediaType) {
         if (Strings.isNullOrEmpty(text)) {
             return new EmptyResource(mediaType);
@@ -65,6 +76,10 @@ public class StringResource extends BaseResource implements ReadableButNotWritab
         }
     }
 
+    /**
+     * @deprecated Replace with {@link DataResource#of(String)}
+     */
+    @Deprecated
     public static Resource of(String text) {
         return of(text, MediaType.PLAIN_TEXT_UTF_8);
     }
@@ -104,10 +119,5 @@ public class StringResource extends BaseResource implements ReadableButNotWritab
     @Override
     public CharSource charSource() {
         return CharSource.wrap(string);
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getName() + "{uri=" + uri() + " & mediaType=" + mediaType() + '}';
     }
 }

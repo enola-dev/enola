@@ -32,9 +32,19 @@ import java.net.URI;
 
 public class DataResourceTest {
 
+    MediaType PLAIN_TEXT_ASCII = PLAIN_TEXT_UTF_8.withCharset(US_ASCII);
+
+    private void check(String data, MediaType mediaType, byte[] bytes) throws IOException {
+        check(new DataResource(URI.create("data:" + data)), mediaType, bytes);
+    }
+
+    private void check(Resource resource, MediaType mediaType, byte[] bytes) throws IOException {
+        assertThat(resource.mediaType()).isEqualTo(mediaType);
+        assertThat(resource.byteSource().read()).isEqualTo(bytes);
+    }
+
     @Test
     public void valid() throws IOException {
-        var PLAIN_TEXT_ASCII = PLAIN_TEXT_UTF_8.withCharset(US_ASCII);
         check(",", PLAIN_TEXT_ASCII, "".getBytes(US_ASCII));
         check(",hello", PLAIN_TEXT_ASCII, "hello".getBytes(US_ASCII));
         check(",hello%20world", PLAIN_TEXT_ASCII, "hello world".getBytes(US_ASCII));
@@ -54,6 +64,19 @@ public class DataResourceTest {
         check(";base64,SGVsbG8gV29ybGQh", PLAIN_TEXT_ASCII, "Hello World!".getBytes(US_ASCII));
     }
 
+    @Test
+    public void ofString() throws IOException {
+        check(DataResource.of(null), PLAIN_TEXT_ASCII, new byte[] {});
+        check(DataResource.of(""), PLAIN_TEXT_ASCII, new byte[] {});
+        check(DataResource.of("hello"), PLAIN_TEXT_ASCII, "hello".getBytes(US_ASCII));
+        check(DataResource.of("hello, world"), PLAIN_TEXT_ASCII, "hello, world".getBytes(US_ASCII));
+
+        check(DataResource.of("{ }", JSON_UTF_8), JSON_UTF_8, "{ }".getBytes(US_ASCII));
+
+        var mt2 = JSON_UTF_8.withParameter("page", "21").withParameter("x", "y");
+        check(DataResource.of("{ }", mt2), mt2, "{ }".getBytes(US_ASCII));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void empty() {
         new DataResource(URI.create(""));
@@ -62,11 +85,5 @@ public class DataResourceTest {
     @Test(expected = IllegalArgumentException.class)
     public void spaceIsInvalid() {
         new DataResource(URI.create("data:hello world"));
-    }
-
-    private void check(String data, MediaType mediaType, byte[] bytes) throws IOException {
-        var r = new DataResource(URI.create("data:" + data));
-        assertThat(r.mediaType).isEqualTo(mediaType);
-        assertThat(r.byteSource().read()).isEqualTo(bytes);
     }
 }

@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.mediatype;
 
+import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
@@ -96,6 +97,16 @@ public class MediaTypesTest {
                 .isEqualTo("https://enola.dev/mediaType/text/plain?charset=utf-8&x=y");
         assertThat(MediaTypes.toIRI(MediaType.parse("application/dita+xml; format=concept")))
                 .isEqualTo("https://enola.dev/mediaType/application/dita/xml?format=concept");
+    }
+
+    @Test
+    public void toStringWithoutSpaces() {
+        assertThat(MediaTypes.toStringWithoutSpaces(MediaType.PLAIN_TEXT_UTF_8))
+                .isEqualTo("text/plain;charset=utf-8");
+
+        var mt2 = JSON_UTF_8.withParameter("page", "21").withParameter("x", "y");
+        assertThat(MediaTypes.toStringWithoutSpaces(mt2))
+                .isEqualTo("application/json;charset=utf-8;page=21;x=y");
     }
 
     // TODO use example/test instead of application/test (and rename accordingly everywhere...)

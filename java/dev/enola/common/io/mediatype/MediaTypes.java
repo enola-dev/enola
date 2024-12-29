@@ -17,7 +17,16 @@
  */
 package dev.enola.common.io.mediatype;
 
+import static com.google.common.base.CharMatcher.ascii;
+import static com.google.common.base.CharMatcher.javaIsoControl;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.google.common.net.MediaType;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
@@ -91,4 +100,50 @@ public final class MediaTypes {
             return sb.substring(0, sb.length() - 1);
         } else return sb.toString();
     }
+
+    public static String toStringWithoutSpaces(@Nullable MediaType mediaType) {
+        if (mediaType == null) return "";
+        // Copy/paste of MediaType#computeToString() with "; " replaced by ";"
+        StringBuilder builder =
+                new StringBuilder()
+                        .append(mediaType.type())
+                        .append('/')
+                        .append(mediaType.subtype());
+        var parameters = mediaType.parameters();
+        if (!parameters.isEmpty()) {
+            builder.append(";");
+            Multimap<String, String> quotedParameters =
+                    Multimaps.transformValues(
+                            parameters,
+                            (String value) ->
+                                    (TOKEN_MATCHER.matchesAllOf(value) && !value.isEmpty())
+                                            ? value
+                                            : escapeAndQuote(value));
+            PARAMETER_JOINER.appendTo(builder, quotedParameters.entries());
+        }
+        return builder.toString();
+    }
+
+    // Copy/paste of MediaType#escapeAndQuote() just because that's private
+    private static String escapeAndQuote(String value) {
+        StringBuilder escaped = new StringBuilder(value.length() + 16).append('"');
+        for (int i = 0; i < value.length(); i++) {
+            char ch = value.charAt(i);
+            if (ch == '\r' || ch == '\\' || ch == '"') {
+                escaped.append('\\');
+            }
+            escaped.append(ch);
+        }
+        return escaped.append('"').toString();
+    }
+
+    // Copy/paste of MediaType#TOKEN_MATCHER() just because that's private
+    private static final CharMatcher TOKEN_MATCHER =
+            ascii().and(javaIsoControl().negate())
+                    .and(CharMatcher.isNot(' '))
+                    .and(CharMatcher.noneOf("()<>@,;:\\\"/[]?="));
+
+    // Copy/paste of MediaType#PARAMETER_JOINER() with "; " replaced by ";"
+    private static final Joiner.MapJoiner PARAMETER_JOINER =
+            Joiner.on(";").withKeyValueSeparator("=");
 }
