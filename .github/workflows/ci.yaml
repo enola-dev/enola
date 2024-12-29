@@ -54,7 +54,7 @@ jobs:
         shell: bash
 
       - name: Cache Bazel
-        uses: bazel-contrib/setup-bazel@0.9.1
+        uses: bazel-contrib/setup-bazel@0.10.0
         with:
           # KEEP IN SYNC WITH BELOW!
           bazelisk-cache: true
@@ -190,7 +190,7 @@ jobs:
           # NB: Repeated above in build: job; must keep in sync!
           java-version: "21"
       - name: Cache Bazel
-        uses: bazel-contrib/setup-bazel@0.9.1
+        uses: bazel-contrib/setup-bazel@0.10.0
         with:
           # KEEP IN SYNC WITH ABOVE!
           bazelisk-cache: true
