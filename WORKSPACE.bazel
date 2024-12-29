@@ -100,8 +100,8 @@ maven_install(
         "com.google.truth.extensions:truth-java8-extension:1.4.4",
         "com.google.truth.extensions:truth-proto-extension:1.4.4",
         # Protobuf
-        "com.google.protobuf:protobuf-java:4.28.2",
-        "com.google.protobuf:protobuf-java-util:4.28.2",
+        "com.google.protobuf:protobuf-java:4.29.2",
+        "com.google.protobuf:protobuf-java-util:4.29.2",
         # gRPC
         "io.grpc:grpc-netty:%s" % GRPC_JAVA_VERSION,
         "io.grpc:grpc-stub:%s" % GRPC_JAVA_VERSION,
