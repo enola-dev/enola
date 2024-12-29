@@ -40,6 +40,11 @@ import java.util.regex.Pattern;
  */
 public class DataResource extends BaseResource implements ReadableButNotWritableResource {
 
+    // This is a "clean room" implementation, which is hopefully correct. Alternatives:
+    // - https://github.com/robtimus/data-url
+    // - https://github.com/maxschuster/DataUrl
+    // - https://github.com/ooxi/jdatauri
+
     private static final String SCHEME = "data";
     private static final Pattern DATA_URL_REGEX = Pattern.compile("^data:([^,]*),(.*)$");
     private static final Charset DATA_DEFAULT_CHARSET = StandardCharsets.US_ASCII;

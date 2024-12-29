@@ -52,6 +52,7 @@ nav:
       - Canonicalize: use/canonicalize/index.md
       - ExecMD: use/execmd/index.md
       - Info: use/info/index.md
+      - Fetch: use/fetch/index.md
   - Models:
       - By Type: models/index.md
       - By Parent: models/hierarchy.md

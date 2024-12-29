@@ -446,6 +446,7 @@ public final class URIs {
 
     // TODO Review if getScheme(), getPath(), getQueryString(), getFragment() are *REALLY* needed?!
 
+    @Deprecated // TODO This automagic " " => %20 is fishy... who needs this, why?!
     public static String encode(String uri) {
         return uri.replace(" ", "%20");
     }

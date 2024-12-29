@@ -44,7 +44,8 @@ import picocli.CommandLine.Mixin;
             LoggingTestCommand.class,
             InfoCommand.class,
             ValidateCommand.class,
-            CanonicalizeCommand.class
+            CanonicalizeCommand.class,
+            FetchCommand.class
         })
 public class EnolaCLI {
 

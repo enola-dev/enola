@@ -94,6 +94,15 @@ $ ./enola help validate
 ...
 ```
 
+## Fetch
+
+[Fetch](../fetch/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help fetch
+...
+```
+
 ## Info
 
 [Info](../info/index.md) has the following options:

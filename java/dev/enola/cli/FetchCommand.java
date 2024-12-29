@@ -21,34 +21,32 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
 
+import java.net.URI;
 import java.nio.file.Paths;
 
-@Command(
-        name = "detect",
-        description =
-                "Provides information about the media type detected for a given URL.\n"
-                    + "This works both for local files (based on extension), and remote HTTP (based"
-                    + " on headers).\n"
-                    + "See also the related 'fetch' command.")
-public class DetectCommand extends CommandWithResourceProvider {
+@CommandLine.Command(
+        name = "fetch",
+        description = {"Fetches (I/O) a Resource", "See also the related 'info detect' command."})
+public class FetchCommand extends CommandWithResourceProvider {
 
-    @Spec CommandSpec spec;
-
-    @CommandLine.Parameters(index = "0", paramLabel = "iri", description = "IRI")
-    String iri;
+    @CommandLine.Parameters(index = "0", paramLabel = "URL", description = "URL to fetch")
+    String url;
 
     @Override
-    public void run() throws Exception {
+    public Integer call() throws Exception {
         super.run();
+        var uri = URI.create(url);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            var resource = rp.getResource(URIs.parse(iri));
-            var pw = spec.commandLine().getOut();
-            pw.println(resource.mediaType());
-            resource.lastModifiedIfKnown().ifPresent(lastModified -> pw.println(lastModified));
+            var resource = rp.getResource(uri);
+            if (resource == null) {
+                System.err.println(uri.getScheme() + " scheme unknown; try: enola fetch --help");
+                return 1;
+
+            } else {
+                resource.byteSource().copyTo(System.out);
+                return 0;
+            }
         }
     }
 }

@@ -41,3 +41,5 @@ $ ./enola get --load models/enola.dev/enola.ttl https://enola.dev/emoji | head -
 ```
 
 Note that `get` [supports various formats](../help/index.md#get).
+
+PS: The [`fetch`](../fetch/index.md) command does something related.
