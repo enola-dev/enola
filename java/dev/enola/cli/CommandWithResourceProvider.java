@@ -82,6 +82,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
     @Override
     public void run() throws Exception {
         var builder = ImmutableList.<ResourceProvider>builder();
+        builder.add(new DataResource.Provider());
         builder.add(new EmptyResource.Provider());
         builder.add(new StringResource.Provider());
         if (file) {

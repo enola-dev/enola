@@ -24,9 +24,9 @@ import dev.enola.Enola;
 import dev.enola.common.convert.IdentityObjectWithTypeConverter;
 import dev.enola.common.convert.ObjectWithTypeTokenConverter;
 import dev.enola.common.convert.ObjectWithTypeTokenConverterChain;
+import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.common.io.resource.StringResource;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
@@ -35,7 +35,7 @@ import dev.enola.model.enola.action.Get;
 public class EnolaProvider {
 
     private final ProviderFromIRI<?> objectProvider =
-            new ResourceProviders(new EmptyResource.Provider(), new StringResource.Provider());
+            new ResourceProviders(new EmptyResource.Provider(), new DataResource.Provider());
 
     private final ObjectWithTypeTokenConverter converter =
             new ObjectWithTypeTokenConverterChain(
