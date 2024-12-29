@@ -18,7 +18,6 @@
 
 # Using Enola.dev with JBang
 
-See documentation, [local](../../docs/dev/jbang.md) or on <!--
-TODO [docs.enola.dev](https://docs.enola.dev/dev/jbang/)! --> docs.enola.dev!
+See documentation, [local](../../docs/dev/jbang.md) or on [docs.enola.dev](https://docs.enola.dev/dev/jbang/)!
 
 This is tested by `//tools/maven/test.bash`.

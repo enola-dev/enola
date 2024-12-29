@@ -20,7 +20,7 @@
 
 Java developers (not end-users) can use Enola via [JBang](https://www.jbang.dev/).
 
-<!-- TODO [`learn/jbang`](https://github.com/enola-dev/enola/tree/main/learn/jbang) --> `learn/jbang`
+[`learn/jbang`](https://github.com/enola-dev/enola/tree/main/learn/jbang)
 has an example project illustrating how this works; clone and go there, and then:
 
 1. `tools/maven/install.bash`
