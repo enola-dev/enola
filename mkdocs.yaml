@@ -24,8 +24,17 @@ edit_uri: blob/main/docs/
 copyright: Copyright &copy; 2023-2024 The Enola <https://enola.dev> Authors
 
 nav:
+  # - Applications:
+  #   - Bookmarks: (delicious.json, bookmarks.html, awesome.yaml; Graph, HTML, Timeline)
+  #   - Tech Infra
+  #     - Networking:
+  #     - Linux:
+  #     - Kubernetes: (Introduction: k8s/index.md, Demo: k8s/demo.md)
+  #     - Java Architecture:
+  #     - Beancount:
+  #     - Linked Data CLI & Shell:
   - Tutorial:
-      - Tutorials:
+      - Tutorials: # Just "Linked Data"?
           - Introduction: index.md
           - Download: use/index.md
           - Hello World: models/example.org/hello.md
@@ -35,7 +44,7 @@ nav:
           - Timeline: models/example.org/timeline.md
           - Templates: models/example.org/templates.md
           - JSON-LD: models/example.org/json-ld.md
-      - News (Blog):
+      - News (Blog): # Move to Appendix? Or top-level "Blog" menu?
           - April 2024 News: blog/posts/2024-04.md
           - Linked Thing UI: blog/posts/ui1.md
           - DocGen v0.1: blog/posts/docgen1.md
@@ -76,6 +85,11 @@ nav:
           - "* Tika": concepts/tika.md
           - XML: concepts/xml.md
   - Developers:
+      # - Java:
+      #   - Maven:
+      #   - JavaDoc:
+      #   - JBang:
+      # - Contributors:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md
       - Architecture: concepts/implementation.md
@@ -87,14 +101,11 @@ nav:
       - Bazel: dev/bazel.md
       - Dependencies: dev/dependencies.md
       - Contributor Guide: contributing.md
-      - Code of Conduct: code-of-conduct.md
-  # - Kubernetes:
-  #     - Introduction: k8s/index.md
-  #     - Demo: k8s/demo.md
   - Appendix:
       # - Playbooks: concepts/playbook.md
       - Comparison: concepts/other.md
       - Security Policy: SECURITY.md
+      - Code of Conduct: code-of-conduct.md
 
 not_in_nav: |
   models/**

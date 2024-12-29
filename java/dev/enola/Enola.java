@@ -22,10 +22,10 @@ import dev.enola.thing.Thing;
 import java.net.URI;
 
 /**
- * 🕵🏾‍♀️ Enola ✨ <i>actions</i> ⬛ <i>Objects</i>, such as 📄 {@link Resource}s and structured 💾
- * data in 🔗 linked 👽 {@link Thing}s.
+ * 🕵🏾‍♀️ Enola ✨ <i>actions</i> ⬛ <i>Objects</i>, such as 📄 {@link
+ * dev.enola.common.io.resource.Resource}s and structured 💾 data in 🔗 linked 👽 {@link Thing}s.
  *
- * <p>🔮 AGI singularity is around the corner. This can help to bring structure into its models.
+ * <p>This helps to bring structure to models. 🔮 AGI singularity is around the corner.
  *
  * <p>"Resistance is futile" (said the Borg).
  */
