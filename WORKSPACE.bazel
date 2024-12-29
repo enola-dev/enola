@@ -20,7 +20,12 @@ register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_de
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-GRPC_JAVA_VERSION = "1.66.0"
+OUR_GUAVA_VERSION = "33.3.1"
+
+GRPC_JAVA_VERSION = "1.69.0"
+
+# NOTE: The GRPC_GUAVA_VERSION needs to be adapted when GRPC_JAVA_VERSION (above) is bumped:
+GRPC_GUAVA_VERSION = "33.3.1"
 
 RDF4J_VERSION = "5.0.2"
 
@@ -32,7 +37,7 @@ RDF4J_VERSION = "5.0.2"
 # (AKA https://github.com/grpc/grpc-java/issues/9559) is available.
 http_archive(
     name = "io_grpc_grpc_java",
-    sha256 = "28a10159fb36939bf09ce158ac0a5dbadf52ce2a3a47f5c1356b5fdbb9423373",
+    sha256 = "3874ac920ad86b7a096e94c0fb17e52a9ed00982bf1fb44910d63bd9345a2fe4",
     strip_prefix = "grpc-java-%s" % GRPC_JAVA_VERSION,
     url = "https://github.com/grpc/grpc-java/archive/refs/tags/v%s.zip" % GRPC_JAVA_VERSION,
 )
@@ -82,15 +87,20 @@ rules_jvm_external_setup()
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 # This is required so that we can use duplicate_version_warning (below) and fixes
-# the "com.google.guava:guava has multiple versions 32.1.3-android, 33.0.0-jre" problem.
-IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA = [item for item in IO_GRPC_GRPC_JAVA_ARTIFACTS if ((item != "com.google.guava:guava:33.2.1-android") and not item.startswith("com.google.errorprone:error_prone_annotations"))]
+# the "com.google.guava:guava has multiple versions x.y.z-android, x.y.z-jre" problem.
+IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA = [
+    item
+    for item in IO_GRPC_GRPC_JAVA_ARTIFACTS
+    if ((item != "com.google.guava:guava:" + GRPC_GUAVA_VERSION + "-android") and
+        not item.startswith("com.google.errorprone:error_prone_annotations"))
+]
 
 maven_install(
     artifacts = IO_GRPC_GRPC_JAVA_ARTIFACTS_WITHOUT_GUAVA + [
         "junit:junit:4.13.2",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
-        "com.google.guava:guava:33.3.1-jre",
+        "com.google.guava:guava:%s-jre" % OUR_GUAVA_VERSION,
         "com.google.jimfs:jimfs:1.3.0",
         "com.google.truth.extensions:truth-java8-extension:1.4.4",
         "com.google.truth.extensions:truth-proto-extension:1.4.4",
