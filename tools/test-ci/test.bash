@@ -39,3 +39,6 @@ tools/git/test.bash
 
 # Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
 tools/distro/test.bash
+
+# Test Maven repo, via JBang integration support
+tools/maven/test.bash

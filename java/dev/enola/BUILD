@@ -15,7 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-# TODO load("@rules_jvm_external//:defs.bzl", "java_export")
+load("@rules_jvm_external//:defs.bzl", "java_export")
 
 java_library(
     name = "api",
@@ -30,10 +30,11 @@ java_library(
     ],
 )
 
-# TODO java_export
-java_library(
+java_export(
     name = "enola",
-    # TODO maven_coordinates = "dev.enola:enola:main-SNAPSHOT",
+    maven_coordinates = "dev.enola:enola:0.0.1-SNAPSHOT",
+    # TODO Fix JavaDoc generation which somehow breaks the build; see https://github.com/enola-dev/enola/issues/491
+    tags = ["no-javadocs"],
     visibility = ["//:__subpackages__"],
     runtime_deps = [
         "//java/dev/enola/common",
