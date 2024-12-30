@@ -20,6 +20,18 @@ bazel_dep(name = "protobuf", version = "29.2", repo_name = "com_google_protobuf"
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "7.12.4")
 
+# Required by gRPC
+# (from https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L1)
+bazel_dep(name = "googleapis", version = "0.0.0-20240819-fe8ba054a", repo_name = "com_google_googleapis")
+
+switched_rules = use_extension("@com_google_googleapis//:extensions.bzl", "switched_rules")
+switched_rules.use_languages(java = True)
+
+# https://github.com/grpc/grpc-java/
+# https://registry.bazel.build/modules/grpc-java
+# TODO Introduce a versions.bzl to avoid duplicating the version of "grpc-java" in MODULE.bazel and here...
+bazel_dep(name = "grpc-java", version = "1.69.0", repo_name = "io_grpc_grpc_java")
+
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 # When bumping the version here, must always run: REPIN=1 bazel run @unpinned_maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.6")
