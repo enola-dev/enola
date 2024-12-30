@@ -14,6 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# see ./tools/java_toolchain/BUILD
-# see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
-register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
+# WORKSPACE needs to exist as an empty file for Bazel, but it's
+# completely empty, intentionally; please use (only) MODULE.bazel!
