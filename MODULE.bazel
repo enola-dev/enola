@@ -98,8 +98,8 @@ enola_maven.install(
         "ch.vorburger.exec:exec:3.1.5",
         "com.github.java-json-tools:uri-template:0.10",
         "info.picocli:picocli:4.7.5",
-        "org.snakeyaml:snakeyaml-engine:2.7",
-        "org.yaml:snakeyaml:2.2",
+        "org.snakeyaml:snakeyaml-engine:2.8",
+        "org.yaml:snakeyaml:2.3",
         "org.slf4j:slf4j-jdk14:2.0.16",
         "org.slf4j:slf4j-simple:2.0.16",
         # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
