@@ -47,11 +47,17 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.4")
 
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
-# When bumping the version here, must always run: REPIN=1 bazel run @unpinned_maven//:pin
+# When bumping the version here, must always run: REPIN=1 bazelisk run @enola_maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.6")
 
-maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
-maven.install(
+enola_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+enola_maven.install(
+    # NB: Do *ALWAYS* specify a name, and NEVER use the (default) name = "maven";
+    # this is because it's not "namespaced" (or "scoped") like you might think it
+    # really should be... use the default name *WILL* cause conflicts with other modules;
+    # notably grpc-java! See e.g. https://github.com/bazel-contrib/rules_jvm_external/issues/916
+    # and https://github.com/bazel-contrib/rules_jvm_external/issues/708 for more background.
+    name = "enola_maven",
     artifacts = [
         "junit:junit:4.13.2",
         # NB: Using GCP Cloud PubSub is a bit too broad, and could be refined,
@@ -64,7 +70,7 @@ maven.install(
         "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
-        "com.google.guava:guava:33.3.1-jre",
+        "com.google.guava:guava:33.3.1-jre",  # TODO Bump to 33.4.0-jre ...
         "com.google.jimfs:jimfs:1.3.0",
         "com.google.truth.extensions:truth-java8-extension:1.4.4",
         "com.google.truth.extensions:truth-proto-extension:1.4.4",
@@ -108,8 +114,12 @@ maven.install(
         "org.apache.tika:tika-core:3.0.0-BETA2",
         "org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2",
     ],
-    # TODO Change duplicate_version_warning back to "error" after TODO ISSUE
-    duplicate_version_warning = "warn",
+    # NB: Never de-activate duplicate_version_warning = "error"!
+    # While it can be tempting to resolve a build-time problem which
+    # may have occurred when changing dependencies, it will only cause
+    # runtime problems due to "classpath hell" later; it's ALWAYS better
+    # to clean versions at build time!
+    duplicate_version_warning = "error",
     excluded_artifacts = [
         # https://commons.apache.org/proper/commons-logging/ is a PITA,
         # because it contains package org.apache.commons.logging, which we
@@ -121,10 +131,13 @@ maven.install(
     ],
     fail_if_repin_required = True,
     fetch_sources = True,
+    # TODO What does generate_compat_repositories actually really do, and is it a good idea? Required?
     generate_compat_repositories = True,
     lock_file = "//:maven_install.json",
+    # TODO Maven central is probably the default, and could be removed here?
     repositories = [
         "https://repo.maven.apache.org/maven2/",
     ],
+    # TODO What does strict_visibility = True, do? Do we want it?
 )
-use_repo(maven, "maven")
+use_repo(enola_maven, "enola_maven")

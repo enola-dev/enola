@@ -30,14 +30,14 @@ java_library(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",
-        "@maven//:com_github_java_json_tools_uri_template",
-        "@maven//:com_google_auto_service_auto_service_annotations",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_squareup_okhttp3_logging_interceptor",
-        "@maven//:com_squareup_okhttp3_okhttp",  # TODO Separate library?
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
+        "@enola_maven//:com_google_auto_service_auto_service_annotations",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:com_squareup_okhttp3_logging_interceptor",
+        "@enola_maven//:com_squareup_okhttp3_okhttp",  # TODO Separate library?
+        "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -51,8 +51,8 @@ junit_tests(
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/protobuf",
         "//test",
-        "@maven//:com_github_java_json_tools_uri_template",
-        "@maven//:com_google_auto_service_auto_service_annotations",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
+        "@enola_maven//:com_google_auto_service_auto_service_annotations",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )

@@ -40,10 +40,10 @@ java_library(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//java/dev/enola/thing/gen",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:com_google_protobuf_protobuf_java",
+        "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -53,7 +53,7 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     srcs_utils = glob(["*Abstract.java"]),
     runtime_deps = [
-        "@maven//:org_slf4j_slf4j_simple",
+        "@enola_maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":web",

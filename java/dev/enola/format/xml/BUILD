@@ -37,12 +37,12 @@ java_library(
         "//java/dev/enola/common/xml",
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
-        "@maven//:com_google_auto_service_auto_service_annotations",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_errorprone_error_prone_type_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:com_google_auto_service_auto_service_annotations",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:com_google_errorprone_error_prone_type_annotations",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 

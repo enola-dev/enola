@@ -31,12 +31,11 @@ public interface ReadableResource extends AbstractResource {
 
     // TODO Consider replacing or integrating this with Converter?!
     default CharSource charSource() {
+        // Workaround for java.lang.NoSuchMethodError: 'java.util.Optional
+        // com.google.common.base.Optional.toJavaUtil()' due to classpath hell :(
+        var charset = java.util.Optional.ofNullable(mediaType().charset().orNull());
         return byteSource()
-                .asCharSource(
-                        mediaType()
-                                .charset()
-                                .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(this)));
+                .asCharSource(charset.orElseThrow(missingCharsetExceptionSupplier(this)));
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
