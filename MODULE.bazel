@@ -131,8 +131,6 @@ enola_maven.install(
     ],
     fail_if_repin_required = True,
     fetch_sources = True,
-    # TODO What does generate_compat_repositories actually really do, and is it a good idea? Required?
-    generate_compat_repositories = True,
     lock_file = "//:maven_install.json",
     repositories = [
         # Override legacy default https://repo1.maven.org/maven2/
