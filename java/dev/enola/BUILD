@@ -25,8 +25,8 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/thing:thing_java",
-        "@maven//:com_google_guava_guava",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -61,13 +61,13 @@ java_export(
         "//java/dev/enola/thing/gen",
         "//java/dev/enola/web",
         "//java/dev/enola/web/netty",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:org_apache_logging_log4j_log4j_to_jul",
-        "@maven//:org_eclipse_rdf4j_rdf4j_model",
-        "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
-        "@maven//:org_slf4j_slf4j_jdk14",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:com_google_protobuf_protobuf_java",
+        "@enola_maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@enola_maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@enola_maven//:org_eclipse_rdf4j_rdf4j_rio_api",
+        "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:org_slf4j_slf4j_jdk14",
     ],
 )

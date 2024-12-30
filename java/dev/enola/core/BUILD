@@ -83,7 +83,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     runtime_deps = [
-        "@maven//:io_grpc_grpc_netty",
+        "@enola_maven//:io_grpc_grpc_netty",
     ],
     deps = [
         "//java/dev/enola/common",
@@ -106,17 +106,17 @@ java_library(
         "//java/dev/enola/thing:thing_java_proto",
         "//java/dev/enola/thing/gen",
         "//models",
-        "@maven//:com_github_java_json_tools_uri_template",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:com_google_protobuf_protobuf_java",
-        "@maven//:com_google_protobuf_protobuf_java_util",
-        "@maven//:io_grpc_grpc_api",
-        "@maven//:io_grpc_grpc_core",
-        "@maven//:io_grpc_grpc_inprocess",
-        "@maven//:io_grpc_grpc_stub",
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:com_google_protobuf_protobuf_java",
+        "@enola_maven//:com_google_protobuf_protobuf_java_util",
+        "@enola_maven//:io_grpc_grpc_api",
+        "@enola_maven//:io_grpc_grpc_core",
+        "@enola_maven//:io_grpc_grpc_inprocess",
+        "@enola_maven//:io_grpc_grpc_stub",
+        "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -124,8 +124,8 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     runtime_deps = [
-        "@maven//:io_grpc_grpc_netty",
-        "@maven//:org_slf4j_slf4j_simple",
+        "@enola_maven//:io_grpc_grpc_netty",
+        "@enola_maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         "//java/dev/enola/common/concurrent",

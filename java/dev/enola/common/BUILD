@@ -26,9 +26,9 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//tools/version",
-        "@maven//:com_google_guava_guava",
-        "@maven//:dev_dirs_directories",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:dev_dirs_directories",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
 

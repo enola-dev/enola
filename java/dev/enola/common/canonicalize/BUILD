@@ -31,8 +31,8 @@ java_library(
         "//java/dev/enola/common/xml",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/rdf/io",
-        "@maven//:com_google_guava_guava",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
 

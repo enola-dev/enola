@@ -30,10 +30,10 @@ java_library(
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",
         "//java/dev/enola/thing:thing_java",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:junit_junit",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:junit_junit",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -43,6 +43,6 @@ junit_tests(
     deps = [
         ":testlib",
         "//java/dev/enola/common/io",
-        "@maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )

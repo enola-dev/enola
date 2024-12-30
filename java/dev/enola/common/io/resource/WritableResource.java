@@ -28,11 +28,9 @@ public interface WritableResource extends AbstractResource {
 
     // TODO Consider replacing or integrating this with Converter?!
     default CharSink charSink() {
-        return byteSink()
-                .asCharSink(
-                        mediaType()
-                                .charset()
-                                .toJavaUtil()
-                                .orElseThrow(missingCharsetExceptionSupplier(this)));
+        // Workaround for java.lang.NoSuchMethodError: 'java.util.Optional
+        // com.google.common.base.Optional.toJavaUtil()' due to classpath hell :(
+        var charset = java.util.Optional.ofNullable(mediaType().charset().orNull());
+        return byteSink().asCharSink(charset.orElseThrow(missingCharsetExceptionSupplier(this)));
     }
 }
