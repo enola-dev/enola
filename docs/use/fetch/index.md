@@ -26,7 +26,9 @@ This is different from [`get`](../get/index.md), which shows _Things_ given an _
 Enola supports the [URI schemes](https://en.wikipedia.org/wiki/List_of_URI_schemes) which are documented below.
 These are supported everywhere; including in `fetch`, `--load`, and elsewhere.
 
-## HTTP
+## Schemes
+
+### HTTP
 
 This will fetch <https://www.vorburger.ch/hello.md>: _(Note how for security reasons we have to explicitly permit it.)_
 
@@ -37,7 +39,7 @@ $ ./enola fetch --http-scheme https://www.vorburger.ch/hello.md
 
 Enola locally caches HTTP responses on the filesystem.
 
-## Files
+### Files
 
 We can do `cat`-like equivalent of local files using [the `file:` scheme](https://en.wikipedia.org/wiki/File_URI_scheme):
 
@@ -55,14 +57,14 @@ $ ./enola fetch /tmp/hi.txt
 ...
 ```
 
-## Classpath
+### Classpath
 
 ```bash cd ../.././..
 $ ./enola fetch classpath:/VERSION
 ...
 ```
 
-## Data
+### Data
 
 Enola [supports (RFC 2397) `data:` URLs](https://en.m.wikipedia.org/wiki/Data_URI_scheme):
 
@@ -71,7 +73,7 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 ...
 ```
 
-## Empty
+### Empty
 
 `empty:` is a (non-standard) URL scheme in Enola for "no content" (as an alternative to `data:,`):
 
@@ -79,6 +81,39 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 $ ./enola fetch empty:/
 ...
 ```
+
+### Exec (TODO)
+
+We plan to support an `exec:` scheme,  whose content will be the resulting of running the given command,
+similar to e.g. [🐪 Camel's](https://camel.apache.org/components/4.8.x/exec-component.html) or (vaguely) Web Browsers'
+`javascript:`.
+
+<!-- TODO ### Git `git:` ? -->
+
+## Parameters
+
+Enola considers certain generic query parameters in URLs it fetches.
+
+These work with most but not all schemes (e.g. `data:` does not permit query parameters).
+
+### Media Type
+
+Adding e.g. `?mediaType=application/json` [overrides the Media Type](../info/index.md#detect)
+which e.g. a server provided in e.g. a HTTP header,
+or that was determined from a file extension.
+
+### Charset
+
+Adding e.g. `?charset=iso-8859-1` overrides (and takes precedence over)
+the Charset from the Media Type (if any) or any HTTP header like mechanisms.
+
+### Integrity (TODO)
+
+We plan
+to support `?integrity=...`
+to verify resource integrity via a [cryptographic digest ("hash")])(https://docs.ipfs.tech/concepts/hashing/)
+using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io).
+This is similar e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
 
 <!--
 ## Screencast
