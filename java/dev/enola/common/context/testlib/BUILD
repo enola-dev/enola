@@ -21,7 +21,7 @@ java_library(
     name = "testlib",
     srcs = glob(
         ["*.java"],
-        exclude = ["**/*Test.java"],
+        exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
@@ -39,7 +39,10 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+        allow_empty = True,
+    ),
     deps = [
         ":testlib",
         "//java/dev/enola/common/io",

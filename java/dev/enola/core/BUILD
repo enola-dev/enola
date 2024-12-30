@@ -22,15 +22,15 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 # https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
 
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
-load("@rules_proto//proto:defs.bzl", "proto_library")
 
 proto_library(
     name = "ext_proto",
     srcs = ["enola_ext.proto"],
     deps = [
-        "@com_google_protobuf//:descriptor_proto",
+        "@protobuf//:descriptor_proto",
     ],
 )
 
@@ -40,9 +40,9 @@ proto_library(
     deps = [
         ":ext_proto",
         "//java/dev/enola/thing:thing_proto",
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
+        "@protobuf//:any_proto",
+        "@protobuf//:descriptor_proto",
+        "@protobuf//:struct_proto",
     ],
 )
 
@@ -50,7 +50,7 @@ proto_library(
     name = "util_proto",
     srcs = ["util/enola_util.proto"],
     deps = [
-        "@com_google_protobuf//:timestamp_proto",
+        "@protobuf//:timestamp_proto",
     ],
 )
 

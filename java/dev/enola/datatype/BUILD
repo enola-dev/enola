@@ -38,7 +38,10 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+        allow_empty = True,
+    ),
     deps = [
         ":datatype",
         "//java/dev/enola/common/convert",

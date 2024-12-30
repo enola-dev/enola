@@ -51,7 +51,6 @@ junit_tests(
     name = "tests",
     size = "medium",
     srcs = glob(["*Test.java"]),
-    srcs_utils = glob(["*Abstract.java"]),
     runtime_deps = [
         "@enola_maven//:org_slf4j_slf4j_simple",
     ],
