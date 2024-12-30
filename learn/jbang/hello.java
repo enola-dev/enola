@@ -16,9 +16,8 @@
  * limitations under the License.
  */
 
-//JAVA 21
-//COMPILE_OPTIONS --enable-preview -source 21
-//RUNTIME_OPTIONS --enable-preview
+//JAVA 21+
+//PREVIEW
 //DEPS dev.enola:enola:0.0.1-SNAPSHOT
 
 import static java.lang.System.out;
