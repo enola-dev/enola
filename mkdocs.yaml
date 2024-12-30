@@ -25,7 +25,11 @@ copyright: Copyright &copy; 2023-2024 The Enola <https://enola.dev> Authors
 
 nav:
   # - Applications:
-  #   - Bookmarks: (delicious.json, bookmarks.html, awesome.yaml; Graph, HTML, Timeline)
+  #   - Bookmark: (delicious.json, bookmarks.html, awesome.yaml; Graph, HTML, Timeline)
+  #   - Awesome List: # https://awesomes.directory/
+  #   - Genealogy:
+  #   - GitHub:
+  #   - ToDo:
   #   - Tech Infra
   #     - Networking:
   #     - Linux:

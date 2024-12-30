@@ -36,6 +36,7 @@ items:
 
   - Exec Connector!:
       tags: [exec]
+      description: "Consider adopting Camel?!"
       links:
         - https://camel.apache.org/components/4.4.x/exec-component.html
 
