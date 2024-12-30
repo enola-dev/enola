@@ -57,8 +57,10 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["*Test.java"]),
-    srcs_utils = glob(["*Subject.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+        allow_empty = True,
+    ),
     deps = [
         ":proto",
         "//java/dev/enola/common/context",

@@ -36,7 +36,7 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(["*Test.java"]),
     deps = [
         ":xml",
         "//java/dev/enola/common/context/testlib",

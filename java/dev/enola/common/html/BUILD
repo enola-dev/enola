@@ -34,7 +34,10 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+        allow_empty = True,
+    ),
     deps = [
         ":html",
         "//java/dev/enola/common/io",

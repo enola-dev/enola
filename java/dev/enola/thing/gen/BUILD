@@ -60,10 +60,6 @@ junit_tests(
     srcs = glob([
         "**/*Test.java",
     ]),
-    srcs_utils = glob(
-        ["**/*Test*.java"],
-        exclude = ["**/*Test.java"],
-    ),
     deps = [
         ":gen",
         "//java/dev/enola/common/context",

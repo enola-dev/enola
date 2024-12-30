@@ -14,15 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
-load("@rules_proto//proto:defs.bzl", "proto_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 proto_library(
     name = "validation_proto",
     srcs = ["validation.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
+        "@protobuf//:any_proto",
     ],
 )
 
@@ -38,10 +38,10 @@ proto_library(
     name = "test_proto",
     srcs = ["test.proto"],
     deps = [
-        "@com_google_protobuf//:any_proto",
-        "@com_google_protobuf//:descriptor_proto",
-        "@com_google_protobuf//:struct_proto",
-        "@com_google_protobuf//:timestamp_proto",
+        "@protobuf//:any_proto",
+        "@protobuf//:descriptor_proto",
+        "@protobuf//:struct_proto",
+        "@protobuf//:timestamp_proto",
     ],
 )
 
@@ -77,7 +77,7 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(["*Test.java"]),
     deps = [
         ":protobuf",
         ":test_java_proto",

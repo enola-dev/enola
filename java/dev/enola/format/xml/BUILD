@@ -28,7 +28,6 @@ java_library(
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     resource_strip_prefix = "java/",
-    resources = glob(["**/*.html"]),
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/context",
