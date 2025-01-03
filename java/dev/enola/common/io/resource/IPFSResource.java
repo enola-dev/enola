@@ -27,17 +27,15 @@ import java.net.URI;
  * <a href="https://ipfs.tech/">IPFS</a> Resource. TODO:
  *
  * <ol>
- *   <li>Does IPFS include MediaType? Otherwise hard-code it here...
  *   <li>Support IPLD <=> Thing API bridge...
  *   <li>Existing? https://github.com/ipld/java-cid and
  *       https://github.com/ipfs-shipyard/java-ipfs-http-client#dependencies
  *       com.github.ipfs:java-ipfs-api, com.github.multiformats:java-multiaddr; cid.jar,
  *       multibase.jar, multihash.jar ?
- *   <li>Support IPNS, but as ipns:// or as ipfs://ipns/ ? Also consider how that needs different
- *       caching than ipfs:
- *   <li>Support CAR files
  *   <li>Get Thing and add https://cid.ipfs.tech -like technical debugging info?
+ *   <li>Support CAR files?
  *   <li>Support writing - via a WritableResource, or (probably) a separate API?
+ *   <li>Support ipns://
  *   <li>Detect IPFS in other links, using https://github.com/ipfs-shipyard/is-ipfs's algorithm
  * </ol>
  */
@@ -65,28 +63,28 @@ public class IPFSResource extends BaseResource implements ReadableResource {
         return "ipfs".equals(uri.getScheme());
     }
 
-    private static void checkScheme(URI uri) {
+    private static void check(URI uri, String gateway) {
         if (!isIPFS(uri)) throw new IllegalArgumentException(uri.toString());
+        if (Strings.isNullOrEmpty(gateway))
+            throw new IllegalStateException("IPFS HTTP Gateway is required");
     }
 
     private final ReadableResource httpResource;
 
     public IPFSResource(URI uri, ResourceProvider httpResourceProvider, String gateway) {
         super(uri);
-        checkScheme(uri);
+        check(uri, gateway);
         this.httpResource = httpResourceProvider.getReadableResource(ipfs2http(uri, gateway));
     }
 
     public IPFSResource(
             URI uri, MediaType mediaType, ResourceProvider httpResourceProvider, String gateway) {
         super(uri, mediaType);
-        checkScheme(uri);
+        check(uri, gateway);
         this.httpResource = httpResourceProvider.getReadableResource(ipfs2http(uri, gateway));
     }
 
     private String ipfs2http(URI ipfsURL, String gateway) {
-        if (Strings.isNullOrEmpty(gateway))
-            throw new IllegalStateException("IPFS Gateway is not configured");
         return gateway + ipfsURL.getAuthority() + ipfsURL.getPath();
     }
 
