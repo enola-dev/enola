@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.resource;
 
-import dev.enola.common.context.TLC;
 import dev.enola.data.ProviderFromIRI;
 
 import org.jspecify.annotations.Nullable;
@@ -42,9 +41,6 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
     // unknown schema
 
     // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
-
-    // TODO Get rid of this again, just inject it into all users
-    ResourceProvider CTX = uri -> TLC.get(ResourceProvider.class).getResource(uri);
 
     @Override
     default @Nullable Resource get(String iri) {
