@@ -14,5 +14,5 @@
     { "pattern": "^https://kohesio.ec.europa.eu" },
     { "pattern": "^https://billiam.itch.io/deepdwn" }
   ],
-  "aliveStatusCodes": [504, 503, 502, 405, 202, 200, 0]
+  "aliveStatusCodes": [504, 503, 502, 405, 403, 202, 200, 0]
 }
