@@ -36,7 +36,7 @@ import java.net.URI;
 
 public class IPFSResourceTest {
 
-    // TODO Document this...
+    // See https://docs.enola.dev/use/fetch/#ipfs
     public static final String IPFS_GATEWAY = "https://dweb.link/ipfs/";
 
     private static final ResourceProvider httpResourceProvider = new OkHttpResource.Provider();
@@ -59,7 +59,7 @@ public class IPFSResourceTest {
         assertThat(r.charSource().read()).startsWith("<html>");
 
         // TODO mediaType determination only works on (some?) public gateways,
-        //  but not with IPFS Desktop; note that we've hard-coded it above...
+        //  but not with local IPFS Desktop; note that we've hard-coded it above...
         // assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 

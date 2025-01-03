@@ -83,7 +83,7 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             // Do NOT specify any defaultValue such as "http://localhost:8080/ipfs/" here,
             // nor "https://dweb.link/ipfs/" (that's worse, because non-local gateway require trust;
             // see https://docs.enola.dev/use/fetch/#ipfs).
-            required = true,
+            required = false,
             description = "See https://docs.enola.dev/use/fetch/#ipfs")
     String ipfsGateway;
 
