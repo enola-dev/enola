@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023-2024 The Enola <https://enola.dev> Authors
+    Copyright 2023-2025 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 ??? warning
 
-    _This page needs some updates to fully match the current code._
+    _This page needs some updates to fully match the current code. [Anything](anything.md) is more up-to-date._
 
 ## Introduction
 
