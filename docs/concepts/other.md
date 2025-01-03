@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2023-2024 The Enola <https://enola.dev> Authors
+    Copyright 2023-2025 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -32,6 +32,11 @@ On the contrary, it could automate creating incidents in such tools.
 Enola 🕵🏾‍♀️ is not Configuration Management tool.
 
 Enola 🕵🏾‍♀️ is not a Communication tool.
+
+## RDF Linked Data Tools
+
+* [Ontospy](https://lambdamusic.github.io/Ontospy/) #python #CLI #RDFS #OWL #SKOS #documentation #generation #ToDo
+* [Iolanta Linked Data browser](https://iolanta.tech) #ToDo
 
 ## Knowledge Management
 
