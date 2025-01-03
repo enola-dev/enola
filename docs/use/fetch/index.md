@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2024 The Enola <https://enola.dev> Authors
+    Copyright 2024-2025 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,24 +20,13 @@
 
 `fetch` fetches a _Resource_ from an _URL_ and outputs its content. You can therefore use this similarly to [curl](https://curl.se/) or [httpie](https://httpie.io/cli) or [wget](https://en.wikipedia.org/wiki/Wget). (If you want to see the _Media Type,_ use [`info detect`](../info/index.md#detect).)
 
-This is different from [`get`](../get/index.md), which shows _Things_ given an _IRI.
+This is different from [`get`](../get/index.md), which shows _Thing/s_ given an _IRI.
 (However the `--load` option of `get` internally does a `fetch`, and supports the same schemes.)
 
 Enola supports the [URI schemes](https://en.wikipedia.org/wiki/List_of_URI_schemes) which are documented below.
 These are supported everywhere; including in `fetch`, `--load`, and elsewhere.
 
 ## Schemes
-
-### HTTP
-
-This will fetch <https://www.vorburger.ch/hello.md>: _(Note how for security reasons we have to explicitly permit it.)_
-
-```bash cd ../.././..
-$ ./enola fetch --http-scheme https://www.vorburger.ch/hello.md
-...
-```
-
-Enola locally caches HTTP responses on the filesystem.
 
 ### Files
 
@@ -56,6 +45,17 @@ used to resolve URI references](https://en.wikipedia.org/wiki/Uniform_Resource_I
 $ ./enola fetch /tmp/hi.txt
 ...
 ```
+
+### HTTP
+
+This will fetch <https://www.vorburger.ch/hello.md>: _(Note how for security reasons we have to explicitly permit it.)_
+
+```bash cd ../.././..
+$ ./enola fetch --http-scheme https://www.vorburger.ch/hello.md
+...
+```
+
+Enola locally caches HTTP responses on the filesystem.
 
 ### Classpath
 
