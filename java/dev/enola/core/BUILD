@@ -22,9 +22,10 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 # https://github.com/bazelbuild/rules_go/blob/master/proto/core.rst#go_proto_library
 
+load("@protobuf//bazel:java_proto_library.bzl", "java_proto_library")
 load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_go//proto:def.bzl", "go_proto_library")
-load("@rules_java//java:defs.bzl", "java_library", "java_proto_library")
+load("@rules_java//java:defs.bzl", "java_library")
 
 proto_library(
     name = "ext_proto",
