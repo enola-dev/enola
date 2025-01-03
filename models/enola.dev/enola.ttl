@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2024 The Enola <https://enola.dev> Authors
+# Copyright 2024-2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,11 @@
 enola: a owl:Ontology;
   rdfs:label "Enola.dev's base/core Ontology.";
   enola:doc <https://docs.enola.dev/models/enola.dev/>.
+
+enola:ID a rdfs:Datatype;
+  schema:name "IDentifier Datatype.";
+  schema:description "This is not to be confused with https://schema.org/identifier, which is a [[rdf:Property]], whereas this is a [[rdfs:Datatype]].";
+  enola:emoji "🆔".
 
 enola:UnknownClass a rdfs:Class;
   schema:name "(Unknown)";
@@ -130,11 +135,12 @@ enola:origin a rdf:Property;
   schema:description "What something is _\"based on\",_ e.g. where it _\"comes from\"._ This may be a list.";
   enola:emoji "🏺".
 
-# TODO Split Q & P...
+# TODO Split Q & P... via sub-Datatypes?
 enola:wikidata a rdf:Property;
   # TODO This, and other, images should be a String, not a link, and the UI needs to be coded to handle it... validate!
   schema:image <https://upload.wikimedia.org/wikipedia/commons/f/ff/Wikidata-logo.svg>;
   # https://www.wikidata.org/wiki/Wikidata:Data_access#Linked_Data_Interface_(URI)
+   # TODO Introduce an indirection through enola:WikidataID a enola:ID;
   schema:url "http://www.wikidata.org/entity/{VALUE}"^^enola:IRITemplate;
   schema:description "Wikidata Q123 or P123 etc.".
   # TODO Range (?) is a RegExp like [QP][0-9]+ or so...
@@ -143,6 +149,7 @@ enola:wikipedia a rdf:Property;
   # TODO This, and other, images should be a String, not a link, and the UI needs to be coded to handle it... validate!
   schema:image <https://upload.wikimedia.org/wikipedia/commons/8/80/Wikipedia-logo-v2.svg>;
   schema:description "Wikipedia EN page ID (not URL), e.g. 'Wikipedia' (for https://en.wikipedia.org/wiki/Wikipedia)";
+  # TODO Introduce an indirection through enola:WikipediaID a enola:ID;
   schema:url "https://en.wikipedia.org/wiki/{VALUE}"^^enola:IRITemplate.
   # TODO Range (?) is a RegExp like [a-zA-Z0-9_]+ (but without slash or colon!) or whatever it is...
 
@@ -170,12 +177,12 @@ enola:example a rdf:Property;
   schema:description "Link to an example of this Class. Often used together with iriTemplate, but not exclusively.";
   rdfs:seeAlso enola:iriTemplate;
   rdfs:range xsd:anyURI;
-  enola:emoji "🤔".
+  enola:emoji "👉".
 
 enola:gkg a rdf:Property;
   rdfs:range enola:GKG.
 
-enola:GKG a rdfs:Datatype;
+enola:GKG a enola:ID;
   schema:name "Google Public Knowledge Graph ID";
   schema:description "ID in Google's Public Knowledge Graph (formerly AKA Freebase), see e.g. https://developers.google.com/knowledge-graph/; starts without slash, but with 'm' or 'g' following by a slash and lower case characters, numbers and underscores; e.g. g/11bwcf511s";
   enola:iriTemplate "kg:/{VALUE}";
@@ -184,6 +191,8 @@ enola:GKG a rdfs:Datatype;
 
 enola:rfc a rdf:Property;
   rdfs:range xsd:positiveInteger;
+  # TODO Introduce an indirection trough an enola:RFC a enola:ID
+  # TODO enola:sameAsTemplate "urn:ietf:rfc:{VALUE}"
   schema:url "https://datatracker.ietf.org/doc/rfc{VALUE}"^^enola:IRITemplate.
 
 enola:doc a rdf:Property;
