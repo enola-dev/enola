@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.Context;
@@ -77,6 +78,15 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             description = "Whether test:/ resource scheme is allowed")
     boolean test;
 
+    @CommandLine.Option(
+            names = {"--ipfs-gateway"},
+            // Do NOT specify any defaultValue such as "http://localhost:8080/ipfs/" here,
+            // nor "https://dweb.link/ipfs/" (that's worse, because non-local gateway require trust;
+            // see https://docs.enola.dev/use/fetch/#ipfs).
+            required = true,
+            description = "See https://docs.enola.dev/use/fetch/#ipfs")
+    String ipfsGateway;
+
     protected ResourceProvider rp;
 
     @Override
@@ -90,6 +100,10 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
             builder.add(new FileDescriptorResource.Provider());
         }
         if (http) builder.add(new OkHttpResource.Provider());
+        if (!Strings.isNullOrEmpty(ipfsGateway)) {
+            var httpResourceProvider = new OkHttpResource.Provider();
+            builder.add(new IPFSResource.Provider(httpResourceProvider, ipfsGateway));
+        }
         if (test) builder.add(new TestResource.Provider());
         if (classpath) builder.add(new ClasspathResource.Provider());
         rp = new ResourceProviders(builder.build());

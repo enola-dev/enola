@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.net.URI;
 import java.util.Optional;
 
 /**
- * AlwaysCachingResourceProvider is a {@link ResourceProvider} which caches everything.
+ * AlwaysCachingResourceProvider is a {@link ResourceProvider} which caches everything in memory.
  *
  * <p>Note that if the delegate ResourceProvider returns null because it could not get the resource,
  * this is cached as well ("persistent cache miss") - and not retried! (Unless Cache flows over, or

@@ -33,7 +33,7 @@ These are supported everywhere; including in `fetch`, `--load`, and elsewhere.
 We can do `cat`-like equivalent of local files using [the `file:` scheme](https://en.wikipedia.org/wiki/File_URI_scheme):
 
 ```bash cd ../.././..
-$ echo "hello" >/tmp/hi.txt && ./enola fetch file:///tmp/hi.txt
+$ echo "hello, world" >/tmp/hi.txt && ./enola fetch file:///tmp/hi.txt
 ...
 ```
 
@@ -43,6 +43,14 @@ used to resolve URI references](https://en.wikipedia.org/wiki/Uniform_Resource_I
 
 ```bash cd ../.././..
 $ ./enola fetch /tmp/hi.txt
+...
+```
+
+When running a remotely accessible [server](../server/index.md), you'll most probably want to disable the `file:` scheme,
+to block access to local files for security:
+
+```bash $? cd ../.././..
+$ ./enola fetch --no-file-scheme /tmp/hi.txt
 ...
 ```
 
@@ -56,6 +64,40 @@ $ ./enola fetch --http-scheme https://www.vorburger.ch/hello.md
 ```
 
 Enola locally caches HTTP responses on the filesystem.
+
+### IPFS
+
+Enola, like e.g. [`curl`](https://curl.se), has a _"native protocol handler"_
+to [support `ipfs:` URLs for decentralized content from IPFS](https://ipfs.tech/):
+
+```bash cd ../.././..
+$ ./enola fetch --ipfs-gateway="https://dweb.link/ipfs/" ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu
+...
+```
+
+The `--ipfs-gateway` is the URL of an [IPFS HTTP Gateway](https://docs.ipfs.tech/reference/http/gateway/).
+Instead of the shown `dweb.link`,
+we do (highly) recommend that you [locally install & run](https://docs.ipfs.tech/install/) an _IPFS Node,_
+such as [IPFS Desktop](https://docs.ipfs.tech/install/ipfs-desktop/),
+or [Kubo](https://docs.ipfs.tech/install/command-line/),
+and then use `--ipfs-gateway="http://localhost:8080/ipfs/"` instead.
+
+For initial testing you can specify one of the [public IPFS Gateways](https://ipfs.github.io/public-gateway-checker/)
+(or "rent" one from a provider such as [Pinata](https://pinata.cloud/dedicated-ipfs-gateways) or [Infura](https://www.infura.io/product/ipfs) or [Cloudflare](https://www.cloudflare.com/application-services/products/web3/)).
+However, we do **NOT*** recommend using these for anything else than for illustration and initial testing,
+because this has the following disadvantages:
+
+* Local Nodes make great local caches to improve Enola's performance
+* Public gateways are likely to rate limit your HTTP requests and return 403 errors
+* Enola does not verify the CID hash over the fetched content, so you are implicitly trusting the Gateway (and assume no [MITM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack))
+* Running an IPFS Node, especially a permanently on and publicly IP reachable one, furthers the global IPFS network
+
+<!-- PS: IPFS URLs typically don't work directly in your web browser - unless you install the [IPFS Companion Browser Extension](https://docs.ipfs.tech/install/ipfs-companion/).
+
+PPS: Note that the `//` separator after `ipfs:` is mandatory;
+we (intentionally) do not support `ipfs:Qm..` (or `ipfs:/Qm..`), nor e.g. `dweb://ipfs/Qm..`.
+For background about why this is so,
+see https://github.com/ipfs/in-web-browsers/blob/68483d0bbe014d0626ca28b6e0d224341c1e8b8f/ADDRESSING.md and the conclusion of https://github.com/ipfs/kubo/issues/1678#issuecomment-492977659. -->
 
 ### Classpath
 
@@ -101,9 +143,9 @@ $ ./enola fetch empty:/
 ...
 ```
 
-### Exec (TODO)
+### Exec
 
-We plan to support an `exec:` scheme,  whose content will be the resulting of running the given command,
+TODO We plan to support an `exec:` scheme,  whose content will be the resulting of running the given command,
 similar to e.g. [🐪 Camel's](https://camel.apache.org/components/4.8.x/exec-component.html) or (vaguely) Web Browsers'
 `javascript:`.
 
@@ -126,13 +168,15 @@ or that was determined from a file extension.
 Adding e.g. `?charset=iso-8859-1` overrides (and takes precedence over)
 the Charset from the Media Type (if any) or any HTTP header like mechanisms.
 
-### Integrity (TODO)
+### Integrity
 
-We plan
+TODO We plan
 to support `?integrity=...`
 to verify resource integrity via a [cryptographic digest ("hash")])(https://docs.ipfs.tech/concepts/hashing/)
 using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io).
 This is similar e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
+
+<!-- TODO ?cache from OptionalCachingResourceProvider (current un-used) -->
 
 <!--
 ## Screencast

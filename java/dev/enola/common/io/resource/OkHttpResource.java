@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,10 +103,19 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
         super(uri, mediaType(uri.toString()));
     }
 
+    private static Request newRequest(String url) {
+        return new Request.Builder()
+                .url(url)
+                // It's polite to announce who we are...
+                .addHeader("User-Agent", "enola.dev")
+                // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
+                .addHeader("Accept", "*/*")
+                .build();
+    }
+
     // See also UrlResource#mediaType(URL url)
     private static MediaType mediaType(String url) {
-        Request request = new Request.Builder().url(url).build();
-
+        Request request = newRequest(url);
         try (var response = client.newCall(request).execute()) {
             if (!response.isSuccessful())
                 throw new IllegalArgumentException(unsuccessfulMessage(url, response));
@@ -133,7 +142,7 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     // This could be fixed by postponing actually opening the connection "down" into openStream().
     public ByteSource byteSource() {
         String url = uri().toString();
-        var request = new Request.Builder().url(url).build();
+        Request request = newRequest(url);
         try {
             // Intentional not try-with-resource (but that's leaky & NOK; see above)
             var response = client.newCall(request).execute();
