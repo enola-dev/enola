@@ -29,14 +29,44 @@ public final class Multihashes {
     public static HashFunction toGuavaHashFunction(Multihash multihash) {
         var type = multihash.getType();
         return switch (type) {
-            // @Deprecated case md5 -> Hashing.md5();
-            // @Deprecated case sha1 -> Hashing.sha1();
+            // NB: Please BEWARE of what types are added here; the (sub)selection is intentional!
+
+            // TODO Support murmur3-x64-64, https://github.com/multiformats/java-multihash/pull/43
+            //   case murmur3_x64_128 ->  Hashing.murmur3_128();
+            // PS: Not suitable, as it's too tiny: case murmur3 -> Hashing.murmur3_32_fixed();
+
+            // TODO Support AES-CMAC https://developers.google.com/tink/supported-key-types#mac ?
+            //   Pending https://github.com/multiformats/multicodec/issues/368
+            //   Using https://developers.google.com/tink/protect-data-from-tampering#java
+
             case sha2_256 -> Hashing.sha256();
             case sha2_512 -> Hashing.sha512();
-            // Not suitable, as it's tiny: case murmur3 -> Hashing.murmur3_32_fixed();
 
-            // TODO What about all other supported types?!
-            //   See https://github.com/multiformats/java-multihash/issues/41 ...
+            // TODO Add additional external libraries for other supported types?
+            //   See https://github.com/multiformats/java-multihash/blob/master/README.md#usage
+            //   from https://github.com/multiformats/java-multihash/pull/42/files
+            //   for https://github.com/multiformats/java-multihash/issues/41.
+
+            // See https://github.com/google/guava/issues/5990#issuecomment-2571350434 ...
+            // SHA-224 (sha2-224) available in JDK, not available in Multibase table; so N/A
+            // SHA-384 (sha2-384) available in JDK (but not Guava), and Multibase table, not API
+            // SHA-512/224 (sha2-512-224) available in JDK (but not Guava), and Multibase table !API
+            // SHA-512/256 (sha2-512-256) available in JDK (but not Guava), and Multibase table !API
+            // NB https://github.com/google/guava/issues/5990
+            // NB https://github.com/google/guava/issues/938
+            //
+            // NB https://github.com/google/guava/issues/3960
+            // SHA3-224
+            // SHA3-256
+            // SHA3-384
+            // SHA3-512
+            // Note "sha3 not being a very good choice" on
+            // https://github.com/google/guava/issues/3960#issuecomment-1080775346;
+            // and https://developers.google.com/tink/protect-data-from-tampering#java
+            // "recommend the HMAC_SHA256" (=sha2-256).
+
+            // @Deprecated case md5 -> Hashing.md5();
+            // @Deprecated case sha1 -> Hashing.sha1();
 
             default -> throw new IllegalArgumentException("Unsupported Multihash type: " + type);
         };

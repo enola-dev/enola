@@ -30,7 +30,8 @@ import java.net.URI;
  *
  * <ol>
  *   <li>Support IPLD <=> Thing API bridge; see https://github.com/enola-dev/enola/issues/777.
- *   <li>Support writing - via a WritableResource, or (probably) a separate API?
+ *   <li>Support writing - via a WritableResource, or (probably) a separate API? Probably using
+ *       https://github.com/ipfs-shipyard/java-ipfs-http-client
  *   <li>Support ipns://
  * </ol>
  */

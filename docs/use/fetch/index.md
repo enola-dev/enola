@@ -170,9 +170,10 @@ the Charset from the Media Type (if any) or any HTTP header like mechanisms.
 
 ### Integrity
 
-Add `?integrity=...` verifies resource integrity via a [cryptographic digest ("hash")])(https://docs.ipfs.tech/concepts/hashing/)
-using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io), this works for all schemes:
-(Similarly e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).)
+Adding `?integrity=...` verifies resources via a [cryptographic digest ("hash")](https://docs.ipfs.tech/concepts/hashing/)
+using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io).
+(This is similar e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).)
+It works for all schemes:
 
 ```bash cd ../.././..
 $ ./enola fetch "/tmp/hi.txt?integrity=z8VxiEEn4n7uuGrVQjeoH2KYypytUHttCubqN7rr65xSH3wjLDjHciXuTyTHkoRuJT1Njghj68RQdynADQt9vzLgyEs"
@@ -187,12 +188,15 @@ $ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8Vtt
 ```
 
 In order to find the expected Multibase encoded Multihash,
-it's simplest to once use a wrong one, and then replace it with the correct one shown by the error message:
+it's simplest to once use a wrong one, and then replace it with the correct one which is shown by the error message:
 
 ```bash $? cd ../.././..
 $ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8VsnXyGnRwJpnrQXB8KcLstvgFYGZ2f5BCm3DVndcNZ8NswtkCqsut69e7yd1FKNtettjgy669GNVt8VSTGxkAiJaB"
 ...
 ```
+
+Note that while [Multihash](https://www.multiformats.io/multihash/) defines codes for [various hash functions](https://github.com/multiformats/multicodec/blob/master/table.csv),
+Enola (currently) [intentionally](https://github.com/google/guava/issues/5990#issuecomment-2571350434) only actually supports `sha2-256` & `sha2-512`.
 
 <!-- TODO ?cache from OptionalCachingResourceProvider (current un-used) -->
 
