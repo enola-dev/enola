@@ -170,11 +170,29 @@ the Charset from the Media Type (if any) or any HTTP header like mechanisms.
 
 ### Integrity
 
-TODO We plan
-to support `?integrity=...`
-to verify resource integrity via a [cryptographic digest ("hash")])(https://docs.ipfs.tech/concepts/hashing/)
-using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io).
-This is similar e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).
+Add `?integrity=...` verifies resource integrity via a [cryptographic digest ("hash")])(https://docs.ipfs.tech/concepts/hashing/)
+using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io), this works for all schemes:
+(Similarly e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).)
+
+```bash cd ../.././..
+$ ./enola fetch "/tmp/hi.txt?integrity=z8VxiEEn4n7uuGrVQjeoH2KYypytUHttCubqN7rr65xSH3wjLDjHciXuTyTHkoRuJT1Njghj68RQdynADQt9vzLgyEs"
+...
+```
+
+or:
+
+```bash cd ../.././..
+$ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8VttgvnrXN5ZzqAh8BLwyup7htUmSM9gbKR445teEECTwMRDQTireiWgWauLiZ4Xr5esrqbVFNbAuAM2XyZ4CTxU7N"
+...
+```
+
+In order to find the expected Multibase encoded Multihash,
+it's simplest to once use a wrong one, and then replace it with the correct one shown by the error message:
+
+```bash $? cd ../.././..
+$ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8VsnXyGnRwJpnrQXB8KcLstvgFYGZ2f5BCm3DVndcNZ8NswtkCqsut69e7yd1FKNtettjgy669GNVt8VSTGxkAiJaB"
+...
+```
 
 <!-- TODO ?cache from OptionalCachingResourceProvider (current un-used) -->
 

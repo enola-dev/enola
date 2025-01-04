@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.Context;
 import dev.enola.common.function.CheckedRunnable;
+import dev.enola.common.io.hashbrown.IntegrityValidatingDelegatingResource;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
@@ -106,7 +107,9 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
         }
         if (test) builder.add(new TestResource.Provider());
         if (classpath) builder.add(new ClasspathResource.Provider());
-        rp = new ResourceProviders(builder.build());
+
+        var original = new ResourceProviders(builder.build());
+        rp = new IntegrityValidatingDelegatingResource.Provider(original);
     }
 
     protected void setup(Context ctx) {
