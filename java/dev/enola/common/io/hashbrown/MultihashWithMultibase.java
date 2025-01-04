@@ -37,7 +37,7 @@ public final class MultihashWithMultibase {
         if (encoded.length() == 46 && encoded.startsWith("Qm"))
             // TODO Base58BTC or Base58Flickr ?
             base = Multibase.Base.Base58BTC;
-        else base = Multibase.Base.lookup(encoded.charAt(0));
+        else base = Multibase.Base.lookup(encoded);
         return new MultihashWithMultibase(base, Multihash.decode(encoded));
     }
 
