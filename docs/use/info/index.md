@@ -66,7 +66,7 @@ $ ./enola info detect "picasso.thing.yaml?mediaType=application/json"
 ...
 ```
 
-[`fetch`](../fetch/index.md) is another command to "get the bytes at" an URL.
+BTW: [`fetch`](../fetch/index.md) is the command to "get the bytes at" an URL.
 
 ## Metadata
 
@@ -76,6 +76,22 @@ $ ./enola info metadata --load=test/metadata-label-property.ttl https://example.
 ```
 
 [Metadata](../../concepts/metadata.md) explains what this is about.
+
+## Digest
+
+```bash cd ../.././..
+$ ./enola info digest --help
+...
+```
+
+So for example:
+
+```bash cd ../.././..
+$ ./enola info digest --http-scheme https://www.google.com
+...
+```
+
+This _digest_ can be used e.g. in [`?integrity=...` of `fetch`](../fetch/index.md#integrity).
 
 ## Screencast
 
