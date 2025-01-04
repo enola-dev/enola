@@ -82,6 +82,7 @@ public class URITemplateMatcherChain<T> {
         return templates;
     }
 
+    // skipcq: JAVA-E0169
     public static class Builder<T> implements dev.enola.common.Builder<URITemplateMatcherChain<T>> {
         private Builder() {
             splitters = new ArrayList<>();

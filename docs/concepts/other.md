@@ -79,6 +79,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 * [Anzo, by Cambridge Semantics](https://cambridgesemantics.com/anzo-platform/) #commercial
 * [Semaphore, by Progress](https://www.progress.com/semaphore) #commercial
 * [metaphactory, by Metaphacts](https://metaphacts.com)
+* [openEngiadina](https://openengiadina.net) #opensource #swiss
 
 ### Personal
 
