@@ -26,8 +26,7 @@ import io.ipfs.multihash.Multihash;
 /** Extension methods for {@link io.ipfs.multihash.Multihash}. */
 public final class Multihashes {
 
-    public static HashFunction toGuavaHashFunction(Multihash multihash) {
-        var type = multihash.getType();
+    public static HashFunction toGuavaHashFunction(Multihash.Type type) {
         return switch (type) {
             // NB: Please BEWARE of what types are added here; the (sub)selection is intentional!
 
