@@ -21,22 +21,17 @@ import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import io.ipfs.cid.Cid;
+
 import java.net.URI;
 
 /**
  * <a href="https://ipfs.tech/">IPFS</a> Resource. TODO:
  *
  * <ol>
- *   <li>Support IPLD <=> Thing API bridge...
- *   <li>Existing? https://github.com/ipld/java-cid and
- *       https://github.com/ipfs-shipyard/java-ipfs-http-client#dependencies
- *       com.github.ipfs:java-ipfs-api, com.github.multiformats:java-multiaddr; cid.jar,
- *       multibase.jar, multihash.jar ?
- *   <li>Get Thing and add https://cid.ipfs.tech -like technical debugging info?
- *   <li>Support CAR files?
+ *   <li>Support IPLD <=> Thing API bridge; see https://github.com/enola-dev/enola/issues/777.
  *   <li>Support writing - via a WritableResource, or (probably) a separate API?
  *   <li>Support ipns://
- *   <li>Detect IPFS in other links, using https://github.com/ipfs-shipyard/is-ipfs's algorithm
  * </ol>
  */
 public class IPFSResource extends BaseResource implements ReadableResource {
@@ -67,6 +62,8 @@ public class IPFSResource extends BaseResource implements ReadableResource {
         if (!isIPFS(uri)) throw new IllegalArgumentException(uri.toString());
         if (Strings.isNullOrEmpty(gateway))
             throw new IllegalStateException("IPFS HTTP Gateway is required");
+        // Validate CID using parser from https://github.com/ipld/java-cid
+        Cid.decode(uri.getAuthority());
     }
 
     private final ReadableResource httpResource;
