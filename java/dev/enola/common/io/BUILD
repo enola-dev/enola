@@ -33,7 +33,7 @@ java_library(
         # TODO Separate BUILD for IPFSResource
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multihash",
-        "@enola_maven//:com_github_multiformats_java_multibase",
+        "@enola_maven//:com_github_vorburger_java_multibase",
         "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
@@ -58,8 +58,8 @@ junit_tests(
         "//test",
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_java_json_tools_uri_template",
-        "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
+        "@enola_maven//:com_github_vorburger_java_multibase",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:org_jspecify_jspecify",
     ],
