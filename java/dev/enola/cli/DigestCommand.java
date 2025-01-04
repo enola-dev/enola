@@ -68,7 +68,6 @@ public class DigestCommand extends CommandWithResourceProvider {
             var resource = rp.getResource(uri);
 
             var multihash = new ResourceHasher().hash(resource, type);
-            multibase = Multibase.Base.Base64;
             pw.println(Multihashes.toString(multihash, multibase));
         }
         return 0;
