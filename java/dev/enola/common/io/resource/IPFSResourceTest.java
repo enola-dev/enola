@@ -28,6 +28,8 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
+import io.ipfs.cid.Cid.CidEncodingException;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -50,7 +52,7 @@ public class IPFSResourceTest {
     }
 
     @Test
-    public void vanGough() throws IOException {
+    public void vanGogh() throws IOException {
         var url =
                 "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html";
         var r =
@@ -71,8 +73,15 @@ public class IPFSResourceTest {
         return new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
     }
 
-    // TODO Test "ipfs:QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu"
-    //  (without // ) and "ipfs:/QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu" with a single
-    // slash;
-    //  does it also need to support "ipfs:/ipfs/Qm...." ?
+    @Test(expected = IllegalArgumentException.class)
+    public void notIFPS() {
+        var url = "http://www.google.com";
+        new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
+    }
+
+    @Test(expected = CidEncodingException.class)
+    public void badCID() {
+        var url = "ipfs://bad";
+        new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
+    }
 }
