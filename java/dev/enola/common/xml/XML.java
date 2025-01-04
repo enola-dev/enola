@@ -61,7 +61,7 @@ public final class XML {
         // TODO Use streaming SAX instead of DOM; and break this up... use XmlResourceParser
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true); // #security
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true); // #security
         DocumentBuilder builder = factory.newDocumentBuilder();
 
         Document document = builder.parse(new InputSource(inputStream));
