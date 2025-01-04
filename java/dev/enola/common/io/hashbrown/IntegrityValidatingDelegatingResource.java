@@ -24,9 +24,6 @@ import com.google.common.io.CharSource;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.*;
 
-import io.ipfs.multibase.Multibase;
-import io.ipfs.multihash.Multihash;
-
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
@@ -46,15 +43,16 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
             if (original == null) return null;
             var integrity = URIs.getQueryMap(uri).get("integrity");
             if (integrity == null) return original;
-            var multihash = Multihash.decode(integrity);
+            var multihash = MultihashWithMultibase.decode(integrity);
             return new IntegrityValidatingDelegatingResource(original, multihash);
         }
     }
 
-    private final Multihash expectedHash;
+    private final MultihashWithMultibase expectedHash;
     private boolean validated = false;
 
-    public IntegrityValidatingDelegatingResource(Resource delegate, Multihash expectedHash) {
+    public IntegrityValidatingDelegatingResource(
+            Resource delegate, MultihashWithMultibase expectedHash) {
         super(delegate);
         this.expectedHash = expectedHash;
     }
@@ -75,7 +73,7 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
         if (validated) return;
 
         var delegateByteSource = delegate.byteSource();
-        var hashFunction = Multihashes.toGuavaHashFunction(expectedHash);
+        var hashFunction = Multihashes.toGuavaHashFunction(expectedHash.multihash());
 
         Hasher hasher;
         var optSize = delegateByteSource.sizeIfKnown();
@@ -93,16 +91,12 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
         }
         var hashCode = hasher.hash();
         var actualBytes = hashCode.asBytes();
-        var actualMultihash = new Multihash(expectedHash.getType(), actualBytes);
+        var actualHash = expectedHash.copy(actualBytes);
 
         // TODO It would be useful if Multihash had an equalsTo() method to avoid byte array copy
-        if (!expectedHash.equals(actualMultihash)) {
-            // TODO Fix that this looses the "original" Base from ?integrity=..
-            var expectedHashString = Multihashes.toString(expectedHash, Multibase.Base.Base64);
-            var actualMultihashString =
-                    Multihashes.toString(actualMultihash, Multibase.Base.Base64);
+        if (!expectedHash.equals(actualHash)) {
             throw new IntegrityViolationException(
-                    "Expected " + expectedHashString + " but got " + actualMultihashString);
+                    "Expected " + expectedHash + " but got " + actualHash);
         }
 
         validated = true;
