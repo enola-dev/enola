@@ -79,7 +79,7 @@ $ ./enola info metadata --load=test/metadata-label-property.ttl https://example.
 
 ## Digest
 
-```bash cd ../.././..
+```bash $? cd ../.././..
 $ ./enola info digest --help
 ...
 ```
@@ -87,7 +87,14 @@ $ ./enola info digest --help
 So for example:
 
 ```bash cd ../.././..
-$ ./enola info digest --http-scheme https://www.google.com
+$ ./enola info digest --http-scheme https://www.vorburger.ch/hello.md
+...
+```
+
+Or alternatively:
+
+```bash cd ../.././..
+$ ./enola info digest --base=Base64Pad --type=sha2_256 --http-scheme https://www.vorburger.ch/hello.md
 ...
 ```
 
