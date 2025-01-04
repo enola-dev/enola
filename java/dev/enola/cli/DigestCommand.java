@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,25 +18,26 @@
 package dev.enola.cli;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.io.hashbrown.Multihashes;
+import dev.enola.common.io.hashbrown.ResourceHasher;
 import dev.enola.common.io.iri.URIs;
 
+import io.ipfs.multibase.Multibase;
+import io.ipfs.multihash.Multihash;
+
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
 
 import java.nio.file.Paths;
 
-@Command(
-        name = "detect",
+@CommandLine.Command(
+        name = "digest",
         description =
-                "Provides information about the media type detected for a given URL.\n"
-                    + "This works both for local files (based on extension), and remote HTTP (based"
-                    + " on headers).\n"
-                    + "See also the related 'fetch' command.")
-public class DetectCommand extends CommandWithResourceProvider {
+                "Generates a Message Authentication Code (MAC; also Message Integrity Code, MIC)"
+                        + " for a given URL.\n"
+                        + "See also the related ?integrity=... argument of the 'fetch' command.")
+public class DigestCommand extends CommandWithResourceProvider {
 
-    @Spec CommandSpec spec;
+    @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @CommandLine.Parameters(index = "0", paramLabel = "url", description = "URL")
     String url;
@@ -44,19 +45,15 @@ public class DetectCommand extends CommandWithResourceProvider {
     @Override
     public Integer call() throws Exception {
         super.run();
+        var pw = spec.commandLine().getOut();
+
         var uri = URIs.parse(url);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var resource = rp.getResource(uri);
-            if (resource == null) {
-                System.err.println(
-                        uri.getScheme() + " scheme unknown; try: enola info detect --help");
-                return 1;
-            }
 
-            var pw = spec.commandLine().getOut();
-            pw.println(resource.mediaType());
-            resource.lastModifiedIfKnown().ifPresent(lastModified -> pw.println(lastModified));
-            return 0;
+            var multihash = new ResourceHasher().hash(resource, Multihash.Type.sha2_512);
+            pw.println(Multihashes.toString(multihash, Multibase.Base.Base64));
         }
+        return 0;
     }
 }
