@@ -67,8 +67,6 @@ public final class MultihashWithMultibase {
         return Objects.hash(multihash, multibase);
     }
 
-    // TODO equals & hashCode
-
     @Override
     public String toString() {
         return Multihashes.toString(multihash, multibase);

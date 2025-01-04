@@ -93,7 +93,6 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
         var actualBytes = hashCode.asBytes();
         var actualHash = expectedHash.copy(actualBytes);
 
-        // TODO It would be useful if Multihash had an equalsTo() method to avoid byte array copy
         if (!expectedHash.equals(actualHash)) {
             throw new IntegrityViolationException(
                     "Expected " + expectedHash + " but got " + actualHash);
