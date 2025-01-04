@@ -19,7 +19,7 @@ package dev.enola.thing.gen;
 
 import dev.enola.common.Version;
 
-public interface DocGenConstants {
+public final class DocGenConstants {
 
     public static final String FOOTER =
             "\n---\n_This model documentation was generated with ❤️ by"
@@ -28,4 +28,6 @@ public interface DocGenConstants {
                             ? " @ [" + Version.get() + "](" + Version.gitUI() + ")"
                             : "")
                     + "_\n";
+
+    private DocGenConstants() {}
 }

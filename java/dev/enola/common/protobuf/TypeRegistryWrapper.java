@@ -109,6 +109,7 @@ public class TypeRegistryWrapper implements DescriptorProvider {
         return parts[parts.length - 1];
     }
 
+    // skipcq: JAVA-E0169
     public static final class Builder implements dev.enola.common.Builder<TypeRegistryWrapper> {
         private final Set<String> files = new HashSet<>();
         private ImmutableMap.Builder<String, GenericDescriptor> typesBuilder =
