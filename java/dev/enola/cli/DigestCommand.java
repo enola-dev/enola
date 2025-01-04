@@ -42,6 +42,22 @@ public class DigestCommand extends CommandWithResourceProvider {
     @CommandLine.Parameters(index = "0", paramLabel = "url", description = "URL")
     String url;
 
+    @CommandLine.Option(
+            names = {"--type"},
+            required = true,
+            defaultValue = "sha2_512",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Multihash Type")
+    Multihash.Type type;
+
+    @CommandLine.Option(
+            names = {"--base"},
+            required = true,
+            defaultValue = "Base58BTC",
+            showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
+            description = "Multibase")
+    Multibase.Base multibase;
+
     @Override
     public Integer call() throws Exception {
         super.run();
@@ -51,8 +67,9 @@ public class DigestCommand extends CommandWithResourceProvider {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var resource = rp.getResource(uri);
 
-            var multihash = new ResourceHasher().hash(resource, Multihash.Type.sha2_512);
-            pw.println(Multihashes.toString(multihash, Multibase.Base.Base64));
+            var multihash = new ResourceHasher().hash(resource, type);
+            multibase = Multibase.Base.Base64;
+            pw.println(Multihashes.toString(multihash, multibase));
         }
         return 0;
     }
