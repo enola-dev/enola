@@ -17,7 +17,6 @@
  */
 package dev.enola.common.io.hashbrown;
 
-import com.google.common.hash.Hasher;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 
@@ -72,30 +71,18 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
     private synchronized void validate() {
         if (validated) return;
 
-        var delegateByteSource = delegate.byteSource();
-        var hashFunction = Multihashes.toGuavaHashFunction(expectedHash.multihash());
-
-        Hasher hasher;
-        var optSize = delegateByteSource.sizeIfKnown();
-        if (optSize.isPresent()) hasher = hashFunction.newHasher(Math.toIntExact(optSize.get()));
-        else hasher = hashFunction.newHasher();
-
-        try (var is = delegateByteSource.openBufferedStream()) {
-            var read = is.read();
-            while (read != -1) {
-                hasher.putByte((byte) read);
-                read = is.read();
+        var resourceHasher = new ResourceHasher();
+        try {
+            var actualHash = resourceHasher.hash(delegate, expectedHash.multihash().getType());
+            if (!expectedHash.multihash().equals(actualHash)) {
+                throw new IntegrityViolationException(
+                        "Expected "
+                                + expectedHash
+                                + " but got "
+                                + Multihashes.toString(actualHash, expectedHash.multibase()));
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        }
-        var hashCode = hasher.hash();
-        var actualBytes = hashCode.asBytes();
-        var actualHash = expectedHash.copy(actualBytes);
-
-        if (!expectedHash.equals(actualHash)) {
-            throw new IntegrityViolationException(
-                    "Expected " + expectedHash + " but got " + actualHash);
         }
 
         validated = true;

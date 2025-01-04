@@ -56,6 +56,10 @@ public final class MultihashWithMultibase {
         return multihash;
     }
 
+    public Multibase.Base multibase() {
+        return multibase;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof MultihashWithMultibase other)) return false;
