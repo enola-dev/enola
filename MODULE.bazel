@@ -119,11 +119,9 @@ enola_maven.install(
         "org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2",
         "com.github.ipld:java-cid:1.3.8",
 
-        # TODO Fix missing version of java-multibase?!
-        "com.github.multiformats:java-multibase",
-
-        # TODO Remove after merge of https://github.com/multiformats/java-multibase/pull/37
-        "com.github.vorburger:java-multibase:Base256Emoji-166578b51d-1",
+        # TODO Replace with "com.github.multiformats:java-multibase:..."
+        #   after merge of https://github.com/multiformats/java-multibase/pull/37
+        "com.github.vorburger:java-multibase:166578b51d",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
