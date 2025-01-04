@@ -98,7 +98,14 @@ $ ./enola info digest --base=Base64Pad --type=sha2_256 --http-scheme https://www
 ...
 ```
 
-This _digest_ can be used e.g. in [`?integrity=...` of `fetch`](../fetch/index.md#integrity).
+Or, just _"for fun",_ also:
+
+```bash cd ../.././..
+$ ./enola info digest --base=Base256Emoji --http-scheme https://www.vorburger.ch/hello.md
+...
+```
+
+Any of these _digests_ can be used e.g. in [`?integrity=...` of `fetch`](../fetch/index.md#integrity).
 
 ## Screencast
 
