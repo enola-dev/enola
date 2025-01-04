@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-RDF4J_VERSION = "5.0.2"
+RDF4J_VERSION = "5.1.0"
 
 GRPC_JAVA_VERSION = "1.69.0"
 
