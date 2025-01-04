@@ -84,8 +84,8 @@ and then use `--ipfs-gateway="http://localhost:8080/ipfs/"` instead.
 
 For initial testing you can specify one of the [public IPFS Gateways](https://ipfs.github.io/public-gateway-checker/)
 (or "rent" one from a provider such as [Pinata](https://pinata.cloud/dedicated-ipfs-gateways) or [Infura](https://www.infura.io/product/ipfs) or [Cloudflare](https://www.cloudflare.com/application-services/products/web3/)).
-However, we do **NOT*** recommend using these for anything else than for illustration and initial testing,
-because this has the following disadvantages:
+However, we do **NOT** recommend using these for anything "real",
+because of the following disadvantages:
 
 * Local Nodes make great local caches to improve Enola's performance
 * Public gateways are likely to rate limit your HTTP requests and return 403 errors

@@ -12,7 +12,8 @@
     { "pattern": "^https://www.hl7.org/fhir/" },
     { "pattern": "^https://metaphacts.com" },
     { "pattern": "^https://kohesio.ec.europa.eu" },
-    { "pattern": "^https://billiam.itch.io/deepdwn" }
+    { "pattern": "^https://billiam.itch.io/deepdwn" },
+    { "pattern": "^https://graphviz.org/" }
   ],
-  "aliveStatusCodes": [504, 503, 502, 405, 403, 202, 200, 0]
+  "aliveStatusCodes": [504, 503, 502, 405, 403, 301, 202, 200, 0]
 }
