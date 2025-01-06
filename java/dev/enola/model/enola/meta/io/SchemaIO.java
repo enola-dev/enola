@@ -232,22 +232,19 @@ public class SchemaIO {
 
     private /* TODO @Nullable */ String getRemoveString(Map<?, ?> map, String name) {
         var value = map.get(name);
-        // skipcq: JAVA-E1036
-        map.remove(name);
+        map.remove(name); // skipcq: JAVA-E1036
         return value != null ? value.toString() : null;
     }
 
     private @Nullable Map<?, ?> getRemoveMap(Map<?, ?> map, String name) {
         var value = map.get(name);
-        // skipcq: JAVA-E1036
-        map.remove(name);
+        map.remove(name); // skipcq: JAVA-E1036
         return asMap(value);
     }
 
     private @Nullable List<?> getRemoveList(Map<?, ?> map, String name) {
         var value = map.get(name);
-        // skipcq: JAVA-E1036
-        map.remove(name);
+        map.remove(name); // skipcq: JAVA-E1036
         return asList(value);
     }
 
@@ -266,6 +263,10 @@ public class SchemaIO {
 
     // TODO Remove when finally fully switching to Thing, where it's *OK* to have extra!
     private void checkEmpty(Map<?, ?> map) {
+        // Remove a few "special" entries:
+        map.remove("@context"); // skipcq: JAVA-E1036
+        map.remove("$schema"); // skipcq: JAVA-E1036
+
         if (!map.isEmpty()) {
             throw new IllegalArgumentException("Unknown properties: " + map);
         }

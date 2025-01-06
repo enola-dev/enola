@@ -19,10 +19,11 @@
 
 default: true
 
-MD007:
-  indent: 6
-  start_indented: false
-  # start_indent: 2
+# https://github.com/updownpress/markdown-lint/blob/master/rules/007-ul-indent.md
+# MD007:
+# indent: 6 <== This *BREAKS* "nested" (* in *) lists, so it's disabled & default (2) is used.
+# WHAT DID THIS DO? It's not documented! start_indented: false
+# start_indent: 2
 
 MD013:
   # Must match .editorconfig [*.md] max_line_length
@@ -53,6 +54,7 @@ MD026:
 # Allow <sub> but no other inline HTML in source MD
 MD033:
   allowed_elements:
+    - "br"
     - "sub"
     - "script"
     - "iframe"

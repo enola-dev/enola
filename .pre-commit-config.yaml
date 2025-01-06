@@ -67,7 +67,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(bash|bazel|textproto|ttl|yaml)$
-        exclude: ^docs/use|test/
+        exclude: ^docs/use|test/|.*test.ttl
         args:
           - --comment-style
           - "#"
@@ -77,7 +77,9 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(md|html)$
-        exclude: ^.github|test/|docs/blog/posts/|docs/use/execmd/demo.md
+        # docs/specs/**.md is starting to use YAML Frontmatter, and can't have license headers
+        # due to the https://github.com/markdownlint/markdownlint/issues/515 limitation... :=()
+        exclude: ^.github|test/|docs/blog/posts/|docs/use/execmd/demo.md|docs/specs/
         args:
           - --comment-style
           - "<!--|   |-->"
@@ -124,14 +126,16 @@ repos:
       - id: markdownlint-cli2
         exclude: (^.github/|test/|docs/use/docgen/docgen.md)
 
-    # Until https://github.com/DavidAnson/markdownlint/issues/121
-  - repo: https://github.com/tcort/markdown-link-check
-    # TODO v3.13.6 causes https://github.com/tcort/markdown-link-check/issues/387 ...
-    rev: v3.12.2
-    hooks:
-      - id: markdown-link-check
-        exclude: (models/|test/|docs/use/docgen/docgen.md|docs/use/server/index.md|docs/concepts/timeline.md)
-        args: [--quiet, --config, .markdown-link-check.json]
+    # TODO Deactivated since
+    #   * Even with older version it sometimes just fails without showing errors
+    #   * It's SO SLOW... doesn't seem to cache the results ?!
+    # Until https://github.com/DavidAnson/markdownlint/issues/121 (or Enola itself)
+    # - repo: https://github.com/tcort/markdown-link-check
+    #   rev: v3.12.2 # TODO v3.13.6 causes https://github.com/tcort/markdown-link-check/issues/387 ...
+    #   hooks:
+    #     - id: markdown-link-check
+    #       exclude: (models/|test/|docs/use/docgen/docgen.md|docs/use/server/index.md|docs/concepts/timeline.md)
+    #       args: [--quiet, --config, .markdown-link-check.json]
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier

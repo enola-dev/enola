@@ -1,0 +1,11 @@
+"@id": https://enola.dev/meta.jsonld
+"@context":
+  - context.jsonld
+  - "@vocab": https://enola.dev/meta/
+  - type: $type
+
+  - label: https://enola.dev/label
+  - description: https://enola.dev/description
+  - emoji: https://enola.dev/emoji
+
+  - range: http://www.w3.org/2000/01/rdf-schema#range

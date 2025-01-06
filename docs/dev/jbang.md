@@ -25,7 +25,7 @@ has an example project illustrating how this works; clone and go there, and then
 
 1. `tools/maven/install.bash`
 1. `cd learn/jbang`
-1 `./jbang hello.java` will run an example using Enola
+1. `./jbang hello.java` will run an example using Enola
 1. `./jbang edit --sandbox --open=code hello.java` opens an IDE
 
 <!-- TODO Improve JBang integration:

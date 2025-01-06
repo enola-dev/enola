@@ -4,6 +4,8 @@
     { "pattern": "^#.*" },
     { "pattern": ".*dev/proto/core.*" },
     { "pattern": "script.svg" },
+    { "pattern": "^http://example.org" },
+    { "pattern": "^https://example.org" },
     { "pattern": "^https://vscode.dev" },
     { "pattern": "^https://graphdb.ontotext.com" },
     { "pattern": "^https://virtuoso.openlinksw.com" },
