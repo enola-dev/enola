@@ -200,6 +200,8 @@ $ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8Vsn
 Note that while [Multihash](https://www.multiformats.io/multihash/) defines codes for [various hash functions](https://github.com/multiformats/multicodec/blob/master/table.csv),
 Enola (currently) [intentionally](https://github.com/google/guava/issues/5990#issuecomment-2571350434) only actually supports `sha2-256` & `sha2-512`.
 
+[URL Integrity Spec](../../specs/url-integrity/index.md) describes this further.
+
 <!-- TODO ?cache from OptionalCachingResourceProvider (current un-used) -->
 
 <!--

@@ -1,0 +1,6 @@
+# TODO See context.yamlld
+"@id": https://enola.dev/spec.jsonld
+"@context":
+  - context.jsonld
+  - author: http://schema.org/author # ALT e.g. http://purl.org/dc/terms/creator (also has /contributor)
+  - status: https://enola.dev/Spec/status

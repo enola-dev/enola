@@ -1,0 +1,10 @@
+# TODO Enola must convert this to JSON...
+# TODO ID must include a version in some way...
+"@id": https://enola.dev/context.jsonld # TODO .jsonld or .yamlld, here?!
+"@context":
+  # This allows to use $prefix etc. instead of "@prefix".
+  # This is convenient in YAML, and 'safer' than just "prefix";
+  # and it matches the https://json-schema.org convention.
+  - https://json-ld.org/contexts/dollar-convenience.jsonld
+#
+# PS: There is intentionally no "@vocab" : https://enola.dev/ here, as we want to default to that.

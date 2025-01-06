@@ -104,7 +104,19 @@ nav:
       - Dependencies: dev/dependencies.md
       - Contributor Guide: contributing.md
   - Appendix:
-      # - Playbooks: concepts/playbook.md
+      # ? - Playbooks: concepts/playbook.md
+      - Specs:
+          - specs/index.md
+          - specs/rdf2ipfs/index.md
+          - specs/url-integrity/index.md
+          # TODO - specs/url-cache-version/index.md
+          - specs/url-reference-workspace/index.md
+          - specs/markdown-yamlld-frontmatter/index.md
+          - specs/markdown-yamlld-codeblock/index.md
+          - specs/markdown-magic-link/index.md
+          - specs/markdown-term/index.md
+          # - specs/markdown2rdf/index.md
+      # TODO - Papers: papers/index.md
       - Comparison: concepts/other.md
       - Security Policy: SECURITY.md
       - Code of Conduct: code-of-conduct.md

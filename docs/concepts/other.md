@@ -35,6 +35,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ## RDF Linked Data Tools
 
+* [`rdflint`](https://imas.github.io/rdflint/) #RDF #lint #validate #opensource #java
 * [Ontospy](https://lambdamusic.github.io/Ontospy/) #python #CLI #RDFS #OWL #SKOS #documentation #generation #ToDo
 * [Iolanta Linked Data browser](https://iolanta.tech) #ToDo
 
@@ -73,6 +74,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Platforms (?)
 
+* [Stardog](https://www.stardog.com) #freemium #commercial #GraphML? #LLM?
 * [Protégé](https://protege.stanford.edu) #opensource #editor #ontology #ToDo
 * [Corese](https://project.inria.fr/corese/) #opensource #ToDo
 * [PoolParty](https://www.poolparty.biz) #commercial #LLM
@@ -183,7 +185,6 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
 * [Apache Jena's TDB](https://jena.apache.org) (Fuseki?) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
-* [Stardog](https://www.stardog.com) #freemium #commercial #GraphML? #LLM?
 * [Virtuoso](https://virtuoso.openlinksw.com) #opensource
 * [Blazegraph](https://blazegraph.com) #opensource
 * [Halyard](https://merck.github.io/Halyard/) (by [Merck](https://github.com/merck)) #opensource

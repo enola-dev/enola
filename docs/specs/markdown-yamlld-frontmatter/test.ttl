@@ -1,0 +1,7 @@
+@prefix enola:   <https://enola.dev/>.
+@prefix schema:  <https://schema.org/>.
+@prefix example: <https://example.org/>.
+
+example:spec1 a enola:Spec;
+  schema:author <https://www.vorburger.ch>;
+  <https://enola.dev/Spec/status> enola:Review.

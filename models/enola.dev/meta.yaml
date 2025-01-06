@@ -14,18 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Meta
-id: dev.enola.meta
-iri: https://enola.dev/meta
-description:
-  Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, Meta Content Framework (MCF), Schema.org, EMF,
-  LinkML, JSON Schema, et al.
-java:package: dev.enola.model.enola.meta
+"@context": https://enola.dev/meta.jsonld
+$schema: https://enola.dev/meta-schema.json
 
 # .imports:
 #   enola: common.yaml
 #   java: java.yaml
 #   proto: proto.esch.yaml
+
+name: Meta
+id: dev.enola.meta
+iri: https://enola.dev/meta
+# TODO label: Enola.dev Meta Model
+description:
+  Meta is Enola's own schema's Metamodel. It is inspired by RDFS, OWL, Meta Content Framework (MCF), Schema.org, EMF,
+  LinkML, JSON Schema, et al.
+java:package: dev.enola.model.enola.meta
 
 classes:
   Namespace:

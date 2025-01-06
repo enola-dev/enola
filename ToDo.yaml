@@ -20,19 +20,25 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
-  - MIME Model:
-      created: 2024-10-05
-      items:
-        - infer inverses
-        - GEXF & Gephi
-      tags: [exec]
-
   - Gephi/SigmaJS Network Graph Format:
       tags: [visualization, ui, docgen, rosetta]
       links:
         - https://www.sigmajs.org
         - https://docs.enola.dev/concepts/other/#visualization
         - https://visjs.github.io/vis-network/docs/network/#importGephi
+
+  - Infer: &infer1
+      description: "Initial Thing Infer API, and hard-coded (Java) RDFS inverses."
+
+  - Validate:
+      description: "enola validate --load='**/*.ttl' --strict; compare with https://imas.github.io/rdflint/ et al."
+      depends: [*infer1]
+
+  - MIME Model:
+      created: 2024-10-05
+      items:
+        - GEXF & Gephi
+      tags: [exec]
 
   - Exec Connector!:
       tags: [exec]
@@ -145,7 +151,7 @@ items:
 
   - Inference; hard-coded, or with Datalog:
       items:
-        - RDFS class properties inverse.. hard-coded in Java? With a SparQL query? With Datalog?
+        - RDFS class properties inverse.. With a SparQL query? With Datalog?
         - Is this an RDFS specific inference rule, or can we write it meta - for all owl:inverseOf properties?!
         - Infer enola:seeAlso mutually reverse bi-directional
       links:
@@ -153,6 +159,7 @@ items:
         - https://docs.enola.dev/concepts/other/#datalog
       created: 2024-08-18
       tags: [datalog, infer]
+      depends: [*infer1]
 
   - Meta Java Code Generator: &metaJavaCodegen
       created: 2024-08-17
