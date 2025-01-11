@@ -1,0 +1,21 @@
+{
+  "name": "enola.dev",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "esbuild ./script.js --bundle --outfile=public/bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "The Enola <https://enola.dev> Authors",
+  "license": "Apache-2.0",
+  "description": "Semantic Web Linked Data UI",
+  "dependencies": {
+    "express": "^4.21.0",
+    "graphology": "^0.25.4",
+    "graphology-gexf": "^0.13.2",
+    "sigma": "^3.0.0-beta.30"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
