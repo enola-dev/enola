@@ -20,13 +20,13 @@
 
 ## Usage
 
-1. `npm install` (TODO: Replace with Bazel...)
+1. One time `npm install` (TODO: Replace with Bazel...)
 
-1. `npm run bundle`
+1. Regularly build `npm run bundle`
 
-1. `python3 -m http.server 7070`
+1. Start `./enola server --load "models/**.ttl" --httpPort=9090`
 
-1. Open <http://0.0.0.0:7070/public/index.html>
+1. Open <http://0.0.0.0:9090/wui/index.html>
 
 ## NeXT
 

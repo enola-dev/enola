@@ -22,24 +22,31 @@ import static com.google.common.util.concurrent.Futures.immediateFuture;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 
+import java.io.File;
 import java.net.URI;
 
 /**
- * {@link WebHandler} which servers static web content from the Java classpath. Useful e.g. for
- * fixed CSS + JS files, or https://www.webjars.org.
+ * {@link WebHandler} which servers static web content using Enola Resource I/O.
+ *
+ * <p>Useful e.g. for fixed HTML, CSS + JS files, or <a href="https://www.webjars.org">WebJars</a>.
  */
 public class StaticWebHandler implements WebHandler {
 
-    // TODO Rename StaticWebHandler to dev.enola.common.net.http.HttpClasspathResourceHandler
-
     private final String uriPrefix;
-    private final String classpathPrefix;
+    private final ResourceProvider resourceProvider;
 
     public StaticWebHandler(String uriPrefix, String classpathPrefix) {
         this.uriPrefix = uriPrefix;
-        this.classpathPrefix = classpathPrefix;
+        this.resourceProvider = new ClasspathResource.Provider(classpathPrefix);
+    }
+
+    public StaticWebHandler(String uriPrefix, File directory) {
+        this.uriPrefix = uriPrefix;
+        this.resourceProvider = new FileResource.Provider(directory);
     }
 
     @Override
@@ -52,7 +59,7 @@ public class StaticWebHandler implements WebHandler {
             throw new IllegalStateException(path + " does not start with " + uriPrefix);
         }
         var cutPath = path.substring(uriPrefix.length());
-        var resource = new ClasspathResource(classpathPrefix + "/" + cutPath);
+        var resource = resourceProvider.get(cutPath);
         return immediateFuture(resource);
     }
 }
