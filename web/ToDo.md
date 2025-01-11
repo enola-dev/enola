@@ -16,6 +16,43 @@
     limitations under the License.
 -->
 
-# Enola **Web** #ToDo
+# Enola `enola/web` TODO
 
-1.
+## Functional
+
+* Use Enola Server `/gexf` instead of `arctic.gexf` (and delete that)
+* Let users drag nodes around
+* Click on node should open Enola details page on the right
+
+## Visual
+
+* Introduce a CSS so that controls are in a single row, with a nicer font
+* `<div id="container">` should fill entire available space
+* There shouldn't be any space around it
+
+## Technical
+
+### Clean
+
+* Needing `web/public/bundle.js` in `.gitignore` is ugly; how to better separate, to avoid?
+
+### Productivity
+
+* How to auto rebuild & reload in browser on file change?
+
+### TypeScript
+
+* Convert `script.js` to `script.[m?]ts`
+
+### Bazel
+
+* Use https://github.com/aspect-build/rules_js
+
+### Testing
+
+* `npm run test` How to do web UI testing?
+* Make `bazel test //web` run web tests
+
+### Performance
+
+* #LATER
