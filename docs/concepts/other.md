@@ -91,6 +91,7 @@ Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Managem
 * [Dendron](https://github.com/dendronhq/dendron) #opensource #vsc
 * [Obsidian](https://obsidian.md) #freeware
 * [Logseq](https://logseq.com) #opensource #ToDo
+* [Tana](https://tana.inc) #commercial
 * [deepdwn](https://billiam.itch.io/deepdwn) #commercial
 * [Cosma](https://cosma.arthurperret.fr) #opensource
 * [Org Mode](https://orgmode.org) #opensource
