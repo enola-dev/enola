@@ -20,7 +20,8 @@ import { Sigma } from "sigma"
 import { parse } from "graphology-gexf/browser"
 import graphology from "graphology"
 
-fetch("./arctic.gexf")
+// TODO Replace hard-coded q=enola:/inline with ?q= read from the URL
+fetch("/gexf?q=enola:/inline")
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
@@ -58,25 +59,4 @@ fetch("./arctic.gexf")
 
     // Set proper range initial value:
     labelsThresholdRange.value = renderer.getSetting("labelRenderedSizeThreshold") + ""
-
-    renderer.on("downNode", e => {
-      const clickedNode = graph.getNodeAttributes(e.node)
-      if (clickedNode.label === "Afge Local") {
-        fetch("./arctic.gexf")
-          .then(res => res.text())
-          .then(gexf => {
-            const newGraph = parse(graphology.Graph, gexf)
-            newGraph.forEachNode(node => {
-              if (newGraph.getNodeAttribute(node, "label") === "Global positioning") {
-                graph.addNode("1723", {
-                  ...newGraph.getNodeAttributes(node),
-                  x: clickedNode.x + 10,
-                  y: clickedNode.y + 10,
-                })
-                graph.addEdge("1723", e.node)
-              }
-            })
-          })
-      }
-    })
   })
