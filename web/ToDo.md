@@ -50,7 +50,7 @@
 
 ### Testing
 
-* `npm run test` How to do web UI testing?
+* `npm run test` How to do web UI testing? Try https://playwright.dev? With https://github.com/GoogleChromeLabs/chrome-for-testing?
 * Make `bazel test //web` run web tests
 
 ### Performance

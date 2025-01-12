@@ -16,25 +16,42 @@
  * limitations under the License.
  */
 
-import { Sigma } from "sigma"
-import { parse } from "graphology-gexf/browser"
 import graphology from "graphology"
+import { parse } from "graphology-gexf/browser"
+import { forceAtlas2 } from "graphology-layout-forceatlas2"
+import { Sigma } from "sigma"
 
 // TODO Replace hard-coded q=enola:/inline with ?q= read from the URL
-fetch("/gexf?q=enola:/inline")
+fetch("enola.gexf") // TODO /gexf?q=enola:/inline
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
-    const graph = parse(graphology.Graph, gexf)
+    // TODO Remove addMissingNodes once GexfGenerator adds them itself
+    const graph = parse(graphology.Graph, gexf, { addMissingNodes: true })
 
-    // Retrieve some useful DOM elements:
+    // TODO https://graphology.github.io/standard-library/layout-forceatlas2.html
+    // Each node’s starting position must be set before running ForceAtlas 2 layout...
+
+    // Configure ForceAtlas2 layout settings
+    // TODO Review and adjust the default settings...
+    // TODO Adjust iterations for desired layout quality/performance...
+    const settings = forceAtlas2.inferSettings(graph)
+    settings.gravity = 1
+    settings.scalingRatio = 2
+    settings.strongGravityMode = false
+    forceAtlas2(graph, {
+      iterations: 500,
+      settings,
+    })
+
+    // Retrieve some useful DOM elements
     const container = document.getElementById("container")
     const zoomInBtn = document.getElementById("zoom-in")
     const zoomOutBtn = document.getElementById("zoom-out")
     const zoomResetBtn = document.getElementById("zoom-reset")
     const labelsThresholdRange = document.getElementById("labels-threshold")
 
-    // Instantiate sigma:
+    // Instantiate Sigma.js
     let renderer = new Sigma(graph, container, {
       minCameraRatio: 0.08,
       maxCameraRatio: 3,
