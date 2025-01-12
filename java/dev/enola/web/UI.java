@@ -47,6 +47,7 @@ import dev.enola.thing.message.ProtoThingMetadataProvider;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.ThingRepository;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
@@ -94,6 +95,8 @@ public class UI implements WebHandler {
     }
 
     public void register(WebHandlers handlers) {
+        var fixMeToNotBeHardCoded = new File("./web/public/");
+        handlers.register("/wui/", new StaticWebHandler("/wui/", fixMeToNotBeHardCoded));
         handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
         handlers.register("/ui", this);
         handlers.register("/timeline", timelineHandler);

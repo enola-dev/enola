@@ -20,6 +20,8 @@ package dev.enola.common.io.resource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -31,11 +33,28 @@ public class ClasspathResource extends UrlResource {
 
     public static class Provider implements ResourceProvider {
 
+        private final @Nullable String classpathPrefix;
+
+        public Provider(String classpathPrefix) {
+            this.classpathPrefix = classpathPrefix;
+        }
+
+        public Provider() {
+            this.classpathPrefix = null;
+        }
+
         @Override
         public Resource getResource(URI uri) {
-            if (SCHEME.equals(uri.getScheme()))
+            // NB: There's very similar logic in FileResource
+            if (SCHEME.equals(uri.getScheme())) {
                 return new ReadableButNotWritableDelegatingResource(new ClasspathResource(uri));
-            else return null;
+            } else if (uri.getScheme() == null && classpathPrefix != null) {
+                if (uri.toString().contains(".."))
+                    throw new IllegalArgumentException(uri.toString());
+                return new ReadableButNotWritableDelegatingResource(
+                        new ClasspathResource(classpathPrefix + "/" + uri));
+            }
+            return null;
         }
     }
 

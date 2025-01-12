@@ -71,7 +71,7 @@ Enola, like e.g. [`curl`](https://curl.se), has a _"native protocol handler"_
 to [support `ipfs:` URLs for decentralized content from IPFS](https://ipfs.tech/):
 
 ```bash cd ../.././..
-$ ./enola fetch --ipfs-gateway="https://dweb.link/ipfs/" ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu
+$ ./enola fetch --ipfs-gateway=https://dweb.link/ipfs/ ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu
 ...
 ```
 
@@ -80,7 +80,7 @@ Instead of the shown `dweb.link`,
 we do (highly) recommend that you [locally install & run](https://docs.ipfs.tech/install/) an _IPFS Node,_
 such as [IPFS Desktop](https://docs.ipfs.tech/install/ipfs-desktop/),
 or [Kubo](https://docs.ipfs.tech/install/command-line/),
-and then use `--ipfs-gateway="http://localhost:8080/ipfs/"` instead.
+and then use `--ipfs-gateway=http://localhost:8080/ipfs/` instead.
 
 For initial testing you can specify one of the [public IPFS Gateways](https://ipfs.github.io/public-gateway-checker/)
 (or "rent" one from a provider such as [Pinata](https://pinata.cloud/dedicated-ipfs-gateways) or [Infura](https://www.infura.io/product/ipfs) or [Cloudflare](https://www.cloudflare.com/application-services/products/web3/)).

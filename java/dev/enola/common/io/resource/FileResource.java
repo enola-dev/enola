@@ -25,6 +25,9 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.MoreFileSystems;
 import dev.enola.common.io.iri.URIs;
 
+import org.jspecify.annotations.Nullable;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
@@ -43,12 +46,22 @@ import java.util.Optional;
  * filesystem, whereas an URI can. While the "file:" scheme is obviously the most well-known and
  * common one, the JVM actually can and does support others, notably the "jar:file:" one. To avoid
  * related confusions, this class intentionally only offers constructors which take {@link URI}
- * instead of {@link Path} arguments.
+ * instead of {@link Path} (or exposing {@link File}) arguments.
  */
 public class FileResource extends BaseResource implements Resource {
     // TODO Rename FileResource to FileSystemPathResource!
 
     public static class Provider implements ResourceProvider {
+
+        private final @Nullable File baseFile;
+
+        public Provider(File baseFile) {
+            this.baseFile = baseFile;
+        }
+
+        public Provider() {
+            this.baseFile = null;
+        }
 
         @Override
         public Resource getResource(URI uri) {
@@ -58,7 +71,16 @@ public class FileResource extends BaseResource implements Resource {
 
             if (MoreFileSystems.URI_SCHEMAS.contains(uri.getScheme())
                     && isValid(URIs.getFilePath(uri))) return new FileResource(uri);
-            else return null;
+
+            // NB: There's very similar logic in ClasspathResource
+            if (uri.getScheme() == null && baseFile != null) {
+                if (uri.toString().contains(".."))
+                    throw new IllegalArgumentException(uri.toString());
+                return new ReadableButNotWritableDelegatingResource(
+                        new FileResource(new File(baseFile, uri.toString()).toURI()));
+            }
+
+            return null;
         }
     }
 
