@@ -37,6 +37,8 @@ import java.io.IOException;
 
 public class GexfGenerator implements ThingsIntoAppendableConverter {
 
+    // TODO Option to skip writing pid= and <parents>
+
     // TODO Write Attributes? https://gexf.net/data.html
     //   - Does this clutter the graph? Or not... too much, all, really?
     //   - Can it be used as Hierarchy Attribute for Circle Layout on https://gephi.org/gephi-lite/?

@@ -22,11 +22,16 @@
 
 1. One time `npm install` (TODO: Replace with Bazel...)
 
-1. Regularly build `npm run bundle`
+1. Regularly `npx tsc && npm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
 
-1. Start `./enola server --load "models/**.ttl" --httpPort=9090`
+1. Start `./enola server --load "models/enola.dev/**.ttl" --httpPort=9090`
 
 1. Open <http://0.0.0.0:9090/wui/index.html>
+
+TODO Resolve CORS in  `npm run serve` to work with Enola JSON API server on another port.
+
+TODO Support a _Dev_ mode where `npm run dev` launches `build.mjs` (TBD `.ts`) with
+a `--watch` for _both_ `tsc` and `esbuild` and then does a `npm run serve` equivalent.
 
 ## NeXT
 
