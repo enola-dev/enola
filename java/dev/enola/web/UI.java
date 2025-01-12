@@ -133,7 +133,9 @@ public class UI implements WebHandler {
                                 + iri
                                 + "</code>; try e.g. <a href=\"/ui/enola:/\"><code>enola:/</code>"
                                 + " for the index</a> or e.g. <a"
-                                + " href=\"/timeline?q=enola:/inline\">the Timeline</a>...";
+                                + " href=\"/wui/index.html?q=enola:/inline\">the Network Graph</a>"
+                                + " or the <a href=\"/timeline?q=enola:/inline\">the"
+                                + " Timeline</a>...";
 
         return new ReplacingResource(
                         HTML_FRAME,
