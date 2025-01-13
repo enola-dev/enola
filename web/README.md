@@ -20,11 +20,15 @@
 
 ## Usage
 
-1. One time `npm install` (TODO: Replace with Bazel...)
+1. `cd web/`
 
-1. Regularly `npx tsc && npm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
+1. One time `npm install -g pnpm@latest-10`
 
-1. Start `./enola server --load "models/enola.dev/**.ttl" --httpPort=9090`
+1. One time `pnpm install` (TODO: Replace with Bazel...)
+
+1. Regularly `pnpm run tsc && pnpm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
+
+1. Start `../enola server --load "../models/enola.dev/**.ttl" --httpPort=9090`
 
 1. Open <http://0.0.0.0:9090/wui/index.html>
 
