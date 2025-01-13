@@ -17,7 +17,10 @@
 
 # Build the end-user distributed executable fat über JAR
 
-mkdir -p site/download/latest/
+THIS="$(dirname "$(realpath "$0")")"
+ROOT="$THIS"/../..
+
+mkdir -p "$ROOT"/site/download/latest/
 set -euox pipefail
 
 if [ -x "$(command -v gbazelisk)" ]; then
@@ -34,6 +37,6 @@ fi
 # NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
 "$BZL" build --color=yes //java/dev/enola/cli:enola_deploy.jar
 
-cp tools/distro/execjar-header.bash site/download/latest/enola
-cat bazel-bin/java/dev/enola/cli/enola_deploy.jar >>site/download/latest/enola
-chmod +x site/download/latest/enola
+cp "$ROOT"/tools/distro/execjar-header.bash "$ROOT"/site/download/latest/enola
+cat "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar >>"$ROOT"/site/download/latest/enola
+chmod +x "$ROOT"/site/download/latest/enola
