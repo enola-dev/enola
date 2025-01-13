@@ -8,3 +8,7 @@
 
 # Test expected output should not be formatted
 *.expected*
+
+# Leave https://pnpm.io (and our note in NPM for non-use of package-lock.json) alone
+web/pnpm-lock.yaml
+web/package-lock.json
