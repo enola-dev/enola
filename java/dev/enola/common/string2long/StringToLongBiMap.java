@@ -30,21 +30,20 @@ public interface StringToLongBiMap {
         void string(String symbol);
     }
 
+    // For what we intend to use this for (e.g. JSON gen, or oneof Proto), this signature is much
+    // better than Object getOrSame(String) & Object getOrSame(long) [which would lead to
+    // instanceof], or Optional<Long> getOptional(String) & Optional<String> getOptional(long)
+    // [which would constantly "double look-up" instead of this much more efficient single op].
     void get(String symbol, LongOrStringConsumer consumer);
 
+    // TODO Consider removing this method?
     long get(String symbol) throws IllegalArgumentException;
 
     String get(long id) throws IllegalArgumentException;
 
-    // ? Object getOrSame(String) returns Long OR same String
-    // ? Object getOrSame(long)
-    // ? Optional<String> getOptional(long)
-    // ? Optional<Long> getOptional(String)
-
     long size();
 
-    // ? void forEach(Consumer<String>), NOT BiConsumer<Long, String>), or just Kable<String> ?
-    // Write *IO, first. Or don't even have such methods, until needed…
+    Iterable<String> symbols();
 
     // skipcq: JAVA-E0169
     interface Builder extends dev.enola.common.Builder<StringToLongBiMap> {

@@ -165,6 +165,8 @@ public final class KIRI {
 
         public static final String PROPERTY = NS + "Property";
 
+        public static final String LANGSTRING = NS + "langString";
+
         /** 📃 */
         public static final String HTML = NS + "HTML";
 
@@ -223,8 +225,39 @@ public final class KIRI {
         private XSD() {}
     }
 
-    public void initilize(StringToLongBiMap.Builder iriToLongBiMap) {
+    public void initialize(StringToLongBiMap.Builder iriToLongBiMap) {
         iriToLongBiMap.put(""); // 0
+        iriToLongBiMap.put(RDF.TYPE); // 1
+        iriToLongBiMap.put(RDF.LANGSTRING);
+        iriToLongBiMap.put(RDF.JSON);
+        iriToLongBiMap.put(RDF.HTML);
+        iriToLongBiMap.put(RDF.PROPERTY);
+        iriToLongBiMap.put(RDFS.CLASS);
+        iriToLongBiMap.put(RDFS.DOMAIN);
+        iriToLongBiMap.put(RDFS.RANGE);
+        iriToLongBiMap.put(RDFS.LABEL);
+        iriToLongBiMap.put(RDFS.COMMENT);
+        iriToLongBiMap.put(XSD.STRING);
+        iriToLongBiMap.put(XSD.BOOL);
+        iriToLongBiMap.put(XSD.INT32);
+        iriToLongBiMap.put(XSD.UINT32);
+        iriToLongBiMap.put(XSD.INT64);
+        iriToLongBiMap.put(XSD.UINT64);
+        iriToLongBiMap.put(XSD.DOUBLE);
+        iriToLongBiMap.put(XSD.FLOAT);
+        iriToLongBiMap.put(XSD.TS);
+        iriToLongBiMap.put(XSD.IRI);
+        iriToLongBiMap.put(XSD.BIN64);
+        iriToLongBiMap.put(E.EMOJI);
+        iriToLongBiMap.put(E.LABEL);
+        iriToLongBiMap.put(E.DESCRIPTION);
+        iriToLongBiMap.put(E.ORIGIN);
+        iriToLongBiMap.put(E.COLOR);
+        iriToLongBiMap.put(E.TEXT_COLOR);
+        iriToLongBiMap.put(E.LABEL_PROPERTY);
+        iriToLongBiMap.put(E.IRI_TEMPLATE_PROPERTY);
+        iriToLongBiMap.put(E.IRI_TEMPLATE_DATATYPE);
+        iriToLongBiMap.put(E.UNKNOWN_CLASS);
     }
 
     private KIRI() {}

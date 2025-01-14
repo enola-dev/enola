@@ -17,7 +17,9 @@
  */
 package dev.enola.common.string2long;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 /// Concurrency safe implementation of [StringToLongBiMap.Builder].
@@ -27,14 +29,14 @@ import java.util.concurrent.atomic.AtomicLong;
 ///
 /// This implementation supports up to [#MAX_VALUE] (not just Int) number of symbols.
 ///
-/// @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a> with assistance from Google
+/// @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a> with input from Google
 ///     Gemini Pro 1.5!
 public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToLongBiMap.Builder {
 
     // Nota bene: Guava does not provide a concurrent BiMap...
     private final AtomicLong nextId = new AtomicLong(0);
-    private final ConcurrentHashMap<String, Long> stringToLongMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Long, String> longToStringMap = new ConcurrentHashMap<>();
+    private final Map<String, Long> stringToLongMap = new ConcurrentHashMap<>();
+    private final Map<Long, String> longToStringMap = new ConcurrentSkipListMap<>();
 
     public static ConcurrentStringToLongBiMap builder() {
         return new ConcurrentStringToLongBiMap();
@@ -98,5 +100,10 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
     @Override
     public long size() {
         return nextId.get();
+    }
+
+    @Override
+    public Iterable<String> symbols() {
+        return longToStringMap.values();
     }
 }

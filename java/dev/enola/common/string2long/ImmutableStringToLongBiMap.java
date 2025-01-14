@@ -73,6 +73,11 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
         return symbols.size();
     }
 
+    @Override
+    public Iterable<String> symbols() {
+        return symbols;
+    }
+
     public static Builder builder() {
         return new BuilderImpl();
     }
