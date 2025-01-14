@@ -22,6 +22,8 @@ package dev.enola.common.string2long;
 /// Useful e.g. for "compressing" client-server I/O, or persistent storage; not needed in-memory.
 ///
 /// Enola can use this e.g. for Thing IRI, including Datatype IRI, but also e.g. Language Codes.
+///
+/// See also string2long.ts
 public interface StringToLongBiMap {
 
     interface LongOrStringConsumer {

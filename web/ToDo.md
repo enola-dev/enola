@@ -49,6 +49,7 @@
 
 ### Clean
 
+* Make pre-commit add License Header to `*.ts`
 * Caching problems... how can I make it never cache bundle.js? I guess live edit will solve that..
 * mv script.ts src/web/
 * mv build.mjs src/dev/ (?)
@@ -56,7 +57,7 @@
 
 ### Productivity
 
-* Does adopting https://eslint.org still make sense with TS? What does it add?
+* Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io!
 * How to auto rebuild & reload in browser on file change?
 
 ### TypeScript
