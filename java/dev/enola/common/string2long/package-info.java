@@ -19,4 +19,7 @@
 ///
 /// First see [dev.enola.common.string2long.StringToLongBiMap] for the API
 /// and then check out its implementations.
+@NullMarked
 package dev.enola.common.string2long;
+
+import org.jspecify.annotations.NullMarked;

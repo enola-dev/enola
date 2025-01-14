@@ -20,8 +20,18 @@ package dev.enola.common.string2long;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+/// Concurrency safe implementation of [StringToLongBiMap.Builder].
+///
+/// If you only need a thread-safe implementation of [StringToLongBiMap], but can do with
+/// the Builder (!) not being so, then prefer using the [ImmutableStringToLongBiMap].
+///
+/// This implementation supports up to [#MAX_VALUE] (not just Int) number of symbols.
+///
+/// @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a> with assistance from Google
+///     Gemini Pro 1.5!
 public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToLongBiMap.Builder {
 
+    // Nota bene: Guava does not provide a concurrent BiMap...
     private final AtomicLong nextId = new AtomicLong(0);
     private final ConcurrentHashMap<String, Long> stringToLongMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Long, String> longToStringMap = new ConcurrentHashMap<>();
@@ -37,15 +47,27 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
 
     @Override
     public long put(String symbol) {
-        long id = nextId.getAndIncrement();
-        if (id == Long.MAX_VALUE) throw new IllegalStateException();
-
-        if (stringToLongMap.putIfAbsent(symbol, id) != null) {
-            throw new IllegalArgumentException("Symbol already exists: " + symbol);
+        long currentId = nextId.get();
+        Long existingId = stringToLongMap.putIfAbsent(symbol, currentId);
+        if (existingId != null) {
+            return existingId;
         }
 
-        longToStringMap.put(id, symbol);
-        return id;
+        // Spin lock!
+        while (!nextId.compareAndSet(currentId, currentId + 1)) {
+            currentId = nextId.get();
+            existingId = stringToLongMap.putIfAbsent(symbol, currentId);
+            if (existingId != null) {
+                return existingId;
+            }
+        }
+
+        // This implementation is thread-safe for the long ID and size.
+        // There is, however, a race condition between concurrent [#put(String)] and [#get(long)]
+        // (but not [#get(String)]) operations. This is acceptable because only a returned ID from
+        // `put` guarantees that the mapping is visible for later `get()` operations.
+        longToStringMap.put(currentId, symbol);
+        return currentId;
     }
 
     @Override
