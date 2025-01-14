@@ -3,9 +3,7 @@
  *
  * Inspired by Java dev.enola.common.string2long.StringToLongBiMap.
  */
-class StringToLongBiMap {
-  // TODO Write a test for this...
-
+export class StringToLongBiMap {
   private symbolsMap: Map<string, number> = new Map()
   private symbolsList: string[] = []
   private nextId: number = 0

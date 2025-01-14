@@ -19,7 +19,8 @@
     "zazuko.vscode-rdf-sketch",
     "redhat.vscode-yaml",
     "gruntfuggly.todo-tree",
-    "jbangdev.jbang-vscode"
+    "jbangdev.jbang-vscode",
+    "Orta.vscode-jest"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39

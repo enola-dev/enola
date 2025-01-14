@@ -26,7 +26,9 @@
 
 1. One time `pnpm install` (TODO: Replace with Bazel...)
 
-1. Regularly `pnpm run tsc && pnpm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
+1. Regularly `pnpm test`
+
+1. Often `pnpm run tsc && pnpm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
 
 1. Start `../enola server --load "../models/enola.dev/**.ttl" --httpPort=9090`
 

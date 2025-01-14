@@ -70,8 +70,9 @@
 
 ### Testing
 
+* ~~Introduce Jest for `npm run test` TS Unit Testing~~
 * Split Graphology & Sigma related code in x2 separate .ts; and test Graphology GEXF initial coordinates in Node, without Browser?
-* `npm run test` How to do web UI testing? Try https://playwright.dev? With https://github.com/GoogleChromeLabs/chrome-for-testing?
+* Try https://playwright.dev for web UI testing? With https://github.com/GoogleChromeLabs/chrome-for-testing?
 * Make `bazel test //web` run web tests
 
 ### Performance
