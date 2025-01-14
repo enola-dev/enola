@@ -17,6 +17,9 @@
  */
 package dev.enola.common.string2long;
 
+import static com.google.common.collect.ImmutableList.copyOf;
+
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 
@@ -27,12 +30,11 @@ import java.util.Map;
 @Immutable
 public class ImmutableStringToLongBiMap implements StringToLongBiMap {
 
-    @SuppressWarnings("Immutable") // TODO Is there a way to remove this?
-    private final String[] symbols;
-
     private final ImmutableMap<String, Integer> symbolsMap;
+    private final ImmutableList<String> symbols;
 
-    private ImmutableStringToLongBiMap(ImmutableMap<String, Integer> symbolsMap, String[] symbols) {
+    private ImmutableStringToLongBiMap(
+            ImmutableMap<String, Integer> symbolsMap, ImmutableList<String> symbols) {
         this.symbolsMap = symbolsMap;
         this.symbols = symbols;
     }
@@ -46,7 +48,7 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
 
     @Override
     public String get(long id) throws IllegalArgumentException {
-        if (id >= 0 && id < symbols.length) return symbols[(int) id];
+        if (id >= 0 && id < symbols.size()) return symbols.get((int) id);
         else
             throw new IllegalArgumentException(
                     Long.toUnsignedString(id)); // TODO String.valueOf(id) ?
@@ -54,7 +56,7 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
 
     @Override
     public long size() {
-        return symbols.length;
+        return symbols.size();
     }
 
     public static Builder builder() {
@@ -88,7 +90,7 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
                         if (array[id] != null) throw new IllegalStateException();
                         array[id] = symbol;
                     });
-            return new ImmutableStringToLongBiMap(immutableMapBuilder.build(), array);
+            return new ImmutableStringToLongBiMap(immutableMapBuilder.build(), copyOf(array));
         }
     }
 }
