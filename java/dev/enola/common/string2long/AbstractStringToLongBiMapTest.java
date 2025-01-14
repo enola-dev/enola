@@ -34,6 +34,9 @@ public abstract class AbstractStringToLongBiMapTest {
         var world = builder.put("world");
         assertThat(world).isEqualTo(1);
 
+        var hello2 = builder.put("hello");
+        assertThat(hello2).isEqualTo(0); // NOT 2!
+
         return builder.build();
     }
 

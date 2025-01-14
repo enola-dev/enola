@@ -26,7 +26,16 @@ import com.google.errorprone.annotations.Immutable;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Immutable Implementation of {@link StringToLongBiMap}. */
+/**
+ * Immutable implementation of {@link StringToLongBiMap}.
+ *
+ * <p>The Builder of this class is NOT thread-safe, but the resulting built instance is (and it's
+ * FASTER; e.g. faster than the {@link ConcurrentStringToLongBiMap}).
+ *
+ * <p>As currently implemented, this only actually supports up to {@link Integer#MAX_VALUE} (NOT
+ * Long!) number of symbols. The API, however, does allow for future expansion of this
+ * implementation to and other implementations which support more symbols.
+ */
 @Immutable
 public class ImmutableStringToLongBiMap implements StringToLongBiMap {
 
@@ -75,8 +84,10 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
             if (nextId == Integer.MAX_VALUE) throw new IllegalStateException();
             var id = map.get(symbol);
             if (id != null) return id;
-            else map.put(symbol, nextId);
-            return nextId++;
+            else {
+                map.put(symbol, nextId);
+                return nextId++;
+            }
         }
 
         @Override
