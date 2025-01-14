@@ -57,7 +57,7 @@
 
 ### Productivity
 
-* Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io!
+* ~~Adopting https://eslint.org with https://typescript-eslint.io~~
 * How to auto rebuild & reload in browser on file change?
 
 ### TypeScript

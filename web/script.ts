@@ -64,7 +64,7 @@ fetch("/gexf?q=enola:/inline") // TODO "enola.gexf" for easy Dev mode?! Nah, let
     const labelsThresholdRange = getElementByIdOrFail("labels-threshold") as HTMLInputElement
 
     // Instantiate Sigma.js
-    let renderer = new Sigma(graph, container, {
+    const renderer = new Sigma(graph, container, {
       minCameraRatio: 0.08,
       maxCameraRatio: 3,
     })

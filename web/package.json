@@ -2,9 +2,10 @@
   "name": "enola.dev",
   "version": "0.0.1",
   "main": "index.js",
-  "TODOtype": "module",
+  "type": "module",
   "scripts": {
     "tsc": "tsc",
+    "lint": "eslint",
     "build": "node build.mjs",
     "serve": "http-server -p 8080",
     "test": "jest"
@@ -20,16 +21,24 @@
     "sigma": "^3.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
     "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.3",
+    "@types/eslint__eslintrc": "^2.1.2",
     "@types/jest": "^29.5.14",
     "@types/sigmajs": "^1.0.32",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
     "esbuild": "^0.24.0",
+    "eslint": "^9.18.0",
     "graphology-types": "^0.24.8",
     "http-server": "^14.1.1",
     "jest": "^29.7.0",
+    "jiti": "^2.4.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
   }
 }
