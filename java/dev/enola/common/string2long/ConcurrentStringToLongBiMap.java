@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /// Concurrency safe implementation of [StringToLongBiMap.Builder].
 ///
-/// If you only need a thread-safe implementation of [StringToLongBiMap], but can do with
+/// If you only need a thread-safe implementation of [StringToLongBiMap] but can do with
 /// the Builder (!) not being so, then prefer using the [ImmutableStringToLongBiMap].
 ///
 /// This implementation supports up to [#MAX_VALUE] (not just Int) number of symbols.
@@ -83,7 +83,7 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
     public String get(long id) throws IllegalArgumentException {
         String symbol = longToStringMap.get(id);
         if (symbol == null) {
-            throw new IllegalArgumentException("ID not found: " + id);
+            throw new IllegalArgumentException("ID not found: " + Long.toUnsignedString(id));
         }
         return symbol;
     }
