@@ -17,17 +17,57 @@
  */
 package dev.enola.common.string2long;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ConcurrentStringToLongBiMap {
+public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToLongBiMap.Builder {
 
-    // TODO Beware of long overflow! Simply check for 0?
+    private final AtomicLong nextId = new AtomicLong(0);
+    private final ConcurrentHashMap<String, Long> stringToLongMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Long, String> longToStringMap = new ConcurrentHashMap<>();
 
-    AtomicLong nextId = new AtomicLong(0);
+    public static ConcurrentStringToLongBiMap builder() {
+        return new ConcurrentStringToLongBiMap();
+    }
 
-    // TODO ConcurrentHashMap (?)
+    @Override
+    public StringToLongBiMap build() {
+        return this;
+    }
 
-    public static StringToLongBiMap.Builder builder() {
-        return null;
+    @Override
+    public long put(String symbol) {
+        long id = nextId.getAndIncrement();
+        if (id == Long.MAX_VALUE) throw new IllegalStateException();
+
+        if (stringToLongMap.putIfAbsent(symbol, id) != null) {
+            throw new IllegalArgumentException("Symbol already exists: " + symbol);
+        }
+
+        longToStringMap.put(id, symbol);
+        return id;
+    }
+
+    @Override
+    public long get(String symbol) throws IllegalArgumentException {
+        Long id = stringToLongMap.get(symbol);
+        if (id == null) {
+            throw new IllegalArgumentException("Symbol not found: " + symbol);
+        }
+        return id;
+    }
+
+    @Override
+    public String get(long id) throws IllegalArgumentException {
+        String symbol = longToStringMap.get(id);
+        if (symbol == null) {
+            throw new IllegalArgumentException("ID not found: " + id);
+        }
+        return symbol;
+    }
+
+    @Override
+    public long size() {
+        return nextId.get();
     }
 }
