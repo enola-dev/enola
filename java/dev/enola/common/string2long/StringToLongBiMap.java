@@ -19,10 +19,18 @@ package dev.enola.common.string2long;
 
 /// Bidirectional map for common "Symbol" String to Long.
 ///
-/// Useful e.g. for client-server I/O, or persistent storage; not needed in-memory.
+/// Useful e.g. for "compressing" client-server I/O, or persistent storage; not needed in-memory.
 ///
 /// Enola can use this e.g. for Thing IRI, including Datatype IRI, but also e.g. Language Codes.
 public interface StringToLongBiMap {
+
+    interface LongOrStringConsumer {
+        void longID(long id);
+
+        void string(String symbol);
+    }
+
+    void get(String symbol, LongOrStringConsumer consumer);
 
     long get(String symbol) throws IllegalArgumentException;
 
@@ -35,7 +43,7 @@ public interface StringToLongBiMap {
 
     long size();
 
-    // ? void forEach(Consumer<String>), NOT BiConsumer<Long, String>), or just Iterable<String> ?
+    // ? void forEach(Consumer<String>), NOT BiConsumer<Long, String>), or just Kable<String> ?
     // Write *IO, first. Or don't even have such methods, until needed…
 
     // skipcq: JAVA-E0169

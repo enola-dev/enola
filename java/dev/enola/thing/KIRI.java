@@ -17,6 +17,7 @@
  */
 package dev.enola.thing;
 
+import dev.enola.common.string2long.StringToLongBiMap;
 import dev.enola.thing.proto.Value.Literal;
 
 /**
@@ -220,6 +221,10 @@ public final class KIRI {
         public static final String TS = NS + "dateTime";
 
         private XSD() {}
+    }
+
+    public void initilize(StringToLongBiMap.Builder iriToLongBiMap) {
+        iriToLongBiMap.put(""); // 0
     }
 
     private KIRI() {}

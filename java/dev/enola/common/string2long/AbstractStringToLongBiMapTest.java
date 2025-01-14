@@ -43,15 +43,15 @@ public abstract class AbstractStringToLongBiMapTest {
     }
 
     @Test
+    public void size() {
+        assertThat(fill().size()).isEqualTo(2); // NOT 3!
+    }
+
+    @Test
     public void get() {
         var map = fill();
         assertThat(map.get("hello")).isEqualTo(0);
         assertThat(map.get("world")).isEqualTo(1);
-    }
-
-    @Test
-    public void size() {
-        assertThat(fill().size()).isEqualTo(2);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -63,5 +63,47 @@ public abstract class AbstractStringToLongBiMapTest {
     public void getUnknownID() {
         var e = assertThrows(IllegalArgumentException.class, () -> fill().get(2));
         assertThat(e).hasMessageThat().contains("2");
+    }
+
+    @Test
+    public void longOrStringConsumerOK() {
+        final boolean[] ok = new boolean[1];
+        var map = fill();
+        map.get(
+                "world",
+                new StringToLongBiMap.LongOrStringConsumer() {
+                    @Override
+                    public void longID(long id) {
+                        assertThat(id).isEqualTo(1);
+                        ok[0] = true;
+                    }
+
+                    @Override
+                    public void string(String symbol) {
+                        ok[0] = false;
+                    }
+                });
+        assertThat(ok[0]).isTrue();
+    }
+
+    @Test
+    public void longOrStringConsumerNOPE() {
+        final boolean[] ok = new boolean[1];
+        var map = fill();
+        map.get(
+                "dunno",
+                new StringToLongBiMap.LongOrStringConsumer() {
+                    @Override
+                    public void longID(long id) {
+                        ok[0] = false;
+                    }
+
+                    @Override
+                    public void string(String symbol) {
+                        assertThat(symbol).isEqualTo("dunno");
+                        ok[0] = true;
+                    }
+                });
+        assertThat(ok[0]).isTrue();
     }
 }
