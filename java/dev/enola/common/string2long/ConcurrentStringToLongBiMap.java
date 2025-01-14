@@ -66,8 +66,9 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
 
         // This implementation is thread-safe for the long ID and size.
         // There is, however, a race condition between concurrent [#put(String)] and [#get(long)]
-        // (but not [#get(String)]) operations. This is acceptable because only a returned ID from
-        // `put` guarantees that the mapping is visible for later `get()` operations.
+        // operations.
+        // This is acceptable because only an ID returned from `put` guarantees that the
+        // mapping is visible for later `get()` operations.
         longToStringMap.put(currentId, symbol);
         return currentId;
     }
@@ -77,15 +78,6 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
         Long id = stringToLongMap.get(symbol);
         if (id != null) consumer.longID(id);
         else consumer.string(symbol);
-    }
-
-    @Override
-    public long get(String symbol) throws IllegalArgumentException {
-        Long id = stringToLongMap.get(symbol);
-        if (id == null) {
-            throw new IllegalArgumentException("Symbol not found: " + symbol);
-        }
-        return id;
     }
 
     @Override

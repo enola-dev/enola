@@ -56,13 +56,6 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
     }
 
     @Override
-    public long get(String symbol) throws IllegalArgumentException {
-        var id = symbolsMap.get(symbol);
-        if (id == null) throw new IllegalArgumentException(symbol);
-        return id;
-    }
-
-    @Override
     public String get(long id) throws IllegalArgumentException {
         if (id >= 0 && id < symbols.size()) return symbols.get((int) id);
         else throw new IllegalArgumentException(Long.toUnsignedString(id));
