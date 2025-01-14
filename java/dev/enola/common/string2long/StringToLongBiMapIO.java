@@ -22,7 +22,14 @@ import com.google.common.io.CharSource;
 
 import java.io.IOException;
 
+/**
+ * Writes out {@link StringToLongBiMap} and reads them back in.
+ *
+ * <p>The Long ID is simply the line number of the symbol in the file.
+ */
 public final class StringToLongBiMapIO {
+
+    // TODO Write JSON equivalent!
 
     public static void read(CharSource charSource, StringToLongBiMap.Builder into)
             throws IOException {

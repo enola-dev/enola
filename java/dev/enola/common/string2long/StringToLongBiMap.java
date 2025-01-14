@@ -36,13 +36,11 @@ public interface StringToLongBiMap {
     // [which would constantly "double look-up" instead of this much more efficient single op].
     void get(String symbol, LongOrStringConsumer consumer);
 
-    // TODO Consider removing this method?
-    long get(String symbol) throws IllegalArgumentException;
-
     String get(long id) throws IllegalArgumentException;
 
     long size();
 
+    /** Symbols, ordered by their Long ID. */
     Iterable<String> symbols();
 
     // skipcq: JAVA-E0169
