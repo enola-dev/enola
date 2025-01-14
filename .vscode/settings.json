@@ -169,5 +169,7 @@
     ".jbang": false,
     "META-INF": false,
     "learn": false
-  }
+  },
+
+  "npm.packageManager": "pnpm"
 }
