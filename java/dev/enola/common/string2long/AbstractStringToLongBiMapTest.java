@@ -19,6 +19,8 @@ package dev.enola.common.string2long;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import org.junit.Test;
 
 public abstract class AbstractStringToLongBiMapTest {
@@ -57,8 +59,9 @@ public abstract class AbstractStringToLongBiMapTest {
         fill().get("dunno");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void getUnknownID() {
-        fill().get(2);
+        var e = assertThrows(IllegalArgumentException.class, () -> fill().get(2));
+        assertThat(e).hasMessageThat().contains("2");
     }
 }

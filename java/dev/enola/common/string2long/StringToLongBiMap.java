@@ -24,11 +24,6 @@ package dev.enola.common.string2long;
 /// Enola can use this e.g. for Thing IRI, including Datatype IRI, but also e.g. Language Codes.
 public interface StringToLongBiMap {
 
-    // TODO How to use it as an unsigned?!
-    //   - Long.parseUnsignedLong()
-    //   - Long.toUnsignedString(l1)
-    //   - Guava?
-
     long get(String symbol) throws IllegalArgumentException;
 
     String get(long id) throws IllegalArgumentException;

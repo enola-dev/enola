@@ -58,9 +58,7 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
     @Override
     public String get(long id) throws IllegalArgumentException {
         if (id >= 0 && id < symbols.size()) return symbols.get((int) id);
-        else
-            throw new IllegalArgumentException(
-                    Long.toUnsignedString(id)); // TODO String.valueOf(id) ?
+        else throw new IllegalArgumentException(Long.toUnsignedString(id));
     }
 
     @Override
@@ -74,7 +72,9 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
 
     private static class BuilderImpl implements Builder {
 
-        // TODO Is there EVER going to be any need to support long instead of int size?
+        // TODO Is there EVER going to be any need to support long instead of int size? Nota bene:
+        // ConcurrentStringToLongBiMap already supports up to [#MAX_VALUE] (not just Int) number of
+        // symbols.
 
         private final Map<String, Integer> map = new HashMap<>();
         private int nextId = 0;
