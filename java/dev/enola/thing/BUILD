@@ -64,6 +64,7 @@ java_library(
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/common/string2long",
         "//java/dev/enola/common/time",
         "//java/dev/enola/common/tree",
         "//java/dev/enola/data",

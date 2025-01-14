@@ -70,6 +70,13 @@ public class ConcurrentStringToLongBiMap implements StringToLongBiMap, StringToL
         return currentId;
     }
 
+    @Override // ~copy/paste from ImmutableStringToLongBiMap
+    public void get(String symbol, LongOrStringConsumer consumer) {
+        Long id = stringToLongMap.get(symbol);
+        if (id != null) consumer.longID(id);
+        else consumer.string(symbol);
+    }
+
     @Override
     public long get(String symbol) throws IllegalArgumentException {
         Long id = stringToLongMap.get(symbol);

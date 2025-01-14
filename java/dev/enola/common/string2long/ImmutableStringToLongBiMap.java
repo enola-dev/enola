@@ -48,6 +48,13 @@ public class ImmutableStringToLongBiMap implements StringToLongBiMap {
         this.symbols = symbols;
     }
 
+    @Override // ~copy/paste from ConcurrentStringToLongBiMap
+    public void get(String symbol, LongOrStringConsumer consumer) {
+        var id = symbolsMap.get(symbol);
+        if (id != null) consumer.longID(id);
+        else consumer.string(symbol);
+    }
+
     @Override
     public long get(String symbol) throws IllegalArgumentException {
         var id = symbolsMap.get(symbol);
