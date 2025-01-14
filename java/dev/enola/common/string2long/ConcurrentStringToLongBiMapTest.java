@@ -17,9 +17,6 @@
  */
 package dev.enola.common.string2long;
 
-import org.junit.Ignore;
-
-@Ignore // TODO Implement ConcurrentStringToLongBiMap !
 public class ConcurrentStringToLongBiMapTest extends AbstractStringToLongBiMapTest {
 
     @Override
