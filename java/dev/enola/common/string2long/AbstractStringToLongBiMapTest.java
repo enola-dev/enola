@@ -54,6 +54,11 @@ public abstract class AbstractStringToLongBiMapTest {
         assertThat(map.get("world")).isEqualTo(1);
     }
 
+    @Test
+    public void symbols() {
+        assertThat(fill().symbols()).containsExactly("hello", "world").inOrder();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void getUnknownSymbol() {
         fill().get("dunno");
