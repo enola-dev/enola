@@ -7,6 +7,7 @@
 // TODO Can this have a #!/usr/bin/env node shebang and made chmod +x executable?
 
 import { build } from "esbuild"
+import process from "node:process"
 
 // TODO await ? https://esbuild.github.io/getting-started/#build-scripts
 build({
