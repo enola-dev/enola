@@ -36,7 +36,7 @@ fetch("/gexf?q=enola:/inline") // TODO "enola.gexf" for easy Dev mode?! Nah, let
   .then(gexf => {
     // Parse GEXF string:
     // TODO Remove addMissingNodes once GexfGenerator adds them itself
-    const graph = parse(Graph, gexf, { addMissingNodes: true })
+    const graph = parse(Graph.DirectedGraph, gexf, { addMissingNodes: true })
 
     // https://graphology.github.io/standard-library/layout-forceatlas2.html:
     // "Each node’s starting position must be set before running ForceAtlas 2 layout"
