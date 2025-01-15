@@ -22,7 +22,7 @@
 
 1. `cd web/`
 
-1. One time `npm install -g pnpm@latest-10`
+1. One time `npm install -g pnpm@latest-10` <!-- NB: Keep pnpm version in-sync with pnpm/action-setup in ci.yaml -->
 
 1. One time `pnpm install` (TODO: Replace with Bazel...)
 

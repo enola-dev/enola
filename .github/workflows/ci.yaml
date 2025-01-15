@@ -42,6 +42,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # TODO Remove pnpm/action-setup after switching to using https://github.com/aspect-build/rules_ts (?)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10 # Keep pnpm version in sync with web/README.md
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: Install Web dependencies
+        working-directory: web
+        run: pnpm install
+      - name: Test Web
+        working-directory: web
+        run: pnpm test
+      - name: Run TSC
+        working-directory: web
+        run: pnpm run tsc
+      - name: Build Web
+        working-directory: web
+        run: pnpm run build
+
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
