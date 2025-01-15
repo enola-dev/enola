@@ -4,9 +4,9 @@
  * Inspired by Java dev.enola.common.string2long.StringToLongBiMap.
  */
 export class StringToLongBiMap {
-  private symbolsMap: Map<string, number> = new Map()
+  private symbolsMap = new Map<string, number>()
   private symbolsList: string[] = []
-  private nextId: number = 0
+  private nextId = 0
 
   put(symbol: string): number {
     if (this.nextId === Number.MAX_SAFE_INTEGER) {
