@@ -34,7 +34,7 @@ export class StringToLongBiMap {
     if (id >= 0 && id < this.symbolsList.length) {
       return this.symbolsList[id]
     } else {
-      throw new Error(`ID not found: ${id}`)
+      throw new Error(`ID not found: ${id.toString()}`)
     }
   }
 

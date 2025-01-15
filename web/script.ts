@@ -18,8 +18,8 @@
 
 import Graph from "graphology"
 import { parse } from "graphology-gexf/browser"
+import { random } from "graphology-layout"
 import forceAtlas2, { inferSettings } from "graphology-layout-forceatlas2"
-import random from "graphology-layout/random"
 import { Sigma } from "sigma"
 
 function getElementByIdOrFail(id: string): HTMLElement {
@@ -72,20 +72,21 @@ fetch("/gexf?q=enola:/inline") // TODO "enola.gexf" for easy Dev mode?! Nah, let
 
     // Bind zoom manipulation buttons
     zoomInBtn.addEventListener("click", () => {
-      camera.animatedZoom({ duration: 600 })
+      void camera.animatedZoom({ duration: 600 })
     })
     zoomOutBtn.addEventListener("click", () => {
-      camera.animatedUnzoom({ duration: 600 })
+      void camera.animatedUnzoom({ duration: 600 })
     })
     zoomResetBtn.addEventListener("click", () => {
-      camera.animatedReset({ duration: 600 })
+      void camera.animatedReset({ duration: 600 })
     })
 
     // Bind labels threshold to range input
     labelsThresholdRange.addEventListener("input", () => {
-      renderer?.setSetting("labelRenderedSizeThreshold", +labelsThresholdRange.value)
+      renderer.setSetting("labelRenderedSizeThreshold", +labelsThresholdRange.value)
     })
 
     // Set proper range initial value:
-    labelsThresholdRange.value = renderer.getSetting("labelRenderedSizeThreshold") + ""
+    labelsThresholdRange.value = renderer.getSetting("labelRenderedSizeThreshold").toString()
   })
+  .catch(console.error)
