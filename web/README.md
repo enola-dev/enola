@@ -26,6 +26,8 @@
 
 1. One time `pnpm install` (TODO: Replace with Bazel...)
 
+1. Occasionally `pnpm lint`
+
 1. Regularly `pnpm test`
 
 1. Often `pnpm run tsc && pnpm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)

@@ -20,7 +20,9 @@
     "redhat.vscode-yaml",
     "gruntfuggly.todo-tree",
     "jbangdev.jbang-vscode",
-    "Orta.vscode-jest"
+    "Orta.vscode-jest",
+    "dbaeumer.vscode-eslint",
+    "rvest.vs-code-prettier-eslint"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
