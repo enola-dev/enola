@@ -39,8 +39,7 @@ docs/BUILT/**
 node_modules/
 web/web-out/
 # TODO This is ugly... how to better separate, to avoid?
-web/public/bundle.js
-web/public/bundle.js.map
+web/public/bundles/
 
 # Be
 .be/
