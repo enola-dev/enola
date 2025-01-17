@@ -1,5 +1,5 @@
-import { expect } from "@jest/globals"
-import { StringToLongBiMap } from "./string2long"
+import { describe, expect, it } from "@jest/globals"
+import { StringToLongBiMap } from "./string2long.ts"
 
 describe("StringToLongBiMap", () => {
   it("should add and retrieve symbols correctly", () => {

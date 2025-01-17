@@ -26,7 +26,7 @@ build({
   bundle: true,
   format: "esm",
   platform: "browser",
-  target: "es2022", // Keep in sync with "target" in tsconfig.json
+  target: "ESNext", // Keep in sync with "target" in tsconfig.json
 }).catch(() => process.exit(1))
 
 // TODO Bundle CSS as well
