@@ -20,9 +20,12 @@
 
 ## Tech
 
-1. Try https://bun.sh/docs/bundler/html
 1. Apply https://bun.sh/docs/typescript#suggested-compileroptions
 1. Fix `bun tsc`
+1. Adopt https://bun.sh/docs/bundler/fullstack ... and fix CORS!
+1. Either rename web-out/index*.html to `index.html` in `build.ts`,
+   OR make `../enola server` send either (better) `Cache-Control: no-cache` & `ETag: "abcdef1234"`
+   (or just `Cache-Control: no-store`; or `max-age=0`, really same?)
 
 ## Functional
 
