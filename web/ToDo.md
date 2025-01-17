@@ -50,14 +50,12 @@
 ### Clean
 
 * Make pre-commit add License Header to `*.ts`
-* Caching problems... how can I make it never cache bundle.js? I guess live edit will solve that..
-* mv script.ts src/web/
-* mv build.mjs src/dev/ (?)
-* Needing `web/public/bundle.js` in `.gitignore` is ugly; how to better separate, to avoid?
+* Caching problems... how can I make it never cache bundle.js? Will Watch Mode solve that? Else [hash] in JS filename...
+* Needing `web/public/bundles/` in `.gitignore` is a bit ugly; how is this normally better separated?
 
 ### Productivity
 
-* Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io!
+* Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io
 * How to auto rebuild & reload in browser on file change?
 
 ### TypeScript
@@ -66,7 +64,8 @@
 
 ### Bazel
 
-* Use https://github.com/aspect-build/rules_js
+* Use https://github.com/aspect-build/rules_js ... would have worked for `pnpm`, but won't for `bun`...
+  but perhaps a simple GenRule, with some https://github.com/bazel-contrib/bazel-lib/blob/main/docs/write_source_files.md magic?
 
 ### Testing
 
@@ -82,3 +81,4 @@
 ### Maintainability
 
 * Enable https://github.com/dependabot/dependabot-core/issues/6528, once that's released
+* Recheck if https://github.com/oven-sh/bun/issues/1760 got implemented, to avoid "seeing" transitive (only) dependencies in `import`

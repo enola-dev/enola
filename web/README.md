@@ -20,24 +20,21 @@
 
 ## Usage
 
+1. Install [🧅 Bun](https://bun.sh/docs/installation)
+
 1. `cd web/`
 
-1. One time `npm install -g pnpm@latest-10` <!-- NB: Keep pnpm version in-sync with pnpm/action-setup in ci.yaml -->
+1. Regularly `bun test`
 
-1. One time `pnpm install` (TODO: Replace with Bazel...)
-
-1. Regularly `pnpm test`
-
-1. Often `pnpm run tsc && pnpm run build` (TODO: Integrate better... e.g. using concurrently or npm-run-all?)
+1. Often `bun tsc && bun src/bun/build.ts` (TODO: Integrate better... e.g. using `concurrently` or `npm-run-all`?)
 
 1. Start `../enola server --load "../models/enola.dev/**.ttl" --httpPort=9090`
 
 1. Open <http://0.0.0.0:9090/wui/index.html>
 
-TODO Resolve CORS in  `npm run serve` to work with Enola JSON API server on another port.
+TODO Resolve CORS in `bun serve` to work with Enola JSON API server on another port.
 
-TODO Support a _Dev_ mode where `npm run dev` launches `build.mjs` (TBD `.ts`) with
-a `--watch` for _both_ `tsc` and `esbuild` and then does a `npm run serve` equivalent.
+TODO Support a _Dev_ for _both_ `tsc` and Bun's build watch mode... which also does a `bun serve` equivalent.
 
 ## NeXT
 

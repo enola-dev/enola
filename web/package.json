@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -f web/public/bundle.js* && rm -rf web-out && mkdir web-out",
-    "tsc": "tsc",
-    "build": "node build.mjs",
-    "serve": "http-server -p 8080"
+    "serve": "http-server -p 9090"
   },
   "author": "The Enola <https://enola.dev> Authors",
   "license": "Apache-2.0",
@@ -22,9 +20,9 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.3",
+    "@types/bun": "^1.1.17",
     "@types/jest": "^29.5.14",
     "@types/sigmajs": "^1.0.32",
-    "esbuild": "^0.24.0",
     "graphology-types": "^0.24.8",
     "http-server": "^14.1.1",
     "typescript": "^5.7.3"
