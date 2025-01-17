@@ -20,11 +20,9 @@
 
 ## Tech
 
-1. GitHub Action
+1. Try https://bun.sh/docs/bundler/html
 1. Apply https://bun.sh/docs/typescript#suggested-compileroptions
 1. Fix `bun tsc`
-1. Try https://bun.sh/docs/bundler/html
-1. Web Test would be nice...
 
 ## Functional
 
@@ -66,10 +64,6 @@
 * Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io
 * How to auto rebuild & reload in browser on file change?
 
-### TypeScript
-
-* ~~Convert `script.js` to `script.[m?]ts`~~
-
 ### Bazel
 
 * Use https://github.com/aspect-build/rules_js ... would have worked for `pnpm`, but won't for `bun`...
@@ -77,9 +71,9 @@
 
 ### Testing
 
-* ~~Introduce Jest for `npm run test` TS Unit Testing~~
-* Split Graphology & Sigma related code in x2 separate .ts; and test Graphology GEXF initial coordinates in Node, without Browser?
-* Try https://playwright.dev for web UI testing? With https://github.com/GoogleChromeLabs/chrome-for-testing?
+* Web Test would be nice... at least just DOM, at first? Then, or directly, Browser?
+  * Split Graphology & Sigma related code in x2 separate .ts; and test Graphology GEXF initial coordinates in Node, without Browser?
+  * Try https://playwright.dev for web UI testing? With https://github.com/GoogleChromeLabs/chrome-for-testing?
 * Make `bazel test //web` run web tests
 
 ### Performance
