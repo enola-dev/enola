@@ -85,7 +85,7 @@ $ ./enola rosetta --in test/picasso.ttl --out docs/BUILT/picasso.gexf
 ...
 ```
 
-produces [`picasso.gexf`](../../BUILT/picasso.gexf) in [GEXF format](https://gexf.net), which can be opened e.g. in [Gephi Lite](https://gephi.org/gephi-lite/).
+produces [`picasso.gexf`](../../BUILT/picasso.gexf) in [GEXF format](https://gexf.net) (see also [GEXF examples](https://github.com/graphology/graphology/tree/master/src/gexf/test/resources)), which can be opened e.g. in [Gephi Lite](https://gephi.org/gephi-lite/) or [Retina](https://ouestware.gitlab.io/retina/).
 
 ## Tika
 

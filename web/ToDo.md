@@ -78,3 +78,7 @@
 ### Performance
 
 * #LATER
+
+### Maintainability
+
+* Enable https://github.com/dependabot/dependabot-core/issues/6528, once that's released

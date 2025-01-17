@@ -7,8 +7,7 @@
     "clean": "rm -f web/public/bundle.js* && rm -rf web-out && mkdir web-out",
     "tsc": "tsc",
     "build": "node build.mjs",
-    "serve": "http-server -p 8080",
-    "test": "jest"
+    "serve": "http-server -p 8080"
   },
   "author": "The Enola <https://enola.dev> Authors",
   "license": "Apache-2.0",
@@ -28,9 +27,6 @@
     "esbuild": "^0.24.0",
     "graphology-types": "^0.24.8",
     "http-server": "^14.1.1",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
 }
