@@ -7,7 +7,7 @@ import { build } from "bun"
 // TODO Support watch mode, ideally like https://esbuild.github.io/api/#live-reload
 
 const result = await build({
-  entrypoints: ["src/browser/script.ts"],
+  entrypoints: ["src/browser/index.ts"],
   outdir: "public/bundles/",
 
   // TODO minify: false in development... how to pass in like a CLI arg type thing?
