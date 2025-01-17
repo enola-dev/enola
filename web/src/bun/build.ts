@@ -1,8 +1,8 @@
+#!/usr/bin/env bun
+
 import { build } from "bun"
 
-// TODO Can this have a #!/usr/bin/env bun shebang and be made chmod +x executable?
-
-// TODO Run tsc from here instead of package.json, e.g. by using `concurrently` or `npm-run-all` (README.md)
+// TODO Run both tsc & test from here, e.g. by using `concurrently` or `npm-run-all` (README.md)
 
 // TODO Support watch mode, ideally like https://esbuild.github.io/api/#live-reload
 
@@ -10,8 +10,6 @@ const result = await build({
   entrypoints: ["src/browser/index.ts"],
   outdir: "public/bundles/",
 
-  // TODO minify: false in development... how to pass in like a CLI arg type thing?
-  // TODO sourcemap: false in production... how to pass in like a CLI arg type thing?
   minify: true,
   sourcemap: "linked",
 

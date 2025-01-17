@@ -18,6 +18,14 @@
 
 # Enola `enola/web` TODO
 
+## Tech
+
+1. GitHub Action
+1. Apply https://bun.sh/docs/typescript#suggested-compileroptions
+1. Fix `bun tsc`
+1. Try https://bun.sh/docs/bundler/html
+1. Web Test would be nice...
+
 ## Functional
 
 * ~~Use Enola Server `/gexf` instead of `arctic.gexf` (and delete that)~~
@@ -80,5 +88,6 @@
 
 ### Maintainability
 
+* Include `VERSION` (with Git rev) into front-end, probably using https://bun.sh/docs/bundler#env ?
 * Enable https://github.com/dependabot/dependabot-core/issues/6528, once that's released
 * Recheck if https://github.com/oven-sh/bun/issues/1760 got implemented, to avoid "seeing" transitive (only) dependencies in `import`

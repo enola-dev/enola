@@ -24,9 +24,7 @@
 
 1. `cd web/`
 
-1. Regularly `bun test`
-
-1. Often `bun tsc && bun src/bun/build.ts` (TODO: Integrate better... e.g. using `concurrently` or `npm-run-all`?)
+1. Regularly `bun test`, and often `bun tsc && ./build` (TODO: Integrate better... e.g. using `concurrently` or `npm-run-all`?)
 
 1. Start `../enola server --load "../models/enola.dev/**.ttl" --httpPort=9090`
 

@@ -35,3 +35,9 @@ pre-commit run --all-files
 bazelisk run @enola_maven//:outdated
 echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
 echo "Don't forget to run 'REPIN=1 bazelisk run @enola_maven//:pin' after changes!"
+
+# Web
+cd web
+bun outdated
+bun update
+cd ..
