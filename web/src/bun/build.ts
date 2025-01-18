@@ -1,10 +1,18 @@
 #!/usr/bin/env bun
 
-import { build } from "bun"
+import { $, build } from "bun"
 
 // TODO Adopt https://bun.sh/docs/bundler/fullstack
 
-// TODO Run both tsc & test from here, e.g. by using `concurrently` or `npm-run-all` (README.md)
+// TODO Run tsc & test by using `concurrently` or `npm-run-all`
+
+// TODO Use https://github.com/google/zx/ or https://github.com/dsherret/dax
+//   instead of Bun's $ (see also https://github.com/google/zx/pull/1082)
+//   if they handle (contrib?) https://github.com/oven-sh/bun/issues/16496 ?
+
+// TODO FIXME await $`bun tsc`
+
+await $`bun test`
 
 const result = await build({
   html: true,

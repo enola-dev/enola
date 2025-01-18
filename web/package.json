@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -f web/public/bundle.js* && rm -rf web-out && mkdir web-out",
+    "build": "./build",
     "serve": "http-server -p 9090"
   },
   "author": "The Enola <https://enola.dev> Authors",
