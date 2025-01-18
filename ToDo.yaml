@@ -27,6 +27,9 @@ items:
         - https://docs.enola.dev/concepts/other/#visualization
         - https://visjs.github.io/vis-network/docs/network/#importGephi
 
+  - Bookmarks:
+      files: models/bookmarks.yaml
+
   - Infer: &infer1
       description: "Initial Thing Infer API, and hard-coded (Java) RDFS inverses."
 

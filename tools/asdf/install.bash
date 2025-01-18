@@ -17,6 +17,8 @@
 
 set -euo pipefail
 
+# TODO Replace asdf with https://mise.jdx.dev? Or, better, rm & go all-in with only Bazel!
+
 # Because mcr.microsoft.com/devcontainers/universal:2-linux
 # comes with several Java versions pre-installed by SDKMAN already,
 # let's wipe everything, and (re)install only the one we want below
@@ -46,6 +48,7 @@ fi
 
 asdf info
 asdf plugin add protoc
+asdf plugin add bun
 # This installs the tools as per //.tools-versions (with fixed versions)
 asdf install
 asdf current
