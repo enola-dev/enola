@@ -19,9 +19,19 @@ set -euo pipefail
 
 # Inspired e.g. by https://github.com/palantir/gradle-git-version
 
-git describe --tags --always --first-parent >tools/version/VERSION
-truncate -s -1 tools/version/VERSION
+# It's *VERY* important that this script *ONLY* touches the tools/version/VERSION file
+# when its content actually changed. This is otherwise it triggers a frequent full rebuild.
+# This is because Bazel (also?) looks at the timestamp of the file to determine if it needs
+# to rebuild, not ([only?] a hash of) its content.
 
-if ! git update-index --refresh >/dev/null; then
-  echo -n ".dirty" >>tools/version/VERSION
+NEW_VERSION=$(git describe --tags --always --first-parent)
+NEW_VERSION=${NEW_VERSION%$'\n'}
+
+# Skip this, because it still causes too frequent rebuilds during development while commiting
+# if ! git update-index --refresh >/dev/null; then
+#   NEW_VERSION="${NEW_VERSION}.dirty"
+# fi
+
+if [ ! -f tools/version/VERSION ] || [ "$(cat tools/version/VERSION)" != "$NEW_VERSION" ]; then
+  echo -n "$NEW_VERSION" > tools/version/VERSION
 fi
