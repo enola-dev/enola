@@ -28,13 +28,13 @@ process.stdout.write("🧪 ")
 await $`bun test`
 
 console.log()
-await $`rm -f "web-out/*.html web-out/*.js web-out/*.js.map"`
+await $`rm -rf web-out/bundle/`
 const result = await build({
   html: true,
   experimentalCss: true,
 
   entrypoints: ["public/index.html"],
-  outdir: "web-out/",
+  outdir: "web-out/bundle/",
 
   minify: true,
   sourcemap: "linked",
