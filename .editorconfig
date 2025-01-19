@@ -114,6 +114,9 @@ max_line_length = unset
 [pnpm-lock.yaml]
 max_line_length = unset
 
+[bun.lock]
+max_line_length = unset
+
 # Note that https://github.com/editorconfig-checker/editorconfig-checker
 # which https://github.com/editorconfig-checker/editorconfig-checker.python
 # uses does not understand e.g. [{*.yaml,*.yml}] but only single ones.
