@@ -42,7 +42,7 @@ tools/version/version.bash
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
 if [ -z "${CI:-""}" ]; then
-  "$BZL" query //... | xargs "$BZL" test --test_size_filters=small
+  "$BZL" query //... | xargs "$BZL" test --explain ~/bazel-test-explain.txt --test_size_filters=small
 else
   "$BZL" query //... | xargs "$BZL" test
 fi
