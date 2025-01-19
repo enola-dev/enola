@@ -24,8 +24,7 @@ import {
   ForceAtlas2SynchronousLayoutParameters,
   inferSettings,
 } from "graphology-layout-forceatlas2"
-import FA2LayoutSupervisor from "graphology-layout-forceatlas2/worker.js"
-
+// TODO import FA2LayoutSupervisor from "graphology-layout-forceatlas2/worker.js"
 import { Sigma } from "sigma"
 
 // TODO Move this to an util.ts file
@@ -56,7 +55,7 @@ fetch("/demo/picasso.gexf")
     // https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
     const fa2Settings = inferSettings(graph) as ForceAtlas2SynchronousLayoutParameters
     fa2Settings.iterations = 500
-    const layout = new FA2LayoutSupervisor(graph, fa2Settings)
+    // TODO const layout = new FA2LayoutSupervisor(graph, fa2Settings)
     if (fa2Settings.settings) {
       fa2Settings.settings.gravity = 1
       // ? fa2Settings.settings.scalingRatio = 2
