@@ -20,7 +20,6 @@
 
 ## Tech
 
-1. Fix `bun tsc`, and enable it
 1. Either rename web-out/index*.html to `index.html` in `build.ts`,
    OR make `../enola server` send either (better) `Cache-Control: no-cache` & `ETag: "abcdef1234"`
    (or just `Cache-Control: no-store`; or `max-age=0`, really same?)
@@ -28,10 +27,7 @@
 
 ## Functional
 
-* ~~Use Enola Server `/gexf` instead of `arctic.gexf` (and delete that)~~
-* Animate not "live & visible" after load (with Stop button) instead hard-coded iterations: 500,
-  see https://graphology.github.io/standard-library/layout-forceatlas2.html#webworker
-* Play with https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
+* Play more with https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
 * Try out https://graphology.github.io/standard-library/layout-noverlap
 * Do coloring using https://graphology.github.io/standard-library/communities-louvain; see https://gemini.google.com/app/4e3c639fc5213673
 
