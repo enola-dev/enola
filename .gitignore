@@ -38,8 +38,6 @@ docs/BUILT/**
 # Node.JS
 node_modules/
 web/web-out/
-# TODO This is ugly... how to better separate, to avoid?
-web/public/bundles/
 
 # Be
 .be/

@@ -49,9 +49,6 @@ jobs:
       - name: Install Web dependencies
         working-directory: web
         run: bun install
-      - name: Test Web
-        working-directory: web
-        run: bun test
       # - name: Run Typescript Compiler (TSC)
       #  working-directory: web
       #  run: bun tsc

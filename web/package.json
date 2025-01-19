@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "dev": "./dev",
     "clean": "rm -f web/public/bundle.js* && rm -rf web-out && mkdir web-out",
-    "build": "./build",
-    "serve": "http-server -p 9090"
+    "build": "./build"
   },
   "author": "The Enola <https://enola.dev> Authors",
   "license": "Apache-2.0",
@@ -25,7 +25,6 @@
     "@types/jest": "^29.5.14",
     "@types/sigmajs": "^1.0.32",
     "graphology-types": "^0.24.8",
-    "http-server": "^14.1.1",
     "typescript": "^5.7.3"
   }
 }
