@@ -19,9 +19,15 @@ set -euo pipefail
 
 # Inspired e.g. by https://github.com/palantir/gradle-git-version
 
+# This is a PITA (!) during development, because every change and commit on //web/
+# triggers a full rebuild of //java/. We therefore now only run this on CI:
+if [ -z "${CI:-""}" ]; then
+  exit 0
+fi
+
 # It's *VERY* important that this script *ONLY* touches the tools/version/VERSION file
-# when its content actually changed. This is otherwise it triggers a frequent full rebuild.
-# This is because Bazel (also?) looks at the timestamp of the file to determine if it needs
+# when its content actually changed. Otherwise it triggers a frequent full rebuild. This is
+# because Bazel (also?) looks at the timestamp of the file to determine if it needs
 # to rebuild, not ([only?] a hash of) its content.
 
 NEW_VERSION=$(git describe --tags --always --first-parent)
