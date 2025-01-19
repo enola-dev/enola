@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-import Graph from "graphology"
+import { DirectedGraph } from "graphology"
 import { parse } from "graphology-gexf/browser"
 import { random } from "graphology-layout"
 import forceAtlas2, { inferSettings } from "graphology-layout-forceatlas2"
@@ -30,13 +30,13 @@ function getElementByIdOrFail(id: string): HTMLElement {
   return element
 }
 
-// TODO Replace hard-coded q=enola:/inline with ?q= read from the URL
-fetch("/gexf?q=enola:/inline") // TODO "enola.gexf" for easy Dev mode?! Nah, let's keep it real...
+// TODO Replace hard-coded demo with ?q= read from the URL e.g. for "/gexf?q=enola:/inline"
+fetch("/demo/picasso.gexf")
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
     // TODO Remove addMissingNodes once GexfGenerator adds them itself
-    const graph = parse(Graph, gexf, { addMissingNodes: true })
+    const graph = parse(DirectedGraph, gexf, { addMissingNodes: true })
 
     // https://graphology.github.io/standard-library/layout-forceatlas2.html:
     // "Each node’s starting position must be set before running ForceAtlas 2 layout"

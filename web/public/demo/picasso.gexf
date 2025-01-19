@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://gexf.net/1.3"
+  xsi:schemaLocation="http://gexf.net/1.3 http://gexf.net/1.3/gexf.xsd" version="1.3">
+  <meta>
+    <creator>Enola.dev</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="dynamic" timeformat="dateTime"
+    timerepresentation="interval">
+    <nodes>
+      <node id="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl"
+        label="picasso.ttl" start="2025-01-04T17:47:57.136095755Z">
+        <parents>
+          <parent for="https://enola.dev/files/File" />
+          <parent for="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl" />
+        </parents>
+      </node>
+      <node id="http://example.enola.dev/Dalí" label="Dalí">
+        <parents>
+          <parent for="http://example.enola.dev/Artist" />
+          <parent for="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl" />
+        </parents>
+      </node>
+      <node id="http://example.enola.dev/Picasso" label="Picasso">
+        <parents>
+          <parent for="http://example.enola.dev/Artist" />
+          <parent for="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl" />
+        </parents>
+      </node>
+    </nodes>
+    <edges>
+      <edge source="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+      <edge source="http://example.enola.dev/Dalí" target="http://example.enola.dev/Artist"
+        kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type" />
+      <edge source="http://example.enola.dev/Dalí"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+      <edge source="http://example.enola.dev/Picasso" target="http://example.enola.dev/Artist"
+        kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type" />
+      <edge source="http://example.enola.dev/Picasso"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/test/picasso.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+    </edges>
+  </graph>
+</gexf>
