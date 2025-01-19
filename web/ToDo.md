@@ -20,12 +20,11 @@
 
 ## Tech
 
-1. Apply https://bun.sh/docs/typescript#suggested-compileroptions
-1. Fix `bun tsc`
-1. Adopt https://bun.sh/docs/bundler/fullstack ... and fix CORS!
+1. Fix `bun tsc`, and enable it
 1. Either rename web-out/index*.html to `index.html` in `build.ts`,
    OR make `../enola server` send either (better) `Cache-Control: no-cache` & `ETag: "abcdef1234"`
    (or just `Cache-Control: no-store`; or `max-age=0`, really same?)
+1. Fix CORS ?
 
 ## Functional
 
@@ -52,7 +51,7 @@
 
 * Introduce a CSS so that controls are in a single row, with a nicer font
 * `<div id="container">` should fill entire available space
-* There shouldn't be any space around it
+* There shouldn't be any space around the graph
 
 ## Technical
 
@@ -60,7 +59,6 @@
 
 * Make pre-commit add License Header to `*.ts`
 * Caching problems... how can I make it never cache bundle.js? Will Watch Mode solve that? Else [hash] in JS filename...
-* Needing `web/public/bundles/` in `.gitignore` is a bit ugly; how is this normally better separated?
 
 ### Productivity
 
@@ -81,7 +79,10 @@
 
 ### Performance
 
-* #LATER
+* Fix lack of "never cache" header support on GitHub pages by hosting the demo app elsewhere
+  * https://gist.github.com/maximebories/961f12101af369804d40d5ec287e562b probably won't work?
+  * E.g. Netlify or Cloudflare Pages, or maybe on IPFS with Pinata
+  * https://developers.cloudflare.com/pages/configuration/headers/
 
 ### Maintainability
 

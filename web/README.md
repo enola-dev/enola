@@ -20,9 +20,15 @@
 
 ## Usage
 
+### Develop
+
 1. Install [🧅 Bun](https://bun.sh/docs/installation)
 
 1. `cd web/`
+
+1. `./develop`
+
+### Build
 
 1. `./build`
 
@@ -31,8 +37,6 @@
 1. Open <http://0.0.0.0:9090/wui/index.html>
 
 TODO Resolve CORS in `bun serve` to work with Enola JSON API server on another port.
-
-TODO Support a _Dev_ for _both_ `tsc` and Bun's build watch mode... which also does a `bun serve` equivalent.
 
 ## NeXT
 
