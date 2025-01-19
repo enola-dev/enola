@@ -24,10 +24,10 @@
    OR make `../enola server` send either (better) `Cache-Control: no-cache` & `ETag: "abcdef1234"`
    (or just `Cache-Control: no-store`; or `max-age=0`, really same?)
 1. Fix CORS ?
+1. Is it OK to have a `package.json` e.g. for the Prettier version at the root, and have another one in `web/package.json`?
 
 ## Functional
 
-* Play more with https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
 * Try out https://graphology.github.io/standard-library/layout-noverlap
 * Do coloring using https://graphology.github.io/standard-library/communities-louvain; see https://gemini.google.com/app/4e3c639fc5213673
 
@@ -40,14 +40,11 @@
 * Highlight when hovering over label as well, not just dot
 * Let users drag nodes around
 * Hover over Nodes should highlight all its edges
+
+* Merge with //java/dev/enola/web/resources/static/main.css and show green NavBar
 * Click on node should open Enola details page on the right
-* Dark Modus support
 
-## Visual
-
-* Introduce a CSS so that controls are in a single row, with a nicer font
-* `<div id="container">` should fill entire available space
-* There shouldn't be any space around the graph
+* Dark Modus support! ;-)
 
 ## Technical
 
