@@ -1,9 +1,47 @@
 body {
   background: lightgrey;
+  height: 100vh;
+  margin: 0;
 }
 
 #container {
   width: 100%;
-  height: 600px; /* TODO How to 100% ? */
+  height: 100vh;
   background: white;
+  z-index: 0;
+}
+
+#buttons {
+  position: absolute;
+  right: 1em;
+  top: 2em;
+  display: flex;
+  z-index: 1;
+}
+button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3em 0.3em;
+  margin: 0 0.5em;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.button label {
+  margin-right: 0.5em;
+}
+.button input[type="range"] {
+  width: 7em;
+}
+button:hover,
+.button:hover {
+  background-color: #e0e0e0;
+}
+#buttons > button img {
+  height: 2em;
+}
+#buttons > button:last-child {
+  margin-right: 0;
 }

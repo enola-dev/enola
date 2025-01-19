@@ -24,18 +24,20 @@
   </head>
 
   <body>
-    <div id="controls">
-      <div class="input"><label for="zoom-in">Zoom in</label><button type="button" id="zoom-in">+</button></div>
-      <div class="input"><label for="zoom-out">Zoom out</label><button type="button" id="zoom-out">-</button></div>
-      <div class="input">
-        <label for="zoom-reset">Reset zoom</label><button type="button" id="zoom-reset">⊙</button>
+    <div id="graph">
+      <div id="buttons">
+        <div class="button">
+          <label for="labels-threshold">Labels</label>
+          <input id="labels-threshold" type="range" min="0" max="15" step="0.5" />
+        </div>
+
+        <button type="button" id="zoom-in">Zoom&nbsp;<b>+</b></button>
+        <button type="button" id="zoom-out">Zoom&nbsp;<b>-</b></button>
+        <button type="button" id="zoom-reset">Zoom ⊙</button>
       </div>
-      <div class="input">
-        <label for="labels-threshold">Labels threshold</label>
-        <input id="labels-threshold" type="range" min="0" max="15" step="0.5" />
-      </div>
+
+      <div id="container"></div>
     </div>
-    <div id="container"></div>
     <script src="../src/browser/index.ts" type="module"></script>
   </body>
 </html>
