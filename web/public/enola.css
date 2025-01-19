@@ -1,0 +1,9 @@
+body {
+  background: lightgrey;
+}
+
+#container {
+  width: 100%;
+  height: 600px; /* TODO How to 100% ? */
+  background: white;
+}
