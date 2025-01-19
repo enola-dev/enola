@@ -55,7 +55,7 @@ repos:
           - --fuzzy-match-generates-todo
           - --use-current-year
       - id: insert-license
-        files: \.(java|js)$
+        files: \.(java|js|ts)$
         exclude: ^(third_party/.*)$
         args:
           - --no-extra-eol

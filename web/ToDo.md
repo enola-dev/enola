@@ -55,11 +55,6 @@
 
 ## Technical
 
-### Clean
-
-* Make pre-commit add License Header to `*.ts`
-* Caching problems... how can I make it never cache bundle.js? Will Watch Mode solve that? Else [hash] in JS filename...
-
 ### Productivity
 
 * Does adopting https://eslint.org still make sense with TS? What does it add? See https://typescript-eslint.io
@@ -69,6 +64,7 @@
 
 * Use https://github.com/aspect-build/rules_js ... would have worked for `pnpm`, but won't for `bun`...
   but perhaps a simple GenRule, with some https://github.com/bazel-contrib/bazel-lib/blob/main/docs/write_source_files.md magic?
+  Maybe quite simple, see https://gemini.google.com/app/9e87284a1100a011.
 
 ### Testing
 
