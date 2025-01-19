@@ -19,26 +19,14 @@
 import { DirectedGraph } from "graphology"
 import { parse } from "graphology-gexf/browser"
 import { random } from "graphology-layout"
-import {
-  default as forceAtlas2,
-  ForceAtlas2SynchronousLayoutParameters,
-  inferSettings,
-} from "graphology-layout-forceatlas2"
-// TODO import FA2LayoutSupervisor from "graphology-layout-forceatlas2/worker.js"
+import { inferSettings } from "graphology-layout-forceatlas2"
+import FA2Layout from "graphology-layout-forceatlas2/worker"
 import { Sigma } from "sigma"
-
-// TODO Move this to an util.ts file
-function getElementByIdOrFail(id: string): HTMLElement {
-  const element = document.getElementById(id)
-  if (!element) {
-    throw new Error(`HTML Element with ID '${id}' not found.`)
-  }
-  return element
-}
+import { getElementByIdOrFail } from "./util"
 
 // TODO Handle 404 - display e.g. an "🙅🏽‍♀️" in the DIV container DOM
 // TODO Replace hard-coded demo with ?q= read from the URL e.g. for "/gexf?q=enola:/inline"
-fetch("/demo/picasso.gexf")
+fetch("/demo/greeting3.gexf")
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
@@ -46,22 +34,25 @@ fetch("/demo/picasso.gexf")
     const graph: DirectedGraph = parse(DirectedGraph, gexf, { addMissingNodes: true })
 
     // https://graphology.github.io/standard-library/layout-forceatlas2.html:
-    // "Each node’s starting position must be set before running ForceAtlas 2 layout"
+    // "Each node’s starting position must be set before running ForceAtlas 2 layout."
+    // https://www.npmjs.com/package/graphology-layout-forceatlas2#pre-requisites:
+    // "(...) edge-case where the layout cannot be computed if all of your nodes starts with x=0 and y=0."
     random.assign(graph)
 
     // Configure ForceAtlas2 layout settings
     // TODO Review and adjust the default settings...
-    // TODO Adjust iterations for desired layout quality/performance...
     // https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
-    const fa2Settings = inferSettings(graph) as ForceAtlas2SynchronousLayoutParameters
-    fa2Settings.iterations = 500
-    // TODO const layout = new FA2LayoutSupervisor(graph, fa2Settings)
-    if (fa2Settings.settings) {
-      fa2Settings.settings.gravity = 1
-      // ? fa2Settings.settings.scalingRatio = 2
-      // ? fa2Settings.settings.strongGravityMode = false
-    }
-    forceAtlas2.assign(graph, fa2Settings)
+    const fa2Settings = inferSettings(graph)
+    fa2Settings.adjustSizes = true // TODO Add Node Sizes to Graph
+    // NOT, because unstable: fa2Settings.barnesHutOptimize = true
+    fa2Settings.gravity = 1
+    fa2Settings.scalingRatio = 1
+    fa2Settings.strongGravityMode = true
+
+    const fa2Layout = new FA2Layout(graph, { settings: fa2Settings })
+    fa2Layout.start()
+    // TODO UI Buttons to stop() and re-start() the layout
+    // TODO layout.kill() when element is removed from DOM - but how do we know when to do that?!
 
     // Retrieve some useful DOM elements
     const container = getElementByIdOrFail("container")
@@ -88,12 +79,11 @@ fetch("/demo/picasso.gexf")
       void camera.animatedReset({ duration: 600 })
     })
 
-    // Bind labels threshold to range input
+    const initialLabelsThreshold = 0
+    labelsThresholdRange.value = initialLabelsThreshold.toString()
+    renderer.setSetting("labelRenderedSizeThreshold", initialLabelsThreshold)
     labelsThresholdRange.addEventListener("input", () => {
       renderer.setSetting("labelRenderedSizeThreshold", +labelsThresholdRange.value)
     })
-
-    // Set proper range initial value:
-    labelsThresholdRange.value = renderer.getSetting("labelRenderedSizeThreshold").toString()
   })
   .catch((error: Error) => console.error(error))

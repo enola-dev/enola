@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://gexf.net/1.3"
+  xsi:schemaLocation="http://gexf.net/1.3 http://gexf.net/1.3/gexf.xsd" version="1.3">
+  <meta>
+    <creator>Enola.dev</creator>
+  </meta>
+  <graph defaultedgetype="directed" mode="dynamic" timeformat="dateTime"
+    timerepresentation="interval">
+    <nodes>
+      <node
+        id="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl"
+        label="greeting3.ttl" start="2024-07-21T23:35:14.803718995Z">
+        <parents>
+          <parent for="https://enola.dev/files/File" />
+          <parent
+            for="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl" />
+        </parents>
+      </node>
+      <node id="https://example.org/Salutation" label="👋ex:Salutation">
+        <parents>
+          <parent for="http://www.w3.org/2000/01/rdf-schema#Class" />
+          <parent
+            for="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl" />
+        </parents>
+      </node>
+      <node id="https://example.org/greeting3" label="👋ex:greeting3">
+        <parents>
+          <parent for="https://example.org/Salutation" />
+          <parent
+            for="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl" />
+        </parents>
+      </node>
+    </nodes>
+    <edges>
+      <edge
+        source="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+      <edge source="https://example.org/Salutation"
+        target="http://www.w3.org/2000/01/rdf-schema#Class"
+        kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type" />
+      <edge source="https://example.org/Salutation"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+      <edge source="https://example.org/greeting3" target="https://example.org/Salutation"
+        kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type" />
+      <edge source="https://example.org/greeting3"
+        target="file:/home/vorburger/git/github.com/enola-dev/enola/docs/models/example.org/greeting3.ttl"
+        kind="https://enola.dev/origin" label="enola:origin" />
+    </edges>
+  </graph>
+</gexf>
