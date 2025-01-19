@@ -22,7 +22,7 @@ import { $, build } from "bun"
 // TODO Use https://github.com/google/zx/ or https://github.com/dsherret/dax
 // instead of Bun's $ (see also https://github.com/google/zx/pull/1082)
 // if they handle (contrib?) https://github.com/oven-sh/bun/issues/16496 ?
-// TODO FIXME await $`bun tsc`
+await $`bun tsc`
 
 process.stdout.write("🧪 ")
 await $`bun test`

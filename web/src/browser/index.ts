@@ -19,9 +19,16 @@
 import { DirectedGraph } from "graphology"
 import { parse } from "graphology-gexf/browser"
 import { random } from "graphology-layout"
-import forceAtlas2, { inferSettings } from "graphology-layout-forceatlas2"
+import {
+  default as forceAtlas2,
+  ForceAtlas2SynchronousLayoutParameters,
+  inferSettings,
+} from "graphology-layout-forceatlas2"
+import FA2LayoutSupervisor from "graphology-layout-forceatlas2/worker.js"
+
 import { Sigma } from "sigma"
 
+// TODO Move this to an util.ts file
 function getElementByIdOrFail(id: string): HTMLElement {
   const element = document.getElementById(id)
   if (!element) {
@@ -30,13 +37,14 @@ function getElementByIdOrFail(id: string): HTMLElement {
   return element
 }
 
+// TODO Handle 404 - display e.g. an "🙅🏽‍♀️" in the DIV container DOM
 // TODO Replace hard-coded demo with ?q= read from the URL e.g. for "/gexf?q=enola:/inline"
 fetch("/demo/picasso.gexf")
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
     // TODO Remove addMissingNodes once GexfGenerator adds them itself
-    const graph = parse(DirectedGraph, gexf, { addMissingNodes: true })
+    const graph: DirectedGraph = parse(DirectedGraph, gexf, { addMissingNodes: true })
 
     // https://graphology.github.io/standard-library/layout-forceatlas2.html:
     // "Each node’s starting position must be set before running ForceAtlas 2 layout"
@@ -46,15 +54,15 @@ fetch("/demo/picasso.gexf")
     // TODO Review and adjust the default settings...
     // TODO Adjust iterations for desired layout quality/performance...
     // https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
-    const settings = inferSettings(graph)
-    settings.gravity = 1
-    // ? settings.scalingRatio = 2
-    // ? settings.strongGravityMode = false
-    // TODO worker: true, barnesHutOptimize: false, ?
-    forceAtlas2(graph, {
-      iterations: 500,
-      settings,
-    })
+    const fa2Settings = inferSettings(graph) as ForceAtlas2SynchronousLayoutParameters
+    fa2Settings.iterations = 500
+    const layout = new FA2LayoutSupervisor(graph, fa2Settings)
+    if (fa2Settings.settings) {
+      fa2Settings.settings.gravity = 1
+      // ? fa2Settings.settings.scalingRatio = 2
+      // ? fa2Settings.settings.strongGravityMode = false
+    }
+    forceAtlas2.assign(graph, fa2Settings)
 
     // Retrieve some useful DOM elements
     const container = getElementByIdOrFail("container")
@@ -64,7 +72,7 @@ fetch("/demo/picasso.gexf")
     const labelsThresholdRange = getElementByIdOrFail("labels-threshold") as HTMLInputElement
 
     // Instantiate Sigma.js
-    let renderer = new Sigma(graph, container, {
+    const renderer = new Sigma(graph, container, {
       minCameraRatio: 0.08,
       maxCameraRatio: 3,
     })
@@ -89,4 +97,4 @@ fetch("/demo/picasso.gexf")
     // Set proper range initial value:
     labelsThresholdRange.value = renderer.getSetting("labelRenderedSizeThreshold").toString()
   })
-  .catch(console.error)
+  .catch((error: Error) => console.error(error))
