@@ -34,7 +34,6 @@ concurrency:
 
 jobs:
   devcontainer:
-    # https://github.com/orgs/community/discussions/25722
     if:
       (github.repository == 'enola-dev/enola') &&
       (github.event.pull_request.draft == false)
@@ -42,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: DevContainer
-        # TODO if: ${{ github.event_name == 'push' }}
+        # if: ${{ github.event_name == 'push' }}
         uses: devcontainers/ci@v0.3
         with:
           # TODO imageName: ghcr.io/example/example-devcontainer
@@ -53,7 +52,6 @@ jobs:
           # TODO runCmd: ./tools/test-ci/test.bash
 
   build:
-    # https://github.com/orgs/community/discussions/25722
     if:
       (github.repository == 'enola-dev/enola') &&
       (github.event.pull_request.draft == false)
