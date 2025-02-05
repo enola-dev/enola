@@ -10,7 +10,7 @@ linkml==1.8.5
 hashdir==0.24
 
 # MkDocs
-mkdocs-material==9.5.49
+mkdocs-material==9.6.2
 mkdocs-git-revision-date-localized-plugin==1.3.0
 
 # Used by mkdocs.yaml#plugins.blog, see
