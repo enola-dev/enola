@@ -24,7 +24,10 @@ set -euo pipefail
 # let's wipe everything, and (re)install only the one we want below
 # (via ASDF, for consistency), to avoid confusion:
 # TODO Remove this when .devcontainer/devcontainer.json switched to a lighter base image
-rm -rf /usr/local/sdkman/candidates/java/
+env
+if [[ -n "${REMOTE_CONTAINERS:-}" ]]; then
+  sudo rm -rf /usr/local/sdkman/candidates/java/
+fi
 
 if ! [ -x "$(command -v asdf)" ]; then
   if ! [ -d "$HOME/.asdf/" ]; then

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
+set -euox pipefail
 
 # This script prepares the Dev Container used for GitHub CodeSpaces.
 # Because this is invoked as an onCreateCommand in the .devcontainer/devcontainer.json,
