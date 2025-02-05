@@ -19,4 +19,5 @@ set -euox pipefail
 
 tools/maven/install.bash
 
-learn/jbang/jbang learn/jbang/hello.java
+# TODO https://github.com/jbangdev/jbang/issues/1921, due to https://github.com/enola-dev/enola/issues/1040
+rm -rf ~/.jbang/ && JBANG_DOWNLOAD_VERSION=0.122.0 learn/jbang/jbang learn/jbang/hello.java
