@@ -33,6 +33,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  devcontainer:
+    # https://github.com/orgs/community/discussions/25722
+    if:
+      (github.repository == 'enola-dev/enola') &&
+      (github.event.pull_request.draft == false)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: DevContainer
+        # TODO if: ${{ github.event_name == 'push' }}
+        uses: devcontainers/ci@v0.3
+        with:
+          # TODO imageName: ghcr.io/example/example-devcontainer
+          # TODO cacheFrom: ghcr.io/example/example-devcontainer
+          # TODO push: always
+          push: never
+          runCmd: echo DevContainer OK!
+          # TODO runCmd: ./tools/test-ci/test.bash
+
   build:
     # https://github.com/orgs/community/discussions/25722
     if:
@@ -150,6 +169,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: ./tools/docs/build.bash
 
+      # TODO Move *BEFORE* ./tools/test-ci/test.bash, so that "dirty" changes cause build to abort
       - name: pre-commit run --all-files
         run: .venv/bin/pre-commit run --all-files
 
