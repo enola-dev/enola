@@ -20,7 +20,7 @@
   // https://containers.dev/implementors/json_reference/#lifecycle-scripts
   // is what you want, NOT features' "ghcr.io/devcontainers-contrib/features/bash-command:1"
   // (because that doesn't seem to have access to the workspace, whereas this does)
-  "onCreateCommand": "/workspaces/enola/tools/devcontainer/install.bash",
+  "onCreateCommand": "pwd && ls && tools/devcontainer/install.bash",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
