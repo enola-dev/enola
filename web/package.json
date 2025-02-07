@@ -8,7 +8,7 @@
     "build": "./build",
     "clean": "rm -rf web-out",
     "prettier": "prettier src/** --write",
-    "lint": "eslint src"
+    "lint": "eslint --fix src"
   },
   "author": "The Enola <https://enola.dev> Authors",
   "license": "Apache-2.0",

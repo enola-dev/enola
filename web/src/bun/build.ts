@@ -26,6 +26,8 @@ import path from "path"
 // if they handle (contrib?) https://github.com/oven-sh/bun/issues/16496 ?
 await $`bun tsc`
 
+await $`bun lint`
+
 process.stdout.write("🧪 ")
 await $`bun test`
 
