@@ -48,6 +48,8 @@ const result = await build({
   throw: true,
 })
 
+await $`cp -r public/demo web-out/bundle/`
+
 if (result.success) {
   result.outputs
     .filter(output => output.path.endsWith(".html"))

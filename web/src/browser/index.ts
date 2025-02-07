@@ -26,7 +26,7 @@ import { getElementByIdOrFail } from "./util"
 
 // TODO Handle 404 - display e.g. an "🙅🏽‍♀️" in the DIV container DOM
 // TODO Replace hard-coded demo with ?q= read from the URL e.g. for "/gexf?q=enola:/inline"
-fetch("/demo/greeting3.gexf")
+fetch("demo/greeting3.gexf")
   .then(res => res.text())
   .then(gexf => {
     // Parse GEXF string:
