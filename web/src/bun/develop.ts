@@ -30,9 +30,9 @@ serve({
   port: PORT,
   development: true,
   static: {
-    "/": index,
+    "/": index as Response,
   },
-  async fetch(req) {
+  fetch(req) {
     const path = new URL(req.url).pathname
     if (path.startsWith("/demo")) return new Response(file(`./public${path}`))
     else if (IGNORE.includes(path)) return new Response("🪹 No Content ", { status: 204 })
@@ -40,4 +40,4 @@ serve({
   },
 })
 
-console.log(`🚀 Server running at http://localhost:${PORT}`)
+console.log(`🚀 Server running at http://localhost:${PORT.toString()}`)
