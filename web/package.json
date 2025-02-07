@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "description": "Semantic Web Linked Data UI",
   "dependencies": {
-    "graphology": "^0.25.4",
+    "graphology": "^0.26.0",
     "graphology-gexf": "^0.13.2",
     "graphology-layout": "^0.6.1",
     "graphology-layout-forceatlas2": "^0.10.1",

@@ -4,7 +4,7 @@
     "": {
       "name": "enola.dev",
       "dependencies": {
-        "graphology": "^0.25.4",
+        "graphology": "^0.26.0",
         "graphology-gexf": "^0.13.2",
         "graphology-layout": "^0.6.1",
         "graphology-layout-forceatlas2": "^0.10.1",
@@ -329,7 +329,7 @@
 
     "graphemer": ["graphemer@1.4.0", "", {}, "sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag=="],
 
-    "graphology": ["graphology@0.25.4", "", { "dependencies": { "events": "^3.3.0", "obliterator": "^2.0.2" }, "peerDependencies": { "graphology-types": ">=0.24.0" } }, "sha512-33g0Ol9nkWdD6ulw687viS8YJQBxqG5LWII6FI6nul0pq6iM2t5EKquOTFDbyTblRB3O9I+7KX4xI8u5ffekAQ=="],
+    "graphology": ["graphology@0.26.0", "", { "dependencies": { "events": "^3.3.0" }, "peerDependencies": { "graphology-types": ">=0.24.0" } }, "sha512-8SSImzgUUYC89Z042s+0r/vMibY7GX/Emz4LDO5e7jYXhuoWfHISPFJYjpRLUSJGq6UQ6xlenvX1p/hJdfXuXg=="],
 
     "graphology-gexf": ["graphology-gexf@0.13.2", "", { "dependencies": { "@xmldom/xmldom": "^0.8.3", "graphology-utils": "^2.4.1", "xml-writer": "^1.7.0" }, "peerDependencies": { "graphology-types": ">=0.20.0" } }, "sha512-7LW1em9RNCtZ7qsnTSEVl0EYGz7lzbZTW8e5xxbcrM2LojZl0x8KS2Z3Q1KNhFX2gVVQ+h0M/CTcdz+B9MQfjg=="],
 
