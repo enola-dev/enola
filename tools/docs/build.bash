@@ -75,3 +75,6 @@ cleanup
 
 # Enola Binary Distro
 tools/distro/build.bash
+
+# https://docs.enola.dev/demo/
+web/distro
