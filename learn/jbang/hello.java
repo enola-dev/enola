@@ -19,7 +19,7 @@
 //JAVA 21+
 //PREVIEW
 //DEPS dev.enola:enola:0.0.1-SNAPSHOT
-//REPOS mavencentral,jitpack
+//REPOS enola=https://docs.enola.dev/maven-repo/,mavencentral,jitpack
 
 import static java.lang.System.out;
 
