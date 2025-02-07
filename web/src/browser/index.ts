@@ -86,4 +86,6 @@ fetch("/demo/greeting3.gexf")
       renderer.setSetting("labelRenderedSizeThreshold", +labelsThresholdRange.value)
     })
   })
-  .catch((error: Error) => console.error(error))
+  .catch((error: unknown) => {
+    console.error(error)
+  })

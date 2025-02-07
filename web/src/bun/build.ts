@@ -29,7 +29,6 @@ await $`bun tsc`
 process.stdout.write("🧪 ")
 await $`bun test`
 
-console.log()
 await $`rm -rf web-out/bundle/`
 const result = await build({
   html: true,
@@ -49,7 +48,7 @@ const result = await build({
 if (result.success) {
   result.outputs
     .filter(output => output.path.endsWith(".html"))
-    .map(async output => {
+    .map(output => {
       const dir = path.parse(output.path).dir
       const index = path.join(dir, "index.html")
       renameSync(output.path, index)
