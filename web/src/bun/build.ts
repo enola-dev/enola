@@ -18,6 +18,8 @@
  * limitations under the License.
  */
 import { $, build } from "bun"
+import { renameSync } from "fs"
+import path from "path"
 
 // TODO Use https://github.com/google/zx/ or https://github.com/dsherret/dax
 // instead of Bun's $ (see also https://github.com/google/zx/pull/1082)
@@ -45,7 +47,13 @@ const result = await build({
 })
 
 if (result.success) {
-  // result.outputs.map(output => console.log("✅", output.path))
+  result.outputs
+    .filter(output => output.path.endsWith(".html"))
+    .map(async output => {
+      const dir = path.parse(output.path).dir
+      const index = path.join(dir, "index.html")
+      renameSync(output.path, index)
+    })
   console.log("✅ Successfully 📦 bundled!")
   process.exit(0)
 } else {

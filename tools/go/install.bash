@@ -18,7 +18,7 @@
 set -euox pipefail
 
 # This script install pre-requisite go tools
-
+echo "$PATH"
 GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
 

@@ -20,11 +20,8 @@
 
 ## Tech
 
-1. Either rename web-out/index*.html to `index.html` in `build.ts`,
-   OR make `../enola server` send either (better) `Cache-Control: no-cache` & `ETag: "abcdef1234"`
-   (or just `Cache-Control: no-store`; or `max-age=0`, really same?)
 1. Fix CORS ?
-1. Is it OK to have a `package.json` e.g. for the Prettier version at the root, and have another one in `web/package.json`?
+1. Use https://bun.sh/docs/install/workspaces to have a `package.json` e.g. for the Prettier version at the root, and have the one in `web/package.json`
 
 ## Functional
 
