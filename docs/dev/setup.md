@@ -89,6 +89,7 @@ If you do still want to try, here's how to manually install what the development
 
         sudo apt update
         sudo apt install golang-go
+        go install github.com/bazelbuild/bazelisk@latest
 
 You should now be able to proceed as above (but without requiring _Docker)._
 

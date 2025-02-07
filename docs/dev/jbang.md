@@ -18,20 +18,17 @@
 
 # JBang
 
-Java developers (not end-users) can use Enola via [JBang](https://www.jbang.dev/).
+Java developers (not end-users) can also use Enola via [JBang](https://www.jbang.dev/).
 
 [`learn/jbang`](https://github.com/enola-dev/enola/tree/main/learn/jbang)
 has an example project illustrating how this works; clone and go there, and then:
 
-1. `tools/maven/install.bash`
 1. `cd learn/jbang`
 1. `./jbang hello.java` will run an example using Enola
 1. `./jbang edit --sandbox --open=code hello.java` opens an IDE
 
-<!-- TODO Improve JBang integration:
-        1. Build Enola on JitPack, and remove the need for step #1.
-        2. Move `learn/jbang` out into a separate Git repo?
-(But then how to test it in CI?
-A Monorepo is very nice for that.
-Perhaps just write a script to automagically extract (copy) it into a small repo?
+<!-- TODO Move `learn/jbang` out into a separate Git repo?
+
+(But then how to test it in CI? A Monorepo is very nice for that.
+Perhaps just write a script to automagically extract (copy) it into a small repo?)
 -->
