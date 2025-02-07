@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "./dev",
     "build": "./build",
-    "clean": "rm -rf web-out"
+    "clean": "rm -rf web-out",
+    "prettier": "prettier src/** --write"
   },
   "author": "The Enola <https://enola.dev> Authors",
   "license": "Apache-2.0",

@@ -155,6 +155,7 @@ repos:
         types_or: [css, html, javascript, json, json5, scss, ts, tsx, yaml]
         exclude: ^docs/use|test/|.devcontainer/devcontainer.json|third_party/
         additional_dependencies:
+          # TODO Avoid duplicating the Prettier version here and in web/package.json
           - prettier@3.2.4
 
   - repo: https://github.com/pre-commit/mirrors-csslint
