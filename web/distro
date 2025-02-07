@@ -30,4 +30,4 @@ if [[ ! -d "$dist" || ! "$(ls -A "$dist")" ]]; then
   exit 1
 fi
 
-cp -r "$dist"/* "$demo"
+cp -vr "$dist"/* "$demo"
