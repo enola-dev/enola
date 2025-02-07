@@ -78,3 +78,7 @@ tools/distro/build.bash
 
 # https://docs.enola.dev/demo/
 web/distro
+
+# https://docs.enola.dev/maven-repo/
+mkdir -p site/maven-repo/dev/enola/
+cp -r ~/.m2/repository/dev/enola/ site/maven-repo/dev/
