@@ -34,11 +34,11 @@ models/build.bash
 # Run test-jsonld before Git Test
 tools/test-jsonld/test-jsonld.bash
 
-# No files (which are not on .gitigore) should have been modified!
-tools/git/test.bash
-
 # Test distros: 1. End-user distributed executable fat über JAR, 2. Container Image
 tools/distro/test.bash
 
 # Test Maven repo, via JBang integration support
 tools/maven/test.bash
+
+# Always run this LAST: No files (which are not on .gitigore) should have been modified!
+tools/git/test.bash
