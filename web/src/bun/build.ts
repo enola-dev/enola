@@ -29,6 +29,7 @@ await $`bun tsc`
 process.stdout.write("🧪 ")
 await $`bun test`
 
+console.log() // Newline, to separate build from 🧪 test output
 await $`rm -rf web-out/bundle/`
 const result = await build({
   html: true,
