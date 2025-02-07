@@ -26,7 +26,7 @@
 
 1. `cd web/`
 
-1. `./develop`
+1. `./dev`
 
 ### Build
 
