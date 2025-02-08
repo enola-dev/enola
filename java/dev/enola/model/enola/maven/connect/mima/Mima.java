@@ -28,32 +28,48 @@ import eu.maveniverse.maven.mima.extensions.mmr.ModelRequest;
 import eu.maveniverse.maven.mima.extensions.mmr.ModelResponse;
 
 import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactDescriptorException;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.eclipse.aether.resolution.VersionResolutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+
 public class Mima implements AutoCloseable {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(Mima.class);
+
     private final Context context;
     private final MavenModelReader mmr;
 
     public Mima() {
-        var overrides =
+        this(
                 ContextOverrides.create()
                         // TODO repositories() - ContextOverrides.AddRepositoriesOp?
                         // TODO transferListener() to log progress?
-                        .checksumPolicy(FAIL)
-                        .snapshotUpdatePolicy(NEVER)
-                        .build();
+                        .snapshotUpdatePolicy(NEVER));
         // TODO https://maven.apache.org/resolver/configuration.html configProperties() ?!
+    }
+
+    public Mima(ContextOverrides.Builder contextOverridesBuilder) {
+        contextOverridesBuilder.checksumPolicy(FAIL);
+
+        var env = "TEST_TMPDIR"; // see https://bazel.build/reference/test-encyclopedia
+        var tmp = System.getenv(env);
+        if (tmp != null) {
+            Path m2repo = Paths.get(tmp, "maven/repo");
+            contextOverridesBuilder.withLocalRepositoryOverride(m2repo);
+        }
 
         var runtime = Runtimes.INSTANCE.getRuntime();
         logger.info("Mima Maven Version: {}", runtime.mavenVersion());
 
-        this.context = runtime.create(overrides);
+        this.context = runtime.create(contextOverridesBuilder.build());
         this.mmr = new MavenModelReader(context);
     }
 
@@ -82,6 +98,19 @@ public class Mima implements AutoCloseable {
                         .setRequestContext(gav)
                         .build();
         var response = mmr.readModel(request);
+        if (response == null) throw new IllegalArgumentException(gav);
         return response;
+    }
+
+    // Utilities
+
+    public static Optional<URI> origin(ModelResponse modelResponse) {
+        var model = modelResponse.getRawModel();
+        var artifactDescriptorResult = modelResponse.toArtifactDescriptorResult(model);
+        var repository = artifactDescriptorResult.getRepository();
+        if (repository instanceof RemoteRepository remoteRepository) {
+            return Optional.of(URI.create(remoteRepository.getUrl()));
+        }
+        return Optional.empty();
     }
 }
