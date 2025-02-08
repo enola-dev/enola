@@ -26,9 +26,7 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 
-public class LearnMimaTest {
-
-    // TODO Rename LearnMimaTest to MimaTest
+public class MimaTest {
 
     // TODO Test other repo URLs than Maven Central (and make explicit)
 
