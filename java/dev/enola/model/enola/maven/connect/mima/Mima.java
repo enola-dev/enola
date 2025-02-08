@@ -140,6 +140,8 @@ public class Mima implements AutoCloseable {
         return response;
     }
 
+    // TODO public ModelResponse get(RemoteRepository repo, String gav)
+
     // Utilities with access to state of this class
 
     public DependencyNode collect(String gav) throws DependencyResolutionException {
