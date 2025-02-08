@@ -23,9 +23,9 @@ import org.eclipse.aether.RepositoryException;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.junit.Test;
 
-public class LearnMimaTest {
+import java.net.URI;
 
-    // TODO Origin repo
+public class LearnMimaTest {
 
     // TODO XML
 
@@ -44,8 +44,19 @@ public class LearnMimaTest {
     @Test
     public void mariaDB4j() throws RepositoryException {
         try (var mima = new Mima()) {
-            var model = mima.get("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0").getEffectiveModel();
+            var gav = "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0";
+            var response = mima.get(gav);
+            var model = response.getEffectiveModel();
             assertThat(model).isNotNull();
+
+            // Origin:
+            assertThat(Mima.origin(response))
+                    .hasValue(URI.create("https://repo.maven.apache.org/maven2/"));
+            // Do it again, to see if it still works a 2nd time, even when it's already DL:
+            response = mima.get(gav);
+            model = response.getEffectiveModel();
+            assertThat(Mima.origin(response))
+                    .hasValue(URI.create("https://repo.maven.apache.org/maven2/"));
         }
     }
 
