@@ -34,6 +34,7 @@ java_library(
         "@enola_maven//:eu_maveniverse_maven_mima_runtime_standalone_static",
         "@enola_maven//:org_apache_maven_maven_model",
         "@enola_maven//:org_apache_maven_resolver_maven_resolver_api",
+        "@enola_maven//:org_apache_maven_resolver_maven_resolver_util",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
