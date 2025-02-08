@@ -54,6 +54,15 @@ public class GAVRTest {
                 "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?classifier=dist&type=zip");
     }
 
+    @Test
+    public void parsePkg() {
+        var purl =
+                "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?repository_url=https%3A%2F%2Fmaven.google.com&type=pom";
+        var gavr = GAVR.parsePkgURL(purl);
+        assertThat(gavr.repo()).isEqualTo("https://maven.google.com");
+        assertThat(gavr.toGAV()).isEqualTo("ch.vorburger.mariaDB4j:mariaDB4j-core:pom:3.1.0");
+    }
+
     private void check(String gav, String purl) {
         checkFromAndToGAV(gav);
         checkFromAndToPkgURL(purl);

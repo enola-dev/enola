@@ -228,7 +228,7 @@ public record GAVR(
             builder.withQualifier("classifier", classifier);
         }
         if (!repo.isEmpty()) {
-            builder.withQualifier("repository_url", classifier);
+            builder.withQualifier("repository_url", repo);
         }
         try {
             return builder.build().canonicalize();
