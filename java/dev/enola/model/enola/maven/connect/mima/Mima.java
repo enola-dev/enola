@@ -24,6 +24,7 @@ import static eu.maveniverse.maven.mima.context.ContextOverrides.SnapshotUpdateP
 
 import eu.maveniverse.maven.mima.context.Context;
 import eu.maveniverse.maven.mima.context.ContextOverrides;
+import eu.maveniverse.maven.mima.context.ContextOverrides.ChecksumPolicy;
 import eu.maveniverse.maven.mima.context.Runtimes;
 import eu.maveniverse.maven.mima.extensions.mmr.MavenModelReader;
 import eu.maveniverse.maven.mima.extensions.mmr.ModelRequest;
@@ -36,6 +37,7 @@ import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RepositoryPolicy;
 import org.eclipse.aether.resolution.*;
 import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 import org.slf4j.Logger;
@@ -45,9 +47,30 @@ import java.io.*;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class Mima implements AutoCloseable {
+
+    private static final ChecksumPolicy ENOLA_DEFAULT_CHECKSUM_POLICY = FAIL;
+    private static final String ENOLA_DEFAULT_CHECKSUM_POLICY_STRING =
+            ENOLA_DEFAULT_CHECKSUM_POLICY.name().toLowerCase(Locale.ROOT);
+
+    public static final RemoteRepository CENTRAL = ContextOverrides.CENTRAL;
+    public static final RemoteRepository JITPACK =
+            new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io/")
+                    .setReleasePolicy(
+                            new RepositoryPolicy(
+                                    true,
+                                    RepositoryPolicy.UPDATE_POLICY_NEVER,
+                                    ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
+                    .setSnapshotPolicy(
+                            new RepositoryPolicy(
+                                    false,
+                                    RepositoryPolicy.UPDATE_POLICY_NEVER,
+                                    ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
+                    .build();
 
     private static final Logger logger = LoggerFactory.getLogger(Mima.class);
 
@@ -55,16 +78,23 @@ public class Mima implements AutoCloseable {
     private final MavenModelReader mmr;
 
     public Mima() {
+        this(List.of(CENTRAL));
+    }
+
+    public Mima(List<RemoteRepository> repos) {
         this(
                 ContextOverrides.create()
-                        // TODO repositories() - ContextOverrides.AddRepositoriesOp?
-                        // TODO transferListener() to log progress?
+                        .withUserSettings(false)
+                        .addRepositoriesOp(ContextOverrides.AddRepositoriesOp.REPLACE)
+                        .repositories(repos)
+                        .ignoreArtifactDescriptorRepositories(true)
                         .snapshotUpdatePolicy(NEVER));
         // TODO https://maven.apache.org/resolver/configuration.html configProperties() ?!
     }
 
     public Mima(ContextOverrides.Builder contextOverridesBuilder) {
-        contextOverridesBuilder.checksumPolicy(FAIL);
+        contextOverridesBuilder.checksumPolicy(ENOLA_DEFAULT_CHECKSUM_POLICY);
+        // TODO transferListener() to show progress... using a generic Tasks API
 
         var env = "TEST_TMPDIR"; // see https://bazel.build/reference/test-encyclopedia
         var tmp = System.getenv(env);
