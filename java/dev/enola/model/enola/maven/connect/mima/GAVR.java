@@ -37,11 +37,12 @@ import java.util.Map;
  * <p>The GroupID, ArtifactID & Version are mandatory and cannot be empty. The Extension, Classifier
  * & Repository can be empty, but never null.
  *
- * <p>The Maven default extension "jar" is hidden in the String and Package URL syntax (but is
- * returned by {@link #extension()}).
+ * <p>The Maven default extension "jar" are hidden in the GAV coordinates and Package URL syntax
+ * (but is returned by {@link #extension()} API). This is different from Maven core, which always
+ * shows "jar".
  *
  * <p>This class itself does NOT imply any other "defaults" for Classifier & Repository. Callers of
- * this class may resolve a GAVR without repot to one with a repo using {@link
+ * this class may resolve a GAVR without repo to one with a repo using {@link
  * Mima#origin(ModelResponse)}.
  */
 public record GAVR(
@@ -72,6 +73,29 @@ public record GAVR(
                 artifact.getClassifier(),
                 artifact.getVersion(),
                 "");
+    }
+
+    /** Return a String in the same format that {@link #parsePkgURL(String)} uses. */
+    public String toPkgURL() {
+        var builder = PackageURLBuilder.aPackageURL();
+        builder.withType("maven");
+        builder.withNamespace(groupId);
+        builder.withName(artifactId);
+        builder.withVersion(version);
+        if (!extension.isEmpty() && !"jar".equals(extension)) {
+            builder.withQualifier("type", extension);
+        }
+        if (!classifier.isEmpty()) {
+            builder.withQualifier("classifier", classifier);
+        }
+        if (!repo.isEmpty()) {
+            builder.withQualifier("repository_url", repo);
+        }
+        try {
+            return builder.build().canonicalize();
+        } catch (MalformedPackageURLException e) {
+            throw new IllegalStateException(toGAV(), e);
+        }
     }
 
     /**
@@ -212,29 +236,6 @@ public record GAVR(
         sb.append(':');
         sb.append(version);
         return sb.toString();
-    }
-
-    /** Return a String in the same format that {@link #parsePkgURL(String)} uses. */
-    public String toPkgURL() {
-        var builder = PackageURLBuilder.aPackageURL();
-        builder.withType("maven");
-        builder.withNamespace(groupId);
-        builder.withName(artifactId);
-        builder.withVersion(version);
-        if (!extension.isEmpty() && !"jar".equals(extension)) {
-            builder.withQualifier("type", extension);
-        }
-        if (!classifier.isEmpty()) {
-            builder.withQualifier("classifier", classifier);
-        }
-        if (!repo.isEmpty()) {
-            builder.withQualifier("repository_url", repo);
-        }
-        try {
-            return builder.build().canonicalize();
-        } catch (MalformedPackageURLException e) {
-            throw new IllegalStateException(toGAV(), e);
-        }
     }
 
     public Builder toBuilder() {
