@@ -128,7 +128,7 @@ public class Mima implements AutoCloseable {
                         .setRequestContext(gavr.toString())
                         .build();
         var response = mmr.readModel(request);
-        if (response == null) throw new IllegalArgumentException(gavr.toGradle());
+        if (response == null) throw new IllegalArgumentException(gavr.toGAV());
         return response;
     }
 

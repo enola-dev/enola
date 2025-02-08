@@ -24,6 +24,8 @@ import com.github.packageurl.PackageURL;
 import com.github.packageurl.PackageURLBuilder;
 import com.google.common.base.Strings;
 
+import eu.maveniverse.maven.mima.extensions.mmr.ModelResponse;
+
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 
@@ -35,8 +37,12 @@ import java.util.Map;
  * <p>The GroupID, ArtifactID & Version are mandatory and cannot be empty. The Extension, Classifier
  * & Repository can be empty, but never null.
  *
- * <p>This class itself does NOT imply any "defaults" for Extension, Classifier & Repository; but
- * it's users may well.
+ * <p>The Maven default extension "jar" is hidden in the String and Package URL syntax (but is
+ * returned by {@link #extension()}).
+ *
+ * <p>This class itself does NOT imply any other "defaults" for Classifier & Repository. Callers of
+ * this class may resolve a GAVR without repot to one with a repo using {@link
+ * Mima#origin(ModelResponse)}.
  */
 public record GAVR(
         String groupId,
@@ -46,17 +52,18 @@ public record GAVR(
         String version,
         String repo) {
 
-    // TODO Remove the "Gradle" terminology references entirely again (just Artifact)
-
-    // TODO Consider #performance - make this a class to cache Gradle & PkgURL representations?
+    // TODO Consider #performance - make this a class to cache GAV & PkgURL its representations?
 
     /**
-     * Parse a "short Gradle-style" GAV in the
-     * <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version> format, like e.g.
-     * "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0" to a GAVR. NB: This syntax does not allow
-     * specifying a repository!
+     * Parse a coordinates in the <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>
+     * format, like e.g. "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0" to a GAVR.
+     *
+     * <p>This format is not a URL; use {@link #parsePkgURL(String)} if you have a URL, or {@link
+     * #toPkgURL()} if you want one.
+     *
+     * <p>PS: This syntax does not allow specifying a repository!
      */
-    public static GAVR parseGradle(String gav) {
+    public static GAVR parseGAV(String gav) {
         var artifact = new DefaultArtifact(gav);
         return new GAVR(
                 artifact.getGroupId(),
@@ -179,12 +186,12 @@ public record GAVR(
     }
 
     /**
-     * Return a String in the same format that {@link #parseGradle(String)} uses.
+     * Return a String in the same format that {@link #parseGAV(String)} uses.
      *
      * <p>This omits extension "jar" when it can (contrary to how
      * org.eclipse.aether.artifact.AbstractArtifact#toString() does it).
      */
-    public String toGradle() {
+    public String toGAV() {
         var sb = // w.o. repo.length()
                 new StringBuilder(
                         4 // max. 4x ':'
@@ -226,7 +233,7 @@ public record GAVR(
         try {
             return builder.build().canonicalize();
         } catch (MalformedPackageURLException e) {
-            throw new IllegalStateException(toGradle(), e);
+            throw new IllegalStateException(toGAV(), e);
         }
     }
 
