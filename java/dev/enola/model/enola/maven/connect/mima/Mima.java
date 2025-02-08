@@ -17,6 +17,8 @@
  */
 package dev.enola.model.enola.maven.connect.mima;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import static eu.maveniverse.maven.mima.context.ContextOverrides.ChecksumPolicy.FAIL;
 import static eu.maveniverse.maven.mima.context.ContextOverrides.SnapshotUpdatePolicy.NEVER;
 
@@ -27,6 +29,8 @@ import eu.maveniverse.maven.mima.extensions.mmr.MavenModelReader;
 import eu.maveniverse.maven.mima.extensions.mmr.ModelRequest;
 import eu.maveniverse.maven.mima.extensions.mmr.ModelResponse;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.eclipse.aether.resolution.ArtifactDescriptorException;
@@ -35,6 +39,7 @@ import org.eclipse.aether.resolution.VersionResolutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -112,5 +117,18 @@ public class Mima implements AutoCloseable {
             return Optional.of(URI.create(remoteRepository.getUrl()));
         }
         return Optional.empty();
+    }
+
+    public static String xml(Model model) {
+        try (var baos = new ByteArrayOutputStream()) {
+            String encoding = model.getModelEncoding();
+            if (isNullOrEmpty(encoding)) encoding = "UTF-8";
+            try (Writer out = new OutputStreamWriter(baos, encoding)) {
+                new MavenXpp3Writer().write(out, model);
+            }
+            return baos.toString(encoding);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }
