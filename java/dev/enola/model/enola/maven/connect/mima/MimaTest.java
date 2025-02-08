@@ -25,10 +25,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.URI;
+import java.util.List;
 
 public class MimaTest {
-
-    // TODO Test other repo URLs than Maven Central (and make explicit)
 
     // TODO Allow explicit repo in get()
 
@@ -60,6 +59,13 @@ public class MimaTest {
             // Do it again, to see if it still works a 2nd time, even when it's already DL:
             response = mima.get(gav);
             assertThat(Mima.origin(response)).hasValue(central);
+        }
+    }
+
+    @Test
+    public void jitpack() throws RepositoryException {
+        try (var mima = new Mima(List.of(Mima.JITPACK))) {
+            assertThat(mima.get("com.github.vorburger:java-multihash:ed14893c86")).isNotNull();
         }
     }
 
