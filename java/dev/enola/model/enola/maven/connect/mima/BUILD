@@ -29,6 +29,11 @@ java_library(
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:eu_maveniverse_maven_mima_context",
+        "@enola_maven//:eu_maveniverse_maven_mima_extensions_mmr",
+        "@enola_maven//:eu_maveniverse_maven_mima_runtime_standalone_static",
+        "@enola_maven//:org_apache_maven_maven_model",
+        "@enola_maven//:org_apache_maven_resolver_maven_resolver_api",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
@@ -39,11 +44,6 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":mima",
-        "@enola_maven//:eu_maveniverse_maven_mima_context",
-        "@enola_maven//:eu_maveniverse_maven_mima_extensions_mmr",
-        "@enola_maven//:eu_maveniverse_maven_mima_runtime_standalone_static",
-        "@enola_maven//:org_apache_maven_maven_model",
         "@enola_maven//:org_apache_maven_resolver_maven_resolver_api",
-        "@enola_maven//:org_slf4j_slf4j_api",  # TODO rm
     ],
 )
