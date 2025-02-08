@@ -27,8 +27,6 @@ import java.net.URI;
 
 public class LearnMimaTest {
 
-    // TODO XML
-
     // TODO Classpath
 
     // TODO Test other repo URLs than Maven Central (and make explicit)
@@ -49,14 +47,15 @@ public class LearnMimaTest {
             var model = response.getEffectiveModel();
             assertThat(model).isNotNull();
 
+            assertThat(Mima.xml(model))
+                    .contains("<description>Java wrapper / launcher for MariaDB (or MySQL)");
+
             // Origin:
-            assertThat(Mima.origin(response))
-                    .hasValue(URI.create("https://repo.maven.apache.org/maven2/"));
+            var central = URI.create("https://repo.maven.apache.org/maven2/");
+            assertThat(Mima.origin(response)).hasValue(central);
             // Do it again, to see if it still works a 2nd time, even when it's already DL:
             response = mima.get(gav);
-            model = response.getEffectiveModel();
-            assertThat(Mima.origin(response))
-                    .hasValue(URI.create("https://repo.maven.apache.org/maven2/"));
+            assertThat(Mima.origin(response)).hasValue(central);
         }
     }
 
