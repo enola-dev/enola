@@ -29,7 +29,7 @@ import java.util.List;
 
 public class MimaTest {
 
-    // TODO Allow explicit repo in get()
+    // TODO Allow explicit repo in get(), see https://github.com/maveniverse/mima/issues/166
 
     // TODO class/record GAVR (with repoS), instead String
 
@@ -64,9 +64,14 @@ public class MimaTest {
 
     @Test
     public void jitpack() throws RepositoryException {
+        var gav = "com.github.vorburger:java-multihash:ed14893c86";
         try (var mima = new Mima(List.of(Mima.JITPACK))) {
-            assertThat(mima.get("com.github.vorburger:java-multihash:ed14893c86")).isNotNull();
+            assertThat(mima.get(gav)).isNotNull();
         }
+        // TODO When https://github.com/maveniverse/mima/issues/166 is implemented:
+        // try (var mima = new Mima()) {
+        //    assertThat(mima.get(Mima.JITPACK, gav)).isNotNull();
+        // }
     }
 
     @Test(expected = ArtifactResolutionException.class)
