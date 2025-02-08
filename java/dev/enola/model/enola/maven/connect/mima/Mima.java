@@ -32,7 +32,6 @@ import eu.maveniverse.maven.mima.extensions.mmr.ModelResponse;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
@@ -57,20 +56,13 @@ public class Mima implements AutoCloseable {
     private static final String ENOLA_DEFAULT_CHECKSUM_POLICY_STRING =
             ENOLA_DEFAULT_CHECKSUM_POLICY.name().toLowerCase(Locale.ROOT);
 
-    public static final RemoteRepository CENTRAL = ContextOverrides.CENTRAL;
-    public static final RemoteRepository JITPACK =
-            new RemoteRepository.Builder("jitpack", "default", "https://jitpack.io/")
-                    .setReleasePolicy(
-                            new RepositoryPolicy(
-                                    true,
-                                    RepositoryPolicy.UPDATE_POLICY_NEVER,
-                                    ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
-                    .setSnapshotPolicy(
-                            new RepositoryPolicy(
-                                    false,
-                                    RepositoryPolicy.UPDATE_POLICY_NEVER,
-                                    ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
-                    .build();
+    /**
+     * This CENTRAL uses FAIL instead of CHECKSUM_POLICY_WARN like ContextOverrides.CENTRAL does!
+     */
+    public static final RemoteRepository CENTRAL =
+            getRemoteRepository(ContextOverrides.CENTRAL.getUrl());
+
+    public static final RemoteRepository JITPACK = getRemoteRepository("https://jitpack.io/");
 
     private static final Logger logger = LoggerFactory.getLogger(Mima.class);
 
@@ -118,38 +110,42 @@ public class Mima implements AutoCloseable {
     /**
      * Fetch a Maven Model from (remote) repositories, given a GAV.
      *
-     * @param gav a "Gradle-style" GAV in the
-     *     <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version> format, like e.g.
-     *     "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0"
+     * @param gavr a {@link GAVR}
      * @return a {@link ModelResponse}, of which you typically care about the {@link
      *     ModelResponse#getEffectiveModel()}
      */
-    public ModelResponse get(String gav)
+    public ModelResponse get(GAVR gavr)
             throws ArtifactResolutionException,
                     VersionResolutionException,
                     ArtifactDescriptorException {
-        var artifact = new DefaultArtifact(gav);
+        var artifact = gavr.toArtifact();
         var request =
                 ModelRequest.builder()
                         .setArtifact(artifact)
+                        // TODO https://github.com/maveniverse/mima/issues/166
+                        //   .setRepository(gavr.repo())
                         // TODO What is RequestContext really used for?!
-                        .setRequestContext(gav)
+                        .setRequestContext(gavr.toString())
                         .build();
         var response = mmr.readModel(request);
-        if (response == null) throw new IllegalArgumentException(gav);
+        if (response == null) throw new IllegalArgumentException(gavr.toGradle());
         return response;
     }
 
-    // TODO public ModelResponse get(RemoteRepository repo, String gav)
-
     // Utilities with access to state of this class
 
-    public DependencyNode collect(String gav) throws DependencyResolutionException {
-        var artifact = new DefaultArtifact(gav);
+    public DependencyNode collect(GAVR gavr) throws DependencyResolutionException {
+        var artifact = gavr.toArtifact();
         Dependency dependency = new Dependency(artifact, "runtime");
         CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot(dependency);
-        collectRequest.setRepositories(context.remoteRepositories());
+
+        if (gavr.repo().isEmpty()) collectRequest.setRepositories(context.remoteRepositories());
+        else {
+            var remoteRepository = getRemoteRepository(gavr.repo());
+            // NOT addRepository() but setRepositories(), to clear any existing:
+            collectRequest.setRepositories(List.of(remoteRepository));
+        }
 
         DependencyRequest dependencyRequest = new DependencyRequest();
         dependencyRequest.setCollectRequest(collectRequest);
@@ -160,6 +156,21 @@ public class Mima implements AutoCloseable {
     }
 
     // Utilities that are purely static "extension" helper methods
+
+    private static RemoteRepository getRemoteRepository(String url) {
+        return new RemoteRepository.Builder(url, "default", url)
+                .setReleasePolicy(
+                        new RepositoryPolicy(
+                                true,
+                                RepositoryPolicy.UPDATE_POLICY_NEVER,
+                                ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
+                .setSnapshotPolicy(
+                        new RepositoryPolicy(
+                                false,
+                                RepositoryPolicy.UPDATE_POLICY_NEVER,
+                                ENOLA_DEFAULT_CHECKSUM_POLICY_STRING))
+                .build();
+    }
 
     public static String classpath(DependencyNode root) throws DependencyResolutionException {
         PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
