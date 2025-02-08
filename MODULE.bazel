@@ -121,7 +121,14 @@ enola_maven.install(
 
         # TODO Replace with "com.github.multiformats:java-multibase:..."
         #   after merge of https://github.com/multiformats/java-multibase/pull/37
+        #   NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1324,
+        #   this only just so happens to work because this Git SHA starts with a digit.
         "com.github.vorburger:java-multibase:166578b51d",
+
+        # TODO When https://github.com/bazel-contrib/rules_jvm_external/issues/1324 is fixed,
+        #   then upgrade rules_jvm_external (above), and uncomment this line, in order to
+        #   fix https://github.com/enola-dev/enola/issues/1040:
+        # "com.github.vorburger:java-multihash:ed14893c86",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
@@ -132,6 +139,10 @@ enola_maven.install(
     excluded_artifacts = [
         # TODO Remove after merge of https://github.com/multiformats/java-multibase/pull/37
         "com.github.multiformats:java-multibase",
+
+        # TODO Uncomment when https://github.com/bazel-contrib/rules_jvm_external/issues/1324 is fixed
+        #      as part of fixing https://github.com/enola-dev/enola/issues/1040.
+        #   "com.github.multiformats:java-multihash",
 
         # https://commons.apache.org/proper/commons-logging/ is a PITA,
         # because it contains package org.apache.commons.logging, which we
