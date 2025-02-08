@@ -19,8 +19,15 @@ package dev.enola.model.enola.maven.connect.mima;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import com.github.packageurl.MalformedPackageURLException;
+import com.github.packageurl.PackageURL;
+import com.github.packageurl.PackageURLBuilder;
+import com.google.common.base.Strings;
+
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
+
+import java.util.Map;
 
 /**
  * GAVR is a Maven GroupID, ArtifactID, Version, Extension (AKA Type), Classifier + Repository.
@@ -38,6 +45,8 @@ public record GAVR(
         String classifier,
         String version,
         String repo) {
+
+    // TODO Remove the "Gradle" terminology references entirely again (just Artifact)
 
     // TODO Consider #performance - make this a class to cache Gradle & PkgURL representations?
 
@@ -58,8 +67,38 @@ public record GAVR(
                 "");
     }
 
-    // TODO public GAVR parsePkgURL(String purl), with
-    //   https://github.com/package-url/packageurl-java
+    /**
+     * Parse a Maven Package URL. For example,
+     * "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?classifier=javadoc". See <a
+     * href="https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst#maven">Type
+     * definition</a> and its underlying <a
+     * href="https://spdx.github.io/spdx-spec/v3.0.1/annexes/pkg-url-specification/">SPDX
+     * specification</a>.
+     */
+    public static GAVR parsePkgURL(String purl) {
+        try {
+            var p = new PackageURL(purl);
+            var q = p.getQualifiers();
+            if (!"maven".equals(p.getType())) throw new IllegalArgumentException(purl);
+            // https://github.com/package-url/purl-spec/blob/master/PURL-TYPES.rst#maven
+            return new GAVR(
+                    p.getNamespace(),
+                    p.getName(),
+                    get(q, "type"),
+                    get(q, "classifier"),
+                    p.getVersion(),
+                    get(q, "repository_url"));
+
+        } catch (MalformedPackageURLException e) {
+            throw new IllegalArgumentException(purl, e);
+        }
+    }
+
+    private static String get(Map<String, String> q, String key) {
+        if (q == null) return "";
+        var value = q.get(key);
+        return Strings.nullToEmpty(value);
+    }
 
     public static class Builder {
         private String groupId;
@@ -118,10 +157,16 @@ public record GAVR(
     public GAVR {
         requireNonEmpty(groupId, "groupId");
         requireNonEmpty(artifactId, "artifactId");
-        requireNonNull(extension, "extension");
+        extension = useDefaultIfNullOrEmpty(extension, "jar");
         requireNonNull(classifier, "classifier");
         requireNonEmpty(version, "version");
         requireNonNull(repo, "repo");
+    }
+
+    private String useDefaultIfNullOrEmpty(String string, String defaultValue) {
+        if (string == null) return defaultValue;
+        if (string.isEmpty()) return defaultValue;
+        return string;
     }
 
     private void requireNonNull(Object object, String field) {
@@ -133,8 +178,12 @@ public record GAVR(
             throw new IllegalStateException(field + " cannot be null or empty");
     }
 
-    /** Return a String in the same format that {@link #parseGradle(String)} uses. */
-    @SuppressWarnings("StringBufferReplaceableByString") // pre-sizing is more efficient (?)
+    /**
+     * Return a String in the same format that {@link #parseGradle(String)} uses.
+     *
+     * <p>This omits extension "jar" when it can (contrary to how
+     * org.eclipse.aether.artifact.AbstractArtifact#toString() does it).
+     */
     public String toGradle() {
         var sb = // w.o. repo.length()
                 new StringBuilder(
@@ -145,26 +194,41 @@ public record GAVR(
                                 + classifier.length()
                                 + version.length());
 
-        sb.append(groupId);
-        sb.append(':');
-        sb.append(artifactId);
+        sb.append(groupId).append(':').append(artifactId);
 
-        if (!extension.isEmpty()) {
-            sb.append(':');
-            sb.append(extension);
-        }
+        if ((!extension.isEmpty() && !"jar".equals(extension))
+                || ("jar".equals(extension) && !classifier.isEmpty()))
+            sb.append(':').append(extension);
 
-        if (!classifier.isEmpty()) {
-            sb.append(':');
-            sb.append(classifier);
-        }
+        if (!classifier.isEmpty()) sb.append(':').append(classifier);
 
         sb.append(':');
         sb.append(version);
         return sb.toString();
     }
 
-    // TODO String toPkgURL()
+    /** Return a String in the same format that {@link #parsePkgURL(String)} uses. */
+    public String toPkgURL() {
+        var builder = PackageURLBuilder.aPackageURL();
+        builder.withType("maven");
+        builder.withNamespace(groupId);
+        builder.withName(artifactId);
+        builder.withVersion(version);
+        if (!extension.isEmpty() && !"jar".equals(extension)) {
+            builder.withQualifier("type", extension);
+        }
+        if (!classifier.isEmpty()) {
+            builder.withQualifier("classifier", classifier);
+        }
+        if (!repo.isEmpty()) {
+            builder.withQualifier("repository_url", classifier);
+        }
+        try {
+            return builder.build().canonicalize();
+        } catch (MalformedPackageURLException e) {
+            throw new IllegalStateException(toGradle(), e);
+        }
+    }
 
     public Builder toBuilder() {
         return new Builder()
