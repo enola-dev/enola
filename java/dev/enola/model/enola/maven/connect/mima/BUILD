@@ -26,6 +26,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "@enola_maven//:com_github_package_url_packageurl_java",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",

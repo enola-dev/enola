@@ -117,6 +117,7 @@ enola_maven.install(
         "org.jsoup:jsoup:1.18.1",
         "org.apache.tika:tika-core:3.0.0-BETA2",
         "org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2",
+        "com.github.package-url:packageurl-java:1.5.0",
 
         # Maven Connector
         "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.21",
