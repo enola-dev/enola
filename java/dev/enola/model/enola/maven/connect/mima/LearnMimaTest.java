@@ -23,17 +23,18 @@ import org.eclipse.aether.RepositoryException;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
 import org.junit.Test;
 
+import java.io.File;
 import java.net.URI;
 
 public class LearnMimaTest {
 
-    // TODO Classpath
+    // TODO Rename LearnMimaTest to MimaTest
 
     // TODO Test other repo URLs than Maven Central (and make explicit)
 
     // TODO Allow explicit repo in get()
 
-    // TODO class/record GAV, instead String
+    // TODO class/record GAVR (with repoS), instead String
 
     // TODO Dependencies & Parent
 
@@ -49,6 +50,11 @@ public class LearnMimaTest {
 
             assertThat(Mima.xml(model))
                     .contains("<description>Java wrapper / launcher for MariaDB (or MySQL)");
+
+            var allDependencies = mima.collect(gav);
+            var classpath = Mima.classpath(allDependencies);
+            var n = classpath.chars().filter(c -> c == File.pathSeparatorChar).count();
+            assertThat(n).isEqualTo(19);
 
             // Origin:
             var central = URI.create("https://repo.maven.apache.org/maven2/");

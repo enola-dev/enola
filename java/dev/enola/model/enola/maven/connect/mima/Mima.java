@@ -32,10 +32,12 @@ import eu.maveniverse.maven.mima.extensions.mmr.ModelResponse;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.collection.CollectRequest;
+import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.repository.RemoteRepository;
-import org.eclipse.aether.resolution.ArtifactDescriptorException;
-import org.eclipse.aether.resolution.ArtifactResolutionException;
-import org.eclipse.aether.resolution.VersionResolutionException;
+import org.eclipse.aether.resolution.*;
+import org.eclipse.aether.util.graph.visitor.PreorderNodeListGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,9 +98,10 @@ public class Mima implements AutoCloseable {
             throws ArtifactResolutionException,
                     VersionResolutionException,
                     ArtifactDescriptorException {
+        var artifact = new DefaultArtifact(gav);
         var request =
                 ModelRequest.builder()
-                        .setArtifact(new DefaultArtifact(gav))
+                        .setArtifact(artifact)
                         // TODO What is RequestContext really used for?!
                         .setRequestContext(gav)
                         .build();
@@ -107,7 +110,30 @@ public class Mima implements AutoCloseable {
         return response;
     }
 
-    // Utilities
+    // Utilities with access to state of this class
+
+    public DependencyNode collect(String gav) throws DependencyResolutionException {
+        var artifact = new DefaultArtifact(gav);
+        Dependency dependency = new Dependency(artifact, "runtime");
+        CollectRequest collectRequest = new CollectRequest();
+        collectRequest.setRoot(dependency);
+        collectRequest.setRepositories(context.remoteRepositories());
+
+        DependencyRequest dependencyRequest = new DependencyRequest();
+        dependencyRequest.setCollectRequest(collectRequest);
+
+        return context.repositorySystem()
+                .resolveDependencies(context.repositorySystemSession(), dependencyRequest)
+                .getRoot();
+    }
+
+    // Utilities that are purely static "extension" helper methods
+
+    public static String classpath(DependencyNode root) throws DependencyResolutionException {
+        PreorderNodeListGenerator nlg = new PreorderNodeListGenerator();
+        root.accept(nlg);
+        return nlg.getClassPath();
+    }
 
     public static Optional<URI> origin(ModelResponse modelResponse) {
         var model = modelResponse.getRawModel();
