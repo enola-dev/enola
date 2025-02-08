@@ -38,7 +38,7 @@ public class MimaTest {
     @Test
     public void mariaDB4j() throws RepositoryException {
         try (var mima = new Mima()) {
-            var gav = GAVR.parseGradle("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
+            var gav = GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
             var response = mima.get(gav);
             var model = response.getEffectiveModel();
             assertThat(model).isNotNull();
@@ -62,7 +62,7 @@ public class MimaTest {
 
     @Test
     public void jitpack() throws RepositoryException {
-        var gav = GAVR.parseGradle("com.github.vorburger:java-multihash:ed14893c86");
+        var gav = GAVR.parseGAV("com.github.vorburger:java-multihash:ed14893c86");
         try (var mima = new Mima(List.of(Mima.JITPACK))) {
             assertThat(mima.get(gav)).isNotNull();
         }
@@ -75,14 +75,14 @@ public class MimaTest {
     @Test(expected = ArtifactResolutionException.class)
     public void nonExistingVersion() throws RepositoryException {
         try (var mima = new Mima()) {
-            mima.get(GAVR.parseGradle("ch.vorburger.mariaDB4j:mariaDB4j-core:1.0.0"));
+            mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:1.0.0"));
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void gavWithoutVersion() throws RepositoryException {
         try (var mima = new Mima()) {
-            mima.get(GAVR.parseGradle("ch.vorburger.mariaDB4j:mariaDB4j-core"));
+            mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core"));
         }
     }
 }

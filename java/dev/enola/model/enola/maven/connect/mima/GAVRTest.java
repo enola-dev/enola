@@ -23,25 +23,23 @@ import org.junit.Test;
 
 public class GAVRTest {
 
-    // TODO Remove the "Gradle" terminology references entirely again (just Artifact)
-
     @Test(expected = IllegalArgumentException.class)
-    public void parseGradleWithoutVersion() {
-        GAVR.parseGradle("ch.vorburger.mariaDB4j:mariaDB4j-core");
+    public void parseGavWithoutVersion() {
+        GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core");
     }
 
     @Test
     public void toArtifactString() {
-        checkFromAndToGradle("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
-        checkFromAndToGradle(
+        checkFromAndToGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
+        checkFromAndToGAV(
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:jar:3.1.0",
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
-        checkFromAndToGradle("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0:jar:javadoc");
-        checkFromAndToGradle("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0:zip:dist");
+        checkFromAndToGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0:jar:javadoc");
+        checkFromAndToGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0:zip:dist");
     }
 
     @Test
-    public void parseGradleAndPkgURL() {
+    public void parseGavAndPkg() {
         check(
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0",
                 "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0");
@@ -51,26 +49,29 @@ public class GAVRTest {
         check(
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:jar:javadoc:3.1.0",
                 "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?classifier=javadoc");
+        check(
+                "ch.vorburger.mariaDB4j:mariaDB4j-core:zip:dist:3.1.0",
+                "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?classifier=dist&type=zip");
     }
 
-    private void check(String gradleGAV, String purl) {
-        checkFromAndToGradle(gradleGAV);
+    private void check(String gav, String purl) {
+        checkFromAndToGAV(gav);
         checkFromAndToPkgURL(purl);
 
-        var gavrFromGradle = GAVR.parseGradle(gradleGAV);
-        assertThat(gavrFromGradle.toPkgURL()).isEqualTo(purl);
+        var gavr = GAVR.parseGAV(gav);
+        assertThat(gavr.toPkgURL()).isEqualTo(purl);
 
         var gavrFromPkgURL = GAVR.parsePkgURL(purl);
-        assertThat(gavrFromPkgURL.toGradle()).isEqualTo(gradleGAV);
+        assertThat(gavrFromPkgURL.toGAV()).isEqualTo(gav);
     }
 
-    private void checkFromAndToGradle(String gav) {
-        checkFromAndToGradle(gav, gav);
+    private void checkFromAndToGAV(String gav) {
+        checkFromAndToGAV(gav, gav);
     }
 
-    private void checkFromAndToGradle(String inputGAV, String expectedGAV) {
-        var gavr = GAVR.parseGradle(inputGAV);
-        assertThat(gavr.toGradle()).isEqualTo(expectedGAV);
+    private void checkFromAndToGAV(String inputGAV, String expectedGAV) {
+        var gavr = GAVR.parseGAV(inputGAV);
+        assertThat(gavr.toGAV()).isEqualTo(expectedGAV);
     }
 
     private void checkFromAndToPkgURL(String purl) {
