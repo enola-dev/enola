@@ -24,7 +24,7 @@ import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.thing.Thing;
-import dev.enola.thing.java2.TBF;
+import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

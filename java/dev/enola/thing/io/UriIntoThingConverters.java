@@ -28,7 +28,7 @@ import dev.enola.common.convert.Converter;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.MutableThing;
-import dev.enola.thing.java2.ProxyTBF;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
 import java.io.IOException;

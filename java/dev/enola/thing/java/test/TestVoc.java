@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java2.test;
+package dev.enola.thing.java.test;
 
-import dev.enola.thing.java2.Vocabulary;
+import dev.enola.thing.java.Vocabulary;
 
 /// Constants for the `https://example.org` vocabulary.
 ///

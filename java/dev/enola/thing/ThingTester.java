@@ -20,7 +20,7 @@ package dev.enola.thing;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.impl.IImmutableThing;
-import dev.enola.thing.java2.TBF;
+import dev.enola.thing.java.TBF;
 
 import org.junit.Before;
 import org.junit.Test;

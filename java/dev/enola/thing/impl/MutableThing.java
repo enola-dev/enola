@@ -19,7 +19,7 @@ package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
-import dev.enola.thing.java2.TBF;
+import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

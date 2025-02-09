@@ -25,7 +25,7 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.thing.ThingConverterInto;
 import dev.enola.thing.ThingTester;
-import dev.enola.thing.java2.TBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Test;

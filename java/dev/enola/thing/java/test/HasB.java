@@ -15,7 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@NullMarked
-package dev.enola.thing.java2.test;
+package dev.enola.thing.java.test;
 
-import org.jspecify.annotations.NullMarked;
+import dev.enola.thing.Thing;
+
+import org.jspecify.annotations.Nullable;
+
+import java.time.Instant;
+
+public interface HasB extends Thing {
+
+    default @Nullable Instant b() {
+        return get(TestVoc.B.B, Instant.class);
+    }
+
+    interface Builder<B extends HasB> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+
+        default HasB.Builder<B> b(Instant test) {
+            set(TestVoc.B.B, test);
+            return this;
+        }
+    }
+}
