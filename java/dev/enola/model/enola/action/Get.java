@@ -21,9 +21,8 @@ import com.google.common.reflect.TypeToken;
 
 import dev.enola.Action;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.thing.java.IRI;
 
-@IRI(Get.IRI)
+// Get.IRI
 public class Get implements Action<String, Object> {
     public static final String IRI = "https://enola.dev/get";
 

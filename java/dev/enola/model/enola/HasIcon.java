@@ -17,18 +17,16 @@
  */
 package dev.enola.model.enola;
 
-import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
 
 import java.net.URI;
 
 public interface HasIcon extends Thing {
 
-    @IRI(KIRI.E.EMOJI)
+    // TODO default ... KIRI.E.EMOJI
     String emoji();
 
-    // TODO @IRI(KIRI.E.IMAGE)
+    // TODO default KIRI.E.IMAGE
     URI image();
 
     interface Builder<B extends HasIcon> extends Thing.Builder<B> { // skipcq: JAVA-E0169

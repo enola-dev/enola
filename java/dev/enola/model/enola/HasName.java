@@ -21,7 +21,7 @@ import dev.enola.thing.Thing;
 
 public interface HasName extends Thing {
 
-    // TODO @IRI(KIRI.E.NAME)
+    // TODO default KIRI.E.NAME
     String name();
 
     interface Builder<B extends HasName> extends HasName, Thing.Builder<B> { // skipcq: JAVA-E0169

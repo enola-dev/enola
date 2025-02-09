@@ -21,7 +21,7 @@ import dev.enola.thing.Thing;
 
 public interface HasDescription extends Thing {
 
-    // TODO @IRI(KIRI.E.META.DESCRIPTION)
+    // TODO default KIRI.E.META.DESCRIPTION
     String description();
 
     interface Builder<B extends HasDescription> extends Thing.Builder<B> { // skipcq: JAVA-E0169

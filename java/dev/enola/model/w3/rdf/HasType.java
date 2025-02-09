@@ -37,7 +37,7 @@ public interface HasType extends Thing {
         return ThingProvider.CTX.get(typesIRI(), Class.class);
     }
 
-    // @IRI(KIRI.RDF.TYPE)
+    // TODO default KIRI.RDF.TYPE
     default Class type() {
         return types().iterator().next();
     }
