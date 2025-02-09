@@ -44,18 +44,19 @@ public class ProxyTBF implements TBF {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<?>> B create(
-            Class<B> builderClass, Class<T> thingClass) {
-        if (builderClass.equals(Thing.Builder.class)) {
+            Class<B> builderInterface, Class<T> thingInterface) {
+        if (builderInterface.equals(Thing.Builder.class)) {
             return (B) wrap.create();
         }
 
         var wrapped = // an ImmutableThing.Builder or a MutableThing (but NOT another Proxy)
                 (Thing.Builder<? extends IImmutableThing>) wrap.create();
-        var handler = new BuilderInvocationHandler(wrapped, thingClass);
+        var handler = new BuilderInvocationHandler(wrapped, thingInterface);
         // return (B) Proxy.newProxyInstance(builderClass.getClassLoader(),
         //     new Class[] {builderClass}, handler);
-        var proxy = Reflection.newProxy(builderClass, handler);
-        if (!(builderClass.isInstance(proxy))) throw new IllegalArgumentException(proxy.toString());
+        var proxy = Reflection.newProxy(builderInterface, handler);
+        if (!(builderInterface.isInstance(proxy)))
+            throw new IllegalArgumentException(proxy.toString());
         return proxy;
     }
 

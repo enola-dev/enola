@@ -27,10 +27,11 @@ public interface TBF {
     /**
      * Creates a new {@link Thing.Builder} instance of (Java) type T.
      *
-     * <p>T may be an interface, not a concrete class.
+     * <p>You would typically not use this directly, but via a generated method on the respective
+     * thing interface, e.g. {@link dev.enola.thing.java2.test.HasSomething#builder(TBF)}.
      */
     <T extends Thing, B extends Thing.Builder<?>> B create(
-            Class<B> builderClass, Class<T> thingClass);
+            Class<B> builderInterface, Class<T> thingInterface);
 
     @SuppressWarnings("unchecked")
     default Thing.Builder<IImmutableThing> create() {

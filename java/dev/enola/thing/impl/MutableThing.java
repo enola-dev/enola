@@ -47,15 +47,15 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
                 @Override
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 public <T extends Thing, TB extends Thing.Builder<?>> TB create(
-                        Class<TB> builderClass, Class<T> thingClass) {
-                    if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
-                        return (TB) new MutableThing();
+                        Class<TB> builderInterface, Class<T> thingInterface) {
+                    if (builderInterface.equals(Thing.Builder.class)
+                            && thingInterface.equals(Thing.class)) return (TB) new MutableThing();
                     else
                         throw new IllegalArgumentException(
                                 "This implementation does not support "
-                                        + builderClass
+                                        + builderInterface
                                         + " and "
-                                        + thingClass);
+                                        + thingInterface);
                 }
             };
 
