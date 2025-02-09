@@ -26,17 +26,17 @@ import java.time.Instant;
 
 public interface HasSomething extends HasA, HasB {
 
-    // TODO Take "https://example.org/test" from a KIRI-like gen. class
+    // TODO Extend HasType and @Override type()
 
     default @Nullable String test() {
-        return getString("https://example.org/test");
+        return getString(TestVoc.SOMETHING.TEST);
     }
 
     interface Builder<B extends HasSomething> // skipcq: JAVA-E0169
             extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 
         default Builder<B> test(String test) {
-            set("https://example.org/test", test);
+            set(TestVoc.SOMETHING.TEST, test);
             return this;
         }
 
