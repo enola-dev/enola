@@ -49,8 +49,8 @@ java_library(
         # TODO Separate BUILD for each sub-package
         ["**/*.java"],
         exclude = [
-            "**/*Test*.java",
-            "**/Test*.java",
+            "**/*Test.java",
+            "**/ThingTester.java",
         ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
@@ -86,7 +86,7 @@ junit_tests(
     name = "tests",
     srcs = glob(["**/*Test.java"]),
     srcs_utils = glob(
-        ["**/*Test*.java"],
+        ["**/ThingTester.java"],
         exclude = ["**/*Test.java"],
     ),
     deps = [

@@ -40,13 +40,13 @@ public class JavaThingTest {
 
         assertThat(thing.iri()).isEqualTo("https://example.org/thing");
 
-        assertThat(thing.getString("https://example.org/test")).isEqualTo("abc");
+        assertThat(thing.getString(TestVoc.SOMETHING.TEST)).isEqualTo("abc");
         assertThat(thing.test()).isEqualTo("abc");
 
-        assertThat(thing.get("https://example.org/a", Long.class)).isEqualTo(123L);
+        assertThat(thing.get(TestVoc.A.A, Long.class)).isEqualTo(123L);
         assertThat(thing.a()).isEqualTo(123L);
 
-        assertThat(thing.get("https://example.org/b", Instant.class)).isInstanceOf(Instant.class);
+        assertThat(thing.get(TestVoc.B.B, Instant.class)).isInstanceOf(Instant.class);
         assertThat(thing.b()).isInstanceOf(Instant.class);
     }
 
@@ -64,10 +64,10 @@ public class JavaThingTest {
         builder.test("hello, world");
 
         Thing thing = builder.build();
-        assertThat(thing.getString("https://example.org/test")).isEqualTo("hello, world");
+        assertThat(thing.getString(TestVoc.SOMETHING.TEST)).isEqualTo("hello, world");
 
         Thing thing2 = builder.build();
-        assertThat(thing2.getString("https://example.org/test")).isEqualTo("hello, world");
+        assertThat(thing2.getString(TestVoc.SOMETHING.TEST)).isEqualTo("hello, world");
 
         // TODO HasSomething hasSomething = builder.build();
         // TODO assertThat(hasSomething.test()).isEqualTo("hello, world");
