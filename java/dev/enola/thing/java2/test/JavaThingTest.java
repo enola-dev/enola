@@ -33,8 +33,7 @@ public class JavaThingTest {
     @Test
     public void javaAPI() {
         var proxyTBF = new ProxyTBF(ImmutableThing.FACTORY);
-        HasSomething.Builder<HasSomething> builder =
-                proxyTBF.create(HasSomething.Builder.class, HasSomething.class);
+        HasSomething.Builder<HasSomething> builder = HasSomething.builder(proxyTBF);
 
         builder.test("abc").a(123L).b(Instant.now()).iri("https://example.org/thing");
         HasSomething thing = builder.build();

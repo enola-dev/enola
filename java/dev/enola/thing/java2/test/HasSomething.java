@@ -18,12 +18,15 @@
 package dev.enola.thing.java2.test;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.java2.TBF;
 
 import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 
 public interface HasSomething extends HasA, HasB {
+
+    // TODO Take "https://example.org/test" from a KIRI-like gen. class
 
     default @Nullable String test() {
         return getString("https://example.org/test");
@@ -48,5 +51,9 @@ public interface HasSomething extends HasA, HasB {
             HasB.Builder.super.b(test);
             return this;
         }
+    }
+
+    static Builder<HasSomething> builder(TBF tbf) {
+        return tbf.create(HasSomething.Builder.class, HasSomething.class);
     }
 }
