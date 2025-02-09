@@ -20,7 +20,7 @@ package dev.enola.thing.repo;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.OnlyIRIThing;
-import dev.enola.thing.java2.TBF;
+import dev.enola.thing.java.TBF;
 
 import java.util.HashMap;
 import java.util.Map;

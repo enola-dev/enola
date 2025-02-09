@@ -15,10 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java2;
+package dev.enola.thing.java;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
+import dev.enola.thing.java.test.HasSomething;
 
 /** TBF is a Thing Builder Factory. */
 @FunctionalInterface
@@ -28,7 +29,7 @@ public interface TBF {
      * Creates a new {@link Thing.Builder} instance of (Java) type T.
      *
      * <p>You would typically not use this directly, but via a generated method on the respective
-     * thing interface, e.g. {@link dev.enola.thing.java2.test.HasSomething#builder(TBF)}.
+     * thing interface, e.g. {@link HasSomething#builder(TBF)}.
      */
     <T extends Thing, B extends Thing.Builder<?>> B create(
             Class<B> builderInterface, Class<T> thingInterface);

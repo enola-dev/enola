@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing.java2.test;
+package dev.enola.thing.java.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
-import dev.enola.thing.java2.ProxyTBF;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Test;

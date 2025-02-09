@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.model.enola.mediatype.TikaMediaTypesThingConverter.IRI;
 
 import dev.enola.thing.impl.MutableThing;
-import dev.enola.thing.java2.ProxyTBF;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Test;
