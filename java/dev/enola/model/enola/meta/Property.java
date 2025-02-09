@@ -21,13 +21,13 @@ public interface Property extends Type {
 
     String CLASS_IRI = "https://enola.dev/meta/Property";
 
-    // TODO @IRI(KIRI.E.META.PARENT)
+    // TODO default KIRI.E.META.PARENT
     Property parent();
 
-    // TODO @IRI(KIRI.E.META.DATATYPE)
+    // TODO default KIRI.E.META.DATATYPE
     Datatype datatype();
 
-    // TODO @IRI(KIRI.E.META.MULTIPLICITY)
+    // TODO default KIRI.E.META.MULTIPLICITY
     Multiplicity multiplicity();
 
     enum Multiplicity {

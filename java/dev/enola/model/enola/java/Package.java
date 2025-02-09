@@ -19,10 +19,12 @@ package dev.enola.model.enola.java;
 
 import dev.enola.model.w3.rdfs.HasLabel;
 import dev.enola.model.w3.rdfs.Resource;
-import dev.enola.thing.java.IRI;
 
-/** 📦 <a href="https://docs.enola.dev/models/enola.dev/java/package/">Java Package</a>. */
-@IRI("https://enola.dev/java/Package/{FQN}")
+/**
+ * 📦 <a href="https://docs.enola.dev/models/enola.dev/java/package/">Java Package</a>.
+ *
+ * <p>IRI Template: https://enola.dev/java/Package/{FQN}
+ */
 public interface Package
         extends Resource, HasLabel { // NOT dev.enola.model.w3.rdfs.Class; these are the instances
 }

@@ -23,7 +23,7 @@ public interface Datatype extends Type {
 
     String CLASS_IRI = "https://enola.dev/meta/Datatype";
 
-    // TODO @IRI(KIRI.E.META.PARENT)
+    // TODO default KIRI.E.META.PARENT
     // Intentionally only singular instead of multiple
     Datatype parent();
 

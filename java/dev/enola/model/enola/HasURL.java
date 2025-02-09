@@ -23,6 +23,6 @@ import java.net.URI;
 
 public interface HasURL extends Thing {
 
-    // TODO @IRI(KIRI.E.URL) ?
+    // TODO default KIRI.E.URL
     URI url();
 }

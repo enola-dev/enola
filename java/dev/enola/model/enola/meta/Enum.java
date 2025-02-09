@@ -19,6 +19,6 @@ package dev.enola.model.enola.meta;
 
 public interface Enum extends Type { // TODO extends Datatype ?!
 
-    // TODO @IRI(KIRI.E.META.VALUES)
+    // TODO default KIRI.E.META.VALUES
     Iterable<EnumValue> values();
 }

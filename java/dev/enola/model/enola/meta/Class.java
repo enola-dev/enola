@@ -22,10 +22,10 @@ public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
 
     String CLASS_IRI = "https://enola.dev/meta/Class";
 
-    // TODO @IRI(KIRI.E.META.PARENTS) ?
+    // TODO default KIRI.E.META.PARENTS ?
     Iterable<Class> parents();
 
-    // TODO @IRI(KIRI.E.META.PROPERTIES)
+    // TODO default KIRI.E.META.PROPERTIES
     // Cannot be properties() due to conflict
     Iterable<Property> classProperties();
 

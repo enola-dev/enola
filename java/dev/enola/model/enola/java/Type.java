@@ -19,8 +19,6 @@ package dev.enola.model.enola.java;
 
 import dev.enola.model.enola.HasName;
 import dev.enola.thing.Thing;
-import dev.enola.thing.java.IRI;
-import dev.enola.thing.java.JThing;
 
 /**
  * ☕ <a href="https://docs.enola.dev/models/enola.dev/java/type/">Java Type</a>.
@@ -28,22 +26,21 @@ import dev.enola.thing.java.JThing;
  * <p>Type (Class, Interface, Enum, Record, Primitives, Array, Void) in the Java Virtual Machine
  * (JVM).
  */
-@JThing("https://enola.dev/java/type")
-// ? @IRI("https://enola.dev/java/type/{FQN}")
+// "https://enola.dev/java/type" - "https://enola.dev/java/type/{FQN}"
 public interface Type
         extends /*Resource,*/ HasName { // NOT dev.enola.model.w3.rdfs.Class; these are the
     // instances
 
-    @IRI("https://enola.dev/java/package")
+    // TODO default "https://enola.dev/java/package"
     Package pkg();
 
-    @IRI("https://enola.dev/java/type-kind")
+    // TODO default "https://enola.dev/java/type-kind"
     Kind kind();
 
-    @IRI("https://enola.dev/code/uses")
+    // TODO default "https://enola.dev/code/uses"
     Iterable<Type> uses();
 
-    @IRI("https://enola.dev/code/oop/parents") // parents extends #uses
+    // TODO default "https://enola.dev/code/oop/parents" // parents extends #uses
     Iterable<Type> parents();
 
     // TODO How to best do enums with (RDF) Things?
