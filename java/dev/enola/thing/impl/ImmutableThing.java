@@ -58,15 +58,15 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                 @Override
                 @SuppressWarnings("unchecked")
                 public <T extends Thing, B extends Thing.Builder<?>> B create(
-                        Class<B> builderClass, Class<T> thingClass) {
-                    if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
-                        return (B) builder();
+                        Class<B> builderInterface, Class<T> thingInterface) {
+                    if (builderInterface.equals(Thing.Builder.class)
+                            && thingInterface.equals(Thing.class)) return (B) builder();
                     else
                         throw new IllegalArgumentException(
                                 "This implementation does not support "
-                                        + builderClass
+                                        + builderInterface
                                         + " and "
-                                        + thingClass);
+                                        + thingInterface);
                 }
             };
 

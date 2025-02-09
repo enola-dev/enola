@@ -36,15 +36,15 @@ public class MutableThingTest extends ThingTester {
             @Override
             @SuppressWarnings({"rawtypes", "unchecked"})
             public <T extends Thing, B extends Thing.Builder<?>> B create(
-                    Class<B> builderClass, Class<T> thingClass) {
-                if (builderClass.equals(Thing.Builder.class) && thingClass.equals(Thing.class))
-                    return (B) new MutableThing(3);
+                    Class<B> builderInterface, Class<T> thingInterface) {
+                if (builderInterface.equals(Thing.Builder.class)
+                        && thingInterface.equals(Thing.class)) return (B) new MutableThing(3);
                 else
                     throw new IllegalArgumentException(
                             "This implementation does not support "
-                                    + builderClass
+                                    + builderInterface
                                     + " and "
-                                    + thingClass);
+                                    + thingInterface);
             }
         };
     }
