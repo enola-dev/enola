@@ -17,6 +17,6 @@
  */
 
 @NullMarked
-package dev.enola.model.enola.maven.connect.mima;
+package dev.enola.connect.maven;
 
 import org.jspecify.annotations.NullMarked;

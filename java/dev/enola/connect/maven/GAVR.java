@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.maven.connect.mima;
+package dev.enola.connect.maven;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
