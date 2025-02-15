@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.repo;
 
-import dev.enola.data.Repository;
 import dev.enola.data.RepositoryBuilder;
 import dev.enola.thing.Thing;
 
@@ -41,20 +40,17 @@ public class ThingMemoryRepositoryROBuilder
 
     @Override
     public ThingRepository build() {
-        return wrap(super.build());
-    }
-
-    private ThingRepository wrap(final Repository<Thing> repository) {
+        var thingRepository = super.build();
         return new ThingRepository() {
 
             @Override
             public Iterable<String> listIRI() {
-                return repository.listIRI();
+                return thingRepository.listIRI();
             }
 
             @Override
             public Thing get(String iri) {
-                return repository.get(iri);
+                return thingRepository.get(iri);
             }
         };
     }
