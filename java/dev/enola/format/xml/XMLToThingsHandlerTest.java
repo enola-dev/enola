@@ -29,7 +29,7 @@ import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.xml.XmlMediaType;
 import dev.enola.rdf.io.RdfMediaTypes;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 import dev.enola.thing.testlib.ThingsSubject;
 
 import org.junit.Ignore;
@@ -46,7 +46,7 @@ public class XMLToThingsHandlerTest {
                     MediaTypeProviders.set(
                             new MediaTypeProviders(new RdfMediaTypes(), new XmlMediaType())));
 
-    TypedThingsBuilder thingsBuilder = new TypedThingsBuilder();
+    ThingsBuilders thingsBuilder = new ThingsBuilders();
     XmlThingConverter loader =
             new XmlThingConverter(
                     new ResourceProviders(

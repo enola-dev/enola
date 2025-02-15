@@ -23,7 +23,7 @@ import static dev.enola.model.enola.mediatype.TikaMediaTypesThingConverter.IRI;
 
 import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class TikaMediaTypesThingConverterTest {
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void convert() throws IOException {
-        TypedThingsBuilder builder = new TypedThingsBuilder(new ProxyTBF(MutableThing.FACTORY));
+        ThingsBuilders builder = new ThingsBuilders(new ProxyTBF(MutableThing.FACTORY));
         new TikaMediaTypesThingConverter().convertInto(IRI, builder);
     }
 }

@@ -27,7 +27,7 @@ import dev.enola.common.io.resource.*;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,7 +62,7 @@ public class RdfResourceIntoThingConverterTest {
     }
 
     private Iterable<Thing.Builder<Thing>> convert(URI uri) throws IOException {
-        var thingsBuilder = new TypedThingsBuilder();
+        var thingsBuilder = new ThingsBuilders();
         c.convertInto(uri, thingsBuilder);
         return thingsBuilder.builders();
     }

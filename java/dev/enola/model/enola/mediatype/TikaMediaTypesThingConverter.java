@@ -23,7 +23,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.format.tika.TikaMediaTypes;
 import dev.enola.thing.io.TypedUriIntoThingConverter;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
@@ -52,7 +52,7 @@ public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter 
     public static final URI IRI = URI.create("enola:TikaMediaTypes");
 
     @Override
-    public boolean convertInto(URI from, TypedThingsBuilder into)
+    public boolean convertInto(URI from, ThingsBuilders into)
             throws ConversionException, IOException {
         if (!IRI.equals(from)) return false;
 

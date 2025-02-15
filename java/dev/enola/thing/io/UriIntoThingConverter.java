@@ -18,7 +18,7 @@
 package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,5 +26,5 @@ import java.net.URI;
 public interface UriIntoThingConverter extends TypedUriIntoThingConverter {
 
     @Override
-    boolean convertInto(URI from, TypedThingsBuilder into) throws ConversionException, IOException;
+    boolean convertInto(URI from, ThingsBuilders into) throws ConversionException, IOException;
 }

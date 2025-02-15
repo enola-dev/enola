@@ -25,8 +25,8 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
+import dev.enola.thing.repo.ThingsBuilders;
 import dev.enola.thing.repo.ThingsRepository;
-import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,13 +40,13 @@ public class ThingsSubjectTest {
 
     @Test
     public void empty() throws IOException {
-        ThingsRepository r = new TypedThingsBuilder();
+        ThingsRepository r = new ThingsBuilders();
         ThingsSubject.assertThat(r).isEqualTo("classpath:/empty.yaml");
     }
 
     @Test
     public void greeting1ttl() throws IOException {
-        TypedThingsBuilder r = new TypedThingsBuilder();
+        ThingsBuilders r = new ThingsBuilders();
         r.getBuilder("https://example.org/greeting1")
                 .set("https://example.org/message", "hello, world");
         ThingsSubject.assertThat(r).isEqualTo("classpath:/example.org/greeting1.ttl");
@@ -54,7 +54,7 @@ public class ThingsSubjectTest {
 
     @Test
     public void greetingNttl() throws IOException {
-        TypedThingsBuilder r = new TypedThingsBuilder();
+        ThingsBuilders r = new ThingsBuilders();
         r.getBuilder("https://example.org/greeting")
                 .set(KIRI.E.IRI_TEMPLATE_PROPERTY, "https://example.org/greet/{NUMBER}")
                 .set("https://enola.dev/example", new Link("https://example.org/greet/42"))
