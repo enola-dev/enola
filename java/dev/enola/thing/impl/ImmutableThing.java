@@ -57,7 +57,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             new TBF() {
                 @Override
                 @SuppressWarnings("unchecked")
-                public <T extends Thing, B extends Thing.Builder<?>> B create(
+                public <T extends Thing, B extends Thing.Builder<T>> B create(
                         Class<B> builderInterface, Class<T> thingInterface) {
                     if (builderInterface.equals(Thing.Builder.class)
                             && thingInterface.equals(Thing.class)) return (B) builder();

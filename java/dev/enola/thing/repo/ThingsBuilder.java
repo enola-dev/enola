@@ -23,11 +23,11 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 
 /** Untyped variant of {@link TypedThingsBuilder}. */
-public class ThingsBuilder extends TypedThingsBuilder<Thing, Thing.Builder<Thing>> {
+public class ThingsBuilder extends TypedThingsBuilder {
 
-    // TODO Merge TypedThingsBuilder & ThingsBuilder!
+    // TODO Merge TypedThingsBuilder & ThingsBuilder, which (now) are exactly the same?!
 
-    public ThingsBuilder(TypedThingsBuilder<Thing, Thing.Builder<Thing>> into) {
+    public ThingsBuilder(TypedThingsBuilder into) {
         super(into);
     }
 

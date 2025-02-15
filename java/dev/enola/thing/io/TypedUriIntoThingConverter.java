@@ -24,4 +24,4 @@ import dev.enola.thing.repo.TypedThingsBuilder;
 import java.net.URI;
 
 public interface TypedUriIntoThingConverter<T extends Thing, B extends Thing.Builder<T>>
-        extends ConverterInto<URI, TypedThingsBuilder<T, B>> {}
+        extends ConverterInto<URI, TypedThingsBuilder> {}

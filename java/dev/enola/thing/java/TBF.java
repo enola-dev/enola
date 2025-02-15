@@ -31,7 +31,7 @@ public interface TBF {
      * <p>You would typically not use this directly, but via a generated method on the respective
      * thing interface, e.g. {@link HasSomething#builder(TBF)}.
      */
-    <T extends Thing, B extends Thing.Builder<?>> B create(
+    <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface);
 
     @SuppressWarnings("unchecked")

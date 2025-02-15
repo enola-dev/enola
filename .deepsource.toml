@@ -1,5 +1,9 @@
 version = 1
 
+# TODO How to add configuration to ignore e.g. JAVA-W1035 here?
+#   - https://discuss.deepsource.com/t/java-w1035-java-analyzer-is-broken-for-java-14-records/709/1
+#   - https://discuss.deepsource.com/t/deepsource-toml-should-allow-ignoring-issues/710
+
 test_patterns=["**/*Test.java", "**/Test*.java", "**/*.test.ts"]
 
 exclude_patterns = [

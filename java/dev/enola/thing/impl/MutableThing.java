@@ -46,7 +46,7 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
             new TBF() {
                 @Override
                 @SuppressWarnings({"unchecked", "rawtypes"})
-                public <T extends Thing, TB extends Thing.Builder<?>> TB create(
+                public <T extends Thing, TB extends Thing.Builder<T>> TB create(
                         Class<TB> builderInterface, Class<T> thingInterface) {
                     if (builderInterface.equals(Thing.Builder.class)
                             && thingInterface.equals(Thing.class)) return (TB) new MutableThing();

@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Test;
@@ -32,8 +33,11 @@ public class JavaThingTest {
 
     @Test
     public void javaAPI() {
-        var proxyTBF = new ProxyTBF(ImmutableThing.FACTORY);
-        HasSomething.Builder<HasSomething> builder = HasSomething.builder(proxyTBF);
+        javaAPI(new ProxyTBF(ImmutableThing.FACTORY));
+    }
+
+    private void javaAPI(TBF tbf) {
+        HasSomething.Builder<HasSomething> builder = HasSomething.builder(tbf);
 
         builder.test("abc").a(123L).b(Instant.now()).iri("https://example.org/thing");
         HasSomething thing = builder.build();
@@ -52,9 +56,11 @@ public class JavaThingTest {
 
     @Test
     public void typedThingsBuilder() {
-        var typedThingsBuilder =
-                new TypedThingsBuilder<HasSomething, HasSomething.Builder>(
-                        new ProxyTBF(ImmutableThing.FACTORY));
+        typedThingsBuilder(new ProxyTBF(ImmutableThing.FACTORY));
+    }
+
+    public void typedThingsBuilder(TBF tbf) {
+        var typedThingsBuilder = new TypedThingsBuilder(tbf);
 
         var builder =
                 typedThingsBuilder.getBuilder(

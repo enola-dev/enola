@@ -34,12 +34,11 @@ import java.util.stream.Stream;
  * <p>For memory efficiency, do NOT "keep this around".
  */
 // @NotThreadSafe
-public class TypedThingsBuilder<T extends Thing, B extends Thing.Builder>
-        implements ThingsRepository { // TODO Move ^^^ type signatures to getBuilder
+public class TypedThingsBuilder implements ThingsRepository {
 
-    // TODO Merge TypedThingsBuilder & ThingsBuilder!
+    // TODO Merge TypedThingsBuilder & ThingsBuilder, which (now) are exactly the same?!
 
-    private final Map<String, B> map;
+    private final Map<String, Thing.Builder<Thing>> map;
     private final TBF tbf;
 
     public TypedThingsBuilder(TBF tbf) {
@@ -47,23 +46,25 @@ public class TypedThingsBuilder<T extends Thing, B extends Thing.Builder>
         this.map = new HashMap<>();
     }
 
-    protected TypedThingsBuilder(TypedThingsBuilder<T, B> into) {
+    protected TypedThingsBuilder(TypedThingsBuilder into) {
         tbf = into.tbf;
         map = into.map;
     }
 
     @SuppressWarnings("unchecked")
-    public B getBuilder(String iri, Class<B> builderClass, Class<T> thingClass) {
-        return map.computeIfAbsent(
-                iri,
-                _iri -> {
-                    var builder = tbf.create(builderClass, thingClass);
-                    builder.iri(_iri);
-                    return builder;
-                });
+    public <T extends Thing, B extends Thing.Builder<T>> B getBuilder(
+            String iri, Class<B> builderClass, Class<T> thingClass) {
+        return (B)
+                map.computeIfAbsent(
+                        iri,
+                        _iri -> {
+                            var builder = tbf.create(builderClass, thingClass);
+                            builder.iri(_iri);
+                            return (Thing.Builder<Thing>) builder;
+                        });
     }
 
-    public Iterable<B> builders() {
+    public Iterable<Thing.Builder<Thing>> builders() {
         return map.values();
     }
 
