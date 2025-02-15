@@ -27,7 +27,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 import dev.enola.thing.testlib.ThingsSubject;
 
 import org.junit.Rule;
@@ -42,7 +42,7 @@ public class TikaThingConverterTest {
 
     @Test
     public void empty() throws IOException {
-        var tb = new TypedThingsBuilder();
+        var tb = new ThingsBuilders();
         var c = new TikaThingConverter(new EmptyResource.Provider());
 
         var r = c.convertInto(EmptyResource.EMPTY_URI, tb);
@@ -69,7 +69,7 @@ public class TikaThingConverterTest {
     private void check(String classpath) throws IOException {
         var name = "classpath:/" + classpath;
 
-        var tb = new TypedThingsBuilder();
+        var tb = new ThingsBuilders();
         var c = new TikaThingConverter(new ClasspathResource.Provider());
 
         var r = c.convertInto(URI.create(name), tb);

@@ -28,32 +28,26 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Set of {@link Thing.Builder}s.
+ * Set of {@link Thing.Builder}s, which is also a {@link ThingsRepository}.
  *
  * <p>This is intended to be used "short-lived" and used only during incremental Things creation.
  *
  * <p>For memory efficiency, do NOT "keep this around".
  */
+// TODO Update JavaDoc about how his would typically be used in a (TBD) "Transaction"...
 // @NotThreadSafe
-public class TypedThingsBuilder implements ThingsRepository {
-    // TODO Rename TypedThingsBuilder to ThingsBuilders
+public class ThingsBuilders implements ThingsRepository {
 
     private final Map<String, Thing.Builder<Thing>> map;
     private final TBF tbf;
 
-    public TypedThingsBuilder(TBF tbf) {
+    public ThingsBuilders(TBF tbf) {
         this.tbf = tbf;
         this.map = new HashMap<>();
     }
 
-    public TypedThingsBuilder() {
+    public ThingsBuilders() {
         this(ImmutableThing.FACTORY);
-    }
-
-    // TODO Remove?
-    protected TypedThingsBuilder(TypedThingsBuilder into) {
-        tbf = into.tbf;
-        map = into.map;
     }
 
     @SuppressWarnings("unchecked")

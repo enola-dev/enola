@@ -32,7 +32,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -71,14 +71,14 @@ public class TikaThingConverter implements UriIntoThingConverter {
     }
 
     @Override
-    public boolean convertInto(URI from, TypedThingsBuilder thingsBuilder)
+    public boolean convertInto(URI from, ThingsBuilders thingsBuilder)
             throws ConversionException, IOException {
         var resource = rp.getReadableResource(from);
         if (resource == null) return false;
         return convertInto(resource, thingsBuilder);
     }
 
-    public boolean convertInto(ReadableResource resource, TypedThingsBuilder thingsBuilder)
+    public boolean convertInto(ReadableResource resource, ThingsBuilders thingsBuilder)
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 

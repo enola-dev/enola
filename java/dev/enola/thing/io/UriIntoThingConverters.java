@@ -29,7 +29,7 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import java.net.URI;
 
@@ -53,7 +53,7 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
     }
 
     public Iterable<Thing.Builder<Thing>> convert(URI input) throws ConversionException {
-        var thingsBuilder = new TypedThingsBuilder(new ProxyTBF(MutableThing.FACTORY));
+        var thingsBuilder = new ThingsBuilders(new ProxyTBF(MutableThing.FACTORY));
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, input);
             for (var converter : converters) {

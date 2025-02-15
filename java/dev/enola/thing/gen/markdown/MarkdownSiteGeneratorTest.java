@@ -52,7 +52,7 @@ import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingProvider;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.TemplateThingRepository;
 
@@ -124,7 +124,7 @@ public class MarkdownSiteGeneratorTest {
     @Test
     public void directory() throws Exception {
         var c = new FileThingConverter();
-        var b = new TypedThingsBuilder();
+        var b = new ThingsBuilders();
         c.convertIntoOrThrow(URI.create("file:/tmp/"), b);
         var javaThing = b.builders().iterator().next().build();
         var protoThing = new JavaThingToProtoThingConverter(dtr).convert(javaThing).build();

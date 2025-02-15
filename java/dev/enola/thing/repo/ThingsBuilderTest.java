@@ -27,7 +27,7 @@ public class ThingsBuilderTest {
     public void build() {
         var thingIRI = "http://example.com";
         var predicateIRI = "http://example.com/predicate";
-        var thingsBuilder = new TypedThingsBuilder();
+        var thingsBuilder = new ThingsBuilders();
 
         var builder = thingsBuilder.getBuilder(thingIRI);
         builder.set(predicateIRI, "hi");

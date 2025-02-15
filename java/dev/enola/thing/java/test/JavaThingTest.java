@@ -23,7 +23,7 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
-import dev.enola.thing.repo.TypedThingsBuilder;
+import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class JavaThingTest {
     }
 
     public void typedThingsBuilder(TBF tbf) {
-        var typedThingsBuilder = new TypedThingsBuilder(tbf);
+        var typedThingsBuilder = new ThingsBuilders(tbf);
 
         var builder =
                 typedThingsBuilder.getBuilder(
