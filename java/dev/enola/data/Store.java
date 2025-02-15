@@ -28,7 +28,9 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 public interface Store<T> {
 
-    // TODO Combine #store() and #merge() after all?!
+    // TODO Combine #store() and #merge() into single store(), or save() [?], after all?!
+
+    // TODO Fix inconsistency of some methods returning B but others void
 
     /**
      * Merge a T into this store.
