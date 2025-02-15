@@ -11,3 +11,6 @@ name = "java"
 
 [[analyzers]]
 name = "shell"
+
+[[analyzers]]
+name = "docker"
