@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.repo;
 
-import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 
 /** Untyped variant of {@link TypedThingsBuilder}. */
@@ -31,10 +30,5 @@ public class ThingsBuilder extends TypedThingsBuilder {
 
     public ThingsBuilder() {
         super(ImmutableThing.FACTORY);
-    }
-
-    @SuppressWarnings("unchecked")
-    public Thing.Builder<Thing> getBuilder(String iri) {
-        return getBuilder(iri, Thing.Builder.class, Thing.class);
     }
 }
