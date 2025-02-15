@@ -26,7 +26,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * {@link StoreKV}, but their external API is {@link #store(T value)} instead of {@link
  * StoreKV#store(Object, Object)} simply because they internally extract a key from T.
  */
-public interface Store<B, T> {
+public interface Store<B extends Store<B, T>, T> {
 
     // TODO Combine #store() and #merge() after all?!
 
@@ -51,7 +51,13 @@ public interface Store<B, T> {
 
     /** Store multiple Ts; see {@link #store(Object)}. */
     @CanIgnoreReturnValue
-    B storeAll(Iterable<T> items);
+    @SuppressWarnings("unchecked")
+    default B storeAll(Iterable<T> items) {
+        for (T item : items) {
+            store(item);
+        }
+        return (B) this;
+    }
 
     default void store(T... items) {
         for (T item : items) {

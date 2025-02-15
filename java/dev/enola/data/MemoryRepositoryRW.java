@@ -54,15 +54,6 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     }
 
     @Override
-    @CanIgnoreReturnValue
-    public final MemoryRepositoryRW<T> storeAll(Iterable<T> items) {
-        for (T item : items) {
-            store(item);
-        }
-        return this;
-    }
-
-    @Override
     public T get(String iri) {
         return map.get(requireNonNull(iri));
     }
