@@ -24,7 +24,7 @@ import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.format.tika.TikaThingConverter;
 import dev.enola.rdf.io.JavaThingsBuilderRdfConverter;
 import dev.enola.rdf.io.WritableResourceRDFHandler;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 public class TikaResourceIntoRdfResourceConverter implements CatchingResourceConverter {
 
@@ -40,8 +40,8 @@ public class TikaResourceIntoRdfResourceConverter implements CatchingResourceCon
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
 
-        ThingsBuilder thingsBuilder = new ThingsBuilder();
-        if (!tikaThingConverter.convertInto(from, thingsBuilder)) return false;
+        TypedThingsBuilder thingsBuilder = new TypedThingsBuilder();
+        if (!tikaThingConverter.convertInto(from.uri(), thingsBuilder)) return false;
 
         var rdfHandler = WritableResourceRDFHandler.create(into);
         if (rdfHandler.isEmpty()) return false;
