@@ -38,4 +38,8 @@ public interface TBF {
     default Thing.Builder<IImmutableThing> create() {
         return create(Thing.Builder.class, Thing.class);
     }
+
+    default <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+        return true;
+    }
 }
