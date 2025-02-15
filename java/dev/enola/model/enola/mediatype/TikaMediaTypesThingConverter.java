@@ -43,8 +43,7 @@ import java.net.URI;
  * href="https://freedesktop.org/wiki/Specifications/shared-mime-info-spec/">freedesktop.org MIME
  * Info Spec</a>.
  */
-public class TikaMediaTypesThingConverter
-        implements TypedUriIntoThingConverter<MediaType, MediaType.Builder> {
+public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter {
 
     // TODO Make https://enola.dev/fileExtensions be links, not text?
 

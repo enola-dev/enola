@@ -55,7 +55,7 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
 
     protected Loader loader() {
         // TODO Move this (and other) initialization out of CLI, to a dev.enola.Enola...
-        var uriIntoThingConverters = new ArrayList<TypedUriIntoThingConverter<?, ?>>(7);
+        var uriIntoThingConverters = new ArrayList<TypedUriIntoThingConverter>(7);
         uriIntoThingConverters.add(new RdfResourceIntoThingConverter<>());
         uriIntoThingConverters.add(new XmlThingConverter(rp));
         if (fileLoader) uriIntoThingConverters.add(new FileThingConverter());

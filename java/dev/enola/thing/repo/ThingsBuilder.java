@@ -17,8 +17,6 @@
  */
 package dev.enola.thing.repo;
 
-import com.google.common.reflect.TypeToken;
-
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 
@@ -37,9 +35,6 @@ public class ThingsBuilder extends TypedThingsBuilder {
 
     @SuppressWarnings("unchecked")
     public Thing.Builder<Thing> getBuilder(String iri) {
-        // TODO Is this TypeToken required?!
-        TypeToken<Thing.Builder<Thing>> genericClass = new TypeToken<>(Thing.Builder.class) {};
-        Class<? super Thing.Builder<Thing>> klass = genericClass.getRawType();
-        return getBuilder(iri, (Class<Thing.Builder<Thing>>) klass, Thing.class);
+        return getBuilder(iri, Thing.Builder.class, Thing.class);
     }
 }
