@@ -47,19 +47,19 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     @Override
     @CanIgnoreReturnValue
-    public final Void store(T item) {
+    public final MemoryRepositoryRW<T> store(T item) {
         if (map.putIfAbsent(getIRI(item), item) != null)
             throw new IllegalArgumentException(item.toString());
-        return null;
+        return this;
     }
 
     @Override
     @CanIgnoreReturnValue
-    public final Void storeAll(Iterable<T> items) {
+    public final MemoryRepositoryRW<T> storeAll(Iterable<T> items) {
         for (T item : items) {
             store(item);
         }
-        return null;
+        return this;
     }
 
     @Override
