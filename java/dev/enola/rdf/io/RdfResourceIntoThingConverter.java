@@ -26,7 +26,7 @@ import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -69,7 +69,7 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
     }
 
     @Override
-    public boolean convertInto(URI uri, ThingsBuilder into)
+    public boolean convertInto(URI uri, TypedThingsBuilder into)
             throws ConversionException, IOException {
         var resource = rp.getResource(uri);
         if (resource == null) return false;

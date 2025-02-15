@@ -19,6 +19,7 @@ package dev.enola.thing.repo;
 
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.java.TBF;
 
@@ -35,8 +36,7 @@ import java.util.stream.Stream;
  */
 // @NotThreadSafe
 public class TypedThingsBuilder implements ThingsRepository {
-
-    // TODO Merge TypedThingsBuilder & ThingsBuilder, which (now) are exactly the same?!
+    // TODO Rename TypedThingsBuilder to ThingsBuilders
 
     private final Map<String, Thing.Builder<Thing>> map;
     private final TBF tbf;
@@ -46,6 +46,11 @@ public class TypedThingsBuilder implements ThingsRepository {
         this.map = new HashMap<>();
     }
 
+    public TypedThingsBuilder() {
+        this(ImmutableThing.FACTORY);
+    }
+
+    // TODO Remove?
     protected TypedThingsBuilder(TypedThingsBuilder into) {
         tbf = into.tbf;
         map = into.map;

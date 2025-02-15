@@ -23,7 +23,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
 import dev.enola.rdf.proto.AbstractModelConverter;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.eclipse.rdf4j.rio.RDFHandler;
 
@@ -31,12 +31,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class JavaThingsBuilderRdfConverter
-        implements AbstractModelConverter<ThingsBuilder>, ConverterInto<ThingsBuilder, RDFHandler> {
+        implements AbstractModelConverter<TypedThingsBuilder>,
+                ConverterInto<TypedThingsBuilder, RDFHandler> {
 
     private final JavaThingRdfConverter javaToRdf = new JavaThingRdfConverter();
 
     @Override
-    public boolean convertInto(ThingsBuilder from, RDFHandler into)
+    public boolean convertInto(TypedThingsBuilder from, RDFHandler into)
             throws ConversionException, IOException {
 
         // TODO Is there a more efficient way to do this? Stream vs Iterable is a mess...

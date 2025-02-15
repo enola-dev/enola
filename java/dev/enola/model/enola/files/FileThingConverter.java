@@ -28,7 +28,7 @@ import dev.enola.common.io.iri.URIs;
 import dev.enola.model.enola.Datatypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.io.UriIntoThingConverter;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class FileThingConverter implements UriIntoThingConverter {
     // Perhaps it could offer BOTH auto-loading and explicitly adding converters?
 
     @Override
-    public boolean convertInto(URI input, ThingsBuilder into)
+    public boolean convertInto(URI input, TypedThingsBuilder into)
             throws ConversionException, IOException {
 
         // TODO I'm surprised we don't have to skip *.ttl, until UriIntoThingConverters merges
@@ -70,7 +70,7 @@ public class FileThingConverter implements UriIntoThingConverter {
         }
     }
 
-    private void convert(URI uri, ThingsBuilder into) throws IOException, URISyntaxException {
+    private void convert(URI uri, TypedThingsBuilder into) throws IOException, URISyntaxException {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 

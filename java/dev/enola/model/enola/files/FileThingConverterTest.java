@@ -30,7 +30,7 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.*;
 import dev.enola.thing.io.UriIntoThingConverters;
-import dev.enola.thing.repo.ThingsBuilder;
+import dev.enola.thing.repo.TypedThingsBuilder;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,7 +67,7 @@ public class FileThingConverterTest {
     public void skipClasspath() throws IOException {
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
-        var thingsBuilder = new ThingsBuilder();
+        var thingsBuilder = new TypedThingsBuilder();
         converter.convertInto(resource.uri(), thingsBuilder);
         assertThat(thingsBuilder.builders()).isEmpty();
     }
@@ -75,7 +75,7 @@ public class FileThingConverterTest {
     @Test // jar:file:
     public void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
-        var thingsBuilder = new ThingsBuilder();
+        var thingsBuilder = new TypedThingsBuilder();
         converter.convertInto(new ClasspathResource("test.png").uri(), thingsBuilder);
         assertThat(thingsBuilder.builders()).isEmpty();
     }
