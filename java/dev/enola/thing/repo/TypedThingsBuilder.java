@@ -64,6 +64,11 @@ public class TypedThingsBuilder implements ThingsRepository {
                         });
     }
 
+    @SuppressWarnings("unchecked")
+    public Thing.Builder<?> getBuilder(String iri) {
+        return getBuilder(iri, Thing.Builder.class, Thing.class);
+    }
+
     public Iterable<Thing.Builder<Thing>> builders() {
         return map.values();
     }
