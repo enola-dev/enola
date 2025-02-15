@@ -28,7 +28,7 @@
 
 * [URL Integrity](url-integrity/index.md)
 * [URL Workspace Root Reference](url-reference-workspace/index.md)
-* <!-- [URL Cache Version](url-cache-version/index.md) -->
+<!-- * [URL Cache Version](url-cache-version/index.md) -->
 
 ## Markdown
 
