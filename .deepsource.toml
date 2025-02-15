@@ -7,7 +7,7 @@ name = "java"
 
   [analyzers.meta]
   # https://docs.deepsource.com/docs/analyzers-java#runtime_version
-  runtime_version = "19"
+  runtime_version = "21"
 
 [[analyzers]]
 name = "shell"
