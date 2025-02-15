@@ -87,11 +87,18 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 Enola 🕵🏾‍♀️  may in the future have some [Personal Knowledge Management](https://en.wikipedia.org/wiki/Personal_knowledge_management) like features, similar to tools such as:
 
+With different _types_ of generic _objects:_
+
+* [Anytype](https://anytype.io) #opensource #p2p
+* [Notion](https://www.notion.com) #cloud #saas #commercial
+* [Tana](https://tana.inc) #commercial #start-with-creditcard #ai
+
+With _Notes_ primarily:
+
 * [Foam](https://foambubble.github.io/foam/) #opensource #vsc
 * [Dendron](https://github.com/dendronhq/dendron) #opensource #vsc
 * [Obsidian](https://obsidian.md) #freeware
 * [Logseq](https://logseq.com) #opensource #ToDo
-* [Tana](https://tana.inc) #commercial
 * [deepdwn](https://billiam.itch.io/deepdwn) #commercial
 * [Cosma](https://cosma.arthurperret.fr) #opensource
 * [Org Mode](https://orgmode.org) #opensource
