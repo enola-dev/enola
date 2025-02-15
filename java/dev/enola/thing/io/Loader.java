@@ -71,6 +71,8 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
         return true;
     }
 
+    // TODO The load() vs. load[AtLeastOne]Thing/s duality is strange... remove this again:
+
     public Iterable<Thing> loadThings(URI uri) {
         var store = new ThingMemoryRepositoryROBuilder();
         load(uri, store);

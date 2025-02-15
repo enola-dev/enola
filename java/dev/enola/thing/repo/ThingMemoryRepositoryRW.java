@@ -17,11 +17,13 @@
  */
 package dev.enola.thing.repo;
 
+import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.data.MemoryRepositoryRW;
 import dev.enola.data.Repository;
 import dev.enola.data.Store;
+import dev.enola.data.Trigger;
 import dev.enola.thing.Thing;
 
 /**
@@ -33,6 +35,14 @@ import dev.enola.thing.Thing;
 @ThreadSafe
 public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
         implements ThingRepositoryStore {
+
+    public ThingMemoryRepositoryRW(ImmutableList<Trigger<Thing>> triggers) {
+        super(triggers);
+    }
+
+    public ThingMemoryRepositoryRW() {
+        this(ImmutableList.of());
+    }
 
     @Override
     protected String getIRI(Thing value) {
