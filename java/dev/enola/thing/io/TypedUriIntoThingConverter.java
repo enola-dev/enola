@@ -18,10 +18,8 @@
 package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.thing.Thing;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
 import java.net.URI;
 
-public interface TypedUriIntoThingConverter<T extends Thing, B extends Thing.Builder<T>>
-        extends ConverterInto<URI, TypedThingsBuilder> {}
+public interface TypedUriIntoThingConverter extends ConverterInto<URI, TypedThingsBuilder> {}

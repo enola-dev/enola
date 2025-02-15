@@ -42,13 +42,13 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
         ORIGIN
     }
 
-    private final ImmutableList<TypedUriIntoThingConverter<?, ?>> converters;
+    private final ImmutableList<TypedUriIntoThingConverter> converters;
 
-    public UriIntoThingConverters(Iterable<TypedUriIntoThingConverter<?, ?>> converters) {
+    public UriIntoThingConverters(Iterable<TypedUriIntoThingConverter> converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public UriIntoThingConverters(TypedUriIntoThingConverter<?, ?>... converters) {
+    public UriIntoThingConverters(TypedUriIntoThingConverter... converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
