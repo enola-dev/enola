@@ -24,6 +24,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 
+// TODO Generate this, from a model
 public interface HasSomething extends HasA, HasB {
 
     // TODO Extend HasType and @Override type()
@@ -53,6 +54,7 @@ public interface HasSomething extends HasA, HasB {
         }
     }
 
+    @SuppressWarnings("unchecked")
     static Builder<HasSomething> builder(TBF tbf) {
         return tbf.create(HasSomething.Builder.class, HasSomething.class);
     }

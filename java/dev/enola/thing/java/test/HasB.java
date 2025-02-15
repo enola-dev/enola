@@ -18,12 +18,14 @@
 package dev.enola.thing.java.test;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.IImmutableThing;
 
 import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 
-public interface HasB extends Thing {
+// TODO Generate this, from a model
+public interface HasB extends IImmutableThing {
 
     default @Nullable Instant b() {
         return get(TestVoc.B.B, Instant.class);

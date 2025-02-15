@@ -45,14 +45,16 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     }
 
     public static Thing.Builder<? extends ImmutableThing> builder() {
-        return new Builder<>();
+        return new Builder<>(ImmutableThing::new);
     }
 
     public static Thing.Builder<? extends ImmutableThing> builderWithExpectedSize(
             int expectedSize) {
-        return new Builder<>(expectedSize);
+        return new Builder<>(ImmutableThing::new, expectedSize);
     }
 
+    // TODO Move this into .java package?
+    // TODO Rename ImmutableThing.FACTORY to BUILDER_FACTORY
     public static final TBF FACTORY =
             new TBF() {
                 @Override
@@ -69,6 +71,13 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                                         + thingInterface);
                 }
             };
+
+    public interface Factory {
+        ImmutableThing create(
+                String iri,
+                ImmutableMap<String, Object> properties,
+                ImmutableMap<String, String> datatypes);
+    }
 
     @Override
     public String iri() {
@@ -99,14 +108,22 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
             extends ImmutablePredicatesObjects.Builder<B> implements Thing.Builder<B> {
 
+        private final Factory factory;
+
         protected @Nullable String iri;
 
         protected Builder() {
-            super();
+            this(ImmutableThing::new);
         }
 
-        protected Builder(int expectedSize) {
+        protected Builder(Factory factory) {
+            super();
+            this.factory = factory;
+        }
+
+        protected Builder(Factory factory, int expectedSize) {
             super(expectedSize);
+            this.factory = factory;
         }
 
         protected Builder(
@@ -114,6 +131,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
             super(properties, datatypes);
+            this.factory = ImmutableThing::new;
             iri(iri);
         }
 
@@ -140,11 +158,11 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public B build() {
             if (iri == null)
                 throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
-            // TODO Remove (B) type cast
-            return (B) new ImmutableThing(iri, properties.build(), datatypes.build());
+            return (B) factory.create(iri, properties.build(), datatypes.build());
         }
 
         @Override
