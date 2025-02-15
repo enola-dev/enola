@@ -43,8 +43,7 @@ public class TikaMediaTypesThingConverterTest {
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void convert() throws IOException {
-        TypedThingsBuilder<MediaType, MediaType.Builder> builder =
-                new TypedThingsBuilder<>(new ProxyTBF(MutableThing.FACTORY));
+        TypedThingsBuilder builder = new TypedThingsBuilder(new ProxyTBF(MutableThing.FACTORY));
         new TikaMediaTypesThingConverter().convertInto(IRI, builder);
     }
 }

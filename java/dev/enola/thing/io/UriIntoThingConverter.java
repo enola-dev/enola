@@ -31,7 +31,7 @@ public interface UriIntoThingConverter
     boolean convertInto(URI input, ThingsBuilder into) throws ConversionException, IOException;
 
     @Override
-    default boolean convertInto(URI from, TypedThingsBuilder<Thing, Thing.Builder<Thing>> into)
+    default boolean convertInto(URI from, TypedThingsBuilder into)
             throws ConversionException, IOException {
         var untypedThingsBuilder = new ThingsBuilder(into);
         return convertInto(from, untypedThingsBuilder);

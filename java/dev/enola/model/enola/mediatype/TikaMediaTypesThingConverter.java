@@ -53,7 +53,7 @@ public class TikaMediaTypesThingConverter
     public static final URI IRI = URI.create("enola:TikaMediaTypes");
 
     @Override
-    public boolean convertInto(URI from, TypedThingsBuilder<MediaType, MediaType.Builder> into)
+    public boolean convertInto(URI from, TypedThingsBuilder into)
             throws ConversionException, IOException {
         if (!IRI.equals(from)) return false;
 

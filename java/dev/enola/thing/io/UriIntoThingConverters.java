@@ -31,7 +31,6 @@ import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.repo.TypedThingsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 
 // TODO Make UriIntoThingConverters actually implement UriIntoThingConverter itself (less confusing)
@@ -54,20 +53,16 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
     }
 
     public Iterable<Thing.Builder<Thing>> convert(URI input) throws ConversionException {
-        var thingsBuilder =
-                new TypedThingsBuilder<Thing, Thing.Builder<Thing>>(
-                        new ProxyTBF(MutableThing.FACTORY));
+        var thingsBuilder = new TypedThingsBuilder(new ProxyTBF(MutableThing.FACTORY));
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, input);
             for (var converter : converters) {
-                converter.convertInto(input, (TypedThingsBuilder) thingsBuilder);
+                converter.convertIntoOrThrow(input, thingsBuilder);
             }
             // This is "cool", but "very ugly and overwhelming" e.g. on graph visualizations...
             if (TLC.optional(Flags.ORIGIN).orElse(true))
                 for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input);
             return thingsBuilder.builders();
-        } catch (IOException e) {
-            throw new ConversionException("IOException on " + input, e);
         }
     }
 
