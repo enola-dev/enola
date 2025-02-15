@@ -19,13 +19,17 @@ package dev.enola.thing.java.test;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
+import dev.enola.thing.java.TBFChain;
 import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Test;
 
+import java.lang.reflect.Proxy;
 import java.time.Instant;
 
 public class JavaThingTest {
@@ -38,6 +42,33 @@ public class JavaThingTest {
     @Test
     public void hasSomethingTBF() {
         checkTBF(new HasSomethingTBF());
+    }
+
+    @Test
+    public void chainTBF1() {
+        checkTBF(new TBFChain(ImmutableList.of(new HasSomethingTBF())));
+    }
+
+    @Test
+    public void chainTBF2() {
+        var tbf =
+                new TBFChain(
+                        ImmutableList.of(
+                                new HasSomethingTBF(),
+                                new ProxyTBF(ImmutableThing.FACTORY),
+                                ImmutableThing.FACTORY));
+        checkTBF(tbf);
+
+        var hasSomethingBuilder = tbf.create(HasSomething.Builder.class, HasSomething.class);
+        assertThat(hasSomethingBuilder).isNotInstanceOf(Proxy.class);
+        assertThat(hasSomethingBuilder).isNotNull();
+
+        var hasABuilder = tbf.create(HasA.Builder.class, HasA.class);
+        assertThat(hasABuilder).isInstanceOf(Proxy.class);
+
+        var immutableThingBuilder = tbf.create();
+        assertThat(immutableThingBuilder).isInstanceOf(ImmutableThing.Builder.class);
+        assertThat(immutableThingBuilder).isNotInstanceOf(Proxy.class);
     }
 
     private void checkTBF(TBF tbf) {

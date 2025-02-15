@@ -42,6 +42,11 @@ public class ProxyTBF implements TBF {
     }
 
     @Override
+    public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+        return !wrap.handles(builderInterface);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface) {

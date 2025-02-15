@@ -58,6 +58,11 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     public static final TBF FACTORY =
             new TBF() {
                 @Override
+                public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+                    return builderInterface.equals(Thing.Builder.class);
+                }
+
+                @Override
                 @SuppressWarnings("unchecked")
                 public <T extends Thing, B extends Thing.Builder<T>> B create(
                         Class<B> builderInterface, Class<T> thingInterface) {

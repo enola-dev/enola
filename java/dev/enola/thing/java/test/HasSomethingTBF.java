@@ -27,6 +27,11 @@ import dev.enola.thing.java.TBF;
 public final class HasSomethingTBF implements TBF {
 
     @Override
+    public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+        return builderInterface.equals(HasSomething.Builder.class);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface) {
