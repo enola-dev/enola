@@ -1,6 +1,12 @@
 version = 1
 
-test_patterns=["**/*Test.java", "**/Test*.java"]
+test_patterns=["**/*Test.java", "**/Test*.java", "**/*.test.ts"]
+
+exclude_patterns = [
+  "dist/**",
+  "node_modules/**,",
+  "web-out/**",
+]
 
 [[analyzers]]
 name = "java"
@@ -14,3 +20,6 @@ name = "shell"
 
 [[analyzers]]
 name = "docker"
+
+[[analyzers]]
+name = "javascript"
