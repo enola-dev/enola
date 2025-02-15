@@ -63,7 +63,7 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
 
     @Override
     @SuppressWarnings("unchecked")
-    public B storeAll(Iterable<T> items) {
+    public B storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
         return (B) Store.super.storeAll(items);
     }
 
