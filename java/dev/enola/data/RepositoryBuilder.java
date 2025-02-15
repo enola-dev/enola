@@ -62,13 +62,9 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
     }
 
     @Override
-    @CanIgnoreReturnValue
     @SuppressWarnings("unchecked")
-    public final B storeAll(Iterable<T> items) {
-        for (T item : items) {
-            store(item);
-        }
-        return (B) this;
+    public B storeAll(Iterable<T> items) {
+        return (B) Store.super.storeAll(items);
     }
 
     @Override
