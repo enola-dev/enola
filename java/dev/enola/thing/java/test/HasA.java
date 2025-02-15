@@ -18,10 +18,12 @@
 package dev.enola.thing.java.test;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.IImmutableThing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface HasA extends Thing {
+// TODO Generate this, from a model
+public interface HasA extends IImmutableThing {
 
     default @Nullable Long a() {
         return get(TestVoc.A.A, Long.class);

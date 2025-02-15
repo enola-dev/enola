@@ -22,6 +22,7 @@ import dev.enola.thing.java.Vocabulary;
 /// Constants for the `https://example.org` vocabulary.
 ///
 /// You typically use the strongly typed interfaces in this package instead of this directly.
+// TODO Generate this, from a model
 @Vocabulary
 public final class TestVoc {
 
