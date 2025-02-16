@@ -180,9 +180,10 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
             // NB: buildKeepingLast() instead of build() == buildOrThrow() because
             // copy() users needs to be able to overwrite (and "clear" properties).
             // TODO Distinguish "fresh" (empty) from copied Things... not hard, with a flag?
-            return (B)
-                    factory.create(
-                            iri, properties.buildKeepingLast(), datatypes.buildKeepingLast());
+            // NB: ImmutablePredicatesObjects.Builder#builder() has the same...
+            var immutableProperties = properties.buildKeepingLast();
+            var immutableDataypes = datatypes.buildKeepingLast();
+            return (B) factory.create(iri, immutableProperties, immutableDataypes);
         }
 
         @Override

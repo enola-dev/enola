@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.TBFChain;
@@ -34,10 +35,13 @@ import java.time.Instant;
 
 public class JavaThingTest {
 
-    // TODO Also test it all via MutableThing.FACTORY here ...
+    @Test
+    public void mutableProxyTBF() {
+        checkTBF(new ProxyTBF(MutableThing.FACTORY));
+    }
 
     @Test
-    public void proxyTBF() {
+    public void immutableProxyTBF() {
         checkTBF(new ProxyTBF(ImmutableThing.FACTORY));
     }
 
