@@ -32,7 +32,7 @@ import java.util.Map;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
 public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
-        implements ProviderFromIRI<T>, Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
+        implements ProviderStore<T, RepositoryBuilder<B, T>>, Builder<Repository<T>> {
 
     private final Map<String, T> map = new HashMap<>();
     private final ImmutableList<Trigger<T>> triggers;
@@ -95,7 +95,7 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
     @Override
     @SuppressWarnings("unchecked")
     public B storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
-        return (B) Store.super.storeAll(items);
+        return (B) ProviderStore.super.storeAll(items);
     }
 
     @Override

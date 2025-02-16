@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,5 +17,9 @@
  */
 package dev.enola.data;
 
-/** RepositoryRW is a readable & writable {@link Repository} which is thus also a {@link Store}. */
-public interface RepositoryRW<T> extends Repository<T>, ProviderStore<T, RepositoryRW<T>> {}
+/**
+ * ProviderStore is both a {@link ProviderFromIRI} as well as a {@link Store}.
+ *
+ * <p>It's however not (necessarily) also a {@link Repository}.
+ */
+public interface ProviderStore<T, B extends Store<B, T>> extends ProviderFromIRI<T>, Store<B, T> {}
