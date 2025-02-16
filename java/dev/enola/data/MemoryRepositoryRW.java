@@ -38,8 +38,16 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     private final Map<String, T> map = new ConcurrentHashMap<>();
     private final ImmutableList<Trigger<T>> triggers;
 
-    protected MemoryRepositoryRW(ImmutableList<Trigger<T>> triggers) {
-        this.triggers = triggers;
+    protected MemoryRepositoryRW(ImmutableList<Trigger<? extends T>> triggers) {
+        this.triggers = hack(triggers);
+    }
+
+    // NB: Copy/pasted in RepositoryBuilder
+    @SuppressWarnings("unchecked")
+    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
+        var builder = ImmutableList.<Trigger<T>>builder();
+        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
+        return builder.build();
     }
 
     protected abstract String getIRI(T value);
@@ -70,7 +78,7 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     private void trigger(@Nullable T existing, T updated) {
         for (Trigger<T> trigger : triggers) {
-            trigger.updated(existing, updated, this);
+            trigger.updated(existing, updated);
         }
     }
 

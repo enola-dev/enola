@@ -31,13 +31,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
-public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<T>, Builder<Repository<T>> {
+public abstract class RepositoryBuilder<T> implements RepositoryRW<T>, Builder<Repository<T>> {
 
     private final Map<String, T> map = new HashMap<>();
     private final ImmutableList<Trigger<T>> triggers;
 
-    protected RepositoryBuilder(ImmutableList<Trigger<T>> triggers) {
-        this.triggers = triggers;
+    protected RepositoryBuilder(ImmutableList<Trigger<? extends T>> triggers) {
+        this.triggers = hack(triggers);
+    }
+
+    // NB: Copy/pasted in MemoryRepositoryRW
+    @SuppressWarnings("unchecked")
+    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
+        var builder = ImmutableList.<Trigger<T>>builder();
+        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
+        return builder.build();
     }
 
     protected RepositoryBuilder() {
@@ -54,6 +62,11 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
     @Override
     public @Nullable T get(String iri) {
         return map.get(iri);
+    }
+
+    @Override
+    public Iterable<String> listIRI() {
+        return map.keySet();
     }
 
     @Override
@@ -86,13 +99,13 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
 
     private void trigger(@Nullable T existing, T updated) {
         for (Trigger<T> trigger : triggers) {
-            trigger.updated(existing, updated, this);
+            trigger.updated(existing, updated);
         }
     }
 
     @Override
     public RepositoryBuilder<T> storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
-        Store.super.storeAll(items);
+        RepositoryRW.super.storeAll(items);
         return this;
     }
 
@@ -127,7 +140,7 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
         }
 
         @Override
-        public T get(String iri) {
+        public @Nullable T get(String iri) {
             return items.get(iri);
         }
 

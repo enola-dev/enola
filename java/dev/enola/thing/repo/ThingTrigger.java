@@ -20,10 +20,11 @@ package dev.enola.thing.repo;
 import dev.enola.data.Trigger;
 import dev.enola.thing.Thing;
 
-import org.jspecify.annotations.Nullable;
+public abstract class ThingTrigger<T extends Thing> implements Trigger<T> {
 
-public interface ThingTrigger<T extends Thing> extends Trigger<T> {
+    protected ThingRepositoryStore repo;
 
-    // TODO @Override
-    void updated(@Nullable T existing, T update, ThingProvider thingProvider);
+    public void setRepo(ThingRepositoryStore repo) {
+        this.repo = repo;
+    }
 }

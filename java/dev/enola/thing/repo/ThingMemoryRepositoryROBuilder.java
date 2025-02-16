@@ -28,9 +28,10 @@ import dev.enola.thing.Thing;
  *
  * <p>{@link ThingMemoryRepositoryRW} is one of possibly several other alternatives for this.
  */
-public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing> {
+public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing>
+        implements ThingRepositoryStore {
 
-    public ThingMemoryRepositoryROBuilder(ImmutableList<Trigger<Thing>> triggers) {
+    public ThingMemoryRepositoryROBuilder(ImmutableList<Trigger<? extends Thing>> triggers) {
         super(triggers);
     }
 

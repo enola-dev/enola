@@ -30,7 +30,8 @@ import java.util.stream.Stream;
  * "queryable" for "everything" (without any "query", really).
  */
 public interface Repository<T> extends ProviderFromIRI<T> {
-    // TODO Rename Repository to RepositoryOfIRI? (But there probably won't be another one...)
+
+    // TODO Merge this with Queryable, to simplify overly complex public API surface
 
     // TODO Switch from Iterable to Stream?
     Iterable<String> listIRI();

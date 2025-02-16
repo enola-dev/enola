@@ -68,6 +68,8 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
 
+    // TODO Move get with Class<T> up into ProviderFromIRI?
+
     @SuppressWarnings("unchecked")
     default <T extends Thing> @Nullable T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
