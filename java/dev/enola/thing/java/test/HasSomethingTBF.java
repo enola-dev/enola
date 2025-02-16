@@ -47,6 +47,10 @@ public final class HasSomethingTBF implements TBF {
         private HasSomethingBuilder() {
             super(HasSomethingImpl::new);
         }
+
+        private HasSomethingBuilder(ImmutableThing.Factory factory, HasSomething hasSomething) {
+            super(factory, hasSomething.iri(), hasSomething.properties(), hasSomething.datatypes());
+        }
     }
 
     private static final class HasSomethingImpl extends ImmutableThing implements HasSomething {
@@ -55,6 +59,11 @@ public final class HasSomethingTBF implements TBF {
                 ImmutableMap<String, Object> properties,
                 ImmutableMap<String, String> datatypes) {
             super(iri, properties, datatypes);
+        }
+
+        @Override
+        public HasSomething.Builder<? extends HasSomething> copy() {
+            return new HasSomethingBuilder(HasSomethingImpl::new, this);
         }
     }
 }

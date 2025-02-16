@@ -88,7 +88,7 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     /**
      * IRI of datatype of predicate, if any (else null). Not all predicates will have a datatype
      * set. This is required because the predicate's Object Java class is not necessarily unique;
-     * e.g. both dev.enola.model.schema.Datatypes.DATE as well as dev.enola.model.xsd.DATE are both
+     * e.g. both dev.enola.model.schema.Datatypes.DATE as well as dev.enola.model.xsd.DATE are
      * java.time.LocalDate instances.
      */
     @Nullable String datatype(String predicateIRI);

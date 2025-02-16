@@ -34,6 +34,8 @@ import java.time.Instant;
 
 public class JavaThingTest {
 
+    // TODO Also test it all via MutableThing.FACTORY here ...
+
     @Test
     public void proxyTBF() {
         checkTBF(new ProxyTBF(ImmutableThing.FACTORY));
@@ -113,5 +115,12 @@ public class JavaThingTest {
 
         assertThat(thing.get(TestVoc.B.B, Instant.class)).isInstanceOf(Instant.class);
         assertThat(thing.b()).isInstanceOf(Instant.class);
+
+        var builder = thing.copy();
+        builder.test("hello, world");
+        var rebuilt = builder.build();
+        assertThat(rebuilt.test()).isEqualTo("hello, world");
+        assertThat(rebuilt.a()).isEqualTo(123L);
+        assertThat(rebuilt.b()).isInstanceOf(Instant.class);
     }
 }

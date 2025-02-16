@@ -32,6 +32,7 @@ import org.jspecify.annotations.Nullable;
 
 @Immutable
 @ThreadSafe
+// TODO Make ImmutableThing package private, and let users create them via the TBF
 public class ImmutableThing extends ImmutablePredicatesObjects implements IImmutableThing {
 
     private final String iri;
@@ -44,11 +45,12 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         this.iri = requireNonNull(iri, "iri");
     }
 
-    public static Thing.Builder<? extends ImmutableThing> builder() {
+    // TODO Is <? extends IImmutableThing> useless on this static method? Same as <IImmutableThing>?
+    public static Thing.Builder<? extends IImmutableThing> builder() {
         return new Builder<>(ImmutableThing::new);
     }
 
-    public static Thing.Builder<? extends ImmutableThing> builderWithExpectedSize(
+    public static Thing.Builder<? extends IImmutableThing> builderWithExpectedSize(
             int expectedSize) {
         return new Builder<>(ImmutableThing::new, expectedSize);
     }
@@ -74,6 +76,12 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                                         + builderInterface
                                         + " and "
                                         + thingInterface);
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public Thing.Builder<IImmutableThing> create(int expectedSize) {
+                    return (Thing.Builder<IImmutableThing>) builderWithExpectedSize(expectedSize);
                 }
             };
 
@@ -105,10 +113,11 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     }
 
     @Override
-    public Builder<? extends ImmutableThing> copy() {
-        return new Builder<>(iri, properties(), datatypes());
+    public Thing.Builder<? extends IImmutableThing> copy() {
+        return new Builder<>(ImmutableThing::new, iri(), properties(), datatypes());
     }
 
+    // TODO make inner class ImmutableThing.Builder private
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
             extends ImmutablePredicatesObjects.Builder<B> implements Thing.Builder<B> {
@@ -132,11 +141,12 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         }
 
         protected Builder(
+                Factory factory,
                 String iri,
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
             super(properties, datatypes);
-            this.factory = ImmutableThing::new;
+            this.factory = factory;
             iri(iri);
         }
 
@@ -167,7 +177,12 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         public B build() {
             if (iri == null)
                 throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
-            return (B) factory.create(iri, properties.build(), datatypes.build());
+            // NB: buildKeepingLast() instead of build() == buildOrThrow() because
+            // copy() users needs to be able to overwrite (and "clear" properties).
+            // TODO Distinguish "fresh" (empty) from copied Things... not hard, with a flag?
+            return (B)
+                    factory.create(
+                            iri, properties.buildKeepingLast(), datatypes.buildKeepingLast());
         }
 
         @Override

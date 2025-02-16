@@ -31,6 +31,9 @@ public interface HasB extends IImmutableThing {
         return get(TestVoc.B.B, Instant.class);
     }
 
+    @Override
+    Builder<? extends HasB> copy();
+
     interface Builder<B extends HasB> extends Thing.Builder<B> { // skipcq: JAVA-E0169
 
         default HasB.Builder<B> b(Instant test) {

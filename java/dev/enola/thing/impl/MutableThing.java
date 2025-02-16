@@ -37,6 +37,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>This implementation is not thread safe, obviously.
  */
+// TODO Make MutableThing package private, and let users create them via the TBF
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutableThing<B extends IImmutableThing> extends MutablePredicatesObjects<B>
@@ -56,6 +57,11 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
                                         + builderInterface
                                         + " and "
                                         + thingInterface);
+                }
+
+                @Override
+                public Thing.Builder<IImmutableThing> create(int expectedSize) {
+                    return new MutableThing<>(expectedSize);
                 }
             };
 

@@ -31,6 +31,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.*;
 
+// TODO Make MutablePredicatesObjects package private, and let users create them via the TBF (?)
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
@@ -61,8 +62,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
-        if (value instanceof Literal literal)
-            set(predicateIRI, literal.value(), literal.datatypeIRI());
+        if (value instanceof Literal(String value1, String datatypeIRI))
+            set(predicateIRI, value1, datatypeIRI);
         else properties.put(predicateIRI, value);
         return this;
     }
@@ -231,7 +232,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @SuppressWarnings("Immutable") // TODO This (tries to...) make deep copies of all objects...
     protected void deepBuildInto(
-            PredicatesObjects.Builder<? extends ImmutablePredicatesObjects> immutableBuilder) {
+            PredicatesObjects.Builder<? extends IImmutablePredicatesObjects> immutableBuilder) {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             var predicateIRI = entry.getKey();
             var object = entry.getValue();
