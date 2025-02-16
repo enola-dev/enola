@@ -50,25 +50,44 @@ public class ProxyTBF implements TBF {
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface) {
-        if (builderInterface.equals(Thing.Builder.class)) {
-            return (B) wrap.create();
-        }
+        return (B)
+                create(
+                        wrap,
+                        -1,
+                        (Class<Thing.Builder<IImmutableThing>>) builderInterface,
+                        (Class<IImmutableThing>) thingInterface);
+    }
 
-        var wrapped = // an ImmutableThing.Builder or a MutableThing (but NOT another Proxy)
-                (Thing.Builder<? extends IImmutableThing>) wrap.create();
-        var handler = new BuilderInvocationHandler(wrapped, thingInterface);
-        // return (B) Proxy.newProxyInstance(builderClass.getClassLoader(),
-        //     new Class[] {builderClass}, handler);
+    @SuppressWarnings("unchecked")
+    private static Thing.Builder<? extends IImmutableThing> create(
+            TBF tbf,
+            int expectedSize,
+            Class<Thing.Builder<IImmutableThing>> builderInterface,
+            Class<IImmutableThing> thingInterface) {
+        if (builderInterface.equals(Thing.Builder.class)) return create(tbf, expectedSize);
+
+        var wrappedBuilder = // an ImmutableThing.Builder or a MutableThing (but NOT another Proxy)
+                (Thing.Builder<? extends IImmutableThing>) create(tbf, expectedSize);
+        var handler =
+                new BuilderInvocationHandler(tbf, wrappedBuilder, builderInterface, thingInterface);
         var proxy = Reflection.newProxy(builderInterface, handler);
         if (!(builderInterface.isInstance(proxy)))
             throw new IllegalArgumentException(proxy.toString());
         return proxy;
     }
 
+    private static Thing.Builder<? extends IImmutableThing> create(TBF tbf, int expectedSize) {
+        if (expectedSize == -1) return tbf.create();
+        else return tbf.create(expectedSize);
+    }
+
     // TODO Consider using Guava's AbstractInvocationHandler?
 
     private record BuilderInvocationHandler(
-            Thing.Builder<? extends IImmutableThing> immutableThingBuilder, Class<?> thingClass)
+            TBF tbf,
+            Thing.Builder<? extends IImmutableThing> immutableThingBuilder,
+            Class<Thing.Builder<IImmutableThing>> builderInterface,
+            Class<IImmutableThing> thingInterface)
             implements InvocationHandler {
 
         @Override
@@ -87,20 +106,37 @@ public class ProxyTBF implements TBF {
                                     + Arrays.toString(args),
                             e);
                 }
-            var handler = new ThingInvocationHandler(immutableThingBuilder.build());
-            // return Proxy.newProxyInstance(thingClass.getClassLoader(), new Class[] {thingClass},
-            // handler);
-            return Reflection.newProxy(thingClass, handler);
+            var built = immutableThingBuilder.build();
+            var handler = new ThingInvocationHandler(tbf, built, builderInterface, thingInterface);
+            return Reflection.newProxy(thingInterface, handler);
         }
     }
 
-    private record ThingInvocationHandler(IImmutableThing immutableThingBuilder)
+    private record ThingInvocationHandler(
+            TBF tbf,
+            IImmutableThing thing,
+            Class<Thing.Builder<IImmutableThing>> builderInterface,
+            Class<IImmutableThing> thingInterface)
             implements InvocationHandler {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
-            return method.invoke(immutableThingBuilder, args);
+            if (method.getName().equals("copy")) return copy();
+            return method.invoke(thing, args);
+        }
+
+        private Thing.Builder<? extends IImmutableThing> copy() {
+            var size = thing.properties().size();
+            var builder = create(tbf, size, builderInterface, thingInterface);
+            builder.iri(thing.iri());
+            thing.properties()
+                    .forEach(
+                            (predicateIRI, object) -> {
+                                var datatypeIRI = thing.datatype(predicateIRI);
+                                builder.set(predicateIRI, object, datatypeIRI);
+                            });
+            return builder;
         }
     }
 }

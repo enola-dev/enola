@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
  * here) Type (see {@link PredicatesObjects}).
  *
  * <p>This is, of course, heavily inspired by TBL's vision of the <i>Semantic Web</i> of <i>Linked
- * Data</i>, such as also described by standards such has RDF and then used e.g. by SPARQL, or
+ * Data</i>, such as also described by standards such as RDF and then used e.g. by SPARQL, or
  * JSON-LD, etc.
  */
 public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {

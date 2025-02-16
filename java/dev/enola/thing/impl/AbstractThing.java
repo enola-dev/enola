@@ -19,7 +19,8 @@ package dev.enola.thing.impl;
 
 import dev.enola.thing.Thing;
 
-public abstract class AbstractThing implements Thing {
+// Package-local (non-public) helpers
+abstract class AbstractThing implements Thing {
 
     @Override
     public final int hashCode() {

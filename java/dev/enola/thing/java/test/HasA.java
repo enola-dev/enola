@@ -29,6 +29,9 @@ public interface HasA extends IImmutableThing {
         return get(TestVoc.A.A, Long.class);
     }
 
+    @Override
+    Builder<? extends HasA> copy();
+
     interface Builder<B extends HasA> extends Thing.Builder<B> { // skipcq: JAVA-E0169
 
         default HasA.Builder<B> a(Long test) {

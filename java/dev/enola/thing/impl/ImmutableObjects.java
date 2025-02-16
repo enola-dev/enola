@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableCollection;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 
+// Package-local (non-public) helpers
 final class ImmutableObjects {
 
     static void check(Object object) {

@@ -31,6 +31,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>See {@link dev.enola.thing.repo.AlwaysThingProvider}.
  */
+// TODO Make OnlyIRIThing package private? This should just be an optimization...
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class OnlyIRIThing extends AbstractThing implements IImmutableThing {

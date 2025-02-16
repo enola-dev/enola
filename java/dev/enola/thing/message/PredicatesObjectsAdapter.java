@@ -163,7 +163,7 @@ public class PredicatesObjectsAdapter implements IImmutablePredicatesObjects {
 
     @SuppressWarnings("Immutable") // TODO Object value https://errorprone.info/bugpattern/Immutable
     private void set(
-            Builder<? extends ImmutablePredicatesObjects> builder,
+            Builder<? extends IImmutablePredicatesObjects> builder,
             String predicate,
             Object value,
             @Nullable String datatype) {

@@ -18,8 +18,10 @@
 package dev.enola.thing.impl;
 
 import com.google.errorprone.annotations.Immutable;
+import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.thing.Thing;
 
 @Immutable
+@ThreadSafe
 public interface IImmutableThing extends Thing, IImmutablePredicatesObjects {}

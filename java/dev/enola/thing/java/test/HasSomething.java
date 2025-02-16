@@ -18,6 +18,7 @@
 package dev.enola.thing.java.test;
 
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java.TBF;
 
 import org.jspecify.annotations.Nullable;
@@ -25,13 +26,16 @@ import org.jspecify.annotations.Nullable;
 import java.time.Instant;
 
 // TODO Generate this, from a model
-public interface HasSomething extends HasA, HasB {
+public interface HasSomething extends HasA, HasB, IImmutableThing {
 
     // TODO Extend HasType and @Override type()
 
     default @Nullable String test() {
         return getString(TestVoc.SOMETHING.TEST);
     }
+
+    @Override
+    Builder<? extends HasSomething> copy();
 
     interface Builder<B extends HasSomething> // skipcq: JAVA-E0169
             extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {

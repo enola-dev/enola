@@ -32,6 +32,7 @@ import org.jspecify.annotations.Nullable;
 
 @Immutable
 @ThreadSafe
+// TODO Make ImmutablePredicatesObjects package private, and let users create them via the TBF (?)
 public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     // Suppressed because of @ImmutableTypeParameter T in PredicatesObjects.Builder#set:
@@ -51,7 +52,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         return new ImmutablePredicatesObjects.Builder<>();
     }
 
-    public static PredicatesObjects.Builder<? extends ImmutablePredicatesObjects>
+    public static PredicatesObjects.Builder<? extends IImmutablePredicatesObjects>
             builderWithExpectedSize(int expectedSize) {
         return new ImmutablePredicatesObjects.Builder<>(expectedSize);
     }
@@ -98,7 +99,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     }
 
     @Override
-    public PredicatesObjects.Builder<? extends ImmutablePredicatesObjects> copy() {
+    public PredicatesObjects.Builder<? extends IImmutablePredicatesObjects> copy() {
         return new Builder<>(properties(), datatypes());
     }
 
@@ -107,7 +108,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
             implements PredicatesObjects.Builder<B> {
 
         // TODO Keep the iteration order of this internal maps consistent between the implementation
-        // chosen here, and the one used in the MutablePredicatesObjects; this makes switching TBL
+        // chosen here, and the one used in the MutablePredicatesObjects; this makes switching TBF
         // implementations easier, and without unexpected property order side effects on tests.
 
         protected final ImmutableMap.Builder<String, Object> properties;
@@ -136,12 +137,13 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
         @Override
         public PredicatesObjects.Builder<B> set(String predicateIRI, Object value) {
+            // TODO Re-review this... this prevents copy() callers from "clearing" properties!
             if (value == null) return this;
             if (value instanceof String string && string.isEmpty()) return this;
             if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
             ImmutableObjects.check(value);
-            if (value instanceof Literal literal)
-                set(predicateIRI, literal.value(), literal.datatypeIRI());
+            if (value instanceof Literal(String literalValue, String datatypeIRI))
+                set(predicateIRI, literalValue, datatypeIRI);
             else properties.put(predicateIRI, value);
             return this;
         }
@@ -165,7 +167,10 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         @Override
         public B build() {
             // TODO Remove (B) type cast
-            return (B) new ImmutablePredicatesObjects(properties.build(), datatypes.build());
+            return (B)
+                    new ImmutablePredicatesObjects(
+                            // See ImmutableThing#build() re. buildKeepingLast() vs buildOrThrow()
+                            properties.buildKeepingLast(), datatypes.buildKeepingLast());
         }
 
         @Override

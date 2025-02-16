@@ -35,8 +35,13 @@ public interface TBF {
             Class<B> builderInterface, Class<T> thingInterface);
 
     @SuppressWarnings("unchecked")
+    // TODO This ^^^ is wrong, in case of MutableThing.. use Thing.Builder<Thing> instead?
     default Thing.Builder<IImmutableThing> create() {
         return create(Thing.Builder.class, Thing.class);
+    }
+
+    default Thing.Builder<IImmutableThing> create(int expectedSize) {
+        return create();
     }
 
     default <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
