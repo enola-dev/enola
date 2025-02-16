@@ -22,8 +22,31 @@ import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface ThingTrigger<T extends Thing> extends Trigger<T> {
+public abstract class ThingTrigger<T extends Thing> implements Trigger<T> {
 
-    // TODO @Override
-    void updated(@Nullable T existing, T update, ThingProvider thingProvider);
+    private final Class<T> thingClass;
+    protected ThingRepositoryStore repo;
+
+    protected ThingTrigger(Class<T> thingClass) {
+        this.thingClass = thingClass;
+    }
+
+    public void setRepo(ThingRepositoryStore repo) {
+        this.repo = repo;
+    }
+
+    @Override
+    public boolean handles(Object object) {
+        return thingClass.isInstance(object);
+    }
+
+    /** Temporarily useful for manually debugging unit tests... */
+    @Deprecated
+    public static final ThingTrigger<Thing> THROWING_TRIGGER =
+            new ThingTrigger<>(Thing.class) {
+                @Override
+                public void updated(@Nullable Thing existing, Thing update) {
+                    throw new IllegalStateException(update.toString());
+                }
+            };
 }

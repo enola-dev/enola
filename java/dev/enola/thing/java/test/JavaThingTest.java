@@ -51,6 +51,14 @@ public class JavaThingTest {
     }
 
     @Test
+    public void hasSomethingBuilder() {
+        // HasSomething.builder() === new HasSomethingTBF(), as above
+        var builder = HasSomething.builder();
+        builder.iri("https://example.org/thing");
+        checkHasSomethingBuilder(builder);
+    }
+
+    @Test
     public void chainTBF1() {
         checkTBF(new TBFChain(ImmutableList.of(new HasSomethingTBF())));
     }
@@ -120,11 +128,14 @@ public class JavaThingTest {
         assertThat(thing.get(TestVoc.B.B, Instant.class)).isInstanceOf(Instant.class);
         assertThat(thing.b()).isInstanceOf(Instant.class);
 
+        // TODO assertThat(thing.typesIRI().iterator().next()).isEqualTo(TestVoc.SOMETHING.TYPE);
+
         var builder = thing.copy();
         builder.test("hello, world");
         var rebuilt = builder.build();
         assertThat(rebuilt.test()).isEqualTo("hello, world");
         assertThat(rebuilt.a()).isEqualTo(123L);
         assertThat(rebuilt.b()).isInstanceOf(Instant.class);
+        // TODO assertThat(rebuilt.typesIRI().iterator().next()).isEqualTo(TestVoc.SOMETHING.TYPE);
     }
 }

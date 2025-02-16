@@ -63,6 +63,7 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     // boolean isLink(String predicateIRI) is intentionally not available; use #getLinks() instead!
 
     default boolean isLinkObject(@Nullable Object object) {
+        // TODO object instanceof HasIRI, instead of Link ?
         return object instanceof URI || object instanceof Link;
     }
 
@@ -234,12 +235,12 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
 
         @SuppressWarnings("Immutable")
         default PredicatesObjects.Builder<B> set(String predicateIRI, Link link) {
-            set(predicateIRI, (Object) link);
+            set(predicateIRI, (Object) link); // !
             return this;
         }
 
         default PredicatesObjects.Builder<B> set(String predicateIRI, HasIRI hasIRI) {
-            set(predicateIRI, hasIRI.iri());
+            set(predicateIRI, new Link(hasIRI.iri())); // !
             return this;
         }
 

@@ -15,17 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data;
+package dev.enola.thing.repo;
+
+import dev.enola.common.convert.ConversionException;
+import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface Trigger<T> {
+import java.io.UncheckedIOException;
 
-    // TODO Run implementations in background thread
+/* package local */ class EmptyThingProvider implements ThingProvider {
 
-    // TODO Scripting hooks, see https://github.com/enola-dev/enola/issues/1105
+    static final ThingProvider INSTANCE = new EmptyThingProvider();
 
-    void updated(@Nullable T existing, T update);
+    private EmptyThingProvider() {}
 
-    boolean handles(Object object);
+    @Override
+    public @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException {
+        return null;
+    }
 }

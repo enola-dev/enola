@@ -17,35 +17,49 @@
  */
 package dev.enola.model.w3.rdf;
 
-import com.google.common.reflect.TypeToken;
+import com.google.common.collect.ImmutableList;
 
 import dev.enola.model.w3.rdfs.Class;
+import dev.enola.model.w3.rdfs.HasClassIRI;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.ThingProvider;
+import dev.enola.thing.repo.AlwaysThingProvider;
 
-import java.util.Set;
+import java.util.Optional;
 
 public interface HasType extends Thing {
+    // TODO Move HasType from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
+    // Or, perhaps better, keep this here, and have a supertype there? Confusing?
 
-    default Iterable<String> typesIRI() {
-        return getOptional(KIRI.RDF.TYPE, new TypeToken<Iterable<String>>() {}).orElse(Set.of());
+    // TODO Actually, returns Iterable<Object> instead of String - make consistent!
+    default Iterable<String> typesIRIs() {
+        // TODO Create constant TypeTokens.ITERABLE_STRING
+        return getLinks(KIRI.RDF.TYPE).stream().map(Object::toString).toList();
     }
 
     default Iterable<Class> types() {
         // return getOptional(KIRI.RDF.TYPE, new TypeToken<Iterable<Class>>() {}).orElse(Set.of());
-        return ThingProvider.CTX.get(typesIRI(), Class.class);
+        return AlwaysThingProvider.CTX.get(typesIRIs(), Class.class);
     }
 
     // TODO default KIRI.RDF.TYPE
-    default Class type() {
-        return types().iterator().next();
+    default Optional<Class> type() {
+        var iterator = types().iterator();
+        if (iterator.hasNext()) return Optional.of(iterator.next());
+        else return Optional.empty();
     }
 
     interface Builder<B extends HasType> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasType.Builder<B> type(String typeIRI) {
-            set(KIRI.RDF.TYPE, typeIRI);
+        default HasType.Builder<B> addType(String typeIRI) {
+            // TODO This is an ugly hack and needs fundamental review...
+            //   just like Class.Builder.addRdfsClassProperty - same problem there...
+            set(KIRI.RDF.TYPE, ImmutableList.of(new Link(typeIRI)));
             return this;
+        }
+
+        default HasType.Builder<B> addType(HasClassIRI typeIRI) {
+            return addType(typeIRI.iri());
         }
     }
 }

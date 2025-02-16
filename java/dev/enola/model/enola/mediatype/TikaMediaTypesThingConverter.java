@@ -67,7 +67,7 @@ public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter 
                 var iri = toIRI(tikaMediaType);
                 MediaType.Builder thing =
                         into.getBuilder(iri, MediaType.Builder.class, MediaType.class);
-                thing.type("https://enola.dev/MediaType");
+                thing.addType("https://enola.dev/MediaType");
                 thing.mediaType(tikaMimeType.getName());
 
                 var label = tikaMimeType.getAcronym();

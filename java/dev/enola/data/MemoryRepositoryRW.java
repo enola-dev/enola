@@ -35,11 +35,21 @@ import java.util.concurrent.ConcurrentHashMap;
 @ThreadSafe
 public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
+    // TODO Share more code between this and RepositoryBuilder, now that they're similar
+
     private final Map<String, T> map = new ConcurrentHashMap<>();
     private final ImmutableList<Trigger<T>> triggers;
 
-    protected MemoryRepositoryRW(ImmutableList<Trigger<T>> triggers) {
-        this.triggers = triggers;
+    protected MemoryRepositoryRW(ImmutableList<Trigger<? extends T>> triggers) {
+        this.triggers = hack(triggers);
+    }
+
+    // NB: Copy/pasted in RepositoryBuilder
+    @SuppressWarnings("unchecked")
+    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
+        var builder = ImmutableList.<Trigger<T>>builder();
+        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
+        return builder.build();
     }
 
     protected abstract String getIRI(T value);
@@ -62,15 +72,16 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     @Override
     @CanIgnoreReturnValue
     public final MemoryRepositoryRW<T> store(T item) {
-        if (map.putIfAbsent(getIRI(item), item) != null)
-            throw new IllegalArgumentException(item.toString());
-        trigger(null, item);
+        var iri = getIRI(item);
+        var existing = map.put(iri, item);
+        trigger(existing, item);
         return this;
     }
 
     private void trigger(@Nullable T existing, T updated) {
+        if (updated.equals(existing)) return;
         for (Trigger<T> trigger : triggers) {
-            trigger.updated(existing, updated, this);
+            if (trigger.handles(updated)) trigger.updated(existing, updated);
         }
     }
 

@@ -36,7 +36,7 @@ import dev.enola.thing.Thing;
 public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
         implements ThingRepositoryStore {
 
-    public ThingMemoryRepositoryRW(ImmutableList<Trigger<Thing>> triggers) {
+    public ThingMemoryRepositoryRW(ImmutableList<Trigger<? extends Thing>> triggers) {
         super(triggers);
     }
 

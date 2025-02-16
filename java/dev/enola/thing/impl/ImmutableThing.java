@@ -68,20 +68,27 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                 @SuppressWarnings("unchecked")
                 public <T extends Thing, B extends Thing.Builder<T>> B create(
                         Class<B> builderInterface, Class<T> thingInterface) {
-                    if (builderInterface.equals(Thing.Builder.class)
-                            && thingInterface.equals(Thing.class)) return (B) builder();
-                    else
+                    check(builderInterface, thingInterface);
+                    return (B) builder();
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T extends Thing, B extends Thing.Builder<T>> B create(
+                        Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
+                    check(builderInterface, thingInterface);
+                    return (B) builderWithExpectedSize(expectedSize);
+                }
+
+                private <B extends Thing.Builder<T>, T extends Thing> void check(
+                        Class<B> builderInterface, Class<T> thingInterface) {
+                    if (!(builderInterface.equals(Thing.Builder.class)
+                            && thingInterface.equals(Thing.class)))
                         throw new IllegalArgumentException(
                                 "This implementation does not support "
                                         + builderInterface
                                         + " and "
                                         + thingInterface);
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public Thing.Builder<IImmutableThing> create(int expectedSize) {
-                    return (Thing.Builder<IImmutableThing>) builderWithExpectedSize(expectedSize);
                 }
             };
 

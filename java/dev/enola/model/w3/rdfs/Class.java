@@ -17,19 +17,25 @@
  */
 package dev.enola.model.w3.rdfs;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.model.w3.rdf.Property;
 import dev.enola.thing.HasIRI;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
 
-public interface Class extends Resource {
+public interface Class extends Resource, HasClassIRI {
 
     // TODO Move somewhere else... but IRI enums are RDFS', while this comes from enola: ...
     String PROPERTIES = "https://enola.dev/properties";
 
     // TODO What's the point of this?! Remove...
     default boolean isClass() {
-        return Iterables.contains(typesIRI(), IRI.Class.Class);
+        return Iterables.contains(typesIRIs(), IRI.Class.Class);
     }
 
     // TODO Multiple, or single?
@@ -53,13 +59,26 @@ public interface Class extends Resource {
     @Override
     Builder<? extends Class> copy();
 
+    @SuppressWarnings("unchecked")
+    static Builder<Class> builder() {
+        var builder = new ProxyTBF(ImmutableThing.FACTORY).create(Builder.class, Class.class);
+        builder.addType(KIRI.RDFS.CLASS);
+        return builder;
+    }
+
     interface Builder<B extends Class> // skipcq: JAVA-E0169
             extends Resource.Builder<B> {
 
         default Builder<B> addRdfsClassProperty(HasIRI iri) {
             // TODO Merge Thing.Builder with Thing.Builder2, and then: add(PROPERTIES, iri);
-            throw new UnsupportedOperationException("TODO");
-            // TODO return this;
+            //   The current solution is an ugly hack and needs fundamental review...
+            //   just like HasType.Builder.addType - same problem there...
+            set(PROPERTIES, ImmutableList.of(new Link(iri.iri())));
+            return this;
         }
+
+        @Override
+        @CanIgnoreReturnValue
+        Builder<B> iri(String iri);
     }
 }

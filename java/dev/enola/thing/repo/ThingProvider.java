@@ -45,8 +45,12 @@ import java.util.Optional;
 @FunctionalInterface
 public interface ThingProvider extends ProviderFromIRI<Thing> {
 
+    /**
+     * ThingProvider which is looked up in the {@link TLC}.
+     *
+     * <p>Consider possibly using {@link AlwaysThingProvider#CTX} instead.
+     */
     // TODO Eventually migrate everything to AlwaysThingProvider...
-
     ThingProvider CTX = iri -> TLC.get(ThingProvider.class).get(iri);
 
     /**
@@ -68,10 +72,14 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     // TODO Switch (back?!) from UncheckedIOException to IOException (as documented)
 
+    // TODO Move get with Class<T> up into ProviderFromIRI?
+
     @SuppressWarnings("unchecked")
     default <T extends Thing> @Nullable T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
         Thing thing = get(Objects.requireNonNull(iri, "iri"));
+        // TODO Automagically convert to Java wrapper, using a TBF? Or shouldn't be needed?!
+        // Nota bene: AlwaysThingProvider (now) already does this - is that sufficient?
         if (thing != null && !thingClass.isInstance(thing))
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);

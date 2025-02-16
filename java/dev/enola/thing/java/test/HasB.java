@@ -17,6 +17,8 @@
  */
 package dev.enola.thing.java.test;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
 
@@ -40,5 +42,9 @@ public interface HasB extends IImmutableThing {
             set(TestVoc.B.B, test);
             return this;
         }
+
+        @Override
+        @CanIgnoreReturnValue
+        Builder<B> iri(String iri);
     }
 }

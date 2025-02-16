@@ -26,6 +26,8 @@ import dev.enola.thing.java.Vocabulary;
 @Vocabulary
 public final class TestVoc {
 
+    // TODO Use HasPredicateIRI enums instead, see dev.enola.model.w3.rdfs.IRI
+
     // This intentionally does not declare any namespace prefix; that does not belong here.
     public static final String NS = "https://example.org/";
 
@@ -42,6 +44,7 @@ public final class TestVoc {
     }
 
     public static final class SOMETHING {
+        // TODO public static final String TYPE = NS + "Something";
         public static final String TEST = NS + "test";
 
         private SOMETHING() {}

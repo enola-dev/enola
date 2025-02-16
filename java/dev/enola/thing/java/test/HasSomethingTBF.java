@@ -41,8 +41,22 @@ public final class HasSomethingTBF implements TBF {
         return (B) new HasSomethingBuilder();
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Thing, B extends Thing.Builder<T>> B create(
+            Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
+        if (!builderInterface.equals(HasSomething.Builder.class)
+                || !thingInterface.equals(HasSomething.class))
+            throw new IllegalArgumentException(builderInterface + ", " + thingInterface);
+        return (B) new HasSomethingBuilder(expectedSize);
+    }
+
     private static final class HasSomethingBuilder extends ImmutableThing.Builder<HasSomething>
             implements HasSomething.Builder<HasSomething> {
+
+        private HasSomethingBuilder(int expectedSize) {
+            super(HasSomethingImpl::new, expectedSize);
+        }
 
         private HasSomethingBuilder() {
             super(HasSomethingImpl::new);
@@ -50,6 +64,12 @@ public final class HasSomethingTBF implements TBF {
 
         private HasSomethingBuilder(ImmutableThing.Factory factory, HasSomething hasSomething) {
             super(factory, hasSomething.iri(), hasSomething.properties(), hasSomething.datatypes());
+        }
+
+        @Override
+        public HasSomething.Builder<HasSomething> iri(String iri) {
+            super.iri(iri);
+            return this;
         }
     }
 
