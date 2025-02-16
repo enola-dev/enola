@@ -17,7 +17,4 @@
  */
 package dev.enola.thing.repo;
 
-import dev.enola.data.RepositoryRW;
-import dev.enola.thing.Thing;
-
-public interface ThingRepositoryStore extends ThingRepository, RepositoryRW<Thing> {}
+public interface ThingRepositoryStore extends ThingRepository, ThingProviderStore {}

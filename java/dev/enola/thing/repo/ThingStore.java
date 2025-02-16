@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data;
+package dev.enola.thing.repo;
 
-/** RepositoryRW is a readable & writable {@link Repository} which is thus also a {@link Store}. */
-public interface RepositoryRW<T>
-        extends Repository<T>, Store<RepositoryRW<T>, T>, ProviderStore<T, RepositoryRW<T>> {}
+import dev.enola.data.Store;
+import dev.enola.thing.Thing;
+
+public interface ThingStore extends Store<ThingStore, Thing> {}
