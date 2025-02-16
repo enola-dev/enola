@@ -62,8 +62,8 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
-        if (value instanceof Literal(String value1, String datatypeIRI))
-            set(predicateIRI, value1, datatypeIRI);
+        if (value instanceof Literal(String literalValue, String datatypeIRI))
+            set(predicateIRI, literalValue, datatypeIRI);
         else properties.put(predicateIRI, value);
         return this;
     }
