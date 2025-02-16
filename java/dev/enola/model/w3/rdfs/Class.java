@@ -23,6 +23,7 @@ import dev.enola.model.w3.rdf.Property;
 
 public interface Class extends Resource {
 
+    // TODO What's the point of this?! Remove...
     default boolean isClass() {
         return Iterables.contains(typesIRI(), IRI.Class.Class);
     }
@@ -33,7 +34,7 @@ public interface Class extends Resource {
     }
 
     /** This is the inverse of {@link Property#domain()}. */
-    default Iterable<Property> propertyRange() {
-        throw new IllegalStateException("TODO Implement!");
+    default Iterable<Property> rdfsClassProperties() {
+        return getThings("https://enola.dev/properties", Property.class);
     }
 }

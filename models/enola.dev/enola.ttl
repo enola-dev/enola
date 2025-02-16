@@ -123,9 +123,27 @@ enola:parent a rdf:Property;
   rdfs:range schema:Thing;
   rdfs:comment "A 'hierarchical' parent. This is typically subclassed - and thus there could be several different kinds of parents. Similar to https://schema.org/isPartOf; but that's specific to CreativeWork, while this is not.".
 
+enola:inverseOf a rdf:Property;
+  enola:seeAlso owl:inverseOf, schema:inverseOf;
+  rdfs:comment "Inverse of another Property. Like owl:inverseOf (for owl:ObjectProperty) or schema:inverseOf (for schema:Property), but for any rdf:Property.";
+  rdfs:domain rdf:Property;
+  rdfs:range rdf:Property.
+
 # Similar to https://schema.org/hasPart; but that's specific to CreativeWork, this is not
 enola:children a rdf:Property;
-  schema:inverseOf enola:parent.
+  enola:inverseOf enola:parent.
+
+enola:properties a rdf:Property;
+  rdfs:comment "Properties of Class; inverse of RDFS' domain.";
+  rdfs:range rdfs:Class;
+  rdfs:domain rdf:Property;
+  enolaj:name "rdfsClassProperties"; # Required to resolve conflict with Thing#properties() API.
+  enola:inverseOf rdfs:domain.
+
+enolaj:name a rdf:Property;
+  rdfs:comment "Name to use when generating related Java Classes & Methods; use to override conflicts from defaults.";
+  rdfs:domain rdf:Property, rdfs:Class;
+  rdfs:range xsd:string.
 
 # TODO schema:source?
 # TODO Rename origin to origins, because the Statements of one Thing could come from various places.
