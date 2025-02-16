@@ -24,10 +24,13 @@ import java.util.regex.Pattern;
 
 /** This is an example {@link ID}. */
 @ID // TODO (converter = TestID.Converter.class)
-public record TestID(long kind, String data) {
+public record TestID(long kind, String data) /* TODO implements HasIRI */ {
 
     public static final Pattern PATTERN = Pattern.compile("([0-9a-z]+)-(.+)");
 
+    public static final IdConverter<TestID> CONVERTER = new Converter();
+
+    // TODO @AutoService(IdConverter.class)
     public static final class Converter implements IdConverter<TestID> {
 
         private final int KIND_STRING_RADIX = 36;
@@ -58,5 +61,10 @@ public record TestID(long kind, String data) {
         public Class<TestID> idClass() {
             return TestID.class;
         }
+    }
+
+    // TODO @Override
+    public String iri() {
+        return CONVERTER.convertTo(this);
     }
 }

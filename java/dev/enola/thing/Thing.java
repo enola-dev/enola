@@ -40,7 +40,6 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
     String iri();
 
     @Override
-    @Deprecated
     Builder<? extends Thing> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")

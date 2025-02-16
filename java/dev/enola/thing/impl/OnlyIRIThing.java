@@ -72,7 +72,7 @@ public class OnlyIRIThing extends AbstractThing implements IImmutableThing {
     }
 
     @Override
-    public Thing.Builder<Thing> copy() {
-        throw new UnsupportedOperationException("TODO");
+    public Thing.Builder<? extends Thing> copy() {
+        return ImmutableThing.builder().iri(iri());
     }
 }
