@@ -22,7 +22,6 @@ import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java.test.HasSomething;
 
 /** TBF is a Thing Builder Factory. */
-@FunctionalInterface
 public interface TBF {
 
     /**
@@ -35,6 +34,9 @@ public interface TBF {
     // TODO Is javac really too stupid to validate callers, as intended?
     // e.g. create(Property.Builder.class, Class.class); should not compile - but does :(
     <T extends Thing, B extends Thing.Builder<T>> B create(
+            Class<B> builderInterface, Class<T> thingInterface, int expectedSize);
+
+    <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface);
 
     @SuppressWarnings("unchecked")
@@ -44,7 +46,7 @@ public interface TBF {
     }
 
     default Thing.Builder<IImmutableThing> create(int expectedSize) {
-        return create();
+        return create(Thing.Builder.class, Thing.class, expectedSize);
     }
 
     default <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {

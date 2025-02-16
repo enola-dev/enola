@@ -17,9 +17,12 @@
  */
 package dev.enola.thing.repo;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.OnlyIRIThing;
+
+import org.jspecify.annotations.NonNull;
 
 import java.io.UncheckedIOException;
 import java.util.Optional;
@@ -36,6 +39,11 @@ import java.util.Optional;
  */
 public class AlwaysThingProvider implements ThingProvider {
 
+    public static final AlwaysThingProvider CTX =
+            new AlwaysThingProvider(
+                    // TODO Rethink... convenient - but hides errors! Better not? Set TLC in Tests!
+                    TLC.optional(ThingProvider.class).orElse(EmptyThingProvider.INSTANCE));
+
     private final ThingProvider delegate;
 
     public AlwaysThingProvider(ThingProvider delegate) {
@@ -43,13 +51,24 @@ public class AlwaysThingProvider implements ThingProvider {
     }
 
     @Override
-    public Thing get(String iri) throws UncheckedIOException, ConversionException {
+    public @NonNull Thing get(String iri) throws UncheckedIOException, ConversionException {
         var thing = delegate.get(iri);
         if (thing == null) return new OnlyIRIThing(iri);
         else return thing;
     }
 
-    public Optional<Thing> getOpt(String iri) throws UncheckedIOException, ConversionException {
+    /*
+    @Override
+    public <T extends Thing> @NonNull T get(String iri, Class<T> thingClass)
+            throws UncheckedIOException, ConversionException {
+        // TODO Use a TBF, like ProxyTBF, to create an instance of thingClass...
+        return ThingProvider.super.get(iri, thingClass);
+    }
+    */
+
+    @Override
+    public Optional<Thing> getOptional(String iri)
+            throws UncheckedIOException, ConversionException {
         var thing = delegate.get(iri);
         return Optional.ofNullable(thing);
     }

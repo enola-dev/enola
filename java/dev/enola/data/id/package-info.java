@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** ID objects from/toString. */
+// TODO This technically actually isn't related so much to "IDs" as to "datatypes"...
 @NullMarked
 package dev.enola.data.id;
 

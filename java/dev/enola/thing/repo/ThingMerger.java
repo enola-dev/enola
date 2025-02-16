@@ -34,6 +34,8 @@ class ThingMerger {
     // TODO This currently only works for the 1st / top-level,
     //   but later ideally really needs to recurse into all contained PredicatesObjects...
 
+    // TODO Support Java Things, like ProxyTBF (or HasSomethingTBF); it's currently "lost".
+
     public static Thing merge(Thing existing, Thing update) {
         if (!existing.iri().equals(update.iri())) throw new IllegalArgumentException();
 

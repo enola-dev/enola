@@ -28,9 +28,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 public interface Store<T> {
 
-    // TODO Combine #store() and #merge() into single store(), or save() [?], after all?!
-
-    // TODO Fix inconsistency of some methods returning B but others void
+    // TODO Move #merge() out of this class, and into the RDF Resource Loader, only
+    // (This will also fix the inconsistency of some methods returning B but others void.)
 
     /**
      * Merge a T into this store.
@@ -39,14 +38,15 @@ public interface Store<T> {
      * #store(Object)}.
      *
      * <p>Otherwise, an implementation specific strategy "merges" the existing and new T in the
-     * store.
+     * store. Note that this strategy may well be "additive" - meaning you cannot "remove" (or
+     * "blank out") properties!
      */
     void merge(T item);
 
     /**
      * Store a T.
      *
-     * @throws IllegalArgumentException if this store already has this T
+     * <p>If this store already has this T, then it's replaced (entirely, not merged).
      */
     @CanIgnoreReturnValue
     Store<T> store(T item);

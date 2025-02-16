@@ -17,6 +17,8 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
@@ -45,10 +47,15 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
 
+        @CanIgnoreReturnValue
         Builder<B> iri(String iri);
 
+        @CanIgnoreReturnValue
+        // TODO @Nullable Object value is OK to "clear" fields.. but not otherwise? Test!
         Builder<B> set(String predicateIRI, Object value);
 
+        @CanIgnoreReturnValue
+        // TODO @Nullable Object value - as above
         Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI);
 
         @Override

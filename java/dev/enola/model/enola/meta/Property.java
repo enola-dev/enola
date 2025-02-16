@@ -18,6 +18,8 @@
 package dev.enola.model.enola.meta;
 
 import dev.enola.thing.KIRI;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
 public interface Property extends Type {
@@ -76,5 +78,10 @@ public interface Property extends Type {
     @SuppressWarnings("unchecked")
     static Property.Builder<Property> builder(TBF tbf) {
         return tbf.create(Property.Builder.class, Property.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    static Property.Builder<Property> builder() {
+        return builder(new ProxyTBF(ImmutableThing.FACTORY));
     }
 }

@@ -26,8 +26,9 @@ import dev.enola.thing.proto.Value.Literal;
  * in code.
  */
 public final class KIRI {
-    // TODO Convert all of this into stuff like dev.enola.model.w3.rdfs.Class
-    // TODO This class should eventually disappear from package dev.enola.thing
+    // TODO Use HasPredicateIRI enums instead, see dev.enola.model.w3.rdfs.IRI
+    // TODO This class should eventually disappear from package dev.enola.thing,
+    //   because it will #later be generated from RDFS into dev.enola.models.*
 
     // The JavaDoc of this class must currently be manually kept in sync with
     // the same content that's also in the //models/enola.dev/properties.ttl file.
@@ -68,6 +69,7 @@ public final class KIRI {
          * e.g. a Thing was originally "loaded" from. This may be a list.
          *
          * <p>TODO: Is there some existing standard vocabulary for this?
+         * https://www.w3.org/TR/prov-overview/, perhaps? Seems complicated.
          */
         public static final String ORIGIN = NS + "origin";
 
@@ -227,7 +229,6 @@ public final class KIRI {
      * 1.1 Concepts XSD datatypes</a>, based (of course) on the <a
      * href="https://www.w3.org/TR/xmlschema11-2/">XML Schema 1.1 datatypes</a>.
      */
-    // TODO One fine day this should be generated
     public static final class XSD {
         private static final String NS = "http://www.w3.org/2001/XMLSchema#";
 
@@ -250,6 +251,7 @@ public final class KIRI {
         private XSD() {}
     }
 
+    // TODO Move this to somewhere else...
     public void initialize(StringToLongBiMap.Builder iriToLongBiMap) {
         iriToLongBiMap.put(""); // 0
         iriToLongBiMap.put(RDF.TYPE); // 1

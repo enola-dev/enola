@@ -23,11 +23,13 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.impl.ImmutableThing;
 
+import org.jspecify.annotations.Nullable;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class ProxyTBF implements TBF {
+public final class ProxyTBF implements TBF {
 
     private final TBF wrap;
 
@@ -54,6 +56,18 @@ public class ProxyTBF implements TBF {
                 create(
                         wrap,
                         -1,
+                        (Class<Thing.Builder<IImmutableThing>>) builderInterface,
+                        (Class<IImmutableThing>) thingInterface);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Thing, B extends Thing.Builder<T>> B create(
+            Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
+        return (B)
+                create(
+                        wrap,
+                        expectedSize,
                         (Class<Thing.Builder<IImmutableThing>>) builderInterface,
                         (Class<IImmutableThing>) thingInterface);
     }
@@ -91,27 +105,43 @@ public class ProxyTBF implements TBF {
             implements InvocationHandler {
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        public Object invoke(Object proxy, Method method, @Nullable Object[] args)
+                throws Throwable {
             if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
-            if (!method.getName().equals("build"))
-                try {
-                    return method.invoke(immutableThingBuilder, args);
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(
-                            "Interface may be missing default method implementations?!"
-                                    + " immutableThingBuilder="
-                                    + immutableThingBuilder
-                                    + "; proxy="
-                                    + proxy
-                                    + "; method="
-                                    + method
-                                    + "; args="
-                                    + Arrays.toString(args),
-                            e);
-                }
-            var built = immutableThingBuilder.build();
-            var handler = new ThingInvocationHandler(tbf, built, builderInterface, thingInterface);
-            return Reflection.newProxy(thingInterface, handler);
+            if (method.getName() == "iri" && args != null && args.length > 0) {
+                immutableThingBuilder.iri((String) args[0]);
+                return proxy;
+            } else if (method.getName().equals("build")) {
+                var built = immutableThingBuilder.build();
+                var handler =
+                        new ThingInvocationHandler(tbf, built, builderInterface, thingInterface);
+                return Reflection.newProxy(thingInterface, handler);
+            } else if (method.getName().equals("toString")) return toString();
+            // else
+            try {
+                return method.invoke(immutableThingBuilder, args);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException(
+                        "Interface may be missing default method implementations?!"
+                                + " immutableThingBuilder="
+                                + immutableThingBuilder
+                                + "; proxy="
+                                + proxy
+                                + "; method="
+                                + method
+                                + "; args="
+                                + Arrays.toString(args),
+                        e);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "ProxyTBF.BuilderInvocationHandler{builderInterface="
+                    + builderInterface
+                    + ", builder="
+                    + immutableThingBuilder
+                    + "}";
         }
     }
 
@@ -123,9 +153,11 @@ public class ProxyTBF implements TBF {
             implements InvocationHandler {
 
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        public Object invoke(Object proxy, Method method, @Nullable Object[] args)
+                throws Throwable {
             if (method.isDefault()) return InvocationHandler.invokeDefault(proxy, method, args);
             if (method.getName().equals("copy")) return copy();
+            if (method.getName().equals("toString")) return toString();
             return method.invoke(thing, args);
         }
 
@@ -140,6 +172,15 @@ public class ProxyTBF implements TBF {
                                 builder.set(predicateIRI, object, datatypeIRI);
                             });
             return builder;
+        }
+
+        @Override
+        public String toString() {
+            return "ProxyTBF.ThingInvocationHandler{thingInterface="
+                    + thingInterface
+                    + ", thing="
+                    + thing
+                    + "}";
         }
     }
 }

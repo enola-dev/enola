@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** Generic (non-Thing specific) "Data" API. */
+// TODO Reconsider whether to keep this... or just "fold" it into dev.enola.thing.repo?
 @NullMarked
 package dev.enola.data;
 

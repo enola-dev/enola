@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-/** Enola integration with <a href="https://tika.apache.org">Apache Tika</a>. */
 @NullMarked
 package dev.enola.infer.datalog;
 

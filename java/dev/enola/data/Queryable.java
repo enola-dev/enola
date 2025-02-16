@@ -17,11 +17,16 @@
  */
 package dev.enola.data;
 
-/** Queryable returns Results (R), given a Query (Q) in a given Query Language (QR) . */
+/**
+ * Queryable returns Results (R), given a Query (Q).
+ *
+ * @param <Q> is a {@link Query} implementation.
+ * @param <R> is typically an Iterable or Stream or something like that.
+ */
 // TODO This API will likely need some more thought in the future, and evolve when implemented
 public interface Queryable<QL, Q, R> {
 
-    R query(QL queryLanguage, Q query);
+    R query(QL queryLanguage, Q query); // TODO throws Data[Query?]Exception
 
     // TODO ? List<QL> queryLanguages();
 }

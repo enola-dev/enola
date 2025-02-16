@@ -17,22 +17,54 @@
  */
 package dev.enola.model.w3.rdf;
 
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
 import dev.enola.model.w3.rdfs.Class;
 import dev.enola.model.w3.rdfs.Resource;
+import dev.enola.thing.HasPredicateIRI;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
 
 import java.util.Optional;
 
-public interface Property extends Resource {
+public interface Property extends Resource, HasPredicateIRI {
 
     default Optional<Property> subPropertyOf() {
         return getThing("http://www.w3.org/2000/01/rdf-schema#subPropertyOf", Property.class);
     }
 
     default Optional<Class> domain() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#domain", Class.class);
+        return getThing(KIRI.RDFS.DOMAIN, Class.class);
     }
 
     default Optional<Class> range() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#domain", Class.class);
+        return getThing("http://www.w3.org/2000/01/rdf-schema#range", Class.class);
+    }
+
+    @Override
+    Builder<? extends Property> copy();
+
+    // skipcq: JAVA-E0169
+    interface Builder<B extends Property> extends Resource.Builder<B> {
+
+        @CanIgnoreReturnValue
+        default Builder<B> domain(String iri) {
+            set(KIRI.RDFS.DOMAIN, new Link(iri));
+            return this;
+        }
+
+        @Override
+        @CanIgnoreReturnValue
+        Builder<B> iri(String iri);
+    }
+
+    @SuppressWarnings("unchecked")
+    static Property.Builder<Property> builder() {
+        var builder =
+                new ProxyTBF(ImmutableThing.FACTORY).create(Property.Builder.class, Property.class);
+        builder.addType(KIRI.RDF.PROPERTY);
+        return builder;
     }
 }

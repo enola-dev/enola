@@ -31,13 +31,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
-public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<T>, Builder<Repository<T>> {
+public abstract class RepositoryBuilder<T> implements RepositoryRW<T>, Builder<Repository<T>> {
+
+    // TODO Share more code between this and MemoryRepositoryRW, now that they're similar
 
     private final Map<String, T> map = new HashMap<>();
     private final ImmutableList<Trigger<T>> triggers;
 
-    protected RepositoryBuilder(ImmutableList<Trigger<T>> triggers) {
-        this.triggers = triggers;
+    protected RepositoryBuilder(ImmutableList<Trigger<? extends T>> triggers) {
+        this.triggers = hack(triggers);
+    }
+
+    // NB: Copy/pasted in MemoryRepositoryRW
+    @SuppressWarnings("unchecked")
+    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
+        var builder = ImmutableList.<Trigger<T>>builder();
+        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
+        return builder.build();
     }
 
     protected RepositoryBuilder() {
@@ -57,6 +67,11 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
     }
 
     @Override
+    public Iterable<String> listIRI() {
+        return map.keySet();
+    }
+
+    @Override
     public void merge(T item) {
         var iri = getIRI(item);
         var existing = map.putIfAbsent(iri, item);
@@ -73,26 +88,21 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
     @CanIgnoreReturnValue
     public RepositoryBuilder<T> store(T item) {
         var iri = getIRI(item);
-        var existing = map.putIfAbsent(iri, item);
-        if (existing != null)
-            throw new IllegalArgumentException(
-                    item
-                            + " cannot replace "
-                            + existing
-                            + "; but consider using merge() instead of store()");
-        trigger(null, item);
+        var existing = map.put(iri, item);
+        trigger(existing, item);
         return this;
     }
 
     private void trigger(@Nullable T existing, T updated) {
+        if (updated.equals(existing)) return;
         for (Trigger<T> trigger : triggers) {
-            trigger.updated(existing, updated, this);
+            if (trigger.handles(updated)) trigger.updated(existing, updated);
         }
     }
 
     @Override
     public RepositoryBuilder<T> storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
-        Store.super.storeAll(items);
+        RepositoryRW.super.storeAll(items);
         return this;
     }
 
@@ -127,7 +137,7 @@ public abstract class RepositoryBuilder<T> implements ProviderFromIRI<T>, Store<
         }
 
         @Override
-        public T get(String iri) {
+        public @Nullable T get(String iri) {
             return items.get(iri);
         }
 

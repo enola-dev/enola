@@ -37,4 +37,14 @@ public class TBFChain implements TBF {
         }
         throw new IllegalStateException("No registered TBF handles: " + builderInterface);
     }
+
+    @Override
+    public <T extends Thing, B extends Thing.Builder<T>> B create(
+            Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
+        for (TBF tbf : chain) {
+            if (tbf.handles(builderInterface))
+                return tbf.create(builderInterface, thingInterface, expectedSize);
+        }
+        throw new IllegalStateException("No registered TBF handles: " + builderInterface);
+    }
 }

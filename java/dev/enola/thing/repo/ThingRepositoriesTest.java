@@ -19,8 +19,6 @@ package dev.enola.thing.repo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
-
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.data.Store;
@@ -48,8 +46,9 @@ public class ThingRepositoriesTest {
                     .build();
 
     private void checkStore(Store<Thing> thingStore) {
+        // Store twice, still has to work
         thingStore.store(TEST_THING);
-        assertThrows(IllegalArgumentException.class, () -> thingStore.store(TEST_THING));
+        thingStore.store(TEST_THING);
     }
 
     private void checkThingRepository(ThingRepository thingRepository) {

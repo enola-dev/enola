@@ -32,21 +32,7 @@ public class MutableThingTest extends ThingTester {
 
     @Override
     protected TBF getThingBuilderFactory() {
-        return new TBF() {
-            @Override
-            @SuppressWarnings({"rawtypes", "unchecked"})
-            public <T extends Thing, B extends Thing.Builder<T>> B create(
-                    Class<B> builderInterface, Class<T> thingInterface) {
-                if (builderInterface.equals(Thing.Builder.class)
-                        && thingInterface.equals(Thing.class)) return (B) new MutableThing(3);
-                else
-                    throw new IllegalArgumentException(
-                            "This implementation does not support "
-                                    + builderInterface
-                                    + " and "
-                                    + thingInterface);
-            }
-        };
+        return MutableThing.FACTORY;
     }
 
     // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
