@@ -17,6 +17,6 @@
  */
 
 @NullMarked
-package dev.enola.infer.datalog;
+package dev.enola.infer.rdf;
 
 import org.jspecify.annotations.NullMarked;
