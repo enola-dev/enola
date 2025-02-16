@@ -216,9 +216,16 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
             return get(predicateIRI, Collection.class).stream().filter(this::isLinkObject).toList();
     }
 
+    default boolean hasLink(String predicateIRI, String linkIRI) {
+        var links = getLinks(predicateIRI);
+        for (var link : links) if (link.toString().equals(linkIRI)) return true;
+        return false;
+    }
+
+    // TODO Collection<> get N for other things than Links
+
     // TODO get... other types.
 
-    @Deprecated
     Builder<? extends PredicatesObjects> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")

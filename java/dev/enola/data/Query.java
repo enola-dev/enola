@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,4 @@
  */
 package dev.enola.data;
 
-// For "enola:/" & "enola:/inline" (later to be changed)
-// (from ListThingService.ENOLA_ROOT_LIST_IRIS & ENOLA_ROOT_LIST_THINGS)
-public record AllQuery(boolean inline, long limit) implements Query {}
+public interface Query {}

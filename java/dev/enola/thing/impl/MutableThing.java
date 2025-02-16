@@ -145,7 +145,6 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     }
 
     @Override
-    @Deprecated
     public Thing.Builder2<? extends Thing> copy() {
         return this;
     }

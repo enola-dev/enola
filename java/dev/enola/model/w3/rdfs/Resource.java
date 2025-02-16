@@ -17,7 +17,6 @@
  */
 package dev.enola.model.w3.rdfs;
 
-import dev.enola.model.enola.meta.Common;
 import dev.enola.model.w3.rdf.HasType;
 import dev.enola.thing.Thing;
 
@@ -25,5 +24,5 @@ import dev.enola.thing.Thing;
 public interface Resource extends Thing, HasType, HasLabel {
 
     // skipcq: JAVA-E0169
-    interface Builder<B extends Common> extends HasType.Builder<B>, HasLabel.Builder<B> {}
+    interface Builder<B extends Resource> extends HasType.Builder<B>, HasLabel.Builder<B> {}
 }
