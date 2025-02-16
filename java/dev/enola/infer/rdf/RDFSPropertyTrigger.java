@@ -17,9 +17,8 @@
  */
 package dev.enola.infer.rdf;
 
-import dev.enola.data.ProviderFromIRI;
 import dev.enola.model.w3.rdf.Property;
-import dev.enola.thing.repo.ThingProvider;
+import dev.enola.thing.repo.ThingRepositoryStore;
 import dev.enola.thing.repo.ThingTrigger;
 
 import org.jspecify.annotations.Nullable;
@@ -28,9 +27,18 @@ public class RDFSPropertyTrigger implements ThingTrigger<Property> {
 
     @Override
     public void updated(
-            @Nullable Property existing, Property update, ThingProvider thingProvider) {}
+            @Nullable Property existing, Property update, ThingRepositoryStore thingProvider) {
 
-    @Override
-    public void updated(
-            @Nullable Property existing, Property update, ProviderFromIRI<Property> provider) {}
+        // TODO implement remove existing...
+
+        update.domain()
+                .ifPresent(
+                        clazz -> {
+                            if (!clazz.hasRdfsClassProperty(update.iri())) {
+                                var builder = clazz.copy();
+                                builder.addRdfsClassProperty(update);
+                                thingProvider.merge(builder.build());
+                            }
+                        });
+    }
 }

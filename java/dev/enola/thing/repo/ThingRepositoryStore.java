@@ -18,6 +18,10 @@
 package dev.enola.thing.repo;
 
 import dev.enola.data.RepositoryRW;
+import dev.enola.data.RepositoryStore;
 import dev.enola.thing.Thing;
 
-public interface ThingRepositoryStore extends ThingRepository, RepositoryRW<Thing> {}
+public interface ThingRepositoryStore
+        extends ThingRepository,
+                RepositoryStore<ThingRepositoryStore, Thing>,
+                RepositoryRW<ThingRepositoryStore, Thing> {}

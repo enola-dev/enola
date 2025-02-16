@@ -33,10 +33,11 @@ import dev.enola.thing.Thing;
  * <p>{@link ThingMemoryRepositoryROBuilder} is one of possibly several other alternatives for this.
  */
 @ThreadSafe
-public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
+public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<ThingMemoryRepositoryRW, Thing>
         implements ThingRepositoryStore {
 
-    public ThingMemoryRepositoryRW(ImmutableList<Trigger<Thing>> triggers) {
+    public ThingMemoryRepositoryRW(
+            ImmutableList<Trigger<ThingMemoryRepositoryRW, Thing>> triggers) {
         super(triggers);
     }
 

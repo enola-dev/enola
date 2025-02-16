@@ -17,10 +17,38 @@
  */
 package dev.enola.infer.rdf;
 
+import com.google.common.collect.ImmutableList;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingMemoryRepositoryRW;
+import dev.enola.thing.repo.ThingRepositoryStore;
 import org.junit.Test;
 
 public class RDFSTriggersTest {
 
     @Test
-    public void justOneProperty() {}
+    public void thingMemoryRepositoryRW() {
+        thingRepositoryStore(
+                new ThingMemoryRepositoryRW(ImmutableList.of(new RDFSPropertyTrigger())));
+    }
+
+    @Test
+    public void thingMemoryRepositoryROBuilder() {
+        thingRepositoryStore(
+                new ThingMemoryRepositoryROBuilder(ImmutableList.of(new RDFSPropertyTrigger())));
+    }
+
+    void thingRepositoryStore(ThingRepositoryStore repo) {
+        justOneProperty(repo);
+        classAndProperties(repo);
+        propertyClassProperty(repo);
+        addRemove(repo);
+    }
+
+    void justOneProperty(ThingRepositoryStore repo) {}
+
+    void classAndProperties(ThingRepositoryStore repo) {}
+
+    void propertyClassProperty(ThingRepositoryStore repo) {}
+
+    void addRemove(ThingRepositoryStore repo) {}
 }

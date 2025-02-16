@@ -33,12 +33,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * ConcurrentHashMap}.
  */
 @ThreadSafe
-public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
+public abstract class MemoryRepositoryRW<R extends MemoryRepositoryRW<R, T>, T>
+        implements RepositoryStore<R, T> {
 
     private final Map<String, T> map = new ConcurrentHashMap<>();
-    private final ImmutableList<Trigger<T>> triggers;
+    private final ImmutableList<Trigger<R, T>> triggers;
 
-    protected MemoryRepositoryRW(ImmutableList<Trigger<T>> triggers) {
+    protected MemoryRepositoryRW(ImmutableList<Trigger<R, T>> triggers) {
         this.triggers = triggers;
     }
 
@@ -61,16 +62,18 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     @Override
     @CanIgnoreReturnValue
-    public final MemoryRepositoryRW<T> store(T item) {
+    @SuppressWarnings("unchecked")
+    public final R store(T item) {
         if (map.putIfAbsent(getIRI(item), item) != null)
             throw new IllegalArgumentException(item.toString());
         trigger(null, item);
-        return this;
+        return (R) this;
     }
 
+    @SuppressWarnings("unchecked")
     private void trigger(@Nullable T existing, T updated) {
-        for (Trigger<T> trigger : triggers) {
-            trigger.updated(existing, updated, this);
+        for (Trigger<R, T> trigger : triggers) {
+            trigger.updated(existing, updated, (R) this);
         }
     }
 

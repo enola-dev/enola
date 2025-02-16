@@ -22,8 +22,8 @@ import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
-public interface ThingTrigger<T extends Thing> extends Trigger<T> {
+public interface ThingTrigger<T extends Thing> extends Trigger<ThingRepositoryStore, T> {
 
-    // TODO @Override
-    void updated(@Nullable T existing, T update, ThingProvider thingProvider);
+    @Override
+    void updated(@Nullable T existing, T update, ThingRepositoryStore thingProvider);
 }

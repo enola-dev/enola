@@ -19,7 +19,7 @@ package dev.enola.data;
 
 import org.jspecify.annotations.Nullable;
 
-public interface Trigger<T> {
+public interface Trigger<R extends RepositoryStore<R, T>, T> {
 
-    void updated(@Nullable T existing, T update, ProviderFromIRI<T> provider);
+    void updated(@Nullable T existing, T update, R context);
 }

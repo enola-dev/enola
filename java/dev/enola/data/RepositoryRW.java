@@ -18,4 +18,4 @@
 package dev.enola.data;
 
 /** RepositoryRW is a readable & writable {@link Repository} which is thus also a {@link Store}. */
-public interface RepositoryRW<T> extends Repository<T>, Store<RepositoryRW<T>, T> {}
+public interface RepositoryRW<B extends RepositoryRW<B, T>, T> extends Repository<T>, Store<B, T> {}
