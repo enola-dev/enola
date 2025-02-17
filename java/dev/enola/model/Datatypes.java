@@ -24,12 +24,15 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 
 /**
- * Enola's built-in core datatypes, extending XSD {@link dev.enola.model.xsd.Datatypes} and
- * Schema.org {@link dev.enola.model.schemaorg.Datatypes}.
+ * All built-in Datatypes. Aggregates XSD {@link dev.enola.model.xsd.Datatypes} and Enola {@link
+ * dev.enola.model.enola.Datatypes} and Schema.org {@link dev.enola.model.schemaorg.Datatypes}.
  */
 // TODO Doc: <p>See https://enola.dev/datatypes --- once we put something on
 // https://docs.enola.dev/models/datatypes and have a working HTTP redirector.
 public final class Datatypes {
+    // NB: Cannot move dev.enola.model.Datatypes to package dev.enola.datatype,
+    // because this depends on x3+ dev.enola.model sub-packages. But with AutoService,
+    // this should not be required anymore at all, #later.
 
     // Nota Bene: There's no NULL here - the absence of a value is not a Datatype!
 

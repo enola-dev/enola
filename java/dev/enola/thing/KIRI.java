@@ -73,6 +73,9 @@ public final class KIRI {
 
         public static final String PARENT = NS + "parent";
 
+        /** Name (not URL/URI/IRI) of something. */
+        public static final String NAME = NS + "name";
+
         public static final String IRI_TEMPLATE_PROPERTY = NS + "iriTemplate";
         public static final String IRI_TEMPLATE_DATATYPE = NS + "IRITemplate";
         public static final String LABEL_PROPERTY = NS + "labelProperty";
@@ -90,7 +93,6 @@ public final class KIRI {
 
             public static final String ID = NS + "id";
             public static final String XSD = NS + "xsd";
-            public static final String NAME = NS + "name";
             public static final String JAVA = NS + "java";
             public static final String PROTO = NS + "proto";
             public static final String SCHEMA = NS + "schema";

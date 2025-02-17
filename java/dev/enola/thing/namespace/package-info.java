@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
+/** {@link dev.enola.common.io.iri.namespace.Namespace}s as Things. */
 @NullMarked
 package dev.enola.thing.namespace;
 
