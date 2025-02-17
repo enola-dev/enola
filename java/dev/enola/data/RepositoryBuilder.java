@@ -18,32 +18,56 @@
 package dev.enola.data;
 
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.common.Builder;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
 public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
-        implements Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
+        implements ProviderFromIRI<T>, Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
 
     private final Map<String, T> map = new HashMap<>();
+    private final ImmutableList<Trigger<T>> triggers;
+
+    protected RepositoryBuilder(ImmutableList<Trigger<T>> triggers) {
+        this.triggers = triggers;
+    }
+
+    protected RepositoryBuilder() {
+        this(ImmutableList.of());
+    }
 
     protected abstract String getIRI(T value);
 
+    // TODO protected abstract T merge(T existing, T update);
     protected T merge(T existing, T update) {
         throw new UnsupportedOperationException("TODO Implement in subclass");
+    }
+
+    @Override
+    public @Nullable T get(String iri) {
+        return map.get(iri);
     }
 
     @Override
     public void merge(T item) {
         var iri = getIRI(item);
         var existing = map.putIfAbsent(iri, item);
-        if (existing != null) map.put(iri, merge(existing, item));
+        if (existing != null) {
+            var merged = merge(existing, item);
+            map.put(iri, merged);
+            trigger(existing, merged);
+        } else {
+            trigger(null, item);
+        }
     }
 
     @Override
@@ -58,7 +82,14 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
                             + " cannot replace "
                             + existing
                             + "; but consider using merge() instead of store()");
+        trigger(null, item);
         return (B) this;
+    }
+
+    private void trigger(@Nullable T existing, T updated) {
+        for (Trigger<T> trigger : triggers) {
+            trigger.updated(existing, updated, this);
+        }
     }
 
     @Override
