@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
+/** Datatypes of Things. */
 @NullMarked
 package dev.enola.thing.datatype;
 

@@ -25,12 +25,12 @@ import org.jspecify.annotations.Nullable;
 public interface HasName extends Thing {
 
     default @Nullable String name() {
-        return getString(KIRI.E.META.NAME);
+        return getString(KIRI.E.NAME);
     }
 
     interface Builder<B extends HasName> extends HasName, Thing.Builder<B> { // skipcq: JAVA-E0169
         default HasName.Builder<B> name(String name) {
-            set(KIRI.E.META.NAME, name);
+            set(KIRI.E.NAME, name);
             return this;
         }
     }

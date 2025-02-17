@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
+/** 📁 Files 🗎 Model & Connector */
 @NullMarked
 package dev.enola.model.enola.files;
 

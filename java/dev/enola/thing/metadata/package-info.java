@@ -16,7 +16,10 @@
  * limitations under the License.
  */
 
-/** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
+/**
+ * Thing {@link dev.enola.common.io.metadata.Metadata}, like labels/descriptions/logos, but also
+ * DateTime & Hierarchy.
+ */
 @NullMarked
 package dev.enola.thing.metadata;
 
