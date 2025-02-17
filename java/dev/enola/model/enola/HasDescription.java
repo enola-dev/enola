@@ -17,14 +17,21 @@
  */
 package dev.enola.model.enola;
 
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+
+import org.jspecify.annotations.Nullable;
 
 public interface HasDescription extends Thing {
 
-    // TODO default KIRI.E.META.DESCRIPTION
-    String description();
+    default @Nullable String description() {
+        return getString(KIRI.E.DESCRIPTION);
+    }
 
     interface Builder<B extends HasDescription> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        B description(String description);
+        default Builder<B> description(String description) {
+            set(KIRI.E.DESCRIPTION, description);
+            return this;
+        }
     }
 }

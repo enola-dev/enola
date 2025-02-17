@@ -30,6 +30,7 @@ import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
+@SuppressWarnings("Immutable") // TODO This seems to be due to a bug in ErrorProne...
 public class ThingRepositoriesTest {
 
     public static final Thing TEST_THING =

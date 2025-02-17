@@ -31,6 +31,9 @@ public interface TBF {
      * <p>You would typically not use this directly, but via a generated method on the respective
      * thing interface, e.g. {@link HasSomething#builder(TBF)}.
      */
+    // TODO Fix that callers have to use  @SuppressWarnings("unchecked")
+    // TODO Is javac really too stupid to validate callers, as intended?
+    // e.g. create(Property.Builder.class, Class.class); should not compile - but does :(
     <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface);
 

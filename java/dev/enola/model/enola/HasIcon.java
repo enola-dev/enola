@@ -17,22 +17,28 @@
  */
 package dev.enola.model.enola;
 
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 
-import java.net.URI;
+import org.jspecify.annotations.Nullable;
 
 public interface HasIcon extends Thing {
 
-    // TODO default ... KIRI.E.EMOJI
-    String emoji();
+    default @Nullable String emoji() {
+        return getString(KIRI.E.EMOJI);
+    }
 
-    // TODO default KIRI.E.IMAGE
-    URI image();
+    // TODO default URI image() KIRI.E.IMAGE ... but, test Type Conversion?!
+    // URI image();
 
     interface Builder<B extends HasIcon> extends Thing.Builder<B> { // skipcq: JAVA-E0169
 
-        B emoji(String emoji);
+        default Builder<B> emoji(String emoji) {
+            set(KIRI.E.EMOJI, emoji);
+            return this;
+        }
 
-        B image(URI image);
+        // TODO default image(URI image)
+        // B image(URI image);
     }
 }

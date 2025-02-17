@@ -28,7 +28,7 @@ public interface HasComment extends Thing {
     }
 
     interface Builder<B extends HasComment> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasComment.Builder<B> comment(String label) {
+        default Builder<B> comment(String label) {
             set(IRI.Predicate.comment.iri(), label);
             return this;
         }

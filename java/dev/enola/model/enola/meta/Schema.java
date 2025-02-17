@@ -17,33 +17,67 @@
  */
 package dev.enola.model.enola.meta;
 
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
+import dev.enola.thing.java.TBF;
+
+import org.jspecify.annotations.Nullable;
+
 public interface Schema extends Common {
 
     String CLASS_IRI = "https://enola.dev/meta/Schema";
 
-    String id();
+    default @Nullable String id() {
+        return getString(KIRI.E.META.ID);
+    }
 
-    String java_package();
+    default @Nullable String java_package() {
+        return getString(KIRI.E.META.JAVA);
+    }
 
-    Iterable<Datatype> schemaDatatypes();
+    default Iterable<Datatype> schemaDatatypes() {
+        return getThings(KIRI.E.META.DATATYPES, Datatype.class);
+    }
 
-    Iterable<Property> schemaProperties();
+    default Iterable<Property> schemaProperties() {
+        return getThings(KIRI.E.META.SCHEMA_PROPERTIES, Property.class);
+    }
 
-    Iterable<Class> schemaClasses();
+    default Iterable<Class> schemaClasses() {
+        return getThings(KIRI.E.META.SCHEMA_CLASSES, Class.class);
+    }
 
-    interface Builder<B extends Schema> extends Schema, Common.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Schema> // skipcq: JAVA-E0169
+            extends Thing.Builder2<B>, Schema, Common.Builder<B> {
 
-        Schema.Builder<B> id(String id);
+        default Schema.Builder<B> id(String id) {
+            set(KIRI.E.META.ID, id);
+            return this;
+        }
 
-        Schema.Builder<B> java_package(String java_package);
+        default Schema.Builder<B> java_package(String java_package) {
+            set(KIRI.E.META.JAVA, java_package);
+            return this;
+        }
 
-        Schema.Builder<B> addSchemaDatatype(Datatype datatype);
+        default Schema.Builder<B> addSchemaDatatype(Datatype datatype) {
+            add(KIRI.E.META.DATATYPES, datatype);
+            return this;
+        }
 
-        Schema.Builder<B> addSchemaProperty(Property property);
+        default Schema.Builder<B> addSchemaProperty(Property property) {
+            add(KIRI.E.META.SCHEMA_PROPERTIES, property);
+            return this;
+        }
 
-        Schema.Builder<B> addSchemaClass(Class clazz);
+        default Schema.Builder<B> addSchemaClass(Class clazz) {
+            add(KIRI.E.META.SCHEMA_CLASSES, clazz);
+            return this;
+        }
+    }
 
-        @Override
-        Schema build();
+    @SuppressWarnings("unchecked")
+    static Schema.Builder<Schema> builder(TBF tbf) {
+        return tbf.create(Schema.Builder.class, Schema.class);
     }
 }

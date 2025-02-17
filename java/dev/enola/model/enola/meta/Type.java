@@ -17,15 +17,20 @@
  */
 package dev.enola.model.enola.meta;
 
-import dev.enola.model.enola.HasName;
+import dev.enola.thing.KIRI;
 
-public interface Type extends Common, HasName {
+public interface Type extends Common {
 
-    Schema schema();
+    default Schema schema() {
+        return getThingOrThrow(KIRI.E.META.SCHEMA, Schema.class);
+    }
 
     interface Builder<B extends Type> // skipcq: JAVA-E0169
             extends Type, Common.Builder<B> {
 
-        Type.Builder<B> schema(Schema schema);
+        default Type.Builder<B> schema(Schema schema) {
+            set(KIRI.E.META.SCHEMA, schema);
+            return this;
+        }
     }
 }

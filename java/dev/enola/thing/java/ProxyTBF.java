@@ -98,7 +98,10 @@ public class ProxyTBF implements TBF {
                     return method.invoke(immutableThingBuilder, args);
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException(
-                            "proxy="
+                            "Interface may be missing default method implementations?!"
+                                    + " immutableThingBuilder="
+                                    + immutableThingBuilder
+                                    + "; proxy="
                                     + proxy
                                     + "; method="
                                     + method

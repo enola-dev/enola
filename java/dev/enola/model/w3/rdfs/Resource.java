@@ -17,7 +17,13 @@
  */
 package dev.enola.model.w3.rdfs;
 
+import dev.enola.model.enola.meta.Common;
 import dev.enola.model.w3.rdf.HasType;
 import dev.enola.thing.Thing;
 
-public interface Resource extends Thing, HasType, HasLabel {}
+// TODO Is this really needed? Does RDFS really define this?!? Don't make shit up... ;-)
+public interface Resource extends Thing, HasType, HasLabel {
+
+    // skipcq: JAVA-E0169
+    interface Builder<B extends Common> extends HasType.Builder<B>, HasLabel.Builder<B> {}
+}

@@ -64,8 +64,15 @@ final class ThingHashCodeEqualsToString {
     }
 
     static String toString(Thing thiz) {
+        String iri;
+        try {
+            iri = thiz.iri();
+        } catch (IllegalStateException e) {
+            // MutableThing's iri() throws IllegalStateException
+            iri = "UNSET";
+        }
         return MoreObjects.toStringHelper(thiz)
-                .add("iri", thiz.iri())
+                .add("iri", iri)
                 .add("properties", thiz.properties())
                 .add("datatypes", thiz.datatypes())
                 .toString();

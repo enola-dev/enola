@@ -17,4 +17,5 @@
  */
 package dev.enola.thing.repo.id;
 
+// TODO Replace dev.enola.thing.repo.id with package dev.enola.data.id
 public record ID(String classID, Object[] ids) {}

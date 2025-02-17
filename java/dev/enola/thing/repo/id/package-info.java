@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/** Convert Protocol Buffer {@link com.google.protobuf.Message} to {@link dev.enola.thing.Thing}. */
 @NullMarked
+// TODO Replace dev.enola.thing.repo.id with package dev.enola.data.id
 package dev.enola.thing.repo.id;
 
 import org.jspecify.annotations.NullMarked;

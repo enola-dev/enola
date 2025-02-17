@@ -166,9 +166,21 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         return getString(predicate.iri());
     }
 
+    // TODO Rename to getThingOpt
     default <T extends Thing> Optional<T> getThing(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, String.class)
                 .map(linkIRI -> ThingProvider.CTX.get(linkIRI, klass));
+    }
+
+    // TODO Rename to getThing
+    default <T extends Thing> T getThingOrThrow(String predicateIRI, Class<T> klass) {
+        var opt = getOptional(predicateIRI, String.class);
+        if (!opt.isPresent())
+            throw new IllegalStateException(this + " has no value for " + predicateIRI);
+        var thingIRI = opt.get();
+        T thing = ThingProvider.CTX.get(thingIRI, klass);
+        if (thing == null) throw new IllegalStateException(thingIRI + " not found");
+        return thing;
     }
 
     @SuppressWarnings("unchecked")
@@ -213,6 +225,17 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             extends dev.enola.common.Builder<B> {
 
+        @SuppressWarnings("Immutable")
+        default PredicatesObjects.Builder<B> set(String predicateIRI, Link link) {
+            set(predicateIRI, (Object) link);
+            return this;
+        }
+
+        default PredicatesObjects.Builder<B> set(String predicateIRI, HasIRI hasIRI) {
+            set(predicateIRI, hasIRI.iri());
+            return this;
+        }
+
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
@@ -233,6 +256,8 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
          * property has already been set to anything else than a {@link Set}.
          */
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value);
+
+        PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
                 String predicateIRI, Iterable<T> value);

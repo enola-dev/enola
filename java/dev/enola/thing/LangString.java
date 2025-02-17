@@ -17,6 +17,9 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.Immutable;
+
 /** LangString is a String with a BCP 47 “language tag” (e.g. “de-ch”) of the text. */
 // TODO Could/should this better be a Map<String,String> of all such tranlated lang strings?!
-public final record LangString(String text, String lang) {}
+@Immutable
+public record LangString(String text, String lang) {}
