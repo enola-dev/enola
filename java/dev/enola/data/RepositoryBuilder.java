@@ -28,8 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /** RepositoryBuilder builds immutable {@link Repository} instances. */
-public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
-        implements Store<RepositoryBuilder<B, T>, T>, Builder<Repository<T>> {
+public abstract class RepositoryBuilder<T> implements Store<T>, Builder<Repository<T>> {
 
     private final Map<String, T> map = new HashMap<>();
 
@@ -48,8 +47,7 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
 
     @Override
     @CanIgnoreReturnValue
-    @SuppressWarnings("unchecked")
-    public final B store(T item) {
+    public RepositoryBuilder<T> store(T item) {
         var iri = getIRI(item);
         var existing = map.putIfAbsent(iri, item);
         if (existing != null)
@@ -58,13 +56,13 @@ public abstract class RepositoryBuilder<B extends RepositoryBuilder<B, T>, T>
                             + " cannot replace "
                             + existing
                             + "; but consider using merge() instead of store()");
-        return (B) this;
+        return this;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public B storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
-        return (B) Store.super.storeAll(items);
+    public RepositoryBuilder<T> storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
+        Store.super.storeAll(items);
+        return this;
     }
 
     @Override

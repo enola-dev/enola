@@ -25,8 +25,7 @@ import dev.enola.thing.Thing;
  *
  * <p>{@link ThingMemoryRepositoryRW} is one of possibly several other alternatives for this.
  */
-public class ThingMemoryRepositoryROBuilder
-        extends RepositoryBuilder<ThingMemoryRepositoryROBuilder, Thing> {
+public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing> {
 
     @Override
     protected String getIRI(Thing thing) {
@@ -36,6 +35,18 @@ public class ThingMemoryRepositoryROBuilder
     @Override
     protected Thing merge(Thing existing, Thing update) {
         return ThingMerger.merge(existing, update);
+    }
+
+    @Override
+    public ThingMemoryRepositoryROBuilder store(Thing item) {
+        super.store(item);
+        return this;
+    }
+
+    @Override
+    public ThingMemoryRepositoryROBuilder storeAll(Iterable<Thing> items) {
+        super.storeAll(items);
+        return this;
     }
 
     @Override

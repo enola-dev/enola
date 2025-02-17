@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.stream.Stream;
 
-public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
+public class Loader implements ConverterInto<Stream<URI>, Store<Thing>> {
 
     // TODO Move Glob-based loading from CommandWithModel into here!
 
@@ -47,7 +47,7 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
     }
 
     @Override
-    public boolean convertInto(Stream<URI> stream, Store<?, Thing> store)
+    public boolean convertInto(Stream<URI> stream, Store<Thing> store)
             throws ConversionException, IOException {
 
         stream.forEach(resource -> load(resource, store));
@@ -55,11 +55,11 @@ public class Loader implements ConverterInto<Stream<URI>, Store<?, Thing>> {
         return true;
     }
 
-    public boolean load(String uri, Store<?, Thing> store) {
+    public boolean load(String uri, Store<Thing> store) {
         return load(URI.create(uri), store);
     }
 
-    public boolean load(URI uri, Store<?, Thing> store) {
+    public boolean load(URI uri, Store<Thing> store) {
         LOG.info("Loading {}...", uri);
         var things = uriIntoThingConverters.convert(uri);
         if (Iterables.isEmpty(things)) return false;

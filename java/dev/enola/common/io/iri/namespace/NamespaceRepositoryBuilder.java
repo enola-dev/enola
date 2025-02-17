@@ -23,8 +23,7 @@ import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
-public class NamespaceRepositoryBuilder
-        extends RepositoryBuilder<NamespaceRepositoryBuilder, Namespace> {
+public class NamespaceRepositoryBuilder extends RepositoryBuilder<Namespace> {
 
     protected final ImmutableSortedMap.Builder<String, String> prefixes =
             ImmutableSortedMap.naturalOrder();
