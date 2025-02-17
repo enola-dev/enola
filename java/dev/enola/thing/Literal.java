@@ -17,6 +17,8 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.Immutable;
+
 import dev.enola.datatype.Datatype;
 
 /**
@@ -30,5 +32,6 @@ import dev.enola.datatype.Datatype;
  * <p>This is a LEGACY type which (now) overlaps with {@link Thing#datatype(String predicateIRI)}
  * (and a String value property). Prefer using that than this, which will eventually be removed.
  */
+@Immutable
 @Deprecated // TODO Remove this; see above
 public record Literal(String value, String datatypeIRI) {}

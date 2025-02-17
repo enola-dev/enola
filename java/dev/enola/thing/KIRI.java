@@ -71,6 +71,8 @@ public final class KIRI {
          */
         public static final String ORIGIN = NS + "origin";
 
+        public static final String PARENT = NS + "parent";
+
         public static final String IRI_TEMPLATE_PROPERTY = NS + "iriTemplate";
         public static final String IRI_TEMPLATE_DATATYPE = NS + "IRITemplate";
         public static final String LABEL_PROPERTY = NS + "labelProperty";
@@ -81,6 +83,27 @@ public final class KIRI {
         // Style-related stuff...
         public static final String COLOR = NS + "color";
         public static final String TEXT_COLOR = NS + "text-color";
+
+        // TODO Add meta.ttl to document https://enola.dev/meta/...
+        public static final class META {
+            private static final String NS = "https://enola.dev/meta/";
+
+            public static final String ID = NS + "id";
+            public static final String XSD = NS + "xsd";
+            public static final String NAME = NS + "name";
+            public static final String JAVA = NS + "java";
+            public static final String PROTO = NS + "proto";
+            public static final String SCHEMA = NS + "schema";
+            public static final String SCHEMA_PROPERTIES = NS + "schemaProperties";
+            public static final String SCHEMA_CLASSES = NS + "schemaClasses";
+            public static final String PARENTS = NS + "parents";
+            public static final String DATATYPE = NS + "datatype";
+            public static final String DATATYPES = NS + "datatypes";
+            public static final String CLASS_PROPERTIES = NS + "classProperties";
+            public static final String CLASS_ID_PROPERTIES = NS + "classIdProperties";
+            public static final String IRI_TEMPLATE = NS + "iriTemplate";
+            // TODO public static final String MULTIPLICITY = NS + "multiplicity";
+        }
     }
 
     /** Schema.org Properties. */

@@ -21,14 +21,11 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.model.enola.meta.*;
 import dev.enola.model.enola.meta.Class;
-import dev.enola.model.enola.meta.Datatype;
-import dev.enola.model.enola.meta.Property;
-import dev.enola.model.enola.meta.Schema;
-import dev.enola.model.enola.meta.bootstrap.MutableClass;
-import dev.enola.model.enola.meta.bootstrap.MutableDatatype;
-import dev.enola.model.enola.meta.bootstrap.MutableProperty;
-import dev.enola.model.enola.meta.bootstrap.MutableSchema;
+import dev.enola.thing.impl.MutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.id.ThingByIdProvider;
 
 import java.util.HashMap;
@@ -39,30 +36,36 @@ public class MetaThingByIdProvider extends Abstract implements ThingByIdProvider
     // skipcq: JAVA-E0169
     static class Builder implements dev.enola.common.Builder<MetaThingByIdProvider> {
 
+        private final TBF tbf = new ProxyTBF(MutableThing.FACTORY);
+
         private final Map<String, Schema.Builder> schemas = new HashMap<>();
         private final Map<String, Datatype.Builder> datatypes = new HashMap<>();
         private final Map<String, Property.Builder> properties = new HashMap<>();
         private final Map<String, Class.Builder> classes = new HashMap<>();
 
-        Schema.Builder schema(String id) {
-            return schemas.computeIfAbsent(id, _id -> new MutableSchema().id(_id));
+        Schema.Builder<Schema> schema(String id) {
+            return schemas.computeIfAbsent(id, _id -> Schema.builder(tbf).id(_id));
         }
 
-        Datatype.Builder datatype(Schema schema, String name) {
+        Datatype.Builder<Datatype> datatype(Schema schema, String name) {
             var id = requireNonNull(schema, "schema").id() + "." + requireNonNull(name, "name");
-            return datatypes.computeIfAbsent(
-                    id, _id -> new MutableDatatype().schema(schema).name(name));
+            return datatypes.computeIfAbsent(id, _id -> init(Datatype.builder(tbf), schema, name));
         }
 
-        Property.Builder property(Schema schema, String name) {
+        Property.Builder<Property> property(Schema schema, String name) {
             var id = requireNonNull(schema).id() + "." + requireNonNull(name);
-            return properties.computeIfAbsent(
-                    id, _id -> new MutableProperty().schema(schema).name(name));
+            return properties.computeIfAbsent(id, _id -> init(Property.builder(tbf), schema, name));
         }
 
-        Class.Builder clazz(Schema schema, String name) {
+        Class.Builder<Class> clazz(Schema schema, String name) {
             var id = requireNonNull(schema).id() + "." + requireNonNull(name);
-            return classes.computeIfAbsent(id, _id -> new MutableClass().schema(schema).name(name));
+            return classes.computeIfAbsent(id, _id -> init(Class.builder(tbf), schema, name));
+        }
+
+        private <T extends Type.Builder<?>> T init(T builder, Schema schema, String name) {
+            builder.schema(schema).name(name);
+            builder.iri(schema.iri() + "/" + name);
+            return builder;
         }
 
         @Override

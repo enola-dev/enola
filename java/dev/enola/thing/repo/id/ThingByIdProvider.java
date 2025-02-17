@@ -19,6 +19,7 @@ package dev.enola.thing.repo.id;
 
 import dev.enola.thing.Thing;
 
+// TODO Replace dev.enola.thing.repo.id with package dev.enola.data.id
 public interface ThingByIdProvider { // extends Provider<ID, Thing> {
 
     // Thing get(String classID, Object[] ids);

@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 
+import dev.enola.thing.HasIRI;
 import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
@@ -80,6 +81,11 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         }
         properties.put(predicateIRI, value);
         return this;
+    }
+
+    @Override
+    public Builder2<B> add(String predicateIRI, HasIRI hasIRI) {
+        return add(predicateIRI, hasIRI.iri());
     }
 
     @Override

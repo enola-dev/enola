@@ -17,6 +17,8 @@
  */
 package dev.enola.thing;
 
+import com.google.errorprone.annotations.Immutable;
+
 /**
  * Link is an IRI "reference" to another {@link Thing}.
  *
@@ -28,6 +30,7 @@ package dev.enola.thing;
 // TODO Abandon this and just use java.net.URI in Things instead?!
 //   Or change this record to a class and have an URI field, for 1 time conversion.
 // TODO Make it extend Thing; and voilà, it's a Property Graph!
+@Immutable
 public record Link(String iri) implements HasIRI {
 
     @Override

@@ -17,6 +17,7 @@
  */
 package dev.enola.model.enola.meta.io;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.namespace.EmptyNamespaceRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepository;
 import dev.enola.common.io.iri.namespace.NamespaceRepositoryBuilder;
@@ -25,6 +26,7 @@ import dev.enola.common.yamljson.YAML;
 import dev.enola.model.enola.HasName;
 import dev.enola.model.enola.meta.*;
 import dev.enola.model.enola.meta.Class;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.jspecify.annotations.Nullable;
 
@@ -65,6 +67,8 @@ public class SchemaIO {
         if (iri.endsWith("/"))
             throw new IllegalArgumentException("Schema's iri: must NOT end with slash: " + iri);
         schema.iri(iri);
+        // TODO Re-review this pretty ugly "hack" later...
+        TLC.get(ThingRepositoryStore.class).store(schema);
 
         schema.description(getRemoveString(map, "description"));
         schema.java_package(getRemoveString(map, "java:package"));
@@ -224,10 +228,10 @@ public class SchemaIO {
                 });
     }
 
+    // TODO Remove, since MetaThingByIdProvider already sets iri() ?
     private void setIRI(HasName.Builder named, String schemaIRI) {
-        if (named.iri() == null) {
-            named.iri(schemaIRI + "/" + named.name());
-        }
+        // NOT if (named.iri() == null) {
+        named.iri(schemaIRI + "/" + named.name());
     }
 
     private /* TODO @Nullable */ String getRemoveString(Map<?, ?> map, String name) {

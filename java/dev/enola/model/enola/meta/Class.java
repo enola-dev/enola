@@ -17,36 +17,75 @@
  */
 package dev.enola.model.enola.meta;
 
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
+import dev.enola.thing.java.TBF;
+
+import org.jspecify.annotations.Nullable;
+
 // skipcq: JAVA-E0169
 public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
 
     String CLASS_IRI = "https://enola.dev/meta/Class";
 
-    // TODO default KIRI.E.META.PARENTS ?
-    Iterable<Class> parents();
+    default Iterable<Class> parents() {
+        return getThings(KIRI.E.META.PARENTS, Class.class);
+    }
 
-    // TODO default KIRI.E.META.PROPERTIES
-    // Cannot be properties() due to conflict
-    Iterable<Property> classProperties();
+    // NB: Cannot be named properties() due to conflict with Thing#properties()
+    default Iterable<Property> classProperties() {
+        return getThings(KIRI.E.META.CLASS_PROPERTIES, Property.class);
+    }
 
-    Iterable<Property> classIdProperties();
+    default Iterable<Property> classIdProperties() {
+        return getThings(KIRI.E.META.CLASS_ID_PROPERTIES, Property.class);
+    }
 
-    String iriTemplate();
+    default @Nullable String iriTemplate() {
+        return getString(KIRI.E.META.IRI_TEMPLATE);
+    }
 
-    interface Builder<B extends Class> extends Class, Type.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Class> // skipcq: JAVA-E0169
+            extends Thing.Builder2<B>,
+                    Class,
+                    Type.Builder<B>,
+                    dev.enola.model.w3.rdfs.Class.Builder<B> { // skipcq: JAVA-E0169
 
         @Override
-        Class.Builder<B> schema(Schema schema);
+        default Class.Builder<B> schema(Schema schema) {
+            Type.Builder.super.schema(schema);
+            return this;
+        }
 
         @Override
-        Class.Builder<B> name(String name);
+        default Class.Builder<B> name(String name) {
+            Type.Builder.super.name(name);
+            return this;
+        }
 
-        Class.Builder<B> addParent(Class parent);
+        default Class.Builder<B> addParent(Class parent) {
+            add(KIRI.E.META.PARENTS, parent);
+            return this;
+        }
 
-        Class.Builder<B> addClassProperty(Property property);
+        default Class.Builder<B> addClassProperty(Property property) {
+            add(KIRI.E.META.CLASS_PROPERTIES, property);
+            return this;
+        }
 
-        Class.Builder<B> addClassIdProperty(Property property);
+        default Class.Builder<B> addClassIdProperty(Property property) {
+            add(KIRI.E.META.CLASS_ID_PROPERTIES, property);
+            return this;
+        }
 
-        Class.Builder<B> iriTemplate(String iriTemplate);
+        default Class.Builder<B> iriTemplate(String iriTemplate) {
+            set(KIRI.E.META.IRI_TEMPLATE, iriTemplate);
+            return this;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static Class.Builder<Class> builder(TBF tbf) {
+        return tbf.create(Class.Builder.class, Class.class);
     }
 }

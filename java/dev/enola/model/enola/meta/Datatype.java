@@ -17,38 +17,73 @@
  */
 package dev.enola.model.enola.meta;
 
+import dev.enola.thing.KIRI;
+import dev.enola.thing.java.TBF;
+
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 
 public interface Datatype extends Type {
 
     String CLASS_IRI = "https://enola.dev/meta/Datatype";
 
-    // TODO default KIRI.E.META.PARENT
     // Intentionally only singular instead of multiple
-    Datatype parent();
+    default Datatype parent() {
+        return getThing(KIRI.E.PARENT, Datatype.class).get();
+    }
 
-    String java();
+    default @Nullable String java() {
+        return getString(KIRI.E.META.JAVA);
+    }
 
-    String proto();
+    default @Nullable String proto() {
+        return getString(KIRI.E.META.PROTO);
+    }
 
-    URI xsd();
+    default @Nullable URI xsd() {
+        return get(KIRI.E.META.XSD, URI.class);
+    }
 
     // TODO Pattern regExp();
 
     interface Builder<B extends Datatype> extends Datatype, Type.Builder<B> { // skipcq: JAVA-E0169
 
         @Override
-        Datatype.Builder<B> schema(Schema schema);
+        default Datatype.Builder<B> schema(Schema schema) {
+            Type.Builder.super.schema(schema);
+            return this;
+        }
 
         @Override
-        Datatype.Builder<B> name(String name);
+        default Datatype.Builder<B> name(String name) {
+            Type.Builder.super.name(name);
+            return this;
+        }
 
-        Datatype.Builder<B> parent(Datatype datatype);
+        default Datatype.Builder<B> parent(Datatype datatype) {
+            set(KIRI.E.PARENT, datatype);
+            return this;
+        }
 
-        Datatype.Builder<B> java(String datatype);
+        default Datatype.Builder<B> java(String java) {
+            set(KIRI.E.META.JAVA, java);
+            return this;
+        }
 
-        Datatype.Builder<B> proto(String proto);
+        default Datatype.Builder<B> proto(String proto) {
+            set(KIRI.E.META.PROTO, proto);
+            return this;
+        }
 
-        Datatype.Builder<B> xsd(URI xsd);
+        default Datatype.Builder<B> xsd(URI xsd) {
+            set(KIRI.E.META.XSD, xsd);
+            return this;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static Datatype.Builder<Datatype> builder(TBF tbf) {
+        return tbf.create(Datatype.Builder.class, Datatype.class);
     }
 }

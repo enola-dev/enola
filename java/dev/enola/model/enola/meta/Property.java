@@ -17,40 +17,64 @@
  */
 package dev.enola.model.enola.meta;
 
+import dev.enola.thing.KIRI;
+import dev.enola.thing.java.TBF;
+
 public interface Property extends Type {
 
     String CLASS_IRI = "https://enola.dev/meta/Property";
 
-    // TODO default KIRI.E.META.PARENT
-    Property parent();
-
-    // TODO default KIRI.E.META.DATATYPE
-    Datatype datatype();
-
-    // TODO default KIRI.E.META.MULTIPLICITY
-    Multiplicity multiplicity();
-
-    enum Multiplicity {
-        Single,
-
-        /** Multiple, unordered */
-        Set,
-
-        // TODO List, for Multiple, ordered?
+    default Property parent() {
+        return getThing(KIRI.E.PARENT, Property.class).get();
     }
 
+    default Datatype datatype() {
+        return getThing(KIRI.E.META.DATATYPE, Datatype.class).get();
+    }
+
+    /*
+        default Multiplicity multiplicity() {
+            return Multiplicity.valueOf(getString(KIRI.E.META.MULTIPLICITY));
+        }
+
+        enum Multiplicity {
+            Single,
+
+            / ** Multiple, unordered * /
+            Set,
+
+            // TODO List, for Multiple, ordered?
+        }
+    */
     interface Builder<B extends Property> extends Property, Type.Builder<B> { // skipcq: JAVA-E0169
 
         @Override
-        Property.Builder<B> schema(Schema schema);
+        default Property.Builder<B> schema(Schema schema) {
+            Type.Builder.super.schema(schema);
+            return this;
+        }
 
         @Override
-        Property.Builder<B> name(String name);
+        default Property.Builder<B> name(String name) {
+            Type.Builder.super.name(name);
+            return this;
+        }
 
-        Property.Builder<B> parent(Property parent);
+        default Property.Builder<B> parent(Property parent) {
+            set(KIRI.E.PARENT, parent);
+            return this;
+        }
 
-        Property.Builder<B> datatype(Datatype datatype);
+        default Property.Builder<B> datatype(Datatype datatype) {
+            set(KIRI.E.META.DATATYPE, datatype);
+            return this;
+        }
 
-        Property.Builder<B> multiplicity(Multiplicity multiplicity);
+        // TODO Property.Builder<B> multiplicity(Multiplicity multiplicity);
+    }
+
+    @SuppressWarnings("unchecked")
+    static Property.Builder<Property> builder(TBF tbf) {
+        return tbf.create(Property.Builder.class, Property.class);
     }
 }

@@ -17,14 +17,21 @@
  */
 package dev.enola.model.enola;
 
+import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
+
+import org.jspecify.annotations.Nullable;
 
 public interface HasName extends Thing {
 
-    // TODO default KIRI.E.NAME
-    String name();
+    default @Nullable String name() {
+        return getString(KIRI.E.META.NAME);
+    }
 
     interface Builder<B extends HasName> extends HasName, Thing.Builder<B> { // skipcq: JAVA-E0169
-        B name(String name);
+        default HasName.Builder<B> name(String name) {
+            set(KIRI.E.META.NAME, name);
+            return this;
+        }
     }
 }

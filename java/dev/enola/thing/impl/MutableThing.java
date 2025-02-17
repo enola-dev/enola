@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.impl;
 
+import dev.enola.thing.HasIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.java.TBF;
@@ -102,6 +103,12 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
     @Override
     public <T> Thing.Builder2<B> add(String predicateIRI, T value) {
         super.add(predicateIRI, value);
+        return this;
+    }
+
+    @Override
+    public Thing.Builder2<B> add(String predicateIRI, HasIRI hasIRI) {
+        super.add(predicateIRI, hasIRI);
         return this;
     }
 

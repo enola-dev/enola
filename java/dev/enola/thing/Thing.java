@@ -67,6 +67,8 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
 
         <T> Thing.Builder2<B> add(String predicateIRI, T value);
 
+        PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI);
+
         <T> Thing.Builder2<B> addAll(String predicateIRI, Iterable<T> value);
 
         default <T> Thing.Builder2<B> add(HasPredicateIRI predicate, T value) {
