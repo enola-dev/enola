@@ -23,12 +23,23 @@ import dev.enola.data.RepositoryBuilder;
 
 import java.util.Optional;
 
-public class DatatypeRepositoryBuilder
-        extends RepositoryBuilder<DatatypeRepositoryBuilder, Datatype<?>> {
+public class DatatypeRepositoryBuilder extends RepositoryBuilder<Datatype<?>> {
 
     @Override
     protected String getIRI(Datatype<?> datatype) {
         return require(datatype.iri(), "iri");
+    }
+
+    @Override
+    public DatatypeRepositoryBuilder store(Datatype<?> item) {
+        super.store(item);
+        return this;
+    }
+
+    @Override
+    public DatatypeRepositoryBuilder storeAll(Iterable<Datatype<?>> items) {
+        super.storeAll(items);
+        return this;
     }
 
     @Override

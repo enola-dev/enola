@@ -27,6 +27,8 @@ import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.junit.Test;
 
+import java.util.List;
+
 public class LinksValidatorTest {
 
     // TODO Add missing test coverage for (working) blank nodes, Iterables, URI instead Link
@@ -61,14 +63,14 @@ public class LinksValidatorTest {
 
     @Test
     public void aok() {
-        repo.store(one, two);
+        repo.storeAll(List.of(one, two));
         v.validate(repo, collector);
         assertThat(collector.getDiagnostics()).isEmpty();
     }
 
     @Test
     public void bad() {
-        repo.store(one, two, bad1, bad2);
+        repo.storeAll(List.of(one, two, bad1, bad2));
         v.validate(repo, collector);
         assertThat(collector.getDiagnostics()).hasSize(2);
     }

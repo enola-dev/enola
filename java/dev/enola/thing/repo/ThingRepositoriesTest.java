@@ -47,7 +47,7 @@ public class ThingRepositoriesTest {
                                     new Literal("k&ç#'", "test:type")))
                     .build();
 
-    private void checkStore(Store<?, Thing> thingStore) {
+    private void checkStore(Store<Thing> thingStore) {
         thingStore.store(TEST_THING);
         assertThrows(IllegalArgumentException.class, () -> thingStore.store(TEST_THING));
     }

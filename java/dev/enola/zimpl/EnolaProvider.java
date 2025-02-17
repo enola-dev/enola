@@ -50,8 +50,7 @@ public class EnolaProvider {
         return new EnolaImplementation(actionsRepo, converter);
     }
 
-    private static class ActionRepositoryBuilder
-            extends RepositoryBuilder<ActionRepositoryBuilder, Action<?, ?>> {
+    private static class ActionRepositoryBuilder extends RepositoryBuilder<Action<?, ?>> {
 
         @Override
         protected String getIRI(Action<?, ?> action) {
