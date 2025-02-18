@@ -89,7 +89,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.5
+    rev: v19.1.7
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -103,7 +103,7 @@ repos:
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
     # NB: v0.51.0 requires go v1.23 (so Fedora 41 not 40; TODO check GitHub Runner...)
-    rev: v0.50.5
+    rev: v0.53.0
     hooks:
       - id: protolint
 
@@ -121,7 +121,7 @@ repos:
         exclude: learn/jbang
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.16.0
+    rev: v0.17.2
     hooks:
       - id: markdownlint-cli2
         exclude: (^.github/|test/|docs/use/docgen/docgen.md)
@@ -139,7 +139,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 7.3.1.1
+    rev: 8.0.1
     hooks:
       - id: buildifier
         args: &args
@@ -208,7 +208,7 @@ repos:
 
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 3.0.3
+    rev: 3.2.0
     hooks:
       - id: editorconfig-checker
         exclude: mvnw
