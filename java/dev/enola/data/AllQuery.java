@@ -19,4 +19,6 @@ package dev.enola.data;
 
 // For "enola:/" & "enola:/inline" (later to be changed)
 // (from ListThingService.ENOLA_ROOT_LIST_IRIS & ENOLA_ROOT_LIST_THINGS)
-public record AllQuery(boolean inline, long limit) implements Query {}
+public record AllQuery(boolean inline, long limit) implements Query {
+    // TODO Implement from/toString, using dev.enola.data.id
+}

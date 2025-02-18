@@ -17,7 +17,10 @@
  */
 package dev.enola.thing.repo;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.data.RepositoryBuilder;
+import dev.enola.data.Trigger;
 import dev.enola.thing.Thing;
 
 /**
@@ -25,7 +28,16 @@ import dev.enola.thing.Thing;
  *
  * <p>{@link ThingMemoryRepositoryRW} is one of possibly several other alternatives for this.
  */
-public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing> {
+public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing>
+        implements ThingRepositoryStore {
+
+    public ThingMemoryRepositoryROBuilder(ImmutableList<Trigger<? extends Thing>> triggers) {
+        super(triggers);
+    }
+
+    public ThingMemoryRepositoryROBuilder() {
+        this(ImmutableList.of());
+    }
 
     @Override
     protected String getIRI(Thing thing) {

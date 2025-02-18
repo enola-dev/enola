@@ -33,6 +33,6 @@ public interface Property extends Resource {
     }
 
     default Optional<Class> range() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#domain", Class.class);
+        return getThing("http://www.w3.org/2000/01/rdf-schema#range", Class.class);
     }
 }

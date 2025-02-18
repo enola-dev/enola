@@ -19,8 +19,11 @@ package dev.enola.data;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ThreadSafe;
+
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +36,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
 
     private final Map<String, T> map = new ConcurrentHashMap<>();
+    private final ImmutableList<Trigger<T>> triggers;
+
+    protected MemoryRepositoryRW(ImmutableList<Trigger<? extends T>> triggers) {
+        this.triggers = hack(triggers);
+    }
+
+    // NB: Copy/pasted in RepositoryBuilder
+    @SuppressWarnings("unchecked")
+    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
+        var builder = ImmutableList.<Trigger<T>>builder();
+        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
+        return builder.build();
+    }
 
     protected abstract String getIRI(T value);
 
@@ -42,7 +58,13 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     public void merge(T item) {
         var iri = getIRI(item);
         var existing = map.putIfAbsent(iri, item);
-        if (existing != null) map.put(iri, merge(existing, item));
+        if (existing != null) {
+            var merged = merge(existing, item);
+            map.put(iri, merged);
+            trigger(existing, merged);
+        } else {
+            trigger(null, item);
+        }
     }
 
     @Override
@@ -50,7 +72,14 @@ public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
     public final MemoryRepositoryRW<T> store(T item) {
         if (map.putIfAbsent(getIRI(item), item) != null)
             throw new IllegalArgumentException(item.toString());
+        trigger(null, item);
         return this;
+    }
+
+    private void trigger(@Nullable T existing, T updated) {
+        for (Trigger<T> trigger : triggers) {
+            trigger.updated(existing, updated);
+        }
     }
 
     @Override

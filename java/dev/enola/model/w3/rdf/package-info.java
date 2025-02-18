@@ -15,19 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.id;
+@NullMarked
+package dev.enola.model.w3.rdf;
 
-/**
- * 🆔 annotated classes uniquely 🪪 identify 🫆 objects.
- *
- * <p>{@link IdConverter} converts such IDs from and to String.
- *
- * <p>This is a "convenience marker interface". It is recommended to be added to new classes, but
- * it's technically NOT strictly required; as e.g. an {@link java.net.URI} is also such an ID (and
- * {@link IdConverters#URI} is its converter) - despite not actually being annotated with this.
- */
-public @interface ID {
-    // TODO This technically actually isn't related so much to "IDs" as to "datatypes"...
-
-    // TODO Class<IdConverter<?>> converter();
-}
+import org.jspecify.annotations.NullMarked;

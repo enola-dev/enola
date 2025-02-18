@@ -29,6 +29,8 @@ import org.jspecify.annotations.NonNull;
 @Immutable
 public interface IdConverter<I> extends ObjectToStringBiConverter<I>, OptionalConverter<String, I> {
 
+    // TODO This technically actually isn't related so much to "IDs" as to "datatypes"...
+
     @Override
     @NonNull String convertTo(@NonNull I input) throws ConversionException;
 
