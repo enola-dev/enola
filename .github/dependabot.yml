@@ -27,3 +27,10 @@ updates:
       day: monday
       time: "04:00"
     open-pull-requests-limit: 99
+  - package-ecosystem: "bun"
+    commit-message:
+      prefix: "build(deps): "
+    directory: "web/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 99
