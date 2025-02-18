@@ -18,18 +18,18 @@
     "graphology-gexf": "^0.13.2",
     "graphology-layout": "^0.6.1",
     "graphology-layout-forceatlas2": "^0.10.1",
-    "sigma": "^3.0.0"
+    "sigma": "^3.0.1"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.3",
-    "@types/bun": "^1.1.17",
+    "@types/bun": "^1.2.2",
     "@types/jest": "^29.5.14",
     "@types/sigmajs": "^1.0.32",
     "eslint-config-prettier": "^10.0.1",
     "graphology-types": "^0.24.8",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.1",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.23.0"
+    "typescript-eslint": "^8.24.1"
   }
 }
