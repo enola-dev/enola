@@ -110,6 +110,10 @@ With _Notes_ primarily:
 * [The Archive from zettelkasten.de](https://zettelkasten.de/the-archive/)
 * [Zettelkasten history on Wikipedia](https://en.wikipedia.org/wiki/Zettelkasten)
 
+### Desktop Search
+
+* [Desktop search on Wikipedia](https://en.m.wikipedia.org/wiki/Desktop_search), with [List](https://en.m.wikipedia.org/wiki/List_of_search_engines#Desktop_search_engines)
+
 ### OSINT
 
 * [Maltego](https://www.maltego.com) #commercial
@@ -171,6 +175,11 @@ Vaguely related other such tools include:
 * [Apache Jena](https://jena.apache.org)
 * [Apache Commons RDF API](https://commons.apache.org/proper/commons-rdf/)
 
+Non-Java RDF libraries:
+
+* [RDF JavaScript & TypeScript Libraries](https://rdf.js.org/) #RDF #JS #TS #library
+* [Redland librdf](https://librdf.org/) #RDF #C #library
+
 ## Documentation Generation
 
 * [LEXREX](https://lexrex.web.app) semantic vocabulary visual builder and manager, by [APICatalog.com](https://apicatalog.com)
@@ -187,7 +196,8 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * RDF4j (formerly known as OpenRDF Sesame) [In-Memory](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/memory/MemoryStore.html),
   or [native B-Tree](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/nativerdf/NativeStore.html),
   or [LMDB](https://rdf4j.org/documentation/programming/lmdb-store/),
-  or [ElasticSearch](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/elasticsearchstore/ElasticsearchStore.html) #LMDB #RDF #RDF4j
+  or [ElasticSearch](https://rdf4j.org/javadoc/latest/org/eclipse/rdf4j/sail/elasticsearchstore/ElasticsearchStore.html) #LMDB #SPARQL #RDF #RDF4j
+* [TinySPARQL](https://gnome.pages.gitlab.gnome.org/tinysparql/) #SPARQL #RDF #SQLite #Linux #GNOME #Tracker #Miner
 * [Tinkerpop](https://tinkerpop.apache.org) with [SPARQL-Gremlin](https://tinkerpop.apache.org/docs/current/reference/#sparql-gremlin) (also NB [Sqlg](https://www.sqlg.org)) #opensource
 * [qEndpoint](https://github.com/the-qa-company/qEndpoint) #RDF #RDF4j #HDT #GeoSPARQL #SPARQL #opensource
 * [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
