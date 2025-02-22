@@ -26,8 +26,14 @@ import dev.enola.common.io.resource.*;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class IntegrityValidatingDelegatingResource extends DelegatingResource {
+
+    // TODO This needs to improved to re-hash() when Resource.version() [content] changes!
+    // (For both scenarios; when it was valid, and when it was not.)
 
     public static class Provider implements ResourceProvider {
         private final ResourceProvider delegatingResourceProvider;
@@ -48,7 +54,8 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
     }
 
     private final MultihashWithMultibase expectedHash;
-    private boolean validated = false;
+    private final AtomicBoolean validated = new AtomicBoolean(false);
+    private final Lock validationLock = new ReentrantLock();
 
     public IntegrityValidatingDelegatingResource(
             Resource delegate, MultihashWithMultibase expectedHash) {
@@ -58,21 +65,35 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
 
     @Override
     public ByteSource byteSource() {
-        validate();
+        ensureValidated();
         return delegate.byteSource();
     }
 
     @Override
     public CharSource charSource() {
-        validate();
+        ensureValidated();
         return delegate.charSource();
     }
 
-    private synchronized void validate() {
-        if (validated) return;
+    private void ensureValidated() {
+        if (validated.get()) {
+            return;
+        }
 
-        var resourceHasher = new ResourceHasher();
+        validationLock.lock();
         try {
+            if (!validated.get()) {
+                validate();
+                validated.set(true);
+            }
+        } finally {
+            validationLock.unlock();
+        }
+    }
+
+    private void validate() {
+        try {
+            var resourceHasher = new ResourceHasher();
             var actualHash = resourceHasher.hash(delegate, expectedHash.multihash().getType());
             if (!expectedHash.multihash().equals(actualHash)) {
                 throw new IntegrityViolationException(
@@ -84,7 +105,5 @@ public class IntegrityValidatingDelegatingResource extends DelegatingResource {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-
-        validated = true;
     }
 }
