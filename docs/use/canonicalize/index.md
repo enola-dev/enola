@@ -40,7 +40,7 @@ $ ./enola canonicalize --load=test/picasso.ttl
 ...
 ```
 
-Future versions may implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/), see also [this Working Group](https://www.w3.org/2024/12/rch-wg-charter.html).
+Future versions [may](https://github.com/enola-dev/enola/issues/1103) implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/), see also [this Working Group](https://www.w3.org/2024/12/rch-wg-charter.html).
 
 ## JSON
 
