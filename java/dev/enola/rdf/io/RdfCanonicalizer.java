@@ -30,7 +30,11 @@ import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 
 import java.util.Comparator;
 
+// TODO https://github.com/enola-dev/enola/issues/1103: Replace this with "real" (full) RDF-Canon.
 public class RdfCanonicalizer {
+
+    // NB: This *DOES* also sort any internal blank statements!
+    // (Because it operates on ["flat"] RDF4j Statement - NOT the ["nested"] Thing API.)
 
     private static final Model EMPTY_MODEL = new DynamicModel(new LinkedHashModelFactory());
 
@@ -43,6 +47,7 @@ public class RdfCanonicalizer {
                             .compare(
                                     o1.getPredicate().stringValue(),
                                     o2.getPredicate().stringValue())
+                            .compare(o1.getObject().stringValue(), o2.getObject().stringValue())
                             .result();
                 }
             };
