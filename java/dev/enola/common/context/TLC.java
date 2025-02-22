@@ -36,6 +36,9 @@ import java.util.Optional;
 @ThreadSafe
 public final class TLC {
 
+    // TODO Use Java 21+ e JEP 446 --preview ScopedValue instead of ThreadLocal
+    // https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ScopedValue.html
+
     private static final ThreadLocal<Context> threadLocalContext = new ThreadLocal<>();
 
     /**

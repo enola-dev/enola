@@ -42,9 +42,13 @@ import java.util.concurrent.TimeUnit;
  *   <li>can return (Guava's) ListenableFuture.
  * </ul>
  *
- * @author Michael Vorburger.ch, originally for https://www.opendaylight.org
+ * @author Michael Vorburger.ch (originally for https://www.opendaylight.org)
  */
 public final class Executors {
+
+    // TODO Use (only?) java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor()
+    // see
+    // https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html#GUID-6444CF1A-FCAD-4F8A-877F-4A72AA0143B7
 
     public static final long DEFAULT_TIMEOUT_FOR_SHUTDOWN = 10;
     public static final TimeUnit DEFAULT_TIMEOUT_UNIT_FOR_SHUTDOWN = TimeUnit.SECONDS;
