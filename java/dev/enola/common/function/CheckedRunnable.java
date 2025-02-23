@@ -17,14 +17,9 @@
  */
 package dev.enola.common.function;
 
-import java.util.concurrent.Callable;
+@FunctionalInterface
+public interface CheckedRunnable<E extends Exception> /* NOT extends Runnable */ {
 
-public interface CheckedRunnable extends Callable<Integer> {
-
-    default Integer call() throws Exception {
-        run();
-        return 0;
-    }
-
-    void run() throws Exception;
+    // NOT @Override
+    void run() throws E, UncheckedInterruptedException;
 }

@@ -30,6 +30,14 @@ enola: a owl:Ontology;
   rdfs:label "Enola.dev's base/core Ontology.";
   enola:doc <https://docs.enola.dev/models/enola.dev/>.
 
+enola:olo a rdf:Property;
+  rdfs:label "Optimistic Lock Version"@en;
+  rdfs:comment "Steadily increasing (and theoretically 'wrapping around') version number used for Optimistic concurrency control (OCC)"@en;
+  rdfs:range xsd:unsignedLong; # TODO Create a new Datatype to express "allowed to wrap around, not overflow"...
+  rdfs:domain rdfs:Resource;
+  enola:wikidata "Q1779327";
+  enola:emoji "🔓".
+
 enola:ID a rdfs:Datatype;
   schema:name "IDentifier Datatype.";
   schema:description "This is not to be confused with https://schema.org/identifier, which is a [[rdf:Property]], whereas this is a [[rdfs:Datatype]].";

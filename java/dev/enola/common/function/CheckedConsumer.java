@@ -24,5 +24,5 @@ package dev.enola.common.function;
 // https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
 @FunctionalInterface
 public interface CheckedConsumer<T, E extends Exception> {
-    void accept(T input) throws E;
+    void accept(T input) throws E, UncheckedInterruptedException;
 }
