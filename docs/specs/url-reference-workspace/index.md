@@ -20,25 +20,25 @@ A URL resolver supporting this spec will interpret a URL such as `¬/dir/file.tx
 Given a project directory tree looking e.g. like this:
 
 * `/home/user/projects/cool/`
-  * `.ROOT` _tag file_ #1
-  * `README.md`
-  * `docs/`
-    * `.ROOT` _tag file_ #2
+    * `.ROOT` _tag file_ #1
     * `README.md`
-    * `folder/`
-      * `index.md`
-  * `other/`
-    * `whatever.xyz`
+    * `docs/`
+        * `.ROOT` _tag file_ #2
+        * `README.md`
+        * `folder/`
+            * `index.md`
+    * `other/`
+        * `whatever.xyz`
 
 The following will be the _Result_ of resolve the _Reference_ given the _Base_:
 
-|Base                 |Reference    |Result          |
-|---------------------|-------------|----------------|
-|README.md            | README.md   | README.md      |
-|README.md            | ¬/README.md | README.md      |
-|docs/README.md       | ¬/README.md | docs/README.md |
-|docs/folder/index.md | ¬/README.md | docs/README.md |
-|other/whatever.xyz   | ¬/README.md | README.md      |
+| Base                 | Reference   | Result         |
+|----------------------|-------------|----------------|
+| README.md            | README.md   | README.md      |
+| README.md            | ¬/README.md | README.md      |
+| docs/README.md       | ¬/README.md | docs/README.md |
+| docs/folder/index.md | ¬/README.md | docs/README.md |
+| other/whatever.xyz   | ¬/README.md | README.md      |
 
 If there is no _tag file_ in any ancestor directory, then an error is raised (instead of it being ignored; as the user likely meant to put one).
 

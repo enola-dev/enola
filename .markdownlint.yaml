@@ -14,19 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+$schema: https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.37.4/schema/markdownlint-config-schema.json
 # https://github.com/DavidAnson/markdownlint#optionsconfig
 # https://github.com/DavidAnson/markdownlint/blob/main/schema/.markdownlint.yaml
 
+# Beware, there are several project, and GitHub repos, named something like Markdown Lint.
+# This project uses https://github.com/DavidAnson/markdownlint, via .pre-commit-config.yaml
+# (as well as the DavidAnson.vscode-markdownlint in .vscode/settings.json, or other IDEs;
+# TODO figure out how configure IntelliJ for markdownlint...
+# but https://github.com/Strajk/intellij-plugin-markdownlint does not look great).
+#
+# The following are OTHER confusingly similarly named tools, which this project does NOT use:
+#   - https://github.com/markdownlint/markdownlint
+#   - https://github.com/updownpress/markdown-lint
+
 default: true
 
-# https://github.com/updownpress/markdown-lint/blob/master/rules/007-ul-indent.md
-# MD007:
-# indent: 6 <== This *BREAKS* "nested" (* in *) lists, so it's disabled & default (2) is used.
-# WHAT DID THIS DO? It's not documented! start_indented: false
-# start_indent: 2
-# TODO Fix the Markdown indention style mess (Mkdocs requires nested indention to use 4 not 2)
-#   see e.g. implementation.md, it's CORRECT how it's done there, but this MD007 wouldn't like that as-is.
-MD007: false
+MD007:
+  # mkdocs (Material) apparently works with "standard" (common?) 2 indent in some cases, but not others
+  # (the exact rule when it works and when it does not is not clear, to me; but never mind). However, it
+  # always formats nested unordered lists correctly when using 4 indents - so we enforce that.
+  start_indented: false
+  indent: 4
 
 MD013:
   # Must match .editorconfig [*.md] max_line_length
