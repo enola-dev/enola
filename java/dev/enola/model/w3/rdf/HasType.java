@@ -26,8 +26,6 @@ import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.AlwaysThingProvider;
 
-import java.util.Optional;
-
 public interface HasType extends Thing {
     // TODO Move HasType from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
     // Or, perhaps better, keep this here, and have a supertype there? Confusing?
@@ -37,15 +35,7 @@ public interface HasType extends Thing {
     }
 
     default Iterable<Class> types() {
-        // return getOptional(KIRI.RDF.TYPE, new TypeToken<Iterable<Class>>() {}).orElse(Set.of());
         return AlwaysThingProvider.CTX.getFromIRIs(typesIRIs(), Class.class);
-    }
-
-    // TODO default KIRI.RDF.TYPE
-    default Optional<Class> type() {
-        var iterator = types().iterator();
-        if (iterator.hasNext()) return Optional.of(iterator.next());
-        else return Optional.empty();
     }
 
     interface Builder<B extends HasType> extends Thing.Builder<B> { // skipcq: JAVA-E0169

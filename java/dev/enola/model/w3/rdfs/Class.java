@@ -18,7 +18,6 @@
 package dev.enola.model.w3.rdfs;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.model.w3.rdf.Property;
@@ -33,12 +32,6 @@ public interface Class extends Resource, HasClassIRI {
     // TODO Move somewhere else... but IRI enums are RDFS', while this comes from enola: ...
     String PROPERTIES = "https://enola.dev/properties";
 
-    // TODO What's the point of this?! Remove...
-    default boolean isClass() {
-        return Iterables.contains(typesIRIs(), IRI.Class.Class);
-    }
-
-    // TODO Multiple, or single?
     default Iterable<Class> subClassOfs() {
         return getThings(IRI.Predicate.subClassOf, Class.class);
     }

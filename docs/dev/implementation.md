@@ -68,6 +68,44 @@ ETs have a number of different (but ultimately semantically equivalent) represen
 
 ### Internal Data Types
 
+### IRIs
+
+??? tip "WIP"
+
+    IRIs are (currently) mostly a `String`, but sometimes an `Object`.
+
+    When an IRI is just an `Object`, then its `toString()` is guaranteed to return a valid textual representation of the IRI.
+
+    The intention is to eventually replace all `String` typed IRI with only `Object`.
+
+    This allows for future optimizations of internal IRI types.
+
+### Wrappers
+
+??? warning
+
+    This section describes a work-in-progress (WIP) which is not yet fully implemented as documented here.
+
+Enola generates wrapper Java interfaces for RDFS Classes and Properties:
+
+* Generated RDF Property interfaces:
+  * by default are named `Has*`_{[Label](https://docs.enola.dev/concepts/metadata/#label)}_ <!-- TODO override how? -->
+  * `extends` based on [`rdfs:subPropertyOf`](../models/www.w3.org/2000/01/rdf-schema/subPropertyOf.md), or `IImmutableThing` (see [Thing](#java--thing))
+  * have getter methods with `default` implementations, which delegate to the suitable `Thing.get()` API, using the Property IRI
+  * contain an inner `Builder` interface (but no `builder()`, as only used via classes)
+* Generated RDF Property Builder interfaces:
+  * have setter and `add*` methods with `default` implementations, which delegate to the suitable Thing API, using the Property IRI
+* Generated RDF Class interfaces:
+  * `extends` all its RDF Property interfaces
+  * by default are named _{[Label](https://docs.enola.dev/concepts/metadata/#label)}_ for classes <!-- TODO override how? -->
+  * contain an inner `Builder` interface, and a static `builder()` method to obtain an implementation of it, with `@type` set
+  * override `copy()` with a covariant variant type of this class's `Builder`
+* Generated RDF Class Builder interfaces:
+  * override `iri(Object iri)` and all setters with a covariant variant type of the `Builder` (for chaining)
+  * `extends` all its RDF Property Builder interfaces
+
+<!-- TODO Do all classes extend HasType? -->
+
 #### Java ☕ Thing
 
 * Java Type: `dev.enola.thing.Thing` <!-- TODO https://github.com/enola-dev/enola/issues/491: Link to Java Doc -->
