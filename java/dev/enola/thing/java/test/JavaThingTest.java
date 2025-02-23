@@ -119,13 +119,13 @@ public class JavaThingTest {
     private void checkHasSomething(TestSomething thing) {
         assertThat(thing.iri()).isEqualTo("https://example.org/thing");
 
-        assertThat(thing.getString(TestVoc.SOMETHING.TEST)).isEqualTo("abc");
+        assertThat(thing.getString(TestSomething.TEST_PROPERTY_IRI)).isEqualTo("abc");
         assertThat(thing.test()).isEqualTo("abc");
 
-        assertThat(thing.get(TestVoc.A.A, Long.class)).isEqualTo(123L);
+        assertThat(thing.get(HasA.IRI, Long.class)).isEqualTo(123L);
         assertThat(thing.a()).isEqualTo(123L);
 
-        assertThat(thing.get(TestVoc.B.B, Instant.class)).isInstanceOf(Instant.class);
+        assertThat(thing.get(HasB.IRI, Instant.class)).isInstanceOf(Instant.class);
         assertThat(thing.b()).isInstanceOf(Instant.class);
 
         // TODO assertThat(thing.typesIRI().iterator().next()).isEqualTo(TestVoc.SOMETHING.TYPE);

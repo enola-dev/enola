@@ -31,8 +31,11 @@ import java.time.Instant;
 public interface TestSomething extends HasA, HasB, IImmutableThing {
     // TODO TestSomething extends HasType? But then it needs to be moved... is it so central?
 
+    String TEST_PROPERTY_IRI = "https://example.org/test";
+    String CLASS_IRI = "https://example.org/TestSomething";
+
     default @Nullable String test() {
-        return getString(TestVoc.SOMETHING.TEST);
+        return getString(TestSomething.TEST_PROPERTY_IRI);
     }
 
     @Override
@@ -43,7 +46,7 @@ public interface TestSomething extends HasA, HasB, IImmutableThing {
             extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 
         default Builder<B> test(String test) {
-            set(TestVoc.SOMETHING.TEST, test);
+            set(TestSomething.TEST_PROPERTY_IRI, test);
             return this;
         }
 
@@ -69,6 +72,7 @@ public interface TestSomething extends HasA, HasB, IImmutableThing {
     @SuppressWarnings("unchecked")
     static Builder<TestSomething> builder(TBF tbf) {
         return tbf.create(TestSomething.Builder.class, TestSomething.class);
+        // TODO Set type() to CLASS_IRI
     }
 
     @SuppressWarnings("unchecked")
