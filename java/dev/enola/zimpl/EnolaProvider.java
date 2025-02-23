@@ -56,5 +56,11 @@ public class EnolaProvider {
         protected String getIRI(Action<?, ?> action) {
             return action.iri();
         }
+
+        @Override
+        protected Action<?, ?> merge(Action<?, ?> existing, Action<?, ?> update) {
+            throw new UnsupportedOperationException(
+                    "TODO Implement merge() in ActionRepositoryBuilder");
+        }
     }
 }

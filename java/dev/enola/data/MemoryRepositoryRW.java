@@ -17,10 +17,7 @@
  */
 package dev.enola.data;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.collect.ImmutableList;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import org.jspecify.annotations.Nullable;
@@ -30,73 +27,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * MemoryRepositoryRW is an in-memory {@link RepositoryRW} implemented using a {@link
- * ConcurrentHashMap}.
+ * ConcurrentHashMap}. It is suitable for us by multiple concurrent threads.
  */
 @ThreadSafe
-public abstract class MemoryRepositoryRW<T> implements RepositoryRW<T> {
-
-    // TODO Share more code between this and RepositoryBuilder, now that they're similar
+public abstract class MemoryRepositoryRW<T> extends AbstractMapRepositoryRW<T>
+        implements RepositoryRW<T> {
 
     private final Map<String, T> map = new ConcurrentHashMap<>();
-    private final ImmutableList<Trigger<T>> triggers;
 
     protected MemoryRepositoryRW(ImmutableList<Trigger<? extends T>> triggers) {
-        this.triggers = hack(triggers);
-    }
-
-    // NB: Copy/pasted in RepositoryBuilder
-    @SuppressWarnings("unchecked")
-    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
-        var builder = ImmutableList.<Trigger<T>>builder();
-        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
-        return builder.build();
-    }
-
-    protected abstract String getIRI(T value);
-
-    protected abstract T merge(T existing, T update);
-
-    @Override
-    public void merge(T item) {
-        var iri = getIRI(item);
-        var existing = map.putIfAbsent(iri, item);
-        if (existing != null) {
-            var merged = merge(existing, item);
-            map.put(iri, merged);
-            trigger(existing, merged);
-        } else {
-            trigger(null, item);
-        }
+        super(triggers);
     }
 
     @Override
-    @CanIgnoreReturnValue
-    public final MemoryRepositoryRW<T> store(T item) {
-        var iri = getIRI(item);
-        var existing = map.put(iri, item);
-        trigger(existing, item);
-        return this;
-    }
-
-    private void trigger(@Nullable T existing, T updated) {
-        if (updated.equals(existing)) return;
-        for (Trigger<T> trigger : triggers) {
-            if (trigger.handles(updated)) trigger.updated(existing, updated);
-        }
+    protected Map<String, T> map() {
+        return map;
     }
 
     @Override
-    public T get(String iri) {
-        return map.get(requireNonNull(iri));
-    }
-
-    @Override
-    public Iterable<T> list() {
-        return map.values();
-    }
-
-    @Override
-    public Iterable<String> listIRI() {
-        return map.keySet();
+    protected void trigger(@Nullable T existing, T updated) {
+        // TODO Run all triggers non-blocking in parallel background threads...
+        super.trigger(existing, updated);
     }
 }
