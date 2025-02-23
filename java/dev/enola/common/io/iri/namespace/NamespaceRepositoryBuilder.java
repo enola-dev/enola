@@ -41,6 +41,12 @@ public class NamespaceRepositoryBuilder extends RepositoryBuilder<Namespace> {
     }
 
     @Override
+    protected Namespace merge(Namespace existing, Namespace update) {
+        throw new UnsupportedOperationException(
+                "TODO Implement merge() in NamespaceRepositoryBuilder");
+    }
+
+    @Override
     public NamespaceRepository build() {
         return new ImmutableNamespaceRepository(buildMap(), prefixes.buildOrThrow());
     }

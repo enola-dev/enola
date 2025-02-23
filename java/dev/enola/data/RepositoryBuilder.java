@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedMap;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.common.Builder;
 
@@ -30,79 +29,41 @@ import org.jspecify.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-/** RepositoryBuilder builds immutable {@link Repository} instances. */
-public abstract class RepositoryBuilder<T> implements RepositoryRW<T>, Builder<Repository<T>> {
-
-    // TODO Share more code between this and MemoryRepositoryRW, now that they're similar
+/**
+ * RepositoryBuilder builds immutable {@link Repository} instances.
+ *
+ * <p>This Builder class itself is NOT thread-safe. The {@link Repository} returned by its {@link
+ * #build()} however is thread-safe (simply because it's immutable). Use {@link MemoryRepositoryRW}
+ * for a thread-safe {@link Store}.
+ */
+public abstract class RepositoryBuilder<T> extends AbstractMapRepositoryRW<T>
+        implements RepositoryRW<T>, Builder<Repository<T>> {
 
     private final Map<String, T> map = new HashMap<>();
-    private final ImmutableList<Trigger<T>> triggers;
 
     protected RepositoryBuilder(ImmutableList<Trigger<? extends T>> triggers) {
-        this.triggers = hack(triggers);
+        super(triggers);
     }
 
-    // NB: Copy/pasted in MemoryRepositoryRW
-    @SuppressWarnings("unchecked")
-    private ImmutableList<Trigger<T>> hack(ImmutableList<Trigger<? extends T>> triggers) {
-        var builder = ImmutableList.<Trigger<T>>builder();
-        for (Trigger<? extends T> trigger : triggers) builder.add((Trigger<T>) trigger);
-        return builder.build();
-    }
-
+    // TODO @Deprecated
     protected RepositoryBuilder() {
         this(ImmutableList.of());
     }
 
-    protected abstract String getIRI(T value);
-
-    // TODO protected abstract T merge(T existing, T update);
-    protected T merge(T existing, T update) {
-        throw new UnsupportedOperationException("TODO Implement in subclass");
+    @Override
+    protected Map<String, T> map() {
+        return map;
     }
 
     @Override
-    public @Nullable T get(String iri) {
-        return map.get(iri);
-    }
-
-    @Override
-    public Iterable<String> listIRI() {
-        return map.keySet();
-    }
-
-    @Override
-    public void merge(T item) {
-        var iri = getIRI(item);
-        var existing = map.putIfAbsent(iri, item);
-        if (existing != null) {
-            var merged = merge(existing, item);
-            map.put(iri, merged);
-            trigger(existing, merged);
-        } else {
-            trigger(null, item);
-        }
-    }
-
-    @Override
-    @CanIgnoreReturnValue
     public RepositoryBuilder<T> store(T item) {
-        var iri = getIRI(item);
-        var existing = map.put(iri, item);
-        trigger(existing, item);
+        super.store(item);
         return this;
-    }
-
-    private void trigger(@Nullable T existing, T updated) {
-        if (updated.equals(existing)) return;
-        for (Trigger<T> trigger : triggers) {
-            if (trigger.handles(updated)) trigger.updated(existing, updated);
-        }
     }
 
     @Override
     public RepositoryBuilder<T> storeAll(Iterable<T> items) { // skipcq: JAVA-W1016
-        RepositoryRW.super.storeAll(items);
+        super.storeAll(items);
         return this;
     }
 
