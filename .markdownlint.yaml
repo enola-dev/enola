@@ -24,6 +24,9 @@ default: true
 # indent: 6 <== This *BREAKS* "nested" (* in *) lists, so it's disabled & default (2) is used.
 # WHAT DID THIS DO? It's not documented! start_indented: false
 # start_indent: 2
+# TODO Fix the Markdown indention style mess (Mkdocs requires nested indention to use 4 not 2)
+#   see e.g. implementation.md, it's CORRECT how it's done there, but this MD007 wouldn't like that as-is.
+MD007: false
 
 MD013:
   # Must match .editorconfig [*.md] max_line_length
