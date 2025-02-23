@@ -86,8 +86,13 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
         return (T) thing;
     }
 
+    // TODO Make all IRI by Object instead of String, and remove this method
     default <T extends Thing> Iterable<T> get(Iterable<String> iris, Class<T> thingClass) {
         return Iterables.transform(iris, iri -> get(iri, thingClass));
+    }
+
+    default <T extends Thing> Iterable<T> getFromIRIs(Iterable<Object> iris, Class<T> thingClass) {
+        return Iterables.transform(iris, iri -> get(iri.toString(), thingClass));
     }
 
     // NOT Iterable/Stream<Thing> not just 1x Thing, just like in ProtoThingProvider
