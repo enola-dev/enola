@@ -25,14 +25,16 @@ import org.jspecify.annotations.Nullable;
 // TODO Generate this, from a model
 public interface HasA extends IImmutableThing {
 
+    String IRI = "https://example.org/a";
+
     default @Nullable Long a() {
-        return get(TestVoc.A.A, Long.class);
+        return get(IRI, Long.class);
     }
 
     interface Builder<B extends HasA> extends Thing.Builder<B> { // skipcq: JAVA-E0169
 
         default HasA.Builder<B> a(Long test) {
-            set(TestVoc.A.A, test);
+            set(IRI, test);
             return this;
         }
     }

@@ -20,6 +20,7 @@ package dev.enola.model.w3.rdfs;
 import dev.enola.thing.HasIRI;
 import dev.enola.thing.HasPredicateIRI;
 
+// TODO Replace with String constants on Property and Class, like in HasA/HasB/TestSomething
 enum IRI implements HasIRI {
     RDFS("http://www.w3.org/2000/01/rdf-schema#");
 

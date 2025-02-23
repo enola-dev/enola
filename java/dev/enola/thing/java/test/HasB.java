@@ -27,14 +27,16 @@ import java.time.Instant;
 // TODO Generate this, from a model
 public interface HasB extends IImmutableThing {
 
+    String IRI = "https://example.org/b";
+
     default @Nullable Instant b() {
-        return get(TestVoc.B.B, Instant.class);
+        return get(IRI, Instant.class);
     }
 
     interface Builder<B extends HasB> extends Thing.Builder<B> { // skipcq: JAVA-E0169
 
         default HasB.Builder<B> b(Instant test) {
-            set(TestVoc.B.B, test);
+            set(IRI, test);
             return this;
         }
     }
