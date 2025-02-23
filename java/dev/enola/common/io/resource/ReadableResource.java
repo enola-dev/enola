@@ -28,11 +28,14 @@ import dev.enola.common.io.hashbrown.ResourceHasher;
 import io.ipfs.multibase.Multibase;
 import io.ipfs.multihash.Multihash;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
 public interface ReadableResource extends AbstractResource {
 
-    // TODO toDataURI(), like DataResource
+    Logger LOGGER = LoggerFactory.getLogger(ReadableResource.class);
 
     ByteSource byteSource();
 
@@ -104,6 +107,7 @@ public interface ReadableResource extends AbstractResource {
             var multihash = new ResourceHasher().hash(this, Multihash.Type.sha2_512);
             return new MultihashChangeToken(multihash);
         } catch (IOException e) {
+            LOGGER.warn("IOException while calculating ChangeToken for resource: {}", uri(), e);
             return ChangeToken.NOT_AVAILABLE;
         }
     }
