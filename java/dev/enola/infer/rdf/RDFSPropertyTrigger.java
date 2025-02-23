@@ -24,7 +24,7 @@ import org.jspecify.annotations.Nullable;
 
 public class RDFSPropertyTrigger extends ThingTrigger<Property> {
 
-    protected RDFSPropertyTrigger() {
+    public RDFSPropertyTrigger() {
         super(Property.class);
     }
 
