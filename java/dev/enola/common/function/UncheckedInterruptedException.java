@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,18 @@
  */
 package dev.enola.common.function;
 
-/**
- * {@link java.util.function.Predicate}-like functional interface which can throw a checked
- * exception.
- */
-@FunctionalInterface
-public interface CheckedPredicate<T, E extends Exception> {
+import java.time.Duration;
+import java.util.Objects;
 
-    boolean test(T t) throws E, UncheckedInterruptedException;
+/**
+ * Wraps an InterruptedException with an unchecked (runtime) exception.
+ *
+ * @see java.io.UncheckedIOException
+ * @see Threads#sleep(Duration)
+ */
+public class UncheckedInterruptedException extends RuntimeException {
+
+    public UncheckedInterruptedException(InterruptedException cause) {
+        super(Objects.requireNonNull(cause));
+    }
 }

@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
 import picocli.CommandLine.Command;
@@ -28,14 +27,14 @@ import picocli.CommandLine.Spec;
         name = "extensions",
         description =
                 "Provides information about extensions of media types for URI path resource names")
-public class ExtensionsInfoCommand implements CheckedRunnable {
+public class ExtensionsInfoCommand implements Runnable {
 
     // TODO Replace this with enola:MediaType's enola:fileExtensions from mediaTypes.ttl
 
     @Spec CommandSpec spec;
 
     @Override
-    public void run() throws Exception {
+    public void run() {
         var pw = spec.commandLine().getOut();
 
         for (var entry :

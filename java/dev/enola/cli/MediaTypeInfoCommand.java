@@ -17,7 +17,6 @@
  */
 package dev.enola.cli;
 
-import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
 import picocli.CommandLine;
@@ -25,14 +24,14 @@ import picocli.CommandLine;
 @CommandLine.Command(
         name = "mediatypes",
         description = "Provides information about all supported media types for Thing Resource I/O")
-public class MediaTypeInfoCommand implements CheckedRunnable {
+public class MediaTypeInfoCommand implements Runnable {
 
     // TODO Replace this with enola:MediaType's enola:fileExtensions from mediaTypes.ttl
 
     @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @Override
-    public void run() throws Exception {
+    public void run() {
         var pw = spec.commandLine().getOut();
 
         for (var entry :

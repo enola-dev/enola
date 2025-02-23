@@ -21,7 +21,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.Context;
-import dev.enola.common.function.CheckedRunnable;
 import dev.enola.common.io.hashbrown.IntegrityValidatingDelegatingResource;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
@@ -34,8 +33,9 @@ import dev.enola.model.Datatypes;
 import picocli.CommandLine;
 
 import java.nio.file.Paths;
+import java.util.concurrent.Callable;
 
-public abstract class CommandWithResourceProvider implements CheckedRunnable {
+public abstract class CommandWithResourceProvider implements Callable<Integer> {
 
     @CommandLine.Option(
             names = {"--http-scheme"},
@@ -91,7 +91,12 @@ public abstract class CommandWithResourceProvider implements CheckedRunnable {
     protected ResourceProvider rp;
 
     @Override
-    public void run() throws Exception {
+    public Integer call() throws Exception {
+        run();
+        return 0;
+    }
+
+    protected void run() throws Exception {
         var builder = ImmutableList.<ResourceProvider>builder();
         builder.add(new DataResource.Provider());
         builder.add(new EmptyResource.Provider());
