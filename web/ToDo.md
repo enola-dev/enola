@@ -58,16 +58,16 @@
 ### Testing
 
 * Web Test would be nice... at least just DOM, at first? Then, or directly, Browser?
-  * Split Graphology & Sigma related code in x2 separate .ts; and test Graphology GEXF initial coordinates in Node, without Browser?
-  * Try https://playwright.dev for web UI testing? With https://github.com/GoogleChromeLabs/chrome-for-testing?
+    * Split Graphology & Sigma related code in x2 separate .ts; and test Graphology GEXF initial coordinates in Node, without Browser?
+    * Try https://playwright.dev for web UI testing? With https://github.com/GoogleChromeLabs/chrome-for-testing?
 * Make `bazel test //web` run web tests
 
 ### Performance
 
 * Fix lack of "never cache" header support on GitHub pages by hosting the demo app elsewhere
-  * https://gist.github.com/maximebories/961f12101af369804d40d5ec287e562b probably won't work?
-  * E.g. Netlify or Cloudflare Pages, or maybe on IPFS with Pinata
-  * https://developers.cloudflare.com/pages/configuration/headers/
+    * https://gist.github.com/maximebories/961f12101af369804d40d5ec287e562b probably won't work?
+    * E.g. Netlify or Cloudflare Pages, or maybe on IPFS with Pinata
+    * https://developers.cloudflare.com/pages/configuration/headers/
 
 ### Maintainability
 

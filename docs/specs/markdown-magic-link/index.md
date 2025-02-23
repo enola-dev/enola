@@ -72,10 +72,9 @@ The `[[URI-Reference|Text]]` syntax causing a _Markdown Pre-Processor_ which imp
   in that case, the "final" page is used. This is useful e.g. to have `[[https://enola.dev/origin]]` turn into `[Origin](https://docs.enola.dev/models/enola.dev/origin/)`.
 
 * The _Markdown Pre-Processor_ may opt to "decorate" the link; for example, it could:
-  * Insert an _Emoji_ or _Image_ before the link. How it does this is currently not fully specified here.
-        For example: `[[https://www.vorburger.ch]]` it may actually insert a Markdown image tag, obtained e.g. from a [Favicon](https://en.wikipedia.org/wiki/Favicon):
-        `![FavIcon](https://www.vorburger.ch/favicon.ico)&nbsp;[Michael Vorburger's Homepage](https://www.vorburger.ch)` (or use an `<img style=...>`).
-  * Adorn the link with text or other symbols e.g. about the "status" or "popularity" of the target.
+    * Insert an _Emoji_ or _Image_ before the link. How it does this is currently not fully specified here.
+      For example: `[[https://www.vorburger.ch]]` it may actually insert a Markdown image tag, obtained e.g. from a [Favicon](https://en.wikipedia.org/wiki/Favicon): `![FavIcon](https://www.vorburger.ch/favicon.ico)&nbsp;[Michael Vorburger's Homepage](https://www.vorburger.ch)` (or use an `<img style=...>`).
+    * Adorn the link with text or other symbols e.g. about the "status" or "popularity" of the target.
 
 These links are only processed in _"text"_ blocks; incl. e.g. inside Headings, Quotes, Lists & Tables, but not e.g. inside comments, standard links, inline code or code blocks.
 
@@ -91,8 +90,8 @@ We briefly considered whether there was any risk of possible confusion with (Com
 Some possible alternatives we considered but opted not to pursue include:
 
 * `<http://example.org/ABC>` ... tempting, as Markdown standard syntax for URL, but:
-  * Risk of confusion with current purpose; better not re-define something that has a clear existing meaning.
-  * Not obvious syntax how to add link label text; `<http://example.org/ABC|Go there>` looks strange.
+    * Risk of confusion with current purpose; better not re-define something that has a clear existing meaning.
+    * Not obvious syntax how to add link label text; `<http://example.org/ABC|Go there>` looks strange.
 
 * `<<http://example.org/ABC>>` extension of above, but risk of confusion for bad MD processors, and as above.
 
@@ -100,8 +99,8 @@ Some possible alternatives we considered but opted not to pursue include:
    such "raw" URLs as if they were written as `<http://example.org/ABC>` and render them as hyperlinks.
 
 * `[http://example.org]` with single instead of double square brackets is shorter, but:
-  * Is too easy to confuse with "regular text in square brackets" (even with some "heuristics")
-  * Could be interpreted as a regular Markdown link with missing label
+    * Is too easy to confuse with "regular text in square brackets" (even with some "heuristics")
+    * Could be interpreted as a regular Markdown link with missing label
 
 * `[http://example.org/ABC]()` has been observed to render as <http://example.org/ABC>
   by some Markdown processors (incl. GitHub), but this does not seem to be "guaranteed",
