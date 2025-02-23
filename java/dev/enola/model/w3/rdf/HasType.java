@@ -32,15 +32,13 @@ public interface HasType extends Thing {
     // TODO Move HasType from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
     // Or, perhaps better, keep this here, and have a supertype there? Confusing?
 
-    // TODO Actually, returns Iterable<Object> instead of String - make consistent!
-    default Iterable<String> typesIRIs() {
-        // TODO Create constant TypeTokens.ITERABLE_STRING
-        return getLinks(KIRI.RDF.TYPE).stream().map(Object::toString).toList();
+    default Iterable<Object> typesIRIs() {
+        return getLinks(KIRI.RDF.TYPE);
     }
 
     default Iterable<Class> types() {
         // return getOptional(KIRI.RDF.TYPE, new TypeToken<Iterable<Class>>() {}).orElse(Set.of());
-        return AlwaysThingProvider.CTX.get(typesIRIs(), Class.class);
+        return AlwaysThingProvider.CTX.getFromIRIs(typesIRIs(), Class.class);
     }
 
     // TODO default KIRI.RDF.TYPE

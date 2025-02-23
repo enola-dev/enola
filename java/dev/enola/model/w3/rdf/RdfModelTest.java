@@ -23,6 +23,8 @@ import dev.enola.thing.KIRI;
 
 import org.junit.Test;
 
+import java.util.stream.StreamSupport;
+
 public class RdfModelTest {
 
     @Test
@@ -58,7 +60,12 @@ public class RdfModelTest {
 
     private void check(Property property) {
         assertThat(property.label()).isEqualTo("Property #1");
-        assertThat(property.typesIRIs()).containsExactly(KIRI.RDF.PROPERTY);
+        assertThat(iterableToString(property.typesIRIs())).containsExactly(KIRI.RDF.PROPERTY);
+    }
+
+    //
+    private static Iterable<String> iterableToString(Iterable<?> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false).map(Object::toString).toList();
     }
 
     @Test

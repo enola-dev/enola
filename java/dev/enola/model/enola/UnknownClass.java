@@ -26,7 +26,7 @@ public interface UnknownClass extends HasType {
     String IRI = "https://enola.dev/UnknownClass";
 
     @Override
-    default Iterable<String> typesIRIs() {
+    default Iterable<Object> typesIRIs() {
         return Set.of(IRI);
     }
 }
