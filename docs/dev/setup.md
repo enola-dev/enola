@@ -93,6 +93,13 @@ If you do still want to try, here's how to manually install what the development
 
 You should now be able to proceed as above (but without requiring _Docker)._
 
+### Clean Up
+
+In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try:
+
+1. `rm -rf .venv/`
+1. `rm -rf ~/.cache/pre-commit/`
+
 ## Further Reading
 
 You can now read more about:

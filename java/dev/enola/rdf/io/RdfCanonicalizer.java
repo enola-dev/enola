@@ -30,7 +30,7 @@ import org.eclipse.rdf4j.model.impl.LinkedHashModelFactory;
 
 import java.util.Comparator;
 
-// TODO https://github.com/enola-dev/enola/issues/1103: Replace this with "real" (full) RDF-Canon.
+// TODO https://github.com/enola-dev/enola/issues/1103 : Replace this with "real" (full) RDF-Canon.
 public class RdfCanonicalizer {
 
     // NB: This *DOES* also sort any internal blank statements!

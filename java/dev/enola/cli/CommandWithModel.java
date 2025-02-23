@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.FileDescriptorResource;
@@ -27,12 +29,15 @@ import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.data.Trigger;
 import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.datatype.DatatypeRepository;
+import dev.enola.infer.rdf.RDFSPropertyTrigger;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingTrigger;
 import dev.enola.thing.repo.ThingsProvider;
 import dev.enola.thing.template.TemplateThingRepository;
 import dev.enola.thing.validation.LoggingCollector;
@@ -81,7 +86,13 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
             if (group.load != null) {
-                ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder();
+                ImmutableList<Trigger<? extends dev.enola.thing.Thing>> triggers =
+                        ImmutableList.of(new RDFSPropertyTrigger());
+                ThingMemoryRepositoryROBuilder store = new ThingMemoryRepositoryROBuilder(triggers);
+                for (var trigger : triggers) {
+                    ((ThingTrigger<?>) trigger).setRepo(store);
+                }
+
                 var loader = loader();
                 var fgrp = new GlobResolvers();
                 for (var globIRI : group.load) {
