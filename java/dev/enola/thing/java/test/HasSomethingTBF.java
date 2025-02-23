@@ -28,15 +28,15 @@ public final class HasSomethingTBF implements TBF {
 
     @Override
     public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
-        return builderInterface.equals(HasSomething.Builder.class);
+        return builderInterface.equals(TestSomething.Builder.class);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface) {
-        if (!builderInterface.equals(HasSomething.Builder.class)
-                || !thingInterface.equals(HasSomething.class))
+        if (!builderInterface.equals(TestSomething.Builder.class)
+                || !thingInterface.equals(TestSomething.class))
             throw new IllegalArgumentException(builderInterface + ", " + thingInterface);
         return (B) new HasSomethingBuilder();
     }
@@ -45,14 +45,14 @@ public final class HasSomethingTBF implements TBF {
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
-        if (!builderInterface.equals(HasSomething.Builder.class)
-                || !thingInterface.equals(HasSomething.class))
+        if (!builderInterface.equals(TestSomething.Builder.class)
+                || !thingInterface.equals(TestSomething.class))
             throw new IllegalArgumentException(builderInterface + ", " + thingInterface);
         return (B) new HasSomethingBuilder(expectedSize);
     }
 
-    private static final class HasSomethingBuilder extends ImmutableThing.Builder<HasSomething>
-            implements HasSomething.Builder<HasSomething> {
+    private static final class HasSomethingBuilder extends ImmutableThing.Builder<TestSomething>
+            implements TestSomething.Builder<TestSomething> {
 
         private HasSomethingBuilder(int expectedSize) {
             super(HasSomethingImpl::new, expectedSize);
@@ -62,18 +62,22 @@ public final class HasSomethingTBF implements TBF {
             super(HasSomethingImpl::new);
         }
 
-        private HasSomethingBuilder(ImmutableThing.Factory factory, HasSomething hasSomething) {
-            super(factory, hasSomething.iri(), hasSomething.properties(), hasSomething.datatypes());
+        private HasSomethingBuilder(ImmutableThing.Factory factory, TestSomething testSomething) {
+            super(
+                    factory,
+                    testSomething.iri(),
+                    testSomething.properties(),
+                    testSomething.datatypes());
         }
 
         @Override
-        public HasSomething.Builder<HasSomething> iri(String iri) {
+        public TestSomething.Builder<TestSomething> iri(String iri) {
             super.iri(iri);
             return this;
         }
     }
 
-    private static final class HasSomethingImpl extends ImmutableThing implements HasSomething {
+    private static final class HasSomethingImpl extends ImmutableThing implements TestSomething {
         private HasSomethingImpl(
                 String iri,
                 ImmutableMap<String, Object> properties,
@@ -82,7 +86,7 @@ public final class HasSomethingTBF implements TBF {
         }
 
         @Override
-        public HasSomething.Builder<? extends HasSomething> copy() {
+        public TestSomething.Builder<? extends TestSomething> copy() {
             return new HasSomethingBuilder(HasSomethingImpl::new, this);
         }
     }
