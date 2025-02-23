@@ -36,6 +36,7 @@ java_binary(
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/infer/rdf",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/markdown/exec:markdown",
