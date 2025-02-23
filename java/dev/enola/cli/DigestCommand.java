@@ -61,13 +61,14 @@ public class DigestCommand extends CommandWithResourceProvider {
     @Override
     public Integer call() throws Exception {
         super.run();
-        var pw = spec.commandLine().getOut();
 
-        var uri = URIs.parse(url);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
+            var uri = URIs.parse(url);
             var resource = rp.getResource(uri);
 
             var multihash = new ResourceHasher().hash(resource, type);
+
+            var pw = spec.commandLine().getOut();
             pw.println(Multihashes.toString(multihash, multibase));
         }
         return 0;

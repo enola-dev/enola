@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,22 +21,14 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
 
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Model.CommandSpec;
-import picocli.CommandLine.Spec;
 
 import java.nio.file.Paths;
 
-@Command(
-        name = "detect",
-        description =
-                "Provides information about the media type detected for a given URL.\n"
-                    + "This works both for local files (based on extension), and remote HTTP (based"
-                    + " on headers).\n"
-                    + "See also the related 'fetch' command.")
-public class DetectCommand extends CommandWithResourceProvider {
+// TODO rename info fingerprint CLI command to changetoken
+@CommandLine.Command(name = "fingerprint", description = "Obtain the Fingerprint of a URL.\n")
+public class FingerprintCommand extends CommandWithResourceProvider {
 
-    @Spec CommandSpec spec;
+    @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @CommandLine.Parameters(index = "0", paramLabel = "url", description = "URL")
     String url;
@@ -48,16 +40,11 @@ public class DetectCommand extends CommandWithResourceProvider {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var uri = URIs.parse(url);
             var resource = rp.getResource(uri);
-            if (resource == null) {
-                System.err.println(
-                        uri.getScheme() + " scheme unknown; try: enola info detect --help");
-                return 1;
-            }
 
             var pw = spec.commandLine().getOut();
-            pw.println(resource.mediaType());
-            resource.lastModifiedIfKnown().ifPresent(lastModified -> pw.println(lastModified));
-            return 0;
+            pw.println(resource.fingerprint());
         }
+
+        return 0;
     }
 }
