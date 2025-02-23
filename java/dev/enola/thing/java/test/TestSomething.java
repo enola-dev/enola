@@ -28,19 +28,18 @@ import org.jspecify.annotations.Nullable;
 import java.time.Instant;
 
 // TODO Generate this, from a model
-// TODO Rename HasSomething to Something, because it's a RDF Class, not Property!
-public interface HasSomething extends HasA, HasB, IImmutableThing {
-    // TODO HasSomething extends HasType? But then it needs to be moved... is it so central?
+public interface TestSomething extends HasA, HasB, IImmutableThing {
+    // TODO TestSomething extends HasType? But then it needs to be moved... is it so central?
 
     default @Nullable String test() {
         return getString(TestVoc.SOMETHING.TEST);
     }
 
     @Override
-    Builder<? extends HasSomething> copy();
+    Builder<? extends TestSomething> copy();
 
-    // TODO HasSomething.Builder extends HasType.Builder?!
-    interface Builder<B extends HasSomething> // skipcq: JAVA-E0169
+    // TODO TestSomething.Builder extends HasType.Builder?!
+    interface Builder<B extends TestSomething> // skipcq: JAVA-E0169
             extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 
         default Builder<B> test(String test) {
@@ -68,12 +67,12 @@ public interface HasSomething extends HasA, HasB, IImmutableThing {
     }
 
     @SuppressWarnings("unchecked")
-    static Builder<HasSomething> builder(TBF tbf) {
-        return tbf.create(HasSomething.Builder.class, HasSomething.class);
+    static Builder<TestSomething> builder(TBF tbf) {
+        return tbf.create(TestSomething.Builder.class, TestSomething.class);
     }
 
     @SuppressWarnings("unchecked")
-    static Builder<HasSomething> builder() {
+    static Builder<TestSomething> builder() {
         return builder(new HasSomethingTBF());
     }
 }

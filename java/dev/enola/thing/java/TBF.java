@@ -19,7 +19,7 @@ package dev.enola.thing.java;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
-import dev.enola.thing.java.test.HasSomething;
+import dev.enola.thing.java.test.TestSomething;
 
 /** TBF is a Thing Builder Factory. */
 public interface TBF {
@@ -28,7 +28,7 @@ public interface TBF {
      * Creates a new {@link Thing.Builder} instance of (Java) type T.
      *
      * <p>You would typically not use this directly, but via a generated method on the respective
-     * thing interface, e.g. {@link HasSomething#builder(TBF)}.
+     * thing interface, e.g. {@link TestSomething#builder(TBF)}.
      */
     // TODO Fix that callers have to use  @SuppressWarnings("unchecked")
     // TODO Is javac really too stupid to validate callers, as intended?

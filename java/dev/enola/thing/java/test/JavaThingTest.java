@@ -52,8 +52,8 @@ public class JavaThingTest {
 
     @Test
     public void hasSomethingBuilder() {
-        // HasSomething.builder() === new HasSomethingTBF(), as above
-        var builder = HasSomething.builder();
+        // TestSomething.builder() === new HasSomethingTBF(), as above
+        var builder = TestSomething.builder();
         builder.iri("https://example.org/thing");
         checkHasSomethingBuilder(builder);
     }
@@ -73,7 +73,7 @@ public class JavaThingTest {
                                 ImmutableThing.FACTORY));
         checkTBF(tbf);
 
-        var hasSomethingBuilder = tbf.create(HasSomething.Builder.class, HasSomething.class);
+        var hasSomethingBuilder = tbf.create(TestSomething.Builder.class, TestSomething.class);
         assertThat(hasSomethingBuilder).isNotInstanceOf(Proxy.class);
         assertThat(hasSomethingBuilder).isNotNull();
 
@@ -91,7 +91,7 @@ public class JavaThingTest {
     }
 
     private void checkHasSomethingBuilder(TBF tbf) {
-        var builder = HasSomething.builder(tbf);
+        var builder = TestSomething.builder(tbf);
         builder.iri("https://example.org/thing");
         checkHasSomethingBuilder(builder);
     }
@@ -101,22 +101,22 @@ public class JavaThingTest {
         var builder =
                 thingsBuilders.getBuilder(
                         "https://example.org/thing",
-                        HasSomething.Builder.class,
-                        HasSomething.class);
+                        TestSomething.Builder.class,
+                        TestSomething.class);
         checkHasSomethingBuilder(builder);
     }
 
-    private void checkHasSomethingBuilder(HasSomething.Builder<HasSomething> builder) {
+    private void checkHasSomethingBuilder(TestSomething.Builder<TestSomething> builder) {
         builder.test("abc").a(123L).b(Instant.now()).iri("https://example.org/thing");
 
-        HasSomething thing = builder.build();
+        TestSomething thing = builder.build();
         checkHasSomething(thing);
 
-        HasSomething thing2 = builder.build();
+        TestSomething thing2 = builder.build();
         checkHasSomething(thing2);
     }
 
-    private void checkHasSomething(HasSomething thing) {
+    private void checkHasSomething(TestSomething thing) {
         assertThat(thing.iri()).isEqualTo("https://example.org/thing");
 
         assertThat(thing.getString(TestVoc.SOMETHING.TEST)).isEqualTo("abc");
