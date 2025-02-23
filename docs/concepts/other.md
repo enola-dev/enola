@@ -184,6 +184,7 @@ Non-Java RDF libraries:
 
 * [LEXREX](https://lexrex.web.app) semantic vocabulary visual builder and manager, by [APICatalog.com](https://apicatalog.com)
 * [Snowman](https://github.com/glaciers-in-archives/snowman) _static site generator for SPARQL_
+* [Quartz](https://quartz.jzhao.xyz/) #static #site #MD #Wikilink #Obsidian #Roam #Mermaid #LaTeX #RSS #TS #ToDo
 
 ## Persistence
 

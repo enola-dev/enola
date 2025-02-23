@@ -135,3 +135,5 @@ Some other Markdown implementations already support something like this syntax:
 * [mkdocs-ezlinks-plugin](https://github.com/orbikm/mkdocs-ezlinks-plugin) adds some support to [MkDocs](https://www.mkdocs.org)
 
 * [Obsidian](https://help.obsidian.md/Linking+notes+and+files/Internal+links) supports some of this syntax
+
+* [Quartz](https://quartz.jzhao.xyz/features/wikilinks) has this
