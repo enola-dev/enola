@@ -53,14 +53,19 @@ abstract class AbstractMapRepositoryRW<T> implements RepositoryRW<T> {
     @Override
     public void merge(T item) {
         var iri = getIRI(item);
-        var existing = map().putIfAbsent(iri, item);
-        if (existing != null) {
-            var merged = merge(existing, item);
-            map().put(iri, merged);
-            trigger(existing, merged);
-        } else {
-            trigger(null, item);
-        }
+        // Nota Bene: For concurrency safety, map() can only be used once!
+        map().compute(
+                        iri,
+                        (k, existing) -> {
+                            if (existing != null) {
+                                var merged = merge(existing, item);
+                                trigger(existing, merged);
+                                return merged;
+                            } else {
+                                trigger(null, item);
+                                return item;
+                            }
+                        });
     }
 
     @Override

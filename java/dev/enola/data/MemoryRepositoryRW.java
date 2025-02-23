@@ -20,8 +20,6 @@ package dev.enola.data;
 import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.ThreadSafe;
 
-import org.jspecify.annotations.Nullable;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,9 +42,11 @@ public abstract class MemoryRepositoryRW<T> extends AbstractMapRepositoryRW<T>
         return map;
     }
 
-    @Override
-    protected void trigger(@Nullable T existing, T updated) {
-        // TODO Run all triggers non-blocking in parallel background threads...
-        super.trigger(existing, updated);
-    }
+    /*
+       @Override
+       protected void trigger(@Nullable T existing, T updated) {
+           // TODO Run all triggers non-blocking in parallel background threads...
+           super.trigger(existing, updated);
+       }
+    */
 }
