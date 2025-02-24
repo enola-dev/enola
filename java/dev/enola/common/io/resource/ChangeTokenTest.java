@@ -67,6 +67,16 @@ public class ChangeTokenTest {
     }
 
     @Test
+    public void dataResourceBytes() {
+        var resource1 = DataResource.of("hello, world");
+        var changeToken1Bytes = resource1.changeToken().toBytes();
+        assertThat(resource1.isDifferent(changeToken1Bytes)).isFalse();
+
+        var resource2 = DataResource.of("hello, universe");
+        assertThat(resource2.isDifferent(changeToken1Bytes)).isTrue();
+    }
+
+    @Test
     public void invalidMultibase() {
         assertThat(EmptyResource.INSTANCE.isDifferent("invalid-multibase")).isTrue();
     }
