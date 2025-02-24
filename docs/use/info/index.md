@@ -107,6 +107,62 @@ $ ./enola info digest --base=Base256Emoji --http-scheme https://www.vorburger.ch
 
 Any of these _digests_ can be used e.g. in [`?integrity=...` of `fetch`](../fetch/index.md#integrity).
 
+## Change
+
+```bash $? cd ../.././..
+$ ./enola info change --help
+...
+```
+
+Issue an (opaque) _"change token"_ for a URL, which for HTTP may use e.g. ETags:
+
+```bash cd ../.././..
+$ ./enola info change --http-scheme https://www.vorburger.ch/hello.md | tee /tmp/helloChangeToken.txt
+...
+```
+
+and verify if the content at the URL has changed:
+
+```bash cd ../.././..
+$ ./enola info change --http-scheme https://www.vorburger.ch/hello.md $(cat /tmp/helloChangeToken.txt)
+...
+```
+
+Or for files, for which this may be implemented with last modified and size metadata, and hashing content:
+
+```bash cd ../.././..
+$ echo "hello," >/tmp/hello.txt
+...
+```
+
+and now as above:
+
+```bash cd ../.././..
+$ ./enola info change /tmp/hello.txt | tee /tmp/helloChangeToken.txt
+...
+```
+
+we have not yet changed it:
+
+```bash cd ../.././..
+$ ./enola info change /tmp/hello.txt $(cat /tmp/helloChangeToken.txt)
+...
+```
+
+but now let's change it:
+
+```bash cd ../.././..
+$ echo "world" >>/tmp/hello.txt
+...
+```
+
+and check again:
+
+```bash cd ../.././..
+$ ./enola info change /tmp/hello.txt $(cat /tmp/helloChangeToken.txt)
+...
+```
+
 ## Screencast
 
 ![Demo](script.svg)
