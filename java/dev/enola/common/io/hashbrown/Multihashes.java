@@ -75,6 +75,20 @@ public final class Multihashes {
         return Multibase.encode(base, multihash.toBytes());
     }
 
+    public static Multihash fromString(String string) {
+        return Multihash.decode(string);
+    }
+
+    // TODO Optimize this, see https://github.com/multiformats/java-multibase/issues/38
+    public static boolean isValid(String multihash) {
+        try {
+            Multihash.decode(multihash);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     public static String example(Multihash.Type type, Multibase.Base base) {
         var bytes = new byte[type.length];
         // for (int i = 0; i < type.length; i++) bytes[i] = (byte) 7;

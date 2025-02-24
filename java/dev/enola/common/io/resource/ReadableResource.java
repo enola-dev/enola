@@ -25,7 +25,6 @@ import com.google.common.io.CharSource;
 import dev.enola.common.io.hashbrown.Multihashes;
 import dev.enola.common.io.hashbrown.ResourceHasher;
 
-import io.ipfs.multibase.Multibase;
 import io.ipfs.multihash.Multihash;
 
 import java.io.IOException;
@@ -59,7 +58,7 @@ public interface ReadableResource extends AbstractResource {
     }
 
     /**
-     * Fingerprint of content. Implementations may e.g. be based on:
+     * {@link ChangeToken} of this resource's content. Implementations may e.g. be based on:
      *
      * <ul>
      *   <li><a href="https://en.wikipedia.org/wiki/Stat_(system_call)"><tt>mtime</tt> Timestamp</a>
@@ -75,46 +74,62 @@ public interface ReadableResource extends AbstractResource {
      *   <li>...
      * </ul>
      *
-     * <p>Intended to be used as "change token" (key), for change detection. Do not interpret the
-     * content of this String. It's intended to be used completely "opaque", and only for before &
-     * after comparison, on a Resource from the same URI. Implementations are encouraged to return
-     * strings which do not (directly) "look like" something familiar, as above - to avoid users
-     * relying on implementation details.
+     * <p>Intended to be used for change detection, like this:
      *
-     * <p>It's only based on {@link #byteSource()} (irrelevant of encoding and thus {@link
-     * #charSource()}), so it ignores {@link #uri()} and {@link #mediaType()}. Ergo, 2 resources
-     * with the same bytes content have the same fingerprint, even if they have different URIs. But
-     * that's if and only if the objects are of the same (Java implementation) type - separate
-     * implementations may create different fingerprints.
+     * <ol>
+     *   <li>Obtain the ChangeToken of a Resource using this method.
+     *   <li>Store it somewhere; either in-memory as a Java object, or possibly externally in its
+     *       {@link ChangeToken#toString()} or {@link ChangeToken#toBytes()} form.
+     *   <li>Later, to check if the Resource at this same (!) {@link #uri()} has changed, get
+     *       another ChangeToken using this method
+     *   <li>To compare the original and current one, use {@link
+     *       ChangeToken#isDifferent(ChangeToken)}, or {@link #isDifferent(String)} or {@link
+     *       #isDifferent(ByteSeq)}.
+     * </ol>
      *
-     * <p>Named "fingerprint" and not "version", because that might imply “numeric” - but this is
-     * explicitly NOT intended to be used for “is it newer or older” comparison, only “has it
-     * changed”.
+     * <p>Implementations may be based on {@link #byteSource()} (typically irrelevant of encoding
+     * and thus {@link #charSource()}), and possibly metadata not available via the Resource API. It
+     * may it ignore {@link #uri()} and {@link #mediaType()}. Ergo, 2 resources with the same bytes
+     * content may have the same ChangeToken, even if they have different URIs, but this should not
+     * be relied upon. ChangeTokens should only be interchange if and only if they are instances of
+     * the same (Java implementation of) Resource type - separate implementations will create
+     * different change tokens, which will always be considered different.
      *
-     * <p>Fingerprint calculation could be an expensive operation. For example, obtaining a checksum
-     * of a large file (if that's how fingerprinting was implemented) would require reading that
+     * <p>ChangeToken calculation could be an expensive operation. For example, obtaining a checksum
+     * of a large file (if that's how a resource implements this method) would require reading that
      * entire file.
      *
-     * <p>Fingerprints of a resource may or may not be cached, or be cached for a certain time. This
+     * <p>Resources may cache or may not cache ChangeTokens, or be cached for a certain time. This
      * is entirely dependent on the implementation.
      *
      * <p>The default implementations currently returns a Multibase RFC-4648 Base64url encoded
      * SHA2-512 CHF MAC. This default may be changed at any time, without notice. At least some
-     * implementations of this interface may well use entirely solutions.
+     * implementations of this interface may well use entirely different solutions.
      *
-     * @return Fingerprint, or the special value "N/A" when it's impossible to calculate a
-     *     fingerprint e.g. due to internal technical errors, or because the URI points to a
-     *     non-existing resource. Implementations should never return null or an empty String.
+     * @return Change Token, never null.
      */
-    // TODO rename fingerprint() to changeToken()
-    // TODO introduce an actual interface or class ChangeToken
-    default String fingerprint() {
+    default ChangeToken changeToken() {
         try {
-            // TODO Reconsider (default) hash type - how much faster is MD5 than SHA-512?!
+            // TODO Reconsider (default) hash - is SHA2-256, or even MD5, much faster than SHA2-512?
             var multihash = new ResourceHasher().hash(this, Multihash.Type.sha2_512);
-            return Multihashes.toString(multihash, Multibase.Base.Base64Url);
+            return new MultihashChangeToken(multihash);
         } catch (IOException e) {
-            return "N/A";
+            return ChangeToken.NOT_AVAILABLE;
         }
     }
+
+    /**
+     * Like {@link ChangeToken#isDifferent(ChangeToken)}, but given a String instead of an object.
+     *
+     * @param previousToString The output of calling {@link ChangeToken#toString()} on a ChangeToken
+     *     previously obtained from {@link #changeToken()} for this Resource.
+     * @return see {@link ChangeToken#isDifferent(ChangeToken)}
+     */
+    default boolean isDifferent(String previousToString) {
+        if (Multihashes.isValid(previousToString))
+            return changeToken().isDifferent(new MultihashChangeToken(previousToString));
+        else return true;
+    }
+
+    // TODO default boolean isDifferent(ByteSeq changeToken) { return true; }
 }

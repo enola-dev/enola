@@ -46,7 +46,8 @@ public class EmptyResource extends BaseResource implements ReadableButNotWritabl
 
     static final String SCHEME = "empty";
     public static final URI EMPTY_URI = URI.create(SCHEME + ":?"); // TODO :/ is probably better?
-    public static final EmptyResource INSTANCE = new EmptyResource(EMPTY_URI);
+    public static final EmptyResource INSTANCE =
+            new EmptyResource(EMPTY_URI, MediaType.OCTET_STREAM);
 
     public EmptyResource(URI uri) {
         super(uri);
@@ -68,10 +69,5 @@ public class EmptyResource extends BaseResource implements ReadableButNotWritabl
     @Override
     public CharSource charSource() {
         return CharSource.empty();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getName() + "{uri=" + uri() + " & mediaType=" + mediaType() + '}';
     }
 }
