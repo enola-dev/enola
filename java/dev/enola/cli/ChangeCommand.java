@@ -24,14 +24,24 @@ import picocli.CommandLine;
 
 import java.nio.file.Paths;
 
-// TODO rename info fingerprint CLI command to changetoken
-@CommandLine.Command(name = "fingerprint", description = "Obtain the Fingerprint of a URL.\n")
-public class FingerprintCommand extends CommandWithResourceProvider {
+@CommandLine.Command(
+        name = "change",
+        description =
+                "Given a URL, obtains its 'Change Token'; or given one, verifies if content at that"
+                        + " URL has changed.\n")
+public class ChangeCommand extends CommandWithResourceProvider {
 
     @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @CommandLine.Parameters(index = "0", paramLabel = "url", description = "URL")
     String url;
+
+    @CommandLine.Parameters(
+            index = "1",
+            paramLabel = "previous",
+            description = "Previously obtained ChangeToken for this URL",
+            arity = "0..1")
+    String previous;
 
     @Override
     public Integer call() throws Exception {
@@ -42,7 +52,11 @@ public class FingerprintCommand extends CommandWithResourceProvider {
             var resource = rp.getResource(uri);
 
             var pw = spec.commandLine().getOut();
-            pw.println(resource.fingerprint());
+            if (previous == null) {
+                pw.println(resource.changeToken());
+            } else {
+                pw.println(resource.isDifferent(previous));
+            }
         }
 
         return 0;
