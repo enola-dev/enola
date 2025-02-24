@@ -28,8 +28,6 @@ import dev.enola.common.io.hashbrown.ResourceHasher;
 import io.ipfs.multihash.Multihash;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.util.Optional;
 
 public interface ReadableResource extends AbstractResource {
 
@@ -45,17 +43,6 @@ public interface ReadableResource extends AbstractResource {
     }
 
     // NO contentLength() because ByteSource already has a size() + sizeIfKnown()
-
-    /**
-     * Last Modified date time (if known). Implemented e.g. via a File's last modified (not created
-     * or accessed) time, or a remote resource's <tt>Last-Modified</tt> HTTP Header. Typically used
-     * for cache invalidation to determine if the resource version is the same as a previously read
-     * one. Some implementations may well not provide this!
-     */
-    @Deprecated // TODO Remove lastModifiedIfKnown() once revision() is implemented
-    default Optional<Instant> lastModifiedIfKnown() {
-        return Optional.empty();
-    }
 
     /**
      * {@link ChangeToken} of this resource's content. Implementations may e.g. be based on:

@@ -31,9 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.*;
-import java.time.Instant;
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * {@link Resource} for a file (not a directory) at a {@link Path} on a {@link FileSystem}.
@@ -134,14 +132,5 @@ public class FileResource extends BaseResource implements Resource {
     @Override
     public ByteSource byteSource() {
         return MoreFiles.asByteSource(path, openOptions);
-    }
-
-    @Override
-    public Optional<Instant> lastModifiedIfKnown() {
-        try {
-            return Optional.of(Files.getLastModifiedTime(path).toInstant());
-        } catch (IOException e) {
-            return Optional.empty();
-        }
     }
 }

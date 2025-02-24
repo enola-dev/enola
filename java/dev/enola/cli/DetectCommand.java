@@ -56,7 +56,6 @@ public class DetectCommand extends CommandWithResourceProvider {
 
             var pw = spec.commandLine().getOut();
             pw.println(resource.mediaType());
-            resource.lastModifiedIfKnown().ifPresent(lastModified -> pw.println(lastModified));
             return 0;
         }
     }
