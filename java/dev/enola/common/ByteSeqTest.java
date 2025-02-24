@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2024 The Enola <https://enola.dev> Authors
+ * Copyright 2023-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.core;
+package dev.enola.common;
 
 import static com.google.common.truth.Truth.assertThat;
-
-import com.google.protobuf.ByteString;
 
 import org.junit.Test;
 
@@ -52,15 +50,17 @@ public class ByteSeqTest {
         assertThat(id.toUUID().toString().length()).isEqualTo(36);
     }
 
-    @Test
-    public void protobufByteString() {
-        var byteString = ByteString.copyFromUtf8("hello, world 😃");
-        var id = ByteSeq.from(byteString);
+    /*
+        @Test
+        public void protobufByteString() {
+            var byteString = ByteString.copyFromUtf8("hello, world 😃");
+            var id = ByteSeq.from(byteString);
 
-        assertThat(id.size()).isEqualTo(17);
-        assertThat(id.hashCode()).isEqualTo(734434573);
-        assertThat(id.toByteString()).isEqualTo(byteString);
-    }
+            assertThat(id.size()).isEqualTo(17);
+            assertThat(id.hashCode()).isEqualTo(734434573);
+            assertThat(id.toByteString()).isEqualTo(byteString);
+        }
+    */
 
     @Test
     public void compare() {
