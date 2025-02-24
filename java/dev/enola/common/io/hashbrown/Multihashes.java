@@ -19,12 +19,22 @@ package dev.enola.common.io.hashbrown;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import com.google.common.io.ByteSource;
 
 import io.ipfs.multibase.Multibase;
 import io.ipfs.multihash.Multihash;
 
+import java.io.IOException;
+
 /** Extension methods for {@link io.ipfs.multihash.Multihash}. */
 public final class Multihashes {
+
+    public static Multihash hash(ByteSource byteSource, Multihash.Type type) throws IOException {
+        var hashFunction = Multihashes.toGuavaHashFunction(type);
+        var hashCode = byteSource.hash(hashFunction);
+        var actualBytes = hashCode.asBytes();
+        return new Multihash(type, actualBytes);
+    }
 
     public static HashFunction toGuavaHashFunction(Multihash.Type type) {
         return switch (type) {

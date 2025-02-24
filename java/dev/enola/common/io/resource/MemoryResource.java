@@ -64,6 +64,6 @@ public class MemoryResource extends BaseResource implements Resource {
 
     @Override
     public ByteSource byteSource() {
-        return new MemoryByteSource(memoryByteSink.toByteArray());
+        return ByteSource.wrap(memoryByteSink.toByteArray());
     }
 }

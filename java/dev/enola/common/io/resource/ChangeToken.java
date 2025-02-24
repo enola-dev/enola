@@ -27,7 +27,7 @@ package dev.enola.common.io.resource;
  * that, e.g. additional metadata.
  */
 // TODO Should implementations also hold and compare the ReadableResource? Or even just its IRI?
-public interface ChangeToken {
+public interface ChangeToken { // skipcq: JAVA-E1041
 
     /**
      * Check is this ChangeToken is different from that other ChangeToken.

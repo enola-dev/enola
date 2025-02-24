@@ -17,8 +17,6 @@
  */
 package dev.enola.common.io.hashbrown;
 
-import com.google.common.hash.Hasher;
-
 import dev.enola.common.io.resource.ReadableResource;
 
 import io.ipfs.multihash.Multihash;
@@ -27,26 +25,7 @@ import java.io.IOException;
 
 public class ResourceHasher {
 
-    @SuppressWarnings("UnstableApiUsage")
     public Multihash hash(ReadableResource resource, Multihash.Type hashType) throws IOException {
-        var hashFunction = Multihashes.toGuavaHashFunction(hashType);
-        var byteSource = resource.byteSource();
-
-        Hasher hasher;
-        var optSize = byteSource.sizeIfKnown();
-        if (optSize.isPresent()) hasher = hashFunction.newHasher(Math.toIntExact(optSize.get()));
-        else hasher = hashFunction.newHasher();
-
-        try (var is = byteSource.openBufferedStream()) {
-            var read = is.read();
-            while (read != -1) {
-                hasher.putByte((byte) read);
-                read = is.read();
-            }
-        }
-
-        var hashCode = hasher.hash();
-        var actualBytes = hashCode.asBytes();
-        return new Multihash(hashType, actualBytes);
+        return Multihashes.hash(resource.byteSource(), hashType);
     }
 }

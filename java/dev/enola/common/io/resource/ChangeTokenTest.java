@@ -28,9 +28,42 @@ public class ChangeTokenTest {
         var resource = EmptyResource.INSTANCE;
         var changeToken = resource.changeToken();
         var changeTokenAsString = changeToken.toString();
+
         assertThat(changeTokenAsString).isNotEmpty();
         assertThat(changeToken.isDifferent(changeToken)).isFalse();
         assertThat(resource.isDifferent(changeTokenAsString)).isFalse();
+
+        var changeToken2 = resource.changeToken();
+        assertThat(changeToken.isDifferent(changeToken2)).isFalse();
+    }
+
+    @Test
+    public void dataResource1() {
+        var resource = DataResource.of("hello, world");
+        var changeToken = resource.changeToken();
+        var changeTokenAsString = changeToken.toString();
+
+        assertThat(changeTokenAsString).isNotEmpty();
+        assertThat(changeToken.isDifferent(changeToken)).isFalse();
+
+        var changeToken2 = resource.changeToken();
+        assertThat(changeToken.isDifferent(changeToken2)).isFalse();
+
+        assertThat(resource.isDifferent(changeTokenAsString)).isFalse();
+    }
+
+    @Test
+    public void dataResource2() {
+        var resource1 = DataResource.of("hello, world");
+        var changeToken1 = resource1.changeToken();
+        var changeToken1AsString = changeToken1.toString();
+
+        var resource2 = DataResource.of("hello, universe");
+        var changeToken2 = resource2.changeToken();
+        // TODO ? var changeToken2AsString = changeToken2.toString();
+
+        assertThat(changeToken1.isDifferent(changeToken2)).isTrue();
+        assertThat(resource2.isDifferent(changeToken1AsString)).isTrue();
     }
 
     @Test

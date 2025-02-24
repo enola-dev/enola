@@ -119,7 +119,7 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
 
     public DataResource(URI uri) {
         super(checkSchema(uri), extractMediaType(uri));
-        byteSource = new MemoryByteSource(extractBytes(uri));
+        byteSource = ByteSource.wrap(extractBytes(uri));
     }
 
     @Override

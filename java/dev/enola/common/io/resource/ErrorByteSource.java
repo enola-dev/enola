@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource;
 
+import com.google.common.base.Optional;
 import com.google.common.io.ByteSource;
 
 import java.io.IOException;
@@ -33,6 +34,11 @@ final class ErrorByteSource extends ByteSource {
     @Override
     public InputStream openStream() throws IOException {
         return new ErrorInputStream();
+    }
+
+    @Override
+    public Optional<Long> sizeIfKnown() {
+        return Optional.of(0L);
     }
 
     private final class ErrorInputStream extends InputStream {
