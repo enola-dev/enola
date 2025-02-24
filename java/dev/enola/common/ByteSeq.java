@@ -18,6 +18,7 @@
 package dev.enola.common;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -35,18 +36,26 @@ public final class ByteSeq implements Comparable<ByteSeq> {
     public static final class Builder {
         private final byte[] bytes;
 
+        // TODO private final int position = 0;
+
         private Builder(int size) {
             bytes = new byte[size];
         }
 
         public ByteSeq build() {
+            // TODO if (position != bytes.length) throw new IllegalStateException();
             return new ByteSeq(bytes);
         }
+
+        // TODO public Builder add(int integer) {
 
         public Builder add(ByteBuffer bb) {
             if (!bb.isReadOnly()) {
                 throw new IllegalArgumentException("ByteBuffer !isReadOnly()");
             }
+            // TODO Write to current position offset
+            // TODO Take length as an argument
+            // TODO Check for Overflow
             bb.get(bytes);
             return this;
         }
@@ -70,6 +79,15 @@ public final class ByteSeq implements Comparable<ByteSeq> {
             return EMPTY;
         }
         return new ByteSeq(Arrays.copyOf(bytes, bytes.length));
+    }
+
+    /**
+     * New ByteSeq from a String, in UTF-8. Inverse of {@link #asString()}. More efficient than
+     * (avoids 2nd re-copy) using {@link #from(byte[])} on {@link String#getBytes()}, and safer
+     * because it avoids accidentally using the (non-fixed) platform default charset.
+     */
+    public static ByteSeq from(String string) {
+        return new ByteSeq(string.getBytes(StandardCharsets.UTF_8));
     }
 
     /*
@@ -130,6 +148,21 @@ public final class ByteSeq implements Comparable<ByteSeq> {
         long high = bb.getLong();
         long low = bb.getLong();
         return new UUID(high, low);
+    }
+
+    /** Return String from bytes decoded as UTF-8. Inverse of {@link #from(String)}. */
+    public String asString() {
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Return debug information about this object.
+     *
+     * @see #asString()
+     */
+    @Override
+    public String toString() {
+        return "ByteSeq@" + Integer.toHexString(hashCode()) + "; size=" + size();
     }
 
     @Override

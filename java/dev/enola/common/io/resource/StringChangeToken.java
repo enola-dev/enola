@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import dev.enola.common.ByteSeq;
+
 /**
  * String-based {@link ChangeToken}. Not intended to be used directly by Resource API consumers, but
  * only internally in some (but not all) implementations of {@link ReadableResource#changeToken()}
@@ -34,5 +36,10 @@ record StringChangeToken(String string) implements ChangeToken {
     @Override
     public String toString() {
         return string;
+    }
+
+    @Override
+    public ByteSeq toBytes() {
+        return ByteSeq.from(string);
     }
 }

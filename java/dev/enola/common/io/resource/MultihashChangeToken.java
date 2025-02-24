@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.resource;
 
+import dev.enola.common.ByteSeq;
 import dev.enola.common.io.hashbrown.Multihashes;
 
 import io.ipfs.multibase.Multibase;
@@ -48,5 +49,10 @@ record MultihashChangeToken(Multihash multihash) implements ChangeToken {
     @Override
     public String toString() {
         return Multihashes.toString(multihash, Multibase.Base.Base64Url);
+    }
+
+    @Override
+    public ByteSeq toBytes() {
+        return ByteSeq.from(multihash.toBytes());
     }
 }

@@ -22,6 +22,7 @@ import static dev.enola.common.io.resource.SPI.missingCharsetExceptionSupplier;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 
+import dev.enola.common.ByteSeq;
 import dev.enola.common.io.hashbrown.Multihashes;
 import dev.enola.common.io.hashbrown.ResourceHasher;
 
@@ -118,5 +119,8 @@ public interface ReadableResource extends AbstractResource {
         else return true;
     }
 
-    // TODO default boolean isDifferent(ByteSeq changeToken) { return true; }
+    default boolean isDifferent(ByteSeq previousBytes) {
+        var previousMultihash = Multihash.deserialize(previousBytes.toBytes());
+        return changeToken().isDifferent(new MultihashChangeToken(previousMultihash));
+    }
 }

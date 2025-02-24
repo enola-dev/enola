@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.resource;
 
+import dev.enola.common.ByteSeq;
+
 /**
  * Change Token ("Tag") for {@link ReadableResource#changeToken()}.
  *
@@ -49,7 +51,7 @@ public interface ChangeToken { // skipcq: JAVA-E1041
      */
     String toString();
 
-    // TODO ByteSeq toBytes();
+    ByteSeq toBytes();
 
     /**
      * Constant (singleton) for "not available" change tokens.
@@ -70,7 +72,10 @@ public interface ChangeToken { // skipcq: JAVA-E1041
                     return "N/A";
                 }
 
-                // TODO @Override public ByteSeq toBytes();
+                @Override
+                public ByteSeq toBytes() {
+                    return ByteSeq.EMPTY;
+                }
 
                 @Override
                 public boolean equals(Object obj) {
