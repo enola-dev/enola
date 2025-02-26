@@ -23,4 +23,7 @@ git status
 
 git diff --exit-code
 
-# TODO Also fail if there are untracked new files (which are not on .gitignore)
+if git status --porcelain | grep '??' > /dev/null; then
+  echo "Untracked files exist (but should not)"
+  exit 1
+fi
