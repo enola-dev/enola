@@ -17,11 +17,11 @@
  */
 package dev.enola.model.enola;
 
-import dev.enola.model.w3.rdf.HasType;
+import dev.enola.model.w3.rdf.HasClass;
 
 import java.util.Set;
 
-public interface UnknownClass extends HasType {
+public interface UnknownClass extends HasClass {
 
     String IRI = "https://enola.dev/UnknownClass";
 
