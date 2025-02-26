@@ -25,11 +25,11 @@ source tools/asdf/install.bash
 # Installs all Python packages already (some of which models/build needs)
 source tools/pre-commit/install.bash
 
-# This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
-models/build.bash
-
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 ./test.bash
+
+# This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
+models/build.bash
 
 # Run test-jsonld before Git Test
 tools/test-jsonld/test-jsonld.bash
