@@ -38,7 +38,7 @@ public final class HasSomethingTBF implements TBF {
         if (!builderInterface.equals(TestSomething.Builder.class)
                 || !thingInterface.equals(TestSomething.class))
             throw new IllegalArgumentException(builderInterface + ", " + thingInterface);
-        return (B) new HasSomethingBuilder();
+        return (B) new TestSomethingBuilder();
     }
 
     @Override
@@ -48,21 +48,23 @@ public final class HasSomethingTBF implements TBF {
         if (!builderInterface.equals(TestSomething.Builder.class)
                 || !thingInterface.equals(TestSomething.class))
             throw new IllegalArgumentException(builderInterface + ", " + thingInterface);
-        return (B) new HasSomethingBuilder(expectedSize);
+        return (B) new TestSomethingBuilder(expectedSize);
     }
 
-    private static final class HasSomethingBuilder extends ImmutableThing.Builder<TestSomething>
+    private static final class TestSomethingBuilder extends ImmutableThing.Builder<TestSomething>
             implements TestSomething.Builder<TestSomething> {
 
-        private HasSomethingBuilder(int expectedSize) {
+        private TestSomethingBuilder(int expectedSize) {
             super(HasSomethingImpl::new, expectedSize);
+            addType(TestSomething.CLASS_IRI);
         }
 
-        private HasSomethingBuilder() {
+        private TestSomethingBuilder() {
             super(HasSomethingImpl::new);
+            addType(TestSomething.CLASS_IRI);
         }
 
-        private HasSomethingBuilder(ImmutableThing.Factory factory, TestSomething testSomething) {
+        private TestSomethingBuilder(ImmutableThing.Factory factory, TestSomething testSomething) {
             super(
                     factory,
                     testSomething.iri(),
@@ -87,7 +89,7 @@ public final class HasSomethingTBF implements TBF {
 
         @Override
         public TestSomething.Builder<? extends TestSomething> copy() {
-            return new HasSomethingBuilder(HasSomethingImpl::new, this);
+            return new TestSomethingBuilder(HasSomethingImpl::new, this);
         }
     }
 }

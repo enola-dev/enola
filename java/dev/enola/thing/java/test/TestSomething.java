@@ -79,7 +79,6 @@ public interface TestSomething extends HasType, HasA, HasB, IImmutableThing {
     @SuppressWarnings("unchecked")
     static Builder<TestSomething> builder(TBF tbf) {
         return tbf.create(TestSomething.Builder.class, TestSomething.class);
-        // TODO Set type() to CLASS_IRI
     }
 
     @SuppressWarnings("unchecked")
