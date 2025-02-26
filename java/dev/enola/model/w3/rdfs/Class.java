@@ -32,8 +32,10 @@ public interface Class extends Resource, HasClassIRI {
     // TODO Move somewhere else... but IRI enums are RDFS', while this comes from enola: ...
     String PROPERTIES = "https://enola.dev/properties";
 
+    String SUBCLASS_OF = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
+
     default Iterable<Class> subClassOfs() {
-        return getThings(IRI.Predicate.subClassOf, Class.class);
+        return getThings(SUBCLASS_OF, Class.class);
     }
 
     /** This is the inverse of {@link Property#domain()}. */

@@ -19,11 +19,14 @@ package dev.enola.thing.impl;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
+import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
+import dev.enola.thing.java.HasType;
 import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -60,7 +63,21 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     public static final TBF FACTORY =
             new TBF() {
                 @Override
-                public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+                public boolean handles(String typeIRI) {
+                    return true;
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public Thing.Builder<Thing> create(String typeIRI) {
+                    var builder = builder();
+                    // TODO Replace set() with add(HasType.IRI, typeIRI) when Builder2...
+                    builder.set(HasType.IRI, ImmutableList.of(new Link(typeIRI)));
+                    return (Thing.Builder) builder;
+                }
+
+                @Override
+                public boolean handles(Class<?> builderInterface) {
                     return builderInterface.equals(Thing.Builder.class);
                 }
 

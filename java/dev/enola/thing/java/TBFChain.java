@@ -30,6 +30,14 @@ public class TBFChain implements TBF {
     }
 
     @Override
+    public Thing.Builder<Thing> create(String typeIRI) {
+        for (TBF tbf : chain) {
+            if (tbf.handles(typeIRI)) return tbf.create(typeIRI);
+        }
+        throw new IllegalStateException("No registered TBF handles: " + typeIRI);
+    }
+
+    @Override
     public <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface) {
         for (TBF tbf : chain) {
@@ -46,5 +54,10 @@ public class TBFChain implements TBF {
                 return tbf.create(builderInterface, thingInterface, expectedSize);
         }
         throw new IllegalStateException("No registered TBF handles: " + builderInterface);
+    }
+
+    @Override
+    public boolean handles(String typeIRI) {
+        return true;
     }
 }
