@@ -26,8 +26,8 @@ import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.AlwaysThingProvider;
 
-public interface HasType extends Thing {
-    // TODO Move HasType from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
+public interface HasClass extends Thing {
+    // TODO Move HasClass from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
     // Or, perhaps better, keep this here, and have a supertype there? Confusing?
 
     default Iterable<Object> typesIRIs() {
@@ -38,15 +38,15 @@ public interface HasType extends Thing {
         return AlwaysThingProvider.CTX.getFromIRIs(typesIRIs(), Class.class);
     }
 
-    interface Builder<B extends HasType> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasType.Builder<B> addType(String typeIRI) {
+    interface Builder<B extends HasClass> extends Thing.Builder<B> { // skipcq: JAVA-E0169
+        default HasClass.Builder<B> addType(String typeIRI) {
             // TODO This is an ugly hack and needs fundamental review...
             //   just like Class.Builder.addRdfsClassProperty - same problem there...
             set(KIRI.RDF.TYPE, ImmutableList.of(new Link(typeIRI)));
             return this;
         }
 
-        default HasType.Builder<B> addType(HasClassIRI typeIRI) {
+        default HasClass.Builder<B> addType(HasClassIRI typeIRI) {
             return addType(typeIRI.iri());
         }
     }

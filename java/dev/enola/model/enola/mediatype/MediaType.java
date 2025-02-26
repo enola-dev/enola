@@ -19,13 +19,13 @@ package dev.enola.model.enola.mediatype;
 
 import dev.enola.model.enola.HasChildren;
 import dev.enola.model.enola.HasParent;
-import dev.enola.model.w3.rdf.HasType;
+import dev.enola.model.w3.rdf.HasClass;
 import dev.enola.model.w3.rdfs.HasComment;
 import dev.enola.model.w3.rdfs.HasLabel;
 import dev.enola.model.w3.rdfs.HasSeeAlso;
 
 public interface MediaType
-        extends HasType,
+        extends HasClass,
                 HasLabel,
                 HasComment,
                 HasSeeAlso,
@@ -37,7 +37,7 @@ public interface MediaType
     // In theory: interface Builder<B extends MediaType> extends ...
     // In practice, we know we're not going to further extend MediaType, so just:
     interface Builder // skipcq: JAVA-E0169
-    extends HasType.Builder<MediaType>,
+    extends HasClass.Builder<MediaType>,
                     HasLabel.Builder<MediaType>,
                     HasComment.Builder<MediaType>,
                     HasSeeAlso.Builder<MediaType>,

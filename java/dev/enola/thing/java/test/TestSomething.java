@@ -29,7 +29,7 @@ import java.time.Instant;
 
 // TODO Generate this, from a model
 public interface TestSomething extends HasA, HasB, IImmutableThing {
-    // TODO TestSomething extends HasType? But then it needs to be moved... is it so central?
+    // TODO TestSomething extends HasClass? But then it needs to be moved... is it so central?
 
     String TEST_PROPERTY_IRI = "https://example.org/test";
     String CLASS_IRI = "https://example.org/TestSomething";
@@ -41,7 +41,7 @@ public interface TestSomething extends HasA, HasB, IImmutableThing {
     @Override
     Builder<? extends TestSomething> copy();
 
-    // TODO TestSomething.Builder extends HasType.Builder?!
+    // TODO TestSomething.Builder extends HasClass.Builder?!
     interface Builder<B extends TestSomething> // skipcq: JAVA-E0169
             extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 

@@ -17,12 +17,12 @@
  */
 package dev.enola.model.w3.rdfs;
 
-import dev.enola.model.w3.rdf.HasType;
+import dev.enola.model.w3.rdf.HasClass;
 import dev.enola.thing.Thing;
 
 // TODO Is this really needed? Does RDFS really define this?!? Don't make shit up... ;-)
-public interface Resource extends Thing, HasType, HasLabel {
+public interface Resource extends Thing, HasClass, HasLabel {
 
     // skipcq: JAVA-E0169
-    interface Builder<B extends Resource> extends HasType.Builder<B>, HasLabel.Builder<B> {}
+    interface Builder<B extends Resource> extends HasClass.Builder<B>, HasLabel.Builder<B> {}
 }
