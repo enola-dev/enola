@@ -21,6 +21,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
+import dev.enola.thing.java.HasType;
 import dev.enola.thing.java.TBF;
 
 import org.jspecify.annotations.Nullable;
@@ -28,8 +29,7 @@ import org.jspecify.annotations.Nullable;
 import java.time.Instant;
 
 // TODO Generate this, from a model
-public interface TestSomething extends HasA, HasB, IImmutableThing {
-    // TODO TestSomething extends HasClass? But then it needs to be moved... is it so central?
+public interface TestSomething extends HasType, HasA, HasB, IImmutableThing {
 
     String TEST_PROPERTY_IRI = "https://example.org/test";
     String CLASS_IRI = "https://example.org/TestSomething";
@@ -41,10 +41,10 @@ public interface TestSomething extends HasA, HasB, IImmutableThing {
     @Override
     Builder<? extends TestSomething> copy();
 
-    // TODO TestSomething.Builder extends HasClass.Builder?!
     interface Builder<B extends TestSomething> // skipcq: JAVA-E0169
-            extends HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
+            extends HasType.Builder<B>, HasA.Builder<B>, HasB.Builder<B>, Thing.Builder<B> {
 
+        @CanIgnoreReturnValue
         default Builder<B> test(String test) {
             set(TestSomething.TEST_PROPERTY_IRI, test);
             return this;
@@ -61,6 +61,13 @@ public interface TestSomething extends HasA, HasB, IImmutableThing {
         @CanIgnoreReturnValue
         default Builder<B> b(Instant test) {
             HasB.Builder.super.b(test);
+            return this;
+        }
+
+        @Override
+        @CanIgnoreReturnValue
+        default Builder<B> addType(String typeIRI) {
+            HasType.Builder.super.addType(typeIRI);
             return this;
         }
 

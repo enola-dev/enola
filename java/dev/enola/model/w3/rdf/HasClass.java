@@ -17,37 +17,21 @@
  */
 package dev.enola.model.w3.rdf;
 
-import com.google.common.collect.ImmutableList;
-
 import dev.enola.model.w3.rdfs.Class;
 import dev.enola.model.w3.rdfs.HasClassIRI;
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Link;
-import dev.enola.thing.Thing;
+import dev.enola.thing.java.HasType;
 import dev.enola.thing.repo.AlwaysThingProvider;
 
-public interface HasClass extends Thing {
-    // TODO Move HasClass from dev.enola.model.w3.rdf to dev.enola.thing.java.meta?
-    // Or, perhaps better, keep this here, and have a supertype there? Confusing?
-
-    default Iterable<Object> typesIRIs() {
-        return getLinks(KIRI.RDF.TYPE);
-    }
+public interface HasClass extends HasType {
 
     default Iterable<Class> types() {
         return AlwaysThingProvider.CTX.getFromIRIs(typesIRIs(), Class.class);
     }
 
-    interface Builder<B extends HasClass> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasClass.Builder<B> addType(String typeIRI) {
-            // TODO This is an ugly hack and needs fundamental review...
-            //   just like Class.Builder.addRdfsClassProperty - same problem there...
-            set(KIRI.RDF.TYPE, ImmutableList.of(new Link(typeIRI)));
-            return this;
-        }
-
+    interface Builder<B extends HasClass> extends HasType.Builder<B> { // skipcq: JAVA-E0169
         default HasClass.Builder<B> addType(HasClassIRI typeIRI) {
-            return addType(typeIRI.iri());
+            addType(typeIRI.iri());
+            return this;
         }
     }
 }
