@@ -31,10 +31,6 @@ import io.ipfs.multihash.Multihash;
 /* Package Local, do not make public (or move into a io.resource.spi sub-package) */
 record MultihashChangeToken(Multihash multihash) implements ChangeToken {
 
-    public static boolean isValid(String multihash) {
-        return Multihashes.isValid(multihash);
-    }
-
     MultihashChangeToken(String string) {
         this(Multihashes.fromString(string));
     }

@@ -23,9 +23,9 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
 
 import dev.enola.common.ByteSeq;
-import dev.enola.common.io.hashbrown.Multihashes;
 import dev.enola.common.io.hashbrown.ResourceHasher;
 
+import io.ipfs.multibase.Multibase;
 import io.ipfs.multihash.Multihash;
 
 import java.io.IOException;
@@ -114,7 +114,7 @@ public interface ReadableResource extends AbstractResource {
      * @return see {@link ChangeToken#isDifferent(ChangeToken)}
      */
     default boolean isDifferent(String previousToString) {
-        if (Multihashes.isValid(previousToString))
+        if (Multibase.hasValidPrefix(previousToString))
             return changeToken().isDifferent(new MultihashChangeToken(previousToString));
         else return true;
     }
