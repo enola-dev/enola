@@ -20,6 +20,7 @@ package dev.enola.thing.impl;
 import dev.enola.thing.HasIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
+import dev.enola.thing.java.HasType;
 import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -46,6 +47,16 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
 
     public static final TBF FACTORY =
             new TBF() {
+                @Override
+                public boolean handles(String typeIRI) {
+                    return true;
+                }
+
+                @Override
+                public Thing.Builder<Thing> create(String typeIRI) {
+                    return new MutableThing().add(HasType.IRI, typeIRI);
+                }
+
                 @Override
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 public <T extends Thing, TB extends Thing.Builder<T>> TB create(

@@ -44,8 +44,19 @@ public final class ProxyTBF implements TBF {
     }
 
     @Override
-    public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+    public boolean handles(Class<?> builderInterface) {
+        // TODO Document the reason for the negation here...
         return !wrap.handles(builderInterface);
+    }
+
+    @Override
+    public boolean handles(String typeIRI) {
+        return true;
+    }
+
+    @Override
+    public Thing.Builder<Thing> create(String typeIRI) {
+        throw new UnsupportedOperationException("Not implemented yet!"); // TODO Implement!
     }
 
     @Override

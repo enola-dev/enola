@@ -26,7 +26,6 @@ enum IRI implements HasIRI {
 
     enum Predicate implements HasPredicateIRI {
         seeAlso(RDFS + "seeAlso"),
-        subClassOf(RDFS + "subClassOf"),
         comment(RDFS + "comment"),
         label(RDFS + "label");
 

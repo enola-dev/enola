@@ -91,6 +91,14 @@ public class JavaThingTest {
     private void checkTBF(TBF tbf) {
         checkHasSomethingBuilder(tbf);
         checkThingsBuilders(tbf);
+        checkCreateFromType(tbf);
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private void checkCreateFromType(TBF tbf) {
+        var builder = (TestSomething.Builder<?>) tbf.create(TestSomething.CLASS_IRI);
+        builder.iri("https://example.org/thing");
+        checkHasSomethingBuilder((TestSomething.Builder<TestSomething>) builder);
     }
 
     private void checkHasSomethingBuilder(TBF tbf) {

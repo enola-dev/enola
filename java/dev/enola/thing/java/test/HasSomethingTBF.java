@@ -25,9 +25,22 @@ import dev.enola.thing.java.TBF;
 
 // TODO Generate this, from a model
 public final class HasSomethingTBF implements TBF {
+    // TODO Rename HasSomethingTBF to TestSomethingTBF
 
     @Override
-    public <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+    public boolean handles(String typeIRI) {
+        return TestSomething.CLASS_IRI.equals(typeIRI);
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public Thing.Builder<Thing> create(String typeIRI) {
+        if (!TestSomething.CLASS_IRI.equals(typeIRI)) throw new IllegalArgumentException(typeIRI);
+        return (Thing.Builder) new TestSomethingBuilder();
+    }
+
+    @Override
+    public boolean handles(Class<?> builderInterface) {
         return builderInterface.equals(TestSomething.Builder.class);
     }
 
@@ -55,12 +68,12 @@ public final class HasSomethingTBF implements TBF {
             implements TestSomething.Builder<TestSomething> {
 
         private TestSomethingBuilder(int expectedSize) {
-            super(HasSomethingImpl::new, expectedSize);
+            super(TestSomethingImpl::new, expectedSize);
             addType(TestSomething.CLASS_IRI);
         }
 
         private TestSomethingBuilder() {
-            super(HasSomethingImpl::new);
+            super(TestSomethingImpl::new);
             addType(TestSomething.CLASS_IRI);
         }
 
@@ -79,8 +92,8 @@ public final class HasSomethingTBF implements TBF {
         }
     }
 
-    private static final class HasSomethingImpl extends ImmutableThing implements TestSomething {
-        private HasSomethingImpl(
+    private static final class TestSomethingImpl extends ImmutableThing implements TestSomething {
+        private TestSomethingImpl(
                 String iri,
                 ImmutableMap<String, Object> properties,
                 ImmutableMap<String, String> datatypes) {
@@ -89,7 +102,7 @@ public final class HasSomethingTBF implements TBF {
 
         @Override
         public TestSomething.Builder<? extends TestSomething> copy() {
-            return new TestSomethingBuilder(HasSomethingImpl::new, this);
+            return new TestSomethingBuilder(TestSomethingImpl::new, this);
         }
     }
 }

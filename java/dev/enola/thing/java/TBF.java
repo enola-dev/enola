@@ -24,6 +24,8 @@ import dev.enola.thing.java.test.TestSomething;
 /** TBF is a Thing Builder Factory. */
 public interface TBF {
 
+    Thing.Builder<Thing> create(String typeIRI);
+
     /**
      * Creates a new {@link Thing.Builder} instance of (Java) type T.
      *
@@ -33,6 +35,8 @@ public interface TBF {
     // TODO Fix that callers have to use  @SuppressWarnings("unchecked")
     // TODO Is javac really too stupid to validate callers, as intended?
     // e.g. create(Property.Builder.class, Class.class); should not compile - but does :(
+    //   Or is it really a bug in javac?! Unlikely, but try latest JDK?
+    //   Otherwise, simplify this... we only really need Builder class?
     <T extends Thing, B extends Thing.Builder<T>> B create(
             Class<B> builderInterface, Class<T> thingInterface, int expectedSize);
 
@@ -49,7 +53,10 @@ public interface TBF {
         return create(Thing.Builder.class, Thing.class, expectedSize);
     }
 
-    default <B extends Thing.Builder<?>> boolean handles(Class<B> builderInterface) {
+    default boolean handles(Class<?> builderInterface) {
+        // TODO Push down default implementation into all implementations
         return true;
     }
+
+    boolean handles(String typeIRI);
 }
