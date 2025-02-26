@@ -131,11 +131,10 @@ enola_maven.install(
         # IPFS & IPLD etc.
         "com.github.ipld:java-cid:1.3.8",
 
-        # TODO Replace with "com.github.multiformats:java-multibase:..."
-        #   after merge of https://github.com/multiformats/java-multibase/pull/37
         #   NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1324,
         #   this only just so happens to work because this Git SHA starts with a digit.
-        "com.github.vorburger:java-multibase:166578b51d",
+        # "com.github.vorburger:java-multibase:166578b51d",
+        "com.github.multiformats:java-multibase:03702505e959cafbebfcf7990848ee124017c27d",
 
         # TODO When https://github.com/bazel-contrib/rules_jvm_external/issues/1324 is fixed,
         #   then upgrade rules_jvm_external (above), and uncomment this line, in order to
@@ -149,9 +148,6 @@ enola_maven.install(
     # to clean versions at build time!
     duplicate_version_warning = "error",
     excluded_artifacts = [
-        # TODO Remove after merge of https://github.com/multiformats/java-multibase/pull/37
-        "com.github.multiformats:java-multibase",
-
         # TODO Uncomment when https://github.com/bazel-contrib/rules_jvm_external/issues/1324 is fixed
         #      as part of fixing https://github.com/enola-dev/enola/issues/1040.
         #   "com.github.multiformats:java-multihash",

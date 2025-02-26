@@ -29,7 +29,7 @@ java_binary(
     ),
     main_class = "dev.enola.cli.EnolaCLI",
     deps = [
-        "@enola_maven//:com_github_vorburger_java_multibase",
+        "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
         "//java/dev/enola",
         # TODO Remove most of these direct deps, through new Enola API...
