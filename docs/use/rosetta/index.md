@@ -101,7 +101,7 @@ $ ./enola rosetta --in test/picasso.yaml --out /tmp/picasso.json
 ## Turtle 🐢 to JSON-LD 🔗
 
 ```bash cd ../.././..
-$ ./enola rosetta --in test/picasso.ttl --out picasso.jsonld
+$ ./enola rosetta --in test/picasso.ttl --out /tmp/picasso.jsonld
 ...
 ```
 
@@ -119,7 +119,7 @@ $ ./enola rosetta --in test/greeting1-nested.xml --out="fd:1?mediaType=text/turt
 ## Turtle 🐢 to Things ⛓️
 
 ```bash cd ../.././..
-$ ./enola rosetta --in test/picasso.ttl --out picasso.thing.yaml
+$ ./enola rosetta --in test/picasso.ttl --out /tmp/picasso.thing.yaml
 ...
 ```
 
