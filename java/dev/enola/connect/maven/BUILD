@@ -44,6 +44,10 @@ java_library(
 junit_tests(
     name = "tests",
     srcs = glob(["*Test.java"]),
+    runtime_deps = [
+        # see https://github.com/enola-dev/enola/issues/1116
+        "@enola_maven//:org_codehaus_plexus_plexus_xml",
+    ],
     deps = [
         ":mima",
         "@enola_maven//:org_apache_maven_resolver_maven_resolver_api",
