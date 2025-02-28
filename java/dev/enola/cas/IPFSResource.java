@@ -85,7 +85,10 @@ public class IPFSResource extends BaseResource implements ReadableResource {
     }
 
     private String ipfs2http(URI ipfsURL, String gateway) {
-        return gateway + ipfsURL.getAuthority() + ipfsURL.getPath();
+        return gateway
+                + (gateway.endsWith("/") ? "" : "/")
+                + ipfsURL.getAuthority()
+                + ipfsURL.getPath();
     }
 
     @Override
