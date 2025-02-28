@@ -23,22 +23,35 @@ import io.ipfs.api.IPFS;
 import io.ipfs.api.NamedStreamable;
 import io.ipfs.cid.Cid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 
 public class IPFSBlobStore implements BlobStore { // TODO , IdStore
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private final IPFS ipfs;
 
     public IPFSBlobStore(IPFS ipfs) {
         this.ipfs = ipfs;
+        try {
+            LOG.info("IPFS version: {}", ipfs.version());
+        } catch (IOException e) {
+            LOG.error("Failed to retrieve IPFS version", e);
+        }
     }
 
     @Override
     public Cid store(ByteSource source) throws IOException {
-        var namedStreamable = new NamedStreamable.ByteArrayWrapper(source.read());
-        var merkleNode = ipfs.add(namedStreamable);
-        // TODO Why does it not work with version == 1 ?!
-        return Cid.build(0, Cid.Codec.Raw, merkleNode.get(0).hash);
+        try (var is = source.openStream()) {
+            var namedStreamable = new NamedStreamable.InputStreamWrapper(is);
+            var merkleNode = ipfs.add(namedStreamable);
+            // TODO Why does it not work with version == 1 ?!
+            //   https://github.com/ipfs-shipyard/java-ipfs-http-client/issues/235
+            return Cid.build(0, Cid.Codec.Raw, merkleNode.get(0).hash);
+        }
     }
 
     @Override
