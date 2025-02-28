@@ -19,6 +19,7 @@ package dev.enola.cas;
 
 import com.google.common.io.ByteSource;
 
+import io.ipfs.api.AddArgs;
 import io.ipfs.api.IPFS;
 import io.ipfs.api.NamedStreamable;
 import io.ipfs.cid.Cid;
@@ -48,10 +49,10 @@ public class IPFSBlobStore implements BlobStore {
     public Cid store(ByteSource source) throws IOException {
         try (var is = source.openStream()) {
             var namedStreamable = new NamedStreamable.InputStreamWrapper(is);
-            var merkleNode = ipfs.add(namedStreamable);
-            // TODO Why does it not work with version == 1 ?!
-            //   https://github.com/ipfs-shipyard/java-ipfs-http-client/issues/235
-            return Cid.build(0, Cid.Codec.Raw, merkleNode.get(0).hash);
+            // TODO .setHash("blake3") https://github.com/multiformats/java-multihash/issues/49
+            var args = AddArgs.Builder.newInstance().setCidVersion(1).build();
+            var merkleNode = ipfs.add(namedStreamable, args);
+            return Cid.build(1, Cid.Codec.Raw, merkleNode.get(0).hash);
         }
     }
 

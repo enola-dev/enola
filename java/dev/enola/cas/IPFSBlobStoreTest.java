@@ -59,16 +59,16 @@ public class IPFSBlobStoreTest {
     @Test
     public void storeHello() throws IOException {
         var cid = ipfs.store(ByteSource.wrap("hello, world\n".getBytes()));
-        assertThat(cid.toString()).isEqualTo(HELLO_CIDv0);
+        assertThat(cid.toString()).isEqualTo(HELLO_CIDv1_RAW);
         assertThat(cid.codec).isEqualTo(Cid.Codec.Raw);
-        assertThat(cid.version).isEqualTo(0); // TODO 1
+        assertThat(cid.version).isEqualTo(1);
     }
 
     @Test
     public void storeLoadRandom() throws IOException {
         var bytes = generateRandomBytes(1024);
         var cid = ipfs.store(ByteSource.wrap(bytes));
-        assertThat(cid.version).isEqualTo(0); // TODO 1
+        assertThat(cid.version).isEqualTo(1);
         var loaded = ipfs.load(cid);
         assertThat(loaded.read()).isEqualTo(bytes);
     }
