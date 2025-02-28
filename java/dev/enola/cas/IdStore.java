@@ -26,6 +26,8 @@ import io.ipfs.cid.Cid;
 /** IdStore stores links of IDs of bytes to CIDs. */
 public interface IdStore {
 
+    // NB: This API cannot be implemented using https://docs.ipfs.tech/concepts/ipns
+
     void link(ByteSeq bytes, Cid cid);
 
     Cid get(Bytes link);
