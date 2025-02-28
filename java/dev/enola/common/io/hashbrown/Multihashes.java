@@ -40,7 +40,10 @@ public final class Multihashes {
         return switch (type) {
             // NB: Please BEWARE of what types are added here; the (sub)selection is intentional!
 
+            // TODO Support blake3, see https://github.com/enola-dev/enola/issues/1125
+
             // TODO Support murmur3-x64-64, https://github.com/multiformats/java-multihash/pull/43
+            //   BUT beware of https://github.com/google/guava/issues/3493, that's worrying!
             //   case murmur3_x64_128 ->  Hashing.murmur3_128();
             // PS: Not suitable, as it's too tiny: case murmur3 -> Hashing.murmur3_32_fixed();
 

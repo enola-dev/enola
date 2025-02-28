@@ -33,6 +33,7 @@ java_binary(
         "@enola_maven//:com_github_multiformats_java_multihash",
         "//java/dev/enola",
         # TODO Remove most of these direct deps, through new Enola API...
+        "//java/dev/enola/cas",
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context",

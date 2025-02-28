@@ -20,6 +20,7 @@ package dev.enola.cli;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.cas.IPFSResource;
 import dev.enola.common.context.Context;
 import dev.enola.common.io.hashbrown.IntegrityValidatingDelegatingResource;
 import dev.enola.common.io.iri.URIs;
