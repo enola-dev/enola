@@ -21,6 +21,8 @@ import com.google.common.io.ByteSource;
 
 import io.ipfs.cid.Cid;
 
+import java.io.IOException;
+
 /**
  * BlobStore stores bytes, which can then be loaded given their CID.
  *
@@ -37,9 +39,9 @@ import io.ipfs.cid.Cid;
  */
 public interface BlobStore {
 
-    Cid store(ByteSource source);
+    Cid store(ByteSource source) throws IOException;
 
-    ByteSource load(Cid cid);
+    ByteSource load(Cid cid) throws IOException;
 
     // TODO void delete(Cid cid)
 }

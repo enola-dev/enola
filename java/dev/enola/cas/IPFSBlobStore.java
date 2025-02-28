@@ -17,27 +17,32 @@
  */
 package dev.enola.cas;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.common.io.ByteSource;
 
+import io.ipfs.api.IPFS;
+import io.ipfs.api.NamedStreamable;
 import io.ipfs.cid.Cid;
+
+import java.io.IOException;
 
 public class IPFSBlobStore implements BlobStore { // TODO , IdStore
 
-    private final IPFSResource.Provider ipfsResourceProvider;
+    private final IPFS ipfs;
 
-    public IPFSBlobStore(IPFSResource.Provider ipfsResourceProvider) {
-        this.ipfsResourceProvider = ipfsResourceProvider;
+    public IPFSBlobStore(IPFS ipfs) {
+        this.ipfs = ipfs;
     }
 
     @Override
-    public Cid store(ByteSource source) {
-        throw new UnsupportedOperationException();
+    public Cid store(ByteSource source) throws IOException {
+        var namedStreamable = new NamedStreamable.ByteArrayWrapper(source.read());
+        var merkleNode = ipfs.add(namedStreamable);
+        // TODO Why does it not work with version == 1 ?!
+        return Cid.build(0, Cid.Codec.Raw, merkleNode.get(0).hash);
     }
 
     @Override
-    public ByteSource load(Cid cid) {
-        return requireNonNull(ipfsResourceProvider.get("ipfs://" + cid)).byteSource();
+    public ByteSource load(Cid cid) throws IOException {
+        return ByteSource.wrap(ipfs.cat(cid));
     }
 }
