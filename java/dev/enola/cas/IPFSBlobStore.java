@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class IPFSBlobStore implements BlobStore { // TODO , IdStore
+public class IPFSBlobStore implements BlobStore {
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -37,7 +37,8 @@ public class IPFSBlobStore implements BlobStore { // TODO , IdStore
     public IPFSBlobStore(IPFS ipfs) {
         this.ipfs = ipfs;
         try {
-            LOG.info("IPFS version: {}", ipfs.version());
+            LOG.info("{}", ipfs.version());
+            LOG.info("IPFS {}", ipfs.version);
         } catch (IOException e) {
             LOG.error("Failed to retrieve IPFS version", e);
         }
