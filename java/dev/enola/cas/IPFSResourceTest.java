@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.resource;
+package dev.enola.cas;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -27,6 +27,9 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.resource.OkHttpResource;
+import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.ResourceProvider;
 
 import io.ipfs.cid.Cid.CidEncodingException;
 
