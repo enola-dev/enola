@@ -49,6 +49,7 @@ public class IPFSBlobStoreTest {
     public void random() throws IOException {
         var bytes = generateRandomBytes(1024);
         var cid = ipfs.store(ByteSource.wrap(bytes));
+        // TODO assertThat(cid.version).isEqualTo(1);
         var loaded = ipfs.load(cid);
         assertThat(loaded.read()).isEqualTo(bytes);
     }
