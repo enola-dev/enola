@@ -130,6 +130,7 @@ enola_maven.install(
 
         # IPFS & IPLD etc.
         "com.github.ipld:java-cid:1.3.8",
+        "com.github.ipfs:java-ipfs-http-client:d982fc0fa1",
 
         #   NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1324,
         #   this only just so happens to work because this Git SHA starts with a digit.
