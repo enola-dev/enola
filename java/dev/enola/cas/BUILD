@@ -27,6 +27,7 @@ java_binary(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "@enola_maven//:com_github_ipld_java_cid",
