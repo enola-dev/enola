@@ -23,11 +23,11 @@ import com.google.common.io.ByteSource;
 
 import io.ipfs.cid.Cid;
 
-public class IPFS implements BlobStore { // TODO , IdStore
+public class IPFSBlobStore implements BlobStore { // TODO , IdStore
 
     private final IPFSResource.Provider ipfsResourceProvider;
 
-    public IPFS(IPFSResource.Provider ipfsResourceProvider) {
+    public IPFSBlobStore(IPFSResource.Provider ipfsResourceProvider) {
         this.ipfsResourceProvider = ipfsResourceProvider;
     }
 
@@ -38,6 +38,6 @@ public class IPFS implements BlobStore { // TODO , IdStore
 
     @Override
     public ByteSource load(Cid cid) {
-        return requireNonNull(ipfsResourceProvider.get("ipfs:" + cid)).byteSource();
+        return requireNonNull(ipfsResourceProvider.get("ipfs://" + cid)).byteSource();
     }
 }
