@@ -46,17 +46,7 @@ public class DemoApplication extends Application {
     }
 
     static CLI cli(String... args) {
-        // Add any "initialization" to start() and NOT here!
-        var app = new DemoApplication();
-        return new CLI(
-                args,
-                new CommandLine(app)
-                        .setUsageHelpAutoWidth(true)
-                        .setCaseInsensitiveEnumValuesAllowed(true)
-                        // .registerConverter(Locale.class, new LocaleConverter())
-                        .setExecutionStrategy(LoggingMixin::executionStrategy)
-                        .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
-                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(app)));
+        return new CLI(args, new DemoApplication());
     }
 
     @Override

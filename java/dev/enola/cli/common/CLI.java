@@ -34,6 +34,18 @@ public class CLI {
 
     private Integer exitCode;
 
+    public CLI(String[] args, Application app) {
+        this(
+                args,
+                new CommandLine(app)
+                        .setUsageHelpAutoWidth(true)
+                        .setCaseInsensitiveEnumValuesAllowed(true)
+                        // .registerConverter(Locale.class, new LocaleConverter())
+                        .setExecutionStrategy(LoggingMixin::executionStrategy)
+                        .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
+                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(app)));
+    }
+
     public CLI(String[] args, CommandLine commandLine) {
         this.commandLine = commandLine;
         this.args = Arrays.copyOf(args, args.length);

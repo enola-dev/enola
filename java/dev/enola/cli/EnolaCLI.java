@@ -20,7 +20,6 @@ package dev.enola.cli;
 import dev.enola.cli.common.*;
 
 import picocli.AutoComplete;
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Mixin;
@@ -60,17 +59,7 @@ public class EnolaCLI extends Application {
     }
 
     static CLI cli(String... args) {
-        // Add any "initialization" to start() and NOT here!
-        var enola = new EnolaCLI();
-        return new CLI(
-                args,
-                new CommandLine(enola)
-                        .setUsageHelpAutoWidth(true)
-                        .setCaseInsensitiveEnumValuesAllowed(true)
-                        // .registerConverter(Locale.class, new LocaleConverter())
-                        .setExecutionStrategy(LoggingMixin::executionStrategy)
-                        .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
-                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(enola)));
+        return new CLI(args, new EnolaCLI());
     }
 
     @Override
