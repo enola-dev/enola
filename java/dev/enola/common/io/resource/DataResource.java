@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 /**
  * Resource I/O implementation for RFC 2397 <a
  * href="https://en.m.wikipedia.org/wiki/Data_URI_scheme">data: URLs</a>.
+ *
+ * <p>@see {@link MultibaseResource} for another similar URL scheme.
  */
 public class DataResource extends BaseResource implements ReadableButNotWritableResource {
 
@@ -101,6 +103,9 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
             return URLDecoder.decode(encodedData, DATA_DEFAULT_CHARSET)
                     .getBytes(DATA_DEFAULT_CHARSET);
     }
+
+    // TODO public static Resource of(ByteSource byteSource, MediaType mediaType) {
+    //   java.util.Base64.getEncoder().withoutPadding().encode(byteSource.read());
 
     public static Resource of(@Nullable String text, @Nullable MediaType mediaType) {
         var data = MediaTypes.toStringWithoutSpaces(mediaType) + "," + Strings.nullToEmpty(text);

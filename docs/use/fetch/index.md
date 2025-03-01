@@ -115,6 +115,15 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 ...
 ```
 
+### Multibase
+
+Enola supports `multibase:` URLs, which are from [Multiformat](https://multiformats.io/):
+
+```bash cd ../.././..
+$ ./enola fetch multibase:maGVsbG8sIHdvcmxk
+...
+```
+
 ### File Descriptor
 
 `fd:` is a (non-standard) URL scheme in Enola for reading from or writing to [file descriptors](https://en.wikipedia.org/wiki/File_descriptor), for:

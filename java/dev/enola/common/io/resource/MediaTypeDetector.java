@@ -147,7 +147,9 @@ class MediaTypeDetector {
             }
         }
         if (!isSpecial(detected)) return detected;
-        else return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
+        var uriString = uri.toString();
+        if (!uriString.contains(".") && byteSource.equals(ByteSource.empty())) return detected;
+        return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
     }
 
     private MediaType fixMissingCharset(MediaType mediaType) {
