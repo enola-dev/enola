@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2025 The Enola <https://enola.dev> Authors
+# Copyright 2023 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 
 java_library(
-    name = "common",
+    name = "demolib",
     srcs = glob(["*.java"]),
-    visibility = ["//java/dev/enola/cli:__subpackages__"],
-    runtime_deps = [
-        "@enola_maven//:org_apache_logging_log4j_log4j_to_jul",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
-    ],
     deps = [
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/markdown/exec:markdown",
-        "@enola_maven//:com_google_guava_guava",
+        "//java/dev/enola/cli/common",
         "@enola_maven//:info_picocli_picocli",
-        "@enola_maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+java_binary(
+    name = "demo",
+    main_class = "dev.enola.cli.demo.DemoApplication",
+    runtime_deps = [
+        ":demolib",
     ],
 )
