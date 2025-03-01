@@ -34,9 +34,6 @@ await $`bun test`
 console.log() // Newline, to separate build from 🧪 test output
 await $`rm -rf web-out/bundle/`
 const result = await build({
-  html: true,
-  experimentalCss: true,
-
   entrypoints: ["public/index.html"],
   outdir: "web-out/bundle/",
 
@@ -58,7 +55,7 @@ if (result.success) {
       const index = path.join(dir, "index.html")
       renameSync(output.path, index)
     })
-  console.log("✅ Successfully 📦 bundled!")
+  console.log("✅ Successfully 📦 to web-out/bundle!")
   process.exit(0)
 } else {
   console.error("Build failed:", result.logs)
