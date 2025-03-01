@@ -29,6 +29,7 @@ java_binary(
     ),
     main_class = "dev.enola.cli.EnolaCLI",
     deps = [
+        "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
         "//java/dev/enola",
