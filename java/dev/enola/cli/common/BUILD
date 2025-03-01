@@ -22,6 +22,7 @@ java_library(
     visibility = ["//java/dev/enola/cli:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
+        "//java/dev/enola/common/markdown/exec:markdown",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:info_picocli_picocli",
     ],

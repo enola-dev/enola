@@ -17,11 +17,7 @@
  */
 package dev.enola.cli;
 
-import dev.enola.cli.common.CLI;
-import dev.enola.cli.common.LoggingVerbosity;
-import dev.enola.cli.common.QuietExecutionExceptionHandler;
-import dev.enola.cli.common.VersionProvider;
-import dev.enola.common.markdown.exec.MarkdownProcessingException;
+import dev.enola.cli.common.*;
 
 import picocli.AutoComplete;
 import picocli.CommandLine;
@@ -83,18 +79,5 @@ public class EnolaCLI implements LoggingVerbosity {
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
-    }
-
-    private static class KnownExitCodeExceptionMapper
-            implements CommandLine.IExitCodeExceptionMapper {
-
-        @Override
-        public int getExitCode(Throwable exception) {
-            if (exception instanceof MarkdownProcessingException) {
-                var exitCode = ((MarkdownProcessingException) exception).getLastExecExitCode();
-                if (exitCode != null) return exitCode;
-            }
-            return CommandLine.ExitCode.SOFTWARE;
-        }
     }
 }
