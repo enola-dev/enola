@@ -174,18 +174,18 @@ enola_maven.install(
 use_repo(enola_maven, "enola_maven")
 
 # https://github.com/sgammon/rules_graalvm
-bazel_dep(name = "rules_graalvm", version = "0.10.3")
+# TODO https://github.com/sgammon/rules_graalvm/issues/401
+# TODO https://github.com/sgammon/rules_graalvm/issues/556
+# TODO https://github.com/sgammon/rules_graalvm/issues/555
+
+bazel_dep(name = "rules_graalvm", version = "0.11.1")
 
 gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
 gvm.graalvm(
     name = "graalvm",
-    components = [
-        # if you need components like `js` or `wasm`, add them here
-    ],
     distribution = "ce",  # `oracle`, `ce`, or `community`
-    java_version = "20",  # `17`, `20`, or `21`, as supported by the version provided
-    # TODO Upgrade from 20.0.2 to 21.0.1 (here and also bump java_version below)
-    version = "20.0.2",  # See https://github.com/graalvm/graalvm-ce-builds/releases/ or https://www.graalvm.org/release-notes/ or https://www.graalvm.org/downloads/ ?
+    java_version = "21",  # `17`, `20`, `22`, `23`, etc.
+    version = "21.0.2",  # pass graalvm or specific jdk version supported by gvm
 )
 use_repo(gvm, "graalvm")
 

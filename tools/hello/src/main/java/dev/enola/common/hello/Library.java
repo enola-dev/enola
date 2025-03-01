@@ -18,7 +18,7 @@
 package dev.enola.common.hello;
 
 public class Library {
-    public static String helloWithJavaStringTemplate(String planet) {
+    public static String hello(String planet) {
         return "hello, " + planet;
     }
 }
