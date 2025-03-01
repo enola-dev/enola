@@ -17,9 +17,7 @@
  */
 package dev.enola.cli.common;
 
-public interface LoggingVerbosity {
+public abstract class Application {
 
-    int level();
-
-    void level(boolean[] verbosity);
+    public int loggingVerbosity;
 }

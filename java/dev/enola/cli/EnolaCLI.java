@@ -47,21 +47,9 @@ import picocli.CommandLine.Mixin;
             CanonicalizeCommand.class,
             FetchCommand.class
         })
-public class EnolaCLI implements LoggingVerbosity {
+public class EnolaCLI extends Application {
 
     @Mixin LoggingMixin loggingMixin;
-
-    private boolean[] verbosity = {};
-
-    @Override
-    public void level(boolean[] verbosity) {
-        this.verbosity = verbosity;
-    }
-
-    @Override
-    public int level() {
-        return verbosity.length;
-    }
 
     static CLI cli(String... args) {
         // Add any "initialization" to class Lifecycle#start(), instead of here!
