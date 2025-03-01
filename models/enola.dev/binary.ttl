@@ -44,6 +44,7 @@ mf:multibaseBinary enola:subDatatypeOf enola:binary;
   # see dev.enola.common.io.resource.MultibaseResource
   enola:iriTemplate "multibase:{IT}";
   # https://github.com/multiformats/multibase/blob/master/multibase.csv
+  # NB: Multibase Pattern is also in dev.enola.model.enola.Datatypes.BINARY
   xsd:pattern "[0179fFvVtTbBcChkKRzZmMuUpQ/🚀][^\\s]*".
 
 # TODO Should dev.enola/id (?) be a subtype of binary?!

@@ -20,6 +20,8 @@ package dev.enola.common.convert;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 
+import dev.enola.common.ByteSeq;
+
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -35,14 +37,13 @@ public final class ObjectToStringBiConverters {
             new ObjectToStringWithToStringBiConverter<>(String.class, input -> input);
 
     public static final ObjectToStringBiConverter<Boolean> BOOLEAN =
-            new ObjectToStringWithToStringBiConverter<>(
-                    Boolean.class, input -> Boolean.valueOf(input));
+            new ObjectToStringWithToStringBiConverter<>(Boolean.class, Boolean::valueOf);
 
     public static final ObjectToStringBiConverter<Byte> BYTE =
-            new ObjectToStringWithToStringBiConverter<>(Byte.class, input -> Byte.valueOf(input));
+            new ObjectToStringWithToStringBiConverter<>(Byte.class, Byte::valueOf);
 
     public static final ObjectToStringBiConverter<Short> SHORT =
-            new ObjectToStringWithToStringBiConverter<>(Short.class, input -> Short.valueOf(input));
+            new ObjectToStringWithToStringBiConverter<>(Short.class, Short::valueOf);
 
     // TODO UNSIGNED_BYTE
 
@@ -62,16 +63,14 @@ public final class ObjectToStringBiConverters {
             };
 
     public static final ObjectToStringBiConverter<Integer> INT =
-            new ObjectToStringWithToStringBiConverter<>(
-                    Integer.class, input -> Integer.valueOf(input));
+            new ObjectToStringWithToStringBiConverter<>(Integer.class, Integer::valueOf);
 
     public static final ObjectToStringBiConverter<UnsignedInteger> UNSIGNED_INTEGER =
             new ObjectToStringWithToStringBiConverter<>(
-                    UnsignedInteger.class, input -> UnsignedInteger.valueOf(input));
+                    UnsignedInteger.class, UnsignedInteger::valueOf);
 
     public static final ObjectToStringBiConverter<UnsignedLong> UNSIGNED_LONG =
-            new ObjectToStringWithToStringBiConverter<>(
-                    UnsignedLong.class, input -> UnsignedLong.valueOf(input));
+            new ObjectToStringWithToStringBiConverter<>(UnsignedLong.class, UnsignedLong::valueOf);
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
             new ObjectToStringWithToStringBiConverter<>(
@@ -85,12 +84,10 @@ public final class ObjectToStringBiConverters {
                     });
 
     public static final ObjectToStringBiConverter<LocalDate> LOCAL_DATE =
-            new ObjectToStringWithToStringBiConverter<>(
-                    LocalDate.class, input -> LocalDate.parse(input));
+            new ObjectToStringWithToStringBiConverter<>(LocalDate.class, LocalDate::parse);
 
     public static final ObjectToStringBiConverter<Instant> INSTANT =
-            new ObjectToStringWithToStringBiConverter<>(
-                    Instant.class, input -> Instant.parse(input));
+            new ObjectToStringWithToStringBiConverter<>(Instant.class, Instant::parse);
 
     public static final ObjectToStringBiConverter<FileTime> FILE_TIME =
             new ObjectToStringWithToStringBiConverter<>(
@@ -106,6 +103,8 @@ public final class ObjectToStringBiConverters {
                     return super.convertToType(input, type);
                 }
             };
+
+    public static final ObjectToStringBiConverter<ByteSeq> BINARY = new MultibaseConverter();
 
     private ObjectToStringBiConverters() {}
 }

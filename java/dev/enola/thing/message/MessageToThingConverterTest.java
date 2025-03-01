@@ -75,7 +75,7 @@ public class MessageToThingConverterTest {
                                     .build())
                     .putProperties(
                             getFieldIRI(TestSimple.getDescriptor(), TestSimple.BYTES_FIELD_NUMBER),
-                            MessageToThingConverter.toLiteral("mAQID", KIRI.XSD.BIN64).build())
+                            MessageToThingConverter.toLiteral("AQID", KIRI.XSD.BIN64).build())
                     .putProperties(
                             getFieldIRI(
                                     TestSimple.getDescriptor(), TestSimple.AN_ENUM_FIELD_NUMBER),

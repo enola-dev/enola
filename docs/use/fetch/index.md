@@ -117,7 +117,7 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 
 ### Multibase
 
-Enola supports `multibase:` URLs, which are from [Multiformat](https://multiformats.io/):
+Enola [supports](https://github.com/multiformats/multibase/issues/134) `multibase:` URLs, which are from [Multiformats](https://multiformats.io/):
 
 ```bash cd ../.././..
 $ ./enola fetch multibase:maGVsbG8sIHdvcmxk

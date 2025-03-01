@@ -31,6 +31,8 @@ enola:wikipedia: Turtle_(syntax)
 
 # RDF Turtle 🐢 Model Language Format Syntax
 
+<!-- TODO Document ^^xsd:base64Binary (et al) Datatype, or language and direction, below... -->
+
 Turtle 🐢 is the _"Terse Resource Description Framework (RDF) Triple Language"_ (TTL).
 
 It's a textual syntax format to write down models of linked things.

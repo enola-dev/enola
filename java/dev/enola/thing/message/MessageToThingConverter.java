@@ -26,10 +26,7 @@ import com.google.protobuf.Message;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.util.Timestamps;
 
-import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.Converter;
-import dev.enola.common.convert.OptionalConverter;
-import dev.enola.common.convert.OptionalConverterChain;
+import dev.enola.common.convert.*;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
@@ -148,9 +145,10 @@ public class MessageToThingConverter implements Converter<MessageWithIRI, Thing.
     }
 
     private String b64(ByteString byteString) {
-        // Nota Bene: The "m" prefix is base64 from https://github.com/multiformats/multibase
-        // TODO Fully Support Multibase, see TODO in Datatypes for #BINARY support there
-        return "m" + Base64.getEncoder().encodeToString(byteString.toByteArray());
+        // Given that this is being used (above) to create a standard xsd:base64Binary,
+        // we do NOT use the MultibaseConverter for e.g. an "m" Multibase prefix, here;
+        // that would be wrong, and only appropriate for a multiformat:multibaseBinary.
+        return Base64.getEncoder().encodeToString(byteString.toByteArray());
     }
 
     private Value.Builder toThingByFieldName(

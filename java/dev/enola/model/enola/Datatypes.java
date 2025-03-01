@@ -20,9 +20,11 @@ package dev.enola.model.enola;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.UnsignedLong;
 
+import dev.enola.common.ByteSeq;
 import dev.enola.common.convert.ObjectToStringBiConverters;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
+import dev.enola.thing.KIRI;
 
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
@@ -52,9 +54,13 @@ public final class Datatypes {
                     ObjectToStringBiConverters.FILE_TIME,
                     FileTime.class);
 
-    // TODO BINARY ... multibase ... with https://github.com/multiformats/java-multibase, or
-    // https://github.com/filip26/copper-multibase, for https://github.com/multiformats/multibase.
-    // Replace use of Base64.getEncoder().encodeToString() in MessageToThingConverter#b64()
+    public static final Datatype<ByteSeq> BINARY =
+            new ImmutableDatatype<>(
+                    KIRI.E.BINARY,
+                    ObjectToStringBiConverters.BINARY,
+                    ByteSeq.class,
+                    // NB: Multibase Pattern is also in binary.ttl
+                    "[0179fFvVtTbBcChkKRzZmMuUpQ/🚀][^\\s]*");
 
     // Beware: The order here matters very much, for DatatypeRepository#match()
     public static final Iterable<Datatype<?>> ALL =
