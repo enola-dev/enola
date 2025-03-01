@@ -28,7 +28,8 @@ const IGNORE = ["/favicon.ico"]
 
 serve({
   port: PORT,
-  development: true,
+  development: { hmr: false },
+
   static: {
     "/": index as Response,
   },

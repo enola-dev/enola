@@ -45,10 +45,6 @@
 
 ## Technical
 
-### Productivity
-
-* How to auto rebuild & reload in browser on file change? -- possible with vite or similar build tool
-
 ### Bazel
 
 * Use https://github.com/aspect-build/rules_js ... would have worked for `pnpm`, but won't for `bun`...

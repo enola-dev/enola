@@ -28,6 +28,10 @@
 
 1. `./dev`
 
+[Bun will hot-reload](https://bun.sh/blog/bun-v1.2.3#develop-frontend-apps-with-bun-index-html) on changes!
+
+TODO Hot reloading is broken, see [issue #1143](https://github.com/enola-dev/enola/issues/1143).
+
 ### Build
 
 1. `./build`
