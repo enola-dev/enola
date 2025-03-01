@@ -19,6 +19,7 @@ package dev.enola.cli;
 
 import dev.enola.cli.common.CLI;
 import dev.enola.cli.common.LoggingVerbosity;
+import dev.enola.cli.common.QuietExecutionExceptionHandler;
 import dev.enola.cli.common.VersionProvider;
 import dev.enola.common.markdown.exec.MarkdownProcessingException;
 
@@ -94,43 +95,6 @@ public class EnolaCLI implements LoggingVerbosity {
                 if (exitCode != null) return exitCode;
             }
             return CommandLine.ExitCode.SOFTWARE;
-        }
-    }
-
-    private static class QuietExecutionExceptionHandler
-            implements CommandLine.IExecutionExceptionHandler {
-
-        private final LoggingVerbosity lvp;
-
-        public QuietExecutionExceptionHandler(LoggingVerbosity lvp) {
-            this.lvp = lvp;
-        }
-
-        @Override
-        public int handleExecutionException(
-                Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult)
-                throws Exception {
-            if (lvp.level() > 0) {
-                cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
-            } else {
-                var intro = "Internal Problem occurred, add -vvv flags for technical details: ";
-                cmd.getErr().print(cmd.getColorScheme().optionText(intro));
-                Throwable e = ex;
-                while (e != null) {
-                    var type = e.getClass().getSimpleName();
-                    var msg = e.getMessage();
-                    var full = type + (msg != null ? ": " + msg : "");
-                    cmd.getErr().println(cmd.getColorScheme().errorText(full));
-                    e = e.getCause();
-                    if (e != null) {
-                        cmd.getErr().print("caused by: ");
-                    }
-                }
-            }
-            cmd.getErr().flush();
-            return cmd.getExitCodeExceptionMapper() != null
-                    ? cmd.getExitCodeExceptionMapper().getExitCode(ex)
-                    : cmd.getCommandSpec().exitCodeOnExecutionException();
         }
     }
 }
