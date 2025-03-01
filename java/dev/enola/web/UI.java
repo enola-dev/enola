@@ -97,7 +97,7 @@ public class UI implements WebHandler {
     public void register(WebHandlers handlers) {
         // TODO Hard-coding this here like that is non-sense of course... will be fixed later!
         // BTW It's ./public/ instead of ./web/public/ only because web/README.md assumes `cd web`.
-        var fixMeToNotBeHardCoded = new File("./web-out/");
+        var fixMeToNotBeHardCoded = new File("./web-out/bundle/");
         handlers.register("/wui/", new StaticWebHandler("/wui/", fixMeToNotBeHardCoded));
         handlers.register("/ui/static/", new StaticWebHandler("/ui/static/", "static"));
         handlers.register("/ui", this);
