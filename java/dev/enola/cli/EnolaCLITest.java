@@ -25,6 +25,7 @@ import static dev.enola.thing.io.ThingMediaTypes.THING_YAML_UTF_8;
 
 import com.google.common.net.MediaType;
 
+import dev.enola.cli.common.CLI;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
