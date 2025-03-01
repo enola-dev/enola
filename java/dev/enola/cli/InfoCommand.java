@@ -28,6 +28,8 @@ import picocli.CommandLine.Command;
             MediaTypeInfoCommand.class,
             DetectCommand.class,
             DigestCommand.class,
+            MultihashCommand.class,
+            CidCommand.class,
             ChangeCommand.class
         })
 public class InfoCommand {}
