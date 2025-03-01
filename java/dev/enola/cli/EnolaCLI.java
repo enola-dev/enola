@@ -101,7 +101,7 @@ public class EnolaCLI {
             if (enola.verbosity.length > 0) {
                 cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
             } else {
-                var intro = "Internal Problem occured, add -vvv flags for technical details: ";
+                var intro = "Internal Problem occurred, add -vvv flags for technical details: ";
                 cmd.getErr().print(cmd.getColorScheme().optionText(intro));
                 Throwable e = ex;
                 while (e != null) {
