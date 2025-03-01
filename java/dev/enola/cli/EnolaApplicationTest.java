@@ -41,7 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 // See also //test-cli.bash
-public class EnolaCLITest {
+public class EnolaApplicationTest {
 
     public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
 
@@ -50,9 +50,9 @@ public class EnolaCLITest {
     private static CLI cli;
 
     private static CLI cli(String... args) {
-        // This was intended to make initization one time and faster, but it doesn't help.
+        // This was intended to make initialization one time and faster, but it doesn't help.
         // TODO Profile this test and see where it spends time!
-        if (cli == null) cli = dev.enola.cli.EnolaCLI.cli(args);
+        if (cli == null) cli = EnolaApplication.cli(args);
         else cli.setArgs(args);
         return cli;
     }

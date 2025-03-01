@@ -20,7 +20,7 @@ package dev.enola.cli;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.cli.CommandLineSubject.assertThat;
-import static dev.enola.cli.EnolaCLI.cli;
+import static dev.enola.cli.EnolaApplication.cli;
 import static dev.enola.common.context.testlib.SingletonRule.onlyReset;
 
 import dev.enola.common.context.testlib.SingletonRule;

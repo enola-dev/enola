@@ -49,8 +49,7 @@ import picocli.CommandLine.Mixin;
             CanonicalizeCommand.class,
             FetchCommand.class
         })
-// TODO Rename EnolaCLI to EnolaApplication
-public class EnolaCLI extends Application {
+public class EnolaApplication extends Application {
 
     @Mixin LoggingMixin loggingMixin;
 
@@ -59,7 +58,7 @@ public class EnolaCLI extends Application {
     }
 
     static CLI cli(String... args) {
-        return new CLI(args, new EnolaCLI());
+        return new CLI(args, new EnolaApplication());
     }
 
     @Override
