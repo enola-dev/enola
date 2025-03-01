@@ -20,7 +20,7 @@
     <grpc.version>1.69.0</grpc.version>
     <errorprone.version>2.36.0</errorprone.version>
     <protobuf.version>4.29.2</protobuf.version>
-    <rdf4j.version>5.1.1</rdf4j.version>
+    <rdf4j.version>5.1.2</rdf4j.version>
   </properties>
 
   <build>
