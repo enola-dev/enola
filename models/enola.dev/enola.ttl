@@ -38,6 +38,12 @@ enola:olo a rdf:Property;
   enola:wikidata "Q1779327";
   enola:emoji "🔓".
 
+enola:subDatatypeOf a rdf:Property;
+  rdfs:label "Sub-Datatype of"@en;
+  rdfs:range rdfs:Datatype;
+  rdfs:domain rdfs:Datatype;
+  enola:emoji "⬆️".
+
 enola:ID a rdfs:Datatype;
   schema:name "IDentifier Datatype.";
   schema:description "This is not to be confused with https://schema.org/identifier, which is a [[rdf:Property]], whereas this is a [[rdfs:Datatype]].";

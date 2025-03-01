@@ -79,6 +79,8 @@ public final class Datatypes {
                     // TODO Test coverage for this INT RegExp...
                     "(\\d{4})-(\\d{2})-(\\d{2})T([0-9:]+)(Z|([+-])(\\d{2})(:(\\d{2})?)?)?");
 
+    // TODO base64Binary & hexBinary; see binary.ttl for their Pattern
+
     // Beware: The order here matters very much, for DatatypeRepository#match()
     public static final Iterable<Datatype<?>> ALL =
             ImmutableList.of(DATE_TIME, DATE, BOOLEAN, INT, IRI, STRING);

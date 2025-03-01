@@ -46,6 +46,9 @@ public final class ByteSeq implements Comparable<ByteSeq> {
 
     // TODO Should this have a static from(ByteSource) method?
 
+    // TODO Add String toBase64() and static ID fromBase64(String data)
+    //   using https://www.baeldung.com/java-base64-encode-and-decode
+
     // TODO Support substring (slice?) and concatenation, like Protobuf ByteString?
 
     // TODO Add a ByteBuffer asReadOnlyByteBuffer() method?
