@@ -20,7 +20,7 @@ package dev.enola.cli;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
-import dev.enola.cas.IPFSResource;
+import dev.enola.cas.IPFSGatewayResource;
 import dev.enola.common.context.Context;
 import dev.enola.common.io.hashbrown.IntegrityValidatingDelegatingResource;
 import dev.enola.common.io.iri.URIs;
@@ -109,7 +109,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
         if (http) builder.add(new OkHttpResource.Provider());
         if (!Strings.isNullOrEmpty(ipfsGateway)) {
             var httpResourceProvider = new OkHttpResource.Provider();
-            builder.add(new IPFSResource.Provider(httpResourceProvider, ipfsGateway));
+            builder.add(new IPFSGatewayResource.Provider(httpResourceProvider, ipfsGateway));
         }
         if (test) builder.add(new TestResource.Provider());
         if (classpath) builder.add(new ClasspathResource.Provider());

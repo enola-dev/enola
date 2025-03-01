@@ -23,12 +23,8 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.common.net.MediaType;
-
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.common.io.resource.OkHttpResource;
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
 import io.ipfs.cid.Cid.CidEncodingException;
@@ -39,12 +35,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 
-public class IPFSResourceTest {
+public abstract class AbstractIPFSResourceTest {
 
-    // See https://docs.enola.dev/use/fetch/#ipfs
-    public static final String IPFS_GATEWAY = "https://dweb.link/ipfs/";
-
-    private static final ResourceProvider httpResourceProvider = new OkHttpResource.Provider();
+    abstract ResourceProvider getResourceProvider();
 
     public @Rule SingletonRule r1 = $(MediaTypeProviders.set());
 
@@ -58,9 +51,7 @@ public class IPFSResourceTest {
     public void vanGogh() throws IOException {
         var url =
                 "ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq/wiki/Vincent_van_Gogh.html";
-        var r =
-                new IPFSResource(
-                        URI.create(url), MediaType.HTML_UTF_8, httpResourceProvider, IPFS_GATEWAY);
+        var r = getResourceProvider().get(url + "?mediaType=text/html;charset=UTF-8");
         assertThat(r.charSource().read()).startsWith("<html>");
 
         // TODO mediaType determination only works on (some?) public gateways,
@@ -69,22 +60,18 @@ public class IPFSResourceTest {
     }
 
     private byte[] bytesFromIPFS(String url) throws IOException {
-        return resourceFromIPFS(url).byteSource().read();
-    }
-
-    private ReadableResource resourceFromIPFS(String url) throws IOException {
-        return new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
+        return getResourceProvider().get(url).byteSource().read();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void notIFPS() {
         var url = "http://www.google.com";
-        new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
+        new IPFSGatewayResource(URI.create(url), null, null);
     }
 
     @Test(expected = CidEncodingException.class)
     public void badCID() {
         var url = "ipfs://bad";
-        new IPFSResource(URI.create(url), httpResourceProvider, IPFS_GATEWAY);
+        getResourceProvider().get(url);
     }
 }
