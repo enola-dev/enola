@@ -29,7 +29,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+// https://docs.ipfs.tech/reference/kubo/rpc/
+/** <a href="https://ipfs.tech/">IPFS</a> Kubo RPC API client. */
 public class IPFSBlobStore implements BlobStore {
+
+    // TODO: Support IPLD <=> Thing API bridge; see https://github.com/enola-dev/enola/issues/777.
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -46,6 +50,15 @@ public class IPFSBlobStore implements BlobStore {
     }
 
     @Override
+    public ByteSource load(Cid cid) throws IOException {
+        return ByteSource.wrap(ipfs.cat(cid));
+    }
+
+    public ByteSource load(Cid cid, String subPath) throws IOException {
+        return ByteSource.wrap(ipfs.cat(cid, subPath));
+    }
+
+    @Override
     public Cid store(ByteSource source) throws IOException {
         try (var is = source.openStream()) {
             var namedStreamable = new NamedStreamable.InputStreamWrapper(is);
@@ -56,8 +69,5 @@ public class IPFSBlobStore implements BlobStore {
         }
     }
 
-    @Override
-    public ByteSource load(Cid cid) throws IOException {
-        return ByteSource.wrap(ipfs.cat(cid));
-    }
+    // TODO Cid store(Tree of relative directories & files...)
 }

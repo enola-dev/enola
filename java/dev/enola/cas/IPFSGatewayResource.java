@@ -27,17 +27,8 @@ import io.ipfs.cid.Cid;
 
 import java.net.URI;
 
-/**
- * <a href="https://ipfs.tech/">IPFS</a> Resource. TODO:
- *
- * <ol>
- *   <li>Support IPLD <=> Thing API bridge; see https://github.com/enola-dev/enola/issues/777.
- *   <li>Support writing - via a WritableResource, or (probably) a separate API? Probably using
- *       https://github.com/ipfs-shipyard/java-ipfs-http-client
- *   <li>Support ipns://
- * </ol>
- */
-public class IPFSResource extends BaseResource implements ReadableResource {
+/** <a href="https://ipfs.tech/">IPFS</a> Resource. */
+public class IPFSGatewayResource extends BaseResource implements ReadableResource {
 
     public static class Provider implements ResourceProvider {
         private final ResourceProvider httpResourceProvider;
@@ -52,7 +43,7 @@ public class IPFSResource extends BaseResource implements ReadableResource {
         public Resource getResource(URI uri) {
             if (isIPFS(uri))
                 return new ReadableButNotWritableDelegatingResource(
-                        new IPFSResource(uri, httpResourceProvider, ipfsGateway));
+                        new IPFSGatewayResource(uri, httpResourceProvider, ipfsGateway));
             else return null;
         }
     }
@@ -71,13 +62,13 @@ public class IPFSResource extends BaseResource implements ReadableResource {
 
     private final ReadableResource httpResource;
 
-    public IPFSResource(URI uri, ResourceProvider httpResourceProvider, String gateway) {
+    public IPFSGatewayResource(URI uri, ResourceProvider httpResourceProvider, String gateway) {
         super(uri);
         check(uri, gateway);
         this.httpResource = httpResourceProvider.getReadableResource(ipfs2http(uri, gateway));
     }
 
-    public IPFSResource(
+    public IPFSGatewayResource(
             URI uri, MediaType mediaType, ResourceProvider httpResourceProvider, String gateway) {
         super(uri, mediaType);
         check(uri, gateway);
