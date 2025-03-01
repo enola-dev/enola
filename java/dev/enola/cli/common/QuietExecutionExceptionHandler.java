@@ -21,16 +21,16 @@ import picocli.CommandLine;
 
 public class QuietExecutionExceptionHandler implements CommandLine.IExecutionExceptionHandler {
 
-    private final LoggingVerbosity lvp;
+    private final Application app;
 
-    public QuietExecutionExceptionHandler(LoggingVerbosity lvp) {
-        this.lvp = lvp;
+    public QuietExecutionExceptionHandler(Application app) {
+        this.app = app;
     }
 
     @Override
     public int handleExecutionException(
             Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult) throws Exception {
-        if (lvp.level() > 0) {
+        if (app.loggingVerbosity > 0) {
             cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
         } else {
             var intro = "Internal Problem occurred, add -vvv flags for technical details: ";
