@@ -36,13 +36,13 @@ public class IPFSBlobStoreTest {
     String HELLO_CIDv1_RAW = "bafkreiefh74toyvanxn7oiwe5pu53vtnr5r53lvjp5jbypwmednhzf3aea";
     String HELLO_CID_IDENTITY = "bafyaafikcmeaeeqnnbswy3dpfqqho33snrsaugan";
 
-    IPFSBlobStore ipfs = new IPFSBlobStore(new IPFS("/ip4/127.0.0.1/tcp/5001"));
-
     @Test
     public void loadHelloCIDv0() throws IOException {
         var bytes = ipfs.load(Cid.decode(HELLO_CIDv0));
         assertThat(new String(bytes.read())).isEqualTo("hello, world\n");
     }
+
+    IPFSBlobStore ipfs = new IPFSBlobStore(new IPFS("/ip4/127.0.0.1/tcp/5001"));
 
     @Test
     public void loadHelloCIDv1() throws IOException {

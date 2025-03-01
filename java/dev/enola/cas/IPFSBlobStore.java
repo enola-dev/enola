@@ -32,10 +32,9 @@ import java.io.IOException;
 // https://docs.ipfs.tech/reference/kubo/rpc/
 /** <a href="https://ipfs.tech/">IPFS</a> Kubo RPC API client. */
 public class IPFSBlobStore implements BlobStore {
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     // TODO: Support IPLD <=> Thing API bridge; see https://github.com/enola-dev/enola/issues/777.
-
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private final IPFS ipfs;
 

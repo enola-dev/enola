@@ -35,7 +35,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 
-public abstract class AbstractIPFSResourceTest {
+public abstract class IPFSResourceTestAbstract {
 
     abstract ResourceProvider getResourceProvider();
 
@@ -70,8 +70,8 @@ public abstract class AbstractIPFSResourceTest {
     }
 
     @Test(expected = CidEncodingException.class)
-    public void badCID() {
+    public void badCID() throws IOException {
         var url = "ipfs://bad";
-        getResourceProvider().get(url);
+        getResourceProvider().get(url).byteSource().read();
     }
 }

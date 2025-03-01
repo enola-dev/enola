@@ -27,7 +27,11 @@ import io.ipfs.cid.Cid;
 
 import java.net.URI;
 
-/** <a href="https://ipfs.tech/">IPFS</a> Resource. */
+/**
+ * <a href="https://ipfs.tech/">IPFS</a> Resource, via an IPFS HTTP Gateway.
+ *
+ * <p>This is read-only, as one cannot write to such a gateway.
+ */
 public class IPFSGatewayResource extends BaseResource implements ReadableResource {
 
     public static class Provider implements ResourceProvider {

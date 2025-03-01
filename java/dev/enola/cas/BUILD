@@ -23,6 +23,7 @@ java_binary(
         ["*.java"],
         exclude = [
             "*Test.java",
+            "*TestAbstract.java",
         ],
     ),
     visibility = ["//:__subpackages__"],
@@ -42,19 +43,16 @@ java_binary(
 
 junit_tests(
     name = "tests",
-    size = "medium",
     srcs = glob(
         ["*Test.java"],
-        exclude = [],
     ),
-    srcs_utils = [
-    ],
+    srcs_utils =
+        glob(["*TestAbstract.java"]),
     deps = [
         ":cas",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "@enola_maven//:com_github_ipfs_java_ipfs_http_client",
         "@enola_maven//:com_github_ipld_java_cid",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
     ],
 )
