@@ -17,7 +17,23 @@
  */
 package dev.enola.cli.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class Application {
 
-    public int loggingVerbosity;
+    int loggingVerbosity;
+    private boolean loggingIsConfigured = false;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    void loggingIsConfigured() {
+        loggingIsConfigured = true;
+    }
+
+    protected Logger log() {
+        if (!loggingIsConfigured) throw new IllegalStateException();
+        return logger;
+    }
+
+    protected abstract void start();
 }

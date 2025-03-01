@@ -15,13 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.cli.common;
 
 import static picocli.CommandLine.ScopeType.INHERIT;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
-import dev.enola.cli.common.Application;
-import dev.enola.cli.common.LoggingColorConsoleHandler;
+import dev.enola.common.Version;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
@@ -64,8 +63,15 @@ public class LoggingMixin {
         var level = calcLogLevel(app.loggingVerbosity);
 
         configureJUL(level);
+        app.loggingIsConfigured();
+        app.log()
+                .error(
+                        "Hi! \uD83D\uDC4B I'm https://Enola.dev {}. "
+                                + "\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE. "
+                                + "What's your goal, today?\n",
+                        Version.get());
 
-        Lifecycle.start();
+        app.start();
 
         // And now back to and onwards with the default execution strategy
         return new CommandLine.RunLast().execute(parseResult);
