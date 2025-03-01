@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.cli.common.CLI;
 import dev.enola.common.markdown.exec.MarkdownProcessingException;
 
 import picocli.AutoComplete;

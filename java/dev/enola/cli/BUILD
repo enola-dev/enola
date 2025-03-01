@@ -35,6 +35,7 @@ java_binary(
         "//java/dev/enola",
         # TODO Remove most of these direct deps, through new Enola API...
         "//java/dev/enola/cas",
+        "//java/dev/enola/cli/common",
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context",
@@ -82,6 +83,7 @@ junit_tests(
     ],
     deps = [
         ":enola",
+        "//java/dev/enola/cli/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
@@ -121,6 +123,7 @@ java_test(
     ],
     deps = [
         ":enola",
+        "//java/dev/enola/cli/common",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/thing:thing_java",
         "@enola_maven//:com_google_truth_truth",

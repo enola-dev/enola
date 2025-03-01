@@ -23,6 +23,8 @@ import com.google.common.truth.FailureMetadata;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
 
+import dev.enola.cli.common.CLI;
+
 public final class CommandLineSubject extends Subject {
 
     private final CLI actual;
@@ -38,7 +40,7 @@ public final class CommandLineSubject extends Subject {
         return CommandLineSubject::new;
     }
 
-    protected CommandLineSubject(FailureMetadata metadata, CLI actual) {
+    private CommandLineSubject(FailureMetadata metadata, CLI actual) {
         super(metadata, actual);
         this.actual = actual;
     }

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.cli.common;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -40,7 +40,7 @@ public class CLI {
     }
 
     @VisibleForTesting
-    void setArgs(String[] args) {
+    public void setArgs(String[] args) {
         this.args = args;
     }
 
