@@ -17,18 +17,15 @@
  */
 package dev.enola.cas;
 
-import dev.enola.common.io.resource.OkHttpResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
-public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
+import io.ipfs.api.IPFS;
 
-    // See https://docs.enola.dev/use/fetch/#ipfs
-    private static final String IPFS_GATEWAY = "https://dweb.link/ipfs/";
-
-    private static final ResourceProvider httpResourceProvider = new OkHttpResource.Provider();
+public class IPFSApiResourceTest extends IPFSResourceTestAbstract {
 
     @Override
     protected ResourceProvider getResourceProvider() {
-        return new IPFSGatewayResource.Provider(httpResourceProvider, IPFS_GATEWAY);
+        var ipfs = new IPFS("/ip4/127.0.0.1/tcp/5001");
+        return new IPFSApiResource.Provider(new IPFSBlobStore(ipfs));
     }
 }

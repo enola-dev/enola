@@ -23,7 +23,7 @@ import com.google.common.io.ByteSource;
 import java.io.IOException;
 import java.io.InputStream;
 
-final class ErrorByteSource extends ByteSource {
+public final class ErrorByteSource extends ByteSource {
 
     private final IOException error;
 
