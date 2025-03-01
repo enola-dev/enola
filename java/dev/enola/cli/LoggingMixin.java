@@ -21,6 +21,7 @@ import static picocli.CommandLine.ScopeType.INHERIT;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
 import dev.enola.cli.common.LoggingColorConsoleHandler;
+import dev.enola.cli.common.LoggingVerbosity;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
@@ -59,8 +60,8 @@ public class LoggingMixin {
     }
 
     public static int executionStrategy(CommandLine.ParseResult parseResult) {
-        var enola = (EnolaCLI) parseResult.commandSpec().root().userObject();
-        var level = calcLogLevel(enola.verbosity.length);
+        var lvp = (LoggingVerbosity) parseResult.commandSpec().root().userObject();
+        var level = calcLogLevel(lvp.level());
 
         configureJUL(level);
 
@@ -105,8 +106,8 @@ public class LoggingMixin {
                         + " -vvv."
             })
     public void setVerbose(boolean[] verbosity) {
-        var enola = (EnolaCLI) mixee.root().userObject();
-        enola.verbosity = verbosity;
+        var lv = (LoggingVerbosity) mixee.root().userObject();
+        lv.level(verbosity);
     }
 
     // NB Because slf4j-jdk14-*.jar is on the classpath,

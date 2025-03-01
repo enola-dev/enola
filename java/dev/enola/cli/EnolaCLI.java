@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.cli.common.CLI;
+import dev.enola.cli.common.LoggingVerbosity;
 import dev.enola.cli.common.VersionProvider;
 import dev.enola.common.markdown.exec.MarkdownProcessingException;
 
@@ -49,10 +50,21 @@ import picocli.CommandLine.Mixin;
             CanonicalizeCommand.class,
             FetchCommand.class
         })
-public class EnolaCLI {
+public class EnolaCLI implements LoggingVerbosity {
 
     @Mixin LoggingMixin loggingMixin;
-    boolean[] verbosity = {};
+
+    private boolean[] verbosity = {};
+
+    @Override
+    public void level(boolean[] verbosity) {
+        this.verbosity = verbosity;
+    }
+
+    @Override
+    public int level() {
+        return verbosity.length;
+    }
 
     static CLI cli(String... args) {
         // Add any "initialization" to class Lifecycle#start(), instead of here!
@@ -88,17 +100,17 @@ public class EnolaCLI {
     private static class QuietExecutionExceptionHandler
             implements CommandLine.IExecutionExceptionHandler {
 
-        private final EnolaCLI enola;
+        private final LoggingVerbosity lvp;
 
-        public QuietExecutionExceptionHandler(EnolaCLI enola) {
-            this.enola = enola;
+        public QuietExecutionExceptionHandler(LoggingVerbosity lvp) {
+            this.lvp = lvp;
         }
 
         @Override
         public int handleExecutionException(
                 Exception ex, CommandLine cmd, CommandLine.ParseResult parseResult)
                 throws Exception {
-            if (enola.verbosity.length > 0) {
+            if (lvp.level() > 0) {
                 cmd.getErr().println(cmd.getColorScheme().richStackTraceString(ex));
             } else {
                 var intro = "Internal Problem occurred, add -vvv flags for technical details: ";
