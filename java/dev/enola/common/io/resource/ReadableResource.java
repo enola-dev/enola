@@ -32,6 +32,8 @@ import java.io.IOException;
 
 public interface ReadableResource extends AbstractResource {
 
+    // TODO toDataURI(), like DataResource
+
     ByteSource byteSource();
 
     // TODO Consider replacing or integrating this with Converter?!

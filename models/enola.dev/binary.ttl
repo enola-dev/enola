@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2025 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+@prefix enola: <https://enola.dev/>.
+@prefix java:  <https://enola.dev/java/>.
+@prefix proto:  <https://enola.dev/proto/>.
+@prefix mf:    <https://multiformats.io/>.
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#>.
+
+enola:binary a rdfs:Datatype;
+ java:type "dev.enola.common.ByteSeq";
+ proto:type "bytes";
+ enola:wikidata "Q3775042", "Q218013".
+
+# https://en.m.wikipedia.org/wiki/Binary-to-text_encoding
+
+xsd:base64Binary enola:subDatatypeOf enola:binary;
+  # https://en.m.wikipedia.org/wiki/Data_URI_scheme
+  enola:iriTemplate "data:,{IT}";
+  xsd:pattern "[0-9a-zA-Z+/]*={0,2}".
+
+xsd:hexBinary enola:subDatatypeOf enola:binary;
+  xsd:pattern "(?:[0-9a-fA-F]{2})*".
+
+enola:UUID enola:subDatatypeOf enola:binary;
+  xsd:pattern "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}".
+
+# https://github.com/multiformats/multibase/issues/133
+mf:multibaseBinary enola:subDatatypeOf enola:binary;
+  # see dev.enola.common.io.resource.MultibaseResource
+  enola:iriTemplate "multibase:{IT}";
+  # https://github.com/multiformats/multibase/blob/master/multibase.csv
+  xsd:pattern "[0179fFvVtTbBcChkKRzZmMuUpQ/🚀][^\\s]*".
+
+# TODO Should dev.enola/id (?) be a subtype of binary?!
