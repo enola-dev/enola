@@ -20,11 +20,11 @@ package dev.enola.common.hello;
 public class Hello {
     public static void main(String[] args) {
         // System.out.println("hello, world");
-        System.out.println(Hello.helloWithJavaStringTemplate("world"));
-        System.out.println(Library.helloWithJavaStringTemplate("world"));
+        System.out.println(Hello.hello("world"));
+        System.out.println(Library.hello("mars"));
     }
 
-    public static String helloWithJavaStringTemplate(String planet) {
+    public static String hello(String planet) {
         return "hello, " + planet;
     }
 }
