@@ -29,11 +29,10 @@ bazel_dep(name = "protobuf", version = "29.2")
 bazel_dep(name = "rules_java", version = "8.9.0")
 
 # Required by gRPC
-# (from https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L1)
-bazel_dep(name = "googleapis", version = "0.0.0-20240819-fe8ba054a", repo_name = "com_google_googleapis")
-
-switched_rules = use_extension("@com_google_googleapis//:extensions.bzl", "switched_rules")
-switched_rules.use_languages(java = True)
+# (from https://github.com/fmeum/googleapis-rules-registry [I think],
+#  NOT https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L1)
+bazel_dep(name = "googleapis-java", version = "1.0.0")
+bazel_dep(name = "googleapis-grpc-java", version = "1.0.0")
 
 # https://github.com/grpc/grpc-java/
 # https://registry.bazel.build/modules/grpc-java

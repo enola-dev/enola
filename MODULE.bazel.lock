@@ -73,6 +73,12 @@
     "https://bcr.bazel.build/modules/google_benchmark/1.8.4/MODULE.bazel": "c6d54a11dcf64ee63545f42561eda3fd94c1b5f5ebe1357011de63ae33739d5e",
     "https://bcr.bazel.build/modules/google_benchmark/1.8.5/MODULE.bazel": "9ba9b31b984022828a950e3300410977eda2e35df35584c6b0b2d0c2e52766b7",
     "https://bcr.bazel.build/modules/google_benchmark/1.8.5/source.json": "2c9c685f9b496f125b9e3a9c696c549d1ed2f33b75830a2fb6ac94fab23c0398",
+    "https://bcr.bazel.build/modules/googleapis-grpc-java/1.0.0/MODULE.bazel": "ae361918c0c40437f503b9ea0337161d603ecec74cca9c58f1784c60f88255bb",
+    "https://bcr.bazel.build/modules/googleapis-grpc-java/1.0.0/source.json": "511626feefe65bbf12d7df92ffb81326049f426f3bc2e2be484faa6ae836585a",
+    "https://bcr.bazel.build/modules/googleapis-java/1.0.0/MODULE.bazel": "d633989337d069b5a95e6101777319681d7a4af4677e36801f11839d6512095c",
+    "https://bcr.bazel.build/modules/googleapis-java/1.0.0/source.json": "ee59e2de37e4b531172870ac0296afa38f1ea004105ee21b2793c31a9d0ddccd",
+    "https://bcr.bazel.build/modules/googleapis-rules-registry/1.0.0/MODULE.bazel": "97c6a4d413b373d4cc97065da3de1b2166e22cbbb5f4cc9f05760bfa83619e24",
+    "https://bcr.bazel.build/modules/googleapis-rules-registry/1.0.0/source.json": "cf611c836a60e98e2e2ab2de8004f119e9f06878dcf4ea2d95a437b1b7a89fe9",
     "https://bcr.bazel.build/modules/googleapis/0.0.0-20240326-1c8d509c5/MODULE.bazel": "a4b7e46393c1cdcc5a00e6f85524467c48c565256b22b5fae20f84ab4a999a68",
     "https://bcr.bazel.build/modules/googleapis/0.0.0-20240819-fe8ba054a/MODULE.bazel": "117b7c7be7327ed5d6c482274533f2dbd78631313f607094d4625c28203cacdf",
     "https://bcr.bazel.build/modules/googleapis/0.0.0-20240819-fe8ba054a/source.json": "b31fc7eb283a83f71d2e5bfc3d1c562d2994198fa1278409fbe8caec3afc1d3e",
@@ -562,7 +568,7 @@
     "@@googleapis+//:extensions.bzl%switched_rules": {
       "general": {
         "bzlTransitiveDigest": "vG6fuTzXD8MMvHWZEQud0MMH7eoC4GXY0va7VrFFh04=",
-        "usagesDigest": "52N63gT5LlUdzMFgwIOPrkeIbk0z0DTZaqgrZBVeQUw=",
+        "usagesDigest": "a3MBrXz2p06iQGHLXQ1rx84x8Tp60udvIcmOWPC0yTE=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -580,7 +586,7 @@
                   ""
                 ],
                 "java_proto_library": [
-                  "native.java_proto_library",
+                  "",
                   ""
                 ],
                 "java_grpc_library": [
