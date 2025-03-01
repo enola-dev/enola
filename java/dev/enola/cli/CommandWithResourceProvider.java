@@ -100,6 +100,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
     protected void run() throws Exception {
         var builder = ImmutableList.<ResourceProvider>builder();
         builder.add(new DataResource.Provider());
+        builder.add(new MultibaseResource.Provider());
         builder.add(new EmptyResource.Provider());
         builder.add(new StringResource.Provider());
         if (file) {

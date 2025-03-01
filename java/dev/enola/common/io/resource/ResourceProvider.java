@@ -43,8 +43,8 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
     // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
 
     @Override
-    default @Nullable Resource get(String iri) {
-        return getResource(URI.create(iri));
+    default @Nullable Resource get(String uri) {
+        return getResource(URI.create(uri));
     }
 
     // TODO Rename getResource to get for consistency
@@ -54,8 +54,8 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return getResource(uri);
     }
 
-    default @Nullable ReadableResource getReadableResource(String iri) {
-        return get(iri);
+    default @Nullable ReadableResource getReadableResource(String uri) {
+        return get(uri);
     }
 
     // TODO getWritableResource() not @Nullable, but throws UnregisteredURISchemeException
@@ -63,8 +63,8 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return getResource(uri);
     }
 
-    default @Nullable WritableResource getWritableResource(String iri) {
-        return get(iri);
+    default @Nullable WritableResource getWritableResource(String uri) {
+        return get(uri);
     }
 
     // -------------------------------------------
