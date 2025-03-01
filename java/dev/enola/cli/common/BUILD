@@ -21,6 +21,7 @@ java_library(
     srcs = glob(["*.java"]),
     visibility = ["//java/dev/enola/cli:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:info_picocli_picocli",
     ],
