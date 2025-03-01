@@ -18,6 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.cli.common.CLI;
+import dev.enola.cli.common.VersionProvider;
 import dev.enola.common.markdown.exec.MarkdownProcessingException;
 
 import picocli.AutoComplete;
@@ -31,7 +32,7 @@ import picocli.CommandLine.Mixin;
         mixinStandardHelpOptions = true,
         showDefaultValues = true,
         synopsisSubcommandLabel = "COMMAND",
-        description = EnolaCLI.DESCRIPTION,
+        description = VersionProvider.DESCRIPTION,
         versionProvider = VersionProvider.class,
         subcommands = {
             HelpCommand.class,
@@ -49,8 +50,6 @@ import picocli.CommandLine.Mixin;
             FetchCommand.class
         })
 public class EnolaCLI {
-
-    static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
 
     @Mixin LoggingMixin loggingMixin;
     boolean[] verbosity = {};

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.cli.common;
 
 import dev.enola.common.Version;
 
@@ -23,10 +23,13 @@ import picocli.CommandLine;
 
 // This is used by enola --version
 public class VersionProvider implements CommandLine.IVersionProvider {
+
+    public static final String DESCRIPTION = "@|green,bold,reverse,underline https://enola.dev|@";
+
     @Override
     public String[] getVersion() throws Exception {
         return new String[] {
-            EnolaCLI.DESCRIPTION,
+            DESCRIPTION,
             "@|yellow,italic Version: " + Version.get() + " <" + Version.gitUI() + "> |@",
             "@|red,bg(white),blink Copyright 2023-2024 The Enola <https://enola.dev> Authors|@",
             "@|magenta,faint JVM: ${java.version} (${java.vendor} ${java.vm.name}"
