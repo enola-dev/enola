@@ -235,6 +235,7 @@ enola:doc a rdf:Property;
   enola:emoji "ℹ️".
 
 enola:seeAlso a rdf:Property;
+  rdfs:range rdfs:Resource, schema:URL;
   rdfs:subPropertyOf rdfs:seeAlso.
 
 enola:content-as-text a rdf:Property;

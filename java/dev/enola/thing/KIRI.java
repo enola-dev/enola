@@ -108,6 +108,9 @@ public final class KIRI {
             public static final String IRI_TEMPLATE = NS + "iriTemplate";
             // TODO public static final String MULTIPLICITY = NS + "multiplicity";
         }
+
+        // See binary.ttl & https://github.com/multiformats/multibase/issues/133
+        public static final String BINARY = "https://multiformats.io/multibaseBinary";
     }
 
     /** Schema.org Properties. */
