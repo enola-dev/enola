@@ -20,6 +20,8 @@ package dev.enola.cli;
 import static picocli.CommandLine.ScopeType.INHERIT;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
+import dev.enola.cli.common.LoggingColorConsoleHandler;
+
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
