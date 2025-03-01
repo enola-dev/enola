@@ -1,4 +1,5 @@
 version: 2
+# TODO https://github.com/dependabot/dependabot-core/issues/11705
 updates:
   - package-ecosystem: "github-actions"
     commit-message:
