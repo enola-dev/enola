@@ -35,4 +35,4 @@ protoc 29.2
 
 # https://bun.sh (with https://github.com/cometkim/asdf-bun)
 # TODO Replace completely with rules_bun from //tools/bun
-bun 1.2.2
+bun 1.2.4
