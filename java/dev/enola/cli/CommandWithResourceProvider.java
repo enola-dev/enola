@@ -120,7 +120,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
     }
 
     protected void setup(Context ctx) {
-        // NB: Singleton are set in class Configuration, invoked by class Lifecycle.
+        // NB: Singleton are set in class Configuration
         // TODO Move this entirely into class Configuration...
 
         ctx.push(ResourceProvider.class, rp);

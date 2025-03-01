@@ -25,5 +25,6 @@ java_library(
         "//java/dev/enola/common/markdown/exec:markdown",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:info_picocli_picocli",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )

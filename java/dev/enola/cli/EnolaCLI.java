@@ -51,8 +51,12 @@ public class EnolaCLI extends Application {
 
     @Mixin LoggingMixin loggingMixin;
 
+    public static void main(String[] args) {
+        System.exit(cli(args).execute());
+    }
+
     static CLI cli(String... args) {
-        // Add any "initialization" to class Lifecycle#start(), instead of here!
+        // Add any "initialization" to start() and NOT here!
         var enola = new EnolaCLI();
         return new CLI(
                 args,
@@ -65,7 +69,8 @@ public class EnolaCLI extends Application {
                         .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(enola)));
     }
 
-    public static void main(String[] args) {
-        System.exit(cli(args).execute());
+    @Override
+    protected void start() {
+        Configuration.setSingletons();
     }
 }
