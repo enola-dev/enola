@@ -17,19 +17,42 @@
  */
 package dev.enola.common;
 
+import com.google.errorprone.annotations.Immutable;
+
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * Immutable Sequence of Bytes, of variable length.
+ * Immutable Sequence of Bytes, of variable (but obviously fixed) length.
  *
  * <p>Typically intended to be used for "small"(-ish) size, like binary IDs, hashes, cryptographic
- * keys, and such things; do not use this for "large BLOBs" (like images or so). The hashCode is
- * cached.
+ * keys, and such things; do not use this for "very large BLOBs". The hashCode is cached.
+ *
+ * <p>The <tt>com.google.protobuf.ByteString</tt> is very similar - but we don't want to depend on
+ * the ProtoBuf library JUST for having a type like this.
+ *
+ * <p>This intentionally does <b>not</b> implement <tt>Iterable<Byte></tt> to avoid boxing overhead.
  */
+@Immutable
 public final class ByteSeq implements Comparable<ByteSeq> {
+
+    // TODO Re-think if this is really the same as a com.google.common.io.ByteSource?!
+    //   If concluding that it's not, then update JavaDoc to explain why...
+
+    // TODO Should this extend com.google.common.io.ByteSource?!
+
+    // TODO Should this have a static from(ByteSource) method?
+
+    // TODO Support substring (slice?) and concatenation, like Protobuf ByteString?
+
+    // TODO Add a ByteBuffer asReadOnlyByteBuffer() method?
+
+    // TODO Add startsWith(ByteSeq) and endsWith(ByteSeq) methods?
+
+    // TODO Add asInputStream() method?
 
     public static final ByteSeq EMPTY = new ByteSeq(new byte[0]);
 
@@ -87,7 +110,11 @@ public final class ByteSeq implements Comparable<ByteSeq> {
      * because it avoids accidentally using the (non-fixed) platform default charset.
      */
     public static ByteSeq from(String string) {
-        return new ByteSeq(string.getBytes(StandardCharsets.UTF_8));
+        return from(string, StandardCharsets.UTF_8);
+    }
+
+    public static ByteSeq from(String string, Charset charset) {
+        return new ByteSeq(string.getBytes(charset));
     }
 
     /*
@@ -114,13 +141,17 @@ public final class ByteSeq implements Comparable<ByteSeq> {
         return builder.build();
     }
 
+    @SuppressWarnings("Immutable") // Holy promise never to change the bytes!
     private final byte[] bytes;
+
+    @SuppressWarnings("Immutable") // Holy promise never to use only as cache!
     private transient int hashCode;
 
     private ByteSeq(byte[] bytes) {
         this.bytes = bytes;
     }
 
+    // TODO Rename toBytes() to copyIntoNewByteArray() ?
     public byte[] toBytes() {
         return Arrays.copyOf(bytes, bytes.length);
     }
@@ -139,6 +170,7 @@ public final class ByteSeq implements Comparable<ByteSeq> {
             return ByteString.copyFrom(bytes);
         }
     */
+    // TODO Rename toUUID() to asUUID() for consistency with asString()?
     public UUID toUUID() {
         if (bytes.length != 16) {
             throw new IllegalStateException(
@@ -153,6 +185,15 @@ public final class ByteSeq implements Comparable<ByteSeq> {
     /** Return String from bytes decoded as UTF-8. Inverse of {@link #from(String)}. */
     public String asString() {
         return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Returns {@code true} if the size is {@code 0}, {@code false} otherwise.
+     *
+     * @return true if this is zero bytes long
+     */
+    public boolean isEmpty() {
+        return size() == 0;
     }
 
     /**
