@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.cli.demo;
 
 import dev.enola.cli.common.*;
 
 import picocli.AutoComplete;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.Mixin;
 
-@Command(
-        name = "enola",
+@CommandLine.Command(
+        name = "demo",
         mixinStandardHelpOptions = true,
         showDefaultValues = true,
         synopsisSubcommandLabel = "COMMAND",
@@ -34,26 +31,15 @@ import picocli.CommandLine.Mixin;
         versionProvider = VersionProvider.class,
         subcommands = {
             // Generic to all CLIs
-            HelpCommand.class,
+            CommandLine.HelpCommand.class,
             AutoComplete.GenerateCompletion.class,
 
             // Specific to this CLI
-            GenCommand.class,
-            DocGenCommand.class,
-            GetCommand.class,
-            RosettaCommand.class,
-            ServerCommand.class,
-            ExecMdCommand.class,
-            LoggingTestCommand.class,
-            InfoCommand.class,
-            ValidateCommand.class,
-            CanonicalizeCommand.class,
-            FetchCommand.class
+            Subcommand.class,
         })
-// TODO Rename EnolaCLI to EnolaApplication
-public class EnolaCLI extends Application {
+public class DemoApplication extends Application {
 
-    @Mixin LoggingMixin loggingMixin;
+    @CommandLine.Mixin LoggingMixin loggingMixin;
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
@@ -61,20 +47,18 @@ public class EnolaCLI extends Application {
 
     static CLI cli(String... args) {
         // Add any "initialization" to start() and NOT here!
-        var enola = new EnolaCLI();
+        var app = new DemoApplication();
         return new CLI(
                 args,
-                new CommandLine(enola)
+                new CommandLine(app)
                         .setUsageHelpAutoWidth(true)
                         .setCaseInsensitiveEnumValuesAllowed(true)
                         // .registerConverter(Locale.class, new LocaleConverter())
                         .setExecutionStrategy(LoggingMixin::executionStrategy)
                         .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
-                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(enola)));
+                        .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(app)));
     }
 
     @Override
-    protected void start() {
-        Configuration.setSingletons();
-    }
+    protected void start() {}
 }
