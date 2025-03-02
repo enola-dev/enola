@@ -14,8 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO load("@rules_graalvm//graalvm:defs.bzl", "native_image")
 load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
 load("//tools/bazel:junit.bzl", "junit_tests")
+
+# TODO https://github.com/enola-dev/enola/issues/1154
+# native_image(
+#    name = "native",
+#    main_class = "dev.enola.cli.EnolaApplication",
+#    native_image_tool = "@graalvm//:native-image",
+#    deps = [":lib"],
+# )
 
 java_binary(
     name = "enola",
