@@ -17,9 +17,14 @@
  */
 package dev.enola.common.hello;
 
+import java.util.logging.Logger;
+
 public class Hello {
+
+    private static final Logger JUL = Logger.getLogger(Hello.class.getName());
+
     public static void main(String[] args) {
-        // System.out.println("hello, world");
+        JUL.info("hello, world");
         System.out.println(Hello.hello("world"));
         System.out.println(Library.hello("mars"));
     }
