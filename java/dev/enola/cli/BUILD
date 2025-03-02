@@ -28,6 +28,7 @@ java_binary(
         ],
     ),
     main_class = "dev.enola.cli.EnolaApplication",
+    plugins = ["//tools/bazel/java_plugin:picocli"],
     deps = [
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multibase",

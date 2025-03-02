@@ -14,12 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO load("@rules_graalvm//graalvm:defs.bzl", "native_image")
+load("@rules_graalvm//graalvm:defs.bzl", "native_image")
 load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 
 java_library(
     name = "demolib",
     srcs = glob(["*.java"]),
+    plugins = ["//tools/bazel/java_plugin:picocli"],
     deps = [
         "//java/dev/enola/cli/common",
         "@enola_maven//:info_picocli_picocli",
@@ -34,10 +35,9 @@ java_binary(
     ],
 )
 
-# TODO https://github.com/enola-dev/enola/issues/1153
-#native_image(
-#    name = "demo-native",
-#    main_class = "dev.enola.cli.demo.DemoApplication",
-#    native_image_tool = "@graalvm//:native-image",
-#    deps = [":demolib"],
-#)
+native_image(
+    name = "demo-native",
+    main_class = "dev.enola.cli.demo.DemoApplication",
+    native_image_tool = "@graalvm//:native-image",
+    deps = [":demolib"],
+)
