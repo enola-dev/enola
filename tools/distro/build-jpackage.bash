@@ -24,7 +24,7 @@ cp "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar /tmp/enola/distro/jpack
 mkdir -p /tmp/enola/distro/jpackage/out
 
 # TODO https://github.com/enola-dev/enola/issues/748: --generate-cds-archive
-jlink --output /tmp/enola/distro/jpackage/out/jlink --compress=2 --include-locales=en \
+jlink --output /tmp/enola/distro/jpackage/out/jlink --include-locales=en \
   --module-path /usr/lib/jvm/java-21-openjdk/jmods --add-modules jdk.management.jfr,java.rmi,jdk.jdi,jdk.charsets,java.xml,jdk.xml.dom,java.datatransfer,jdk.jstatd,jdk.httpserver,java.desktop,java.security.sasl,jdk.zipfs,java.base,jdk.crypto.ec,jdk.javadoc,jdk.management.agent,jdk.jshell,jdk.editpad,jdk.sctp,java.sql.rowset,jdk.jsobject,jdk.unsupported,java.smartcardio,jdk.jlink,java.security.jgss,java.compiler,jdk.nio.mapmode,jdk.dynalink,jdk.unsupported.desktop,jdk.accessibility,jdk.security.jgss,java.sql,jdk.incubator.vector,java.xml.crypto,java.logging,java.transaction.xa,jdk.jfr,jdk.crypto.cryptoki,jdk.net,jdk.random,java.naming,jdk.internal.ed,java.prefs,java.net.http,jdk.compiler,jdk.internal.opt,jdk.naming.rmi,jdk.jconsole,jdk.attach,jdk.internal.le,java.management,jdk.jdwp.agent,jdk.internal.jvmstat,java.instrument,jdk.management,jdk.security.auth,java.scripting,jdk.jdeps,jdk.jartool,java.management.rmi,jdk.jpackage,jdk.naming.dns,jdk.localedata \
   --strip-native-commands --strip-debug --no-man-pages --no-header-files
 
