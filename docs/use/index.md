@@ -22,9 +22,18 @@ The following chapters demonstrate different usage scenarios with recorded demos
 
 This page documents several options available to locally install and run Enola.
 
-## Binary
+## TGZ x86_64
 
-Download the [`enola`](../download/latest/enola) binary, then `chmod +x enola`
+For Linux, download the [`enola.x86_64.tgz`](../download/latest/enola.x86_64.tgz)
+archive, then extract it, e.g. with `tar xvf enola.x86_64.tgz`, then run it with
+`enola/bin/enola`.
+
+This distribution includes an appropriate Java Runtime Environment (JRE).
+
+## JAR
+
+If you have `java` on your `$PATH`, then you can
+download the [`enola`](../download/latest/enola) binary, then `chmod +x enola`
 and launch it directly using `./enola` (on Linux, FreeBSD & macOS); or
 `java -jar enola` (e.g. on 🪟 Windows).
 

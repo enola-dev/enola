@@ -35,16 +35,9 @@ jpackage --verbose --type app-image \
   --app-version 0.0.1 --copyright "Copyright 2023-2025 The Enola Authors" \
   --description "See https://docs.enola.dev" \
   --dest /tmp/enola/distro/jpackage/out -n enola
-tar czf site/download/latest/enola.tgz -C /tmp/enola/distro/jpackage/out/ enola
-ls -lh site/download/latest/enola.tgz
+tar czf site/download/latest/enola.x86_64.tgz -C /tmp/enola/distro/jpackage/out/ enola
+ls -lh site/download/latest/enola.x86_64.tgz
 
 /tmp/enola/distro/jpackage/out/enola/bin/enola --version
 
-# --type rpm --about-url https://docs.enola.dev \
-#  mv -v "$ROOT"/enola-*.rpm site/download/latest/enola.x86_64.rpm
-#  git restore --staged enola-*.rpm
-
-# TODO Customize jlink for smaller JRE with less modules
-
-# Nota bene: jpackage needs to run on the platform for which it generates a package
-# TODO Explore https://jreleaser.org to see if it has cross-platform (Mac) GitHub Actions?
+# TODO https://github.com/enola-dev/enola/issues/1158 Mac & Windows?
