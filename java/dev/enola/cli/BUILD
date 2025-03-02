@@ -14,11 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "enola",
+    main_class = "dev.enola.cli.EnolaApplication",
+    runtime_deps = [":lib"],
+)
+
+java_library(
+    name = "lib",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -27,7 +33,6 @@ java_binary(
             "SystemOutErrCapture.java",
         ],
     ),
-    main_class = "dev.enola.cli.EnolaApplication",
     plugins = ["//tools/bazel/java_plugin:picocli"],
     deps = [
         "@enola_maven//:com_github_ipld_java_cid",
@@ -83,7 +88,7 @@ junit_tests(
         "SystemOutErrCapture.java",
     ],
     deps = [
-        ":enola",
+        ":lib",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context/testlib",
@@ -123,7 +128,7 @@ java_test(
         "@enola_maven//:org_slf4j_slf4j_jdk14",
     ],
     deps = [
-        ":enola",
+        ":lib",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/thing:thing_java",
