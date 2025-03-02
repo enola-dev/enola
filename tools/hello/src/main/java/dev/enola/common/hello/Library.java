@@ -17,8 +17,15 @@
  */
 package dev.enola.common.hello;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Library {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Library.class);
+
     public static String hello(String planet) {
+        LOG.info("hello, {}", planet);
         return "hello, " + planet;
     }
 }
