@@ -17,3 +17,4 @@
 
 tools/distro/build-execjar.bash
 tools/distro/build-container.bash
+tools/distro/build-jpackage.bash
