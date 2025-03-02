@@ -45,6 +45,8 @@ if [ -z "${CI:-""}" ]; then
   "$BZL" query //... | xargs "$BZL" test --explain ~/bazel-test-explain.txt --test_size_filters=small
 
 else # On CI
+  # Non-regression for problems like https://github.com/enola-dev/enola/issues/1146 and https://github.com/enola-dev/enola/issues/1164
+  bazelisk mod graph --depth=1
   # See https://github.com/enola-dev/enola/issues/1116 why it's worth to re-PIN, on CI:
   REPIN=1 bazelisk run @enola_maven//:pin
   # Runs git status and git diff to ensure no uncommitted changes
