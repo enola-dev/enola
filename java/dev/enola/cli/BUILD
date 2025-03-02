@@ -43,6 +43,8 @@ java_library(
         ],
     ),
     plugins = ["//tools/bazel/java_plugin:picocli"],
+    resource_strip_prefix = "java/dev/enola/cli/resources",
+    resources = glob(["resources/**"]),
     deps = [
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multibase",
