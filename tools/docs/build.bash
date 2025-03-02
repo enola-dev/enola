@@ -73,6 +73,11 @@ mkdocs build --strict --config-file mkdocs.yaml
 
 cleanup
 
+# JavaDoc
+rm site/dev/javadoc/index.html
+unzip bazel-bin/java/dev/enola/javadoc.jar -d site/dev/javadoc/
+# xdg-open site/dev/javadoc/index.html
+
 # Enola Binary Distro
 tools/distro/build.bash
 

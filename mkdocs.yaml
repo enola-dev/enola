@@ -90,10 +90,10 @@ nav:
           - "* Tika": concepts/tika.md
           - XML: concepts/xml.md
   - Developers:
-      # - Java:
-      #   - Maven:
-      #   - JavaDoc:
-      - JBang: dev/jbang.md
+      - Java:
+          # - Maven:
+          - JBang: dev/jbang.md
+          - JavaDoc: dev/javadoc.md
       # - Contributors:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md
