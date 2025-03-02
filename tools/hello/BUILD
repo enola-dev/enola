@@ -33,10 +33,15 @@ java_binary(
 java_library(
     name = "hello_lib1",
     srcs = ["src/main/java/dev/enola/common/hello/Hello.java"],
+    runtime_deps = [
+        # TODO "@enola_maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@enola_maven//:org_slf4j_slf4j_jdk14",
+    ],
     deps = [":hello_lib2"],
 )
 
 java_library(
     name = "hello_lib2",
     srcs = ["src/main/java/dev/enola/common/hello/Library.java"],
+    deps = ["@enola_maven//:org_slf4j_slf4j_api"],
 )
