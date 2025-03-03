@@ -16,7 +16,7 @@
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 
-name: CI
+name: Build, Test & Deploy (CI)
 
 on:
   push:
