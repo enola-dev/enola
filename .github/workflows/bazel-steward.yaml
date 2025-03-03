@@ -30,7 +30,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: VirtusLab/bazel-steward@da4afb73b57160cb1e9663d4b89bae0ec75a7a71 # v1.6.0
+      - uses: VirtusLab/bazel-steward@v1.6.0
+        # NB: Cannot use hash instead of version here due to
+        # https://github.com/VirtusLab/bazel-steward/issues/414.
         with:
           # github-personal-token: 'TODO'
           additional-args: "--update-all-prs"
