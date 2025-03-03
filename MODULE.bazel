@@ -16,7 +16,9 @@
 
 # Nota bene, any shared version numbers defined here should ONLY be
 # for Maven versions (of multiple artifacts), and NOT also used in bazel_dep()
-# mod versions; because of https://github.com/VirtusLab/bazel-steward/issues/404.
+# mod versions; because bazel-steward may update the variable but
+# not the bazel_dep, or vice versa, leading to inconsistencies (see
+# https://github.com/VirtusLab/bazel-steward/issues/404).
 
 RDF4J_VERSION = "5.1.2"
 
