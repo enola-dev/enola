@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2025 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Bazel Steward 🤵
+
+# https://virtuslab.github.io/bazel-steward/docs/installation.html
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 5 * * *" # runs every day at 5:30 am
+
+jobs:
+  bazel-steward:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: VirtusLab/bazel-steward@da4afb73b57160cb1e9663d4b89bae0ec75a7a71 # v1.6.0
+        with:
+          # github-personal-token: 'TODO'
+          additional-args: "--update-all-prs"
