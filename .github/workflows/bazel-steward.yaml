@@ -18,10 +18,11 @@ name: Bazel Steward 🤵
 
 # https://github.com/peter-evans/create-pull-request
 
+# See https://github.com/VirtusLab/bazel-steward/issues/420:
 permissions:
-  contents: write # OK!
-  # See https://github.com/VirtusLab/bazel-steward/issues/420:
-  # NOK: pull-requests: write
+  write-all
+  # TODO contents: write
+  # TODO pull-requests: write
 
 # https://virtuslab.github.io/bazel-steward/docs/installation.html
 
