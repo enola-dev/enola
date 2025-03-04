@@ -19,8 +19,9 @@ name: Bazel Steward 🤵
 # https://github.com/peter-evans/create-pull-request
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: write # OK!
+  # See https://github.com/VirtusLab/bazel-steward/issues/420:
+  # NOK: pull-requests: write
 
 # https://virtuslab.github.io/bazel-steward/docs/installation.html
 
@@ -32,6 +33,11 @@ on:
 jobs:
   bazel-steward:
     runs-on: ubuntu-latest
+    # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md
+    #   #restrictions-on-repository-forks
+    # https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
+    # if: github.event.pull_request.head.repo.full_name == github.repository
+    if: github.repository == 'enola-dev/enola' # Don't do this in forks
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,5 +46,5 @@ jobs:
         # NB: Cannot use hash instead of version here due to
         # https://github.com/VirtusLab/bazel-steward/issues/414.
         with:
-          # github-personal-token: 'TODO'
+          github-personal-token: ${{ secrets.BAZEL_STEWARD }}
           additional-args: "--update-all-prs"
