@@ -18,6 +18,22 @@
 
 # Dev Set-Up
 
+## DevContainers
+
+This project [aims to](https://github.com/enola-dev/enola/issues/180) eventually (only) use & support [Development Containers](https://containers.dev/). The current state is:
+
+* For Doc & Web, [not Java](https://github.com/salesforce/bazel-vscode-java/issues/114), with VSC-based:
+  * GitHub CodeSpaces works (?)
+  * Visual Studio Code with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) works on Ubuntu (?), but [not Fedora](https://github.com/microsoft/vscode-remote-release/issues/10681)
+* JetBrains Family
+  * On Fedora, use IntelliJ IDEA 2025.1 EAP instead of 2024.3.2.2, due to [IJPL-173883](https://youtrack.jetbrains.com/issue/IJPL-173883)
+  * TODO File IntelliJ bug re. _"sh: 1: /workspaces/enola/tools/devcontainer/install.bash: not found"_ problem?
+* https://devpod.sh:
+  * [Broken](https://github.com/enola-dev/enola/issues/1038) TODO Debug...
+  * [AppImage does not work on Fedora 41](https://github.com/loft-sh/devpod/issues/1410); but the Targz ([after](https://github.com/loft-sh/devpod/pull/1618) a `sudo dnf install libappindicator-gtk3`) at least starts
+  * TODO Try CLI?
+* There is some CI "coverage", which would detect major problems, but cannot catch problems such as those listed above.
+
 ## GitHub Codespaces
 
 **We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
