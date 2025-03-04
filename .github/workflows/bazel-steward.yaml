@@ -20,9 +20,8 @@ name: Bazel Steward 🤵
 
 # See https://github.com/VirtusLab/bazel-steward/issues/420:
 permissions:
-  write-all
-  # TODO contents: write
-  # TODO pull-requests: write
+  contents: write
+  pull-requests: write
 
 # https://virtuslab.github.io/bazel-steward/docs/installation.html
 
@@ -45,7 +44,9 @@ jobs:
           fetch-depth: 0
       - uses: VirtusLab/bazel-steward@v1.6.0
         # NB: Cannot use hash instead of version here due to
-        # https://github.com/VirtusLab/bazel-steward/issues/414.
+        # TODO https://github.com/VirtusLab/bazel-steward/issues/414.
         with:
+          # NB: https://github.com/VirtusLab/bazel-steward/issues/419
+          configuration-path: .bazel-steward.yaml
           github-personal-token: ${{ secrets.BAZEL_STEWARD }}
           additional-args: "--update-all-prs"
