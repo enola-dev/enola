@@ -16,6 +16,12 @@
 
 name: Bazel Steward 🤵
 
+# https://github.com/peter-evans/create-pull-request
+
+permissions:
+  contents: write
+  pull-requests: write
+
 # https://virtuslab.github.io/bazel-steward/docs/installation.html
 
 on:
