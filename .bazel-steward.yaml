@@ -19,6 +19,22 @@ maven:
   # https://github.com/enola-dev/enola/issues/254
   repository-name: enola_maven
 
+pull-requests:
+  - group-id: google-auto-service
+    dependencies: "com.google.auto.service:*"
+  - group-id: grpc
+    dependencies: "io.grpc:*"
+  - group-id: opentelemetry
+    dependencies: "io.opentelemetry:*"
+  - group-id: jackson
+    dependencies: "com.fasterxml.jackson*:*"
+  - group-id: junit5-jupiter
+    dependencies: "org.junit.jupiter:*"
+  - group-id: junit5-platform
+    dependencies: "org.junit.platform:*"
+  - group-id: maven
+    dependencies: "org.apache.maven.resolver:*"
+
 # https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/maven.html
 post-update-hooks:
   - kinds: maven
@@ -32,7 +48,7 @@ post-update-hooks:
     files-to-commit:
       - "**/*.bzl"
       - "**/BUILD"
-      - "**/BUILD.bazel"
+      # - "**/BUILD.bazel"
       - "MODULE.bazel"
       - "MODULE.bazel.lock"
       - "WORKSPACE"
