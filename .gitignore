@@ -61,3 +61,6 @@ tools/version/VERSION
 
 # LinkML
 .built
+
+# https://github.com/VirtusLab/bazel-steward/issues/424
+bazel-steward.jar
