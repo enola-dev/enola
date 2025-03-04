@@ -16,7 +16,9 @@
 
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 
-name: Build, Test & Deploy (CI)
+# Do NOT use special character in this "name", because of
+# https://github.com/bazel-contrib/setup-bazel/issues/72.
+name: Build Test Deploy CI
 
 on:
   push:
