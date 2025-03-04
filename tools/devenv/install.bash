@@ -19,9 +19,10 @@ set -euo pipefail
 
 # This script prepares the Development Environment container.
 
-tools/pre-commit/install.bash
+tools/go/install.bash
 
-# TODO After https://github.com/enola-dev/enola/pull/452, uncomment:
-# $(go env GOPATH)/bin/bazelisk run //tools/hello
-
-# TODO tools/git/install-hooks.bash
+# This is a simple initial test, without fully building Enola, just yet:
+# We're doing this here (a) to test, and (b) and more importantly to
+# "pre-load" ("warm up") the Bazel distribution in the container image
+# at ~/.cache/bazel.
+"$(go env GOPATH)"/bin/bazelisk run //tools/hello
