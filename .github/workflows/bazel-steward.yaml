@@ -44,8 +44,8 @@ jobs:
           go install github.com/bazelbuild/buildtools/buildifier@latest
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
 
-          git config user.name "Bazel Steward 🤵"
-          git config user.email "steward@enola.dev"
+          git config --global user.name "Bazel Steward 🤵"
+          git config --global user.email "steward@enola.dev"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
