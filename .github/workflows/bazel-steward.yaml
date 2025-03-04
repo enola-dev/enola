@@ -39,6 +39,8 @@ jobs:
     # if: github.event.pull_request.head.repo.full_name == github.repository
     if: github.repository == 'enola-dev/enola' # Don't do this in forks
     steps:
+      - name: Install Buildifier
+        run: go install github.com/bazelbuild/buildtools/buildifier@latest
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
