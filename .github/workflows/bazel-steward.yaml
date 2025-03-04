@@ -40,7 +40,9 @@ jobs:
     if: github.repository == 'enola-dev/enola' # Don't do this in forks
     steps:
       - name: Install Buildifier
-        run: go install github.com/bazelbuild/buildtools/buildifier@latest
+        run: |
+          go install github.com/bazelbuild/buildtools/buildifier@latest
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
