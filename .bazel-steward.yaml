@@ -44,14 +44,15 @@ post-update-hooks:
       - "maven_install.json"
     run-for: commit
 
-  - commands: "buildifier --lint=fix -r ."
-    files-to-commit:
-      - "**/*.bzl"
-      - "**/BUILD"
-      # - "**/BUILD.bazel"
-      - "MODULE.bazel"
-      - "MODULE.bazel.lock"
-      # - "WORKSPACE"
-      - "WORKSPACE.bazel"
-    run-for: pull-request
-    commit-message: "clean(deps): Buildifieraroo"
+  # TODO https://github.com/VirtusLab/bazel-steward/issues/426
+  # - commands: "buildifier --lint=fix -r ."
+  #   files-to-commit:
+  #     - "**/*.bzl"
+  #     - "**/BUILD"
+  #     # - "**/BUILD.bazel"
+  #     - "MODULE.bazel"
+  #     - "MODULE.bazel.lock"
+  #     # - "WORKSPACE"
+  #     - "WORKSPACE.bazel"
+  #   run-for: pull-request
+  #   commit-message: "clean(deps): Buildifieraroo"
