@@ -23,7 +23,7 @@ pull-requests:
   - group-id: google-auto-service
     dependencies: "com.google.auto.service:*"
   - group-id: grpc
-    dependencies: "io.grpc:*"
+    dependencies: "com.google.api.grpc:*"
   - group-id: opentelemetry
     dependencies: "io.opentelemetry:*"
   - group-id: jackson
@@ -32,7 +32,7 @@ pull-requests:
     dependencies: "org.junit.jupiter:*"
   - group-id: junit5-platform
     dependencies: "org.junit.platform:*"
-  - group-id: maven
+  - group-id: maven-resolver
     dependencies: "org.apache.maven.resolver:*"
 
 # https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/maven.html
@@ -51,7 +51,7 @@ post-update-hooks:
       # - "**/BUILD.bazel"
       - "MODULE.bazel"
       - "MODULE.bazel.lock"
-      - "WORKSPACE"
+      # - "WORKSPACE"
       - "WORKSPACE.bazel"
     run-for: pull-request
     commit-message: "clean(deps): Buildifieraroo"
