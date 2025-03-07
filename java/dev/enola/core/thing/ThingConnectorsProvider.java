@@ -17,8 +17,8 @@
  */
 package dev.enola.core.thing;
 
-import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.data.iri.template.URITemplateMatcherChain;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 import dev.enola.thing.repo.ThingProvider;

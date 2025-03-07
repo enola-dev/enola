@@ -35,6 +35,7 @@ java_library(
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/datatype",
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",

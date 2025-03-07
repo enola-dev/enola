@@ -25,10 +25,10 @@ import com.google.protobuf.Descriptors.EnumValueDescriptor;
 import com.google.protobuf.ProtocolMessageEnum;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.namespace.NamespaceConverterIdentity;
 import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.TypeRegistryWrapper;
 import dev.enola.core.thing.ThingConnectorsProvider;
+import dev.enola.data.iri.namespace.NamespaceConverterIdentity;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.metadata.ThingMetadataProvider;

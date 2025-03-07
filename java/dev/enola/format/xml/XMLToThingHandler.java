@@ -19,8 +19,8 @@ package dev.enola.format.xml;
 
 import com.google.common.base.Strings;
 
-import dev.enola.common.io.iri.namespace.NamespaceRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryBuilder;
+import dev.enola.data.iri.namespace.repo.NamespaceRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepositoryBuilder;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutablePredicatesObjects;
 import dev.enola.thing.impl.ImmutablePredicatesObjects;

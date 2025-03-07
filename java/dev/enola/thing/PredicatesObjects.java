@@ -21,7 +21,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.IRI;
+import dev.enola.data.iri.IRI;
 import dev.enola.thing.repo.ThingProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;

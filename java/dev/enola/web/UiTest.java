@@ -26,14 +26,14 @@ import static java.net.URI.create;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.core.EnolaServiceProvider;
 import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.proto.*;
 import dev.enola.data.ProviderFromIRI;
+import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;

@@ -22,8 +22,6 @@ java_library(
     srcs = glob(
         [
             "*.java",
-            "namespace/*.java",
-            "template/*.java",
         ],
         exclude = [
             "*Test.java",
@@ -33,11 +31,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
         "//java/dev/enola/common/context",
-        "//java/dev/enola/common/convert",
-        "//java/dev/enola/data",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:com_google_truth_truth",
@@ -50,8 +44,6 @@ junit_tests(
     srcs = glob(
         include = [
             "*Test.java",
-            "namespace/*Test.java",
-            "template/*Test.java",
         ],
         allow_empty = True,
     ),

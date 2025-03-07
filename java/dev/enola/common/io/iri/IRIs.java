@@ -30,7 +30,7 @@ import java.net.URISyntaxException;
 public final class IRIs {
     // see also class dev.enola.common.io.iri.URIs
 
-    // TODO This is crap; replace all this with the intended new IRI class!
+    // TODO Merge this class into URIs
 
     /**
      * Resolves an IRI reference against a base IRI and returns the resulting IRI as a String.

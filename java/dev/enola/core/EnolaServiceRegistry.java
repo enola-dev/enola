@@ -19,13 +19,13 @@ package dev.enola.core;
 
 import com.google.protobuf.Any;
 
-import dev.enola.common.io.iri.template.URITemplateMatcherChain;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.proto.*;
 import dev.enola.core.resource.ResourceEnolaService;
 import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
+import dev.enola.data.iri.template.URITemplateMatcherChain;
 import dev.enola.thing.Thing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingRepository;

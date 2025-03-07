@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.common.io.iri.namespace.NamespaceRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepository;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value.LangString;

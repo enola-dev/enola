@@ -24,8 +24,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
 import dev.enola.common.collect.MoreIterables;
-import dev.enola.common.io.iri.template.URITemplateMatcherChain;
-import dev.enola.common.io.iri.template.VariableMaps;
+import dev.enola.data.iri.template.URITemplateMatcherChain;
+import dev.enola.data.iri.template.VariableMaps;
 import dev.enola.thing.*;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingRepository;

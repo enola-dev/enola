@@ -20,7 +20,7 @@ package dev.enola.data.id;
 import com.google.errorprone.annotations.Immutable;
 
 import dev.enola.common.convert.ObjectToStringBiConverter;
-import dev.enola.common.io.iri.IDIRI;
+import dev.enola.data.iri.IDIRI;
 
 @Immutable
 public class TestIRI extends IDIRI<TestID> {

@@ -18,11 +18,11 @@
 package dev.enola.model.enola.meta.io;
 
 import dev.enola.common.context.TLC;
-import dev.enola.common.io.iri.namespace.EmptyNamespaceRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryBuilder;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.yamljson.YAML;
+import dev.enola.data.iri.namespace.repo.EmptyNamespaceRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepositoryBuilder;
 import dev.enola.model.enola.HasName;
 import dev.enola.model.enola.meta.*;
 import dev.enola.model.enola.meta.Class;

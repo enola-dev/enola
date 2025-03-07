@@ -19,7 +19,7 @@ package dev.enola.format.tika;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.io.iri.IRI;
+import dev.enola.data.iri.IRI;
 import dev.enola.thing.KIRI;
 
 import org.jspecify.annotations.Nullable;
