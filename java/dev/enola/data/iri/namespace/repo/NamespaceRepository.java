@@ -19,7 +19,6 @@ package dev.enola.data.iri.namespace.repo;
 
 import dev.enola.common.context.TLC;
 import dev.enola.data.Repository;
-import dev.enola.data.iri.namespace.Namespace;
 
 import java.util.Optional;
 

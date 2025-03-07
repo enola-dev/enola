@@ -17,7 +17,7 @@
  */
 package dev.enola.model.enola.meta.io;
 
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.model.enola.meta.Schema;
 import dev.enola.thing.repo.id.ThingByIdProvider;
 

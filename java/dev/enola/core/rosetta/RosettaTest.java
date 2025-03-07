@@ -36,7 +36,7 @@ import dev.enola.common.io.resource.*;
 import dev.enola.common.xml.XmlMediaType;
 import dev.enola.common.yamljson.JSON;
 import dev.enola.common.yamljson.YAML;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
 import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.rdf.io.RdfLoader;

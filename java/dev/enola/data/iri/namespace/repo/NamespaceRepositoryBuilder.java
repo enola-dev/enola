@@ -20,8 +20,6 @@ package dev.enola.data.iri.namespace.repo;
 import com.google.common.collect.ImmutableSortedMap;
 
 import dev.enola.data.RepositoryBuilder;
-import dev.enola.data.iri.namespace.ImmutableNamespace;
-import dev.enola.data.iri.namespace.Namespace;
 
 import java.util.Optional;
 

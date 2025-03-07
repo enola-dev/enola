@@ -24,7 +24,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
-import dev.enola.data.iri.namespace.ImmutableNamespace;
+import dev.enola.data.iri.namespace.repo.ImmutableNamespace;
 import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;

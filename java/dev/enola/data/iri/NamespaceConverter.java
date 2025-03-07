@@ -15,10 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.iri.namespace;
+package dev.enola.data.iri;
 
 import dev.enola.common.context.TLC;
-import dev.enola.data.iri.IRI;
 
 /**
  * NamespaceConverter converts "compact" <a

@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.iri.namespace;
+package dev.enola.data.iri.namespace.repo;
 
-public interface Namespace /* TODO extends Thing */ {
+public interface Namespace {
 
     /** Prefix. May be empty. */
     String prefix();

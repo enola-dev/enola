@@ -26,11 +26,11 @@ import java.net.URISyntaxException;
 /**
  * IRI (Internationalized Resource Identifier) at its core is basically just any object which can be
  * identified by a typically globally (or "clearly within a specific context") unique String; see
- * also {@link ID}.
+ * also ID.
  *
- * <p>Contrary to {@link URL} this is technically not per-se limited to "something which can be
+ * <p>Contrary to an URL (URI), this is technically not per-se limited to "something which can be
  * fetched". It has no explicit notion of a "protocol" (scheme) or "authority" (host) - nor path.
- * Thus, there is also no resolve() kind of method here (use {@link URI} or {@link URL} if that's
+ * Thus, there is also no resolve() kind of method here (use {@link URI} or Enola's URL if that's
  * needed). There is therefore also no normalize() sort of method here - because that again really
  * depends on the "protocol" (scheme).
  *
@@ -49,7 +49,7 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
     }
 
     public static IRI from(String namespaceIRI, String localName) {
-        return new HolderIRI(new CURIE_IRI(namespaceIRI, localName));
+        return new HolderIRI(new NamespacedIRI(namespaceIRI, localName));
     }
 
     // TODO Re-think if IRI from(java.net.URI uri) is really needed?
@@ -87,11 +87,7 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
         return new URI(toString());
     }
 
-    // TODO public abstract URL toURL();
-
-    // TODO public abstract String toCURIE();
-
-    // TODO public abstract Long toID();
-
-    // ? public abstract java.xml.QName toQName();
+    public final String toCURIE() {
+        return NamespaceConverter.CTX.toCURIE(this);
+    }
 }

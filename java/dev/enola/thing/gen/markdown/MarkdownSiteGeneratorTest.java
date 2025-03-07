@@ -33,7 +33,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
 import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepository;

@@ -25,7 +25,7 @@ import dev.enola.common.context.Context;
 import dev.enola.common.io.hashbrown.IntegrityValidatingDelegatingResource;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.*;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
 import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepository;
