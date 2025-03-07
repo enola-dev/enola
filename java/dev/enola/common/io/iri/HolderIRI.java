@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.iri;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -47,6 +48,11 @@ public class HolderIRI extends IRI {
             iri = uriIRI;
             return uriIRI.toURI();
         }
+    }
+
+    @Override
+    public void append(Appendable appendable) throws IOException {
+        iri.append(appendable);
     }
 
     @Override

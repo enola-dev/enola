@@ -17,6 +17,7 @@
  */
 package dev.enola.common.io.iri;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -26,6 +27,11 @@ import java.net.URISyntaxException;
 
     StringIRI(String iri) {
         this.iri = iri;
+    }
+
+    @Override
+    public void append(Appendable appendable) throws IOException {
+        appendable.append(toString());
     }
 
     @Override
