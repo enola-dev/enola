@@ -48,7 +48,7 @@ public class IRITest {
     @Test
     public void mapRemove1() {
         var map = new HashMap<IRI, String>();
-        var iri = IRI.from("https://enola.dev/tika/", "author");
+        IRI iri = IRI.from("https://enola.dev/tika/", "author");
         map.put(iri, "hi");
         assertThat(map.remove(iri)).isEqualTo("hi");
         assertThat(map).isEmpty();
@@ -57,10 +57,10 @@ public class IRITest {
     @Test
     public void mapRemove2() {
         var map = new HashMap<IRI, String>();
-        var iri1 = IRI.from("https://enola.dev/tika/", "author");
+        IRI iri1 = IRI.from("https://enola.dev/tika/", "author");
         map.put(iri1, "hi");
 
-        var iri2 = IRI.from("https://enola.dev/tika/", "author");
+        IRI iri2 = IRI.from("https://enola.dev/tika/", "author");
         assertThat(map.remove(iri2)).isEqualTo("hi");
         assertThat(map).isEmpty();
     }
