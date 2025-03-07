@@ -67,4 +67,8 @@ public abstract class Singleton<T> implements Supplier<T> {
         if (value == null) throw new IllegalStateException();
         value = null;
     }
+
+    public boolean isSet() {
+        return value != null;
+    }
 }
