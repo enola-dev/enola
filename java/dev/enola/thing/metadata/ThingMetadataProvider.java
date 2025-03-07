@@ -17,7 +17,6 @@
  */
 package dev.enola.thing.metadata;
 
-import dev.enola.common.io.iri.IRIs;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.metadata.Metadata;
 import dev.enola.common.io.metadata.MetadataProvider;
@@ -32,6 +31,7 @@ import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.function.Function;
 
@@ -114,7 +114,7 @@ public class ThingMetadataProvider implements MetadataProvider<Thing> {
         if (!curie.equals(fallbackIRI)) return curie;
 
         try {
-            var fallbackURI = IRIs.toURI(fallbackIRI);
+            var fallbackURI = new URI(fallbackIRI);
             var filename = URIs.getFilenameOrLastPathSegmentOrHost(fallbackURI);
             if (filename == null) return fallbackIRI;
 
