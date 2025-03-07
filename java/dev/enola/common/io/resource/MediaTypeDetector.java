@@ -149,7 +149,9 @@ class MediaTypeDetector {
         if (!isSpecial(detected)) return detected;
         var uriString = uri.toString();
         if (!uriString.contains(".") && byteSource.equals(ByteSource.empty())) return detected;
-        return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
+        if (MediaTypeProviders.SINGLETON.isSet())
+            return MediaTypeProviders.SINGLETON.get().detect(uri.toString(), byteSource, detected);
+        else return detected;
     }
 
     private MediaType fixMissingCharset(MediaType mediaType) {

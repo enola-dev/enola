@@ -49,7 +49,9 @@ public final class MediaTypes {
     @Deprecated // Remove and replace (inline) with implementation, for clarity
     public static MediaType normalize(MediaType mediaType) {
         if (MediaType.OCTET_STREAM.equals(mediaType)) return mediaType;
-        return MediaTypeProviders.SINGLETON.get().normalize(mediaType);
+        if (MediaTypeProviders.SINGLETON.isSet())
+            return MediaTypeProviders.SINGLETON.get().normalize(mediaType);
+        else return mediaType;
     }
 
     public static boolean normalizedNoParamsEquals(MediaType actual, MediaType... expecteds) {
