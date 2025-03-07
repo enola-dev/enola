@@ -27,9 +27,9 @@ import org.junit.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class IRITest {
+public class URLTest {
 
-    record TestIRI(
+    record TestURL(
             boolean validIRI,
             boolean validURI,
             String text,
@@ -41,9 +41,9 @@ public class IRITest {
             String fragment) {}
 
     // TODO Use e.g. a CSV instead of coding these out here?
-    TestIRI[] tests =
-            new TestIRI[] {
-                new TestIRI(
+    TestURL[] tests =
+            new TestURL[] {
+                new TestURL(
                         true,
                         true,
                         "https://enola.dev",
@@ -67,12 +67,12 @@ public class IRITest {
 
     @Test
     @Ignore // TODO
-    public void iri() throws URISyntaxException, IRI.ValidationException {
+    public void iri() throws URISyntaxException, URL.ValidationException {
         for (var test : tests) {
-            var iri = IRI.parseUnencoded(test.text);
+            var iri = URL.parseUnencoded(test.text);
             check2(iri, test);
 
-            var builder = IRI.builder();
+            var builder = URL.builder();
             builder.scheme(test.scheme);
             builder.authority(test.authority);
             builder.path(test.path);
@@ -82,14 +82,14 @@ public class IRITest {
         }
     }
 
-    void check2(IRI iri, TestIRI test) throws URISyntaxException, IRI.ValidationException {
+    void check2(URL iri, TestURL test) throws URISyntaxException, URL.ValidationException {
         check(iri, test);
 
         var rebuiltIRI = iri.newBuilder().build();
         check(rebuiltIRI, test);
     }
 
-    void check(IRI iri, TestIRI test) throws URISyntaxException, IRI.ValidationException {
+    void check(URL iri, TestURL test) throws URISyntaxException, URL.ValidationException {
         assertThat(iri.toString()).isEqualTo(test.text);
 
         assertThat(iri.scheme()).isEqualTo(test.scheme());
@@ -99,11 +99,11 @@ public class IRITest {
         assertThat(iri.fragment()).isEqualTo(test.fragment());
 
         if (test.validIRI) iri.validate();
-        else assertThrows(IRI.ValidationException.class, iri::validate);
+        else assertThrows(URL.ValidationException.class, iri::validate);
 
         if (test.validURI) {
             assertThat(iri.toURI()).isEqualTo(new URI(test.text));
-            assertThat(IRI.from(iri.toURI())).isEqualTo(iri);
+            assertThat(URL.from(iri.toURI())).isEqualTo(iri);
         }
     }
 }
