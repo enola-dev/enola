@@ -31,7 +31,6 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -335,14 +334,6 @@ public final class URIs {
         else p = path.substring(0, path.length() - 1).lastIndexOf('/');
 
         return p > -1 ? chopLastSlash(path.substring(p + 1)) : chopLastSlash(path);
-    }
-
-    public static URI create(URL url) {
-        try {
-            return url.toURI();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid Syntax: " + url, e);
-        }
     }
 
     /**

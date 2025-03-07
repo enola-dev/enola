@@ -22,8 +22,6 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.iri.URIs;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,12 +100,20 @@ public class UrlResource extends BaseResource implements ReadableResource {
     }
 
     public UrlResource(URL url) {
-        this(URIs.create(url), url, mediaType(url));
+        this(create(url), url, mediaType(url));
     }
 
     public UrlResource(URL url, MediaType mediaType) {
-        super(URIs.create(url), mediaType);
+        super(create(url), mediaType);
         this.url = url;
+    }
+
+    private static URI create(URL url) {
+        try {
+            return url.toURI();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid Syntax: " + url, e);
+        }
     }
 
     // See also OkHttpResource#mediaType(String url)
