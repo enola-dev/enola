@@ -32,7 +32,6 @@ java_library(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data/iri/namespace/repo",

@@ -45,7 +45,6 @@ junit_tests(
         ":iri",
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
-        "//java/dev/enola/common/io/iri",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
     ],
 )

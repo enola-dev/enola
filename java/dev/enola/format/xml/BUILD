@@ -33,7 +33,6 @@ java_library(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/xml",
         "//java/dev/enola/data/iri/namespace",
         "//java/dev/enola/data/iri/namespace/repo",

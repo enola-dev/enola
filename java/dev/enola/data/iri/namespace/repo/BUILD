@@ -27,11 +27,10 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/context",
         "//java/dev/enola/data",
         "//java/dev/enola/data/iri",
         "//java/dev/enola/data/iri/namespace",
-        "//java/dev/enola/common/context",
-        # "//java/dev/enola/common/convert",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
@@ -45,10 +44,6 @@ junit_tests(
     ]),
     deps = [
         ":repo",
-        "//java/dev/enola/common",
-        # "//java/dev/enola/common/convert",
-        "//java/dev/enola/common/io/iri",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "//java/dev/enola/data/iri",
     ],
 )
