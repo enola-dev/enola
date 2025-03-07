@@ -18,6 +18,7 @@
 package dev.enola.common.io.iri.namespace;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.io.iri.IRI;
 
 /**
  * NamespaceConverter converts "compact" <a
@@ -33,7 +34,7 @@ public interface NamespaceConverter {
 
     String toCURIE(Object iri);
 
-    String toIRI(String curie);
+    IRI toIRI(String curie);
 
     NamespaceConverter CTX =
             new NamespaceConverter() {
@@ -43,7 +44,7 @@ public interface NamespaceConverter {
                 }
 
                 @Override
-                public String toIRI(String curie) {
+                public IRI toIRI(String curie) {
                     return TLC.get(NamespaceConverter.class).toIRI(curie);
                 }
             };

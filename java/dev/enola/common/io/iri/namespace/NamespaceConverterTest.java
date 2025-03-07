@@ -19,6 +19,8 @@ package dev.enola.common.io.iri.namespace;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.io.iri.IRI;
+
 import org.junit.Test;
 
 public class NamespaceConverterTest {
@@ -27,7 +29,7 @@ public class NamespaceConverterTest {
     public void schemaOrgName() {
         var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var convert = new NamespaceConverterWithRepository(standard);
-        assertThat(convert.toIRI("schema:name")).isEqualTo("https://schema.org/name");
+        assertThat(convert.toIRI("schema:name")).isEqualTo(IRI.from("https://schema.org/name"));
         assertThat(convert.toCURIE("https://schema.org/name")).isEqualTo("schema:name");
     }
 
@@ -35,7 +37,7 @@ public class NamespaceConverterTest {
     public void empty() {
         var empty = new NamespaceRepositoryBuilder().store("", "https://schema.org/").build();
         var convert = new NamespaceConverterWithRepository(empty);
-        assertThat(convert.toIRI(":name")).isEqualTo("https://schema.org/name");
+        assertThat(convert.toIRI(":name")).isEqualTo(IRI.from("https://schema.org/name"));
         assertThat(convert.toCURIE("https://schema.org/name")).isEqualTo(":name");
     }
 
@@ -43,7 +45,7 @@ public class NamespaceConverterTest {
     public void unknown() {
         var emptyRepository = new NamespaceRepositoryBuilder().build();
         var convert = new NamespaceConverterWithRepository(emptyRepository);
-        assertThat(convert.toIRI(":name")).isEqualTo(":name");
+        assertThat(convert.toIRI(":name")).isEqualTo(IRI.from(":name"));
         assertThat(convert.toCURIE("https://schema.org/name")).isEqualTo("https://schema.org/name");
     }
 }

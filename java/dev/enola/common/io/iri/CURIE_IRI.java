@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.iri.namespace;
+package dev.enola.common.io.iri;
+
+import static java.util.Objects.requireNonNull;
 
 import com.google.common.base.Objects;
-
-import dev.enola.common.io.iri.IRI;
 
 import org.jspecify.annotations.Nullable;
 
@@ -34,7 +34,7 @@ import javax.xml.namespace.QName;
  *
  * <p>See also {@link QName}.
  */
-/* non-public! */ final class CURIE_IRI extends IRI {
+/* non-public! */ final /*TODO value*/ class CURIE_IRI extends IRI {
 
     // NO! private final String prefix;
     private final String namespaceIRI;
@@ -44,8 +44,8 @@ import javax.xml.namespace.QName;
     private transient @Nullable String iri;
 
     CURIE_IRI(String namespaceIRI, String localName) {
-        this.namespaceIRI = namespaceIRI;
-        this.localName = localName;
+        this.namespaceIRI = requireNonNull(namespaceIRI, "namespaceIRI");
+        this.localName = requireNonNull(localName, "localName");
     }
 
     @Override
@@ -68,10 +68,12 @@ import javax.xml.namespace.QName;
 
     @Override
     public boolean equals(Object other) {
+        if (this == other) return true;
         if (other instanceof CURIE_IRI otherCurieIRI)
             return Objects.equal(namespaceIRI, otherCurieIRI.namespaceIRI)
                     && Objects.equal(localName, otherCurieIRI.localName);
-        else return false;
+        if (other instanceof IRI otherIRI) return this.toString().equals(otherIRI.toString());
+        return false;
     }
 
     @Override
