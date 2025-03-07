@@ -22,8 +22,6 @@ import dev.enola.data.ProviderFromIRI;
 import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Resource Provider.
@@ -34,8 +32,6 @@ import java.net.URL;
  * @see dev.enola.common.io.resource
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
-
-    // TODO Rename all parameters from iri or uri to url - because that's what these are!
 
     // TODO Separate @NonNull SPI provider, instead of changing all @Nullable Resource to
     // Optional<Resource>... or, better, throw exception for unknown schema
@@ -65,31 +61,5 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
     default @Nullable WritableResource getWritableResource(String uri) {
         return get(uri);
-    }
-
-    // -------------------------------------------
-
-    default @Nullable ReadableResource getReadableResource(URL url) {
-        try {
-            return getReadableResource(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
-        }
-    }
-
-    default @Nullable WritableResource getWritableResource(URL url) {
-        try {
-            return getWritableResource(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
-        }
-    }
-
-    default @Nullable Resource getResource(URL url) {
-        try {
-            return getResource(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("URL cannot be converted to URI: " + url, e);
-        }
     }
 }
