@@ -72,6 +72,8 @@ junit_tests(
         "//java/dev/enola/common/io/metadata",
         "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/common/xml",
+        "//java/dev/enola/data/iri/namespace",
+        "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",
         "//java/dev/enola/rdf/io",

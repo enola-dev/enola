@@ -17,9 +17,9 @@
  */
 package dev.enola.thing.namespace;
 
-import dev.enola.common.io.iri.namespace.ImmutableNamespace;
-import dev.enola.common.io.iri.namespace.Namespace;
-import dev.enola.common.io.iri.namespace.NamespaceRepository;
+import dev.enola.data.iri.namespace.ImmutableNamespace;
+import dev.enola.data.iri.namespace.Namespace;
+import dev.enola.data.iri.namespace.repo.NamespaceRepository;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.repo.ThingProvider;
 
@@ -33,7 +33,7 @@ import java.util.Optional;
  * ThingProvider}.
  *
  * <p>This is (much!) slower than the {@link
- * dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults#INSTANCE}, and should only
+ * dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults#INSTANCE}, and should only
  * ever be used indirectly through {@link
  * dev.enola.common.io.iri.namespace.CachingNamespaceRepository}.
  */

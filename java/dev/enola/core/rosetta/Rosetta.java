@@ -22,7 +22,6 @@ import com.google.protobuf.Descriptors.Descriptor;
 
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
@@ -33,6 +32,7 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
+import dev.enola.data.iri.namespace.NamespaceConverter;
 import dev.enola.format.tika.rdf.TikaResourceIntoRdfResourceConverter;
 import dev.enola.format.xml.XmlResourceConverter;
 import dev.enola.rdf.io.RdfResourceConverter;

@@ -20,7 +20,7 @@ package dev.enola.thing;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
-import dev.enola.common.io.iri.IRI;
+import dev.enola.data.iri.IRI;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 

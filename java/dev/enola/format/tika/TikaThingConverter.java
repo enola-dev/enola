@@ -23,13 +23,13 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.StringBuilderWriter;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.io.iri.IRI;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.iri.namespace.NamespaceConverter;
-import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.data.iri.IRI;
+import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;

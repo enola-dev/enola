@@ -19,12 +19,12 @@ package dev.enola.common.context.testlib;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.io.iri.namespace.NamespaceConverter;
-import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
-import dev.enola.common.io.iri.namespace.NamespaceRepositoryEnolaDefaults;
 import dev.enola.common.io.metadata.MetadataProvider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
+import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
 import dev.enola.thing.metadata.ThingMetadataProvider;
