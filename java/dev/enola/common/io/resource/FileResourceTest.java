@@ -41,6 +41,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -90,9 +91,9 @@ public class FileResourceTest {
     @Test
     @Ignore // TODO Support jar: scheme in FileResource, for writeable ZIPs!
     // For now, ResourceProvidersTest#testJarScheme() makes sure it works via ClasspathResource
-    public void jarScheme() throws IOException {
-        var url = Resources.getResource("test-hello-ascii.txt");
-        var r = new FileResource.Provider().getResource(url);
+    public void jarScheme() throws IOException, URISyntaxException {
+        var uri = Resources.getResource("test-hello-ascii.txt").toURI();
+        var r = new FileResource.Provider().getResource(uri);
         assertThat(r).isNotNull();
         assertThat(r.charSource().read()).isEqualTo("hello, world");
     }

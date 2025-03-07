@@ -17,17 +17,40 @@
  */
 package dev.enola.common.io.resource;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static dev.enola.common.context.testlib.SingletonRule.$;
+
+import com.google.common.io.Resources;
+
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
+import dev.enola.common.io.mediatype.YamlMediaType;
+
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public class UrlResourceTest {
+
+    public @Rule SingletonRule r =
+            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     // NB: ClasspathResourceTest (for ClasspathResource, which extends UrlResource) covers basics.
 
     // TODO Implement, using
     // https://docs.oracle.com/en/java/javase/17/docs/api/jdk.httpserver/module-summary.html ?
 
-    // Test that an URL can return MediaType HTML without have a .htm file extension
+    // TODO Test that an URL can return MediaType HTML without have a .htm file extension
 
     @Test
-    public void testTODO() {}
+    public void testJarScheme() throws IOException, URISyntaxException {
+        var url = Resources.getResource("test-emoji.txt").toURI();
+        var rp = new ResourceProviders(new UrlResource.Provider(UrlResource.Scheme.jar));
+        var emoji = rp.getReadableResource(url).charSource().read();
+        assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
+    }
 }
