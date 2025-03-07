@@ -34,16 +34,17 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * IRI is <a href="https://url.spec.whatwg.org">WHATWG URL Living Standard</a> inspired
+ * URL is <a href="https://url.spec.whatwg.org">WHATWG URL Living Standard</a> inspired
  * implementation. That standard is the de-facto successor of RFC 3987 & RFC 3986, which were the
  * successors that obsoleted the original RFCs 2396 (with more minor RFC RF 2732 in between them).
  *
- * <p>This class is so-named primarily to avoid confusion with {@link java.net.URL} and {@link
- * java.net.URI} for humans, and to avoid ugly FQNs in code mixing both. (TODO Consider instead
- * naming it e.g. "Url", with lower-case?!)
+ * <p>This class is intentionally named the same as {@link java.net.URL}, because that class anyway
+ * should never ever be used anymore in modern Java (<a
+ * href="https://errorprone.info/bugpattern/URLEqualsHashCode">because its equals() and hashCode()
+ * methods use blocking outgoing internet connections</a>).
  *
- * <p>This class strictly speaking represents an <i>IRI <b>Reference</b></i>, not just an
- * <i>IRI</i>; meaning that it can either an absolute with a <code>scheme:</code>, or relative.
+ * <p>This class strictly speaking represents an <i>URL <b>Reference</b></i>, not just an
+ * <i>URL</i>; meaning that it can either an absolute with a <code>scheme:</code>, or relative.
  *
  * <p>This class is logically (but not technically, for efficiency) immutable. It has a {@link
  * Builder} to programmatically configure instances of it. You can also just construct it from a
@@ -63,12 +64,12 @@ import java.util.Objects;
  * com.google.common.net.InternetDomainName} and {@link com.google.common.net.InetAddresses} may be
  * useful; they are used by {@link #validate()}.
  *
- * <p>This class never ever by itself changes an IRI you construct based on a String input.
+ * <p>This class never ever by itself changes an URL you construct based on a String input.
  *
  * <p>This class can {@link #normalize()}! But {@link #equals(Object)} does <b>*NOT*</b> normalize!
  * (This makes it suitable for use in RDF-like applications; see e.g. <a
  * href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">Wikipedia</a> for background
- * reading.) You <i>can</i> use {@link #equalsNormalized(IRI)}, if you must.
+ * reading.) You <i>can</i> use {@link #equalsNormalized(URL)}, if you must.
  *
  * <p>This class does not yet directly support Windows Drive Letter scheme; you're welcome to add
  * support for that, if you need it.
@@ -103,7 +104,8 @@ import java.util.Objects;
  * @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a> originally wrote this class
  *     for <a href="https://enola.dev">Enola.dev</a>.
  */
-public final class IRI implements Comparable<IRI> {
+public final class URL implements Comparable<URL> {
+    // TODO extends IRI
 
     // TODO If you are reading this, please help us to make this class stop lying about itself? ;-)
     // It currently doesn't really do what's described above - yet... but you can help to make it!
@@ -118,7 +120,7 @@ public final class IRI implements Comparable<IRI> {
     // - https://github.com/lemonlabsuk/scala-uri
     // - others?
 
-    // TODO Add more shit to IRITest and make it pass
+    // TODO Add more shit to URLTest and make it pass
 
     // TODO Consider using CharSequence instead of String, for substring performance?
 
@@ -139,16 +141,16 @@ public final class IRI implements Comparable<IRI> {
     // TODO Get listed on https://url.spec.whatwg.org ?
 
     // TODO What's the right naming - encoded, or escaped?
-    public static IRI parseUnencoded(String unencoded) {
-        var iri = new IRI();
-        iri.string = Objects.requireNonNull(unencoded);
-        return iri;
+    public static URL parseUnencoded(String unencoded) {
+        var url = new URL();
+        url.string = Objects.requireNonNull(unencoded);
+        return url;
     }
 
-    // TODO public static IRI fromEscaped(String unencoded, Charset cs) {
+    // TODO public static URL fromEscaped(String unencoded, Charset cs) {
     // see e.g. https://github.com/lemonlabsuk/scala-uri?tab=readme-ov-file#character-sets why CS
 
-    public static IRI from(URI uri) {
+    public static URL from(URI uri) {
         // TODO Use getRawXYZ() here, or non-raw?!
         return builder()
                 .scheme(uri.getScheme())
@@ -163,9 +165,9 @@ public final class IRI implements Comparable<IRI> {
 
     /**
      * Returns a new {@link Builder}. This method exists purely for convenience for folks used to
-     * typing <code>IRI#builder()</code> (e.g. as is popular in generated <a
+     * typing <code>URL#builder()</code> (e.g. as is popular in generated <a
      * href="https://protobuf.dev>Protocol Buffers</a> and similar code) instead of <code>
-     * new IRI.Builder()</code> - they are equivalent.
+     * new URL.Builder()</code> - they are equivalent.
      */
     public static Builder builder() {
         return new Builder();
@@ -181,16 +183,16 @@ public final class IRI implements Comparable<IRI> {
         // TODO private @Nullable Multimap<String, String> queryMap;
         private @Nullable String fragment;
 
-        public IRI build() {
-            var iri = new IRI();
-            iri.scheme = scheme;
-            iri.authority = authority;
-            iri.path = path;
-            // TODO iri.paths = paths;
-            iri.query = query;
-            // TODO iri.queryMap = queryMap;
-            iri.fragment = fragment;
-            return iri;
+        public URL build() {
+            var url = new URL();
+            url.scheme = scheme;
+            url.authority = authority;
+            url.path = path;
+            // TODO url.paths = paths;
+            url.query = query;
+            // TODO url.queryMap = queryMap;
+            url.fragment = fragment;
+            return url;
         }
 
         @CanIgnoreReturnValue
@@ -235,8 +237,7 @@ public final class IRI implements Comparable<IRI> {
     private @Nullable String string;
 
     public Builder newBuilder() {
-        var builder = new Builder();
-        return builder;
+        return new Builder();
     }
 
     public String scheme() {
@@ -287,22 +288,22 @@ public final class IRI implements Comparable<IRI> {
         return null; // TODO
     }
 
-    public IRI base() {
+    public URL base() {
         return null; // TODO as in URIs.base()
     }
 
     /** Resolve, e.g. as in {@link URI#resolve(URI)}. */
-    public IRI resolve(IRI iri) {
+    public URL resolve(URL url) {
         return null; // TODO
     }
 
     /** Resolve, e.g. as in {@link URI#resolve(URI)}. */
-    public IRI resolve(String string) {
-        return resolve(IRI.parseUnencoded(string));
+    public URL resolve(String string) {
+        return resolve(URL.parseUnencoded(string));
     }
 
     /** Relativize, e.g. as in {@link URI#relativize(URI)}. */
-    public IRI relativize(IRI iri) {
+    public URL relativize(URL url) {
         return null; // TODO
     }
 
@@ -320,7 +321,7 @@ public final class IRI implements Comparable<IRI> {
         return new URI(toString());
     }
 
-    public IRI normalize() {
+    public URL normalize() {
         // TODO Keep result in a lazily initialized field? But... memory?!
         var builder = newBuilder();
         builder.scheme(scheme().toLowerCase(Locale.ROOT));
@@ -330,20 +331,19 @@ public final class IRI implements Comparable<IRI> {
     }
 
     /** Equality check, with {@link #normalize()}-ation. */
-    public boolean equalsNormalized(IRI o) {
+    public boolean equalsNormalized(URL o) {
         return this.normalize().toString().equals(o.normalize().toString());
     }
 
     /**
      * Equality check, based on {@link #toString()}.
      *
-     * <p>This does <b>NOT</b> {@link #normalize()}! See {@link #equalsNormalized(IRI)}.
+     * <p>This does <b>NOT</b> {@link #normalize()}! See {@link #equalsNormalized(URL)}.
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        IRI iri = (IRI) o;
         return toString().equals(o.toString());
     }
 
@@ -356,7 +356,7 @@ public final class IRI implements Comparable<IRI> {
      * Comparison, based purely on {@link #toString()}. This does <b>NOT</b> {@link #normalize()}!
      */
     @Override
-    public int compareTo(IRI o) {
+    public int compareTo(URL o) {
         return toString().compareTo(o.toString());
     }
 
@@ -392,7 +392,7 @@ public final class IRI implements Comparable<IRI> {
                             + host);
     }
 
-    private IRI() {}
+    private URL() {}
 
     private static final class CharAscii extends CharMatcher {
 
@@ -408,29 +408,29 @@ public final class IRI implements Comparable<IRI> {
     public static class ValidationException extends Exception {
         // This was originally loosely inspired by java.net.URISyntaxException
 
-        private final IRI iri;
+        private final URL url;
 
-        private ValidationException(IRI iri, String reason) {
+        private ValidationException(URL url, String reason) {
             super(reason);
-            this.iri = iri;
+            this.url = url;
         }
 
-        public ValidationException(IRI iri, String reason, Exception e) {
+        public ValidationException(URL url, String reason, Exception e) {
             super(reason, e);
-            this.iri = iri;
+            this.url = url;
         }
 
         public String getReason() {
             return super.getMessage();
         }
 
-        public IRI getIRI() {
-            return iri;
+        public URL getURL() {
+            return url;
         }
 
         @Override
         public String getMessage() {
-            return getReason() + ": " + getIRI();
+            return getReason() + ": " + getURL();
         }
     }
 }
