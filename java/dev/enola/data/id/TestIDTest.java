@@ -25,7 +25,7 @@ import org.junit.Test;
 
 public class TestIDTest {
 
-    IdConverter<TestID> c = new TestID.Converter();
+    IdConverter<TestID> c = TestID.CONVERTER;
     static TestID testId = new TestID(UnsignedLong.MAX_VALUE.longValue(), "test");
     static String testIdString = "3w5e11264sgsf-test";
 

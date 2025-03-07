@@ -17,18 +17,22 @@
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-# TODO Replace **/*.java with split BUILD
-
 java_library(
     name = "io",
     srcs = glob(
-        ["**/*.java"],
+        [
+            "*.java",
+            "mediatype/*.java",
+            "hashbrown/*.java",
+            "resource/**/*.java",
+        ],
         exclude = ["**/*Test.java"],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data",
@@ -36,7 +40,6 @@ java_library(
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multihash",
         "@enola_maven//:com_github_multiformats_java_multibase",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
@@ -50,12 +53,17 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob([
+        "mediatype/*Test.java",
+        "resource/**/*Test.java",
+        "hashbrown/**/*Test.java",
+    ]),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     deps = [
         ":io",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/protobuf",
         "//test",
         "@enola_maven//:com_github_ipld_java_cid",

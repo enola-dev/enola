@@ -17,44 +17,38 @@
  */
 package dev.enola.common.io.iri;
 
-import static java.util.Objects.requireNonNull;
+import org.jspecify.annotations.Nullable;
 
-import java.io.IOException;
+public abstract class StringableIRI extends IRI {
 
-/* non-public! */ final /*TODO value*/ class StringIRI extends IRI {
-
-    private final String iri;
-
-    StringIRI(String iri) {
-        this.iri = requireNonNull(iri);
-    }
+    @SuppressWarnings("Immutable") // We (hopefully) know what we're doing!
+    private transient @Nullable String iri;
 
     @Override
-    public void append(Appendable appendable) throws IOException {
-        appendable.append(toString());
-    }
-
-    @Override
-    public String toString() {
+    public final String toString() {
+        if (iri == null) iri = createStringIRI();
         return iri;
     }
 
-    @Override
-    public int hashCode() {
-        return iri.hashCode();
-    }
+    protected abstract String createStringIRI();
 
     @Override
-    public boolean equals(Object other) {
+    public final boolean equals(Object other) {
         if (this == other) return true;
-        if (other instanceof StringIRI otherStringIRI) return iri.equals(otherStringIRI.iri);
+        if (isEqualTo(other)) return true;
         if (other instanceof IRI otherIRI) return this.toString().equals(otherIRI.toString());
         return false;
     }
 
+    protected abstract boolean isEqualTo(Object other);
+
     @Override
-    public int compareTo(IRI other) {
-        if (other instanceof StringIRI otherStringIRI) return iri.compareTo(otherStringIRI.iri);
-        else return iri.compareTo(other.toString());
+    public final int compareTo(IRI other) {
+        if (isComparableTo(other)) return compare(other);
+        else return this.toString().compareTo(other.toString());
     }
+
+    protected abstract boolean isComparableTo(Object other);
+
+    protected abstract int compare(Object other);
 }

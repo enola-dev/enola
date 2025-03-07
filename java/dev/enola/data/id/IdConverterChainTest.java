@@ -26,7 +26,7 @@ import java.net.URI;
 public class IdConverterChainTest {
 
     IdConverterChain chain =
-            new IdConverterChain(new TestID.Converter(), IdConverters.URI, IdConverters.STRING);
+            new IdConverterChain(TestID.CONVERTER, IdConverters.URI, IdConverters.STRING);
 
     @Test
     public void testID() {
