@@ -196,6 +196,8 @@ public final class KIRI {
         public static final String PROPERTY = NS + "Property";
 
         public static final String LANGSTRING = NS + "langString";
+        public static final String LANGUAGE = NS + "language";
+        public static final String DIRECTION = NS + "direction";
 
         /** 📃 */
         public static final String HTML = NS + "HTML";
