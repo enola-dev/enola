@@ -29,6 +29,8 @@ import java.net.URL;
 /** {@link ReadableResource} on Java Classpath; e.g. <tt>classpath:/hello.txt</tt>. */
 public class ClasspathResource extends UrlResource {
 
+    // TODO Replace with ClassLoaderResource which uses ClassLoader.getResourceAsStream(String name)
+
     // TODO Security: This *MUST* have a mandatory "allowed packages" sort of argument!
 
     public static class Provider implements ResourceProvider {
