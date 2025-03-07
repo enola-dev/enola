@@ -27,7 +27,6 @@ java_library(
     deps = [
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/metadata",
         "//java/dev/enola/data/iri/namespace",
         "//java/dev/enola/data/iri/namespace/repo",

@@ -27,11 +27,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "@enola_maven//:com_github_java_json_tools_uri_template",
         "//java/dev/enola/common",
         "//java/dev/enola/data/iri",
-        "//java/dev/enola/common/context",
-        # "//java/dev/enola/common/convert",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
@@ -43,10 +41,8 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":template",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
         "//java/dev/enola/common",
-        # "//java/dev/enola/common/convert",
-        "//java/dev/enola/common/io/iri",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
     ],
 )
