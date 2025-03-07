@@ -17,6 +17,8 @@
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
+# TODO Replace **/*.java with split BUILD
+
 java_library(
     name = "io",
     srcs = glob(
