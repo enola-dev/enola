@@ -17,16 +17,18 @@
  */
 package dev.enola.common.io.iri;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/* non-public! */ final class URI_IRI extends IRI {
+/* non-public! */ final /*TODO value*/ class URI_IRI extends IRI {
 
     private final URI uri;
 
     URI_IRI(URI uri) {
-        this.uri = uri;
+        this.uri = requireNonNull(uri);
     }
 
     @Override
@@ -46,12 +48,9 @@ import java.net.URISyntaxException;
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other instanceof URI_IRI otherURI_IRI) {
-            return uri.equals(otherURI_IRI.uri);
-        }
+        if (this == other) return true;
+        if (other instanceof URI_IRI otherURI_IRI) return uri.equals(otherURI_IRI.uri);
+        if (other instanceof IRI otherIRI) return this.toString().equals(otherIRI.toString());
         return false;
     }
 

@@ -19,14 +19,19 @@ package dev.enola.format.tika;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.io.iri.IRI;
 import dev.enola.thing.KIRI;
 
 import org.jspecify.annotations.Nullable;
 
-record CleanMetadata(@Nullable String iri, String... removeNames) {
+record CleanMetadata(@Nullable IRI iri, String... removeNames) {
 
     CleanMetadata() {
-        this(null);
+        this((IRI) null);
+    }
+
+    CleanMetadata(String iri, String... removeName) {
+        this(IRI.from(iri), removeName);
     }
 
     // TODO Read this from a configuration file (in TTL) loaded into the Store

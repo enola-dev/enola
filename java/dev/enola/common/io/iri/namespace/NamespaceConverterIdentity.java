@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.iri.namespace;
 
+import dev.enola.common.io.iri.IRI;
+
 public final class NamespaceConverterIdentity implements NamespaceConverter {
 
     @Override
@@ -25,7 +27,7 @@ public final class NamespaceConverterIdentity implements NamespaceConverter {
     }
 
     @Override
-    public String toIRI(String curie) {
-        return curie;
+    public IRI toIRI(String curie) {
+        return IRI.from(curie);
     }
 }

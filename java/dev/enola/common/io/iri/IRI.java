@@ -29,8 +29,10 @@ import java.net.URISyntaxException;
  * also {@link ID}.
  *
  * <p>Contrary to {@link URL} this is technically not per-se limited to "something which can be
- * fetched". It has no explicit notion of a "protocol" (scheme) or "authority" (host) or path. There
- * is nothing inherent to "normalize".
+ * fetched". It has no explicit notion of a "protocol" (scheme) or "authority" (host) - nor path.
+ * Thus, there is also no resolve() kind of method here (use {@link URI} or {@link URL} if that's
+ * needed). There is therefore also no normalize() sort of method here - because that again really
+ * depends on the "protocol" (scheme).
  *
  * <p>The "internationalized" aspect here specifically refers to the fact that what {@link
  * #toString()} returns is not "encoded" in any way; it's literally just some String, which may well
@@ -40,7 +42,19 @@ import java.net.URISyntaxException;
  */
 // TODO @ID
 @Immutable
-public abstract class IRI implements Comparable<IRI> {
+public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
+
+    public static IRI from(String iri) {
+        return new HolderIRI(new StringIRI(iri));
+    }
+
+    public static IRI from(String namespaceIRI, String localName) {
+        return new HolderIRI(new CURIE_IRI(namespaceIRI, localName));
+    }
+
+    public static IRI from(java.net.URI uri) {
+        return new HolderIRI(new URI_IRI(uri));
+    }
 
     /*
         // TODO Globally rethink binary bytes representations...

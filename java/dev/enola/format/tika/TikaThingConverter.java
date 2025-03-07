@@ -23,6 +23,7 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.StringBuilderWriter;
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.IRI;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.iri.namespace.NamespaceConverter;
 import dev.enola.common.io.iri.namespace.NamespaceConverterWithRepository;
@@ -150,8 +151,9 @@ public class TikaThingConverter implements UriIntoThingConverter {
     // TODO This should use Integer instead of String when appropriate, e.g. for tiff:ImageWidth.
     // TODO This needs to be smarter, but can't Tika do this itself already?!
     // - Transform https://enola.dev/tika/Exif into exif: (some are already, but many are not)
+    @SuppressWarnings("Immutable")
     private void convertMetadata(Metadata metadata, Thing.Builder<?> thing) {
-        final var properties = new HashMap<String, Object>();
+        final var properties = new HashMap<IRI, Object>();
         final var names = new ArrayList<>(List.of(metadata.names()));
         while (!names.isEmpty()) {
             final var name = names.remove(0);
@@ -170,19 +172,20 @@ public class TikaThingConverter implements UriIntoThingConverter {
                 var removeNames = List.of(toClean.removeNames());
                 for (var removeName : removeNames) {
                     names.remove(removeName);
-                    properties.remove(tikaMetadataNameToEnolaIRI(removeName));
+                    var removeIRI = tikaMetadataNameToEnolaIRI(removeName);
+                    properties.remove(removeIRI);
                 }
 
             } else {
                 var iri = namespaceConverter.toIRI(name);
-                if (!iri.equals(name)) properties.put(iri, value);
+                if (!iri.equals(IRI.from(name))) properties.put(iri, value);
                 else properties.put(tikaMetadataNameToEnolaIRI(name), value);
             }
         }
         properties.forEach(thing::set);
     }
 
-    private String tikaMetadataNameToEnolaIRI(String name) {
-        return "https://enola.dev/tika/" + URIs.encode(name);
+    private IRI tikaMetadataNameToEnolaIRI(String name) {
+        return IRI.from("https://enola.dev/tika/", URIs.encode(name));
     }
 }

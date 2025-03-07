@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.iri.namespace;
 
+import dev.enola.common.io.iri.IRI;
+
 public class NamespaceConverterWithRepository implements NamespaceConverter {
 
     private final NamespaceRepository repo;
@@ -38,16 +40,16 @@ public class NamespaceConverterWithRepository implements NamespaceConverter {
     }
 
     @Override
-    public String toIRI(String curie) {
+    public IRI toIRI(String curie) {
         var p = curie.indexOf(':');
-        if (p == -1) return curie;
+        if (p == -1) return IRI.from(curie);
 
         var iriSchema = curie.substring(0, p);
 
         var optNamepaceBaseIRI = repo.getIRI(iriSchema);
-        if (optNamepaceBaseIRI.isEmpty()) return curie;
+        if (optNamepaceBaseIRI.isEmpty()) return IRI.from(curie);
 
         var schemaSpecificPart = curie.substring(p + 1);
-        return optNamepaceBaseIRI.get() + schemaSpecificPart;
+        return IRI.from(optNamepaceBaseIRI.get(), schemaSpecificPart);
     }
 }

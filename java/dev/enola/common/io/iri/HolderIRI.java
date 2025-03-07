@@ -17,26 +17,21 @@
  */
 package dev.enola.common.io.iri;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class HolderIRI extends IRI {
+/* non-public! */
+/*TODO value*/ class HolderIRI extends IRI {
 
     // We know what we're doing (hopefully)
     @SuppressWarnings("Immutable")
     private IRI iri;
 
-    private HolderIRI(IRI iri) {
-        this.iri = iri;
-    }
-
-    public static IRI from(String iriString) {
-        return new HolderIRI(new StringIRI(iriString));
-    }
-
-    public static IRI from(java.net.URI uri) {
-        return new HolderIRI(new URI_IRI(uri));
+    HolderIRI(IRI iri) {
+        this.iri = requireNonNull(iri);
     }
 
     @Override
@@ -66,9 +61,11 @@ public class HolderIRI extends IRI {
     }
 
     @Override
-    @SuppressWarnings("EqualsDoesntCheckParameterClass")
     public boolean equals(Object other) {
-        return iri.equals(other);
+        if (this == other) return true;
+        if (other instanceof HolderIRI otherHolderIRI) return iri.equals(otherHolderIRI.iri);
+        if (other instanceof IRI otherIRI) return this.toString().equals(otherIRI.toString());
+        return false;
     }
 
     @Override

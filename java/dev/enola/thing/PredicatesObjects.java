@@ -21,6 +21,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.convert.ConversionException;
+import dev.enola.common.io.iri.IRI;
 import dev.enola.thing.repo.ThingProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -233,6 +234,8 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             extends dev.enola.common.Builder<B> {
 
+        // TODO Remove String predicateIRI, use only IRI predicateIRI; else confusing.
+
         @SuppressWarnings("Immutable")
         default PredicatesObjects.Builder<B> set(String predicateIRI, Link link) {
             set(predicateIRI, (Object) link); // !
@@ -242,6 +245,11 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         default PredicatesObjects.Builder<B> set(String predicateIRI, HasIRI hasIRI) {
             set(predicateIRI, new Link(hasIRI.iri())); // !
             return this;
+        }
+
+        default <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
+                IRI predicateIRI, T value) {
+            return set(predicateIRI.toString(), value);
         }
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
