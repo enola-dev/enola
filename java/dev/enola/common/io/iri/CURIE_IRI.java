@@ -21,11 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.common.base.Objects;
 
-import org.jspecify.annotations.Nullable;
-
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import javax.xml.namespace.QName;
 
@@ -34,14 +30,11 @@ import javax.xml.namespace.QName;
  *
  * <p>See also {@link QName}.
  */
-/* non-public! */ final /*TODO value*/ class CURIE_IRI extends IRI {
+/* non-public! */ final /*TODO value*/ class CURIE_IRI extends StringableIRI {
 
     // NO! private final String prefix;
     private final String namespaceIRI;
     private final String localName;
-
-    @SuppressWarnings("Immutable") // We (hopefully) know what we're doing!
-    private transient @Nullable String iri;
 
     CURIE_IRI(String namespaceIRI, String localName) {
         this.namespaceIRI = requireNonNull(namespaceIRI, "namespaceIRI");
@@ -54,9 +47,8 @@ import javax.xml.namespace.QName;
     }
 
     @Override
-    public String toString() {
-        if (iri == null) iri = namespaceIRI + localName;
-        return iri;
+    protected String createStringIRI() {
+        return namespaceIRI + localName;
     }
 
     @Override
@@ -67,30 +59,25 @@ import javax.xml.namespace.QName;
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
+    protected boolean isEqualTo(Object other) {
         if (other instanceof CURIE_IRI otherCurieIRI)
             return Objects.equal(namespaceIRI, otherCurieIRI.namespaceIRI)
                     && Objects.equal(localName, otherCurieIRI.localName);
-        if (other instanceof IRI otherIRI) return this.toString().equals(otherIRI.toString());
         return false;
     }
 
     @Override
-    public int compareTo(IRI other) {
-        if (other instanceof CURIE_IRI otherCurieIRI) {
-            int namespaceComparison = this.namespaceIRI.compareTo(otherCurieIRI.namespaceIRI);
-            if (namespaceComparison != 0) {
-                return namespaceComparison;
-            }
-            return this.localName.compareTo(otherCurieIRI.localName);
-        } else {
-            return this.toString().compareTo(other.toString());
-        }
+    protected boolean isComparableTo(Object other) {
+        return other instanceof CURIE_IRI;
     }
 
     @Override
-    public URI toURI() throws URISyntaxException {
-        return new URI(toString());
+    protected int compare(Object other) {
+        var otherCurieIRI = (CURIE_IRI) other;
+        int namespaceComparison = this.namespaceIRI.compareTo(otherCurieIRI.namespaceIRI);
+        if (namespaceComparison != 0) {
+            return namespaceComparison;
+        }
+        return this.localName.compareTo(otherCurieIRI.localName);
     }
 }

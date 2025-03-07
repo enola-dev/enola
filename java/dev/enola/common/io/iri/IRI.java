@@ -52,6 +52,7 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
         return new HolderIRI(new CURIE_IRI(namespaceIRI, localName));
     }
 
+    // TODO Re-think if IRI from(java.net.URI uri) is really needed?
     public static IRI from(java.net.URI uri) {
         return new HolderIRI(new URI_IRI(uri));
     }
@@ -82,7 +83,9 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
     @Override
     public abstract int compareTo(IRI other);
 
-    public abstract URI toURI() throws URISyntaxException;
+    public URI toURI() throws URISyntaxException {
+        return new URI(toString());
+    }
 
     // TODO public abstract URL toURL();
 

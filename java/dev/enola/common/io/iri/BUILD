@@ -18,48 +18,48 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "model",
+    name = "iri",
     srcs = glob(
-        ["**/*.java"],
-        exclude = ["**/*Test.java"],
+        [
+            "*.java",
+            "namespace/*.java",
+            "template/*.java",
+        ],
+        exclude = [
+            "*Test.java",
+            "namespace/*Test.java",
+            "template/*Test.java",
+        ],
     ),
-    plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
-        # TODO Reduce model deps - this should only be the Thing API!
-        # All Converters should move from /model/ to an enola.connect package.
-        "//java/dev/enola:api",
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/iri",
-        "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data",
-        "//java/dev/enola/datatype",
-        "//java/dev/enola/format/tika",
-        "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_auto_service_auto_service_annotations",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_apache_tika_tika_core",
+        "@enola_maven//:com_google_truth_truth",
         "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(["**/*Test.java"]),
+    srcs = glob(
+        include = [
+            "*Test.java",
+            "namespace/*Test.java",
+            "template/*Test.java",
+        ],
+        allow_empty = True,
+    ),
     deps = [
-        ":model",
-        "//java/dev/enola/common/context/testlib",
-        "//java/dev/enola/common/convert",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/yamljson/testlib",
-        "//java/dev/enola/datatype",
-        "//java/dev/enola/thing:thing_java",
-        "//models",
+        ":iri",
+        "//java/dev/enola/common/context",
         "//test",
+        "@enola_maven//:com_github_java_json_tools_uri_template",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )

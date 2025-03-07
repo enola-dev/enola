@@ -17,6 +17,9 @@
  */
 package dev.enola.data.id;
 
+import com.google.errorprone.annotations.Immutable;
+
+import dev.enola.common.MoreStrings;
 import dev.enola.common.convert.ConversionException;
 
 import java.util.Optional;
@@ -24,15 +27,24 @@ import java.util.regex.Pattern;
 
 /** This is an example {@link ID}. */
 @ID // TODO (converter = TestID.Converter.class)
-public record TestID(long kind, String data) /* TODO implements HasIRI */ {
+@Immutable
+public record TestID(long kind, String data) implements Comparable<TestID> {
+
+    @Override
+    public int compareTo(TestID other) {
+        int kindComparison = Long.compare(kind, other.kind);
+        if (kindComparison != 0) {
+            return kindComparison;
+        }
+        return MoreStrings.compare(data, other.data);
+    }
 
     public static final Pattern PATTERN = Pattern.compile("([0-9a-z]+)-(.+)");
 
     public static final IdConverter<TestID> CONVERTER = new Converter();
 
     // TODO @AutoService(IdConverter.class)
-    public static final class Converter implements IdConverter<TestID> {
-
+    private static final class Converter implements IdConverter<TestID> {
         private final int KIND_STRING_RADIX = 36;
         private final int MAX_KIND_STRING_LENGTH =
                 Long.toUnsignedString(Long.MAX_VALUE, KIND_STRING_RADIX).length();
@@ -61,10 +73,5 @@ public record TestID(long kind, String data) /* TODO implements HasIRI */ {
         public Class<TestID> idClass() {
             return TestID.class;
         }
-    }
-
-    // TODO @Override
-    public String iri() {
-        return CONVERTER.convertTo(this);
     }
 }

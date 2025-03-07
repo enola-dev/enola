@@ -32,6 +32,7 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/format/xml",
         "//java/dev/enola/thing:thing_java",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
