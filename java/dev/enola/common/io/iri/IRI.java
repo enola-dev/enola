@@ -19,6 +19,7 @@ package dev.enola.common.io.iri;
 
 import com.google.errorprone.annotations.Immutable;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,6 +41,20 @@ import java.net.URISyntaxException;
 // TODO @ID
 @Immutable
 public abstract class IRI implements Comparable<IRI> {
+
+    /*
+        // TODO Globally rethink binary bytes representations...
+        public void append(OutputStream os) throws IOException {
+            // TODO #effiency How to best pre-size the BufferedWriter?
+            var writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
+            append(writer);
+            // TODO try() catch {} AutoCloseable!
+            writer.flush();
+            writer.close();
+        }
+    */
+
+    public abstract void append(Appendable appendable) throws IOException;
 
     @Override
     public abstract String toString();
