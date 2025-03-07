@@ -29,6 +29,8 @@ set -euo pipefail
 allow_list=("java/dev/enola/common/io/resource/UrlResource.java"
             "java/dev/enola/common/io/resource/ClasspathResource.java")
 
+# TODO Also grep for .toURL() invocations, and fail for any (new) ones.
+
 found_files=$(find . -name "*.java" -print0 | xargs -0 grep -lE "(^|[^a-zA-Z0-9_.])java\.net\.URL($|[^a-zA-Z0-9_#}])" | while IFS= read -r file; do
     file_name=$(basename "$file")
     allow_path="${file//.\//}"
