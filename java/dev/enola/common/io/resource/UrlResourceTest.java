@@ -26,7 +26,6 @@ import com.google.common.io.Resources;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
-import dev.enola.common.io.mediatype.YamlMediaType;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,8 +35,7 @@ import java.net.URISyntaxException;
 
 public class UrlResourceTest {
 
-    public @Rule SingletonRule r =
-            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
+    public @Rule SingletonRule r = $(MediaTypeProviders.set(new StandardMediaTypes()));
 
     // NB: ClasspathResourceTest (for ClasspathResource, which extends UrlResource) covers basics.
 
