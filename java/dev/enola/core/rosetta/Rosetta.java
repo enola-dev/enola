@@ -32,7 +32,7 @@ import dev.enola.common.protobuf.DescriptorProvider;
 import dev.enola.common.protobuf.MessageResourceConverter;
 import dev.enola.common.protobuf.ProtoIO;
 import dev.enola.common.protobuf.YamlJsonResourceConverter;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.format.tika.rdf.TikaResourceIntoRdfResourceConverter;
 import dev.enola.format.xml.XmlResourceConverter;
 import dev.enola.rdf.io.RdfResourceConverter;

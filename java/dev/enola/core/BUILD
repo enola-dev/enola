@@ -99,7 +99,7 @@ java_library(
         "//java/dev/enola/core:core_java_grpc",
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
-        "//java/dev/enola/data/iri/namespace",
+        "//java/dev/enola/data/iri",
         "//java/dev/enola/datatype",
         "//java/dev/enola/data/iri/template",
         # TODO Remove tika dependency from core once Rosetta is ServiceLoader-based
@@ -146,7 +146,7 @@ junit_tests(
         "//java/dev/enola/core:core_java_grpc",
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
-        "//java/dev/enola/data/iri/namespace",
+        "//java/dev/enola/data/iri",
         "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/datatype",
         "//java/dev/enola/model",

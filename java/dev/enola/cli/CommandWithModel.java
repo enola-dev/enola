@@ -27,7 +27,7 @@ import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;

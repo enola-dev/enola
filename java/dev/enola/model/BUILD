@@ -26,6 +26,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/data/iri",
         "//java/dev/enola/data/iri/namespace/repo",
         # TODO Reduce model deps - this should only be the Thing API!
         # All Converters should move from /model/ to an enola.connect package.
@@ -37,7 +38,6 @@ java_library(
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data",
-        "//java/dev/enola/data/iri/namespace",
         "//java/dev/enola/datatype",
         "//java/dev/enola/format/tika",
         "//java/dev/enola/thing:thing_java",

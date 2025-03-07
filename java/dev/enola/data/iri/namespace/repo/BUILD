@@ -30,7 +30,6 @@ java_library(
         "//java/dev/enola/common/context",
         "//java/dev/enola/data",
         "//java/dev/enola/data/iri",
-        "//java/dev/enola/data/iri/namespace",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",

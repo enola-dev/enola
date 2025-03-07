@@ -15,19 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.iri.namespace;
+package dev.enola.data.iri.namespace.repo;
 
-import dev.enola.data.iri.IRI;
+import com.google.common.base.Strings;
 
-public final class NamespaceConverterIdentity implements NamespaceConverter {
+import java.util.Objects;
 
-    @Override
-    public String toCURIE(Object iri) {
-        return iri.toString();
-    }
-
-    @Override
-    public IRI toIRI(String curie) {
-        return IRI.from(curie);
+public record ImmutableNamespace(String prefix, String iri) implements Namespace {
+    public ImmutableNamespace {
+        Objects.nonNull(prefix);
+        Objects.nonNull(Strings.emptyToNull(iri));
     }
 }

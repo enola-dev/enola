@@ -18,7 +18,7 @@
 package dev.enola.data.iri.namespace.repo;
 
 import dev.enola.data.iri.IRI;
-import dev.enola.data.iri.namespace.NamespaceConverter;
+import dev.enola.data.iri.NamespaceConverter;
 
 public class NamespaceConverterWithRepository implements NamespaceConverter {
 

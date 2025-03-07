@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.iri;
+package dev.enola.data.id;
 
 import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.Immutable;
 
-import dev.enola.common.convert.ObjectToStringBiConverter;
+import dev.enola.data.iri.StringableIRI;
 
 import java.io.IOException;
 
@@ -37,18 +37,17 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
         this.id = requireNonNull(id);
     }
 
-    // TODO IdConverter
-    protected abstract ObjectToStringBiConverter<T> stringConverter();
+    protected abstract IdConverter<T> idConverter();
 
     @Override
     public void append(Appendable appendable) throws IOException {
-        if (!stringConverter().convertInto(id, appendable))
+        if (!idConverter().convertInto(id, appendable))
             throw new IllegalArgumentException(id.toString());
     }
 
     @Override
     protected String createStringIRI() {
-        return stringConverter().convertTo(id);
+        return idConverter().convertTo(id);
     }
 
     @Override
@@ -61,12 +60,10 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
         return id.hashCode();
     }
 
-    /* TODO
     @Override
     protected boolean isComparableTo(Object other) {
-        return idConverter.idClass().isInstance(other);
+        return idConverter().idClass().isInstance(other);
     }
-    */
 
     @Override
     @SuppressWarnings("unchecked")

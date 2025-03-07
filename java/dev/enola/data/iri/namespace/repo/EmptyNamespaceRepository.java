@@ -17,8 +17,6 @@
  */
 package dev.enola.data.iri.namespace.repo;
 
-import dev.enola.data.iri.namespace.Namespace;
-
 import org.jspecify.annotations.Nullable;
 
 import java.util.Collections;

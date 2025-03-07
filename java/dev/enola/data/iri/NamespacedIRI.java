@@ -26,17 +26,17 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 
 /**
- * CURIE {@link dev.enola.common.io.iri.IRI}.
+ * CURIE {@link IRI}.
  *
  * <p>See also {@link QName}.
  */
-/* non-public! */ final /*TODO value*/ class CURIE_IRI extends StringableIRI {
+/* non-public! */ final /*TODO value*/ class NamespacedIRI extends StringableIRI {
 
     // NO! private final String prefix;
     private final String namespaceIRI;
     private final String localName;
 
-    CURIE_IRI(String namespaceIRI, String localName) {
+    NamespacedIRI(String namespaceIRI, String localName) {
         this.namespaceIRI = requireNonNull(namespaceIRI, "namespaceIRI");
         this.localName = requireNonNull(localName, "localName");
     }
@@ -60,7 +60,7 @@ import javax.xml.namespace.QName;
 
     @Override
     protected boolean isEqualTo(Object other) {
-        if (other instanceof CURIE_IRI otherCurieIRI)
+        if (other instanceof NamespacedIRI otherCurieIRI)
             return Objects.equal(namespaceIRI, otherCurieIRI.namespaceIRI)
                     && Objects.equal(localName, otherCurieIRI.localName);
         return false;
@@ -68,12 +68,12 @@ import javax.xml.namespace.QName;
 
     @Override
     protected boolean isComparableTo(Object other) {
-        return other instanceof CURIE_IRI;
+        return other instanceof NamespacedIRI;
     }
 
     @Override
     protected int compare(Object other) {
-        var otherCurieIRI = (CURIE_IRI) other;
+        var otherCurieIRI = (NamespacedIRI) other;
         int namespaceComparison = this.namespaceIRI.compareTo(otherCurieIRI.namespaceIRI);
         if (namespaceComparison != 0) {
             return namespaceComparison;

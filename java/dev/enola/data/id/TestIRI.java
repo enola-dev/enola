@@ -19,9 +19,6 @@ package dev.enola.data.id;
 
 import com.google.errorprone.annotations.Immutable;
 
-import dev.enola.common.convert.ObjectToStringBiConverter;
-import dev.enola.data.iri.IDIRI;
-
 @Immutable
 public class TestIRI extends IDIRI<TestID> {
 
@@ -30,12 +27,7 @@ public class TestIRI extends IDIRI<TestID> {
     }
 
     @Override
-    protected ObjectToStringBiConverter<TestID> stringConverter() {
+    protected IdConverter<TestID> idConverter() {
         return TestID.CONVERTER;
-    }
-
-    @Override
-    protected boolean isComparableTo(Object other) {
-        return other instanceof TestIRI;
     }
 }

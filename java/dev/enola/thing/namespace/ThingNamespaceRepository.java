@@ -17,8 +17,8 @@
  */
 package dev.enola.thing.namespace;
 
-import dev.enola.data.iri.namespace.ImmutableNamespace;
-import dev.enola.data.iri.namespace.Namespace;
+import dev.enola.data.iri.namespace.repo.ImmutableNamespace;
+import dev.enola.data.iri.namespace.repo.Namespace;
 import dev.enola.data.iri.namespace.repo.NamespaceRepository;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.repo.ThingProvider;
