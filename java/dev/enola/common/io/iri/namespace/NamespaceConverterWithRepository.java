@@ -26,14 +26,15 @@ public class NamespaceConverterWithRepository implements NamespaceConverter {
     }
 
     @Override
-    public String toCURIE(String iri) {
+    public String toCURIE(Object iri) {
+        var iriString = iri.toString();
         for (var namespace : repo.list()) {
-            if (iri.startsWith(namespace.iri())) {
-                var rest = iri.substring(namespace.iri().length());
+            if (iriString.startsWith(namespace.iri())) {
+                var rest = iriString.substring(namespace.iri().length());
                 return namespace.prefix() + ":" + rest;
             }
         }
-        return iri;
+        return iriString;
     }
 
     @Override

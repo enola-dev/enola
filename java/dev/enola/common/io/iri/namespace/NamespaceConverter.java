@@ -31,14 +31,14 @@ import dev.enola.common.context.TLC;
  */
 public interface NamespaceConverter {
 
-    String toCURIE(String iri);
+    String toCURIE(Object iri);
 
     String toIRI(String curie);
 
     NamespaceConverter CTX =
             new NamespaceConverter() {
                 @Override
-                public String toCURIE(String iri) {
+                public String toCURIE(Object iri) {
                     return TLC.get(NamespaceConverter.class).toCURIE(iri);
                 }
 

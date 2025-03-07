@@ -20,8 +20,8 @@ package dev.enola.common.io.iri.namespace;
 public final class NamespaceConverterIdentity implements NamespaceConverter {
 
     @Override
-    public String toCURIE(String iri) {
-        return iri;
+    public String toCURIE(Object iri) {
+        return iri.toString();
     }
 
     @Override
