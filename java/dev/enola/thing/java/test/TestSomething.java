@@ -83,6 +83,6 @@ public interface TestSomething extends HasType, HasA, HasB, IImmutableThing {
 
     @SuppressWarnings("unchecked")
     static Builder<TestSomething> builder() {
-        return builder(new HasSomethingTBF());
+        return builder(new TestSomethingTBF());
     }
 }

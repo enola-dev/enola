@@ -24,8 +24,7 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.TBF;
 
 // TODO Generate this, from a model
-public final class HasSomethingTBF implements TBF {
-    // TODO Rename HasSomethingTBF to TestSomethingTBF
+public final class TestSomethingTBF implements TBF {
 
     @Override
     public boolean handles(String typeIRI) {
@@ -35,7 +34,7 @@ public final class HasSomethingTBF implements TBF {
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public Thing.Builder<Thing> create(String typeIRI) {
-        if (!TestSomething.CLASS_IRI.equals(typeIRI)) throw new IllegalArgumentException(typeIRI);
+        if (!handles(typeIRI)) throw new IllegalArgumentException(typeIRI);
         return (Thing.Builder) new TestSomethingBuilder();
     }
 
