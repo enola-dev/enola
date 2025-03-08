@@ -87,6 +87,18 @@ java_library(
     ],
 )
 
+java_library(
+    name = "testlib",
+    srcs = [
+        "CommandLineSubject.java",
+        "SystemOutErrCapture.java",
+    ],
+    deps = [
+        "//java/dev/enola/cli/common",
+        "@enola_maven//:com_google_truth_truth",
+    ],
+)
+
 junit_tests(
     name = "tests",
     size = "medium",
@@ -94,12 +106,9 @@ junit_tests(
         ["*Test.java"],
         exclude = ["EnolaLoggingTest.java"],
     ),
-    srcs_utils = [
-        "CommandLineSubject.java",
-        "SystemOutErrCapture.java",
-    ],
     deps = [
         ":lib",
+        ":testlib",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context/testlib",
@@ -123,9 +132,7 @@ junit_tests(
 java_test(
     name = "EnolaLoggingTest",
     srcs = [
-        "CommandLineSubject.java",
         "EnolaLoggingTest.java",
-        "SystemOutErrCapture.java",
     ],
     runtime_deps = [
         "//java/dev/enola/common/canonicalize",
@@ -140,6 +147,7 @@ java_test(
     ],
     deps = [
         ":lib",
+        ":testlib",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/thing:thing_java",
