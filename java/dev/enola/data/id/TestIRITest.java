@@ -21,32 +21,29 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.primitives.UnsignedLong;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.data.iri.IRIConverter;
+
 import org.junit.Test;
 
-public class TestIDTest {
+public class TestIRITest {
 
-    static IdConverter<TestID> c = TestID.CONVERTER;
-    static TestID testId = new TestID(UnsignedLong.MAX_VALUE.longValue(), "test");
-    static String testIdString = "3w5e11264sgsf-test";
+    IRIConverter<TestIRI> c = TestIRI.CONVERTER;
+    TestID testId = new TestID(UnsignedLong.MAX_VALUE.longValue(), "test");
+    String testIriString = "https://example.org/thing/3w5e11264sgsf-test";
 
     @Test
     public void convertToFrom() {
-        assertThat(c.convertTo(testId)).isEqualTo(testIdString);
-        assertThat(c.convertFrom(testIdString)).isEqualTo(testId);
+        var testIRI = c.convertFrom(testIriString);
+        assertThat(c.convertTo(testIRI)).isEqualTo(testIriString);
+        assertThat(testIRI.toString()).isEqualTo(testIriString);
+        assertThat(testIRI.id()).isEqualTo(testId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void convertFromNull() {
-        c.convertFrom(null);
+    @Test(expected = ConversionException.class)
+    public void convertMismatch() {
+        c.convertFrom("https://example.org/other/xyz");
     }
 
-    @Test(expected = NullPointerException.class)
-    public void convertNull() {
-        c.convert(null);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void convertToNull() {
-        c.convertTo(null);
-    }
+    // TODO equals(), compareTo(), hashCode(), toString()
 }

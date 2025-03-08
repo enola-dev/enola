@@ -22,6 +22,7 @@ import com.google.errorprone.annotations.Immutable;
 import dev.enola.common.MoreStrings;
 import dev.enola.common.convert.ConversionException;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,15 @@ public record TestID(long kind, String data) implements Comparable<TestID> {
         private final int KIND_STRING_RADIX = 36;
         private final int MAX_KIND_STRING_LENGTH =
                 Long.toUnsignedString(Long.MAX_VALUE, KIND_STRING_RADIX).length();
+
+        @Override
+        public boolean convertInto(TestID from, Appendable into)
+                throws ConversionException, IOException {
+            into.append(Long.toUnsignedString(from.kind, KIND_STRING_RADIX))
+                    .append('-')
+                    .append(from.data);
+            return true;
+        }
 
         @Override
         @SuppressWarnings("StringBufferReplaceableByString")
