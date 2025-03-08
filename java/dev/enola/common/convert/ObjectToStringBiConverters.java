@@ -30,6 +30,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.UUID;
 
 public final class ObjectToStringBiConverters {
 
@@ -71,6 +72,9 @@ public final class ObjectToStringBiConverters {
 
     public static final ObjectToStringBiConverter<UnsignedLong> UNSIGNED_LONG =
             new ObjectToStringWithToStringBiConverter<>(UnsignedLong.class, UnsignedLong::valueOf);
+
+    public static final ObjectToStringBiConverter<UUID> UUID =
+            new ObjectToStringWithToStringBiConverter<>(UUID.class, java.util.UUID::fromString);
 
     public static final ObjectToStringBiConverter<java.net.URI> URI =
             new ObjectToStringWithToStringBiConverter<>(

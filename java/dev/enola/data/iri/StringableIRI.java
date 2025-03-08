@@ -20,6 +20,7 @@ package dev.enola.data.iri;
 import org.jspecify.annotations.Nullable;
 
 public abstract class StringableIRI extends IRI {
+    // TODO Rename this... all IRI are "stringable" - this is... StringCacheingIRI?
 
     @SuppressWarnings("Immutable") // We (hopefully) know what we're doing!
     private transient @Nullable String iri;
