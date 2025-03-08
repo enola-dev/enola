@@ -64,3 +64,6 @@ tools/version/VERSION
 
 # https://github.com/VirtusLab/bazel-steward/issues/424
 bazel-steward.jar
+
+# Bazel BSP, by https://docs.google.com/document/d/1fdLN1iONuRm--PhpDNYXpEOPPwKML8bG5OJv9AbCvEI/edit?tab=t.0
+.bazelbsp/
