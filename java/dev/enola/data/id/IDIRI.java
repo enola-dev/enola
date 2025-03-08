@@ -21,14 +21,20 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.Immutable;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.common.convert.ObjectToStringBiConverter;
 import dev.enola.data.iri.IRIConverter;
 import dev.enola.data.iri.StringableIRI;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
+import java.util.Optional;
 
 @Immutable(containerOf = "T")
 /** ID-IRI is an {@link IRI} based on an ID object. */
 public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
+    // TODO dev.enola.data.id.IDIRI to dev.enola.data.iri
 
     // TODO Add URL Pattern, in & out!
 
@@ -38,6 +44,7 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
         this.id = requireNonNull(id);
     }
 
+    // TODO Consider "pulling up" an Object id() method to IRI itself?
     public T id() {
         return id;
     }
@@ -69,5 +76,34 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
     @SuppressWarnings("unchecked")
     protected int compare(Object other) {
         return id.compareTo(((IDIRI<T>) other).id);
+    }
+
+    protected abstract static class ConverterX<C extends IDIRI<T>, T extends Comparable<T>>
+            implements IRIConverter<C> {
+        private final String prefix;
+        private final ObjectToStringBiConverter<T> converter;
+
+        protected ConverterX(String prefix, ObjectToStringBiConverter<T> converter) {
+            this.prefix = prefix;
+            this.converter = converter;
+        }
+
+        protected abstract C create(T id);
+
+        @Override
+        public Optional<C> convert(String input) throws ConversionException {
+            if (!input.startsWith(prefix)) return Optional.empty();
+            @Nullable T id = converter.convertFrom(input.substring(prefix.length()));
+            if (id == null)
+                throw new ConversionException("Not a TestID: " + input); // Optional.empty()?
+            return Optional.of(create(id));
+        }
+
+        @Override
+        public boolean convertInto(C from, Appendable into)
+                throws ConversionException, IOException {
+            into.append(prefix);
+            return converter.convertInto(from.id(), into);
+        }
     }
 }

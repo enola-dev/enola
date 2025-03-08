@@ -57,6 +57,14 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
         return new HolderIRI(new URI_IRI(uri));
     }
 
+    /* TODO
+    public static IRI newUUID() {
+        return new UUID_IRI(UUID.randomUUID());
+    }
+    */
+
+    // TODO Consider adding an Object id() method here? See IDIRI.
+
     /*
         // TODO Globally rethink binary bytes representations...
         public void append(OutputStream os) throws IOException {

@@ -24,7 +24,8 @@ package dev.enola.data.id;
  *
  * <p>This is a "convenience marker interface". It is recommended to be added to new classes, but
  * it's technically NOT strictly required; as e.g. an {@link java.net.URI} is also such an ID (and
- * {@link IdConverters#URI} is its converter) - despite not actually being annotated with this.
+ * {@link IdConverters#URI} is its converter) or an {@link java.util.UUID} - despite either of them
+ * not actually really being annotated with this.
  */
 public @interface ID {
     // TODO This technically actually isn't related so much to "IDs" as to "datatypes"...

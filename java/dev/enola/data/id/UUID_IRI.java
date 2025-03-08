@@ -19,31 +19,40 @@ package dev.enola.data.id;
 
 import com.google.errorprone.annotations.Immutable;
 
-import dev.enola.data.id.IDIRI.ConverterX;
+import dev.enola.common.convert.ObjectToStringBiConverters;
 import dev.enola.data.iri.IRIConverter;
 
-@Immutable
-public class TestIRI extends IDIRI<TestID> {
+import java.util.UUID;
 
-    static final ConverterX<TestIRI, TestID> CONVERTER =
-            new ConverterX<>("https://example.org/thing/", TestID.CONVERTER) {
+@Immutable
+public final class UUID_IRI extends IDIRI<UUID> {
+    // TODO /* non-public! */
+
+    static final ConverterX<UUID_IRI, UUID> CONVERTER =
+            new ConverterX<UUID_IRI, UUID>("urn:uuid:", ObjectToStringBiConverters.UUID) {
                 @Override
-                protected TestIRI create(TestID id) {
-                    return new TestIRI(id);
+                protected UUID_IRI create(UUID id) {
+                    return new UUID_IRI(id);
                 }
             };
 
-    public TestIRI(TestID testID) {
-        super(testID);
+    // TODO Remove public
+    public UUID_IRI(UUID uuid) {
+        super(uuid);
+    }
+
+    public UUID_IRI() {
+        super(UUID.randomUUID());
     }
 
     @Override
-    protected IRIConverter<TestIRI> iriConverter() {
+    @SuppressWarnings("unchecked")
+    protected IRIConverter<UUID_IRI> iriConverter() {
         return CONVERTER;
     }
 
     @Override
     protected boolean isComparableTo(Object other) {
-        return other instanceof TestIRI;
+        return other instanceof UUID_IRI;
     }
 }
