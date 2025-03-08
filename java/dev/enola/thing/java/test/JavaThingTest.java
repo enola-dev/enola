@@ -49,16 +49,16 @@ public class JavaThingTest {
     }
 
     @Test
-    public void hasSomethingTBF() {
+    public void testSomethingTBF() {
         checkTBF(new TestSomethingTBF());
     }
 
     @Test
-    public void hasSomethingBuilder() {
-        // TestSomething.builder() === new HasSomethingTBF(), as above
+    public void testSomethingBuilder() {
+        // TestSomething.builder() === new TestSomethingTBF(), as above
         var builder = TestSomething.builder();
         builder.iri("https://example.org/thing");
-        checkHasSomethingBuilder(builder);
+        checkTestSomethingBuilder(builder);
     }
 
     @Test
@@ -76,9 +76,9 @@ public class JavaThingTest {
                                 ImmutableThing.FACTORY));
         checkTBF(tbf);
 
-        var hasSomethingBuilder = tbf.create(TestSomething.Builder.class, TestSomething.class);
-        assertThat(hasSomethingBuilder).isNotInstanceOf(Proxy.class);
-        assertThat(hasSomethingBuilder).isNotNull();
+        var testSomethingBuilder = tbf.create(TestSomething.Builder.class, TestSomething.class);
+        assertThat(testSomethingBuilder).isNotInstanceOf(Proxy.class);
+        assertThat(testSomethingBuilder).isNotNull();
 
         var hasABuilder = tbf.create(HasA.Builder.class, HasA.class);
         assertThat(hasABuilder).isInstanceOf(Proxy.class);
@@ -89,7 +89,7 @@ public class JavaThingTest {
     }
 
     private void checkTBF(TBF tbf) {
-        checkHasSomethingBuilder(tbf);
+        checkTestSomethingBuilder(tbf);
         checkThingsBuilders(tbf);
         checkCreateFromType(tbf);
     }
@@ -98,13 +98,13 @@ public class JavaThingTest {
     private void checkCreateFromType(TBF tbf) {
         var builder = (TestSomething.Builder<?>) tbf.create(TestSomething.CLASS_IRI);
         builder.iri("https://example.org/thing");
-        checkHasSomethingBuilder((TestSomething.Builder<TestSomething>) builder);
+        checkTestSomethingBuilder((TestSomething.Builder<TestSomething>) builder);
     }
 
-    private void checkHasSomethingBuilder(TBF tbf) {
+    private void checkTestSomethingBuilder(TBF tbf) {
         var builder = TestSomething.builder(tbf);
         builder.iri("https://example.org/thing");
-        checkHasSomethingBuilder(builder);
+        checkTestSomethingBuilder(builder);
     }
 
     private void checkThingsBuilders(TBF tbf) {
@@ -114,20 +114,20 @@ public class JavaThingTest {
                         "https://example.org/thing",
                         TestSomething.Builder.class,
                         TestSomething.class);
-        checkHasSomethingBuilder(builder);
+        checkTestSomethingBuilder(builder);
     }
 
-    private void checkHasSomethingBuilder(TestSomething.Builder<TestSomething> builder) {
+    private void checkTestSomethingBuilder(TestSomething.Builder<TestSomething> builder) {
         builder.test("abc").a(123L).b(Instant.now()).iri("https://example.org/thing");
 
         TestSomething thing = builder.build();
-        checkHasSomething(thing);
+        checkTestSomething(thing);
 
         TestSomething thing2 = builder.build();
-        checkHasSomething(thing2);
+        checkTestSomething(thing2);
     }
 
-    private void checkHasSomething(TestSomething thing) {
+    private void checkTestSomething(TestSomething thing) {
         assertThat(thing.iri()).isEqualTo("https://example.org/thing");
 
         assertThat(thing.getString(TestSomething.TEST_PROPERTY_IRI)).isEqualTo("abc");
