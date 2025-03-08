@@ -19,15 +19,49 @@ package dev.enola.data.id;
 
 import com.google.errorprone.annotations.Immutable;
 
+import dev.enola.common.convert.ConversionException;
+import dev.enola.data.iri.IRIConverter;
+
+import java.io.IOException;
+import java.util.Optional;
+
 @Immutable
 public class TestIRI extends IDIRI<TestID> {
+
+    private static final String PREFIX = "https://example.org/thing/";
+
+    public static final IRIConverter<TestIRI> CONVERTER =
+            // TODO Create better abstraction for this... PrefixingIRIConverter?
+            new IRIConverter<>() {
+                @Override
+                public Optional<TestIRI> convert(String input) throws ConversionException {
+                    if (!input.startsWith(PREFIX)) return Optional.empty();
+                    var opt = TestID.CONVERTER.convert(input.substring(PREFIX.length()));
+                    var testID =
+                            opt.orElseThrow(
+                                    () -> new ConversionException("Not a TestID: " + input));
+                    return Optional.of(new TestIRI(testID));
+                }
+
+                @Override
+                public boolean convertInto(TestIRI from, Appendable into)
+                        throws ConversionException, IOException {
+                    into.append(PREFIX);
+                    return TestID.CONVERTER.convertInto(from.id(), into);
+                }
+            };
 
     public TestIRI(TestID testID) {
         super(testID);
     }
 
     @Override
-    protected IdConverter<TestID> idConverter() {
-        return TestID.CONVERTER;
+    protected IRIConverter<TestIRI> iriConverter() {
+        return CONVERTER;
+    }
+
+    @Override
+    protected boolean isComparableTo(Object other) {
+        return other instanceof TestIRI;
     }
 }

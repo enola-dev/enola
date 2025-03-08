@@ -24,6 +24,7 @@ import dev.enola.common.convert.ConversionException;
 
 import org.jspecify.annotations.NonNull;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -50,6 +51,17 @@ public class IdConverterChain implements IdConverter<Object> {
         for (IdConverter converter : converters)
             convertersMapBuilder.put(converter.idClass(), converter);
         return convertersMapBuilder.build();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean convertInto(Object from, Appendable into)
+            throws ConversionException, IOException {
+        Class<?> idClass = from.getClass();
+        IdConverter<Object> converter = (IdConverter<Object>) convertersMap.get(idClass);
+        if (converter == null)
+            throw new IllegalStateException("No IdConverter registered for " + idClass);
+        return converter.convertInto(from, into);
     }
 
     @Override

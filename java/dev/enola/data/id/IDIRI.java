@@ -21,6 +21,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.Immutable;
 
+import dev.enola.data.iri.IRIConverter;
 import dev.enola.data.iri.StringableIRI;
 
 import java.io.IOException;
@@ -37,17 +38,21 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
         this.id = requireNonNull(id);
     }
 
-    protected abstract IdConverter<T> idConverter();
+    public T id() {
+        return id;
+    }
+
+    protected abstract <C extends IDIRI<T>> IRIConverter<C> iriConverter();
 
     @Override
     public void append(Appendable appendable) throws IOException {
-        if (!idConverter().convertInto(id, appendable))
+        if (!iriConverter().convertInto(this, appendable))
             throw new IllegalArgumentException(id.toString());
     }
 
     @Override
     protected String createStringIRI() {
-        return idConverter().convertTo(id);
+        return iriConverter().convertTo(this);
     }
 
     @Override
@@ -61,13 +66,8 @@ public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
     }
 
     @Override
-    protected boolean isComparableTo(Object other) {
-        return idConverter().idClass().isInstance(other);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     protected int compare(Object other) {
-        return id.compareTo((T) other);
+        return id.compareTo(((IDIRI<T>) other).id);
     }
 }

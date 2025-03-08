@@ -15,31 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.data.id;
+package dev.enola.data.iri;
 
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
-import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.ObjectToStringBiConverter;
-import dev.enola.common.convert.OptionalConverter;
+import dev.enola.common.convert.OptionalBiConverterIntoAppendable;
 
-import org.jspecify.annotations.NonNull;
-
+/** IRIConverter converts {@link IRI}s (I) into ({@link String} for) {@link Appendable}. */
 @Immutable
 @ThreadSafe
-/** IdConverter converts {@link ID}s (I) to and from {@link String}. */
-public interface IdConverter<I> extends ObjectToStringBiConverter<I>, OptionalConverter<String, I> {
-
-    @Override
-    @NonNull String convertTo(@NonNull I input) throws ConversionException;
-
-    @Override
-    default @NonNull I convertFrom(@NonNull String input) throws ConversionException {
-        var opt = convert(input);
-        if (opt.isPresent()) return opt.get();
-        throw new ConversionException(input);
-    }
-
-    Class<I> idClass();
-}
+public interface IRIConverter<I extends IRI> extends OptionalBiConverterIntoAppendable<I> {}
