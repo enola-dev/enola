@@ -50,7 +50,7 @@ public class JavaThingTest {
 
     @Test
     public void hasSomethingTBF() {
-        checkTBF(new HasSomethingTBF());
+        checkTBF(new TestSomethingTBF());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class JavaThingTest {
 
     @Test
     public void chainTBF1() {
-        checkTBF(new TBFChain(ImmutableList.of(new HasSomethingTBF())));
+        checkTBF(new TBFChain(ImmutableList.of(new TestSomethingTBF())));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class JavaThingTest {
         var tbf =
                 new TBFChain(
                         ImmutableList.of(
-                                new HasSomethingTBF(),
+                                new TestSomethingTBF(),
                                 new ProxyTBF(ImmutableThing.FACTORY),
                                 ImmutableThing.FACTORY));
         checkTBF(tbf);
