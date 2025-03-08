@@ -10,7 +10,9 @@ build/
 
 # IntelliJ
 .ijwb/
-.idea/
+.idea/*
+# https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins
+!.idea/externalDependencies.xml
 
 # Eclipse JDT with VSC Bazel for Java (bazel-vscode-java)
 .eclipse/

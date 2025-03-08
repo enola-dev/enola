@@ -90,13 +90,9 @@ $ sudo apt get install clang-format
 
 ## JetBrains IntelliJ IDEA (IJ)
 
-IJ can be used as a complete alternative to VSC, or only for Java coding, with:
+IJ can be used as a complete alternative to VSC, or only for Java coding.
 
-* [Bazel](https://plugins.jetbrains.com/plugin/8609-bazel-for-intellij) from [ij.bazel.build](https://ij.bazel.build)
-  (You [have to manually change](https://github.com/bazelbuild/intellij/issues/4693) the
-  _Bazel Binary Location_ from the default `bazel` to `bazelisk`.)
-
-* [Google Java Format](https://plugins.jetbrains.com/plugin/8527-google-java-format)
+The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins) are managed via the [`.idea/externalDependencies.xml`](https://github.com/enola-dev/enola/blob/main/.idea/externalDependencies.xml).
 
 ## Eclipse
 
