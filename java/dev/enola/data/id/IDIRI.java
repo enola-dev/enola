@@ -33,6 +33,7 @@ import java.util.Optional;
 
 @Immutable(containerOf = "T")
 /** ID-IRI is an {@link IRI} based on an ID object. */
+// skipcq: JAVA-W0100
 public abstract class IDIRI<T extends Comparable<T>> extends StringableIRI {
     // TODO dev.enola.data.id.IDIRI to dev.enola.data.iri
 
