@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class ThingsRepositoryAdapter implements ThingsRepository {
+    // TODO Remove?! Only (un)used in EnolaServiceRegistry
 
     private final ThingConnector thingConnector;
 
