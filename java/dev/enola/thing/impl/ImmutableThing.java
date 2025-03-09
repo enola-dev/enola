@@ -27,6 +27,7 @@ import com.google.errorprone.annotations.ThreadSafe;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.java.HasType;
+import dev.enola.thing.java.RdfAnnotations;
 import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -85,27 +86,18 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                 @SuppressWarnings("unchecked")
                 public <T extends Thing, B extends Thing.Builder<T>> B create(
                         Class<B> builderInterface, Class<T> thingInterface) {
-                    check(builderInterface, thingInterface);
-                    return (B) builder();
+                    var builder = (B) builder();
+                    RdfAnnotations.addType(thingInterface, builder);
+                    return builder;
                 }
 
                 @Override
                 @SuppressWarnings("unchecked")
                 public <T extends Thing, B extends Thing.Builder<T>> B create(
                         Class<B> builderInterface, Class<T> thingInterface, int expectedSize) {
-                    check(builderInterface, thingInterface);
-                    return (B) builderWithExpectedSize(expectedSize);
-                }
-
-                private <B extends Thing.Builder<T>, T extends Thing> void check(
-                        Class<B> builderInterface, Class<T> thingInterface) {
-                    if (!(builderInterface.equals(Thing.Builder.class)
-                            && thingInterface.equals(Thing.class)))
-                        throw new IllegalArgumentException(
-                                "This implementation does not support "
-                                        + builderInterface
-                                        + " and "
-                                        + thingInterface);
+                    var builder = (B) builderWithExpectedSize(expectedSize);
+                    RdfAnnotations.addType(thingInterface, builder);
+                    return builder;
                 }
             };
 

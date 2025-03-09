@@ -106,5 +106,7 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
             "@enola_maven//:org_slf4j_slf4j_simple",
             "@enola_maven//:junit_junit",
         ],
+        # Increase timeout, due to https://youtrack.jetbrains.com/issue/BAZEL-1791
+        timeout = "long",
         **dict(kwargs, size = size, jvm_flags = jvm_flags)
     )

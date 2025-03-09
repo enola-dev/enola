@@ -55,8 +55,10 @@ public final class ProxyTBF implements TBF {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Thing.Builder<Thing> create(String typeIRI) {
-        throw new UnsupportedOperationException("Not implemented yet!"); // TODO Implement!
+        var classPair = TypeToBuilder.typeToBuilder(typeIRI);
+        return create(classPair.builderClass(), classPair.thingClass());
     }
 
     @Override
@@ -89,10 +91,12 @@ public final class ProxyTBF implements TBF {
             int expectedSize,
             Class<Thing.Builder<IImmutableThing>> builderInterface,
             Class<IImmutableThing> thingInterface) {
-        if (builderInterface.equals(Thing.Builder.class)) return create(tbf, expectedSize);
+        if (builderInterface.equals(Thing.Builder.class))
+            return createX(tbf, builderInterface, thingInterface, expectedSize);
 
         var wrappedBuilder = // an ImmutableThing.Builder or a MutableThing (but NOT another Proxy)
-                (Thing.Builder<? extends IImmutableThing>) create(tbf, expectedSize);
+                (Thing.Builder<? extends IImmutableThing>)
+                        createX(tbf, builderInterface, thingInterface, expectedSize);
         var handler =
                 new BuilderInvocationHandler(tbf, wrappedBuilder, builderInterface, thingInterface);
         var proxy = Reflection.newProxy(builderInterface, handler);
@@ -101,9 +105,13 @@ public final class ProxyTBF implements TBF {
         return proxy;
     }
 
-    private static Thing.Builder<? extends IImmutableThing> create(TBF tbf, int expectedSize) {
-        if (expectedSize == -1) return tbf.create();
-        else return tbf.create(expectedSize);
+    private static Thing.Builder<? extends IImmutableThing> createX(
+            TBF tbf,
+            Class<Thing.Builder<IImmutableThing>> builderInterface,
+            Class<IImmutableThing> thingInterface,
+            int expectedSize) {
+        if (expectedSize == -1) return tbf.create(builderInterface, thingInterface);
+        else return tbf.create(builderInterface, thingInterface, expectedSize);
     }
 
     // TODO Consider using Guava's AbstractInvocationHandler?
