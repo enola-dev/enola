@@ -28,6 +28,7 @@ import dev.enola.thing.repo.*;
 
 import org.junit.Test;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class RDFSTriggersTest {
@@ -57,24 +58,18 @@ public class RDFSTriggersTest {
     }
 
     void thingRepositoryStore(Supplier<ThingRepositoryStore> repoSupplier) {
+        check(repoSupplier, this::justOneProperty);
+        check(repoSupplier, this::classAndProperties);
+        check(repoSupplier, this::propertyClassProperty);
+        check(repoSupplier, this::addRemove);
+    }
+
+    private void check(
+            Supplier<ThingRepositoryStore> repoSupplier,
+            Consumer<ThingRepositoryStore> repoConsumer) {
         var repo = repoSupplier.get();
         try (var ctx = TLC.open().push(ThingProvider.class, repo)) {
-            justOneProperty(repo);
-        }
-
-        repo = repoSupplier.get();
-        try (var ctx = TLC.open().push(ThingProvider.class, repo)) {
-            classAndProperties(repo);
-        }
-
-        repo = repoSupplier.get();
-        try (var ctx = TLC.open().push(ThingProvider.class, repo)) {
-            propertyClassProperty(repo);
-        }
-
-        repo = repoSupplier.get();
-        try (var ctx = TLC.open().push(ThingProvider.class, repo)) {
-            addRemove(repo);
+            repoConsumer.accept(repo);
         }
     }
 
