@@ -17,8 +17,6 @@
  */
 package dev.enola.thing;
 
-import com.google.common.collect.Collections2;
-
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
@@ -33,22 +31,34 @@ import java.util.Optional;
 // package-local
 class ObjectConversions {
 
+    @SuppressWarnings("unchecked")
     static <T> Optional<T> as(
-            Object object,
+            @Nullable Object object,
             Class<T> klass,
             PredicatesObjects predicatesObjects,
             String predicateIRI) {
         if (object == null) return Optional.empty();
         if (klass.isInstance(object)) return Optional.of((T) object);
         if (String.class.equals(klass)) {
-            if (object instanceof Literal literal) return Optional.of((T) literal.value());
-            if (object instanceof URI uri) return Optional.of((T) uri.toString());
-            if (object instanceof Link link) return Optional.of((T) link.iri());
-            if (object instanceof Collection<?> collection)
-                return Optional.of(
-                        (T) Collections2.transform(collection, e -> e.toString()).toString());
-            // TODO Ideally, it should look up the "right" text, using a Lang Ctx Key from the TLC
-            if (object instanceof LangString langString) return Optional.of((T) langString.text());
+            // TODO Remove! This actually seems like a Real Bad Idea(TM)(C)(R), in hindsight...
+            switch (object) {
+                case Literal literal:
+                    return Optional.of((T) literal.value());
+                case URI uri:
+                    return Optional.of((T) uri.toString());
+                case Link(String iri):
+                    return Optional.of((T) iri);
+                case Collection<?> collection:
+                    // return Optional.of((T) Collections2.transform(collection, e ->
+                    // e.toString()).toString());
+                    throw new IllegalArgumentException(
+                            predicateIRI + " is not a String, but: " + object);
+                // TODO Ideally, it should look up the "right" text, using a Lang Ctx Key from TLC
+                case LangString langString:
+                    return Optional.of((T) langString.text());
+                default:
+                    break;
+            }
         }
         try {
             var dtIRI = datatypeLEGACY(predicateIRI, predicatesObjects);
