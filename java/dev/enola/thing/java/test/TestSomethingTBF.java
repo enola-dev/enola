@@ -23,8 +23,10 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.TBF;
 
+// TODO Is this really needed?!
 // TODO Generate this, from a model
 public final class TestSomethingTBF implements TBF {
+    // TODO make this package-local, and accessible only via TestSomething.Builder?
 
     @Override
     public boolean handles(String typeIRI) {

@@ -21,6 +21,7 @@ import dev.enola.thing.HasIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingOrBuilder;
 import dev.enola.thing.java.HasType;
+import dev.enola.thing.java.RdfAnnotations;
 import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -61,27 +62,18 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 public <T extends Thing, TB extends Thing.Builder<T>> TB create(
                         Class<TB> builderInterface, Class<T> thingInterface) {
-                    check(builderInterface, thingInterface);
-                    return (TB) new MutableThing();
+                    var builder = (TB) new MutableThing();
+                    RdfAnnotations.addType(thingInterface, builder);
+                    return builder;
                 }
 
                 @Override
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 public <T extends Thing, TB extends Thing.Builder<T>> TB create(
                         Class<TB> builderInterface, Class<T> thingInterface, int expectedSize) {
-                    check(builderInterface, thingInterface);
-                    return (TB) new MutableThing(expectedSize);
-                }
-
-                private <T extends Thing, TB extends Thing.Builder<T>> void check(
-                        Class<TB> builderInterface, Class<T> thingInterface) {
-                    if (!(builderInterface.equals(Thing.Builder.class)
-                            && thingInterface.equals(Thing.class)))
-                        throw new IllegalArgumentException(
-                                "This implementation does not support "
-                                        + builderInterface
-                                        + " and "
-                                        + thingInterface);
+                    var builder = (TB) new MutableThing(expectedSize);
+                    RdfAnnotations.addType(thingInterface, builder);
+                    return builder;
                 }
             };
 

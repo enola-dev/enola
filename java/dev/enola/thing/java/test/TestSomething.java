@@ -22,6 +22,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java.HasType;
+import dev.enola.thing.java.RdfClass;
 import dev.enola.thing.java.TBF;
 
 import org.jspecify.annotations.Nullable;
@@ -29,6 +30,7 @@ import org.jspecify.annotations.Nullable;
 import java.time.Instant;
 
 // TODO Generate this, from a model
+@RdfClass(iri = TestSomething.CLASS_IRI)
 public interface TestSomething extends HasType, HasA, HasB, IImmutableThing {
 
     String TEST_PROPERTY_IRI = "https://example.org/test";
@@ -78,7 +80,7 @@ public interface TestSomething extends HasType, HasA, HasB, IImmutableThing {
 
     @SuppressWarnings("unchecked")
     static Builder<TestSomething> builder(TBF tbf) {
-        return tbf.create(TestSomething.Builder.class, TestSomething.class);
+        return tbf.create(Builder.class, TestSomething.class);
     }
 
     @SuppressWarnings("unchecked")

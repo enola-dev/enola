@@ -28,7 +28,6 @@ import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.TBFChain;
 import dev.enola.thing.repo.ThingsBuilders;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;
@@ -37,13 +36,11 @@ import java.time.Instant;
 public class JavaThingTest {
 
     @Test
-    @Ignore // TODO Missing addType(); FIXME!!
     public void mutableProxyTBF() {
         checkTBF(new ProxyTBF(MutableThing.FACTORY));
     }
 
     @Test
-    @Ignore // TODO Missing addType(); FIXME!!
     public void immutableProxyTBF() {
         checkTBF(new ProxyTBF(ImmutableThing.FACTORY));
     }
