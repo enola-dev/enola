@@ -133,11 +133,6 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             };
         }
 
-        // TODO Remove?!
-        public void register(ThingsRepositoryAdapter thingsRepository) {
-            register(thingsRepository, thingsRepository);
-        }
-
         public void register(ThingRepository thingRepository, ThingsProvider thingsProvider) {
             var thingRepositoryThingService =
                     new ThingRepositoryThingService(thingsProvider, thingRepository);
