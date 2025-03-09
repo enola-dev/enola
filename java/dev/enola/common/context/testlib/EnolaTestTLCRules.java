@@ -27,6 +27,9 @@ import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
 import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.*;
 
@@ -65,5 +68,7 @@ public class EnolaTestTLCRules {
                             MetadataProvider.class,
                             thingMetadataProvider,
                             ThingMetadataProvider.class,
-                            thingMetadataProvider));
+                            thingMetadataProvider,
+                            TBF.class,
+                            new ProxyTBF(ImmutableThing.FACTORY)));
 }
