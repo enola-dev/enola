@@ -1,0 +1,4 @@
+@prefix ex: <https://example.org/>.
+
+ex:thing7 a ex:TestSomething;
+  ex:test "hello, world".

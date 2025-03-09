@@ -46,21 +46,32 @@ public class ThingsBuilders implements ThingsRepository {
         this.map = new HashMap<>();
     }
 
+    @Deprecated // TODO Remove ThingsBuilders() by replacing with ThingsBuilders(TBF tbf)
     public ThingsBuilders() {
         this(ImmutableThing.FACTORY);
     }
 
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B getBuilder(
-            String iri, Class<B> builderClass, Class<T> thingClass) {
+            String thingIRI, Class<B> builderClass, Class<T> thingClass) {
         return (B)
                 map.computeIfAbsent(
-                        iri,
-                        _iri -> {
+                        thingIRI,
+                        _thingIRI -> {
                             var builder = tbf.create(builderClass, thingClass);
-                            builder.iri(_iri);
+                            builder.iri(_thingIRI);
                             return (Thing.Builder<Thing>) builder;
                         });
+    }
+
+    public Thing.Builder<?> getBuilder(String thingIRI, String typeIRI) {
+        return map.computeIfAbsent(
+                thingIRI,
+                _thingIRI -> {
+                    var builder = tbf.create(typeIRI);
+                    builder.iri(_thingIRI);
+                    return builder;
+                });
     }
 
     @SuppressWarnings("unchecked")

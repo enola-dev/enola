@@ -31,7 +31,7 @@ public class VersionProvider implements CommandLine.IVersionProvider {
         return new String[] {
             DESCRIPTION,
             "@|yellow,italic Version: " + Version.get() + " <" + Version.gitUI() + "> |@",
-            "@|red,bg(white),blink Copyright 2023-2024 The Enola <https://enola.dev> Authors|@",
+            "@|red,bg(white),blink Copyright 2023-2025 The Enola <https://enola.dev> Authors|@",
             "@|magenta,faint JVM: ${java.version} (${java.vendor} ${java.vm.name}"
                 + " ${java.vm.version})|@ on @|cyan,faint OS: ${os.name} ${os.version} ${os.arch}|@"
         };

@@ -24,6 +24,8 @@ import java.util.Optional;
 
 public class RdfAnnotations {
 
+    // TODO Cache these! Because repeated Class.getAnnotation() is quite expensive.
+
     @SuppressWarnings("OptionalOfNullableMisuse")
     static Optional<String> classIRI(Class<?> clazz) {
         return Optional.ofNullable(clazz.getAnnotation(RdfClass.class)).map(RdfClass::iri);
