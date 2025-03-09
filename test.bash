@@ -39,9 +39,6 @@ fi
 
 tools/version/version.bash
 
-# TODO Remove this once evilurl is Bazel test BUILD integrated...
-tools/evilurl/test.bash
-
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
 if [ -z "${CI:-""}" ]; then
