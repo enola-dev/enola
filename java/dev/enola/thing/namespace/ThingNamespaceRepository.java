@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.namespace;
 
+import dev.enola.data.iri.namespace.repo.CachingNamespaceRepository;
 import dev.enola.data.iri.namespace.repo.ImmutableNamespace;
 import dev.enola.data.iri.namespace.repo.Namespace;
 import dev.enola.data.iri.namespace.repo.NamespaceRepository;
@@ -34,13 +35,9 @@ import java.util.Optional;
  *
  * <p>This is (much!) slower than the {@link
  * dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults#INSTANCE}, and should only
- * ever be used indirectly through {@link
- * dev.enola.common.io.iri.namespace.CachingNamespaceRepository}.
+ * ever be used indirectly through {@link CachingNamespaceRepository}.
  */
 public record ThingNamespaceRepository(ThingProvider thingProvider) implements NamespaceRepository {
-
-    // TODO Write ThingNamespaceRepositoryTest which tests //models/enola.dev/namespaces.ttl
-    // and uses and therefore also tests the CachingNamespaceRepository
 
     public static final String ACTIVE_NAMESPACES_IRI = "https://enola.dev/namespaces";
 
@@ -64,9 +61,10 @@ public record ThingNamespaceRepository(ThingProvider thingProvider) implements N
         var optNamespaces = thingProvider.getOptional(ACTIVE_NAMESPACES_IRI);
         if (optNamespaces.isEmpty()) return Optional.empty();
         var namespaces = optNamespaces.get();
+        // TODO Replace with ThingVisitor, when available.
         for (var iri : namespaces.predicateIRIs()) {
-            var aPrefix = namespaces.get(iri, String.class);
-            if (prefix.equals(aPrefix)) return Optional.of(iri);
+            var object = namespaces.get(iri);
+            if (prefix.equals(object)) return Optional.of(iri);
         }
         return Optional.empty();
     }
