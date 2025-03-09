@@ -21,11 +21,10 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.io.testlib.ResourceSubject.assertThat;
 import static dev.enola.thing.template.Templates.Format.Mustache;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MarkdownMediaTypes;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -80,9 +79,7 @@ public class MarkdownSiteGeneratorTest {
                             new MarkdownMediaTypes(),
                             new StandardMediaTypes()));
 
-    @Rule
-    public TestRule tlcRule =
-            new TestTLCRule(ImmutableMap.of(DatatypeRepository.class, Datatypes.DTR));
+    @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
 
     ThingProvider NO_THING_PROVIDER = iri -> null;
 
