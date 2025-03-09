@@ -26,6 +26,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 // package-local
@@ -51,7 +52,7 @@ class ObjectConversions {
                 case Collection<?> collection:
                     // return Optional.of((T) Collections2.transform(collection, e ->
                     // e.toString()).toString());
-                    throw new IllegalArgumentException(
+                    throw new IllegalStateException(
                             predicateIRI + " is not a String, but: " + object);
                 // TODO Ideally, it should look up the "right" text, using a Lang Ctx Key from TLC
                 case LangString langString:
@@ -60,6 +61,8 @@ class ObjectConversions {
                     break;
             }
         }
+        if (klass.isAssignableFrom(Iterable.class) && !(object instanceof Iterable))
+            return Optional.of((T) Collections.singleton(object));
         try {
             var dtIRI = datatypeLEGACY(predicateIRI, predicatesObjects);
             // TODO Find Datatype via object Java class lookup in DatatypeRepository?
