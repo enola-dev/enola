@@ -23,6 +23,8 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.Thing;
+import dev.enola.thing.ThingConverterInto;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.message.ProtoThingProvider;
 
 import org.jspecify.annotations.Nullable;
@@ -63,6 +65,7 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
      */
     // TODO Remove ConversionException? It's weird, and should never happen anymore (here)...
     @Override
+    // TODO Eventually remove @Nullable by making all ThingProvider be AlwaysThingProvider
     @Nullable Thing get(String iri) throws UncheckedIOException, ConversionException;
 
     default Optional<Thing> getOptional(String iri)
@@ -75,15 +78,37 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
     // TODO Move get with Class<T> up into ProviderFromIRI?
 
     @SuppressWarnings("unchecked")
+    @Deprecated // TODO Replace all callers with new variant, see below
     default <T extends Thing> @Nullable T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
         Thing thing = get(Objects.requireNonNull(iri, "iri"));
-        // TODO Automagically convert to Java wrapper, using a TBF? Or shouldn't be needed?!
-        // Nota bene: AlwaysThingProvider (now) already does this - is that sufficient?
+        // Nota bene: This happens when a Thing doesn't not have a @rdf:type
+        // TODO What would be a better way to handle this more gracefully?
+        //   return null is a bad idea - because it's there, just not of type
+        //   generate the Proxy of the Thing here, and return that?!
+        //   But that could hide bugs, and be inefficient, confusing...
         if (thing != null && !thingClass.isInstance(thing))
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);
         return (T) thing;
+    }
+
+    default <T extends Thing, B extends Thing.Builder<T>> T get(
+            String iri, Class<T> thingClass, Class<B> thingBuilderClass) {
+        Thing thing = get(Objects.requireNonNull(iri, "iri"));
+
+        if (thing != null && thingClass.isInstance(thing)) {
+            // noinspection unchecked
+            return (T) thing;
+        }
+
+        // TODO Avoid creating both of these kinda unnecessary intermediate Builders...
+        var tbf = TLC.get(TBF.class);
+        if (thing == null) return tbf.create(thingBuilderClass, thingClass).iri(iri).build();
+
+        var builder = tbf.create(thingBuilderClass, thingClass, thing.predicateIRIs().size());
+        new ThingConverterInto().convertInto(thing, builder);
+        return builder.build();
     }
 
     // TODO Make all IRI by Object instead of String, and remove this method

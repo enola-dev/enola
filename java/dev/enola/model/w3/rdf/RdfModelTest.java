@@ -60,7 +60,7 @@ public class RdfModelTest {
 
     private void check(Property property) {
         assertThat(property.label()).isEqualTo("Property #1");
-        assertThat(iterableToString(property.typesIRIs())).containsExactly(KIRI.RDF.PROPERTY);
+        assertThat(iterableToString(property.typesIRIs())).containsExactly(KIRI.RDFS.CLASS);
     }
 
     //

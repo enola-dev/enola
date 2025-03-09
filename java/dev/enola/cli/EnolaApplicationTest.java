@@ -190,6 +190,18 @@ public class EnolaApplicationTest {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/emoji");
         var subject = assertThat(exec);
         subject.err().isEmpty();
+        subject.out().contains("enola:emoji \"\uD83D\uDE03\";"); // 😃
+        subject.hasExitCode(0);
+    }
+
+    @Test
+    @Ignore // TODO Make this work...
+    public void getLoadedClassAssertPropertiesDomainInverse() {
+        // This ensures that the RDFSPropertyTrigger did its job
+        var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/Event");
+        var subject = assertThat(exec);
+        subject.err().isEmpty();
+        subject.out().contains("enola:properties enola:timestamp");
         subject.hasExitCode(0);
     }
 

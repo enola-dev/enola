@@ -56,6 +56,14 @@ public class ContextsTest {
         }
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void two() {
+        try (var ctx = TLC.open()) {
+            ctx.push(FOO, "bar");
+            ctx.push(FOO, "baz");
+        }
+    }
+
     @Test
     public void nested() {
         try (var ctx1 = TLC.open()) {
