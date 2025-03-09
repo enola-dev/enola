@@ -60,6 +60,7 @@ public class Context implements AutoCloseable {
      * @param key Key.
      * @param value Value to associate with the key.
      * @return this, for chaining.
+     * @throws IllegalStateException if this Context already has another value for the key.
      */
     public <K extends Enum<K> & Key<T>, T> Context push(K key, T value) {
         return _push(key, value);
@@ -72,7 +73,9 @@ public class Context implements AutoCloseable {
 
     private Context _push(Object key, Object value) {
         check();
-        // TODO Check if this Context (not its parents...) already has a value for this key!
+        if (_getJustThisLevel(key) != null)
+            throw new IllegalStateException(
+                    "Use nesting; this Context already has another value for: #" + key);
         last = new Entry(key, value, last);
         return this;
     }
@@ -81,7 +84,7 @@ public class Context implements AutoCloseable {
     // TODO Introduce <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key)
     // TODO Context.get(K key) should not be @Nullable, but throws IllegalStateException
     public <K extends Enum<K> & Key<T>, T> @Nullable T get(K key) {
-        return (T) _get(key);
+        return (T) _getRecursive(key);
     }
 
     /**
@@ -94,7 +97,7 @@ public class Context implements AutoCloseable {
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
         if (isEmpty()) throw new IllegalStateException("Context is empty, no: " + key);
-        var object = _get(key);
+        var object = _getRecursive(key);
         if (object == null)
             throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
         if (key.isInstance(object)) return (T) object;
@@ -107,10 +110,21 @@ public class Context implements AutoCloseable {
      * <p>Use {@link #get(Class)} if key must be available in Context.
      */
     public <T> Optional<T> optional(Class<T> key) {
-        return Optional.ofNullable((T) _get(key));
+        return Optional.ofNullable((T) _getRecursive(key));
     }
 
-    private @Nullable Object _get(Object key) {
+    private @Nullable Object _getJustThisLevel(Object key) {
+        var current = last;
+        while (current != null) {
+            if (current.key.equals(key)) {
+                return current.value;
+            }
+            current = current.previous;
+        }
+        return null;
+    }
+
+    private @Nullable Object _getRecursive(Object key) {
         check();
         var current = last;
         while (current != null) {
@@ -119,7 +133,7 @@ public class Context implements AutoCloseable {
             }
             current = current.previous;
         }
-        if (parent != null) return parent._get(key);
+        if (parent != null) return parent._getRecursive(key);
         else return null;
     }
 
