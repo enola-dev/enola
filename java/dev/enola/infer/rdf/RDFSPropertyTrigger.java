@@ -33,7 +33,6 @@ public class RDFSPropertyTrigger extends ThingTrigger<Property> {
 
         // TODO implement remove existing...
 
-        // TODO Avoid ifPresent() and do always
         update.domain()
                 .ifPresent(
                         clazz -> {
