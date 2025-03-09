@@ -57,10 +57,10 @@ public class TypeToBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Class<?>> T getClass(String typeIRI, String className, T baseClass) {
+    private static <T> Class<T> getClass(String typeIRI, String className, Class<T> baseClass) {
         try {
             var clazz = Class.forName(className);
-            if (baseClass.isAssignableFrom(clazz)) return (T) clazz;
+            if (baseClass.isAssignableFrom(clazz)) return (Class<T>) clazz;
             else
                 throw new IllegalStateException(
                         typeIRI + " -> " + className + " is not a " + baseClass.getName());
