@@ -35,6 +35,8 @@ import org.junit.rules.TestRule;
 
 public class ThingNamespaceRepositoryTest {
 
+    // TODO Cover CachingNamespaceRepository, here and/or in other tests?
+
     @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;

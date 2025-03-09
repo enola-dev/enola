@@ -133,6 +133,7 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             };
         }
 
+        // TODO Remove?!
         public void register(ThingsRepositoryAdapter thingsRepository) {
             register(thingsRepository, thingsRepository);
         }
@@ -141,6 +142,7 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             var thingRepositoryThingService =
                     new ThingRepositoryThingService(thingsProvider, thingRepository);
             for (var iri : thingRepository.listIRI()) {
+                // TODO Why are we adding *ALL* IRI? Wouldn't only those with Templates suffice?
                 b.add(iri, wrap(thingRepositoryThingService));
             }
         }

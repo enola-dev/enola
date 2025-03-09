@@ -110,7 +110,9 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
      *
      * @deprecated Use {@link #get(String, Class)} instead.
      */
-    @Deprecated // TODO Remove after replacing all usages with #get(String, aClass | Object.class)
+    @Deprecated // TODO Remove after adopting ThingVisitor
+    //  Note bene: Cannot always just replace all usages with #get(String, aClass | Object.class);
+    //    actually technically with Object.class we could; but the ThingVisitor is better!
     <T> @Nullable T get(String predicateIRI);
 
     /**
