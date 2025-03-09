@@ -123,12 +123,12 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
      * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
      * dev.enola.common.convert.ObjectClassConverter}.
      */
-    // TODO Remove; create & replace callers with #get(String, Class, Class)
+    @Deprecated // TODO Remove; create & replace callers with #get(String, Class, Class)
     default <T> @Nullable T get(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, klass).orElse(null);
     }
 
-    // TODO Remove; create & replace callers with #get(HasPredicateIRI, Class, Class)
+    @Deprecated // TODO Remove; create & replace callers with #get(HasPredicateIRI, Class, Class)
     default <T> @Nullable T get(HasPredicateIRI predicate, Class<T> klass) {
         return get(predicate.iri(), klass);
     }
@@ -136,11 +136,6 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     @SuppressWarnings("unchecked")
     default <T> @Nullable T get(String predicateIRI, TypeToken<T> typeToken) {
         return (T) get(predicateIRI, typeToken.getRawType());
-    }
-
-    @SuppressWarnings("unchecked")
-    default <T> Optional<T> getOptional(String predicateIRI, TypeToken<T> typeToken) {
-        return (Optional<T>) getOptional(predicateIRI, typeToken.getRawType());
     }
 
     /**
@@ -159,15 +154,6 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
 
     default @Nullable String getString(String predicateIRI) {
         return getOptional(predicateIRI, String.class).orElse(null);
-    }
-
-    // TODO Remove; create & replace callers with #getOptional(HasPredicateIRI, Class, Class)
-    default <T> Optional<T> getOptional(HasPredicateIRI predicate, Class<T> klass) {
-        return getOptional(predicate.iri(), klass);
-    }
-
-    default <T> Optional<T> getOptional(HasPredicateIRI predicate, TypeToken<T> typeToken) {
-        return getOptional(predicate.iri(), typeToken);
     }
 
     default @Nullable String getString(HasPredicateIRI predicate) {
@@ -211,6 +197,10 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
             String predicateIRI, Class<T> klass, Class<B> builderClass) {
         var iris = getOptional(predicateIRI, Iterable.class).orElse(Set.of());
         return ThingProvider.CTX.get(iris, klass, builderClass);
+    }
+
+    default Iterable<Thing> getThings(String predicateIRI) {
+        return getThings(predicateIRI, Thing.class, Thing.Builder.class);
     }
 
     // TODO Remove after creating and replacing all with #getThings(HasPredicateIRI, Class, Class)
