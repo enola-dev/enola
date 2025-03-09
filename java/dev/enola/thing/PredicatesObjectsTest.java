@@ -19,6 +19,12 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
+import dev.enola.common.context.TLC;
+import dev.enola.thing.impl.OnlyIRIThing;
+import dev.enola.thing.repo.ThingProvider;
+
 import org.jspecify.annotations.Nullable;
 import org.junit.Test;
 
@@ -71,11 +77,25 @@ public class PredicatesObjectsTest {
         }
     }
 
-    List<Link> list = List.of(new Link("test:one"), new Link("test:two"));
-    PredicatesObjects predicatesObjects = new TestPredicatesObjects("test:it", list);
+    @Test
+    public void links() {
+        var list = List.of(new Link("test:one"), new Link("test:two"));
+        var predicatesObjects = new TestPredicatesObjects("test:list", list);
+        assertThat(predicatesObjects.getLinks("test:list")).isEqualTo(list);
+        assertThrows(
+                IllegalStateException.class, () -> predicatesObjects.get("test:list", Link.class));
+        assertThrows(
+                IllegalStateException.class,
+                () -> predicatesObjects.get("test:list", String.class));
+    }
 
     @Test
-    public void x() {
-        assertThat(predicatesObjects.getLinks("test:it")).isEqualTo(list);
+    public void single2iterable() {
+        try (var ctx = TLC.open()) {
+            ctx.push(ThingProvider.class, OnlyIRIThing::new);
+            var predicatesObjects = new TestPredicatesObjects("test:one", new Link("test:world"));
+            var things = predicatesObjects.getThings("test:one", Thing.class, Thing.Builder.class);
+            assertThat(things).containsExactly(new OnlyIRIThing("test:world"));
+        }
     }
 }
