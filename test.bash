@@ -42,19 +42,24 @@ tools/version/version.bash
 # TODO Remove this once evilurl is Bazel test BUILD integrated...
 tools/evilurl/test.bash
 
+# TODO Replace skipping non-small tests and JavaDoc unless on CI with Bazel profiles!
 # https://github.com/bazelbuild/bazel/issues/4257
 echo $ Bazel testing...
 if [ -z "${CI:-""}" ]; then
-  "$BZL" query //... | xargs "$BZL" test --explain ~/bazel-test-explain.txt --test_size_filters=small
+  # Skip (slow!) JavaDoc generation when not running on CI
+  "$BZL" query //... | grep -v //java/dev/enola:javadoc | xargs "$BZL" test --explain ~/bazel-test-explain.txt --test_size_filters=small
 
 else # On CI
   # Non-regression for problems like https://github.com/enola-dev/enola/issues/1146 and https://github.com/enola-dev/enola/issues/1164
   bazelisk mod graph --depth=1
+
   # See https://github.com/enola-dev/enola/issues/1116 why it's worth to re-PIN, on CI:
   REPIN=1 bazelisk run @enola_maven//:pin
+
   # Runs git status and git diff to ensure no uncommitted changes
   tools/git/test.bash
 
+  # Test all Bazel targets
   "$BZL" query //... | xargs "$BZL" test
 fi
 
