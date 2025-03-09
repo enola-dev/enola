@@ -25,8 +25,11 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.Thing.Builder;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.UriIntoThingConverter;
+import dev.enola.thing.java.HasType;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
 import dev.enola.thing.repo.ThingsBuilders;
+
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
@@ -80,9 +83,19 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
         var protoList = optProtoList.get();
 
         for (var protoThing : protoList) {
-            var thingBuilder = into.getBuilder(protoThing.getIri());
+            Thing.Builder<?> thingBuilder;
+            var typeIRI = typeIRI(protoThing);
+            if (typeIRI != null) thingBuilder = into.getBuilder(protoThing.getIri(), typeIRI);
+            else thingBuilder = into.getBuilder(protoThing.getIri());
             protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(protoThing, thingBuilder);
         }
         return true;
+    }
+
+    private @Nullable String typeIRI(dev.enola.thing.proto.Thing.Builder protoThing) {
+        var value = protoThing.getPropertiesMap().get(HasType.IRI);
+        if (value != null && value.hasLink()) return value.getLink();
+        // TODO if (value.hasList()) support Proxy of Java interfaces for all types
+        return null;
     }
 }

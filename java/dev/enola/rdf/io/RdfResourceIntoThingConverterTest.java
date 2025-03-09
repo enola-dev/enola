@@ -27,6 +27,9 @@ import dev.enola.common.io.resource.*;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.test.TestSomething;
 import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Rule;
@@ -61,8 +64,16 @@ public class RdfResourceIntoThingConverterTest {
         assertThat(convert(URI.create("file:/tmp/"))).isEmpty();
     }
 
+    @Test // Load testSomething.ttl and ensure it's an instance of TestSomething and not just Thing
+    public void testSomething() throws IOException {
+        var things = convert(new ClasspathResource("testSomething.ttl").uri());
+        Thing thing = things.iterator().next().build();
+        TestSomething testSomething = (TestSomething) thing;
+        assertThat(testSomething.test()).isEqualTo("hello, world");
+    }
+
     private Iterable<Thing.Builder<Thing>> convert(URI uri) throws IOException {
-        var thingsBuilder = new ThingsBuilders();
+        var thingsBuilder = new ThingsBuilders(new ProxyTBF(ImmutableThing.FACTORY));
         c.convertInto(uri, thingsBuilder);
         return thingsBuilder.builders();
     }
