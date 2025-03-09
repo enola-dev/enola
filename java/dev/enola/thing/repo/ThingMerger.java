@@ -22,19 +22,16 @@ import com.google.common.collect.ImmutableSet;
 
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
-import dev.enola.thing.ThingConverterInto;
-import dev.enola.thing.impl.MutableThing;
 
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 
 class ThingMerger {
+    // TODO Get entirely rid of this; with Thing.copy(), using this should be unnecessary?!
 
     // TODO This currently only works for the 1st / top-level,
     //   but later ideally really needs to recurse into all contained PredicatesObjects...
-
-    // TODO Support Java Things, like ProxyTBF (or HasSomethingTBF); it's currently "lost".
 
     public static Thing merge(Thing existing, Thing update) {
         if (!existing.iri().equals(update.iri())) throw new IllegalArgumentException();
@@ -42,9 +39,10 @@ class ThingMerger {
         if (existing.predicateIRIs().isEmpty()) return update;
         if (update.predicateIRIs().isEmpty()) return existing;
 
-        // TODO merged = existing.copy(); !!
-        var merged = new MutableThing();
-        new ThingConverterInto().convertInto(existing, merged);
+        // NOT var merged = new MutableThing();
+        //   new ThingConverterInto().convertInto(existing, merged);
+        //   because that wouldn't support Java Things, like ProxyTBF (or HasSomethingTBF).
+        var merged = existing.copy();
 
         var properties = update.properties();
         properties.forEach(
