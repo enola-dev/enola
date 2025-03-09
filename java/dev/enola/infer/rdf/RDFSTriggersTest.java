@@ -22,23 +22,35 @@ import static com.google.common.truth.Truth.assertThat;
 import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.model.w3.rdf.Property;
 import dev.enola.model.w3.rdfs.Class;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.*;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class RDFSTriggersTest {
 
+    @Rule
+    public final TestRule tlcRule = TestTLCRule.of(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
+
     @Test
     public void thingMemoryRepositoryRW() {
         var trigger = new RDFSPropertyTrigger();
         Supplier<ThingRepositoryStore> repoSupplier =
                 () -> {
-                    var repo = new ThingMemoryRepositoryRW(ImmutableList.of(trigger));
+                    var repo =
+                            new AlwaysThingRepositoryStore(
+                                    new ThingMemoryRepositoryRW(ImmutableList.of(trigger)));
                     trigger.setRepo(repo);
                     return repo;
                 };
@@ -50,7 +62,9 @@ public class RDFSTriggersTest {
         var trigger = new RDFSPropertyTrigger();
         Supplier<ThingRepositoryStore> repoSupplier =
                 () -> {
-                    var repo = new ThingMemoryRepositoryROBuilder(ImmutableList.of(trigger));
+                    var repo =
+                            new AlwaysThingRepositoryStore(
+                                    new ThingMemoryRepositoryROBuilder(ImmutableList.of(trigger)));
                     trigger.setRepo(repo);
                     return repo;
                 };
@@ -62,6 +76,7 @@ public class RDFSTriggersTest {
         check(repoSupplier, this::classAndProperties);
         check(repoSupplier, this::propertyClassProperty);
         check(repoSupplier, this::addRemove);
+        check(repoSupplier, this::inverseOf);
     }
 
     private void check(
@@ -80,8 +95,8 @@ public class RDFSTriggersTest {
                         .iri("http://example.org/AProperty")
                         .build();
         repo.store(property);
-        // TODO Or should we expect it to contain both the Property and the Class, now...
-        assertThat(repo.listIRI()).containsExactly("http://example.org/AProperty");
+        assertThat(repo.listIRI())
+                .containsExactly("http://example.org/AProperty", "http://example.org/AClass");
     }
 
     void classAndProperties(ThingRepositoryStore repo) {
@@ -110,4 +125,17 @@ public class RDFSTriggersTest {
     }
 
     // TODO void changeDomain(ThingRepositoryStore repo) {
+
+    private void inverseOf(ThingRepositoryStore repo) {
+        // Intentionally use "raw" thing instead of Property interface!
+        var inverseProperty =
+                Property.builder()
+                        .iri("http://example.org/inverseOf")
+                        .domain(KIRI.RDF.PROPERTY)
+                        .range(KIRI.RDF.PROPERTY)
+                        .build();
+        repo.store(inverseProperty);
+        var propertyClass = repo.get(KIRI.RDF.PROPERTY, Class.class);
+        assertThat(propertyClass.hasRdfsClassProperty("http://example.org/inverseOf")).isTrue();
+    }
 }

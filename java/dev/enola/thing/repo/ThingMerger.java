@@ -42,6 +42,7 @@ class ThingMerger {
         if (existing.predicateIRIs().isEmpty()) return update;
         if (update.predicateIRIs().isEmpty()) return existing;
 
+        // TODO merged = existing.copy(); !!
         var merged = new MutableThing();
         new ThingConverterInto().convertInto(existing, merged);
 

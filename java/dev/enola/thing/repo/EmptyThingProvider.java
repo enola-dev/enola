@@ -24,6 +24,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.UncheckedIOException;
 
+// TODO Remove this again eventually, as we fully adopt Always*
 /* package local */ class EmptyThingProvider implements ThingProvider {
 
     static final ThingProvider INSTANCE = new EmptyThingProvider();
