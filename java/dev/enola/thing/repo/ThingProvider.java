@@ -78,8 +78,11 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
     default <T extends Thing> @Nullable T get(String iri, Class<T> thingClass)
             throws UncheckedIOException, ConversionException {
         Thing thing = get(Objects.requireNonNull(iri, "iri"));
-        // TODO Automagically convert to Java wrapper, using a TBF? Or shouldn't be needed?!
-        // Nota bene: AlwaysThingProvider (now) already does this - is that sufficient?
+        // Nota bene: This happens when a Thing doesn't not have a @rdf:type
+        // TODO What would be a better way to handle this more gracefully?
+        //   return null is a bad idea - because it's there, just not of type
+        //   generate the Proxy of the Thing here, and return that?!
+        //   But that could hide bugs, and be inefficient, confusing...
         if (thing != null && !thingClass.isInstance(thing))
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);

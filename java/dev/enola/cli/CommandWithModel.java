@@ -37,6 +37,7 @@ import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.repo.ThingTrigger;
 import dev.enola.thing.repo.ThingsProvider;
 import dev.enola.thing.template.TemplateThingRepository;
@@ -80,8 +81,8 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
     @Override
     public final void run() throws Exception {
         super.run();
-        try (var ctx = TLC.open()) {
-            setup(ctx);
+        try (var ctx1 = TLC.open()) {
+            setup(ctx1);
 
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
@@ -93,14 +94,19 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
                     ((ThingTrigger<?>) trigger).setRepo(store);
                 }
 
-                var loader = loader();
-                var fgrp = new GlobResolvers();
-                for (var globIRI : group.load) {
-                    try (var stream = fgrp.get(globIRI)) {
-                        loader.convertIntoOrThrow(stream, store);
+                try (var ctx2 = TLC.open()) {
+                    ctx2.push(ThingProvider.class, store);
+                    var loader = loader();
+                    var fgrp = new GlobResolvers();
+                    for (var globIRI : group.load) {
+                        try (var stream = fgrp.get(globIRI)) {
+                            loader.convertIntoOrThrow(stream, store);
+                        }
                     }
                 }
                 var repo = store.build();
+                // TODO ctx1.push(ThingProvider.class, new AlwaysThingProviderAdapter(repo));
+                ctx1.push(ThingProvider.class, repo);
 
                 if (validate) {
                     var c = new LoggingCollector();
