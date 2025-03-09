@@ -95,10 +95,22 @@ You should now be able to proceed as above (but without requiring _Docker)._
 
 ### Clean Up
 
+Use `tools/pre-commit/install.bash` and do not directly do
+`pip install -r requirements.txt` - because that script creates `.venv/`.
+
 In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try:
 
 1. `rm -rf .venv/`
 1. `rm -rf ~/.cache/pre-commit/`
+
+In case of `ImportError: cannot import name 're' from 'typing' (/usr/lib64/python3.13/typing.py)`,
+see https://github.com/linkml/linkml/issues/2563.
+
+In other cases like `ImportError: cannot import name '...' from '...'`, maybe try:
+
+1. `rm -rf ~/.local/lib/python*`
+
+Altough if you are correctly in the virtual environment, then no need.
 
 ## Further Reading
 
