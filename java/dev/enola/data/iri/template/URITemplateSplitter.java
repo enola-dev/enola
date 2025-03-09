@@ -26,14 +26,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
- * Splits an URI based on a RFC 6570 Template. This is the "inverse" of {@link URITemplate}.
- * Reliably parsing URIs correctly is hard, see https://urlpattern.spec.whatwg.org (and note
- * https://github.com/teaconmc/urlpattern/issues/1). This class is intentionally limited, and only
- * fulfills the current needs of this project. It still has a lot of gaps. If you read this and need
- * it to do more and better, please improve it, along with its coverage in URITemplateSplitterTest
- * and URITemplateTest! (Or find some existing library which does this?)
+ * Splits an URI based on an RFC 6570 Template. This is the "inverse" of {@link URITemplate}.
+ * Reliably parsing URIs correctly is hard, see <a href="https://urlpattern.spec.whatwg.org">WHATWG
+ * URL Pattern</a>. This class is intentionally limited, and only fulfills the current needs of this
+ * project. It still has a lot of gaps. If you read this and need it to do more and better, please
+ * improve it, along with its coverage in URITemplateSplitterTest and URITemplateTest! (Or find some
+ * existing library which does this? E.g.
+ * [teaconmc/urlpattern](https://github.com/teaconmc/urlpattern/issues/1)).
  */
 public class URITemplateSplitter {
 
@@ -75,7 +77,11 @@ public class URITemplateSplitter {
 
         this.template = template;
         this.keys = keysBuilder.build();
-        this.pattern = Pattern.compile(pattern.toString());
+        try {
+            this.pattern = Pattern.compile(pattern.toString());
+        } catch (PatternSyntaxException e) {
+            throw new IllegalArgumentException(template, e);
+        }
         this.length = lengther.length();
     }
 
