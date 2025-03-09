@@ -207,6 +207,12 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         return ThingProvider.CTX.get(iris, klass);
     }
 
+    default <T extends Thing, B extends Thing.Builder<T>> Iterable<T> getThings(
+            String predicateIRI, Class<T> klass, Class<B> builderClass) {
+        var iris = getOptional(predicateIRI, Iterable.class).orElse(Set.of());
+        return ThingProvider.CTX.get(iris, klass, builderClass);
+    }
+
     // TODO Remove after creating and replacing all with #getThings(HasPredicateIRI, Class, Class)
     default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicate, Class<T> klass) {
         return getThings(predicate.iri(), klass);

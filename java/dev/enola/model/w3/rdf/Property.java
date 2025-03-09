@@ -40,12 +40,24 @@ public interface Property extends Resource, HasPredicateIRI {
                 Property.Builder.class);
     }
 
-    default Optional<Class> domain() {
-        return getThing(KIRI.RDFS.DOMAIN, Class.class, Class.Builder.class);
+    /**
+     * <a href="https://www.w3.org/TR/rdf12-schema/#ch_domain">Domains</a> of this property.
+     *
+     * <p>Beware that, if more than one, then this means intersection, not union; see <a
+     * href="https://g.co/gemini/share/1ec30662b500">this explanation</a>.
+     */
+    default Iterable<Class> domains() {
+        return getThings(KIRI.RDFS.DOMAIN, Class.class, Class.Builder.class);
     }
 
-    default Optional<Class> range() {
-        return getThing(KIRI.RDFS.RANGE, Class.class, Class.Builder.class);
+    /**
+     * <a href="https://www.w3.org/TR/rdf12-schema/#ch_range">Domains</a> of this property.
+     *
+     * <p>Beware that, if more than one, then this means intersection, not union; see <a
+     * href="https://g.co/gemini/share/1ec30662b500">this explanation</a>.
+     */
+    default Iterable<Class> ranges() {
+        return getThings(KIRI.RDFS.RANGE, Class.class, Class.Builder.class);
     }
 
     @Override

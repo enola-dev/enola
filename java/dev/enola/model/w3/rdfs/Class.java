@@ -40,7 +40,7 @@ public interface Class extends Resource, HasClassIRI {
         return getThings(SUBCLASS_OF, Class.class);
     }
 
-    /** This is the inverse of {@link Property#domain()}. */
+    /** This is the inverse of {@link Property#domains()}. */
     default Iterable<Property> rdfsClassProperties() {
         return getThings(PROPERTIES, Property.class);
     }
