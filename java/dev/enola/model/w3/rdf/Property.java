@@ -34,15 +34,18 @@ import java.util.Optional;
 public interface Property extends Resource, HasPredicateIRI {
 
     default Optional<Property> subPropertyOf() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#subPropertyOf", Property.class);
+        return getThing(
+                "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
+                Property.class,
+                Property.Builder.class);
     }
 
     default Optional<Class> domain() {
-        return getThing(KIRI.RDFS.DOMAIN, Class.class);
+        return getThing(KIRI.RDFS.DOMAIN, Class.class, Class.Builder.class);
     }
 
     default Optional<Class> range() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#range", Class.class);
+        return getThing(KIRI.RDFS.RANGE, Class.class, Class.Builder.class);
     }
 
     @Override
@@ -57,6 +60,12 @@ public interface Property extends Resource, HasPredicateIRI {
             return this;
         }
 
+        @CanIgnoreReturnValue
+        default Builder<B> range(String iri) {
+            set(KIRI.RDFS.RANGE, new Link(iri));
+            return this;
+        }
+
         @Override
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
@@ -66,7 +75,8 @@ public interface Property extends Resource, HasPredicateIRI {
     static Property.Builder<Property> builder() {
         var builder =
                 new ProxyTBF(ImmutableThing.FACTORY).create(Property.Builder.class, Property.class);
-        builder.addType(KIRI.RDF.PROPERTY);
+        // Nota bene: The rdf:class (@type) of a Property is Class, not Property!!
+        builder.addType(KIRI.RDFS.CLASS);
         return builder;
     }
 }

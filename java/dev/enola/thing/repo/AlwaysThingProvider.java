@@ -41,10 +41,10 @@ public class AlwaysThingProvider implements ThingProvider {
 
     public static final AlwaysThingProvider CTX =
             new AlwaysThingProvider(
-                    // TODO Rethink... convenient - but hides errors! Better not? Set TLC in Tests!
+                    // TODO Rethink EmptyThingProvider... convenient - but hides errors! So not?
                     TLC.optional(ThingProvider.class).orElse(EmptyThingProvider.INSTANCE));
 
-    private final ThingProvider delegate;
+    ThingProvider delegate;
 
     public AlwaysThingProvider(ThingProvider delegate) {
         this.delegate = delegate;

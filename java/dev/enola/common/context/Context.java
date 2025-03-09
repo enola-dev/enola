@@ -72,6 +72,7 @@ public class Context implements AutoCloseable {
 
     private Context _push(Object key, Object value) {
         check();
+        // TODO Check if this Context (not its parents...) already has a value for this key!
         last = new Entry(key, value, last);
         return this;
     }
