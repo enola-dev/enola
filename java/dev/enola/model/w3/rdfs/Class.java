@@ -26,7 +26,9 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.RdfClass;
 
+@RdfClass(iri = KIRI.RDFS.CLASS)
 public interface Class extends Resource, HasClassIRI {
 
     // TODO Move somewhere else... but IRI enums are RDFS', while this comes from enola: ...

@@ -26,9 +26,11 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.RdfClass;
 
 import java.util.Optional;
 
+@RdfClass(iri = KIRI.RDF.PROPERTY)
 public interface Property extends Resource, HasPredicateIRI {
 
     default Optional<Property> subPropertyOf() {
