@@ -26,7 +26,9 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.RdfClass;
 
+@RdfClass(iri = KIRI.RDFS.CLASS)
 public interface Class extends Resource, HasClassIRI {
 
     // TODO Move somewhere else... but IRI enums are RDFS', while this comes from enola: ...
@@ -38,7 +40,7 @@ public interface Class extends Resource, HasClassIRI {
         return getThings(SUBCLASS_OF, Class.class);
     }
 
-    /** This is the inverse of {@link Property#domain()}. */
+    /** This is the inverse of {@link Property#domains()}. */
     default Iterable<Property> rdfsClassProperties() {
         return getThings(PROPERTIES, Property.class);
     }

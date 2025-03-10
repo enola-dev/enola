@@ -110,7 +110,9 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
      *
      * @deprecated Use {@link #get(String, Class)} instead.
      */
-    @Deprecated // TODO Remove after replacing all usages with #get(String, aClass | Object.class)
+    @Deprecated // TODO Remove after adopting ThingVisitor
+    //  Note bene: Cannot always just replace all usages with #get(String, aClass | Object.class);
+    //    actually technically with Object.class we could; but the ThingVisitor is better!
     <T> @Nullable T get(String predicateIRI);
 
     /**
@@ -121,10 +123,12 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
      * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
      * dev.enola.common.convert.ObjectClassConverter}.
      */
+    @Deprecated // TODO Remove; create & replace callers with #get(String, Class, Class)
     default <T> @Nullable T get(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, klass).orElse(null);
     }
 
+    @Deprecated // TODO Remove; create & replace callers with #get(HasPredicateIRI, Class, Class)
     default <T> @Nullable T get(HasPredicateIRI predicate, Class<T> klass) {
         return get(predicate.iri(), klass);
     }
@@ -132,11 +136,6 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     @SuppressWarnings("unchecked")
     default <T> @Nullable T get(String predicateIRI, TypeToken<T> typeToken) {
         return (T) get(predicateIRI, typeToken.getRawType());
-    }
-
-    @SuppressWarnings("unchecked")
-    default <T> Optional<T> getOptional(String predicateIRI, TypeToken<T> typeToken) {
-        return (Optional<T>) getOptional(predicateIRI, typeToken.getRawType());
     }
 
     /**
@@ -147,6 +146,7 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
      * @throws ConversionException if known Datatype failed to convert
      */
     @SuppressWarnings("unchecked")
+    // TODO Remove; create & replace callers with #getOptional(String, Class, Class)
     default <T> Optional<T> getOptional(String predicateIRI, Class<T> klass) {
         Object object = get(predicateIRI);
         return ObjectConversions.as(object, klass, this, predicateIRI);
@@ -156,25 +156,18 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         return getOptional(predicateIRI, String.class).orElse(null);
     }
 
-    default <T> Optional<T> getOptional(HasPredicateIRI predicate, Class<T> klass) {
-        return getOptional(predicate.iri(), klass);
-    }
-
-    default <T> Optional<T> getOptional(HasPredicateIRI predicate, TypeToken<T> typeToken) {
-        return getOptional(predicate.iri(), typeToken);
-    }
-
     default @Nullable String getString(HasPredicateIRI predicate) {
         return getString(predicate.iri());
     }
 
-    // TODO Rename to getThingOpt
+    @Deprecated // TODO Replace all callers with new variant, see below
     default <T extends Thing> Optional<T> getThing(String predicateIRI, Class<T> klass) {
         return getOptional(predicateIRI, String.class)
                 .map(linkIRI -> ThingProvider.CTX.get(linkIRI, klass));
     }
 
     // TODO Rename to getThing
+    @Deprecated // TODO Replace all callers with new variant, see below
     default <T extends Thing> T getThingOrThrow(String predicateIRI, Class<T> klass) {
         var opt = getOptional(predicateIRI, String.class);
         if (!opt.isPresent())
@@ -185,12 +178,32 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         return thing;
     }
 
+    // TODO Rename to getThingOpt; or (better) remove Optional, when fully adopting Always*
+    default <T extends Thing, B extends Thing.Builder<T>> Optional<T> getThing(
+            String predicateIRI, Class<T> klass, Class<B> builderClass) {
+        return getOptional(predicateIRI, String.class)
+                .map(linkIRI -> ThingProvider.CTX.get(linkIRI, klass, builderClass));
+    }
+
     @SuppressWarnings("unchecked")
+    @Deprecated
+    // TODO Remove after creating and replacing all usages with #getThings(String, Class, Class)
     default <T extends Thing> Iterable<T> getThings(String predicateIRI, Class<T> klass) {
         var iris = getOptional(predicateIRI, Iterable.class).orElse(Set.of());
         return ThingProvider.CTX.get(iris, klass);
     }
 
+    default <T extends Thing, B extends Thing.Builder<T>> Iterable<T> getThings(
+            String predicateIRI, Class<T> klass, Class<B> builderClass) {
+        var iris = getOptional(predicateIRI, Iterable.class).orElse(Set.of());
+        return ThingProvider.CTX.get(iris, klass, builderClass);
+    }
+
+    default Iterable<Thing> getThings(String predicateIRI) {
+        return getThings(predicateIRI, Thing.class, Thing.Builder.class);
+    }
+
+    // TODO Remove after creating and replacing all with #getThings(HasPredicateIRI, Class, Class)
     default <T extends Thing> Iterable<T> getThings(HasPredicateIRI predicate, Class<T> klass) {
         return getThings(predicate.iri(), klass);
     }

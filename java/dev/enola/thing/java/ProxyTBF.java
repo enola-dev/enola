@@ -45,12 +45,16 @@ public final class ProxyTBF implements TBF {
 
     @Override
     public boolean handles(Class<?> builderInterface) {
-        // TODO Document the reason for the negation here...
+        // Skip Proxy if wrapped delegate can handle it
+        // This makes TBFChain more efficient, because e.g.
+        // Thing.Builder.class can be "passed through".
         return !wrap.handles(builderInterface);
     }
 
     @Override
     public boolean handles(String typeIRI) {
+        // ProxyTBF handles any typeIRI, currently.
+        // TODO Make it based on whether create() implementation uses default class or not.
         return true;
     }
 

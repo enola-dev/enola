@@ -107,10 +107,12 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
         out.append("\" [");
         if (full) out.append("shape=plain ");
 
-        // TODO Later use RdfsClass Java interface instead of Thing API
-        var optClass = thing.getThing(KIRI.RDF.TYPE, Thing.class);
-        if (optClass.isPresent()) {
-            printColors(optClass.get(), out);
+        // Nota bene: This is just an approximate heuristic; if there are multiple types,
+        // then we don't know which of them has colors, if any.
+        // TODO We could do better and find the first one with a color, if any....
+        var types = thing.getThings(KIRI.RDF.TYPE).iterator();
+        if (types.hasNext()) {
+            printColors(types.next(), out);
         } else {
             printColors(thing, out);
         }

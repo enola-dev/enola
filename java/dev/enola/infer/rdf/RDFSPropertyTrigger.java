@@ -17,6 +17,8 @@
  */
 package dev.enola.infer.rdf;
 
+import com.google.common.collect.Iterables;
+
 import dev.enola.model.w3.rdf.Property;
 import dev.enola.thing.repo.ThingTrigger;
 
@@ -24,24 +26,27 @@ import org.jspecify.annotations.Nullable;
 
 public class RDFSPropertyTrigger extends ThingTrigger<Property> {
 
-    protected RDFSPropertyTrigger() {
+    public RDFSPropertyTrigger() {
         super(Property.class);
     }
 
     @Override
     public void updated(@Nullable Property existing, Property update) {
-
         // TODO implement remove existing...
 
-        // TODO Avoid ifPresent() and do always
-        update.domain()
-                .ifPresent(
-                        clazz -> {
-                            if (!clazz.hasRdfsClassProperty(update.iri())) {
-                                var builder = clazz.copy();
-                                builder.addRdfsClassProperty(update);
-                                repo.store(builder.build());
-                            }
-                        });
+        var domains = update.domains();
+        var size = Iterables.size(domains);
+        if (size == 0) return;
+
+        // TODO Handle this by generating a new "synthetic" class?! See domains() JavaDoc.
+        if (size == 2) return;
+
+        // size == 1
+        var clazz = domains.iterator().next();
+        if (!clazz.hasRdfsClassProperty(update.iri())) {
+            var builder = clazz.copy();
+            builder.addRdfsClassProperty(update);
+            repo.store(builder.build());
+        }
     }
 }

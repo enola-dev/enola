@@ -76,6 +76,8 @@ junit_tests(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing:thing_java_proto",
         "//test",
+        # TODO Remove //models again later, it's only here temporarily for META-INF/dev.enola/*
+        "//models",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_model",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_model_api",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_model_vocabulary",

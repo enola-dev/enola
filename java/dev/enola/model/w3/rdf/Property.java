@@ -26,21 +26,38 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.RdfClass;
 
 import java.util.Optional;
 
+@RdfClass(iri = KIRI.RDF.PROPERTY)
 public interface Property extends Resource, HasPredicateIRI {
 
     default Optional<Property> subPropertyOf() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#subPropertyOf", Property.class);
+        return getThing(
+                "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
+                Property.class,
+                Property.Builder.class);
     }
 
-    default Optional<Class> domain() {
-        return getThing(KIRI.RDFS.DOMAIN, Class.class);
+    /**
+     * <a href="https://www.w3.org/TR/rdf12-schema/#ch_domain">Domains</a> of this property.
+     *
+     * <p>Beware that, if more than one, then this means intersection, not union; see <a
+     * href="https://g.co/gemini/share/1ec30662b500">this explanation</a>.
+     */
+    default Iterable<Class> domains() {
+        return getThings(KIRI.RDFS.DOMAIN, Class.class, Class.Builder.class);
     }
 
-    default Optional<Class> range() {
-        return getThing("http://www.w3.org/2000/01/rdf-schema#range", Class.class);
+    /**
+     * <a href="https://www.w3.org/TR/rdf12-schema/#ch_range">Domains</a> of this property.
+     *
+     * <p>Beware that, if more than one, then this means intersection, not union; see <a
+     * href="https://g.co/gemini/share/1ec30662b500">this explanation</a>.
+     */
+    default Iterable<Class> ranges() {
+        return getThings(KIRI.RDFS.RANGE, Class.class, Class.Builder.class);
     }
 
     @Override
@@ -55,6 +72,12 @@ public interface Property extends Resource, HasPredicateIRI {
             return this;
         }
 
+        @CanIgnoreReturnValue
+        default Builder<B> range(String iri) {
+            set(KIRI.RDFS.RANGE, new Link(iri));
+            return this;
+        }
+
         @Override
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
@@ -64,7 +87,8 @@ public interface Property extends Resource, HasPredicateIRI {
     static Property.Builder<Property> builder() {
         var builder =
                 new ProxyTBF(ImmutableThing.FACTORY).create(Property.Builder.class, Property.class);
-        builder.addType(KIRI.RDF.PROPERTY);
+        // Nota bene: The rdf:class (@type) of a Property is Class, not Property!!
+        builder.addType(KIRI.RDFS.CLASS);
         return builder;
     }
 }

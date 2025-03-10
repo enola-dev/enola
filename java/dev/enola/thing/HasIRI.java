@@ -19,5 +19,6 @@ package dev.enola.thing;
 
 public interface HasIRI {
 
+    // TODO IRI iri() instead of String iri() ?
     String iri();
 }

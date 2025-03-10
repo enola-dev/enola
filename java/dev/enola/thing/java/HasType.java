@@ -25,6 +25,9 @@ import dev.enola.thing.Thing;
 
 public interface HasType extends Thing {
 
+    // TODO Remove this, and instead use KIRI.RDF.TYPE inline instead,
+    //   because having this here as-is is visible EVERYWHERE, which is confusing;
+    //   UNLESS it's repeated (and hides this) in every single static Thing interface.
     String IRI = KIRI.RDF.TYPE;
 
     default Iterable<Object> typesIRIs() {

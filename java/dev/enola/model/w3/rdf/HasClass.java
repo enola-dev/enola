@@ -25,7 +25,7 @@ import dev.enola.thing.repo.AlwaysThingProvider;
 public interface HasClass extends HasType {
 
     default Iterable<Class> types() {
-        return AlwaysThingProvider.CTX.getFromIRIs(typesIRIs(), Class.class);
+        return AlwaysThingProvider.CTX.get(typesIRIs(), Class.class, Class.Builder.class);
     }
 
     interface Builder<B extends HasClass> extends HasType.Builder<B> { // skipcq: JAVA-E0169

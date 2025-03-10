@@ -94,8 +94,11 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
 
     private @Nullable String typeIRI(dev.enola.thing.proto.Thing.Builder protoThing) {
         var value = protoThing.getPropertiesMap().get(HasType.IRI);
-        if (value != null && value.hasLink()) return value.getLink();
-        // TODO if (value.hasList()) support Proxy of Java interfaces for all types
-        return null;
+        if (value == null) return null;
+        if (value.hasLink()) return value.getLink();
+        // TODO Support Proxy of Java interfaces for more than 1 @type:
+        if (value.hasList()) return null;
+        // TODO Handle other weird cases? Or also ignore by returning null?
+        throw new IllegalArgumentException(protoThing.toString());
     }
 }

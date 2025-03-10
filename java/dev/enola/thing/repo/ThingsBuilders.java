@@ -21,6 +21,7 @@ import dev.enola.thing.KIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.impl.OnlyIRIThing;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class ThingsBuilders implements ThingsRepository {
 
     @Deprecated // TODO Remove ThingsBuilders() by replacing with ThingsBuilders(TBF tbf)
     public ThingsBuilders() {
-        this(ImmutableThing.FACTORY);
+        this(new ProxyTBF(ImmutableThing.FACTORY));
     }
 
     @SuppressWarnings("unchecked")
