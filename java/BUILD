@@ -13,3 +13,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+sh_test(
+    name = "evilurl",
+    srcs = ["evilurl.bash"],
+    # TODO How to make this work despite the presence of **/BUILD files?!
+    data = glob(["**/*.java"]),
+)
