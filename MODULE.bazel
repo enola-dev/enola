@@ -129,7 +129,7 @@ enola_maven.install(
         "com.squareup.okhttp3:logging-interceptor:4.12.0",
         "dev.dirs:directories:26",
         "io.github.amithkoujalgi:ollama4j:1.0.70",
-        "com.github.spotbugs:spotbugs-annotations:4.9.1",
+        "com.github.spotbugs:spotbugs-annotations:4.9.2",
         "io.github.java-diff-utils:java-diff-utils:4.15",
         "org.jsoup:jsoup:1.18.3",
         "org.apache.tika:tika-core:3.0.0-BETA2",
