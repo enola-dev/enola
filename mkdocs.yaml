@@ -76,6 +76,8 @@ nav:
           - MIME Simple: models/enola.dev/mediaType/graph.gv.svg
           - MIME Full: models/enola.dev/mediaType/graphviz.gv.svg
   - Concepts:
+      - What? Things!: concept/what.md
+      - Which? Identifiers!: concept/which.md
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
       - Roadmap: concepts/roadmap.md
