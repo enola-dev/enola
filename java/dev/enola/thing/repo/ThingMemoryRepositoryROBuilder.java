@@ -45,11 +45,6 @@ public class ThingMemoryRepositoryROBuilder extends RepositoryBuilder<Thing>
     }
 
     @Override
-    protected Thing merge(Thing existing, Thing update) {
-        return ThingMerger.merge(existing, update);
-    }
-
-    @Override
     public ThingMemoryRepositoryROBuilder store(Thing item) {
         super.store(item);
         return this;

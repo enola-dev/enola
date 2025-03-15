@@ -48,9 +48,4 @@ public class ThingMemoryRepositoryRW extends MemoryRepositoryRW<Thing>
     protected String getIRI(Thing value) {
         return value.iri();
     }
-
-    @Override
-    protected Thing merge(Thing existing, Thing update) {
-        return ThingMerger.merge(existing, update);
-    }
 }

@@ -37,8 +37,6 @@ abstract class AbstractMapRepositoryRW<T> implements RepositoryRW<T> {
 
     protected abstract String getIRI(T value);
 
-    protected abstract T merge(T existing, T update);
-
     protected abstract Map<String, T> map();
 
     @Override
@@ -48,24 +46,6 @@ abstract class AbstractMapRepositoryRW<T> implements RepositoryRW<T> {
         var existing = map().put(iri, item);
         trigger(existing, item);
         return this;
-    }
-
-    @Override
-    public void merge(T item) {
-        var iri = getIRI(item);
-        // Nota Bene: For concurrency safety, map() can only be used once!
-        map().compute(
-                        iri,
-                        (k, existing) -> {
-                            if (existing != null) {
-                                var merged = merge(existing, item);
-                                trigger(existing, merged);
-                                return merged;
-                            } else {
-                                trigger(null, item);
-                                return item;
-                            }
-                        });
     }
 
     @Override

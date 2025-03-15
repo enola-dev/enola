@@ -48,11 +48,6 @@ public class AlwaysThingRepositoryStore extends AlwaysThingProvider
     }
 
     @Override
-    public void merge(Thing item) {
-        delegateRepositoryStore.merge(item);
-    }
-
-    @Override
     public Store<Thing> store(Thing item) {
         return delegateRepositoryStore.store(item);
     }
