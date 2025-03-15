@@ -21,9 +21,9 @@ import com.google.common.collect.Iterables;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.data.Store;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +32,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.stream.Stream;
 
-public class Loader implements ConverterInto<Stream<URI>, Store<Thing>> {
+public class Loader implements ConverterInto<Stream<URI>, ThingRepositoryStore> {
 
     // TODO Move Glob-based loading from CommandWithModel into here!
 
-    // TODO Load resources multi-threaded, in parallel...
+    // TODO Load resources multithreaded, in parallel...
 
     private static final Logger LOG = LoggerFactory.getLogger(Loader.class);
 
@@ -47,7 +47,7 @@ public class Loader implements ConverterInto<Stream<URI>, Store<Thing>> {
     }
 
     @Override
-    public boolean convertInto(Stream<URI> stream, Store<Thing> store)
+    public boolean convertInto(Stream<URI> stream, ThingRepositoryStore store)
             throws ConversionException, IOException {
 
         stream.forEach(resource -> load(resource, store));
@@ -55,11 +55,11 @@ public class Loader implements ConverterInto<Stream<URI>, Store<Thing>> {
         return true;
     }
 
-    public boolean load(String uri, Store<Thing> store) {
+    public boolean load(String uri, ThingRepositoryStore store) {
         return load(URI.create(uri), store);
     }
 
-    public boolean load(URI uri, Store<Thing> store) {
+    public boolean load(URI uri, ThingRepositoryStore store) {
         LOG.info("Loading {}...", uri);
         var things = uriIntoThingConverters.convert(uri);
         if (Iterables.isEmpty(things)) return false;
@@ -73,7 +73,7 @@ public class Loader implements ConverterInto<Stream<URI>, Store<Thing>> {
 
     // TODO The load() vs. load[AtLeastOne]Thing/s duality is strange... remove this again:
 
-    public Iterable<Thing> loadThings(URI uri) {
+    private Iterable<Thing> loadThings(URI uri) {
         var store = new ThingMemoryRepositoryROBuilder();
         load(uri, store);
         return store.build().list();
