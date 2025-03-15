@@ -37,6 +37,11 @@ public class WritableResourceRDFHandler implements RDFHandler, Closeable {
             String baseURI = resource.uri().toString();
             var mediaType = resource.mediaType().withoutParameters().toString();
             var writerFormat = Rio.getWriterFormatForMIMEType(mediaType);
+            // TODO See https://github.com/eclipse-rdf4j/rdf4j/issues/5272:
+            if (mediaType.equals("text/plain")
+                    && writerFormat.isPresent()
+                    && writerFormat.get().equals(RDFFormat.NTRIPLES))
+                writerFormat = Optional.empty();
             if (writerFormat.isEmpty()) writerFormat = Rio.getWriterFormatForFileName(baseURI);
             if (writerFormat.isEmpty()) return Optional.empty();
 
