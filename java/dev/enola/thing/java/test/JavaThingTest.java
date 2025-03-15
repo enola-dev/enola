@@ -26,7 +26,6 @@ import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.TBFChain;
-import dev.enola.thing.repo.ThingsBuilders;
 
 import org.junit.Test;
 
@@ -87,7 +86,6 @@ public class JavaThingTest {
 
     private void checkTBF(TBF tbf) {
         checkTestSomethingBuilder(tbf);
-        checkThingsBuilders(tbf);
         checkCreateFromType(tbf);
     }
 
@@ -101,16 +99,6 @@ public class JavaThingTest {
     private void checkTestSomethingBuilder(TBF tbf) {
         var builder = TestSomething.builder(tbf);
         builder.iri("https://example.org/thing");
-        checkTestSomethingBuilder(builder);
-    }
-
-    private void checkThingsBuilders(TBF tbf) {
-        var thingsBuilders = new ThingsBuilders(tbf);
-        var builder =
-                thingsBuilders.getBuilder(
-                        "https://example.org/thing",
-                        TestSomething.class,
-                        TestSomething.Builder.class);
         checkTestSomethingBuilder(builder);
     }
 

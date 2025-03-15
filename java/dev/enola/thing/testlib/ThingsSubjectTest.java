@@ -19,50 +19,59 @@ package dev.enola.thing.testlib;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
-import dev.enola.thing.repo.ThingsBuilders;
-import dev.enola.thing.repo.ThingsRepository;
+import dev.enola.thing.repo.EmptyThingsRepository;
+import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.io.IOException;
 
 public class ThingsSubjectTest {
 
     @Rule
-    public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new YamlMediaType()));
+    public final SingletonRule r =
+            $(MediaTypeProviders.set(new RdfMediaTypes(), new YamlMediaType()));
+
+    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
     public void empty() throws IOException {
-        ThingsRepository r = new ThingsBuilders();
+        var r = new EmptyThingsRepository();
         ThingsSubject.assertThat(r).isEqualTo("classpath:/empty.yaml");
     }
 
     @Test
     public void greeting1ttl() throws IOException {
-        ThingsBuilders r = new ThingsBuilders();
-        r.getBuilder("https://example.org/greeting1")
-                .set("https://example.org/message", "hello, world");
-        ThingsSubject.assertThat(r).isEqualTo("classpath:/example.org/greeting1.ttl");
+        var repo = new ThingMemoryRepositoryRW();
+        var builder =
+                repo.getBuilder("https://example.org/greeting1")
+                        .set("https://example.org/message", "hello, world");
+        repo.store(builder.build());
+        ThingsSubject.assertThat(repo).isEqualTo("classpath:/example.org/greeting1.ttl");
     }
 
     @Test
     public void greetingNttl() throws IOException {
-        ThingsBuilders r = new ThingsBuilders();
-        r.getBuilder("https://example.org/greeting")
-                .set(KIRI.E.IRI_TEMPLATE_PROPERTY, "https://example.org/greet/{NUMBER}")
-                .set("https://enola.dev/example", new Link("https://example.org/greet/42"))
-                .set(
-                        "https://example.org/yo",
-                        "http://example.org/hi/{NUMBER}",
-                        KIRI.E.IRI_TEMPLATE_DATATYPE)
-                .set(KIRI.RDF.TYPE, new Link(KIRI.RDFS.CLASS));
-        ThingsSubject.assertThat(r).isEqualTo("classpath:/example.org/greetingN.ttl");
+        var repo = new ThingMemoryRepositoryRW();
+        var builder =
+                repo.getBuilder("https://example.org/greeting")
+                        .set(KIRI.E.IRI_TEMPLATE_PROPERTY, "https://example.org/greet/{NUMBER}")
+                        .set("https://enola.dev/example", new Link("https://example.org/greet/42"))
+                        .set(
+                                "https://example.org/yo",
+                                "http://example.org/hi/{NUMBER}",
+                                KIRI.E.IRI_TEMPLATE_DATATYPE)
+                        .set(KIRI.RDF.TYPE, new Link(KIRI.RDFS.CLASS));
+        repo.store(builder.build());
+        ThingsSubject.assertThat(repo).isEqualTo("classpath:/example.org/greetingN.ttl");
     }
 }
