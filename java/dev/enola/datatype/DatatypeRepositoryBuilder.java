@@ -31,12 +31,6 @@ public class DatatypeRepositoryBuilder extends RepositoryBuilder<Datatype<?>> {
     }
 
     @Override
-    protected Datatype<?> merge(Datatype<?> existing, Datatype<?> update) {
-        throw new UnsupportedOperationException(
-                "TODO Implement merge() in DatatypeRepositoryBuilder");
-    }
-
-    @Override
     public DatatypeRepositoryBuilder store(Datatype<?> item) {
         super.store(item);
         return this;
