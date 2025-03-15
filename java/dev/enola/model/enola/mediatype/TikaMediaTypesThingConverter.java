@@ -22,7 +22,7 @@ import com.google.common.base.Strings;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.format.tika.TikaMediaTypes;
-import dev.enola.thing.io.TypedUriIntoThingConverter;
+import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.apache.tika.mime.MimeTypeException;
@@ -43,7 +43,7 @@ import java.net.URI;
  * href="https://freedesktop.org/wiki/Specifications/shared-mime-info-spec/">freedesktop.org MIME
  * Info Spec</a>.
  */
-public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter {
+public class TikaMediaTypesThingConverter implements UriIntoThingConverter {
 
     // TODO Make https://enola.dev/fileExtensions be links, not text?
 
