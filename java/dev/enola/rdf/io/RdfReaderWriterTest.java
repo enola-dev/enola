@@ -44,7 +44,7 @@ public class RdfReaderWriterTest {
                     MediaTypeProviders.set(
                             new RdfMediaTypes(), new RdfMediaTypeYamlLd(), new YamlMediaType()));
 
-    private static final Model PICASSO_MODEL = new LearnRdf4jTest().picasso2();
+    private static final Model PICASSO_MODEL = new LearnRdf4jTest().picassoAndDali2();
 
     private static final ResourceProvider rp = new ClasspathResource.Provider();
 
