@@ -27,6 +27,5 @@ public interface ThingsProvider {
     // KIRI.E.LIST_THINGS & KIRI.E.LIST_IRIS just needs to return a Thing with 1 list property...
     // Switch callers to existing old ThingProvider (NB singular Thing, not ThingsProvider).
 
-    // TODO Reactive Stream, or Mutiny Multi, instead of JDK Stream
     Stream<Thing> getThings(String iri);
 }

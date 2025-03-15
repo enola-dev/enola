@@ -62,6 +62,7 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
             }
             // This is "cool", but "very ugly and overwhelming" e.g. on graph visualizations...
             if (TLC.optional(Flags.ORIGIN).orElse(true))
+                // TODO Use add() instead of set() to collect all origins, instead overwriting them
                 for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input);
             return thingsBuilder.builders();
         } catch (IOException e) {
