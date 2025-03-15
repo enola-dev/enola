@@ -33,6 +33,7 @@ import dev.enola.data.Trigger;
 import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.infer.rdf.RDFSPropertyTrigger;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
@@ -107,7 +108,7 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
                 }
                 var repo = store.build();
                 // TODO ? ctx1.push(ThingProvider.class, new AlwaysThingProvider(repo));
-                // TODO ? ctx1.push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
+                ctx1.push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
 
                 if (validate) {
                     var c = new LoggingCollector();

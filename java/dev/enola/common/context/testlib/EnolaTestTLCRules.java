@@ -71,4 +71,7 @@ public class EnolaTestTLCRules {
                             thingMetadataProvider,
                             TBF.class,
                             new ProxyTBF(ImmutableThing.FACTORY)));
+
+    public static final TestTLCRule TBF =
+            new TestTLCRule(ImmutableMap.of(TBF.class, new ProxyTBF(ImmutableThing.FACTORY)));
 }

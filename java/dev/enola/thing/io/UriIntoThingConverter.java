@@ -18,13 +18,15 @@
 package dev.enola.thing.io;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import java.io.IOException;
 import java.net.URI;
 
 public interface UriIntoThingConverter extends TypedUriIntoThingConverter {
+    // TODO Get rid of this useless interface which just duplicates TypedUriIntoThingConverter
 
     @Override
-    boolean convertInto(URI from, ThingsBuilders into) throws ConversionException, IOException;
+    boolean convertInto(URI from, ThingRepositoryStore into)
+            throws ConversionException, IOException;
 }

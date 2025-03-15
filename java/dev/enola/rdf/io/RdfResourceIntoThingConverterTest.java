@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.*;
@@ -29,8 +30,9 @@ import dev.enola.datatype.DatatypeRepositoryBuilder;
 import dev.enola.thing.Thing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.test.TestSomething;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,7 +52,7 @@ public class RdfResourceIntoThingConverterTest {
 
     @Test
     public void picasso() throws IOException {
-        var thing = convert(new ClasspathResource("picasso.ttl").uri()).iterator().next().build();
+        var thing = convert(new ClasspathResource("picasso.ttl").uri()).iterator().next();
         assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
     }
 
@@ -67,14 +69,16 @@ public class RdfResourceIntoThingConverterTest {
     @Test // Load testSomething.ttl and ensure it's an instance of TestSomething and not just Thing
     public void testSomething() throws IOException {
         var things = convert(new ClasspathResource("testSomething.ttl").uri());
-        Thing thing = things.iterator().next().build();
+        Thing thing = things.iterator().next();
         TestSomething testSomething = (TestSomething) thing;
         assertThat(testSomething.test()).isEqualTo("hello, world");
     }
 
-    private Iterable<Thing.Builder<Thing>> convert(URI uri) throws IOException {
-        var thingsBuilder = new ThingsBuilders(new ProxyTBF(ImmutableThing.FACTORY));
-        c.convertInto(uri, thingsBuilder);
-        return thingsBuilder.builders();
+    private Iterable<Thing> convert(URI uri) throws IOException {
+        try (var ctx = TLC.open().push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY))) {
+            var store = new ThingMemoryRepositoryROBuilder();
+            var ignored = c.convertInto(uri, store);
+            return store.list();
+        }
     }
 }

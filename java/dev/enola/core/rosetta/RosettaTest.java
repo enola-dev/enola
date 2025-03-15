@@ -178,7 +178,7 @@ public class RosettaTest {
         // TODO Make this test all "classpath:/**.xml"...
         var in = rp.get("classpath:/greeting1-nested.xml");
         var out = new MemoryResource(RdfMediaTypes.TURTLE);
-        rosetta.convertInto(in, out);
+        rosetta.convertIntoOrThrow(in, out);
         var ttl = out.charSource().read();
         assertThat(ttl).contains("\n<classpath:/");
         // This makes sure that namespace prefixes were used

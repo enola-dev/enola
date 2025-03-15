@@ -22,7 +22,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.rdf.io.JavaThingsRdfWriterConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 public record XmlResourceConverter(ResourceProvider rp) implements CatchingResourceConverter {
 
@@ -32,8 +32,8 @@ public record XmlResourceConverter(ResourceProvider rp) implements CatchingResou
         var xmlThingConverter = new XmlThingConverter(rp);
         var thingsWriterConverter = new JavaThingsRdfWriterConverter();
 
-        var things = new ThingsBuilders();
-        if (!xmlThingConverter.convertInto(from.uri(), things)) return false;
-        return thingsWriterConverter.convertInto(things, into);
+        var store = new ThingMemoryRepositoryROBuilder();
+        if (!xmlThingConverter.convertInto(from.uri(), store)) return false;
+        return thingsWriterConverter.convertInto(store /* NOT .build()*/, into);
     }
 }

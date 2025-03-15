@@ -109,8 +109,8 @@ public class JavaThingTest {
         var builder =
                 thingsBuilders.getBuilder(
                         "https://example.org/thing",
-                        TestSomething.Builder.class,
-                        TestSomething.class);
+                        TestSomething.class,
+                        TestSomething.Builder.class);
         checkTestSomethingBuilder(builder);
     }
 

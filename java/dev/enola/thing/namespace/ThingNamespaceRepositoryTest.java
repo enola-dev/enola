@@ -33,6 +33,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
+import java.io.IOException;
+
 public class ThingNamespaceRepositoryTest {
 
     // TODO Cover CachingNamespaceRepository, here and/or in other tests?
@@ -51,7 +53,7 @@ public class ThingNamespaceRepositoryTest {
     }
 
     @Test
-    public void namespacesTTL() {
+    public void namespacesTTL() throws IOException {
         var store = new ThingMemoryRepositoryROBuilder();
         assertThat(new RdfLoader().load("classpath:/enola.dev/namespaces.ttl", store)).isTrue();
         ThingNamespaceRepository ns = new ThingNamespaceRepository(store.build());

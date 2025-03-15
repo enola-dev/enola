@@ -21,32 +21,36 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.Thing;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.testlib.ThingsSubject;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class TikaThingConverterTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @Rule public final SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+
+    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
     public void empty() throws IOException {
-        var tb = new ThingsBuilders();
+        var store = new ThingMemoryRepositoryROBuilder();
         var c = new TikaThingConverter(new EmptyResource.Provider());
 
-        var r = c.convertInto(EmptyResource.EMPTY_URI, tb);
-        assertThat(tb.builders()).isEmpty();
+        var r = c.convertInto(EmptyResource.EMPTY_URI, store);
+        assertThat(store.listIRI()).isEmpty();
         assertThat(r).isFalse();
     }
 
@@ -69,17 +73,17 @@ public class TikaThingConverterTest {
     private void check(String classpath) throws IOException {
         var name = "classpath:/" + classpath;
 
-        var tb = new ThingsBuilders();
+        var store = new ThingMemoryRepositoryROBuilder();
         var c = new TikaThingConverter(new ClasspathResource.Provider());
 
-        var r = c.convertInto(URI.create(name), tb);
+        var r = c.convertInto(URI.create(name), store);
         assertThat(r).isTrue();
 
-        assertThat(tb.builders()).hasSize(1);
-        var thing = tb.builders().iterator().next().build();
+        assertThat(store.listIRI()).hasSize(1);
+        var thing = store.list().iterator().next();
         checkThatAllPredicatesAreAbsoluteURIs(thing);
 
-        ThingsSubject.assertThat(tb).isEqualTo(name + ".ttl");
+        ThingsSubject.assertThat(store).isEqualTo(name + ".ttl");
     }
 
     private void checkThatAllPredicatesAreAbsoluteURIs(Thing thing) {

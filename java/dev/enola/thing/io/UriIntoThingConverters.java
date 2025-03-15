@@ -24,18 +24,14 @@ import com.google.common.collect.ImmutableList;
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.Converter;
-import dev.enola.thing.KIRI;
-import dev.enola.thing.Thing;
-import dev.enola.thing.impl.MutableThing;
-import dev.enola.thing.java.ProxyTBF;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.common.convert.ConverterInto;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import java.io.IOException;
 import java.net.URI;
 
 // TODO Make UriIntoThingConverters actually implement UriIntoThingConverter itself (less confusing)
-public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Builder<Thing>>> {
+public class UriIntoThingConverters implements ConverterInto<URI, ThingRepositoryStore> {
 
     // TODO Load a resource with different converters multi-threaded, in parallel...
 
@@ -53,21 +49,16 @@ public class UriIntoThingConverters implements Converter<URI, Iterable<Thing.Bui
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public Iterable<Thing.Builder<Thing>> convert(URI input) throws ConversionException {
-        var thingsBuilder = new ThingsBuilders(new ProxyTBF(MutableThing.FACTORY));
+    @Override
+    public boolean convertInto(URI from, ThingRepositoryStore into)
+            throws ConversionException, IOException {
         try (var ctx = TLC.open()) {
-            ctx.push(INPUT, input);
+            ctx.push(INPUT, from);
             for (var converter : converters) {
-                boolean ignore = converter.convertInto(input, thingsBuilder);
+                converter.convertInto(from, into);
             }
-            // This is "cool", but "very ugly and overwhelming" e.g. on graph visualizations...
-            if (TLC.optional(Flags.ORIGIN).orElse(true))
-                // TODO Use add() instead of set() to collect all origins, instead overwriting them
-                for (var builder : thingsBuilder.builders()) builder.set(KIRI.E.ORIGIN, input);
-            return thingsBuilder.builders();
-        } catch (IOException e) {
-            throw new ConversionException("IOException on " + input, e);
         }
+        return true;
     }
 
     // TODO Actually TLC.get(INPUT) *read* this somewhere... ;-) else remove again later.

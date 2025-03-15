@@ -22,32 +22,31 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.format.tika.TikaThingConverter;
-import dev.enola.rdf.io.JavaThingsBuilderRdfConverter;
+import dev.enola.rdf.io.JavaThingRdfConverter;
 import dev.enola.rdf.io.WritableResourceRDFHandler;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 public class TikaResourceIntoRdfResourceConverter implements CatchingResourceConverter {
 
     private final TikaThingConverter tikaThingConverter;
-    private final JavaThingsBuilderRdfConverter javaToRdfConverter;
+    private final JavaThingRdfConverter javaToRdf = new JavaThingRdfConverter();
 
     public TikaResourceIntoRdfResourceConverter(ResourceProvider rp) {
         this.tikaThingConverter = new TikaThingConverter(rp);
-        this.javaToRdfConverter = new JavaThingsBuilderRdfConverter();
     }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
 
-        ThingsBuilders thingsBuilder = new ThingsBuilders();
-        if (!tikaThingConverter.convertInto(from.uri(), thingsBuilder)) return false;
+        var store = new ThingMemoryRepositoryROBuilder();
+        if (!tikaThingConverter.convertInto(from.uri(), store)) return false;
 
         var rdfHandler = WritableResourceRDFHandler.create(into);
         if (rdfHandler.isEmpty()) return false;
 
         try (var closeableRDFHandler = rdfHandler.get()) {
-            return javaToRdfConverter.convertInto(thingsBuilder, closeableRDFHandler);
+            return javaToRdf.convertInto(store.stream(), closeableRDFHandler);
         }
     }
 }

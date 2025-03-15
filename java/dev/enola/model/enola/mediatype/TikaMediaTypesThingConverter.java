@@ -23,7 +23,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.format.tika.TikaMediaTypes;
 import dev.enola.thing.io.TypedUriIntoThingConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.apache.tika.mime.MimeTypeException;
 import org.apache.tika.mime.MimeTypes;
@@ -52,7 +52,7 @@ public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter 
     public static final URI IRI = URI.create("enola:TikaMediaTypes");
 
     @Override
-    public boolean convertInto(URI from, ThingsBuilders into)
+    public boolean convertInto(URI from, ThingRepositoryStore into)
             throws ConversionException, IOException {
         if (!IRI.equals(from)) return false;
 
@@ -66,7 +66,7 @@ public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter 
                 var tikaMimeType = tikaMimeTypes.getRegisteredMimeType(mediaTypeName);
                 var iri = toIRI(tikaMediaType);
                 MediaType.Builder thing =
-                        into.getBuilder(iri, MediaType.Builder.class, MediaType.class);
+                        into.getBuilder(iri, MediaType.class, MediaType.Builder.class);
                 thing.addType("https://enola.dev/MediaType");
                 thing.mediaType(tikaMimeType.getName());
 
@@ -101,6 +101,8 @@ public class TikaMediaTypesThingConverter implements TypedUriIntoThingConverter 
                     thing.childrenIRI(childrenIRI.build());
                 }
                 */
+
+                into.store(thing.build());
 
             } catch (MimeTypeException e) {
                 LOG.warn("MediaType not found: {}", mediaTypeName, e);

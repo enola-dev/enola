@@ -35,8 +35,7 @@ import java.util.stream.Stream;
  *
  * <p>For memory efficiency, do NOT "keep this around".
  */
-// TODO Update JavaDoc about how his would typically be used in a (TBD) "Transaction"...
-// @NotThreadSafe
+@Deprecated // TODO Replace this entirely with ThingsRepository, and get rid of ThingsBuilders!
 public class ThingsBuilders implements ThingsRepository {
 
     private final Map<String, Thing.Builder<Thing>> map;
@@ -54,7 +53,7 @@ public class ThingsBuilders implements ThingsRepository {
 
     @SuppressWarnings("unchecked")
     public <T extends Thing, B extends Thing.Builder<T>> B getBuilder(
-            String thingIRI, Class<B> builderClass, Class<T> thingClass) {
+            String thingIRI, Class<T> thingClass, Class<B> builderClass) {
         return (B)
                 map.computeIfAbsent(
                         thingIRI,
@@ -77,7 +76,7 @@ public class ThingsBuilders implements ThingsRepository {
 
     @SuppressWarnings("unchecked")
     public Thing.Builder<?> getBuilder(String iri) {
-        return getBuilder(iri, Thing.Builder.class, Thing.class);
+        return getBuilder(iri, Thing.class, Thing.Builder.class);
     }
 
     public Iterable<Thing.Builder<Thing>> builders() {

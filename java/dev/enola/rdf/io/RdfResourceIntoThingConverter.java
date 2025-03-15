@@ -27,7 +27,7 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.java.HasType;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.jspecify.annotations.Nullable;
 
@@ -72,9 +72,9 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
     }
 
     @Override
-    public boolean convertInto(URI uri, ThingsBuilders into)
+    public boolean convertInto(URI from, ThingRepositoryStore into)
             throws ConversionException, IOException {
-        var resource = rp.getResource(uri);
+        var resource = rp.getResource(from);
         if (resource == null) return false;
 
         var optProtoList = rdfResourceIntoProtoThingConverter.convert(resource);
@@ -84,10 +84,13 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
 
         for (var protoThing : protoList) {
             Thing.Builder<?> thingBuilder;
+            var thingIRI = protoThing.getIri();
             var typeIRI = typeIRI(protoThing);
-            if (typeIRI != null) thingBuilder = into.getBuilder(protoThing.getIri(), typeIRI);
-            else thingBuilder = into.getBuilder(protoThing.getIri());
+            if (typeIRI != null) thingBuilder = into.getBuilder(thingIRI, typeIRI);
+            else thingBuilder = into.getBuilder(thingIRI);
             protoThingIntoJavaThingBuilderConverter.convertIntoOrThrow(protoThing, thingBuilder);
+            addOrigin(from, thingBuilder);
+            into.store(thingBuilder.build());
         }
         return true;
     }
