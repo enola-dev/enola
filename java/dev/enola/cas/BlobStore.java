@@ -24,7 +24,7 @@ import io.ipfs.cid.Cid;
 import java.io.IOException;
 
 /**
- * BlobStore stores bytes, which can then be loaded given their CID.
+ * BlobStore stores bytes, which can then be loaded again given their CID.
  *
  * <p>Note that this interface per-se does not specify anything about how this may be implemented...
  * just with simple non-distributed local files. Or into a Key Value Store. Or e.g. with <a

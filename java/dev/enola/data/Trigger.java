@@ -23,7 +23,7 @@ import org.jspecify.annotations.Nullable;
  * Trigger for updates to {@link Store}.
  *
  * <p>Trigger implementations themselves should be written as simple single-threaded code. Callers
- * may or may not invoke different triggers in parallel (but that's something that the caller
+ * may or may not invoke different triggers in parallel (but that is something that the caller
  * handles, not the implementations of individual triggers).
  */
 public interface Trigger<T> {
