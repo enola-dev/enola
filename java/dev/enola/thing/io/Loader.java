@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
+import dev.enola.common.function.MoreStreams;
 import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingRepositoryStore;
@@ -50,36 +51,29 @@ public class Loader implements ConverterInto<Stream<URI>, ThingRepositoryStore> 
     public boolean convertInto(Stream<URI> stream, ThingRepositoryStore store)
             throws ConversionException, IOException {
 
-        stream.forEach(resource -> load(resource, store));
+        MoreStreams.forEach(stream, resource -> load(resource, store));
         // TODO Should check if at least one URI successfully loaded anything?
         return true;
     }
 
-    public boolean load(String uri, ThingRepositoryStore store) {
+    public boolean load(String uri, ThingRepositoryStore store) throws IOException {
         return load(URI.create(uri), store);
     }
 
-    public boolean load(URI uri, ThingRepositoryStore store) {
+    public boolean load(URI uri, ThingRepositoryStore store) throws IOException {
         LOG.info("Loading {}...", uri);
-        var things = uriIntoThingConverters.convert(uri);
-        if (Iterables.isEmpty(things)) return false;
-        things.forEach(
-                thingBuilder -> {
-                    var thing = thingBuilder.build();
-                    store.merge(thing);
-                });
-        return true;
+        return uriIntoThingConverters.convertInto(uri, store);
     }
 
     // TODO The load() vs. load[AtLeastOne]Thing/s duality is strange... remove this again:
 
-    private Iterable<Thing> loadThings(URI uri) {
+    private Iterable<Thing> loadThings(URI uri) throws IOException {
         var store = new ThingMemoryRepositoryROBuilder();
         load(uri, store);
         return store.build().list();
     }
 
-    public Iterable<Thing> loadAtLeastOneThing(URI uri) {
+    public Iterable<Thing> loadAtLeastOneThing(URI uri) throws IOException {
         var things = loadThings(uri);
         if (Iterables.isEmpty(things)) throw new ConversionException("Nothing loaded from: " + uri);
         return things;

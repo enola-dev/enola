@@ -23,6 +23,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
@@ -39,6 +40,7 @@ import dev.enola.thing.repo.ThingRepositoriesTest;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 
 import java.util.stream.Stream;
 
@@ -51,6 +53,8 @@ import java.util.stream.Stream;
 public class TemplateThingRepositoryTest {
 
     public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+
+    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
     public void greetingN() {

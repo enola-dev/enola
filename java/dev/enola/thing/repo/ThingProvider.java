@@ -55,6 +55,18 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
     // TODO Eventually migrate everything to AlwaysThingProvider...
     ThingProvider CTX = iri -> TLC.get(ThingProvider.class).get(iri);
 
+    default Thing.Builder<?> getBuilder(String iri, String typeIRI) {
+        var thing = get(Objects.requireNonNull(iri, "iri"));
+        if (thing != null) return thing.copy();
+        else return TLC.get(TBF.class).create(typeIRI).iri(iri);
+    }
+
+    default Thing.Builder<?> getBuilder(String iri) {
+        var thing = get(Objects.requireNonNull(iri, "iri"));
+        if (thing != null) return thing.copy();
+        else return TLC.get(TBF.class).create().iri(iri);
+    }
+
     /**
      * Get the Thing.
      *
@@ -91,6 +103,25 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
             throw new IllegalArgumentException(
                     iri + " is " + thing.getClass() + ", not " + thingClass);
         return (T) thing;
+    }
+
+    @SuppressWarnings("unchecked")
+    default <T extends Thing, B extends Thing.Builder<T>> B getBuilder(
+            String iri, Class<T> thingClass, Class<B> thingBuilderClass) {
+        Thing thing = get(Objects.requireNonNull(iri, "iri"));
+
+        if (thing != null && thingClass.isInstance(thing)) {
+            // noinspection unchecked
+            return (B) thing.copy();
+        }
+
+        // TODO Avoid creating both of these kinda unnecessary intermediate Builders...
+        var tbf = TLC.get(TBF.class);
+        if (thing == null) return (B) tbf.create(thingBuilderClass, thingClass).iri(iri);
+
+        var builder = tbf.create(thingBuilderClass, thingClass, thing.predicateIRIs().size());
+        new ThingConverterInto().convertInto(thing, builder);
+        return builder;
     }
 
     default <T extends Thing, B extends Thing.Builder<T>> T get(

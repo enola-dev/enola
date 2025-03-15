@@ -21,9 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.model.enola.mediatype.TikaMediaTypesThingConverter.IRI;
 
+import dev.enola.common.context.TLC;
 import dev.enola.thing.impl.MutableThing;
 import dev.enola.thing.java.ProxyTBF;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.java.TBF;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.junit.Test;
 
@@ -43,7 +46,9 @@ public class TikaMediaTypesThingConverterTest {
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void convert() throws IOException {
-        ThingsBuilders builder = new ThingsBuilders(new ProxyTBF(MutableThing.FACTORY));
-        new TikaMediaTypesThingConverter().convertInto(IRI, builder);
+        try (var ctx = TLC.open().push(TBF.class, new ProxyTBF(MutableThing.FACTORY))) {
+            ThingRepositoryStore builder = new ThingMemoryRepositoryROBuilder();
+            new TikaMediaTypesThingConverter().convertInto(IRI, builder);
+        }
     }
 }

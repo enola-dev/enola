@@ -28,7 +28,7 @@ import dev.enola.common.io.iri.URIs;
 import dev.enola.model.enola.Datatypes;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.io.UriIntoThingConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class FileThingConverter implements UriIntoThingConverter {
     // Perhaps it could offer BOTH auto-loading and explicitly adding converters?
 
     @Override
-    public boolean convertInto(URI input, ThingsBuilders into)
+    public boolean convertInto(URI input, ThingRepositoryStore into)
             throws ConversionException, IOException {
 
         // TODO I'm surprised we don't have to skip *.ttl, until UriIntoThingConverters merges
@@ -70,11 +70,13 @@ public class FileThingConverter implements UriIntoThingConverter {
         }
     }
 
-    private void convert(URI uri, ThingsBuilders into) throws IOException, URISyntaxException {
+    private void convert(URI uri, ThingRepositoryStore into)
+            throws IOException, URISyntaxException {
         Path path = URIs.getFilePath(uri);
         BasicFileAttributes attrs = readAttributes(path, BasicFileAttributes.class, NOFOLLOW_LINKS);
 
         var node = into.getBuilder(getIRI(uri));
+        addOrigin(uri, node);
 
         if (attrs.isRegularFile()) {
             node.set(KIRI.RDF.TYPE, File.Type_IRI);
@@ -115,6 +117,8 @@ public class FileThingConverter implements UriIntoThingConverter {
         node.set(Node.lastAccessAt_IRI, attrs.lastAccessTime(), Datatypes.FILE_TIME.iri());
 
         // node.set("https://enola.dev/files/Node/fileKey", attrs.fileKey().toString());
+
+        into.store(node.build());
     }
 
     private String getIRI(URI uri) throws URISyntaxException {

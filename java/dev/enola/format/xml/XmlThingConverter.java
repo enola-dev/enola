@@ -21,8 +21,9 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.xml.XmlResourceParser;
+import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import java.net.URI;
 
@@ -36,14 +37,18 @@ public class XmlThingConverter implements UriIntoThingConverter {
     }
 
     @Override
-    public boolean convertInto(URI from, ThingsBuilders into) throws ConversionException {
+    public boolean convertInto(URI from, ThingRepositoryStore into) throws ConversionException {
         var resource = rp.getReadableResource(from);
         if (resource == null) return false;
 
         var id = TLC.optional(XmlThingContext.ID).orElse(resource.uri().toString());
         var ns = TLC.optional(XmlThingContext.NS).orElse(id);
 
-        var handler = new XMLToThingHandler(ns, into.getBuilder(id));
-        return parser.convertInto(resource, handler);
+        Thing.Builder<?> builder = into.getBuilder(id);
+        // TODO addOrigin(from, builder);
+        var handler = new XMLToThingHandler(ns, builder);
+        var success = parser.convertInto(resource, handler);
+        into.store(builder.build());
+        return success;
     }
 }

@@ -39,6 +39,8 @@ import org.jspecify.annotations.Nullable;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class ThingMetadataProviderTest {
 
     @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
@@ -95,7 +97,7 @@ public class ThingMetadataProviderTest {
     }
 
     @Test
-    public void labelViaAlternativeLabelProperty() {
+    public void labelViaAlternativeLabelProperty() throws IOException {
         var uri = java.net.URI.create("classpath:/metadata-label-property.ttl");
         var repo = new ThingMemoryRepositoryRW();
         var things = new RdfLoader().load(uri, repo);

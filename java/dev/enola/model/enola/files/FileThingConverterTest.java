@@ -26,11 +26,14 @@ import com.google.common.jimfs.Jimfs;
 import com.google.common.net.MediaType;
 import com.google.common.primitives.UnsignedLong;
 
+import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.*;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.UriIntoThingConverters;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.java.TBF;
+import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,17 +70,17 @@ public class FileThingConverterTest {
     public void skipClasspath() throws IOException {
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
-        var thingsBuilder = new ThingsBuilders();
-        converter.convertInto(resource.uri(), thingsBuilder);
-        assertThat(thingsBuilder.builders()).isEmpty();
+        var store = new ThingMemoryRepositoryROBuilder();
+        assertThat(converter.convertInto(resource.uri(), store)).isFalse();
+        assertThat(store.listIRI()).isEmpty();
     }
 
     @Test // jar:file:
     public void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
-        var thingsBuilder = new ThingsBuilders();
-        converter.convertInto(new ClasspathResource("test.png").uri(), thingsBuilder);
-        assertThat(thingsBuilder.builders()).isEmpty();
+        var store = new ThingMemoryRepositoryROBuilder();
+        assertThat(converter.convertInto(new ClasspathResource("test.png").uri(), store)).isFalse();
+        assertThat(store.listIRI()).isEmpty();
     }
 
     private void check(Path root) throws IOException {
@@ -95,26 +98,30 @@ public class FileThingConverterTest {
         var mt = MediaType.PLAIN_TEXT_UTF_8;
         var ritc = new UriIntoThingConverters(new FileThingConverter());
 
-        var list = ritc.convert(hello.toUri());
-        var thing = list.iterator().next().build();
+        try (var ctx = TLC.open().push(TBF.class, ImmutableThing.FACTORY)) {
+            var store = new ThingMemoryRepositoryROBuilder();
+            ritc.convertIntoOrThrow(hello.toUri(), store);
+            var thing = store.list().iterator().next();
 
-        // Assert expected Thing
-        URI iri = URI.create(thing.iri());
-        assertThat(iri.toString()).endsWith("/hello.txt");
-        // TODO assertThat(iri.getAuthority()).isNotEmpty();
-        // TODO assertThat(iri.getHost()).isNotEmpty();
+            // Assert expected Thing
+            URI iri = URI.create(thing.iri());
+            assertThat(iri.toString()).endsWith("/hello.txt");
+            // TODO assertThat(iri.getAuthority()).isNotEmpty();
+            // TODO assertThat(iri.getHost()).isNotEmpty();
 
-        // assertThat(thing.getString(File.mediaType_IRI)).isEqualTo(mt.toString());
-        assertThat(thing.get(File.size_IRI, UnsignedLong.class))
-                .isEqualTo(UnsignedLong.valueOf(12));
-        assertThat(thing.get(File.createdAt_IRI, FileTime.class)).isNotNull();
-        assertThat(thing.get(File.modifiedAt_IRI, FileTime.class)).isNotNull();
+            // assertThat(thing.getString(File.mediaType_IRI)).isEqualTo(mt.toString());
+            assertThat(thing.get(File.size_IRI, UnsignedLong.class))
+                    .isEqualTo(UnsignedLong.valueOf(12));
+            assertThat(thing.get(File.createdAt_IRI, FileTime.class)).isNotNull();
+            assertThat(thing.get(File.modifiedAt_IRI, FileTime.class)).isNotNull();
 
-        // Convert folder
-        list = ritc.convert(folder.toUri());
-        thing = list.iterator().next().build();
-        iri = URI.create(thing.iri());
-        assertThat(iri.toString()).endsWith("/folder/");
+            // Convert folder
+            store = new ThingMemoryRepositoryROBuilder();
+            ritc.convertIntoOrThrow(folder.toUri(), store);
+            thing = store.list().iterator().next();
+            iri = URI.create(thing.iri());
+            assertThat(iri.toString()).endsWith("/folder/");
+        }
     }
 
     // TODO Read folder, and check for 3 Things (Directory folder, File hello, Link)

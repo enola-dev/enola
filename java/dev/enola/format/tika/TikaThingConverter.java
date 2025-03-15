@@ -33,7 +33,7 @@ import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.io.UriIntoThingConverter;
-import dev.enola.thing.repo.ThingsBuilders;
+import dev.enola.thing.repo.ThingRepositoryStore;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -72,14 +72,14 @@ public class TikaThingConverter implements UriIntoThingConverter {
     }
 
     @Override
-    public boolean convertInto(URI from, ThingsBuilders thingsBuilder)
+    public boolean convertInto(URI from, ThingRepositoryStore store)
             throws ConversionException, IOException {
         var resource = rp.getReadableResource(from);
         if (resource == null) return false;
-        return convertInto(resource, thingsBuilder);
+        return convertInto(resource, store);
     }
 
-    public boolean convertInto(ReadableResource resource, ThingsBuilders thingsBuilder)
+    private boolean convertInto(ReadableResource resource, ThingRepositoryStore store)
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 
@@ -90,8 +90,9 @@ public class TikaThingConverter implements UriIntoThingConverter {
         // parser.getSupportedTypes(parseContext) ... with TikaMediaTypeProvider ?
         if (IGNORED.contains(resource.mediaType().withoutParameters())) return false;
 
-        var thingBuilder = thingsBuilder.getBuilder(resource.uri().toString());
+        var thingBuilder = store.getBuilder(resource.uri().toString());
         var iri = resource.uri().toString();
+        // TODO addOrigin(resource.uri(), thingBuilder);
         Writer sw = new StringBuilderWriter();
         // TODO var thingsHandler = new XMLToThingHandler(iri, thingBuilder);
         var linksHandler = new LinkContentHandler(true);
@@ -109,6 +110,7 @@ public class TikaThingConverter implements UriIntoThingConverter {
             var text = sw.toString().trim();
             if (!text.isEmpty()) thingBuilder.set("https://enola.dev/content-as-text", text);
 
+            store.store(thingBuilder.build());
             return true;
 
         } catch (TikaException | SAXException e) {
