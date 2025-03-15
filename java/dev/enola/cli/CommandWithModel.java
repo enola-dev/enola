@@ -29,16 +29,17 @@ import dev.enola.core.grpc.EnolaGrpcInProcess;
 import dev.enola.core.grpc.ServiceProvider;
 import dev.enola.core.proto.EnolaServiceGrpc.EnolaServiceBlockingStub;
 import dev.enola.data.ProviderFromIRI;
-import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.data.Trigger;
+import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.infer.rdf.RDFSPropertyTrigger;
+import dev.enola.thing.impl.MutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 import dev.enola.thing.message.AlwaysThingProviderAdapter;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
-import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
-import dev.enola.thing.repo.ThingTrigger;
-import dev.enola.thing.repo.ThingsProvider;
+import dev.enola.thing.repo.*;
 import dev.enola.thing.template.TemplateThingRepository;
 import dev.enola.thing.validation.LoggingCollector;
 import dev.enola.thing.validation.Validators;
@@ -80,8 +81,8 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
     @Override
     public final void run() throws Exception {
         super.run();
-        try (var ctx = TLC.open()) {
-            setup(ctx);
+        try (var ctx1 = TLC.open()) {
+            setup(ctx1);
 
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
@@ -93,14 +94,20 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
                     ((ThingTrigger<?>) trigger).setRepo(store);
                 }
 
-                var loader = loader();
-                var fgrp = new GlobResolvers();
-                for (var globIRI : group.load) {
-                    try (var stream = fgrp.get(globIRI)) {
-                        loader.convertIntoOrThrow(stream, store);
+                try (var ctx2 = TLC.open()) {
+                    ctx2.push(ThingProvider.class, new AlwaysThingRepositoryStore(store));
+                    ctx2.push(TBF.class, new ProxyTBF(MutableThing.FACTORY));
+                    var loader = loader();
+                    var fgrp = new GlobResolvers();
+                    for (var globIRI : group.load) {
+                        try (var stream = fgrp.get(globIRI)) {
+                            loader.convertIntoOrThrow(stream, store);
+                        }
                     }
                 }
                 var repo = store.build();
+                // TODO ? ctx1.push(ThingProvider.class, new AlwaysThingProvider(repo));
+                // TODO ? ctx1.push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
 
                 if (validate) {
                     var c = new LoggingCollector();
