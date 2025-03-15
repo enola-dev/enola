@@ -107,7 +107,6 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
                     }
                 }
                 var repo = store.build();
-                // TODO ? ctx1.push(ThingProvider.class, new AlwaysThingProvider(repo));
                 ctx1.push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
 
                 if (validate) {

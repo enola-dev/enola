@@ -39,13 +39,13 @@ public class UriIntoThingConverters implements ConverterInto<URI, ThingRepositor
         ORIGIN
     }
 
-    private final ImmutableList<TypedUriIntoThingConverter> converters;
+    private final ImmutableList<UriIntoThingConverter> converters;
 
-    public UriIntoThingConverters(Iterable<TypedUriIntoThingConverter> converters) {
+    public UriIntoThingConverters(Iterable<UriIntoThingConverter> converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 
-    public UriIntoThingConverters(TypedUriIntoThingConverter... converters) {
+    public UriIntoThingConverters(UriIntoThingConverter... converters) {
         this.converters = ImmutableList.copyOf(converters);
     }
 

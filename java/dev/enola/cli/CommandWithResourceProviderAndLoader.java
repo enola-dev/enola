@@ -24,7 +24,7 @@ import dev.enola.model.enola.files.FileThingConverter;
 import dev.enola.model.enola.mediatype.TikaMediaTypesThingConverter;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.io.Loader;
-import dev.enola.thing.io.TypedUriIntoThingConverter;
+import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.io.UriIntoThingConverters;
 
 import picocli.CommandLine;
@@ -55,7 +55,7 @@ public abstract class CommandWithResourceProviderAndLoader extends CommandWithRe
 
     protected Loader loader() {
         // TODO Move this (and other) initialization out of CLI, to a dev.enola.Enola...
-        var uriIntoThingConverters = new ArrayList<TypedUriIntoThingConverter>(7);
+        var uriIntoThingConverters = new ArrayList<UriIntoThingConverter>(7);
         uriIntoThingConverters.add(new RdfResourceIntoThingConverter<>());
         uriIntoThingConverters.add(new XmlThingConverter(rp));
         if (fileLoader) uriIntoThingConverters.add(new FileThingConverter());

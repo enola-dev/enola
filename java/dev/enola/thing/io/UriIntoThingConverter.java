@@ -17,16 +17,23 @@
  */
 package dev.enola.thing.io;
 
-import dev.enola.common.convert.ConversionException;
+import dev.enola.common.context.TLC;
+import dev.enola.common.convert.ConverterInto;
+import dev.enola.thing.KIRI;
+import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import java.io.IOException;
 import java.net.URI;
 
-public interface UriIntoThingConverter extends TypedUriIntoThingConverter {
-    // TODO Get rid of this useless interface which just duplicates TypedUriIntoThingConverter
+public interface UriIntoThingConverter extends ConverterInto<URI, ThingRepositoryStore> {
 
-    @Override
-    boolean convertInto(URI from, ThingRepositoryStore into)
-            throws ConversionException, IOException;
+    default void addOrigin(URI uri, Thing.Builder<?> thingBuilder) {
+        // This is "cool", but "very ugly and overwhelming"
+        // e.g. on graph visualizations, so conditionally disable it:
+        if (TLC.optional(UriIntoThingConverters.Flags.ORIGIN).orElse(true))
+            // TODO Use only add() instead of set() to collect all origins, instead overwriting them
+            if (thingBuilder instanceof Thing.Builder2<?> builder2)
+                builder2.add(KIRI.E.ORIGIN, uri);
+            else thingBuilder.set(KIRI.E.ORIGIN, uri);
+    }
 }
