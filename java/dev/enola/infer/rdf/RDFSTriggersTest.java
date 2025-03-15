@@ -77,9 +77,10 @@ public class RDFSTriggersTest {
         check(repoSupplier, this::propertyClassProperty);
         check(repoSupplier, this::addRemove);
         check(repoSupplier, this::inverseOf);
+        check(repoSupplier, this::propertyDomainProperty);
     }
 
-    private void check(
+    void check(
             Supplier<ThingRepositoryStore> repoSupplier,
             Consumer<ThingRepositoryStore> repoConsumer) {
         var repo = repoSupplier.get();
@@ -126,7 +127,7 @@ public class RDFSTriggersTest {
 
     // TODO void changeDomain(ThingRepositoryStore repo) {
 
-    private void inverseOf(ThingRepositoryStore repo) {
+    void inverseOf(ThingRepositoryStore repo) {
         // Intentionally use "raw" thing instead of Property interface!
         var inverseProperty =
                 Property.builder()
@@ -137,5 +138,19 @@ public class RDFSTriggersTest {
         repo.store(inverseProperty);
         var propertyClass = repo.get(KIRI.RDF.PROPERTY, Class.class);
         assertThat(propertyClass.hasRdfsClassProperty("http://example.org/inverseOf")).isTrue();
+    }
+
+    /**
+     * Non-regression for the java.lang.IllegalStateException: Recursive update at
+     * java.base/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1063) in case
+     * of a recursive trigger.
+     */
+    void propertyDomainProperty(ThingRepositoryStore repo) {
+        var iri = "http://example.org/weirdo";
+        var weirdo1 = Property.builder().iri(iri).domain(iri).build();
+        repo.store(weirdo1);
+
+        var weirdo2 = Property.builder().iri(KIRI.RDF.PROPERTY).domain(KIRI.RDF.PROPERTY).build();
+        repo.store(weirdo2);
     }
 }
