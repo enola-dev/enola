@@ -162,7 +162,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         if (values == null) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
-            var builder = ImmutableSet.builder();
+            var builder = ImmutableList.builder();
             properties.put(predicateIRI, builder);
             builder.addAll(values);
         } else if (object instanceof ImmutableList.Builder listBuilder) {

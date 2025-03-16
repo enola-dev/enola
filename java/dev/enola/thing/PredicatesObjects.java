@@ -301,6 +301,12 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
          * Adds one of possibly several value objects for the given predicate IRI - and preserves
          * order.
          *
+         * <p>Nota bene: This is <b>ordered</b> (insertion order <i>is</i> preserved), but not
+         * <b>sorted</b> (elements are in the order in which they were added, not [re-]sorted).
+         *
+         * <p>If this property has previously already been set to something other than a List, then
+         * it gets converted to a list (in a random order), and then values gets added.
+         *
          * <p>Duplicates ARE allowed.
          */
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
