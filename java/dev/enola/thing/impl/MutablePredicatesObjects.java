@@ -139,8 +139,14 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             var builder = ImmutableList.builder();
             properties.put(predicateIRI, builder);
             builder.add(value);
-        } else if (object instanceof ImmutableList.Builder builder) {
-            builder.add(value);
+        } else if (object instanceof ImmutableList.Builder listBuilder) {
+            listBuilder.add(value);
+        } else if (object instanceof ImmutableSet.Builder setBuilder) {
+            var set = setBuilder.build();
+            var listBuilder = ImmutableList.builderWithExpectedSize(set.size());
+            properties.put(predicateIRI, listBuilder);
+            listBuilder.addAll(set);
+            listBuilder.add(value);
         } else {
             var builder = ImmutableList.builder();
             properties.put(predicateIRI, builder);
