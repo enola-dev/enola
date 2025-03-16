@@ -31,7 +31,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Immutable
@@ -137,8 +137,8 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         Builder(
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
-            this.properties = new HashMap<>(properties);
-            this.datatypes = new HashMap<>(datatypes);
+            this.properties = new LinkedHashMap<>(properties);
+            this.datatypes = new LinkedHashMap<>(datatypes);
         }
 
         @Override
