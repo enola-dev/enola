@@ -107,7 +107,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     static class Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             implements PredicatesObjects.Builder<B> {
 
-        // TODO Keep the iteration order of this internal maps consistent between the implementation
+        // TODO Keep the iteration order of the internal maps consistent between the implementation
         // chosen here, and the one used in the MutablePredicatesObjects; this makes switching TBF
         // implementations easier, and without unexpected property order side effects on tests.
 

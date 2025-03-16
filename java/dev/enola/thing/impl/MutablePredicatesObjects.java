@@ -38,7 +38,7 @@ import java.util.*;
 public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
         implements PredicatesObjects, PredicatesObjects.Builder2<B> {
 
-    // TODO Keep the iteration order of this internal maps consistent between the implementation
+    // NB: Keep the iteration order of this internal maps consistent between the implementation
     // chosen here, and the one used in ImmutablePredicatesObjects.Builder; this makes switching TBL
     // implementations easier, and without unexpected property order side effects on tests.
     //
