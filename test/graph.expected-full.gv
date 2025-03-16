@@ -7,48 +7,48 @@ digraph {
 
   "https://example.org/Salutation" [shape=plain style=filled fillcolor=lightblue URL="https://example.org/Salutation" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:Salutation</TD></TR>
-    <TR><TD ALIGN="left">enola:color</TD><TD>violet</TD></TR>
-    <TR><TD ALIGN="left">enola:text-color</TD><TD>white</TD></TR>
     <TR><TD ALIGN="left">enola:emoji</TD><TD>👋</TD></TR>
+    <TR><TD ALIGN="left">enola:text-color</TD><TD>white</TD></TR>
+    <TR><TD ALIGN="left">enola:color</TD><TD>violet</TD></TR>
   </TABLE>>]
-  "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
-  "https://example.org/Salutation" -> "https://schema.org/TextObject" [URL="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"]
   "https://example.org/Salutation" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/Salutation" -> "https://schema.org/TextObject" [URL="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"]
+  "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "https://example.org/TwoLinks" [shape=plain URL="https://example.org/TwoLinks" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">ex:TwoLinks</TD></TR>
   </TABLE>>]
+  "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
   "https://example.org/TwoLinks" -> "https://example.org/greeting3" [URL="https://example.org/links" label="ex:links"]
   "https://example.org/TwoLinks" -> "https://example.org/world" [URL="https://example.org/links" label="ex:links"]
-  "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
 
   "https://example.org/greeting3" [shape=plain style=filled fillcolor=violet fontcolor=white URL="https://example.org/greeting3" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:greeting3</TD></TR>
-    <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>
     <TR><TD ALIGN="left">enola:files/Node/deletedAt</TD><TD>2024-08-11T01:50:56.737...</TD></TR>
     <TR><TD ALIGN="left">ex:firstName</TD><TD>Salvador<BR/>Domingo<BR/>Felipe<BR/>Jacinto<BR/></TD></TR>
+    <TR><TD ALIGN="left">ex:message</TD><TD>hello, world &gt; 42</TD></TR>
   </TABLE>>]
-  "https://example.org/greeting3" -> "https://example.org/Salutation" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
-  "https://example.org/greeting3" -> "https://example.org/world" [URL="https://example.org/object" label="ex:object"]
   "https://example.org/greeting3" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/greeting3" -> "https://example.org/world" [URL="https://example.org/object" label="ex:object"]
+  "https://example.org/greeting3" -> "https://example.org/Salutation" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "https://example.org/orphan" [shape=plain URL="https://example.org/orphan" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">👋ex:orphan</TD></TR>
     <TR><TD ALIGN="left">enola:emoji</TD><TD>👋</TD></TR>
   </TABLE>>]
-  "https://example.org/orphan" -> "https://example.org/OnlyIRIThing" [URL="https://example.org/link" label="ex:link"]
   "https://example.org/orphan" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/orphan" -> "https://example.org/OnlyIRIThing" [URL="https://example.org/link" label="ex:link"]
 
   "https://example.org/world" [shape=plain URL="https://example.org/world" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">ex:world</TD></TR>
-    <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.or...</TD></TR>
     <TR><TD ALIGN="left">schema:image</TD><TD>https://upload.wikimedi...</TD></TR>
-    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-02T00:00...</TD></TR>
     <TR><TD ALIGN="left">enola:endedAt</TD><TD>+300000-12-31T00:00:00Z</TD></TR>
+    <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.or...</TD></TR>
+    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-02T00:00...</TD></TR>
     <TR><TD ALIGN="left">ex:population</TD><TD>18446744073709551615</TD></TR>
   </TABLE>>]
-  "https://example.org/world" -> "https://example.org/Planet" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
   "https://example.org/world" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/world" -> "https://example.org/Planet" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "classpath:/graph.ttl" [shape=plain URL="classpath:/graph.ttl" label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
     <TR><TD COLSPAN="2">graph.ttl</TD></TR>

@@ -49,14 +49,20 @@
       "typeId": "https://enola.dev/origin"
     },
     {
+      "id": "229e8eb18b16fe769a1258a912bb982b",
+      "sourceId": "https://example.org/Salutation",
+      "targetId": "classpath:/graph.ttl",
+      "typeId": "https://enola.dev/origin"
+    },
+    {
       "id": "21cfa23a9b722a169c9ac13377aae624",
       "sourceId": "https://example.org/Salutation",
       "targetId": "https://schema.org/TextObject",
       "typeId": "http://www.w3.org/2000/01/rdf-schema#subClassOf"
     },
     {
-      "id": "229e8eb18b16fe769a1258a912bb982b",
-      "sourceId": "https://example.org/Salutation",
+      "id": "08560fda4c0bc12dab017f669ee0a6e3",
+      "sourceId": "https://example.org/TwoLinks",
       "targetId": "classpath:/graph.ttl",
       "typeId": "https://enola.dev/origin"
     },
@@ -73,8 +79,8 @@
       "typeId": "https://example.org/links"
     },
     {
-      "id": "08560fda4c0bc12dab017f669ee0a6e3",
-      "sourceId": "https://example.org/TwoLinks",
+      "id": "3aa7344ecf2d2d035ebce05032eccf8a",
+      "sourceId": "https://example.org/greeting3",
       "targetId": "classpath:/graph.ttl",
       "typeId": "https://enola.dev/origin"
     },
@@ -85,8 +91,8 @@
       "typeId": "https://example.org/object"
     },
     {
-      "id": "3aa7344ecf2d2d035ebce05032eccf8a",
-      "sourceId": "https://example.org/greeting3",
+      "id": "490ec3136255edf949cccf9af167e406",
+      "sourceId": "https://example.org/orphan",
       "targetId": "classpath:/graph.ttl",
       "typeId": "https://enola.dev/origin"
     },
@@ -95,12 +101,6 @@
       "sourceId": "https://example.org/orphan",
       "targetId": "https://example.org/OnlyIRIThing",
       "typeId": "https://example.org/link"
-    },
-    {
-      "id": "490ec3136255edf949cccf9af167e406",
-      "sourceId": "https://example.org/orphan",
-      "targetId": "classpath:/graph.ttl",
-      "typeId": "https://enola.dev/origin"
     },
     {
       "id": "fa469a19d47dd9d96d31ff4b2c1a5571",

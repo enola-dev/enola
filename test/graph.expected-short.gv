@@ -3,27 +3,27 @@ digraph {
   "http://www.w3.org/2000/01/rdf-schema#Class" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
 
   "https://example.org/Salutation" [style=filled fillcolor=lightblue URL="https://example.org/Salutation" label="👋ex:Salutation"]
-  "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
-  "https://example.org/Salutation" -> "https://schema.org/TextObject" [URL="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"]
   "https://example.org/Salutation" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/Salutation" -> "https://schema.org/TextObject" [URL="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"]
+  "https://example.org/Salutation" -> "http://www.w3.org/2000/01/rdf-schema#Class" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "https://example.org/TwoLinks" [URL="https://example.org/TwoLinks" label="ex:TwoLinks"]
+  "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
   "https://example.org/TwoLinks" -> "https://example.org/greeting3" [URL="https://example.org/links" label="ex:links"]
   "https://example.org/TwoLinks" -> "https://example.org/world" [URL="https://example.org/links" label="ex:links"]
-  "https://example.org/TwoLinks" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
 
   "https://example.org/greeting3" [style=filled fillcolor=violet fontcolor=white URL="https://example.org/greeting3" label="👋ex:greeting3"]
-  "https://example.org/greeting3" -> "https://example.org/Salutation" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
-  "https://example.org/greeting3" -> "https://example.org/world" [URL="https://example.org/object" label="ex:object"]
   "https://example.org/greeting3" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/greeting3" -> "https://example.org/world" [URL="https://example.org/object" label="ex:object"]
+  "https://example.org/greeting3" -> "https://example.org/Salutation" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "https://example.org/orphan" [URL="https://example.org/orphan" label="👋ex:orphan"]
-  "https://example.org/orphan" -> "https://example.org/OnlyIRIThing" [URL="https://example.org/link" label="ex:link"]
   "https://example.org/orphan" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/orphan" -> "https://example.org/OnlyIRIThing" [URL="https://example.org/link" label="ex:link"]
 
   "https://example.org/world" [URL="https://example.org/world" label="ex:world"]
-  "https://example.org/world" -> "https://example.org/Planet" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
   "https://example.org/world" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]
+  "https://example.org/world" -> "https://example.org/Planet" [URL="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"]
 
   "classpath:/graph.ttl" [URL="classpath:/graph.ttl" label="graph.ttl"]
 

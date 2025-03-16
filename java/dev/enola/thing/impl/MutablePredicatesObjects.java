@@ -38,21 +38,18 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     // NB: Keep the iteration order of this internal maps consistent between the implementation
     // chosen here, and the one used in ImmutablePredicatesObjects.Builder; this makes switching TBL
     // implementations easier, and without unexpected property order side effects on tests.
-    //
-    // Because ImmutableMap.Builder behaves like LinkedHashMap, and preserves insertion
-    // order, we have that here, instead of a simple HashMap.
 
     private final Map<String, Object> properties;
     private final Map<String, String> datatypes;
 
     public MutablePredicatesObjects() {
-        properties = Maps.newLinkedHashMapWithExpectedSize(8);
-        datatypes = Maps.newLinkedHashMapWithExpectedSize(0);
+        properties = Maps.newHashMapWithExpectedSize(8);
+        datatypes = Maps.newHashMapWithExpectedSize(0);
     }
 
     public MutablePredicatesObjects(int expectedSize) {
-        properties = Maps.newLinkedHashMapWithExpectedSize(expectedSize); // exact
-        datatypes = Maps.newLinkedHashMapWithExpectedSize(expectedSize / 4); // upper bound
+        properties = Maps.newHashMapWithExpectedSize(expectedSize); // exact
+        datatypes = Maps.newHashMapWithExpectedSize(expectedSize / 4); // upper bound
     }
 
     @Override

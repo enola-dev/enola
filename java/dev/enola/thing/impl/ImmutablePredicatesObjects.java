@@ -31,7 +31,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 @Immutable
@@ -116,29 +116,27 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         // implementations easier, and without unexpected property order side effects on tests.
 
         // Nota bene: It is tempting to want to use ImmutableMap.Builder internally here. However,
-        // ImmutableMap.Builder only has put*() and no get() methods - which makes it unsuitable
-        // here, because we need to be able to get() to implement add*().
+        // ImmutableMap.Builder only has put*() and no get() methods, which makes it unsuitable
+        // here - because we need to be able to get() to implement add*().
 
         protected final Map<String, Object> properties;
         protected final Map<String, String> datatypes;
 
-        // TODO Use HashMap instead of LinkedHashMap
-
         Builder() {
-            properties = Maps.newLinkedHashMapWithExpectedSize(8);
-            datatypes = Maps.newLinkedHashMapWithExpectedSize(0);
+            properties = Maps.newHashMapWithExpectedSize(8);
+            datatypes = Maps.newHashMapWithExpectedSize(0);
         }
 
         Builder(int expectedSize) {
-            properties = Maps.newLinkedHashMapWithExpectedSize(expectedSize); // exact
-            datatypes = Maps.newLinkedHashMapWithExpectedSize(expectedSize / 4); // upper bound
+            properties = Maps.newHashMapWithExpectedSize(expectedSize); // exact
+            datatypes = Maps.newHashMapWithExpectedSize(expectedSize / 4); // upper bound
         }
 
         Builder(
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
-            this.properties = new LinkedHashMap<>(properties);
-            this.datatypes = new LinkedHashMap<>(datatypes);
+            this.properties = new HashMap<>(properties);
+            this.datatypes = new HashMap<>(datatypes);
         }
 
         @Override
