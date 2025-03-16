@@ -140,9 +140,12 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             builder.add(value);
         } else if (object instanceof ImmutableList.Builder builder) {
             builder.add(value);
-        } else
-            throw new IllegalStateException(
-                    predicateIRI + " is not an ImmutableList.Builder: " + object);
+        } else {
+            var builder = ImmutableList.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(object);
+            builder.add(value);
+        }
         return this;
     }
 
