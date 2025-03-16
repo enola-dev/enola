@@ -133,7 +133,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         return new Builder<>(ImmutableThing::new, iri(), properties(), datatypes());
     }
 
-    // TODO make inner class ImmutableThing.Builder private
+    // TODO make inner class ImmutableThing.Builder protected
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
             extends ImmutablePredicatesObjects.Builder<B> implements Thing.Builder<B> {
@@ -193,25 +193,21 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         public B build() {
             if (iri == null)
                 throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
-            // NB: buildKeepingLast() instead of build() == buildOrThrow() because
-            // copy() users needs to be able to overwrite (and "clear" properties).
-            // TODO Distinguish "fresh" (empty) from copied Things... not hard, with a flag?
-            // NB: ImmutablePredicatesObjects.Builder#builder() has the same...
-            var immutableProperties = properties.buildKeepingLast();
-            var immutableDataypes = datatypes.buildKeepingLast();
+            // NB: ImmutablePredicatesObjects.Builder#build() has the same:
+            var immutableProperties = ImmutableMap.copyOf(this.properties);
+            var immutableDataypes = ImmutableMap.copyOf(this.datatypes);
             return (B) factory.create(iri, immutableProperties, immutableDataypes);
         }
 
         @Override
         public String toString() {
-            // TODO https://github.com/google/guava/issues/7408 to avoid .build()
             return "Builder{"
                     + "iri="
                     + iri
                     + ", properties="
-                    + properties.build()
+                    + properties
                     + ", datatypes="
-                    + datatypes.build()
+                    + datatypes
                     + '}';
         }
     }
