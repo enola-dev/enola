@@ -132,4 +132,13 @@ public class MutableThingTest extends ThingTester {
         var thing = thingBuilder2.build();
         assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c", "d");
     }
+
+    @Test
+    public void addAddAllOrdered() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2<?>) thingBuilder;
+        thingBuilder2.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
 }

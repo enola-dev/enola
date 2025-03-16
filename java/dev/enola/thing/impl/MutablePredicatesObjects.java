@@ -111,20 +111,20 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> Builder2<B> addAll(String predicateIRI, Iterable<T> value) {
-        if (value == null) return this;
+    public <T> Builder2<B> addAll(String predicateIRI, Iterable<T> values) {
+        if (values == null) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);
-            builder.addAll(value);
+            builder.addAll(values);
         } else if (object instanceof ImmutableCollection.Builder builder) {
-            builder.addAll(value);
+            builder.addAll(values);
         } else {
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);
             builder.add(object);
-            builder.addAll(value);
+            builder.addAll(values);
         }
         return this;
     }
@@ -143,7 +143,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             listBuilder.add(value);
         } else if (object instanceof ImmutableSet.Builder setBuilder) {
             var set = setBuilder.build();
-            var listBuilder = ImmutableList.builderWithExpectedSize(set.size());
+            var listBuilder = ImmutableList.builderWithExpectedSize(set.size() + 1);
             properties.put(predicateIRI, listBuilder);
             listBuilder.addAll(set);
             listBuilder.add(value);
@@ -152,6 +152,33 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             properties.put(predicateIRI, builder);
             builder.add(object);
             builder.add(value);
+        }
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public <T> Builder2<B> addAllOrdered(String predicateIRI, Iterable<T> values) {
+        if (values == null) return this;
+        var object = properties.get(predicateIRI);
+        if (object == null) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(values);
+        } else if (object instanceof ImmutableList.Builder listBuilder) {
+            listBuilder.addAll(values);
+        } else if (object instanceof ImmutableSet.Builder setBuilder) {
+            var set = setBuilder.build();
+            var listBuilder =
+                    ImmutableList.builderWithExpectedSize(set.size() + Iterables.size(values));
+            properties.put(predicateIRI, listBuilder);
+            listBuilder.addAll(set);
+            listBuilder.addAll(values);
+        } else {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(object);
+            builder.addAll(values);
         }
         return this;
     }
@@ -167,10 +194,10 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
 
     @Override
     public <T> Builder2<B> addAll(
-            String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI) {
-        if (value == null) return this;
+            String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI) {
+        if (values == null) return this;
         checkCollectionDatatype(predicateIRI, datatypeIRI);
-        addAll(predicateIRI, value);
+        addAll(predicateIRI, values);
         return this;
     }
 
