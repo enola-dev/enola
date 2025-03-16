@@ -30,6 +30,10 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Immutable
 @ThreadSafe
 // TODO Make ImmutablePredicatesObjects package private, and let users create them via the TBF (?)
@@ -107,32 +111,34 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
     static class Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             implements PredicatesObjects.Builder<B> {
 
-        // TODO Keep the iteration order of the internal maps consistent between the implementation
+        // NB: Keep the iteration order of the internal maps consistent between the implementation
         // chosen here, and the one used in the MutablePredicatesObjects; this makes switching TBF
         // implementations easier, and without unexpected property order side effects on tests.
 
-        protected final ImmutableMap.Builder<String, Object> properties;
-        protected final ImmutableMap.Builder<String, String> datatypes;
+        // Nota bene: It is tempting to want to use ImmutableMap.Builder internally here. However,
+        // ImmutableMap.Builder only has put*() and no get() methods - which makes it unsuitable
+        // here, because we need to be able to get() to implement add*().
+
+        protected final Map<String, Object> properties;
+        protected final Map<String, String> datatypes;
+
+        // TODO Use HashMap instead of LinkedHashMap
 
         Builder() {
-            properties = ImmutableMap.builder();
-            datatypes = ImmutableMap.builder();
+            properties = new LinkedHashMap<>(8, 0.9f);
+            datatypes = new LinkedHashMap<>(0, 1.0f);
         }
 
         Builder(int expectedSize) {
-            properties = ImmutableMap.builderWithExpectedSize(expectedSize); // exact
-            datatypes = ImmutableMap.builderWithExpectedSize(expectedSize); // upper bound
+            properties = new LinkedHashMap<>(expectedSize, 0.9f); // exact
+            datatypes = new LinkedHashMap<>(expectedSize / 4, 1.0f); // upper bound
         }
 
         Builder(
                 final ImmutableMap<String, Object> properties,
                 final ImmutableMap<String, String> datatypes) {
-            this.properties =
-                    ImmutableMap.<String, Object>builderWithExpectedSize(properties.size())
-                            .putAll(properties);
-            this.datatypes =
-                    ImmutableMap.<String, String>builderWithExpectedSize(properties.size())
-                            .putAll(datatypes);
+            this.properties = new HashMap<>(properties);
+            this.datatypes = new HashMap<>(datatypes);
         }
 
         @Override
@@ -140,7 +146,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
             // TODO Re-review this... this prevents copy() callers from "clearing" properties!
             if (value == null) return this;
             if (value instanceof String string && string.isEmpty()) return this;
-            if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
+            if (value instanceof Iterable<?> iterable && Iterables.isEmpty(iterable)) return this;
             ImmutableObjects.check(value);
             if (value instanceof Literal(String literalValue, String datatypeIRI))
                 set(predicateIRI, literalValue, datatypeIRI);
@@ -153,7 +159,7 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
                 String predicateIRI, Object value, @Nullable String datatypeIRI) {
             if (value == null) return this;
             if (value instanceof String string && string.isEmpty()) return this;
-            if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
+            if (value instanceof Iterable<?> iterable && Iterables.isEmpty(iterable)) return this;
             ImmutableObjects.check(value);
             if (datatypeIRI != null) {
                 if (value instanceof Literal)
@@ -165,23 +171,17 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public B build() {
-            // TODO Remove (B) type cast
-            return (B)
-                    new ImmutablePredicatesObjects(
-                            // See ImmutableThing#build() re. buildKeepingLast() vs buildOrThrow()
-                            properties.buildKeepingLast(), datatypes.buildKeepingLast());
+            // NB: ImmutableThing.Builder#build() has the same:
+            var immutableProperties = ImmutableMap.copyOf(this.properties);
+            var immutableDataypes = ImmutableMap.copyOf(this.datatypes);
+            return (B) new ImmutablePredicatesObjects(immutableProperties, immutableDataypes);
         }
 
         @Override
         public String toString() {
-            // TODO https://github.com/google/guava/issues/7408 to avoid .build()
-            return "Builder{"
-                    + "properties="
-                    + properties.build()
-                    + ", datatypes="
-                    + datatypes.build()
-                    + '}';
+            return "Builder{" + "properties=" + properties + ", datatypes=" + datatypes + '}';
         }
     }
 }
