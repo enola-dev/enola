@@ -18,14 +18,51 @@
 package dev.enola.thing.impl;
 
 import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 // Package-local (non-public) helpers
 final class ImmutableObjects {
 
+    record Pair(ImmutableMap<String, Object> properties, ImmutableMap<String, String> datatypes) {}
+
+    static Pair build(Map<String, Object> properties, Map<String, String> datatypes) {
+        var propertiesBuilder =
+                ImmutableMap.<String, Object>builderWithExpectedSize(properties.size());
+        var datatypesBuilder =
+                ImmutableMap.<String, String>builderWithExpectedSize(datatypes.size());
+
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            var predicateIRI = entry.getKey();
+            var object = entry.getValue();
+            if (object instanceof ImmutableCollection.Builder<?> immutableCollectionBuilder)
+                object = immutableCollectionBuilder.build();
+            if (object instanceof List<?> list) object = ImmutableList.copyOf(list);
+            if (object instanceof Set<?> list) object = ImmutableSet.copyOf(list);
+            if (object instanceof MutablePredicatesObjects<?> mutablePredicatesObjects)
+                object = mutablePredicatesObjects.build();
+            // Keep these ^^^ conversions in sync with:
+            ImmutableObjects.check(object);
+
+            propertiesBuilder.put(predicateIRI, object);
+
+            var datatype = datatypes.get(predicateIRI);
+            if (datatype != null) datatypesBuilder.put(predicateIRI, datatype);
+        }
+
+        return new Pair(propertiesBuilder.build(), datatypesBuilder.build());
+    }
+
     static void check(Object object) {
+        // TODO if (object == null) throw new IllegalStateException("null is not allowed here");
         if ((object instanceof Iterable<?>) && !(object instanceof ImmutableCollection<?>))
             throw new IllegalStateException("Non-ImmutableCollection: " + object);
         if (object instanceof Thing)
@@ -34,10 +71,10 @@ final class ImmutableObjects {
             throw new IllegalStateException("Things cannot contain Thing.Builder: " + object);
         if (object instanceof PredicatesObjects.Builder)
             throw new IllegalStateException(
-                    "Things cannot contain PredicatesObjects.Builder: " + object);
+                    "Immutable Things cannot contain PredicatesObjects.Builder: " + object);
         if (object instanceof PredicatesObjects && !(object instanceof IImmutablePredicatesObjects))
             throw new IllegalStateException(
-                    "Things cannot contain Non-IImmutablePredicatesObjects: " + object);
+                    "Immutable Things cannot contain Non-IImmutablePredicatesObjects: " + object);
     }
 
     private ImmutableObjects() {}

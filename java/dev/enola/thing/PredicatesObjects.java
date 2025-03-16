@@ -260,6 +260,7 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
             return this;
         }
 
+        @Deprecated // Remove variants with IRI again
         default <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
                 IRI predicateIRI, T value) {
             return set(predicateIRI.toString(), value);

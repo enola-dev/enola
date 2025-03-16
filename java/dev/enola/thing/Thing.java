@@ -48,14 +48,14 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
     Builder<? extends Thing> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Thing> extends PredicatesObjects.Builder2<B> { // skipcq: JAVA-E0169
 
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
 
         @CanIgnoreReturnValue
         default <@ImmutableTypeParameter T> Builder<B> set(IRI predicateIRI, T value) {
-            PredicatesObjects.Builder.super.set(predicateIRI, value);
+            PredicatesObjects.Builder2.super.set(predicateIRI, value);
             return this;
         }
 
