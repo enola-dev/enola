@@ -29,7 +29,7 @@ import dev.enola.thing.template.Templates;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.*;
 
 /** Generates the Markdown showing details about one Thing. */
 class MarkdownThingGenerator {
@@ -97,7 +97,7 @@ class MarkdownThingGenerator {
             CheckedPredicate<String, IOException> isDocumentedIRI,
             TemplateService ts)
             throws IOException {
-        for (var entry : properties.entrySet()) {
+        for (var entry : sort(properties.entrySet())) {
             var predicateIRI = entry.getKey();
             var object = entry.getValue();
 
@@ -109,6 +109,14 @@ class MarkdownThingGenerator {
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI, ts);
         }
+    }
+
+    // TODO Sort with more sophisticated rules?
+    //   E.g. rdf:type always first - but then why not just but it right into the header, with "∈"?
+    private Iterable<Map.Entry<String, Value>> sort(Set<Map.Entry<String, Value>> entries) {
+        List<Map.Entry<String, Value>> list = new ArrayList<>(entries);
+        Collections.sort(list, (e1, e2) -> e1.getKey().compareTo(e2.getKey()));
+        return list;
     }
 
     private void write(

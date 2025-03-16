@@ -16,48 +16,49 @@
       </node>
       <node id="https://example.org/TwoLinks" label="ex:TwoLinks" pid="classpath:/graph.ttl"/>
       <node id="https://example.org/greeting3" label="👋ex:greeting3" end="2024-08-11T01:50:56.737412406Z">
-          <parents>
-            <parent for="https://example.org/Salutation"/>
-            <parent for="classpath:/graph.ttl"/>
-          </parents>
+        <parents>
+          <parent for="https://example.org/Salutation"/>
+          <parent for="classpath:/graph.ttl"/>
+        </parents>
       </node>
       <node id="https://example.org/orphan" label="👋ex:orphan" pid="classpath:/graph.ttl"/>
       <node id="https://example.org/world" label="ex:world" start="-1000000000-01-02T00:00:00Z"
             end="+300000-12-31T00:00:00Z">
-          <parents>
-            <parent for="https://example.org/Planet"/>
-            <parent for="classpath:/graph.ttl"/>
-          </parents>
+        <parents>
+          <parent for="https://example.org/Planet"/>
+          <parent for="classpath:/graph.ttl"/>
+        </parents>
       </node>
     </nodes>
     <edges>
-      <edge kind="https://enola.dev/origin" label="enola:origin" source="http://www.w3.org/2000/01/rdf-schema#Class" target="classpath:/graph.ttl"/>
-      <edge source="https://example.org/Salutation" target="http://www.w3.org/2000/01/rdf-schema#Class"
-            kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"/>
-      <edge source="https://example.org/Salutation" target="https://schema.org/TextObject"
-            kind="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"/>
-      <edge source="https://example.org/Salutation" target="classpath:/graph.ttl"
-            kind="https://enola.dev/origin" label="enola:origin"/>
-      <edge source="https://example.org/TwoLinks" target="https://example.org/greeting3"
-            kind="https://example.org/links" label="ex:links" />
-      <edge source="https://example.org/TwoLinks" target="https://example.org/world"
-            kind="https://example.org/links" label="ex:links" />
-      <edge source="https://example.org/TwoLinks" target="classpath:/graph.ttl"
-            kind="https://enola.dev/origin" label="enola:origin" />
-      <edge source="https://example.org/greeting3" target="https://example.org/Salutation"
-            kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"/>
-      <edge source="https://example.org/greeting3" target="https://example.org/world" kind="https://example.org/object"
-            label="ex:object"/>
-      <edge source="https://example.org/greeting3" target="classpath:/graph.ttl" kind="https://enola.dev/origin"
-            label="enola:origin"/>
-      <edge source="https://example.org/orphan" target="https://example.org/OnlyIRIThing"
-            kind="https://example.org/link" label="ex:link" />
-      <edge source="https://example.org/orphan" target="classpath:/graph.ttl"
-            kind="https://enola.dev/origin" label="enola:origin"/>
-      <edge source="https://example.org/world" target="https://example.org/Planet"
-            kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"/>
-      <edge source="https://example.org/world" target="classpath:/graph.ttl" kind="https://enola.dev/origin"
-            label="enola:origin"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="http://www.w3.org/2000/01/rdf-schema#Class"
+            target="classpath:/graph.ttl"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="https://example.org/Salutation"
+            target="classpath:/graph.ttl"/>
+      <edge kind="http://www.w3.org/2000/01/rdf-schema#subClassOf" label="rdfs:subClassOf"
+            source="https://example.org/Salutation" target="https://schema.org/TextObject"/>
+      <edge kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"
+            source="https://example.org/Salutation" target="http://www.w3.org/2000/01/rdf-schema#Class"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="https://example.org/TwoLinks"
+            target="classpath:/graph.ttl"/>
+      <edge kind="https://example.org/links" label="ex:links" source="https://example.org/TwoLinks"
+            target="https://example.org/greeting3"/>
+      <edge kind="https://example.org/links" label="ex:links" source="https://example.org/TwoLinks"
+            target="https://example.org/world"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="https://example.org/greeting3"
+            target="classpath:/graph.ttl"/>
+      <edge kind="https://example.org/object" label="ex:object" source="https://example.org/greeting3"
+            target="https://example.org/world"/>
+      <edge kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type"
+            source="https://example.org/greeting3" target="https://example.org/Salutation"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="https://example.org/orphan"
+            target="classpath:/graph.ttl"/>
+      <edge kind="https://example.org/link" label="ex:link" source="https://example.org/orphan"
+            target="https://example.org/OnlyIRIThing"/>
+      <edge kind="https://enola.dev/origin" label="enola:origin" source="https://example.org/world"
+            target="classpath:/graph.ttl"/>
+      <edge kind="http://www.w3.org/1999/02/22-rdf-syntax-ns#type" label="rdf:type" source="https://example.org/world"
+            target="https://example.org/Planet"/>
     </edges>
   </graph>
 </gexf>

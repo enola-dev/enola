@@ -23,6 +23,7 @@ import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java.TBF;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Set;
@@ -58,7 +59,17 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void insertionOrder() {
+    public void insertion() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set("b", "B");
+        thingBuilder.set("a", "A");
+        var thing = thingBuilder.build();
+        assertThat(thing.predicateIRIs()).containsExactly("b", "a");
+    }
+
+    @Test
+    @Ignore // inOrder() is *NOT* guaranteed to be deterministic [anymore]
+    public void insertionInOrder() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set("b", "B");
         thingBuilder.set("a", "A");
