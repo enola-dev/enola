@@ -82,5 +82,7 @@ javadoc(
         "@enola_maven//:com_google_protobuf_protobuf_java",
         "@enola_maven//:com_google_protobuf_protobuf_java_util",
         "@enola_maven//:javax_annotation_javax_annotation_api",
+        # NB: We cannot use "@enola_maven//:com_google_guava_guava" here,
+        # due to https://github.com/bazel-contrib/rules_jvm_external/issues/1343.
     ],
 )
