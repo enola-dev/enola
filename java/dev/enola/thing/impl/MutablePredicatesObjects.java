@@ -98,7 +98,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);
             builder.add(value);
-        } else if (object instanceof ImmutableSet.Builder builder) {
+        } else if (object instanceof ImmutableCollection.Builder builder) {
             builder.add(value);
         } else {
             var builder = ImmutableSet.builder();
@@ -110,6 +110,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public <T> Builder2<B> addAll(String predicateIRI, Iterable<T> value) {
         if (value == null) return this;
         var object = properties.get(predicateIRI);
@@ -117,7 +118,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);
             builder.addAll(value);
-        } else if (object instanceof ImmutableSet.Builder builder) {
+        } else if (object instanceof ImmutableCollection.Builder builder) {
             builder.addAll(value);
         } else {
             var builder = ImmutableSet.builder();
