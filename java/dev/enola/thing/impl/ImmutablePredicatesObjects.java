@@ -20,6 +20,7 @@ package dev.enola.thing.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import com.google.errorprone.annotations.Immutable;
 import com.google.errorprone.annotations.ThreadSafe;
 
@@ -31,7 +32,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Immutable
@@ -125,13 +125,13 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
         // TODO Use HashMap instead of LinkedHashMap
 
         Builder() {
-            properties = new LinkedHashMap<>(8, 0.9f);
-            datatypes = new LinkedHashMap<>(0, 1.0f);
+            properties = Maps.newLinkedHashMapWithExpectedSize(8);
+            datatypes = Maps.newLinkedHashMapWithExpectedSize(0);
         }
 
         Builder(int expectedSize) {
-            properties = new LinkedHashMap<>(expectedSize, 0.9f); // exact
-            datatypes = new LinkedHashMap<>(expectedSize / 4, 1.0f); // upper bound
+            properties = Maps.newLinkedHashMapWithExpectedSize(expectedSize); // exact
+            datatypes = Maps.newLinkedHashMapWithExpectedSize(expectedSize / 4); // upper bound
         }
 
         Builder(

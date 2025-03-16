@@ -17,10 +17,7 @@
  */
 package dev.enola.thing.impl;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.*;
 
 import dev.enola.thing.HasIRI;
 import dev.enola.thing.Literal;
@@ -49,13 +46,13 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     private final Map<String, String> datatypes;
 
     public MutablePredicatesObjects() {
-        properties = new LinkedHashMap<>();
-        datatypes = new LinkedHashMap<>();
+        properties = Maps.newLinkedHashMapWithExpectedSize(8);
+        datatypes = Maps.newLinkedHashMapWithExpectedSize(0);
     }
 
     public MutablePredicatesObjects(int expectedSize) {
-        properties = new LinkedHashMap<>(expectedSize); // exact
-        datatypes = new LinkedHashMap<>(expectedSize); // upper bound
+        properties = Maps.newLinkedHashMapWithExpectedSize(expectedSize); // exact
+        datatypes = Maps.newLinkedHashMapWithExpectedSize(expectedSize / 4); // upper bound
     }
 
     @Override
