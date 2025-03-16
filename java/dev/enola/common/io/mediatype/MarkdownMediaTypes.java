@@ -40,8 +40,8 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
 
     private static final String VARIANT = "variant";
 
-    // NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1343,
-    //   we can't directly use Guava's  MediaType.MD_UTF_8 here! :( But it's easy enough:
+    // NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1343, we cannot
+    //   directly use Guava's MediaType.MD_UTF_8 here! :( But working around is easy enough:
     public static final MediaType MARKDOWN_UTF_8 =
             MediaType.create("text", "markdown").withCharset(StandardCharsets.UTF_8);
 
