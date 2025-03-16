@@ -73,6 +73,7 @@ java_export(
     ],
 )
 
+# This is used by tools/docs/build.bash (and tools/maven/install.bash)
 javadoc(
     name = "javadoc",
     doc_url = "https://docs.enola.dev/dev/javadoc/",
