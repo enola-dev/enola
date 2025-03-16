@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
 
 @Immutable
 @ThreadSafe
-// TODO Make ImmutableThing package private, and let users create them via the TBF
+// TODO Make ImmutableThing package private, and let users create them only via the #FACTORY TBF
 public class ImmutableThing extends ImmutablePredicatesObjects implements IImmutableThing {
 
     private final String iri;
