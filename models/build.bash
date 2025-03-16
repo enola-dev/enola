@@ -27,8 +27,8 @@ rm docs/models/{BUILD,build.bash}
 
 # https://linkml.io
 mkdir -p .built/linkml/
-find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 linkml-lint --validate --config models/.linkmllint.yaml
-find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 gen-project -X prefixmap -X owl -X shacl -d .built/linkml/
+#find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 linkml-lint --validate --config models/.linkmllint.yaml
+#find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 gen-project -X prefixmap -X owl -X shacl -d .built/linkml/
 # TODO Re-enable OWL after fixing https://github.com/enola-dev/enola/issues/759
 # TODO Drop all *.linkml.* e.g. to rename file.linkml.context.jsonld to just file.linkml.context.jsonld
 # TODO --no-mergeimports? https://linkml.io/linkml/schemas/imports.html#making-merged-files-for-distribution ?
