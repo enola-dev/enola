@@ -30,6 +30,9 @@ import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
 import dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.model.Datatypes;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
 
 import picocli.CommandLine;
 
@@ -134,5 +137,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
         var namespaceRepo = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var namespaceConverter = new NamespaceConverterWithRepository(namespaceRepo);
         ctx.push(NamespaceConverter.class, namespaceConverter);
+
+        ctx.push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
     }
 }
