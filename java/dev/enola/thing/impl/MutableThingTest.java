@@ -30,12 +30,12 @@ import java.util.List;
 
 public class MutableThingTest extends ThingTester {
 
+    // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
+
     @Override
     protected TBF getThingBuilderFactory() {
         return MutableThing.FACTORY;
     }
-
-    // TODO Once ImmutableThing.Builder extends (or is) Builder2, move this up to ThingTester
 
     @Test
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -69,5 +69,25 @@ public class MutableThingTest extends ThingTester {
         assertThat(thing.get(PREDICATE_IRI, Iterable.class))
                 .containsExactly("https://vorburger.ch");
         assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(KIRI.SCHEMA.URL_DATATYPE);
+    }
+
+    @Test
+    public void addToSingle() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2<?>) thingBuilder;
+        thingBuilder2.set(PREDICATE_IRI, "a");
+        thingBuilder2.add(PREDICATE_IRI, "b");
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void addAllToSingle() {
+        thingBuilder.iri(THING_IRI);
+        var thingBuilder2 = (Thing.Builder2<?>) thingBuilder;
+        thingBuilder2.set(PREDICATE_IRI, "a");
+        thingBuilder2.addAll(PREDICATE_IRI, List.of("b", "c"));
+        var thing = thingBuilder2.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c");
     }
 }

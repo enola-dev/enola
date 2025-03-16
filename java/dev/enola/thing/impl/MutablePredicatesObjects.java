@@ -100,9 +100,12 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             builder.add(value);
         } else if (object instanceof ImmutableSet.Builder builder) {
             builder.add(value);
-        } else
-            throw new IllegalStateException(
-                    predicateIRI + " is not an ImmutableSet.Builder: " + object);
+        } else {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(object);
+            builder.add(value);
+        }
         return this;
     }
 
@@ -116,9 +119,12 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
             builder.addAll(value);
         } else if (object instanceof ImmutableSet.Builder builder) {
             builder.addAll(value);
-        } else
-            throw new IllegalStateException(
-                    predicateIRI + " is not an ImmutableSet.Builder: " + object);
+        } else {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.add(object);
+            builder.addAll(value);
+        }
         return this;
     }
 
