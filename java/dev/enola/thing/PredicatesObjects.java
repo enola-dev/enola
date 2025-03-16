@@ -289,26 +289,28 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
-                String predicateIRI, Iterable<T> value);
+                String predicateIRI, Iterable<T> values);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
-                String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI);
+                String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI);
 
         /**
          * Adds one of possibly several value objects for the given predicate IRI - and preserves
          * order.
          *
-         * <p>Duplicates ARE allowed. It is an error if this property has already been set to
-         * anything else than a {@link List}.
+         * <p>Duplicates ARE allowed.
          */
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
                 String predicateIRI, T value);
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAllOrdered(
+                String predicateIRI, Iterable<T> values);
 
         @Override
         B build();
