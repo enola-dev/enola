@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import com.google.common.net.MediaType;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +40,10 @@ public class MarkdownMediaTypes implements MediaTypeProvider {
 
     private static final String VARIANT = "variant";
 
-    public static final MediaType MARKDOWN_UTF_8 = MediaType.MD_UTF_8;
+    // NB: Due to https://github.com/bazel-contrib/rules_jvm_external/issues/1343,
+    //   we can't directly use Guava's  MediaType.MD_UTF_8 here! :( But it's easy enough:
+    public static final MediaType MARKDOWN_UTF_8 =
+            MediaType.create("text", "markdown").withCharset(StandardCharsets.UTF_8);
 
     /**
      * <a href="https://www.iana.org/assignments/markdown-variants/CommonMark">CommonMark</a>
