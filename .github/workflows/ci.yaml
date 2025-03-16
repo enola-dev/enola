@@ -118,6 +118,12 @@ jobs:
           # -${{ hashFiles('**/package-lock.json') }}
           key: ${{ runner.os }}-npm
           restore-keys: ${{ runner.os }}-npm
+      - name: Cache Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven
+          restore-keys: ${{ runner.os }}-maven
       - name: Cache Go
         uses: actions/cache@v4
         with:
