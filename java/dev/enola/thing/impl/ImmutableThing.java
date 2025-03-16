@@ -125,7 +125,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
 
     @Override
     public String toString() {
-        return ThingHashCodeEqualsToString.toString(this);
+        return ThingHashCodeEqualsToString.toString(this, properties, datatypes);
     }
 
     @Override
@@ -193,22 +193,9 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         public B build() {
             if (iri == null)
                 throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
-            // NB: ImmutablePredicatesObjects.Builder#build() has the same:
-            var immutableProperties = ImmutableMap.copyOf(this.properties);
-            var immutableDataypes = ImmutableMap.copyOf(this.datatypes);
-            return (B) factory.create(iri, immutableProperties, immutableDataypes);
-        }
 
-        @Override
-        public String toString() {
-            return "Builder{"
-                    + "iri="
-                    + iri
-                    + ", properties="
-                    + properties
-                    + ", datatypes="
-                    + datatypes
-                    + '}';
+            var pair = ImmutableObjects.build(properties, datatypes);
+            return (B) factory.create(iri, pair.properties(), pair.datatypes());
         }
     }
 }

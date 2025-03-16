@@ -34,6 +34,6 @@ abstract class AbstractThing implements Thing {
 
     @Override
     public final String toString() {
-        return ThingHashCodeEqualsToString.toString(this);
+        return ThingHashCodeEqualsToString.toString(this, properties(), datatypes());
     }
 }

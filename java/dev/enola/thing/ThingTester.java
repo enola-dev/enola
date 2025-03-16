@@ -107,6 +107,7 @@ public abstract class ThingTester {
     }
 
     @Test
+    // TODO Test if we can CLEAR a previously set value!
     public void setNullIsIgnored() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, null);

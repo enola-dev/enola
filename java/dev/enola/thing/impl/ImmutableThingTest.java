@@ -19,6 +19,8 @@ package dev.enola.thing.impl;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableSet;
+
 import dev.enola.common.context.TLC;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.DatatypeRepository;
@@ -113,5 +115,20 @@ public class ImmutableThingTest extends ThingTester {
             var actual = thing.get(p, Instant.class);
             assertThat(actual).isEqualTo(instant);
         }
+    }
+
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void add() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.add(PREDICATE_IRI, "a");
+        thingBuilder.add(PREDICATE_IRI, "b");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+        assertThat(thing.isIterable(PREDICATE_IRI)).isTrue();
+        assertThat(thing.isOrdered(PREDICATE_IRI)).isFalse();
+
+        // TODO When merging with ThingTester, beware of this additional new last line!
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).isInstanceOf(ImmutableSet.class);
     }
 }

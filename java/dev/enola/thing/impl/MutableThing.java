@@ -173,16 +173,15 @@ public class MutableThing<B extends IImmutableThing> extends MutablePredicatesOb
 
     @Override
     public final String toString() {
-        return ThingHashCodeEqualsToString.toString(this);
+        return ThingHashCodeEqualsToString.toString(this, properties, datatypes);
     }
 
     @Override
-    @SuppressWarnings("unchecked") // TODO How to remove (B) type cast?!
+    @SuppressWarnings("unchecked")
     public B build() {
-        var immutableBuilder = ImmutableThing.builderWithExpectedSize(predicateIRIs().size());
         if (iri == null) throw new IllegalStateException(PackageLocalConstants.NEEDS_IRI_MESSAGE);
-        immutableBuilder.iri(iri);
-        deepBuildInto(immutableBuilder);
-        return (B) immutableBuilder.build();
+
+        var pair = ImmutableObjects.build(properties, datatypes);
+        return (B) new ImmutableThing(iri, pair.properties(), pair.datatypes());
     }
 }

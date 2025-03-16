@@ -19,8 +19,6 @@ package dev.enola.thing.impl;
 
 import com.google.common.collect.*;
 
-import dev.enola.thing.HasIRI;
-import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -33,186 +31,14 @@ import java.util.*;
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
 public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
-        implements PredicatesObjects, PredicatesObjects.Builder2<B> {
-
-    // NB: Keep the iteration order of this internal maps consistent between the implementation
-    // chosen here, and the one used in ImmutablePredicatesObjects.Builder; this makes switching TBL
-    // implementations easier, and without unexpected property order side effects on tests.
-
-    private final Map<String, Object> properties;
-    private final Map<String, String> datatypes;
+        extends MutablePredicatesObjectsBuilder<B> implements PredicatesObjects {
 
     public MutablePredicatesObjects() {
-        properties = Maps.newHashMapWithExpectedSize(8);
-        datatypes = Maps.newHashMapWithExpectedSize(0);
+        super();
     }
 
     public MutablePredicatesObjects(int expectedSize) {
-        properties = Maps.newHashMapWithExpectedSize(expectedSize); // exact
-        datatypes = Maps.newHashMapWithExpectedSize(expectedSize / 4); // upper bound
-    }
-
-    @Override
-    public Builder2<B> set(String predicateIRI, Object value) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
-        if (value instanceof Literal(String literalValue, String datatypeIRI))
-            set(predicateIRI, literalValue, datatypeIRI);
-        else properties.put(predicateIRI, value);
-        return this;
-    }
-
-    @Override
-    public Builder2<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
-        if (datatypeIRI != null) {
-            if (value instanceof Literal)
-                throw new IllegalArgumentException("Cannot set Literal AND Datatype");
-            datatypes.put(predicateIRI, datatypeIRI);
-        }
-        properties.put(predicateIRI, value);
-        return this;
-    }
-
-    @Override
-    public Builder2<B> add(String predicateIRI, HasIRI hasIRI) {
-        return add(predicateIRI, hasIRI.iri());
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> Builder2<B> add(String predicateIRI, T value) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        var object = properties.get(predicateIRI);
-        if (object == null) {
-            var builder = ImmutableSet.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(value);
-        } else if (object instanceof ImmutableCollection.Builder builder) {
-            builder.add(value);
-        } else {
-            var builder = ImmutableSet.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(object);
-            builder.add(value);
-        }
-        return this;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> Builder2<B> addAll(String predicateIRI, Iterable<T> values) {
-        if (values == null) return this;
-        var object = properties.get(predicateIRI);
-        if (object == null) {
-            var builder = ImmutableSet.builder();
-            properties.put(predicateIRI, builder);
-            builder.addAll(values);
-        } else if (object instanceof ImmutableCollection.Builder builder) {
-            builder.addAll(values);
-        } else {
-            var builder = ImmutableSet.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(object);
-            builder.addAll(values);
-        }
-        return this;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> Builder2<B> addOrdered(String predicateIRI, T value) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        var object = properties.get(predicateIRI);
-        if (object == null) {
-            var builder = ImmutableList.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(value);
-        } else if (object instanceof ImmutableList.Builder listBuilder) {
-            listBuilder.add(value);
-        } else if (object instanceof ImmutableSet.Builder setBuilder) {
-            var set = setBuilder.build();
-            var listBuilder = ImmutableList.builderWithExpectedSize(set.size() + 1);
-            properties.put(predicateIRI, listBuilder);
-            listBuilder.addAll(set);
-            listBuilder.add(value);
-        } else {
-            var builder = ImmutableList.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(object);
-            builder.add(value);
-        }
-        return this;
-    }
-
-    @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> Builder2<B> addAllOrdered(String predicateIRI, Iterable<T> values) {
-        if (values == null) return this;
-        var object = properties.get(predicateIRI);
-        if (object == null) {
-            var builder = ImmutableList.builder();
-            properties.put(predicateIRI, builder);
-            builder.addAll(values);
-        } else if (object instanceof ImmutableList.Builder listBuilder) {
-            listBuilder.addAll(values);
-        } else if (object instanceof ImmutableSet.Builder setBuilder) {
-            var set = setBuilder.build();
-            var listBuilder =
-                    ImmutableList.builderWithExpectedSize(set.size() + Iterables.size(values));
-            properties.put(predicateIRI, listBuilder);
-            listBuilder.addAll(set);
-            listBuilder.addAll(values);
-        } else {
-            var builder = ImmutableSet.builder();
-            properties.put(predicateIRI, builder);
-            builder.add(object);
-            builder.addAll(values);
-        }
-        return this;
-    }
-
-    @Override
-    public <T> Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        checkCollectionDatatype(predicateIRI, datatypeIRI);
-        add(predicateIRI, value);
-        return this;
-    }
-
-    @Override
-    public <T> Builder2<B> addAll(
-            String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI) {
-        if (values == null) return this;
-        checkCollectionDatatype(predicateIRI, datatypeIRI);
-        addAll(predicateIRI, values);
-        return this;
-    }
-
-    @Override
-    public <T> Builder2<B> addOrdered(String predicateIRI, T value, @Nullable String datatypeIRI) {
-        if (value == null) return this;
-        if (value instanceof String string && string.isEmpty()) return this;
-        checkCollectionDatatype(predicateIRI, datatypeIRI);
-        addOrdered(predicateIRI, value);
-        return this;
-    }
-
-    private void checkCollectionDatatype(String predicateIRI, @Nullable String datatypeIRI) {
-        // Nota bene: This is, of course, actually stricter than what RDF would technically allow...
-        // ... but this is intentional and matches intended strongly type safe generated code.
-        if (datatypeIRI != null) {
-            var previous = datatypes.putIfAbsent(predicateIRI, datatypeIRI);
-            if (previous != null && !datatypeIRI.equals(previous))
-                throw new IllegalStateException(
-                        predicateIRI + " has another Datatype: " + previous);
-        }
+        super(expectedSize);
     }
 
     @Override
@@ -257,37 +83,5 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     @SuppressWarnings({"EqualsWhichDoesntCheckParameterClass", "EqualsDoesntCheckParameterClass"})
     public boolean equals(Object obj) {
         return ThingHashCodeEqualsToString.equals(this, obj);
-    }
-
-    @Override
-    public String toString() {
-        return ThingHashCodeEqualsToString.toString(this);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked") // TODO How to remove (B) type cast?!
-    public B build() {
-        var immutableBuilder =
-                ImmutablePredicatesObjects.builderWithExpectedSize(properties.size());
-        deepBuildInto(immutableBuilder);
-        return (B) immutableBuilder.build();
-    }
-
-    @SuppressWarnings("Immutable") // TODO This (tries to...) make deep copies of all objects...
-    protected void deepBuildInto(
-            PredicatesObjects.Builder<? extends IImmutablePredicatesObjects> immutableBuilder) {
-        for (Map.Entry<String, Object> entry : properties.entrySet()) {
-            var predicateIRI = entry.getKey();
-            var object = entry.getValue();
-            if (object instanceof ImmutableCollection.Builder<?> immutableCollectionBuilder)
-                object = immutableCollectionBuilder.build();
-            if (object instanceof List<?> list) object = ImmutableList.copyOf(list);
-            if (object instanceof Set<?> list) object = ImmutableSet.copyOf(list);
-            if (object instanceof MutablePredicatesObjects<?> mutablePredicatesObjects)
-                object = mutablePredicatesObjects.build();
-            // Keep these ^^^ conversions in sync with:
-            ImmutableObjects.check(object);
-            immutableBuilder.set(predicateIRI, object, datatype(predicateIRI));
-        }
     }
 }

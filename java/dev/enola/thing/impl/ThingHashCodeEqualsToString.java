@@ -19,11 +19,13 @@ package dev.enola.thing.impl;
 
 import com.google.common.base.MoreObjects;
 
+import dev.enola.thing.HasIRI;
 import dev.enola.thing.PredicatesObjects;
 import dev.enola.thing.Thing;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Objects;
 
 final class ThingHashCodeEqualsToString {
@@ -34,8 +36,8 @@ final class ThingHashCodeEqualsToString {
         // NOT: if (getClass() != obj.getClass()) return false;
         if (obj instanceof Thing) return false; // TODO is this a good idea? But what's better?
         if (!(obj instanceof ImmutablePredicatesObjects other)) return false;
-        return Objects.equals(thiz.properties(), other.properties)
-                && Objects.equals(thiz.datatypes(), other.datatypes);
+        return Objects.equals(thiz.properties(), other.properties())
+                && Objects.equals(thiz.datatypes(), other.datatypes());
     }
 
     static boolean equals(Thing thiz, @Nullable Object obj) {
@@ -56,14 +58,16 @@ final class ThingHashCodeEqualsToString {
         return Objects.hash(thiz.iri(), thiz.properties(), thiz.datatypes());
     }
 
-    static String toString(PredicatesObjects thiz) {
+    static String toString(
+            Object thiz, Map<String, Object> properties, Map<String, String> datatypes) {
         return MoreObjects.toStringHelper(thiz)
-                .add("properties", thiz.properties())
-                .add("datatypes", thiz.datatypes())
+                .add("properties", properties)
+                .add("datatypes", datatypes)
                 .toString();
     }
 
-    static String toString(Thing thiz) {
+    static String toString(
+            HasIRI thiz, Map<String, Object> properties, Map<String, String> datatypes) {
         String iri;
         try {
             iri = thiz.iri();
@@ -73,8 +77,8 @@ final class ThingHashCodeEqualsToString {
         }
         return MoreObjects.toStringHelper(thiz)
                 .add("iri", iri)
-                .add("properties", thiz.properties())
-                .add("datatypes", thiz.datatypes())
+                .add("properties", properties)
+                .add("datatypes", datatypes)
                 .toString();
     }
 
