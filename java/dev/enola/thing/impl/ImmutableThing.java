@@ -114,17 +114,17 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         return ThingHashCodeEqualsToString.equals(this, obj);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return ThingHashCodeEqualsToString.hashCode(this);
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return ThingHashCodeEqualsToString.toString(this, properties, datatypes);
     }
 
