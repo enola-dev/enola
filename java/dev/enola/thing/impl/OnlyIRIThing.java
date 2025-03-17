@@ -31,10 +31,11 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>See {@link dev.enola.thing.repo.AlwaysThingProvider}.
  */
-// TODO Make OnlyIRIThing package private? This should just be an optimization...
+// TODO Make OnlyIRIThing package private; this should only be used by AlwaysThingProvider!
 @SuppressFBWarnings("EQ_DOESNT_OVERRIDE_EQUALS")
 // skipcq: JAVA-W0100
-public class OnlyIRIThing extends AbstractThing implements IImmutableThing {
+public class OnlyIRIThing implements IImmutableThing {
+
     private final String iri;
 
     public OnlyIRIThing(String iri) {
@@ -74,5 +75,20 @@ public class OnlyIRIThing extends AbstractThing implements IImmutableThing {
     @Override
     public Thing.Builder<? extends Thing> copy() {
         return ImmutableThing.builder().iri(iri());
+    }
+
+    @Override
+    public final int hashCode() {
+        return ThingHashCodeEqualsToString.hashCode(this);
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        return ThingHashCodeEqualsToString.equals(this, obj);
+    }
+
+    @Override
+    public final String toString() {
+        return ThingHashCodeEqualsToString.toString(this, properties(), datatypes());
     }
 }
