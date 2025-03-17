@@ -24,8 +24,6 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.thing.PredicatesObjects;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import org.jspecify.annotations.Nullable;
 
 @Immutable
@@ -33,7 +31,8 @@ import org.jspecify.annotations.Nullable;
 // TODO Make ImmutablePredicatesObjects package private, and let users create them via the TBF (?)
 public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
-    // Suppressed because of @ImmutableTypeParameter T in PredicatesObjects.Builder#set:
+    // TODO Can this be removed now? @SuppressWarnings("Immutable") because of
+    // @ImmutableTypeParameter T in former PredicatesObjects.Builder#set:
 
     @SuppressWarnings("Immutable")
     protected final ImmutableMap<String, Object> properties;
@@ -49,12 +48,12 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     public static <T extends IImmutablePredicatesObjects>
             IImmutablePredicatesObjects.Builder<T> builder() {
-        return new ImmutablePredicatesObjects.Builder<>();
+        return new MutablePredicatesObjectsBuilder<>();
     }
 
     public static PredicatesObjects.Builder<? extends IImmutablePredicatesObjects>
             builderWithExpectedSize(int expectedSize) {
-        return new ImmutablePredicatesObjects.Builder<>(expectedSize);
+        return new MutablePredicatesObjectsBuilder<>(expectedSize);
     }
 
     @Override
@@ -100,28 +99,6 @@ public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     @Override
     public PredicatesObjects.Builder<? extends IImmutablePredicatesObjects> copy() {
-        return new Builder<>(properties(), datatypes());
-    }
-
-    // TODO This can probably be simply entirely replaced with MutablePredicatesObjectsBuilder ?!
-    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    static class Builder<B extends IImmutablePredicatesObjects> // skipcq: JAVA-E0169
-            extends MutablePredicatesObjectsBuilder<B> {
-
-        Builder() {
-            super();
-        }
-
-        Builder(int expectedSize) {
-            super(expectedSize);
-        }
-
-        Builder(
-                final ImmutableMap<String, Object> properties,
-                final ImmutableMap<String, String> datatypes) {
-            super(properties, datatypes);
-        }
-
-        // TODO add() ... ?
+        return new MutablePredicatesObjectsBuilder<>(properties(), datatypes());
     }
 }

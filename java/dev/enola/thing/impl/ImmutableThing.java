@@ -136,7 +136,7 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
     // TODO make inner class ImmutableThing.Builder protected
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
     public static class Builder<B extends IImmutableThing> // skipcq: JAVA-E0169
-            extends ImmutablePredicatesObjects.Builder<B> implements Thing.Builder<B> {
+            extends MutablePredicatesObjectsBuilder<B> implements Thing.Builder<B> {
 
         private final Factory factory;
 
