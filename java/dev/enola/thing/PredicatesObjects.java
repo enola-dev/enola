@@ -21,7 +21,6 @@ import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.convert.ConversionException;
-import dev.enola.data.iri.IRI;
 import dev.enola.thing.repo.ThingProvider;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -258,12 +257,6 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
         default PredicatesObjects.Builder<B> set(String predicateIRI, HasIRI hasIRI) {
             set(predicateIRI, new Link(hasIRI.iri())); // !
             return this;
-        }
-
-        @Deprecated // Remove variants with IRI again
-        default <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
-                IRI predicateIRI, T value) {
-            return set(predicateIRI.toString(), value);
         }
 
         <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
