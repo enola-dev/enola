@@ -46,7 +46,7 @@ public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
     }
 
     interface Builder<B extends Class> // skipcq: JAVA-E0169
-            extends Thing.Builder2<B>,
+            extends Thing.Builder<B>,
                     Class,
                     Type.Builder<B>,
                     dev.enola.model.w3.rdfs.Class.Builder<B> { // skipcq: JAVA-E0169
@@ -64,17 +64,17 @@ public interface Class extends Type, dev.enola.model.w3.rdfs.Class {
         }
 
         default Class.Builder<B> addParent(Class parent) {
-            add(KIRI.E.META.PARENTS, parent);
+            add(KIRI.E.META.PARENTS, parent.iri());
             return this;
         }
 
         default Class.Builder<B> addClassProperty(Property property) {
-            add(KIRI.E.META.CLASS_PROPERTIES, property);
+            add(KIRI.E.META.CLASS_PROPERTIES, property.iri());
             return this;
         }
 
         default Class.Builder<B> addClassIdProperty(Property property) {
-            add(KIRI.E.META.CLASS_ID_PROPERTIES, property);
+            add(KIRI.E.META.CLASS_ID_PROPERTIES, property.iri());
             return this;
         }
 

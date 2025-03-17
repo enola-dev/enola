@@ -30,7 +30,7 @@ public interface HasSeeAlso extends Thing {
         return get(IRI.Predicate.seeAlso, Set.class);
     }
 
-    interface Builder<B extends HasSeeAlso> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends HasSeeAlso> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         default HasSeeAlso.Builder<B> addSeeAlso(String seeAlso) {
             add(IRI.Predicate.seeAlso, seeAlso);
             return this;

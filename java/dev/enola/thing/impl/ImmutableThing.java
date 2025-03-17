@@ -19,11 +19,12 @@ package dev.enola.thing.impl;
 
 import static java.util.Objects.requireNonNull;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.Immutable;
+import com.google.errorprone.annotations.ImmutableTypeParameter;
 import com.google.errorprone.annotations.ThreadSafe;
 
+import dev.enola.thing.HasPredicateIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 import dev.enola.thing.java.HasType;
@@ -69,11 +70,10 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
                 }
 
                 @Override
-                @SuppressWarnings("unchecked")
+                @SuppressWarnings({"unchecked", "rawtypes"})
                 public Thing.Builder<Thing> create(String typeIRI) {
                     var builder = builder();
-                    // TODO Replace set() with add(HasType.IRI, typeIRI) when Builder2...
-                    builder.set(HasType.IRI, ImmutableList.of(new Link(typeIRI)));
+                    builder.add(HasType.IRI, new Link(typeIRI));
                     return (Thing.Builder) builder;
                 }
 
@@ -176,15 +176,98 @@ public class ImmutableThing extends ImmutablePredicatesObjects implements IImmut
         }
 
         @Override
-        public Thing.Builder<B> set(String predicateIRI, Object value) {
+        public <@ImmutableTypeParameter T> Thing.Builder<B> set(String predicateIRI, T value) {
             super.set(predicateIRI, value);
             return this;
         }
 
         @Override
-        public Thing.Builder<B> set(
-                String predicateIRI, Object value, @Nullable String datatypeIRI) {
+        public <@ImmutableTypeParameter T> Thing.Builder<B> set(
+                String predicateIRI, T value, @Nullable String datatypeIRI) {
             super.set(predicateIRI, value, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> add(String predicateIRI, T value) {
+            super.add(predicateIRI, value);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addAll(
+                String predicateIRI, Iterable<T> values) {
+            super.addAll(predicateIRI, values);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> add(
+                String predicateIRI, T value, @Nullable String datatypeIRI) {
+            super.add(predicateIRI, value, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addAll(
+                String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI) {
+            super.addAll(predicateIRI, values, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addOrdered(
+                String predicateIRI, T value) {
+            super.addOrdered(predicateIRI, value);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addOrdered(
+                String predicateIRI, T value, @Nullable String datatypeIRI) {
+            super.addOrdered(predicateIRI, value, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> add(
+                HasPredicateIRI predicate, T value) {
+            super.add(predicate, value);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> add(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            super.add(predicate, value, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value) {
+            super.addAll(predicate, value);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value, @Nullable String datatypeIRI) {
+            super.addAll(predicate, value, datatypeIRI);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addOrdered(
+                HasPredicateIRI predicate, T value) {
+            super.addOrdered(predicate, value);
+            return this;
+        }
+
+        @Override
+        public <@ImmutableTypeParameter T> Thing.Builder<B> addOrdered(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            super.addOrdered(predicate, value, datatypeIRI);
             return this;
         }
 

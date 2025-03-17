@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import com.google.common.reflect.TypeToken;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import dev.enola.common.convert.ConversionException;
@@ -246,30 +247,27 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     interface Builder<B extends PredicatesObjects> // skipcq: JAVA-E0169
             extends dev.enola.common.Builder<B> {
 
-        // TODO Remove String predicateIRI, use only IRI predicateIRI; else confusing.
+        // TODO Add clear(String predicateIRI) method..
 
+        @CanIgnoreReturnValue
         @SuppressWarnings("Immutable")
-        default PredicatesObjects.Builder<B> set(String predicateIRI, Link link) {
+        default Builder<B> set(String predicateIRI, Link link) {
             set(predicateIRI, (Object) link); // !
             return this;
         }
 
-        default PredicatesObjects.Builder<B> set(String predicateIRI, HasIRI hasIRI) {
+        @CanIgnoreReturnValue
+        default Builder<B> set(String predicateIRI, HasIRI hasIRI) {
             set(predicateIRI, new Link(hasIRI.iri())); // !
             return this;
         }
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(String predicateIRI, T value);
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> set(String predicateIRI, T value);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> set(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
-
-        @Override
-        B build();
-    }
-
-    // TODO How to best name this, and the equivalent in Thing?
-    interface Builder2<B extends PredicatesObjects> extends PredicatesObjects.Builder<B> {
 
         /**
          * Adds one of possibly several value objects for the given predicate IRI.
@@ -278,17 +276,18 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
          * and will cause an error (possibly only on {@link #build()}). It is an error if this
          * property has already been set to anything else than a {@link Set}.
          */
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value);
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> add(String predicateIRI, T value);
 
-        PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI);
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> addAll(String predicateIRI, Iterable<T> values);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
-                String predicateIRI, Iterable<T> values);
-
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> add(
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> add(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAll(
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> addAll(
                 String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI);
 
         /**
@@ -303,14 +302,51 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
          *
          * <p>Duplicates ARE allowed.
          */
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
-                String predicateIRI, T value);
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(String predicateIRI, T value);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addOrdered(
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
-        <@ImmutableTypeParameter T> PredicatesObjects.Builder2<B> addAllOrdered(
+        @CanIgnoreReturnValue
+        <@ImmutableTypeParameter T> Builder<B> addAllOrdered(
                 String predicateIRI, Iterable<T> values);
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> add(HasPredicateIRI predicate, T value) {
+            return add(predicate.iri(), value);
+        }
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value) {
+            return addAll(predicate.iri(), value);
+        }
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> add(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            return add(predicate.iri(), value, datatypeIRI);
+        }
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value, @Nullable String datatypeIRI) {
+            return addAll(predicate.iri(), value, datatypeIRI);
+        }
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> addOrdered(
+                HasPredicateIRI predicate, T value) {
+            return addOrdered(predicate.iri(), value);
+        }
+
+        @CanIgnoreReturnValue
+        default <@ImmutableTypeParameter T> Builder<B> addOrdered(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
+            return addOrdered(predicate.iri(), value, datatypeIRI);
+        }
 
         @Override
         B build();

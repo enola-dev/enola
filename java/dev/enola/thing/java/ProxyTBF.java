@@ -184,6 +184,8 @@ public final class ProxyTBF implements TBF {
             return method.invoke(thing, args);
         }
 
+        @SuppressWarnings(
+                "Immutable") // TODO Remove when switching to (TBD) PredicatesObjects.Visitor
         private Thing.Builder<? extends IImmutableThing> copy() {
             var size = thing.properties().size();
             var builder = create(tbf, size, builderInterface, thingInterface);

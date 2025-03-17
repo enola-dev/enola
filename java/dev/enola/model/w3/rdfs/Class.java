@@ -17,7 +17,6 @@
  */
 package dev.enola.model.w3.rdfs;
 
-import com.google.common.collect.ImmutableList;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.model.w3.rdf.Property;
@@ -66,16 +65,13 @@ public interface Class extends Resource, HasClassIRI {
     interface Builder<B extends Class> // skipcq: JAVA-E0169
             extends Resource.Builder<B> {
 
-        default Builder<B> addRdfsClassProperty(HasIRI iri) {
-            // TODO Merge Thing.Builder with Thing.Builder2, and then: add(PROPERTIES, iri);
-            //   The current solution is an ugly hack and needs fundamental review...
-            //   just like HasClass.Builder.addType - same problem there...
-            set(PROPERTIES, ImmutableList.of(new Link(iri.iri())));
-            return this;
-        }
-
         @Override
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
+
+        default Builder<B> addRdfsClassProperty(HasIRI iri) {
+            add(PROPERTIES, new Link(iri.iri()));
+            return this;
+        }
     }
 }

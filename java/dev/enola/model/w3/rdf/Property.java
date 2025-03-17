@@ -30,7 +30,8 @@ import dev.enola.thing.java.RdfClass;
 
 import java.util.Optional;
 
-@RdfClass(iri = KIRI.RDF.PROPERTY)
+@RdfClass(iri = KIRI.RDFS.CLASS)
+// Nota bene: The rdf:class (@type) of a Property is Class, not Property!!
 public interface Property extends Resource, HasPredicateIRI {
 
     default Optional<Property> subPropertyOf() {
@@ -87,7 +88,7 @@ public interface Property extends Resource, HasPredicateIRI {
     static Property.Builder<Property> builder() {
         var builder =
                 new ProxyTBF(ImmutableThing.FACTORY).create(Property.Builder.class, Property.class);
-        // Nota bene: The rdf:class (@type) of a Property is Class, not Property!!
+        // TODO Remove this duplication of @RdfClass(iri = KIRI.RDFS.CLASS)
         builder.addType(KIRI.RDFS.CLASS);
         return builder;
     }

@@ -48,7 +48,7 @@ public interface Schema extends Common {
     }
 
     interface Builder<B extends Schema> // skipcq: JAVA-E0169
-            extends Thing.Builder2<B>, Schema, Common.Builder<B> {
+            extends Thing.Builder<B>, Schema, Common.Builder<B> {
 
         default Schema.Builder<B> id(String id) {
             set(KIRI.E.META.ID, id);
@@ -61,17 +61,17 @@ public interface Schema extends Common {
         }
 
         default Schema.Builder<B> addSchemaDatatype(Datatype datatype) {
-            add(KIRI.E.META.DATATYPES, datatype);
+            add(KIRI.E.META.DATATYPES, datatype.iri());
             return this;
         }
 
         default Schema.Builder<B> addSchemaProperty(Property property) {
-            add(KIRI.E.META.SCHEMA_PROPERTIES, property);
+            add(KIRI.E.META.SCHEMA_PROPERTIES, property.iri());
             return this;
         }
 
         default Schema.Builder<B> addSchemaClass(Class clazz) {
-            add(KIRI.E.META.SCHEMA_CLASSES, clazz);
+            add(KIRI.E.META.SCHEMA_CLASSES, clazz.iri());
             return this;
         }
     }

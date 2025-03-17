@@ -47,6 +47,7 @@ public final class ThingAdapter extends PredicatesObjectsAdapter implements Thin
     }
 
     @Override
+    @SuppressWarnings("Immutable") // TODO Remove when switching to (TBD) PredicatesObjects.Visitor
     public Thing.Builder<? extends Thing> copy() {
         // TODO Alternatively to this approach, we could also wrap a Proto Thing Builder
         var properties = properties();

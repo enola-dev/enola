@@ -69,8 +69,7 @@ public class MutablePredicatesObjects<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    @Deprecated
-    public Builder2<? extends PredicatesObjects> copy() {
+    public Builder<? extends PredicatesObjects> copy() {
         return this;
     }
 
