@@ -26,8 +26,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Set;
-
 public abstract class ThingTester {
 
     // TODO Move some of the generic tests from ImmutableThingTest up here
@@ -124,9 +122,11 @@ public abstract class ThingTester {
     }
 
     @Test
+    @Ignore // No need (anymore), we're (now) preventing this using EP's @ImmutableTypeParameter
     public void setEmptyCollectionIsIgnored() {
         thingBuilder.iri(THING_IRI);
-        thingBuilder.set(PREDICATE_IRI, Set.of());
+        // CANNOT: thingBuilder.set(PREDICATE_IRI, Set.of());
+        // CANNOT: thingBuilder.addAll(PREDICATE_IRI, Set.of());
         var thing = thingBuilder.build();
         assertThat(thing.predicateIRIs()).isEmpty();
     }

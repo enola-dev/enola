@@ -28,7 +28,7 @@ public interface HasMediaType extends Thing {
         return get("https://enola.dev/mediaType", String.class);
     }
 
-    interface Builder<B extends HasMediaType> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends HasMediaType> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         default HasMediaType.Builder<B> mediaType(String mediaType) {
             set("https://enola.dev/mediaType", mediaType);
             return this;

@@ -32,6 +32,7 @@ import org.jspecify.annotations.Nullable;
 public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
     @SuppressWarnings("Immutable")
+    // Immutability of Objects is guaranteed by @ImmutableTypeParameter in PredicatesObjects.Builder
     protected final ImmutableMap<String, Object> properties;
 
     protected final ImmutableMap<String, String> datatypes;

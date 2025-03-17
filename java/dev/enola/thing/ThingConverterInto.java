@@ -28,6 +28,7 @@ import dev.enola.thing.Thing.Builder;
 public class ThingConverterInto implements ConverterInto<Thing, Thing.Builder> {
 
     @Override
+    @SuppressWarnings("Immutable") // TODO Remove when switching to (TBD) PredicatesObjects.Visitor
     public boolean convertInto(Thing from, Builder into) {
         into.iri(from.iri());
         for (var predicateIRI : from.predicateIRIs()) {

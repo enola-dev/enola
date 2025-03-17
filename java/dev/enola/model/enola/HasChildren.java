@@ -17,6 +17,7 @@
  */
 package dev.enola.model.enola;
 
+import dev.enola.data.iri.IRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
 
@@ -31,8 +32,8 @@ public interface HasChildren extends Thing {
     }
 
     interface Builder<B extends HasChildren> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasChildren.Builder<B> childrenIRI(Set<Link> childrenIRI) {
-            set("https://enola.dev/children", childrenIRI);
+        default HasChildren.Builder<B> addChildIRI(IRI childIRI) {
+            add("https://enola.dev/children", childIRI);
             return this;
         }
     }

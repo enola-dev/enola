@@ -17,5 +17,5 @@
  */
 package dev.enola.thing;
 
-/** {@link Thing} or {@link Thing.Builder2}. */
-public interface ThingOrBuilder<B extends Thing> extends Thing, Thing.Builder2<B> {}
+/** {@link Thing} or {@link Thing.Builder}. */
+public interface ThingOrBuilder<B extends Thing> extends Thing, Thing.Builder<B> {}

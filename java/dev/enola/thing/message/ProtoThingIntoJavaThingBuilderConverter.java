@@ -52,6 +52,7 @@ public class ProtoThingIntoJavaThingBuilderConverter
     }
 
     @Override
+    @SuppressWarnings("Immutable") // TODO Remove when switching to (TBD) PredicatesObjects.Visitor
     public boolean convertInto(ThingOrBuilder from, Builder into)
             throws ConversionException, IOException {
         into.iri(from.getIri());

@@ -32,11 +32,8 @@ public class RdfAnnotations {
     }
 
     public static void addType(Class<?> clazz, Thing.Builder<?> builder) {
-        if (builder instanceof Thing.Builder2<?> builder2)
-            classIRI(clazz).ifPresent(classIRI -> builder2.add(HasType.IRI, new Link(classIRI)));
         if (builder instanceof HasType.Builder<?> hasTypeBuilder)
             classIRI(clazz).ifPresent(hasTypeBuilder::addType);
-        // TODO Remove this when Builder2 & Builder are merged! Wrong use of set() instead of add().
-        classIRI(clazz).ifPresent(classIRI -> builder.set(HasType.IRI, new Link(classIRI)));
+        else classIRI(clazz).ifPresent(classIRI -> builder.add(HasType.IRI, new Link(classIRI)));
     }
 }

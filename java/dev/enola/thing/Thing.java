@@ -18,6 +18,7 @@
 package dev.enola.thing;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.google.errorprone.annotations.ImmutableTypeParameter;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -45,73 +46,64 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
     Builder<? extends Thing> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    interface Builder<B extends Thing> extends PredicatesObjects.Builder2<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
 
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
 
-        @CanIgnoreReturnValue
-        // TODO @Nullable Object value is OK to "clear" fields.. but not otherwise? Test!
-        Builder<B> set(String predicateIRI, Object value);
-
-        @CanIgnoreReturnValue
-        // TODO @Nullable Object value - as above
-        Builder<B> set(String predicateIRI, Object value, @Nullable String datatypeIRI);
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> set(String predicateIRI, T value);
 
         @Override
-        B build();
-    }
-
-    // TODO Once ImmutableThing.Builder implements Builder2, just fold it into above
-    // TODO How to best name this, and the equivalent in PredicatesObjects?
-    @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    interface Builder2<B extends Thing> // skipcq: JAVA-E0169
-            extends Thing.Builder<B>, PredicatesObjects.Builder2<B> {
+        <@ImmutableTypeParameter T> Builder<B> set(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
 
         // TODO It would be cool if we could enforce that T value must be an Immutable.
         // But using Error Prone's <@ImmutableTypeParameter T> instead of <T> does not work.
 
-        <T> Thing.Builder2<B> add(String predicateIRI, T value);
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> add(String predicateIRI, T value);
 
-        PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI);
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addAll(String predicateIRI, Iterable<T> value);
 
-        <T> Thing.Builder2<B> addAll(String predicateIRI, Iterable<T> value);
-
-        default <T> Thing.Builder2<B> add(HasPredicateIRI predicate, T value) {
-            return add(predicate.iri(), value);
-        }
-
-        default <T> Thing.Builder2<B> addAll(HasPredicateIRI predicate, Iterable<T> value) {
-            return addAll(predicate.iri(), value);
-        }
-
-        <T> Thing.Builder2<B> add(String predicateIRI, T value, @Nullable String datatypeIRI);
-
-        <T> Thing.Builder2<B> addAll(
-                String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI);
-
-        default <T> Thing.Builder2<B> add(
-                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
-            return add(predicate.iri(), value, datatypeIRI);
-        }
-
-        default <T> Thing.Builder2<B> addAll(
-                HasPredicateIRI predicate, Iterable<T> value, @Nullable String datatypeIRI) {
-            return addAll(predicate.iri(), value, datatypeIRI);
-        }
-
-        <T> Thing.Builder2<B> addOrdered(String predicateIRI, T value);
-
-        default <T> Thing.Builder2<B> addOrdered(HasPredicateIRI predicate, T value) {
-            return addOrdered(predicate.iri(), value);
-        }
-
-        <T> Thing.Builder2<B> addOrdered(
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> add(
                 String predicateIRI, T value, @Nullable String datatypeIRI);
 
-        default <T> Thing.Builder2<B> addOrdered(
-                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI) {
-            return addOrdered(predicate.iri(), value, datatypeIRI);
-        }
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addAll(
+                String predicateIRI, Iterable<T> value, @Nullable String datatypeIRI);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(String predicateIRI, T value);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(
+                String predicateIRI, T value, @Nullable String datatypeIRI);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> add(HasPredicateIRI predicate, T value);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> add(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addAll(HasPredicateIRI predicate, Iterable<T> value);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addAll(
+                HasPredicateIRI predicate, Iterable<T> value, @Nullable String datatypeIRI);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(HasPredicateIRI predicate, T value);
+
+        @Override
+        <@ImmutableTypeParameter T> Builder<B> addOrdered(
+                HasPredicateIRI predicate, T value, @Nullable String datatypeIRI);
+
+        @Override
+        B build();
     }
 }

@@ -17,8 +17,6 @@
  */
 package dev.enola.thing.java;
 
-import com.google.common.collect.ImmutableList;
-
 import dev.enola.thing.KIRI;
 import dev.enola.thing.Link;
 import dev.enola.thing.Thing;
@@ -36,10 +34,7 @@ public interface HasType extends Thing {
 
     interface Builder<B extends Thing> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         default Builder<B> addType(String typeIRI) {
-            // TODO This is an ugly hack and needs fundamental review...
-            //   just like Class.Builder.addRdfsClassProperty - same problem there...
-            //   as well as in ImmutableThing.TBF.create(String typeIRI) - fix as well
-            set(IRI, ImmutableList.of(new Link(typeIRI)));
+            add(IRI, new Link(typeIRI));
             return this;
         }
     }

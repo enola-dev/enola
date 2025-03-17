@@ -31,9 +31,6 @@ public interface UriIntoThingConverter extends ConverterInto<URI, ThingRepositor
         // This is "cool", but "very ugly and overwhelming"
         // e.g. on graph visualizations, so conditionally disable it:
         if (TLC.optional(UriIntoThingConverters.Flags.ORIGIN).orElse(true))
-            // TODO Use only add() instead of set() to collect all origins, instead overwriting them
-            if (thingBuilder instanceof Thing.Builder2<?> builder2)
-                builder2.add(KIRI.E.ORIGIN, uri);
-            else thingBuilder.set(KIRI.E.ORIGIN, uri);
+            thingBuilder.add(KIRI.E.ORIGIN, uri);
     }
 }

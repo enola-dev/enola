@@ -18,8 +18,8 @@
 package dev.enola.thing.impl;
 
 import com.google.common.collect.*;
+import com.google.errorprone.annotations.ImmutableTypeParameter;
 
-import dev.enola.thing.HasIRI;
 import dev.enola.thing.Literal;
 import dev.enola.thing.PredicatesObjects;
 
@@ -30,7 +30,7 @@ import java.util.Map;
 
 // NOT public, intentionally just package private!
 class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
-        implements PredicatesObjects.Builder2<B> {
+        implements PredicatesObjects.Builder<B> {
 
     // Nota bene: It is tempting to want to use ImmutableMap.Builder internally here. However,
     // ImmutableMap.Builder only has put*() and no get() methods, which makes it unsuitable
@@ -56,7 +56,8 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public PredicatesObjects.Builder2<B> set(String predicateIRI, Object value) {
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
+            String predicateIRI, T value) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
@@ -67,8 +68,8 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public PredicatesObjects.Builder2<B> set(
-            String predicateIRI, Object value, @Nullable String datatypeIRI) {
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> set(
+            String predicateIRI, T value, @Nullable String datatypeIRI) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         if (value instanceof Iterable iterable && Iterables.isEmpty(iterable)) return this;
@@ -82,13 +83,9 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public PredicatesObjects.Builder2<B> add(String predicateIRI, HasIRI hasIRI) {
-        return add(predicateIRI, hasIRI.iri());
-    }
-
-    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> PredicatesObjects.Builder2<B> add(String predicateIRI, T value) {
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> add(
+            String predicateIRI, T value) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         var object = properties.get(predicateIRI);
@@ -109,7 +106,8 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> PredicatesObjects.Builder2<B> addAll(String predicateIRI, Iterable<T> values) {
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addAll(
+            String predicateIRI, Iterable<T> values) {
         if (values == null) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
@@ -129,7 +127,8 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> PredicatesObjects.Builder2<B> addOrdered(String predicateIRI, T value) {
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addOrdered(
+            String predicateIRI, T value) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
         var object = properties.get(predicateIRI);
@@ -156,7 +155,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
 
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public <T> PredicatesObjects.Builder2<B> addAllOrdered(
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addAllOrdered(
             String predicateIRI, Iterable<T> values) {
         if (values == null) return this;
         var object = properties.get(predicateIRI);
@@ -183,7 +182,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public <T> PredicatesObjects.Builder2<B> add(
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> add(
             String predicateIRI, T value, @Nullable String datatypeIRI) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;
@@ -193,7 +192,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public <T> PredicatesObjects.Builder2<B> addAll(
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addAll(
             String predicateIRI, Iterable<T> values, @Nullable String datatypeIRI) {
         if (values == null) return this;
         checkCollectionDatatype(predicateIRI, datatypeIRI);
@@ -202,7 +201,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     }
 
     @Override
-    public <T> PredicatesObjects.Builder2<B> addOrdered(
+    public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addOrdered(
             String predicateIRI, T value, @Nullable String datatypeIRI) {
         if (value == null) return this;
         if (value instanceof String string && string.isEmpty()) return this;

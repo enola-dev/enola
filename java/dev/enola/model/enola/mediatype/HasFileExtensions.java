@@ -30,7 +30,7 @@ public interface HasFileExtensions extends Thing {
         return get("https://enola.dev/fileExtensions", Set.class);
     }
 
-    interface Builder<B extends HasFileExtensions> extends Thing.Builder2<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends HasFileExtensions> extends Thing.Builder<B> { // skipcq: JAVA-E0169
         default HasFileExtensions.Builder<B> addFileExtension(String fileExtension) {
             add("https://enola.dev/fileExtensions", fileExtension);
             return this;
