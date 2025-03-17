@@ -31,13 +31,9 @@ import org.jspecify.annotations.Nullable;
 // TODO Make ImmutablePredicatesObjects package private, and let users create them via the TBF (?)
 public class ImmutablePredicatesObjects implements IImmutablePredicatesObjects {
 
-    // TODO Can this be removed now? @SuppressWarnings("Immutable") because of
-    // @ImmutableTypeParameter T in former PredicatesObjects.Builder#set:
-
     @SuppressWarnings("Immutable")
     protected final ImmutableMap<String, Object> properties;
 
-    @SuppressWarnings("Immutable")
     protected final ImmutableMap<String, String> datatypes;
 
     protected ImmutablePredicatesObjects(
