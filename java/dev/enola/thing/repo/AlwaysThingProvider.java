@@ -25,7 +25,6 @@ import dev.enola.thing.impl.OnlyIRIThing;
 import org.jspecify.annotations.NonNull;
 
 import java.io.UncheckedIOException;
-import java.util.Optional;
 
 /**
  * AlwaysThingProvider is a {@link ThingProvider} which never returns null, but always a Thing.
@@ -35,16 +34,17 @@ import java.util.Optional;
  *
  * <p>This is useful in some situations where callers don't want to distinguish "non-existent"
  * Things; e.g. to have a {@link dev.enola.thing.metadata.ThingMetadataProvider} always work, or so.
- * Callers which do need to distinguish can still use {@link #getOpt(String)}.
  */
 public class AlwaysThingProvider implements ThingProvider {
+
+    // TODO Make this the private and built-in default, and remove @Nullable from ThingProvider
 
     public static final AlwaysThingProvider CTX =
             new AlwaysThingProvider(
                     // TODO Rethink EmptyThingProvider... convenient - but hides errors! So not?
                     TLC.optional(ThingProvider.class).orElse(EmptyThingProvider.INSTANCE));
 
-    ThingProvider delegate;
+    private final ThingProvider delegate;
 
     public AlwaysThingProvider(ThingProvider delegate) {
         this.delegate = delegate;
@@ -55,21 +55,5 @@ public class AlwaysThingProvider implements ThingProvider {
         var thing = delegate.get(iri);
         if (thing == null) return new OnlyIRIThing(iri);
         else return thing;
-    }
-
-    /*
-    @Override
-    public <T extends Thing> @NonNull T get(String iri, Class<T> thingClass)
-            throws UncheckedIOException, ConversionException {
-        // TODO Use a TBF, like ProxyTBF, to create an instance of thingClass...
-        return ThingProvider.super.get(iri, thingClass);
-    }
-    */
-
-    @Override
-    public Optional<Thing> getOptional(String iri)
-            throws UncheckedIOException, ConversionException {
-        var thing = delegate.get(iri);
-        return Optional.ofNullable(thing);
     }
 }
