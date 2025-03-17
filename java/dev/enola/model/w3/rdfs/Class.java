@@ -57,9 +57,7 @@ public interface Class extends Resource, HasClassIRI {
 
     @SuppressWarnings("unchecked")
     static Builder<Class> builder() {
-        var builder = new ProxyTBF(ImmutableThing.FACTORY).create(Builder.class, Class.class);
-        builder.addType(KIRI.RDFS.CLASS);
-        return builder;
+        return new ProxyTBF(ImmutableThing.FACTORY).create(Builder.class, Class.class);
     }
 
     interface Builder<B extends Class> // skipcq: JAVA-E0169

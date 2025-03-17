@@ -86,10 +86,6 @@ public interface Property extends Resource, HasPredicateIRI {
 
     @SuppressWarnings("unchecked")
     static Property.Builder<Property> builder() {
-        var builder =
-                new ProxyTBF(ImmutableThing.FACTORY).create(Property.Builder.class, Property.class);
-        // TODO Remove this duplication of @RdfClass(iri = KIRI.RDFS.CLASS)
-        builder.addType(KIRI.RDFS.CLASS);
-        return builder;
+        return new ProxyTBF(ImmutableThing.FACTORY).create(Builder.class, Property.class);
     }
 }
