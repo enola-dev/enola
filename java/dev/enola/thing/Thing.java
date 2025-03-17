@@ -18,9 +18,6 @@
 package dev.enola.thing;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.ImmutableTypeParameter;
-
-import dev.enola.data.iri.IRI;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -52,12 +49,6 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
 
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
-
-        @CanIgnoreReturnValue
-        default <@ImmutableTypeParameter T> Builder<B> set(IRI predicateIRI, T value) {
-            PredicatesObjects.Builder2.super.set(predicateIRI, value);
-            return this;
-        }
 
         @CanIgnoreReturnValue
         // TODO @Nullable Object value is OK to "clear" fields.. but not otherwise? Test!

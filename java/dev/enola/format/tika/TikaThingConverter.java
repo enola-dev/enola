@@ -184,7 +184,7 @@ public class TikaThingConverter implements UriIntoThingConverter {
                 else properties.put(tikaMetadataNameToEnolaIRI(name), value);
             }
         }
-        properties.forEach(thing::set);
+        properties.forEach((predicateIRI, value) -> thing.set(predicateIRI.toString(), value));
     }
 
     private IRI tikaMetadataNameToEnolaIRI(String name) {
