@@ -105,7 +105,11 @@ class MarkdownThingGenerator {
             out.append("* ");
             var meta = metadataProvider.get(predicateIRI);
             linkWriter.writeMarkdownLink(meta, out, outputIRI, base, isDocumentedIRI, ts);
-            out.append(": ");
+            out.append(':');
+            if (object.getKindCase() != Value.KindCase.STRUCT
+                    && object.getKindCase() != Value.KindCase.LIST) {
+                out.append(' ');
+            }
 
             write(indent, object, out, outputIRI, base, isDocumentedIRI, ts);
         }
@@ -175,11 +179,13 @@ class MarkdownThingGenerator {
                 break;
 
             case LIST:
-                var list = value.getList().getValuesList();
                 out.append('\n');
-                for (var element : list) {
+                var list = value.getList();
+                var values = list.getValuesList();
+                for (var element : values) {
                     out.append(indent);
-                    out.append("    1. ");
+                    if (list.getOrdered()) out.append("    1. ");
+                    else out.append("    * ");
                     write(indent, element, out, outputIRI, base, isDocumentedIRI, ts);
                 }
                 break;
