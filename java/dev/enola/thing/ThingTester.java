@@ -19,12 +19,16 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableSet;
+
 import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.java.TBF;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 public abstract class ThingTester {
 
@@ -129,5 +133,101 @@ public abstract class ThingTester {
         // CANNOT: thingBuilder.addAll(PREDICATE_IRI, Set.of());
         var thing = thingBuilder.build();
         assertThat(thing.predicateIRIs()).isEmpty();
+    }
+
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public void add() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.add(PREDICATE_IRI, "a");
+        thingBuilder.add(PREDICATE_IRI, "b");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+        assertThat(thing.isIterable(PREDICATE_IRI)).isTrue();
+        assertThat(thing.isOrdered(PREDICATE_IRI)).isFalse();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).isInstanceOf(ImmutableSet.class);
+    }
+
+    @Test
+    public void addAll() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addAll(PREDICATE_IRI, List.of("a", "b"));
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void addAllWithDatatype() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addAll(
+                PREDICATE_IRI, List.of("https://vorburger.ch"), KIRI.SCHEMA.URL_DATATYPE);
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class))
+                .containsExactly("https://vorburger.ch");
+        assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(KIRI.SCHEMA.URL_DATATYPE);
+    }
+
+    @Test
+    public void addToSingle() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, "a");
+        thingBuilder.add(PREDICATE_IRI, "b");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void addAllToSingle() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, "a");
+        thingBuilder.addAll(PREDICATE_IRI, List.of("b", "c"));
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c");
+    }
+
+    @Test
+    public void addOrderedToSingle() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.set(PREDICATE_IRI, "x");
+        thingBuilder.addOrdered(PREDICATE_IRI, "a");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "x");
+    }
+
+    @Test
+    public void addThenAddOrdered() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.add(PREDICATE_IRI, "x");
+        thingBuilder.addOrdered(PREDICATE_IRI, "a");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "x");
+    }
+
+    @Test
+    public void addToOrdered() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addOrdered(PREDICATE_IRI, "b");
+        thingBuilder.addOrdered(PREDICATE_IRI, "a");
+        thingBuilder.add(PREDICATE_IRI, "c");
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c");
+    }
+
+    @Test
+    public void addOrderedAddAll() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addOrdered(PREDICATE_IRI, "b");
+        thingBuilder.addOrdered(PREDICATE_IRI, "a");
+        thingBuilder.addAll(PREDICATE_IRI, List.of("d", "c"));
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c", "d");
+    }
+
+    @Test
+    public void addAddAllOrdered() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
+        var thing = thingBuilder.build();
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
     }
 }
