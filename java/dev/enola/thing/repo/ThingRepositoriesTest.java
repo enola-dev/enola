@@ -28,16 +28,18 @@ import org.junit.Test;
 
 public class ThingRepositoriesTest {
 
-    public static final Thing TEST_THING =
-            ImmutableThing.builder()
-                    .iri("http://example.com")
-                    .set("http://example.com/message", "hello")
-                    .set("http://example.com/link", new Link("http://example.com"))
-                    .set("http://example.com/mls", new LangString("Saluton", "eo"))
-                    .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
-                    .add("http://example.com/list", new Link("http://example.com"))
-                    .add("http://example.com/list", new Literal("k&ç#'", "test:type"))
-                    .build();
+    public static final Thing testThing(Thing.Builder<?> builder) {
+        return builder.iri("http://example.com")
+                .set("http://example.com/message", "hello")
+                .set("http://example.com/link", new Link("http://example.com"))
+                .set("http://example.com/mls", new LangString("Saluton", "eo"))
+                .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
+                .add("http://example.com/list", new Link("http://example.com"))
+                .add("http://example.com/list", new Literal("k&ç#'", "test:type"))
+                .build();
+    }
+
+    private static final Thing TEST_THING = testThing(ImmutableThing.builder());
 
     private void checkStore(Store<Thing> thingStore) {
         // Store twice, still has to work
