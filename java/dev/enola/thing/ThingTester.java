@@ -21,25 +21,32 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.context.TLC;
+import dev.enola.common.convert.ConversionException;
+import dev.enola.datatype.DatatypeRepository;
+import dev.enola.model.Datatypes;
 import dev.enola.thing.impl.IImmutableThing;
+import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.TBF;
+import dev.enola.thing.repo.ThingRepositoriesTest;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.attribute.FileTime;
+import java.time.Instant;
 import java.util.List;
 
 public abstract class ThingTester {
 
-    // TODO Move some of the generic tests from ImmutableThingTest up here
+    private static final String THING_IRI = "https://example.org/thing";
+    private static final String PREDICATE_IRI = "https://example.org/predicate";
 
-    protected static final String THING_IRI = "https://example.org/thing";
-    protected static final String PREDICATE_IRI = "https://example.org/predicate";
+    private Thing.Builder<IImmutableThing> thingBuilder;
 
     protected abstract TBF getThingBuilderFactory();
-
-    protected Thing.Builder<IImmutableThing> thingBuilder;
 
     @Before
     public void setUp() {
@@ -229,5 +236,77 @@ public abstract class ThingTester {
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing = thingBuilder.build();
         assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void hashCodeEquals() throws ConversionException, IOException {
+        var testThing1 = ThingRepositoriesTest.testThing(thingBuilder);
+
+        var testThing2Builder = ImmutableThing.builder();
+        new ThingConverterInto().convertInto(testThing1, testThing2Builder);
+        var testThing2 = testThing2Builder.build();
+
+        assertThat(testThing1).isEqualTo(testThing2);
+        assertThat(testThing1.hashCode()).isEqualTo(testThing2.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        var testThingToString = testThing.toString();
+
+        assertThat(testThingToString).doesNotContain("@");
+        assertThat(testThingToString).contains("example.com");
+        assertThat(testThingToString).contains("hello");
+    }
+
+    @Test
+    public void getAllAsString() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        for (var predicateIRI : testThing.predicateIRIs()) {
+            if (predicateIRI.equals("http://example.com/list")) continue;
+            assertThat(testThing.get(predicateIRI, String.class)).isNotEmpty();
+        }
+    }
+
+    @Test
+    public void message() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        assertThat(testThing.getString("http://example.com/message")).isEqualTo("hello");
+    }
+
+    @Test
+    public void link() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        assertThat(testThing.getString("http://example.com/link")).isEqualTo("http://example.com");
+    }
+
+    @Test
+    public void langString() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        assertThat(testThing.getString("http://example.com/mls")).isEqualTo("Saluton");
+    }
+
+    @Test
+    public void literal2() {
+        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+        assertThat(testThing.datatype("http://example.com/lit")).isEqualTo("test:type");
+        assertThat(testThing.getString("http://example.com/lit")).isEqualTo("k&ç#'");
+    }
+
+    @Test
+    public void fileTimeAsInstant() {
+        var instant = Instant.now();
+        var p = "https://enola.dev/files/Node/createdAt";
+        var thing =
+                ImmutableThing.builder()
+                        .iri("http://example.org")
+                        .set(p, FileTime.from(instant), "https://enola.dev/FileTime")
+                        .build();
+        try (var ctx = TLC.open()) {
+            ctx.push(DatatypeRepository.class, Datatypes.DTR);
+            var actual = thing.get(p, Instant.class);
+            assertThat(actual).isEqualTo(instant);
+        }
     }
 }
