@@ -19,8 +19,6 @@ package dev.enola.thing.repo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.collect.ImmutableList;
-
 import dev.enola.data.Store;
 import dev.enola.thing.*;
 import dev.enola.thing.impl.ImmutableThing;
@@ -28,7 +26,6 @@ import dev.enola.thing.template.TemplateThingRepository;
 
 import org.junit.Test;
 
-@SuppressWarnings("Immutable") // TODO This seems to be due to a bug in ErrorProne...
 public class ThingRepositoriesTest {
 
     public static final Thing TEST_THING =
@@ -38,11 +35,8 @@ public class ThingRepositoriesTest {
                     .set("http://example.com/link", new Link("http://example.com"))
                     .set("http://example.com/mls", new LangString("Saluton", "eo"))
                     .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
-                    .set(
-                            "http://example.com/list",
-                            ImmutableList.of(
-                                    new Link("http://example.com"),
-                                    new Literal("k&ç#'", "test:type")))
+                    .add("http://example.com/list", new Link("http://example.com"))
+                    .add("http://example.com/list", new Literal("k&ç#'", "test:type"))
                     .build();
 
     private void checkStore(Store<Thing> thingStore) {
