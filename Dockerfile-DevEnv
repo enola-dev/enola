@@ -46,10 +46,22 @@ USER developer
 # https://go.dev/doc/install (adapted for Fedora, which does not use ~/.profile, and ignores PATH in ~/.bash_profile)
 RUN echo "export PATH=$PATH:/home/developer/go/bin" >> /home/developer/.bashrc
 
-ADD tools/go/install.bash /tmp/go-install.bash
-RUN /tmp/go-install.bash
+# It's a bit dumb that we have a manually maintained list of "essential initial dev env set-up" files here...
+# An alternative could be to use 'RUN --mount=type=bind,source=.,target=/workspace/', but this has been
+# observed to work inconsistently between older/newer Docker versions, as well as with Podman on Fedora
+# (see https://github.com/enola-dev/enola/issues/515), so let's just do it like this, unless someone
+# reading this has a better idea! [Note that it only makes sense to "pre-warm" tools that end up in
+# $HOME; but any tools in the "repo" (/workspace) cannot be pre-loaded, as the $PWD mount hides it.
+
+ADD tools /workspace/tools
+ADD .tool-versions /workspace/
+ADD .bazel* /workspace/
+ADD WORKSPACE* /workspace/
+ADD MODULE* /workspace/
+ADD BUILD /workspace/
+ADD maven_install.json /workspace/
 
 WORKDIR /workspace/
-RUN --mount=type=bind,source=.,target=/workspace/ /workspace/tools/devenv/install.bash
+RUN /workspace/tools/devenv/install.bash
 
 # See https://docs.docker.com/build/guide/mounts/ for documentation about --mount=type.
