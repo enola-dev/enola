@@ -58,7 +58,12 @@ To work on documentation, launch:
 
 [Please install Flox.dev](https://flox.dev/docs/install-flox) to work locally on this project, using its _virtual development environment._
 
-Activate it using [something like this](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/fish/functions/flox.fish), or e.g. `eval ...` (or `...| source` for Fish) [as described here](https://flox.dev/docs/tutorials/default-environment/#initial-setup). (We recommend this approach, instead of just using the alternative `flox activate`, like _Flox_ documentation suggests elsewhere, because it might preserve your own personal fancy shell customizations better - especially if you don't have `$SHELL` or `$FLOX_SHELL` set up correctly for an altnernative shell.)
+This project's build scripts do not assume that Flox (Nix) is "activated" in your shell; they do this by themselves.
+So once you have `flox` available on your `PATH`, launching e.g. `./test.bash` should _"just work"_ (please feel free to raise a bug if it does not).
+
+To directly use tools installed into the Flox _virtual development environment_ from your shell (instead of **indirectly,** via the build scripts of this project), activate it in your shell using [something like this](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/fish/functions/flox.fish), or e.g. `eval ...` (or `...| source` for Fish) [as described here](https://flox.dev/docs/tutorials/default-environment/#initial-setup). (We recommend this approach, instead of just using the alternative `flox activate`, like _Flox_ documentation suggests elsewhere, because it might preserve your own personal fancy shell customizations better - especially if you don't have `$SHELL` or `$FLOX_SHELL` set up correctly for an altnernative shell.)
+
+TODO In IDEs? Like https://mise.jdx.dev/ide-integration.html#ide-plugins...
 
 ## Manual Tools Installation
 

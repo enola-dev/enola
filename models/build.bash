@@ -17,6 +17,8 @@
 
 set -euox pipefail
 
+source tools/flox
+
 rm -rf docs/models/ .built/linkml/
 
 tools/protoc/protoc.bash

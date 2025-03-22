@@ -21,6 +21,8 @@
 # This script must be used (only) via "source tools/flox" from another Bash script, NOT directly invoked!
 
 if ! [ -x "$(command -v "flox")" ]; then
+  echo
+  echo
   echo "Please install Flux.dev as per https://flox.dev/docs/install-flox, and then re-run this script."
   echo "See also https://docs.enola.dev/dev/setup#flox for background."
   exit 254
@@ -34,16 +36,23 @@ check_path_prefix() {
 
   for element in "${path_elements[@]}"; do
     if [[ "$element" == "$prefix"* ]]; then
-      return 1
+      return 0 # Prefix found - success!
     fi
   done
 
-  return 0
+  return 1 # Prefix not found - failure.
 }
 
 TOOLS_DIR=$(realpath "$(dirname "$0")")
-FLOX_DIR=$TOOLS_DIR/../.flox/
+FLOX_DIR=$(realpath "$TOOLS_DIR/../.flox")
 
-if ! check_path_prefix "$FLOX_DIR"; then
+if check_path_prefix "$FLOX_DIR"; then
+  echo "🕰️ Flux ⚛️ capacitor is already on PATH!"
+else
+  echo 💫 "$FLOX_DIR" is not on PATH, activating 🕰️ Flux ⚛️ capacitor... 🚀
   eval "$(flox activate -m run)"
 fi
+
+echo
+echo PATH="$PATH"
+echo
