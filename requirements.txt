@@ -3,6 +3,10 @@
 # https://pre-commit.com
 pre-commit==4.1.0
 
+# https://github.com/Kijewski/pyjson5
+# Used as additional_dependencies in check-renovate pre-commit.
+pyjson5==1.6.8
+
 # https://linkml.io
 linkml==1.8.7
 

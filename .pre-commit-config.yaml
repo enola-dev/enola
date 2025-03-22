@@ -189,7 +189,7 @@ repos:
       #   args: ["--verbose"]
       - id: check-renovate
         args: ["--verbose"]
-        additional_dependencies: ["pyjson5==1.6.7"]
+        additional_dependencies: ["pyjson5"]
       - id: check-metaschema
         files: \.schema\.json$
         args: ["--verbose"]
