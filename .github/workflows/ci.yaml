@@ -76,6 +76,12 @@ jobs:
         with:
           command: flox --version && echo $PATH
 
+      # TODO Remove this duplication; normally this only runs at the end, only here to debug:
+      - name: pre-commit run --all-files
+        uses: flox/activate-action@v1
+        with:
+          command: pre-commit run --all-files
+
       - name: Install bun
         uses: oven-sh/setup-bun@v2
         with:
