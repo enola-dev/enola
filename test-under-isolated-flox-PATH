@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Find flox (while PATH is still available)
+FLOX=$(which flox)
+
+# Clear PATH!
+PATH=
+
+# NOT source tools/flox
+$FLOX activate -m run
+
+./test.bash
