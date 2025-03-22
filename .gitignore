@@ -66,3 +66,6 @@ bazel-steward.jar
 
 # Bazel BSP, by https://docs.google.com/document/d/1fdLN1iONuRm--PhpDNYXpEOPPwKML8bG5OJv9AbCvEI/edit?tab=t.0
 .bazelbsp/
+
+# https://github.com/flox/install-flox-action/issues/106
+flox.x86_64-linux.deb
