@@ -76,12 +76,6 @@ jobs:
         with:
           command: flox --version && echo $PATH
 
-      # TODO Remove this duplication; normally this only runs at the end, only here to debug:
-      - name: pre-commit run --all-files
-        uses: flox/activate-action@v1
-        with:
-          command: pre-commit run --all-files
-
       - name: Install bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -101,6 +95,13 @@ jobs:
           distribution: "temurin"
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
+
+      # TODO Remove this duplication; normally this only runs at the end, only here to debug:
+      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
+      - name: pre-commit run --all-files
+        uses: flox/activate-action@v1
+        with:
+          command: pre-commit run --all-files
 
       - name: Install graphviz
         # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
@@ -194,6 +195,7 @@ jobs:
         run: tools/git/test.bash
 
       # Any "dirty" changes willl cause build to abort. This intentionally runs after the build.
+      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
       - name: pre-commit run --all-files
         uses: flox/activate-action@v1
         with:
