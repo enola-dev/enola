@@ -17,7 +17,7 @@
 
 set -euo pipefail
 
-# TODO Replace asdf with https://mise.jdx.dev? Or, better, rm & go all-in with only Bazel!
+# TODO Replace ASDF entirely with tools/flux!
 
 # Because mcr.microsoft.com/devcontainers/universal:2-linux
 # comes with several Java versions pre-installed by SDKMAN already,

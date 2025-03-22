@@ -17,9 +17,6 @@ build/
 # Eclipse JDT with VSC Bazel for Java (bazel-vscode-java)
 .eclipse/
 
-# Python Virtual Environment (venv, created by ./test.bash)
-.venv/
-
 # mkdocs
 # incl. e.g. .cache/plugin/git-committers/page-authors.json
 site/

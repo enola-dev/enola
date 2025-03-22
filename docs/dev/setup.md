@@ -54,9 +54,17 @@ To work on documentation, launch:
 * `tools/docs/serve-build.bash` for a  "real" (full) docs build, without without the demo "screen cast" recordings (which are slow)
 * `tools/docs/serve.bash` for generating the "real" (full) static `site/` exactly as it's deployed on <https://docs.enola.dev>
 
+## Flox
+
+[Please install Flox.dev](https://flox.dev/docs/install-flox) to work locally on this project, using its _virtual development environment._
+
+Activate it using [something like this](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/fish/functions/flox.fish), or e.g. `eval ...` (or `...| source` for Fish) [as described here](https://flox.dev/docs/tutorials/default-environment/#initial-setup). (We recommend this approach, instead of just using the alternative `flox activate`, like _Flox_ documentation suggests elsewhere, because it might preserve your own personal fancy shell customizations better - especially if you don't have `$SHELL` or `$FLOX_SHELL` set up correctly for an altnernative shell.)
+
 ## Manual Tools Installation
 
-_This may be out of date (please help to update it) - it's just so much easier to use the above!_
+!!! warning "Setup is in flux, with flox!"
+
+    This project is in the process of adopting <https://flox.dev>. _The following is out of date!_
 
 If you do still want to try, here's how to manually install what the development environment container comes built-in with:
 
@@ -95,22 +103,18 @@ You should now be able to proceed as above (but without requiring _Docker)._
 
 ### Clean Up
 
-Use `tools/pre-commit/install.bash` and do not directly do
-`pip install -r requirements.txt` - because that script creates `.venv/`.
+Use `tools/flox` and do not directly do
+`pip install -r requirements.txt` - because that script correctly uses [Flox](#flox).
 
 In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try:
 
-1. `rm -rf .venv/`
 1. `rm -rf ~/.cache/pre-commit/`
 
-In case of `ImportError: cannot import name 're' from 'typing' (/usr/lib64/python3.13/typing.py)`,
-see https://github.com/linkml/linkml/issues/2563.
-
-In other cases like `ImportError: cannot import name '...' from '...'`, maybe try:
+In cases like `ImportError: cannot import name '...' from '...'`, maybe try:
 
 1. `rm -rf ~/.local/lib/python*`
 
-Altough if you are correctly in the virtual environment, then no need.
+But if you are correctly in the virtual environment, there should be no need for this.
 
 ## Further Reading
 
