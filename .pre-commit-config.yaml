@@ -178,18 +178,18 @@ repos:
         exclude: mvnw
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.31.1
+    rev: 0.31.3
     hooks:
       - id: check-github-actions
         args: ["--verbose"]
       - id: check-github-workflows
         args: ["--verbose"]
-      # TODO https://github.com/python-jsonschema/check-jsonschema/issues/528
-      # - id: check-dependabot
-      #   args: ["--verbose"]
-      - id: check-renovate
+      - id: check-dependabot
         args: ["--verbose"]
-        additional_dependencies: ["pyjson5==1.6.7"]
+      # TODO https://github.com/python-jsonschema/check-jsonschema/issues/542
+      # - id: check-renovate
+      #   args: ["--verbose"]
+      #   additional_dependencies: ["pyjson5==1.6.7"]
       - id: check-metaschema
         files: \.schema\.json$
         args: ["--verbose"]
