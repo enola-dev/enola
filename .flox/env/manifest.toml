@@ -15,8 +15,12 @@ version = 1
 ##  $ flox show gum     <- show all versions of a package
 ## -------------------------------------------------------------------
 [install]
-python3 = { pkg-path = "python3" }
-
+# TODO Replace "python312" with just "python3" once
+# https://github.com/linkml/linkml/issues/2563 is fixed
+# with https://github.com/linkml/linkml/pull/2358,
+# for https://github.com/linkml/linkml/issues/2357;
+# see https://github.com/enola-dev/enola/pull/1227.
+python3 = { pkg-path = "python312" }
 
 ## Environment Variables ---------------------------------------------
 ##  ... available for use in the activated environment
