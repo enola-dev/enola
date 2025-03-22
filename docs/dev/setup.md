@@ -108,18 +108,24 @@ You should now be able to proceed as above (but without requiring _Docker)._
 
 ### Clean Up
 
-Use `tools/flox` and do not directly do
-`pip install -r requirements.txt` - because that script correctly uses [Flox](#flox).
+Use [Flox](#flox) and do not do `pip install -r requirements.txt` outside of the _virtual environment!_
 
-In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try:
+In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try wiping the cache of https://pre-commit.com:
 
-1. `rm -rf ~/.cache/pre-commit/`
+    rm -rf ~/.cache/pre-commit/
 
-In cases like `ImportError: cannot import name '...' from '...'`, maybe try:
+In cases like `ImportError: cannot import name '...' from '...'`, maybe try wiping the user (non-`venv`) Python libs:
 
-1. `rm -rf ~/.local/lib/python*`
+    rm -rf ~/.local/lib/python*
 
-But if you are correctly in the virtual environment, there should be no need for this.
+For _"cannot parse .renovaterc.json5 because support is missing for json5"_ from `pre-commit run --all-files` you may have to:
+
+    rm -rf ~/.cache/pre-commit/
+    rm -rf .flox/cache/python/
+    flox activate
+    pip install -r requirements.txt
+
+But if you are correctly in Flox's virtual environment, there should normally be no need for any this.
 
 ## Further Reading
 
