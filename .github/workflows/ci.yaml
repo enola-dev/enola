@@ -96,12 +96,13 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      # TODO Explore further how to appropriately use "env -i" isolation to see failure locally (due to missing protoc, at this stage, while still with AFDS, before Flox)
       # TODO Remove this duplication; normally this only runs at the end, only here to debug:
       # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
-      - name: pre-commit run --all-files
-        uses: flox/activate-action@v1
-        with:
-          command: tools/protoc/protoc.bash && pre-commit run --all-files
+      # - name: pre-commit run --all-files
+      #   uses: flox/activate-action@v1
+      #   with:
+      #     command: tools/protoc/protoc.bash && pre-commit run --all-files
 
       - name: Install graphviz
         # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
