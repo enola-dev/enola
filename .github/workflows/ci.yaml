@@ -69,6 +69,13 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - name: "Install Flox"
+        uses: "flox/install-flox-action@v2"
+      - name: Test Flox Installation PATH
+        uses: flox/activate-action@v1
+        with:
+          command: flox --version && echo $PATH
+
       - name: Install bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -89,6 +96,14 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      # TODO Explore further how to appropriately use "env -i" isolation to see failure locally (due to missing protoc, at this stage, while still with AFDS, before Flox)
+      # TODO Remove this duplication; normally this only runs at the end, only here to debug:
+      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
+      # - name: pre-commit run --all-files
+      #   uses: flox/activate-action@v1
+      #   with:
+      #     command: tools/protoc/protoc.bash && pre-commit run --all-files
+
       - name: Install graphviz
         # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
         run: sudo apt-get install -y graphviz && dot -V
@@ -104,13 +119,6 @@ jobs:
           # TODO manifest: npm: package-lock.json ??
           external-cache: true
           repository-cache: true
-
-      - name: Cache Python
-        uses: actions/cache@v4
-        with:
-          path: .venv/
-          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
-          restore-keys: ${{ runner.os }}-venv-
       - name: Cache Node.js
         uses: actions/cache@v4
         with:
@@ -188,8 +196,11 @@ jobs:
         run: tools/git/test.bash
 
       # Any "dirty" changes willl cause build to abort. This intentionally runs after the build.
+      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
       - name: pre-commit run --all-files
-        run: .venv/bin/pre-commit run --all-files
+        uses: flox/activate-action@v1
+        with:
+          command: pre-commit run --all-files
 
       # The following steps deploy site/ (using GitHub Pages)
       # to https://enola-dev.github.io = https://docs.enola.dev

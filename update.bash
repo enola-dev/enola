@@ -23,7 +23,7 @@ set -euox pipefail
 
 # Update .pre-commit-config.yaml
 # shellcheck disable=SC1091
-source ./.venv/bin/activate
+source tools/flox
 pre-commit autoupdate
 pre-commit clean
 pre-commit gc

@@ -143,7 +143,6 @@
     ".github": false,
     ".idea": false,
     ".ijwb": false,
-    ".venv": false,
     ".vscode": false,
     "bazel-bin": false,
     "bazel-enola": false,

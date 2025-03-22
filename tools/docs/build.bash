@@ -20,7 +20,7 @@ set -euo pipefail
 # This script assumes that ../../test.bash already ran, to set up tools, and build!
 
 # shellcheck disable=SC1091
-source .venv/bin/activate
+source tools/flox
 
 if ! git update-index --refresh >/dev/null; then
   git status

@@ -23,7 +23,7 @@ set -euox pipefail
 source tools/asdf/install.bash
 
 # Installs all Python packages already (some of which models/build needs)
-source tools/pre-commit/install.bash
+source tools/flox
 
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 ./test.bash

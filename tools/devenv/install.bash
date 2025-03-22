@@ -19,7 +19,9 @@ set -euo pipefail
 
 # This script prepares the Development Environment container.
 
-tools/pre-commit/install.bash
+# @DEPRECATED Replace all callers with direct tools/flox invocations?
+
+tools/flox
 
 # TODO After https://github.com/enola-dev/enola/pull/452, uncomment:
 # $(go env GOPATH)/bin/bazelisk run //tools/hello
