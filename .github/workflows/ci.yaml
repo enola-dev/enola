@@ -101,7 +101,7 @@ jobs:
       - name: pre-commit run --all-files
         uses: flox/activate-action@v1
         with:
-          command: pre-commit run --all-files
+          command: tools/protoc/protoc.bash && pre-commit run --all-files
 
       - name: Install graphviz
         # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
