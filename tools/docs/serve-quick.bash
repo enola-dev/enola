@@ -17,9 +17,6 @@
 
 set -euo pipefail
 
-# shellcheck disable=SC1091
-source .venv/bin/activate
-
 xdg-open http://localhost:8000
 
 # NOT --strict, because that will fail, without the 'rpl' magic which build.bash does!

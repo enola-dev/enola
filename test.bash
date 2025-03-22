@@ -71,7 +71,7 @@ fi
 # This is intentionally only done here at the END of successfully running the tests above,
 # because only if we reach here we now that everything above actually works well locally.
 
-source tools/pre-commit/install.bash
+source tools/flox
 
 echo
 # Run https://pre-commit.com, see .pre-commit-config.yaml;
@@ -83,7 +83,7 @@ echo
 # PS: models/build.bash & ./tools/docs/build.bash must have run already... TODO automate dependency, with Bazel?
 if [ -z "${CI:-""}" ]; then
   echo "$ pre-commit run (locally, only changed files)"
-  .venv/bin/pre-commit run
+  pre-commit run
 else
   echo "Skip running pre-commit --all-files on CI, it will run after tools/docs/build.bash Build Docs Site"
 fi
