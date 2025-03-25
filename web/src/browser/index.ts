@@ -39,6 +39,11 @@ fetch("demo/greeting3.gexf")
     // "(...) edge-case where the layout cannot be computed if all of your nodes starts with x=0 and y=0."
     random.assign(graph)
 
+    for (const node of graph.nodeEntries()) {
+      // NOK: graph.setNodeAttribute(node, "size", 10)
+      node.attributes["size"] = 10
+    }
+
     // Configure ForceAtlas2 layout settings
     // TODO Review and adjust the default settings...
     // https://graphology.github.io/standard-library/layout-forceatlas2.html#settings
@@ -53,6 +58,8 @@ fetch("demo/greeting3.gexf")
     fa2Layout.start()
     // TODO UI Buttons to stop() and re-start() the layout
     // TODO layout.kill() when element is removed from DOM - but how do we know when to do that?!
+    //   incl. renderer.off("upNode", handleUp) ?
+    //   incl. renderer.off("upStage", handleUp) ?
 
     // Retrieve some useful DOM elements
     const container = getElementByIdOrFail("container")
@@ -61,11 +68,56 @@ fetch("demo/greeting3.gexf")
     const zoomResetBtn = getElementByIdOrFail("zoom-reset")
     const labelsThresholdRange = getElementByIdOrFail("labels-threshold") as HTMLInputElement
 
+    // State for drag'n'drop
+    let draggedNode: string | null = null
+    let isDragging = false
+
     // Instantiate Sigma.js
     const renderer = new Sigma(graph, container, {
       minCameraRatio: 0.08,
       maxCameraRatio: 3,
     })
+    renderer.on("downNode", e => {
+      // On mouse down on a node:
+      //  - Stop layout-ing (required; otherwise manual and automatic re-positioning "compete")
+      //  - Enable the drag mode
+      //  - Save in the dragged node in the state
+      //  - Highlight the node
+      //  - Disable the camera so its state is not updated
+      fa2Layout.stop()
+      isDragging = true
+      draggedNode = e.node
+      graph.setNodeAttribute(draggedNode, "highlighted", true)
+      if (!renderer.getCustomBBox()) renderer.setCustomBBox(renderer.getBBox())
+    })
+    renderer.on("moveBody", ({ event }) => {
+      // On mouse move, if the drag mode is enabled, we change the position of the draggedNode
+      if (!isDragging || !draggedNode) return
+
+      // Get new position of node
+      const pos = renderer.viewportToGraph(event)
+
+      graph.setNodeAttribute(draggedNode, "x", pos.x)
+      graph.setNodeAttribute(draggedNode, "y", pos.y)
+
+      // Prevent sigma to move camera:
+      event.preventSigmaDefault()
+      event.original.preventDefault()
+      event.original.stopPropagation()
+    })
+    const handleUp = () => {
+      try {
+        // On mouse up, we reset the dragging mode
+        if (draggedNode) {
+          graph.removeNodeAttribute(draggedNode, "highlighted")
+        }
+      } finally {
+        isDragging = false
+        draggedNode = null
+      }
+    }
+    renderer.on("upNode", handleUp)
+    renderer.on("upStage", handleUp)
     const camera = renderer.getCamera()
 
     // Bind zoom manipulation buttons
