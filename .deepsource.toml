@@ -27,3 +27,6 @@ name = "docker"
 
 [[analyzers]]
 name = "javascript"
+
+  [analyzers.meta]
+  skip_doc_coverage = ["arrow-function-expression", "class-declaration", "class-expression", "function-declaration", "function-expression", "method-definition"]
