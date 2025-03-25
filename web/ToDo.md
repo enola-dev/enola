@@ -30,12 +30,11 @@
 
 * Exploratory Mode... like http://en.lodlive.it, with UX as follows: Hide edges, until Node is clicked.
 
-* Switch from GEXF to JSON
+* Switch from GEXF to ~~JSON~~ https://rdf.js.org
 * Show Edge labels!
 * Show fixed type colors (like Graphviz already does)
 
 * Highlight when hovering over label as well, not just dot
-* Let users drag nodes around
 * Hover over Nodes should highlight all its edges
 
 * Merge with //java/dev/enola/web/resources/static/main.css and show green NavBar
