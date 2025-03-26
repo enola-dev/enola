@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "description": "Semantic Web Linked Data UI",
   "dependencies": {
+    "@rdfjs/parser-n3": "^2.1.0",
     "graphology": "^0.26.0",
     "graphology-gexf": "^0.13.2",
     "graphology-layout": "^0.6.1",
@@ -26,6 +27,7 @@
     "@types/bun": "^1.2.4",
     "@types/jest": "^29.5.14",
     "@types/sigmajs": "^1.0.32",
+    "@types/n3": "^1.24.2",
     "eslint-config-prettier": "^10.0.2",
     "graphology-types": "^0.24.8",
     "prettier": "^3.5.2",

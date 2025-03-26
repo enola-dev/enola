@@ -40,7 +40,7 @@
 * Merge with //java/dev/enola/web/resources/static/main.css and show green NavBar
 * Click on node should open Enola details page on the right
 
-* Dark Modus support! ;-)
+* Dark Mode support! ;-)
 
 ## Technical
 
@@ -58,6 +58,8 @@
 * Make `bazel test //web` run web tests
 
 ### Performance
+
+* Load compressed TTL, using e.g. https://github.com/nodeca/pako
 
 * Fix lack of "never cache" header support on GitHub pages by hosting the demo app elsewhere
     * https://gist.github.com/maximebories/961f12101af369804d40d5ec287e562b probably won't work?
