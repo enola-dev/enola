@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euxo pipefail
+
 # Find flox (while PATH is still available)
 FLOX=$(which flox)
 
@@ -7,6 +9,10 @@ FLOX=$(which flox)
 PATH=
 
 # NOT source tools/flox
-$FLOX activate -m run
+$FLOX activate --mode=run
 
-./test.bash
+echo "Now source ./test.bash ..."
+source ./test.bash
+
+# TODO or use something like:
+#   env -i flox activate -- source

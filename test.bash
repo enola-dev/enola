@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
 #
 # Copyright 2023-2025 The Enola <https://enola.dev> Authors
@@ -15,7 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
+set -euxo pipefail
+
+echo "test.bash: Yo!"
 
 # This script builds the project *WITHOUT* requiring containers.
 # It can be used *IN* a container though; and is so, by the ./build script.
