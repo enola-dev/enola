@@ -77,16 +77,6 @@ public abstract class ThingTester {
     }
 
     @Test
-    @Ignore // inOrder() is *NOT* guaranteed to be deterministic [anymore]
-    public void insertionInOrder() {
-        thingBuilder.iri(THING_IRI);
-        thingBuilder.set("b", "B");
-        thingBuilder.set("a", "A");
-        var thing = thingBuilder.build();
-        assertThat(thing.predicateIRIs()).containsExactly("b", "a").inOrder();
-    }
-
-    @Test
     public void datatype1() {
         thingBuilder.iri(THING_IRI);
         var value = "http://example.org/hi/{NUMBER}";
@@ -232,7 +222,7 @@ public abstract class ThingTester {
         thingBuilder.set(PREDICATE_IRI, "x");
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
         var thing = thingBuilder.build();
-        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "x");
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("x", "a").inOrder();
     }
 
     @Test
@@ -241,17 +231,19 @@ public abstract class ThingTester {
         thingBuilder.add(PREDICATE_IRI, "x");
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
         var thing = thingBuilder.build();
-        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "x");
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("x", "a").inOrder();
     }
 
     @Test
     public void addToOrdered() {
         thingBuilder.iri(THING_IRI);
+        thingBuilder.addOrdered(PREDICATE_IRI, "c");
         thingBuilder.addOrdered(PREDICATE_IRI, "b");
-        thingBuilder.addOrdered(PREDICATE_IRI, "a");
-        thingBuilder.add(PREDICATE_IRI, "c");
+        thingBuilder.add(PREDICATE_IRI, "a");
         var thing = thingBuilder.build();
-        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c");
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class))
+                .containsExactly("c", "b", "a")
+                .inOrder();
     }
 
     @Test
@@ -261,7 +253,9 @@ public abstract class ThingTester {
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
         thingBuilder.addAll(PREDICATE_IRI, List.of("d", "c"));
         var thing = thingBuilder.build();
-        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c", "d");
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class))
+                .containsExactly("b", "a", "d", "c")
+                .inOrder();
     }
 
     @Test
@@ -284,7 +278,7 @@ public abstract class ThingTester {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing = thingBuilder.build();
-        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+        assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("b", "a").inOrder();
     }
 
     @Test
@@ -293,9 +287,11 @@ public abstract class ThingTester {
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing1 = thingBuilder.build();
         var thingBuilder2 = thing1.copy();
-        thingBuilder2.addAllOrdered(PREDICATE_IRI, List.of("c", "d"));
+        thingBuilder2.addAllOrdered(PREDICATE_IRI, List.of("d", "c"));
         var thing2 = thingBuilder2.build();
-        assertThat(thing2.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b", "c", "d");
+        assertThat(thing2.get(PREDICATE_IRI, Iterable.class))
+                .containsExactly("b", "a", "d", "c")
+                .inOrder();
     }
 
     @Test
