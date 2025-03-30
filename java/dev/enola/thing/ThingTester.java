@@ -164,6 +164,14 @@ public abstract class ThingTester {
     }
 
     @Test
+    public void addAllEmpty() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addAll(PREDICATE_IRI, List.<String>of());
+        var thing = thingBuilder.build();
+        assertThat(thing.getOptional(PREDICATE_IRI, Iterable.class)).isEmpty();
+    }
+
+    @Test
     public void addAllWithDatatype() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAll(
@@ -231,11 +239,19 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAddAllOrdered() {
+    public void addAllOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing = thingBuilder.build();
         assertThat(thing.get(PREDICATE_IRI, Iterable.class)).containsExactly("a", "b");
+    }
+
+    @Test
+    public void addAllOrderedEmpty() {
+        thingBuilder.iri(THING_IRI);
+        thingBuilder.addAllOrdered(PREDICATE_IRI, List.<String>of());
+        var thing = thingBuilder.build();
+        assertThat(thing.getOptional(PREDICATE_IRI, Iterable.class)).isEmpty();
     }
 
     @Test

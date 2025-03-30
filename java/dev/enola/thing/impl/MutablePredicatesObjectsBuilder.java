@@ -109,6 +109,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addAll(
             String predicateIRI, Iterable<T> values) {
         if (values == null) return this;
+        if (Iterables.isEmpty(values)) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
             var builder = ImmutableSet.builder();
@@ -158,6 +159,7 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
     public <@ImmutableTypeParameter T> PredicatesObjects.Builder<B> addAllOrdered(
             String predicateIRI, Iterable<T> values) {
         if (values == null) return this;
+        if (Iterables.isEmpty(values)) return this;
         var object = properties.get(predicateIRI);
         if (object == null) {
             var builder = ImmutableList.builder();
