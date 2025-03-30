@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Locale;
 
 /**
- * LangString is a String plus its (mandatory) language.
+ * LangString is a {@link String} plus its (mandatory) language.
  *
  * <p>For example, <i>"hello, world" in English</i> is a LangString.
  *
@@ -33,9 +33,10 @@ import java.util.Locale;
  * type is otherwise technically not specific to the Resource Description Framework [RDF] as such).
  *
  * <p>Alternative names for the same concept include <tt>LocalizedText</tt>, <tt>LanguageText</tt>,
- * <tt>MultilingualString</tt> ('MLS'), <tt>InternationalizedString</tt> or <tt>LanguageString</tt>.
+ * <tt>MultilingualString</tt> ('MLS'; or <tt>MultiLangString</tt> or <tt>MultiLanguageString</tt>),
+ * <tt>InternationalizedString</tt> or <tt>LanguageString</tt>.
  */
-public sealed class LangString permits DirectionalLangString {
+public sealed class LangString permits DirectionalLangString, PronounceableText {
 
     private final String text;
     private final Locale language;
