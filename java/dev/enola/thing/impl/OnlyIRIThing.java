@@ -20,7 +20,9 @@ package dev.enola.thing.impl;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.context.TLC;
 import dev.enola.thing.Thing;
+import dev.enola.thing.java.TBF;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -74,7 +76,7 @@ public class OnlyIRIThing implements IImmutableThing {
 
     @Override
     public Thing.Builder<? extends Thing> copy() {
-        return ImmutableThing.builder().iri(iri());
+        return TLC.get(TBF.class).create();
     }
 
     @Override

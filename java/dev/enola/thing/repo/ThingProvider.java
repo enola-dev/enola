@@ -24,6 +24,7 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.data.ProviderFromIRI;
 import dev.enola.thing.Thing;
 import dev.enola.thing.ThingConverterInto;
+import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.message.ProtoThingProvider;
 
@@ -57,7 +58,7 @@ public interface ThingProvider extends ProviderFromIRI<Thing> {
 
     default Thing.Builder<?> getBuilder(String iri, String typeIRI) {
         var thing = get(Objects.requireNonNull(iri, "iri"));
-        if (thing != null) return thing.copy();
+        if (thing != null && !(thing instanceof OnlyIRIThing)) return thing.copy();
         else return TLC.get(TBF.class).create(typeIRI).iri(iri);
     }
 

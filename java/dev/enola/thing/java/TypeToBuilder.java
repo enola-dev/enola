@@ -17,6 +17,7 @@
  */
 package dev.enola.thing.java;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.Resources;
 import com.google.errorprone.annotations.ThreadSafe;
 
@@ -31,14 +32,17 @@ public class TypeToBuilder {
 
     // TODO Cache in @ThreadSafe (copy-on-write, perhaps?) Map
 
-    record ThingAndBuilderClassPair(Class<Thing> thingClass, Class<Thing.Builder> builderClass) {}
+    @VisibleForTesting
+    public record ThingAndBuilderClassPair(
+            Class<Thing> thingClass, Class<Thing.Builder> builderClass) {}
 
     private static final ThingAndBuilderClassPair DEFAULT =
             new ThingAndBuilderClassPair(Thing.class, Thing.Builder.class);
 
     private static final ClassLoader classLoader = TypeToBuilder.class.getClassLoader();
 
-    static ThingAndBuilderClassPair typeToBuilder(String typeIRI) {
+    @VisibleForTesting
+    public static ThingAndBuilderClassPair typeToBuilder(String typeIRI) {
         var resourceName = "META-INF/dev.enola/" + mangle(typeIRI);
         var url = classLoader.getResource(resourceName);
         if (url == null) return DEFAULT;
