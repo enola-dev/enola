@@ -47,7 +47,11 @@ junit_tests(
         ":rdf",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/datatype",
         "//java/dev/enola/model",
+        "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
+        "//models",
     ],
 )

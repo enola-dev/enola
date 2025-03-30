@@ -67,8 +67,8 @@ public interface Class extends Resource, HasClassIRI {
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
 
-        default Builder<B> addRdfsClassProperty(HasIRI iri) {
-            add(PROPERTIES, new Link(iri.iri()));
+        default Builder<B> addRdfsClassProperty(HasIRI hasIRI) {
+            add(PROPERTIES, new Link(hasIRI.iri()));
             return this;
         }
     }

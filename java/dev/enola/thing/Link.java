@@ -26,13 +26,18 @@ import com.google.errorprone.annotations.Immutable;
  * be returned by {@link Thing#get(String)} and distinguished from a String which is not an IRI but
  * text.
  */
-// TODO Link extends IRI
 // TODO Consider using a Datatype to indicate link? But which...
 // TODO Abandon this and just use java.net.URI in Things instead?! No, that's less efficient.
 //   Or change this record to a class and have an URI field, for 1 time conversion.
 // TODO Make it extend Thing; and voilà, it's a Property Graph!
 @Immutable
 public record Link(String iri) implements HasIRI {
+
+    public Link {
+        if (iri == null || iri.isBlank()) {
+            throw new IllegalArgumentException("IRI cannot be null or trimmed empty.");
+        }
+    }
 
     @Override
     public String toString() {

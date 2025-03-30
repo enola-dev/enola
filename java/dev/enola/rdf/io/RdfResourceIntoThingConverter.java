@@ -22,8 +22,6 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.Thing;
-import dev.enola.thing.Thing.Builder;
-import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.UriIntoThingConverter;
 import dev.enola.thing.java.HasType;
 import dev.enola.thing.message.ProtoThingIntoJavaThingBuilderConverter;
@@ -33,7 +31,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.function.Supplier;
 
 /**
  * RdfResourceIntoThingConverter "converts" (loads, really) RDF resources (e.g. *.ttl, et al.) into
@@ -46,25 +43,14 @@ public class RdfResourceIntoThingConverter<T extends Thing> implements UriIntoTh
 
     private final ProtoThingIntoJavaThingBuilderConverter protoThingIntoJavaThingBuilderConverter;
 
-    private final Supplier<Builder<T>> builderSupplier;
     private final ResourceProvider rp;
 
-    private RdfResourceIntoThingConverter(
-            ResourceProvider rp,
-            DatatypeRepository datatypeRepository,
-            Supplier<Thing.Builder<T>> builderSupplier) {
+    public RdfResourceIntoThingConverter(
+            ResourceProvider rp, DatatypeRepository datatypeRepository) {
         this.rdfResourceIntoProtoThingConverter = new RdfResourceIntoProtoThingConverter(rp);
         this.protoThingIntoJavaThingBuilderConverter =
                 new ProtoThingIntoJavaThingBuilderConverter(datatypeRepository);
-        this.builderSupplier = builderSupplier;
         this.rp = rp;
-    }
-
-    @SuppressWarnings("unchecked")
-    public RdfResourceIntoThingConverter(
-            ResourceProvider rp, DatatypeRepository datatypeRepository) {
-        // TODO Instead ImmutableThing.builder() it should look-up GenJavaThing subclass, if any
-        this(rp, datatypeRepository, () -> (Builder<T>) ImmutableThing.builder());
     }
 
     public RdfResourceIntoThingConverter() {
