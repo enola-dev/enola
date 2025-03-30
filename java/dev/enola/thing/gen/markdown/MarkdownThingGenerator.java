@@ -186,7 +186,8 @@ class MarkdownThingGenerator {
                     out.append(indent);
                     if (list.getOrdered()) out.append("    1. ");
                     else out.append("    * ");
-                    write(indent, element, out, outputIRI, base, isDocumentedIRI, ts);
+                    // NB: indent + "    " is important to correctly visualize nested lists!
+                    write(indent + "    ", element, out, outputIRI, base, isDocumentedIRI, ts);
                 }
                 break;
 

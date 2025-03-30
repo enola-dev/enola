@@ -95,6 +95,11 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
             builder.add(value);
         } else if (object instanceof ImmutableCollection.Builder builder) {
             builder.add(value);
+        } else if (object instanceof Iterable iterable) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(iterable);
+            builder.add(value);
         } else {
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);
@@ -116,6 +121,11 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
             properties.put(predicateIRI, builder);
             builder.addAll(values);
         } else if (object instanceof ImmutableCollection.Builder builder) {
+            builder.addAll(values);
+        } else if (object instanceof Iterable iterable) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(iterable);
             builder.addAll(values);
         } else {
             var builder = ImmutableSet.builder();
@@ -145,6 +155,11 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
             properties.put(predicateIRI, listBuilder);
             listBuilder.addAll(set);
             listBuilder.add(value);
+        } else if (object instanceof Iterable iterable) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(iterable);
+            builder.add(value);
         } else {
             var builder = ImmutableList.builder();
             properties.put(predicateIRI, builder);
@@ -174,6 +189,11 @@ class MutablePredicatesObjectsBuilder<B extends IImmutablePredicatesObjects>
             properties.put(predicateIRI, listBuilder);
             listBuilder.addAll(set);
             listBuilder.addAll(values);
+        } else if (object instanceof Iterable iterable) {
+            var builder = ImmutableSet.builder();
+            properties.put(predicateIRI, builder);
+            builder.addAll(iterable);
+            builder.addAll(values);
         } else {
             var builder = ImmutableSet.builder();
             properties.put(predicateIRI, builder);

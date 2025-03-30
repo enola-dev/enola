@@ -41,6 +41,7 @@ public record Link(String iri) implements HasIRI {
 
     @Override
     public String toString() {
+        // TODO return "<" + iri + ">";
         return iri;
     }
 }
