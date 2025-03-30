@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common;
+package dev.enola.common.text;
 
 public enum Direction {
     LTR("ltr"),

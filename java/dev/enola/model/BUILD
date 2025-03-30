@@ -36,6 +36,7 @@ java_library(
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
+        "//java/dev/enola/common/text",
         "//java/dev/enola/common/yamljson",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",

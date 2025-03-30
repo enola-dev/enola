@@ -17,7 +17,7 @@
  */
 package dev.enola.model.w3.rdf;
 
-import dev.enola.common.Direction;
+import dev.enola.common.text.Direction;
 import dev.enola.thing.KIRI;
 import dev.enola.thing.impl.IImmutableThing;
 
