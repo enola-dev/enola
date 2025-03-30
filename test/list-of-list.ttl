@@ -1,0 +1,13 @@
+@prefix : <http://example.org/>.
+
+:list-of-list
+  :set :a, :b, :c;
+  # TODO :list ( (:a) :b :c );
+  :list ( :a :b :c );
+  # TODO :blank [
+  # TODO   :a [
+  # TODO     :c :d, :e
+  # TODO   ];
+  # TODO   :list ( (:a) :b :c )
+  # TODO ]
+.
