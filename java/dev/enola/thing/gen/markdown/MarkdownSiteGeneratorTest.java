@@ -154,6 +154,13 @@ public class MarkdownSiteGeneratorTest {
         generate(dir, "template-name-clash.ttl");
     }
 
+    @Test
+    public void listOfList() throws IOException {
+        Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-listOfList");
+        generate(dir, "list-of-list.ttl");
+        check(dir, "example.org/list-of-list.md", "list-of-list.md");
+    }
+
     private void generate(Path dir, String classpathResource) throws IOException {
         var converterP2J = new ProtoThingIntoJavaThingBuilderConverter(dtr);
         var loadedProtoThings = load(new ClasspathResource(classpathResource));
