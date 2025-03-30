@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@NullMarked
 package dev.enola.common.text;
 
-public enum Direction {
-    LTR("ltr"),
-    RTL("rtl"),
-    AUTO("auto");
-
-    private final String value;
-
-    Direction(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public static Direction from(String text) {
-        for (Direction direction : Direction.values()) {
-            if (direction.value.equalsIgnoreCase(text)) {
-                return direction;
-            }
-        }
-        throw new IllegalArgumentException(text);
-    }
-}
+import org.jspecify.annotations.NullMarked;
