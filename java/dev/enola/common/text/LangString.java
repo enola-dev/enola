@@ -35,12 +35,12 @@ import java.util.Locale;
  * <p>Alternative names for the same concept include <tt>LocalizedText</tt>, <tt>LanguageText</tt>,
  * <tt>MultilingualString</tt> ('MLS'), <tt>InternationalizedString</tt> or <tt>LanguageString</tt>.
  */
-public sealed class LangString {
+public sealed class LangString permits DirectionalLangString {
 
     private final String text;
     private final Locale language;
 
-    private LangString(String text, Locale language) {
+    LangString(String text, Locale language) {
         this.text = requireNonNull(text, "text");
         this.language = requireNonNull(language, "language");
     }
@@ -83,40 +83,5 @@ public sealed class LangString {
 
         LangString that = (LangString) o;
         return text.equals(that.text) && language.equals(that.language);
-    }
-
-    private static final class DirectionalLangString extends LangString {
-        private final Direction direction;
-
-        private DirectionalLangString(String text, Locale language, Direction direction) {
-            super(text, language);
-            this.direction = requireNonNull(direction, "direction");
-        }
-
-        @Override
-        public Direction direction() {
-            return direction;
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + "-" + direction;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = super.hashCode();
-            result = 31 * result + direction.hashCode();
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
-
-            DirectionalLangString that = (DirectionalLangString) o;
-            return direction == that.direction;
-        }
     }
 }
