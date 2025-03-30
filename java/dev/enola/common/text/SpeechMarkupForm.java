@@ -17,28 +17,17 @@
  */
 package dev.enola.common.text;
 
-public enum Direction {
-    LTR("ltr"),
-    RTL("rtl"),
-    AUTO("auto");
-    // TODO ICU's Unicode class Bidi (but not RDF) also has MIXED & NEUTRAL... hm!
+public enum SpeechMarkupForm {
 
-    private final String value;
+    /**
+     * <a href="https://www.w3.org/TR/speech-synthesis11/">Speech Synthesis Markup Language
+     * (SSML)</a>.
+     */
+    SSML,
 
-    Direction(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public static Direction from(String text) {
-        for (Direction direction : Direction.values()) {
-            if (direction.value.equalsIgnoreCase(text)) {
-                return direction;
-            }
-        }
-        throw new IllegalArgumentException(text);
-    }
+    /**
+     * <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet">International
+     * Phonetic Alphabet</a>.
+     */
+    IPA
 }
