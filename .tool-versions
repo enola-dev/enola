@@ -10,11 +10,6 @@
 # asdf install protoc latest
 # asdf local protoc latest
 
-# Protoc is used (only) by tools/protoc/protoc.bash
-# to generate *.schema.json from *.proto; the Bazel
-# rules_proto (downloads and builds) its own protoc.
-protoc 29.2
-
 # TODO protolint here instead of installing it in test.bash
 # when https://github.com/spencergilbert/asdf-protolint/issues/37 is fixed
 

@@ -22,6 +22,12 @@ version = 1
 # see https://github.com/enola-dev/enola/pull/1227.
 python3 = { pkg-path = "python312" }
 
+# Protoc is used (only) by tools/protoc/protoc.bash
+# to generate *.schema.json from *.proto; the Bazel
+# rules_proto (downloads and builds) its own protoc.
+protobuf.pkg-path = "protobuf"
+protobuf.version = "29.2"
+
 ## Environment Variables ---------------------------------------------
 ##  ... available for use in the activated environment
 ##      as well as [hook], [profile] scripts and [services] below.

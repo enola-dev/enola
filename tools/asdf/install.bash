@@ -50,7 +50,6 @@ if ! [ -x "$(command -v asdf)" ]; then
 fi
 
 asdf info
-asdf plugin add protoc
 asdf plugin add bun
 # This installs the tools as per //.tools-versions (with fixed versions)
 asdf install

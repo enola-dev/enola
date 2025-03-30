@@ -3,6 +3,10 @@
   "manifest": {
     "version": 1,
     "install": {
+      "protobuf": {
+        "pkg-path": "protobuf",
+        "version": "29.2"
+      },
       "python3": {
         "pkg-path": "python312"
       }
@@ -31,29 +35,150 @@
   },
   "packages": [
     {
-      "attr_path": "python312",
+      "attr_path": "protobuf",
       "broken": false,
-      "derivation": "/nix/store/mdsmprmrjc24d5bf2xg5nsp03qix19fh-python3-3.12.9.drv",
-      "description": "High-level dynamically-typed programming language",
-      "install_id": "python3",
-      "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "name": "python3-3.12.9",
-      "pname": "python312",
-      "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "rev_count": 770807,
-      "rev_date": "2025-03-19T22:12:44Z",
-      "scrape_date": "2025-03-22T01:09:15.046624Z",
+      "derivation": "/nix/store/5biik4lz9fgsgbl0zf5d9qj5zxjbmqk2-protobuf-29.2.drv",
+      "description": "Google's data interchange format",
+      "install_id": "protobuf",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "protobuf-29.2",
+      "pname": "protobuf",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "python3-3.12.9",
+      "version": "29.2",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/ibnllhp7pc88kgcrxa2gddxcbyl0vngk-python3-3.12.9"
+        "out": "/nix/store/rf1k2r8bh34i23za7w9g5nf459sldbb5-protobuf-29.2"
+      },
+      "system": "aarch64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "protobuf",
+      "broken": false,
+      "derivation": "/nix/store/gyh22g7yaa82qgkmpf9vskwcnphwilzg-protobuf-29.2.drv",
+      "description": "Google's data interchange format",
+      "install_id": "protobuf",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "protobuf-29.2",
+      "pname": "protobuf",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "29.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/b0lnp9h1i5jv43nw1qyvb8xdyck3x2v2-protobuf-29.2"
+      },
+      "system": "aarch64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "protobuf",
+      "broken": false,
+      "derivation": "/nix/store/5gkcqih18jc2bh3qj2rb54jhqghx1lrq-protobuf-29.2.drv",
+      "description": "Google's data interchange format",
+      "install_id": "protobuf",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "protobuf-29.2",
+      "pname": "protobuf",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "29.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/c97xv0vszx2g81d9339ndqf72z3ji6hy-protobuf-29.2"
+      },
+      "system": "x86_64-darwin",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "protobuf",
+      "broken": false,
+      "derivation": "/nix/store/md04plaig6zkp14gi456drm1wykac3ya-protobuf-29.2.drv",
+      "description": "Google's data interchange format",
+      "install_id": "protobuf",
+      "license": "BSD-3-Clause",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "protobuf-29.2",
+      "pname": "protobuf",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "29.2",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/r4k147v919pir4fj74in3axcbma03793-protobuf-29.2"
+      },
+      "system": "x86_64-linux",
+      "group": "toplevel",
+      "priority": 5
+    },
+    {
+      "attr_path": "python312",
+      "broken": false,
+      "derivation": "/nix/store/3l02ibvbim50yrmplj2gd6q9k4bnv00h-python3-3.12.8.drv",
+      "description": "High-level dynamically-typed programming language",
+      "install_id": "python3",
+      "license": "Python-2.0",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "python3-3.12.8",
+      "pname": "python312",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
+      "stabilities": [
+        "staging",
+        "unstable"
+      ],
+      "unfree": false,
+      "version": "python3-3.12.8",
+      "outputs_to_install": [
+        "out"
+      ],
+      "outputs": {
+        "out": "/nix/store/ffxlyz7jrxxyxg70cn3h961lr91lan2j-python3-3.12.8"
       },
       "system": "aarch64-darwin",
       "group": "toplevel",
@@ -62,28 +187,29 @@
     {
       "attr_path": "python312",
       "broken": false,
-      "derivation": "/nix/store/47wg9wf5x9lv03w38j45g6jkq7492bz0-python3-3.12.9.drv",
+      "derivation": "/nix/store/i8fq977q7gr33lnbh4x7pfns2lzlf3vv-python3-3.12.8.drv",
       "description": "High-level dynamically-typed programming language",
       "install_id": "python3",
       "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "name": "python3-3.12.9",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "python3-3.12.8",
       "pname": "python312",
-      "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "rev_count": 770807,
-      "rev_date": "2025-03-19T22:12:44Z",
-      "scrape_date": "2025-03-22T01:26:15.127488Z",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "python3-3.12.9",
+      "version": "python3-3.12.8",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "debug": "/nix/store/61ksnhxna7vrh315zp36swz4563hfip3-python3-3.12.9-debug",
-        "out": "/nix/store/69nij8d888s5nxm90bwmlza5v1pfniz5-python3-3.12.9"
+        "debug": "/nix/store/zgss40jlwqkb22z37bi8nb3jwg28sj10-python3-3.12.8-debug",
+        "out": "/nix/store/p3nlssl5qqib5kysa30mqzzzp364z6fb-python3-3.12.8"
       },
       "system": "aarch64-linux",
       "group": "toplevel",
@@ -92,27 +218,28 @@
     {
       "attr_path": "python312",
       "broken": false,
-      "derivation": "/nix/store/m216wld0xa07pb3kwhm5qf2vcxwcd8kp-python3-3.12.9.drv",
+      "derivation": "/nix/store/mxwwxflkwcaj30048cgk3i853fhbbrji-python3-3.12.8.drv",
       "description": "High-level dynamically-typed programming language",
       "install_id": "python3",
       "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "name": "python3-3.12.9",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "python3-3.12.8",
       "pname": "python312",
-      "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "rev_count": 770807,
-      "rev_date": "2025-03-19T22:12:44Z",
-      "scrape_date": "2025-03-22T01:41:19.501074Z",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "python3-3.12.9",
+      "version": "python3-3.12.8",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "out": "/nix/store/2gr2skg3m0hagibhmhn8fwpvgkg2a3sn-python3-3.12.9"
+        "out": "/nix/store/45g1q2ama4j033d5qi2lgfzy1xmagnmf-python3-3.12.8"
       },
       "system": "x86_64-darwin",
       "group": "toplevel",
@@ -121,28 +248,29 @@
     {
       "attr_path": "python312",
       "broken": false,
-      "derivation": "/nix/store/7migdv1gw3nv4dl921mk8algfllzricw-python3-3.12.9.drv",
+      "derivation": "/nix/store/vayn2kdmslggnm005zxr7r67hfbzi4jh-python3-3.12.8.drv",
       "description": "High-level dynamically-typed programming language",
       "install_id": "python3",
       "license": "Python-2.0",
-      "locked_url": "https://github.com/flox/nixpkgs?rev=a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "name": "python3-3.12.9",
+      "locked_url": "https://github.com/flox/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d",
+      "name": "python3-3.12.8",
       "pname": "python312",
-      "rev": "a84ebe20c6bc2ecbcfb000a50776219f48d134cc",
-      "rev_count": 770807,
-      "rev_date": "2025-03-19T22:12:44Z",
-      "scrape_date": "2025-03-22T01:59:34.881820Z",
+      "rev": "799ba5bffed04ced7067a91798353d360788b30d",
+      "rev_count": 747653,
+      "rev_date": "2025-02-04T14:46:40Z",
+      "scrape_date": "2025-02-05T00:30:07Z",
       "stabilities": [
+        "staging",
         "unstable"
       ],
       "unfree": false,
-      "version": "python3-3.12.9",
+      "version": "python3-3.12.8",
       "outputs_to_install": [
         "out"
       ],
       "outputs": {
-        "debug": "/nix/store/lax69b07pjgj4ahn4zild8vfqdavy9zm-python3-3.12.9-debug",
-        "out": "/nix/store/wz0j2zi02rvnjiz37nn28h3gfdq61svz-python3-3.12.9"
+        "debug": "/nix/store/yg7pavnh3hhw0lwfm9c4jr9yi3rq8h4r-python3-3.12.8-debug",
+        "out": "/nix/store/qrc496n6fsqp4p5m5h8wmw5d5jwyw5mr-python3-3.12.8"
       },
       "system": "x86_64-linux",
       "group": "toplevel",
