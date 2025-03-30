@@ -32,6 +32,7 @@ import dev.enola.model.w3.rdf.Property;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.rdf.io.RdfResourceIntoThingConverter;
 import dev.enola.thing.KIRI;
+import dev.enola.thing.Link;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
@@ -43,7 +44,6 @@ import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -54,7 +54,6 @@ public class RDFSTriggersIntegrationTest {
     @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Test
-    @Ignore // TODO FIXME
     public void rdfs() throws IOException {
         var trigger = new RDFSPropertyTrigger();
         ThingRepositoryStore repo = new ThingMemoryRepositoryRW(ImmutableList.of(trigger));
@@ -78,9 +77,9 @@ public class RDFSTriggersIntegrationTest {
             var properties = propertyThing.get("https://enola.dev/properties", Iterable.class);
             assertThat(properties)
                     .containsExactly(
-                            "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
-                            "http://www.w3.org/2000/01/rdf-schema#domain",
-                            "http://www.w3.org/2000/01/rdf-schema#range");
+                            new Link("http://www.w3.org/2000/01/rdf-schema#subPropertyOf"),
+                            new Link("http://www.w3.org/2000/01/rdf-schema#domain"),
+                            new Link("http://www.w3.org/2000/01/rdf-schema#range"));
         }
     }
 
