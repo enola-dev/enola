@@ -41,6 +41,7 @@ import java.net.URISyntaxException;
 public class MultibaseResource extends BaseResource implements ReadableButNotWritableResource {
 
     // Intentionally different from MultibaseIRI's mb: scheme.
+    // multibase: is for fetching resources, mb: is for Thing IRIs.
     private static final String SCHEME = "multibase";
 
     public static class Provider implements ResourceProvider {
