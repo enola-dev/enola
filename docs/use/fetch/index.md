@@ -124,6 +124,8 @@ $ ./enola fetch multibase:maGVsbG8sIHdvcmxk
 ...
 ```
 
+Nota bene: This (fetchable) `multibase:` scheme is (intentionally) different from the `mb:` used for (random) Thing IRIs.
+
 ### File Descriptor
 
 `fd:` is a (non-standard) URL scheme in Enola for reading from or writing to [file descriptors](https://en.wikipedia.org/wiki/File_descriptor), for:

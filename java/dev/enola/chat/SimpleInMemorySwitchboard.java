@@ -18,7 +18,7 @@
 package dev.enola.chat;
 
 import dev.enola.common.context.TLC;
-import dev.enola.data.id.UUID_IRI;
+import dev.enola.data.id.MultibaseIRI;
 import dev.enola.identity.SubjectContextKey;
 
 import java.time.Instant;
@@ -33,7 +33,7 @@ public class SimpleInMemorySwitchboard implements Switchboard {
 
     @Override
     public void post(Message.Builder builder) {
-        if (builder.id() == null) builder.id(new UUID_IRI());
+        if (builder.id() == null) builder.id(MultibaseIRI.random());
         if (builder.from() == null) builder.from(TLC.get(SubjectContextKey.USER));
         if (builder.createdAt() == null) builder.createdAt(Instant.now());
         if (builder.modifiedAt() == null) builder.modifiedAt(builder.createdAt());

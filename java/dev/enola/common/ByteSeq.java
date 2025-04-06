@@ -22,6 +22,7 @@ import com.google.errorprone.annotations.Immutable;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -142,6 +143,20 @@ public final class ByteSeq implements Comparable<ByteSeq> {
         var builder = builder(16);
         builder.add(byteBuffer.asReadOnlyBuffer());
         return builder.build();
+    }
+
+    // Stolen from java.util.UUID:
+    private static class Holder {
+        static final SecureRandom numberGenerator = new SecureRandom();
+    }
+
+    public static ByteSeq random(int size) {
+        // As in java.util.UUID#randomUUID:
+        // (See also dev.enola.data.id.UUID_IRI constructor!)
+        SecureRandom ng = Holder.numberGenerator;
+        byte[] randomBytes = new byte[size];
+        ng.nextBytes(randomBytes);
+        return new ByteSeq(randomBytes);
     }
 
     @SuppressWarnings("Immutable") // Holy promise never to change the bytes!

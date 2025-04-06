@@ -36,6 +36,8 @@ public interface Message {
 
     Instant modifiedAt();
 
+    // TODO Add Locale language(), by introducing a LangString-like type with format datatype?
+
     String content();
 
     Format format();

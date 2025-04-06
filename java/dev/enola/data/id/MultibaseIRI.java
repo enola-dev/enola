@@ -19,41 +19,56 @@ package dev.enola.data.id;
 
 import com.google.errorprone.annotations.Immutable;
 
+import dev.enola.common.ByteSeq;
 import dev.enola.common.convert.ObjectToStringBiConverters;
 import dev.enola.data.iri.IRIConverter;
 
-import java.util.UUID;
-
 @Immutable
-public final class UUID_IRI extends IDIRI<UUID> {
-    // TODO /* non-public! */
+public class MultibaseIRI extends IDIRI<ByteSeq> {
 
-    static final ConverterX<UUID_IRI, UUID> CONVERTER =
-            new ConverterX<>("urn:uuid:", ObjectToStringBiConverters.UUID) {
+    // Intentionally different from MultibaseResource's multibase: scheme.
+    private static final String SCHEME = "mb";
+
+    static final ConverterX<MultibaseIRI, ByteSeq> CONVERTER =
+            new ConverterX<>(SCHEME, ObjectToStringBiConverters.MULTIBASE) {
                 @Override
-                protected UUID_IRI create(UUID id) {
-                    return new UUID_IRI(id);
+                protected MultibaseIRI create(ByteSeq id) {
+                    return new MultibaseIRI(id);
                 }
             };
 
-    // TODO Remove public
-    public UUID_IRI(UUID uuid) {
-        super(uuid);
+    public static MultibaseIRI random() {
+        return random(16);
     }
 
-    public UUID_IRI() {
-        // See also dev.enola.common.ByteSeq#random()
-        super(UUID.randomUUID());
+    public static MultibaseIRI random(int size) {
+        return new MultibaseIRI(size);
+    }
+
+    public static MultibaseIRI parse(String multibase) {
+        return CONVERTER.convertFrom(multibase);
+    }
+
+    public static MultibaseIRI of(ByteSeq id) {
+        return new MultibaseIRI(id);
+    }
+
+    private MultibaseIRI(int size) {
+        this(ByteSeq.random(size));
+    }
+
+    private MultibaseIRI(ByteSeq bs) {
+        super(bs);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected IRIConverter<UUID_IRI> iriConverter() {
+    protected IRIConverter<MultibaseIRI> iriConverter() {
         return CONVERTER;
     }
 
     @Override
     protected boolean isComparableTo(Object other) {
-        return other instanceof UUID_IRI;
+        return other instanceof MultibaseIRI;
     }
 }

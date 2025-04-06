@@ -108,7 +108,7 @@ public final class ObjectToStringBiConverters {
                 }
             };
 
-    public static final ObjectToStringBiConverter<ByteSeq> BINARY = new MultibaseConverter();
+    public static final ObjectToStringBiConverter<ByteSeq> MULTIBASE = new MultibaseConverter();
 
     private ObjectToStringBiConverters() {}
 }
