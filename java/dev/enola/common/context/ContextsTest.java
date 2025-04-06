@@ -48,11 +48,9 @@ public class ContextsTest {
     @Test
     public void one() {
         try (var ctx = TLC.open()) {
-            assertThat(ctx.get(OTHER)).isNull();
             ctx.push(FOO, "bar");
             String foo = TLC.get(FOO);
             assertThat(foo).isEqualTo("bar");
-            assertThat(ctx.get(OTHER)).isNull();
         }
     }
 

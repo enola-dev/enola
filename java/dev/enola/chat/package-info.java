@@ -15,18 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
+/** Chat. */
+@NullMarked
+package dev.enola.chat;
 
-public interface HasIRI {
-
-    // TODO IRI iri() instead of String iri() ?
-    String iri();
-
-    interface Builder<B extends HasIRI.Builder<?>> {
-
-        @CanIgnoreReturnValue
-        B iri(String iri);
-    }
-}
+import org.jspecify.annotations.NullMarked;

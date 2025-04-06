@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.identity;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import dev.enola.common.context.Context;
 
-public interface HasIRI {
+public enum SubjectContextKey implements Context.Key<Subject> {
 
-    // TODO IRI iri() instead of String iri() ?
-    String iri();
+    /** The subject of the "currently logged-in user", e.g. from an HTTP request (or similar). */
+    USER,
 
-    interface Builder<B extends HasIRI.Builder<?>> {
+    // TODO ORG_BEHALF ?
 
-        @CanIgnoreReturnValue
-        B iri(String iri);
-    }
+    /** The "machine" subject, e.g. the "system" or "application" or "container" or "VM" etc. */
+    // TODO ? MACHINE
 }

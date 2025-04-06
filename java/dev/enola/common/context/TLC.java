@@ -68,23 +68,18 @@ public final class TLC {
      *
      * <p>Use {@link #optional(Enum)} to check if key is available in Context.
      */
-    // TODO TLC.get(K key) should not be @Nullable, but throws IllegalStateException; see optional()
-    public static <K extends Enum<K> & Context.Key<T>, T> @Nullable T get(K key) {
+    public static <K extends Enum<K> & Context.Key<T>, T> T get(K key) {
         return context(key).get(key);
     }
 
-    /**
-     * See {@link Context#optional(Class)}.
-     *
-     * <p>Use {@link #get(Enum)} if key must be available in Context.
-     */
+    /** See {@link Context#optional(Enum)}. */
     public static <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key) {
         var tlc = threadLocalContext.get();
         if (tlc == null) return Optional.empty();
-        return Optional.ofNullable(tlc.get(key));
+        return tlc.optional(key);
     }
 
-    /** See {@link dev.enola.common.context.Context#get(java.lang.Class). */
+    /** See {@link Context#get(java.lang.Class). */
     public static <T> T get(Class<T> klass) {
         return context(klass).get(klass);
     }

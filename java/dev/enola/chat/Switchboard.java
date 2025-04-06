@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.chat;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import java.util.function.Consumer;
 
-public interface HasIRI {
+public interface Switchboard {
 
-    // TODO IRI iri() instead of String iri() ?
-    String iri();
+    void post(Message.Builder message);
 
-    interface Builder<B extends HasIRI.Builder<?>> {
-
-        @CanIgnoreReturnValue
-        B iri(String iri);
-    }
+    void watch(Consumer<Message> consumer);
 }

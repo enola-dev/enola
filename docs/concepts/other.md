@@ -201,7 +201,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 * [TinySPARQL](https://gnome.pages.gitlab.gnome.org/tinysparql/) #SPARQL #RDF #SQLite #Linux #GNOME #Tracker #Miner
 * [Tinkerpop](https://tinkerpop.apache.org) with [SPARQL-Gremlin](https://tinkerpop.apache.org/docs/current/reference/#sparql-gremlin) (also NB [Sqlg](https://www.sqlg.org)) #opensource
 * [qEndpoint](https://github.com/the-qa-company/qEndpoint) #RDF #RDF4j #HDT #GeoSPARQL #SPARQL #opensource
-* [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial
+* [GraphDB, by Ontotext](https://graphdb.ontotext.com) #freemium #commercial #RDF4j
 * [Apache Jena's TDB](https://jena.apache.org) (Fuseki?) #opensource
 * [Oxigraph](https://github.com/oxigraph/oxigraph) #opensource
 * [Virtuoso](https://virtuoso.openlinksw.com) #opensource
