@@ -80,11 +80,24 @@ public class Context implements AutoCloseable {
         return this;
     }
 
-    /** Get the value for the given key, from this or its parent context. May be null. */
-    // TODO Introduce <K extends Enum<K> & Context.Key<T>, T> Optional<T> optional(K key)
-    // TODO Context.get(K key) should not be @Nullable, but throws IllegalStateException
-    public <K extends Enum<K> & Key<T>, T> @Nullable T get(K key) {
-        return (T) _getRecursive(key);
+    private Object _get(Object key) {
+        if (isEmpty()) throw new IllegalStateException("Context is empty, no: " + key);
+        var object = _getRecursive(key);
+        if (object == null)
+            throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
+        return object;
+    }
+
+    /**
+     * Get the value for the given key, from this or its parent context.
+     *
+     * <p>Never null, but may throw IllegalStateException if not available.
+     *
+     * <p>Use {@link #optional(Enum)} to check if key is available in Context.
+     */
+    public <K extends Enum<K> & Key<T>, T> T get(K key) {
+        // TODO Better error message instead of ClassCastException ? See below...
+        return (T) _get(key);
     }
 
     /**
@@ -96,10 +109,7 @@ public class Context implements AutoCloseable {
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> key) {
-        if (isEmpty()) throw new IllegalStateException("Context is empty, no: " + key);
-        var object = _getRecursive(key);
-        if (object == null)
-            throw new IllegalStateException("Context has no " + key + "; only:\n" + toString("  "));
+        var object = _get(key);
         if (key.isInstance(object)) return (T) object;
         throw new IllegalStateException("Context's " + key + " is a " + object.getClass());
     }
@@ -110,6 +120,15 @@ public class Context implements AutoCloseable {
      * <p>Use {@link #get(Class)} if key must be available in Context.
      */
     public <T> Optional<T> optional(Class<T> key) {
+        return Optional.ofNullable((T) _getRecursive(key));
+    }
+
+    /**
+     * Get the value for the given key, from this or its parent context, if available.
+     *
+     * <p>Use {@link #get(Enum)} if key must be available in Context.
+     */
+    public <T, K extends Enum<K> & Key<T>> Optional<T> optional(K key) {
         return Optional.ofNullable((T) _getRecursive(key));
     }
 

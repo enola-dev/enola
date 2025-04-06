@@ -1,0 +1,148 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2025 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.enola.chat;
+
+import static java.util.Objects.requireNonNull;
+
+import dev.enola.identity.Subject;
+
+import org.jspecify.annotations.Nullable;
+
+import java.time.Instant;
+
+// TODO This is temporary, until replaced by Thing
+//   or https://komma.enilink.net/docs/ ?
+//   and https://immutables.github.io/ ?
+public record MessageImpl(
+        Object id,
+        Subject from,
+        Room to,
+        Instant createdAt,
+        Instant modifiedAt,
+        String content,
+        Format format)
+        implements Message {
+
+    Builder builder() {
+        return new Builder(id, from, to, createdAt, modifiedAt, content, format);
+    }
+
+    static class Builder implements Message.Builder { // skipcq: JAVA-E0169
+
+        private @Nullable Object id;
+        private @Nullable Subject from;
+        private @Nullable Room to;
+        private @Nullable Instant created;
+        private @Nullable Instant modified;
+        private @Nullable String content;
+        private Format format = Format.PLAIN;
+
+        Builder(
+                Object id,
+                Subject from,
+                Room to,
+                Instant createdAt,
+                Instant modifiedAt,
+                String content,
+                Format format) {
+            this.id = id;
+            this.from = from;
+            this.to = to;
+            this.created = createdAt;
+            this.modified = modifiedAt;
+            this.content = content;
+            this.format = format;
+        }
+
+        public Builder() {}
+
+        @Override
+        public Message.Builder id(Object id) {
+            this.id = requireNonNull(id);
+            return this;
+        }
+
+        @Override
+        public Object id() {
+            return id;
+        }
+
+        @Override
+        public Message.Builder from(Subject from) {
+            this.from = requireNonNull(from);
+            return this;
+        }
+
+        @Override
+        public @Nullable Subject from() {
+            return from;
+        }
+
+        @Override
+        public Message.Builder to(Room to) {
+            this.to = requireNonNull(to);
+            return this;
+        }
+
+        @Override
+        public Message.Builder createdAt(Instant createdAt) {
+            this.created = requireNonNull(createdAt);
+            return this;
+        }
+
+        @Override
+        public @Nullable Instant createdAt() {
+            return created;
+        }
+
+        @Override
+        public Message.Builder modifiedAt(Instant modifiedAt) {
+            this.modified = requireNonNull(modifiedAt);
+            return this;
+        }
+
+        @Override
+        public @Nullable Instant modifiedAt() {
+            return modified;
+        }
+
+        @Override
+        public Message.Builder content(String content) {
+            this.content = requireNonNull(content);
+            return this;
+        }
+
+        @Override
+        public Message.Builder format(Format format) {
+            this.format = requireNonNull(format);
+            return this;
+        }
+
+        @Override
+        public Message build() {
+            return new MessageImpl(
+                    requireNonNull(id, "id"),
+                    requireNonNull(from, "from"),
+                    requireNonNull(to, "to"),
+                    requireNonNull(created, "created"),
+                    requireNonNull(modified, "modified"),
+                    requireNonNull(content, "content"),
+                    requireNonNull(format, "format"));
+        }
+    }
+}

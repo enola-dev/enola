@@ -46,8 +46,10 @@ public interface Thing extends HasIRI, PredicatesObjects /*<Thing>*/ {
     Builder<? extends Thing> copy();
 
     @SuppressFBWarnings("NM_SAME_SIMPLE_NAME_AS_INTERFACE")
-    interface Builder<B extends Thing> extends PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
+    interface Builder<B extends Thing> // skipcq: JAVA-E0169
+            extends HasIRI.Builder<Builder<B>>, PredicatesObjects.Builder<B> { // skipcq: JAVA-E0169
 
+        @Override
         @CanIgnoreReturnValue
         Builder<B> iri(String iri);
 

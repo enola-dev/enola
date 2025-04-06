@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.thing;
+package dev.enola.chat;
 
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import dev.enola.identity.Subject;
 
-public interface HasIRI {
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-    // TODO IRI iri() instead of String iri() ?
-    String iri();
+public class Room {
 
-    interface Builder<B extends HasIRI.Builder<?>> {
+    private final String label;
+    private final Set<Subject> members;
 
-        @CanIgnoreReturnValue
-        B iri(String iri);
+    public Room(String label) {
+        this.label = label;
+        this.members = ConcurrentHashMap.newKeySet();
+    }
+
+    public String label() {
+        return label;
+    }
+
+    public Set<Subject> members() {
+        return members;
     }
 }
