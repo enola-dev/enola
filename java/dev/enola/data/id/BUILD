@@ -28,6 +28,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/data/iri",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",

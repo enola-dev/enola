@@ -50,6 +50,12 @@ public class ByteSeqTest {
         assertThat(id.toUUID().toString().length()).isEqualTo(36);
     }
 
+    @Test
+    public void random() {
+        var r = ByteSeq.random(17);
+        assertThat(r.size()).isEqualTo(17);
+    }
+
     /*
         @Test
         public void protobufByteString() {

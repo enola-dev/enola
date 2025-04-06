@@ -57,7 +57,7 @@ public final class Datatypes {
     public static final Datatype<ByteSeq> BINARY =
             new ImmutableDatatype<>(
                     KIRI.E.BINARY,
-                    ObjectToStringBiConverters.BINARY,
+                    ObjectToStringBiConverters.MULTIBASE,
                     ByteSeq.class,
                     // NB: Multibase Pattern is also in binary.ttl
                     "[0179fFvVtTbBcChkKRzZmMuUpQ/🚀][^\\s]*");
