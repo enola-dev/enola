@@ -77,6 +77,8 @@ public interface Message {
 
         @Nullable Instant modifiedAt();
 
+        Builder subject(String subject);
+
         Builder content(String content);
 
         Builder format(Format format);
