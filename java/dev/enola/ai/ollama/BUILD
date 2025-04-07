@@ -25,7 +25,7 @@ java_binary(
     deps = [
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
-        "@enola_maven//:io_github_amithkoujalgi_ollama4j",
+        "@enola_maven//:io_github_ollama4j_ollama4j",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_jdk14",
     ],
