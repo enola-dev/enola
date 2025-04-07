@@ -22,6 +22,7 @@
 
 import { file, serve } from "bun"
 import index from "../../public/index.html"
+import chat from "../../public/chat.html"
 
 const PORT = 7070
 const IGNORE = ["/favicon.ico"]
@@ -32,6 +33,7 @@ serve({
 
   static: {
     "/": index as Response,
+    "/chat": chat as Response,
   },
   fetch(req) {
     const path = new URL(req.url).pathname
