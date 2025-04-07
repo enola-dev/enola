@@ -24,12 +24,14 @@ import dev.enola.identity.Subject;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
+import java.util.Optional;
 
 // TODO This is temporary, until replaced by Thing
 //   or https://komma.enilink.net/docs/ ?
 //   and https://immutables.github.io/ ?
 public record MessageImpl(
         Object id,
+        Optional<Object> replyTo,
         Subject from,
         Room to,
         Instant createdAt,
@@ -39,12 +41,13 @@ public record MessageImpl(
         implements Message {
 
     Builder builder() {
-        return new Builder(id, from, to, createdAt, modifiedAt, content, format);
+        return new Builder(id, replyTo, from, to, createdAt, modifiedAt, content, format);
     }
 
     static class Builder implements Message.Builder { // skipcq: JAVA-E0169
 
         private @Nullable Object id;
+        private @Nullable Object replyTo;
         private @Nullable Subject from;
         private @Nullable Room to;
         private @Nullable Instant created;
@@ -54,6 +57,7 @@ public record MessageImpl(
 
         Builder(
                 Object id,
+                Object replyTo,
                 Subject from,
                 Room to,
                 Instant createdAt,
@@ -61,6 +65,7 @@ public record MessageImpl(
                 String content,
                 Format format) {
             this.id = id;
+            this.replyTo = replyTo;
             this.from = from;
             this.to = to;
             this.created = createdAt;
@@ -80,6 +85,12 @@ public record MessageImpl(
         @Override
         public Object id() {
             return id;
+        }
+
+        @Override
+        public Message.Builder replyTo(Object replyToMessageID) {
+            this.replyTo = requireNonNull(replyToMessageID);
+            return this;
         }
 
         @Override
@@ -137,6 +148,7 @@ public record MessageImpl(
         public Message build() {
             return new MessageImpl(
                     requireNonNull(id, "id"),
+                    Optional.ofNullable(replyTo),
                     requireNonNull(from, "from"),
                     requireNonNull(to, "to"),
                     requireNonNull(created, "created"),
