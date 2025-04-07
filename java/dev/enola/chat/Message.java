@@ -22,11 +22,14 @@ import dev.enola.identity.Subject;
 import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
+import java.util.Optional;
 
 /** Message. AKA "Post" or "Comment" or "Tweet" - or even an "Email". */
 public interface Message {
 
     Object id();
+
+    Optional<Object> replyTo();
 
     Subject from();
 
@@ -55,6 +58,8 @@ public interface Message {
     interface Builder {
 
         Builder id(Object id);
+
+        Builder replyTo(Object replyToMessageID);
 
         @Nullable Object id();
 
