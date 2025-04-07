@@ -20,6 +20,7 @@
 
 ## Tech
 
+1. https://bun.sh/docs/bundler/fullstack#using-tailwindcss-in-html-routes for chat.html
 1. Fix CORS ?
 1. Use https://bun.sh/docs/install/workspaces to have a `package.json` e.g. for the Prettier version at the root, and have the one in `web/package.json`
 

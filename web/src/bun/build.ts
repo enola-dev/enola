@@ -34,7 +34,7 @@ await $`bun test`
 console.log() // Newline, to separate build from 🧪 test output
 await $`rm -rf web-out/bundle/`
 const result = await build({
-  entrypoints: ["public/index.html"],
+  entrypoints: ["public/index.html", "public/chat.html"],
   outdir: "web-out/bundle/",
 
   minify: true,

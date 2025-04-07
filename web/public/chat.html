@@ -1,0 +1,521 @@
+<!--
+    SPDX-License-Identifier: Apache-2.0
+
+    Copyright 2025 The Enola <https://enola.dev> Authors
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      /* Light Mode Styles */
+      :root {
+        --bg-color: #f8fafc;
+        --text-color: #1e293b;
+        --input-bg: #ffffff;
+        --input-border: #e2e8f0;
+        --button-bg: #3b82f6;
+        --button-hover: #2563eb;
+        --control-bg: #f0f4f8;
+        --control-hover: #e2e8f0;
+        --control-text: #64748b;
+        --menu-bg: #ffffff;
+        --menu-border: #f1f5f9;
+        --menu-item-hover: #f8fafc;
+        --menu-text: #475569;
+        --user-message-bg: #e0f2fe;
+        --user-message-text: #065f46;
+        --assistant-message-bg: #f0f4f8;
+        --assistant-message-text: #1e293b;
+        --page-bg: #f1f5f9;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --button-shadow: rgba(59, 130, 246, 0.2);
+      }
+
+      /* Dark Mode Styles */
+      body.dark-mode {
+        --bg-color: #1e293b;
+        --text-color: #f1f5f9;
+        --input-bg: #334155;
+        --input-border: #475569;
+        --button-bg: #3b82f6;
+        --button-hover: #60a5fa;
+        --control-bg: #334155;
+        --control-hover: #475569;
+        --control-text: #cbd5e1;
+        --menu-bg: #334155;
+        --menu-border: #475569;
+        --menu-item-hover: #475569;
+        --menu-text: #f1f5f9;
+        --user-message-bg: #0c4a6e;
+        --user-message-text: #e0f2fe;
+        --assistant-message-bg: #334155;
+        --assistant-message-text: #f1f5f9;
+        --page-bg: #0f172a;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --button-shadow: rgba(59, 130, 246, 0.4);
+      }
+
+      body {
+        background-color: var(--page-bg);
+        color: var(--text-color);
+      }
+
+      .message-bubble {
+        border-radius: 1.25rem;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0.5rem;
+        max-width: 85%;
+      }
+
+      .user-message {
+        background-color: var(--user-message-bg);
+        color: var(--user-message-text);
+        align-self: flex-end;
+        border-bottom-right-radius: 0.25rem;
+      }
+
+      .assistant-message {
+        background-color: var(--assistant-message-bg);
+        color: var(--assistant-message-text);
+        align-self: flex-start;
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      .input-area {
+        background-color: var(--bg-color);
+      }
+
+      .input-box {
+        border-radius: 1.5rem;
+        padding: 0.75rem 1.25rem;
+        border: 0.125rem solid var(--input-border);
+        width: calc(100% - 4rem);
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        font-size: 1rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+      }
+
+      .input-box:focus {
+        outline: none;
+        border-color: var(--button-bg);
+        box-shadow: 0 0 0 0.125rem rgba(59, 130, 246, 0.25);
+      }
+
+      .send-button {
+        border-radius: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--button-bg);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        border: none;
+        box-shadow: 0 2px 5px var(--button-shadow);
+      }
+
+      .send-button:hover {
+        background-color: var(--button-hover);
+      }
+
+      .chat-container {
+        height: calc(100vh - 8rem);
+        overflow-y: auto;
+        padding-bottom: 1rem;
+      }
+
+      .input-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      .attach-button,
+      .mic-button,
+      .avatar-button {
+        border-radius: 9999px;
+        padding: 0.3rem;
+        background-color: var(--control-bg);
+        color: var(--control-text);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: none;
+        box-shadow: 0 1px 3px var(--shadow-color);
+      }
+
+      .attach-button {
+        margin-right: 0.5rem;
+        left: 0.75rem;
+      }
+
+      .mic-button {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        right: 2.5rem;
+      }
+
+      .avatar-button {
+        margin-left: 0.5rem;
+      }
+
+      .attach-button:hover,
+      .mic-button:hover,
+      .avatar-button:hover {
+        background-color: var(--control-hover);
+        transform: translateY(-1px);
+      }
+
+      .avatar-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      #fileInput {
+        display: none;
+      }
+
+      .room-name-input {
+        border-radius: 0.375rem;
+        padding: 0.75rem 1rem;
+        border: 0.125rem solid var(--input-border);
+        width: calc(100% - 2rem);
+        font-size: 1rem;
+        margin: 0.5rem 1rem 1rem 1rem;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+      }
+
+      .room-name-input:focus {
+        outline: none;
+        border-color: var(--button-bg);
+        box-shadow: 0 0 0 0.125rem rgba(59, 130, 246, 0.25);
+      }
+
+      .overlay-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--menu-bg);
+        border: 0.125rem solid var(--menu-border);
+        border-radius: 0.375rem;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        padding: 0.5rem 0;
+        margin-top: 0.5rem;
+        min-width: 12rem;
+        z-index: 10;
+        display: none;
+      }
+
+      .overlay-menu.show {
+        display: block;
+      }
+
+      .overlay-menu-item {
+        padding: 0.3rem 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        white-space: nowrap;
+        color: var(--menu-text);
+      }
+
+      .overlay-menu-item:hover {
+        background-color: var(--menu-item-hover);
+      }
+
+      .avatar-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .theme-option {
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+      }
+
+      .theme-option input {
+        margin-right: 0.5rem;
+      }
+
+      .theme-options-container {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid var(--menu-border);
+        margin-top: 0.5rem;
+      }
+
+      .theme-options-title {
+        padding: 0.75rem 1rem 0.25rem 1rem;
+        font-weight: 600;
+        color: var(--menu-text);
+      }
+    </style>
+  </head>
+  <body class="flex flex-col h-screen">
+    <div style="display: flex; align-items: center">
+      <input
+        type="text"
+        id="roomNameInput"
+        placeholder="Chat XZ47"
+        class="room-name-input"
+        style="margin-right: 0.5rem" />
+      <div class="avatar-container">
+        <button id="avatarButton" class="avatar-button">
+          <img
+            src="https://www.vorburger.ch/michael_vorburger_portrait_in_bay_of_roses_spain_with_bad_lighting.jpg"
+            alt="User Avatar"
+            class="avatar-icon" />
+        </button>
+        <div id="userMenu" class="overlay-menu">
+          <div class="overlay-menu-item" id="userName">🗣️ Michael Vorburger.ch</div>
+          <div class="overlay-menu-item" id="settings">Settings</div>
+          <div class="overlay-menu-item" id="logout">Logout</div>
+          <div class="theme-options-container">
+            <div class="theme-options-title">Theme</div>
+            <div class="theme-option">
+              <input type="radio" id="lightTheme" name="theme" value="light" />
+              <label for="lightTheme">Light</label>
+            </div>
+            <div class="theme-option">
+              <input type="radio" id="darkTheme" name="theme" value="dark" />
+              <label for="darkTheme">Dark</label>
+            </div>
+            <div class="theme-option">
+              <input type="radio" id="systemTheme" name="theme" value="system" checked />
+              <label for="systemTheme">System</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-container flex-grow overflow-y-auto p-4 flex flex-col">
+      <div class="message-bubble assistant-message">Hello! How can I assist you today?</div>
+    </div>
+
+    <div class="input-area p-4">
+      <div class="input-container">
+        <button id="attachButton" class="attach-button">📎</button>
+        <input type="text" id="messageInput" placeholder="Type your message..." class="input-box" />
+        <button id="micButton" class="mic-button">🎤</button>
+        <button id="sendButton" class="send-button">📡</button>
+        <input type="file" id="fileInput" />
+      </div>
+    </div>
+
+    <script>
+      const chatContainer = document.querySelector(".chat-container")
+      const messageInput = document.getElementById("messageInput")
+      const sendButton = document.getElementById("sendButton")
+      const attachButton = document.getElementById("attachButton")
+      const fileInput = document.getElementById("fileInput")
+      const micButton = document.getElementById("micButton")
+      const roomNameInput = document.getElementById("roomNameInput")
+      const avatarButton = document.getElementById("avatarButton")
+      const userMenu = document.getElementById("userMenu")
+      const userNameDisplay = document.getElementById("userName")
+      const settingsOption = document.getElementById("settings")
+      const logoutOption = document.getElementById("logout")
+
+      // Theme selection elements
+      const lightThemeRadio = document.getElementById("lightTheme")
+      const darkThemeRadio = document.getElementById("darkTheme")
+      const systemThemeRadio = document.getElementById("systemTheme")
+
+      let isMenuOpen = false
+
+      // Theme Management
+      function setTheme(themeName) {
+        localStorage.setItem("theme", themeName)
+
+        if (themeName === "system") {
+          // Check system preference
+          if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.body.classList.add("dark-mode")
+          } else {
+            document.body.classList.remove("dark-mode")
+          }
+        } else if (themeName === "dark") {
+          document.body.classList.add("dark-mode")
+        } else {
+          document.body.classList.remove("dark-mode")
+        }
+      }
+
+      // Initialize theme
+      function initTheme() {
+        const savedTheme = localStorage.getItem("theme") || "system"
+
+        // Set the correct radio button
+        if (savedTheme === "light") {
+          lightThemeRadio.checked = true
+        } else if (savedTheme === "dark") {
+          darkThemeRadio.checked = true
+        } else {
+          systemThemeRadio.checked = true
+        }
+
+        setTheme(savedTheme)
+      }
+
+      // Listen for system theme changes
+      function setupSystemThemeListener() {
+        if (window.matchMedia) {
+          const colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)")
+          colorSchemeQuery.addEventListener("change", e => {
+            const savedTheme = localStorage.getItem("theme") || "system"
+            if (savedTheme === "system") {
+              if (e.matches) {
+                document.body.classList.add("dark-mode")
+              } else {
+                document.body.classList.remove("dark-mode")
+              }
+            }
+          })
+        }
+      }
+
+      // Theme option change handlers
+      lightThemeRadio.addEventListener("change", () => {
+        if (lightThemeRadio.checked) {
+          setTheme("light")
+        }
+      })
+
+      darkThemeRadio.addEventListener("change", () => {
+        if (darkThemeRadio.checked) {
+          setTheme("dark")
+        }
+      })
+
+      systemThemeRadio.addEventListener("change", () => {
+        if (systemThemeRadio.checked) {
+          setTheme("system")
+        }
+      })
+
+      // Initialize theme on page load
+      initTheme()
+      setupSystemThemeListener()
+
+      // Avatar button click handler
+      avatarButton.addEventListener("click", event => {
+        event.stopPropagation()
+        isMenuOpen = !isMenuOpen
+        if (isMenuOpen) {
+          userMenu.classList.add("show")
+        } else {
+          userMenu.classList.remove("show")
+        }
+      })
+
+      // Ensure the menu closes when clicking outside
+      document.addEventListener("click", event => {
+        if (isMenuOpen && event.target !== avatarButton && !userMenu.contains(event.target)) {
+          isMenuOpen = false
+          userMenu.classList.remove("show")
+        }
+      })
+
+      // Add visible feedback for menu items
+      settingsOption.addEventListener("click", () => {
+        console.log("Settings clicked")
+        alert("Settings clicked")
+      })
+
+      logoutOption.addEventListener("click", () => {
+        console.log("Logout clicked")
+        alert("Logout clicked")
+      })
+
+      userNameDisplay.addEventListener("click", () => {
+        console.log("Username clicked")
+        alert("Username clicked")
+      })
+
+      function addMessage(sender, message) {
+        const messageElement = document.createElement("div")
+        messageElement.classList.add("message-bubble", `${sender}-message`)
+        messageElement.textContent = message
+        chatContainer.appendChild(messageElement)
+        chatContainer.scrollTop = chatContainer.scrollHeight
+      }
+
+      sendButton.addEventListener("click", () => {
+        const messageText = messageInput.value.trim()
+        if (messageText !== "") {
+          addMessage("user", messageText)
+          messageInput.value = ""
+          setTimeout(() => {
+            addMessage("assistant", "This is a simulated response.")
+          }, 500)
+        }
+      })
+
+      messageInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          sendButton.click()
+          event.preventDefault()
+        }
+      })
+
+      attachButton.addEventListener("click", () => {
+        fileInput.click()
+      })
+
+      fileInput.addEventListener("change", event => {
+        const files = event.target.files
+        if (files && files.length > 0) {
+          addMessage("user", `File attached: ${files[0].name}`)
+          fileInput.value = ""
+        }
+      })
+
+      micButton.addEventListener("click", () => {
+        addMessage("user", "Voice message recording started...")
+        setTimeout(() => {
+          addMessage("user", "Voice message recording stopped.")
+        }, 3000)
+      })
+
+      roomNameInput.addEventListener("input", event => {
+        const roomName = event.target.value
+        console.log(`Room name changed to: ${roomName}`)
+      })
+    </script>
+  </body>
+</html>
