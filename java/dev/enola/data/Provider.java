@@ -19,6 +19,8 @@ package dev.enola.data;
 
 import com.google.errorprone.annotations.ThreadSafe;
 
+import java.io.UncheckedIOException;
+
 /** Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K). */
 @ThreadSafe
 public interface Provider<K, V> {
@@ -29,6 +31,6 @@ public interface Provider<K, V> {
      * @param key Key, never null
      * @return value, or null if there is no Value for the given key
      */
-    // TODO @Nullable (from JSpecify) ? Or not... AlwaysThingProvider!
-    V get(K key);
+    // NB: Intentionally NOT @Nullable, should throw, or return a default (like AlwaysThingProvider)
+    V get(K key) throws IllegalArgumentException, UncheckedIOException;
 }

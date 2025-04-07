@@ -23,9 +23,9 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.stream.GlobResolver;
 import dev.enola.common.io.resource.stream.GlobResolvers;
 
-import io.github.amithkoujalgi.ollama4j.core.OllamaAPI;
-import io.github.amithkoujalgi.ollama4j.core.exceptions.OllamaBaseException;
-import io.github.amithkoujalgi.ollama4j.core.utils.OptionsBuilder;
+import io.github.ollama4j.OllamaAPI;
+import io.github.ollama4j.exceptions.OllamaBaseException;
+import io.github.ollama4j.utils.OptionsBuilder;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -72,6 +72,7 @@ public class OllamaMain {
                                         + " code, and avoid repeating yourself: "
                                         + prompt,
                                 // "Do not provide any reasoning, just answer the question",
+                                true,
                                 options)
                         .getResponse());
         System.out.println("Context Size was: " + context.length());
