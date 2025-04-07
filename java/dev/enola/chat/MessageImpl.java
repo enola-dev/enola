@@ -36,12 +36,22 @@ public record MessageImpl(
         Room to,
         Instant createdAt,
         Instant modifiedAt,
+        Optional<String> subject,
         String content,
         Format format)
         implements Message {
 
     Builder builder() {
-        return new Builder(id, replyTo, from, to, createdAt, modifiedAt, content, format);
+        return new Builder(
+                id,
+                replyTo.orElse(null),
+                from,
+                to,
+                createdAt,
+                modifiedAt,
+                subject.orElse(null),
+                content,
+                format);
     }
 
     static class Builder implements Message.Builder { // skipcq: JAVA-E0169
@@ -52,16 +62,18 @@ public record MessageImpl(
         private @Nullable Room to;
         private @Nullable Instant created;
         private @Nullable Instant modified;
+        private @Nullable String subject;
         private @Nullable String content;
         private Format format = Format.PLAIN;
 
         Builder(
                 Object id,
-                Object replyTo,
+                @Nullable Object replyTo,
                 Subject from,
                 Room to,
                 Instant createdAt,
                 Instant modifiedAt,
+                @Nullable String subject,
                 String content,
                 Format format) {
             this.id = id;
@@ -70,6 +82,7 @@ public record MessageImpl(
             this.to = to;
             this.created = createdAt;
             this.modified = modifiedAt;
+            this.subject = subject;
             this.content = content;
             this.format = format;
         }
@@ -133,6 +146,12 @@ public record MessageImpl(
         }
 
         @Override
+        public Message.Builder subject(String subject) {
+            this.subject = requireNonNull(subject);
+            return this;
+        }
+
+        @Override
         public Message.Builder content(String content) {
             this.content = requireNonNull(content);
             return this;
@@ -153,6 +172,7 @@ public record MessageImpl(
                     requireNonNull(to, "to"),
                     requireNonNull(created, "created"),
                     requireNonNull(modified, "modified"),
+                    Optional.ofNullable(subject),
                     requireNonNull(content, "content"),
                     requireNonNull(format, "format"));
         }
