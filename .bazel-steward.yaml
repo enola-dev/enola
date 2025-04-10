@@ -54,7 +54,8 @@ post-update-hooks:
   # https://github.com/VirtusLab/bazel-steward/issues/422
   - kinds: bzlmod
     commands:
-      - "bazelisk sync --enable_workspace"
+      # NOT "bazelisk sync --enable_workspace"
+      - "./test.bash"
     files-to-commit:
       - "MODULE.bazel.lock"
 
