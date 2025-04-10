@@ -54,7 +54,7 @@ post-update-hooks:
   # https://github.com/VirtusLab/bazel-steward/issues/422
   - kinds: bzlmod
     commands:
-      - "bazelisk build //tools/hello"
+      - "bazelisk query //..."
     files-to-commit:
       - "MODULE.bazel.lock"
 
