@@ -14,6 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ignore the (empty) WORKSPACE.bazel, only MODULE.bazel
+# https://github.com/VirtusLab/bazel-steward/issues/423
+# https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/#rule-resolution
+update-rules:
+  - kinds: bazel-rules
+    enabled: false
+
 maven:
   # https://github.com/VirtusLab/bazel-steward/issues/401
   # https://github.com/enola-dev/enola/issues/254
