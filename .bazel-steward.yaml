@@ -52,9 +52,10 @@ post-update-hooks:
     run-for: commit
 
   # https://github.com/VirtusLab/bazel-steward/issues/422
+  # TODO https://stackoverflow.com/q/79567769/421602
   - kinds: bzlmod
     commands:
-      - "bazelisk build //..."
+      - "bazelisk sync --enable_workspace"
     files-to-commit:
       - "MODULE.bazel.lock"
 
