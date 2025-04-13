@@ -17,6 +17,7 @@
  */
 package dev.enola.identity;
 
+import dev.enola.model.w3.rdfs.HasComment;
 import dev.enola.model.w3.rdfs.HasLabel;
 import dev.enola.thing.HasIRI;
 import dev.enola.thing.java.HasType;
@@ -29,14 +30,29 @@ import dev.enola.thing.java.HasType;
  * <p>Could be "Alice", or "Bob" - or... YOU!
  */
 // TODO HasPublicKeys ?
-public interface Subject extends HasIRI, HasType, HasLabel {
+public interface Subject extends HasIRI, HasType, HasLabel, HasComment {
 
     // skipcq: JAVA-E0169
-    interface Builder extends HasType.Builder<Subject>, HasLabel.Builder<Subject> {
+    interface Builder
+            extends HasType.Builder<Subject>,
+                    HasLabel.Builder<Subject>,
+                    HasComment.Builder<Subject> {
         /* TODO HasIRI.Builder<Builder>, */
 
         @Override
         Builder iri(String iri);
+
+        @Override
+        default Builder label(String label) {
+            HasLabel.Builder.super.label(label);
+            return this;
+        }
+
+        @Override
+        default Builder comment(String label) {
+            HasComment.Builder.super.comment(label);
+            return this;
+        }
 
         Subject build();
     }

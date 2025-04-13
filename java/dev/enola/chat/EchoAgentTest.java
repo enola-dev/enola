@@ -26,26 +26,21 @@ import dev.enola.identity.Subjects;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-public class SwitchboardTest {
+public class EchoAgentTest {
 
     @Rule public TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
 
     @Test
-    public void chit() {
-        var s = new TestSwitchboard();
+    public void echo() {
+        var pbx = new TestSwitchboard();
+        var agent = new EchoAgent(pbx);
+        pbx.watch(agent);
 
-        var m1 = new MessageImpl.Builder();
-        m1.to(new Room("Chat #1"));
-        m1.content("Hello");
-
-        s.post(m1);
-
-        assertThat(s.messages()).hasSize(1);
-
-        var msgs = new ArrayList<Message>();
-        s.watch(msgs::add);
-        assertThat(msgs).hasSize(1);
+        var testRoom = new Room("test");
+        pbx.post(new MessageImpl.Builder().content("@echo Hello").to(testRoom));
+        assertThat(pbx.messages).hasSize(2);
+        var echo = pbx.messages().get(1);
+        assertThat(echo.content()).isEqualTo("Hello");
+        assertThat(echo.from()).isEqualTo(agent.subject());
     }
 }

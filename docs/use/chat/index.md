@@ -19,6 +19,8 @@
 # Chat
 
 ```bash cd ../.././..
-$ echo "hello, world" | ./enola chat
+$ echo "hello, world\n@echo hi" | ./enola chat
 ...
 ```
+
+[See Help doc](../help/index.md#chat) for all options.

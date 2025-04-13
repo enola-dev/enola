@@ -19,9 +19,18 @@ package dev.enola.chat;
 
 import java.util.function.Consumer;
 
+/** <a href="https://en.wikipedia.org/wiki/Business_telephone_system>PBX</a>. */
 public interface Switchboard {
 
+    /** Post a Message to the switchboard. */
     void post(Message.Builder message);
 
+    /**
+     * Watch the switchboard for new messages.
+     *
+     * <p>This is intended to be used mostly internally; "applications" should write {@link Agent}s,
+     * instead.
+     */
+    // TODO Move this to a separate interface? Or not needed, because everything could be an agent?!
     void watch(Consumer<Message> consumer);
 }

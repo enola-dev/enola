@@ -22,6 +22,7 @@ import dev.enola.thing.Thing;
 import org.jspecify.annotations.Nullable;
 
 public interface HasComment extends Thing {
+    // TODO Support LangString[]
 
     default @Nullable String comment() {
         return getString(IRI.Predicate.comment);

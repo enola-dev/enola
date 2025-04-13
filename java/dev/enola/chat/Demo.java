@@ -31,18 +31,21 @@ public class Demo {
     }
 
     public static void chat(IO io, Subject user) {
-        var room = new Room("Chat #1");
+        var room = new Room("#Lobby");
 
         Switchboard sw = new SimpleInMemorySwitchboard();
         sw.watch(
                 message -> {
                     if (!message.from().iri().equals(user.iri()))
-                        io.printf("%s> %s\n", message.from().label(), message.content());
+                        io.printf("%s> %s\n", message.from().labelOrIRI(), message.content());
                 });
+        // NOT sw.watch(new SystemAgent(sw, new EchoAgent(sw)));
+        sw.watch(new SystemAgent(sw));
+        sw.watch(new EchoAgent(sw));
 
         String input;
         do {
-            io.printf("%s> ", user.label());
+            io.printf("%s in %s> ", user.labelOrIRI(), room.label());
             input = io.readLine();
             if (input == null || input.isEmpty()) break;
 

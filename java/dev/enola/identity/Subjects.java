@@ -17,6 +17,8 @@
  */
 package dev.enola.identity;
 
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
 import org.slf4j.Logger;
@@ -28,12 +30,13 @@ import java.net.UnknownHostException;
 public class Subjects {
     private static final Logger LOG = LoggerFactory.getLogger(Subjects.class);
 
-    private final TBF tbf;
     private final Subject local;
 
-    public Subjects(TBF tbf) {
-        this.tbf = tbf;
+    public Subjects() {
+        this(new ProxyTBF(ImmutableThing.FACTORY));
+    }
 
+    public Subjects(TBF tbf) {
         String userlabel;
         String username = System.getProperty("user.name");
         String hostname;
@@ -55,5 +58,12 @@ public class Subjects {
 
     public Subject local() {
         return local;
+    }
+
+    /** <a href="https://en.wikipedia.org/wiki/Alice_and_Bob">Alice</a>. */
+    public Subject alice() {
+        TBF tbf = new ProxyTBF(ImmutableThing.FACTORY);
+        Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
+        return sb.iri("https://example.com/alice").label("Alice").build();
     }
 }

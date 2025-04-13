@@ -19,25 +19,17 @@ package dev.enola.chat;
 
 import dev.enola.identity.Subject;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
-public class Room {
+/**
+ * Agent is something which acts on a {@link Message}.
+ *
+ * <p>Agents can use other agents, web APIs, etc. to act. Agents interact with an environment.
+ *
+ * <p>Agents are also known as a "Bots" or "Tool/s (Providers)" or "Functions" or "Services" or
+ * "Service Providers".
+ */
+public interface Agent extends Consumer<Message> {
 
-    private final String label;
-    // TODO Better Set<String> memberIRIs; instead of Set<Subject> ?
-    private final Set<Subject> members;
-
-    public Room(String label) {
-        this.label = label;
-        this.members = ConcurrentHashMap.newKeySet();
-    }
-
-    public String label() {
-        return label;
-    }
-
-    public Set<Subject> members() {
-        return members;
-    }
+    Subject subject();
 }
