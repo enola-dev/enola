@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableList;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.convert.ConverterInto;
-import dev.enola.data.iri.namespace.repo.NamespaceRepository;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.ThingOrBuilder;
 import dev.enola.thing.proto.Value.LangString;
@@ -66,17 +65,11 @@ public class ProtoThingRdfConverter
     @Override
     public boolean convertInto(ThingOrBuilder from, RDFHandler into) throws ConversionException {
         into.startRDF();
-        setNamespaces(into);
+        Namespacer.setNamespaces(from, into);
         Map<BNode, Thing> containedThings = new HashMap<>();
         convertInto(null, from, into, containedThings);
         into.endRDF();
         return true;
-    }
-
-    private void setNamespaces(RDFHandler into) {
-        // TODO Only add namespace prefixes for IRI that are actually used
-        // This requires (recursively!) visiting all Things' properties, and objects - and nested
-        for (var ns : NamespaceRepository.CTX.list()) into.handleNamespace(ns.prefix(), ns.iri());
     }
 
     private void convertInto(
