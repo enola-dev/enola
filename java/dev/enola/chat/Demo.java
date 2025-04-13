@@ -39,7 +39,6 @@ public class Demo {
                     if (!message.from().iri().equals(user.iri()))
                         io.printf("%s> %s\n", message.from().labelOrIRI(), message.content());
                 });
-        // NOT sw.watch(new SystemAgent(sw, new EchoAgent(sw)));
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
 
