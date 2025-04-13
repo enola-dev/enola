@@ -19,6 +19,9 @@ package dev.enola.cli;
 
 import dev.enola.chat.Demo;
 import dev.enola.chat.IO;
+import dev.enola.identity.Subjects;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
 
 import picocli.CommandLine;
 
@@ -30,8 +33,9 @@ import java.util.concurrent.Callable;
 public class ChatCommand implements Callable<Integer> {
 
     @Override
-    public Integer call() throws Exception {
-        Demo.chat(IO.CONSOLE);
+    public Integer call() {
+        var tbf = new ProxyTBF(ImmutableThing.FACTORY);
+        Demo.chat(IO.CONSOLE, new Subjects(tbf).local());
         return 0;
     }
 }

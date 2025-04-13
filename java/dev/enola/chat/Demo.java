@@ -20,21 +20,18 @@ package dev.enola.chat;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subject;
 import dev.enola.identity.SubjectContextKey;
+import dev.enola.identity.Subjects;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 
 public class Demo {
 
     public static void main(String[] args) {
-        chat(IO.CONSOLE);
+        chat(IO.CONSOLE, new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local());
     }
 
-    public static void chat(IO io) {
+    public static void chat(IO io, Subject user) {
         var room = new Room("Chat #1");
-
-        var tbf = new ProxyTBF(ImmutableThing.FACTORY);
-        var sb = tbf.create(Subject.Builder.class, Subject.class);
-        var user = sb.iri("https://example.com/alice").label("Alice").build();
 
         Switchboard sw = new SimpleInMemorySwitchboard();
         sw.watch(
