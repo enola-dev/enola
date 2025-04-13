@@ -39,27 +39,7 @@ public class SystemAgent extends AbstractAgent {
 
     @Override
     public void accept(Message message) {
-        var content = message.content();
-        if (content.startsWith("@")) {
-            var end = content.indexOf(' ');
-            var at = content.substring(1, end).trim();
-            // First, check for (unique!) Agent IRI match
-            for (var agent : agents) {
-                if (agent.subject().iri().equals(at)) {
-                    agent.accept(message);
-                    return;
-                }
-            }
-            // Next, if non found, check for first (non-unique!) Agent Label match
-            var atLowerCase = at.toLowerCase();
-            for (var agent : agents) {
-                var label = agent.subject().label();
-                if (label != null && label.toLowerCase().equals(atLowerCase)) {
-                    agent.accept(message);
-                    return;
-                }
-            }
-        }
+        // TODO /whoami, /help, /invite, /join, /leave, /quit, /who
     }
 
     private static Subject _subject() {
