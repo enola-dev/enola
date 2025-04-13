@@ -33,6 +33,15 @@ $ ./enola
 
 Each sub-command's help can be shown either with `enola help SUBCOMMAND` (better) or `enola SUBCOMMAND --help` (not recommended).
 
+## Chat
+
+[Chat](../chat/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help chat
+...
+```
+
 ## DocGen
 
 [Documentation Generation](../docgen/index.md) has the following options:

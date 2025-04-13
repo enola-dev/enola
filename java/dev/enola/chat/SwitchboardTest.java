@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class ChatTest {
+public class SwitchboardTest {
 
     @Test
     public void chit() {

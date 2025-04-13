@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import org.jspecify.annotations.Nullable;
+
 public interface IO {
 
     // TODO Markdown?
@@ -25,7 +27,7 @@ public interface IO {
 
     // TODO showImage() ??
 
-    String readLine();
+    @Nullable String readLine();
 
     void printf(String format, Object... args);
 

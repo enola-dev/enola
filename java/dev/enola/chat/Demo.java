@@ -29,7 +29,7 @@ public class Demo {
         chat(IO.CONSOLE);
     }
 
-    static void chat(IO io) {
+    public static void chat(IO io) {
         var room = new Room("Chat #1");
 
         var tbf = new ProxyTBF(ImmutableThing.FACTORY);
@@ -47,6 +47,7 @@ public class Demo {
         do {
             io.printf("%s> ", user.label());
             input = io.readLine();
+            if (input == null || input.isEmpty()) break;
 
             var msg = new MessageImpl.Builder();
             msg.content(input);

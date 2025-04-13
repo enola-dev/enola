@@ -26,10 +26,16 @@ import java.util.List;
 public class DemoTest {
 
     @Test
-    public void demo() {
+    public void eof() {
+        var io = new TestIO(List.of());
+        Demo.chat(io);
+        assertThat(io.getOutput()).containsExactly("Alice> ");
+    }
+
+    @Test
+    public void helloAndQuit() {
         var io = new TestIO(List.of("Hello", "quit"));
         Demo.chat(io);
-        var output = io.getOutput();
-        assertThat(output).containsExactly("Alice> ", "Alice> ").inOrder();
+        assertThat(io.getOutput()).containsExactly("Alice> ", "Alice> ").inOrder();
     }
 }

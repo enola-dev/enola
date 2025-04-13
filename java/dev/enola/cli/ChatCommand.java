@@ -17,4 +17,21 @@
  */
 package dev.enola.cli;
 
-public class ChatCommand {}
+import dev.enola.chat.Demo;
+import dev.enola.chat.IO;
+
+import picocli.CommandLine;
+
+import java.util.concurrent.Callable;
+
+@CommandLine.Command(
+        name = "chat",
+        description = "Chat with Enola, LLMs, Bots, Tools, Agents, and more.")
+public class ChatCommand implements Callable<Integer> {
+
+    @Override
+    public Integer call() throws Exception {
+        Demo.chat(IO.CONSOLE);
+        return 0;
+    }
+}
