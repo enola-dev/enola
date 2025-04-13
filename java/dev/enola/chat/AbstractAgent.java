@@ -22,6 +22,10 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
+import org.jspecify.annotations.Nullable;
+
+import java.util.function.Consumer;
+
 public abstract class AbstractAgent implements Agent {
 
     protected static final TBF tbf = new ProxyTBF(ImmutableThing.FACTORY);
@@ -46,5 +50,16 @@ public abstract class AbstractAgent implements Agent {
         reply.content(response);
         reply.replyTo(request.id());
         pbx.post(reply);
+    }
+
+    protected void handle(Message message, String prefix, Consumer<@Nullable String> consumer) {
+        var content = message.content();
+        if (!content.startsWith(prefix)) return;
+
+        var end = content.indexOf(' ');
+        if (end == -1) return;
+
+        var postfix = content.substring(end + 1).trim();
+        consumer.accept(postfix);
     }
 }
