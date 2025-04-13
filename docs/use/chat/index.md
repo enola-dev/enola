@@ -19,7 +19,7 @@
 # Chat
 
 ```bash cd ../.././..
-$ echo "hello, world\n@echo hi" | ./enola chat
+$ echo -e "hello, world\n@echo hi" | ./enola chat
 ...
 ```
 

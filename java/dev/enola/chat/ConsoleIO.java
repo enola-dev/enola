@@ -31,18 +31,21 @@ class ConsoleIO implements IO {
     private static final Logger LOG = LoggerFactory.getLogger(ConsoleIO.class);
 
     private final @Nullable Console console = System.console();
+    private final @Nullable BufferedReader reader;
 
-    static Charset consoleCharset() {
-        if (System.console() != null) return System.console().charset();
-        return Charset.defaultCharset();
+    ConsoleIO() {
+        if (console == null) {
+            reader = new BufferedReader(new InputStreamReader(System.in, consoleCharset()));
+        } else {
+            reader = null; // Not needed when console is available
+        }
     }
 
     @Override
     public @Nullable String readLine() {
         if (console != null) return console.readLine();
-        try (var inputStreamReader = new InputStreamReader(System.in, consoleCharset());
-                var bufferedReader = new BufferedReader(inputStreamReader)) {
-            var line = bufferedReader.readLine();
+        try {
+            var line = reader.readLine();
             if (line != null) System.out.println(line); // echo!
             return line;
         } catch (IOException e) {
@@ -55,5 +58,10 @@ class ConsoleIO implements IO {
     public void printf(String format, Object... args) {
         if (console != null) console.printf(format, args);
         else System.out.printf(format, args);
+    }
+
+    static Charset consoleCharset() {
+        if (System.console() != null) return System.console().charset();
+        return Charset.defaultCharset();
     }
 }

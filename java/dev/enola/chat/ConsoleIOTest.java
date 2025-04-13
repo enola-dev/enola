@@ -26,10 +26,12 @@ public class ConsoleIOTest {
     @Test
     public void stdin() {
         SystemStdinStdoutTester.pipeIn(
-                "hello\n",
+                "hello\nworld\nend", // Intentionally no last \n at the end!
                 () -> {
                     var io = new ConsoleIO();
                     assertThat(io.readLine()).isEqualTo("hello");
+                    assertThat(io.readLine()).isEqualTo("world");
+                    assertThat(io.readLine()).isEqualTo("end");
                 });
     }
 
