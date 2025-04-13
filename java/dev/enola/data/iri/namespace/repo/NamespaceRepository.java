@@ -24,9 +24,14 @@ import java.util.Optional;
 
 public interface NamespaceRepository extends Repository<Namespace> {
 
-    NamespaceRepository CTX =
-            TLC.optional(NamespaceRepository.class)
-                    .orElse(NamespaceRepositoryEnolaDefaults.INSTANCE);
+    static NamespaceRepository ctx() {
+        return TLC.optional(NamespaceRepository.class)
+                .orElse(NamespaceRepositoryEnolaDefaults.INSTANCE);
+    }
 
     Optional<String> getIRI(String prefix);
+
+    default Optional<Namespace> match(String iri) {
+        return stream().filter(namespace -> iri.startsWith(namespace.iri())).findFirst();
+    }
 }

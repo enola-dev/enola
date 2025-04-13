@@ -48,4 +48,17 @@ public class NamespaceConverterTest {
         assertThat(convert.toIRI(":name")).isEqualTo(IRI.from(":name"));
         assertThat(convert.toCURIE("https://schema.org/name")).isEqualTo("https://schema.org/name");
     }
+
+    @Test
+    public void match() {
+        var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        assertThat(standard.match("https://schema.org/name"))
+                .hasValue(standard.get("https://schema.org/"));
+    }
+
+    @Test
+    public void noMatch() {
+        var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
+        assertThat(standard.match("http://example.org/note-its-without-https")).isEmpty();
+    }
 }

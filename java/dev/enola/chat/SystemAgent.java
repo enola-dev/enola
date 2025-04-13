@@ -42,7 +42,7 @@ public class SystemAgent extends AbstractAgent {
         handle(message, "/help", () -> reply(message, help()));
         handle(message, "/whoami", () -> reply(message, whoami()));
 
-        // TODO /help, /invite, /join, /leave, /quit, /who
+        // TODO /invite, /join, /leave, /quit, /who
     }
 
     private String help() {
@@ -61,6 +61,7 @@ public class SystemAgent extends AbstractAgent {
     }
 
     private String toString(Thing thing) {
+        // TODO Pass through "text/turtle", so that e.g. UI can syntax highlight, etc.
         var appendable = new StringBuilder();
         thingIntoAppendableConverter.convertIntoOrThrow(thing, appendable);
         return appendable.toString();

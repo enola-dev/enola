@@ -51,7 +51,9 @@ public class JavaThingIntoRdfAppendableConverterTest {
         var converter = new JavaThingIntoRdfAppendableConverter(RdfMediaTypes.TURTLE);
         assertThat(converter.convertInto(thing1, stringBuilder)).isTrue();
         var turtleTTL = stringBuilder.toString();
-        assertThat(turtleTTL).startsWith("@prefix ");
+        assertThat(turtleTTL).startsWith("@prefix schema: <https://schema.org/> .");
         assertThat(turtleTTL).endsWith("schema:birthDate \"1904-05-11\"^^schema:Date .\n");
+        assertThat(turtleTTL).doesNotContain("http://ns.adobe.com");
+        // TODO assertThat(turtleTTL).isEqualTo("...");
     }
 }
