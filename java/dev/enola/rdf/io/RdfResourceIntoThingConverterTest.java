@@ -74,7 +74,8 @@ public class RdfResourceIntoThingConverterTest {
         assertThat(testSomething.test()).isEqualTo("hello, world");
     }
 
-    private Iterable<Thing> convert(URI uri) throws IOException {
+    Iterable<Thing> convert(URI uri) throws IOException {
+        // TODO Switch to using RdfLoader...
         try (var ctx = TLC.open().push(TBF.class, new ProxyTBF(ImmutableThing.FACTORY))) {
             var store = new ThingMemoryRepositoryROBuilder();
             var ignored = c.convertInto(uri, store);

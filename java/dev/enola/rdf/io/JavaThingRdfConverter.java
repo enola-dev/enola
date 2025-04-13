@@ -32,6 +32,8 @@ import java.util.stream.Stream;
 public class JavaThingRdfConverter
         implements AbstractModelConverter<Stream<Thing>>, ConverterInto<Stream<Thing>, RDFHandler> {
 
+    // TODO Implement this more directly, instead of indirect via Proto; with JavaThingRdfConverter?
+
     private final JavaThingToProtoThingConverter javaToProto = new JavaThingToProtoThingConverter();
     private final ProtoThingRdfConverter protoToRdf = new ProtoThingRdfConverter();
 
@@ -39,8 +41,6 @@ public class JavaThingRdfConverter
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public boolean convertInto(Stream<Thing> from, RDFHandler into)
             throws ConversionException, IOException {
-
-        // TODO Implement this more directly, instead of indirect via Proto
 
         from.forEach(
                 thing -> {
