@@ -17,24 +17,12 @@
  */
 package dev.enola.chat;
 
-import com.google.common.collect.ImmutableList;
-
 import dev.enola.identity.Subject;
 
 public class SystemAgent extends AbstractAgent {
 
-    private final ImmutableList<Agent> agents;
-
     public SystemAgent(Switchboard pbx) {
         super(_subject(), pbx);
-        this.agents = ImmutableList.of();
-    }
-
-    public SystemAgent(Switchboard pbx, Agent... agents) {
-        super(_subject(), pbx);
-        this.agents = ImmutableList.copyOf(agents);
-        // Avoid potential @system circular reference loops
-        if (this.agents.contains(this)) throw new IllegalArgumentException();
     }
 
     @Override
