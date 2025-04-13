@@ -62,6 +62,7 @@ java_library(
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/xml",
+        "//java/dev/enola/identity",
         "//java/dev/enola/infer/datalog",
         "//java/dev/enola/infer/rdf",
         "//java/dev/enola/core",

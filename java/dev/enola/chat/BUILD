@@ -15,7 +15,17 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
+
+java_binary(
+    name = "demo",
+    main_class = "dev.enola.chat.Demo",
+    runtime_deps = [
+        ":chat",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
 
 java_library(
     name = "chat",

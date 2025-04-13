@@ -19,23 +19,32 @@ package dev.enola.chat;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.identity.Subject;
+import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.java.ProxyTBF;
+import dev.enola.thing.java.TBF;
+
 import org.junit.Test;
 
 import java.util.List;
 
 public class DemoTest {
 
+    TBF tbf = new ProxyTBF(ImmutableThing.FACTORY);
+    Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
+    Subject testSubject = sb.iri("https://example.com/alice").label("Alice").build();
+
     @Test
     public void eof() {
         var io = new TestIO(List.of());
-        Demo.chat(io);
+        Demo.chat(io, testSubject);
         assertThat(io.getOutput()).containsExactly("Alice> ");
     }
 
     @Test
     public void helloAndQuit() {
         var io = new TestIO(List.of("Hello", "quit"));
-        Demo.chat(io);
+        Demo.chat(io, testSubject);
         assertThat(io.getOutput()).containsExactly("Alice> ", "Alice> ").inOrder();
     }
 }
