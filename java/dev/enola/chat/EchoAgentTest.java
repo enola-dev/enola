@@ -23,6 +23,7 @@ import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,17 +31,36 @@ public class EchoAgentTest {
 
     @Rule public TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
 
+    TestSwitchboard pbx;
+    Agent agent;
+    Room testRoom;
+
+    @Before
+    public void setup() {
+        pbx = new TestSwitchboard();
+        agent = new EchoAgent(pbx);
+        testRoom = new Room("test");
+        pbx.watch(agent);
+    }
+
     @Test
     public void echo() {
-        var pbx = new TestSwitchboard();
-        var agent = new EchoAgent(pbx);
-        pbx.watch(agent);
-
-        var testRoom = new Room("test");
         pbx.post(new MessageImpl.Builder().content("@echo Hello").to(testRoom));
         assertThat(pbx.messages).hasSize(2);
         var echo = pbx.messages().get(1);
         assertThat(echo.content()).isEqualTo("Hello");
         assertThat(echo.from()).isEqualTo(agent.subject());
+    }
+
+    @Test
+    public void echoWithoutText1() {
+        pbx.post(new MessageImpl.Builder().content("@echo ").to(testRoom));
+        assertThat(pbx.messages).hasSize(1);
+    }
+
+    @Test
+    public void echoWithoutText2() {
+        pbx.post(new MessageImpl.Builder().content("@echo").to(testRoom));
+        assertThat(pbx.messages).hasSize(1);
     }
 }
