@@ -34,13 +34,11 @@ public class EchoAgent extends AbstractAgent {
 
     @Override
     public void accept(Message message) {
+        var CMD = "@echo";
         var content = message.content();
-        if (!content.startsWith("@")) return;
+        if (!content.startsWith(CMD)) return;
 
         var end = content.indexOf(' ');
-        var at = content.substring(1, end).trim();
-        if (!at.equalsIgnoreCase("echo")) return;
-
         var echo = content.substring(end + 1);
         reply(message, echo);
     }
