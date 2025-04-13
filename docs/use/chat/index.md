@@ -18,8 +18,12 @@
 
 # Chat
 
+<!-- TODO This is increasingly less readable...
+       ... use an (EOF) "HERE doc", even though that's Bash and NOK in Fish?
+       ... use a file instead, shown here? -->
+
 ```bash cd ../.././..
-$ echo -e "hello, world\n@echo hi" | ./enola chat
+$ echo -e "hello, world\n@echo hi\n/whoami" | ./enola chat
 ...
 ```
 

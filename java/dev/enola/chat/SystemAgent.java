@@ -17,7 +17,10 @@
  */
 package dev.enola.chat;
 
+import dev.enola.common.context.TLC;
 import dev.enola.identity.Subject;
+import dev.enola.identity.SubjectContextKey;
+import dev.enola.thing.Thing;
 
 public class SystemAgent extends AbstractAgent {
 
@@ -27,7 +30,19 @@ public class SystemAgent extends AbstractAgent {
 
     @Override
     public void accept(Message message) {
-        // TODO /whoami, /help, /invite, /join, /leave, /quit, /who
+        handle(message, "/whoami", () -> reply(message, whoami()));
+
+        // TODO /help, /invite, /join, /leave, /quit, /who
+    }
+
+    private String whoami() {
+        var user = TLC.get(SubjectContextKey.USER);
+        return toString(user);
+    }
+
+    private static String toString(Thing thing) {
+        // TODO: Print as TTL instead of internal representation!
+        return thing.toString();
     }
 
     private static Subject _subject() {
