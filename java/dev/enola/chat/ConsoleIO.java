@@ -17,18 +17,43 @@
  */
 package dev.enola.chat;
 
+import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.BufferedReader;
 import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 class ConsoleIO implements IO {
-    private final Console console = System.console();
+    private static final Logger LOG = LoggerFactory.getLogger(ConsoleIO.class);
+
+    private final @Nullable Console console = System.console();
+
+    static Charset consoleCharset() {
+        if (System.console() != null) return System.console().charset();
+        return Charset.defaultCharset();
+    }
 
     @Override
-    public String readLine() {
-        return console.readLine();
+    public @Nullable String readLine() {
+        if (console != null) return console.readLine();
+        try (var inputStreamReader = new InputStreamReader(System.in, consoleCharset());
+                var bufferedReader = new BufferedReader(inputStreamReader)) {
+            var line = bufferedReader.readLine();
+            if (line != null) System.out.println(line);
+            return line;
+        } catch (IOException e) {
+            LOG.warn("readLine() from STDIN, without System.console(), failed", e);
+            return null;
+        }
     }
 
     @Override
     public void printf(String format, Object... args) {
-        console.printf(format, args);
+        if (console != null) console.printf(format, args);
+        else System.out.printf(format, args);
     }
 }

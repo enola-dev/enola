@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,9 @@ public class TestIO implements IO {
     }
 
     @Override
-    public String readLine() {
-        return input.get(line++);
+    public @Nullable String readLine() {
+        if (line < input.size()) return input.get(line++);
+        else return null;
     }
 
     @Override
