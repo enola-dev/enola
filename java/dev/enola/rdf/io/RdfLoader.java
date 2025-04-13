@@ -17,6 +17,8 @@
  */
 package dev.enola.rdf.io;
 
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
 
@@ -27,5 +29,11 @@ public class RdfLoader extends Loader {
 
     public RdfLoader() {
         super(new UriIntoThingConverters(new RdfResourceIntoThingConverter<>()));
+    }
+
+    public RdfLoader(ResourceProvider rp, DatatypeRepository datatypeRepository) {
+        super(
+                new UriIntoThingConverters(
+                        new RdfResourceIntoThingConverter<>(rp, datatypeRepository)));
     }
 }

@@ -19,8 +19,11 @@ package dev.enola.cli;
 
 import dev.enola.chat.Demo;
 import dev.enola.chat.IO;
+import dev.enola.common.context.TLC;
 import dev.enola.identity.Subjects;
+import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
 import dev.enola.thing.impl.ImmutableThing;
+import dev.enola.thing.io.ThingIntoAppendableConverter;
 import dev.enola.thing.java.ProxyTBF;
 
 import picocli.CommandLine;
@@ -35,7 +38,10 @@ public class ChatCommand implements Callable<Integer> {
     @Override
     public Integer call() {
         var tbf = new ProxyTBF(ImmutableThing.FACTORY);
-        Demo.chat(IO.CONSOLE, new Subjects(tbf).local());
+        try (var ctx = TLC.open()) {
+            ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
+            Demo.chat(IO.CONSOLE, new Subjects(tbf).local());
+        }
         return 0;
     }
 }

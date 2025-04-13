@@ -22,11 +22,19 @@ import dev.enola.common.context.TLC;
 import dev.enola.identity.Subject;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.thing.Thing;
+import dev.enola.thing.io.ThingIntoAppendableConverter;
+import dev.enola.thing.io.ToStringThingIntoAppendableConverter;
 
 public class SystemAgent extends AbstractAgent {
 
+    private final ThingIntoAppendableConverter thingIntoAppendableConverter;
+
     public SystemAgent(Switchboard pbx) {
         super(_subject(), pbx);
+
+        thingIntoAppendableConverter =
+                TLC.optional(ThingIntoAppendableConverter.class)
+                        .orElse(new ToStringThingIntoAppendableConverter());
     }
 
     @Override
@@ -52,9 +60,10 @@ public class SystemAgent extends AbstractAgent {
         return toString(user);
     }
 
-    private static String toString(Thing thing) {
-        // TODO: Print as TTL instead of internal representation!
-        return thing.toString();
+    private String toString(Thing thing) {
+        var appendable = new StringBuilder();
+        thingIntoAppendableConverter.convertIntoOrThrow(thing, appendable);
+        return appendable.toString();
     }
 
     private static Subject _subject() {

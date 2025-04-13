@@ -28,6 +28,7 @@ import org.eclipse.rdf4j.rio.helpers.StatementCollector;
 
 public interface AbstractModelConverter<T>
         extends Converter<T, Model>, ConverterInto<T, RDFHandler> {
+    // TODO Move AbstractModelConverter from rdf.proto to rdf, as it's not Proto specific
 
     @Override
     default Model convert(T input) throws ConversionException {
