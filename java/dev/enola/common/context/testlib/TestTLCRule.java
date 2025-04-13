@@ -19,6 +19,7 @@ package dev.enola.common.context.testlib;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 
 import org.junit.rules.TestRule;
@@ -33,11 +34,22 @@ public class TestTLCRule implements TestRule {
         return new TestTLCRule(ImmutableMap.of(klass, instance));
     }
 
-    private final ImmutableMap<Class<?>, ?> pushes;
+    public static <T> TestTLCRule of(Context.Key<T> klass, T instance) {
+        return new TestTLCRule(ImmutableMap.of(klass, instance), true);
+    }
 
-    // TODO turn into static of() method - just because it's shorter to write
+    private final ImmutableMap<Class<?>, ?> pushedClasses;
+    private final ImmutableMap<Context.Key<?>, ?> pushedKeys;
+
+    // TODO private; callers should should static of() method - just because it's shorter to write
     public TestTLCRule(ImmutableMap<Class<?>, ?> pushes) {
-        this.pushes = pushes;
+        this.pushedClasses = pushes;
+        this.pushedKeys = ImmutableMap.of();
+    }
+
+    private TestTLCRule(ImmutableMap<Context.Key<?>, ?> pushes, boolean ignore) {
+        this.pushedClasses = ImmutableMap.of();
+        this.pushedKeys = pushes;
     }
 
     @Override
@@ -51,10 +63,15 @@ public class TestTLCRule implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 try (var ctx = TLC.open()) {
-                    for (var push : pushes.entrySet()) {
+                    for (var push : pushedClasses.entrySet()) {
                         Class<T> clazz = (Class<T>) push.getKey();
                         T instance = (T) push.getValue();
                         ctx.push(clazz, instance);
+                    }
+                    for (var push : pushedKeys.entrySet()) {
+                        Context.Key<T> key = (Context.Key<T>) push.getKey();
+                        T instance = (T) push.getValue();
+                        ctx.push(key, instance);
                     }
                     base.evaluate();
                 }

@@ -17,27 +17,13 @@
  */
 package dev.enola.chat;
 
-import dev.enola.identity.Subject;
+import com.google.common.collect.ImmutableList;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
-public class Room {
+public class TestSwitchboard extends SimpleInMemorySwitchboard {
 
-    private final String label;
-    // TODO Better Set<String> memberIRIs; instead of Set<Subject> ?
-    private final Set<Subject> members;
-
-    public Room(String label) {
-        this.label = label;
-        this.members = ConcurrentHashMap.newKeySet();
-    }
-
-    public String label() {
-        return label;
-    }
-
-    public Set<Subject> members() {
-        return members;
+    public List<Message> messages() {
+        return ImmutableList.copyOf(messages);
     }
 }

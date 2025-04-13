@@ -43,7 +43,7 @@ class ConsoleIO implements IO {
         try (var inputStreamReader = new InputStreamReader(System.in, consoleCharset());
                 var bufferedReader = new BufferedReader(inputStreamReader)) {
             var line = bufferedReader.readLine();
-            if (line != null) System.out.println(line);
+            if (line != null) System.out.println(line); // echo!
             return line;
         } catch (IOException e) {
             LOG.warn("readLine() from STDIN, without System.console(), failed", e);

@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import com.google.errorprone.annotations.ThreadSafe;
+
 import dev.enola.common.context.TLC;
 import dev.enola.data.id.MultibaseIRI;
 import dev.enola.identity.SubjectContextKey;
@@ -26,13 +28,14 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
+@ThreadSafe
 public class SimpleInMemorySwitchboard implements Switchboard {
 
     private final Queue<Consumer<Message>> consumers = new ConcurrentLinkedQueue<>();
-    private final Queue<Message> messages = new ConcurrentLinkedQueue<>();
+    final Queue<Message> messages = new ConcurrentLinkedQueue<>();
 
     @Override
-    public void post(Message.Builder builder) {
+    public synchronized void post(Message.Builder builder) {
         if (builder.id() == null) builder.id(MultibaseIRI.random());
         if (builder.from() == null) builder.from(TLC.get(SubjectContextKey.USER));
         if (builder.createdAt() == null) builder.createdAt(Instant.now());
@@ -43,8 +46,8 @@ public class SimpleInMemorySwitchboard implements Switchboard {
     }
 
     @Override
-    public void watch(Consumer<Message> consumer) {
-        consumers.add(consumer);
+    public synchronized void watch(Consumer<Message> consumer) {
         messages.forEach(consumer);
+        consumers.add(consumer);
     }
 }

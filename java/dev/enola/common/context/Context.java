@@ -66,6 +66,10 @@ public class Context implements AutoCloseable {
         return _push(key, value);
     }
 
+    public <T> void push(Key<T> key, T instance) {
+        _push(key, instance);
+    }
+
     public <T> Context push(Class<T> key, T value) {
         _push(key, value); // NOT .getName()
         return this;

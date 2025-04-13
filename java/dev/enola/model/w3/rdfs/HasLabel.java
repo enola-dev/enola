@@ -22,9 +22,15 @@ import dev.enola.thing.Thing;
 import org.jspecify.annotations.Nullable;
 
 public interface HasLabel extends Thing {
+    // TODO Support LangString[]
 
     default @Nullable String label() {
         return getString(IRI.Predicate.label);
+    }
+
+    default String labelOrIRI() {
+        var label = label();
+        return label != null ? label : iri();
     }
 
     interface Builder<B extends HasLabel> extends Thing.Builder<B> { // skipcq: JAVA-E0169
