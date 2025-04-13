@@ -23,7 +23,7 @@
        ... use a file instead, shown here? -->
 
 ```bash cd ../.././..
-$ echo -e "hello, world\n@echo hi\n/whoami" | ./enola chat
+$ echo -e "hello, world\n@echo hi\n/help\n/whoami" | ./enola chat
 ...
 ```
 

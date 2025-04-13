@@ -17,6 +17,7 @@
  */
 package dev.enola.chat;
 
+import dev.enola.common.Version;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subject;
 import dev.enola.identity.SubjectContextKey;
@@ -30,9 +31,20 @@ public class SystemAgent extends AbstractAgent {
 
     @Override
     public void accept(Message message) {
+        handle(message, "/help", () -> reply(message, help()));
         handle(message, "/whoami", () -> reply(message, whoami()));
 
         // TODO /help, /invite, /join, /leave, /quit, /who
+    }
+
+    private String help() {
+        return "Enola.dev v"
+                + Version.get()
+                + """
+                 -- Commands:
+                  /whoami - Show your user details.
+                  /help - This help.
+                """;
     }
 
     private String whoami() {
