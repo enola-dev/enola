@@ -29,7 +29,7 @@ public abstract class AbstractAgent implements Agent {
     protected final Switchboard pbx;
     protected final Subject subject;
 
-    public AbstractAgent(Subject subject, Switchboard pbx) {
+    protected AbstractAgent(Subject subject, Switchboard pbx) {
         this.pbx = pbx;
         this.subject = subject;
     }
