@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import static com.google.common.base.Strings.emptyToNull;
+
 import static java.util.Objects.requireNonNull;
 
 import dev.enola.identity.Subject;
@@ -147,13 +149,13 @@ public record MessageImpl(
 
         @Override
         public Message.Builder subject(String subject) {
-            this.subject = requireNonNull(subject);
+            this.subject = requireNonNull(emptyToNull(subject.trim()));
             return this;
         }
 
         @Override
         public Message.Builder content(String content) {
-            this.content = requireNonNull(content);
+            this.content = requireNonNull(emptyToNull(content.trim()));
             return this;
         }
 

@@ -39,6 +39,7 @@ public class EchoAgent extends AbstractAgent {
         if (!content.startsWith(CMD)) return;
 
         var end = content.indexOf(' ');
+        if (end == -1) return;
         var echo = content.substring(end + 1);
         reply(message, echo);
     }
