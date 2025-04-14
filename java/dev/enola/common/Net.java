@@ -15,21 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cas;
+package dev.enola.common;
 
-import dev.enola.common.Net;
-import dev.enola.common.io.resource.ResourceProvider;
+import java.io.IOException;
+import java.net.Socket;
 
-import io.ipfs.api.IPFS;
+public final class Net {
+    private Net() {}
 
-import org.jspecify.annotations.Nullable;
-
-public class IPFSApiResourceTest extends IPFSResourceTestAbstract {
-
-    @Override
-    protected @Nullable ResourceProvider getResourceProvider() {
-        if (!Net.portAvailable(5001)) return null;
-        var ipfs = new IPFS("/ip4/127.0.0.1/tcp/5001");
-        return new IPFSApiResource.Provider(new IPFSBlobStore(ipfs));
+    public static boolean portAvailable(int port) {
+        // skipcq: JAVA-S1011 Non-SSL socket is OK for this purpose.
+        try (var ignored = new Socket("localhost", port)) {
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

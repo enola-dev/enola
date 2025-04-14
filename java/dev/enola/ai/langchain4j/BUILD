@@ -29,6 +29,7 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/data",
         "//java/dev/enola/identity",
         "@enola_maven//:com_google_guava_guava",
@@ -46,6 +47,7 @@ junit_tests(
     ),
     deps = [
         ":langchain4j",
+        "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/data",
