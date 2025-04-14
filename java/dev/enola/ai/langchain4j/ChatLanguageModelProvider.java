@@ -17,6 +17,7 @@
  */
 package dev.enola.ai.langchain4j;
 
+import dev.enola.common.io.iri.URIs;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
@@ -32,22 +33,18 @@ public class ChatLanguageModelProvider implements Provider<URI, ChatLanguageMode
 
     @Override
     public ChatLanguageModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
-        if (!"llm".equals(uri.getScheme())) throw new IllegalArgumentException(uri.toString());
-        var schemeSpecificPart = uri.getSchemeSpecificPart();
-
-        if (schemeSpecificPart.startsWith("fake:")) {
-            var reply = schemeSpecificPart.substring("fake:".length());
+        if ("mockllm".equalsIgnoreCase(uri.getScheme())) {
+            var reply = uri.getSchemeSpecificPart();
             return new TestChatLanguageModel(reply);
         }
 
-        if (schemeSpecificPart.startsWith("ollama:")) {
-            var tail = schemeSpecificPart.substring("ollama:".length());
-            var split = tail.split(":");
-            var baseURL = split[0] + ":" + split[1] + ":" + split[2];
-            var model = split[3] + ":" + split[4];
+        var queryMap = URIs.getQueryMap(uri);
+        if ("ollama".equalsIgnoreCase(queryMap.get("type"))) {
+            var baseURL = uri.getScheme() + "://" + uri.getAuthority();
+            var model = queryMap.get("model");
             return OllamaChatModel.builder().baseUrl(baseURL).modelName(model).build();
         }
 
-        throw new IllegalArgumentException(schemeSpecificPart);
+        throw new IllegalArgumentException(uri.toString());
     }
 }

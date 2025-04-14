@@ -19,13 +19,12 @@ package dev.enola.ai.langchain4j;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.Net;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
@@ -46,21 +45,13 @@ public class ChatLanguageModelProviderTest {
 
     @Test
     public void fake() {
-        check(provider.get(URI.create("llm:fake:Zurich")));
+        check(provider.get(URI.create("mockllm:Zurich")));
     }
 
     @Test
     public void ollama() {
-        if (!portAvailable(11434)) return;
+        if (!Net.portAvailable(11434)) return;
 
-        check(provider.get(URI.create("llm:ollama:http://localhost:11434:gemma3:1b")));
-    }
-
-    private boolean portAvailable(int port) {
-        try (var ignored = new Socket("localhost", port)) {
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        check(provider.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
     }
 }

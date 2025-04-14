@@ -50,9 +50,12 @@ junit_tests(
         glob(["*TestAbstract.java"]),
     deps = [
         ":cas",
+        "//java/dev/enola/common",
         "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "@enola_maven//:com_github_ipfs_java_ipfs_http_client",
         "@enola_maven//:com_github_ipld_java_cid",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
