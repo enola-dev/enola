@@ -36,7 +36,7 @@ $ ./enola get --load "models/**.ttl" enola:/
 Get something from a loaded 🐢 Turtle resource, e.g. from the [enola.dev/enola.ttl](../../models/enola.dev/enola.ttl) model:
 
 ```bash cd ../.././..
-$ ./enola get --load models/enola.dev/enola.ttl https://enola.dev/emoji | head --lines=3
+$ ./enola get --load models/enola.dev/enola.ttl https://enola.dev/emoji
 ...
 ```
 

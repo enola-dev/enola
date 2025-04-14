@@ -26,6 +26,9 @@ import dev.enola.thing.java.ProxyTBF;
 
 public class Demo {
 
+    // TODO MOTD with LLM? ;-)
+    static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
+
     public static void main(String[] args) {
         chat(IO.CONSOLE, new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local());
     }
@@ -41,7 +44,9 @@ public class Demo {
                 });
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
+        sw.watch(new PingPongAgent(sw));
 
+        io.printf(MOTD);
         String input;
         do {
             io.printf("%s in %s> ", user.labelOrIRI(), room.label());
@@ -55,6 +60,6 @@ public class Demo {
             try (var ignored = TLC.open().push(SubjectContextKey.USER, user)) {
                 sw.post(msg);
             }
-        } while (!"quit".equals(input));
+        } while (true);
     }
 }

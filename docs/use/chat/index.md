@@ -18,6 +18,8 @@
 
 # Chat
 
+<!-- TODO "This is the last shell you'll ever need." -->
+
 <!-- TODO This is increasingly less readable...
        ... use an (EOF) "HERE doc", even though that's Bash and NOK in Fish?
        ... use a file instead, shown here? -->

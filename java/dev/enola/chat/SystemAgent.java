@@ -42,7 +42,9 @@ public class SystemAgent extends AbstractAgent {
         handle(message, "/help", () -> reply(message, help()));
         handle(message, "/whoami", () -> reply(message, whoami()));
 
-        // TODO /invite, /join, /leave, /quit, /who
+        // TODO /invite, /join, /leave (/who ?)
+
+        // No /quit
     }
 
     private String help() {
@@ -52,6 +54,8 @@ public class SystemAgent extends AbstractAgent {
                  -- Commands:
                   /whoami - Show your user details.
                   /help - This help.
+                 Say "ping" to get a "pong" back.
+                 @echo ... echoes your message back to you.
                 """;
     }
 
