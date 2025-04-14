@@ -19,6 +19,8 @@ package dev.enola.chat;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.chat.Demo.MOTD;
+
 import dev.enola.identity.Subjects;
 
 import org.junit.Test;
@@ -31,15 +33,15 @@ public class DemoTest {
     public void eof() {
         var io = new TestIO(List.of());
         Demo.chat(io, new Subjects().alice());
-        assertThat(io.getOutput()).containsExactly("Alice in #Lobby> ");
+        assertThat(io.getOutput()).containsExactly(MOTD, "Alice in #Lobby> ");
     }
 
     @Test
-    public void helloAndQuit() {
-        var io = new TestIO(List.of("Hello", "quit"));
+    public void hello() {
+        var io = new TestIO(List.of("Hello"));
         Demo.chat(io, new Subjects().alice());
         assertThat(io.getOutput())
-                .containsExactly("Alice in #Lobby> ", "Alice in #Lobby> ")
+                .containsExactly(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
                 .inOrder();
     }
 
@@ -48,7 +50,7 @@ public class DemoTest {
         var io = new TestIO(List.of("@echo yolo"));
         Demo.chat(io, new Subjects().alice());
         assertThat(io.getOutput())
-                .containsExactly("Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
+                .containsExactly(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
                 .inOrder();
     }
 }

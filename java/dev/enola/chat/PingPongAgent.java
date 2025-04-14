@@ -15,12 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.langchain4j;
+package dev.enola.chat;
 
-public class Main {
+import dev.enola.identity.Subject;
 
-    public static void main(String[] args) {
-        // TODO Simple Chat App, using chat.Message etc.
-        System.out.println("Hello, World!");
+public class PingPongAgent extends AbstractAgent {
+
+    public PingPongAgent(Switchboard pbx) {
+        super(
+                tbf.create(Subject.Builder.class, Subject.class)
+                        .iri("https://enola.dev/pingpong")
+                        .label("PingPong")
+                        .comment("Responds to 'ping' with 'pong'.")
+                        .build(),
+                pbx);
+    }
+
+    @Override
+    public void accept(Message message) {
+        handle(message, "ping", () -> reply(message, "pong"));
     }
 }

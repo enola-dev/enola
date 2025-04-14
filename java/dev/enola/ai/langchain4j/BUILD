@@ -15,7 +15,6 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
@@ -54,10 +53,4 @@ junit_tests(
         "@enola_maven//:dev_langchain4j_langchain4j_core",
         "@enola_maven//:dev_langchain4j_langchain4j_ollama",
     ],
-)
-
-java_binary(
-    name = "demo",
-    main_class = "dev.enola.ai.langchain4j.Main",
-    runtime_deps = [":langchain4j"],
 )
