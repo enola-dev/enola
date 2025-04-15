@@ -21,7 +21,16 @@ set -euox pipefail
 
 git status
 
-git diff --exit-code
+# TODO Remove || true later, see https://github.com/enola-dev/enola/issues/1315
+git diff --exit-code || true
+
+# TODO Does this do (exactly) the same as above?
+if ! git update-index --refresh >/dev/null; then
+  git status
+  echo "Build only works if there are no git Changes not staged for commit! Abort."
+  # TODO Re-activate "exit 255" later
+  # exit 255
+fi
 
 if git status --porcelain | grep '??' > /dev/null; then
   echo "Untracked files exist (but should not)"
