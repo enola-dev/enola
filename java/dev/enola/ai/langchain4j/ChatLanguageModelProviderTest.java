@@ -26,18 +26,15 @@ import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import org.junit.Test;
 
 import java.net.URI;
-import java.time.Duration;
-import java.util.concurrent.TimeoutException;
 
 public class ChatLanguageModelProviderTest {
 
     Provider<URI, StreamingChatLanguageModel> provider = new ChatLanguageModelProvider();
 
-    void check(StreamingChatLanguageModel model) throws TimeoutException {
+    void check(StreamingChatLanguageModel model) {
         var answer = new TestStreamingChatResponseHandler();
         model.chat("List top 3 cites in Switzerland", answer);
-        assertThat(answer.awaitChatResponse(Duration.ofSeconds(30)).aiMessage().text())
-                .contains("Zurich");
+        assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -46,12 +43,12 @@ public class ChatLanguageModelProviderTest {
     }
 
     @Test
-    public void fake() throws TimeoutException {
+    public void fake() {
         check(provider.get(URI.create("mockllm:Zurich")));
     }
 
     @Test
-    public void ollama() throws TimeoutException {
+    public void ollama() {
         if (!Net.portAvailable(11434)) return;
 
         check(provider.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));

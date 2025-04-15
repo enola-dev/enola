@@ -17,13 +17,12 @@
  */
 package dev.enola.ai.langchain4j;
 
-import dev.enola.common.concurrent.CompletableFutures;
+import com.google.common.util.concurrent.Futures;
+
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeoutException;
 
 public class TestStreamingChatResponseHandler implements StreamingChatResponseHandler {
 
@@ -46,7 +45,7 @@ public class TestStreamingChatResponseHandler implements StreamingChatResponseHa
         responseFuture.completeExceptionally(error);
     }
 
-    public ChatResponse awaitChatResponse(Duration duration) throws TimeoutException {
-        return CompletableFutures.get(responseFuture, duration);
+    public ChatResponse awaitChatResponse() {
+        return Futures.getUnchecked(responseFuture);
     }
 }
