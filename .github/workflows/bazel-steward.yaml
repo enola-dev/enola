@@ -50,6 +50,7 @@ jobs:
         run: |
           git config user.name "Bazel Steward 🤵"
           git config user.email "steward@enola.dev"
+          git remote set-url origin "https://${{ secrets.STEWARD }}@github.com/${{ github.repository }}"
       - uses: VirtusLab/bazel-steward@v1.7.1
         # NB: Cannot use hash instead of version here due to
         # TODO https://github.com/VirtusLab/bazel-steward/issues/414.
