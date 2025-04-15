@@ -22,11 +22,7 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source tools/flox
 
-if ! git update-index --refresh >/dev/null; then
-  git status
-  echo "Build only works if there are no git Changes not staged for commit! Abort."
-  exit 255
-fi
+tools/git/test.bash
 
 DIR=$(pwd)
 cleanup() {
