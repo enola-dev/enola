@@ -17,8 +17,8 @@
  */
 package dev.enola.data;
 
+import dev.enola.common.concurrent.Threads;
 import dev.enola.common.function.CheckedRunnable;
-import dev.enola.common.function.Threads;
 
 import java.time.Duration;
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.function;
+package dev.enola.common.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,7 +28,6 @@ import java.time.Duration;
  * @see Threads#sleep(Duration)
  */
 public class UncheckedInterruptedException extends RuntimeException {
-    // TODO Move this class from dev.enola.common.function to dev.enola.common.concurrent!
 
     // TODO Get rid of this class? Take inspiration from Guava's Futures helpers.
 

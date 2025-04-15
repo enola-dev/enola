@@ -15,14 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.function;
+package dev.enola.common.concurrent;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import java.time.Duration;
 
 public final class Threads {
-    // TODO Move class Threads from dev.enola.common.function to dev.enola.common.concurrent!
 
     /**
      * Sleep 😴 for a certain duration.
