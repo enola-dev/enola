@@ -96,7 +96,7 @@ enola_maven.install(
         "com.google.truth.extensions:truth-proto-extension:1.4.4",
         # Protobuf
         "com.google.protobuf:protobuf-java:4.30.2",
-        "com.google.protobuf:protobuf-java-util:4.29.3",
+        "com.google.protobuf:protobuf-java-util:4.30.2",
         # gRPC
         "io.grpc:grpc-netty:%s" % GRPC_JAVA_VERSION,
         "io.grpc:grpc-stub:%s" % GRPC_JAVA_VERSION,
