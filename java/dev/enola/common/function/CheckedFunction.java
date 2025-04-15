@@ -30,5 +30,5 @@ public interface CheckedFunction<T, R, E extends Exception> {
      * @param t the function argument
      * @return the function result
      */
-    R apply(T t) throws E, UncheckedInterruptedException;
+    R apply(T t) throws E;
 }

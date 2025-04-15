@@ -24,5 +24,5 @@ package dev.enola.common.function;
 @FunctionalInterface
 public interface CheckedPredicate<T, E extends Exception> {
 
-    boolean test(T t) throws E, UncheckedInterruptedException;
+    boolean test(T t) throws E;
 }
