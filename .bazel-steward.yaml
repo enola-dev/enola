@@ -41,6 +41,14 @@ pull-requests:
     dependencies: "org.junit.platform:*"
   - group-id: maven-resolver
     dependencies: "org.apache.maven.resolver:*"
+  - group-id: maveniverse
+    dependencies: "eu.maveniverse*:*"
+  - group-id: rdf4j
+    dependencies: "org.eclipse.rdf4j:*"
+
+  - title: "Update ${group}/${artifact} from ${versionFrom} to ${versionTo}"
+    commit-message: "deps: Update ${group}/${artifact} from ${versionFrom} to ${versionTo}"
+    kinds: maven
 
 # https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/maven.html
 post-update-hooks:
