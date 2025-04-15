@@ -18,12 +18,13 @@
 package dev.enola.ai.langchain4j;
 
 import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
 import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
+import dev.langchain4j.model.output.FinishReason;
 
-// TODO Switch from ChatLanguageModel to StreamingChatLanguageModel
-public class TestChatLanguageModel implements ChatLanguageModel {
+public class TestChatLanguageModel implements StreamingChatLanguageModel {
     private final String reply;
 
     public TestChatLanguageModel(String reply) {
@@ -31,14 +32,11 @@ public class TestChatLanguageModel implements ChatLanguageModel {
     }
 
     @Override
-    public String chat(String userMessage) {
-        return ChatLanguageModel.super.chat(userMessage);
-    }
-
-    @Override
-    public ChatResponse doChat(ChatRequest chatRequest) {
-        var response = ChatResponse.builder();
-        response.aiMessage(AiMessage.builder().text(reply).build());
-        return response.build();
+    public void doChat(ChatRequest chatRequest, StreamingChatResponseHandler handler) {
+        handler.onCompleteResponse(
+                ChatResponse.builder()
+                        .aiMessage(AiMessage.builder().text(reply).build())
+                        .finishReason(FinishReason.STOP)
+                        .build());
     }
 }

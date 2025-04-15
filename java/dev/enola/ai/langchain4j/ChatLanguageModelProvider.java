@@ -19,20 +19,19 @@ package dev.enola.ai.langchain4j;
 
 import dev.enola.common.io.iri.URIs;
 import dev.enola.data.Provider;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.ollama.OllamaChatModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
 
-public class ChatLanguageModelProvider implements Provider<URI, ChatLanguageModel> {
-
-    // TODO Switch from ChatLanguageModel to StreamingChatLanguageModel
+public class ChatLanguageModelProvider implements Provider<URI, StreamingChatLanguageModel> {
 
     // TODO Support ?topP / topK, temperature, seed etc. as query parameters!
 
     @Override
-    public ChatLanguageModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
+    public StreamingChatLanguageModel get(URI uri)
+            throws IllegalArgumentException, UncheckedIOException {
         if ("mockllm".equalsIgnoreCase(uri.getScheme())) {
             var reply = uri.getSchemeSpecificPart();
             return new TestChatLanguageModel(reply);
@@ -42,7 +41,7 @@ public class ChatLanguageModelProvider implements Provider<URI, ChatLanguageMode
         if ("ollama".equalsIgnoreCase(queryMap.get("type"))) {
             var baseURL = uri.getScheme() + "://" + uri.getAuthority();
             var model = queryMap.get("model");
-            return OllamaChatModel.builder().baseUrl(baseURL).modelName(model).build();
+            return OllamaStreamingChatModel.builder().baseUrl(baseURL).modelName(model).build();
         }
 
         throw new IllegalArgumentException(uri.toString());

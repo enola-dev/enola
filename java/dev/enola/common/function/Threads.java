@@ -22,6 +22,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import java.time.Duration;
 
 public final class Threads {
+    // TODO Move class Threads from dev.enola.common.function to dev.enola.common.concurrent!
 
     /**
      * Sleep 😴 for a certain duration.

@@ -21,21 +21,23 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.Net;
 import dev.enola.data.Provider;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 
 import org.junit.Test;
 
 import java.net.URI;
+import java.time.Duration;
+import java.util.concurrent.TimeoutException;
 
 public class ChatLanguageModelProviderTest {
 
-    // TODO Switch from ChatLanguageModel to StreamingChatLanguageModel
+    Provider<URI, StreamingChatLanguageModel> provider = new ChatLanguageModelProvider();
 
-    Provider<URI, ChatLanguageModel> provider = new ChatLanguageModelProvider();
-
-    void check(ChatLanguageModel model) {
-        String answer = model.chat("List top 3 cites in Switzerland");
-        assertThat(answer).contains("Zurich");
+    void check(StreamingChatLanguageModel model) throws TimeoutException {
+        var answer = new TestStreamingChatResponseHandler();
+        model.chat("List top 3 cites in Switzerland", answer);
+        assertThat(answer.awaitChatResponse(Duration.ofSeconds(30)).aiMessage().text())
+                .contains("Zurich");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -44,12 +46,12 @@ public class ChatLanguageModelProviderTest {
     }
 
     @Test
-    public void fake() {
+    public void fake() throws TimeoutException {
         check(provider.get(URI.create("mockllm:Zurich")));
     }
 
     @Test
-    public void ollama() {
+    public void ollama() throws TimeoutException {
         if (!Net.portAvailable(11434)) return;
 
         check(provider.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
