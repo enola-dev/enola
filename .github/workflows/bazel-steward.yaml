@@ -56,5 +56,5 @@ jobs:
         with:
           # NB: https://github.com/VirtusLab/bazel-steward/issues/419
           configuration-path: .bazel-steward.yaml
-          github-personal-token: ${{ secrets.BAZEL_STEWARD_APP }}
+          github-personal-token: ${{ secrets.BAZEL_STEWARD }}
           additional-args: "--update-all-prs"
