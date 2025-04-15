@@ -27,7 +27,12 @@ import java.net.URI;
 
 public class ChatLanguageModelProvider implements Provider<URI, StreamingChatLanguageModel> {
 
+    // TODO CachingChatLanguageModelProvider
+
+    // TODO Support Vertex AI Cloud LLM API
+
     // TODO Support ?topP / topK, temperature, seed etc. as query parameters!
+    //   Or is there no need to set that as default, because it will only be set on requests?
 
     @Override
     public StreamingChatLanguageModel get(URI uri)
@@ -41,7 +46,13 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatLan
         if ("ollama".equalsIgnoreCase(queryMap.get("type"))) {
             var baseURL = uri.getScheme() + "://" + uri.getAuthority();
             var model = queryMap.get("model");
-            return OllamaStreamingChatModel.builder().baseUrl(baseURL).modelName(model).build();
+            // TODO ollamaAPI.pullModel(model);
+            return OllamaStreamingChatModel.builder()
+                    .logRequests(true)
+                    .logResponses(true)
+                    .baseUrl(baseURL)
+                    .modelName(model)
+                    .build();
         }
 
         throw new IllegalArgumentException(uri.toString());
