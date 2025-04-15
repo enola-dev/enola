@@ -28,6 +28,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common",
+        "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/data",

@@ -17,22 +17,18 @@
  */
 package dev.enola.common.function;
 
-import static java.util.Objects.requireNonNull;
-
-import java.time.Duration;
-
 /**
- * Wraps an InterruptedException as an unchecked (runtime) exception.
- *
- * @see java.io.UncheckedIOException
- * @see Threads#sleep(Duration)
+ * {@link java.util.function.Function}-like functional interface which can throw a checked
+ * exception.
  */
-public class UncheckedInterruptedException extends RuntimeException {
-    // TODO Move this class from dev.enola.common.function to dev.enola.common.concurrent!
-
-    // TODO Get rid of this class? Take inspiration from Guava's Futures helpers.
-
-    public UncheckedInterruptedException(InterruptedException cause) {
-        super(requireNonNull(cause));
-    }
+// https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
+@FunctionalInterface
+public interface CheckedFunction<T, R, E extends Exception> {
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param t the function argument
+     * @return the function result
+     */
+    R apply(T t) throws E, UncheckedInterruptedException;
 }

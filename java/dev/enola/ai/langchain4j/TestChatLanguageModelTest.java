@@ -21,12 +21,17 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
+import java.time.Duration;
+import java.util.concurrent.TimeoutException;
+
 public class TestChatLanguageModelTest {
 
     @Test
-    public void fake() {
+    public void mock() throws TimeoutException {
         var model = new TestChatLanguageModel("Zurich");
-        var answer = model.chat("List top 3 cites in Switzerland");
-        assertThat(answer).contains("Zurich");
+        var answer = new TestStreamingChatResponseHandler();
+        model.chat("List top 3 cites in Switzerland", answer);
+        assertThat(answer.awaitChatResponse(Duration.ofSeconds(1)).aiMessage().text())
+                .contains("Zurich");
     }
 }
