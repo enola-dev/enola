@@ -41,7 +41,7 @@ public class DemoTest {
         var io = new TestIO(List.of("Hello"));
         Demo.chat(io, new Subjects().alice());
         assertThat(io.getOutput())
-                .containsExactly(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
+                .containsAtLeast(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
                 .inOrder();
     }
 
@@ -50,7 +50,7 @@ public class DemoTest {
         var io = new TestIO(List.of("@echo yolo"));
         Demo.chat(io, new Subjects().alice());
         assertThat(io.getOutput())
-                .containsExactly(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
+                .containsAtLeast(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
                 .inOrder();
     }
 }

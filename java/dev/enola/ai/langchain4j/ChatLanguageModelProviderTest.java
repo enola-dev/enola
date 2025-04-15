@@ -43,14 +43,13 @@ public class ChatLanguageModelProviderTest {
     }
 
     @Test
-    public void fake() {
+    public void mock() {
         check(provider.get(URI.create("mockllm:Zurich")));
     }
 
     @Test
     public void ollama() {
         if (!Net.portAvailable(11434)) return;
-
         check(provider.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
     }
 }

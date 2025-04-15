@@ -17,12 +17,15 @@
  */
 package dev.enola.chat;
 
+import dev.enola.common.Net;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subject;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
+
+import java.net.URI;
 
 public class Demo {
 
@@ -45,6 +48,10 @@ public class Demo {
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
         sw.watch(new PingPongAgent(sw));
+
+        // TODO Make this configurable, and support to /invite several of them to chit chat!
+        var llmURL = URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");
+        if (Net.portAvailable(11434)) sw.watch(new LangChain4jAgent(llmURL, sw));
 
         io.printf(MOTD);
         String input;

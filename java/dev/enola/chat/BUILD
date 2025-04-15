@@ -37,6 +37,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/ai/langchain4j",
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/data/id",
@@ -44,6 +45,7 @@ java_library(
         "//java/dev/enola/thing:thing_java",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:dev_langchain4j_langchain4j_core",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
