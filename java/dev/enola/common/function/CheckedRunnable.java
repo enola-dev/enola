@@ -21,5 +21,5 @@ package dev.enola.common.function;
 public interface CheckedRunnable<E extends Exception> /* NOT extends Runnable */ {
 
     // NOT @Override
-    void run() throws E, UncheckedInterruptedException;
+    void run() throws E;
 }
