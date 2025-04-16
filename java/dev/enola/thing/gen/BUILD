@@ -50,7 +50,6 @@ java_library(
         "//java/dev/enola/thing:thing_java_proto",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_type_annotations",
         "@enola_maven//:com_google_code_gson_gson",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",

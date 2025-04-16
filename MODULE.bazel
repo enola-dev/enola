@@ -130,8 +130,7 @@ enola_maven.install(
         # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
         "org.apache.logging.log4j:log4j-to-jul:2.24.3",
         "io.github.classgraph:classgraph:4.8.179",
-        "com.google.errorprone:error_prone_annotations:2.36.0",
-        "com.google.errorprone:error_prone_type_annotations:2.36.0",
+        "com.google.errorprone:error_prone_annotations:2.38.0",
         "org.jspecify:jspecify:1.0.0",
         "com.squareup.okhttp3:okhttp:4.12.0",
         "com.squareup.okhttp3:logging-interceptor:4.12.0",
