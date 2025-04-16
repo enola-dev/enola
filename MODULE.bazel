@@ -167,6 +167,10 @@ enola_maven.install(
         #   then upgrade rules_jvm_external (above), and uncomment this line, in order to
         #   fix https://github.com/enola-dev/enola/issues/1040:
         # "com.github.vorburger:java-multihash:ed14893c86",
+
+        # TODO Use finer-grained individual JARs?
+        # TODO Support MS Windows? See https://github.com/jline/jline3#artifacts.
+        "org.jline:jline:3.29.0",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which

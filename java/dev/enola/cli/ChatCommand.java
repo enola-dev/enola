@@ -18,7 +18,7 @@
 package dev.enola.cli;
 
 import dev.enola.chat.Demo;
-import dev.enola.chat.IO;
+import dev.enola.chat.jline.JLineIO;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subjects;
 import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
@@ -28,6 +28,7 @@ import dev.enola.thing.java.ProxyTBF;
 
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -36,11 +37,11 @@ import java.util.concurrent.Callable;
 public class ChatCommand implements Callable<Integer> {
 
     @Override
-    public Integer call() {
+    public Integer call() throws IOException {
         var tbf = new ProxyTBF(ImmutableThing.FACTORY);
         try (var ctx = TLC.open()) {
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
-            Demo.chat(IO.CONSOLE, new Subjects(tbf).local());
+            Demo.chat(new JLineIO(), new Subjects(tbf).local());
         }
         return 0;
     }

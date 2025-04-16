@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
+/** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
 class ConsoleIO implements IO {
     private static final Logger LOG = LoggerFactory.getLogger(ConsoleIO.class);
 
@@ -52,6 +53,12 @@ class ConsoleIO implements IO {
             LOG.warn("readLine() from STDIN, without System.console(), failed", e);
             return null;
         }
+    }
+
+    @Override
+    public @Nullable String readLine(String prompt) {
+        printf(prompt);
+        return readLine();
     }
 
     @Override
