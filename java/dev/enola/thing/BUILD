@@ -78,7 +78,6 @@ java_library(
         "@enola_maven//:com_github_spotbugs_spotbugs_annotations",
         "@enola_maven//:com_google_auto_service_auto_service_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_type_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:com_google_protobuf_protobuf_java",
         "@enola_maven//:com_google_protobuf_protobuf_java_util",
