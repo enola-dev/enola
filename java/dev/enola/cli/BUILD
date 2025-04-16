@@ -53,6 +53,7 @@ java_library(
         # TODO Remove most of these direct deps, through new Enola API...
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
+        "//java/dev/enola/chat/jline",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",

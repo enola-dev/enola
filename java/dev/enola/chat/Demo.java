@@ -33,7 +33,7 @@ public class Demo {
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
 
     public static void main(String[] args) {
-        chat(IO.CONSOLE, new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local());
+        chat(new ConsoleIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local());
     }
 
     public static void chat(IO io, Subject user) {
@@ -56,8 +56,7 @@ public class Demo {
         io.printf(MOTD);
         String input;
         do {
-            io.printf("%s in %s> ", user.labelOrIRI(), room.label());
-            input = io.readLine();
+            input = io.readLine("%s in %s> ", user.labelOrIRI(), room.label());
             if (input == null || input.isEmpty()) break;
 
             var msg = new MessageImpl.Builder();

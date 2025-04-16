@@ -39,6 +39,12 @@ public class TestIO implements IO {
     }
 
     @Override
+    public @Nullable String readLine(String prompt) {
+        printf(prompt);
+        return readLine();
+    }
+
+    @Override
     public void printf(String format, Object... args) {
         output.add(String.format(format, args));
     }

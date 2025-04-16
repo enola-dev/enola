@@ -25,6 +25,7 @@ import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import java.net.URI;
 
 public class LangChain4jAgent extends AbstractAgent {
+    // TODO Move this to another package, keep chat base package simple
 
     private final StreamingChatLanguageModel lm;
 

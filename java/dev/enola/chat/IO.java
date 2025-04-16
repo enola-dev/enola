@@ -29,7 +29,11 @@ public interface IO {
 
     @Nullable String readLine();
 
-    void printf(String format, Object... args);
+    @Nullable String readLine(String prompt);
 
-    IO CONSOLE = new ConsoleIO();
+    default @Nullable String readLine(String promptFormat, Object... args) {
+        return readLine(String.format(promptFormat, args));
+    }
+
+    void printf(String format, Object... args);
 }
