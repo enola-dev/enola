@@ -29,6 +29,8 @@ public interface IO {
 
     @Nullable String readLine();
 
+    @Nullable String readLine(String prompt);
+
     void printf(String format, Object... args);
 
     IO CONSOLE = new ConsoleIO();
