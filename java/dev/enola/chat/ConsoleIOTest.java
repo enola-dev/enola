@@ -17,33 +17,9 @@
  */
 package dev.enola.chat;
 
-import static com.google.common.truth.Truth.assertThat;
+public class ConsoleIOTest extends AbstractIOTester {
 
-import org.junit.Test;
-
-public class ConsoleIOTest {
-
-    @Test
-    public void stdin() {
-        SystemStdinStdoutTester.pipeIn(
-                "hello\nworld\nend", // Intentionally no last \n at the end!
-                () -> {
-                    var io = new ConsoleIO();
-                    assertThat(io.readLine()).isEqualTo("hello");
-                    assertThat(io.readLine()).isEqualTo("world");
-                    assertThat(io.readLine()).isEqualTo("end");
-                });
-    }
-
-    @Test
-    public void stdout() {
-        var out =
-                SystemStdinStdoutTester.captureOut(
-                        () -> {
-                            System.out.println("hello");
-                            var io = new ConsoleIO();
-                            io.printf("world");
-                        });
-        assertThat(out).isEqualTo("hello\nworld");
+    protected IO io() {
+        return new ConsoleIO();
     }
 }
