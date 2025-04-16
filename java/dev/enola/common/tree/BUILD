@@ -27,7 +27,6 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_type_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
