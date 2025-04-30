@@ -48,8 +48,10 @@ pull-requests:
   - group-id: protobuf
     dependencies: "com.google.protobuf:*"
 
-  - title: "Update ${group}/${artifact} from ${versionFrom} to ${versionTo}"
-    commit-message: "deps: Update ${group}/${artifact} from ${versionFrom} to ${versionTo}"
+  # NB: We're using ${dependencyId} instead of ${group}/${artifact} because
+  #     of https://github.com/VirtusLab/bazel-steward/issues/439.
+  - title: "Update ${dependencyId} from ${versionFrom} to ${versionTo}"
+    commit-message: "deps: Update ${dependencyId} from ${versionFrom} to ${versionTo}"
     kinds: maven
 
 # https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/maven.html
