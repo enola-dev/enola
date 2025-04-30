@@ -21,14 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
-public class ConsoleIOTest {
+public class SystemInOutIOTest {
 
     @Test
     public void stdin() {
         SystemStdinStdoutTester.pipeIn(
                 "hello\nworld\nend", // Intentionally no last \n at the end!
                 () -> {
-                    IO io = new DelegatingIO(new ConsoleIO());
+                    IO io = new SystemInOutIO();
                     assertThat(io.readLine()).isEqualTo("hello");
                     assertThat(io.readLine()).isEqualTo("world");
                     assertThat(io.readLine()).isEqualTo("end");
@@ -41,7 +41,7 @@ public class ConsoleIOTest {
                 SystemStdinStdoutTester.captureOut(
                         () -> {
                             System.out.println("hello");
-                            IO io = new DelegatingIO(new ConsoleIO());
+                            IO io = new SystemInOutIO();
                             io.printf("world");
                         });
         assertThat(out).isEqualTo("hello\nworld");
