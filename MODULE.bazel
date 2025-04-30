@@ -115,7 +115,7 @@ enola_maven.install(
         # TODO https://rdf4j.org/documentation/programming/lmdb-store/
         #   "org.eclipse.rdf4j:rdf4j-sail-lmdb:%s" % RDF4J_VERSION,
         # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
-        "com.fasterxml.jackson.core:jackson-databind:2.18.3",
+        "com.fasterxml.jackson.core:jackson-databind:2.19.0",
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:23.0.0",
         # Other
