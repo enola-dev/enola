@@ -18,18 +18,33 @@
 package dev.enola.chat;
 
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.Console;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
-/** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
-class ConsoleIO implements IO {
-    private final @Nullable Console console = System.console();
+/** SystemInOutIO is an {@link IO} implementation based on {@link System#in}. */
+class SystemInOutIO implements IO {
+    private static final Logger LOG = LoggerFactory.getLogger(SystemInOutIO.class);
+
+    // TODO Charset should not be hard-coded to defaultCharset, but ... from Context?
+
+    private final BufferedReader reader =
+            new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));
 
     @Override
     public @Nullable String readLine() {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
-        return console.readLine();
+        try {
+            var line = reader.readLine();
+            if (line != null) System.out.println(line); // echo!
+            return line;
+        } catch (IOException e) {
+            LOG.warn("readLine() from STDIN, without System.console(), failed", e);
+            return null;
+        }
     }
 
     @Override
@@ -40,8 +55,6 @@ class ConsoleIO implements IO {
 
     @Override
     public void printf(String format, Object... args) {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
-        console.printf(format, args);
+        System.out.printf(format, args);
     }
 }

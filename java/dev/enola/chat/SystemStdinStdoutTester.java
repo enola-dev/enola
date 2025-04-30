@@ -18,6 +18,7 @@
 package dev.enola.chat;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 public class SystemStdinStdoutTester {
 
@@ -25,10 +26,12 @@ public class SystemStdinStdoutTester {
 
     // TODO combinations of System.in, System.out, System.err
 
+    // TODO Rethink Charset... should be a constructor argument?!
+
     public static void pipeIn(String input, Runnable runnable) {
         InputStream original = System.in;
         try {
-            System.setIn(new ByteArrayInputStream(input.getBytes(ConsoleIO.consoleCharset())));
+            System.setIn(new ByteArrayInputStream(input.getBytes(consoleCharset())));
             runnable.run();
         } finally {
             System.setIn(original);
@@ -39,12 +42,17 @@ public class SystemStdinStdoutTester {
         var original = System.out;
         try {
             var out = new ByteArrayOutputStream();
-            var ps = new PrintStream(out, true, ConsoleIO.consoleCharset());
+            var ps = new PrintStream(out, true, consoleCharset());
             System.setOut(ps);
             runnable.run();
-            return out.toString(ConsoleIO.consoleCharset());
+            return out.toString(consoleCharset());
         } finally {
             System.setOut(original);
         }
+    }
+
+    private static Charset consoleCharset() {
+        if (System.console() != null) return System.console().charset();
+        return Charset.defaultCharset();
     }
 }

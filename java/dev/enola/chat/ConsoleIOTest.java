@@ -28,7 +28,7 @@ public class ConsoleIOTest {
         SystemStdinStdoutTester.pipeIn(
                 "hello\nworld\nend", // Intentionally no last \n at the end!
                 () -> {
-                    IO io = new ConsoleIO();
+                    IO io = new DelegatingIO(new ConsoleIO());
                     assertThat(io.readLine()).isEqualTo("hello");
                     assertThat(io.readLine()).isEqualTo("world");
                     assertThat(io.readLine()).isEqualTo("end");
@@ -41,7 +41,7 @@ public class ConsoleIOTest {
                 SystemStdinStdoutTester.captureOut(
                         () -> {
                             System.out.println("hello");
-                            IO io = new ConsoleIO();
+                            IO io = new DelegatingIO(new ConsoleIO());
                             io.printf("world");
                         });
         assertThat(out).isEqualTo("hello\nworld");

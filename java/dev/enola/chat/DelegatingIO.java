@@ -19,29 +19,38 @@ package dev.enola.chat;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.Console;
+/**
+ * DelegatingIO is an {@link dev.enola.chat.IO} implementation which if STDIN and/or STDOUT have
+ * been redirected reads from there (and "echos" input), and otherwise delegates to another IO
+ * implementation (typically e.g., a {@link dev.enola.chat.ConsoleIO} or a {@link
+ * dev.enola.chat.jline.JLineIO}).
+ */
+public class DelegatingIO implements IO {
 
-/** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
-class ConsoleIO implements IO {
-    private final @Nullable Console console = System.console();
+    private final IO delegate;
+
+    public DelegatingIO(IO delegate) {
+        if (System.console() == null) this.delegate = new SystemInOutIO();
+        else this.delegate = delegate;
+    }
 
     @Override
     public @Nullable String readLine() {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
-        return console.readLine();
+        return delegate.readLine();
     }
 
     @Override
     public @Nullable String readLine(String prompt) {
-        printf(prompt);
-        return readLine();
+        return delegate.readLine(prompt);
+    }
+
+    @Override
+    public @Nullable String readLine(String promptFormat, Object... args) {
+        return delegate.readLine(promptFormat, args);
     }
 
     @Override
     public void printf(String format, Object... args) {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
-        console.printf(format, args);
+        delegate.printf(format, args);
     }
 }
