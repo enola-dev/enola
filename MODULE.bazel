@@ -141,7 +141,7 @@ enola_maven.install(
         "io.github.ollama4j:ollama4j:1.0.100",
         "com.github.spotbugs:spotbugs-annotations:4.9.3",
         "io.github.java-diff-utils:java-diff-utils:4.15",
-        "org.jsoup:jsoup:1.19.1",
+        "org.jsoup:jsoup:1.20.1",
         "org.apache.tika:tika-core:3.0.0-BETA2",
         "org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2",
         "com.github.package-url:packageurl-java:1.5.0",
