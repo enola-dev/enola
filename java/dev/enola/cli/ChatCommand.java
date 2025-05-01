@@ -39,10 +39,11 @@ public class ChatCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        var tbf = new ProxyTBF(ImmutableThing.FACTORY);
-        try (var ctx = TLC.open()) {
+        try (var jLineIO = new JLineIO();
+                var ctx = TLC.open()) {
+            var tbf = new ProxyTBF(ImmutableThing.FACTORY);
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
-            Demo.chat(new DelegatingIO(new JLineIO()), new Subjects(tbf).local());
+            Demo.chat(new DelegatingIO(jLineIO), new Subjects(tbf).local());
         }
         return 0;
     }

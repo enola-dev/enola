@@ -17,6 +17,7 @@
  */
 package dev.enola.identity;
 
+import dev.enola.data.id.UUID_IRI;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
@@ -26,10 +27,12 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.PublicKey;
 
 public class Subjects {
     private static final Logger LOG = LoggerFactory.getLogger(Subjects.class);
 
+    private final TBF tbf;
     private final Subject local;
 
     public Subjects() {
@@ -37,6 +40,8 @@ public class Subjects {
     }
 
     public Subjects(TBF tbf) {
+        this.tbf = tbf;
+
         String userlabel;
         String username = System.getProperty("user.name");
         String hostname;
@@ -61,9 +66,14 @@ public class Subjects {
     }
 
     /** <a href="https://en.wikipedia.org/wiki/Alice_and_Bob">Alice</a>. */
-    public Subject alice() {
-        TBF tbf = new ProxyTBF(ImmutableThing.FACTORY);
+    public /*@TestOnly*/ Subject alice() {
         Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
         return sb.iri("https://example.com/alice").label("Alice").build();
+    }
+
+    public Subject fromPublicKey(PublicKey pubKey, String username) {
+        // TODO Store & re-lookup Subject by pubKey in Thing Store...
+        Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
+        return sb.iri(new UUID_IRI().toString()).pubKey(pubKey).label(username).build();
     }
 }

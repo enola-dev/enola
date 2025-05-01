@@ -30,3 +30,27 @@ $ echo -e "hello, world\n@echo hi\n/help\n/whoami" | ./enola chat
 ```
 
 [See Help doc](../help/index.md#chat) for all options.
+
+## AI
+
+If you have [Ollama](https://ollama.com/) up and running locally on its default port `11434`, then this _Chat_ will have an `LLM>` participant using [`gemma3:1b`](https://ai.google.dev/gemma) which will chime into the conversation, like this:
+
+```sh
+$ ./enola chat
+Welcome here! Type /help if you're lost.
+
+vorburger@yara in #Lobby> hi
+LLM> Hi there! How’s your day going so far? 😊
+Is there anything you'd like to chat about, or anything I can help you with today?
+
+vorburger@yara in #Lobby> how ya feel'
+LLM> As an AI, I don't have feelings in the same way humans do. However, I can say that I’m functioning well and ready to assist you! 😊
+
+It’s a good day for me to be here. How about you? How are *you* feeling today?
+```
+
+This will be extended to support other 🔮 LLMs and 🪛 Tools and 🕵🏾‍♀️ Agents in the future - watch this space.
+
+## SSH
+
+This _Chat_ feature is [also available via an SSH server](../server/index.md#ssh)!

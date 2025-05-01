@@ -42,7 +42,8 @@ import java.util.concurrent.TimeUnit;
  *   <li>can return (Guava's) ListenableFuture.
  * </ul>
  *
- * @author Michael Vorburger.ch (originally for https://www.opendaylight.org)
+ * @author Michael Vorburger.ch (originally for <a
+ *     href="https://www.opendaylight.org">OpenDaylight</a>)
  */
 public final class Executors {
 

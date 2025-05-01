@@ -22,4 +22,4 @@ git branch | grep bazel-steward/ | xargs git branch -D
 cs launch org.virtuslab:bazel-steward:1.6.0 --main org.virtuslab.bazelsteward.app.Main -- --update-all-prs
 
 git add MODULE.bazel MODULE.bazel.lock maven_install.json
-# TODO git commit -m "build(deps): Bump loads of stuff using Bazel Steward"
+# TODO git commit -m "deps: Bump loads of stuff using Bazel Steward"

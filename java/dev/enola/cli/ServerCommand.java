@@ -17,11 +17,15 @@
  */
 package dev.enola.cli;
 
+import dev.enola.chat.sshd.EnolaSshServer;
+import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.context.TLC;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.*;
 import dev.enola.web.netty.NettyHttpServer;
+
+import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
@@ -37,8 +41,9 @@ public class ServerCommand extends CommandWithModel {
             hidden = true)
     boolean immediateExitOnlyForTest;
 
-    private EnolaGrpcServer grpcServer;
-    private WebServer httpServer;
+    private @Nullable EnolaGrpcServer grpcServer;
+    private @Nullable WebServer httpServer;
+    private @Nullable EnolaSshServer sshServer;
 
     @Override
     protected void run(EnolaServiceGrpc.EnolaServiceBlockingStub service) throws Exception {
@@ -72,6 +77,13 @@ public class ServerCommand extends CommandWithModel {
                             + "/ui ...");
         }
 
+        // SSH Server
+        if (ports.sshPort != null) {
+            var hostKeyPath = FreedesktopDirectories.HOSTKEY_PATH;
+            sshServer = new EnolaSshServer(ports.sshPort, hostKeyPath);
+            out.println("SSH server (" + hostKeyPath + ") running on port " + sshServer.port());
+        }
+
         if (!immediateExitOnlyForTest) {
             Thread.currentThread().join();
         } else {
@@ -79,9 +91,12 @@ public class ServerCommand extends CommandWithModel {
         }
     }
 
-    public void close() throws InterruptedException {
+    public void close() throws Exception {
         if (grpcServer != null) {
             grpcServer.close();
+        }
+        if (sshServer != null) {
+            sshServer.close();
         }
         if (httpServer != null) {
             httpServer.close();
@@ -93,11 +108,16 @@ public class ServerCommand extends CommandWithModel {
         @CommandLine.Option(
                 names = {"--httpPort"},
                 description = "HTTP Port")
-        Integer httpPort;
+        @Nullable Integer httpPort;
+
+        @CommandLine.Option(
+                names = {"--sshPort"},
+                description = "SSH (Chat) Port")
+        @Nullable Integer sshPort;
 
         @CommandLine.Option(
                 names = {"--grpcPort"},
                 description = "gRPC API Port")
-        Integer grpcPort;
+        @Nullable Integer grpcPort;
     }
 }

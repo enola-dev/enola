@@ -3,6 +3,6 @@
   extends: ["config:recommended"],
   labels: ["dependencies"],
   schedule: "every month",
-  commitMessagePrefix: "build(deps): ",
+  commitMessagePrefix: "deps: ",
   commitMessageAction: "Bump",
 }
