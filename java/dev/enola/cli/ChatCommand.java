@@ -43,7 +43,7 @@ public class ChatCommand implements Callable<Integer> {
                 var ctx = TLC.open()) {
             var tbf = new ProxyTBF(ImmutableThing.FACTORY);
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
-            Demo.chat(new DelegatingIO(jLineIO), new Subjects(tbf).local());
+            Demo.chat(new DelegatingIO(jLineIO), new Subjects(tbf).local(), true);
         }
         return 0;
     }
