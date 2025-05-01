@@ -26,17 +26,22 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jspecify.annotations.Nullable;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
-public class JLineIO implements IO {
+public class JLineIO implements IO, Closeable {
 
     private final Terminal terminal;
     private final LineReader lineReader;
 
     public JLineIO() throws IOException {
-        terminal = TerminalBuilder.terminal();
-        lineReader = LineReaderBuilder.builder().terminal(terminal).build();
+        this(TerminalBuilder.terminal());
+    }
+
+    public JLineIO(Terminal terminal) throws IOException {
+        this.terminal = terminal;
+        this.lineReader = LineReaderBuilder.builder().terminal(terminal).build();
     }
 
     @Override
@@ -60,5 +65,10 @@ public class JLineIO implements IO {
     @Override
     public void printf(String format, Object... args) {
         terminal.writer().printf(format, args);
+    }
+
+    @Override
+    public void close() throws IOException {
+        terminal.close();
     }
 }

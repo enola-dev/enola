@@ -20,6 +20,7 @@ package dev.enola.common;
 import dev.dirs.ProjectDirectories;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * XDG Base Directories.
@@ -35,9 +36,13 @@ import java.io.File;
  * </ul>
  */
 public final class FreedesktopDirectories {
+    // TODO Rename FreedesktopDirectories to something like StandardPaths or so ?
 
     public static final File CACHE_FILE =
             new File(ProjectDirectories.from("dev", "Enola", "Enola").cacheDir);
+
+    public static final Path HOSTKEY_PATH =
+            Path.of(ProjectDirectories.from("dev", "Enola", "Enola").configDir, "sshd-hostkey");
 
     private FreedesktopDirectories() {}
 }

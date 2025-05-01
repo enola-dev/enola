@@ -37,6 +37,18 @@ There is also a REST API which returns JSON if you replace `ui` with `api` in th
 so e.g. on <http://[::]:8080/api/https://example.org/greeting2>.
 <!-- TODO Clean Up: /ui/ dropped /entity/ but API kept it, due to /entities/ ... -->
 
+## SSH
+
+    $ ./enola server --load models/enola.dev/enola.ttl --httpPort=9090 --sshPort=2222
+    (...)
+    SSH server running on port 2222
+
+You can now connect to [Chat](../chat/index.md), e.g. with `ssh -p 2222 alice@localhost`.
+
+Any username (e.g. `alice@`) can be used. Only public key authentication is supported, no passwords.
+
+The host (private) key is stored e.g. in `~/.config/enola/sshd-hostkey`.
+
 ## gRPC
 
 The `--grpcPort` flag starts the Enola gRPC API.

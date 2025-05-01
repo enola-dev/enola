@@ -33,7 +33,8 @@ import java.util.UUID;
  * keys, and such things; do not use this for "very large BLOBs". The hashCode is cached.
  *
  * <p>The <tt>com.google.protobuf.ByteString</tt> is very similar - but we don't want to depend on
- * the ProtoBuf library JUST for having a type like this.
+ * the ProtoBuf library JUST for having a type like this. Likewise,
+ * <tt>com.google.crypto.tink.util.Bytes</tt> is similar.
  *
  * <p>This intentionally does <b>not</b> implement <tt>Iterable<Byte></tt> to avoid boxing overhead.
  */
@@ -169,7 +170,6 @@ public final class ByteSeq implements Comparable<ByteSeq> {
         this.bytes = bytes;
     }
 
-    // TODO Rename toBytes() to copyIntoNewByteArray() ?
     public byte[] toBytes() {
         return Arrays.copyOf(bytes, bytes.length);
     }

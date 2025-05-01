@@ -22,6 +22,9 @@ import dev.enola.model.w3.rdfs.HasLabel;
 import dev.enola.thing.HasIRI;
 import dev.enola.thing.java.HasType;
 
+import java.security.PublicKey;
+import java.util.Base64;
+
 /**
  * Subject. Often a user (person) or an organization / group, but also a machine, or a service, etc.
  *
@@ -41,6 +44,18 @@ public interface Subject extends HasIRI, HasType, HasLabel, HasComment {
 
         @Override
         Builder iri(String iri);
+
+        // TODO Move to HasPublicKeys interface
+        default Builder pubKey(PublicKey pubKey) {
+            // TODO Check Decentralized IDs (DID) for an existing "publicKey" IRI
+            // TODO Use
+            // https://github.com/filip26/copper-multicodec/blob/05c14b5068078d9cd522de374abbfc76f66f605b/src/main/java/com/apicatalog/multicodec/codec/KeyCodec.java#L118
+            var bytes = Base64.getEncoder().encodeToString(pubKey.getEncoded());
+            // TODO Document https://enola.dev/pubKeys (extend https://schema.org/identifier)
+            var pubKeyText = pubKey.getAlgorithm() + ":" + pubKey.getFormat() + ":" + bytes;
+            add("https://enola.dev/pubKeys", pubKeyText);
+            return this;
+        }
 
         @Override
         default Builder label(String label) {

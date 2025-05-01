@@ -54,6 +54,7 @@ java_library(
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
         "//java/dev/enola/chat/jline",
+        "//java/dev/enola/chat/sshd",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",

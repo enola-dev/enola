@@ -3,7 +3,7 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     commit-message:
-      prefix: "build(deps): "
+      prefix: "deps: "
     directory: "/"
     schedule:
       interval: "monthly"
@@ -12,7 +12,7 @@ updates:
     open-pull-requests-limit: 99
   - package-ecosystem: "pip"
     commit-message:
-      prefix: "build(deps): "
+      prefix: "deps: "
     directory: "/"
     schedule:
       interval: "monthly"
@@ -21,7 +21,7 @@ updates:
     open-pull-requests-limit: 99
   - package-ecosystem: "devcontainers"
     commit-message:
-      prefix: "build(deps): "
+      prefix: "deps: "
     directory: "/"
     schedule:
       interval: "monthly"
@@ -30,7 +30,7 @@ updates:
     open-pull-requests-limit: 99
   - package-ecosystem: "bun"
     commit-message:
-      prefix: "build(deps): "
+      prefix: "deps: "
     directory: "web/"
     schedule:
       interval: "daily"
