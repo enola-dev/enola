@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# set -euo pipefail
+set -euo pipefail
 
 # This script detects any usages of java.net.URL in **/*.java.
 # See class dev.enola.common.io.iri.URL for background about why.
@@ -23,8 +23,6 @@
 # It technically misses "implicit" usages of java.net.URL, such as:
 # Resources.getResource("test.txt").toURI(); but that's OK, for now.
 # TODO Write a better JVM level test; e.g. with ErrorProne or SpotBugs.
-
-set -euo pipefail
 
 allow_list=("java/dev/enola/common/io/resource/UrlResource.java"
             "java/dev/enola/common/io/resource/ClasspathResource.java")

@@ -28,7 +28,7 @@ import java.util.List;
  * href="https://github.com/brettwooldridge/NuProcess">NuProcess</a>, or <a
  * href="https://github.com/zeroturnaround/zt-exec">zt-exec</a>.
  */
-interface Runner {
+public interface Runner {
     int exec(
             boolean expectNonZeroExitCode,
             Path dir,

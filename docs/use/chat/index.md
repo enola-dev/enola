@@ -20,16 +20,24 @@
 
 <!-- TODO "This is the last shell you'll ever need." -->
 
+## Usage
+
 <!-- TODO This is increasingly less readable...
        ... use an (EOF) "HERE doc", even though that's Bash and NOK in Fish?
        ... use a file instead, shown here? -->
 
 ```bash cd ../.././..
-$ echo -e "hello, world\n@echo hi\n/help\n/whoami" | ./enola chat
+$ echo -e "hello, world\n@echo hi\n/help\n/whoami\npwd" | ./enola chat
 ...
 ```
 
 [See Help doc](../help/index.md#chat) for all options.
+
+## Exec
+
+Note how the last "message" in the example chat above was `pwd`.
+
+This is executed as a local command, and the result is printed.
 
 ## AI
 
