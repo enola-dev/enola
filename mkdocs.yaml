@@ -21,7 +21,7 @@ site_name: Enola.dev
 site_url: https://www.enola.dev
 repo_url: https://github.com/enola-dev/enola
 edit_uri: blob/main/docs/
-copyright: Copyright &copy; 2023-2024 The Enola <https://enola.dev> Authors
+copyright: Copyright &copy; 2023-2025 The Enola <https://enola.dev> Authors
 
 nav:
   # - Applications:

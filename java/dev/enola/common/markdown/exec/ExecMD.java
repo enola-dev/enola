@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class ExecMD {
 
     private static final String LS = System.lineSeparator();
-    private final Runner runner = new VorburgerExecRunner(); // NuProcessRunner();
+    private final Runner runner = new VorburgerExecRunner();
 
     public void process(File mdFile, boolean inplace)
             throws IOException, MarkdownProcessingException {

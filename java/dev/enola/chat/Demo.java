@@ -48,6 +48,8 @@ public class Demo {
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
         sw.watch(new PingPongAgent(sw));
+        // TODO ExecAgent should NOT be added when running EnolaSshServer... boolean allowLocalExec?
+        sw.watch(new ExecAgent(sw));
 
         // TODO Make this configurable, and support to /invite several of them to chit chat!
         var llmURL = URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");

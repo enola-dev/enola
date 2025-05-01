@@ -63,9 +63,9 @@ public abstract class AbstractAgent implements Agent {
         consumer.accept(postfix);
     }
 
-    protected void handle(Message message, String prefix, Runnable runnable) {
+    protected void handle(Message message, String match, Runnable runnable) {
         var content = message.content();
-        if (!content.equals(prefix)) return;
+        if (!content.equals(match)) return;
         runnable.run();
     }
 }

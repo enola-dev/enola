@@ -45,8 +45,9 @@ public class LangChain4jAgent extends AbstractAgent {
         // Avoid it talking to itself endlessly... ROTFL!
         if (message.from().equals(subject())) return;
 
-        // TODO Support streaming LLM partial responses into Chat
         // TODO https://docs.langchain4j.dev/tutorials/chat-memory
+
+        // TODO Support streaming LLM partial responses into Chat
         var handler = new TestStreamingChatResponseHandler();
         lm.chat(message.content(), handler);
         reply(message, handler.awaitChatResponse().aiMessage().text());

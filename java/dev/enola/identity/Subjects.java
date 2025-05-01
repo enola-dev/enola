@@ -25,8 +25,6 @@ import dev.enola.thing.java.TBF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.PublicKey;
 
 public class Subjects {
@@ -42,22 +40,14 @@ public class Subjects {
     public Subjects(TBF tbf) {
         this.tbf = tbf;
 
-        String userlabel;
-        String username = System.getProperty("user.name");
-        String hostname;
-        try {
-            hostname = InetAddress.getLocalHost().getHostName();
-            userlabel = username + "@" + hostname;
-        } catch (UnknownHostException e) {
-            LOG.warn("InetAddress.getLocalHost().getHostName() failed", e);
-            hostname = "";
-            userlabel = username;
-        }
+        String hostname = Hostnames.LOCAL;
+        String userName = System.getProperty("user.name");
+        String userLabel = userName + "@" + hostname;
 
         this.local =
                 tbf.create(Subject.Builder.class, Subject.class)
-                        .iri("subject://" + hostname + "/" + username)
-                        .label(userlabel)
+                        .iri("subject://" + hostname + "/" + userName)
+                        .label(userLabel)
                         .build();
     }
 

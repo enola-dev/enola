@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola.net;
+package dev.enola.identity;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
