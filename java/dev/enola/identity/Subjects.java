@@ -22,13 +22,9 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.PublicKey;
 
 public class Subjects {
-    private static final Logger LOG = LoggerFactory.getLogger(Subjects.class);
 
     private final TBF tbf;
     private final Subject local;

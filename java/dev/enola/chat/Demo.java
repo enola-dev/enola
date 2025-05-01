@@ -33,10 +33,10 @@ public class Demo {
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
 
     public static void main(String[] args) {
-        chat(new ConsoleIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local());
+        chat(new ConsoleIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local(), true);
     }
 
-    public static void chat(IO io, Subject user) {
+    public static void chat(IO io, Subject user, boolean allowLocalExec) {
         var room = new Room("#Lobby");
 
         Switchboard sw = new SimpleInMemorySwitchboard();
@@ -48,8 +48,7 @@ public class Demo {
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
         sw.watch(new PingPongAgent(sw));
-        // TODO ExecAgent should NOT be added when running EnolaSshServer... boolean allowLocalExec?
-        sw.watch(new ExecAgent(sw));
+        if (allowLocalExec) sw.watch(new ExecAgent(sw));
 
         // TODO Make this configurable, and support to /invite several of them to chit chat!
         var llmURL = URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");

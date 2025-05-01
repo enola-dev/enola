@@ -27,7 +27,7 @@
        ... use a file instead, shown here? -->
 
 ```bash cd ../.././..
-$ echo -e "hello, world\n@echo hi\n/help\n/whoami\npwd" | ./enola chat
+$ echo -e "hello, world\n@echo hi\n/help\n/whoami\nwhoami\npwd" | ./enola chat
 ...
 ```
 
@@ -35,9 +35,9 @@ $ echo -e "hello, world\n@echo hi\n/help\n/whoami\npwd" | ./enola chat
 
 ## Exec
 
-Note how the last "message" in the example chat above was `pwd`.
+Note how the last two "messages" in the example chat above were `whoami` and `pwd`.
 
-This is executed as a local command, and the result is printed.
+They were both executed as commands on the local system. (Whereas the `/whoami` with slash was not a system executable command, but a built-in.)
 
 ## AI
 
@@ -62,3 +62,5 @@ This will be extended to support other 🔮 LLMs and 🪛 Tools and 🕵🏾‍�
 ## SSH
 
 This _Chat_ feature is [also available via an SSH server](../server/index.md#ssh)!
+
+[Exec](#exec) is only enabled in (local) `enola chat`, but disabled over SSH.

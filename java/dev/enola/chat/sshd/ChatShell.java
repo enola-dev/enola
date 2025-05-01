@@ -49,7 +49,7 @@ class ChatShell {
         try {
             var subject = subjects.fromPublicKey(pubKey, username);
             var io = new JLineIO(terminal);
-            Demo.chat(io, subject);
+            Demo.chat(io, subject, false);
 
         } catch (IOException e) {
             LOG.error("IOException from JLineIO", e);
