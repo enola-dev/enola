@@ -47,6 +47,8 @@ pull-requests:
     dependencies: "org.eclipse.rdf4j:*"
   - group-id: protobuf
     dependencies: "com.google.protobuf:*"
+  - group-id: picocli
+    dependencies: "info.picocli:*"
 
   # NB: We're using ${dependencyId} instead of ${group}/${artifact} because
   #     of https://github.com/VirtusLab/bazel-steward/issues/439.
