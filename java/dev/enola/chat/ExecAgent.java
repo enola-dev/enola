@@ -17,6 +17,9 @@
  */
 package dev.enola.chat;
 
+import com.google.common.collect.ImmutableMap;
+
+import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.markdown.exec.Runner;
 import dev.enola.common.markdown.exec.VorburgerExecRunner;
 import dev.enola.identity.Hostnames;
@@ -26,9 +29,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +43,27 @@ public class ExecAgent extends AbstractAgent {
 
     // TODO Support exec programs using / and ./ and ../ prefixes
 
+    // TODO Support  ; && | > < https://github.com/enola-dev/enola/issues/1356
+
     // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecAgent.class);
 
     private final Runner runner = new VorburgerExecRunner();
 
-    private final Map<String, File> executables = ExecPATH.scan();
+    private final Map<String, File> executables = filter(ExecPATH.scan());
+
+    // See https://github.com/enola-dev/enola/issues/1354
+    private Map<String, File> filter(ImmutableMap<String, File> allExecutables) {
+        var map = new HashMap<String, File>(allExecutables.size());
+        map.putAll(allExecutables);
+        try {
+            new ClasspathResource("command-words.txt").charSource().forEachLine(map::remove);
+        } catch (IOException e) {
+            throw new IllegalStateException("Processing /command-words.txt failed?!", e);
+        }
+        return ImmutableMap.copyOf(map);
+    }
 
     private final List<String> commands = executables.keySet().stream().sorted().toList();
 
@@ -85,6 +104,8 @@ public class ExecAgent extends AbstractAgent {
         var outputBuilder = new StringBuilder();
         try {
             // TODO Feedback exitCode also to Chat (somewhow; but how?!)
+            //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
+            //   in the NEXT prompt... how how to "generalize" this here?
             var exitCode = runner.exec(false, cwd, commandList, outputBuilder, timeout);
             LOG.debug("Executed: {} => {}", executableFile.getAbsolutePath(), exitCode);
             var output = outputBuilder.toString();

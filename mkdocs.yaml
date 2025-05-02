@@ -56,7 +56,7 @@ nav:
           - Repo Created: blog/posts/git-repo-created.md
   - Tools:
       - 🦮 Help: use/help/index.md
-      - 💬 Chat: use/chat/index.md
+      - 💬 Chat/Shell: use/chat/index.md
       # TODO git rm docs/use/library/* ? - Example Model: use/library/index.md
       - 📃 DocGen: use/docgen/index.md
       - 🏗️ Generate: use/gen/index.md
