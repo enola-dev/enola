@@ -33,7 +33,9 @@ public class LangChain4jAgent extends AbstractAgent {
         super(
                 tbf.create(Subject.Builder.class, Subject.class)
                         .iri(llmURL.toString())
+                        // TODO LLM Label from URI &label= (if any)
                         .label("LLM")
+                        // TODO LLM .nickname() from URI &nick= (if any)
                         .comment(llmURL.toString())
                         .build(),
                 pbx);

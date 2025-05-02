@@ -35,6 +35,10 @@ import java.util.Base64;
 // TODO HasPublicKeys ?
 public interface Subject extends HasIRI, HasType, HasLabel, HasComment {
 
+    // TODO HasAuthPublicKeys
+
+    // TODO HasNickname
+
     // skipcq: JAVA-E0169
     interface Builder
             extends HasType.Builder<Subject>,
@@ -46,16 +50,19 @@ public interface Subject extends HasIRI, HasType, HasLabel, HasComment {
         Builder iri(String iri);
 
         // TODO Move to HasPublicKeys interface
-        default Builder pubKey(PublicKey pubKey) {
+        default Builder addAuthPubKey(PublicKey pubKey) {
             // TODO Check Decentralized IDs (DID) for an existing "publicKey" IRI
             // TODO Use
             // https://github.com/filip26/copper-multicodec/blob/05c14b5068078d9cd522de374abbfc76f66f605b/src/main/java/com/apicatalog/multicodec/codec/KeyCodec.java#L118
             var bytes = Base64.getEncoder().encodeToString(pubKey.getEncoded());
-            // TODO Document https://enola.dev/pubKeys (extend https://schema.org/identifier)
+            // TODO Document https://enola.dev/authPubKeys (extend https://schema.org/identifier)
+            //   auth* as opposed to a Subject's (current) cryptPubKey
             var pubKeyText = pubKey.getAlgorithm() + ":" + pubKey.getFormat() + ":" + bytes;
-            add("https://enola.dev/pubKeys", pubKeyText);
+            add("https://enola.dev/authPubKeys", pubKeyText);
             return this;
         }
+
+        // TODO Builder nickname(String nickname) {
 
         @Override
         default Builder label(String label) {

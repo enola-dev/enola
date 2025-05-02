@@ -60,6 +60,6 @@ public class Subjects {
     public Subject fromPublicKey(PublicKey pubKey, String username) {
         // TODO Store & re-lookup Subject by pubKey in Thing Store...
         Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
-        return sb.iri(new UUID_IRI().toString()).pubKey(pubKey).label(username).build();
+        return sb.iri(new UUID_IRI().toString()).addAuthPubKey(pubKey).label(username).build();
     }
 }

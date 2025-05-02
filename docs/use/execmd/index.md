@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Executable Markdown (MD)
+# Executable Markdown (MD) 📝
 
 _ExecMD_ is a tool ([not a Dr.](https://memory-alpha.fandom.com/wiki/I%27m_a_doctor,_not_a...)) which executes commands from Markdown code blocks. Inspired by [Literate Programming](https://en.wikipedia.org/wiki/Literate_programming), this is useful e.g. to create documentation which automatically updates itself to stay in line with current code of tools being documented - such as [later on this page](#cli-options)! 😃
 

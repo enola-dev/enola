@@ -16,9 +16,9 @@
     limitations under the License.
 -->
 
-# Help
+# Help 🦮
 
-## Screencast (Asciinema)
+## Screencast
 
 ![Demo](script.svg)
 

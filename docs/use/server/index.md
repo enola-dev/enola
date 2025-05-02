@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Web & gRPC Server
+# Web, SSH & gRPC Server 🤵
 
 ## UI
 

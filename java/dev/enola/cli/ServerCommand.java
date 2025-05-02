@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "server", description = "Start HTTP and/or gRPC Server/s")
+@CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
 public class ServerCommand extends CommandWithModel {
 
     @CommandLine.ArgGroup(exclusive = false, multiplicity = "1")

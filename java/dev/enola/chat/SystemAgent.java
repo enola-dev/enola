@@ -42,7 +42,8 @@ public class SystemAgent extends AbstractAgent {
         handle(message, "/help", () -> reply(message, help()));
         handle(message, "/whoami", () -> reply(message, whoami()));
 
-        // TODO /invite, /join, /leave (/who ?)
+        // TODO /invite, /join, /leave
+        // TODO /who, like /whoami but for a room; see https://en.wikipedia.org/wiki/Who_(Unix)
 
         // No /quit
     }
@@ -53,6 +54,7 @@ public class SystemAgent extends AbstractAgent {
                 + """
                  -- Commands:
                   /whoami - Show your user details.
+                  /commands - Available commands.
                   /help - This help.
                  Say "ping" to get a "pong" back.
                  @echo ... echoes your message back to you.

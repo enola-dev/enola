@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# DocGen
+# DocGen 📃
 
 We can generate nice Markdown documentation as seen in [the tutorial](../../models/example.org/class.md)
 or for [our example Library model](../library/index.md), including a Graph in either Mermaid.JS or

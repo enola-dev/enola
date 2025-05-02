@@ -27,9 +27,13 @@ maven:
   repository-name: enola_maven
 
 pull-requests:
-  - group-id: google-auto-service
+  - group-id: auto-service
     dependencies: "com.google.auto.service:*"
+  - group-id: protobuf
+    dependencies: "com.google.protobuf:*"
   - group-id: grpc
+    dependencies: "io.grpc:*"
+  - group-id: google-api-grpc
     dependencies: "com.google.api.grpc:*"
   - group-id: opentelemetry
     dependencies: "io.opentelemetry:*"
@@ -45,8 +49,6 @@ pull-requests:
     dependencies: "eu.maveniverse*:*"
   - group-id: rdf4j
     dependencies: "org.eclipse.rdf4j:*"
-  - group-id: protobuf
-    dependencies: "com.google.protobuf:*"
 
   # NB: We're using ${dependencyId} instead of ${group}/${artifact} because
   #     of https://github.com/VirtusLab/bazel-steward/issues/439.

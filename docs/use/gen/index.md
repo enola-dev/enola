@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Generate
+# Generate 🏗️
 
 Generates [various outputs](../help/index.md#gen) from (loaded) _Things._
 
