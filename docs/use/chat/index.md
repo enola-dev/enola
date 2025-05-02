@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Chat 💬
+# Chat 💬 (Shell)
 
 Enola’s Chat is _The Shell for the 2030s+_ and the _“last Chat you'll ever need”._
 
@@ -38,6 +38,8 @@ $ ./enola chat <docs/use/chat/demo.input
 Note how the last two "messages" in the example chat above were [`whoami`](https://en.wikipedia.org/wiki/Whoami) and [`pwd`](https://en.wikipedia.org/wiki/Pwd).
 
 They were both executed as commands on the local system. (Whereas the `/whoami` with slash was not a system executable but a built-in command.)
+
+In order to avoid confusion with certain terms which are both typically valid UNIX command names but also valid natural language words, a hard-coded list excludes them from being executed as commands.
 
 ## AI
 
