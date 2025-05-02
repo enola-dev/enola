@@ -48,6 +48,7 @@ public class ObjectToStringBiConverterWithFormat implements ObjectToStringBiConv
     @Override
     public boolean convertInto(Object from, Appendable into) throws ConversionException {
         // TODO Test if this really works like this...
+        // TODO How to use StringBuilder instead of StringBuffer with java.text.Format ?!
         var sb = new StringBuffer();
         format.format(from, sb, ALL_FIELD_POSITIONS);
         try {

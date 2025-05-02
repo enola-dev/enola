@@ -26,7 +26,7 @@ import java.util.Locale;
  *
  * <p>For example, <i>"hello, world" in English</i> is a LangString.
  *
- * <p>Text Direction is optionally also part of a LangString.
+ * <p>For Text with Direction, use {@link DirectionalLangString}.
  *
  * <p>The class name <tt>LangString</tt> was chosen both because of its <i>*String</i> suffix
  * familiarity for Java developers, and inspired by <tt>rdf:langString</tt> (even though this Java

@@ -25,7 +25,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 /** Message. AKA "Post" or "Comment" or "Tweet" - or even an "Email". */
-public interface Message {
+public interface Message { // TODO extends Thing
 
     Object id();
 
@@ -46,10 +46,34 @@ public interface Message {
     Format format();
 
     enum Format {
+        /** Plain Text, without formatting. */
         PLAIN,
+
+        /**
+         * Markdown format.
+         *
+         * <p>Markdown could be converted to ANSI for Terminal Shell output e.g. using <a
+         * href="https://github.com/swsnr/mdcat">mdcat</a>.
+         */
         MARKDOWN,
+
+        /**
+         * HTML format.
+         *
+         * <p>HTML could be converted to ANSI for Terminal Shell output e.g. using <a
+         * href="https://en.m.wikipedia.org/wiki/W3m">w3m</a>.
+         */
         HTML,
+
+        /**
+         * "ANSI" format, as in "Terminal text", with "ANSI escape & color etc. control codes".
+         *
+         * <p>Should typically be rendered in a fixed width (monospaced) font.
+         */
+        ANSI
     }
+
+    // TODO Locale language, like in LangString ?
 
     // TODO Attachments!! Useful both for Emails, as well as for LLMs...
 

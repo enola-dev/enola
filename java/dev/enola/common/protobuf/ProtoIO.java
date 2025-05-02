@@ -122,7 +122,7 @@ public class ProtoIO {
 
                 } else if (normalizedNoParamsEquals(mediaType, PROTOBUF_YAML_UTF_8, YAML_UTF_8)
                         || mediaType.subtype().endsWith("+yaml")) {
-                    var sb = new StringBuffer();
+                    var sb = new StringBuilder();
                     JsonFormat.printer()
                             .usingTypeRegistry(typeRegistry)
                             .omittingInsignificantWhitespace()
