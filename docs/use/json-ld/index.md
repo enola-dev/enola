@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# JSON-LD
+# JSON-LD ➰
 
 Enola supports [JSON-LD](https://en.wikipedia.org/wiki/JSON-LD).
 

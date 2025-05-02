@@ -42,6 +42,8 @@ public class SimpleInMemorySwitchboard implements Switchboard {
         if (builder.modifiedAt() == null) builder.modifiedAt(builder.createdAt());
         var message = builder.build();
         messages.add(message);
+
+        // TODO: Accept Messages in a separate new thread per Consumer
         consumers.forEach(c -> c.accept(message));
     }
 

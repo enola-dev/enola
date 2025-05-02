@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Info
+# Info ℹ️
 
 <!-- TODO Link? [The MediaType ("MIME") Model Graph]() might also interest you in this context. -->
 

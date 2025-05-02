@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Canonicalize (AKA Normalize)
+# Canonicalize (AKA Normalize) 📚
 
 _Canonicalization,_ which is also called _normalization,_ transforms a resource into a "standard" representation.
 

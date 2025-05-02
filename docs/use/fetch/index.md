@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Fetch
+# Fetch ⤵️
 
 `fetch` fetches a _Resource_ from an _URL_ and outputs its content. You can therefore use this similarly to [curl](https://curl.se/) or [httpie](https://httpie.io/cli) or [wget](https://en.wikipedia.org/wiki/Wget). (If you want to see the _Media Type,_ use [`info detect`](../info/index.md#detect).)
 

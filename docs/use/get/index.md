@@ -16,9 +16,9 @@
     limitations under the License.
 -->
 
-# Get Thing
+# Get Thing ⬇️
 
-## Screencast (Asciinema)
+## Screencast
 
 ![Demo](script.svg)
 

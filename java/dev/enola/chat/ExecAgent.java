@@ -34,15 +34,19 @@ import java.util.Map;
 
 public class ExecAgent extends AbstractAgent {
 
+    // TODO Offer tab completion of all available commands in Chat
+
+    // TODO Support exec programs using / and ./ and ../ prefixes
+
     // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecAgent.class);
 
-    // TODO Offer tab completion of all available commands in Chat
-
     private final Runner runner = new VorburgerExecRunner();
 
     private final Map<String, File> executables = ExecPATH.scan();
+
+    private final List<String> commands = executables.keySet().stream().sorted().toList();
 
     // TODO Support changing working directory with a built-in "cd" command
     //   (which must be handled BEFORE /usr/bin/cd is invoked)
@@ -53,13 +57,17 @@ public class ExecAgent extends AbstractAgent {
                 tbf.create(Subject.Builder.class, Subject.class)
                         .iri("http://" + Hostnames.LOCAL)
                         .label(Hostnames.LOCAL)
-                        .comment("Executes Commands")
+                        .comment("Executes Commands on " + Hostnames.LOCAL)
                         .build(),
                 pbx);
     }
 
     @Override
     public void accept(Message message) {
+        // /commands is inspired e.g. by Fish's "command --all",
+        //   see https://fishshell.com/docs/current/cmds/command.html
+        handle(message, "/commands", () -> reply(message, String.join("\n", commands)));
+
         var executable = executable(message.content());
         var executableFile = executables.get(executable);
         if (executableFile == null) return;

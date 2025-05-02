@@ -16,18 +16,18 @@
     limitations under the License.
 -->
 
-# Chat
+# Chat 💬
 
-<!-- TODO "This is the last shell you'll ever need." -->
+Enola’s Chat is _The Shell for the 2030s+_ and the _“last Chat you'll ever need”._
+
+## Screencast
+
+![Demo](script.svg)
 
 ## Usage
 
-<!-- TODO This is increasingly less readable...
-       ... use an (EOF) "HERE doc", even though that's Bash and NOK in Fish?
-       ... use a file instead, shown here? -->
-
 ```bash cd ../.././..
-$ echo -e "hello, world\n@echo hi\n/help\n/whoami\nwhoami\npwd" | ./enola chat
+$ ./enola chat <docs/use/chat/demo.input
 ...
 ```
 
@@ -35,9 +35,9 @@ $ echo -e "hello, world\n@echo hi\n/help\n/whoami\nwhoami\npwd" | ./enola chat
 
 ## Exec
 
-Note how the last two "messages" in the example chat above were `whoami` and `pwd`.
+Note how the last two "messages" in the example chat above were [`whoami`](https://en.wikipedia.org/wiki/Whoami) and [`pwd`](https://en.wikipedia.org/wiki/Pwd).
 
-They were both executed as commands on the local system. (Whereas the `/whoami` with slash was not a system executable command, but a built-in.)
+They were both executed as commands on the local system. (Whereas the `/whoami` with slash was not a system executable but a built-in command.)
 
 ## AI
 
@@ -64,3 +64,5 @@ This will be extended to support other 🔮 LLMs and 🪛 Tools and 🕵🏾‍�
 This _Chat_ feature is [also available via an SSH server](../server/index.md#ssh)!
 
 [Exec](#exec) is only enabled in (local) `enola chat`, but disabled over SSH.
+
+`/whoami` includes the public key of the user connected over SSH.

@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Rosetta
+# Rosetta 🌐
 
 <!-- Show (include) each example's input/output... maybe split onto separate pages? -->
 
