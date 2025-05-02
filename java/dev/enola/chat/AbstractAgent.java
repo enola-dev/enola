@@ -52,20 +52,22 @@ public abstract class AbstractAgent implements Agent {
         pbx.post(reply);
     }
 
-    protected void handle(Message message, String prefix, Consumer<@Nullable String> consumer) {
+    protected boolean handle(Message message, String prefix, Consumer<@Nullable String> consumer) {
         var content = message.content();
-        if (!content.startsWith(prefix)) return;
+        if (!content.startsWith(prefix)) return false;
 
         var end = content.indexOf(' ');
-        if (end == -1) return;
+        if (end == -1) return false;
 
         var postfix = content.substring(end + 1).trim();
         consumer.accept(postfix);
+        return true;
     }
 
-    protected void handle(Message message, String match, Runnable runnable) {
+    protected boolean handle(Message message, String match, Runnable runnable) {
         var content = message.content();
-        if (!content.equals(match)) return;
+        if (!content.equals(match)) return false;
         runnable.run();
+        return true;
     }
 }

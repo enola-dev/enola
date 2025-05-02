@@ -32,6 +32,11 @@ import java.io.IOException;
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
 
+    // TODO https://github.com/jline/jline3/wiki/History
+    // TODO Regularly do lineReader.getHistory().save(); // NOT .write(path, true);
+
+    // TODO Keybindings; see https://github.com/jline/jline3/issues/398
+
     private final Terminal terminal;
     private final LineReader lineReader;
 
@@ -41,7 +46,12 @@ public class JLineIO implements IO, Closeable {
 
     public JLineIO(Terminal terminal) throws IOException {
         this.terminal = terminal;
-        this.lineReader = LineReaderBuilder.builder().terminal(terminal).build();
+        this.lineReader =
+                LineReaderBuilder.builder()
+                        .terminal(terminal)
+                        // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
+                        // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
+                        .build();
     }
 
     @Override

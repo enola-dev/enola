@@ -50,6 +50,8 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
 
     // TODO java.net.http <https://openjdk.org/groups/net/httpclient/intro.html> alternative!
 
+    // TODO https://kong.github.io/unirest-java/ (which uses JDK HttpClient itself?) alternative?
+
     // TODO https://github.com/mizosoft/methanol as alternative?
 
     private static final Logger LOG = LoggerFactory.getLogger(OkHttpResource.class);

@@ -17,6 +17,8 @@
  */
 package dev.enola.identity;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import dev.enola.data.id.UUID_IRI;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
@@ -52,7 +54,7 @@ public class Subjects {
     }
 
     /** <a href="https://en.wikipedia.org/wiki/Alice_and_Bob">Alice</a>. */
-    public /*@TestOnly*/ Subject alice() {
+    public @VisibleForTesting Subject alice() {
         Subject.Builder sb = tbf.create(Subject.Builder.class, Subject.class);
         return sb.iri("https://example.com/alice").label("Alice").build();
     }
