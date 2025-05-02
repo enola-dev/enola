@@ -17,7 +17,9 @@
  */
 package dev.enola.chat;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.markdown.exec.Runner;
@@ -32,10 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ExecAgent extends AbstractAgent {
 
@@ -49,29 +48,31 @@ public class ExecAgent extends AbstractAgent {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecAgent.class);
 
-    private final Runner runner = new VorburgerExecRunner();
-
-    private final Map<String, File> executables = filter(ExecPATH.scan());
-
-    // See https://github.com/enola-dev/enola/issues/1354
-    private Map<String, File> filter(ImmutableMap<String, File> allExecutables) {
-        var map = new HashMap<String, File>(allExecutables.size());
-        map.putAll(allExecutables);
-        try {
-            new ClasspathResource("command-words.txt").charSource().forEachLine(map::remove);
-        } catch (IOException e) {
-            throw new IllegalStateException("Processing /command-words.txt failed?!", e);
-        }
-        return ImmutableMap.copyOf(map);
-    }
-
-    private final List<String> commands = executables.keySet().stream().sorted().toList();
+    private final Runner runner;
+    private final Map<String, File> executablesMap;
+    private final List<String> executables;
+    private final Set<String> commandWords = loadCommandWords();
 
     // TODO Support changing working directory with a built-in "cd" command
     //   (which must be handled BEFORE /usr/bin/cd is invoked)
     private final Path cwd = Path.of(".");
+    private final String forceExecPrefix;
 
-    public ExecAgent(Switchboard pbx) {
+    /**
+     * Constructor.
+     *
+     * @param pbx the PBX
+     * @param runner the exec runner
+     * @param executablesMap the executables on PATH
+     * @param forceExecPrefix the prefix to force execution of a command, e.g. "$" or "!", or
+     *     whatever. (Note that <a href="https://github.com/jline/jline3/issues/1218">JLine handles
+     *     "!" as history expansion, so that needs to disabled</a>.)
+     */
+    public ExecAgent(
+            Switchboard pbx,
+            Runner runner,
+            Map<String, File> executablesMap,
+            String forceExecPrefix) {
         super(
                 tbf.create(Subject.Builder.class, Subject.class)
                         .iri("http://" + Hostnames.LOCAL)
@@ -79,20 +80,43 @@ public class ExecAgent extends AbstractAgent {
                         .comment("Executes Commands on " + Hostnames.LOCAL)
                         .build(),
                 pbx);
+        this.runner = runner;
+        this.executablesMap = ImmutableMap.copyOf(executablesMap); // skipcq: JAVA-E1086
+        // skipcq: JAVA-E1086
+        this.executables = ImmutableList.copyOf(executablesMap.keySet().stream().sorted().toList());
+        this.forceExecPrefix = forceExecPrefix;
+    }
+
+    public ExecAgent(Switchboard pbx) {
+        this(pbx, new VorburgerExecRunner(), ExecPATH.scan(), "$");
     }
 
     @Override
     public void accept(Message message) {
         // /commands is inspired e.g. by Fish's "command --all",
         //   see https://fishshell.com/docs/current/cmds/command.html
-        handle(message, "/commands", () -> reply(message, String.join("\n", commands)));
+        if (handle(message, "/commands", () -> reply(message, String.join("\n", executables))))
+            return;
 
-        var executable = executable(message.content());
-        var executableFile = executables.get(executable);
+        // See https://github.com/enola-dev/enola/issues/1354
+        var potentialCommand = message.content();
+        if (potentialCommand.startsWith(forceExecPrefix)
+                && potentialCommand.length() > forceExecPrefix.length()) {
+            execute(potentialCommand.substring(1), false, message);
+            return;
+        }
+
+        execute(potentialCommand, true, message);
+    }
+
+    private void execute(String potentialCommand, boolean checkCommandWords, Message replyTo) {
+        var executable = executable(potentialCommand);
+        if (checkCommandWords && commandWords.contains(executable)) return;
+        var executableFile = executablesMap.get(executable);
         if (executableFile == null) return;
 
-        // Replace first part of command line with executable file path
-        var commandArray = message.content().split(" ");
+        // Replace first part of potentialCommand line with executable file path
+        var commandArray = potentialCommand.split("\\s+");
         var commandList = new ArrayList<String>(commandArray.length);
         commandList.addAll(List.of(commandArray));
         commandList.set(0, executableFile.getAbsolutePath());
@@ -110,13 +134,13 @@ public class ExecAgent extends AbstractAgent {
             LOG.debug("Executed: {} => {}", executableFile.getAbsolutePath(), exitCode);
             var output = outputBuilder.toString();
             if (!output.isEmpty()) {
-                reply(message, output);
+                reply(replyTo, output);
             }
 
         } catch (Exception e) {
             LOG.warn("Failed to execute: {}", commandList, e);
             reply(
-                    message,
+                    replyTo,
                     "Failed to execute: " + executable + "; due to " + e.getMessage() + "\n");
         }
     }
@@ -128,5 +152,16 @@ public class ExecAgent extends AbstractAgent {
         } else {
             return messageContent.substring(0, idx);
         }
+    }
+
+    // See https://github.com/enola-dev/enola/issues/1354
+    private Set<String> loadCommandWords() {
+        var builder = ImmutableSet.<String>builder();
+        try {
+            new ClasspathResource("command-words.txt").charSource().forEachLine(builder::add);
+        } catch (IOException e) {
+            throw new IllegalStateException("Processing /command-words.txt failed?!", e);
+        }
+        return builder.build();
     }
 }

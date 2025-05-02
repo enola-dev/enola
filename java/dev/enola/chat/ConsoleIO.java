@@ -22,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.Console;
 
 /** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
-class ConsoleIO implements IO {
+public class ConsoleIO implements IO {
     private final @Nullable Console console = System.console();
 
     @Override

@@ -29,6 +29,7 @@ import java.nio.file.Path;
  *   <li><a
  *       href="https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html">Specification</a>
  *   <li><a href="https://wiki.archlinux.org/title/XDG_Base_Directory">Arch Linux Wiki</a>
+ *   <li<a href="https://github.com/harawata/appdirs">harawata/appdirs</a>
  *   <li><a href="https://github.com/dirs-dev/directories-jvm">dirs-dev/directories-jvm</a>
  *   <li><a href="https://dirs.dev">dirs.dev</a>
  *   <li><a href="https://github.com/omajid/xdg-java">omajid/xdg-java</a>
@@ -37,6 +38,9 @@ import java.nio.file.Path;
  */
 public final class FreedesktopDirectories {
     // TODO Rename FreedesktopDirectories to something like StandardPaths or so ?
+
+    // TODO Use https://github.com/harawata/appdirs instead of
+    // https://codeberg.org/dirs/directories-jvm
 
     public static final File CACHE_FILE =
             new File(ProjectDirectories.from("dev", "Enola", "Enola").cacheDir);
