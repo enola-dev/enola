@@ -32,7 +32,7 @@ public class RunnerTest {
 
     void check(String command, boolean expectNonZeroExitCode, String expectedOutput)
             throws Exception {
-        var sb = new StringBuffer();
+        var sb = new StringBuilder();
         var actualExitCode = runner.bash(expectNonZeroExitCode, of("."), command, sb, ofSeconds(3));
         Truth.assertThat(sb.toString()).contains(expectedOutput);
         assertEquals(expectNonZeroExitCode, actualExitCode != 0);

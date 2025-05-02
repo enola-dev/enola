@@ -49,8 +49,8 @@ public class ExecMD {
     }
 
     Pair process(Path dir, String markdown) throws MarkdownProcessingException, IOException {
-        StringBuffer outScript = new StringBuffer();
-        StringBuffer outMD = new StringBuffer();
+        var outScript = new StringBuilder();
+        var outMD = new StringBuilder();
         var markdownLines = markdown.lines().collect(Collectors.toList());
         var iterator = markdownLines.iterator();
         while (iterator.hasNext()) {
@@ -68,7 +68,7 @@ public class ExecMD {
             // outMD.append(line);
             outMD.append("```bash");
             outMD.append(LS);
-            StringBuffer command = new StringBuffer();
+            var command = new StringBuilder();
             var commandLine = iterator.next().trim();
             if (!commandLine.startsWith("$ ")) {
                 throw new MarkdownProcessingException(

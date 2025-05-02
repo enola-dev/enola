@@ -22,7 +22,7 @@ public interface OptionalBiConverterIntoAppendable<I>
 
     @Override
     default String convertTo(I input) throws ConversionException {
-        StringBuffer sb = new StringBuffer();
+        var sb = new StringBuilder();
         convertIntoOrThrow(input, sb);
         return sb.toString();
     }
