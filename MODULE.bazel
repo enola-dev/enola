@@ -85,8 +85,8 @@ enola_maven.install(
         # dependencies are required.  This was inspired by the grpc-java examples at
         # https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L24
         # which should be updated when this will be refined.
-        "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.121.1",
-        "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.121.1",
+        "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.121.2",
+        "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.121.2",
         "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
