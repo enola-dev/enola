@@ -27,7 +27,7 @@ Enola’s Chat is _The Shell for the 2030s+_ and the _“last Chat you'll ever n
 ## Usage
 
 ```bash cd ../.././..
-$ ./enola chat <docs/use/chat/demo.input
+$ HOSTNAME=demo ./enola chat <docs/use/chat/demo.input
 ...
 ```
 
