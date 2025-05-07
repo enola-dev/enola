@@ -59,6 +59,7 @@ public class JLineIO implements IO, Closeable {
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
+                        // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)

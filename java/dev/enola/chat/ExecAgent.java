@@ -66,7 +66,7 @@ public class ExecAgent extends AbstractAgent {
      * @param pbx the PBX
      * @param runner the exec runner
      * @param executablesMap the executables on PATH
-     * @param forceExecPrefix the prefix to force execution of a command, e.g. "$" or "!", or
+     * @param forceExecPrefix the prefix to force execution of a command, e.g. "$ " or "!", or
      *     whatever. (Note that <a href="https://github.com/jline/jline3/issues/1218">JLine handles
      *     "!" as history expansion, so that needs to disabled</a>.)
      */
@@ -90,7 +90,7 @@ public class ExecAgent extends AbstractAgent {
     }
 
     public ExecAgent(Switchboard pbx) {
-        this(pbx, new VorburgerExecRunner(), ExecPATH.scan(), "$");
+        this(pbx, new VorburgerExecRunner(), ExecPATH.scan(), "$ ");
     }
 
     @Override
