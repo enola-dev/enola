@@ -46,6 +46,8 @@ public class ExecAgent extends AbstractAgent {
 
     // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
 
+    // TODO Support "who am i"; see https://github.com/vorburger/ch.vorburger.exec/issues/269
+
     private static final Logger LOG = LoggerFactory.getLogger(ExecAgent.class);
 
     private final Runner runner;

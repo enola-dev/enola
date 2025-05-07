@@ -17,6 +17,8 @@
  */
 package dev.enola.chat.jline;
 
+import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
+
 import dev.enola.chat.IO;
 
 import org.jline.reader.EndOfFileException;
@@ -41,17 +43,27 @@ public class JLineIO implements IO, Closeable {
     private final LineReader lineReader;
 
     public JLineIO() throws IOException {
-        this(TerminalBuilder.terminal());
+        this(TerminalBuilder.terminal(), true);
     }
 
-    public JLineIO(Terminal terminal) throws IOException {
-        this.terminal = terminal;
+    /**
+     * Constructor.
+     *
+     * @param terminal the Terminal
+     * @param disableEventExpansion whether or not to disable special handling of magic history
+     *     expansion commands like "!" and "!!" and "!n" and "!-n" and "!string" and
+     *     "^string1^string2".
+     * @throws IOException
+     */
+    public JLineIO(Terminal terminal, boolean disableEventExpansion) throws IOException {
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
+                        .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
                         .build();
+        this.terminal = terminal;
     }
 
     @Override
