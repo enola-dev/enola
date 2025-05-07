@@ -92,6 +92,7 @@ With different _types_ of generic _objects:_
 * [Anytype](https://anytype.io) #opensource #p2p
 * [Notion](https://www.notion.com) #cloud #saas #commercial
 * [Tana](https://tana.inc) #commercial #start-with-creditcard #ai
+* [Treehouse](https://treehouse.sh) #opensource #framework
 
 With _Notes_ primarily:
 

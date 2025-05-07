@@ -74,6 +74,14 @@ public class ExecAgentTest {
         check("$who am i", "/usr/bin/who", "am", "i");
     }
 
+    @Test
+    public void sosNotOnPathButOnExclusionList() {
+        // The word "sos" IS in command-words.txt (because of https://github.com/sosreport/sos),
+        // but if it's not installed (actually available on the PATH) then it should obviously just
+        // be ignored as a command:
+        check("sos help me");
+    }
+
     private void check(String givenCommandLine, String... expectedCommandArray) {
         pbx.watch(agent);
         pbx.post(new MessageImpl.Builder().content(givenCommandLine).to(testRoom));

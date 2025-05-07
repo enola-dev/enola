@@ -39,7 +39,7 @@ Note how the last two "messages" in the example chat above were [`whoami`](https
 
 They were both executed as commands on the local system. (Whereas the `/whoami` with slash was not a system executable but a built-in command.)
 
-In order to avoid confusion with certain terms which are both typically valid UNIX command names but also valid natural language words which you may well start a prompt to the LLM, a hard-coded list excludes them from being executed as commands. Prefixing input with `$` will force the input to be interpreted as a command to be executed instead.
+In order to avoid confusion with certain terms which are both typically valid UNIX command names but also valid natural language words which you may well start a prompt to the LLM, a hard-coded list excludes them from being executed as commands. Prefixing input with $ followed by a space (to avoid potential future confusion with environment variables) will force the input to be interpreted as a command to be executed instead (e.g. `$ uptime`).
 
 ## AI
 
