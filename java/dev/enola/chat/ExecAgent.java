@@ -44,6 +44,9 @@ public class ExecAgent extends AbstractAgent {
 
     // TODO Support  ; && | > < https://github.com/enola-dev/enola/issues/1356
 
+    // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
+    //   see https://github.com/enola-dev/enola/issues/1368
+
     // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
 
     // TODO Support "who am i"; see https://github.com/vorburger/ch.vorburger.exec/issues/269
@@ -104,7 +107,7 @@ public class ExecAgent extends AbstractAgent {
         var potentialCommand = message.content();
         if (potentialCommand.startsWith(forceExecPrefix)
                 && potentialCommand.length() > forceExecPrefix.length()) {
-            execute(potentialCommand.substring(1), false, message);
+            execute(potentialCommand.substring(forceExecPrefix.length()), false, message);
             return;
         }
 

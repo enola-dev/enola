@@ -42,7 +42,7 @@ public class ExecAgentTest {
                     pbx,
                     testRunner,
                     Map.of("ls", new File("/usr/bin/ls"), "who", new File("/usr/bin/who")),
-                    "$");
+                    "$ ");
 
     @Test
     public void ls() {
@@ -71,7 +71,7 @@ public class ExecAgentTest {
 
     @Test
     public void whoWithExclamationMarkPrefix() {
-        check("$who am i", "/usr/bin/who", "am", "i");
+        check("$ who am i", "/usr/bin/who", "am", "i");
     }
 
     @Test
