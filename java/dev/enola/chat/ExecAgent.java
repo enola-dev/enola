@@ -38,9 +38,6 @@ import java.util.*;
 
 public class ExecAgent extends AbstractAgent {
 
-    // TODO Support changing working directory with a built-in "cd" command
-    //   (which must be handled BEFORE /usr/bin/cd is invoked by setting Path cwd)
-
     // TODO Offer tab completion of all available commands in Chat
 
     // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
@@ -57,7 +54,7 @@ public class ExecAgent extends AbstractAgent {
     private final List<String> executables;
     private final Set<String> commandWords = loadCommandWords();
 
-    private final Path cwd = Path.of(".");
+    private Path cwd = Path.of(".");
     private final String forceExecPrefix;
 
     /**
@@ -103,6 +100,8 @@ public class ExecAgent extends AbstractAgent {
         if (handle(message, "/commands", () -> reply(message, String.join("\n", executables))))
             return;
 
+        if (handle(message, "cd", this::cd)) return;
+
         // See https://github.com/enola-dev/enola/issues/1354
         var potentialCommand = message.content();
         if (potentialCommand.startsWith(forceExecPrefix)
@@ -112,6 +111,10 @@ public class ExecAgent extends AbstractAgent {
         }
 
         execute(potentialCommand, true, message);
+    }
+
+    private void cd(String path) {
+        cwd = cwd.resolve(path.trim());
     }
 
     private void execute(String potentialCommand, boolean checkCommandWords, Message replyTo) {

@@ -24,7 +24,6 @@ cal
 cancel
 cargo
 cat
-cd
 chat
 check
 clear
@@ -53,7 +52,6 @@ dump
 echo
 edit
 eject
-env
 ether
 expand
 factor
