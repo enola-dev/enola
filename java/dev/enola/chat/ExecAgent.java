@@ -38,11 +38,12 @@ import java.util.*;
 
 public class ExecAgent extends AbstractAgent {
 
+    // TODO Support changing working directory with a built-in "cd" command
+    //   (which must be handled BEFORE /usr/bin/cd is invoked by setting Path cwd)
+
     // TODO Offer tab completion of all available commands in Chat
 
     // TODO Support exec programs using / and ./ and ../ prefixes
-
-    // TODO Support  ; && | > < https://github.com/enola-dev/enola/issues/1356
 
     // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
     //   see https://github.com/enola-dev/enola/issues/1368
@@ -58,8 +59,6 @@ public class ExecAgent extends AbstractAgent {
     private final List<String> executables;
     private final Set<String> commandWords = loadCommandWords();
 
-    // TODO Support changing working directory with a built-in "cd" command
-    //   (which must be handled BEFORE /usr/bin/cd is invoked)
     private final Path cwd = Path.of(".");
     private final String forceExecPrefix;
 
@@ -118,13 +117,10 @@ public class ExecAgent extends AbstractAgent {
         var executable = executable(potentialCommand);
         if (checkCommandWords && commandWords.contains(executable)) return;
         var executableFile = executablesMap.get(executable);
-        if (executableFile == null) return;
-
-        // Replace first part of potentialCommand line with executable file path
-        var commandArray = potentialCommand.split("\\s+");
-        var commandList = new ArrayList<String>(commandArray.length);
-        commandList.addAll(List.of(commandArray));
-        commandList.set(0, executableFile.getAbsolutePath());
+        if (executableFile == null) {
+            LOG.info("Unknown executable: {}", executable);
+            return;
+        }
 
         // TODO Allow running without timeout?
         var timeout = Duration.ofDays(1);
@@ -135,7 +131,7 @@ public class ExecAgent extends AbstractAgent {
             // TODO Feedback exitCode also to Chat (somewhow; but how?!)
             //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
             //   in the NEXT prompt... how how to "generalize" this here?
-            var exitCode = runner.exec(false, cwd, commandList, outputBuilder, timeout);
+            var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);
             LOG.debug("Executed: {} => {}", executableFile.getAbsolutePath(), exitCode);
             var output = outputBuilder.toString();
             if (!output.isEmpty()) {
@@ -143,7 +139,7 @@ public class ExecAgent extends AbstractAgent {
             }
 
         } catch (Exception e) {
-            LOG.warn("Failed to execute: {}", commandList, e);
+            LOG.warn("Failed to execute: {}", potentialCommand, e);
             reply(
                     replyTo,
                     "Failed to execute: " + executable + "; due to " + e.getMessage() + "\n");
@@ -151,12 +147,40 @@ public class ExecAgent extends AbstractAgent {
     }
 
     private String executable(String messageContent) {
+        String command;
         var idx = messageContent.indexOf(' ');
         if (idx == -1) {
-            return messageContent;
+            command = messageContent.trim();
         } else {
-            return messageContent.substring(0, idx);
+            command = messageContent.substring(0, idx).trim();
         }
+
+        idx = command.indexOf(';');
+        if (idx > -1) {
+            command = command.substring(0, idx).trim();
+        }
+
+        idx = command.indexOf('|');
+        if (idx > -1) {
+            command = command.substring(0, idx).trim();
+        }
+
+        idx = command.indexOf("&&");
+        if (idx > -1) {
+            command = command.substring(0, idx + 1).trim();
+        }
+
+        idx = command.indexOf("<");
+        if (idx > -1) {
+            command = command.substring(0, idx).trim();
+        }
+
+        idx = command.indexOf(">");
+        if (idx > -1) {
+            command = command.substring(0, idx).trim();
+        }
+
+        return command;
     }
 
     // See https://github.com/enola-dev/enola/issues/1354

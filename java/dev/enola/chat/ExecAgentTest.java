@@ -46,22 +46,22 @@ public class ExecAgentTest {
 
     @Test
     public void ls() {
-        check("ls -l", "/usr/bin/ls", "-l");
+        check("ls -l", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
     public void spaceLs() {
-        check(" ls -l", "/usr/bin/ls", "-l");
+        check(" ls -l", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
     public void spaceLsSpace() {
-        check(" ls -l ", "/usr/bin/ls", "-l");
+        check(" ls -l ", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
     public void spaceLsSpacesArgSpace() {
-        check(" ls  -lh", "/usr/bin/ls", "-lh");
+        check(" ls  -lh", "/usr/bin/env", "bash", "-c", "ls  -lh");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ExecAgentTest {
 
     @Test
     public void whoWithExclamationMarkPrefix() {
-        check("$ who am i", "/usr/bin/who", "am", "i");
+        check("$ who am i", "/usr/bin/env", "bash", "-c", "who am i");
     }
 
     @Test

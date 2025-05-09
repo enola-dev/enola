@@ -34,10 +34,12 @@ import java.io.IOException;
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
 
-    // TODO https://github.com/jline/jline3/wiki/History
-    // TODO Regularly do lineReader.getHistory().save(); // NOT .write(path, true);
+    // TODO Ctrl-Backspace delete word backwards
 
     // TODO Keybindings; see https://github.com/jline/jline3/issues/398
+
+    // TODO https://github.com/jline/jline3/wiki/History
+    // TODO Regularly do lineReader.getHistory().save(); // NOT .write(path, true);
 
     private final Terminal terminal;
     private final LineReader lineReader;
