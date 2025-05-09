@@ -43,8 +43,6 @@ public class ExecAgent extends AbstractAgent {
 
     // TODO Offer tab completion of all available commands in Chat
 
-    // TODO Support exec programs using / and ./ and ../ prefixes
-
     // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
     //   see https://github.com/enola-dev/enola/issues/1368
 
@@ -115,11 +113,15 @@ public class ExecAgent extends AbstractAgent {
 
     private void execute(String potentialCommand, boolean checkCommandWords, Message replyTo) {
         var executable = executable(potentialCommand);
-        if (checkCommandWords && commandWords.contains(executable)) return;
-        var executableFile = executablesMap.get(executable);
-        if (executableFile == null) {
-            LOG.info("Unknown executable: {}", executable);
-            return;
+        if (!executable.startsWith("/")
+                && !executable.startsWith("./")
+                && !executable.startsWith("../")) {
+            if (checkCommandWords && commandWords.contains(executable)) return;
+            var executableFile = executablesMap.get(executable);
+            if (executableFile == null) {
+                LOG.info("Unknown executable: {}", executable);
+                return;
+            }
         }
 
         // TODO Allow running without timeout?
@@ -132,7 +134,7 @@ public class ExecAgent extends AbstractAgent {
             //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
             //   in the NEXT prompt... how how to "generalize" this here?
             var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);
-            LOG.debug("Executed: {} => {}", executableFile.getAbsolutePath(), exitCode);
+            LOG.debug("Executed: {} => {}", potentialCommand, exitCode);
             var output = outputBuilder.toString();
             if (!output.isEmpty()) {
                 reply(replyTo, output);
