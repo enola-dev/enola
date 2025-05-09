@@ -172,12 +172,12 @@ public class ExecAgent extends AbstractAgent {
             command = command.substring(0, idx + 1).trim();
         }
 
-        idx = command.indexOf("<");
+        idx = command.indexOf('<');
         if (idx > -1) {
             command = command.substring(0, idx).trim();
         }
 
-        idx = command.indexOf(">");
+        idx = command.indexOf('>');
         if (idx > -1) {
             command = command.substring(0, idx).trim();
         }
