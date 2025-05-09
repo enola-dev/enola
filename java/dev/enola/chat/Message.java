@@ -41,8 +41,11 @@ public interface Message { // TODO extends Thing
 
     // TODO Add Locale language(), by introducing a LangString-like type with format datatype?
 
+    // TODO Attachments!! Useful both for Emails, as well as for LLMs...
+    // TODO Instead of attachments, add "Parts", like a Multipart MIME message - and in A2A!
     String content();
 
+    // TODO Replace enum Format with MediaType
     Format format();
 
     enum Format {
@@ -72,10 +75,6 @@ public interface Message { // TODO extends Thing
          */
         ANSI
     }
-
-    // TODO Locale language, like in LangString ?
-
-    // TODO Attachments!! Useful both for Emails, as well as for LLMs...
 
     // TODO Signature by from Subject!
 

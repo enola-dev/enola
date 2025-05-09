@@ -102,6 +102,12 @@ It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/baze
 
 We recommend using VSC.
 
+## Debug
+
+    bazelisk run //java/dev/enola/chat:demo  -- --debug
+    (...)
+    Listening for transport dt_socket at address: 5005
+
 ## Other
 
 Some [people prefer coding using 🙊](https://en.wikipedia.org/wiki/Editor_war) `hexedit` or one its derivatives 😈 such as `vi` or `emacs`.

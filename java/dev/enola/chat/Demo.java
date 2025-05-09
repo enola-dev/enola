@@ -33,7 +33,10 @@ public class Demo {
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
 
     public static void main(String[] args) {
-        chat(new ConsoleIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local(), true);
+        // NB: We're intentionally using SystemInOutIO instead of ConsoleIO (or even JLineIO, like
+        // in ChatCommand) here, because System.console() == null when we run this under a Debugger
+        // in some IDEs!
+        chat(new SystemInOutIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local(), true);
     }
 
     public static void chat(IO io, Subject user, boolean allowLocalExec) {
