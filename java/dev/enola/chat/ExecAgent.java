@@ -95,6 +95,9 @@ public class ExecAgent extends AbstractAgent {
 
     @Override
     public void accept(Message message) {
+        // Skip processing self-replies from itself; this might need some more thought?
+        if (message.from().iri().equals(subject().iri())) return;
+
         // /commands is inspired e.g. by Fish's "command --all",
         //   see https://fishshell.com/docs/current/cmds/command.html
         if (handle(message, "/commands", () -> reply(message, String.join("\n", executables))))
