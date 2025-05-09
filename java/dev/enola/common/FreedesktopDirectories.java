@@ -39,6 +39,8 @@ import java.nio.file.Path;
 public final class FreedesktopDirectories {
     // TODO Rename FreedesktopDirectories to something like StandardPaths or so ?
 
+    // TODO Do not hard-code app name, but leave configurable by "Product"
+
     // TODO Use https://github.com/harawata/appdirs instead of
     // https://codeberg.org/dirs/directories-jvm
 
@@ -47,6 +49,9 @@ public final class FreedesktopDirectories {
 
     public static final Path HOSTKEY_PATH =
             Path.of(ProjectDirectories.from("dev", "Enola", "Enola").configDir, "sshd-hostkey");
+
+    public static final Path HISTORY =
+            Path.of(ProjectDirectories.from("dev", "Enola", "Enola").dataLocalDir, "history");
 
     private FreedesktopDirectories() {}
 }

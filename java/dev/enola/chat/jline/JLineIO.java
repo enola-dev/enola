@@ -20,9 +20,11 @@ package dev.enola.chat.jline;
 import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 
 import dev.enola.chat.IO;
+import dev.enola.common.FreedesktopDirectories;
 
 import org.jline.keymap.KeyMap;
 import org.jline.reader.*;
+import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jspecify.annotations.Nullable;
@@ -65,7 +67,12 @@ public class JLineIO implements IO, Closeable {
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
+
+                        .history(new DefaultHistory())
+                        .variable(LineReader.HISTORY_FILE, FreedesktopDirectories.HISTORY)
+                        .option(LineReader.Option.HISTORY_BEEP, false)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
+
                         .build();
 
         KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
@@ -98,5 +105,6 @@ public class JLineIO implements IO, Closeable {
     @Override
     public void close() throws IOException {
         terminal.close();
+        lineReader.getHistory().save();
     }
 }
