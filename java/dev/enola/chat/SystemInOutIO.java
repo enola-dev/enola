@@ -26,11 +26,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-/** SystemInOutIO is an {@link IO} implementation based on {@link System#in}. */
-class SystemInOutIO implements IO {
+/**
+ * SystemInOutIO is an {@link IO} implementation based on {@link System#in} and {@link System#out}.
+ */
+public class SystemInOutIO implements IO {
     private static final Logger LOG = LoggerFactory.getLogger(SystemInOutIO.class);
 
-    // TODO Charset should not be hard-coded to defaultCharset, but ... from Context?
+    // TODO Charset should not be hard-coded to defaultCharset, but ... from Context? Console?!
 
     private final BufferedReader reader =
             new BufferedReader(new InputStreamReader(System.in, Charset.defaultCharset()));

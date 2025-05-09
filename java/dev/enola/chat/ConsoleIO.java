@@ -23,12 +23,16 @@ import java.io.Console;
 
 /** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
 public class ConsoleIO implements IO {
-    private final @Nullable Console console = System.console();
+    private final Console console;
+
+    public ConsoleIO() {
+        if (System.console() == null)
+            throw new IllegalStateException("Use another implementation of interface IO");
+        console = System.console();
+    }
 
     @Override
     public @Nullable String readLine() {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
         return console.readLine();
     }
 
@@ -40,8 +44,6 @@ public class ConsoleIO implements IO {
 
     @Override
     public void printf(String format, Object... args) {
-        if (console == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
         console.printf(format, args);
     }
 }
