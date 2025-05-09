@@ -27,6 +27,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/chat",
+        "//java/dev/enola/common",
         "//java/dev/enola/identity",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
