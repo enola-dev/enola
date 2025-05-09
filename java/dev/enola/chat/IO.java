@@ -27,6 +27,8 @@ public interface IO {
 
     // TODO showImage() ??
 
+    // TODO Merge readLine() as readLine(String prompt) with prompt="" ?
+
     @Nullable String readLine();
 
     @Nullable String readLine(String prompt);
