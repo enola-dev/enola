@@ -22,8 +22,6 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 
-import org.jspecify.annotations.Nullable;
-
 import java.util.function.Consumer;
 
 public abstract class AbstractAgent implements Agent {
@@ -52,7 +50,7 @@ public abstract class AbstractAgent implements Agent {
         pbx.post(reply);
     }
 
-    protected boolean handle(Message message, String prefix, Consumer<@Nullable String> consumer) {
+    protected boolean handle(Message message, String prefix, Consumer<String> consumer) {
         var content = message.content();
         if (!content.startsWith(prefix)) return false;
 
