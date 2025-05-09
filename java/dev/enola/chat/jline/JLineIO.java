@@ -83,7 +83,7 @@ public class JLineIO implements IO, Closeable {
     public @Nullable String readLine() {
         try {
             return lineReader.readLine();
-        } catch (EndOfFileException e) {
+        } catch (EndOfFileException | UserInterruptException e) {
             return null;
         }
     }
@@ -92,7 +92,7 @@ public class JLineIO implements IO, Closeable {
     public @Nullable String readLine(String prompt) {
         try {
             return lineReader.readLine(prompt);
-        } catch (EndOfFileException e) {
+        } catch (EndOfFileException | UserInterruptException e) {
             return null;
         }
     }
@@ -105,6 +105,10 @@ public class JLineIO implements IO, Closeable {
     @Override
     public void close() throws IOException {
         terminal.close();
+
+        // NB: JLine already saves History in a background thread; this is just to save the history
+        // file in case of a close() call before that background thread had another chance to save
+        // it.
         lineReader.getHistory().save();
     }
 }
