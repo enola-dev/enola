@@ -21,9 +21,8 @@ import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 
 import dev.enola.chat.IO;
 
-import org.jline.reader.EndOfFileException;
-import org.jline.reader.LineReader;
-import org.jline.reader.LineReaderBuilder;
+import org.jline.keymap.KeyMap;
+import org.jline.reader.*;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jspecify.annotations.Nullable;
@@ -34,7 +33,7 @@ import java.io.IOException;
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
 
-    // TODO Ctrl-Backspace delete word backwards
+    // TODO Make current hard-coded key bindings end-user configurable
 
     // TODO Keybindings; see https://github.com/jline/jline3/issues/398
 
@@ -58,6 +57,8 @@ public class JLineIO implements IO, Closeable {
      * @throws IOException
      */
     public JLineIO(Terminal terminal, boolean disableEventExpansion) throws IOException {
+        this.terminal = terminal;
+
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
@@ -66,7 +67,9 @@ public class JLineIO implements IO, Closeable {
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
                         .build();
-        this.terminal = terminal;
+
+        KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
+        map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
     }
 
     @Override
