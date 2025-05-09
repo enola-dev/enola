@@ -17,8 +17,8 @@
  */
 package dev.enola.cli;
 
-import dev.enola.chat.DelegatingIO;
 import dev.enola.chat.Demo;
+import dev.enola.chat.SystemInOutIO;
 import dev.enola.chat.jline.JLineIO;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subjects;
@@ -39,11 +39,18 @@ public class ChatCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        try (var jLineIO = new JLineIO();
-                var ctx = TLC.open()) {
+        try (var ctx = TLC.open()) {
             var tbf = new ProxyTBF(ImmutableThing.FACTORY);
+            var subject = new Subjects(tbf).local();
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
-            Demo.chat(new DelegatingIO(jLineIO), new Subjects(tbf).local(), true);
+            if (System.console() != null) {
+                try (var io = new JLineIO()) {
+                    Demo.chat(io, subject, true);
+                }
+            } else {
+                var io = new SystemInOutIO();
+                Demo.chat(io, subject, true);
+            }
         }
         return 0;
     }
