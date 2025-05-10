@@ -26,6 +26,7 @@ import org.jline.reader.*;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.widget.AutopairWidgets;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
@@ -78,7 +79,11 @@ public class JLineIO implements IO, Closeable {
                         .option(LineReader.Option.HISTORY_BEEP, false)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
 
+                        // https://github.com/jline/jline3/wiki/Auto-Indentation-and-Pairing#auto-indentation ?
+
                         .build();
+
+        new AutopairWidgets(lineReader, true).enable();
 
         // KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
         // map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
