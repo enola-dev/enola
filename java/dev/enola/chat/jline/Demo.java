@@ -17,6 +17,7 @@
  */
 package dev.enola.chat.jline;
 
+import org.jline.reader.impl.DefaultParser;
 import org.jline.terminal.TerminalBuilder;
 
 /** Demo example main() of JLineIO; without any Chat, Shell, LLM, etc. */
@@ -26,7 +27,14 @@ public class Demo {
         try (var terminal = TerminalBuilder.terminal()) {
             var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
             var tailTips = consumer.commandDescriptions();
-            try (var jLineIO = new JLineIO(terminal, consumer.completer(), tailTips, true)) {
+            try (var jLineIO =
+                    new JLineIO(
+                            terminal,
+                            new DefaultParser(),
+                            consumer.completer(),
+                            tailTips,
+                            null,
+                            true)) {
                 consumer.lineReader(jLineIO.lineReader());
 
                 jLineIO.printf("hello, world\n");

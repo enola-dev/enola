@@ -122,6 +122,7 @@ enola_maven.install(
         "ch.vorburger.exec:exec:3.3.1",
         "com.github.java-json-tools:uri-template:0.10",
         "info.picocli:picocli:4.7.7",
+        "info.picocli:picocli-shell-jline3:4.7.7",
         "info.picocli:picocli-codegen:4.7.6",
         "org.snakeyaml:snakeyaml-engine:2.9",
         "org.yaml:snakeyaml:2.4",

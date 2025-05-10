@@ -31,9 +31,14 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ThingIntoAppendableConverter;
 import dev.enola.thing.java.ProxyTBF;
 
+import org.jline.console.SystemRegistry;
+import org.jline.console.impl.SystemRegistryImpl;
+import org.jline.reader.Parser;
+import org.jline.reader.impl.DefaultParser;
 import org.jline.terminal.TerminalBuilder;
 
 import picocli.CommandLine;
+import picocli.shell.jline3.PicocliCommands;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
@@ -43,6 +48,8 @@ import java.util.concurrent.Callable;
         description = "Chat with Enola, LLMs, Bots, Tools, Agents, and more.")
 public class ChatCommand implements Callable<Integer> {
 
+    @CommandLine.Spec CommandLine.Model.CommandSpec spec;
+
     @Override
     public Integer call() throws IOException {
         try (var ctx = TLC.open()) {
@@ -50,14 +57,29 @@ public class ChatCommand implements Callable<Integer> {
             var subject = new Subjects(tbf).local();
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
             if (System.console() != null) {
+                Parser parser = new DefaultParser();
                 try (var terminal = TerminalBuilder.terminal()) {
-                    var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
+                    var picocliCommands = new PicocliCommands(spec.commandLine().getParent());
+                    var builtinCmdsProcessor = new JLineBuiltinShellCommandsProcessor(terminal);
+                    var cwdSupplier = builtinCmdsProcessor.cwdSupplier();
+                    SystemRegistry systemRegistry =
+                            new SystemRegistryImpl(parser, terminal, cwdSupplier, null);
+                    systemRegistry.setCommandRegistries(
+                            builtinCmdsProcessor.commandRegistry(), picocliCommands);
+
                     try (var io =
-                            new JLineIO(terminal, consumer.completer(), ImmutableMap.of(), true)) {
-                        consumer.lineReader(io.lineReader());
-                        var chat = new Prompter();
-                        chat.addAgent(new JLineAgent(chat.getSwitchboard(), consumer));
-                        chat.chatLoop(io, subject, true);
+                            new JLineIO(
+                                    terminal,
+                                    parser,
+                                    systemRegistry.completer(),
+                                    ImmutableMap.of(),
+                                    systemRegistry::commandDescription,
+                                    true)) {
+                        builtinCmdsProcessor.lineReader(io.lineReader());
+                        var prompter = new Prompter();
+                        prompter.addAgent(
+                                new JLineAgent(prompter.getSwitchboard(), builtinCmdsProcessor));
+                        prompter.chatLoop(io, subject, true);
                     }
                 }
             } else {
