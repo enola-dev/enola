@@ -34,12 +34,18 @@ import java.io.IOException;
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
 
-    // TODO Make current hard-coded key bindings end-user configurable
+    // TODO Enable "print above" for for progressive LLM response completion
+    //   see https://jline.org/docs/advanced/interactive-features
+    //   and update https://github.com/enola-dev/enola/issues/1377
 
-    // TODO Keybindings; see https://github.com/jline/jline3/issues/398
+    // TODO Enable Tab completion; see https://github.com/jline/jline3/issues/397
 
-    // TODO https://github.com/jline/jline3/wiki/History
-    // TODO Regularly do lineReader.getHistory().save(); // NOT .write(path, true);
+    // TODO Enable configuring syntax highlighting; e.g. for @ and / and filenames
+    //   see https://jline.org/docs/advanced/syntax-highlighting
+
+    // TODO End-user configurable keybindings; see https://github.com/jline/jline3/issues/398
+
+    // TODO Mouse support; see https://github.com/jline/jline3/issues/1254
 
     private final Terminal terminal;
     private final LineReader lineReader;
