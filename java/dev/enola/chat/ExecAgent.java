@@ -43,6 +43,8 @@ public class ExecAgent extends AbstractAgent {
     // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
     //   see https://github.com/enola-dev/enola/issues/1368
 
+    // TODO cd with argument should CWD to $HOME
+
     // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
 
     // TODO Support "who am i"; see https://github.com/vorburger/ch.vorburger.exec/issues/269

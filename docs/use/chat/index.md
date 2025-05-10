@@ -31,8 +31,6 @@ $ HOSTNAME=demo ./enola chat <docs/use/chat/demo.input
 ...
 ```
 
-[See Help doc](../help/index.md#chat) for all options.
-
 ## Exec
 
 Note how the last two "messages" in the example chat above were [`whoami`](https://en.wikipedia.org/wiki/Whoami) and [`pwd`](https://en.wikipedia.org/wiki/Pwd).
@@ -70,3 +68,11 @@ This _Chat_ feature is [also available via an SSH server](../server/index.md#ssh
 [Exec](#exec) is only enabled in (local) `enola chat`, but disabled over SSH.
 
 `/whoami` includes the public key of the user connected over SSH.
+
+## Configuration
+
+Your [`~/.inputrc` and `/etc/inputrc`](https://www.linuxfromscratch.org/lfs/view/12.3/chapter09/inputrc.html) are loaded on startup. [For example](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/032a76d83ec26a79b84dc44e0e7b8a52132812ab/dotfiles/.inputrc#L36), to bind `Ctrl-Backspace`, do `echo '"\C-h": backward-kill-word' >> ~/.inputrc`.
+
+History is persisted e.g. in `~/.local/share/enola/history`.
+
+[See Help doc](../help/index.md#chat) for all other options.
