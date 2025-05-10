@@ -27,6 +27,7 @@ import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.widget.AutopairWidgets;
+import org.jline.widget.AutosuggestionWidgets;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
@@ -84,6 +85,8 @@ public class JLineIO implements IO, Closeable {
                         .build();
 
         new AutopairWidgets(lineReader, true).enable();
+
+        new AutosuggestionWidgets(lineReader).enable();
 
         // KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
         // map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
