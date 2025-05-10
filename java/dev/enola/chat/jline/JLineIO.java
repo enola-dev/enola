@@ -19,9 +19,12 @@ package dev.enola.chat.jline;
 
 import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
+import org.jline.console.CmdDesc;
 import org.jline.reader.*;
 import org.jline.reader.impl.DefaultParser;
 import org.jline.reader.impl.completer.NullCompleter;
@@ -30,6 +33,7 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.widget.AutopairWidgets;
 import org.jline.widget.AutosuggestionWidgets;
+import org.jline.widget.TailTipWidgets;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
@@ -42,10 +46,10 @@ public class JLineIO implements IO, Closeable {
     //   see https://jline.org/docs/advanced/interactive-features
     //   and update https://github.com/enola-dev/enola/issues/1377
 
-    // TODO Enable TailTipWidgets
-
     // TODO Enable configuring syntax highlighting; e.g. for @ and / and filenames
     //   see https://jline.org/docs/advanced/syntax-highlighting
+
+    // TODO TailTipWidgets "qqqqqqqqqqq" https://github.com/jline/jline3/issues/1259
 
     // TODO End-user configurable keybindings; see https://github.com/jline/jline3/issues/398
 
@@ -57,7 +61,7 @@ public class JLineIO implements IO, Closeable {
     private final LineReader lineReader;
 
     public JLineIO() throws IOException {
-        this(TerminalBuilder.terminal(), NullCompleter.INSTANCE, true);
+        this(TerminalBuilder.terminal(), NullCompleter.INSTANCE, ImmutableMap.of(), true);
     }
 
     /**
@@ -68,14 +72,23 @@ public class JLineIO implements IO, Closeable {
      * @param disableEventExpansion whether to disable special handling of magic history expansion
      *     commands like "!" and "!!" and "!n" and "!-n" and "!string" and "^string1^string2".
      */
-    public JLineIO(Terminal terminal, Completer completer, boolean disableEventExpansion) {
+    public JLineIO(
+            Terminal terminal,
+            Completer completer,
+            ImmutableMap<String, CmdDesc> tailTips,
+            boolean disableEventExpansion) {
         this.terminal = terminal;
 
         this.lineReader =
                 LineReaderBuilder.builder()
                         .parser(new DefaultParser())
                         .terminal(terminal)
+                        //
                         .completer(completer)
+                        .option(LineReader.Option.AUTO_LIST, true) // Automatically list options
+                        .option(LineReader.Option.LIST_PACKED, true) // Display compact completions
+                        .option(LineReader.Option.AUTO_MENU, true) // Show menu automatically
+                        .option(LineReader.Option.MENU_COMPLETE, true) // Cycle through completions
 
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
@@ -93,6 +106,9 @@ public class JLineIO implements IO, Closeable {
         new AutopairWidgets(lineReader, true).enable();
 
         new AutosuggestionWidgets(lineReader).enable();
+
+        if (!tailTips.isEmpty())
+            new TailTipWidgets(lineReader, tailTips, 5, TailTipWidgets.TipType.COMBINED).enable();
 
         // KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
         // map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));

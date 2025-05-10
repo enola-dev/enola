@@ -17,10 +17,13 @@
  */
 package dev.enola.chat.jline;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.function.CheckedConsumer;
 
 import org.jline.builtins.ConfigurationPath;
+import org.jline.console.CmdDesc;
 import org.jline.console.CommandRegistry;
 import org.jline.console.impl.Builtins;
 import org.jline.reader.LineReader;
@@ -38,13 +41,14 @@ class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exce
 
     // TODO https://github.com/jline/jline3/issues/1256
 
-    // TODO Enable TailTipWidgets & completion ...
+    // TODO https://github.com/jline/jline3/issues/1260 history IllegalArgumentException
 
     // TODO Integrate into "enola shell" (via ... Demo? SystemAgent? JLineAgent?)
 
     private final CommandRegistry.CommandSession commandSession;
     private final Builtins builtins;
     private final SystemCompleter completers;
+    private final ImmutableMap<String, CmdDesc> commandDescriptions;
     private @Nullable LineReader lineReader;
 
     JLineBuiltinShellCommandsProcessor(Terminal terminal) {
@@ -54,10 +58,18 @@ class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exce
         Function<String, Widget> widgetCreator = name -> null;
         var configDir = FreedesktopDirectories.JLINE_CONFIG_DIR;
         var configurationPath = new ConfigurationPath(configDir, configDir);
+
         // TODO Limit exposed Builtins commands?
         builtins = new Builtins(cwdSupplier, configurationPath, widgetCreator);
+
         completers = builtins.compileCompleters();
         completers.compile();
+
+        var commandDescriptions = ImmutableMap.<String, CmdDesc>builder();
+        for (var commandName : builtins.commandNames()) {
+            commandDescriptions.put(commandName, builtins.commandDescription(List.of(commandName)));
+        }
+        this.commandDescriptions = commandDescriptions.build();
     }
 
     void lineReader(LineReader lineReader) {
@@ -82,5 +94,9 @@ class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exce
 
     public SystemCompleter completers() {
         return completers;
+    }
+
+    public ImmutableMap<String, CmdDesc> commandDescriptions() {
+        return commandDescriptions;
     }
 }
