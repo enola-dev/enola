@@ -37,7 +37,7 @@ public interface Subject extends HasIRI, HasType, HasLabel, HasComment {
 
     // TODO HasAuthPublicKeys
 
-    // TODO HasNickname
+    // TODO HasNickname String nickName(); Set<String> nickNameAliases();
 
     // skipcq: JAVA-E0169
     interface Builder

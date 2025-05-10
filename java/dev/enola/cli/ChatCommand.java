@@ -17,8 +17,12 @@
  */
 package dev.enola.cli;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.chat.Demo;
 import dev.enola.chat.SystemInOutIO;
+import dev.enola.chat.jline.JLineAgent;
+import dev.enola.chat.jline.JLineBuiltinShellCommandsProcessor;
 import dev.enola.chat.jline.JLineIO;
 import dev.enola.common.context.TLC;
 import dev.enola.identity.Subjects;
@@ -26,6 +30,8 @@ import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.io.ThingIntoAppendableConverter;
 import dev.enola.thing.java.ProxyTBF;
+
+import org.jline.terminal.TerminalBuilder;
 
 import picocli.CommandLine;
 
@@ -44,12 +50,19 @@ public class ChatCommand implements Callable<Integer> {
             var subject = new Subjects(tbf).local();
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
             if (System.console() != null) {
-                try (var io = new JLineIO()) {
-                    Demo.chat(io, subject, true);
+                try (var terminal = TerminalBuilder.terminal()) {
+                    var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
+                    try (var io =
+                            new JLineIO(terminal, consumer.completers(), ImmutableMap.of(), true)) {
+                        consumer.lineReader(io.lineReader());
+                        var chat = new Demo();
+                        chat.addAgent(new JLineAgent(chat.getSwitchboard(), consumer));
+                        chat.chat(io, subject, true);
+                    }
                 }
             } else {
                 var io = new SystemInOutIO();
-                Demo.chat(io, subject, true);
+                new Demo().chat(io, subject, true);
             }
         }
         return 0;

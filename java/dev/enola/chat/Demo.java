@@ -28,21 +28,36 @@ import dev.enola.thing.java.ProxyTBF;
 import java.net.URI;
 
 public class Demo {
+    // TODO Rename class Demo (which it's no longer now) to... REPL? MessageLoop?
 
     // TODO MOTD with LLM? ;-)
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
 
     public static void main(String[] args) {
+        var localSubject = new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local();
         // NB: We're intentionally using SystemInOutIO instead of ConsoleIO (or even JLineIO, like
         // in ChatCommand) here, because System.console() == null when we run this under a Debugger
         // in some IDEs!
-        chat(new SystemInOutIO(), new Subjects(new ProxyTBF(ImmutableThing.FACTORY)).local(), true);
+        new Demo().chat(new SystemInOutIO(), localSubject, true);
     }
 
-    public static void chat(IO io, Subject user, boolean allowLocalExec) {
+    private final Switchboard sw;
+
+    public Demo() {
+        this.sw = new SimpleInMemorySwitchboard();
+    }
+
+    public Switchboard getSwitchboard() {
+        return sw;
+    }
+
+    public void addAgent(Agent agent) {
+        sw.watch(agent);
+    }
+
+    public void chat(IO io, Subject user, boolean allowLocalExec) {
         var room = new Room("#Lobby");
 
-        Switchboard sw = new SimpleInMemorySwitchboard();
         sw.watch(
                 message -> {
                     if (!message.from().iri().equals(user.iri()))
