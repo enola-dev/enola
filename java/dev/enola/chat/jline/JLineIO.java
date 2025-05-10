@@ -40,6 +40,8 @@ public class JLineIO implements IO, Closeable {
     //   see https://jline.org/docs/advanced/interactive-features
     //   and update https://github.com/enola-dev/enola/issues/1377
 
+    // TODO Enable TailTipWidgets
+
     // TODO Enable Tab completion; see https://github.com/jline/jline3/issues/397
 
     // TODO Enable configuring syntax highlighting; e.g. for @ and / and filenames
@@ -48,6 +50,8 @@ public class JLineIO implements IO, Closeable {
     // TODO End-user configurable keybindings; see https://github.com/jline/jline3/issues/398
 
     // TODO Mouse support; see https://github.com/jline/jline3/issues/1254
+
+    // TODO Enable Undo keybinding
 
     private final Terminal terminal;
     private final LineReader lineReader;
@@ -71,6 +75,7 @@ public class JLineIO implements IO, Closeable {
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
+
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
@@ -125,5 +130,13 @@ public class JLineIO implements IO, Closeable {
         // file in case of a close() call before that background thread had another chance to save
         // it.
         lineReader.getHistory().save();
+    }
+
+    public Terminal terminal() {
+        return terminal;
+    }
+
+    public LineReader lineReader() {
+        return lineReader;
     }
 }

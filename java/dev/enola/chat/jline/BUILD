@@ -15,6 +15,16 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
+
+java_binary(
+    name = "demo",
+    main_class = "dev.enola.chat.jline.Demo",
+    runtime_deps = [
+        ":jline",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
 
 java_library(
     name = "jline",
@@ -28,6 +38,7 @@ java_library(
     deps = [
         "//java/dev/enola/chat",
         "//java/dev/enola/common",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/identity",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",

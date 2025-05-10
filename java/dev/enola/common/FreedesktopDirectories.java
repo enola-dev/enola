@@ -53,5 +53,8 @@ public final class FreedesktopDirectories {
     public static final Path HISTORY =
             Path.of(ProjectDirectories.from("dev", "Enola", "Enola").dataLocalDir, "history");
 
+    public static final Path JLINE_CONFIG_DIR =
+            Path.of(ProjectDirectories.from("dev", "Enola", "Enola").preferenceDir, "jline");
+
     private FreedesktopDirectories() {}
 }
