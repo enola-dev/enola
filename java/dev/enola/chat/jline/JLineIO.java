@@ -23,6 +23,7 @@ import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
 import org.jline.reader.*;
+import org.jline.reader.impl.DefaultParser;
 import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
@@ -72,6 +73,7 @@ public class JLineIO implements IO, Closeable {
 
         this.lineReader =
                 LineReaderBuilder.builder()
+                        .parser(new DefaultParser())
                         .terminal(terminal)
                         .completer(completer)
 
