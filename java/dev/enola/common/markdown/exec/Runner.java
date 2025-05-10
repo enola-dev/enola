@@ -47,6 +47,7 @@ public interface Runner {
         return exec(
                 expectNonZeroExitCode,
                 dir,
+                // TODO if(IS_WINDOWS) "cmd.exe", "/c"
                 List.of("/usr/bin/env", "bash", "-c", command),
                 output,
                 timeout);
