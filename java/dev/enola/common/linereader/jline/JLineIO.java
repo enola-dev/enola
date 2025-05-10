@@ -37,6 +37,8 @@ import org.jline.widget.AutopairWidgets;
 import org.jline.widget.AutosuggestionWidgets;
 import org.jline.widget.TailTipWidgets;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -44,6 +46,7 @@ import java.util.function.Function;
 
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
+    private static final Logger LOG = LoggerFactory.getLogger(JLineIO.class);
 
     // TODO Enable "print above" for for progressive LLM response completion
     //   see https://jline.org/docs/advanced/interactive-features
@@ -55,8 +58,6 @@ public class JLineIO implements IO, Closeable {
     // TODO TailTipWidgets "qqqqqqqqqqq" https://github.com/jline/jline3/issues/1259
 
     // TODO End-user configurable keybindings; see https://github.com/jline/jline3/issues/398
-
-    // TODO Mouse support; see https://github.com/jline/jline3/issues/1254
 
     // TODO Enable Undo keybinding
 
@@ -91,10 +92,16 @@ public class JLineIO implements IO, Closeable {
             boolean disableEventExpansion) {
         this.terminal = terminal;
 
+        if (terminal.trackMouse(Terminal.MouseTracking.Normal))
+            LOG.info("Terminal has mouse tracking support");
+        else LOG.info("Terminal does not have mouse tracking support");
+        terminal.flush();
+
         this.lineReader =
                 LineReaderBuilder.builder()
                         .parser(parser)
                         .terminal(terminal)
+                        .variable(LineReader.MOUSE, true)
                         //
                         .completer(completer)
                         .option(LineReader.Option.AUTO_LIST, true) // Automatically list options
@@ -156,6 +163,9 @@ public class JLineIO implements IO, Closeable {
 
     @Override
     public void close() throws IOException {
+        terminal.trackMouse(Terminal.MouseTracking.Off);
+        terminal.flush();
+
         terminal.close();
 
         // NB: JLine already saves History in a background thread; this is just to save the history
