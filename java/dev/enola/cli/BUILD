@@ -49,6 +49,7 @@ java_library(
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
+        "@enola_maven//:org_jline_jline",
         "//java/dev/enola",
         # TODO Remove most of these direct deps, through new Enola API...
         "//java/dev/enola/cas",

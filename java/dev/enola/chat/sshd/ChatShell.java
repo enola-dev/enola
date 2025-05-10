@@ -52,7 +52,7 @@ class ChatShell {
             var subject = subjects.fromPublicKey(pubKey, username);
             // TODO Create JLine Completer & Tail Tips from Agents, and use instead of NullCompleter
             var io = new JLineIO(terminal, NullCompleter.INSTANCE, ImmutableMap.of(), false);
-            Demo.chat(io, subject, false);
+            new Demo().chat(io, subject, false);
 
         } finally {
             try {

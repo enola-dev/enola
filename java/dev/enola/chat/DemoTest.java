@@ -32,14 +32,14 @@ public class DemoTest {
     @Test
     public void eof() {
         var io = new TestIO(List.of());
-        Demo.chat(io, new Subjects().alice(), false);
+        new Demo().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).containsExactly(MOTD, "Alice in #Lobby> ");
     }
 
     @Test
     public void hello() {
         var io = new TestIO(List.of("Hello"));
-        Demo.chat(io, new Subjects().alice(), false);
+        new Demo().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
                 .inOrder();
@@ -48,7 +48,7 @@ public class DemoTest {
     @Test
     public void echo() {
         var io = new TestIO(List.of("@echo yolo"));
-        Demo.chat(io, new Subjects().alice(), false);
+        new Demo().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
                 .inOrder();

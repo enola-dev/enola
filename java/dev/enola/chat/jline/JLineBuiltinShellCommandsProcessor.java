@@ -37,13 +37,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exception> {
+public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exception> {
+    // TODO Rename JLineBuiltinShellCommandsProcessor to JLineBuiltinCommandsProcessor
 
     // TODO https://github.com/jline/jline3/issues/1256
 
     // TODO https://github.com/jline/jline3/issues/1260 history IllegalArgumentException
-
-    // TODO Integrate into "enola shell" (via ... Demo? SystemAgent? JLineAgent?)
 
     private final CommandRegistry.CommandSession commandSession;
     private final Builtins builtins;
@@ -51,7 +50,7 @@ class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exce
     private final ImmutableMap<String, CmdDesc> commandDescriptions;
     private @Nullable LineReader lineReader;
 
-    JLineBuiltinShellCommandsProcessor(Terminal terminal) {
+    public JLineBuiltinShellCommandsProcessor(Terminal terminal) {
         commandSession = new Builtins.CommandSession(terminal);
         // TODO Integrate with cwd in ExecAgent - but keep Optional!
         Supplier<Path> cwdSupplier = () -> Path.of("/");
@@ -72,7 +71,7 @@ class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exce
         this.commandDescriptions = commandDescriptions.build();
     }
 
-    void lineReader(LineReader lineReader) {
+    public void lineReader(LineReader lineReader) {
         this.lineReader = lineReader;
         builtins.setLineReader(lineReader);
     }
