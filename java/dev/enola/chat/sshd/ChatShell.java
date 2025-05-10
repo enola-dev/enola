@@ -26,6 +26,7 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 
 import org.jline.builtins.ssh.Ssh;
+import org.jline.reader.impl.DefaultParser;
 import org.jline.reader.impl.completer.NullCompleter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,14 @@ class ChatShell {
             var subjects = new Subjects(new ProxyTBF(ImmutableThing.FACTORY));
             var subject = subjects.fromPublicKey(pubKey, username);
             // TODO Create JLine Completer & Tail Tips from Agents, and use instead of NullCompleter
-            var io = new JLineIO(terminal, NullCompleter.INSTANCE, ImmutableMap.of(), false);
+            var io =
+                    new JLineIO(
+                            terminal,
+                            new DefaultParser(),
+                            NullCompleter.INSTANCE,
+                            ImmutableMap.of(),
+                            null,
+                            false);
             new Prompter().chatLoop(io, subject, false);
 
         } finally {

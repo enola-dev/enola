@@ -25,6 +25,7 @@ import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
 import org.jline.console.CmdDesc;
+import org.jline.console.CmdLine;
 import org.jline.keymap.KeyMap;
 import org.jline.reader.*;
 import org.jline.reader.impl.DefaultParser;
@@ -39,6 +40,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.function.Function;
 
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
@@ -62,27 +64,36 @@ public class JLineIO implements IO, Closeable {
     private final LineReader lineReader;
 
     public JLineIO() throws IOException {
-        this(TerminalBuilder.terminal(), NullCompleter.INSTANCE, ImmutableMap.of(), true);
+        this(
+                TerminalBuilder.terminal(),
+                new DefaultParser(),
+                NullCompleter.INSTANCE,
+                ImmutableMap.of(),
+                null,
+                true);
     }
 
     /**
      * Constructor.
      *
      * @param terminal the Terminal
+     * @param parser the Parser
      * @param completer the Completer
      * @param disableEventExpansion whether to disable special handling of magic history expansion
      *     commands like "!" and "!!" and "!n" and "!-n" and "!string" and "^string1^string2".
      */
     public JLineIO(
             Terminal terminal,
+            Parser parser,
             Completer completer,
             ImmutableMap<String, CmdDesc> tailTips,
+            @Nullable Function<CmdLine, CmdDesc> descFun,
             boolean disableEventExpansion) {
         this.terminal = terminal;
 
         this.lineReader =
                 LineReaderBuilder.builder()
-                        .parser(new DefaultParser())
+                        .parser(parser)
                         .terminal(terminal)
                         //
                         .completer(completer)
@@ -110,6 +121,9 @@ public class JLineIO implements IO, Closeable {
 
         if (!tailTips.isEmpty())
             new TailTipWidgets(lineReader, tailTips, 5, TailTipWidgets.TipType.COMBINED).enable();
+
+        if (descFun != null)
+            new TailTipWidgets(lineReader, descFun, 5, TailTipWidgets.TipType.COMBINED).enable();
 
         KeyMap<Binding> keyMap = lineReader.getKeyMaps().get(LineReader.MAIN);
         keyMap.bind(new Reference(AutopairWidgets.TAILTIP_TOGGLE), KeyMap.alt("s"));

@@ -48,28 +48,25 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
     private final Builtins builtins;
     private final SystemCompleter completer;
     private final ImmutableMap<String, CmdDesc> commandDescriptions;
+    private final Supplier<Path> cwdSupplier;
     private @Nullable LineReader lineReader;
 
     public JLineBuiltinShellCommandsProcessor(Terminal terminal) {
         commandSession = new Builtins.CommandSession(terminal);
         // TODO Integrate with cwd in ExecAgent - but keep Optional!
-        Supplier<Path> cwdSupplier = () -> Path.of("/");
+        this.cwdSupplier = () -> null; // Path.of("/");
         Function<String, Widget> widgetCreator = name -> null;
         var configDir = FreedesktopDirectories.JLINE_CONFIG_DIR;
         var configurationPath = new ConfigurationPath(configDir, configDir);
 
         // TODO Limit exposed Builtins commands?
         builtins = new Builtins(cwdSupplier, configurationPath, widgetCreator);
-        builtins.alias("bindkey", "keymap");
+        // builtins.alias("bindkey", "keymap");
 
         completer = builtins.compileCompleters();
         completer.compile();
 
-        var commandDescriptions = ImmutableMap.<String, CmdDesc>builder();
-        for (var commandName : builtins.commandNames()) {
-            commandDescriptions.put(commandName, builtins.commandDescription(List.of(commandName)));
-        }
-        this.commandDescriptions = commandDescriptions.build();
+        this.commandDescriptions = CmdDescs.buildMap(builtins);
     }
 
     public void lineReader(LineReader lineReader) {
@@ -92,8 +89,16 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
         } else builtins.invoke(commandSession, command);
     }
 
+    public Supplier<Path> cwdSupplier() {
+        return cwdSupplier;
+    }
+
     public SystemCompleter completer() {
         return completer;
+    }
+
+    public CommandRegistry commandRegistry() {
+        return builtins;
     }
 
     public ImmutableMap<String, CmdDesc> commandDescriptions() {
