@@ -46,7 +46,7 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
 
     private final CommandRegistry.CommandSession commandSession;
     private final Builtins builtins;
-    private final SystemCompleter completers;
+    private final SystemCompleter completer;
     private final ImmutableMap<String, CmdDesc> commandDescriptions;
     private @Nullable LineReader lineReader;
 
@@ -60,9 +60,10 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
 
         // TODO Limit exposed Builtins commands?
         builtins = new Builtins(cwdSupplier, configurationPath, widgetCreator);
+        builtins.alias("bindkey", "keymap");
 
-        completers = builtins.compileCompleters();
-        completers.compile();
+        completer = builtins.compileCompleters();
+        completer.compile();
 
         var commandDescriptions = ImmutableMap.<String, CmdDesc>builder();
         for (var commandName : builtins.commandNames()) {
@@ -91,8 +92,8 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
         } else builtins.invoke(commandSession, command);
     }
 
-    public SystemCompleter completers() {
-        return completers;
+    public SystemCompleter completer() {
+        return completer;
     }
 
     public ImmutableMap<String, CmdDesc> commandDescriptions() {

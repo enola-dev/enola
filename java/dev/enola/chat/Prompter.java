@@ -37,7 +37,7 @@ public class Prompter {
         // NB: We're intentionally using SystemInOutIO instead of ConsoleIO (or even JLineIO, like
         // in ChatCommand) here, because System.console() == null when we run this under a Debugger
         // in some IDEs!
-        new Prompter().chat(new SystemInOutIO(), localSubject, true);
+        new Prompter().chatLoop(new SystemInOutIO(), localSubject, true);
     }
 
     private final Switchboard sw;
@@ -54,7 +54,7 @@ public class Prompter {
         sw.watch(agent);
     }
 
-    public void chat(IO io, Subject user, boolean allowLocalExec) {
+    public void chatLoop(IO io, Subject user, boolean allowLocalExec) {
         var room = new Room("#Lobby");
 
         sw.watch(

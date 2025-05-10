@@ -53,16 +53,16 @@ public class ChatCommand implements Callable<Integer> {
                 try (var terminal = TerminalBuilder.terminal()) {
                     var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
                     try (var io =
-                            new JLineIO(terminal, consumer.completers(), ImmutableMap.of(), true)) {
+                            new JLineIO(terminal, consumer.completer(), ImmutableMap.of(), true)) {
                         consumer.lineReader(io.lineReader());
                         var chat = new Prompter();
                         chat.addAgent(new JLineAgent(chat.getSwitchboard(), consumer));
-                        chat.chat(io, subject, true);
+                        chat.chatLoop(io, subject, true);
                     }
                 }
             } else {
                 var io = new SystemInOutIO();
-                new Prompter().chat(io, subject, true);
+                new Prompter().chatLoop(io, subject, true);
             }
         }
         return 0;
