@@ -20,7 +20,7 @@ package dev.enola.chat.sshd;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.chat.Prompter;
-import dev.enola.chat.jline.JLineIO;
+import dev.enola.common.linereader.jline.JLineIO;
 import dev.enola.identity.Subjects;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
