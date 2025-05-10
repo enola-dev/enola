@@ -19,7 +19,7 @@ package dev.enola.cli;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.chat.Demo;
+import dev.enola.chat.Prompter;
 import dev.enola.chat.SystemInOutIO;
 import dev.enola.chat.jline.JLineAgent;
 import dev.enola.chat.jline.JLineBuiltinShellCommandsProcessor;
@@ -55,14 +55,14 @@ public class ChatCommand implements Callable<Integer> {
                     try (var io =
                             new JLineIO(terminal, consumer.completers(), ImmutableMap.of(), true)) {
                         consumer.lineReader(io.lineReader());
-                        var chat = new Demo();
+                        var chat = new Prompter();
                         chat.addAgent(new JLineAgent(chat.getSwitchboard(), consumer));
                         chat.chat(io, subject, true);
                     }
                 }
             } else {
                 var io = new SystemInOutIO();
-                new Demo().chat(io, subject, true);
+                new Prompter().chat(io, subject, true);
             }
         }
         return 0;

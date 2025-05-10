@@ -27,8 +27,7 @@ import dev.enola.thing.java.ProxyTBF;
 
 import java.net.URI;
 
-public class Demo {
-    // TODO Rename class Demo (which it's no longer now) to... REPL? MessageLoop?
+public class Prompter {
 
     // TODO MOTD with LLM? ;-)
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
@@ -38,12 +37,12 @@ public class Demo {
         // NB: We're intentionally using SystemInOutIO instead of ConsoleIO (or even JLineIO, like
         // in ChatCommand) here, because System.console() == null when we run this under a Debugger
         // in some IDEs!
-        new Demo().chat(new SystemInOutIO(), localSubject, true);
+        new Prompter().chat(new SystemInOutIO(), localSubject, true);
     }
 
     private final Switchboard sw;
 
-    public Demo() {
+    public Prompter() {
         this.sw = new SimpleInMemorySwitchboard();
     }
 

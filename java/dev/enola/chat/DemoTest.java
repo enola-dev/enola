@@ -19,7 +19,7 @@ package dev.enola.chat;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.chat.Demo.MOTD;
+import static dev.enola.chat.Prompter.MOTD;
 
 import dev.enola.identity.Subjects;
 
@@ -32,14 +32,14 @@ public class DemoTest {
     @Test
     public void eof() {
         var io = new TestIO(List.of());
-        new Demo().chat(io, new Subjects().alice(), false);
+        new Prompter().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).containsExactly(MOTD, "Alice in #Lobby> ");
     }
 
     @Test
     public void hello() {
         var io = new TestIO(List.of("Hello"));
-        new Demo().chat(io, new Subjects().alice(), false);
+        new Prompter().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
                 .inOrder();
@@ -48,7 +48,7 @@ public class DemoTest {
     @Test
     public void echo() {
         var io = new TestIO(List.of("@echo yolo"));
-        new Demo().chat(io, new Subjects().alice(), false);
+        new Prompter().chat(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
                 .inOrder();
