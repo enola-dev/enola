@@ -48,6 +48,7 @@ public abstract class Singleton<T> implements Supplier<T> {
 
     @CanIgnoreReturnValue
     public Singleton<T> set(T value) {
+        if (this.value != null && this.value.equals(value)) return this;
         if (this.value != null) throw new IllegalStateException();
         if (value == null) throw new IllegalArgumentException("Use reset() instead of set(null)");
         this.value = value;

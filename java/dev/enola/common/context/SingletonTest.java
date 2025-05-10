@@ -23,6 +23,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.SingletonRule;
 
+import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -42,6 +43,11 @@ public class SingletonTest {
         HELLO_SINGLETON.reset();
         HELLO_SINGLETON.set("hi");
         assertThat(HELLO_SINGLETON.get()).isEqualTo("hi");
+
+        // Setting it again to the same value is acceptable (and a NOOP)
+        HELLO_SINGLETON.set("hi");
+        // But setting it to another value (without reset()) causes an IllegalStateException
+        Assert.assertThrows(IllegalStateException.class, () -> HELLO_SINGLETON.set("bye"));
     }
 
     @Test
