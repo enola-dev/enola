@@ -50,7 +50,6 @@ java_library(
         # TODO Remove most of these direct deps, through new Enola API...
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
-        "//java/dev/enola/chat/jline",
         "//java/dev/enola/chat/sshd",
         "//java/dev/enola/cli/common",
         "//java/dev/enola/common",
@@ -59,6 +58,7 @@ java_library(
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/linereader",
+        "//java/dev/enola/common/linereader/jline",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/xml",

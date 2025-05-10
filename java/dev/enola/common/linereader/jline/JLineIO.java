@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.chat.jline;
+package dev.enola.common.linereader.jline;
 
 import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 

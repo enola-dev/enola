@@ -19,7 +19,7 @@ load("@rules_java//java:java_binary.bzl", "java_binary")
 
 java_binary(
     name = "demo",
-    main_class = "dev.enola.chat.jline.Demo",
+    main_class = "dev.enola.common.linereader.jline.Demo",
     runtime_deps = [
         ":jline",
         "@enola_maven//:org_slf4j_slf4j_simple",

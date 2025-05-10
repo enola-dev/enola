@@ -15,25 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.chat.jline;
+@NullMarked
+package dev.enola.common.linereader.jline;
 
-import com.google.common.collect.ImmutableMap;
-
-import org.jline.console.CmdDesc;
-import org.jline.console.CommandRegistry;
-
-import java.util.List;
-
-public class CmdDescs {
-
-    public static ImmutableMap<String, CmdDesc> buildMap(CommandRegistry cmdRegistry) {
-        var commandDescriptions = ImmutableMap.<String, CmdDesc>builder();
-        for (var commandName : cmdRegistry.commandNames()) {
-            commandDescriptions.put(
-                    commandName, cmdRegistry.commandDescription(List.of(commandName)));
-        }
-        return commandDescriptions.build();
-    }
-
-    private CmdDescs() {}
-}
+import org.jspecify.annotations.NullMarked;

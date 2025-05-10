@@ -20,11 +20,11 @@ package dev.enola.cli;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.chat.Prompter;
-import dev.enola.chat.jline.JLineAgent;
-import dev.enola.chat.jline.JLineBuiltinShellCommandsProcessor;
-import dev.enola.chat.jline.JLineIO;
 import dev.enola.common.context.TLC;
 import dev.enola.common.linereader.SystemInOutIO;
+import dev.enola.common.linereader.jline.JLineAgent;
+import dev.enola.common.linereader.jline.JLineBuiltinShellCommandsProcessor;
+import dev.enola.common.linereader.jline.JLineIO;
 import dev.enola.identity.Subjects;
 import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
 import dev.enola.thing.impl.ImmutableThing;
