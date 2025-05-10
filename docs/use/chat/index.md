@@ -73,6 +73,8 @@ This _Chat_ feature is [also available via an SSH server](../server/index.md#ssh
 
 Your [`~/.inputrc` and `/etc/inputrc`](https://www.linuxfromscratch.org/lfs/view/12.3/chapter09/inputrc.html) are loaded on startup. [For example](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/032a76d83ec26a79b84dc44e0e7b8a52132812ab/dotfiles/.inputrc#L36), to bind `Ctrl-Backspace`, do `echo '"\C-h": backward-kill-word' >> ~/.inputrc`.
 
+The line editor has _mouse support,_ e.g. to click on the prompt line to move the cursor.
+
 History is persisted e.g. in `~/.local/share/enola/history`.
 
 [See Help doc](../help/index.md#chat) for all other options.
