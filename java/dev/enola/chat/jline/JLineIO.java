@@ -22,7 +22,6 @@ import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
-import org.jline.keymap.KeyMap;
 import org.jline.reader.*;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
@@ -75,8 +74,10 @@ public class JLineIO implements IO, Closeable {
 
                         .build();
 
-        KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
-        map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
+        // KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
+        // map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
+
+        InputRC.apply(lineReader);
     }
 
     @Override
