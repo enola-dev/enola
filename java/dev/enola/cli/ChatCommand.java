@@ -19,12 +19,16 @@ package dev.enola.cli;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.chat.AbstractAgent;
+import dev.enola.chat.Message;
 import dev.enola.chat.Prompter;
+import dev.enola.chat.Switchboard;
 import dev.enola.common.context.TLC;
 import dev.enola.common.linereader.SystemInOutIO;
 import dev.enola.common.linereader.jline.JLineAgent;
 import dev.enola.common.linereader.jline.JLineBuiltinShellCommandsProcessor;
 import dev.enola.common.linereader.jline.JLineIO;
+import dev.enola.identity.Subject;
 import dev.enola.identity.Subjects;
 import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
 import dev.enola.thing.impl.ImmutableThing;
@@ -41,6 +45,7 @@ import picocli.CommandLine;
 import picocli.shell.jline3.PicocliCommands;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -59,7 +64,8 @@ public class ChatCommand implements Callable<Integer> {
             if (System.console() != null) {
                 Parser parser = new DefaultParser();
                 try (var terminal = TerminalBuilder.terminal()) {
-                    var picocliCommands = new PicocliCommands(spec.commandLine().getParent());
+                    var parentCommandLine = spec.commandLine().getParent();
+                    var picocliCommands = new PicocliCommands(parentCommandLine);
                     var builtinCmdsProcessor = new JLineBuiltinShellCommandsProcessor(terminal);
                     var cwdSupplier = builtinCmdsProcessor.cwdSupplier();
                     SystemRegistry systemRegistry =
@@ -77,8 +83,9 @@ public class ChatCommand implements Callable<Integer> {
                                     true)) {
                         builtinCmdsProcessor.lineReader(io.lineReader());
                         var prompter = new Prompter();
-                        prompter.addAgent(
-                                new JLineAgent(prompter.getSwitchboard(), builtinCmdsProcessor));
+                        var pbx = prompter.getSwitchboard();
+                        prompter.addAgent(new JLineAgent(pbx, builtinCmdsProcessor));
+                        prompter.addAgent(new EnolaAgent(pbx, parentCommandLine));
                         prompter.chatLoop(io, subject, true);
                     }
                 }
@@ -88,5 +95,31 @@ public class ChatCommand implements Callable<Integer> {
             }
         }
         return 0;
+    }
+
+    /** EnolaAgent runs Enola's own CLI sub-commands. */
+    private static class EnolaAgent extends AbstractAgent {
+        private final CommandLine picocliCommandLine;
+
+        public EnolaAgent(Switchboard pbx, CommandLine commandLine) {
+            super(
+                    tbf.create(Subject.Builder.class, Subject.class)
+                            .iri("https://enola.dev")
+                            .label("enola")
+                            .comment("Enola's own CLI sub-commands.")
+                            .build(),
+                    pbx);
+            this.picocliCommandLine = commandLine;
+        }
+
+        @Override
+        public void accept(Message message) {
+            var commandLine = message.content();
+            // split() won't handle quoted arguments correctly, which is fine here (for simple
+            // Builtins), but don't re-use this as-is for other more complex external commands.
+            var splitCommandLine = List.of(commandLine.split("\\s+"));
+
+            picocliCommandLine.execute(splitCommandLine.toArray(new String[0]));
+        }
     }
 }
