@@ -27,12 +27,15 @@ import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
 public class JLineIO implements IO, Closeable {
+    private static final Logger LOG = LoggerFactory.getLogger(JLineIO.class);
 
     // TODO Make current hard-coded key bindings end-user configurable
 
@@ -60,9 +63,16 @@ public class JLineIO implements IO, Closeable {
     public JLineIO(Terminal terminal, boolean disableEventExpansion) throws IOException {
         this.terminal = terminal;
 
+        if (terminal.trackMouse(Terminal.MouseTracking.Normal))
+            LOG.info("Terminal has mouse tracking support");
+        else LOG.info("Terminal does not have mouse tracking support");
+        terminal.flush();
+
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
+                        .variable(LineReader.MOUSE, true)
+
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
                         // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
@@ -105,6 +115,9 @@ public class JLineIO implements IO, Closeable {
 
     @Override
     public void close() throws IOException {
+        terminal.trackMouse(Terminal.MouseTracking.Off);
+        terminal.flush();
+
         terminal.close();
 
         // NB: JLine already saves History in a background thread; this is just to save the history
