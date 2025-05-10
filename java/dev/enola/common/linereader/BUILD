@@ -15,19 +15,10 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
-
-java_binary(
-    name = "demo",
-    main_class = "dev.enola.chat.jline.Demo",
-    runtime_deps = [
-        ":jline",
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-)
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "jline",
+    name = "linereader",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -36,15 +27,17 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/chat",
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/function",
-        "//java/dev/enola/common/linereader",
-        "//java/dev/enola/identity",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jline_jline",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob([
+        "*Test.java",
+    ]),
+    deps = [
+        ":linereader",
     ],
 )
