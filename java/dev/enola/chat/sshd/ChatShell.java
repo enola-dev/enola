@@ -17,6 +17,8 @@
  */
 package dev.enola.chat.sshd;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.chat.Demo;
 import dev.enola.chat.jline.JLineIO;
 import dev.enola.identity.Subjects;
@@ -48,8 +50,8 @@ class ChatShell {
         try {
             var subjects = new Subjects(new ProxyTBF(ImmutableThing.FACTORY));
             var subject = subjects.fromPublicKey(pubKey, username);
-            // TODO Create JLine Completer from Agents, and use instead of NullCompleter
-            var io = new JLineIO(terminal, NullCompleter.INSTANCE, false);
+            // TODO Create JLine Completer & Tail Tips from Agents, and use instead of NullCompleter
+            var io = new JLineIO(terminal, NullCompleter.INSTANCE, ImmutableMap.of(), false);
             Demo.chat(io, subject, false);
 
         } finally {

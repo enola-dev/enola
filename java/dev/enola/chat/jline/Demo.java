@@ -25,8 +25,10 @@ public class Demo {
     public static void main(String[] args) throws Exception {
         try (var terminal = TerminalBuilder.terminal()) {
             var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
-            try (var jLineIO = new JLineIO(terminal, consumer.completers(), true)) {
+            var tailTips = consumer.commandDescriptions();
+            try (var jLineIO = new JLineIO(terminal, consumer.completers(), tailTips, true)) {
                 consumer.lineReader(jLineIO.lineReader());
+
                 jLineIO.printf("hello, world\n");
                 do {
                     var input = jLineIO.readLine("> ");
