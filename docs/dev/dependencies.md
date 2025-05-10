@@ -25,6 +25,7 @@ This project, like any software, stands on the shoulders of giants, and depends 
 [`./update.bash`](//update.bash) shows some of and where possible automatically updates these dependencies.
 It should be regularly (manually) run by maintainers of this project. Where possible, we automate this with "bots" such as:
 
+* [Bazel 🤵 Steward](https://github.com/VirtusLab/bazel-steward): A bot that automatically updates Bazel dependencies. [Its PRs](https://github.com/enola-dev/enola/commits?author=enola-dev-steward), acting as [`@enola-dev-steward`](https://github.com/enola-dev-steward)
 * Renovate: [Dashboard](https://github.com/enola-dev/enola/issues/73), and [its PRs](https://github.com/enola-dev/enola/pulls?q=is%3Apr+author%3Aapp%2Frenovate+)
 * Dependabot: [Its PRs](https://github.com/enola-dev/enola/pulls?q=is%3Apr+author%3Aapp%2Fdependabot)
 
