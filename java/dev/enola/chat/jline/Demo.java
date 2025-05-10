@@ -17,22 +17,24 @@
  */
 package dev.enola.chat.jline;
 
+import org.jline.terminal.TerminalBuilder;
+
 /** Demo example main() of JLineIO; without any Chat, Shell, LLM, etc. */
 public class Demo {
 
     public static void main(String[] args) throws Exception {
-        try (var jLineIO = new JLineIO()) {
-            var consumer =
-                    new JLineBuiltinShellCommandsProcessor(
-                            jLineIO.terminal(), jLineIO.lineReader());
+        try (var terminal = TerminalBuilder.terminal()) {
+            var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
+            try (var jLineIO = new JLineIO(terminal, consumer.completers(), true)) {
+                consumer.lineReader(jLineIO.lineReader());
+                jLineIO.printf("hello, world\n");
+                do {
+                    var input = jLineIO.readLine("> ");
+                    if (input == null || input.isEmpty()) break;
+                    consumer.accept(input);
 
-            jLineIO.printf("hello, world\n");
-            do {
-                var input = jLineIO.readLine("> ");
-                if (input == null || input.isEmpty()) break;
-                consumer.accept(input);
-
-            } while (true);
+                } while (true);
+            }
         }
     }
 }

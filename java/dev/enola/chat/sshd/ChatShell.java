@@ -24,6 +24,7 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 
 import org.jline.builtins.ssh.Ssh;
+import org.jline.reader.impl.completer.NullCompleter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +33,6 @@ import java.io.IOException;
 class ChatShell {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChatShell.class);
-
-    private final Subjects subjects = new Subjects(new ProxyTBF(ImmutableThing.FACTORY));
 
     public ChatShell(
             Ssh.ShellParams shellParams,
@@ -47,13 +46,11 @@ class ChatShell {
         // TODO Read secrets from shellParams.getEnv()
 
         try {
+            var subjects = new Subjects(new ProxyTBF(ImmutableThing.FACTORY));
             var subject = subjects.fromPublicKey(pubKey, username);
-            var io = new JLineIO(terminal, false);
+            // TODO Create JLine Completer from Agents, and use instead of NullCompleter
+            var io = new JLineIO(terminal, NullCompleter.INSTANCE, false);
             Demo.chat(io, subject, false);
-
-        } catch (IOException e) {
-            LOG.error("IOException from JLineIO", e);
-            shellParams.getSession().exceptionCaught(e);
 
         } finally {
             try {

@@ -23,6 +23,7 @@ import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
 import org.jline.reader.*;
+import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -42,8 +43,6 @@ public class JLineIO implements IO, Closeable {
 
     // TODO Enable TailTipWidgets
 
-    // TODO Enable Tab completion; see https://github.com/jline/jline3/issues/397
-
     // TODO Enable configuring syntax highlighting; e.g. for @ and / and filenames
     //   see https://jline.org/docs/advanced/syntax-highlighting
 
@@ -57,24 +56,24 @@ public class JLineIO implements IO, Closeable {
     private final LineReader lineReader;
 
     public JLineIO() throws IOException {
-        this(TerminalBuilder.terminal(), true);
+        this(TerminalBuilder.terminal(), NullCompleter.INSTANCE, true);
     }
 
     /**
      * Constructor.
      *
      * @param terminal the Terminal
-     * @param disableEventExpansion whether or not to disable special handling of magic history
-     *     expansion commands like "!" and "!!" and "!n" and "!-n" and "!string" and
-     *     "^string1^string2".
-     * @throws IOException
+     * @param completer the Completer
+     * @param disableEventExpansion whether to disable special handling of magic history expansion
+     *     commands like "!" and "!!" and "!n" and "!-n" and "!string" and "^string1^string2".
      */
-    public JLineIO(Terminal terminal, boolean disableEventExpansion) throws IOException {
+    public JLineIO(Terminal terminal, Completer completer, boolean disableEventExpansion) {
         this.terminal = terminal;
 
         this.lineReader =
                 LineReaderBuilder.builder()
                         .terminal(terminal)
+                        .completer(completer)
 
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
