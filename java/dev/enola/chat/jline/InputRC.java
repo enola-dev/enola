@@ -44,7 +44,7 @@ public final class InputRC {
         if (rcFile.exists() && rcFile.isFile() && rcFile.canRead()) {
             try {
                 // TODO What is the "right" charset to use?!
-                try (var fileReader = new FileReader(rcFile, StandardCharsets.US_ASCII)) {
+                try (var fileReader = new FileReader(rcFile, StandardCharsets.UTF_8)) {
                     // org.jline.reader.impl.InputRC.configure(lineReader, fileReader);
                     org.jline.builtins.InputRC.configure(lineReader, fileReader);
                 }
