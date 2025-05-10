@@ -19,7 +19,7 @@ package dev.enola.chat.sshd;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.chat.Demo;
+import dev.enola.chat.Prompter;
 import dev.enola.chat.jline.JLineIO;
 import dev.enola.identity.Subjects;
 import dev.enola.thing.impl.ImmutableThing;
@@ -52,7 +52,7 @@ class ChatShell {
             var subject = subjects.fromPublicKey(pubKey, username);
             // TODO Create JLine Completer & Tail Tips from Agents, and use instead of NullCompleter
             var io = new JLineIO(terminal, NullCompleter.INSTANCE, ImmutableMap.of(), false);
-            new Demo().chat(io, subject, false);
+            new Prompter().chat(io, subject, false);
 
         } finally {
             try {
