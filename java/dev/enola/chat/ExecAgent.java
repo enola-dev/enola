@@ -39,13 +39,20 @@ import java.util.*;
 public class ExecAgent extends AbstractAgent {
 
     // TODO Offer tab completion of all available commands in Chat
+    //   see https://jline.org/docs/tab-completion
 
     // TODO Support ANSI color capable output detection; e.g. for "lsd" to "just work";
+    // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
     //   see https://github.com/enola-dev/enola/issues/1368
 
-    // TODO cd with argument should CWD to $HOME
+    // TODO Running "$ false" should not show "Failed to execute"
+    //   requires https://github.com/vorburger/ch.vorburger.exec/issues/116
+    //   (UNLESS vorburger.exec is replaced with pty4j for #1368 ?)
 
-    // TODO Support running programs like "nano" or "fish" which need STDIN to be a TTY Terminal
+    // TODO Ctrl-R FZF History Search Widget; see https://github.com/jline/jline3/issues/1246
+
+    // TODO cd without argument should CWD to $HOME
+    // TODO implicit cd with dirname (UNLESS it's also a command on PATH), like Fish Shell does
 
     // TODO Support "who am i"; see https://github.com/vorburger/ch.vorburger.exec/issues/269
 

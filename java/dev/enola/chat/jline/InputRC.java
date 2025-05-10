@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 public final class InputRC {
 
     // TODO Upstream this into JLine org.jline.builtins.InputRC?
+    //   https://github.com/jline/jline3/issues/1253
 
     private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(InputRC.class);
 
@@ -43,13 +44,12 @@ public final class InputRC {
     private static void load(File rcFile, LineReader lineReader) {
         if (rcFile.exists() && rcFile.isFile() && rcFile.canRead()) {
             try {
-                // TODO What is the "right" charset to use?!
                 try (var fileReader = new FileReader(rcFile, StandardCharsets.UTF_8)) {
-                    // org.jline.reader.impl.InputRC.configure(lineReader, fileReader);
                     org.jline.builtins.InputRC.configure(lineReader, fileReader);
+                    LOG.info("Loaded {}", rcFile);
                 }
             } catch (IOException e) {
-                LOG.error("Failed to read inputrc file: " + rcFile, e);
+                LOG.error("Failed to read inputrc file: {}", rcFile, e);
             }
         }
     }
