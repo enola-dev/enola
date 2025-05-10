@@ -21,8 +21,8 @@ import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
+import dev.enola.common.linereader.IO;
 
 import org.jline.console.CmdDesc;
 import org.jline.console.CmdLine;

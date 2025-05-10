@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import dev.enola.common.linereader.IO;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;

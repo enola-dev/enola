@@ -43,6 +43,7 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/linereader",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/data/id",
         "//java/dev/enola/identity",
