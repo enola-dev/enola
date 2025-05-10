@@ -26,7 +26,7 @@ public class Demo {
         try (var terminal = TerminalBuilder.terminal()) {
             var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
             var tailTips = consumer.commandDescriptions();
-            try (var jLineIO = new JLineIO(terminal, consumer.completers(), tailTips, true)) {
+            try (var jLineIO = new JLineIO(terminal, consumer.completer(), tailTips, true)) {
                 consumer.lineReader(jLineIO.lineReader());
 
                 jLineIO.printf("hello, world\n");

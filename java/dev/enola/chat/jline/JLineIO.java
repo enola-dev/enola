@@ -25,6 +25,7 @@ import dev.enola.chat.IO;
 import dev.enola.common.FreedesktopDirectories;
 
 import org.jline.console.CmdDesc;
+import org.jline.keymap.KeyMap;
 import org.jline.reader.*;
 import org.jline.reader.impl.DefaultParser;
 import org.jline.reader.impl.completer.NullCompleter;
@@ -110,8 +111,8 @@ public class JLineIO implements IO, Closeable {
         if (!tailTips.isEmpty())
             new TailTipWidgets(lineReader, tailTips, 5, TailTipWidgets.TipType.COMBINED).enable();
 
-        // KeyMap<Binding> map = lineReader.getKeyMaps().get(LineReader.MAIN);
-        // map.bind(new Reference(LineReader.BACKWARD_KILL_WORD), KeyMap.ctrl('\u0008'));
+        KeyMap<Binding> keyMap = lineReader.getKeyMaps().get(LineReader.MAIN);
+        keyMap.bind(new Reference(AutopairWidgets.TAILTIP_TOGGLE), KeyMap.alt("s"));
 
         InputRC.apply(lineReader);
     }
