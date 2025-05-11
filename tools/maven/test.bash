@@ -19,5 +19,9 @@ set -euox pipefail
 
 tools/maven/install.bash
 
-# TODO https://github.com/jbangdev/jbang/issues/1921, due to https://github.com/enola-dev/enola/issues/1040
-rm -rf ~/.jbang/ && JBANG_DOWNLOAD_VERSION=0.122.0 learn/jbang/jbang learn/jbang/hello.java
+# Note that the JBang version is not fixed, and could change. This is *normally* fine, as it's supposed to backwards compatible.
+# In the past we used to "pin" it here (via "rm -rf ~/.jbang/ && JBANG_DOWNLOAD_VERSION=0.122.0 learn/jbang/jbang ...),
+# due to https://github.com/enola-dev/enola/issues/1040, but since that's been resolved, we don't anymore now.)
+learn/jbang/jbang --version
+
+learn/jbang/jbang learn/jbang/hello.java
