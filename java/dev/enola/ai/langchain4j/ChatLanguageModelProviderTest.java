@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.Net;
 import dev.enola.data.Provider;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 
 import org.junit.Test;
 
@@ -29,9 +29,9 @@ import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
 
-    Provider<URI, StreamingChatLanguageModel> provider = new ChatLanguageModelProvider();
+    Provider<URI, StreamingChatModel> provider = new ChatLanguageModelProvider();
 
-    void check(StreamingChatLanguageModel model) {
+    void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
         model.chat("List top 3 cites in Switzerland", answer);
         assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");

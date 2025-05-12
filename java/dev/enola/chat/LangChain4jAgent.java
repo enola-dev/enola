@@ -20,14 +20,14 @@ package dev.enola.chat;
 import dev.enola.ai.langchain4j.ChatLanguageModelProvider;
 import dev.enola.ai.langchain4j.TestStreamingChatResponseHandler;
 import dev.enola.identity.Subject;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 
 import java.net.URI;
 
 public class LangChain4jAgent extends AbstractAgent {
     // TODO Move this to another package, keep chat base package simple
 
-    private final StreamingChatLanguageModel lm;
+    private final StreamingChatModel lm;
 
     protected LangChain4jAgent(URI llmURL, Switchboard pbx) {
         super(
