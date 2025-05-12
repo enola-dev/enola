@@ -22,7 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.langchain4j.ChatLanguageModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import dev.enola.common.Net;
-import dev.enola.common.secret.InMemorySecretManager;
+import dev.enola.common.secret.ExecPassSecretManager;
+import dev.enola.common.secret.SecretManager;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
@@ -32,9 +33,8 @@ import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
 
-    // TODO Use another implementation than InMemorySecretManager!
-    Provider<URI, StreamingChatModel> p =
-            new ChatLanguageModelProvider(new InMemorySecretManager());
+    SecretManager secretManager = new ExecPassSecretManager();
+    Provider<URI, StreamingChatModel> p = new ChatLanguageModelProvider(secretManager);
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
@@ -60,13 +60,13 @@ public class ChatLanguageModelProviderTest {
 
     @Test
     public void gemini() {
-        if (System.getenv(GOOGLE_AI_API_KEY_SECRET_NAME) == null) return;
-        check(p.get(URI.create("google://?model=gemini-2.5-flash-preview-04-17")));
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(URI.create("google://?model=gemini-2.5-flash-preview-04-17")));
     }
 
     @Test
     public void gemma() {
-        if (System.getenv(GOOGLE_AI_API_KEY_SECRET_NAME) == null) return;
-        check(p.get(URI.create("google://?model=gemma-3-1b-it")));
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(URI.create("google://?model=gemma-3-1b-it")));
     }
 }

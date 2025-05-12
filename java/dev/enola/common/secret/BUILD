@@ -15,7 +15,17 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
+
+java_binary(
+    name = "pass",
+    main_class = "dev.enola.common.secret.ExecPassSecretManager",
+    runtime_deps = [
+        ":secret",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
 
 java_library(
     name = "secret",
@@ -29,6 +39,7 @@ java_library(
     deps = [
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/function",
+        "@enola_maven//:ch_vorburger_exec_exec",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
