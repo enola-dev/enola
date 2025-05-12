@@ -19,12 +19,15 @@ package dev.enola.common.secret;
 
 import ch.vorburger.exec.ManagedProcessBuilder;
 import ch.vorburger.exec.ManagedProcessException;
+import ch.vorburger.exec.OutputStreamLogDispatcher;
+import ch.vorburger.exec.OutputStreamType;
 
 import com.google.errorprone.annotations.ThreadSafe;
 
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import java.util.Optional;
 
@@ -36,10 +39,22 @@ import java.util.Optional;
 public class ExecPassSecretManager implements SecretManager {
 
     // TODO FIXME Suppress STDOUT logging!! :=((
+    //   https://github.com/vorburger/ch.vorburger.exec/issues/272
 
     // TODO How to make this (pass) work from within Bazel tests? ENV vars, @TestOnly after all?!
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecPassSecretManager.class);
+
+    private static final OutputStreamLogDispatcher DO_NOT_LOG_STDOUT =
+            new OutputStreamLogDispatcher() {
+                @Override
+                public Level dispatch(OutputStreamType type, String line) {
+                    return switch (type) {
+                        case STDOUT -> Level.TRACE; // Silence!!
+                        case STDERR -> Level.DEBUG;
+                    };
+                }
+            };
 
     private final boolean throwToDebug;
 
@@ -58,6 +73,7 @@ public class ExecPassSecretManager implements SecretManager {
                     new ManagedProcessBuilder("/usr/bin/env")
                             .addArgument("pass")
                             .addArgument(key)
+                            .setOutputStreamLogDispatcher(DO_NOT_LOG_STDOUT)
                             .build()
                             .start()
                             .waitForExitMaxMsOrDestroy(7000);
