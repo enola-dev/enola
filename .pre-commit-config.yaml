@@ -31,6 +31,8 @@ repos:
         # TODO - id: check-json
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
+        # shebang needed for syntax check, but files are sourced not executed
+        exclude: ^\.envrc
       - id: check-symlinks
       - id: check-vcs-permalinks
       - id: check-yaml

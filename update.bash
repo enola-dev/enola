@@ -25,7 +25,6 @@ tools/javadoc/classpath.bash
 
 # Update .pre-commit-config.yaml
 # shellcheck disable=SC1091
-source tools/flox
 pre-commit autoupdate
 pre-commit clean
 pre-commit gc
