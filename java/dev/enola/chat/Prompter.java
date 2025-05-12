@@ -21,6 +21,8 @@ import dev.enola.common.Net;
 import dev.enola.common.context.TLC;
 import dev.enola.common.linereader.IO;
 import dev.enola.common.linereader.SystemInOutIO;
+import dev.enola.common.secret.InMemorySecretManager;
+import dev.enola.common.secret.SecretManager;
 import dev.enola.identity.Subject;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
@@ -39,12 +41,14 @@ public class Prompter {
         // NB: We're intentionally using SystemInOutIO instead of ConsoleIO (or even JLineIO, like
         // in ChatCommand) here, because System.console() == null when we run this under a Debugger
         // in some IDEs!
-        new Prompter().chatLoop(new SystemInOutIO(), localSubject, true);
+        new Prompter(new InMemorySecretManager()).chatLoop(new SystemInOutIO(), localSubject, true);
     }
 
+    private final SecretManager secretManager;
     private final Switchboard sw;
 
-    public Prompter() {
+    public Prompter(SecretManager secretManager) {
+        this.secretManager = secretManager;
         this.sw = new SimpleInMemorySwitchboard();
     }
 
@@ -71,7 +75,7 @@ public class Prompter {
 
         // TODO Make this configurable, and support to /invite several of them to chit chat!
         var llmURL = URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");
-        if (Net.portAvailable(11434)) sw.watch(new LangChain4jAgent(llmURL, sw));
+        if (Net.portAvailable(11434)) sw.watch(new LangChain4jAgent(llmURL, secretManager, sw));
 
         io.printf(MOTD);
         String input;

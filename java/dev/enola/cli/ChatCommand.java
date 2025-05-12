@@ -28,6 +28,7 @@ import dev.enola.common.linereader.SystemInOutIO;
 import dev.enola.common.linereader.jline.JLineAgent;
 import dev.enola.common.linereader.jline.JLineBuiltinShellCommandsProcessor;
 import dev.enola.common.linereader.jline.JLineIO;
+import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subject;
 import dev.enola.identity.Subjects;
 import dev.enola.rdf.io.JavaThingIntoRdfAppendableConverter;
@@ -82,7 +83,7 @@ public class ChatCommand implements Callable<Integer> {
                                     systemRegistry::commandDescription,
                                     true)) {
                         builtinCmdsProcessor.lineReader(io.lineReader());
-                        var prompter = new Prompter();
+                        var prompter = new Prompter(new InMemorySecretManager());
                         var pbx = prompter.getSwitchboard();
                         prompter.addAgent(new JLineAgent(pbx, builtinCmdsProcessor));
                         prompter.addAgent(new EnolaAgent(pbx, parentCommandLine));
@@ -91,7 +92,7 @@ public class ChatCommand implements Callable<Integer> {
                 }
             } else {
                 var io = new SystemInOutIO();
-                new Prompter().chatLoop(io, subject, true);
+                new Prompter(new InMemorySecretManager()).chatLoop(io, subject, true);
             }
         }
         return 0;

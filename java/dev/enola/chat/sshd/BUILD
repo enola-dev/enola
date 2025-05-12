@@ -40,6 +40,7 @@ java_library(
         "//java/dev/enola/chat",
         "//java/dev/enola/common",
         "//java/dev/enola/common/linereader/jline",
+        "//java/dev/enola/common/secret",
         "//java/dev/enola/identity",
         "//java/dev/enola/thing:thing_java",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",

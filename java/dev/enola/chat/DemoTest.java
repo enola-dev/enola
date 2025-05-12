@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.chat.Prompter.MOTD;
 
+import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subjects;
 
 import org.junit.Test;
@@ -32,14 +33,14 @@ public class DemoTest {
     @Test
     public void eof() {
         var io = new TestIO(List.of());
-        new Prompter().chatLoop(io, new Subjects().alice(), false);
+        new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).containsExactly(MOTD, "Alice in #Lobby> ");
     }
 
     @Test
     public void hello() {
         var io = new TestIO(List.of("Hello"));
-        new Prompter().chatLoop(io, new Subjects().alice(), false);
+        new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Alice in #Lobby> ")
                 .inOrder();
@@ -48,7 +49,7 @@ public class DemoTest {
     @Test
     public void echo() {
         var io = new TestIO(List.of("@echo yolo"));
-        new Prompter().chatLoop(io, new Subjects().alice(), false);
+        new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput())
                 .containsAtLeast(MOTD, "Alice in #Lobby> ", "Echoer> yolo\n", "Alice in #Lobby> ")
                 .inOrder();

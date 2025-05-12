@@ -22,6 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.langchain4j.ChatLanguageModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import dev.enola.common.Net;
+import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
@@ -31,7 +32,9 @@ import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
 
-    Provider<URI, StreamingChatModel> p = new ChatLanguageModelProvider();
+    // TODO Use another implementation than InMemorySecretManager!
+    Provider<URI, StreamingChatModel> p =
+            new ChatLanguageModelProvider(new InMemorySecretManager());
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();

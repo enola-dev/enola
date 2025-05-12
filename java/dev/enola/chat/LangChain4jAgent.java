@@ -19,6 +19,7 @@ package dev.enola.chat;
 
 import dev.enola.ai.langchain4j.ChatLanguageModelProvider;
 import dev.enola.ai.langchain4j.TestStreamingChatResponseHandler;
+import dev.enola.common.secret.SecretManager;
 import dev.enola.identity.Subject;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
@@ -29,7 +30,7 @@ public class LangChain4jAgent extends AbstractAgent {
 
     private final StreamingChatModel lm;
 
-    protected LangChain4jAgent(URI llmURL, Switchboard pbx) {
+    protected LangChain4jAgent(URI llmURL, SecretManager secretManager, Switchboard pbx) {
         super(
                 tbf.create(Subject.Builder.class, Subject.class)
                         .iri(llmURL.toString())
@@ -39,7 +40,7 @@ public class LangChain4jAgent extends AbstractAgent {
                         .comment(llmURL.toString())
                         .build(),
                 pbx);
-        lm = new ChatLanguageModelProvider().get(llmURL);
+        lm = new ChatLanguageModelProvider(secretManager).get(llmURL);
     }
 
     @Override
