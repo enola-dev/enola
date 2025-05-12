@@ -138,6 +138,7 @@ enola_maven.install(
         "dev.dirs:directories:26",
         "dev.langchain4j:langchain4j:1.0.0-rc1",
         "dev.langchain4j:langchain4j-ollama:1.0.0-beta4",
+        "dev.langchain4j:langchain4j-google-ai-gemini:1.0.0-beta4",
         "io.github.ollama4j:ollama4j:1.0.100",
         "com.github.spotbugs:spotbugs-annotations:4.9.3",
         "io.github.java-diff-utils:java-diff-utils:4.15",

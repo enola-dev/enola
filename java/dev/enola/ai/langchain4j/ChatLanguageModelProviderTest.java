@@ -19,6 +19,8 @@ package dev.enola.ai.langchain4j;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.ai.langchain4j.ChatLanguageModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+
 import dev.enola.common.Net;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
@@ -29,7 +31,7 @@ import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
 
-    Provider<URI, StreamingChatModel> provider = new ChatLanguageModelProvider();
+    Provider<URI, StreamingChatModel> p = new ChatLanguageModelProvider();
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
@@ -39,17 +41,29 @@ public class ChatLanguageModelProviderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void bad() {
-        provider.get(URI.create("http://www.google.com"));
+        p.get(URI.create("http://www.google.com"));
     }
 
     @Test
     public void mock() {
-        check(provider.get(URI.create("mockllm:Zurich")));
+        check(p.get(URI.create("mockllm:Zurich")));
     }
 
     @Test
     public void ollama() {
         if (!Net.portAvailable(11434)) return;
-        check(provider.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
+        check(p.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
+    }
+
+    @Test
+    public void gemini() {
+        if (System.getenv(GOOGLE_AI_API_KEY_SECRET_NAME) == null) return;
+        check(p.get(URI.create("google://?model=gemini-2.5-flash-preview-04-17")));
+    }
+
+    @Test
+    public void gemma() {
+        if (System.getenv(GOOGLE_AI_API_KEY_SECRET_NAME) == null) return;
+        check(p.get(URI.create("google://?model=gemma-3-1b-it")));
     }
 }

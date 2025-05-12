@@ -35,6 +35,7 @@ java_library(
         "//java/dev/enola/identity",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:dev_langchain4j_langchain4j_core",
+        "@enola_maven//:dev_langchain4j_langchain4j_google_ai_gemini",
         "@enola_maven//:dev_langchain4j_langchain4j_ollama",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
