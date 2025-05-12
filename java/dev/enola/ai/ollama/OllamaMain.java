@@ -52,10 +52,10 @@ public class OllamaMain {
         var prompt = args[1];
 
         var modelName = "codegemma:7b";
-        var host = "http://localhost:11434/";
+        var baseURL = "http://localhost:11434/";
         var options = new OptionsBuilder().setSeed(1).build();
 
-        OllamaAPI ollamaAPI = new OllamaAPI(host);
+        OllamaAPI ollamaAPI = new OllamaAPI(baseURL);
         ollamaAPI.setRequestTimeoutSeconds(30);
         ollamaAPI.ping();
         // System.out.println(ollamaAPI.getModelDetails(modelName));

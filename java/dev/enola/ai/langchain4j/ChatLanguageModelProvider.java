@@ -25,8 +25,13 @@ import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiStreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
+import io.github.ollama4j.OllamaAPI;
+import io.github.ollama4j.exceptions.OllamaBaseException;
+
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ChatLanguageModelProvider implements Provider<URI, StreamingChatModel> {
 
@@ -70,8 +75,18 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
                         "http://localhost:11434?type=ollama&model=$MODEL, see https://ollama.com/search");
 
             var baseURL = uri.getScheme() + "://" + uri.getAuthority();
-            // TODO ollamaAPI.pullModel(model);
-            // TODO ollamaAPI ping()
+            var ollamaAPI = new OllamaAPI(baseURL);
+            ollamaAPI.setVerbose(true);
+            if (!ollamaAPI.ping())
+                throw new IllegalStateException("Failed to ping Ollama at " + ollamaAPI);
+            try {
+                ollamaAPI.pullModel(model);
+            } catch (OllamaBaseException
+                    | IOException
+                    | URISyntaxException
+                    | InterruptedException e) {
+                throw new IllegalArgumentException(model, e);
+            }
 
             return OllamaStreamingChatModel.builder()
                     .logRequests(true)
