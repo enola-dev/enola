@@ -18,13 +18,13 @@
 package dev.enola.ai.langchain4j;
 
 import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
 import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.output.FinishReason;
 
-public class TestChatLanguageModel implements StreamingChatLanguageModel {
+public class TestChatLanguageModel implements StreamingChatModel {
     private final String reply;
 
     public TestChatLanguageModel(String reply) {

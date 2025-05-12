@@ -19,13 +19,13 @@ package dev.enola.ai.langchain4j;
 
 import dev.enola.common.io.iri.URIs;
 import dev.enola.data.Provider;
-import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
 
-public class ChatLanguageModelProvider implements Provider<URI, StreamingChatLanguageModel> {
+public class ChatLanguageModelProvider implements Provider<URI, StreamingChatModel> {
 
     // TODO CachingChatLanguageModelProvider
 
@@ -35,8 +35,7 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatLan
     //   Or is there no need to set that as default, because it will only be set on requests?
 
     @Override
-    public StreamingChatLanguageModel get(URI uri)
-            throws IllegalArgumentException, UncheckedIOException {
+    public StreamingChatModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
         if ("mockllm".equalsIgnoreCase(uri.getScheme())) {
             var reply = uri.getSchemeSpecificPart();
             return new TestChatLanguageModel(reply);
