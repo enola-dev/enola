@@ -38,6 +38,9 @@ import java.util.function.Function;
  */
 public final class Secret implements AutoCloseable, Processor<char[]> {
 
+    // TODO Factor out a class SecureData<T> and make Secret extends SecureData<char[]>
+    //   Then also have another class SecretBytes extends SecureData<byte[]> e.g. for private keys.
+
     private static final Cleaner cleaner = Cleaner.create();
     private final AtomicBoolean isCleared = new AtomicBoolean(false);
     private final Cleaner.Cleanable cleanable;

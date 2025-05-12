@@ -30,6 +30,32 @@ import java.util.Optional;
  */
 public interface SecretManager {
 
+    // NB: Do *NEVER* write an implementation of this interface that uses System.getenv()
+    //   because that, while perhaps tempting at first, is a terrible idea whenever this is used
+    //   in any application which "shells out" (exec) to any other process, when would then be able
+    //   to see any such (not so) "secret" environment variables!
+    //
+    // Similarly, an implementation which uses System.getProperty() is also not such a great idea,
+    //   really only marginally better than using System.getenv(). That's because the "java -D"
+    //   launch parameters are often still too broadly visible.
+    //
+    // Lastly, a FileSecretManager which stores the secrets in an encrypted file vault which is
+    //   decrypted with a passphrase which the user must type when starting an application is a
+    //   possibility.  We, however, prefer focusing on implementations based on OS support.
+
+    // TODO Write an ExecAgeSecretManager for https://github.com/Foxboron/age-plugin-tpm
+    //   by generalizing the existing initial ExecPassSecretManager
+
+    // TODO Write an AppleSecretManager
+    //   Initially using https://github.com/remko/age-plugin-se
+    //   Later see if there is some direct Java JCA for HSM API for this?
+
+    // TODO Write a WindowsSecretManager
+
+    // TODO Write CLI with ./enola secret store
+
+    // TODO Write a multi-user dev.enola.common.context.TLC-based wrapper for this.
+
     /**
      * Stores a secret value associated with a unique key. The sensitive value is provided as a char
      * array. Implementations will zero out the input {@code value} array immediately after calling
@@ -58,7 +84,10 @@ public interface SecretManager {
      */
     default Secret get(String key) throws IllegalStateException {
         return getOptional(key)
-                .orElseThrow(() -> new IllegalStateException("Secret missing: " + key));
+                .orElseThrow(
+                        () ->
+                                new IllegalStateException(
+                                        getClass().getSimpleName() + " missing secret: " + key));
     }
 
     /**
