@@ -20,6 +20,7 @@ package dev.enola.ai.langchain4j;
 import com.google.common.base.Strings;
 
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.secret.SecretManager;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiStreamingChatModel;
@@ -44,6 +45,12 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
 
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
 
+    private final SecretManager secretManager;
+
+    public ChatLanguageModelProvider(SecretManager secretManager) {
+        this.secretManager = secretManager;
+    }
+
     @Override
     public StreamingChatModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
         var queryMap = URIs.getQueryMap(uri);
@@ -59,13 +66,13 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
                 throw new IllegalArgumentException(
                         "google://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models");
 
-            var apiKey = "..."; // TODO secretManager.getSecret(GOOGLE_AI_API_KEY_SECRET_NAME)
-
-            return GoogleAiGeminiStreamingChatModel.builder()
-                    .apiKey(apiKey)
-                    .modelName(model.trim())
-                    .logRequestsAndResponses(true)
-                    .build();
+            try (var apiKey = secretManager.get(GOOGLE_AI_API_KEY_SECRET_NAME)) {
+                return GoogleAiGeminiStreamingChatModel.builder()
+                        .apiKey(apiKey.map(String::new))
+                        .modelName(model.trim())
+                        .logRequestsAndResponses(true)
+                        .build();
+            }
         }
 
         if ("ollama".equalsIgnoreCase(queryMap.get("type"))) {

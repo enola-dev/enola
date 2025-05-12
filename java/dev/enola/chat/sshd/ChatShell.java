@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.enola.chat.Prompter;
 import dev.enola.common.linereader.jline.JLineIO;
+import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subjects;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
@@ -60,7 +61,7 @@ class ChatShell {
                             ImmutableMap.of(),
                             null,
                             false);
-            new Prompter().chatLoop(io, subject, false);
+            new Prompter(new InMemorySecretManager()).chatLoop(io, subject, false);
 
         } finally {
             try {
