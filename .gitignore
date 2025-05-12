@@ -69,3 +69,7 @@ bazel-steward.jar
 
 # https://github.com/flox/install-flox-action/issues/106
 flox.x86_64-linux.deb
+
+# Nix & direnv
+# TODO https://github.com/direnv/direnv/issues/1434
+.direnv/
