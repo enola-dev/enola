@@ -37,6 +37,10 @@ import java.util.Optional;
  */
 public class Context implements AutoCloseable {
 
+    // TODO Change this to not permit pushing to a key that's already set
+
+    // TODO Change this to have a separate Context.Builder
+
     public interface Key<T> {}
 
     private static final Logger LOG = LoggerFactory.getLogger(Context.class);
