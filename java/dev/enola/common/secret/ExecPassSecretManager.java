@@ -88,6 +88,7 @@ public class ExecPassSecretManager implements SecretManager {
     @Override
     public void store(String key, char @Nullable [] value) {
         throw new UnsupportedOperationException("TODO Implemented store()");
+        // When implementing, remember to Arrays.fill(value, '\0');
     }
 
     @Override
