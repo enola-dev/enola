@@ -79,7 +79,8 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
             var model = queryMap.get("model");
             if (Strings.isNullOrEmpty(model.trim()))
                 throw new IllegalArgumentException(
-                        "http://localhost:11434?type=ollama&model=$MODEL, see https://ollama.com/search");
+                        "http://localhost:11434?type=ollama&model=$MODEL, see"
+                                + " https://ollama.com/search");
 
             var baseURL = uri.getScheme() + "://" + uri.getAuthority();
             var ollamaAPI = new OllamaAPI(baseURL);
