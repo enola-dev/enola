@@ -49,7 +49,7 @@ public class ChatLanguageModelProviderTest {
 
     @Test
     public void mock() {
-        check(p.get(URI.create("mockllm:Zurich")));
+        check(p.get(URI.create("mocklm:Zurich")));
     }
 
     @Test

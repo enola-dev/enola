@@ -34,9 +34,11 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * ChatLanguageModelProvider provides a LM based on the <a
+ * href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
+ */
 public class ChatLanguageModelProvider implements Provider<URI, StreamingChatModel> {
-
-    // TODO Document LLM URI Spec (and link from here)
 
     // TODO CachingChatLanguageModelProvider
 
@@ -55,7 +57,7 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
     public StreamingChatModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
         var queryMap = URIs.getQueryMap(uri);
 
-        if ("mockllm".equalsIgnoreCase(uri.getScheme())) {
+        if ("mocklm".equalsIgnoreCase(uri.getScheme())) {
             var reply = uri.getSchemeSpecificPart();
             return new TestChatLanguageModel(reply);
         }
