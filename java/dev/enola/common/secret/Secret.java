@@ -30,8 +30,8 @@ import java.util.function.Function;
 
 /**
  * Secret 🔑 is a wrapper around an auto-cleaned char[]. It's intended to hold sensitive character
- * data like passwords, API keys and similar credentials, often related to configuration. It is
- * cleared from memory when the Secret is {@link #close()}d.
+ * data like passwords, pass phrases, access tokens like API keys and similar credentials, often
+ * related to configuration. It is cleared from memory when the Secret is {@link #close()}d.
  *
  * @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a>, pair programmed together <a
  *     href="https://gemini.google.com/app/58da21bb8360498c">with Google Gemini</a> on 2025-05-11.

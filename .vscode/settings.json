@@ -15,8 +15,10 @@
     "Datatypes",
     "Enola",
     "Intelli",
+    "Ollama",
     "protolint",
-    "textproto"
+    "textproto",
+    "Vorburger"
   ],
 
   // formatOnType and formatOnPaste is a very bad idea for slow formatters
@@ -124,14 +126,14 @@
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/*.crswap": true,
     "**/.classpath": true,
-    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/*.crswap": true,
+    "**/.factorypath": true,
+    "**/CVS": true,
     "**/eclipse-bin/": true,
     "**/eclipse-testbin/": true,
     "**/.bazeltargets": true,
@@ -167,7 +169,9 @@
     "third_party": false,
     ".jbang": false,
     "META-INF": false,
-    "learn": false
+    "learn": false,
+    ".flox": false,
+    ".venv": false
   },
 
   "npm.packageManager": "pnpm"

@@ -20,6 +20,10 @@
 
 <!-- Enola should be able to generate such a TOC automagically... -->
 
+## AI & ML
+
+* [AI URIs](aiuri/index.md)
+
 ## IPFS
 
 * [RDF on IPFS](rdf2ipfs/index.md)
@@ -39,6 +43,7 @@
 <!--* [Markdown as RDF](markdown2rdf/index.md)-->
 
 <!-- TODO Order in which to tackle these Spec ideas:
+       1. AI URIs
        1. Markdown YAML-LD Frontmatter
        1. URL Cache Version
        1. RDF on IPFS

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Secret (API keys, passwords, ...) credentials management. */
+/** Secret (access tokens like API keys, pass phrases and passwords, ...) credentials management. */
 @NullMarked
 package dev.enola.common.secret;
 
