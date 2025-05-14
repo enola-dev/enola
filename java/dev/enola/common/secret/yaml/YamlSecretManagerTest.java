@@ -19,10 +19,6 @@ package dev.enola.common.secret.yaml;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-
-import dev.enola.common.io.resource.DataResource;
-
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,8 +31,8 @@ public class YamlSecretManagerTest {
 
     @Test
     public void load() throws IOException {
-        var resource = DataResource.of("secret1: do-not-tell", YAML_UTF_8);
-        var secretManager = new YamlSecretManager(resource);
+        var yaml = "secret1: do-not-tell";
+        var secretManager = new YamlSecretManager(input -> {}, () -> yaml);
         try (var secret = secretManager.get("secret1")) {
             secret.process(it -> assertThat(it).isEqualTo("do-not-tell".toCharArray()));
         }

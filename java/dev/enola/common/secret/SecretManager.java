@@ -17,8 +17,6 @@
  */
 package dev.enola.common.secret;
 
-import org.jspecify.annotations.Nullable;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -67,7 +65,7 @@ public interface SecretManager {
      * @param value The sensitive secret value as a character array.
      * @throws IOException If an error occurs while storing the secret.
      */
-    void store(String key, char @Nullable [] value) throws IOException;
+    void store(String key, char[] value) throws IOException;
 
     /**
      * Retrieves a secret by its key, with optionality.

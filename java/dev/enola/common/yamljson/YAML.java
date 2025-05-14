@@ -37,8 +37,23 @@ public final class YAML {
         return new Load(settings);
     }
 
+    private static Map<?, ?> iterable2singleMap(Iterable<?> iterable) {
+        var iterator = iterable.iterator();
+        if (!iterator.hasNext()) throw new IllegalArgumentException("Empty YAML");
+        var root = iterator.next();
+        if (root instanceof Map<?, ?> map) {
+            if (iterator.hasNext())
+                throw new IllegalArgumentException("YAML with multiple --- documents");
+            return map;
+        } else throw new IllegalArgumentException("YAML document is not Map");
+    }
+
     public static Iterable<?> read(String yaml) {
         return newLoad().loadAllFromString(yaml);
+    }
+
+    public static Map<?, ?> readSingleMap(String yaml) {
+        return iterable2singleMap(read(yaml));
     }
 
     public static void read(ReadableResource yaml, Consumer<Iterable> itery) throws IOException {
@@ -49,20 +64,7 @@ public final class YAML {
 
     public static void readSingleMap(ReadableResource yaml, Consumer<Map<?, ?>> mappy)
             throws IOException {
-        read(
-                yaml,
-                iterable -> {
-                    var iterator = iterable.iterator();
-                    if (!iterator.hasNext())
-                        throw new IllegalArgumentException("Empty YAML: " + yaml);
-                    var root = iterator.next();
-                    if (root instanceof Map<?, ?> map) {
-                        if (iterator.hasNext())
-                            throw new IllegalArgumentException(
-                                    "YAML with multiple --- documents: " + yaml);
-                        mappy.accept(map);
-                    } else throw new IllegalArgumentException("YAML document is not Map: " + yaml);
-                });
+        read(yaml, iterable -> mappy.accept(iterable2singleMap(iterable)));
     }
 
     public static String write(Object object) {
