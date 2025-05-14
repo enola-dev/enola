@@ -19,6 +19,7 @@ package dev.enola.common.secret;
 
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -64,16 +65,18 @@ public interface SecretManager {
      *
      * @param key The unique key (name) for the secret.
      * @param value The sensitive secret value as a character array.
+     * @throws IOException If an error occurs while storing the secret.
      */
-    void store(String key, char @Nullable [] value);
+    void store(String key, char @Nullable [] value) throws IOException;
 
     /**
      * Retrieves a secret by its key, with optionality.
      *
      * @param key The unique key (name) of the secret to retrieve.
      * @return An {@link Optional} containing the {@link Secret}, if found.
+     * @throws IOException If an error occurs while retrieving the secret.
      */
-    Optional<Secret> getOptional(String key);
+    Optional<Secret> getOptional(String key) throws IOException;
 
     /**
      * Retrieves a secret by its key; throws if not found.
@@ -81,8 +84,9 @@ public interface SecretManager {
      * @param key The unique key (name) of the secret to retrieve.
      * @return An {@link Optional} containing the {@link Secret}, if found.
      * @throws IllegalStateException if the secret is not found.
+     * @throws IOException If an error occurs while retrieving the secret.
      */
-    default Secret get(String key) throws IllegalStateException {
+    default Secret get(String key) throws IllegalStateException, IOException {
         return getOptional(key)
                 .orElseThrow(
                         () ->
@@ -94,6 +98,7 @@ public interface SecretManager {
      * Deletes a secret from the manager.
      *
      * @param key The unique key (name) of the secret to delete.
+     * @throws IOException If an error occurs while deleting the secret.
      */
-    void delete(String key);
+    void delete(String key) throws IOException;
 }

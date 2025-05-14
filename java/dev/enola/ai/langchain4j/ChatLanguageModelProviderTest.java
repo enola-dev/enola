@@ -29,6 +29,7 @@ import dev.langchain4j.model.chat.StreamingChatModel;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
@@ -59,13 +60,13 @@ public class ChatLanguageModelProviderTest {
     }
 
     @Test
-    public void gemini() {
+    public void gemini() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(URI.create("google://?model=gemini-2.5-flash-preview-04-17")));
     }
 
     @Test
-    public void gemma() {
+    public void gemma() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(URI.create("google://?model=gemma-3-1b-it")));
     }

@@ -18,6 +18,7 @@
 package dev.enola.common.yamljson;
 
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.io.resource.WritableResource;
 
 import org.snakeyaml.engine.v2.api.Dump;
 import org.snakeyaml.engine.v2.api.DumpSettings;
@@ -69,6 +70,10 @@ public final class YAML {
                 DumpSettings.builder().setDefaultScalarStyle(ScalarStyle.PLAIN).build();
         Dump dump = new Dump(settings);
         return dump.dumpToString(object);
+    }
+
+    public static void write(Object object, WritableResource yaml) throws IOException {
+        yaml.charSink().write(write(object));
     }
 
     private YAML() {}
