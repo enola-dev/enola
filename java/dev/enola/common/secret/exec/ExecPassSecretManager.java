@@ -43,9 +43,6 @@ import java.util.Optional;
 @ThreadSafe
 public class ExecPassSecretManager implements SecretManager {
 
-    // TODO FIXME Suppress STDOUT logging!! :=((
-    //   https://github.com/vorburger/ch.vorburger.exec/issues/272
-
     // TODO get() needs to distinguish between "not found" and other errors
 
     // TODO Support https://github.com/FiloSottile/age (or https://github.com/str4d/rage)
@@ -61,9 +58,9 @@ public class ExecPassSecretManager implements SecretManager {
     private static final OutputStreamLogDispatcher DO_NOT_LOG_STDOUT =
             new OutputStreamLogDispatcher() {
                 @Override
-                public Level dispatch(OutputStreamType type, String line) {
+                public @Nullable Level dispatch(OutputStreamType type, String line) {
                     return switch (type) {
-                        case STDOUT -> Level.TRACE; // Silence!!
+                        case STDOUT -> null; // Silence!!
                         case STDERR -> Level.DEBUG;
                     };
                 }
