@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-final class ExecPATH {
+public final class ExecPATH {
 
     // TODO Upstream; see https://github.com/vorburger/ch.vorburger.exec/issues/277
 

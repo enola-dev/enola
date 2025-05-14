@@ -32,7 +32,8 @@ class UnavailableSecretManager implements SecretManager {
 
     @Override
     public Optional<Secret> getOptional(String key) throws IOException {
-        throw new IllegalStateException("No Secret manager is available; see logs.");
+        // NOT throw new IllegalStateException("No Secret manager is available; see logs.");
+        return Optional.empty();
     }
 
     @Override
