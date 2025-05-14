@@ -19,6 +19,7 @@ package dev.enola.common.secret.auto;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import dev.enola.common.exec.ExecPATH;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.exec.ExecPassSecretManager;
@@ -40,6 +41,7 @@ public class AutoSecretManager implements SecretManager {
     }
 
     public static SecretManager yamlInExecPass() throws IOException {
+        if (!ExecPATH.scan().containsKey("pass")) throw new IOException("pass not found in PATH");
         var id = "enola.dev"; // TODO Use (~) FreedesktopDirectories
         var TD = "Please create (empty) pass edit " + id;
         var pass = new ExecPassSecretManager(true);
@@ -51,14 +53,20 @@ public class AutoSecretManager implements SecretManager {
     private final SecretManager delegate;
 
     public AutoSecretManager() {
-        SecretManager delegate;
-        try {
-            delegate = yamlInExecPass();
-        } catch (IOException e) {
-            delegate = new UnavailableSecretManager();
-            LOG.error("Failed to initialize AutoSecretManager", e);
+        if (System.getenv("BAZEL_TEST") != null) {
+            this.delegate = new UnavailableSecretManager();
+        } else {
+            SecretManager delegate;
+            try {
+                delegate = yamlInExecPass();
+            } catch (IOException e) {
+                delegate = new UnavailableSecretManager();
+                LOG.error(
+                        "Failed to initialize AutoSecretManager, using UnavailableSecretManager",
+                        e);
+            }
+            this.delegate = delegate;
         }
-        this.delegate = delegate;
     }
 
     @Override
