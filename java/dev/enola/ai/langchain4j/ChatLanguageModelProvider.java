@@ -74,6 +74,8 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
                         .modelName(model.trim())
                         .logRequestsAndResponses(true)
                         .build();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
             }
         }
 

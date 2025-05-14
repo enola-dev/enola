@@ -19,7 +19,9 @@ package dev.enola.common.secret;
 
 import com.google.errorprone.annotations.ThreadSafe;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,8 +39,12 @@ public class InMemorySecretManager implements SecretManager {
         this(Map.of());
     }
 
+    protected Map<String, char[]> getAll() {
+        return Collections.unmodifiableMap(secrets);
+    }
+
     @Override
-    public void store(String name, char[] value) {
+    public void store(String name, char[] value) throws IOException {
         if (name.trim().isEmpty()) {
             throw new IllegalArgumentException("Secret name cannot be null or empty.");
         }
@@ -57,7 +63,7 @@ public class InMemorySecretManager implements SecretManager {
     }
 
     @Override
-    public void delete(String key) {
+    public void delete(String key) throws IOException {
         char[] removedData = secrets.remove(key);
         if (removedData != null) Arrays.fill(removedData, '\0');
     }
