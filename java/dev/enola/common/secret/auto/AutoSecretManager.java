@@ -19,6 +19,7 @@ package dev.enola.common.secret.auto;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.exec.ExecPATH;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
@@ -61,10 +62,21 @@ public class AutoSecretManager implements SecretManager {
             try {
                 delegate = yamlInExecPass();
             } catch (IOException e) {
-                delegate = new UnavailableSecretManager();
-                LOG.error(
-                        "Failed to initialize AutoSecretManager, using UnavailableSecretManager",
-                        e);
+                try {
+                    delegate =
+                            new InsecureUnencryptedYamlFileSecretManager(
+                                    FreedesktopDirectories.PLAINTEXT_VAULT_FILE);
+                    LOG.warn(
+                            "Failed to initialize ExecPassSecretManager, using"
+                                    + " InsecureUnencryptedYamlFileSecretManager",
+                            e);
+                } catch (IOException ex) {
+                    delegate = new UnavailableSecretManager();
+                    LOG.error(
+                            "Failed to initialize ExecPassSecretManager, using"
+                                    + " UnavailableSecretManager",
+                            e);
+                }
             }
             this.delegate = delegate;
         }

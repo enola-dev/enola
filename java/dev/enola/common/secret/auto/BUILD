@@ -37,6 +37,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/exec",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/exec",
