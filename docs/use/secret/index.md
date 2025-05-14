@@ -23,10 +23,10 @@ Enola manages _"secrets"_ (e.g. API keys, other tokens, passwords, etc.) by dele
 The following ones are currently supported:
 
 * [`pass`](https://www.passwordstore.org): We recommend using this with GPG on a YubiKey that requires "touch" to decrypt secrets.
+* Plain File
 
 Support for other secret managers may be added in the future. Please open an issue if you need a specific one; like:
 
-* Plain File
 * [GNOME Keyring](https://github.com/swiesend/secret-service/issues/52)
 * [KDE Wallet](https://github.com/purejava/kdewallet)
 * Support [`age`](https://github.com/FiloSottile/age) (or [`rage`](https://github.com/str4d/rage)), with [`passage`](https://github.com/FiloSottile/passage); for [TPM](https://github.com/Foxboron/age-plugin-tpm), [SE](https://github.com/remko/age-plugin-se) and [YubiKey](https://github.com/str4d/age-plugin-yubikey)
