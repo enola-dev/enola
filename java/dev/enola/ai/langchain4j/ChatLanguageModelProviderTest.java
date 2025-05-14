@@ -22,8 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.langchain4j.ChatLanguageModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import dev.enola.common.Net;
-import dev.enola.common.secret.ExecPassSecretManager;
 import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.exec.ExecPassSecretManager;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 

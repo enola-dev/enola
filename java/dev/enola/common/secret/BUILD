@@ -15,17 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
-
-java_binary(
-    name = "pass",
-    main_class = "dev.enola.common.secret.ExecPassSecretManager",
-    runtime_deps = [
-        ":secret",
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-)
 
 java_library(
     name = "secret",

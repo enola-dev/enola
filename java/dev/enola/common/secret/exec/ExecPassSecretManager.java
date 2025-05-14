@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.secret;
+package dev.enola.common.secret.exec;
 
 import ch.vorburger.exec.ManagedProcessBuilder;
 import ch.vorburger.exec.ManagedProcessException;
@@ -23,6 +23,9 @@ import ch.vorburger.exec.OutputStreamLogDispatcher;
 import ch.vorburger.exec.OutputStreamType;
 
 import com.google.errorprone.annotations.ThreadSafe;
+
+import dev.enola.common.secret.Secret;
+import dev.enola.common.secret.SecretManager;
 
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -34,14 +37,22 @@ import java.util.Optional;
 /**
  * ExecPassSecretManager is an implementation of {@link SecretManager} which "shells out" (exec) to
  * [something like] <a href="https://www.passwordstore.org/"><tt>pass</tt></a> (for every secret).
+ *
+ * <p>We recommend using this with GPG on a YubiKey that requires "touch" to decrypt secrets.
  */
 @ThreadSafe
 public class ExecPassSecretManager implements SecretManager {
 
-    // TODO Move into sub package dev.enola.common.secret.exec
-
     // TODO FIXME Suppress STDOUT logging!! :=((
     //   https://github.com/vorburger/ch.vorburger.exec/issues/272
+
+    // TODO get() needs to distinguish between "not found" and other errors
+
+    // TODO Support https://github.com/FiloSottile/age (or https://github.com/str4d/rage)
+    //   [maybe via https://github.com/FiloSottile/passage ?], and then test it
+    //   with https://github.com/Foxboron/age-plugin-tpm
+    //   and https://github.com/remko/age-plugin-se
+    //   and https://github.com/str4d/age-plugin-yubikey
 
     // TODO How to make this (pass) work from within Bazel tests? ENV vars, @TestOnly after all?!
 
