@@ -15,10 +15,20 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
+java_binary(
+    name = "test",
+    main_class = "dev.enola.common.secret.auto.AutoSecretManager",
+    runtime_deps = [
+        ":auto",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
+
 java_library(
-    name = "langchain4j",
+    name = "auto",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -27,18 +37,11 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/concurrent",
-        "//java/dev/enola/common/context",
-        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
-        "//java/dev/enola/data",
-        "//java/dev/enola/identity",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:dev_langchain4j_langchain4j_core",
-        "@enola_maven//:dev_langchain4j_langchain4j_google_ai_gemini",
-        "@enola_maven//:dev_langchain4j_langchain4j_ollama",
-        "@enola_maven//:io_github_ollama4j_ollama4j",
+        "//java/dev/enola/common/secret/exec",
+        "//java/dev/enola/common/secret/yaml",
+        "@enola_maven//:ch_vorburger_exec_exec",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
@@ -47,18 +50,10 @@ java_library(
 junit_tests(
     name = "tests",
     srcs = glob(
-        ["*Test.java"],
+        include = ["*Test.java"],
+        allow_empty = True,
     ),
     deps = [
-        ":langchain4j",
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/context",
-        "//java/dev/enola/common/context/testlib",
-        "//java/dev/enola/common/secret",
-        "//java/dev/enola/common/secret/auto",
-        "//java/dev/enola/data",
-        "//java/dev/enola/identity",
-        "@enola_maven//:dev_langchain4j_langchain4j_core",
-        "@enola_maven//:dev_langchain4j_langchain4j_ollama",
+        ":auto",
     ],
 )

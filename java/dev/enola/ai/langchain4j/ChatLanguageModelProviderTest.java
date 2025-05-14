@@ -23,7 +23,7 @@ import static dev.enola.ai.langchain4j.ChatLanguageModelProvider.GOOGLE_AI_API_K
 
 import dev.enola.common.Net;
 import dev.enola.common.secret.SecretManager;
-import dev.enola.common.secret.exec.ExecPassSecretManager;
+import dev.enola.common.secret.auto.AutoSecretManager;
 import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
@@ -34,8 +34,10 @@ import java.net.URI;
 
 public class ChatLanguageModelProviderTest {
 
-    SecretManager secretManager = new ExecPassSecretManager();
+    SecretManager secretManager = new AutoSecretManager();
     Provider<URI, StreamingChatModel> p = new ChatLanguageModelProvider(secretManager);
+
+    public ChatLanguageModelProviderTest() throws IOException {}
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();

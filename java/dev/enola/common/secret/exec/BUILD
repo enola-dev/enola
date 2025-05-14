@@ -20,7 +20,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "pass",
-    main_class = "dev.enola.common.secret.pass.ExecPassSecretManager",
+    main_class = "dev.enola.common.secret.exec.ExecPassSecretManager",
     runtime_deps = [
         ":exec",
         "@enola_maven//:org_slf4j_slf4j_simple",
@@ -53,6 +53,5 @@ junit_tests(
     ),
     deps = [
         ":exec",
-        "//java/dev/enola/common/io",
     ],
 )

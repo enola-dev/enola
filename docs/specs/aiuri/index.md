@@ -40,15 +40,25 @@ Perhaps your favorite one could adopt it!
 
 The `model` query parameter of the URI needs to use a model name from https://ollama.com/search.
 
-## Google AI 🔮
+### Google AI 🔮
 
 `google://?model=gemini-2.5-flash-preview-04-17` is the URI of the [Gemini 2.5 Flash (Preview 04-17)](https://ai.google.dev/gemini-api/docs/models) LLM, used via the [Google (Gemini) AI API](https://ai.google.dev/gemini-api/).
+
+[For security](#security), the API key is not part of this URI, but configured elsewhere; typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`.
 
 Note that this is a **different** from the _Google Cloud Vertex AI Platform API._
 
 ### Mock 🦜
 
 `mocklm:hello,%20world` is the URI of a [mock](https://en.wikipedia.org/wiki/Mock_object) LM which, like a 🦜 parrot, always replies with _"hello, world"_ to any prompt.
+
+## Security
+
+It is intentional that none of these URIs contain API keys. They are configured "elsewhere", with a mechanism specific to the [supporting framework or tool](#support); typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`.
+
+This is primarily for security reasons, as such URIs may be shown to end-users.
+
+It is also often more convenient in practice; because while the choice of model, and its parameters, may be specific to a given Agent configuration, the specific API key is normally not, and more part of the using system's configuration.
 
 ## Related
 
@@ -63,3 +73,13 @@ We are not aware of any similar LM URI naming scheme. Please add any that you kn
 
 * [Enola](../../use/chat/index.md)
 * ?
+
+## [Haiku](https://github.com/enola-dev/enola/pull/1390)
+
+```english
+A URI's a name,
+For AI, it's the same,
+Ollama, Google, ...
+No longer a struggle,
+To call models by name.
+```
