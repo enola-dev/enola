@@ -25,6 +25,10 @@ import java.util.List;
 
 final class ExecPATH {
 
+    // TODO Move to package dev.enola.common.exec
+
+    // TODO Upstream; see https://github.com/vorburger/ch.vorburger.exec/issues/277
+
     // TODO Windows support is just quick hack, and has not really been tested yet.
 
     // TODO Add missing test coverage; use e.g. JimFS to mock a file system.

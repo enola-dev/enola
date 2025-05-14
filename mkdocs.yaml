@@ -68,6 +68,7 @@ nav:
       - 📝 ExecMD: use/execmd/index.md
       - ℹ️ Info: use/info/index.md
       - ⤵️ Fetch: use/fetch/index.md
+      - 🔑 Secrets: use/secret/index.md
   - Models:
       - By Type: models/index.md
       - By Parent: models/hierarchy.md

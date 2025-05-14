@@ -100,13 +100,13 @@ public class ExecPassSecretManager implements SecretManager {
 
     @Override
     public void store(String key, char @Nullable [] value) {
-        throw new UnsupportedOperationException("TODO Implemented store()");
+        throw new UnsupportedOperationException("Just use pass directly!");
         // When implementing, remember to Arrays.fill(value, '\0');
     }
 
     @Override
     public void delete(String key) {
-        throw new UnsupportedOperationException("TODO Implemented delete()");
+        throw new UnsupportedOperationException("Just use pass directly!");
     }
 
     public static void main(String[] args) {

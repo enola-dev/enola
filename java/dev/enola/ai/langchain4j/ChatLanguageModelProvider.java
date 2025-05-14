@@ -42,6 +42,8 @@ public class ChatLanguageModelProvider implements Provider<URI, StreamingChatMod
 
     // TODO CachingChatLanguageModelProvider
 
+    // TODO Make this more modular and pluggable
+
     // TODO Support ?topP / topK, temperature, seed etc. as query parameters!
     //   Or is there no need to set that as default, because it will only be set on requests?
 
