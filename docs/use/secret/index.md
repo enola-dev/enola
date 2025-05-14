@@ -19,11 +19,10 @@
 # Secrets
 
 Enola manages _"secrets"_ (e.g. API keys, other tokens, passwords, etc.) by delegating to an external secret manager.
-
 The following ones are currently supported:
 
-* [`pass`](https://www.passwordstore.org): We recommend using this with GPG on a YubiKey that requires "touch" to decrypt secrets.
-* Plain File
+1. [`pass`](https://www.passwordstore.org): We recommend using this with GPG on a YubiKey that requires "touch" to decrypt secrets.
+1. Insecure unencrypted plain text (YAML) file 😭
 
 Support for other secret managers may be added in the future. Please open an issue if you need a specific one; like:
 
