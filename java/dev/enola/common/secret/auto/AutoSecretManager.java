@@ -53,6 +53,7 @@ public class AutoSecretManager implements SecretManager {
     private final SecretManager delegate;
 
     public AutoSecretManager() {
+        // TODO Add support for GnomeSecretManager, using class DesktopDetector
         if (System.getenv("BAZEL_TEST") != null) {
             this.delegate = new UnavailableSecretManager();
         } else {

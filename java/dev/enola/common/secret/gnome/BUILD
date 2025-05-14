@@ -20,15 +20,15 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "demo",
-    main_class = "dev.enola.common.secret.auto.AutoSecretManager",
+    main_class = "dev.enola.common.secret.gnome.GnomeSecretManager",
     runtime_deps = [
-        ":auto",
+        ":gnome",
         "@enola_maven//:org_slf4j_slf4j_simple",
     ],
 )
 
 java_library(
-    name = "auto",
+    name = "gnome",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -37,12 +37,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/exec",
         "//java/dev/enola/common/secret",
-        "//java/dev/enola/common/secret/exec",
-        "//java/dev/enola/common/secret/yaml",
-        "@enola_maven//:ch_vorburger_exec_exec",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:de_swiesend_secret_service",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
@@ -50,11 +47,12 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(
-        include = ["*Test.java"],
-        allow_empty = True,
-    ),
+    srcs = glob([
+        "*Test.java",
+    ]),
     deps = [
-        ":auto",
+        ":gnome",
+        "//java/dev/enola/common/io",
+        "@enola_maven//:de_swiesend_secret_service",
     ],
 )
