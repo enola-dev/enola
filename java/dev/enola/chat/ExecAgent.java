@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
+import dev.enola.common.exec.ExecPATH;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.markdown.exec.Runner;
 import dev.enola.common.markdown.exec.VorburgerExecRunner;

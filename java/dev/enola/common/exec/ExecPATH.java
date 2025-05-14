@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.chat;
+package dev.enola.common.exec;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class ExecPATH {
-
-    // TODO Move to package dev.enola.common.exec
 
     // TODO Upstream; see https://github.com/vorburger/ch.vorburger.exec/issues/277
 
