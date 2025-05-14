@@ -26,14 +26,14 @@ The following ones are currently supported:
 
 Support for other secret managers may be added in the future. Please open an issue if you need a specific one; like:
 
-* GNOME Keyring
-* KDE Wallet
 * Plain File
+* [GNOME Keyring](https://github.com/swiesend/secret-service/issues/52)
+* [KDE Wallet](https://github.com/purejava/kdewallet)
 * Support [`age`](https://github.com/FiloSottile/age) (or [`rage`](https://github.com/str4d/rage)), with [`passage`](https://github.com/FiloSottile/passage); for [TPM](https://github.com/Foxboron/age-plugin-tpm), [SE](https://github.com/remko/age-plugin-se) and [YubiKey](https://github.com/str4d/age-plugin-yubikey)
 * macOS Keychain, on Apple's Secure Enclave
 * Cloud KMS (various)
 * Windows
 
-Which one is used is currently automatically determined. This may be more configurable in the future.
+Which one is used is currently automatically determined. This may be made more configurable in the future.
 
 We will not read _"secrets"_ from environment variables, as this is not secure.
