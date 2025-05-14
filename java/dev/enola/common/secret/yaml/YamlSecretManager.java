@@ -20,12 +20,10 @@ package dev.enola.common.secret.yaml;
 import dev.enola.common.function.CheckedConsumer;
 import dev.enola.common.function.CheckedSupplier;
 import dev.enola.common.secret.InMemorySecretManager;
-import dev.enola.common.secret.Secret;
 import dev.enola.common.yamljson.YAML;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Optional;
 
 public class YamlSecretManager extends InMemorySecretManager {
 
@@ -71,11 +69,6 @@ public class YamlSecretManager extends InMemorySecretManager {
     public void store(String key, char[] value) throws IOException {
         super.store(key, value);
         save();
-    }
-
-    @Override
-    public Optional<Secret> getOptional(String key) {
-        return super.getOptional(key);
     }
 
     @Override

@@ -50,6 +50,9 @@ public final class FreedesktopDirectories {
     public static final Path HOSTKEY_PATH =
             Path.of(ProjectDirectories.from("dev", "Enola", "Enola").configDir, "sshd-hostkey");
 
+    public static final Path PLAINTEXT_VAULT_FILE =
+            Path.of(ProjectDirectories.from("dev", "Enola", "Enola").configDir, "azkaban.yaml");
+
     public static final Path HISTORY =
             Path.of(ProjectDirectories.from("dev", "Enola", "Enola").dataLocalDir, "history");
 
