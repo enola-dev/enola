@@ -24,7 +24,9 @@ import java.util.Optional;
  * PrefixingSecretManager is a {@link SecretManager} that prefixes all keys with a given prefix.
  *
  * <p>This is useful, for example, to use a single {@link SecretManager} in a server environment for
- * multiple users (or any other Subject).
+ * multiple users (or any other Subject), or in a desktop environment to store application-specific
+ * secrets on the user's desktop secret manager (like GNOME Keyring or macOS Keychain on Apple's
+ * Secure Enclave).
  */
 public class PrefixingSecretManager implements SecretManager {
 

@@ -27,13 +27,10 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        # TODO vorburger.exec
         "//java/dev/enola/common/function",
-        "//java/dev/enola/common/io",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/yamljson",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
