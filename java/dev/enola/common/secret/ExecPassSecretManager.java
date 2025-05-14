@@ -33,10 +33,12 @@ import java.util.Optional;
 
 /**
  * ExecPassSecretManager is an implementation of {@link SecretManager} which "shells out" (exec) to
- * [something like] <a href="https://www.passwordstore.org/"><tt>pass</tt></a>.
+ * [something like] <a href="https://www.passwordstore.org/"><tt>pass</tt></a> (for every secret).
  */
 @ThreadSafe
 public class ExecPassSecretManager implements SecretManager {
+
+    // TODO Move into sub package dev.enola.common.secret.exec
 
     // TODO FIXME Suppress STDOUT logging!! :=((
     //   https://github.com/vorburger/ch.vorburger.exec/issues/272

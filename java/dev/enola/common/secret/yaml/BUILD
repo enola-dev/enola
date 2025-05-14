@@ -27,6 +27,8 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        # TODO vorburger.exec
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/yamljson",

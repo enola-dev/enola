@@ -17,59 +17,58 @@
  */
 package dev.enola.common.secret.yaml;
 
-import dev.enola.common.io.resource.Resource;
+import dev.enola.common.function.CheckedConsumer;
+import dev.enola.common.function.CheckedSupplier;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.yamljson.YAML;
 
-import org.jspecify.annotations.Nullable;
-
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Optional;
 
 public class YamlSecretManager extends InMemorySecretManager {
 
-    private final Resource resource;
+    private final CheckedConsumer<String, IOException> saveConsumer;
+    private final CheckedSupplier<String, IOException> loadSupplier;
 
-    public YamlSecretManager(Resource resource) throws IOException {
-        this.resource = resource;
-        // TODO Handle resource not found
+    public YamlSecretManager(
+            CheckedConsumer<String, IOException> saveConsumer,
+            CheckedSupplier<String, IOException> loadSupplier)
+            throws IOException {
+        this.saveConsumer = saveConsumer;
+        this.loadSupplier = loadSupplier;
         load();
     }
 
     protected void load() throws IOException {
-        YAML.readSingleMap(
-                resource,
-                map -> {
-                    map.forEach(
-                            (key, value) -> {
-                                if (key instanceof String keyAsString
-                                        && value instanceof String valueAsString) {
-                                    try {
-                                        super.store(keyAsString, valueAsString.toCharArray());
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(
-                                                "InMemorySecretManager should never throw"
-                                                        + " IOException",
-                                                e);
-                                    }
-                                } else {
-                                    throw new IllegalArgumentException(
-                                            "Unsupported key/value types: "
-                                                    + key.getClass()
-                                                    + " / "
-                                                    + value.getClass());
-                                }
-                            });
+        var map = YAML.readSingleMap(loadSupplier.get());
+        map.forEach(
+                (key, value) -> {
+                    if (key instanceof String keyAsString
+                            && value instanceof String valueAsString) {
+                        try {
+                            super.store(keyAsString, valueAsString.toCharArray());
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(
+                                    "InMemorySecretManager should never throw IOException?!", e);
+                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Unsupported key/value types: "
+                                        + key.getClass()
+                                        + " / "
+                                        + value.getClass());
+                    }
                 });
     }
 
     protected void save() throws IOException {
-        YAML.write(super.getAll(), this.resource);
+        saveConsumer.accept(YAML.write(super.getAll()));
     }
 
     @Override
-    public void store(String key, char @Nullable [] value) throws IOException {
+    public void store(String key, char[] value) throws IOException {
         super.store(key, value);
         save();
     }
