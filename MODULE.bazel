@@ -38,7 +38,7 @@ bazel_dep(name = "re2", version = "2024-07-02.bcr.1")
 bazel_dep(name = "abseil-cpp", version = "20250127.1")
 
 # https://github.com/protocolbuffers/protobuf/tree/main?tab=readme-ov-file#bazel-with-bzlmod
-bazel_dep(name = "protobuf", version = "29.4")
+bazel_dep(name = "protobuf", version = "30.2")
 
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "8.11.0")
