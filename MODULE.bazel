@@ -164,7 +164,7 @@ enola_maven.install(
 
         # TODO Use finer-grained individual JARs?
         # TODO Support MS Windows? See https://github.com/jline/jline3#artifacts.
-        "org.jline:jline:3.30.0",
+        "org.jline:jline:3.30.1",
 
         # TODO Use sshd-netty? See https://github.com/apache/mina-sshd/blob/master/docs/dependencies.md#netty
         "org.apache.sshd:sshd-core:2.15.0",
