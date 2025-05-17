@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/context",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:org_jspecify_jspecify",
     ],

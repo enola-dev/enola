@@ -27,6 +27,8 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/locale",
+        "//java/dev/enola/common/time",
         "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",

@@ -34,6 +34,8 @@ import java.util.UUID;
 
 public final class ObjectToStringBiConverters {
 
+    // TODO Add Locale aware Number converters (similar to TemporalAccessorToStringConverter)
+
     public static final ObjectToStringBiConverter<String> STRING =
             new ObjectToStringWithToStringBiConverter<>(String.class, input -> input);
 
@@ -91,7 +93,8 @@ public final class ObjectToStringBiConverters {
             new ObjectToStringWithToStringBiConverter<>(LocalDate.class, LocalDate::parse);
 
     public static final ObjectToStringBiConverter<Instant> INSTANT =
-            new ObjectToStringWithToStringBiConverter<>(Instant.class, Instant::parse);
+            // new ObjectToStringWithToStringBiConverter<>(Instant.class, Instant::parse);
+            TemporalAccessorToStringConverter.INSTANT;
 
     public static final ObjectToStringBiConverter<FileTime> FILE_TIME =
             new ObjectToStringWithToStringBiConverter<>(
