@@ -18,7 +18,9 @@
 
 # Fetch ⤵️
 
-`fetch` fetches a _Resource_ from an _URL_ and outputs its content. You can therefore use this similarly to [curl](https://curl.se/) or [httpie](https://httpie.io/cli) or [wget](https://en.wikipedia.org/wiki/Wget). (If you want to see the _Media Type,_ use [`info detect`](../info/index.md#detect).)
+`fetch` fetches a _Resource_ from an
+_URL_ and outputs its content. You can therefore use this similarly to [curl](https://curl.se/) or [httpie](https://httpie.io/cli) or [wget](https://en.wikipedia.org/wiki/Wget). (If you want to see the
+_Media Type,_ use [`info detect`](../info/index.md#detect).)
 
 This is different from [`get`](../get/index.md), which shows _Thing/s_ given an _IRI.
 (However the `--load` option of `get` internally does a `fetch`, and supports the same schemes.)
@@ -30,7 +32,8 @@ These are supported everywhere; including in `fetch`, `--load`, and elsewhere.
 
 ### Files
 
-We can do `cat`-like equivalent of local files using [the `file:` scheme](https://en.wikipedia.org/wiki/File_URI_scheme):
+We can do `cat`-like equivalent of local files using [the
+`file:` scheme](https://en.wikipedia.org/wiki/File_URI_scheme):
 
 ```bash cd ../.././..
 $ echo "hello, world" >/tmp/hi.txt && ./enola fetch file:///tmp/hi.txt
@@ -46,7 +49,8 @@ $ ./enola fetch /tmp/hi.txt
 ...
 ```
 
-When running a remotely accessible [server](../server/index.md), you'll most probably want to disable the `file:` scheme,
+When running a remotely accessible [server](../server/index.md), you'll most probably want to disable the
+`file:` scheme,
 to block access to local files for security:
 
 ```bash $? cd ../.././..
@@ -117,14 +121,16 @@ $ ./enola fetch "data:application/json;charset=UTF-8,%7B%22key%22%3A+%22value%22
 
 ### Multibase
 
-Enola [supports](https://github.com/multiformats/multibase/issues/134) `multibase:` URLs, which are from [Multiformats](https://multiformats.io/):
+Enola [supports](https://github.com/multiformats/multibase/issues/134)
+`multibase:` URLs, which are from [Multiformats](https://multiformats.io/):
 
 ```bash cd ../.././..
 $ ./enola fetch multibase:maGVsbG8sIHdvcmxk
 ...
 ```
 
-Nota bene: This (fetchable) `multibase:` scheme is (intentionally) different from the `mb:` used for (random) Thing IRIs.
+Nota bene: This (fetchable) `multibase:` scheme is (intentionally) different from the
+`mb:` used for (random) Thing IRIs.
 
 ### File Descriptor
 
@@ -154,9 +160,29 @@ $ ./enola fetch empty:/
 ...
 ```
 
+### Teapot 🫖
+
+We are proud to handle [RFC 2324](https://www.rfc-editor.org/rfc/rfc2324.html)-inspired
+🫖 `coffee:` etc. URLs, in support of [save418.com](https://save418.com/):
+
+```bash cd ../.././..
+$ ./enola fetch "kafo://demo.enola.dev/pot-7?#syrup-type=Vanilla"
+...
+```
+
+All international (§3.) coffee URI schemes are fully supported; and e.g.
+`kafo://demo.enola.dev/pot-7?#syrup-type=Vanilla` is valid for sameideanoj. Please note
+the following (major and breaking, sorry) backwards incompatibility: Due to what is assumed to
+be a typo in the original RFC, for _Catalan, French and Galician_ the correctly accented URI
+scheme `café` ("caf%C3%A9") instead of `cafè` ("caf%C3%E8") is used. However, we
+do also support `cafè` as the _Italian_ URI scheme; this should help to avoid major
+systems interoperability disasters. (It may still cause minor language issues; where full
+interop with the original RFC spec is required, we recommend using a Locale override URL
+parameter; e.g. `cafè://demo.enola.dev/pot-7?hl=fr`.)
+
 ### Exec
 
-TODO We plan to support an `exec:` scheme,  whose content will be the resulting of running the given command,
+TODO We plan to support an `exec:` scheme, whose content will be the resulting of running the given command,
 similar to e.g. [🐪 Camel's](https://camel.apache.org/components/4.8.x/exec-component.html) or (vaguely) Web Browsers'
 `javascript:`.
 
@@ -179,9 +205,12 @@ or that was determined from a file extension.
 Adding e.g. `?charset=iso-8859-1` overrides (and takes precedence over)
 the Charset from the Media Type (if any) or any HTTP header like mechanisms.
 
+<!-- ### Locale Adding e.g. `?hl=gsw-CH` overrides the _Locale_ used for textual responses to [Swiss German](https://en.wikipedia.org/wiki/Swiss_German). -->
+
 ### Integrity
 
-Adding `?integrity=...` verifies resources via a [cryptographic digest ("hash")](https://docs.ipfs.tech/concepts/hashing/)
+Adding
+`?integrity=...` verifies resources via a [cryptographic digest ("hash")](https://docs.ipfs.tech/concepts/hashing/)
 using a [Multiformats's Multibase encoded Multihash](https://www.multiformats.io).
 (This is similar e.g. to [HTML's Subresource Integrity (SRI)](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity).)
 It works for all schemes:
@@ -209,7 +238,8 @@ $ ./enola fetch --http-scheme "https://www.vorburger.ch/hello.md?integrity=z8Vsn
 [`enola info digest`](../info/index.md#digest) is an alternative for obtaining the `?integrity=...` value.
 
 Note that while [Multihash](https://www.multiformats.io/multihash/) defines codes for [various hash functions](https://github.com/multiformats/multicodec/blob/master/table.csv),
-Enola (currently) [intentionally](https://github.com/google/guava/issues/5990#issuecomment-2571350434) only actually supports `sha2-256` & `sha2-512`.
+Enola (currently) [intentionally](https://github.com/google/guava/issues/5990#issuecomment-2571350434) only actually supports
+`sha2-256` & `sha2-512`.
 
 [URL Integrity Spec](../../specs/url-integrity/index.md) describes this further.
 
