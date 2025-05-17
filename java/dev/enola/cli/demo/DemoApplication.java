@@ -40,6 +40,7 @@ import picocli.CommandLine;
 public class DemoApplication extends Application {
 
     @CommandLine.Mixin LoggingMixin loggingMixin;
+    @CommandLine.Mixin LocaleOption localeOption;
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
@@ -50,5 +51,8 @@ public class DemoApplication extends Application {
     }
 
     @Override
-    protected void start() {}
+    protected void start() {
+        // TODO Move this (and LocaleOption localeOption) up into Application?
+        localeOption.initializeSINGLETON();
+    }
 }

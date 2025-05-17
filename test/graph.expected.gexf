@@ -22,8 +22,7 @@
         </parents>
       </node>
       <node id="https://example.org/orphan" label="👋ex:orphan" pid="classpath:/graph.ttl"/>
-      <node id="https://example.org/world" label="ex:world" start="-1000000000-01-02T00:00:00Z"
-            end="+300000-12-31T00:00:00Z">
+      <node id="https://example.org/world" label="ex:world" end="+300000-12-31T00:00:00Z">
         <parents>
           <parent for="https://example.org/Planet"/>
           <parent for="classpath:/graph.ttl"/>

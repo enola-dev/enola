@@ -126,7 +126,7 @@ public record Interval(Instant start, Instant end) {
     }
 
     /**
-     * Checks if the start of the interval is unbounded (i.e. equals {@link Instant#MAX}).
+     * Checks if the start of the interval is unbounded (i.e. equals {@link Instant#MIN}).
      *
      * @return true if start is unbounded
      */
@@ -135,7 +135,7 @@ public record Interval(Instant start, Instant end) {
     }
 
     /**
-     * Checks if the end of the interval is unbounded (i.e. equals {@link Instant#MIN}).
+     * Checks if the end of the interval is unbounded (i.e. equals {@link Instant#MAX}).
      *
      * @return true if end is unbounded
      */

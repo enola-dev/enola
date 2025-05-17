@@ -21,6 +21,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -61,6 +62,10 @@ public abstract class Singleton<T> implements Supplier<T> {
             throw new IllegalStateException(
                     getClass() + " was never set(); use SingletonRule in tests");
         else return value;
+    }
+
+    public Optional<T> getOptional() {
+        return Optional.ofNullable(value);
     }
 
     // TODO Make Move SingletonRule to this package, and make this package private!

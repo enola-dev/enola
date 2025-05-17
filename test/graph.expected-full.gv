@@ -44,7 +44,7 @@ digraph {
     <TR><TD ALIGN="left">schema:image</TD><TD>https://upload.wikimedi...</TD></TR>
     <TR><TD ALIGN="left">enola:endedAt</TD><TD>+300000-12-31T00:00:00Z</TD></TR>
     <TR><TD ALIGN="left">enola:wikipedia</TD><TD>https://en.wikipedia.or...</TD></TR>
-    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-02T00:00...</TD></TR>
+    <TR><TD ALIGN="left">enola:startedAt</TD><TD>-1000000000-01-01T00:00...</TD></TR>
     <TR><TD ALIGN="left">ex:population</TD><TD>18446744073709551615</TD></TR>
   </TABLE>>]
   "https://example.org/world" -> "classpath:/graph.ttl" [URL="https://enola.dev/origin" label="enola:origin"]

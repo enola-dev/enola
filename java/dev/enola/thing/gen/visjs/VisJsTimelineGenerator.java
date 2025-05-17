@@ -122,6 +122,7 @@ public class VisJsTimelineGenerator implements ThingsIntoAppendableConverter {
                 var start = interval.isUnboundedStart() ? null : interval.start();
                 var end = interval.isUnboundedEnd() ? null : interval.end();
                 // NB: Vis.js needs either start & end, or just start - but never only end
+                // TODO Isn't this missing handling of the other cases?
                 if (start == null && end != null) {
                     start = end;
                     end = null;

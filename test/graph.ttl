@@ -23,7 +23,7 @@ rdfs:Class enola:color "lightblue".
   enola:wikipedia "https://en.wikipedia.org/wiki/Earth";
   schema:image "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/480px-The_Blue_Marble_%28remastered%29.jpg";
   # https://en.wikipedia.org/wiki/Dating_creation#Egyptian ;-)
-  enola:startedAt "-1000000000-01-02T00:00:00Z"^^enola:Timestamp;
+  enola:startedAt "-1000000000-01-01T00:00:00Z"^^enola:Timestamp;
   # https://en.wikipedia.org/wiki/List_of_dates_predicted_for_apocalyptic_events#Far_future_predictions
   enola:endedAt "+300000-12-31T00:00:00Z"^^enola:Timestamp;
   :population "18446744073709551615"^^enola:UnsignedLong.
