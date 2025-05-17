@@ -85,6 +85,7 @@ nav:
       - URL & ID: concepts/uri.md
       - Metadata: concepts/metadata.md
       - Namespaces: concepts/namespaces.md
+      - Internationalization: concepts/locale.md
       - Formats:
           - RDF:
               - Turtle: concepts/turtle.md
@@ -110,7 +111,7 @@ nav:
       # ? - Playbooks: concepts/playbook.md
       - Specs:
           - specs/index.md
-          - specs/aiuri/index.md
+          - AI URI: specs/aiuri/index.md
           - specs/rdf2ipfs/index.md
           - specs/url-integrity/index.md
           # TODO - specs/url-cache-version/index.md

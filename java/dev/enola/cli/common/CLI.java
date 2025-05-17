@@ -23,7 +23,9 @@ import picocli.CommandLine;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class CLI {
 
@@ -40,7 +42,8 @@ public class CLI {
                 new CommandLine(app)
                         .setUsageHelpAutoWidth(true)
                         .setCaseInsensitiveEnumValuesAllowed(true)
-                        // .registerConverter(Locale.class, new LocaleConverter())
+                        .registerConverter(Locale.class, new LocaleConverter())
+                        .registerConverter(ZoneId.class, new ZoneIdConverter())
                         .setExecutionStrategy(LoggingMixin::executionStrategy)
                         .setExitCodeExceptionMapper(new KnownExitCodeExceptionMapper())
                         .setExecutionExceptionHandler(new QuietExecutionExceptionHandler(app)));

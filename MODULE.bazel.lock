@@ -300,7 +300,7 @@
     "@@apple_support+//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "HMksCpwTJObG/qVmCTsOuVA6HYhHT4OzvE3MSzDCQ58=",
-        "usagesDigest": "5GLot8AKuDILP0+p7fYcUY2XmzKXL40xGnX+IhQFcSo=",
+        "usagesDigest": "xy4hGUI+8czFEq7WK6IuxNAD1vPu9nBlmZmaeFsQI1E=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -814,7 +814,7 @@
     "@@rules_apple+//apple:apple.bzl%provisioning_profile_repository_extension": {
       "general": {
         "bzlTransitiveDigest": "XsFBZHA61lhMoXvnuRk0q1Xa/d4yrkD4yRHjltPCNMU=",
-        "usagesDigest": "pS5nskWKqJmyQrAbunwjEcDsK6cHF7JOAXgEofCmj7k=",
+        "usagesDigest": "0EHzLTJlMTVTJ8YrNWsO1IC7mxSweG1kmBAzJagFnpo=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},

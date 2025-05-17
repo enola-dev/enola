@@ -26,6 +26,8 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.locale.LocaleSupplier;
+import dev.enola.common.locale.LocaleSupplierTLC;
 import dev.enola.data.iri.IRI;
 import dev.enola.data.iri.NamespaceConverter;
 import dev.enola.data.iri.namespace.repo.NamespaceConverterWithRepository;
@@ -61,9 +63,10 @@ public class TikaThingConverter implements UriIntoThingConverter {
                     MediaType.parse("application/x-turtle"));
 
     private static final AutoDetectParser parser = new AutoDetectParser();
-    private final ResourceProvider rp;
 
+    private final ResourceProvider rp;
     private final NamespaceConverter namespaceConverter;
+    private final LocaleSupplier localeSupplier = LocaleSupplierTLC.JVM_DEFAULT;
 
     public TikaThingConverter(ResourceProvider resourceProvider) {
         this.rp = resourceProvider;
@@ -83,8 +86,8 @@ public class TikaThingConverter implements UriIntoThingConverter {
             throws ConversionException, IOException {
         if (resource.byteSource().isEmpty()) return false;
 
-        // TODO How to pass e.g. current Locale from TLC, e.g. for XLS parsing?
         ParseContext parseContext = new ParseContext();
+        parseContext.set(Locale.class, localeSupplier.get());
 
         // TODO Improve detection of on when Tika can actually process content...
         // parser.getSupportedTypes(parseContext) ... with TikaMediaTypeProvider ?

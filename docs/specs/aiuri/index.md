@@ -44,9 +44,9 @@ The `model` query parameter of the URI needs to use a model name from https://ol
 
 `google://?model=gemini-2.5-flash-preview-04-17` is the URI of the [Gemini 2.5 Flash (Preview 04-17)](https://ai.google.dev/gemini-api/docs/models) LLM, used via the [Google (Gemini) AI API](https://ai.google.dev/gemini-api/).
 
-[For security](#security), the API key is not part of this URI, but configured elsewhere; typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`.
+[For security](#security), the API key is not part of this URI, but configured elsewhere; typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`. Such keys can be easily obtained by clicking on _Get API key_ in https://aistudio.google.com.
 
-Note that this is a **different** from the _Google Cloud Vertex AI Platform API._
+Note that the _Google (Gemini) AI API_ is a **different** API from the _Google Cloud Vertex AI Platform API._
 
 ### Mock 🦜
 
@@ -54,11 +54,11 @@ Note that this is a **different** from the _Google Cloud Vertex AI Platform API.
 
 ## Security
 
-It is intentional that none of these URIs contain API keys. They are configured "elsewhere", with a mechanism specific to the [supporting framework or tool](#support); typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`.
+It is intentional that none of these URIs contain API keys. They are configured "elsewhere", with a mechanism specific to the [supporting framework or tool](#support); typically in a _[secret](../../use/secret/index.md)._
 
-This is primarily for security reasons, as such URIs may be shown to end-users.
+This is primarily for security reasons, as such URIs may be used e.g. in agent configuration files stored under source control, or even shown to technical end-users in UIs.
 
-It is also often more convenient in practice; because while the choice of model, and its parameters, may be specific to a given Agent configuration, the specific API key is normally not, and more part of the using system's configuration.
+It is also often more convenient in practice; because while the choice of a model, and its parameters, is often specific to a given Agent configuration, the specific API key really is not, and instead belongs to separate configuration.
 
 ## Related
 

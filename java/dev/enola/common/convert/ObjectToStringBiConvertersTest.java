@@ -24,12 +24,13 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.attribute.FileTime;
-import java.time.Instant;
+import java.time.*;
 import java.util.Optional;
 
 public class ObjectToStringBiConvertersTest {
 
     @Test
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void BOOLEAN_convertToType() throws IOException {
         ObjectClassConverter occ = ObjectToStringBiConverters.BOOLEAN;
         assertThat(occ.convertToType(Boolean.TRUE, String.class)).hasValue("true");
@@ -41,14 +42,15 @@ public class ObjectToStringBiConvertersTest {
     }
 
     @Test
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void STRING_convertToType() throws IOException {
         ObjectClassConverter occ = ObjectToStringBiConverters.STRING;
-        assertThat(occ.convertToType(Integer.valueOf(123), String.class)).isEmpty();
+        assertThat(occ.convertToType(123, String.class)).isEmpty();
         assertThat(occ.convertToType("hello, world", URI.class)).isEmpty();
     }
 
     @Test
-    public void BOOLEAN_convertTo() throws IOException {
+    public void BOOLEAN_convertTo() {
         BiConverter<Boolean, String> bic = ObjectToStringBiConverters.BOOLEAN;
         assertThat(bic.convertTo(Boolean.TRUE)).isEqualTo("true");
         assertThat(bic.convertTo(Boolean.FALSE)).isEqualTo("false");
@@ -56,12 +58,14 @@ public class ObjectToStringBiConvertersTest {
     }
 
     @Test
-    public void BOOLEAN_convertFrom() throws IOException {
+    public void BOOLEAN_convertFrom() {
         BiConverter<Boolean, String> bic = ObjectToStringBiConverters.BOOLEAN;
         assertThat(bic.convertFrom("true")).isEqualTo(Boolean.TRUE);
         assertThat(bic.convertFrom("false")).isEqualTo(Boolean.FALSE);
         assertThat(bic.convertFrom(null)).isEqualTo(null);
     }
+
+    // ObjectToStringBiConverters.INSTANT is tested in TemporalAccessorToStringConverterTest
 
     @Test
     public void FILE_TIME_convertTo_Instant() throws IOException {

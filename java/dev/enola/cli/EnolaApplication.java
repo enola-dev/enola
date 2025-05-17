@@ -44,6 +44,7 @@ import picocli.CommandLine.Mixin;
             ServerCommand.class,
             ExecMdCommand.class,
             LoggingTestCommand.class,
+            LocaleTestCommand.class,
             InfoCommand.class,
             ValidateCommand.class,
             CanonicalizeCommand.class,
@@ -53,6 +54,7 @@ import picocli.CommandLine.Mixin;
 public class EnolaApplication extends Application {
 
     @Mixin LoggingMixin loggingMixin;
+    @Mixin LocaleOption localeOption;
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
@@ -64,6 +66,9 @@ public class EnolaApplication extends Application {
 
     @Override
     protected void start() {
+        // TODO Move this (and LocaleOption localeOption) up into Application?
+        localeOption.initializeSINGLETON();
+
         Configuration.setSingletons();
     }
 }
