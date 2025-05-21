@@ -30,7 +30,7 @@ register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_de
 
 # see https://github.com/bazelbuild/rules_apple/issues/2660
 # for https://github.com/enola-dev/enola/issues/1146
-bazel_dep(name = "rules_apple", version = "3.21.1", repo_name = "build_bazel_rules_apple")
+bazel_dep(name = "rules_apple", version = "3.22.0", repo_name = "build_bazel_rules_apple")
 
 # see https://github.com/enola-dev/enola/issues/1164
 # NO NEED: bazel_dep(name = "rules_cc", version = "0.0.17")
@@ -151,8 +151,8 @@ enola_maven.install(
         "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.25",
         "eu.maveniverse.maven.mima:context:2.4.25",
         "eu.maveniverse.maven.mima.extensions:mmr:2.4.25",
-        "org.apache.maven.resolver:maven-resolver-api:2.0.8",
-        "org.apache.maven.resolver:maven-resolver-util:2.0.8",
+        "org.apache.maven.resolver:maven-resolver-api:2.0.9",
+        "org.apache.maven.resolver:maven-resolver-util:2.0.9",
         "org.apache.maven:maven-model:3.9.9",
         "org.codehaus.plexus:plexus-xml:4.1.0",
 
