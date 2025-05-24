@@ -164,7 +164,7 @@ enola_maven.install(
 
         # TODO Use finer-grained individual JARs?
         # TODO Support MS Windows? See https://github.com/jline/jline3#artifacts.
-        "org.jline:jline:3.30.2",
+        "org.jline:jline:3.30.3",
 
         # https://github.com/JetBrains/pty4j
         "org.jetbrains.pty4j:pty4j:0.13.4",
