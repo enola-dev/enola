@@ -18,6 +18,7 @@
 package dev.enola.common.exec.pty;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class Demo {
 
@@ -28,7 +29,14 @@ public class Demo {
         String[] cmd = {"/usr/bin/fish", "-l"};
         System.out.println("Starting: " + String.join(" ", cmd));
         try (var runner =
-                new PtyRunner(true, cmd, System.getenv(), System.in, System.out, System.err)) {
+                new PtyRunner(
+                        true,
+                        Path.of("."),
+                        cmd,
+                        System.getenv(),
+                        System.in,
+                        System.out,
+                        System.err)) {
             // System.out.println("Running, and awaiting exit of: " + String.join(" ", cmd));
             result = runner.waitForExit();
         }

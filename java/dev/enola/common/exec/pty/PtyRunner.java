@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,8 +37,6 @@ import java.util.Map;
 /** PtyRunner executes a command in a PTY, connecting its I/O to an IS & OS. */
 public class PtyRunner implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(PtyRunner.class);
-
-    // TODO Support passing working directory! (PtyProcessBuilder has required method)
 
     private final PtyProcess process;
     private final OutputStream procOut;
@@ -49,6 +48,7 @@ public class PtyRunner implements AutoCloseable {
 
     public PtyRunner(
             boolean console,
+            Path directory,
             String[] cmd,
             Map<String, String> env,
             InputStream in,
@@ -65,6 +65,7 @@ public class PtyRunner implements AutoCloseable {
                         .setCommand(cmd)
                         .setEnvironment(envCopy)
                         .setConsole(!console)
+                        .setDirectory(directory.toString())
                         .start();
 
         procOut = process.getOutputStream();
