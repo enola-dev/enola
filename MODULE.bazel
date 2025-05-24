@@ -166,12 +166,14 @@ enola_maven.install(
         # TODO Support MS Windows? See https://github.com/jline/jline3#artifacts.
         "org.jline:jline:3.30.2",
 
+        # https://github.com/JetBrains/pty4j
+        "org.jetbrains.pty4j:pty4j:0.13.4",
+
         # SLF4j Logging Testing alternatives considered:
         #   - https://github.com/Hakky54/log-captor
         #   - https://github.com/portingle/slf4jtesting
         #   - https://www.spf4j.org/spf4j-slf4j-test/
         "com.github.valfirst:slf4j-test:3.0.1",
-        "org.jetbrains.pty4j:pty4j:0.13.4",
 
         # TODO Use sshd-netty? See https://github.com/apache/mina-sshd/blob/master/docs/dependencies.md#netty
         "org.apache.sshd:sshd-core:2.15.0",

@@ -17,8 +17,6 @@
  */
 package dev.enola.common.exec.pty;
 
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
-
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
 
@@ -33,6 +31,7 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /** PtyRunner executes a command in a PTY, connecting its I/O to an IS & OS. */
 public class PtyRunner implements AutoCloseable {
@@ -57,8 +56,7 @@ public class PtyRunner implements AutoCloseable {
             throws IOException {
 
         var envCopy = new HashMap<>(env);
-        // TODO Why default TERM=xterm, instead of modern e.g. screen-256color?
-        if (!envCopy.containsKey("TERM")) envCopy.put("TERM", "xterm");
+        if (!envCopy.containsKey("TERM")) envCopy.put("TERM", "xterm-256color");
 
         process =
                 new PtyProcessBuilder()
@@ -96,52 +94,51 @@ public class PtyRunner implements AutoCloseable {
         }
     }
 
-    // TODO How to re-factor to reduce copy/paste between waitForExit() & waitFor() ?
-
     public int waitForExit() {
-        int exitCode = -99; // -99 is the default exit code if interrupted
-        try {
-            // NOT inPump.waitFor(StreamPumper.DEFAULT_TIMEOUT);
-
-            exitCode = process.waitFor();
-
-            outPump.waitFor(StreamPumper.DEFAULT_TIMEOUT);
-            errPump.waitFor(StreamPumper.DEFAULT_TIMEOUT);
-
-        } catch (InterruptedException e) {
-            LOG.debug("Interrupted while waiting for PTY child process to terminate.", e);
-            Thread.currentThread().interrupt(); // Restore interrupt status
-
-        } finally {
-            close();
-        }
-        return exitCode;
+        return wait(null);
     }
 
     public int waitFor(Duration timeout) {
+        return wait(timeout);
+    }
+
+    private int wait(@Nullable Duration timeout) {
+        int exitCode;
         try {
             // NOT inPump.waitFor(timeout);
 
-            var exited = process.waitFor(NANOSECONDS.convert(timeout), NANOSECONDS);
+            boolean exited = false;
+            if (timeout == null) {
+                // Wait indefinitely
+                process.waitFor();
+                exited = true;
+            } else {
+                exited = process.waitFor(timeout.toNanos(), TimeUnit.NANOSECONDS);
+            }
 
-            outPump.waitFor(timeout);
-            errPump.waitFor(timeout);
+            // Wait for stream pumpers to finish, using the same timeout if provided
+            // or a default/long timeout if the process was waited for indefinitely.
+            Duration pumperTimeout = (timeout == null) ? StreamPumper.DEFAULT_TIMEOUT : timeout;
+            outPump.waitFor(pumperTimeout);
+            errPump.waitFor(pumperTimeout);
 
-            if (exited) return process.exitValue();
-            else {
+            if (exited) {
+                exitCode = process.exitValue();
+            } else {
                 LOG.error("Failed to wait {} for process to exit; will destroyForcibly.", timeout);
                 process.destroyForcibly();
-                return -101;
+                exitCode = -101;
             }
 
         } catch (InterruptedException e) {
             LOG.warn("Interrupted while waiting for PTY child process to terminate.", e);
             Thread.currentThread().interrupt(); // Restore interrupt status
-            return -99;
+            exitCode = -99;
 
         } finally {
             close();
         }
+        return exitCode;
     }
 
     private void whenInPumpCompletes(Void result, @Nullable Throwable exception) {
