@@ -30,6 +30,9 @@ import java.nio.charset.StandardCharsets;
 // TODO Try if LogManager.getLogManager().reset(); could fix ^^^ this?
 public class SystemOutErrCapture implements AutoCloseable {
 
+    // TODO Compare with similar
+    // https://github.com/Hakky54/console-captor/blob/master/src/main/java/nl/altindag/console/ConsoleCaptor.java
+
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     private final PrintStream originalOut;
