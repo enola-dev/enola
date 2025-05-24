@@ -38,8 +38,6 @@ import java.util.function.BiConsumer;
 class StreamPumper implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(StreamPumper.class);
 
-    // TODO Remove closeOutputStreamWhenDone stuff again, if ultimately still un-used
-
     public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(7);
     public static final int BUFFER_SIZE = 4096;
 
@@ -47,24 +45,17 @@ class StreamPumper implements AutoCloseable {
     private final InputStream is;
     private final OutputStream os;
     private final boolean flush;
-    private final boolean closeOutputStreamWhenDone;
 
     private final ListeningExecutorService executor;
     private final ListenableFuture<Void> pumpFuture;
 
     private boolean stop = false;
 
-    StreamPumper(
-            String prefix,
-            InputStream is,
-            OutputStream os,
-            boolean flush,
-            boolean closeOutputStreamWhenDone) {
+    StreamPumper(String prefix, InputStream is, OutputStream os, boolean flush) {
         this.name = prefix;
         this.is = is;
         this.os = os;
         this.flush = flush;
-        this.closeOutputStreamWhenDone = closeOutputStreamWhenDone;
 
         this.executor = Executors.newListeningSingleThreadExecutor(prefix + "StreamPumper", LOG);
         pumpFuture = this.executor.submit(this::pump);
@@ -82,7 +73,7 @@ class StreamPumper implements AutoCloseable {
             if (stop) {
                 LOG.debug(
                         "StreamPumper '{}' caught IOException during shutdown (likely stream"
-                            + " closed; fine): {}",
+                                + " closed; fine): {}",
                         name,
                         e.getMessage());
             } else {
@@ -91,19 +82,6 @@ class StreamPumper implements AutoCloseable {
                         name,
                         e.getMessage(),
                         e);
-            }
-        } finally {
-            if (closeOutputStreamWhenDone) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    LOG.warn(
-                            "StreamPumper '{}' failed to close output stream (may already be"
-                                + " closed, but by who?!): {}",
-                            name,
-                            e.getMessage(),
-                            e);
-                }
             }
         }
         return null;
@@ -119,7 +97,7 @@ class StreamPumper implements AutoCloseable {
         } catch (TimeoutException e) {
             LOG.error(
                     "StreamPumper '{}' did not terminate within timeout {} during await. Output"
-                        + " might be lost.",
+                            + " might be lost.",
                     name,
                     timeout);
         } catch (ExecutionException e) {

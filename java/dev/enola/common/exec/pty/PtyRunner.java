@@ -69,14 +69,14 @@ public class PtyRunner implements AutoCloseable {
                         .start();
 
         procOut = process.getOutputStream();
-        inPump = new StreamPumper("In", in, procOut, true, false);
+        inPump = new StreamPumper("In", in, procOut, true);
         inPump.whenComplete(this::whenInPumpCompletes);
 
         procIn = process.getInputStream();
-        outPump = new StreamPumper("Out", procIn, out, true, false);
+        outPump = new StreamPumper("Out", procIn, out, true);
 
         procErr = process.getErrorStream();
-        errPump = new StreamPumper("Err", procErr, err, true, false);
+        errPump = new StreamPumper("Err", procErr, err, true);
     }
 
     @Override
