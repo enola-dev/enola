@@ -34,6 +34,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
@@ -53,17 +54,14 @@ public class PtyRunnerTest {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     ByteArrayOutputStream err = new ByteArrayOutputStream();
 
+    PtyRunner run(String[] cmd, InputStream in) throws IOException {
+        return new PtyRunner(false, Path.of("."), cmd, env, in, out, err);
+    }
+
     @Test
     public void echo() throws IOException {
         TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
-        try (var r =
-                new PtyRunner(
-                        false,
-                        new String[] {"/usr/bin/echo", "hello,", "world"},
-                        env,
-                        noInput,
-                        out,
-                        err)) {
+        try (var r = run(new String[] {"/usr/bin/echo", "hello,", "world"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
@@ -76,7 +74,7 @@ public class PtyRunnerTest {
     public void cat() throws IOException {
         TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
         var in = new ByteArrayInputStream("hello, world\r\n".getBytes(US_ASCII));
-        try (var r = new PtyRunner(false, new String[] {"/usr/bin/cat"}, env, in, out, err)) {
+        try (var r = run(new String[] {"/usr/bin/cat"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
@@ -91,9 +89,7 @@ public class PtyRunnerTest {
         TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
         var in = new ByteArrayInputStream("line 1\nline 2\nline 3\n".getBytes(US_ASCII));
         // NB: The "head -n 1" command reads only the first line, ignored lines 2 & 3, and exits.
-        try (var r =
-                new PtyRunner(
-                        false, new String[] {"/usr/bin/head", "-n", "1"}, env, in, out, err)) {
+        try (var r = run(new String[] {"/usr/bin/head", "-n", "1"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
@@ -107,7 +103,6 @@ public class PtyRunnerTest {
 
     @Test(expected = IOException.class)
     public void failNotFound() throws IOException {
-        try (var r =
-                new PtyRunner(false, new String[] {"does-not-exist"}, env, noInput, out, err)) {}
+        try (var r = run(new String[] {"does-not-exist"}, noInput)) {}
     }
 }
