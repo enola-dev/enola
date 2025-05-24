@@ -17,15 +17,63 @@
  */
 package dev.enola.common.exec.pty;
 
+import com.pty4j.PtyProcess;
+import com.pty4j.PtyProcessBuilder;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Demo {
 
     // TODO Fix the (ugly) "echo" which "re-displays" all Fish shell input again
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        // System.exit(ptyRunner());
+        System.exit(pty4j());
+    }
+
+    private static int pty4j() throws IOException, InterruptedException {
+        String[] cmd = {"/bin/sh", "-l"};
+        Map<String, String> env = new HashMap<>(System.getenv());
+        if (!env.containsKey("TERM")) env.put("TERM", "xterm-256color");
+        PtyProcess process = new PtyProcessBuilder().setCommand(cmd).setEnvironment(env).start();
+
+        OutputStream os = process.getOutputStream();
+        // new StreamPumper("In", System.in, os);
+        new SimpleStreamPumper(System.in, os);
+
+        InputStream is = process.getInputStream();
+        // new StreamPumper("Out", is, System.out);
+        new SimpleStreamPumper(is, System.out);
+
+        return process.waitFor();
+    }
+
+    private static class SimpleStreamPumper extends Thread {
+        SimpleStreamPumper(InputStream is, OutputStream os) {
+            super(
+                    () -> {
+                        try {
+                            int b;
+                            while ((b = is.read()) != -1) {
+                                os.write(b);
+                                os.flush();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+            start();
+        }
+    }
+
+    private static int ptyRunner() throws IOException {
         int result;
+        // TODO Read from $SHELL (and use cmd.exe on Windows)
         String[] cmd = {"/usr/bin/fish", "-l"};
         System.out.println("Starting: " + String.join(" ", cmd));
         try (var runner =
@@ -41,6 +89,6 @@ public class Demo {
             result = runner.waitForExit();
         }
         System.out.println("PTY demo exits!");
-        System.exit(result);
+        return result;
     }
 }
