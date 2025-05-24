@@ -20,7 +20,7 @@ package dev.enola.chat;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.context.testlib.TestTLCRule;
-import dev.enola.common.markdown.exec.TestRunner;
+import dev.enola.common.exec.TestRunner;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 
