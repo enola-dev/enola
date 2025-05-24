@@ -15,6 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "exec",
@@ -24,9 +25,18 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "@enola_maven//:ch_vorburger_exec_exec",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["*Test.java"]),
+    deps = [
+        ":exec",
     ],
 )

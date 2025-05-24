@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.markdown.exec;
+package dev.enola.common.exec;
 
 import com.google.common.annotations.VisibleForTesting;
 
