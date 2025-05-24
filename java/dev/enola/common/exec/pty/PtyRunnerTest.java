@@ -41,9 +41,11 @@ import java.util.Map;
 
 public class PtyRunnerTest {
 
-    // TODO Eventually merge this into vorburger:exec
+    // TODO Factor out the (non)logging infra into separate @Rule
 
     // TODO Run these tests against all Runner impls like vorburger:exec
+
+    // TODO Eventually upstream PtyRunner (and this test) into vorburger:exec (?)
 
     @Rule public TestRule resetLoggingEvents = new TestLoggerFactoryResetRule();
     TestLogger ptyRunnerLogger = TestLoggerFactory.getTestLogger(PtyRunner.class);
