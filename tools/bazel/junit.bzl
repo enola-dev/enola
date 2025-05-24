@@ -103,7 +103,9 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
             "@enola_maven//:com_google_truth_extensions_truth_java8_extension",
             "@enola_maven//:com_google_truth_truth",
             "@enola_maven//:com_google_truth_extensions_truth_proto_extension",
-            "@enola_maven//:org_slf4j_slf4j_simple",
+            # TODO https://valfirst.github.io/slf4j-test/usage.html#printing-log-statements-to-system-out-and-err
+            #   instead of "@enola_maven//:org_slf4j_slf4j_simple",
+            "@enola_maven//:com_github_valfirst_slf4j_test",
             "@enola_maven//:junit_junit",
         ],
         # Increase timeout, due to https://youtrack.jetbrains.com/issue/BAZEL-1791

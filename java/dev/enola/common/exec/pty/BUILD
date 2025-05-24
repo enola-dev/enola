@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,26 +15,47 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
+java_binary(
+    name = "demo",
+    main_class = "dev.enola.common.exec.pty.Demo",
+    runtime_deps = [
+        ":pty",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
+
 java_library(
-    name = "markdown",
+    name = "pty",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test.java"],
+        exclude = [
+            "*Test.java",
+        ],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/concurrent",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:org_jetbrains_pty4j_pty4j",
         "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(["*Test.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+        allow_empty = True,
+    ),
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":markdown",
+        ":pty",
+        "//java/dev/enola/common/concurrent",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )

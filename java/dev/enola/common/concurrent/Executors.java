@@ -47,6 +47,8 @@ import java.util.concurrent.TimeUnit;
  */
 public final class Executors {
 
+    // TODO Simplify and keep only ListeningExecutorService variants
+
     // TODO Use (only?) java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor()
     // see
     // https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html#GUID-6444CF1A-FCAD-4F8A-877F-4A72AA0143B7
@@ -150,12 +152,11 @@ public final class Executors {
                 new ThreadFactoryBuilder()
                         .setNameFormat(namePrefix + "-%d")
                         .setUncaughtExceptionHandler(
-                                dev.enola.common.concurrent.LoggingThreadUncaughtExceptionHandler
-                                        .toLogger(logger))
+                                LoggingThreadUncaughtExceptionHandler.toLogger(logger))
                         .setDaemon(true)
                         .setThreadFactory(new ContextAwareThreadFactory());
         // priority.ifPresent(guavaBuilder::setPriority);
-        logger.info("ThreadFactory created: {}", namePrefix);
+        // logger.info("ThreadFactory created: {}", namePrefix);
         return guavaBuilder.build();
     }
 
