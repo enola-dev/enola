@@ -44,18 +44,16 @@ class StreamPumper implements AutoCloseable {
     private final String name;
     private final InputStream is;
     private final OutputStream os;
-    private final boolean flush;
 
     private final ListeningExecutorService executor;
     private final ListenableFuture<Void> pumpFuture;
 
     private boolean stop = false;
 
-    StreamPumper(String prefix, InputStream is, OutputStream os, boolean flush) {
+    StreamPumper(String prefix, InputStream is, OutputStream os) {
         this.name = prefix;
         this.is = is;
         this.os = os;
-        this.flush = flush;
 
         this.executor = Executors.newListeningSingleThreadExecutor(prefix + "StreamPumper", LOG);
         pumpFuture = this.executor.submit(this::pump);
@@ -67,7 +65,7 @@ class StreamPumper implements AutoCloseable {
         try {
             while (!stop && (bytesRead = is.read(buffer)) != -1) {
                 os.write(buffer, 0, bytesRead);
-                if (flush) os.flush();
+                os.flush();
             }
         } catch (IOException e) {
             if (stop) {
