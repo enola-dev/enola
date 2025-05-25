@@ -29,6 +29,9 @@ import java.util.List;
  * href="https://github.com/zeroturnaround/zt-exec">zt-exec</a>.
  */
 public interface Runner {
+
+    // TODO Replace Runner exec() with ProcessLauncher eventually
+
     int exec(
             boolean expectNonZeroExitCode,
             Path dir,
@@ -36,6 +39,8 @@ public interface Runner {
             Appendable output,
             Duration timeout)
             throws Exception;
+
+    // TODO Replace bash() with a new BashProcessLauncher
 
     default int bash(
             boolean expectNonZeroExitCode,
