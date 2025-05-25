@@ -18,6 +18,7 @@
 package dev.enola.common.exec.pty;
 
 import java.io.IOException;
+import java.nio.CharBuffer;
 
 // TODO If kept, then later move this to dev.enola.common.io
 class AppendableWriter extends java.io.Writer {
@@ -30,7 +31,7 @@ class AppendableWriter extends java.io.Writer {
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
         // TODO This cannot work if it doesn't happen to be at the right boundary...
-        appendable.append(new String(cbuf, off, len));
+        appendable.append(CharBuffer.wrap(cbuf, off, len));
     }
 
     @Override

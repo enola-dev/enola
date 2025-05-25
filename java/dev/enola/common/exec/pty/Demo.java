@@ -36,7 +36,8 @@ public class Demo {
         System.exit(pty4j());
     }
 
-    private static int pty4j() throws IOException, InterruptedException {
+    // For https://github.com/JetBrains/pty4j/issues/170
+    static int pty4j() throws IOException, InterruptedException {
         String[] cmd = {"/bin/sh", "-l"};
         Map<String, String> env = new HashMap<>(System.getenv());
         if (!env.containsKey("TERM")) env.put("TERM", "xterm-256color");
@@ -53,7 +54,8 @@ public class Demo {
         return process.waitFor();
     }
 
-    private static class SimpleStreamPumper extends Thread {
+    // Just for https://github.com/JetBrains/pty4j/issues/170
+    static class SimpleStreamPumper extends Thread {
         SimpleStreamPumper(InputStream is, OutputStream os) {
             super(
                     () -> {
@@ -71,7 +73,7 @@ public class Demo {
         }
     }
 
-    private static int ptyRunner() throws IOException {
+    static int ptyRunner() throws IOException {
         int result;
         // TODO Read from $SHELL (and use cmd.exe on Windows)
         String[] cmd = {"/usr/bin/fish", "-l"};

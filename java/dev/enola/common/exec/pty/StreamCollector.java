@@ -19,11 +19,7 @@ package dev.enola.common.exec.pty;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 // TODO {WIP}
 class StreamCollector {
@@ -37,10 +33,11 @@ class StreamCollector {
     }
 
     public static class Builder {
-        private Writer writer;
+        // private Writer writer;
         private Appendable appendable;
-        private InputStream in;
-        private final List<OutputStream> outs = new ArrayList<>();
+
+        // private InputStream in;
+        // private final List<OutputStream> outs = new ArrayList<>();
 
         private Builder() {}
 
