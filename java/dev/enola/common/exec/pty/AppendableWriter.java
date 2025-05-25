@@ -20,8 +20,6 @@ package dev.enola.common.exec.pty;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
-// TODO Use Appendable or Writer implements Appendable ?!
-// TODO Write a SEPARATE (!) thingie for ANSI filtering...
 // TODO If kept, then later move this to dev.enola.common.io
 class AppendableWriter extends java.io.Writer {
     private final Appendable appendable;
@@ -38,11 +36,11 @@ class AppendableWriter extends java.io.Writer {
 
     @Override
     public void flush() throws IOException {
-        // Appendable doesn't have a flush method, so nothing to do here
+        if (appendable instanceof java.io.Flushable flushable) flushable.flush();
     }
 
     @Override
     public void close() throws IOException {
-        // Appendable doesn't have a close method, so nothing to do here
+        if (appendable instanceof java.io.Closeable closeable) closeable.close();
     }
 }
