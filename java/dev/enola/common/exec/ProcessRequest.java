@@ -74,7 +74,7 @@ public record ProcessRequest(
         private OutputStream err;
 
         public Builder directory(Path directory) {
-            if (directory != null) throw new IllegalStateException("directory already set");
+            if (this.directory != null) throw new IllegalStateException("directory already set");
             this.directory = requireNonNull(directory, "directory");
             return this;
         }
@@ -96,19 +96,19 @@ public record ProcessRequest(
         }
 
         public Builder in(InputStream in) {
-            if (in != null) throw new IllegalStateException("in already set");
+            if (this.in != null) throw new IllegalStateException("in already set");
             this.in = requireNonNull(in, "in");
             return this;
         }
 
         public Builder out(OutputStream out) {
-            if (out != null) throw new IllegalStateException("out already set");
+            if (this.out != null) throw new IllegalStateException("out already set");
             this.out = requireNonNull(out, "out");
             return this;
         }
 
         public Builder err(OutputStream err) {
-            if (err != null) throw new IllegalStateException("err already set");
+            if (this.err != null) throw new IllegalStateException("err already set");
             this.err = requireNonNull(err, "err");
             return this;
         }

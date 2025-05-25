@@ -57,7 +57,7 @@ public class PtyRunner implements AutoCloseable {
 
         var envCopy = new HashMap<>(env);
         if (!envCopy.containsKey("TERM")) envCopy.put("TERM", "xterm-256color");
-        if (!envCopy.containsKey("COLORTERM")) envCopy.put("TERM", "truecolor");
+        if (!envCopy.containsKey("COLORTERM")) envCopy.put("COLORTERM", "truecolor");
 
         process =
                 new PtyProcessBuilder()
