@@ -43,13 +43,15 @@ public class Demo {
         if (!env.containsKey("TERM")) env.put("TERM", "xterm-256color");
         PtyProcess process = new PtyProcessBuilder().setCommand(cmd).setEnvironment(env).start();
 
-        OutputStream os = process.getOutputStream();
-        // new StreamPumper("In", System.in, os);
-        new SimpleStreamPumper(System.in, os);
+        OutputStream in = process.getOutputStream();
+        // new StreamPumper("In", System.in, in);
+        new SimpleStreamPumper(System.in, in);
 
-        InputStream is = process.getInputStream();
-        // new StreamPumper("Out", is, System.out);
-        new SimpleStreamPumper(is, System.out);
+        InputStream out = process.getInputStream();
+        // new StreamPumper("Out", out, System.out);
+        new SimpleStreamPumper(out, System.out);
+
+        InputStream err = process.getErrorStream();
 
         return process.waitFor();
     }
@@ -86,7 +88,8 @@ public class Demo {
                         System.getenv(),
                         System.in,
                         System.out,
-                        System.err)) {
+                        System.err,
+                        false)) {
             // System.out.println("Running, and awaiting exit of: " + String.join(" ", cmd));
             result = runner.waitForExit();
         }

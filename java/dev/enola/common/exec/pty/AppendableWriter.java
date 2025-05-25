@@ -20,6 +20,8 @@ package dev.enola.common.exec.pty;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
+// TODO Use Appendable or Writer implements Appendable ?!
+// TODO Write a SEPARATE (!) thingie for ANSI filtering...
 // TODO If kept, then later move this to dev.enola.common.io
 class AppendableWriter extends java.io.Writer {
     private final Appendable appendable;

@@ -46,11 +46,17 @@ public record ProcessRequest(
         ImmutableMap<String, String> environment,
         Supplier<InputStream> in,
         Supplier<OutputStream> out,
-        Supplier<OutputStream> err) {
+        Supplier<OutputStream> err,
+        boolean mergeErrIntoOut) {
 
-    // TODO Use a Handler, like https://github.com/brettwooldridge/NuProcess ?
+    // TODO Flip InputStream/OutputStream? To avoid unnecessary pumping!
 
-    // TODO Should in/out/err be Supplier of @Nullable or Optional<> ?
+    // TODO Use a "Handler", with ByteBuffer; like
+    // https://brettwooldridge.github.io/NuProcess/apidocs/com/zaxxer/nuprocess/NuProcessHandler.html
+
+    // TODO Integration with common.io.Resource
+
+    // TODO #Optimization: Allow in/out/err be Supplier of @Nullable or Optional<> (for "discard")
 
     public ProcessRequest {
         requireNonNull(directory, "directory");
@@ -70,6 +76,7 @@ public record ProcessRequest(
         private Supplier<InputStream> in;
         private Supplier<OutputStream> out;
         private Supplier<OutputStream> err;
+        private boolean mergeErrIntoOut = false;
 
         public Builder directory(Path directory) {
             if (this.directory != null) throw new IllegalStateException("directory already set");
@@ -88,6 +95,14 @@ public record ProcessRequest(
             return this;
         }
 
+        /**
+         * Add all environment variables from the given map.
+         *
+         * <p>Often used with {@link System#getenv()} to inherit the JVM process' environment.
+         *
+         * @param env a Map of key/values for the Environment
+         * @return this
+         */
         public Builder addEnvironment(Map<String, String> env) {
             environment.putAll(requireNonNull(env, "env"));
             return this;
@@ -111,9 +126,18 @@ public record ProcessRequest(
             return this;
         }
 
+        public Builder mergeErrIntoOut(boolean mergeErrIntoOut) {
+            this.mergeErrIntoOut = mergeErrIntoOut;
+            return this;
+        }
+
+        public Builder mergeErrIntoOut() {
+            return mergeErrIntoOut(true);
+        }
+
         public ProcessRequest build() {
             return new ProcessRequest(
-                    directory, command.build(), environment.build(), in, out, err);
+                    directory, command.build(), environment.build(), in, out, err, mergeErrIntoOut);
         }
     }
 }
