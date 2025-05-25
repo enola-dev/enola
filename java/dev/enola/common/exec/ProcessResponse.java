@@ -17,6 +17,9 @@
  */
 package dev.enola.common.exec;
 
+
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -26,6 +29,12 @@ public interface ProcessResponse {
     CompletableFuture<Integer> async();
 
     ProcessRequest request();
+
+    InputStream in();
+
+    OutputStream out();
+
+    OutputStream err();
 
     Instant started();
 
