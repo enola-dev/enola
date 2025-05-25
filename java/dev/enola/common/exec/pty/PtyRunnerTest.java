@@ -57,7 +57,7 @@ public class PtyRunnerTest {
     ByteArrayOutputStream err = new ByteArrayOutputStream();
 
     PtyRunner run(String[] cmd, InputStream in) throws IOException {
-        return new PtyRunner(false, Path.of("."), cmd, env, in, out, err);
+        return new PtyRunner(false, Path.of("."), cmd, env, in, out, err, false);
     }
 
     @Test

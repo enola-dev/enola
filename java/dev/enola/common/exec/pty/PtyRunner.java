@@ -45,6 +45,8 @@ public class PtyRunner implements AutoCloseable {
     private final StreamPumper outPump;
     private final StreamPumper errPump;
 
+    // TODO Support flipped InputStream/OutputStream? To avoid unnecessary pumping!
+
     public PtyRunner(
             boolean console,
             Path directory,
@@ -52,7 +54,8 @@ public class PtyRunner implements AutoCloseable {
             Map<String, String> env,
             InputStream in,
             OutputStream out,
-            OutputStream err)
+            OutputStream err,
+            boolean redirectErrorStream)
             throws IOException {
 
         var envCopy = new HashMap<>(env);
@@ -65,6 +68,8 @@ public class PtyRunner implements AutoCloseable {
                         .setEnvironment(envCopy)
                         .setConsole(!console)
                         .setDirectory(directory.toString())
+                        // TODO .setInitialColumns(?).setInitialRows(?)
+                        .setRedirectErrorStream(redirectErrorStream)
                         .start();
 
         procOut = process.getOutputStream();
