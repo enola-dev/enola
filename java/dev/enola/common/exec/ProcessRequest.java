@@ -21,6 +21,7 @@ import static com.google.common.base.Strings.emptyToNull;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -39,20 +40,17 @@ import java.util.Map;
  * launcher - while this may use other means to execute the command. This intentionally has no
  * start() method, because it is passed to a {@link ProcessLauncher} to actually run it.
  */
-// TODO @Immutable
 public record ProcessRequest(
         Path directory,
         ImmutableList<String> command,
         ImmutableMap<String, String> environment,
-        InputStream in,
-        OutputStream out,
-        OutputStream err) {
+        Supplier<InputStream> in,
+        Supplier<OutputStream> out,
+        Supplier<OutputStream> err) {
 
-    // TODO The in/out/err can't be here like this, because that makes it impossible to launch x2!
-    //   So should it be a ... Supplier<InputStream/OutputStream> ? in/out/err
-    //   Use a Handler, like https://github.com/brettwooldridge/NuProcess ?
+    // TODO Use a Handler, like https://github.com/brettwooldridge/NuProcess ?
 
-    // TODO Should in/out/err be @Nullable or Optional<> ?
+    // TODO Should in/out/err be Supplier of @Nullable or Optional<> ?
 
     public ProcessRequest {
         requireNonNull(directory, "directory");
@@ -69,9 +67,9 @@ public record ProcessRequest(
         private final ImmutableList.Builder<String> command = new ImmutableList.Builder<>();
         private final ImmutableMap.Builder<String, String> environment =
                 new ImmutableMap.Builder<>();
-        private InputStream in;
-        private OutputStream out;
-        private OutputStream err;
+        private Supplier<InputStream> in;
+        private Supplier<OutputStream> out;
+        private Supplier<OutputStream> err;
 
         public Builder directory(Path directory) {
             if (this.directory != null) throw new IllegalStateException("directory already set");
@@ -95,19 +93,19 @@ public record ProcessRequest(
             return this;
         }
 
-        public Builder in(InputStream in) {
+        public Builder in(Supplier<InputStream> in) {
             if (this.in != null) throw new IllegalStateException("in already set");
             this.in = requireNonNull(in, "in");
             return this;
         }
 
-        public Builder out(OutputStream out) {
+        public Builder out(Supplier<OutputStream> out) {
             if (this.out != null) throw new IllegalStateException("out already set");
             this.out = requireNonNull(out, "out");
             return this;
         }
 
-        public Builder err(OutputStream err) {
+        public Builder err(Supplier<OutputStream> err) {
             if (this.err != null) throw new IllegalStateException("err already set");
             this.err = requireNonNull(err, "err");
             return this;
