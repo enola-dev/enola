@@ -38,13 +38,12 @@ class ChatShell {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChatShell.class);
 
-    public ChatShell(
-            Ssh.ShellParams shellParams,
-            NonLoggingAcceptAllPublickeyAuthenticator pubKeyAuthenticator) {
+    public ChatShell(Ssh.ShellParams shellParams) {
         var terminal = shellParams.getTerminal();
         var closer = shellParams.getCloser();
 
-        var pubKey = pubKeyAuthenticator.getPublicKey(shellParams.getSession());
+        var pubKey =
+                NonLoggingAcceptAllPublickeyAuthenticator.getPublicKey(shellParams.getSession());
         var username = shellParams.getSession().getUsername();
 
         // TODO Read secrets from shellParams.getEnv()

@@ -35,6 +35,7 @@ import java.time.Duration;
 import java.util.concurrent.*;
 import java.util.function.BiConsumer;
 
+/** 🏞️ Stream Pumper ⛽. */
 // TODO Factor out a generic class Worker
 class StreamPumper implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(StreamPumper.class);
