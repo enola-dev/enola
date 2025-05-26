@@ -19,6 +19,7 @@ package dev.enola.common.exec.pty;
 
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
+import com.pty4j.WinSize;
 
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -81,6 +82,10 @@ public class PtyRunner implements AutoCloseable {
 
         procErr = process.getErrorStream();
         errPump = new StreamPumper("Err", procErr, err);
+    }
+
+    public void size(int columns, int rows) {
+        process.setWinSize(new WinSize(columns, rows));
     }
 
     @Override

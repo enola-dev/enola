@@ -17,83 +17,56 @@
  */
 package dev.enola.common.exec.pty;
 
-import com.pty4j.PtyProcess;
-import com.pty4j.PtyProcessBuilder;
+import static java.util.Objects.requireNonNull;
+
+import org.jline.terminal.Size;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Demo {
 
-    // TODO Fix the (ugly) "echo" which "re-displays" all Fish shell input again
-
     public static void main(String[] args) throws IOException, InterruptedException {
-        // System.exit(ptyRunner());
-        System.exit(pty4j());
-    }
+        // TODO system(false)
+        try (Terminal terminal = TerminalBuilder.builder().system(true).build()) {
+            // TODO .systemOutput(ForcedSysOut) ?
 
-    // For https://github.com/JetBrains/pty4j/issues/170
-    static int pty4j() throws IOException, InterruptedException {
-        String[] cmd = {"/bin/sh", "-l"};
-        Map<String, String> env = new HashMap<>(System.getenv());
-        if (!env.containsKey("TERM")) env.put("TERM", "xterm-256color");
-        PtyProcess process = new PtyProcessBuilder().setCommand(cmd).setEnvironment(env).start();
+            // TODO Fix the (ugly) "echo" which "re-displays" all Fish shell input again
+            // This does not work well, see https://github.com/JetBrains/pty4j/issues/170;
+            // Disabling echo does NOT help: terminal.echo(false);
+            // Do NOT enter raw, it's worse: terminal.enterRawMode();
 
-        OutputStream in = process.getOutputStream();
-        // new StreamPumper("In", System.in, in);
-        new SimpleStreamPumper(System.in, in);
-
-        InputStream out = process.getInputStream();
-        // new StreamPumper("Out", out, System.out);
-        new SimpleStreamPumper(out, System.out);
-
-        InputStream err = process.getErrorStream();
-
-        return process.waitFor();
-    }
-
-    // Just for https://github.com/JetBrains/pty4j/issues/170
-    static class SimpleStreamPumper extends Thread {
-        SimpleStreamPumper(InputStream is, OutputStream os) {
-            super(
-                    () -> {
-                        try {
-                            int b;
-                            while ((b = is.read()) != -1) {
-                                os.write(b);
-                                os.flush();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-            start();
+            int result;
+            // TODO Read from $SHELL (and use cmd.exe on Windows)
+            String[] cmd = {"/usr/bin/fish", "-li"};
+            System.out.println("Starting: " + String.join(" ", cmd));
+            try (var runner =
+                    new PtyRunner(
+                            true,
+                            Path.of("."),
+                            cmd,
+                            System.getenv(),
+                            requireNonNull(terminal.input(), "terminal.input"),
+                            requireNonNull(terminal.output(), "terminal.output"),
+                            null,
+                            true)) {
+                // System.out.println("Running, and awaiting exit of: " + String.join(" ", cmd));
+                resize(terminal, runner);
+                terminal.handle(Terminal.Signal.WINCH, signal -> resize(terminal, runner));
+                result = runner.waitForExit();
+            }
+            System.out.println("PTY demo exits!");
+            System.exit(result);
         }
     }
 
-    static int ptyRunner() throws IOException {
-        int result;
-        // TODO Read from $SHELL (and use cmd.exe on Windows)
-        String[] cmd = {"/usr/bin/fish", "-l"};
-        System.out.println("Starting: " + String.join(" ", cmd));
-        try (var runner =
-                new PtyRunner(
-                        true,
-                        Path.of("."),
-                        cmd,
-                        System.getenv(),
-                        System.in,
-                        System.out,
-                        System.err,
-                        false)) {
-            // System.out.println("Running, and awaiting exit of: " + String.join(" ", cmd));
-            result = runner.waitForExit();
-        }
-        System.out.println("PTY demo exits!");
-        return result;
+    private static void resize(Terminal terminal, PtyRunner runner) {
+        Size size = terminal.getSize();
+        var cols = size.getColumns();
+        var rows = size.getRows();
+        if (cols > 0 && rows > 0) runner.size(cols, rows);
+        // Do NOT "terminal.writer().flush()" - when exec, this destroys the child process updates!
     }
 }
