@@ -22,6 +22,7 @@ import org.apache.sshd.common.session.SessionHeartbeatController;
 import org.apache.sshd.server.ServerBuilder;
 import org.apache.sshd.server.SshServer;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
+import org.apache.sshd.server.shell.ShellFactory;
 import org.jline.builtins.ssh.ShellFactoryImpl;
 
 import java.io.IOException;
@@ -33,6 +34,11 @@ public class EnolaSshServer implements AutoCloseable {
     private final SshServer server;
 
     public EnolaSshServer(int port, Path hostKeyStorePath) throws IOException {
+        this(port, hostKeyStorePath, new ShellFactoryImpl(ChatShell::new));
+    }
+
+    public EnolaSshServer(int port, Path hostKeyStorePath, ShellFactory shellFactory)
+            throws IOException {
         var builder = ServerBuilder.builder();
 
         // NOTA BENE: Good God, no local file system access for Enola Chat over SSH!
@@ -53,8 +59,7 @@ public class EnolaSshServer implements AutoCloseable {
         var pubKeyAuthenticator = new NonLoggingAcceptAllPublickeyAuthenticator();
         server.setPublickeyAuthenticator(pubKeyAuthenticator);
 
-        server.setShellFactory(
-                new ShellFactoryImpl(params -> new ChatShell(params, pubKeyAuthenticator)));
+        server.setShellFactory(shellFactory);
 
         // https://github.com/apache/mina-sshd/blob/master/docs/server-setup.md#providing-server-side-heartbeat
         server.setSessionHeartbeat(

@@ -17,19 +17,15 @@
  */
 package dev.enola.chat.sshd;
 
+import org.apache.sshd.common.AttributeRepository.AttributeKey;
 import org.apache.sshd.server.auth.pubkey.StaticPublickeyAuthenticator;
 import org.apache.sshd.server.session.ServerSession;
 
 import java.security.PublicKey;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 class NonLoggingAcceptAllPublickeyAuthenticator extends StaticPublickeyAuthenticator {
 
-    // TODO Isn't there a better way to do this?! See
-    //   https://github.com/apache/mina-sshd/issues/748...
-
-    private final Map<ServerSession, PublicKey> keys = new ConcurrentHashMap<>();
+    private static final AttributeKey<PublicKey> USER_KEY = new AttributeKey<>();
 
     NonLoggingAcceptAllPublickeyAuthenticator() {
         super(true);
@@ -38,28 +34,19 @@ class NonLoggingAcceptAllPublickeyAuthenticator extends StaticPublickeyAuthentic
     @Override
     protected void handleAcceptance(String username, PublicKey key, ServerSession session) {
         // Do not delegate to super() - to avoid WARN log; instead:
-        var existing = keys.putIfAbsent(session, key);
+        // This assumes that CoreModuleProperties.AUTH_METHODS is set to "publickey",
+        // and will not work e.g. for (x2) "publickey,publickey" or "publickey,password" etc.
+        var existing = session.getAttribute(USER_KEY);
         if (existing != null && !existing.equals(key)) {
             throw new IllegalStateException("Session already accepted");
         }
+        session.setAttribute(USER_KEY, key);
     }
 
-    public PublicKey getPublicKey(ServerSession session) {
-        var key = getAndRemove(session);
+    public static PublicKey getPublicKey(ServerSession session) {
+        var key = session.getAttribute(USER_KEY);
         if (key == null)
             throw new IllegalStateException("Session never accepted (or already got its Key?!)");
         return key;
-    }
-
-    private PublicKey getAndRemove(ServerSession session) {
-        final PublicKey[] removedValue = new PublicKey[1];
-        keys.computeIfPresent(
-                session,
-                (key, value) -> {
-                    // 'value' is the current value associated with 'key', keep it:
-                    removedValue[0] = value;
-                    return null; // Returning null removes the entry
-                });
-        return removedValue[0];
     }
 }
