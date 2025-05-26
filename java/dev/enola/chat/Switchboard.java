@@ -19,7 +19,7 @@ package dev.enola.chat;
 
 import java.util.function.Consumer;
 
-/** <a href="https://en.wikipedia.org/wiki/Business_telephone_system>PBX</a>. */
+/** <a href="https://en.wikipedia.org/wiki/Business_telephone_system">PBX</a>. */
 public interface Switchboard {
 
     /** Post a Message to the switchboard. */

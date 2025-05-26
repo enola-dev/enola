@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/** PtyRunner executes a command in a PTY, connecting its I/O to an IS & OS. */
+/** PtyRunner executes a command in a PTY, connecting its I/O to an IS &amp; OS. */
 public class PtyRunner implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(PtyRunner.class);
 

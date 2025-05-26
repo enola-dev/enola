@@ -34,15 +34,15 @@ import java.util.Map;
 /**
  * GAVR is a Maven GroupID, ArtifactID, Version, Extension (AKA Type), Classifier + Repository.
  *
- * <p>The GroupID, ArtifactID & Version are mandatory and cannot be empty. The Extension, Classifier
- * & Repository can be empty, but never null.
+ * <p>The GroupID, ArtifactID &amp; Version are mandatory and cannot be empty. The Extension,
+ * Classifier &amp; Repository can be empty (but never null).
  *
  * <p>The Maven default extension "jar" are hidden in the GAV coordinates and Package URL syntax
  * (but is returned by {@link #extension()} API). This is different from Maven core, which always
  * shows "jar".
  *
- * <p>This class itself does NOT imply any other "defaults" for Classifier & Repository. Callers of
- * this class may resolve a GAVR without repo to one with a repo using {@link
+ * <p>This class itself does NOT imply any other "defaults" for Classifier &amp; Repository. Callers
+ * of this class may resolve a GAVR without repo to one with a repo using {@link
  * Mima#origin(ModelResponse)}.
  */
 public record GAVR(

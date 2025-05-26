@@ -38,7 +38,7 @@ public interface Datatype<T> {
     /** Converter from/to T &lt;=&gt; text. */
     ObjectToStringBiConverter<T> stringConverter();
 
-    /** Converter from/to Object (expected to be of T) <=> text. Just for convenience. */
+    /** Converter from/to Object (expected to be of T) &lt;==&gt; text. Just for convenience. */
     @SuppressWarnings("unchecked")
     default ObjectToStringBiConverter<Object> stringConverterFromObject() {
         return (ObjectToStringBiConverter<Object>) stringConverter();
