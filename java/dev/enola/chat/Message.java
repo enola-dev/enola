@@ -69,7 +69,7 @@ public interface Message { // TODO extends Thing
         HTML,
 
         /**
-         * "ANSI" format, as in "Terminal text", with "ANSI escape & color etc. control codes".
+         * "ANSI" format, as in "Terminal text", with "ANSI escape &amp; color etc. control codes".
          *
          * <p>Should typically be rendered in a fixed width (monospaced) font.
          */

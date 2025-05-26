@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /// If you only need a thread-safe implementation of [StringToLongBiMap] but can do with
 /// the Builder (!) not being so, then prefer using the [ImmutableStringToLongBiMap].
 ///
-/// This implementation supports up to [#MAX_VALUE] (not just Int) number of symbols.
+/// This implementation supports up to [java.lang.Long#MAX_VALUE] (not just Int) number of symbols.
 ///
 /// @author <a href="https://www.vorburger.ch">Michael Vorburger.ch</a> with input from Google
 ///     Gemini Pro 1.5!
