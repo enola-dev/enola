@@ -41,6 +41,7 @@ java_library(
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jetbrains_pty4j_pty4j",
+        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
