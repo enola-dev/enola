@@ -110,7 +110,7 @@ public final class Secret implements AutoCloseable, Processor<char[]> {
      *
      * <p>Do not copy the secret data within the mapping if you can avoid it! When you really must,
      * e.g. because you need to pass it to an existing less secure API which does not offer a
-     * (functional) "on-demand" alternative, then use <tt>secret.map(String::new)</tt>.
+     * (functional) "on-demand" alternative, then use <code>secret.map(String::new)</code>.
      *
      * @param mapping The function to process the char array.
      * @throws IllegalStateException if the Secret instance has already been {@link #close()}}.

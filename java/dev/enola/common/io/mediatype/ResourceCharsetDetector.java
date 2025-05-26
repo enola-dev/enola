@@ -32,7 +32,7 @@ import java.util.Optional;
  *
  * <p>This interface is typically not used directly by {@link Resource} API users (who would just
  * use {@link MediaType#charset()} on an {@link AbstractResource#mediaType()}). Instead, it is
- * normally implemented by (some) <tt>*MediaType</tt> API implementations, for Charset detection
+ * normally implemented by (some) <code>*MediaType</code> API implementations, for Charset detection
  * that is specific to a given MediaType (if any). For example, RFC 4627 §3 specifies how to
  * determine the encoding of JSON, or https://yaml.org/spec §5.2. specifies ditto for YAML.
  */

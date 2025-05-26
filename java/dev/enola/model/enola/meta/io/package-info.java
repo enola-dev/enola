@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Enola Meta Schema Model Input & Output (I/O). */
+/** Enola Meta Schema Model Input &amp; Output (I/O). */
 @NullMarked
 package dev.enola.model.enola.meta.io;
 

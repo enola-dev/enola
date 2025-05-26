@@ -30,8 +30,8 @@ import java.util.Optional;
  * API for detectors of a (better) MediaType for a Resource.
  *
  * <p>This interface is typically not used directly by {@link Resource} API users (who would just
- * use {@link AbstractResource#mediaType()}). Instead, it is normally implemented by (some)
- * <tt>*MediaType</tt> API implementations.
+ * use {@link AbstractResource#mediaType()}). Instead, it is normally implemented by (some) <code>
+ * *MediaType</code> API implementations.
  */
 public interface ResourceMediaTypeDetector {
 

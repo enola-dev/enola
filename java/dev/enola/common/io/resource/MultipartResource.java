@@ -26,10 +26,10 @@ import java.net.URI;
  * MultipartResources are "logical" resources which do have an URI, but are composed of multiple
  * "parts" which are independent (sub)resources, each with their own {@link MediaType} and content.
  *
- * <p>Examples could be Emails with attachments (RFC 2045 & 2046), or files on operating systems
+ * <p>Examples could be Emails with attachments (RFC 2045 &amp; 2046), or files on operating systems
  * with file systems where a single file can contain multiple alternative data streams (e.g. NTFS,
- * and old classic Mac OS's HFS with data & resources forks), or things like the {@link
- * FrontmatterResource}.
+ * and old classic Mac OS's HFS with data &amp; resources forks), or things like the frontmatter
+ * resources.
  *
  * <p>The URI of the sub-resources should correspond to the "parent" MultipartResource's URI
  * appended by the part name as a #fragment.

@@ -45,9 +45,9 @@ public interface ChangeToken { // skipcq: JAVA-E1041
      * ReadableResource#isDifferent(String)}.
      *
      * <p>Do not interpret the content of this String. It's intended to be used completely "opaque",
-     * and only for before & after comparison, on a Resource from the same URI. Implementations are
-     * encouraged to return strings which do not (directly) "look like something familiar", to avoid
-     * users relying on implementation details.
+     * and only for before &amp; after comparison, on a Resource from the same URI. Implementations
+     * are encouraged to return strings which do not (directly) "look like something familiar", to
+     * avoid users relying on implementation details.
      */
     String toString();
 

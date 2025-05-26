@@ -22,7 +22,7 @@ import dev.enola.common.context.TLC;
 /**
  * NamespaceConverter converts "compact" <a
  * href="https://en.m.wikipedia.org/wiki/CURIE">CURIE</a>-like IRIs (i.e. an IRI with a short
- * schema, from a list of prefixes only valid in a local context instead of globally) to & from
+ * schema, from a list of prefixes only valid in a local context instead of globally) to &amp; from
  * "full" IRIs (which are globally unique).
  *
  * <p>Both methods of this interface may simply return back the argument, if no "match" was found.

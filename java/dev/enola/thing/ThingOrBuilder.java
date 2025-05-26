@@ -17,5 +17,9 @@
  */
 package dev.enola.thing;
 
-/** {@link Thing} or {@link Thing.Builder}. */
+/**
+ * {@link Thing} or {@link Thing.Builder}.
+ *
+ * @param <B> the type of Thing being built
+ */
 public interface ThingOrBuilder<B extends Thing> extends Thing, Thing.Builder<B> {}

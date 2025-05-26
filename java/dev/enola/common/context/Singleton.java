@@ -37,9 +37,10 @@ import java.util.function.Supplier;
  *
  * <p>In tests, use this together with the JUnit SingletonRule. See also SingleTest for how to use
  * this; TL;DR is: <code>class MyService {
- *   public static final Singleton<MyService> SINGLETON = new Singleton<>() {};</code>. For
- * configurable services used in several tests, it's convenient to define something like: <code>
- * public static Singleton<MyService> set(...) { return SINGLETON.set(new MyService(...));</code>
+ *   public static final Singleton&lt;MyService&gt; SINGLETON = new Singleton&lt;&gt;() {};</code>.
+ * For configurable services used in several tests, it's convenient to define something like: <code>
+ * public static Singleton&lt;MyService&gt; set(...) { return SINGLETON.set(new MyService(...));
+ * </code>
  *
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */

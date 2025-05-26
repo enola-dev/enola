@@ -23,7 +23,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-/** JUnit <tt>@ClassRule</tt> (or even just <tt>@Rule</tt>) for {@link Singleton}. */
+/** JUnit <code>@ClassRule</code> (or even just <code>@Rule</code>) for {@link Singleton}. */
 public class SingletonRule implements TestRule {
 
     /** Intended to be statically imported into *Test classes. */

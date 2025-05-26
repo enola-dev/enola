@@ -44,7 +44,8 @@ public final class TLC {
      * Opens a new (!) {@link Context}, "stacked" over the current one (if any).
      *
      * <p>This is typically invoked from a try-with-resources, as the returned context must be
-     * closed again at some point; so the typical usage is: <tt>try (var ctx = TLC.open()) {</tt>.
+     * closed again at some point; so the typical usage is: <code>try (var ctx = TLC.open()) {
+     * </code>.
      */
     public static Context open() {
         Context next;
@@ -78,7 +79,7 @@ public final class TLC {
         return tlc.optional(key);
     }
 
-    /** See {@link Context#get(java.lang.Class). */
+    /** See {@link Context#get(java.lang.Class)}. */
     public static <T> T get(Class<T> klass) {
         return context(klass).get(klass);
     }

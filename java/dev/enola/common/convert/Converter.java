@@ -29,6 +29,9 @@ package dev.enola.common.convert;
  * ConversionException.
  *
  * <p>{@link BiConverter} is a bi-directional alternative to this.
+ *
+ * @param <I> the input type
+ * @param <O> the output type
  */
 @FunctionalInterface
 public interface Converter<I, O> {

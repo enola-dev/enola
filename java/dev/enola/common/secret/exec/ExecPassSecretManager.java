@@ -36,7 +36,8 @@ import java.util.Optional;
 
 /**
  * ExecPassSecretManager is an implementation of {@link SecretManager} which "shells out" (exec) to
- * [something like] <a href="https://www.passwordstore.org/"><tt>pass</tt></a> (for every secret).
+ * [something like] <a href="https://www.passwordstore.org/"><code>pass</code></a> (for every
+ * secret).
  *
  * <p>We recommend using this with GPG on a YubiKey that requires "touch" to decrypt secrets.
  */

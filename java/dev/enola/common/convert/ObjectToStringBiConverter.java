@@ -22,7 +22,11 @@ import com.google.errorprone.annotations.Immutable;
 import java.io.IOException;
 import java.util.Optional;
 
-/** Converts objects of type T to & from String, if it can. */
+/**
+ * Converts objects of type T to &amp; from String, if it can.
+ *
+ * @param <T> the type of objects to convert
+ */
 @Immutable
 public interface ObjectToStringBiConverter<T>
         extends BiConverter<T, String>, ConverterIntoAppendable<T>, ObjectClassConverter<T> {

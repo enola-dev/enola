@@ -32,11 +32,12 @@ import java.util.UUID;
  * <p>Typically intended to be used for "small"(-ish) size, like binary IDs, hashes, cryptographic
  * keys, and such things; do not use this for "very large BLOBs". The hashCode is cached.
  *
- * <p>The <tt>com.google.protobuf.ByteString</tt> is very similar - but we don't want to depend on
- * the ProtoBuf library JUST for having a type like this. Likewise,
- * <tt>com.google.crypto.tink.util.Bytes</tt> is similar.
+ * <p>The <code>com.google.protobuf.ByteString</code> is very similar - but we don't want to depend
+ * on the ProtoBuf library JUST for having a type like this. Likewise, <code>
+ * com.google.crypto.tink.util.Bytes</code> is similar.
  *
- * <p>This intentionally does <b>not</b> implement <tt>Iterable<Byte></tt> to avoid boxing overhead.
+ * <p>This intentionally does <b>not</b> implement <code>Iterable&lt;Byte&gt;</code> to avoid boxing
+ * overhead.
  */
 @Immutable
 public final class ByteSeq implements Comparable<ByteSeq> {

@@ -37,12 +37,12 @@ import java.util.function.Function;
 
 /**
  * {@link MetadataProvider} implementation based on looking at {@link Things}s obtained via {@link
- * ThingProvider}; see also related <a href="https://docs.enola.dev/concepts/metadata/>end-user
+ * ThingProvider}; see also related <a href="https://docs.enola.dev/concepts/metadata/">end-user
  * documentation</a>.
  *
- * <p>Logs errors, but does not propagate exceptions from the <tt>ThingProvider</tt>, because we do
- * not want to fail operations "just" because Metadata could not be obtained; all the methods have
- * fallbacks.
+ * <p>Logs errors, but does not propagate exceptions from the <code>ThingProvider</code>, because we
+ * do not want to fail operations "just" because Metadata could not be obtained; all the methods
+ * have fallbacks.
  */
 public class ThingMetadataProvider implements MetadataProvider<Thing> {
 

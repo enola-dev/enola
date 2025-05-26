@@ -29,7 +29,7 @@ import java.nio.file.Path;
  *   <li><a
  *       href="https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html">Specification</a>
  *   <li><a href="https://wiki.archlinux.org/title/XDG_Base_Directory">Arch Linux Wiki</a>
- *   <li<a href="https://github.com/harawata/appdirs">harawata/appdirs</a>
+ *   <li><a href="https://github.com/harawata/appdirs">harawata/appdirs</a>
  *   <li><a href="https://github.com/dirs-dev/directories-jvm">dirs-dev/directories-jvm</a>
  *   <li><a href="https://dirs.dev">dirs.dev</a>
  *   <li><a href="https://github.com/omajid/xdg-java">omajid/xdg-java</a>

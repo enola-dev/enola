@@ -31,6 +31,9 @@ import dev.enola.datatype.Datatype;
  *
  * <p>This is a LEGACY type which (now) overlaps with {@link Thing#datatype(String predicateIRI)}
  * (and a String value property). Prefer using that than this, which will eventually be removed.
+ *
+ * @param value the string value of the literal
+ * @param datatypeIRI the IRI of the datatype of the literal
  */
 @Immutable
 @Deprecated // TODO Remove this; see above

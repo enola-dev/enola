@@ -23,6 +23,9 @@ import org.jspecify.annotations.Nullable;
  * Bi-directional alternative to {@link Converter}.
  *
  * <p>See also Guava's similar {@link com.google.common.base.Converter}.
+ *
+ * @param <A> the first type that can be converted to and from
+ * @param <B> the second type that can be converted to and from
  */
 public interface BiConverter<A, B> {
 

@@ -32,10 +32,10 @@ import java.util.stream.Stream;
  *
  * <p>See {@link FileSystem#getPathMatcher(String)} for the full (Java) documentation of globs.
  *
- * <p>For example <tt>file:/tmp/*.txt</tt> (for all TXT directly in /tmp), or <tt>file:/tmp/**</tt>
- * (for everything under /tmp), or <tt>file:/tmp/**&#47;*.txt</tt> (for all TXT in sub-directories
- * of /tmp), or <tt>file:/tmp/**.txt</tt> (for all TXT in /tmp itself and sub-directories), or
- * similar.
+ * <p>For example <code>file:/tmp/*.txt</code> (for all TXT directly in /tmp), or <code>file:/tmp/**
+ * </code> (for everything under /tmp), or <code>file:/tmp/**&#47;*.txt</code> (for all TXT in
+ * sub-directories of /tmp), or <code>file:/tmp/**.txt</code> (for all TXT in /tmp itself and
+ * sub-directories), or similar.
  *
  * <p>It is also valid to use a file: IRI which is not actually a glob; in that case, it is
  * interpreted as just the given single file or directory.

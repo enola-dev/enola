@@ -39,6 +39,14 @@ import java.util.Map;
  * <p>{@link ProcessBuilder} is similar to this. But that's tied to the JVM's builtin process
  * launcher - while this may use other means to execute the command. This intentionally has no
  * start() method, because it is passed to a {@link ProcessLauncher} to actually run it.
+ *
+ * @param directory the working directory for the process
+ * @param command the command to execute
+ * @param environment the environment variables for the process
+ * @param in the input stream supplier for the process
+ * @param out the output stream supplier for the process
+ * @param err the error stream supplier for the process
+ * @param mergeErrIntoOut whether to merge the error stream into the output stream
  */
 public record ProcessRequest(
         Path directory,

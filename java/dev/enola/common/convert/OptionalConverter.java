@@ -22,5 +22,8 @@ import java.util.Optional;
 /**
  * Optional {@link Converter} of an object of type I to a new object of type O, or {@link
  * Optional#empty()}.
+ *
+ * @param <I> the type of input objects to convert from
+ * @param <O> the type of output objects to convert to, wrapped in an Optional
  */
 public interface OptionalConverter<I, O> extends Converter<I, Optional<O>> {}

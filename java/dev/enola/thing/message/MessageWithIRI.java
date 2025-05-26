@@ -22,6 +22,9 @@ import com.google.protobuf.Message;
 /**
  * MessageWithIRI is a Proto {@link Message} + an IRI describing "what it is" (logical), or "where
  * it comes from" ('physical' URI).
+ *
+ * @param iri the IRI describing what the message is or where it comes from
+ * @param message the Protocol Buffers message
  */
 // MessageOrBuilder instead Message, to avoid build(), when not required?
-public final record MessageWithIRI(String iri, Message message) {}
+public record MessageWithIRI(String iri, Message message) {}

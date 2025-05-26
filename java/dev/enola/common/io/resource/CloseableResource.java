@@ -25,13 +25,13 @@ import java.io.Closeable;
  * <p>For {@link Resource} implementations which are {@link Closeable} and thus have (!) to be
  * {@link Closeable#close()} after use.
  *
- * <p>Note that the majority of <tt>Resource</tt> implementations (such as e.g. the {@link
- * FileResource}) themselves are NOT <tt>Closeable</tt>, because their {@link
+ * <p>Note that the majority of <code>Resource</code> implementations (such as e.g. the {@link
+ * FileResource}) themselves are NOT <code>Closeable</code>, because their {@link
  * com.google.common.io.ByteSource} and {@link com.google.common.io.ByteSink} are <a
  * href="https://github.com/google/guava/wiki/IOExplained">designed in (generally) resource leak
  * safe way</a>.
  *
- * <p>There are however some more special case <tt>Resource</tt> implementations which do require to
- * be closed to avoid resource leaks.
+ * <p>There are however some more special case <code>Resource</code> implementations which do
+ * require to be closed to avoid resource leaks.
  */
 public interface CloseableResource extends Closeable, Resource {}

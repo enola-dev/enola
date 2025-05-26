@@ -26,7 +26,7 @@ import java.time.Instant;
 /**
  * Interval of time on the time-line from a start to an end instant.
  *
- * <p>The start is inclusive and the end exclusive ("half-open").
+ * <p>The start is inclusive, and the end exclusive ("half-open").
  *
  * <p>The end instant is always greater than or equal to the start instant.
  *
@@ -42,6 +42,9 @@ import java.time.Instant;
  *   <li><a href="https://www.joda.org/joda-time/key_interval.html"><code>org.joda.time.Interval
  *       </code></a>
  * </ul>
+ *
+ * @param start the start instant, inclusive
+ * @param end the end instant, exclusive
  */
 @Immutable
 public record Interval(Instant start, Instant end) {

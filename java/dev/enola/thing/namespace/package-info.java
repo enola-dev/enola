@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** {@linkdev.enola.data.iri.namespace.Namespace}s as Things. */
+/** {@link dev.enola.data.iri.namespace.repo.Namespace}s as Things. */
 @NullMarked
 package dev.enola.thing.namespace;
 

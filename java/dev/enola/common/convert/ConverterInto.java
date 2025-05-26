@@ -30,13 +30,15 @@ import java.io.Writer;
 /**
  * Converts an object of type I into an existing object of type O.
  *
- * <p>O is typically something like an {@link Appendable}, {@link Builder} (or any other such
- * <tt>*Builder</tt>), {@link ByteSink}, {@link CharSink}, {@link OutputStream}, or {@link Writer}
- * or some similar such kind of thing.
+ * <p>O is typically something like an {@link Appendable}, {@link Builder} (or any other such <code>
+ * *Builder</code>), {@link ByteSink}, {@link CharSink}, {@link OutputStream}, or {@link Writer} or
+ * some similar such kind of thing.
  *
  * <p>The "context" of the conversion, if any, must be part of I (or available via {@link
  * dev.enola.common.context.TLC}).
  *
+ * @param <I> the type of input objects to convert from
+ * @param <O> the type of output objects to convert into
  * @see Converter
  */
 @FunctionalInterface

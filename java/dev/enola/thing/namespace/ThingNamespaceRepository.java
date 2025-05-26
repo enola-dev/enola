@@ -36,6 +36,8 @@ import java.util.Optional;
  * <p>This is (much!) slower than the {@link
  * dev.enola.data.iri.namespace.repo.NamespaceRepositoryEnolaDefaults#INSTANCE}, and should only
  * ever be used indirectly through {@link CachingNamespaceRepository}.
+ *
+ * @param thingProvider the provider of things used to retrieve namespace information
  */
 public record ThingNamespaceRepository(ThingProvider thingProvider) implements NamespaceRepository {
 

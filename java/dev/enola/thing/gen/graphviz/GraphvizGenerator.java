@@ -56,8 +56,8 @@ public class GraphvizGenerator implements ThingsIntoAppendableConverter {
         /**
          * In "full" mode, we print a table with properties; in "lite" mode we do not.
          *
-         * <p>Note that many of <a href="Layout Engines">Graphviz's Layout Engines</a> don't seem to
-         * work well with full mode.
+         * <p>Note that many of <a href="https://graphviz.org/docs/layouts/">Graphviz's Layout
+         * Engines</a> don't seem to work well with full mode.
          */
         FULL
     }

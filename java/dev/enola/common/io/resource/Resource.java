@@ -25,7 +25,7 @@ package dev.enola.common.io.resource;
  * #byteSink()}.
  *
  * <p>PS: Nota bene that this <i>Resource</i> (of Enola's Java API) is <b>NOT</b> the same as the <a
- * href="https://docs.enola.dev/models/www.w3.org/2000/01/rdf-schema/Resource/"><tt>rdfs:Resource</tt></a>,
- * which is a {@link dev.enola.thing.Thing} in Enola's Java API.
+ * href="https://docs.enola.dev/models/www.w3.org/2000/01/rdf-schema/Resource/"><code>rdfs:Resource
+ * </code></a>, which is a Thing in Enola's Java API.
  */
 public interface Resource extends ReadableResource, WritableResource {}

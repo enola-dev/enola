@@ -26,7 +26,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-/** {@link ReadableResource} on Java Classpath; e.g. <tt>classpath:/hello.txt</tt>. */
+/** {@link ReadableResource} on Java Classpath; e.g. <code>classpath:/hello.txt</code>. */
 public class ClasspathResource extends UrlResource {
 
     // TODO Replace with ClassLoaderResource which uses ClassLoader.getResourceAsStream(String name)
