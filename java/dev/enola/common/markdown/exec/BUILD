@@ -18,6 +18,7 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
+    # TODO Rename to "exec"
     name = "markdown",
     srcs = glob(
         ["*.java"],

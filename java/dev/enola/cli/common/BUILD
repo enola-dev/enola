@@ -19,7 +19,11 @@ load("@rules_java//java:defs.bzl", "java_library")
 java_library(
     name = "common",
     srcs = glob(["*.java"]),
-    visibility = ["//java/dev/enola/cli:__subpackages__"],
+    visibility = [
+        # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
+        "//java/dev/enola:__pkg__",
+        "//java/dev/enola/cli:__subpackages__",
+    ],
     runtime_deps = [
         "@enola_maven//:org_apache_logging_log4j_log4j_to_jul",
         "@enola_maven//:org_slf4j_slf4j_jdk14",

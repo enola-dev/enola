@@ -30,6 +30,8 @@ java_library(
 java_binary(
     name = "demo",
     main_class = "dev.enola.cli.demo.DemoApplication",
+    # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
+    visibility = ["//java/dev/enola:__pkg__"],
     runtime_deps = [
         ":demolib",
     ],

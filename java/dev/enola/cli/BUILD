@@ -33,6 +33,7 @@ java_binary(
 )
 
 java_library(
+    # TODO Rename to cli
     name = "lib",
     srcs = glob(
         ["*.java"],
@@ -45,9 +46,10 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:picocli"],
     resource_strip_prefix = "java/dev/enola/cli/resources",
     resources = glob(["resources/**"]),
+    # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
+    visibility = ["//java/dev/enola:__pkg__"],
     deps = [
-        "//java/dev/enola",
-        # TODO Remove most of these direct deps, through new Enola API...
+        # TODO Remove most of these direct deps, through new "//java/dev/enola" API...
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
         "//java/dev/enola/chat/sshd",
@@ -55,8 +57,10 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/canonicalize",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/convert",
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/linereader",
         "//java/dev/enola/common/linereader/jline",
         "//java/dev/enola/common/locale",
@@ -64,6 +68,8 @@ java_library(
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/xml",
+        "//java/dev/enola/data/iri",
+        "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/identity",
         "//java/dev/enola/infer/datalog",
         "//java/dev/enola/infer/rdf",
