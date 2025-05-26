@@ -19,6 +19,8 @@ set -euox pipefail
 
 # See docs/dev/dependencies.md
 
+tools/javadoc/classpath.bash
+
 # TODO How-to automagically update dependencies.txt if PyPI has newer versions? (pip-tools & requirements.in?)
 
 # Update .pre-commit-config.yaml
@@ -35,6 +37,7 @@ pre-commit run --all-files
 bazelisk run @enola_maven//:outdated
 echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
 echo "Don't forget to run 'REPIN=1 bazelisk run @enola_maven//:pin' after changes!"
+tools/javadoc/classpath.bash
 
 # ASDF
 asdf plugin update --all

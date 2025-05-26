@@ -58,3 +58,9 @@ It **WILL** work and speed up future PRs (provided there are no changes to depen
 explains why this is so; TL;DR: a PR build can use the cache from a `main` build, but a `main` build will not use a PR's cache.
 
 https://github.com/actions/cache/pull/575/files has some related discussion.
+
+## Bill of Materials (BOM)
+
+### Java
+
+{% include "./dependencies.txt" %}

@@ -116,6 +116,7 @@ java_export(
     ],
 )
 
+# TODO Replace Bazel JavaDoc with tools/javadoc/build.bash (but Maven JAR?)
 # This is used by tools/docs/build.bash (and tools/maven/install.bash)
 javadoc(
     name = "javadoc",
