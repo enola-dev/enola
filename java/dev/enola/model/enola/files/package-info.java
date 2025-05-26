@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** 📁 Files 🗎 Model & Connector */
+/** 📁 Files 🗎 Model &amp; Connector */
 @NullMarked
 package dev.enola.model.enola.files;
 

@@ -36,9 +36,9 @@ import java.util.concurrent.TimeUnit;
  * <p>Use this instead of {@link java.util.concurrent.Executors}, because it ensures that:
  *
  * <ul>
- *   <li></b>the {@link dev.enola.common.context.TLC} is correctly propagated</b>
+ *   <li>the {@link dev.enola.common.context.TLC} is correctly propagated
  *   <li>the returned Executor uses a {@link ThreadFactory} that is named,
- *   <li>has a logging UncaughtExceptionHandler,
+ *   <li>has an UncaughtExceptionHandler which logs to SLF4j
  *   <li>can return (Guava's) ListenableFuture.
  * </ul>
  *

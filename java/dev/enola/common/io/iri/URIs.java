@@ -103,7 +103,8 @@ public final class URIs {
      * the query parameters of originalUriWithQuery (2nd) parameter - IFF the uri (1st) parameter
      * has no query; otherwise just returns the uri (1st) parameter as-is.
      *
-     * <p>See {@link URIsTest#testAddQueryGivenOriginalUriWithQuery()} for example.
+     * <p>For example, this method can be used to preserve query parameters when changing the URI
+     * path.
      */
     public static URI addQuery(URI uri, URI originalUriWithQuery) {
         if (Strings.isNullOrEmpty(originalUriWithQuery.getQuery())) return uri;

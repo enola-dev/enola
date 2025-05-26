@@ -25,6 +25,8 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * <p>Stores which are also {@link Provider} typically internally actually are, or delegate to, a
  * {@link StoreKV}, but their external API is {@link #store(T value)} instead of {@link
  * StoreKV#store(Object, Object)} simply because they internally extract a key from T.
+ *
+ * @param <T> the type of objects to store
  */
 public interface Store<T> {
 

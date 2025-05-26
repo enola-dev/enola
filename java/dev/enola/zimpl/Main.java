@@ -23,7 +23,7 @@ import dev.enola.model.enola.action.Get;
 /**
  * Enola CLI demo MVP.
  *
- * <p>The "real" CLI is in the <tt>dev.enola.cli</tt> package.
+ * <p>The "real" CLI is in the <code>dev.enola.cli</code> package.
  */
 public class Main {
 

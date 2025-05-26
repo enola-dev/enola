@@ -20,6 +20,9 @@ package dev.enola.common.function;
 /**
  * {@link java.util.function.Predicate}-like functional interface which can throw a checked
  * exception.
+ *
+ * @param <T> the type of the input to the predicate
+ * @param <E> the type of exception that may be thrown
  */
 @FunctionalInterface
 public interface CheckedPredicate<T, E extends Exception> {

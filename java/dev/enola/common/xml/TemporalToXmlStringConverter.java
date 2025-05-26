@@ -43,7 +43,7 @@ public class TemporalToXmlStringConverter implements Converter<TemporalAccessor,
      * Constructor.
      *
      * @param strictFourDigitYears see <a
-     *     href="https://en.wikipedia.org/wiki/ISO_8601#Years>Wikipedia on ISO 8601 years</a>, but
+     *     href="https://en.wikipedia.org/wiki/ISO_8601#Years">Wikipedia on ISO 8601 years</a>, but
      *     note that <a href="https://www.w3.org/TR/xmlschema-2/#morethan9999years">XSD permits year
      *     values greater than 9999</a>.
      */

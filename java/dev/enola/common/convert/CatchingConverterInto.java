@@ -17,7 +17,12 @@
  */
 package dev.enola.common.convert;
 
-/** {@link ConverterInto} which catches any failures and wraps them into ConversionException. */
+/**
+ * {@link ConverterInto} which catches any failures and wraps them into ConversionException.
+ *
+ * @param <I> the input type
+ * @param <O> the output type
+ */
 public interface CatchingConverterInto<I, O> extends ConverterInto<I, O> {
 
     boolean convertIntoThrows(I from, O into) throws Exception;

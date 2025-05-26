@@ -70,7 +70,7 @@ mkdocs build --strict --config-file mkdocs.yaml
 cleanup
 
 # JavaDoc
-rm site/dev/javadoc/index.html
+rm -rf site/dev/javadoc/
 unzip bazel-bin/java/dev/enola/javadoc.jar -d site/dev/javadoc/
 # xdg-open site/dev/javadoc/index.html
 

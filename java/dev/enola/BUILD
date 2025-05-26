@@ -77,6 +77,16 @@ java_export(
 javadoc(
     name = "javadoc",
     doc_url = "https://docs.enola.dev/dev/javadoc/",
+    excluded_workspaces = ["enola_maven"],
+    # Note that even merely javadocopts = [] makes the build fail?! ;=(
+    # TODO javadocopts = [
+    #   TODO "-Xdoclint:all",
+    #   TODO "-Werror",
+    #"-encoding",
+    #"UTF-8",
+    #"-charset",
+    #"UTF-8",
+    #],
     deps = [
         ":enola",
         # TODO Remove, but how not to fail?!

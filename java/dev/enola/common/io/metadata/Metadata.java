@@ -27,8 +27,8 @@ import java.util.Comparator;
  * Metadata of an IRI, provided by {@link MetadataProvider}.
  *
  * @param iri IRI about which this is Metadata.
- * @param imageHTML HTML of an image for the IRI, e.g. <img...> with URL of a favicon or something
- *     like that; or an 😃 Emoji!
+ * @param imageHTML HTML of an image for the IRI, e.g. &lt;img...&gt; with URL of a favicon or
+ *     something like that; or an 😃 Emoji!
  *     <p>Always returns something (never null), but may be empty String.
  * @param imageURL URL (not HTML) of an image for the IRI, but never the 😃 Emoji.
  *     <p>Always returns something (never null), but may be empty String.

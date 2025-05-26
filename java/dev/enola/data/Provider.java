@@ -21,7 +21,12 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import java.io.UncheckedIOException;
 
-/** Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K). */
+/**
+ * Providers "provide" (AKA "load" or allow you to "get") a value (V), given a key (K).
+ *
+ * @param <K> the type of keys
+ * @param <V> the type of values
+ */
 @ThreadSafe
 public interface Provider<K, V> {
 

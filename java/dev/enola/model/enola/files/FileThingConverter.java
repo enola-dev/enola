@@ -40,7 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
-/** FileThingConverter converts <code>file:/</code> URI into File & Directory Things. */
+/** FileThingConverter converts <code>file:/</code> URI into File &amp; Directory Things. */
 public class FileThingConverter implements UriIntoThingConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(FileThingConverter.class);

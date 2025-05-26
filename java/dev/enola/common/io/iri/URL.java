@@ -35,8 +35,9 @@ import java.util.Objects;
 
 /**
  * URL is <a href="https://url.spec.whatwg.org">WHATWG URL Living Standard</a> inspired
- * implementation. That standard is the de-facto successor of RFC 3987 & RFC 3986, which were the
- * successors that obsoleted the original RFCs 2396 (with more minor RFC RF 2732 in between them).
+ * implementation. That standard is the de-facto successor of RFC 3987 &amp; RFC 3986, which were
+ * the successors that obsoleted the original RFCs 2396 (with more minor RFC RF 2732 in between
+ * them).
  *
  * <p>This class is intentionally named the same as {@link java.net.URL}, because that class anyway
  * should never ever be used anymore in modern Java (<a
@@ -59,8 +60,8 @@ import java.util.Objects;
  * which <code>throws
  * </code> - naturally.)
  *
- * <p>This class leaves parsing (decoding) its {@link #authority()} to host/IPv4 & IPv6/port, and
- * IDNA for host, up to others. E.g. Guava's {@link HostAndPort} and {@link
+ * <p>This class leaves parsing (decoding) its {@link #authority()} to host/IPv4 &amp; IPv6/port,
+ * and IDNA for host, up to others. E.g. Guava's {@link HostAndPort} and {@link
  * com.google.common.net.InternetDomainName} and {@link com.google.common.net.InetAddresses} may be
  * useful; they are used by {@link #validate()}.
  *
@@ -166,7 +167,7 @@ public final class URL implements Comparable<URL> {
     /**
      * Returns a new {@link Builder}. This method exists purely for convenience for folks used to
      * typing <code>URL#builder()</code> (e.g. as is popular in generated <a
-     * href="https://protobuf.dev>Protocol Buffers</a> and similar code) instead of <code>
+     * href="https://protobuf.dev">Protocol Buffers</a> and similar code) instead of <code>
      * new URL.Builder()</code> - they are equivalent.
      */
     public static Builder builder() {

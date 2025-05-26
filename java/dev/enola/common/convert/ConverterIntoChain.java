@@ -21,6 +21,9 @@ import java.io.IOException;
 
 /**
  * A "chain" of {@link ConverterInto}s. It attempts the conversion in order until one is successful.
+ *
+ * @param <I> the type of input objects to convert from
+ * @param <O> the type of output objects to convert into
  */
 public class ConverterIntoChain<I, O> implements ConverterInto<I, O> {
 

@@ -25,6 +25,8 @@ import org.jspecify.annotations.Nullable;
  * <p>Trigger implementations themselves should be written as simple single-threaded code. Callers
  * may or may not invoke different triggers in parallel (but that is something that the caller
  * handles, not the implementations of individual triggers).
+ *
+ * @param <T> the type of objects in the store
  */
 public interface Trigger<T> {
 

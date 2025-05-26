@@ -25,6 +25,8 @@ import com.google.errorprone.annotations.Immutable;
  * <p>IRI are normally just String in Enola; this type only exists, and is required, so that it can
  * be returned by {@link Thing#get(String)} and distinguished from a String which is not an IRI but
  * text.
+ *
+ * @param iri the IRI (Internationalized Resource Identifier) that references another Thing
  */
 // TODO Consider using a Datatype to indicate link? But which...
 // TODO Abandon this and just use java.net.URI in Things instead?! No, that's less efficient.

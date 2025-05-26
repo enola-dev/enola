@@ -18,7 +18,7 @@
 
 /**
  * Thing {@link dev.enola.common.io.metadata.Metadata}, like labels/descriptions/logos, but also
- * DateTime & Hierarchy.
+ * DateTime &amp; Hierarchy.
  */
 @NullMarked
 package dev.enola.thing.metadata;

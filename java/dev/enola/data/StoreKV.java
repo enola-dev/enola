@@ -19,7 +19,12 @@ package dev.enola.data;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-/** StoreKV store Values so that they can be retrieved again later by Key. */
+/**
+ * StoreKV store Values so that they can be retrieved again later by Key.
+ *
+ * @param <K> the type of keys
+ * @param <V> the type of values
+ */
 public interface StoreKV<K, V> {
 
     @CanIgnoreReturnValue

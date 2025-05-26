@@ -35,7 +35,7 @@ public interface Datatype<T> {
     /** Regular Expression {@link Pattern} which text of this datatype matches. */
     Optional<Pattern> pattern();
 
-    /** Converter from/to T <=> text. */
+    /** Converter from/to T &lt;=&gt; text. */
     ObjectToStringBiConverter<T> stringConverter();
 
     /** Converter from/to Object (expected to be of T) <=> text. Just for convenience. */

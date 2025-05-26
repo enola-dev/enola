@@ -24,8 +24,8 @@ import java.util.Optional;
  * SecretManager is a "vault" of 🔑 {@link Secret}s.
  *
  * <p>You {@link #store(String, char[])}, then {@link #getOptional(String)} it; and maybe later
- * {@link #delete(String)} it again. There is very intentionally no <tt>Set&lt;String&gt;
- * listKeys()</tt> sort of method here.
+ * {@link #delete(String)} it again. There is very intentionally no <code>Set&lt;String&gt;
+ * listKeys()</code> sort of method here.
  */
 public interface SecretManager {
 

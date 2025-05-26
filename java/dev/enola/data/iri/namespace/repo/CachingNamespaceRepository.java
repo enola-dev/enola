@@ -22,7 +22,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 
 /**
- * {@linkdev.enola.data.iri.namespace.repo.NamespaceRepository} which caches another one.
+ * {@link dev.enola.data.iri.namespace.repo.NamespaceRepository} which caches another one.
  *
  * <p>This is initialized one-time at construction; changes to the underlying NamespaceRepository
  * are NOT automatically updated and IGNORED.

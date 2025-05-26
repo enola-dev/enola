@@ -20,6 +20,9 @@ package dev.enola.common.function;
 /**
  * {@link java.util.function.Supplier}-like functional interface which can throw a checked
  * exception.
+ *
+ * @param <T> the type of results supplied by this supplier
+ * @param <E> the type of exception that may be thrown
  */
 // https://javadocs.opendaylight.org/infrautils/neon/org/opendaylight/infrautils/utils/function/package-summary.html
 @FunctionalInterface

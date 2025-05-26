@@ -118,8 +118,8 @@ public interface PredicatesObjects /*<TT /*extends PredicatesObjects<?>>*/ {
     /**
      * Object of predicate, with type conversion - or failure.
      *
-     * <p>BEWARE: This may well fail and throw an <tt>IllegalArgumentException</tt>! You can never
-     * really be sure what Java type an object of a predicate is. If in doubt, use {@link
+     * <p>BEWARE: This may well fail and throw an <code>IllegalArgumentException</code>! You can
+     * never really be sure what Java type an object of a predicate is. If in doubt, use {@link
      * #getOptional(String, Class)}, or perhaps {@link #get(String)} with an {@link
      * dev.enola.common.convert.ObjectClassConverter}.
      */

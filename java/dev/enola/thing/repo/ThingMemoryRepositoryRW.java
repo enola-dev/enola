@@ -27,7 +27,7 @@ import dev.enola.data.Trigger;
 import dev.enola.thing.Thing;
 
 /**
- * ThingMemoryRepositoryRW is an in-memory read & write (i.e. both a {@link Store} and a {@link
+ * ThingMemoryRepositoryRW is an in-memory read &amp; write (i.e. both a {@link Store} and a {@link
  * Repository} of {@link Thing}s.
  *
  * <p>{@link ThingMemoryRepositoryROBuilder} is one of possibly several other alternatives for this.

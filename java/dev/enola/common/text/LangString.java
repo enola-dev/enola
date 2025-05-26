@@ -28,13 +28,14 @@ import java.util.Locale;
  *
  * <p>For Text with Direction, use {@link DirectionalLangString}.
  *
- * <p>The class name <tt>LangString</tt> was chosen both because of its <i>*String</i> suffix
- * familiarity for Java developers, and inspired by <tt>rdf:langString</tt> (even though this Java
- * type is otherwise technically not specific to the Resource Description Framework [RDF] as such).
+ * <p>The class name <code>LangString</code> was chosen both because of its <i>*String</i> suffix
+ * familiarity for Java developers, and inspired by <code>rdf:langString</code> (even though this
+ * Java type is otherwise technically not specific to the Resource Description Framework [RDF] as
+ * such).
  *
- * <p>Alternative names for the same concept include <tt>LocalizedText</tt>, <tt>LanguageText</tt>,
- * <tt>MultilingualString</tt> ('MLS'; or <tt>MultiLangString</tt> or <tt>MultiLanguageString</tt>),
- * <tt>InternationalizedString</tt> or <tt>LanguageString</tt>.
+ * <p>Alternative names for the same concept include <code>LocalizedText</code>, <code>LanguageText
+ * </code>, <code>MultilingualString</code> ('MLS'; or <code>MultiLangString</code> or <code>
+ * MultiLanguageString</code>), <code>InternationalizedString</code> or <code>LanguageString</code>.
  */
 public sealed class LangString permits DirectionalLangString, PronounceableText {
 

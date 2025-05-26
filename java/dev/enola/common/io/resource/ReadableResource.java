@@ -54,10 +54,10 @@ public interface ReadableResource extends AbstractResource {
      * {@link ChangeToken} of this resource's content. Implementations may e.g. be based on:
      *
      * <ul>
-     *   <li><a href="https://en.wikipedia.org/wiki/Stat_(system_call)"><tt>mtime</tt> Timestamp</a>
-     *       of a File or Directory
-     *   <li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields">HTTP
-     *       <tt>Last-Modified</tt></a>
+     *   <li><a href="https://en.wikipedia.org/wiki/Stat_(system_call)"><code>mtime</code>
+     *       Timestamp</a> of a File or Directory
+     *   <li><a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields">HTTP <code>
+     *       Last-Modified</code></a>
      *   <li><a href="https://en.wikipedia.org/wiki/HTTP_ETag">HTTP Etag</a>
      *   <li><a href="https://en.wikipedia.org/wiki/Merkle_tree">Merkle tree</a>, e.g. of a
      *       Directory

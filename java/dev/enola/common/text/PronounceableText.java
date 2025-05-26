@@ -33,8 +33,9 @@ import java.util.Locale;
  * href="https://aws.amazon.com/polly/">Amazon Polly</a> (try it e.g. on <a
  * href="https://ipa-reader.com">ipa-reader.com</a>), etc.
  *
- * <p>Both the idea and the specific class name <tt>PronounceableText</tt> were directly inspired by
- * the <a href="https://schema.org/PronounceableText">https://schema.org/PronounceableText</a>.
+ * <p>Both the idea and the specific class name <code>PronounceableText</code> were directly
+ * inspired by the <a
+ * href="https://schema.org/PronounceableText">https://schema.org/PronounceableText</a>.
  */
 public final class PronounceableText extends LangString {
 

@@ -42,7 +42,7 @@ import dev.enola.thing.repo.ThingProvider;
 import java.io.IOException;
 
 /**
- * Generator of JSON Format used by <a href="https://graphcommons.com"/>Graph Commons</a>.
+ * Generator of JSON Format used by <a href="https://graphcommons.com">Graph Commons</a>.
  *
  * <p>@deprecated This does not actually work.
  */

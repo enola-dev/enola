@@ -17,5 +17,9 @@
  */
 package dev.enola.data;
 
-/** RepositoryRW is a readable & writable {@link Repository} which is thus also a {@link Store}. */
+/**
+ * RepositoryRW is a readable &amp; writable {@link Repository} which is thus also a {@link Store}.
+ *
+ * @param <T> the type of objects in the repository
+ */
 public interface RepositoryRW<T> extends Repository<T>, Store<T> {}
