@@ -28,15 +28,12 @@ import java.nio.file.Path;
 
 public class Demo {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // TODO system(false)
-        try (Terminal terminal = TerminalBuilder.builder().system(true).build()) {
-            // TODO .systemOutput(ForcedSysOut) ?
+    // FTR https://github.com/JetBrains/pty4j/issues/170
 
-            // TODO Fix the (ugly) "echo" which "re-displays" all Fish shell input again
-            // This does not work well, see https://github.com/JetBrains/pty4j/issues/170;
-            // Disabling echo does NOT help: terminal.echo(false);
-            // Do NOT enter raw, it's worse: terminal.enterRawMode();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        try (Terminal terminal = TerminalBuilder.builder().build()) {
+            terminal.enterRawMode();
+            // NB: terminal.echo() true or false makes no difference (because we're in raw mode)
 
             int result;
             // TODO Read from $SHELL (and use cmd.exe on Windows)
@@ -52,7 +49,6 @@ public class Demo {
                             requireNonNull(terminal.output(), "terminal.output"),
                             null,
                             true)) {
-                // System.out.println("Running, and awaiting exit of: " + String.join(" ", cmd));
                 resize(terminal, runner);
                 terminal.handle(Terminal.Signal.WINCH, signal -> resize(terminal, runner));
                 result = runner.waitForExit();
