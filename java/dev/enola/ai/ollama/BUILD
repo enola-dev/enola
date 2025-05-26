@@ -17,6 +17,7 @@
 load("@rules_java//java:defs.bzl", "java_binary")
 
 java_binary(
+    # TODO Rename to ollama
     name = "enai",
     srcs = glob(
         ["*.java"],

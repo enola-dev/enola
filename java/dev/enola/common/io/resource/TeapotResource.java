@@ -30,8 +30,8 @@ import java.util.Set;
 
 /// TeapotResource 🫖 is an <a href="https://www.rfc-editor.org/rfc/rfc2324.html">RFC 2324</a>
 /// inspired resource for <code>coffee:/</code> etc. URLs. It returns "I'm a teapot" (as UTF-8
-// encoded
-/// text; but NOT as <code>message/coffeepot</code> media type!). It ignores anything written to it.
+/// encoded text; but NOT as <code>message/coffeepot</code> media type!). It ignores anything
+/// written to it.
 ///
 /// All international (§3.) coffee URI schemes are fully supported; and e.g.
 /// `kafo://demo.enola.dev/pot-7?#syrup-type=Vanilla` is valid for sameideanoj. Please note

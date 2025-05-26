@@ -44,6 +44,7 @@ go_proto_library(
 )
 
 java_library(
+    # TODO Rename to thing
     name = "thing_java",
     srcs = glob(
         # TODO Separate BUILD for each sub-package
