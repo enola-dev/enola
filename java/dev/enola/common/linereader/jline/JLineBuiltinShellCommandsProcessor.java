@@ -42,8 +42,6 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
 
     // TODO https://github.com/jline/jline3/issues/1256
 
-    // TODO https://github.com/jline/jline3/issues/1260 history IllegalArgumentException
-
     private final CommandRegistry.CommandSession commandSession;
     private final Builtins builtins;
     private final SystemCompleter completer;
@@ -85,7 +83,7 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
         if (!builtins.hasCommand(command)) return;
         if (splitCommandLine.size() > 1) {
             var rest = splitCommandLine.subList(1, splitCommandLine.size());
-            builtins.invoke(commandSession, command, rest);
+            builtins.invoke(commandSession, command, rest.toArray(new Object[0]));
         } else builtins.invoke(commandSession, command);
     }
 
