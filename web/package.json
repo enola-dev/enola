@@ -18,7 +18,7 @@
     "graphology-gexf": "^0.13.2",
     "graphology-layout": "^0.6.1",
     "graphology-layout-forceatlas2": "^0.10.1",
-    "sigma": "^3.0.1"
+    "sigma": "^3.0.2"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
