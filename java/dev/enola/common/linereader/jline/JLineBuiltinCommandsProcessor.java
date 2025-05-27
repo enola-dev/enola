@@ -37,8 +37,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<String, Exception> {
-    // TODO Rename JLineBuiltinShellCommandsProcessor to JLineBuiltinCommandsProcessor
+public class JLineBuiltinCommandsProcessor implements CheckedConsumer<String, Exception> {
 
     // TODO https://github.com/jline/jline3/issues/1256
 
@@ -49,7 +48,7 @@ public class JLineBuiltinShellCommandsProcessor implements CheckedConsumer<Strin
     private final Supplier<Path> cwdSupplier;
     private @Nullable LineReader lineReader;
 
-    public JLineBuiltinShellCommandsProcessor(Terminal terminal) {
+    public JLineBuiltinCommandsProcessor(Terminal terminal) {
         commandSession = new Builtins.CommandSession(terminal);
         // TODO Integrate with cwd in ExecAgent - but keep Optional!
         this.cwdSupplier = () -> null; // Path.of("/");

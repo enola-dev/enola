@@ -26,7 +26,7 @@ import dev.enola.chat.Switchboard;
 import dev.enola.common.context.TLC;
 import dev.enola.common.linereader.SystemInOutIO;
 import dev.enola.common.linereader.jline.JLineAgent;
-import dev.enola.common.linereader.jline.JLineBuiltinShellCommandsProcessor;
+import dev.enola.common.linereader.jline.JLineBuiltinCommandsProcessor;
 import dev.enola.common.linereader.jline.JLineIO;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subject;
@@ -67,7 +67,7 @@ public class ChatCommand implements Callable<Integer> {
                 try (var terminal = TerminalBuilder.terminal()) {
                     var parentCommandLine = spec.commandLine().getParent();
                     var picocliCommands = new PicocliCommands(parentCommandLine);
-                    var builtinCmdsProcessor = new JLineBuiltinShellCommandsProcessor(terminal);
+                    var builtinCmdsProcessor = new JLineBuiltinCommandsProcessor(terminal);
                     var cwdSupplier = builtinCmdsProcessor.cwdSupplier();
                     SystemRegistry systemRegistry =
                             new SystemRegistryImpl(parser, terminal, cwdSupplier, null);
