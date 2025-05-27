@@ -28,9 +28,9 @@ import org.slf4j.Logger;
 public class JLineAgent extends AbstractAgent {
     private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(JLineAgent.class);
 
-    private final JLineBuiltinShellCommandsProcessor proc;
+    private final JLineBuiltinCommandsProcessor proc;
 
-    public JLineAgent(Switchboard pbx, JLineBuiltinShellCommandsProcessor proc) {
+    public JLineAgent(Switchboard pbx, JLineBuiltinCommandsProcessor proc) {
         super(
                 tbf.create(Subject.Builder.class, Subject.class)
                         .iri("https://jline.org")

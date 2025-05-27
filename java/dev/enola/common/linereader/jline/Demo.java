@@ -25,7 +25,7 @@ public class Demo {
 
     public static void main(String[] args) throws Exception {
         try (var terminal = TerminalBuilder.terminal()) {
-            var consumer = new JLineBuiltinShellCommandsProcessor(terminal);
+            var consumer = new JLineBuiltinCommandsProcessor(terminal);
             var tailTips = consumer.commandDescriptions();
             try (var jLineIO =
                     new JLineIO(
