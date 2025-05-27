@@ -39,6 +39,10 @@ import java.util.*;
 
 public class ExecAgent extends AbstractAgent {
 
+    // TODO Must check if command is a path or on the PATH
+
+    // TODO If PATH contains "." then this won't really work yet as-is
+
     // TODO Offer tab completion of all available commands in Chat
     //   see https://jline.org/docs/tab-completion
 
