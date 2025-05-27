@@ -47,6 +47,7 @@ import picocli.shell.jline3.PicocliCommands;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -101,6 +102,7 @@ public class ChatCommand implements Callable<Integer> {
     /** EnolaAgent runs Enola's own CLI sub-commands. */
     private static class EnolaAgent extends AbstractAgent {
         private final CommandLine picocliCommandLine;
+        private final Set<String> commands;
 
         public EnolaAgent(Switchboard pbx, CommandLine commandLine) {
             super(
@@ -111,6 +113,7 @@ public class ChatCommand implements Callable<Integer> {
                             .build(),
                     pbx);
             this.picocliCommandLine = commandLine;
+            this.commands = picocliCommandLine.getSubcommands().keySet();
         }
 
         @Override
@@ -120,7 +123,11 @@ public class ChatCommand implements Callable<Integer> {
             // Builtins), but don't re-use this as-is for other more complex external commands.
             var splitCommandLine = List.of(commandLine.split("\\s+"));
 
-            picocliCommandLine.execute(splitCommandLine.toArray(new String[0]));
+            var command = splitCommandLine.get(0);
+            if (!commands.contains(command)) return;
+
+            // TODO Do something with exit code (just like for exec, where it's also still ignored)
+            int exit = picocliCommandLine.execute(splitCommandLine.toArray(new String[0]));
         }
     }
 }
