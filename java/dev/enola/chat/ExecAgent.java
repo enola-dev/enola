@@ -17,6 +17,8 @@
  */
 package dev.enola.chat;
 
+import static java.nio.file.Files.*;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -133,6 +135,7 @@ public class ExecAgent extends AbstractAgent {
 
     private void execute(String potentialCommand, boolean checkCommandWords, Message replyTo) {
         var executable = executable(potentialCommand);
+        var executablePath = cwd.resolve(executable);
         if (!executable.startsWith("/")
                 && !executable.startsWith("./")
                 && !executable.startsWith("../")) {
@@ -142,7 +145,9 @@ public class ExecAgent extends AbstractAgent {
                 LOG.info("Unknown executable: {}", executable);
                 return;
             }
-        }
+        } else if (!isRegularFile(executablePath)
+                || !isReadable(executablePath)
+                || !isExecutable(executablePath)) return;
 
         // TODO Allow running without timeout?
         var timeout = Duration.ofDays(1);
