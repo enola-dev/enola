@@ -43,6 +43,8 @@ In order to avoid confusion with certain terms which are both typically valid UN
 
 Prefixing input with $ followed by a space (to avoid potential future confusion with environment variables) will force it to be interpreted as a command to be executed instead (e.g. `$ uptime`).
 
+Commands are currently executed using `/usr/bin/env bash -c ...`, but this may be changed in the future.
+
 ## AI
 
 If you have [Ollama](https://ollama.com/) up and running locally on its default port `11434`, then this _Chat_ will have an `LLM>` participant using [`gemma3:1b`](https://ai.google.dev/gemma) which will chime into the conversation, like this:
