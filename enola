@@ -49,7 +49,8 @@ fi
 if [[ "$exit_code" == "0" ]]; then
   source "$ROOT"/tools/bazel-java-tool-chain/bazel-java-tool-chain.bash
   JAVA=$(java_home)
-  PATH="$JAVA"/bin:"$PATH" "$ROOT"/site/download/latest/enola "$@"
+  # TODO Remove TERM override after https://github.com/jline/jline3/issues/1259 is fixed
+  TERM=xterm-256color PATH="$JAVA"/bin:"$PATH" "$ROOT"/site/download/latest/enola "$@"
 
 else
   cat "$LOG" && echo >&2 && echo >&2
