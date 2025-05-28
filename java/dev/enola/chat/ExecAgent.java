@@ -161,7 +161,7 @@ public class ExecAgent extends AbstractAgent {
             var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);
             LOG.debug("Executed: {} => {}", potentialCommand, exitCode);
             var output = outputBuilder.toString();
-            if (!output.isEmpty()) {
+            if (!output.trim().isEmpty()) {
                 reply(replyTo, output);
             }
 
