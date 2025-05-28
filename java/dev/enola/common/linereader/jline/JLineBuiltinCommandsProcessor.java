@@ -33,6 +33,8 @@ import org.jline.terminal.Terminal;
 import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -56,8 +58,9 @@ public class JLineBuiltinCommandsProcessor implements CheckedConsumer<String, Ex
         var configDir = FreedesktopDirectories.JLINE_CONFIG_DIR;
         var configurationPath = new ConfigurationPath(configDir, configDir);
 
-        // TODO Limit exposed Builtins commands?
-        builtins = new Builtins(cwdSupplier, configurationPath, widgetCreator);
+        var commands = new HashSet<>(Arrays.asList(Builtins.Command.values()));
+        commands.remove(Builtins.Command.NANO);
+        builtins = new Builtins(commands, cwdSupplier, configurationPath, widgetCreator);
 
         completer = builtins.compileCompleters();
         completer.compile();
