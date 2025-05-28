@@ -28,6 +28,7 @@ import org.jline.console.CmdDesc;
 import org.jline.console.CmdLine;
 import org.jline.keymap.KeyMap;
 import org.jline.reader.*;
+import org.jline.reader.LineReader.Option;
 import org.jline.reader.impl.DefaultParser;
 import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.history.DefaultHistory;
@@ -113,18 +114,17 @@ public class JLineIO implements IO, Closeable {
                         .variable(LineReader.MOUSE, true)
                         //
                         .completer(completer)
-                        .option(LineReader.Option.AUTO_LIST, true) // Automatically list options
-                        .option(LineReader.Option.LIST_PACKED, true) // Display compact completions
-                        .option(LineReader.Option.AUTO_MENU, true) // Show menu automatically
-                        .option(LineReader.Option.MENU_COMPLETE, true) // Cycle through completions
+                        .option(Option.USE_FORWARD_SLASH, true) // use '/' as directory separator
+                        .option(Option.AUTO_LIST, true) // Automatically list options
+                        .option(Option.LIST_PACKED, true) // Display compact completions
+                        .option(Option.AUTO_MENU, true) // Show menu automatically
+                        .option(Option.MENU_COMPLETE, true) // Cycle through completions
 
                         // See https://github.com/jline/jline3/issues/1218
                         .option(DISABLE_EVENT_EXPANSION, disableEventExpansion)
-                        // TODO Test/Doc! .option(LineReader.Option.MOUSE, true)
-
                         .history(new DefaultHistory())
                         .variable(LineReader.HISTORY_FILE, FreedesktopDirectories.HISTORY)
-                        .option(LineReader.Option.HISTORY_BEEP, false)
+                        .option(Option.HISTORY_BEEP, false)
                         // ? .variable(LineReader.EXPAND_HISTORY, Boolean.TRUE)
 
                         // https://github.com/jline/jline3/wiki/Auto-Indentation-and-Pairing#auto-indentation ?
