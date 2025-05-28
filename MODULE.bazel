@@ -22,7 +22,7 @@
 
 RDF4J_VERSION = "5.1.3"
 
-GRPC_JAVA_VERSION = "1.72.0"
+GRPC_JAVA_VERSION = "1.73.0"
 
 # see ./tools/java_toolchain/BUILD
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
