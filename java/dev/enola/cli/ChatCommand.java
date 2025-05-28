@@ -38,7 +38,6 @@ import dev.enola.thing.java.ProxyTBF;
 
 import org.jline.console.SystemRegistry;
 import org.jline.console.impl.SystemRegistryImpl;
-import org.jline.reader.Parser;
 import org.jline.reader.impl.DefaultParser;
 import org.jline.terminal.TerminalBuilder;
 
@@ -64,7 +63,13 @@ public class ChatCommand implements Callable<Integer> {
             var subject = new Subjects(tbf).local();
             ctx.push(ThingIntoAppendableConverter.class, new JavaThingIntoRdfAppendableConverter());
             if (System.console() != null) {
-                Parser parser = new DefaultParser();
+                // TODO Parser configuration should be in class JLineIO, not here
+                DefaultParser parser = new DefaultParser();
+                parser.setEofOnUnclosedQuote(false);
+                parser.setEofOnEscapedNewLine(false);
+                parser.setEofOnUnclosedBracket(null);
+                parser.setRegexVariable(null); // We do not have console variables!
+
                 try (var terminal = TerminalBuilder.terminal()) {
                     var parentCommandLine = spec.commandLine().getParent();
                     var picocliCommands = new PicocliCommands(parentCommandLine);
