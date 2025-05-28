@@ -51,14 +51,13 @@ public class JLineBuiltinCommandsProcessor implements CheckedConsumer<String, Ex
     public JLineBuiltinCommandsProcessor(Terminal terminal) {
         commandSession = new Builtins.CommandSession(terminal);
         // TODO Integrate with cwd in ExecAgent - but keep Optional!
-        this.cwdSupplier = () -> null; // Path.of("/");
+        this.cwdSupplier = () -> null; // Path.of(".");
         Function<String, Widget> widgetCreator = name -> null;
         var configDir = FreedesktopDirectories.JLINE_CONFIG_DIR;
         var configurationPath = new ConfigurationPath(configDir, configDir);
 
         // TODO Limit exposed Builtins commands?
         builtins = new Builtins(cwdSupplier, configurationPath, widgetCreator);
-        // builtins.alias("bindkey", "keymap");
 
         completer = builtins.compileCompleters();
         completer.compile();
@@ -67,16 +66,18 @@ public class JLineBuiltinCommandsProcessor implements CheckedConsumer<String, Ex
     }
 
     public void lineReader(LineReader lineReader) {
+        if (this.lineReader != null) throw new IllegalStateException("lineReader already set!");
         this.lineReader = lineReader;
         builtins.setLineReader(lineReader);
     }
 
     @Override
     public void accept(String commandLine) throws Exception {
-        if (lineReader == null) throw new IllegalStateException("lineReader not set!");
+        if (lineReader == null) throw new IllegalStateException("lineReader not yet set!");
 
         // split() won't handle quoted arguments correctly, which is fine here (for simple
         // Builtins), but don't re-use this as-is for other more complex external commands.
+        // We could use the org.jline.reader.Parser here, but it seems unnecessary.
         var splitCommandLine = List.of(commandLine.split("\\s+"));
         var command = splitCommandLine.getFirst();
         if (!builtins.hasCommand(command)) return;
