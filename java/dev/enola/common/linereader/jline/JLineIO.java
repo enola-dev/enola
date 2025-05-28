@@ -33,6 +33,7 @@ import org.jline.reader.impl.completer.NullCompleter;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+import org.jline.utils.InfoCmp;
 import org.jline.widget.AutopairWidgets;
 import org.jline.widget.AutosuggestionWidgets;
 import org.jline.widget.TailTipWidgets;
@@ -91,6 +92,14 @@ public class JLineIO implements IO, Closeable {
             @Nullable Function<CmdLine, CmdDesc> descFun,
             boolean disableEventExpansion) {
         this.terminal = terminal;
+
+        // Jline's TailTipWidgets, used below, overwrite what's already on the screen.
+        // So to avoid it from looking ugly, we need to clear the screen before using it.
+        // In order to make the UX nicer, we save the current content of the screen (smcup),
+        // and in the close() method restore it again (rmcup).
+        terminal.puts(InfoCmp.Capability.enter_ca_mode);
+        terminal.puts(InfoCmp.Capability.clear_screen);
+        terminal.flush();
 
         if (terminal.trackMouse(Terminal.MouseTracking.Normal))
             LOG.info("Terminal has mouse tracking support");
@@ -163,6 +172,9 @@ public class JLineIO implements IO, Closeable {
 
     @Override
     public void close() throws IOException {
+        // Restore the previous screen content
+        terminal.puts(InfoCmp.Capability.exit_ca_mode);
+
         terminal.trackMouse(Terminal.MouseTracking.Off);
         terminal.flush();
 
