@@ -20,6 +20,8 @@
 
 Enola’s Chat is _The Shell for the 2030s+_ and the _“last Chat you'll ever need”._
 
+[After installing](../index.md), you can use it like this:
+
 ## Screencast
 
 ![Demo](script.svg)

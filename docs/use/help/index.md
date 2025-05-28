@@ -18,6 +18,8 @@
 
 # Help 🦮
 
+[After installing](../index.md), you can view help for each sub-command:
+
 ## Screencast
 
 ![Demo](script.svg)
