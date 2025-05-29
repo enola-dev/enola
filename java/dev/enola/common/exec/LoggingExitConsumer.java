@@ -20,9 +20,9 @@ package dev.enola.common.exec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.BiFunction;
+import java.util.function.BiConsumer;
 
-public class LoggingExitConsumer implements BiFunction<Integer, Throwable, Void> {
+public class LoggingExitConsumer implements BiConsumer<Integer, Throwable> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoggingExitConsumer.class);
 
@@ -33,7 +33,7 @@ public class LoggingExitConsumer implements BiFunction<Integer, Throwable, Void>
     }
 
     @Override
-    public Void apply(Integer integer, Throwable throwable) {
+    public void accept(Integer integer, Throwable throwable) {
         if (throwable == null) LOG.info("Process {} exited with code {}", details, integer);
         else
             LOG.warn(
@@ -41,6 +41,5 @@ public class LoggingExitConsumer implements BiFunction<Integer, Throwable, Void>
                     details,
                     throwable.getMessage(),
                     throwable);
-        return null;
     }
 }
