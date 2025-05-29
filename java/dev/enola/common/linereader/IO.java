@@ -21,6 +21,8 @@ import org.jspecify.annotations.Nullable;
 
 public interface IO {
 
+    // TODO readPassword()
+
     // TODO Markdown?
 
     // TODO printURL() ?
@@ -38,4 +40,6 @@ public interface IO {
     }
 
     void printf(String format, Object... args);
+
+    ExecutionContext ctx();
 }

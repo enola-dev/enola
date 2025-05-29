@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.chat.Prompter.MOTD;
 
+import dev.enola.common.linereader.TestIO;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subjects;
 

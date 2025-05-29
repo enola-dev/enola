@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/linereader",
         "@enola_maven//:ch_vorburger_exec_exec",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",

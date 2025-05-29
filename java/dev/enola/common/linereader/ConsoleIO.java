@@ -20,15 +20,23 @@ package dev.enola.common.linereader;
 import org.jspecify.annotations.Nullable;
 
 import java.io.Console;
+import java.util.Map;
 
 /** ConsoleIO is an {@link IO} implementation based on {@link Console}. */
-public class ConsoleIO implements IO {
+public class ConsoleIO extends SystemInOutIO {
     private final Console console;
 
-    public ConsoleIO() {
+    // TODO Use console.charset() in ctx() ?
+
+    public ConsoleIO(Map<String, String> env) {
+        super(env);
         if (System.console() == null)
             throw new IllegalStateException("Use another implementation of interface IO");
         console = System.console();
+    }
+
+    public ConsoleIO() {
+        this(System.getenv());
     }
 
     @Override

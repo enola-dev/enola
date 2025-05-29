@@ -29,6 +29,7 @@ public class Demo {
             var tailTips = consumer.commandDescriptions();
             try (var jLineIO =
                     new JLineIO(
+                            System.getenv(),
                             terminal,
                             new DefaultParser(),
                             consumer.completer(),
