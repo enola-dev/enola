@@ -65,6 +65,7 @@ class StreamPumper implements AutoCloseable {
         int bytesRead;
         byte[] buffer = new byte[BUFFER_SIZE];
         try {
+            // We cannot use this.is.transferTo(this.os); because of !stop
             while (!stop && (bytesRead = is.read(buffer)) != -1) {
                 os.write(buffer, 0, bytesRead);
                 os.flush();
