@@ -22,6 +22,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.linereader.ExecutionContextImpl;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;

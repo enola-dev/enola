@@ -15,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.exec;
+package dev.enola.common.linereader;
 
 import com.google.common.collect.ImmutableMap;
-
-import dev.enola.common.linereader.ExecutionContext;
 
 import java.io.InputStream;
 import java.io.OutputStream;
