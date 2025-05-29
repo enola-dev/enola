@@ -29,10 +29,7 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.slf4j.event.Level;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
@@ -57,6 +54,10 @@ public class PtyRunnerTest {
     ByteArrayOutputStream err = new ByteArrayOutputStream();
 
     PtyRunner run(String[] cmd, InputStream in) throws IOException {
+        return new PtyRunner(false, Path.of("."), cmd, env, in, out, err, false);
+    }
+
+    PtyRunner run(String[] cmd, InputStream in, OutputStream out) throws IOException {
         return new PtyRunner(false, Path.of("."), cmd, env, in, out, err, false);
     }
 
@@ -101,6 +102,21 @@ public class PtyRunnerTest {
         }
         assertThat(err.toString(US_ASCII)).isEmpty();
         assertThat(out.toString(US_ASCII)).startsWith("/dev/pts/");
+    }
+
+    @Test
+    public void teeTty() throws IOException {
+        Appendable appendable = new StringBuilder();
+        try (var aos = new AppendableOutputStream(appendable, US_ASCII)) {
+            // TODO Test System.out with SystemStdinStdoutTester ?
+            var os = new TeeOutputStream(out, aos);
+            try (var r = run(new String[] {"/usr/bin/tty"}, noInput, os)) {
+                assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
+            }
+            assertThat(err.toString(US_ASCII)).isEmpty();
+            assertThat(out.toString(US_ASCII)).startsWith("/dev/pts/");
+        }
+        assertThat(appendable.toString()).startsWith("/dev/pts/");
     }
 
     @Test(expected = IOException.class)
