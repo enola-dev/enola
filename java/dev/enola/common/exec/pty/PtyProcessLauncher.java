@@ -48,6 +48,7 @@ public class PtyProcessLauncher implements ProcessLauncher {
         final var terminatedAtom = new AtomicReference<Optional<Instant>>(Optional.empty());
 
         try {
+            // skipcq: JAVA-W1087
             new PtyRunner(
                             console,
                             request.directory(),
@@ -64,7 +65,7 @@ public class PtyProcessLauncher implements ProcessLauncher {
                                 terminatedAtom.set(Optional.of(Instant.now()));
                                 if (process != null) result.complete(process.exitValue());
                                 else result.completeExceptionally(throwable);
-                            }); // skipcq: JAVA-W1087
+                            });
 
         } catch (IOException e) {
             result.completeExceptionally(e);
