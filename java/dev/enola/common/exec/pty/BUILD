@@ -57,6 +57,7 @@ junit_tests(
     deps = [
         ":pty",
         "//java/dev/enola/common/concurrent",
+        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
