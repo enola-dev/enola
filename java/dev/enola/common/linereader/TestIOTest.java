@@ -44,8 +44,8 @@ public class TestIOTest {
     @Test
     public void out() {
         var io = new TestIO(List.of());
-        io.printf("hello, %s", "world");
-        assertThat(io.getOutput()).containsExactly("hello, world");
+        io.printf("hello, %s\nTHE END", "world");
+        assertThat(io.getOutput()).isEqualTo("hello, world\nTHE END");
     }
 
     @Test

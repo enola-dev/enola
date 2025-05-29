@@ -175,6 +175,7 @@ public class JLineIO implements IO, Closeable {
 
                     @Override
                     public OutputStream error() {
+                        // TODO https://github.com/jline/jline3/issues/1318
                         return terminal.output();
                     }
 
@@ -190,6 +191,7 @@ public class JLineIO implements IO, Closeable {
 
                     @Override
                     public Charset errorCharset() {
+                        // TODO https://github.com/jline/jline3/issues/1318
                         return terminal.stderrEncoding();
                     }
                 };
