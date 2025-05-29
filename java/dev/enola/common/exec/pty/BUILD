@@ -33,6 +33,7 @@ java_library(
         ["*.java"],
         exclude = [
             "*Test.java",
+            "TestLoggerRule.java",
         ],
     ),
     visibility = ["//:__subpackages__"],
@@ -53,6 +54,7 @@ junit_tests(
         include = ["*Test.java"],
         allow_empty = True,
     ),
+    srcs_utils = ["TestLoggerRule.java"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":pty",

@@ -23,7 +23,6 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import com.github.valfirst.slf4jtest.TestLogger;
 import com.github.valfirst.slf4jtest.TestLoggerFactory;
-import com.github.valfirst.slf4jtest.TestLoggerFactoryResetRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,15 +40,16 @@ import java.util.Map;
 
 public class PtyRunnerTest {
 
-    // TODO Factor out the (non)logging infra into separate @Rule
-
     // TODO Run these tests against all Runner impls like vorburger:exec
 
     // TODO Eventually upstream PtyRunner (and this test) into vorburger:exec (?)
 
-    @Rule public TestRule resetLoggingEvents = new TestLoggerFactoryResetRule();
     TestLogger ptyRunnerLogger = TestLoggerFactory.getTestLogger(PtyRunner.class);
     TestLogger streamPumperLogger = TestLoggerFactory.getTestLogger(StreamPumper.class);
+
+    @Rule
+    public TestRule resetLoggingEvents =
+            new TestLoggerRule(Level.TRACE, Level.TRACE, ptyRunnerLogger, streamPumperLogger);
 
     Map<String, String> env = Collections.emptyMap();
     InputStream noInput = InputStream.nullInputStream();
@@ -62,25 +62,19 @@ public class PtyRunnerTest {
 
     @Test
     public void echo() throws IOException {
-        TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
         try (var r = run(new String[] {"/usr/bin/echo", "hello,", "world"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
-        assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
-        assertThat(streamPumperLogger.getAllLoggingEvents()).isEmpty();
         assertThat(err.toString(US_ASCII)).isEmpty();
         assertThat(out.toString(US_ASCII)).isEqualTo("hello, world\r\n");
     }
 
     @Test
     public void cat() throws IOException {
-        TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
         var in = new ByteArrayInputStream("hello, world\r\n".getBytes(US_ASCII));
         try (var r = run(new String[] {"/usr/bin/cat"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
-        assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
-        assertThat(streamPumperLogger.getAllLoggingEvents()).isEmpty();
         assertThat(err.toString(US_ASCII)).isEmpty();
         assertThat(in.available()).isEqualTo(0);
         assertThat(out.toString(US_ASCII)).isEqualTo("hello, world\r\n\r\n");
@@ -88,20 +82,19 @@ public class PtyRunnerTest {
 
     @Test
     public void head() throws IOException {
-        TestLoggerFactory.getInstance().setPrintLevel(Level.TRACE);
         var in = new ByteArrayInputStream("line 1\nline 2\nline 3\n".getBytes(US_ASCII));
         // NB: The "head -n 1" command reads only the first line, ignored lines 2 & 3, and exits.
         try (var r = run(new String[] {"/usr/bin/head", "-n", "1"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
-        assertThat(ptyRunnerLogger.getAllLoggingEvents()).isEmpty();
-        assertThat(streamPumperLogger.getAllLoggingEvents()).isEmpty();
         assertThat(err.toString(US_ASCII)).isEmpty();
         assertThat(out.toString(US_ASCII)).isEqualTo("line 1\r\n");
         // The input stream was not fully consumed, which is correct (in this case)
         // TODO FIXME assertThat(in.available()).isGreaterThan(0);
         assertThat(in.available()).isEqualTo(0);
     }
+
+    // TODO @Test public void tty() throws IOException {}
 
     @Test(expected = IOException.class)
     public void failNotFound() throws IOException {
