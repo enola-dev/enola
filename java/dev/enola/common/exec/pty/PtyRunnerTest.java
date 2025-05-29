@@ -94,7 +94,14 @@ public class PtyRunnerTest {
         assertThat(in.available()).isEqualTo(0);
     }
 
-    // TODO @Test public void tty() throws IOException {}
+    @Test
+    public void tty() throws IOException {
+        try (var r = run(new String[] {"/usr/bin/tty"}, noInput)) {
+            assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
+        }
+        assertThat(err.toString(US_ASCII)).isEmpty();
+        assertThat(out.toString(US_ASCII)).startsWith("/dev/pts/");
+    }
 
     @Test(expected = IOException.class)
     public void failNotFound() throws IOException {
