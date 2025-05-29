@@ -60,6 +60,9 @@ public class JLineBuiltinCommandsProcessor implements CheckedConsumer<String, Ex
 
         var commands = new HashSet<>(Arrays.asList(Builtins.Command.values()));
         commands.remove(Builtins.Command.NANO);
+        commands.remove(Builtins.Command.LESS);
+        commands.remove(Builtins.Command.SETVAR);
+        commands.remove(Builtins.Command.HIGHLIGHTER);
         builtins = new Builtins(commands, cwdSupplier, configurationPath, widgetCreator);
 
         completer = builtins.compileCompleters();

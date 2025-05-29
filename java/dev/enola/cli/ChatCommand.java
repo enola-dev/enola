@@ -67,7 +67,7 @@ public class ChatCommand implements Callable<Integer> {
                 DefaultParser parser = new DefaultParser();
                 parser.setEofOnUnclosedQuote(false);
                 parser.setEofOnEscapedNewLine(false);
-                parser.setEofOnUnclosedBracket(null);
+                parser.setEofOnUnclosedBracket((DefaultParser.Bracket[]) null);
                 parser.setRegexVariable(null); // We do not have console variables!
 
                 try (var terminal = TerminalBuilder.terminal()) {
