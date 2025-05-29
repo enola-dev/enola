@@ -17,26 +17,12 @@
  */
 package dev.enola.common.exec;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.time.Instant;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import org.junit.Test;
 
-public interface ProcessResponse {
+public class ExecMockTest {
 
-    // TODO Rename async() to future() ?
-    CompletableFuture<Integer> async();
-
-    ProcessRequest request();
-
-    InputStream in();
-
-    OutputStream out();
-
-    OutputStream err();
-
-    Instant started();
-
-    Optional<Instant> terminated();
+    @Test
+    public void success() {
+        // TODO Exec.run(new MockProcessLauncher(0, "hello".getBytes(UTF_8), new byte[0]), ... );
+    }
 }

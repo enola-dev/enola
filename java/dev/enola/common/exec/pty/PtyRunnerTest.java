@@ -37,6 +37,8 @@ import java.util.Map;
 
 public class PtyRunnerTest {
 
+    // TODO Adapt this to use ProcessLauncher instead of PtyRunner
+
     // TODO Merge with RunnerTest, to run these tests against all Runner impls incl. vorburger:exec
 
     // TODO Eventually upstream PtyRunner (and this test) into vorburger:exec (?)

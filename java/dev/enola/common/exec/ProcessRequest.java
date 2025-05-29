@@ -52,7 +52,7 @@ public record ProcessRequest(
     // TODO Use a "Handler", with ByteBuffer; like
     // https://brettwooldridge.github.io/NuProcess/apidocs/com/zaxxer/nuprocess/NuProcessHandler.html
 
-    // TODO Integration with common.io.Resource
+    // TODO Integration with common.io.Resource; https://docs.enola.dev/use/fetch/#exec
 
     public ProcessRequest {
         requireNonNull(directory, "directory");
