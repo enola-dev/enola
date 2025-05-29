@@ -38,6 +38,8 @@ public interface ChatModelProvider extends Provider<URI, StreamingChatModel> {
 
     URI uriExample();
 
+    // TODO Set<String> secrets();
+
     @Override
     default StreamingChatModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
         return getOptional(uri)

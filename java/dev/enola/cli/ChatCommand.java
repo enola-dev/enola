@@ -82,6 +82,7 @@ public class ChatCommand implements Callable<Integer> {
 
                     try (var io =
                             new JLineIO(
+                                    System.getenv(),
                                     terminal,
                                     parser,
                                     systemRegistry.completer(),

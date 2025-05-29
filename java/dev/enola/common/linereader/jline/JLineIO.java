@@ -22,6 +22,7 @@ import static org.jline.reader.LineReader.Option.DISABLE_EVENT_EXPANSION;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.FreedesktopDirectories;
+import dev.enola.common.linereader.ExecutionContext;
 import dev.enola.common.linereader.IO;
 
 import org.jline.console.CmdDesc;
@@ -44,6 +45,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.function.Function;
 
 /** JLineIO is an {@link IO} implementation based on <a href="https://jline.org">JLine.org</a>. */
@@ -65,9 +70,12 @@ public class JLineIO implements IO, Closeable {
 
     private final Terminal terminal;
     private final LineReader lineReader;
+    private final ImmutableMap<String, String> env;
+    private final ExecutionContext ctx;
 
     public JLineIO() throws IOException {
         this(
+                System.getenv(),
                 TerminalBuilder.terminal(),
                 new DefaultParser(),
                 NullCompleter.INSTANCE,
@@ -86,12 +94,14 @@ public class JLineIO implements IO, Closeable {
      *     commands like "!" and "!!" and "!n" and "!-n" and "!string" and "^string1^string2".
      */
     public JLineIO(
+            Map<String, String> env,
             Terminal terminal,
             Parser parser,
             Completer completer,
             ImmutableMap<String, CmdDesc> tailTips,
             @Nullable Function<CmdLine, CmdDesc> descFun,
             boolean disableEventExpansion) {
+        this.env = ImmutableMap.copyOf(env);
         this.terminal = terminal;
 
         // Jline's TailTipWidgets, used below, overwrite what's already on the screen.
@@ -145,6 +155,44 @@ public class JLineIO implements IO, Closeable {
         keyMap.bind(new Reference(AutopairWidgets.TAILTIP_TOGGLE), KeyMap.alt("s"));
 
         InputRC.apply(lineReader);
+
+        this.ctx =
+                new ExecutionContext() {
+                    @Override
+                    public ImmutableMap<String, String> environment() {
+                        return JLineIO.this.env;
+                    }
+
+                    @Override
+                    public InputStream input() {
+                        return terminal.input();
+                    }
+
+                    @Override
+                    public OutputStream output() {
+                        return terminal.output();
+                    }
+
+                    @Override
+                    public OutputStream error() {
+                        return terminal.output();
+                    }
+
+                    @Override
+                    public Charset inputCharset() {
+                        return terminal.stdinEncoding();
+                    }
+
+                    @Override
+                    public Charset outputCharset() {
+                        return terminal.stdoutEncoding();
+                    }
+
+                    @Override
+                    public Charset errorCharset() {
+                        return terminal.stderrEncoding();
+                    }
+                };
     }
 
     @Override
@@ -168,6 +216,11 @@ public class JLineIO implements IO, Closeable {
     @Override
     public void printf(String format, Object... args) {
         terminal.writer().printf(format, args);
+    }
+
+    @Override
+    public ExecutionContext ctx() {
+        return ctx;
     }
 
     @Override

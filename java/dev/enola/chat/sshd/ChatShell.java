@@ -46,14 +46,13 @@ class ChatShell {
                 NonLoggingAcceptAllPublickeyAuthenticator.getPublicKey(shellParams.getSession());
         var username = shellParams.getSession().getUsername();
 
-        // TODO Read secrets from shellParams.getEnv()
-
         try {
             var subjects = new Subjects(new ProxyTBF(ImmutableThing.FACTORY));
             var subject = subjects.fromPublicKey(pubKey, username);
             // TODO Create JLine Completer & Tail Tips from Agents, and use instead of NullCompleter
             var io =
                     new JLineIO(
+                            shellParams.getEnv(),
                             terminal,
                             new DefaultParser(),
                             NullCompleter.INSTANCE,
