@@ -17,12 +17,28 @@
  */
 package dev.enola.common.exec;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import com.google.common.collect.ImmutableMap;
+
 import org.junit.Test;
 
-public class ExecMockTest {
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.file.Path;
+
+public class MockProcessLauncherTest {
 
     @Test
     public void success() {
-        // TODO Exec.run(new MockProcessLauncher(0, "hello".getBytes(UTF_8), new byte[0]), ... );
+        var env = ImmutableMap.<String, String>of();
+        var launcher = new MockProcessLauncher(0, "hello".getBytes(UTF_8), new byte[0]);
+        var baos = new ByteArrayOutputStream();
+        Exec.run(launcher, env, Path.of("/"), InputStream.nullInputStream(), baos, "ls");
+        assertThat(baos.toString()).isEqualTo("hello");
     }
+
+    // TODO @Test void failure() {}
 }
