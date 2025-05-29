@@ -40,7 +40,7 @@ public interface Runner {
             Duration timeout)
             throws Exception;
 
-    // TODO Replace bash() with a new BashProcessLauncher
+    // TODO Replace bash() with a new BashProcessLauncher? Or just replace usages.
 
     default int bash(
             boolean expectNonZeroExitCode,

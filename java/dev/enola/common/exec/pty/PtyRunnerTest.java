@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class PtyRunnerTest {
 
-    // TODO Run these tests against all Runner impls like vorburger:exec
+    // TODO Merge with RunnerTest, to run these tests against all Runner impls incl. vorburger:exec
 
     // TODO Eventually upstream PtyRunner (and this test) into vorburger:exec (?)
 

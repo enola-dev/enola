@@ -30,6 +30,8 @@ public class TestRunner implements Runner {
 
     // See also (TBD) https://github.com/vorburger/ch.vorburger.exec/issues/10
 
+    // TODO Remove when replaced with MockProcessLauncher
+
     private final int exitCode;
     public final String output;
     private final @Nullable Exception exception;
