@@ -27,6 +27,7 @@ import dev.enola.common.exec.ExecPATH;
 import dev.enola.common.exec.Runner;
 import dev.enola.common.exec.VorburgerExecRunner;
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.linereader.IO;
 import dev.enola.identity.Hostnames;
 import dev.enola.identity.Subject;
 
@@ -94,7 +95,7 @@ public class ExecAgent extends AbstractAgent {
         this.forceExecPrefix = forceExecPrefix;
     }
 
-    public ExecAgent(Switchboard pbx) {
+    public ExecAgent(Switchboard pbx, IO io) {
         this(pbx, new VorburgerExecRunner(), ExecPATH.scan(), "$ ");
     }
 
@@ -147,7 +148,7 @@ public class ExecAgent extends AbstractAgent {
         // TODO Support streaming outputBuilder into Chat (see also LangChain4jAgent)
         var outputBuilder = new StringBuilder();
         try {
-            // TODO Feedback exitCode also to Chat (somewhow; but how?!)
+            // TODO Feedback exitCode also to Chat (somehow; but how?!)
             //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
             //   in the NEXT prompt... how how to "generalize" this here?
             var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);

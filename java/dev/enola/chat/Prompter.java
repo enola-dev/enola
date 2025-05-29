@@ -71,7 +71,7 @@ public class Prompter {
         sw.watch(new SystemAgent(sw));
         sw.watch(new EchoAgent(sw));
         sw.watch(new PingPongAgent(sw));
-        if (allowLocalExec) sw.watch(new ExecAgent(sw));
+        if (allowLocalExec) sw.watch(new ExecAgent(sw, io));
 
         // TODO Make this configurable, and support to /invite several of them to chit chat!
         var llmURL = URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");
