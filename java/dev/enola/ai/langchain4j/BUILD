@@ -27,13 +27,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
-        "//java/dev/enola/common/concurrent",
-        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/data",
-        "//java/dev/enola/identity",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:dev_langchain4j_langchain4j_core",
         "@enola_maven//:dev_langchain4j_langchain4j_google_ai_gemini",

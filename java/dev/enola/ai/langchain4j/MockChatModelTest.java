@@ -21,11 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
-public class TestChatLanguageModelTest {
+public class MockChatModelTest {
 
     @Test
     public void mock() {
-        var model = new TestChatLanguageModel("Zurich");
+        var model = new MockChatModel("Zurich");
         var answer = new TestStreamingChatResponseHandler();
         model.chat("List top 3 cites in Switzerland", answer);
         assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");

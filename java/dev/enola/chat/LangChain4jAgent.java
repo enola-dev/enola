@@ -17,7 +17,7 @@
  */
 package dev.enola.chat;
 
-import dev.enola.ai.langchain4j.ChatLanguageModelProvider;
+import dev.enola.ai.langchain4j.ChatModelProviders;
 import dev.enola.ai.langchain4j.TestStreamingChatResponseHandler;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.identity.Subject;
@@ -40,7 +40,7 @@ public class LangChain4jAgent extends AbstractAgent {
                         .comment(llmURL.toString())
                         .build(),
                 pbx);
-        lm = new ChatLanguageModelProvider(secretManager).get(llmURL);
+        lm = new ChatModelProviders(secretManager).get(llmURL);
     }
 
     @Override

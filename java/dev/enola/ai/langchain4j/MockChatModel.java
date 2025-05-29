@@ -24,10 +24,14 @@ import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.output.FinishReason;
 
-public class TestChatLanguageModel implements StreamingChatModel {
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.util.Optional;
+
+public class MockChatModel implements StreamingChatModel {
     private final String reply;
 
-    public TestChatLanguageModel(String reply) {
+    public MockChatModel(String reply) {
         this.reply = reply;
     }
 
@@ -38,5 +42,32 @@ public class TestChatLanguageModel implements StreamingChatModel {
                         .aiMessage(AiMessage.builder().text(reply).build())
                         .finishReason(FinishReason.STOP)
                         .build());
+    }
+
+    public static class Provider implements ChatModelProvider { // skipcq: JAVA-E0169
+
+        @Override
+        public String name() {
+            return "Mock 🦜";
+        }
+
+        @Override
+        public String uriTemplate() {
+            return "mocklm:{reply}";
+        }
+
+        @Override
+        public URI uriExample() {
+            return URI.create("mocklm:Hello,%20world!");
+        }
+
+        @Override
+        public Optional<StreamingChatModel> getOptional(URI uri)
+                throws IllegalArgumentException, UncheckedIOException {
+            if ("mocklm".equalsIgnoreCase(uri.getScheme())) {
+                var reply = uri.getSchemeSpecificPart();
+                return Optional.of(new MockChatModel(reply));
+            } else return Optional.empty();
+        }
     }
 }
