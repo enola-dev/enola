@@ -33,23 +33,29 @@ import java.util.Map;
 public class SystemInOutIO implements IO {
     private static final Logger LOG = LoggerFactory.getLogger(SystemInOutIO.class);
 
+    private final Charset inCharset;
+    private final Charset outCharset;
+    private final Charset errCharset;
+
+    private final BufferedReader reader;
     private final ImmutableMap<String, String> env;
 
-    // TODO Charset should not be hard-coded to defaultCharset, but ... from Context? Console?!
-    // TODO Java 25+ Use System.in.charset() ["stdin.encoding"]
-    // see https://github.com/openjdk/jdk/pull/25271
-    // see https://github.com/jline/jline3/issues/1282
-    private final Charset inCharset = Charset.defaultCharset();
-
-    private final BufferedReader reader =
-            new BufferedReader(new InputStreamReader(System.in, inCharset));
-
     public SystemInOutIO() {
-        this(System.getenv());
+        // TODO Java 25+ Use System.in.charset() ["stdin.encoding"] instead of defaultCharset()
+        //   see https://github.com/openjdk/jdk/pull/25271
+        //   see https://github.com/jline/jline3/issues/1282
+        this(System.getenv(), Charset.defaultCharset(), System.out.charset(), System.err.charset());
     }
 
-    public SystemInOutIO(Map<String, String> env) {
+    public SystemInOutIO(
+            Map<String, String> env, Charset inCharset, Charset outCharset, Charset errCharset) {
         this.env = ImmutableMap.copyOf(env);
+
+        this.errCharset = errCharset;
+        this.outCharset = outCharset;
+
+        this.inCharset = inCharset;
+        this.reader = new BufferedReader(new InputStreamReader(System.in, inCharset));
     }
 
     @Override
@@ -105,12 +111,12 @@ public class SystemInOutIO implements IO {
 
             @Override
             public Charset outputCharset() {
-                return System.out.charset();
+                return outCharset;
             }
 
             @Override
             public Charset errorCharset() {
-                return System.err.charset();
+                return errCharset;
             }
         };
     }

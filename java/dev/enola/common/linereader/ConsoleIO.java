@@ -26,13 +26,16 @@ import java.util.Map;
 public class ConsoleIO extends SystemInOutIO {
     private final Console console;
 
-    // TODO Use console.charset() in ctx() ?
+    private static Console console() {
+        var console = System.console();
+        if (console == null)
+            throw new IllegalStateException("Use another implementation of interface IO");
+        return console;
+    }
 
     public ConsoleIO(Map<String, String> env) {
-        super(env);
-        if (System.console() == null)
-            throw new IllegalStateException("Use another implementation of interface IO");
-        console = System.console();
+        super(env, console().charset(), console().charset(), console().charset());
+        console = console();
     }
 
     public ConsoleIO() {
