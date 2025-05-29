@@ -49,9 +49,8 @@ public final class Exec {
         var ctx = new ExecutionContextImpl(imap, in, out, out, cs, cs, cs);
         var request = new ProcessRequest(directory, ImmutableList.copyOf(command), () -> ctx, true);
 
-        launcher.execute(request)
-                .async()
-                .whenComplete(new LoggingExitConsumer(command[0])); // skipcq: JAVA-W1087
+        // skipcq: JAVA-W1087
+        launcher.execute(request).async().whenComplete(new LoggingExitConsumer(command[0]));
     }
 
     private Exec() {}

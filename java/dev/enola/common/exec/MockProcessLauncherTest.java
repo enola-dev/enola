@@ -37,7 +37,7 @@ public class MockProcessLauncherTest {
         var launcher = new MockProcessLauncher(0, "hello".getBytes(UTF_8), new byte[0]);
         var baos = new ByteArrayOutputStream();
         Exec.run(launcher, env, Path.of("/"), InputStream.nullInputStream(), baos, "ls");
-        assertThat(baos.toString()).isEqualTo("hello");
+        assertThat(baos.toString(UTF_8)).isEqualTo("hello");
     }
 
     // TODO @Test void failure() {}
