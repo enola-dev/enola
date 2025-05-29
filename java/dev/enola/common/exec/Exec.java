@@ -17,7 +17,6 @@
  */
 package dev.enola.common.exec;
 
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -50,7 +49,9 @@ public final class Exec {
         var ctx = new ExecutionContextImpl(imap, in, out, out, cs, cs, cs);
         var request = new ProcessRequest(directory, ImmutableList.copyOf(command), () -> ctx, true);
 
-        launcher.execute(request).async().handle(new LoggingExitConsumer(command[0]));
+        launcher.execute(request)
+                .async()
+                .whenComplete(new LoggingExitConsumer(command[0])); // skipcq: JAVA-W1087
     }
 
     private Exec() {}

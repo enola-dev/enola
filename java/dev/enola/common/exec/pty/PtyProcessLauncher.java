@@ -59,13 +59,12 @@ public class PtyProcessLauncher implements ProcessLauncher {
                             redirectErrorStream)
                     .process()
                     .onExit()
-                    .handle(
+                    .whenComplete(
                             (process, throwable) -> {
                                 terminatedAtom.set(Optional.of(Instant.now()));
                                 if (process != null) result.complete(process.exitValue());
                                 else result.completeExceptionally(throwable);
-                                return null;
-                            });
+                            }); // skipcq: JAVA-W1087
 
         } catch (IOException e) {
             result.completeExceptionally(e);
