@@ -17,7 +17,6 @@
  */
 package dev.enola.common.exec;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -26,6 +25,7 @@ import dev.enola.common.linereader.ExecutionContextImpl;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -45,8 +45,9 @@ public final class Exec {
             OutputStream out,
             String... command) {
 
+        var cs = Charset.defaultCharset();
         var imap = ImmutableMap.copyOf(env);
-        var ctx = new ExecutionContextImpl(imap, in, out, out, UTF_8, UTF_8, UTF_8);
+        var ctx = new ExecutionContextImpl(imap, in, out, out, cs, cs, cs);
         var request = new ProcessRequest(directory, ImmutableList.copyOf(command), () -> ctx, true);
 
         launcher.execute(request).async().handle(new LoggingExitConsumer(command[0]));
