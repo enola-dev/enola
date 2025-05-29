@@ -33,10 +33,9 @@ import java.net.URI;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
-    // TODO Separate @NonNull SPI provider, instead of changing all @Nullable Resource to
-    // Optional<Resource>... or, better, throw exception for unknown schema
+    // TODO Avoid @Nullable Resource, by using the pattern from ChatLanguageModelProvider
 
-    // TODO Should this have a Resource getResource(URI uri, MediaType mediaType) ?
+    // TODO Add (strongly typed) "metadata headers" (instead of e.g. only MediaType)
 
     @Override
     default @Nullable Resource get(String uri) {
