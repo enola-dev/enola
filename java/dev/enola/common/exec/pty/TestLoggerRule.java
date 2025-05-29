@@ -29,7 +29,7 @@ import org.slf4j.event.Level;
 
 public class TestLoggerRule extends TestLoggerFactoryResetRule {
 
-    // TODO Upstream this into https://github.com/valfirst/slf4j-test ?
+    // TODO Upstream this? See https://github.com/valfirst/slf4j-test/issues/580.
 
     private final Level captureLevel;
     private final Level printLevel;

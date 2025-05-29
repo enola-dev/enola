@@ -28,6 +28,8 @@ import org.junit.Test;
 
 public class RunnerTest {
 
+    // TODO Merge with PtyRunnerTest
+
     Runner runner = new VorburgerExecRunner(); // NuProcessRunner();
 
     void check(String command, boolean expectNonZeroExitCode, String expectedOutput)
