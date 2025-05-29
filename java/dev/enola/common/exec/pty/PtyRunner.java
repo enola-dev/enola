@@ -38,6 +38,10 @@ import java.util.concurrent.TimeUnit;
 public class PtyRunner implements AutoCloseable {
     private static final Logger LOG = LoggerFactory.getLogger(PtyRunner.class);
 
+    // TODO Make non-public, and expose only via PtyProcessLauncher
+
+    // TODO Rename class PtyRunner to something without *Runner
+
     private final PtyProcess process;
     private final OutputStream procOut;
     private final InputStream procIn;
@@ -82,6 +86,10 @@ public class PtyRunner implements AutoCloseable {
 
         procErr = process.getErrorStream();
         errPump = new StreamPumper("Err", procErr, err);
+    }
+
+    Process process() {
+        return process;
     }
 
     public void size(int columns, int rows) {

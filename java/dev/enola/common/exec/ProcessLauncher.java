@@ -17,13 +17,34 @@
  */
 package dev.enola.common.exec;
 
-/** ProcessLauncher launches a ProcessRequest. */
+/**
+ * ProcessLauncher launches a process described by a {@link ProcessRequest}.
+ *
+ * <p>Implementations could include:
+ *
+ * <ul>
+ *   <li>JDK's built-in {@link ProcessBuilder}
+ *   <li>Wrappers around native bindings (e.g. <a
+ *       href="https://github.com/JetBrains/pty4j">pty4j</a> (in a "raw" JLine Terminal), or <a
+ *       href="https://github.com/brettwooldridge/NuProcess">NuProcess</a>, or <a
+ *       href="https://github.com/jnr/jnr-process">jnr-process</a>)
+ *   <li>SSH client
+ *   <li>in Container
+ *   <li>in VM
+ * </ul>
+ *
+ * {@link Exec} is a related higher-level utility which builds upon this that may also interest you.
+ */
 public interface ProcessLauncher {
 
-    // TODO Support running in an "environment" container and/or VM, local or remote
+    // TODO Upstream this into https://github.com/vorburger/ch.vorburger.exec eventually
+
+    // TODO Implement atop an SSH client; like Apache MINA, or JSch, or jcabi-ssh
+
+    // TODO Implement running in an "environment" container and/or VM, local or remote
 
     /**
-     * Launch a new process (and immediately returns).
+     * Launch a new process (and immediately return).
      *
      * <p>Note that this intentionally does NOT throw IOException. Any start errors, such as a
      * failure to launch e.g. due to an image file not found or not executable, as well as

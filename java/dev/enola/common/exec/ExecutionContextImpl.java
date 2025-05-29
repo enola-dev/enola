@@ -17,26 +17,20 @@
  */
 package dev.enola.common.exec;
 
+import com.google.common.collect.ImmutableMap;
+
+import dev.enola.common.linereader.ExecutionContext;
+
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.time.Instant;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.nio.charset.Charset;
 
-public interface ProcessResponse {
-
-    // TODO Rename async() to future() ?
-    CompletableFuture<Integer> async();
-
-    ProcessRequest request();
-
-    InputStream in();
-
-    OutputStream out();
-
-    OutputStream err();
-
-    Instant started();
-
-    Optional<Instant> terminated();
-}
+public record ExecutionContextImpl(
+        ImmutableMap<String, String> environment,
+        InputStream input,
+        OutputStream output,
+        OutputStream error,
+        Charset inputCharset,
+        Charset outputCharset,
+        Charset errorCharset)
+        implements ExecutionContext {}

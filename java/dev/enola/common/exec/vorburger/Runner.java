@@ -30,8 +30,6 @@ import java.util.List;
  */
 public interface Runner {
 
-    // TODO Move into sub-package vorburger
-
     // TODO Fully replace Runner exec() with ProcessLauncher eventually
 
     int exec(

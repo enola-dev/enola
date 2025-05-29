@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -42,15 +43,17 @@ public class MockProcessLauncher implements ProcessLauncher {
     private @Nullable ImmutableMap<String, String> env;
 
     public MockProcessLauncher(int exit, byte[] out, byte[] err) {
-        this.result = CompletableFuture.completedFuture(exit);
-        this.out = out;
-        this.err = err;
+        this(CompletableFuture.completedFuture(exit), out, err);
     }
 
     public MockProcessLauncher(Throwable e, byte[] out, byte[] err) {
-        this.result = CompletableFuture.failedFuture(e);
-        this.out = out;
-        this.err = err;
+        this(CompletableFuture.failedFuture(e), out, err);
+    }
+
+    private MockProcessLauncher(CompletableFuture<Integer> result, byte[] out, byte[] err) {
+        this.result = result;
+        this.out = Arrays.copyOf(out, out.length);
+        this.err = Arrays.copyOf(err, err.length);
     }
 
     @Override
