@@ -21,8 +21,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.io.Files;
 
-import dev.enola.common.exec.Runner;
-import dev.enola.common.exec.VorburgerExecRunner;
+import dev.enola.common.exec.vorburger.Runner;
+import dev.enola.common.exec.vorburger.VorburgerExecRunner;
 
 import java.io.File;
 import java.io.IOException;

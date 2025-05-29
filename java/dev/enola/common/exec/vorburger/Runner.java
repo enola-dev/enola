@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.exec;
+package dev.enola.common.exec.vorburger;
 
 import java.nio.file.Path;
 import java.time.Duration;
@@ -30,7 +30,9 @@ import java.util.List;
  */
 public interface Runner {
 
-    // TODO Replace Runner exec() with ProcessLauncher eventually
+    // TODO Move into sub-package vorburger
+
+    // TODO Fully replace Runner exec() with ProcessLauncher eventually
 
     int exec(
             boolean expectNonZeroExitCode,

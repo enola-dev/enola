@@ -24,8 +24,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.exec.ExecPATH;
-import dev.enola.common.exec.Runner;
-import dev.enola.common.exec.VorburgerExecRunner;
+import dev.enola.common.exec.vorburger.Runner;
+import dev.enola.common.exec.vorburger.VorburgerExecRunner;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.linereader.IO;
 import dev.enola.identity.Hostnames;

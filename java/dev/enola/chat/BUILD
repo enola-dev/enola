@@ -43,6 +43,7 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/exec/vorburger",  # TODO Remove!
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/linereader",
         "//java/dev/enola/common/secret",
@@ -68,8 +69,8 @@ junit_tests(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/exec/vorburger",  # TODO Remove!
         "//java/dev/enola/common/linereader",
-        "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/identity",
         "//java/dev/enola/thing:thing_java",
