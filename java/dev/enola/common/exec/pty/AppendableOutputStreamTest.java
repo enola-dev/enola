@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -38,7 +37,6 @@ public class AppendableOutputStreamTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
     public void euroSignWithThreeByteWrites() throws IOException {
         var sb = new StringBuilder();
         try (var aos = new AppendableOutputStream(sb, UTF_8)) {
