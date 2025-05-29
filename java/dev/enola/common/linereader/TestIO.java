@@ -23,26 +23,25 @@ import com.google.common.collect.ImmutableMap;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestIO implements IO {
 
-    // TODO This is wrong, because it keeps InputStream ctx.input() separate from List<String> input
-
     static final Charset CHARSET = UTF_8;
 
-    private int line = 0;
-    private final List<String> input;
-    private final List<String> output = new ArrayList<>();
+    private final BufferedReader inputReader;
+    private final ByteArrayInputStream input;
+    private final ByteArrayOutputStream output = new ByteArrayOutputStream();
     private final ExecutionContext ctx;
 
     public TestIO(List<String> lines) {
-        this.input = lines;
+        var text = String.join("\n", lines);
+        var bytes = text.getBytes(CHARSET);
+        this.input = new ByteArrayInputStream(bytes);
+        this.inputReader = new BufferedReader(new InputStreamReader(input, CHARSET));
+
         this.ctx =
                 new ExecutionContext() {
                     @Override
@@ -52,19 +51,17 @@ public class TestIO implements IO {
 
                     @Override
                     public InputStream input() {
-                        var text = String.join("\n", input);
-                        var bytes = text.getBytes(CHARSET);
-                        return new ByteArrayInputStream(bytes);
+                        return input;
                     }
 
                     @Override
                     public OutputStream output() {
-                        throw new UnsupportedOperationException("TODO");
+                        return output;
                     }
 
                     @Override
                     public OutputStream error() {
-                        throw new UnsupportedOperationException("TODO");
+                        return output;
                     }
 
                     @Override
@@ -91,8 +88,13 @@ public class TestIO implements IO {
 
     @Override
     public @Nullable String readLine() {
-        if (line < input.size()) return input.get(line++);
-        else return null;
+        // if (input.available() < 1) return null;
+        try {
+            if (!inputReader.ready()) return null;
+            return inputReader.readLine();
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     @Override
@@ -103,10 +105,16 @@ public class TestIO implements IO {
 
     @Override
     public void printf(String format, Object... args) {
-        output.add(String.format(format, args));
+        output.writeBytes(String.format(format, args).getBytes(ctx.outputCharset()));
     }
 
-    public List<String> getOutput() {
-        return output;
+    // This signature is misleading, because it makes it appear as if we were tracking "line",
+    // whereas of course this is actually not so; any notion of print-by-line is meaningless
+    // and lost as soon as any printf() contains new line characters.
+    //   public List<String> getOutput() {
+    //     return  output.toString(ctx.outputCharset()).lines().toList(); }
+
+    public String getOutput() {
+        return output.toString(ctx.outputCharset());
     }
 }

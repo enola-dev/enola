@@ -31,7 +31,7 @@ public interface IO {
 
     // TODO Merge readLine() as readLine(String prompt) with prompt="" ?
 
-    @Nullable String readLine();
+    @Nullable String readLine(); // TODO throw IOException ?
 
     @Nullable String readLine(String prompt);
 
@@ -39,7 +39,9 @@ public interface IO {
         return readLine(String.format(promptFormat, args));
     }
 
-    void printf(String format, Object... args);
+    void printf(String format, Object... args); // TODO throw IOException ?
 
+    // TODO Rethink this... feel wrong, in hindsight; an IO does not "have" an ExecutionContext?
+    //   Rather, one way to implement in IO is to delegate it to an ExecutionContext?
     ExecutionContext ctx();
 }

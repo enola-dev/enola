@@ -151,6 +151,7 @@ public class ExecAgent extends AbstractAgent {
             // TODO Feedback exitCode also to Chat (somehow; but how?!)
             //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
             //   in the NEXT prompt... how how to "generalize" this here?
+            // TODO Run command in $SHELL instead of hard-coding bash -c.
             var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);
             LOG.debug("Executed: {} => {}", potentialCommand, exitCode);
             var output = outputBuilder.toString();
