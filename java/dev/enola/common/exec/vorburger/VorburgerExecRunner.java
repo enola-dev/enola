@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.exec;
+package dev.enola.common.exec.vorburger;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

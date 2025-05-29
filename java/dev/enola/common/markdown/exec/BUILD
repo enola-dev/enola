@@ -26,7 +26,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/exec/vorburger",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
     ],

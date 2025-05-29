@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,16 +18,17 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "exec",
+    name = "vorburger",
     srcs = glob(
         ["*.java"],
-        exclude = ["*Test.java"],
+        exclude = [
+            "*Test.java",
+        ],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/linereader",
+        "//java/dev/enola/common/exec",
         "@enola_maven//:ch_vorburger_exec_exec",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
@@ -40,7 +41,9 @@ junit_tests(
         include = ["*Test.java"],
         allow_empty = True,
     ),
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":exec",
+        ":vorburger",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
