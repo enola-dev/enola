@@ -44,10 +44,6 @@ public class Demo {
     private static final String USER_ID = "student";
     private static final String NAME = "multi_tool_agent";
 
-    // TODO This is kinda stupid...can we do better? FIXME
-    // The run your agent with Dev UI, the ROOT_AGENT should be a global public static variable.
-    public static final BaseAgent ROOT_AGENT = initAgent();
-
     public static BaseAgent initAgent() {
         return LlmAgent.builder()
                 // TODO Read agent config file
@@ -123,7 +119,7 @@ public class Demo {
 
     public static void main(String[] args) {
         // TODO Persist
-        InMemoryRunner runner = new InMemoryRunner(ROOT_AGENT);
+        InMemoryRunner runner = new InMemoryRunner(initAgent());
 
         Session session = runner.sessionService().createSession(NAME, USER_ID).blockingGet();
 

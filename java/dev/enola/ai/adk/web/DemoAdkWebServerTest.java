@@ -17,12 +17,16 @@
  */
 package dev.enola.ai.adk.web;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-public class WebServerTest {
+public class DemoAdkWebServerTest {
+
+    // TODO Use Spring Boot's integration test support stuff
 
     @Test
-    @Ignore
-    public void todo() {}
+    public void startStop() throws Exception {
+        try (var server = DemoAdkWebServer.start()) {
+            // TODO Test HTTP API
+        }
+    }
 }
