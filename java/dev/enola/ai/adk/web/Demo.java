@@ -19,7 +19,7 @@ package dev.enola.ai.adk.web;
 
 public class Demo {
     public static void main(String[] args) {
-        // TODO How to simply pass the Agent instance as argument?!
+        // TODO https://github.com/google/adk-java/issues/149 How to simply pass the Agent instance?
         com.google.adk.web.AdkWebServer.main(new String[] {});
     }
 }

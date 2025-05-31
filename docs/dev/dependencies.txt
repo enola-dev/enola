@@ -1,6 +1,4 @@
 at.favre.lib:hkdf:2.0.0
-ch.qos.logback:logback-classic:1.5.12
-ch.qos.logback:logback-core:1.5.12
 ch.vorburger.exec:exec:3.3.2
 com.adobe.xmp:xmpcore:6.1.11
 com.amazonaws:aws-java-sdk-core:1.12.783
