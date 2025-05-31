@@ -118,7 +118,7 @@ public class Demo {
     }
 
     public static void main(String[] args) {
-        // TODO Persist
+        // TODO Persist (and share to use the same config in DemoAdkWebServer)
         InMemoryRunner runner = new InMemoryRunner(initAgent());
 
         Session session = runner.sessionService().createSession(NAME, USER_ID).blockingGet();

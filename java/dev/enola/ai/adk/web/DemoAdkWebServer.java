@@ -33,7 +33,9 @@ import java.util.Map;
  */
 public class DemoAdkWebServer extends AdkWebServer {
 
-    public static AutoCloseable start() {
+    public static AutoCloseable start(int port) {
+        System.setProperty("server.port", Integer.toString(port)); // Add this line
+
         // As in com.google.adk.web.AdkWebServer#main()
         // TODO Avoid copy/paste by making this re-usable in a (static) method AdkWebServer
         System.setProperty(
@@ -51,6 +53,6 @@ public class DemoAdkWebServer extends AdkWebServer {
     }
 
     public static void main(String[] args) {
-        DemoAdkWebServer.start();
+        DemoAdkWebServer.start(8080);
     }
 }

@@ -25,7 +25,7 @@ public class DemoAdkWebServerTest {
 
     @Test
     public void startStop() throws Exception {
-        try (var server = DemoAdkWebServer.start()) {
+        try (var server = DemoAdkWebServer.start(0)) {
             // TODO Test HTTP API
         }
     }
