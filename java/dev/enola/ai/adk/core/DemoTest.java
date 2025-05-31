@@ -24,5 +24,8 @@ public class DemoTest {
 
     @Test
     @Ignore
-    public void todo() {}
+    public void todo() {
+        // TODO "What's the current time in Zürich"?
+        // TODO "What's the weather in New York?"
+    }
 }

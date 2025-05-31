@@ -192,6 +192,10 @@ enola_maven.install(
     # to clean versions at build time!
     duplicate_version_warning = "error",
     excluded_artifacts = [
+        # Thanks, but No Thanks! (Spring Boot drags this along, with ADK.)
+        "ch.qos.logback:logback-core",
+        "ch.qos.logback:logback-classic",
+
         # List e.g. "com.github.multiformats:java-multihash" etc. here
         #   if using "com.github.vorburger:*" instead above, for unmerged patched versions.
 
