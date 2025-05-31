@@ -180,6 +180,10 @@ enola_maven.install(
         "de.swiesend:secret-service:2.0.1-alpha",
         # TODO https://github.com/swiesend/secret-service/issues/51
         # "org.purejava:kdewallet:1.6.0",
+
+        # https://google.github.io/adk-docs/get-started/installation/
+        "com.google.adk:google-adk:0.1.0",
+        "com.google.adk:google-adk-dev:0.1.0",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
