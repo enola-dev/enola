@@ -20,7 +20,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "demo",
-    main_class = "dev.enola.ai.adk.web.Demo",
+    main_class = "dev.enola.ai.adk.web.DemoAdkWebServer",
     runtime_deps = [
         ":web",
         "@enola_maven//:org_slf4j_slf4j_simple",
@@ -38,10 +38,14 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/ai/adk/core",
+        "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_adk_google_adk_dev",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:org_springframework_boot_spring_boot",
+        "@enola_maven//:org_springframework_spring_beans",
+        "@enola_maven//:org_springframework_spring_context",
     ],
 )
 
