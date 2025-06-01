@@ -17,9 +17,12 @@
  */
 package dev.enola.common.struct;
 
+import io.soabase.recordbuilder.core.RecordInterface;
+
 import java.math.BigDecimal;
 import java.net.URI;
 
+@RecordInterface
 public interface ExtendedExample extends Example {
 
     CustomDatatype customDatatype();

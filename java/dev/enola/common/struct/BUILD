@@ -23,10 +23,12 @@ java_library(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    plugins = ["//tools/bazel/java_plugin:record-builder"],
     visibility = ["//:__subpackages__"],
     deps = [
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_soabase_record_builder_record_builder_core",
         "@enola_maven//:org_jspecify_jspecify",
     ],
 )

@@ -19,13 +19,11 @@ package dev.enola.common.struct;
 
 import org.junit.Test;
 
-import java.util.List;
-
 public class ExampleTest {
 
     @Test
     public void empty() {
-        // var o = ExtendedExampleBuilder().build();
+        // var o = ExampleBuilder().build();
         // assertThat(o.text()).isNull();
         // assertThat(o.number()).isNull();
         // assertThat(o.instant()).isNull();

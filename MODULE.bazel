@@ -184,6 +184,10 @@ enola_maven.install(
         # https://google.github.io/adk-docs/get-started/installation/
         "com.google.adk:google-adk:0.1.0",
         "com.google.adk:google-adk-dev:0.1.0",
+
+        # https://github.com/Randgalt/record-builder
+        "io.soabase.record-builder:record-builder-core:47",
+        "io.soabase.record-builder:record-builder-processor:47",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
