@@ -23,6 +23,8 @@ public class DemoAdkWebServerTest {
 
     // TODO Use Spring Boot's integration test support stuff
 
+    // TODO Upstream (something like) this, because ADK has no test coverage for dev/
+
     @Test
     public void startStop() throws Exception {
         try (var server = DemoAdkWebServer.start(0)) {
