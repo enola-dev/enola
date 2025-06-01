@@ -353,4 +353,29 @@ public class EnolaApplicationTest {
         exec.err().isEmpty();
         exec.hasExitCode(0);
     }
+
+    @Test
+    @Ignore // TODO Make CLI tests isolated so that this test does not break because -vvv elsewhere
+    public void exception() {
+        var exec = assertThat(cli("test-exception"));
+        exec.err()
+                .isEqualTo(
+                        "Internal Problem occurred, add -vvv flags for technical details:"
+                                + " RuntimeException: Test Exception\n"
+                                + "caused by: IOException: Test I/O failure\n");
+        exec.out().isEmpty();
+        exec.hasExitCode(1);
+    }
+
+    @Test
+    @Ignore // TODO Make CLI stateless so that enabling this does not break the exception() test
+    public void exceptionWithLogging() {
+        var exec = assertThat(cli("-v", "test-exception"));
+        exec.err().contains("java.lang.RuntimeException: Test Exception");
+        exec.err().contains("at dev.enola.cli.ExceptionTestCommand.run(ExceptionTestCommand.java:");
+        exec.err().contains("Caused by: java.io.IOException: Test I/O failure");
+        exec.out().contains("\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE.");
+        exec.out().isEmpty();
+        exec.hasExitCode(1);
+    }
 }
