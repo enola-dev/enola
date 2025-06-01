@@ -45,6 +45,7 @@ import picocli.CommandLine.Mixin;
             ExecMdCommand.class,
             LoggingTestCommand.class,
             LocaleTestCommand.class,
+            ExceptionTestCommand.class,
             InfoCommand.class,
             ValidateCommand.class,
             CanonicalizeCommand.class,
