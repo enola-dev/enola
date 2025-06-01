@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.yamljson;
+package dev.enola.common.struct;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import org.junit.Test;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class JSONTest {
+public interface Example {
 
-    // See YamlJsonTest for more tests.
+    String text();
 
-    @Test
-    public void instant() {
-        assertThat(JSON.write(Instant.now(), false)).isNotEmpty();
-    }
+    Integer number();
+
+    Instant instant();
+
+    @Nullable Example example();
+
+    List<Example> examplesInOrder();
+
+    Set<Example> examplesBag();
+
+    Map<String, Example> map();
 }
