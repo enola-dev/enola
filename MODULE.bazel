@@ -88,7 +88,6 @@ enola_maven.install(
         # which should be updated when this will be refined.
         "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.121.4",
         "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.121.4",
-        "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
         "com.google.guava:guava:33.4.0-jre",
@@ -117,6 +116,7 @@ enola_maven.install(
         #   "org.eclipse.rdf4j:rdf4j-sail-lmdb:%s" % RDF4J_VERSION,
         # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
         "com.fasterxml.jackson.core:jackson-databind:2.19.0",
+        "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.0",
         # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
         "io.kubernetes:client-java:24.0.0",
         # Other
@@ -185,6 +185,10 @@ enola_maven.install(
         # https://google.github.io/adk-docs/get-started/installation/
         "com.google.adk:google-adk:0.1.0",
         "com.google.adk:google-adk-dev:0.1.0",
+
+        # https://github.com/Randgalt/record-builder
+        "io.soabase.record-builder:record-builder-core:47",
+        "io.soabase.record-builder:record-builder-processor:47",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which

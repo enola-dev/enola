@@ -42,6 +42,7 @@ web/web-out/
 .be/
 
 # Maven
+target/
 java/.mvn/wrapper/maven-wrapper.jar
 java/target
 .built/.m2

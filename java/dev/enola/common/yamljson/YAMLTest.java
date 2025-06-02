@@ -28,6 +28,8 @@ import java.io.IOException;
 
 public class YAMLTest {
 
+    // See YamlJsonTest for more tests.
+
     @Test
     public void readResource() throws IOException {
         var resource = StringResource.of("name: it", YamlMediaType.YAML_UTF_8);
