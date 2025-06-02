@@ -18,29 +18,33 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "struct",
+    name = "jackson",
     srcs = glob(
-        ["**/*.java"],
+        ["*.java"],
         exclude = ["*Test.java"],
     ),
-    # TODO Re-enable after https://github.com/Randgalt/record-builder/issues/231
-    #   plugins = ["//tools/bazel/java_plugin:record-builder"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/io",
+        "@enola_maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@enola_maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_soabase_record_builder_record_builder_core",
         "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
+        "@enola_maven//:org_yaml_snakeyaml",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(
-        ["*Test.java"],
-        allow_empty = True,
-    ),
+    srcs = glob(["*Test.java"]),
     deps = [
-        ":struct",
+        ":jackson",
+        "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/struct",
+        "//test",
+        "@enola_maven//:org_jspecify_jspecify",
     ],
 )
