@@ -20,10 +20,11 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 java_library(
     name = "struct",
     srcs = glob(
-        ["*.java"],
+        ["**/*.java"],
         exclude = ["*Test.java"],
     ),
-    plugins = ["//tools/bazel/java_plugin:record-builder"],
+    # TODO Re-enable after https://github.com/Randgalt/record-builder/issues/231
+    #   plugins = ["//tools/bazel/java_plugin:record-builder"],
     visibility = ["//:__subpackages__"],
     deps = [
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
