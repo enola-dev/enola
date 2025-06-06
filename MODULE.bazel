@@ -149,9 +149,9 @@ enola_maven.install(
         "com.github.package-url:packageurl-java:1.5.0",
 
         # Maven Connector
-        "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.26",
-        "eu.maveniverse.maven.mima:context:2.4.26",
-        "eu.maveniverse.maven.mima.extensions:mmr:2.4.26",
+        "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.28",
+        "eu.maveniverse.maven.mima:context:2.4.28",
+        "eu.maveniverse.maven.mima.extensions:mmr:2.4.28",
         "org.apache.maven.resolver:maven-resolver-api:2.0.9",
         "org.apache.maven.resolver:maven-resolver-util:2.0.9",
         "org.apache.maven:maven-model:3.9.9",
