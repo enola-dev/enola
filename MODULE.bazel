@@ -53,10 +53,17 @@ switched_rules.use_languages(java = True)
 
 # https://github.com/grpc/grpc-java/
 # https://registry.bazel.build/modules/grpc-java
-# TODO Bump grpc-java version to avoid ugly WARNING & DEBUG once https://github.com/grpc/grpc-java/issues/11792
+# TODO How to avoid the ugly WARNING & DEBUG once https://github.com/grpc/grpc-java/issues/11792
 #  and https://github.com/grpc/grpc-java/issues/11791 are fixed (and released).
 # NB: Do *NOT* re-use GRPC_JAVA_VERSION here, because of https://github.com/VirtusLab/bazel-steward/issues/404.
-bazel_dep(name = "grpc-java", version = "1.71.0", repo_name = "io_grpc_grpc_java")
+bazel_dep(name = "grpc-java", version = "1.73.0", repo_name = "io_grpc_grpc_java")
+
+# https://github.com/grpc/grpc-java/issues/12055
+git_override(
+    module_name = "grpc-java",
+    remote = "https://github.com/grpc/grpc-java.git",
+    tag = "v1.73.0",
+)
 
 # https://github.com/bazelbuild/rules_go/blob/master/docs/go/core/bzlmod.md
 bazel_dep(name = "rules_go", version = "0.55.0")
