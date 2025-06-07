@@ -50,10 +50,16 @@ public class JacksonObjectReaderWritersTest {
 
     @Test
     public void writeYAML() throws IOException {
-        var example = new Example("hello, world");
-        var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
         ObjectWriter ow = new YamlObjectReaderWriter();
+
+        var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
+        var example = new Example("hello, world");
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("text: \"hello, world\"\n");
+
+        sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
+        example = new Example("hello world");
+        assertThat(ow.write(example, sr)).isTrue();
+        assertThat(sr.charSource().read()).isEqualTo("text: hello world\n");
     }
 }
