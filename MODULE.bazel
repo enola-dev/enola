@@ -154,7 +154,7 @@ enola_maven.install(
         "eu.maveniverse.maven.mima.extensions:mmr:2.4.26",
         "org.apache.maven.resolver:maven-resolver-api:2.0.9",
         "org.apache.maven.resolver:maven-resolver-util:2.0.9",
-        "org.apache.maven:maven-model:3.9.9",
+        "org.apache.maven:maven-model:3.9.10",
         "org.codehaus.plexus:plexus-xml:4.1.0",
 
         # IPFS & IPLD etc.
