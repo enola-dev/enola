@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.yamljson;
 
-import static com.google.common.truth.Truth.assertThat;
+/** Object I/O with Samuel L. Jackson. */
+@NullMarked
+package dev.enola.common.io.object.jackson;
 
-import org.junit.Test;
-
-import java.time.Instant;
-
-public class JSONTest {
-
-    // See YamlJsonTest for more tests.
-
-    @Test
-    public void instant() {
-        assertThat(JSON.write(Instant.now(), false)).isNotEmpty();
-    }
-}
+import org.jspecify.annotations.NullMarked;
