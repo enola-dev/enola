@@ -19,6 +19,7 @@ package dev.enola.common.io.object.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.common.net.MediaType;
 
@@ -47,7 +48,10 @@ public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
                         .loaderOptions(loaderOptions)
                         .dumperOptions(dumperOptions)
                         .build();
-        return new YAMLMapper(yamlFactory);
+
+        var yamlMapper = new YAMLMapper(yamlFactory);
+        yamlMapper.disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
+        return yamlMapper;
     }
 
     public YamlObjectReaderWriter() {

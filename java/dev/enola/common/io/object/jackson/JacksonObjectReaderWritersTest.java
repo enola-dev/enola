@@ -54,6 +54,6 @@ public class JacksonObjectReaderWritersTest {
         var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
         ObjectWriter ow = new YamlObjectReaderWriter();
         assertThat(ow.write(example, sr)).isTrue();
-        assertThat(sr.charSource().read()).isEqualTo("---\ntext: \"hello, world\"\n");
+        assertThat(sr.charSource().read()).isEqualTo("text: \"hello, world\"\n");
     }
 }
