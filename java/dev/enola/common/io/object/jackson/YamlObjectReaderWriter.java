@@ -51,6 +51,7 @@ public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
 
         var yamlMapper = new YAMLMapper(yamlFactory);
         yamlMapper.disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
+        yamlMapper.enable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
         return yamlMapper;
     }
 
