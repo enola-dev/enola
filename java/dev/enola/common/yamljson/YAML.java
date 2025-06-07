@@ -33,8 +33,14 @@ import java.util.function.Consumer;
 public final class YAML {
 
     private static Load newLoad() {
-        LoadSettings settings = LoadSettings.builder().build();
-        return new Load(settings);
+        // NB: No need for new SafeConstructor(), here; because that's
+        // for org.yaml.snakeyaml, whereas this is for org.snakeyaml.engine.
+        var loadSettings = LoadSettings.builder();
+        // NB: Keep in-sync with similar (but not same, different API!) in YamlObjectReader
+        loadSettings.setAllowDuplicateKeys(false);
+        loadSettings.setAllowRecursiveKeys(false);
+        loadSettings.setCodePointLimit(10 * 1024 * 1024); // 10 MB
+        return new Load(loadSettings.build());
     }
 
     private static Map<?, ?> iterable2singleMap(Iterable<?> iterable) {
