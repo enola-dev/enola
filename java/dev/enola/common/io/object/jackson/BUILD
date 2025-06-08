@@ -42,7 +42,6 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":jackson",
-        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//test",
         "@enola_maven//:org_jspecify_jspecify",
