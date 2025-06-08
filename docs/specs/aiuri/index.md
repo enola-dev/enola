@@ -67,7 +67,7 @@ We are not aware of any similar LM URI naming scheme. Please add any that you kn
 ## ToDo
 
 1. Add many more URIs
-1. Support (default) "standard" ?topP / topK, temperature, seed etc. query parameters
+1. Support (default) "standard" `?topP` / `topK`, `temperature`, `maxOutputTokens`, `seed`, `stopSequences`, `version` (?) etc. query parameters (see also [dotprompt config](https://google.github.io/dotprompt/reference/frontmatter/#config))
 
 ## Support
 
