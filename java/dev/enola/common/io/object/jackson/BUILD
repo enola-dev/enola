@@ -26,6 +26,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/io",
+        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_databind",
         "@enola_maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
