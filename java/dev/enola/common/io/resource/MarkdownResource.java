@@ -23,42 +23,54 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.io.mediatype.MarkdownMediaTypes;
+
 import java.io.IOException;
 
 /**
  * MarkdownResource is a {@link MultipartResource} which separates "Front Matter" (as {@link #FRONT}
- * part, typically YAML structured data) and Markdown content (as {@link #BODY}) from the base
+ * part, typically YAML structured data) and Markdown content (as {@link #MARKDOWN}) from the base
  * resource.
  *
- * <p>The "frontmatter" is anything between 2 "---" lines at the very start of the file (if present,
- * it's optional) and the "body" is everything that follows. Any HTML comment before the frontmatter
- * is stripped (this is useful e.g. to ignore license headers).
+ * <p>The "front matter" is anything between 2 "---" lines at the very start of the file (if
+ * present, it's optional), and the "body" (in Markdown text) is everything that follows. Any HTML
+ * comment before the front-matter is stripped (this is useful, e.g. to ignore license headers).
  *
- * <p>This is very common de-facto standard format used by many Markdown tools. It may (TBC)
+ * <p>This is a very common quasi de-facto standard format used by many Markdown tools. It may (TBC)
  * originally have been <a href="https://jekyllrb.com/docs/front-matter/">introduced by Jekyll</a>.
  */
 public class MarkdownResource extends RegexMultipartResource {
 
     public static final String FIRST_COMMENT = "comment";
     public static final String FRONT = "frontmatter";
-    public static final String BODY = "body";
+    public static final String MARKDOWN = "markdown";
 
     private static final PartsDef PARTS =
             new PartsDef(
                     "(?s)^(?<"
                             + FIRST_COMMENT
-                            + "><!--.*-->)?(\r?\n)*(===\r?\n(?<"
+                            + "><!--.*-->)?(\r?\n)*(---\r?\n(?<"
                             + FRONT
-                            + ">.*)===\r?\n)?(\r?\n)*(?<"
-                            + BODY
+                            + ">.*)---\r?\n)?(\r?\n)*(?<"
+                            + MARKDOWN
                             + ">.*)$",
                     ImmutableMap.of(
                             FIRST_COMMENT,
                             HTML_UTF_8.withoutParameters(),
                             FRONT,
-                            YAML_UTF_8.withoutParameters()));
+                            YAML_UTF_8.withoutParameters(),
+                            MARKDOWN,
+                            MarkdownMediaTypes.MARKDOWN_UTF_8));
 
     public MarkdownResource(ReadableResource baseResource) throws IOException {
         super(baseResource, PARTS);
+    }
+
+    public Resource frontMatter() {
+        return part(FRONT);
+    }
+
+    public Resource markdown() {
+        return part(MARKDOWN);
     }
 }

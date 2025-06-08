@@ -21,8 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.MarkdownMediaTypes.MARKDOWN_UTF_8;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-import static dev.enola.common.io.resource.MarkdownResource.BODY;
 import static dev.enola.common.io.resource.MarkdownResource.FRONT;
+import static dev.enola.common.io.resource.MarkdownResource.MARKDOWN;
 
 import org.junit.Test;
 
@@ -45,9 +45,9 @@ public class MarkdownResourceTest {
 
     String FRONTMATTER =
             """
-            ===
+            ---
             title: First Blog post!
-            ===
+            ---
 
             """;
 
@@ -62,7 +62,7 @@ public class MarkdownResourceTest {
     public void commentFrontmatterMarkdown() throws IOException {
         var r = new MarkdownResource(StringResource.of(COMMENT + FRONTMATTER + MD, MARKDOWN_UTF_8));
         var f = r.part(FRONT);
-        var b = r.part(BODY);
+        var b = r.part(MARKDOWN);
 
         assertThat(b.charSource().read()).isEqualTo("# Thaw Blough!\n\n**It rocks...**\n");
         assertThat(f.charSource().read()).isEqualTo("title: First Blog post!\n");
@@ -85,7 +85,7 @@ public class MarkdownResourceTest {
     public void frontmatterAndMarkdownButNoComment() throws IOException {
         var r = new MarkdownResource(StringResource.of(FRONTMATTER + MD, MARKDOWN_UTF_8));
         var f = r.part(FRONT);
-        var b = r.part(BODY);
+        var b = r.part(MARKDOWN);
 
         assertThat(b.charSource().read()).isEqualTo("# Thaw Blough!\n\n**It rocks...**\n");
         assertThat(f.charSource().read()).isEqualTo("title: First Blog post!\n");
@@ -94,7 +94,7 @@ public class MarkdownResourceTest {
     @Test
     public void onlyMarkdown() throws IOException {
         var r = new MarkdownResource(StringResource.of(MD, MARKDOWN_UTF_8));
-        assertThat(r.part(BODY).charSource().read())
+        assertThat(r.part(MARKDOWN).charSource().read())
                 .isEqualTo("# Thaw Blough!\n\n**It rocks...**\n");
         assertThat(r.part(FRONT).charSource().read()).isEmpty();
     }
@@ -102,14 +102,14 @@ public class MarkdownResourceTest {
     @Test
     public void onlyFrontmatter() throws IOException {
         var r = new MarkdownResource(StringResource.of(FRONTMATTER, MARKDOWN_UTF_8));
-        assertThat(r.part(BODY).charSource().read()).isEmpty();
+        assertThat(r.part(MARKDOWN).charSource().read()).isEmpty();
         assertThat(r.part(FRONT).charSource().read()).isEqualTo("title: First Blog post!\n");
     }
 
     @Test
     public void empty() throws IOException {
         var r = new MarkdownResource(new EmptyResource(MARKDOWN_UTF_8));
-        assertThat(r.part(BODY).charSource().read()).isEmpty();
+        assertThat(r.part(MARKDOWN).charSource().read()).isEmpty();
         assertThat(r.part(FRONT).charSource().read()).isEmpty();
         assertThat(r.parts()).hasSize(3);
     }
