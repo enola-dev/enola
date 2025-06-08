@@ -49,7 +49,14 @@ public class AgentLoader {
         try {
             model = baseLlmProvider.get(new URI(dot.model));
         } catch (URISyntaxException e) {
-            throw new IOException("Invalid Model URI in " + uri, e);
+            throw new IOException(
+                    "Invalid Model URI '"
+                            + dot.model
+                            + "' (raw input: '"
+                            + e.getInput()
+                            + "') found in agent definition: "
+                            + uri,
+                    e);
         }
         // TODO Create a class AgentModel extends Dotprompt, with description (and more later)
         var description = "TODO Extend Dotprompt with Description!";
