@@ -19,4 +19,11 @@ package dev.enola.common.io.object;
 
 import org.jspecify.annotations.Nullable;
 
-public record Example(@Nullable String text) {}
+import java.util.List;
+import java.util.Set;
+
+public record Example(
+        @Nullable String string,
+        Set<String> stringSet,
+        List<String> stringList,
+        @Nullable Example example) {}

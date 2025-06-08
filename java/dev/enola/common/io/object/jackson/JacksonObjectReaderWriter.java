@@ -17,6 +17,9 @@
  */
 package dev.enola.common.io.object.jackson;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
@@ -28,7 +31,10 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
 
@@ -36,6 +42,15 @@ abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
         this.mapper = mapper;
+
+        // Always skip empty sequences ([]) and maps
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+
+        // Always set missing sequences to empty collections
+        var nullAsEmpty = JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY);
+        mapper.configOverride(List.class).setSetterInfo(nullAsEmpty);
+        mapper.configOverride(Set.class).setSetterInfo(nullAsEmpty);
+        mapper.configOverride(Map.class).setSetterInfo(nullAsEmpty);
     }
 
     abstract boolean canHandle(MediaType mediaType);
