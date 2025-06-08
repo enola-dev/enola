@@ -25,7 +25,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-class ResourceTemplateSource implements TemplateSource {
+final class ResourceTemplateSource implements TemplateSource {
 
     private final ReadableResource resource;
 
@@ -57,6 +57,10 @@ class ResourceTemplateSource implements TemplateSource {
 
     @Override
     public long lastModified() {
+        // ReadableResource doesn't expose an lastModified(), but Handlebars' caching and/or
+        // template reloading mechanisms likely anyway just use for a before/after comparison for
+        // change detection, so we can delegate to the ChangeToken based hashCode(), which should do
+        // what we really need this for. TODO Actually verify this, with real test coverage!
         return hashCode();
     }
 
@@ -67,6 +71,10 @@ class ResourceTemplateSource implements TemplateSource {
 
     @Override
     public boolean equals(Object obj) {
-        return resource.changeToken().equals(obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        ResourceTemplateSource other = (ResourceTemplateSource) obj;
+        return resource.changeToken().equals(other.resource.changeToken());
     }
 }
