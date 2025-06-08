@@ -19,8 +19,9 @@ package dev.enola.common.template;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.io.resource.ReadableResource;
+
 import java.io.IOException;
-import java.net.URI;
 import java.util.Optional;
 
 /** Chain ⛓️ of {@link TemplateProvider}s. */
@@ -37,7 +38,7 @@ public class TemplateProviderChain implements TemplateProvider {
     }
 
     @Override
-    public Optional<Template> optional(URI source) throws IOException {
+    public Optional<Template> optional(ReadableResource source) throws IOException {
         for (var provider : providers) {
             Optional<Template> optional = provider.optional(source);
             if (optional.isPresent()) {

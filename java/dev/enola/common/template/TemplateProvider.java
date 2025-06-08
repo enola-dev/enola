@@ -17,8 +17,9 @@
  */
 package dev.enola.common.template;
 
+import dev.enola.common.io.resource.ReadableResource;
+
 import java.io.IOException;
-import java.net.URI;
 import java.util.Optional;
 
 /**
@@ -31,9 +32,9 @@ import java.util.Optional;
  */
 public interface TemplateProvider {
 
-    Optional<Template> optional(URI source) throws IOException;
+    Optional<Template> optional(ReadableResource source) throws IOException;
 
-    default Template get(URI source) throws IOException {
+    default Template get(ReadableResource source) throws IOException {
         return optional(source)
                 .orElseThrow(
                         () ->

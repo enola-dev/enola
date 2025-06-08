@@ -22,6 +22,7 @@ import static com.google.common.net.MediaType.HTML_UTF_8;
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MarkdownMediaTypes;
 
@@ -45,25 +46,31 @@ public class MarkdownResource extends RegexMultipartResource {
     public static final String FRONT = "frontmatter";
     public static final String MARKDOWN = "markdown";
 
-    private static final PartsDef PARTS =
-            new PartsDef(
-                    "(?s)^(?<"
-                            + FIRST_COMMENT
-                            + "><!--.*-->)?(\r?\n)*(---\r?\n(?<"
-                            + FRONT
-                            + ">.*)---\r?\n)?(\r?\n)*(?<"
-                            + MARKDOWN
-                            + ">.*)$",
-                    ImmutableMap.of(
-                            FIRST_COMMENT,
-                            HTML_UTF_8.withoutParameters(),
-                            FRONT,
-                            YAML_UTF_8.withoutParameters(),
-                            MARKDOWN,
-                            MarkdownMediaTypes.MARKDOWN_UTF_8));
+    private static PartsDef partsDef(MediaType bodyMediaType) {
+        return new PartsDef(
+                "(?s)^(?<"
+                        + FIRST_COMMENT
+                        + "><!--.*-->)?(\r?\n)*(---\r?\n(?<"
+                        + FRONT
+                        + ">.*)---\r?\n)?(\r?\n)*(?<"
+                        + MARKDOWN
+                        + ">.*)$",
+                ImmutableMap.of(
+                        FIRST_COMMENT,
+                        HTML_UTF_8.withoutParameters(),
+                        FRONT,
+                        YAML_UTF_8.withoutParameters(),
+                        MARKDOWN,
+                        bodyMediaType));
+    }
 
     public MarkdownResource(ReadableResource baseResource) throws IOException {
-        super(baseResource, PARTS);
+        super(baseResource, partsDef(MarkdownMediaTypes.MARKDOWN_UTF_8));
+    }
+
+    public MarkdownResource(ReadableResource baseResource, MediaType bodyMediaType)
+            throws IOException {
+        super(baseResource, partsDef(bodyMediaType));
     }
 
     public Resource frontMatter() {

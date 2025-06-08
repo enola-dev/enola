@@ -21,6 +21,7 @@ import static java.util.Collections.emptyMap;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.io.Files;
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.Context;
@@ -302,6 +303,15 @@ public final class URIs {
      */
     public static String getFilename(URI uri) {
         return getLastPathSegmentOrHost(uri, false);
+    }
+
+    public static String getFilenameWithoutExtension(URI uri, String... extensions) {
+        var fileName = getFilename(uri);
+        for (String extension : extensions) {
+            if (fileName.endsWith(extension))
+                return fileName.substring(0, fileName.length() - extension.length());
+        }
+        return Files.getNameWithoutExtension(fileName);
     }
 
     public static String getFilenameOrLastPathSegmentOrHost(URI uri) {

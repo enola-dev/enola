@@ -27,7 +27,10 @@ java_library(
     ),
     deps = [
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/template",
+        "//java/dev/enola/common/template/handlebars",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_jdk14",

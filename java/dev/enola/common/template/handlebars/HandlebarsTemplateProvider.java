@@ -22,7 +22,7 @@ import static dev.enola.common.template.handlebars.HandlebarsMediaType.HANDLEBAR
 import com.github.jknack.handlebars.Handlebars;
 
 import dev.enola.common.io.mediatype.MediaTypes;
-import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.util.AppendableWriter;
 import dev.enola.common.template.Template;
 import dev.enola.common.template.TemplateProvider;
@@ -37,32 +37,26 @@ import java.util.Optional;
  */
 public class HandlebarsTemplateProvider implements TemplateProvider {
 
-    private final ResourceProvider rp;
-
     private final Handlebars handlebars = new Handlebars(new ThrowingTemplateLoader());
 
-    public HandlebarsTemplateProvider(ResourceProvider rp) {
-        this.rp = rp;
-    }
-
     @Override
-    public Optional<Template> optional(URI origin) throws IOException {
-        var resource = rp.getResource(origin);
+    public Optional<Template> optional(ReadableResource resource) throws IOException {
         if (!MediaTypes.normalizedNoParamsEquals(resource.mediaType(), HANDLEBARS))
             return Optional.empty();
 
         var resourceTemplateSource = new ResourceTemplateSource(resource);
         var template = handlebars.compile(resourceTemplateSource);
-        return Optional.of(new HandlebarTemplate(origin, template));
+        return Optional.of(new HandlebarTemplate(resource, template));
     }
 
     private static class HandlebarTemplate implements Template {
         private final com.github.jknack.handlebars.Template handlebarsTemplate;
         private final URI origin;
 
-        HandlebarTemplate(URI origin, com.github.jknack.handlebars.Template template) {
+        HandlebarTemplate(
+                ReadableResource resource, com.github.jknack.handlebars.Template template) {
             this.handlebarsTemplate = template;
-            this.origin = origin;
+            this.origin = resource.uri();
         }
 
         @Override
