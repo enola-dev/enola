@@ -22,8 +22,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public record Example(
+public record ExampleRecord(
         @Nullable String string,
         Set<String> stringSet,
         List<String> stringList,
-        @Nullable Example example) {}
+        @Nullable ExampleRecord example) {}
