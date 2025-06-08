@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.dotprompt;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -85,7 +87,7 @@ public class DotPrompt {
          * passed from the implementation should be merged into these values with a shallow merge
          * strategy.
          */
-        // TODO It should be "default" instead of "defaults" cauz "default" is a reserved keyword
+        @JsonProperty("default") // cauz "default" is a reserved keyword
         // TODO https://github.com/google/dotprompt/issues/306 re. Map<String, Object>
         public Map<String, Object> defaults;
 
