@@ -15,9 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package dev.enola.common.struct;
 
-/** I/O for {@link dev.enola.common.struct}. */
-@NullMarked
-package dev.enola.common.io.object;
+import io.soabase.recordbuilder.core.RecordInterface;
 
-import org.jspecify.annotations.NullMarked;
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+@RecordInterface
+public interface Example {
+
+    String text();
+
+    Integer number();
+
+    Instant instant();
+
+    /* TODO @Nullable */ Example example();
+
+    List<Example> examplesInOrder();
+
+    Set<Example> examplesBag();
+
+    Map<String, Example> map();
+}

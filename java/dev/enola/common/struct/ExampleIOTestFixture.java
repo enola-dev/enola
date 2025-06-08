@@ -15,9 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package dev.enola.common.struct;
 
-/** I/O for {@link dev.enola.common.struct}. */
-@NullMarked
-package dev.enola.common.io.object;
-
-import org.jspecify.annotations.NullMarked;
+public class ExampleIOTestFixture {}

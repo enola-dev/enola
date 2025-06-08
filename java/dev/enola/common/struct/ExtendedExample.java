@@ -15,9 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package dev.enola.common.struct;
 
-/** I/O for {@link dev.enola.common.struct}. */
-@NullMarked
-package dev.enola.common.io.object;
+import io.soabase.recordbuilder.core.RecordInterface;
 
-import org.jspecify.annotations.NullMarked;
+import java.math.BigDecimal;
+import java.net.URI;
+
+@RecordInterface
+public interface ExtendedExample extends Example {
+
+    CustomDatatype customDatatype();
+
+    BigDecimal bigDecimal();
+
+    URI url();
+}
