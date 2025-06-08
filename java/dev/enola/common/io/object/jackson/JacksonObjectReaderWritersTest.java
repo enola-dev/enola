@@ -26,6 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.object.ExamplePlainClass;
 import dev.enola.common.io.object.ExampleRecord;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.ObjectWriter;
@@ -71,6 +72,23 @@ public class JacksonObjectReaderWritersTest {
 
     @Test
     public void readComplexYAML_toExampleRecord() throws IOException {
+        var example = readComplexYAML_toExample(ExampleRecord.class);
+        assertThat(example.string()).isEqualTo("hello, world");
+        assertThat(example.stringSet()).containsExactly("hello", "world");
+        assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
+        assertThat(example.example().string()).isEqualTo("hey");
+    }
+
+    @Test
+    public void readComplexYAML_toExamplePlainClass() throws IOException {
+        var example = readComplexYAML_toExample(ExamplePlainClass.class);
+        assertThat(example.string).isEqualTo("hello, world");
+        assertThat(example.stringSet).containsExactly("hello", "world");
+        assertThat(example.stringList).containsExactly("hello", "world").inOrder();
+        assertThat(example.example.string()).isEqualTo("hey");
+    }
+
+    private <T> T readComplexYAML_toExample(Class<T> clazz) throws IOException {
         var yaml1 =
                 """
                 string: hello, world
@@ -81,12 +99,7 @@ public class JacksonObjectReaderWritersTest {
                 """;
         var resource = DataResource.of(yaml1, YamlMediaType.YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
-
-        var example = or.read(resource, ExampleRecord.class);
-        assertThat(example.string()).isEqualTo("hello, world");
-        assertThat(example.stringSet()).containsExactly("hello", "world");
-        assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
-        assertThat(example.example().string()).isEqualTo("hey");
+        return or.read(resource, clazz);
     }
 
     @Test
