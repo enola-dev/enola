@@ -17,6 +17,8 @@
  */
 package dev.enola.common.exec.pty;
 
+import dev.enola.common.io.util.AppendableWriter;
+
 import org.jline.utils.WriterOutputStream;
 
 import java.io.IOException;
@@ -28,10 +30,10 @@ import java.nio.charset.Charset;
  * a character-based destination like a StringBuilder, Writer, or CharBuffer.
  */
 class AppendableOutputStream extends WriterOutputStream {
-    // TODO If kept, then later move this to dev.enola.common.io
+    // TODO If kept and ever needed elsewhere, then later move this to dev.enola.common.io.util
 
     // NOTE: We originally had our own full implementation of this, but it was buggy. Then we
-    // discovered that JLine already had something very close, and now we just used that.
+    // discovered that JLine already had something very close, and now we just extend that one.
 
     private final Appendable appendable;
 

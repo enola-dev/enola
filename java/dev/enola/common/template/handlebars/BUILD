@@ -15,53 +15,35 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
-    name = "demo",
-    main_class = "dev.enola.common.exec.pty.Demo",
-    runtime_deps = [
-        ":pty",
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-)
-
 java_library(
-    name = "pty",
+    name = "handlebars",
     srcs = glob(
         ["*.java"],
-        exclude = [
-            "*Test.java",
-            "TestLoggerRule.java",
-        ],
+        exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/concurrent",
-        "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/util",
+        "//java/dev/enola/common/template",
+        "@enola_maven//:com_github_jknack_handlebars",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jetbrains_pty4j_pty4j",
-        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size & WriterOutputStream
         "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
 junit_tests(
     name = "tests",
     srcs = glob(
-        include = ["*Test.java"],
-        allow_empty = True,
+        ["*Test.java"],
     ),
-    srcs_utils = ["TestLoggerRule.java"],
-    visibility = ["//:__subpackages__"],
     deps = [
-        ":pty",
-        "//java/dev/enola/common/concurrent",
-        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size
-        "@enola_maven//:org_slf4j_slf4j_api",
+        ":handlebars",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/template",
     ],
 )
