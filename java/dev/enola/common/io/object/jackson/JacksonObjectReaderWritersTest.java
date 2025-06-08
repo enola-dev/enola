@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
@@ -34,6 +36,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class JacksonObjectReaderWritersTest {
 
@@ -42,14 +45,21 @@ public class JacksonObjectReaderWritersTest {
     public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     @Test
-    public void readYAML() throws IOException {
+    public void readYAML_toExampleClass() throws IOException {
         ObjectReader or = new YamlObjectReaderWriter();
         var example = or.read(new ClasspathResource("example.yaml"), Example.class);
         assertThat(example.text()).isEqualTo("hello, world");
     }
 
     @Test
-    public void writeYAML() throws IOException {
+    public void readYAML_toMap() throws IOException {
+        ObjectReader or = new YamlObjectReaderWriter();
+        var example = or.read(new ClasspathResource("example.yaml"), Map.class);
+        assertThat(example).containsExactly("text", "hello, world");
+    }
+
+    @Test
+    public void writeYAML_fromExampleClass() throws IOException {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
@@ -61,5 +71,14 @@ public class JacksonObjectReaderWritersTest {
         example = new Example("hello world");
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("text: hello world\n");
+    }
+
+    @Test
+    public void writeYAML_fromMap() throws IOException {
+        ObjectWriter ow = new YamlObjectReaderWriter();
+        var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
+        var map = ImmutableMap.of("text", "hello, world");
+        assertThat(ow.write(map, sr)).isTrue();
+        assertThat(sr.charSource().read()).isEqualTo("text: \"hello, world\"\n");
     }
 }

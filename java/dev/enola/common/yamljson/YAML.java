@@ -30,6 +30,13 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * YAML Utility.
+ *
+ * @deprecated Consider using the (newer) {@code
+ *     dev.enola.common.io.object.jackson.YamlObjectReaderWriter} instead.
+ */
+@Deprecated
 public final class YAML {
 
     private static Load newLoad() {
