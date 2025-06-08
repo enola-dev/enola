@@ -27,6 +27,7 @@ java_library(
     ),
     deps = [
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/object/jackson",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_jdk14",
@@ -41,5 +42,7 @@ junit_tests(
     deps = [
         ":dotprompt",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/object/jackson",
+        "//test",
     ],
 )
