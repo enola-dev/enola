@@ -27,9 +27,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
-        "//java/dev/enola/data",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:dev_langchain4j_langchain4j_core",
         "@enola_maven//:dev_langchain4j_langchain4j_google_ai_gemini",

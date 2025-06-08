@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.Optional;
 
 public class ChatModelProviderChain implements ChatModelProvider {
+    // TODO Genericify and move to package dev.enola.ai.iri
 
     // TODO CachingChatLanguageModelProvider
 
@@ -54,15 +55,15 @@ public class ChatModelProviderChain implements ChatModelProvider {
 
     @Override
     public StreamingChatModel get(URI uri) throws IllegalArgumentException, UncheckedIOException {
-        return getOptional(uri)
+        return optional(uri)
                 .orElseThrow(() -> new IllegalArgumentException("No LM provider handles " + uri));
     }
 
     @Override
-    public Optional<StreamingChatModel> getOptional(URI uri)
+    public Optional<StreamingChatModel> optional(URI uri)
             throws IllegalArgumentException, UncheckedIOException {
         for (var provider : providers) {
-            var opt = provider.getOptional(uri);
+            var opt = provider.optional(uri);
             if (opt.isPresent()) return opt;
         }
         return Optional.empty();

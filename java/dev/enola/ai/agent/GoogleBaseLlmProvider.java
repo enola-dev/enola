@@ -15,27 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.langchain4j;
+package dev.enola.ai.agent;
+
+import com.google.adk.models.BaseLlm;
+import com.google.adk.models.Gemini;
 
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
-import dev.langchain4j.model.chat.StreamingChatModel;
-import dev.langchain4j.model.googleai.GoogleAiGeminiStreamingChatModel;
 
-public class GoogleChatModelProvider extends GoogleModelProvider<StreamingChatModel>
-        implements ChatModelProvider {
+public class GoogleBaseLlmProvider extends GoogleModelProvider<BaseLlm> implements BaseLlmProvider {
 
-    public GoogleChatModelProvider(SecretManager secretManager) {
+    public GoogleBaseLlmProvider(SecretManager secretManager) {
         super(secretManager);
     }
 
     @Override
-    protected StreamingChatModel create(Secret apiKey, String modelName) {
-        return GoogleAiGeminiStreamingChatModel.builder()
-                .apiKey(apiKey.map(String::new))
-                .modelName(modelName)
-                .logRequestsAndResponses(true)
-                .build();
+    protected BaseLlm create(Secret apiKey, String modelName) {
+        return Gemini.builder().apiKey(apiKey.map(String::new)).modelName(modelName).build();
     }
 }

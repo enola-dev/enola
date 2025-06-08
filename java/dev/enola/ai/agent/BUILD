@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:java_library.bzl", "java_library")
+load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
+java_binary(
+    name = "demo",
+    main_class = "dev.enola.ai.agent.Demo",
+    runtime_deps = [
+        ":agent",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
+
 java_library(
-    name = "dotprompt",
+    name = "agent",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -27,14 +37,17 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/ai/adk/core",
+        "//java/dev/enola/ai/dotprompt",
+        "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/iri",
-        "//java/dev/enola/common/io/object/jackson",
-        "//java/dev/enola/common/template",
-        "//java/dev/enola/common/template/handlebars",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "//java/dev/enola/common/secret",
+        "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_google_genai_google_genai",
+        "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
         "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -44,9 +57,6 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":dotprompt",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/object/jackson",
-        "//test",
+        ":agent",
     ],
 )

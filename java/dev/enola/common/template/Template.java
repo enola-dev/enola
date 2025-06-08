@@ -40,4 +40,11 @@ public interface Template {
      *     helper).
      */
     void apply(Object input, Appendable output) throws IOException;
+
+    // TODO JavaDoc
+    default String apply(Object input) throws IOException {
+        var sb = new StringBuilder();
+        this.apply(input, sb);
+        return sb.toString();
+    }
 }

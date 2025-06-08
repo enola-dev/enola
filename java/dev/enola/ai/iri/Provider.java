@@ -15,13 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.langchain4j;
+package dev.enola.ai.iri;
 
-import dev.enola.ai.iri.Provider;
-import dev.langchain4j.model.chat.StreamingChatModel;
+import java.net.URI;
+import java.util.Optional;
 
 /**
- * ChatLanguageModelProvider is a {@link Provider} of a LangChain4j {@link StreamingChatModel} based
- * on the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
+ * Provider of an AI Thing based on the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI
+ * URI spec</a>.
  */
-public interface ChatModelProvider extends Provider<StreamingChatModel> {}
+public interface Provider<T> {
+
+    default String name() {
+        return getClass().getSimpleName();
+    }
+
+    String uriTemplate();
+
+    URI uriExample();
+
+    // TODO Set<String> secrets();
+
+    default T get(URI uri) throws IllegalArgumentException {
+        return optional(uri)
+                .orElseThrow(() -> new IllegalArgumentException(name() + " cannot provide " + uri));
+    }
+
+    Optional<T> optional(URI uri);
+}

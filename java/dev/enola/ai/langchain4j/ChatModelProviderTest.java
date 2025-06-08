@@ -24,7 +24,6 @@ import static dev.enola.ai.langchain4j.GoogleChatModelProvider.GOOGLE_AI_API_KEY
 import dev.enola.common.Net;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.AutoSecretManager;
-import dev.enola.data.Provider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class ChatModelProviderTest {
     // TODO Split into separate tests
 
     SecretManager secretManager = new AutoSecretManager();
-    Provider<URI, StreamingChatModel> p = new ChatModelProviders(secretManager);
+    ChatModelProvider p = new ChatModelProviders(secretManager);
 
     public ChatModelProviderTest() throws IOException {}
 

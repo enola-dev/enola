@@ -46,7 +46,6 @@ public class Demo {
 
     public static BaseAgent initAgent() {
         return LlmAgent.builder()
-                // TODO Read agent config file
                 .name(NAME)
                 // TODO Use 2.5 instead of 2.0
                 // TODO Use Gemini extends BaseModel configured with credential from SecretManager

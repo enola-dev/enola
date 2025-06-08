@@ -15,13 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.langchain4j;
 
-import dev.enola.ai.iri.Provider;
-import dev.langchain4j.model.chat.StreamingChatModel;
+/** APIs related to the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>. */
+@NullMarked
+package dev.enola.ai.iri;
 
-/**
- * ChatLanguageModelProvider is a {@link Provider} of a LangChain4j {@link StreamingChatModel} based
- * on the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
- */
-public interface ChatModelProvider extends Provider<StreamingChatModel> {}
+import org.jspecify.annotations.NullMarked;
