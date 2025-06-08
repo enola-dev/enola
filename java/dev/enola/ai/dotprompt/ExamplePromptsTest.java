@@ -42,9 +42,7 @@ public class ExamplePromptsTest {
         assertThat(front.model).isEqualTo("google://?model=gemini-2.5-flash-preview-05-20");
         assertThat(front.input.schema.get("text")).isEqualTo("string");
 
-        var sb = new StringBuilder();
-        loaded.template().apply(Map.of("text", "This is a blog post about..."), sb);
-        assertThat(sb.toString())
+        assertThat(loaded.template().apply(Map.of("text", "This is a blog post about...")))
                 .isEqualTo(
                         "Extract the requested information from the given text. If a piece of"
                                 + " information is not present, omit that field from the output.\n"

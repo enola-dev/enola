@@ -50,7 +50,7 @@ public class OllamaChatModelProvider implements ChatModelProvider {
     }
 
     @Override
-    public Optional<StreamingChatModel> getOptional(URI uri)
+    public Optional<StreamingChatModel> optional(URI uri)
             throws IllegalArgumentException, UncheckedIOException {
         var queryMap = URIs.getQueryMap(uri);
         if (!"ollama".equalsIgnoreCase(queryMap.get("type"))) return Optional.empty();

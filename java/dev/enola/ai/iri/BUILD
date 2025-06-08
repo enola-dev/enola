@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:java_library.bzl", "java_library")
+load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "dotprompt",
+    name = "iri",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -27,14 +27,11 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
-        "//java/dev/enola/common/io/object/jackson",
-        "//java/dev/enola/common/template",
-        "//java/dev/enola/common/template/handlebars",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "//java/dev/enola/common/secret",
+        "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -42,11 +39,9 @@ junit_tests(
     name = "tests",
     srcs = glob(
         ["*Test.java"],
+        allow_empty = True,
     ),
     deps = [
-        ":dotprompt",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/object/jackson",
-        "//test",
+        ":iri",
     ],
 )
