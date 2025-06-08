@@ -17,14 +17,26 @@
  */
 package dev.enola.ai.dotprompt;
 
-import org.junit.Ignore;
+import static com.google.common.truth.Truth.assertThat;
+
+import dev.enola.common.io.object.jackson.YamlObjectReaderWriter;
+import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.MarkdownResource;
+
 import org.junit.Test;
 
-@Ignore
+import java.io.IOException;
+
 public class ExamplePromptsTest {
 
     @Test
-    public void testExample1() {
-        // TODO
+    public void testExample1() throws IOException {
+        // TODO Move some of this code into another class later...
+        var md = new MarkdownResource(new ClasspathResource("example1.prompt.md"));
+        assertThat(md.frontMatter().charSource().isEmpty()).isFalse();
+
+        var reader = new YamlObjectReaderWriter();
+        var dotPromptFrontmatter = reader.read(md.frontMatter(), DotPrompt.class);
+        assertThat(dotPromptFrontmatter.model).isEqualTo("googleai/gemini-1.5-pro");
     }
 }
