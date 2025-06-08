@@ -26,6 +26,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/object",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_databind",
         "@enola_maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
@@ -43,6 +44,7 @@ junit_tests(
     deps = [
         ":jackson",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/object",
         "//test",
         "@enola_maven//:org_jspecify_jspecify",
     ],
