@@ -195,6 +195,9 @@ enola_maven.install(
         # https://google.github.io/adk-docs/get-started/installation/
         "com.google.adk:google-adk:0.1.0",
         "com.google.adk:google-adk-dev:0.1.0",
+
+        # https://github.com/jknack/handlebars.java
+        "com.github.jknack:handlebars:4.4.0",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
@@ -206,6 +209,9 @@ enola_maven.install(
         # Thanks, but No Thanks! (Spring Boot drags this along, with ADK.)
         "ch.qos.logback:logback-core",
         "ch.qos.logback:logback-classic",
+
+        # Most certainly no JS scripting! (jknack:handlebars drags this cat along)
+        "org.openjdk.nashorn:nashorn-core",
 
         # List e.g. "com.github.multiformats:java-multihash" etc. here
         #   if using "com.github.vorburger:*" instead above, for unmerged patched versions.

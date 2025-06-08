@@ -1,0 +1,48 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2025 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.enola.common.template.handlebars;
+
+import static com.google.common.truth.Truth.assertThat;
+
+import static dev.enola.common.template.handlebars.HandlebarsMediaType.HANDLEBARS;
+
+import dev.enola.common.io.resource.DataResource;
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.template.TemplateProvider;
+import dev.enola.common.template.TemplateProviderChain;
+
+import org.junit.Test;
+
+import java.io.IOException;
+
+public class HandlebarsTest {
+
+    ResourceProvider rp = new DataResource.Provider();
+    TemplateProvider tp = new TemplateProviderChain(new HandlebarsTemplateProvider(rp));
+
+    @Test
+    public void simple() throws IOException {
+        var r = DataResource.of("hello, {{this}}", HANDLEBARS);
+        var t = tp.get(r.uri());
+        assertThat(t.origin()).isEqualTo(r.uri());
+
+        var sb = new StringBuilder();
+        t.apply("world", sb);
+        assertThat(sb.toString()).isEqualTo("hello, world");
+    }
+}

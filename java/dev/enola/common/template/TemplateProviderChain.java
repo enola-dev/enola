@@ -15,27 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object;
+package dev.enola.common.template;
 
 import com.google.common.collect.ImmutableList;
 
-import dev.enola.common.io.resource.ReadableResource;
-
 import java.io.IOException;
+import java.net.URI;
 import java.util.Optional;
 
-public class ObjectReaderChain implements ObjectReader {
+/** Chain ⛓️ of {@link TemplateProvider}s. */
+public class TemplateProviderChain implements TemplateProvider {
 
-    private final Iterable<ObjectReader> readers;
+    private final Iterable<TemplateProvider> providers;
 
-    public ObjectReaderChain(Iterable<ObjectReader> readers) {
-        this.readers = ImmutableList.copyOf(readers);
+    public TemplateProviderChain(Iterable<TemplateProvider> providers) {
+        this.providers = ImmutableList.copyOf(providers);
+    }
+
+    public TemplateProviderChain(TemplateProvider... providers) {
+        this.providers = ImmutableList.copyOf(providers);
     }
 
     @Override
-    public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
-        for (var reader : readers) {
-            Optional<T> optional = reader.optional(resource, type);
+    public Optional<Template> optional(URI source) throws IOException {
+        for (var provider : providers) {
+            Optional<Template> optional = provider.optional(source);
             if (optional.isPresent()) {
                 return optional;
             }

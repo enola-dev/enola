@@ -15,27 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object;
 
-import com.google.common.collect.ImmutableList;
+/** Utilities for (only) {@code java.io}. */
+@NullMarked
+package dev.enola.common.io.util;
 
-import dev.enola.common.io.resource.WritableResource;
-
-import java.io.IOException;
-
-public class ObjectWriterChain implements ObjectWriter {
-
-    private final Iterable<ObjectWriter> writers;
-
-    public ObjectWriterChain(Iterable<ObjectWriter> writers) {
-        this.writers = ImmutableList.copyOf(writers);
-    }
-
-    @Override
-    public boolean write(Object instance, WritableResource resource) throws IOException {
-        for (var writer : writers) {
-            if (writer.write(instance, resource)) return true;
-        }
-        return false;
-    }
-}
+import org.jspecify.annotations.NullMarked;

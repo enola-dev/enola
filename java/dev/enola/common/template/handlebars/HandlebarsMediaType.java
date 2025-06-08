@@ -15,27 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object;
+package dev.enola.common.template.handlebars;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.net.MediaType;
 
-import dev.enola.common.io.resource.WritableResource;
+import dev.enola.common.io.mediatype.MediaTypeProvider;
 
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-public class ObjectWriterChain implements ObjectWriter {
+public class HandlebarsMediaType implements MediaTypeProvider {
 
-    private final Iterable<ObjectWriter> writers;
-
-    public ObjectWriterChain(Iterable<ObjectWriter> writers) {
-        this.writers = ImmutableList.copyOf(writers);
-    }
+    public static final MediaType HANDLEBARS =
+            MediaType.create("text", "x-handlebars-template").withCharset(StandardCharsets.UTF_8);
 
     @Override
-    public boolean write(Object instance, WritableResource resource) throws IOException {
-        for (var writer : writers) {
-            if (writer.write(instance, resource)) return true;
-        }
-        return false;
+    public Multimap<String, MediaType> extensionsToTypes() {
+        return ImmutableMultimap.of(".hbs", HANDLEBARS, ".handlebars", HANDLEBARS);
     }
 }
