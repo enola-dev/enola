@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.object;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -26,4 +28,5 @@ public record ExampleRecord(
         @Nullable String string,
         Set<String> stringSet,
         List<String> stringList,
-        @Nullable ExampleRecord example) {}
+        @Nullable ExampleRecord example,
+        @JsonProperty("default") String defaultValue) {}
