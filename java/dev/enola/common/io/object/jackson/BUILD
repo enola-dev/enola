@@ -43,7 +43,6 @@ junit_tests(
         ":jackson",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/struct",
         "//test",
         "@enola_maven//:org_jspecify_jspecify",
     ],

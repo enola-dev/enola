@@ -17,25 +17,6 @@
  */
 package dev.enola.common.io.object;
 
-import com.google.common.collect.ImmutableList;
+import org.jspecify.annotations.Nullable;
 
-import dev.enola.common.io.resource.WritableResource;
-
-import java.io.IOException;
-
-public class ObjectWriterChain implements ObjectWriter {
-
-    private final Iterable<ObjectWriter> writers;
-
-    public ObjectWriterChain(Iterable<ObjectWriter> writers) {
-        this.writers = ImmutableList.copyOf(writers);
-    }
-
-    @Override
-    public boolean write(Object instance, WritableResource resource) throws IOException {
-        for (ObjectWriter writer : writers) {
-            if (writer.write(instance, resource)) return true;
-        }
-        return false;
-    }
-}
+public record Example(@Nullable String text) {}

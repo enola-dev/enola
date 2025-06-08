@@ -39,6 +39,7 @@ public final class YAML {
         // NB: Keep in-sync with similar (but not same, different API!) in YamlObjectReader
         loadSettings.setAllowDuplicateKeys(false);
         loadSettings.setAllowRecursiveKeys(false);
+        loadSettings.setCodePointLimit(10 * 1024 * 1024); // 10 MB
         return new Load(loadSettings.build());
     }
 

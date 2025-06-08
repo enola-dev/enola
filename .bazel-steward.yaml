@@ -54,7 +54,7 @@ pull-requests:
   #     of https://github.com/VirtusLab/bazel-steward/issues/439.
   - title: "Update ${dependencyId} from ${versionFrom} to ${versionTo}"
     commit-message: "deps: Update ${dependencyId} from ${versionFrom} to ${versionTo}"
-    kinds: maven
+    # NO 'kinds: maven', see https://github.com/VirtusLab/bazel-steward/issues/440
 
 # https://virtuslab.github.io/bazel-steward/docs/configuration/configuration-file/maven.html
 post-update-hooks:

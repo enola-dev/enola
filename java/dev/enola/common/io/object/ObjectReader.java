@@ -31,7 +31,7 @@ public interface ObjectReader {
                 .orElseThrow(
                         () ->
                                 new IOException(
-                                        getClass()
+                                        getClass().getSimpleName()
                                                 + " cannot read "
                                                 + resource.uri()
                                                 + " as "

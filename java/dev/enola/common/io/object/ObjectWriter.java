@@ -17,4 +17,14 @@
  */
 package dev.enola.common.io.object;
 
-public interface ObjectWriter {}
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import dev.enola.common.io.resource.WritableResource;
+
+import java.io.IOException;
+
+public interface ObjectWriter {
+
+    @CanIgnoreReturnValue
+    boolean write(Object instance, WritableResource resource) throws IOException;
+}

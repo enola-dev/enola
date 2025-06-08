@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** I/O for {@link dev.enola.common.struct} with Jackson. */
+/** I/O for {@link dev.enola.common.struct} with Samuel L. Jackson. */
 @NullMarked
 package dev.enola.common.io.object.jackson;
 
