@@ -47,6 +47,7 @@ public class UrlResource extends BaseResource implements ReadableResource {
     // TODO Remove, once there is a ClassLoaderResource
 
     // TODO java.net.http <https://openjdk.org/groups/net/httpclient/intro.html> alternative!
+    //   Or not, as it has it's own problems? https://github.com/apache/maven-resolver/issues/739.
 
     public enum Scheme {
         jar,

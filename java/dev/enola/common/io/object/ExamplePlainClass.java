@@ -17,6 +17,8 @@
  */
 package dev.enola.common.io.object;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -33,4 +35,6 @@ public class ExamplePlainClass {
     public final List<String> stringList = new ArrayList<>();
 
     public @Nullable ExampleRecord example;
+
+    public @JsonProperty("default") String defaultValue;
 }
