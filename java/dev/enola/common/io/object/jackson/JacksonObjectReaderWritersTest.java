@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
-import dev.enola.common.io.object.Example;
+import dev.enola.common.io.object.ExampleRecord;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.ObjectWriter;
 import dev.enola.common.io.resource.DataResource;
@@ -62,7 +62,7 @@ public class JacksonObjectReaderWritersTest {
         var resource = DataResource.of(yaml1, YamlMediaType.YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
 
-        var example = or.read(resource, Example.class);
+        var example = or.read(resource, ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
         assertThat(example.stringSet()).isEmpty();
         assertThat(example.stringList()).isEmpty();
@@ -70,7 +70,7 @@ public class JacksonObjectReaderWritersTest {
     }
 
     @Test
-    public void readComplexYAML_toExampleClass() throws IOException {
+    public void readComplexYAML_toExampleRecord() throws IOException {
         var yaml1 =
                 """
                 string: hello, world
@@ -82,7 +82,7 @@ public class JacksonObjectReaderWritersTest {
         var resource = DataResource.of(yaml1, YamlMediaType.YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
 
-        var example = or.read(resource, Example.class);
+        var example = or.read(resource, ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
         assertThat(example.stringSet()).containsExactly("hello", "world");
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
@@ -90,16 +90,16 @@ public class JacksonObjectReaderWritersTest {
     }
 
     @Test
-    public void writeYAML_fromExampleClass() throws IOException {
+    public void writeYAML_fromExampleRecord() throws IOException {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
-        var example = new Example("hello, world", Set.of(), List.of(), null);
+        var example = new ExampleRecord("hello, world", Set.of(), List.of(), null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
         sr = new MemoryResource(YamlMediaType.YAML_UTF_8);
-        example = new Example("hello world", Set.of(), List.of(), null);
+        example = new ExampleRecord("hello world", Set.of(), List.of(), null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
