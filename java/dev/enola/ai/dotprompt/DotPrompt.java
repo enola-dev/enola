@@ -50,7 +50,7 @@ public class DotPrompt {
 
     /**
      * The variant name for the prompt. If null, then inferred from the filename in the URL of the
-     * loaded prompt (e.g. {@code http://example.org/stuff/example.variant1.prompt.md} hasan
+     * loaded prompt (e.g. {@code http://example.org/stuff/example.variant1.prompt.md} has an
      * inferred name of {@code example} and inferred variant of {@code variant1}).
      */
     public @Nullable String variant;
@@ -58,7 +58,8 @@ public class DotPrompt {
     /**
      * The name of the model to use for this prompt, based on the <a
      * href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI specification</a>; so e.g.,
-     * {@code google://?model=gemini-2.5-flash}.
+     * {@code google://?model=gemini-2.5-flash}. May be omitted, in which case a default model will
+     * be used.
      */
     public @Nullable String model;
 

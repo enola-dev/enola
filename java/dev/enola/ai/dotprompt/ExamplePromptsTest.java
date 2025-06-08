@@ -19,24 +19,36 @@ package dev.enola.ai.dotprompt;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.object.jackson.YamlObjectReaderWriter;
 import dev.enola.common.io.resource.ClasspathResource;
-import dev.enola.common.io.resource.MarkdownResource;
 
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.Map;
 
 public class ExamplePromptsTest {
 
     @Test
     public void testExample1() throws IOException {
-        // TODO Move some of this code into another class later...
-        var md = new MarkdownResource(new ClasspathResource("example1.prompt.md"));
-        assertThat(md.frontMatter().charSource().isEmpty()).isFalse();
+        var loader =
+                new DotPromptLoader(
+                        new ClasspathResource.Provider(),
+                        URI.create("google://?model=gemini-2.5-flash-preview-05-20"));
+        var loaded = loader.load(URI.create("classpath:/example1.prompt.md"));
 
-        var reader = new YamlObjectReaderWriter();
-        var dotPromptFrontmatter = reader.read(md.frontMatter(), DotPrompt.class);
-        assertThat(dotPromptFrontmatter.model).isEqualTo("googleai/gemini-1.5-pro");
+        var front = loaded.frontMatter();
+        assertThat(front.name).isEqualTo("example1");
+        assertThat(front.model).isEqualTo("google://?model=gemini-2.5-flash-preview-05-20");
+        assertThat(front.input.schema.get("text")).isEqualTo("string");
+
+        var sb = new StringBuilder();
+        loaded.template().apply(Map.of("text", "This is a blog post about..."), sb);
+        assertThat(sb.toString())
+                .isEqualTo(
+                        "Extract the requested information from the given text. If a piece of"
+                                + " information is not present, omit that field from the output.\n"
+                                + "\n"
+                                + "Text: This is a blog post about...\n");
     }
 }

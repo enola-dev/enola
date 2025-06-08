@@ -42,7 +42,7 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return getResource(URI.create(uri));
     }
 
-    // TODO Rename getResource to get for consistency
+    // TODO Rename getResource() to get() for consistency with the previous method
     @Nullable Resource getResource(URI uri);
 
     default @Nullable ReadableResource getReadableResource(URI uri) {
