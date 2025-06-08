@@ -19,12 +19,8 @@ package dev.enola.common.io.object.jackson;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.common.context.testlib.SingletonRule.$;
-
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.context.testlib.SingletonRule;
-import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ExamplePlainClass;
 import dev.enola.common.io.object.ExampleRecord;
@@ -33,7 +29,6 @@ import dev.enola.common.io.object.ObjectWriter;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -44,8 +39,6 @@ import java.util.Set;
 public class JacksonObjectReaderWritersTest {
 
     // TODO Factor out test logic and reuse also for JSON etc.
-
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     @Test
     public void readSimplestYAML_toMap() throws IOException {
