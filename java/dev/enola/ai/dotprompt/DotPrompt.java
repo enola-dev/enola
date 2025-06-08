@@ -28,7 +28,9 @@ import java.util.Set;
 
 /**
  * Dot Prompt struct, see <a
- * href="https://google.github.io/dotprompt/reference/frontmatter/">Spec</a>.
+ * href="https://google.github.io/dotprompt/reference/frontmatter/">Spec</a> and the (TypeScript) <a
+ * href="https://github.com/google/dotprompt/blob/main/js/src/types.ts">Reference
+ * Implementation</a>.
  *
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */
@@ -95,8 +97,7 @@ public class DotPrompt {
          * Schema representing the input values for the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        // TODO Schema?
-        public @Nullable String schema;
+        public @Nullable Map<String, Object> schema;
     }
 
     public static class Output {
@@ -113,7 +114,6 @@ public class DotPrompt {
          * Schema representing the expected output from the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        // TODO Schema?
-        public @Nullable String schema;
+        public @Nullable Map<String, Object> schema;
     }
 }
