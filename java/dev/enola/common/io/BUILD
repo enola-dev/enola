@@ -22,7 +22,6 @@ java_library(
     srcs = glob(
         [
             "*.java",
-            "object/*.java",
             "mediatype/*.java",
             "hashbrown/*.java",
             "resource/**/*.java",
