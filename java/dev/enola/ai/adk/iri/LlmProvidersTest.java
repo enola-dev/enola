@@ -23,10 +23,8 @@ import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME
 
 import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
-import com.google.adk.models.LlmRequest;
-import com.google.genai.types.Content;
-import com.google.genai.types.Part;
 
+import dev.enola.ai.adk.test.ModelTester;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.InMemorySecretManager;
@@ -36,31 +34,33 @@ import dev.enola.common.secret.auto.TestSecretManager;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.List;
+import java.net.URI;
 
-public class BaseLlmProvidersTest {
+public class LlmProvidersTest {
     // See also the similarly structured ChatModelProviderTest
 
-    void checkGenerateContent(BaseLlm llm) {
-        var content = Content.fromParts(Part.fromText("List top 3 cites in Switzerland"));
-        var request = LlmRequest.builder().contents(List.of(content)).build();
-        var response = llm.generateContent(request, false).blockingFirst();
-        assertThat(response.content().get().text()).contains("Zurich");
-    }
-
     @Test
-    public void geminiIntegrationTest() throws IOException {
-        SecretManager secretManager = new TestSecretManager();
-        Provider<BaseLlm> p = new BaseLlmProviders(secretManager);
-        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
-        checkGenerateContent(p.get(GoogleModelProvider.FLASH));
+    public void mock() {
+        var provider = new LlmProviders(new InMemorySecretManager());
+        var model = provider.get(URI.create("mocklm:hello"));
+        new ModelTester(model).assertTextResponseContains("What up?", "hello");
     }
 
     @Test
     public void geminiUnitTest() {
         var secretManager = new InMemorySecretManager(GOOGLE_AI_API_KEY_SECRET_NAME, "...");
-        var provider = new BaseLlmProviders(secretManager);
+        var provider = new LlmProviders(secretManager);
         var exampleURI = provider.uriExamples().iterator().next();
         assertThat(provider.get(exampleURI)).isInstanceOf(Gemini.class);
+    }
+
+    @Test
+    public void geminiIntegrationTest() throws IOException {
+        SecretManager secretManager = new TestSecretManager();
+        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+
+        Provider<BaseLlm> p = new LlmProviders(secretManager);
+        new ModelTester(p.get(GoogleModelProvider.FLASH))
+                .assertTextResponseContains("List top 3 cites in Switzerland", "Zurich");
     }
 }

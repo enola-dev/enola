@@ -23,9 +23,13 @@ import dev.enola.ai.iri.CachingProvider;
 import dev.enola.ai.iri.ProviderChain;
 import dev.enola.common.secret.SecretManager;
 
-public class BaseLlmProviders extends CachingProvider<BaseLlm> {
+public class LlmProviders extends CachingProvider<BaseLlm> {
 
-    public BaseLlmProviders(SecretManager secretManager) {
-        super(new ProviderChain<>(new GoogleBaseLlmProvider(secretManager)));
+    public LlmProviders(SecretManager secretManager) {
+        super(
+                new ProviderChain<>(
+                        new GoogleLlmProvider(secretManager),
+                        // TODO new AnthropicLlmProvider(secretManager),
+                        new MockLlmProvider()));
     }
 }

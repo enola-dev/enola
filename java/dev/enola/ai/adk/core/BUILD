@@ -58,6 +58,7 @@ junit_tests(
     deps = [
         ":core",
         "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",

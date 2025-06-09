@@ -29,10 +29,9 @@ import dev.enola.common.secret.SecretManager;
  * GoogleBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
  * href="https://docs.enola.dev/specs/aiuri#google-ai">Enola.dev Google AI URI spec</a>.
  */
-public class GoogleBaseLlmProvider extends GoogleModelProvider<BaseLlm>
-        implements Provider<BaseLlm> {
+public class GoogleLlmProvider extends GoogleModelProvider<BaseLlm> implements Provider<BaseLlm> {
 
-    public GoogleBaseLlmProvider(SecretManager secretManager) {
+    public GoogleLlmProvider(SecretManager secretManager) {
         super(secretManager);
     }
 

@@ -15,16 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
+package dev.enola.ai.adk.iri;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import com.google.adk.models.BaseLlm;
 
-public class AgentLoaderTest {
+import dev.enola.ai.iri.AnthropicModelProvider;
+import dev.enola.ai.iri.Provider;
 
-    @Test
-    @Ignore // TODO Remove again later!!
-    public void TODO() {
-        // Use the AgentTester utility
-    }
+/**
+ * AnthropicBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
+ * href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI URI spec</a>.
+ */
+public abstract class AnthropicLlmProvider extends AnthropicModelProvider<BaseLlm>
+        implements Provider<BaseLlm> {
+
+    // TODO ...
 }
