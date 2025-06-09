@@ -15,20 +15,10 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
-    name = "demo",
-    main_class = "dev.enola.ai.agent.Demo",
-    runtime_deps = [
-        ":agent",
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-)
-
 java_library(
-    name = "agent",
+    name = "iri",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -37,11 +27,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/ai/adk/core",
-        "//java/dev/enola/ai/adk/iri",
-        "//java/dev/enola/ai/dotprompt",
         "//java/dev/enola/ai/iri",
-        "//java/dev/enola/common/io",
         "//java/dev/enola/common/secret",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
@@ -58,6 +44,6 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":agent",
+        ":iri",
     ],
 )
