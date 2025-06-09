@@ -21,9 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.ai.langchain4j.GoogleChatModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
+import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.Provider;
 import dev.enola.common.Net;
 import dev.enola.common.secret.SecretManager;
-import dev.enola.common.secret.auto.AutoSecretManager;
+import dev.enola.common.secret.auto.TestSecretManager;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
 import org.junit.Test;
@@ -31,14 +33,11 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 
-public class ChatModelProviderTest {
+public class ChatModelProvidersTest {
+    // See also the similarly structured BaseLlmProvidersTest
 
-    // TODO Split into separate tests
-
-    SecretManager secretManager = new AutoSecretManager();
-    ChatModelProvider p = new ChatModelProviders(secretManager);
-
-    public ChatModelProviderTest() throws IOException {}
+    SecretManager secretManager = new TestSecretManager();
+    Provider<StreamingChatModel> p = new ChatModelProviders(secretManager);
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
@@ -65,7 +64,7 @@ public class ChatModelProviderTest {
     @Test
     public void gemini() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
-            check(p.get(URI.create("google://?model=gemini-2.5-flash-preview-04-17")));
+            check(p.get(GoogleModelProvider.FLASH));
     }
 
     @Test

@@ -36,3 +36,11 @@ Support for other secret managers may be added in the future. Please open an iss
 Which one is used is currently automatically determined. This may be made more configurable in the future.
 
 We will not read _"secrets"_ from environment variables, as this is not secure.
+
+## Tests
+
+Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. If it's not set, then no secrets are available. We test for the presence of secrets, and skip tests if the required is not available. Launch such integration tests like this, as the `test.bash` script also does:
+
+    bazelisk test --test_env=ENOLA.DEV_AZKABAN="$HOME/keys.yaml" //java/dev/enola/common/secret/auto:tests
+
+To run integration tests [in an IDE](../../dev/ide.md), add this environment variable in the Bazel Test launch config.

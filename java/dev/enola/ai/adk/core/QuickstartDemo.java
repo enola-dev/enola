@@ -20,7 +20,10 @@ package dev.enola.ai.adk.core;
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.events.Event;
+import com.google.adk.models.BaseLlm;
+import com.google.adk.models.Gemini;
 import com.google.adk.runner.InMemoryRunner;
+import com.google.adk.runner.Runner;
 import com.google.adk.sessions.Session;
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.FunctionTool;
@@ -37,27 +40,40 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Demo {
+/**
+ * Demo using <a
+ * href="https://google.github.io/adk-docs/get-started/quickstart/#create-multitoolagentjava">Quickstart</a>
+ * from ADK docs.
+ */
+public class QuickstartDemo {
 
-    // TODO Modularize this...
+    // TODO Modularize this better...
 
-    private static final String USER_ID = "student";
-    private static final String NAME = "multi_tool_agent";
+    public static final String NYC_WEATHER =
+            "The weather in New York is sunny with a temperature of 25 degrees Celsius (77"
+                    + " degrees Fahrenheit).";
 
     public static BaseAgent initAgent() {
+        return initAgent(System.getenv("GOOGLE_API_KEY"));
+    }
+
+    public static BaseAgent initAgent(String apiKey) {
+        // TODO Use 2.5 instead of 2.0
+        return initAgent(new Gemini("gemini-2.0-flash", apiKey));
+    }
+
+    public static BaseAgent initAgent(BaseLlm baseLLM) {
         return LlmAgent.builder()
-                .name(NAME)
-                // TODO Use 2.5 instead of 2.0
-                // TODO Use Gemini extends BaseModel configured with credential from SecretManager
-                .model("gemini-2.0-flash")
+                .name("multi_tool_agent")
+                .model(baseLLM)
                 .description("Agent to answer questions about the time and weather in a city.")
                 .instruction(
                         "You are a helpful agent who can answer user questions about the time and"
                                 + " weather in a city.")
                 .tools(
                         // TODO Create separate Agent classes
-                        FunctionTool.create(Demo.class, "getCurrentTime"),
-                        FunctionTool.create(Demo.class, "getWeather"))
+                        FunctionTool.create(QuickstartDemo.class, "getCurrentTime"),
+                        FunctionTool.create(QuickstartDemo.class, "getWeather"))
                 .build();
     }
 
@@ -100,12 +116,7 @@ public class Demo {
             @Schema(description = "The name of the city for which to retrieve the weather report")
                     String city) {
         if (city.equalsIgnoreCase("new york")) {
-            return Map.of(
-                    "status",
-                    "success",
-                    "report",
-                    "The weather in New York is sunny with a temperature of 25 degrees Celsius (77"
-                            + " degrees Fahrenheit).");
+            return Map.of("status", "success", "report", NYC_WEATHER);
 
         } else {
             return Map.of(
@@ -117,10 +128,17 @@ public class Demo {
     }
 
     public static void main(String[] args) {
-        // TODO Persist (and share to use the same config in DemoAdkWebServer)
-        InMemoryRunner runner = new InMemoryRunner(initAgent());
+        String userID = "student";
+        var agent = initAgent();
+        // TODO Persistence (and share to use the same config in DemoAdkWebServer)
+        InMemoryRunner runner = new InMemoryRunner(agent);
+        Session session = runner.sessionService().createSession(agent.name(), userID).blockingGet();
 
-        Session session = runner.sessionService().createSession(NAME, USER_ID).blockingGet();
+        if (args.length > 0) {
+            var prompt = String.join(" ", args);
+            run(runner, session, prompt);
+            return;
+        }
 
         // TODO Use JLineIO (but in the non-core package)
         try (Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8)) {
@@ -132,13 +150,22 @@ public class Demo {
                     break;
                 }
 
-                Content userMsg = Content.fromParts(Part.fromText(userInput));
-                Flowable<Event> events = runner.runAsync(USER_ID, session.id(), userMsg);
-
                 System.out.print("\nAgent > ");
-                // TODO Don't print function calls, but log them; only print the actual responses.
-                events.blockingForEach(event -> System.out.println(event.stringifyContent()));
+                run(runner, session, userInput);
             }
         }
+    }
+
+    private static void run(Runner runner, Session session, String userInput) {
+        Content userMsg = Content.fromParts(Part.fromText(userInput));
+        Flowable<Event> events = runner.runAsync(session.userId(), session.id(), userMsg);
+        // TODO Don't print function calls, but log them; only print the actual responses.
+        events.blockingForEach(event -> System.out.println(toString(event) + "\n"));
+    }
+
+    private static String toString(Event event) {
+        // event.stringifyContent()
+        // TODO Skip empty fields!
+        return event.toJson();
     }
 }

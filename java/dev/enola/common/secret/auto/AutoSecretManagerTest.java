@@ -15,17 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.core;
+package dev.enola.common.secret.auto;
 
-import org.junit.Ignore;
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Test;
 
-public class DemoTest {
+import java.io.IOException;
+
+public class AutoSecretManagerTest {
+
+    // echo "test: it" >~/keys.yaml
+    // see /docs/use/secret/index.md#tests
 
     @Test
-    @Ignore
-    public void todo() {
-        // TODO "What's the current time in Zürich"?
-        // TODO "What's the weather in New York?"
+    public void test() throws IOException {
+        var secretManager = new AutoSecretManager();
+        // CANNOT secretManager.store("test", "testit".toCharArray());
+        secretManager
+                .getOptional("test")
+                .ifPresent(
+                        secret ->
+                                secret.process(
+                                        chars -> assertThat(chars).isEqualTo("it".toCharArray())));
     }
 }

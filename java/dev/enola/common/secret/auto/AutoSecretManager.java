@@ -29,56 +29,57 @@ import dev.enola.common.secret.yaml.YamlSecretManager;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 
 public class AutoSecretManager implements SecretManager {
 
     private static final Logger LOG = getLogger(AutoSecretManager.class);
 
+    // main() just for quick demo / usage illustration
     public static void main(String[] args) throws IOException {
         var secretManager = new AutoSecretManager();
         // secretManager.store("test", "hello, world".toCharArray());
         secretManager.get("test").process(System.out::println);
     }
 
-    public static SecretManager yamlInExecPass() throws IOException {
-        if (!ExecPATH.scan().containsKey("pass")) throw new IOException("pass not found in PATH");
+    private static Optional<SecretManager> yamlInExecPass() throws IOException {
+        if (!ExecPATH.scan().containsKey("pass")) return Optional.empty();
         var id = "enola.dev"; // TODO Use (~) FreedesktopDirectories
         var TD = "Please create (empty) pass edit " + id;
         var pass = new ExecPassSecretManager(true);
-        return new YamlSecretManager(
-                input -> pass.store(id, input.toCharArray()),
-                () -> pass.getOptional(id).orElseThrow(() -> new IOException(TD)).map(String::new));
+        return Optional.of(
+                new YamlSecretManager(
+                        input -> pass.store(id, input.toCharArray()),
+                        () ->
+                                pass.getOptional(id)
+                                        .orElseThrow(() -> new IOException(TD))
+                                        .map(String::new)));
     }
 
     private final SecretManager delegate;
 
-    public AutoSecretManager() {
+    public AutoSecretManager() throws IOException {
         // TODO Add support for GnomeSecretManager, using class DesktopDetector
+
         if (System.getenv("BAZEL_TEST") != null) {
-            this.delegate = new UnavailableSecretManager();
+            var azkaban = System.getenv("ENOLA.DEV_AZKABAN");
+            if (azkaban == null) {
+                this.delegate = new UnavailableSecretManager();
+                LOG.warn("No Secrets! Set ENOLA.DEV_AZKABAN under BAZEL_TEST for test secrets.");
+            } else this.delegate = new InsecureUnencryptedYamlFileSecretManager(Path.of(azkaban));
+
         } else {
-            SecretManager delegate;
-            try {
-                delegate = yamlInExecPass();
-            } catch (IOException e) {
-                try {
-                    delegate =
-                            new InsecureUnencryptedYamlFileSecretManager(
-                                    FreedesktopDirectories.PLAINTEXT_VAULT_FILE);
-                    LOG.warn(
-                            "Failed to initialize ExecPassSecretManager, using"
-                                    + " InsecureUnencryptedYamlFileSecretManager",
-                            e);
-                } catch (IOException ex) {
-                    delegate = new UnavailableSecretManager();
-                    LOG.error(
-                            "Failed to initialize ExecPassSecretManager, using"
-                                    + " UnavailableSecretManager",
-                            e);
-                }
+            var opt = yamlInExecPass();
+            if (opt.isPresent()) this.delegate = opt.get();
+            else {
+                LOG.warn(
+                        "The ExecPassSecretManager is N/A, so using"
+                                + " InsecureUnencryptedYamlFileSecretManager");
+                this.delegate =
+                        new InsecureUnencryptedYamlFileSecretManager(
+                                FreedesktopDirectories.PLAINTEXT_VAULT_FILE);
             }
-            this.delegate = delegate;
         }
     }
 

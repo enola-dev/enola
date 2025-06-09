@@ -20,7 +20,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "demo",
-    main_class = "dev.enola.ai.adk.core.Demo",
+    main_class = "dev.enola.ai.adk.core.QuickstartDemo",
     runtime_deps = [
         ":core",
         "@enola_maven//:org_slf4j_slf4j_simple",
@@ -57,5 +57,12 @@ junit_tests(
     ),
     deps = [
         ":core",
+        "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/iri",
+        "//java/dev/enola/common/secret",
+        "//java/dev/enola/common/secret/auto",
+        "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_google_genai_google_genai",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

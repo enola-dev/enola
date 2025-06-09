@@ -26,6 +26,7 @@ import dev.langchain4j.model.output.FinishReason;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 public class MockChatModel implements StreamingChatModel {
@@ -52,13 +53,13 @@ public class MockChatModel implements StreamingChatModel {
         }
 
         @Override
-        public String uriTemplate() {
-            return "mocklm:{reply}";
+        public Iterable<String> uriTemplates() {
+            return List.of("mocklm:{reply}");
         }
 
         @Override
-        public URI uriExample() {
-            return URI.create("mocklm:Hello,%20world!");
+        public Iterable<URI> uriExamples() {
+            return List.of(URI.create("mocklm:Hello,%20world!"));
         }
 
         @Override

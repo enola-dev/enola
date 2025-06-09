@@ -21,10 +21,16 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
 
 import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
 
-public class GoogleBaseLlmProvider extends GoogleModelProvider<BaseLlm> implements BaseLlmProvider {
+/**
+ * GoogleBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
+ * href="https://docs.enola.dev/specs/aiuri#google-ai">Enola.dev Google AI URI spec</a>.
+ */
+public class GoogleBaseLlmProvider extends GoogleModelProvider<BaseLlm>
+        implements Provider<BaseLlm> {
 
     public GoogleBaseLlmProvider(SecretManager secretManager) {
         super(secretManager);

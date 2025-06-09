@@ -15,16 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.iri;
+package dev.enola.ai.adk.core;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import com.google.adk.agents.BaseAgent;
+import com.google.adk.agents.InvocationContext;
+import com.google.adk.events.Event;
 
-public class BaseLlmProviderTest {
+import io.reactivex.rxjava3.core.Flowable;
 
-    // TODO Implement, quite similarly to ChatModelProviderTest; but split!
+import java.util.List;
 
-    @Test
-    @Ignore // TODO Remove again later!!
-    public void TODO() {}
+public class MockAgent extends BaseAgent {
+
+    public MockAgent() {
+        super("Mock", "Mock Agent for Unit Testing", List.of(), null, null);
+    }
+
+    @Override
+    protected Flowable<Event> runAsyncImpl(InvocationContext invocationContext) {
+        return Flowable.empty();
+    }
+
+    @Override
+    protected Flowable<Event> runLiveImpl(InvocationContext invocationContext) {
+        return Flowable.empty();
+    }
 }

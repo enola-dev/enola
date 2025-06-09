@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 public class OllamaChatModelProvider implements ChatModelProvider {
@@ -40,13 +41,13 @@ public class OllamaChatModelProvider implements ChatModelProvider {
     }
 
     @Override
-    public String uriTemplate() {
-        return "http://{HOST}:{PORT}?type=ollama&model={MODEL}";
+    public Iterable<String> uriTemplates() {
+        return List.of("http://{HOST}:{PORT}?type=ollama&model={MODEL}");
     }
 
     @Override
-    public URI uriExample() {
-        return URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");
+    public Iterable<URI> uriExamples() {
+        return List.of(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b"));
     }
 
     @Override

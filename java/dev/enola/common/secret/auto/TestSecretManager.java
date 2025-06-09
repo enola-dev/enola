@@ -15,20 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.langchain4j;
+package dev.enola.common.secret.auto;
 
-import dev.enola.ai.iri.CachingProvider;
-import dev.enola.ai.iri.ProviderChain;
+import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
-import dev.langchain4j.model.chat.StreamingChatModel;
 
-public class ChatModelProviders extends CachingProvider<StreamingChatModel> {
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Optional;
 
-    public ChatModelProviders(SecretManager secretManager) {
-        super(
-                new ProviderChain<>(
-                        new OllamaChatModelProvider(),
-                        new GoogleChatModelProvider(secretManager),
-                        new MockChatModel.Provider()));
+public class TestSecretManager extends UnavailableSecretManager {
+
+    private final SecretManager delegate;
+
+    public TestSecretManager() {
+        try {
+            // TODO Later use another more direct implementation...
+            delegate = new AutoSecretManager();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    @Override
+    public Optional<Secret> getOptional(String key) throws IOException {
+        return delegate.getOptional(key);
     }
 }

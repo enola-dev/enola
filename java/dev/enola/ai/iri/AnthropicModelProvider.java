@@ -18,9 +18,13 @@
 package dev.enola.ai.iri;
 
 /**
- * Base class for <a href="https://docs.enola.dev/specs/aiuri/#anthropic">Enola.dev Anthropic AI
+ * Base class for <a href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI
  * URI</a> implementations.
  *
  * @param <T> The class specific to the implementing technical framework.
  */
-public abstract class AnthropicModelProvider<T> implements Provider<T> {}
+public abstract class AnthropicModelProvider<T> implements Provider<T> {
+
+    // TODO ...
+
+}

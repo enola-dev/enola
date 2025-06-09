@@ -47,6 +47,7 @@ junit_tests(
     ),
     deps = [
         ":langchain4j",
+        "//java/dev/enola/ai/iri",
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",

@@ -44,15 +44,13 @@ import java.util.Optional;
 @ThreadSafe
 public class ExecPassSecretManager implements SecretManager {
 
-    // TODO get() needs to distinguish between "not found" and other errors
+    // TODO get() needs to distinguish between "not found" and other errors!
 
     // TODO Support https://github.com/FiloSottile/age (or https://github.com/str4d/rage)
     //   [maybe via https://github.com/FiloSottile/passage ?], and then test it
     //   with https://github.com/Foxboron/age-plugin-tpm
     //   and https://github.com/remko/age-plugin-se
     //   and https://github.com/str4d/age-plugin-yubikey
-
-    // TODO How to make this (pass) work from within Bazel tests? ENV vars, @TestOnly after all?!
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecPassSecretManager.class);
 

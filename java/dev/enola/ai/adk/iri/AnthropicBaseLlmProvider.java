@@ -20,6 +20,14 @@ package dev.enola.ai.adk.iri;
 import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.iri.AnthropicModelProvider;
+import dev.enola.ai.iri.Provider;
 
+/**
+ * AnthropicBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
+ * href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI URI spec</a>.
+ */
 public abstract class AnthropicBaseLlmProvider extends AnthropicModelProvider<BaseLlm>
-        implements BaseLlmProvider {}
+        implements Provider<BaseLlm> {
+
+    // TODO ...
+}
