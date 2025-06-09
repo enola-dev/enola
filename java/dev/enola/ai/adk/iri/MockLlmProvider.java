@@ -15,16 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
+package dev.enola.ai.adk.iri;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import com.google.adk.models.BaseLlm;
 
-public class AgentLoaderTest {
+import dev.enola.ai.adk.test.MockModel;
+import dev.enola.ai.iri.MockModelProvider;
 
-    @Test
-    @Ignore // TODO Remove again later!!
-    public void TODO() {
-        // Use the AgentTester utility
+import java.net.URI;
+import java.util.Optional;
+
+public class MockLlmProvider extends MockModelProvider<BaseLlm> {
+
+    @Override
+    public Optional<BaseLlm> optional(URI uri) {
+        if ("mocklm".equalsIgnoreCase(uri.getScheme())) {
+            var reply = uri.getSchemeSpecificPart();
+            return Optional.of(new MockModel(reply));
+        } else return Optional.empty();
     }
 }

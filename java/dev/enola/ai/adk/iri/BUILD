@@ -31,6 +31,7 @@ java_library(
         "@enola_maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
+        "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
@@ -50,6 +51,7 @@ junit_tests(
     ),
     deps = [
         ":iri",
+        "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",

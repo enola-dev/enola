@@ -15,29 +15,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.core;
+package dev.enola.ai.adk.test;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.InvocationContext;
 import com.google.adk.events.Event;
+import com.google.genai.types.Content;
+import com.google.genai.types.Part;
 
 import io.reactivex.rxjava3.core.Flowable;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class MockAgent extends BaseAgent {
 
-    public MockAgent() {
+    // https://github.com/google/adk-java/blob/main/core/src/test/java/com/google/adk/testing/TestBaseAgent.java
+    //   is similar to this, but it's in src/test and thus not available...
+    //   TODO Propose a related refactoring!
+
+    private final Supplier<Flowable<Event>> eventSupplier;
+
+    public MockAgent(String reply) {
         super("Mock", "Mock Agent for Unit Testing", List.of(), null, null);
+
+        var part = Part.fromText(reply);
+        var content = Content.fromParts(part);
+        var event = Event.builder().id(Event.generateEventId()).content(content).build();
+        this.eventSupplier = () -> Flowable.just(event);
     }
 
     @Override
     protected Flowable<Event> runAsyncImpl(InvocationContext invocationContext) {
-        return Flowable.empty();
+        return eventSupplier.get();
     }
 
     @Override
     protected Flowable<Event> runLiveImpl(InvocationContext invocationContext) {
-        return Flowable.empty();
+        return eventSupplier.get();
     }
 }

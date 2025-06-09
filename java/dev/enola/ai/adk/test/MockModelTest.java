@@ -15,19 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.iri;
+package dev.enola.ai.adk.test;
 
-import com.google.adk.models.BaseLlm;
+import org.junit.Test;
 
-import dev.enola.ai.iri.AnthropicModelProvider;
-import dev.enola.ai.iri.Provider;
+public class MockModelTest {
 
-/**
- * AnthropicBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
- * href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI URI spec</a>.
- */
-public abstract class AnthropicBaseLlmProvider extends AnthropicModelProvider<BaseLlm>
-        implements Provider<BaseLlm> {
-
-    // TODO ...
+    @Test
+    public void mock() {
+        var model = new MockModel("bar");
+        new ModelTester(model).assertTextResponseContains("foo", "bar");
+    }
 }

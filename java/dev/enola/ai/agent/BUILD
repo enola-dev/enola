@@ -39,6 +39,7 @@ java_library(
     deps = [
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/dotprompt",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/io",

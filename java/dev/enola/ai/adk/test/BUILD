@@ -15,20 +15,10 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
-    name = "demo",
-    main_class = "dev.enola.ai.adk.web.DemoAdkWebServer",
-    runtime_deps = [
-        ":web",
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-)
-
 java_library(
-    name = "web",
+    name = "test",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -36,17 +26,17 @@ java_library(
         ],
     ),
     visibility = ["//:__subpackages__"],
+    runtime_deps = [
+        # Google GenAI uses Apache HttpComponents which uses Apache Commons Logging, which this bridges into SLF4j!
+        "@enola_maven//:org_slf4j_jcl_over_slf4j",
+    ],
     deps = [
-        "//java/dev/enola/ai/adk/core",
-        "//java/dev/enola/ai/adk/test",
         "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_google_adk_google_adk_dev",
+        "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
-        "@enola_maven//:org_springframework_boot_spring_boot",
-        "@enola_maven//:org_springframework_spring_beans",
-        "@enola_maven//:org_springframework_spring_context",
     ],
 )
 
@@ -56,6 +46,9 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":web",
+        ":test",
+        "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_google_genai_google_genai",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

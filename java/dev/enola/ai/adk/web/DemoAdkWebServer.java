@@ -22,8 +22,8 @@ import com.google.adk.web.AdkWebServer;
 import com.google.adk.web.AgentCompilerLoader;
 import com.google.adk.web.config.AgentLoadingProperties;
 
-import dev.enola.ai.adk.core.MockAgent;
 import dev.enola.ai.adk.core.QuickstartDemo;
+import dev.enola.ai.adk.test.MockAgent;
 
 import org.springframework.boot.SpringApplication;
 
@@ -54,7 +54,7 @@ public class DemoAdkWebServer extends AdkWebServer {
         var root =
                 System.getenv("GOOGLE_API_KEY") != null
                         ? QuickstartDemo.initAgent()
-                        : new MockAgent();
+                        : new MockAgent("bar");
         return Map.of(root.name(), root);
     }
 

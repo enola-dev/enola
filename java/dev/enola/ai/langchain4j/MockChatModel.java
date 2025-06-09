@@ -17,6 +17,7 @@
  */
 package dev.enola.ai.langchain4j;
 
+import dev.enola.ai.iri.MockModelProvider;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
@@ -26,7 +27,6 @@ import dev.langchain4j.model.output.FinishReason;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 public class MockChatModel implements StreamingChatModel {
@@ -45,22 +45,8 @@ public class MockChatModel implements StreamingChatModel {
                         .build());
     }
 
-    public static class Provider implements ChatModelProvider { // skipcq: JAVA-E0169
-
-        @Override
-        public String name() {
-            return "Mock 🦜";
-        }
-
-        @Override
-        public Iterable<String> uriTemplates() {
-            return List.of("mocklm:{reply}");
-        }
-
-        @Override
-        public Iterable<URI> uriExamples() {
-            return List.of(URI.create("mocklm:Hello,%20world!"));
-        }
+    public static class Provider extends MockModelProvider<StreamingChatModel> // skipcq: JAVA-E0169
+            implements ChatModelProvider { // skipcq: JAVA-E0169
 
         @Override
         public Optional<StreamingChatModel> optional(URI uri)
