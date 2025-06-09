@@ -17,6 +17,7 @@
  */
 package dev.enola.common.secret;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import java.io.IOException;
@@ -33,6 +34,10 @@ public class InMemorySecretManager implements SecretManager {
 
     public InMemorySecretManager(Map<String, String> secrets) {
         secrets.forEach((key, value) -> this.secrets.put(key, value.toCharArray()));
+    }
+
+    public InMemorySecretManager(String key, String value) {
+        this(ImmutableMap.of(key, value));
     }
 
     public InMemorySecretManager() {
