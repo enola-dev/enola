@@ -15,16 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
+package dev.enola.ai.adk.iri;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import com.google.adk.models.BaseLlm;
 
-public class BaseLlmProviderTest {
+import dev.enola.ai.iri.AnthropicModelProvider;
 
-    // TODO Implement, quite similarly to ChatModelProviderTest; but split!
-
-    @Test
-    @Ignore // TODO Remove again later!!
-    public void TODO() {}
-}
+public abstract class AnthropicBaseLlmProvider extends AnthropicModelProvider<BaseLlm>
+        implements BaseLlmProvider {}

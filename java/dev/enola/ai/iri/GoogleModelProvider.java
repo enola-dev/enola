@@ -28,13 +28,19 @@ import java.io.UncheckedIOException;
 import java.net.URI;
 import java.util.Optional;
 
+/**
+ * Base class for <a href="https://docs.enola.dev/specs/aiuri/#google-ai">Enola.dev Google AI
+ * URI</a> implementations.
+ *
+ * @param <T> The class specific to the implementing technical framework.
+ */
 public abstract class GoogleModelProvider<T> implements Provider<T> {
 
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
 
     protected final SecretManager secretManager;
 
-    protected GoogleModelProvider(SecretManager secretManager) {
+    public GoogleModelProvider(SecretManager secretManager) {
         this.secretManager = secretManager;
     }
 
@@ -59,7 +65,7 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
         if (!"google".equalsIgnoreCase(uri.getScheme())) return Optional.empty();
         var queryMap = URIs.getQueryMap(uri);
         var model = queryMap.get("model");
-        if (Strings.isNullOrEmpty(model))
+        if (Strings.isNullOrEmpty(model.trim()))
             throw new IllegalArgumentException(
                     "google://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models");
 

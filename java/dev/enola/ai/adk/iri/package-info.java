@@ -15,14 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
-
-import com.google.adk.models.BaseLlm;
-
-import dev.enola.ai.iri.Provider;
 
 /**
- * BaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
- * href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
+ * <a href="https://google.github.io/adk-docs/">Agent Development Kit</a> (Core) integration related
+ * to the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
  */
-public interface BaseLlmProvider extends Provider<BaseLlm> {}
+@NullMarked
+package dev.enola.ai.adk.iri;
+
+import org.jspecify.annotations.NullMarked;

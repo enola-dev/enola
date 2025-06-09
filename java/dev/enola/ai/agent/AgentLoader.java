@@ -21,6 +21,7 @@ import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
 
+import dev.enola.ai.adk.iri.BaseLlmProvider;
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.common.io.resource.ResourceProvider;
 
