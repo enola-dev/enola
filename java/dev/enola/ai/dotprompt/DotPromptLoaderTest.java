@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
-public class ExamplePromptsTest {
+public class DotPromptLoaderTest {
 
     @Test
     public void testExample1() throws IOException {
