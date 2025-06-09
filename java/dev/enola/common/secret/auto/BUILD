@@ -51,10 +51,7 @@ java_library(
 
 junit_tests(
     name = "tests",
-    srcs = glob(
-        include = ["*Test.java"],
-        allow_empty = True,
-    ),
+    srcs = glob(include = ["*Test.java"]),
     deps = [
         ":auto",
     ],

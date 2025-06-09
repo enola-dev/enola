@@ -21,8 +21,8 @@ import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.adk.iri.BaseLlmProvider;
 import dev.enola.ai.dotprompt.DotPromptLoader;
+import dev.enola.ai.iri.Provider;
 import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
@@ -34,10 +34,12 @@ public class AgentLoader {
     // TODO Also support configuring SequentialAgent, ParallelAgent, LoopAgent in *.agent.yaml!
 
     private final DotPromptLoader dotPromptLoader;
-    private final BaseLlmProvider baseLlmProvider;
+    private final Provider<BaseLlm> baseLlmProvider;
 
     public AgentLoader(
-            ResourceProvider resourceProvider, URI defaultModel, BaseLlmProvider baseLlmProvider) {
+            ResourceProvider resourceProvider,
+            URI defaultModel,
+            Provider<BaseLlm> baseLlmProvider) {
         this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultModel);
         this.baseLlmProvider = baseLlmProvider;
     }

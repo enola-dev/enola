@@ -26,21 +26,23 @@ import dev.enola.common.secret.SecretManager;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 /**
- * Base class for <a href="https://docs.enola.dev/specs/aiuri/#google-ai">Enola.dev Google AI
- * URI</a> implementations.
+ * Base class for <a href="https://docs.enola.dev/specs/aiuri#google-ai">Enola.dev Google AI URI</a>
+ * implementations.
  *
  * @param <T> The class specific to the implementing technical framework.
  */
 public abstract class GoogleModelProvider<T> implements Provider<T> {
 
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
+    public static final URI FLASH = URI.create("google://?model=gemini-2.5-flash-preview-04-17");
 
     protected final SecretManager secretManager;
 
-    public GoogleModelProvider(SecretManager secretManager) {
+    protected GoogleModelProvider(SecretManager secretManager) {
         this.secretManager = secretManager;
     }
 
@@ -50,13 +52,13 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
     }
 
     @Override
-    public String uriTemplate() {
-        return "google://?model={MODEL}";
+    public Iterable<String> uriTemplates() {
+        return List.of("google://?model={MODEL}");
     }
 
     @Override
-    public URI uriExample() {
-        return URI.create("google://?model=gemini-2.5-flash-preview-04-17");
+    public Iterable<URI> uriExamples() {
+        return List.of(FLASH);
     }
 
     @Override

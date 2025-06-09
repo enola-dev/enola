@@ -22,6 +22,9 @@ import com.google.adk.web.AdkWebServer;
 import com.google.adk.web.AgentCompilerLoader;
 import com.google.adk.web.config.AgentLoadingProperties;
 
+import dev.enola.ai.adk.core.MockAgent;
+import dev.enola.ai.adk.core.QuickstartDemo;
+
 import org.springframework.boot.SpringApplication;
 
 import java.util.Map;
@@ -48,7 +51,10 @@ public class DemoAdkWebServer extends AdkWebServer {
     @Override
     public Map<String, BaseAgent> loadedAgentRegistry(
             AgentCompilerLoader loader, AgentLoadingProperties props) {
-        var root = dev.enola.ai.adk.core.Demo.initAgent();
+        var root =
+                System.getenv("GOOGLE_API_KEY") != null
+                        ? QuickstartDemo.initAgent()
+                        : new MockAgent();
         return Map.of(root.name(), root);
     }
 

@@ -26,13 +26,16 @@ import java.util.Optional;
  */
 public interface Provider<T> {
 
+    // TODO Support ?topP / topK, temperature, seed etc. as query parameters!
+    //   Or is there no need to set that as default, because it will only be set on requests?
+
     default String name() {
         return getClass().getSimpleName();
     }
 
-    String uriTemplate();
+    Iterable<String> uriTemplates();
 
-    URI uriExample();
+    Iterable<URI> uriExamples();
 
     // TODO Set<String> secrets();
 

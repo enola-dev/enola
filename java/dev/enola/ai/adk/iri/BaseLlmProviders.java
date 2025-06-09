@@ -19,10 +19,13 @@ package dev.enola.ai.adk.iri;
 
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.iri.Provider;
+import dev.enola.ai.iri.CachingProvider;
+import dev.enola.ai.iri.ProviderChain;
+import dev.enola.common.secret.SecretManager;
 
-/**
- * BaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
- * href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI spec</a>.
- */
-public interface BaseLlmProvider extends Provider<BaseLlm> {}
+public class BaseLlmProviders extends CachingProvider<BaseLlm> {
+
+    public BaseLlmProviders(SecretManager secretManager) {
+        super(new ProviderChain<>(new GoogleBaseLlmProvider(secretManager)));
+    }
+}
