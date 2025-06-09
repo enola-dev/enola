@@ -39,7 +39,8 @@ public class ModelTester {
         var request = LlmRequest.builder().contents(List.of(content)).build();
         var response = llm.generateContent(request, false).blockingFirst();
         var text = response.content().orElseThrow().text();
-        if (text == null || !text.contains(responseMustContain))
-            throw new AssertionError(responseMustContain);
+        if (text == null) throw new AssertionError("Reponse text is null");
+        if (!text.contains(responseMustContain))
+            throw new AssertionError(text + " does not contain: " + responseMustContain);
     }
 }

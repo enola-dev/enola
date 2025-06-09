@@ -58,6 +58,16 @@ public class AgentTester {
                     if (content.text() != null) sb.append(content.text());
                 }
             }
+            for (var event : events) {
+                if (event.content().isPresent()) {
+                    var content = event.content().get();
+                    if (content.parts().isPresent()) {
+                        for (var part : content.parts().get()) {
+                            part.text().ifPresent(sb::append);
+                        }
+                    }
+                }
+            }
             var response = sb.toString();
             if (!response.contains(responseMustContain))
                 throw new AssertionError(response + " does not contain: " + responseMustContain);
