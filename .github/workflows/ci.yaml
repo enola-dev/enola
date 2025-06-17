@@ -31,7 +31,7 @@ on:
 
 # Cancel any in-progress job or run if there is a newer commit
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
