@@ -67,8 +67,15 @@ public class AutoSecretManager implements SecretManager {
             if (azkaban == null) {
                 this.delegate = new UnavailableSecretManager();
                 LOG.warn("No Secrets! Set ENOLA.DEV_AZKABAN under BAZEL_TEST for test secrets.");
-            } else this.delegate = new InsecureUnencryptedYamlFileSecretManager(Path.of(azkaban));
-
+            } else {
+                var azkabanPath = Path.of(azkaban);
+                if (azkabanPath.toFile().exists()) {
+                    this.delegate = new InsecureUnencryptedYamlFileSecretManager(azkabanPath);
+                } else {
+                    this.delegate = new UnavailableSecretManager();
+                    LOG.warn("ENOLA.DEV_AZKABAN is set, but does not exist: " + azkabanPath);
+                }
+            }
         } else {
             var opt = yamlInExecPass();
             if (opt.isPresent()) this.delegate = opt.get();
