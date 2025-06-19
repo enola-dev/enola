@@ -31,11 +31,6 @@ GRPC_JAVA_VERSION_BUILD = "1.73.0"
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
 register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
 
-# see https://github.com/enola-dev/enola/issues/1164
-# NO NEED: bazel_dep(name = "rules_cc", version = "0.0.17")
-bazel_dep(name = "re2", version = "2024-07-02.bcr.1")
-bazel_dep(name = "abseil-cpp", version = "20250127.1")
-
 # https://github.com/protocolbuffers/protobuf/tree/main?tab=readme-ov-file#bazel-with-bzlmod
 bazel_dep(name = "protobuf", version = "29.5")
 
