@@ -21,6 +21,9 @@ import { $, build } from "bun"
 import { renameSync } from "fs"
 import path from "path"
 
+// Need to run install, because `tsc` is not available otherwise
+await $`bun install`
+
 // TODO Use https://github.com/google/zx/ or https://github.com/dsherret/dax
 // instead of Bun's $ (see also https://github.com/google/zx/pull/1082)
 // if they handle (contrib?) https://github.com/oven-sh/bun/issues/16496 ?
