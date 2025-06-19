@@ -31,10 +31,6 @@ GRPC_JAVA_VERSION_BUILD = "1.73.0"
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
 register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
 
-# see https://github.com/bazelbuild/rules_apple/issues/2660
-# for https://github.com/enola-dev/enola/issues/1146
-bazel_dep(name = "rules_apple", version = "3.22.0", repo_name = "build_bazel_rules_apple")
-
 # see https://github.com/enola-dev/enola/issues/1164
 # NO NEED: bazel_dep(name = "rules_cc", version = "0.0.17")
 bazel_dep(name = "re2", version = "2024-07-02.bcr.1")
