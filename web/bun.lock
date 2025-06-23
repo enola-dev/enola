@@ -18,7 +18,7 @@
         "@types/sigmajs": "^1.0.32",
         "eslint-config-prettier": "^10.1.5",
         "graphology-types": "^0.24.8",
-        "prettier": "^3.5.3",
+        "prettier": "^3.6.0",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.34.1",
       },
@@ -469,7 +469,7 @@
 
     "prelude-ls": ["prelude-ls@1.2.1", "", {}, "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="],
 
-    "prettier": ["prettier@3.5.3", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw=="],
+    "prettier": ["prettier@3.6.0", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw=="],
 
     "pretty-format": ["pretty-format@30.0.0", "", { "dependencies": { "@jest/schemas": "30.0.0", "ansi-styles": "^5.2.0", "react-is": "^18.3.1" } }, "sha512-18NAOUr4ZOQiIR+BgI5NhQE7uREdx4ZyV0dyay5izh4yfQ+1T7BSvggxvRGoXocrRyevqW5OhScUjbi9GB8R8Q=="],
 
