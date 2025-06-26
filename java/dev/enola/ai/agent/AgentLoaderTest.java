@@ -21,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 public class AgentLoaderTest {
+    // TODO Rename AgentLoaderTest to AgentsLoaderTest
 
     @Test
     @Ignore // TODO Remove again later!!
