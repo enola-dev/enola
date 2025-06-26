@@ -35,6 +35,7 @@ import java.util.Set;
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */
 public class DotPrompt {
+    // TODO Rename DotPrompt to DotPromptFrontmatter
 
     // This is a class instead of a record to allow users to extend it.
 
@@ -92,13 +93,13 @@ public class DotPrompt {
          */
         @JsonProperty("default") // cauz "default" is a reserved keyword
         // TODO https://github.com/google/dotprompt/issues/306 re. Map<String, Object>
-        public Map<String, Object> defaults;
+        public final Map<String, Object> defaults = new HashMap<>();
 
         /**
          * Schema representing the input values for the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        public @Nullable Map<String, Object> schema;
+        public final Map<String, Object> schema = new HashMap<>();
     }
 
     public static class Output {
@@ -115,6 +116,6 @@ public class DotPrompt {
          * Schema representing the expected output from the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        public @Nullable Map<String, Object> schema;
+        public final Map<String, Object> schema = new HashMap<>();
     }
 }

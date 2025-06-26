@@ -29,7 +29,7 @@ import io.reactivex.rxjava3.subscribers.TestSubscriber;
 
 public class AgentTester {
 
-    // TODO Maybe re-write this as a Truth Subject?
+    // TODO Re-write this as a Truth Subject?
 
     private final BaseAgent agent;
 

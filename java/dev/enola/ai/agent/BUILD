@@ -43,7 +43,9 @@ java_library(
         "//java/dev/enola/ai/dotprompt",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
+        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",
@@ -60,5 +62,8 @@ junit_tests(
     ),
     deps = [
         ":agent",
+        "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/adk/test",
+        "//java/dev/enola/common/io",
     ],
 )

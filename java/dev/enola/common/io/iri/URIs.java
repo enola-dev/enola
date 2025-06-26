@@ -267,7 +267,7 @@ public final class URIs {
      * <p>TODO Is this really required?! Re-review which tests URI#getPath() fails, and why...
      */
     @Deprecated // Get rid of this, it's stupid, buggy, and bad.
-    // TODO This doesn't corrrectly handle URIs with an authority!
+    // TODO This doesn't correctly handle URIs with an authority!
     public static String getPath(URI uri) {
         return chopFragmentAndQuery(uri.getSchemeSpecificPart());
     }

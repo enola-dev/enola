@@ -30,18 +30,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class AgentLoader {
-
-    // TODO Also support configuring SequentialAgent, ParallelAgent, LoopAgent in *.agent.yaml!
+    // TODO Rename AgentLoader to DotPromptAgentifier
+    // TODO Move AgentLoader (DotPromptAgentifier) to package dotprompt.adk
 
     private final DotPromptLoader dotPromptLoader;
-    private final Provider<BaseLlm> baseLlmProvider;
+    private final Provider<BaseLlm> llmProvider;
 
     public AgentLoader(
-            ResourceProvider resourceProvider,
-            URI defaultModel,
-            Provider<BaseLlm> baseLlmProvider) {
-        this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultModel);
-        this.baseLlmProvider = baseLlmProvider;
+            ResourceProvider resourceProvider, URI defaultLLM, Provider<BaseLlm> llmProvider) {
+        this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultLLM);
+        this.llmProvider = llmProvider;
     }
 
     public BaseAgent load(URI uri) throws IOException {
@@ -50,7 +48,7 @@ public class AgentLoader {
         var dot = dotPrompt.frontMatter();
         BaseLlm model = null;
         try {
-            model = baseLlmProvider.get(new URI(dot.model));
+            model = llmProvider.get(new URI(dot.model));
         } catch (URISyntaxException e) {
             throw new IOException(
                     "Invalid Model URI '"
@@ -61,7 +59,8 @@ public class AgentLoader {
                             + uri,
                     e);
         }
-        // TODO Create a class AgentModel extends Dotprompt, with description (and more later)
+        // TODO Use description from AgentsModel.Agent
+        // TODO Discuss upstream why description is mandatory, and change that?
         var description = "TODO Extend Dotprompt with Description!";
         var instruction = dotPrompt.template().apply(input);
         return LlmAgent.builder()

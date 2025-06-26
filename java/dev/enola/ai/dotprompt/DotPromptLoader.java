@@ -46,11 +46,12 @@ public class DotPromptLoader {
         if (resource == null) throw new IOException("Resource not found: " + uri);
         var md = new MarkdownResource(resource, HANDLEBARS);
 
-        // TODO Support https://google.github.io/dotprompt/reference/template/#dotprompt-helpers
-        var template = templateProvider.get(md.markdown());
-
         var reader = new YamlObjectReaderWriter();
-        var front = reader.read(md.frontMatter(), DotPrompt.class);
+        var front = reader.read(md.frontMatter(), DotPromptWithPromptTemplate.class);
+
+        var templateResource = md.markdown();
+        front.prompt = templateResource.charSource().read();
+
         if (front.name == null)
             front.name = URIs.getFilenameWithoutExtension(uri, ".prompt.md", ".prompt");
         // TODO front.variant
@@ -62,6 +63,8 @@ public class DotPromptLoader {
 
         // TODO Set I&O schemas into (to be added) properties on LoadedDotPrompt (but for what?)
 
+        // TODO Support https://google.github.io/dotprompt/reference/template/#dotprompt-helpers
+        var template = templateProvider.get(templateResource);
         return new LoadedDotPrompt(front, template);
     }
 }
