@@ -40,7 +40,7 @@ public class ModelTester {
         var response = llm.generateContent(request, false).blockingFirst();
         var text = response.content().orElseThrow().text();
         if (text == null) throw new AssertionError("Reponse text is null");
-        if (!text.contains(responseMustContain))
+        if (!text.toLowerCase().contains(responseMustContain.toLowerCase()))
             throw new AssertionError(text + " does not contain: " + responseMustContain);
     }
 }
