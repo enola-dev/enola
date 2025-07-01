@@ -28,7 +28,6 @@ package dev.enola.data.id;
  * not actually really being annotated with this.
  */
 public @interface ID {
-    // TODO This technically actually isn't related so much to "IDs" as to "datatypes"...
 
     // TODO Class<IdConverter<?>> converter();
 }

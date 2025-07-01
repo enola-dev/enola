@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.model.enola;
-
-import dev.enola.thing.Link;
-import dev.enola.thing.Thing;
+package dev.enola.model.schemaorg;
 
 import org.jspecify.annotations.Nullable;
 
-public interface HasParent extends Thing {
+import java.net.URI;
+import java.util.Set;
 
-    // TODO @Nullable T parent()
+public interface WebPage extends CreativeWork {
 
-    default @Nullable String parentIRI() {
-        return getString("https://enola.dev/parent");
-    }
+    @Nullable Speciality speciality();
 
-    interface Builder<B extends HasParent> extends Thing.Builder<B> { // skipcq: JAVA-E0169
-        default HasParent.Builder<B> parentIRI(String iri) {
-            set("https://enola.dev/parent", new Link(iri));
-            return this;
-        }
-    }
+    @Nullable Set<URI> relatedLinks();
+
+    @Nullable Set<URI> significantLinks();
 }
