@@ -4,7 +4,7 @@
 pre-commit==4.2.0
 
 # https://linkml.io
-linkml==1.8.7
+linkml==1.9.2
 # TODO https://github.com/linkml/linkml/issues/2592
 linkml-runtime==1.9.3
 
