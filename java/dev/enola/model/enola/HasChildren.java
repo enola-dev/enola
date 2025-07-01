@@ -27,6 +27,8 @@ import java.util.Set;
 
 public interface HasChildren extends Thing {
 
+    // TODO Set<T> children()
+
     default @Nullable Set<Link> childrenIRI() {
         return get("https://enola.dev/children", Set.class);
     }

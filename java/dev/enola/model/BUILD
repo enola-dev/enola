@@ -32,6 +32,7 @@ java_library(
         # All Converters should move from /model/ to an enola.connect package.
         "//java/dev/enola:api",
         "//java/dev/enola/common",
+        "//java/dev/enola/identity",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
