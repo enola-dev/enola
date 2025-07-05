@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.test;
+package dev.enola.ai.dotprompt;
 
-import org.junit.Test;
+import org.jspecify.annotations.Nullable;
 
-public class MockAgentTest {
+public class DotPromptWithPromptTemplate extends DotPrompt {
+    // TODO Rename DotPromptWithPromptTemplate to DotPrompt
 
-    @Test
-    public void mock() {
-        var agent = new MockAgent("bar");
-        new AgentTester(agent).assertTextResponseContains("foo", "bar");
-        // TODO assertThat(agent).prompt("foo").responseContains("bar");
-    }
+    /** Template of Prompt; e.g. from the body (after frontmatter) of a .prompt * */
+    public @Nullable String prompt;
 }

@@ -15,16 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.test;
+package dev.enola.ai.agent;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class MockAgentTest {
+public class AgentsModelAgentifierIntegrationTest {
+
+    // TODO @Test quickstart()
 
     @Test
-    public void mock() {
-        var agent = new MockAgent("bar");
-        new AgentTester(agent).assertTextResponseContains("foo", "bar");
-        // TODO assertThat(agent).prompt("foo").responseContains("bar");
+    @Ignore // TODO Remove again later!!
+    public void TODO() {
+        // Use the AgentTester utility
     }
 }
