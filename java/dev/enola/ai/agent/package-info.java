@@ -18,6 +18,7 @@
 
 /** Enola.dev's "Dynamic (YAML) Agents" related code. */
 @NullMarked
+// TODO Rename ai.agent to ai.dotagent
 package dev.enola.ai.agent;
 
 import org.jspecify.annotations.NullMarked;

@@ -25,5 +25,6 @@ public class MockModelTest {
     public void mock() {
         var model = new MockModel("bar");
         new ModelTester(model).assertTextResponseContains("foo", "bar");
+        // TODO assertThat(model).prompt("foo").responseContains("bar");
     }
 }
