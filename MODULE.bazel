@@ -69,7 +69,7 @@ go_sdk.download(version = "1.22.4")
 
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 # When bumping the version here, must always run: REPIN=1 bazelisk run @enola_maven//:pin
-bazel_dep(name = "rules_jvm_external", version = "6.7")
+bazel_dep(name = "rules_jvm_external", version = "6.8")
 
 enola_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 enola_maven.install(
