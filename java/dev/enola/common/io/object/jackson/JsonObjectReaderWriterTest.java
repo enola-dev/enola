@@ -33,14 +33,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class JacksonObjectReaderWritersTest {
-    // TODO Rename JacksonObjectReaderWritersTest to JsonObjectReaderWritersTest
+public class JsonObjectReaderWriterTest {
 
     // NB: Keep the very similar YamlObjectReaderWriterTest in sync with this!
 
