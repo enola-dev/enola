@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
 import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -51,6 +52,8 @@ abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
         this.mapper = mapper;
+
+        mapper.registerModule(new JavaTimeModule());
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

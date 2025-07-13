@@ -30,6 +30,7 @@ java_library(
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_core",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@enola_maven//:com_fasterxml_jackson_datatype_jackson_datatype_jsr310",
         "@enola_maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
