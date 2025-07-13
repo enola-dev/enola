@@ -83,8 +83,8 @@ abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
     public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return List.of();
         try (var reader = resource.charSource().openBufferedStream()) {
-            // TODO FIXME HOWTO ?@#!
-            return mapper.readValue(reader, new TypeReference<List<T>>() {});
+            var javaType = mapper.getTypeFactory().constructCollectionType(List.class, type);
+            return mapper.readValue(reader, javaType);
         } catch (DatabindException e) {
             throw new IOException(e);
         }
