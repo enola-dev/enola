@@ -34,9 +34,7 @@ import dev.enola.common.io.resource.MemoryResource;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,8 +86,7 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
         assertThat(example.example().string()).isEqualTo("hey");
         assertThat(example.defaultValue()).isEqualTo("hallo");
-        assertThat(example.timestamp())
-                .isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
+        assertThat(example.timestamp()).isEqualTo(Instant.parse("2016-05-18T06:51:25Z"));
         assertThat(example.isPrivate()).isTrue();
     }
 
@@ -101,7 +98,7 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList).containsExactly("hello", "world").inOrder();
         assertThat(example.example.string()).isEqualTo("hey");
         assertThat(example.defaultValue).isEqualTo("hallo");
-        assertThat(example.timestamp).isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
+        assertThat(example.timestamp).isEqualTo(Instant.parse("2016-05-18T06:51:25Z"));
         assertThat(example.isPrivate).isTrue();
     }
 
