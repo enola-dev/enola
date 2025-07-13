@@ -29,4 +29,5 @@ public record ExampleRecord(
         Set<String> stringSet,
         List<String> stringList,
         @Nullable ExampleRecord example,
-        @JsonProperty("default") String defaultValue) {}
+        @Nullable @JsonProperty("default") String defaultValue,
+        @Nullable @JsonProperty("private") Boolean isPrivate) {}

@@ -37,4 +37,7 @@ public class ExamplePlainClass {
     public @Nullable ExampleRecord example;
 
     public @JsonProperty("default") String defaultValue;
+
+    @JsonProperty("private")
+    public boolean isPrivate;
 }

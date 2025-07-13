@@ -72,6 +72,7 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
         assertThat(example.example().string()).isEqualTo("hey");
         assertThat(example.defaultValue()).isEqualTo("hallo");
+        assertThat(example.isPrivate()).isTrue();
     }
 
     @Test
@@ -82,6 +83,7 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList).containsExactly("hello", "world").inOrder();
         assertThat(example.example.string()).isEqualTo("hey");
         assertThat(example.defaultValue).isEqualTo("hallo");
+        assertThat(example.isPrivate).isTrue();
     }
 
     private <T> T readComplexYAML_toExample(Class<T> clazz) throws IOException {
@@ -93,6 +95,7 @@ public class YamlObjectReaderWriterTest {
                 example:
                   string: hey
                 default: hallo
+                private: 1
                 """;
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
@@ -104,12 +107,12 @@ public class YamlObjectReaderWriterTest {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YAML_UTF_8);
-        var example = new ExampleRecord("hello, world", Set.of(), List.of(), null, null);
+        var example = new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
         sr = new MemoryResource(YAML_UTF_8);
-        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null);
+        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
