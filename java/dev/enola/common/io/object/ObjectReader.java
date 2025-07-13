@@ -17,14 +17,17 @@
  */
 package dev.enola.common.io.object;
 
+import com.google.common.reflect.TypeToken;
 import dev.enola.common.io.resource.ReadableResource;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public interface ObjectReader {
 
-    // TODO <T> Iterator<T> readAll(ReadableResource resource, Class<T> type) throws IOException;
+    <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException;
 
     default <T> T read(ReadableResource resource, Class<T> type) throws IOException {
         return optional(resource, type)

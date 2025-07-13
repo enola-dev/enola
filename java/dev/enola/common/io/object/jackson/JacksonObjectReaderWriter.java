@@ -20,10 +20,15 @@ package dev.enola.common.io.object.jackson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.google.common.net.MediaType;
+import com.google.common.reflect.TypeToken;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.common.io.object.ObjectReader;
@@ -32,10 +37,13 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.fasterxml.jackson.databind.type.TypeBindings.emptyBindings;
 
 abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
 
@@ -63,6 +71,17 @@ abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
         if (!canHandle(resource.mediaType())) return Optional.empty();
         try (var reader = resource.charSource().openBufferedStream()) {
             return Optional.of(mapper.readValue(reader, type));
+        } catch (DatabindException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @Override
+    public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
+        if (!canHandle(resource.mediaType())) return List.of();
+        try (var reader = resource.charSource().openBufferedStream()) {
+            // TODO FIXME HOWTO ?@#!
+            return mapper.readValue(reader, new TypeReference<List<T>>() {});
         } catch (DatabindException e) {
             throw new IOException(e);
         }

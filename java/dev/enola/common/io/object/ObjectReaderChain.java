@@ -19,9 +19,12 @@ package dev.enola.common.io.object;
 
 import com.google.common.collect.ImmutableList;
 
+import com.google.common.collect.Iterables;
+import com.google.common.reflect.TypeToken;
 import dev.enola.common.io.resource.ReadableResource;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class ObjectReaderChain implements ObjectReader {
@@ -41,5 +44,17 @@ public class ObjectReaderChain implements ObjectReader {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
+        for (var reader : readers) {
+            Iterable<T> iterable = reader.readAll(resource, type);
+            // TODO Rethink this further... does this really make sense, as-is?
+            if (!Iterables.isEmpty(iterable)) {
+                return iterable;
+            }
+        }
+        return List.of();
     }
 }

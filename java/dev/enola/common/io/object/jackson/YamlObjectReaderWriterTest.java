@@ -22,6 +22,7 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
+import com.google.common.reflect.TypeToken;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ExamplePlainClass;
 import dev.enola.common.io.object.ExampleRecord;
@@ -65,6 +66,18 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringSet()).isEmpty();
         assertThat(example.stringList()).isEmpty();
         assertThat(example.example()).isNull();
+    }
+
+    @Test
+    public void readStreamOfYAML_toExampleClassList() throws IOException {
+        var yaml = "string: hello, world\n---string: saluton\n";
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
+
+        var examples = or.readAll(resource, ExampleRecord.class);
+        assertThat(examples).hasSize(2);
+        assertThat(examples.iterator().next().string()).isEqualTo("hello, world");
+        assertThat(examples.iterator().next().string()).isEqualTo("saluton");
     }
 
     @Test
