@@ -61,8 +61,10 @@ post-update-hooks:
   - kinds: maven
     commands:
       - "REPIN=1 bazelisk run @enola_maven//:pin"
+      - "tools/javadoc/classpath.bash"
     files-to-commit:
       - "maven_install.json"
+      - "docs/dev/dependencies.txt"
     run-for: commit
 
   # https://github.com/VirtusLab/bazel-steward/issues/422
