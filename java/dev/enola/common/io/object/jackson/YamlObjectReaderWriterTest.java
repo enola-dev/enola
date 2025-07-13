@@ -17,11 +17,12 @@
  */
 package dev.enola.common.io.object.jackson;
 
-import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ExamplePlainClass;
 import dev.enola.common.io.object.ExampleRecord;
 import dev.enola.common.io.object.ObjectReader;
@@ -36,26 +37,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class JacksonObjectReaderWritersTest {
-    // TODO Rename JacksonObjectReaderWritersTest to JsonObjectReaderWritersTest
+public class YamlObjectReaderWriterTest {
 
-    // NB: Keep the very similar YamlObjectReaderWriterTest in sync with this!
+    // NB: Keep the very similar JsonObjectReaderWriterTest in sync with this!
 
     @Test
-    public void readSimplestJSON_toMap() throws IOException {
-        var json = "{ \"string\": \"hello, world\" }";
-        var resource = DataResource.of(json, JSON_UTF_8);
-        ObjectReader or = new JsonObjectReaderWriter();
+    public void readSimplestYAML_toMap() throws IOException {
+        var yaml = "string: hello, world";
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
 
         var example = or.read(resource, Map.class);
         assertThat(example).containsExactly("string", "hello, world");
     }
 
     @Test
-    public void readSimplestJSON_toExampleClass() throws IOException {
-        var json = "{ \"string\": \"hello, world\" }";
-        var resource = DataResource.of(json, JSON_UTF_8);
-        ObjectReader or = new JsonObjectReaderWriter();
+    public void readSimplestYAML_toExampleClass() throws IOException {
+        var yaml = "string: hello, world";
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
 
         var example = or.read(resource, ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
@@ -65,8 +65,8 @@ public class JacksonObjectReaderWritersTest {
     }
 
     @Test
-    public void readComplexJSON_toExampleRecord() throws IOException {
-        var example = readComplexJSON_toExample(ExampleRecord.class);
+    public void readComplexYAML_toExampleRecord() throws IOException {
+        var example = readComplexYAML_toExample(ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
         assertThat(example.stringSet()).containsExactly("hello", "world");
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
@@ -75,8 +75,8 @@ public class JacksonObjectReaderWritersTest {
     }
 
     @Test
-    public void readComplexJSON_toExamplePlainClass() throws IOException {
-        var example = readComplexJSON_toExample(ExamplePlainClass.class);
+    public void readComplexYAML_toExamplePlainClass() throws IOException {
+        var example = readComplexYAML_toExample(ExamplePlainClass.class);
         assertThat(example.string).isEqualTo("hello, world");
         assertThat(example.stringSet).containsExactly("hello", "world");
         assertThat(example.stringList).containsExactly("hello", "world").inOrder();
@@ -84,41 +84,42 @@ public class JacksonObjectReaderWritersTest {
         assertThat(example.defaultValue).isEqualTo("hallo");
     }
 
-    private <T> T readComplexJSON_toExample(Class<T> clazz) throws IOException {
-        var json =
+    private <T> T readComplexYAML_toExample(Class<T> clazz) throws IOException {
+        var yaml =
                 """
-                { "string": "hello, world",
-                "stringSet": ["hello", "world"],
-                "stringList": ["hello", "world"],
-                "example": { "string": "hey" },
-                "default": "hallo" }
+                string: hello, world
+                stringSet: [hello, world]
+                stringList: [hello, world]
+                example:
+                  string: hey
+                default: hallo
                 """;
-        var resource = DataResource.of(json, JSON_UTF_8);
-        ObjectReader or = new JsonObjectReaderWriter();
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
         return or.read(resource, clazz);
     }
 
     @Test
-    public void writeJSON_fromExampleRecord() throws IOException {
-        ObjectWriter ow = new JsonObjectReaderWriter();
+    public void writeYAML_fromExampleRecord() throws IOException {
+        ObjectWriter ow = new YamlObjectReaderWriter();
 
-        var sr = new MemoryResource(JSON_UTF_8);
+        var sr = new MemoryResource(YAML_UTF_8);
         var example = new ExampleRecord("hello, world", Set.of(), List.of(), null, null);
         assertThat(ow.write(example, sr)).isTrue();
-        assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello, world\"}");
+        assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
-        sr = new MemoryResource(JSON_UTF_8);
+        sr = new MemoryResource(YAML_UTF_8);
         example = new ExampleRecord("hello world", Set.of(), List.of(), null, null);
         assertThat(ow.write(example, sr)).isTrue();
-        assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello world\"}");
+        assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
 
     @Test
-    public void writeJSON_fromMap() throws IOException {
-        ObjectWriter ow = new JsonObjectReaderWriter();
-        var sr = new MemoryResource(JSON_UTF_8);
+    public void writeYAML_fromMap() throws IOException {
+        ObjectWriter ow = new YamlObjectReaderWriter();
+        var sr = new MemoryResource(YAML_UTF_8);
         var map = ImmutableMap.of("string", "hello, world");
         assertThat(ow.write(map, sr)).isTrue();
-        assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello, world\"}");
+        assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
     }
 }
