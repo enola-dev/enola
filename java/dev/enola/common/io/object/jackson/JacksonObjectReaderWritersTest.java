@@ -101,7 +101,8 @@ public class JacksonObjectReaderWritersTest {
                 "example": { "string": "hey" },
                 "default": "hallo",
                 "timestamp": "1463554285",
-                "private": "1" }
+                "private": "1",
+                "ignoreUnknown": "yolo" }
                 """;
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
