@@ -103,6 +103,7 @@ public class YamlObjectReaderWriterTest {
                 default: hallo
                 timestamp: 1463554285
                 private: 1
+                ignoreUnknown: yolo
                 """;
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -42,6 +43,8 @@ abstract class JacksonObjectReaderWriter implements ObjectReader, ObjectWriter {
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
         this.mapper = mapper;
+
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // Always skip empty sequences ([]) and maps
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
