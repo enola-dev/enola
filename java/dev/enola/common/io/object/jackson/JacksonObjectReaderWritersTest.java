@@ -32,6 +32,9 @@ import dev.enola.common.io.resource.MemoryResource;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +75,8 @@ public class JacksonObjectReaderWritersTest {
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
         assertThat(example.example().string()).isEqualTo("hey");
         assertThat(example.defaultValue()).isEqualTo("hallo");
+        assertThat(example.timestamp())
+                .isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
         assertThat(example.isPrivate()).isTrue();
     }
 
@@ -83,6 +88,7 @@ public class JacksonObjectReaderWritersTest {
         assertThat(example.stringList).containsExactly("hello", "world").inOrder();
         assertThat(example.example.string()).isEqualTo("hey");
         assertThat(example.defaultValue).isEqualTo("hallo");
+        assertThat(example.timestamp).isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
         assertThat(example.isPrivate).isTrue();
     }
 
@@ -94,6 +100,7 @@ public class JacksonObjectReaderWritersTest {
                 "stringList": ["hello", "world"],
                 "example": { "string": "hey" },
                 "default": "hallo",
+                "timestamp": "1463554285",
                 "private": "1" }
                 """;
         var resource = DataResource.of(json, JSON_UTF_8);
@@ -106,12 +113,13 @@ public class JacksonObjectReaderWritersTest {
         ObjectWriter ow = new JsonObjectReaderWriter();
 
         var sr = new MemoryResource(JSON_UTF_8);
-        var example = new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null);
+        var example =
+                new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello, world\"}");
 
         sr = new MemoryResource(JSON_UTF_8);
-        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null);
+        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello world\"}");
     }

@@ -33,6 +33,9 @@ import dev.enola.common.io.resource.MemoryResource;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +75,8 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
         assertThat(example.example().string()).isEqualTo("hey");
         assertThat(example.defaultValue()).isEqualTo("hallo");
+        assertThat(example.timestamp())
+                .isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
         assertThat(example.isPrivate()).isTrue();
     }
 
@@ -83,6 +88,7 @@ public class YamlObjectReaderWriterTest {
         assertThat(example.stringList).containsExactly("hello", "world").inOrder();
         assertThat(example.example.string()).isEqualTo("hey");
         assertThat(example.defaultValue).isEqualTo("hallo");
+        assertThat(example.timestamp).isEqualTo(LocalDateTime.of(2025, Month.MAY, 17, 13, 27, 34));
         assertThat(example.isPrivate).isTrue();
     }
 
@@ -95,6 +101,7 @@ public class YamlObjectReaderWriterTest {
                 example:
                   string: hey
                 default: hallo
+                timestamp: 1463554285
                 private: 1
                 """;
         var resource = DataResource.of(yaml, YAML_UTF_8);
@@ -107,12 +114,13 @@ public class YamlObjectReaderWriterTest {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YAML_UTF_8);
-        var example = new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null);
+        var example =
+                new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
         sr = new MemoryResource(YAML_UTF_8);
-        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null);
+        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
