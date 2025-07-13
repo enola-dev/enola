@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.jspecify.annotations.Nullable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
@@ -30,4 +31,5 @@ public record ExampleRecord(
         List<String> stringList,
         @Nullable ExampleRecord example,
         @Nullable @JsonProperty("default") String defaultValue,
+        @Nullable Instant timestamp,
         @Nullable @JsonProperty("private") Boolean isPrivate) {}
