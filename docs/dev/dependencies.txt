@@ -131,7 +131,7 @@ guru.nidi:graphviz-java:0.18.1
 info.picocli:picocli:4.7.7
 info.picocli:picocli-codegen:4.7.6
 info.picocli:picocli-shell-jline3:4.7.7
-io.github.classgraph:classgraph:4.8.180
+io.github.classgraph:classgraph:4.8.181
 io.github.java-diff-utils:java-diff-utils:4.15
 io.github.ollama4j:ollama4j:1.0.100
 io.grpc:grpc-alts:1.69.0
