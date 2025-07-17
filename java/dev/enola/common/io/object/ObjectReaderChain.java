@@ -18,9 +18,8 @@
 package dev.enola.common.io.object;
 
 import com.google.common.collect.ImmutableList;
-
 import com.google.common.collect.Iterables;
-import com.google.common.reflect.TypeToken;
+
 import dev.enola.common.io.resource.ReadableResource;
 
 import java.io.IOException;
