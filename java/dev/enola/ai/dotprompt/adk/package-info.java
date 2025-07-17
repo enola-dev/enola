@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.test;
 
-import org.junit.Test;
+/**
+ * AI 🗣️ <a href="https://google.github.io/dotprompt">Dot Prompts</a> implemented with ADK.
+ *
+ * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
+ */
+@NullMarked
+package dev.enola.ai.dotprompt.adk;
 
-public class MockAgentTest {
-
-    @Test
-    public void mock() {
-        var agent = new MockAgent("bar");
-        new AgentTester(agent).assertTextResponseEquals("foo", "bar");
-        // TODO assertThat(agent).prompt("foo").responseContains("bar");
-    }
-}
+import org.jspecify.annotations.NullMarked;

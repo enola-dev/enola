@@ -15,13 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.dotprompt;
+package dev.enola.ai.dotagent;
 
-import dev.enola.common.template.Template;
-
-public record LoadedDotPrompt(DotPrompt frontMatter, Template template) {
-
-    // TODO public Optional<Schema> inputSchema();
-
-    // TODO public Optional<Schema> outputSchema();
-}
+public class Demo {}

@@ -32,7 +32,7 @@ import org.yaml.snakeyaml.LoaderOptions;
 public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
 
     private static ObjectMapper newObjectMapper() {
-        // NB: Keep in-sync with similar (but not same, different API!) in
+        // NB: Keep in-sync with the similar (but not the same, different API!) in
         //       the dev.enola.common.yamljson.YAML class.
         var loaderOptions = new LoaderOptions();
         loaderOptions.setAllowDuplicateKeys(false);
@@ -62,5 +62,10 @@ public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
     @Override
     boolean canHandle(MediaType mediaType) {
         return MediaTypes.normalizedNoParamsEquals(mediaType, YamlMediaType.YAML_UTF_8);
+    }
+
+    @Override
+    String empty() {
+        return "{}";
     }
 }

@@ -15,12 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
+package dev.enola.ai.dotagent;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class AgentLoaderTest {
+public class AgentsLoaderIntegrationTest {
+
+    // TODO @Test quickstart()
 
     @Test
     @Ignore // TODO Remove again later!!

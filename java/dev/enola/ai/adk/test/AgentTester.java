@@ -21,15 +21,20 @@ import com.google.adk.agents.BaseAgent;
 import com.google.adk.events.Event;
 import com.google.adk.runner.InMemoryRunner;
 import com.google.adk.sessions.Session;
+import com.google.common.base.Strings;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
+
+import dev.enola.common.yamljson.JSON;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.subscribers.TestSubscriber;
 
+import org.junit.ComparisonFailure;
+
 public class AgentTester {
 
-    // TODO Maybe re-write this as a Truth Subject?
+    // TODO Re-write this as a Truth Subject?
 
     private final BaseAgent agent;
 
@@ -38,6 +43,30 @@ public class AgentTester {
     }
 
     public void assertTextResponseContains(String prompt, String responseMustContain) {
+        var response = invoke(prompt);
+        if (!response.toLowerCase().contains(responseMustContain.toLowerCase()))
+            throw new AssertionError(response + " does not contain: " + responseMustContain);
+    }
+
+    public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
+        var response = invoke(prompt);
+        if (!response.equalsIgnoreCase(responseMustBeEqualTo))
+            throw new ComparisonFailure("!equalsIgnoreCase", responseMustBeEqualTo, response);
+    }
+
+    public void assertJsonResponseEquals(String prompt, String responseMustBeEqualToJSON) {
+        var response = invoke(prompt);
+        var actualCanonicalFormattedJSON = JSON.canonicalize(response, true);
+        var expectedCanonicalFormattedJSON = JSON.canonicalize(responseMustBeEqualToJSON, true);
+
+        if (!actualCanonicalFormattedJSON.equalsIgnoreCase(expectedCanonicalFormattedJSON))
+            throw new ComparisonFailure(
+                    "JSON is not equal",
+                    expectedCanonicalFormattedJSON,
+                    actualCanonicalFormattedJSON);
+    }
+
+    private String invoke(String prompt) {
         String userID = "tester";
         InMemoryRunner runner = new InMemoryRunner(agent);
         Session session = runner.sessionService().createSession(agent.name(), userID).blockingGet();
@@ -55,22 +84,17 @@ public class AgentTester {
             for (var event : events) {
                 if (event.content().isPresent()) {
                     var content = event.content().get();
-                    if (content.text() != null) sb.append(content.text());
-                }
-            }
-            for (var event : events) {
-                if (event.content().isPresent()) {
-                    var content = event.content().get();
-                    if (content.parts().isPresent()) {
+                    var text = content.text();
+                    if (!Strings.isNullOrEmpty(text)) sb.append(text);
+                    // TODO Re-review more closely if this is even needed?!
+                    else if (content.parts().isPresent()) {
                         for (var part : content.parts().get()) {
                             part.text().ifPresent(sb::append);
                         }
                     }
                 }
             }
-            var response = sb.toString();
-            if (!response.toLowerCase().contains(responseMustContain.toLowerCase()))
-                throw new AssertionError(response + " does not contain: " + responseMustContain);
+            return sb.toString();
 
         } finally {
             runner.sessionService().closeSession(session);

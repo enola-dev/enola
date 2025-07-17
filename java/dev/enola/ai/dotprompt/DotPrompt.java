@@ -19,8 +19,11 @@ package dev.enola.ai.dotprompt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import dev.enola.common.template.Template;
+
 import org.jspecify.annotations.Nullable;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -39,14 +42,17 @@ public class DotPrompt {
     // This is a class instead of a record to allow users to extend it.
 
     // This is a trivial "struct" instead of a (*Builder) "bean", with getters and setters,
-    // because... there is real no need for that, here - this is totally fine and enough.
+    // because... there is really no need for that, here - this is totally fine and enough.
+
+    /** The URL of where this DotPrompt originated. */
+    public URI id;
 
     /**
-     * The name of the prompt. If null, then inferred from the filename in the URL of the loaded
-     * prompt (e.g. {@code http://example.org/stuff/example.prompt.md} has an inferred name of
-     * {@code example}).
+     * The name of the prompt. If null, then will be inferred from the filename in the URL of the
+     * loaded prompt (e.g. {@code http://example.org/stuff/example.prompt.md} has an inferred name
+     * of {@code example}).
      */
-    public @Nullable String name;
+    public String name;
 
     /**
      * The variant name for the prompt. If null, then inferred from the filename in the URL of the
@@ -61,7 +67,7 @@ public class DotPrompt {
      * {@code google://?model=gemini-2.5-flash}. May be omitted, in which case a default model will
      * be used.
      */
-    public @Nullable String model;
+    public String model;
 
     /**
      * Configuration to be passed to the model. The specific options may vary depending on the
@@ -79,8 +85,22 @@ public class DotPrompt {
     /** Defines the (schema of the) input variables the prompt. */
     public @Nullable Input input;
 
+    // TODO public Optional<Schema> inputSchema();
+
     /** Defines the expected model output format. */
     public @Nullable Output output;
+
+    // TODO public Optional<Schema> outputSchema();
+
+    /**
+     * Template of Prompt, as text.
+     *
+     * <p>This is typically in the body (after the YAML frontmatter) of a .prompt *
+     */
+    public @Nullable String prompt;
+
+    /** Template of Prompt, as Template (from parsed {@link #prompt}). */
+    public @Nullable Template template;
 
     // TODO How to class input Map<String, Object> extends Map<String, Object> ?!
     public static class Input {
@@ -92,13 +112,14 @@ public class DotPrompt {
          */
         @JsonProperty("default") // cauz "default" is a reserved keyword
         // TODO https://github.com/google/dotprompt/issues/306 re. Map<String, Object>
-        public Map<String, Object> defaults;
+        public final Map<String, Object> defaults = new HashMap<>();
 
         /**
          * Schema representing the input values for the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        public @Nullable Map<String, Object> schema;
+        // TODO Validate by parsing with JSON Schema parser, not (just) text to basic JSON Map
+        public final Map<String, Object> schema = new HashMap<>();
     }
 
     public static class Output {
@@ -115,6 +136,7 @@ public class DotPrompt {
          * Schema representing the expected output from the prompt. Must correspond to a JSON Schema
          * {@code object} type.
          */
-        public @Nullable Map<String, Object> schema;
+        // TODO Validate by parsing with JSON Schema parser, not (just) text to basic JSON Map
+        public final Map<String, Object> schema = new HashMap<>();
     }
 }

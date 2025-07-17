@@ -15,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.test;
+package dev.enola.ai.dotagent;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-public class MockAgentTest {
+import java.io.IOException;
 
-    @Test
-    public void mock() {
-        var agent = new MockAgent("bar");
-        new AgentTester(agent).assertTextResponseEquals("foo", "bar");
-        // TODO assertThat(agent).prompt("foo").responseContains("bar");
-    }
+public class AgentsLoaderTest {
+
+    @Ignore // TODO
+    public @Test void TODO() throws IOException {}
 }

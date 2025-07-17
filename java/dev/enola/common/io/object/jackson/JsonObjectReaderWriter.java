@@ -36,4 +36,9 @@ public class JsonObjectReaderWriter extends JacksonObjectReaderWriter {
     boolean canHandle(MediaType mediaType) {
         return MediaTypes.normalizedNoParamsEquals(mediaType, MediaType.JSON_UTF_8);
     }
+
+    @Override
+    String empty() {
+        return "{}";
+    }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ModelTester {
 
-    // TODO Maybe re-write this as a Truth Subject?
+    // TODO Re-write this as a Truth Subject?
 
     private final BaseLlm llm;
 

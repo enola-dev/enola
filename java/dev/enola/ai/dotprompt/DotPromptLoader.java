@@ -41,27 +41,33 @@ public class DotPromptLoader {
         this.defaultModel = defaultModel.toString();
     }
 
-    public LoadedDotPrompt load(URI uri) throws IOException {
+    public DotPrompt load(URI uri) throws IOException {
         var resource = resourceProvider.getReadableResource(uri);
         if (resource == null) throw new IOException("Resource not found: " + uri);
         var md = new MarkdownResource(resource, HANDLEBARS);
 
-        // TODO Support https://google.github.io/dotprompt/reference/template/#dotprompt-helpers
-        var template = templateProvider.get(md.markdown());
-
         var reader = new YamlObjectReaderWriter();
-        var front = reader.read(md.frontMatter(), DotPrompt.class);
-        if (front.name == null)
-            front.name = URIs.getFilenameWithoutExtension(uri, ".prompt.md", ".prompt");
-        // TODO front.variant
-        if (front.model == null) front.model = defaultModel;
+        var dotPrompt = reader.read(md.frontMatter(), DotPrompt.class);
+        dotPrompt.id = uri;
+
+        var templateResource = md.markdown();
+        dotPrompt.prompt = templateResource.charSource().read();
+        dotPrompt.template = templateProvider.get(templateResource);
+
+        if (dotPrompt.name == null)
+            dotPrompt.name = URIs.getFilenameWithoutExtension(uri, ".prompt.md", ".prompt");
+        // TODO dotPrompt.variant
+        if (dotPrompt.model == null) dotPrompt.model = defaultModel;
 
         // TODO https://github.com/google/dotprompt/issues/307 Translate Picoschema to JSON Schema
 
-        // TODO Validate front.input.schema & front.input.schema with a JSON Schema Validator
+        // TODO Validate dotPrompt.input.schema & dotPrompt.input.schema with a JSON Schema
+        // Validator
 
         // TODO Set I&O schemas into (to be added) properties on LoadedDotPrompt (but for what?)
 
-        return new LoadedDotPrompt(front, template);
+        // TODO Support https://google.github.io/dotprompt/reference/template/#dotprompt-helpers
+
+        return dotPrompt;
     }
 }

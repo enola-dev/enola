@@ -44,6 +44,15 @@ public class YamlObjectReaderWriterTest {
     // NB: Keep the very similar JsonObjectReaderWriterTest in sync with this!
 
     @Test
+    public void readEmpty_toMap() throws IOException {
+        var resource = DataResource.of("", YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
+
+        var example = or.read(resource, Map.class);
+        assertThat(example).isEmpty();
+    }
+
+    @Test
     public void readSimplestYAML_toMap() throws IOException {
         var yaml = "string: hello, world";
         var resource = DataResource.of(yaml, YAML_UTF_8);
