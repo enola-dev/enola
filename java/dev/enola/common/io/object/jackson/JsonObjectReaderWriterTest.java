@@ -20,8 +20,6 @@ package dev.enola.common.io.object.jackson;
 import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
-
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.io.object.ExamplePlainClass;
@@ -68,9 +66,9 @@ public class JsonObjectReaderWriterTest {
 
     @Test
     public void readJsonArray_toExampleClassList() throws IOException {
-        var yaml = "[ { \"string\": \"hello, world\" }, { \"string\": \"saluton\" } ]";
-        var resource = DataResource.of(yaml, YAML_UTF_8);
-        ObjectReader or = new YamlObjectReaderWriter();
+        var json = "[ { \"string\": \"hello, world\" }, { \"string\": \"saluton\" } ]";
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
 
         var examples = or.readAll(resource, ExampleRecord.class);
         assertThat(examples).hasSize(2);
