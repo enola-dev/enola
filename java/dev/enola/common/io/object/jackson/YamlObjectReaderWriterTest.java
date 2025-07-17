@@ -18,12 +18,11 @@
 package dev.enola.common.io.object.jackson;
 
 import static com.google.common.truth.Truth.assertThat;
+
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.google.common.reflect.TypeToken;
-import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ExamplePlainClass;
 import dev.enola.common.io.object.ExampleRecord;
 import dev.enola.common.io.object.ObjectReader;
