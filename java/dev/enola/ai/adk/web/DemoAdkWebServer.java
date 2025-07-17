@@ -53,6 +53,7 @@ public class DemoAdkWebServer extends AdkWebServer {
             AgentCompilerLoader loader, AgentLoadingProperties props) {
         var root =
                 System.getenv("GOOGLE_API_KEY") != null
+                        // TODO Don't hard-code QuickstartDemo
                         ? QuickstartDemo.initAgent()
                         : new MockAgent("bar");
         return Map.of(root.name(), root);

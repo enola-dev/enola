@@ -17,14 +17,25 @@
  */
 package dev.enola.common.io.object;
 
+import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.WritableResource;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public interface ObjectWriter {
 
     @CanIgnoreReturnValue
     boolean write(Object instance, WritableResource resource) throws IOException;
+
+    default Optional<String> write(Object instance, MediaType mediaType) throws IOException {
+        var resource = new MemoryResource(mediaType);
+        var success = write(instance, resource);
+
+        if (success) return Optional.of(resource.charSource().read());
+        else return Optional.empty();
+    }
 }

@@ -45,9 +45,14 @@ public class EmptyResource extends BaseResource implements ReadableButNotWritabl
     }
 
     static final String SCHEME = "empty";
-    public static final URI EMPTY_URI = URI.create(SCHEME + ":?"); // TODO :/ is probably better?
+
+    // TODO Use similar pattern to EMPTY_TEXT_URI (just without charset)
+    public static final URI EMPTY_URI = URI.create(SCHEME + ":?");
     public static final EmptyResource INSTANCE =
             new EmptyResource(EMPTY_URI, MediaType.OCTET_STREAM);
+
+    // Intentionally contains a "filename", so that e.g. URIs.getFilename() "works"
+    public static final URI EMPTY_TEXT_URI = URI.create(SCHEME + ":/void?charset=utf-8");
 
     public EmptyResource(URI uri) {
         super(uri);

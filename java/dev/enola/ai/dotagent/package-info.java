@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.agent;
 
-public class Demo {}
+/** Enola.dev's "Dynamic (YAML) Agents" related code. */
+@NullMarked
+package dev.enola.ai.dotagent;
+
+import org.jspecify.annotations.NullMarked;

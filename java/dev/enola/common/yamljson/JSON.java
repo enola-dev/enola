@@ -31,8 +31,6 @@ import java.util.*;
 
 public final class JSON {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JSON.class);
-
     private static GsonBuilder newBuilder() {
         return new GsonBuilder()
                 .disableJdkUnsafe()
@@ -46,8 +44,7 @@ public final class JSON {
         try {
             return read.fromJson(json, classOfT);
         } catch (JsonParseException e) {
-            LOG.debug("Failed to parse JSON: {}", json, e);
-            throw e;
+            throw new IllegalArgumentException("Failed to parse JSON: " + json, e);
         }
     }
 
@@ -55,13 +52,12 @@ public final class JSON {
         try {
             return read.fromJson(json, typeOfT);
         } catch (JsonParseException e) {
-            LOG.debug("Failed to parse JSON: {}", json, e);
-            throw e;
+            throw new IllegalArgumentException("Failed to parse JSON: " + json, e);
         }
     }
 
     public static Object readObject(String json) {
-        if ("".equals(json)) return ""; // NOT Collections.emptyMap();
+        if (json.isEmpty()) return ""; // NOT Collections.emptyMap();
         return read(json, Object.class);
     }
 

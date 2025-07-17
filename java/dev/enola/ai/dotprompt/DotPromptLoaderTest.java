@@ -34,15 +34,15 @@ public class DotPromptLoaderTest {
         var loader =
                 new DotPromptLoader(
                         new ClasspathResource.Provider(),
-                        URI.create("google://?model=gemini-2.5-flash-preview-05-20"));
-        var loaded = loader.load(URI.create("classpath:/example1.prompt.md"));
+                        URI.create("google://?model=gemini-2.5-flash"));
+        var dotPrompt = loader.load(URI.create("classpath:/prompts/summarize.prompt.md"));
 
-        var front = loaded.frontMatter();
-        assertThat(front.name).isEqualTo("example1");
-        assertThat(front.model).isEqualTo("google://?model=gemini-2.5-flash-preview-05-20");
-        assertThat(front.input.schema.get("text")).isEqualTo("string");
+        assertThat(dotPrompt.name).isEqualTo("summarize");
+        assertThat(dotPrompt.model).isEqualTo("google://?model=gemini-2.5-flash");
+        assertThat(dotPrompt.input.schema.get("text")).isEqualTo("string");
 
-        assertThat(loaded.template().apply(Map.of("text", "This is a blog post about...")))
+        var prompt = dotPrompt.template.apply(Map.of("text", "This is a blog post about..."));
+        assertThat(prompt)
                 .isEqualTo(
                         "Extract the requested information from the given text. If a piece of"
                                 + " information is not present, omit that field from the output.\n"

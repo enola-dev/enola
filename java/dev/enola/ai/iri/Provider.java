@@ -17,7 +17,9 @@
  */
 package dev.enola.ai.iri;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -39,10 +41,25 @@ public interface Provider<T> {
 
     // TODO Set<String> secrets();
 
+    Optional<T> optional(URI uri);
+
     default T get(URI uri) throws IllegalArgumentException {
         return optional(uri)
                 .orElseThrow(() -> new IllegalArgumentException(name() + " cannot provide " + uri));
     }
 
-    Optional<T> optional(URI uri);
+    default T get(String uri, Object context) throws IllegalArgumentException {
+        try {
+            return get(new URI(uri));
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(
+                    "Invalid Model URI '"
+                            + uri
+                            + "' (raw input: '"
+                            + e.getInput()
+                            + "') in: "
+                            + context,
+                    e);
+        }
+    }
 }

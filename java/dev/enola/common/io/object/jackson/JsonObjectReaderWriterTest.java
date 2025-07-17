@@ -42,6 +42,15 @@ public class JsonObjectReaderWriterTest {
     // NB: Keep the very similar YamlObjectReaderWriterTest in sync with this!
 
     @Test
+    public void readEmpty_toMap() throws IOException {
+        var resource = DataResource.of("", JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, Map.class);
+        assertThat(example).isEmpty();
+    }
+
+    @Test
     public void readSimplestJSON_toMap() throws IOException {
         var json = "{ \"string\": \"hello, world\" }";
         var resource = DataResource.of(json, JSON_UTF_8);
@@ -65,7 +74,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJsonArray_toExampleClassList() throws IOException {
+    public void readJsonArray_toExampleRecordList() throws IOException {
         var json = "[ { \"string\": \"hello, world\" }, { \"string\": \"saluton\" } ]";
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();

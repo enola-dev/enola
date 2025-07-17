@@ -39,12 +39,19 @@ import java.util.Set;
 
 abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
+    // TODO Upgrade from Jackson 2.x to 3.0
+
     private final ObjectMapper mapper;
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
         this.mapper = mapper;
 
+        // Do NOT use mapper.findAndRegisterModules();
+        // because that would mean that mapping would depend on (un-controllable) classpath
+
+        // https://github.com/FasterXML/jackson-modules-java8
         mapper.registerModule(new JavaTimeModule());
+        // TODO Optional<T> support with mapper.registerModule(new Jdk8Module());
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -60,10 +67,18 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
     abstract boolean canHandle(MediaType mediaType);
 
+    abstract String empty();
+
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return Optional.empty();
         try (var reader = resource.charSource().openBufferedStream()) {
+            if (!reader.ready()) return Optional.of(mapper.readValue(empty(), type));
+            if (reader.markSupported()) {
+                reader.mark(1);
+                if (reader.read() == -1) return Optional.of(mapper.readValue(empty(), type));
+                else reader.reset();
+            }
             return Optional.of(mapper.readValue(reader, type));
         } catch (DatabindException e) {
             throw new IOException(e);
