@@ -17,4 +17,4 @@
 
 set -euo pipefail
 
-jq -r '.artifacts | to_entries[] | "\(.key):\(.value.version)"' maven_install.json >docs/dev/dependencies.txt
+jq -r '.artifacts | to_entries | sort_by(.key)[] | "\(.key):\(.value.version)"' maven_install.json >docs/dev/dependencies.txt
