@@ -33,6 +33,8 @@ pull-requests:
     dependencies: "com.google.protobuf:*"
   - group-id: grpc
     dependencies: "io.grpc:*"
+  - group-id: google-adk
+    dependencies: "com.google.adk:*"
   - group-id: google-api-grpc
     dependencies: "com.google.api.grpc:*"
   - group-id: opentelemetry
