@@ -239,7 +239,7 @@ org.apache.maven:maven-api-annotations:4.0.0-rc-3
 org.apache.maven:maven-api-xml:4.0.0-rc-3
 org.apache.maven:maven-artifact:3.9.10
 org.apache.maven:maven-builder-support:3.9.10
-org.apache.maven:maven-model:3.9.10
+org.apache.maven:maven-model:3.9.11
 org.apache.maven:maven-model-builder:3.9.10
 org.apache.maven:maven-repository-metadata:3.9.10
 org.apache.maven:maven-resolver-provider:3.9.10
