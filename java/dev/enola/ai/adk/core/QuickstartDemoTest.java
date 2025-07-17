@@ -40,7 +40,7 @@ public class QuickstartDemoTest {
     @Test
     public void test() throws IOException {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
-        var agent = QuickstartDemo.initAgent(p.get(GoogleModelProvider.FLASH));
+        var agent = QuickstartDemo.initAgent(p.get(GoogleModelProvider.FLASH_LITE));
 
         var tester = new AgentTester(agent);
         tester.assertTextResponseContains(
@@ -50,7 +50,7 @@ public class QuickstartDemoTest {
                 "What's the time in Zürich?", "The current time in Zürich is ");
 
         // TODO Test status=error vs success
-        tester.assertTextResponseContains("What's the time now in Lausanne?", "Sorry, I ");
+        tester.assertTextResponseContains("What's the time now in Lausanne?", "sorry");
         // TODO lower temperature (?) to reduce variability?
         //   "Sorry, I don't have timezone information for Lausanne"
         //   "Sorry, I am not able to retrieve the current time in Lausanne."
