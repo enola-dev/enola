@@ -38,7 +38,9 @@ import java.util.Optional;
 public abstract class GoogleModelProvider<T> implements Provider<T> {
 
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
-    public static final URI FLASH = URI.create("google://?model=gemini-2.5-flash-preview-04-17");
+    public static final URI FLASH = URI.create("google://?model=gemini-2.5-flash");
+    public static final URI FLASH_LITE =
+            URI.create("google://?model=gemini-2.5-flash-lite-preview-06-17");
 
     protected final SecretManager secretManager;
 

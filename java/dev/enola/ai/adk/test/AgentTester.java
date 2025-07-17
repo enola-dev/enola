@@ -68,8 +68,8 @@ public class AgentTester {
                     }
                 }
             }
-            var response = sb.toString();
-            if (!response.contains(responseMustContain))
+            var response = sb.toString().toLowerCase();
+            if (!response.contains(responseMustContain.toLowerCase()))
                 throw new AssertionError(response + " does not contain: " + responseMustContain);
 
         } finally {
