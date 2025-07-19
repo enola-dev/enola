@@ -73,7 +73,7 @@ class MarkdownCanonicalizer {
 
         // Remove trailing whitespace from each line:
         // (CommonMark renderer usually handles this, but good to double check.)
-        canonicalized = canonicalized.replaceAll("[ \t]+$", "");
+        canonicalized = canonicalized.replaceAll("(?m)[ \\t]+$", "");
 
         // Reduce multiple consecutive blank lines to a single blank line.
         // CommonMark renderer might leave more than one blank line between blocks,
