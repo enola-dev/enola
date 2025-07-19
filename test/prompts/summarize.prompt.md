@@ -1,11 +1,6 @@
 ---
 # Origin: https://google.github.io/dotprompt/getting-started/
 #
-# model: google://?model=gemini-2.5-flash
-input:
-    schema:
-        # TODO Support this Picoschema (or change it to JSON Schema)
-        text: string
 output:
     format: json
     schema:

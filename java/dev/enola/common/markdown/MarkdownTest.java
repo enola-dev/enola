@@ -23,6 +23,8 @@ import org.junit.Test;
 
 public class MarkdownTest {
 
+    // TODO Remove all non-double line breaks to avoid discrepancies
+
     @Test
     public void canonicalize() {
         var messy =
