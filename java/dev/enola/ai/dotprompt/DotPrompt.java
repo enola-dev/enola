@@ -95,7 +95,7 @@ public class DotPrompt {
     /**
      * Template of Prompt, as text.
      *
-     * <p>This is typically in the body (after the YAML frontmatter) of a .prompt *
+     * <p>This is typically in the body (after the YAML frontmatter) of a .prompt file.
      */
     public @Nullable String prompt;
 
