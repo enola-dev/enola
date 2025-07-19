@@ -48,9 +48,9 @@ public class DotPromptLoaderTest {
                 .isEqualTo(
                         Markdown.canonicalize(
                                 "Extract the requested information from the given text. If a piece"
-                                    + " of information is not present, omit that field from the"
-                                    + " output.\n"
-                                    + "\n"
-                                    + "Text: This is a blog post about...\n"));
+                                        + " of information is not present, omit that field from the"
+                                        + " output.\n"
+                                        + "\n"
+                                        + "Text: This is a blog post about...\n"));
     }
 }

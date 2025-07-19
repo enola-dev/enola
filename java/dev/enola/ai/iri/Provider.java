@@ -17,7 +17,6 @@
  */
 package dev.enola.ai.iri;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;

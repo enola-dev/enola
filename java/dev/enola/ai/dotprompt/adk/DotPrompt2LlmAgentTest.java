@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.dotprompt.adk;
 
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+
 import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.adk.iri.LlmProviders;
@@ -32,8 +34,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
-
-import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 public class DotPrompt2LlmAgentTest {
 
