@@ -29,7 +29,11 @@ This process is dependent on the type of the resource, but typically includes th
 
 This is useful e.g. when testing, to compare output to a fixed expected outcome.
 
-It also has an application in [cryptography](https://github.com/enola-dev/enola/issues/284), and is useful when _"signing"_ things.
+It also has an application in
+[cryptography](https://github.com/enola-dev/enola/issues/284),
+where it's useful when _"signing"_ things.
+
+You can also use this as a "formatter".
 
 ## RDF
 
@@ -40,7 +44,9 @@ $ ./enola canonicalize --load=test/picasso.ttl
 ...
 ```
 
-Future versions [may](https://github.com/enola-dev/enola/issues/1103) implement full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/), see also [this Working Group](https://www.w3.org/2024/12/rch-wg-charter.html).
+Future versions [may](https://github.com/enola-dev/enola/issues/1103) implement
+full [RDF Dataset Canonicalization](https://www.w3.org/TR/rdf-canon/), see
+also [this Working Group](https://www.w3.org/2024/12/rch-wg-charter.html).
 
 ## JSON
 
@@ -50,7 +56,9 @@ Future versions [may](https://github.com/enola-dev/enola/issues/1103) implement 
 {% include "../../../test/canonicalize.json" %}
 ```
 
-into this, using an [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) _JSON Canonicalization Scheme_ (JCS) -inspired (but currently not fully compliant) algorithm:
+into this, using an [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785)
+_JSON Canonicalization Scheme_ (JCS) -inspired (but currently not fully compliant)
+algorithm:
 
 ```bash cd ../.././..
 $ ./enola canonicalize --load=test/canonicalize.json
@@ -79,8 +87,21 @@ $ ./enola canonicalize --pretty --load=test/canonicalize.jsonld --output=test/ca
 ...
 ```
 
-into this - note how the 🎨 painters' order was swapped, because not just all map keys but the list itself was also ordered alphabetically by `@id`:
+into this - note how the 🎨 painters' order was swapped, because not just all
+map keys but the list itself was also ordered alphabetically by `@id`:
 
 ```json
 {% include "../../../test/canonicalize.jsonld.expected" %}
 ```
+
+## Markdown
+
+Markdown canonicalization is also supported.
+
+## HTML
+
+HTML canonicalization is also supported.
+
+## XML
+
+XML canonicalization is also supported.

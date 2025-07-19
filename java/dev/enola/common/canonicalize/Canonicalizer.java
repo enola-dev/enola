@@ -24,12 +24,14 @@ import com.google.common.net.MediaType;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.common.html.HTML;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.mediatype.MarkdownMediaTypes;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CharResourceConverter;
 import dev.enola.common.io.resource.convert.IdempotentCopyingResourceNonConverter;
 import dev.enola.common.io.resource.convert.ResourceConverter;
+import dev.enola.common.markdown.Markdown;
 import dev.enola.common.xml.XML;
 import dev.enola.common.yamljson.JSON;
 import dev.enola.rdf.io.RdfCanonicalizer;
@@ -78,6 +80,12 @@ public class Canonicalizer implements ResourceConverter {
         } else if (normalizedNoParamsEquals(inMT, RdfMediaTypes.TURTLE)
                 || normalizedNoParamsEquals(inMT, RdfMediaTypes.JSON_LD)) {
             rdfCanonicalizer.canonicalize(in, out);
+
+        } else if (normalizedNoParamsEquals(inMT, MarkdownMediaTypes.MARKDOWN_UTF_8)
+                || normalizedNoParamsEquals(inMT, MarkdownMediaTypes.COMMON_MARKDOWN_UTF_8)
+                || normalizedNoParamsEquals(inMT, MarkdownMediaTypes.GFM_MARKDOWN_UTF_8)) {
+            var md = in.charSource().read();
+            out.charSink().write(Markdown.canonicalize(md));
 
         } else {
             // TODO Document char conversion on https://docs.enola.dev/use/canonicalize/
