@@ -63,4 +63,6 @@ https://github.com/actions/cache/pull/575/files has some related discussion.
 
 ### Java
 
+```text
 {% include "./dependencies.txt" %}
+```

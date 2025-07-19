@@ -1,0 +1,4 @@
+THIS FILE WILL BE OVERWRITTEN WITH THE GENERATED
+
+It's useful to have it (force added, because .gitgignore)
+in Git so that e.g. tools/docs/serve-quick.bash "just works".
