@@ -48,9 +48,9 @@ public class DotPrompt {
     public URI id;
 
     /**
-     * The name of the prompt. If null, then will be inferred from the filename in the URL of the
-     * loaded prompt (e.g. {@code http://example.org/stuff/example.prompt.md} has an inferred name
-     * of {@code example}).
+     * The name of the prompt. If not specified, it will be inferred from the filename in the URL of
+     * the loaded prompt (e.g. {@code http://example.org/stuff/example.prompt.md} has an inferred
+     * name of {@code example}).
      */
     public String name;
 
