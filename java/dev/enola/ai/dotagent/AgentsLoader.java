@@ -60,7 +60,7 @@ public class AgentsLoader {
     }
 
     public BaseAgent load(URI uri) throws IOException {
-        if (uri.getPath().endsWith(".prompt")) {
+        if (uri.getPath() != null && uri.getPath().endsWith(".prompt")) {
             var loadedDotPrompt = dotPromptLoader.load(uri);
             // TODO loadedDotPrompt.
         }
