@@ -10,11 +10,11 @@ com.anthropic:anthropic-java-core:1.4.0
 com.anthropic:anthropic-java-vertex:1.4.0
 com.drewnoakes:metadata-extractor:2.19.0
 com.epam:parso:2.0.14
-com.fasterxml.jackson.core:jackson-annotations:2.19.1
-com.fasterxml.jackson.core:jackson-core:2.19.1
-com.fasterxml.jackson.core:jackson-databind:2.19.1
+com.fasterxml.jackson.core:jackson-annotations:2.19.2
+com.fasterxml.jackson.core:jackson-core:2.19.2
+com.fasterxml.jackson.core:jackson-databind:2.19.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.19.0
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0
 com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2
