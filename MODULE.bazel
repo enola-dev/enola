@@ -179,6 +179,8 @@ enola_maven.install(
 
         # TODO Use sshd-netty? See https://github.com/apache/mina-sshd/blob/master/docs/dependencies.md#netty
         "org.apache.sshd:sshd-core:2.15.0",
+
+        # https://github.com/swiesend/secret-service
         "de.swiesend:secret-service:2.0.1-alpha",
         # TODO https://github.com/swiesend/secret-service/issues/51
         # "org.purejava:kdewallet:1.6.0",
@@ -189,6 +191,9 @@ enola_maven.install(
 
         # https://github.com/jknack/handlebars.java
         "com.github.jknack:handlebars:4.4.0",
+
+        # https://github.com/commonmark/commonmark-java
+        "org.commonmark:commonmark:0.25.0",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
