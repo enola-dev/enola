@@ -17,10 +17,14 @@
  */
 package dev.enola.common.markdown;
 
-public class Markdown {
+public final class Markdown {
+
+    private static final MarkdownCanonicalizer CANONICALIZER = new MarkdownCanonicalizer();
+
+    private Markdown() {}
 
     /** Canonicalize Markdown. */
-    public static String canonicalize(String markdown /*, boolean format*/) {
-        return new MarkdownCanonicalizer().canonicalize(markdown);
+    public static String canonicalize(String markdown) {
+        return CANONICALIZER.canonicalize(markdown);
     }
 }
