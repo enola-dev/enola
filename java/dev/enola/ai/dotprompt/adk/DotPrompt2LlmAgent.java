@@ -57,19 +57,10 @@ public class DotPrompt2LlmAgent {
     public LlmAgent convert(DotPrompt dotPrompt) throws IOException {
         var model = llmProvider.get(dotPrompt.model, dotPrompt.id);
 
-        // TODO Use description from AgentsModel.Agent
-        // TODO Discuss upstream why description is mandatory, and change that?
-        var description = "TODO Extend Dotprompt with Description!";
-
         Object input = null; // TODO ??
         var instruction = dotPrompt.template.apply(input);
 
-        var builder =
-                LlmAgent.builder()
-                        .name(dotPrompt.name)
-                        .model(model)
-                        .description(description)
-                        .instruction(instruction);
+        var builder = LlmAgent.builder().name(dotPrompt.name).model(model).instruction(instruction);
 
         if (dotPrompt.input != null) builder.inputSchema(schema(dotPrompt.input.schema));
         if (dotPrompt.output != null) builder.outputSchema(schema(dotPrompt.output.schema));
