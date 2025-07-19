@@ -33,6 +33,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URI;
 
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+
 public class DotPrompt2LlmAgentTest {
 
     URI defaultLLM = URI.create("mocklm:hello");
@@ -53,6 +55,8 @@ public class DotPrompt2LlmAgentTest {
 
     @Test
     public void person() throws IOException {
+        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+
         var agent = loader.load(URI.create("classpath:/prompts/person.prompt.md"));
         var tester = new AgentTester(agent);
 
