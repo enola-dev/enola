@@ -1,10 +1,7 @@
 ---
 # Origin: https://github.com/google/dotprompt#example-prompt-file
-# TODO model: googleai/gemini-1.5-pro
+# TODO Support alt? model: googleai/gemini-1.5-pro
 model: google://?model=gemini-2.5-flash
-input:
-    schema:
-        text: string
 output:
     format: json
     schema:

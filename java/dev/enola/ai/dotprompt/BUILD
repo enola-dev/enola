@@ -47,6 +47,7 @@ junit_tests(
         ":dotprompt",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/markdown",
         "//test",
     ],
 )
