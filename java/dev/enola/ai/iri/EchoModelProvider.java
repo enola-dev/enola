@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class EchoModelProvider<T> implements Provider<T> {
 
     protected static final String SCHEME = "echo";
-    private static final String ECHO_URI = SCHEME + ":/";
+    public static final String ECHO_URI = SCHEME + ":/";
 
     @Override
     public String name() {

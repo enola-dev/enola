@@ -21,8 +21,10 @@ import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME
 
 import com.google.adk.models.BaseLlm;
 
+import dev.enola.ai.adk.iri.EchoLlmProvider;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.test.AgentTester;
+import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
@@ -30,6 +32,7 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -54,6 +57,28 @@ public class DotPrompt2LlmAgentTest {
     }
 
     @Test
+    @Ignore // TODO FIXME
+    public void template() throws IOException {
+        var dotPromptLoader = new DotPromptLoader(rp, defaultLLM);
+        var dotPrompt = dotPromptLoader.load(URI.create("classpath:/prompts/person.prompt.md"));
+        dotPrompt.model = EchoLlmProvider.ECHO_URI;
+        var agent = loader.convert(dotPrompt);
+        var tester = new AgentTester(agent);
+
+        tester.assertMarkdownResponseEquals(
+                "This is a blog post about...",
+                "Extract the requested information from the given text. If a piece"
+                        + " of information is not present, omit that field from the"
+                        + " output.\n"
+                        + "\n"
+                        + "Text: This is a blog post about...\n");
+    }
+
+    @Test
+    // NOTA BENE: This test would actually PASS even if the @Test template() one FAILS;
+    // this is because Gemini is "smart enough" to 'respect' the output schema in the prompt
+    // EVEN if the prompt template actually is not passed through correctly (with {{text}}
+    // replacement).
     public void person() throws IOException {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
 
