@@ -70,10 +70,13 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
             throws IllegalArgumentException, UncheckedIOException {
         if (!SCHEME.equalsIgnoreCase(uri.getScheme())) return Optional.empty();
         var queryMap = URIs.getQueryMap(uri);
-        var model = queryMap.get("model");
-        if (Strings.isNullOrEmpty(model.trim()))
+        var model = queryMap.get("model").trim();
+        if (Strings.isNullOrEmpty(model))
             throw new IllegalArgumentException(
-                    SCHEME + "://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models");
+                    "Missing model; URI must be "
+                            + SCHEME
+                            + "://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models; but was: "
+                            + model);
 
         try (var apiKey = secretManager.get(GOOGLE_AI_API_KEY_SECRET_NAME)) {
             return Optional.of(create(apiKey, model.trim()));
