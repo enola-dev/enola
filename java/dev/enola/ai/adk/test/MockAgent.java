@@ -37,7 +37,7 @@ public class MockAgent extends BaseAgent {
     private final Supplier<Flowable<Event>> eventSupplier;
 
     public MockAgent(String reply) {
-        super("Mock", "Mock Agent for Unit Testing", List.of(), null, null);
+        super("Mock:" + reply, "Mock Agent for Testing", List.of(), null, null);
 
         var part = Part.fromText(reply);
         var content = Content.fromParts(part);

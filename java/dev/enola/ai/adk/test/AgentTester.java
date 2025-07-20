@@ -29,7 +29,7 @@ import dev.enola.common.markdown.Markdown;
 import dev.enola.common.yamljson.JSON;
 
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.subscribers.TestSubscriber;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import org.junit.ComparisonFailure;
 
@@ -82,16 +82,21 @@ public class AgentTester {
     private String invoke(String prompt) {
         String userID = "tester";
         InMemoryRunner runner = new InMemoryRunner(agent);
-        Session session = runner.sessionService().createSession(agent.name(), userID).blockingGet();
+        var sessionService = runner.sessionService();
+        Session session = sessionService.createSession(agent.name(), userID).blockingGet();
         try {
             Content userMsg = Content.fromParts(Part.fromText(prompt));
-
             Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);
-            TestSubscriber<Event> testSubscriber = TestSubscriber.create();
-            eventsFlow.subscribe(testSubscriber);
-            testSubscriber.assertNoErrors();
-            testSubscriber.assertComplete();
-            var events = testSubscriber.values();
+            // TestSubscriber<Event> testSubscriber = TestSubscriber.create();
+            // eventsFlow.subscribe(testSubscriber);
+            // testSubscriber.assertNoErrors();runConfigBuilder
+            // testSubscriber.assertComplete();
+            // var events = testSubscriber.values();
+            var events =
+                    eventsFlow
+                            .subscribeOn(Schedulers.trampoline())
+                            .observeOn(Schedulers.trampoline())
+                            .blockingIterable();
 
             var sb = new StringBuilder();
             for (var event : events) {
@@ -110,10 +115,9 @@ public class AgentTester {
             return sb.toString();
 
         } finally {
-            runner.sessionService().closeSession(session);
+            sessionService.closeSession(session);
             // TODO Propose deleteSession(Sesssion session)
-            runner.sessionService()
-                    .deleteSession(session.appName(), session.userId(), session.id());
+            sessionService.deleteSession(session.appName(), session.userId(), session.id());
         }
     }
 }

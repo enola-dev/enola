@@ -39,6 +39,10 @@ import java.util.Set;
  */
 public class DotPrompt {
 
+    // TODO Rethink @Nullable ... it's a mess because some fields MAY be null
+    //   initially, e.g. in a YAML frontmatter, but then WONT be null after DotPromptLoader;
+    //   should there be 2 different (sub?)classes - just because of that?!
+
     // This is a class instead of a record to allow users to extend it.
 
     // This is a trivial "struct" instead of a (*Builder) "bean", with getters and setters,
@@ -100,7 +104,7 @@ public class DotPrompt {
     public @Nullable String prompt;
 
     /** Template of Prompt, as Template (from parsed {@link #prompt}). */
-    public @Nullable Template template;
+    public Template template;
 
     // TODO How to class input Map<String, Object> extends Map<String, Object> ?!
     public static class Input {

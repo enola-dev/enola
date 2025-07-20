@@ -66,7 +66,10 @@ public class HandlebarsTemplateProvider implements TemplateProvider {
 
         @Override
         public void apply(Object input, Appendable output) throws IOException {
-            handlebarsTemplate.apply(input, new AppendableWriter(output));
+            try (var writer = new AppendableWriter(output)) {
+                handlebarsTemplate.apply(input, writer);
+                writer.flush();
+            }
         }
     }
 }
