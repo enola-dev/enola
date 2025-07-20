@@ -32,15 +32,12 @@ public class DotPromptLoaderTest {
 
     @Test
     public void testExample1() throws IOException {
-        var loader =
-                new DotPromptLoader(
-                        new ClasspathResource.Provider(),
-                        // TODO GoogleModelProvider.FLASH
-                        URI.create("google://?model=gemini-2.5-flash"));
+        var llmURI = URI.create("TheLLM");
+        var loader = new DotPromptLoader(new ClasspathResource.Provider(), llmURI);
         var dotPrompt = loader.load(URI.create("classpath:/prompts/summarize.prompt.md"));
 
         assertThat(dotPrompt.name).isEqualTo("summarize");
-        assertThat(dotPrompt.model).isEqualTo("google://?model=gemini-2.5-flash");
+        assertThat(dotPrompt.model).isEqualTo(llmURI.toString());
         // TODO assertThat(dotPrompt.input.schema.get("text")).isEqualTo("string");
 
         var response = dotPrompt.template.apply(Map.of("text", "This is a blog post about..."));
