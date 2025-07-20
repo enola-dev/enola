@@ -25,6 +25,7 @@ import com.google.common.base.Strings;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import dev.enola.common.markdown.Markdown;
 import dev.enola.common.yamljson.JSON;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -54,16 +55,28 @@ public class AgentTester {
             throw new ComparisonFailure("!equalsIgnoreCase", responseMustBeEqualTo, response);
     }
 
-    public void assertJsonResponseEquals(String prompt, String responseMustBeEqualToJSON) {
+    public void assertJsonResponseEquals(String prompt, String expectedJSON) {
         var response = invoke(prompt);
         var actualCanonicalFormattedJSON = JSON.canonicalize(response, true);
-        var expectedCanonicalFormattedJSON = JSON.canonicalize(responseMustBeEqualToJSON, true);
+        var expectedCanonicalFormattedJSON = JSON.canonicalize(expectedJSON, true);
 
         if (!actualCanonicalFormattedJSON.equalsIgnoreCase(expectedCanonicalFormattedJSON))
             throw new ComparisonFailure(
                     "JSON is not equal",
                     expectedCanonicalFormattedJSON,
                     actualCanonicalFormattedJSON);
+    }
+
+    public void assertMarkdownResponseEquals(String prompt, String expectedMarkdown) {
+        var response = invoke(prompt);
+        var actualCanonicalFormattedMarkdown = Markdown.canonicalize(response);
+        var expectedCanonicalFormattedMarkdown = Markdown.canonicalize(expectedMarkdown);
+
+        if (!actualCanonicalFormattedMarkdown.equalsIgnoreCase(expectedCanonicalFormattedMarkdown))
+            throw new ComparisonFailure(
+                    "Markdown is not equal",
+                    expectedCanonicalFormattedMarkdown,
+                    actualCanonicalFormattedMarkdown);
     }
 
     private String invoke(String prompt) {
