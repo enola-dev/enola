@@ -45,6 +45,7 @@ public class EchoModel extends BaseLlm {
 
     @Override
     public BaseLlmConnection connect(LlmRequest llmRequest) {
-        throw new IllegalStateException("TODO");
+        // TODO How should EchoModel implement connect() ?! See also MockModel.
+        throw new UnsupportedOperationException("EchoModel does not yet support connections!");
     }
 }

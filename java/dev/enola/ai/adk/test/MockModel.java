@@ -50,6 +50,7 @@ public class MockModel extends BaseLlm {
 
     @Override
     public BaseLlmConnection connect(LlmRequest llmRequest) {
-        throw new IllegalStateException("TODO");
+        // TODO How should MockModel implement connect() ?! See also EchoModel.
+        throw new UnsupportedOperationException("MockModel does not yet support connections!");
     }
 }
