@@ -23,7 +23,7 @@ import dev.enola.common.secret.SecretManager;
 import java.io.IOException;
 import java.util.Optional;
 
-class UnavailableSecretManager implements SecretManager {
+public class UnavailableSecretManager implements SecretManager {
 
     @Override
     public void store(String key, char[] value) throws IOException {

@@ -42,7 +42,7 @@ The `model` query parameter of the URI needs to use a model name from https://ol
 
 ### Google AI 🔮
 
-`google://?model=gemini-2.5-flash-preview-04-17` is the URI of the [Gemini 2.5 Flash (Preview 04-17)](https://ai.google.dev/gemini-api/docs/models) LLM, used via the [Google (Gemini) AI API](https://ai.google.dev/gemini-api/).
+`google://?model=gemini-2.5-flash` is the URI of the [Gemini 2.5 Flash](https://ai.google.dev/gemini-api/docs/models) LLM, used via the [Google (Gemini) AI API](https://ai.google.dev/gemini-api/).
 
 [For security](#security), the API key is not part of this URI, but configured elsewhere; typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`. Such keys can be easily obtained by clicking on _Get API key_ in https://aistudio.google.com.
 
@@ -51,6 +51,12 @@ Note that the _Google (Gemini) AI API_ is a **different** API from the _Google C
 ### Mock 🦜
 
 `mocklm:hello,%20world` is the URI of a [mock](https://en.wikipedia.org/wiki/Mock_object) LM which, like a 🦜 parrot, always replies with _"hello, world"_ to any prompt.
+
+### Echo 🪞
+
+`echo:/` is the URI of a LM which, like a 🪞 mirror, always "echos back" the prompt itself.
+
+This is sometimes suitable e.g. for testing.
 
 ## Security
 

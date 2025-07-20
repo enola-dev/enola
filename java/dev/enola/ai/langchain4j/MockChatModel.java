@@ -51,7 +51,7 @@ public class MockChatModel implements StreamingChatModel {
         @Override
         public Optional<StreamingChatModel> optional(URI uri)
                 throws IllegalArgumentException, UncheckedIOException {
-            if ("mocklm".equalsIgnoreCase(uri.getScheme())) {
+            if (SCHEME.equalsIgnoreCase(uri.getScheme())) {
                 var reply = uri.getSchemeSpecificPart();
                 return Optional.of(new MockChatModel(reply));
             } else return Optional.empty();

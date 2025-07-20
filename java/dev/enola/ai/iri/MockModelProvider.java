@@ -22,6 +22,8 @@ import java.util.List;
 
 public abstract class MockModelProvider<T> implements Provider<T> {
 
+    protected static final String SCHEME = "mocklm";
+
     @Override
     public String name() {
         return "Mock 🦜";
@@ -29,11 +31,11 @@ public abstract class MockModelProvider<T> implements Provider<T> {
 
     @Override
     public Iterable<String> uriTemplates() {
-        return List.of("mocklm:{reply}");
+        return List.of(SCHEME + ":{reply}");
     }
 
     @Override
     public Iterable<URI> uriExamples() {
-        return List.of(URI.create("mocklm:Hello,%20world!"));
+        return List.of(URI.create(SCHEME + ":Hello,%20world!"));
     }
 }

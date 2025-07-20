@@ -15,23 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.iri;
-
-import com.google.adk.models.BaseLlm;
-
-import dev.enola.ai.adk.test.MockModel;
-import dev.enola.ai.iri.MockModelProvider;
+package dev.enola.ai.iri;
 
 import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 
-public class MockLlmProvider extends MockModelProvider<BaseLlm> {
+public abstract class EchoModelProvider<T> implements Provider<T> {
+
+    protected static final String SCHEME = "echo";
+    private static final String URI = SCHEME + ":/";
 
     @Override
-    public Optional<BaseLlm> optional(URI uri) {
-        if (SCHEME.equalsIgnoreCase(uri.getScheme())) {
-            var reply = uri.getSchemeSpecificPart();
-            return Optional.of(new MockModel(reply));
-        } else return Optional.empty();
+    public String name() {
+        return "Echo 🪞";
+    }
+
+    @Override
+    public Iterable<String> uriTemplates() {
+        return List.of(URI);
+    }
+
+    @Override
+    public Iterable<URI> uriExamples() {
+        return List.of(java.net.URI.create(URI));
     }
 }
