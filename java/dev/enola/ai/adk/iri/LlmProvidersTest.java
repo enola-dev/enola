@@ -30,20 +30,29 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
+import dev.enola.common.secret.auto.UnavailableSecretManager;
 
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class LlmProvidersTest {
     // See also the similarly structured ChatModelProviderTest
 
     @Test
     public void mock() {
-        var provider = new LlmProviders(new InMemorySecretManager());
-        var model = provider.get(URI.create("mocklm:hello"));
+        var provider = new LlmProviders(new UnavailableSecretManager());
+        var uri = new MockLlmProvider().uriExamples().iterator().next();
+        var model = provider.get(uri);
         new ModelTester(model).assertTextResponseContains("What up?", "hello");
+    }
+
+    @Test
+    public void echo() {
+        var provider = new LlmProviders(new UnavailableSecretManager());
+        var uri = new EchoLlmProvider().uriExamples().iterator().next();
+        var model = provider.get(uri);
+        new ModelTester(model).assertTextResponseContains("What up?", "What up?");
     }
 
     @Test

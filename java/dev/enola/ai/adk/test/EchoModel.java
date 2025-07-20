@@ -21,31 +21,26 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.BaseLlmConnection;
 import com.google.adk.models.LlmRequest;
 import com.google.adk.models.LlmResponse;
-import com.google.genai.types.Content;
-import com.google.genai.types.Part;
 
 import io.reactivex.rxjava3.core.Flowable;
 
-import java.util.List;
+public class EchoModel extends BaseLlm {
 
-public class MockModel extends BaseLlm {
-
-    // https://github.com/google/adk-java/blob/main/core/src/test/java/com/google/adk/testing/TestLlm.java
-    //   is similar to this, but it's in src/test and thus not available...
-    //   TODO Propose a related refactoring!
-
-    private final String reply;
-
-    public MockModel(String reply) {
-        super("Mock");
-        this.reply = reply;
+    public EchoModel() {
+        super("Echo");
     }
 
     @Override
     public Flowable<LlmResponse> generateContent(LlmRequest llmRequest, boolean stream) {
-        var replyParts = List.of(Part.fromText(reply));
-        var content = Content.builder().role("model").parts(replyParts).build();
-        return Flowable.just(LlmResponse.builder().content(content).build());
+        var requestContents = llmRequest.contents();
+        if (requestContents.size() == 1) {
+            var requestContent = requestContents.getFirst();
+            return Flowable.just(LlmResponse.builder().content(requestContent).build());
+        } else if (requestContents.isEmpty()) {
+            return Flowable.just(LlmResponse.builder().build());
+        } else // requestContents.size() > 1
+            // TODO Or should we just log a warning and return only the first content?!
+            throw new IllegalArgumentException("Cannot echo requests with more than one content");
     }
 
     @Override

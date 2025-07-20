@@ -35,6 +35,7 @@ public class DotPromptLoaderTest {
         var loader =
                 new DotPromptLoader(
                         new ClasspathResource.Provider(),
+                        // TODO GoogleModelProvider.FLASH
                         URI.create("google://?model=gemini-2.5-flash"));
         var dotPrompt = loader.load(URI.create("classpath:/prompts/summarize.prompt.md"));
 

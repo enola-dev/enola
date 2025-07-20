@@ -30,6 +30,7 @@ public class LlmProviders extends CachingProvider<BaseLlm> {
                 new ProviderChain<>(
                         new GoogleLlmProvider(secretManager),
                         // TODO new AnthropicLlmProvider(secretManager),
-                        new MockLlmProvider()));
+                        new MockLlmProvider(),
+                        new EchoLlmProvider()));
     }
 }

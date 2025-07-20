@@ -37,10 +37,12 @@ import java.util.Optional;
  */
 public abstract class GoogleModelProvider<T> implements Provider<T> {
 
+    private static final String SCHEME = "google";
+
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
-    public static final URI FLASH = URI.create("google://?model=gemini-2.5-flash");
+    public static final URI FLASH = URI.create(SCHEME + "://?model=gemini-2.5-flash");
     public static final URI FLASH_LITE =
-            URI.create("google://?model=gemini-2.5-flash-lite-preview-06-17");
+            URI.create(SCHEME + "://?model=gemini-2.5-flash-lite-preview-06-17");
 
     protected final SecretManager secretManager;
 
@@ -55,7 +57,7 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
 
     @Override
     public Iterable<String> uriTemplates() {
-        return List.of("google://?model={MODEL}");
+        return List.of(SCHEME + "://?model={MODEL}");
     }
 
     @Override
@@ -66,12 +68,12 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
     @Override
     public final Optional<T> optional(URI uri)
             throws IllegalArgumentException, UncheckedIOException {
-        if (!"google".equalsIgnoreCase(uri.getScheme())) return Optional.empty();
+        if (!SCHEME.equalsIgnoreCase(uri.getScheme())) return Optional.empty();
         var queryMap = URIs.getQueryMap(uri);
         var model = queryMap.get("model");
         if (Strings.isNullOrEmpty(model.trim()))
             throw new IllegalArgumentException(
-                    "google://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models");
+                    SCHEME + "://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models");
 
         try (var apiKey = secretManager.get(GOOGLE_AI_API_KEY_SECRET_NAME)) {
             return Optional.of(create(apiKey, model.trim()));

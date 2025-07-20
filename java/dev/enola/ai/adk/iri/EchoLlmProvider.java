@@ -19,19 +19,18 @@ package dev.enola.ai.adk.iri;
 
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.adk.test.MockModel;
-import dev.enola.ai.iri.MockModelProvider;
+import dev.enola.ai.adk.test.EchoModel;
+import dev.enola.ai.iri.EchoModelProvider;
 
 import java.net.URI;
 import java.util.Optional;
 
-public class MockLlmProvider extends MockModelProvider<BaseLlm> {
+public class EchoLlmProvider extends EchoModelProvider<BaseLlm> {
 
     @Override
     public Optional<BaseLlm> optional(URI uri) {
         if (SCHEME.equalsIgnoreCase(uri.getScheme())) {
-            var reply = uri.getSchemeSpecificPart();
-            return Optional.of(new MockModel(reply));
+            return Optional.of(new EchoModel());
         } else return Optional.empty();
     }
 }
