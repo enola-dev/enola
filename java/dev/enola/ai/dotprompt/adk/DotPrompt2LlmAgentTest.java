@@ -21,10 +21,10 @@ import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME
 
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.adk.iri.EchoLlmProvider;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.dotprompt.DotPromptLoader;
+import dev.enola.ai.iri.EchoModelProvider;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
@@ -57,11 +57,11 @@ public class DotPrompt2LlmAgentTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
+    @Ignore // TODO https://github.com/google/adk-java/issues/288
     public void template() throws IOException {
         var dotPromptLoader = new DotPromptLoader(rp, defaultLLM);
         var dotPrompt = dotPromptLoader.load(URI.create("classpath:/prompts/person.prompt.md"));
-        dotPrompt.model = EchoLlmProvider.ECHO_URI;
+        dotPrompt.model = EchoModelProvider.ECHO_URI;
         var agent = loader.convert(dotPrompt);
         var tester = new AgentTester(agent);
 
