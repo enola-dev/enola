@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class EchoModelProvider<T> implements Provider<T> {
 
     protected static final String SCHEME = "echo";
-    private static final String URI = SCHEME + ":/";
+    private static final String ECHO_URI = SCHEME + ":/";
 
     @Override
     public String name() {
@@ -32,11 +32,11 @@ public abstract class EchoModelProvider<T> implements Provider<T> {
 
     @Override
     public Iterable<String> uriTemplates() {
-        return List.of(URI);
+        return List.of(ECHO_URI);
     }
 
     @Override
     public Iterable<URI> uriExamples() {
-        return List.of(java.net.URI.create(URI));
+        return List.of(URI.create(ECHO_URI));
     }
 }
