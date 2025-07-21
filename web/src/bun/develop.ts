@@ -21,8 +21,8 @@
 // TODO Also run tsc & test in BG by using e.g. `concurrently`? Or no need?
 
 import { file, serve } from "bun"
-import index from "../../public/index.html"
 import chat from "../../public/chat.html"
+import index from "../../public/index.html"
 
 const PORT = 7070
 const IGNORE = ["/favicon.ico"]
@@ -32,8 +32,8 @@ serve({
   development: { hmr: false },
 
   static: {
-    "/": index as Response,
-    "/chat": chat as Response,
+    "/": index,
+    "/chat": chat,
   },
   fetch(req) {
     const path = new URL(req.url).pathname
