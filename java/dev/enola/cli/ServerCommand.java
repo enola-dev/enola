@@ -17,9 +17,14 @@
  */
 package dev.enola.cli;
 
+import com.google.adk.agents.LlmAgent;
+
+import dev.enola.ai.adk.iri.LlmProviders;
+import dev.enola.ai.adk.web.AdkHttpServer;
 import dev.enola.chat.sshd.EnolaSshServer;
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.context.TLC;
+import dev.enola.common.secret.auto.AutoSecretManager;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.*;
@@ -29,11 +34,16 @@ import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
+import java.util.Map;
+
 @CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
 public class ServerCommand extends CommandWithModel {
 
     @CommandLine.ArgGroup(exclusive = false, multiplicity = "1")
     HttpAndOrGrpcPorts ports;
+
+    @CommandLine.ArgGroup(exclusive = false)
+    @Nullable AiOptions aiOptions;
 
     @CommandLine.Option(
             names = {"--immediateExitOnlyForTest"},
@@ -43,6 +53,7 @@ public class ServerCommand extends CommandWithModel {
 
     private @Nullable EnolaGrpcServer grpcServer;
     private @Nullable WebServer httpServer;
+    private @Nullable AutoCloseable chatServer;
     private @Nullable EnolaSshServer sshServer;
 
     @Override
@@ -72,9 +83,26 @@ public class ServerCommand extends CommandWithModel {
             httpServer = new NettyHttpServer(ports.httpPort, handlers);
             httpServer.start();
             out.println(
-                    "HTTP JSON REST API + HTML UI server started; open http:/"
+                    "HTTP JSON REST API + HTML UI server started; open http://"
                             + httpServer.getInetAddress()
                             + "/ui ...");
+        }
+
+        // Chat (ADK) UI
+        if (ports.chatPort != null) {
+            // TODO Move this code somewhere else so that (TBD) AdkChatCommand can re-use it
+            // TODO Configurable agents!!
+            var provider = new LlmProviders(new AutoSecretManager());
+            var modelURI =
+                    aiOptions != null ? aiOptions.defaultLanguageModelURI : AiOptions.DEFAULT_MODEL;
+            var model = provider.get(modelURI, "CLI");
+            var agent = LlmAgent.builder().name("multi_tool_agent").model(model).build();
+            AdkHttpServer.agents(Map.of(agent.name(), agent));
+            chatServer = AdkHttpServer.start(ports.chatPort);
+            out.println(
+                    "HTTP Chat UI server started; open http://localhost:"
+                            + ports.chatPort
+                            + " ...");
         }
 
         // SSH Server
@@ -95,11 +123,14 @@ public class ServerCommand extends CommandWithModel {
         if (grpcServer != null) {
             grpcServer.close();
         }
-        if (sshServer != null) {
-            sshServer.close();
-        }
         if (httpServer != null) {
             httpServer.close();
+        }
+        if (chatServer != null) {
+            chatServer.close();
+        }
+        if (sshServer != null) {
+            sshServer.close();
         }
         // TODO Thread.currentThread().interrupt();
     }
@@ -107,8 +138,13 @@ public class ServerCommand extends CommandWithModel {
     static class HttpAndOrGrpcPorts {
         @CommandLine.Option(
                 names = {"--httpPort"},
-                description = "HTTP Port")
+                description = "HTTP Port of Enola UI")
         @Nullable Integer httpPort;
+
+        @CommandLine.Option(
+                names = {"--chatPort"},
+                description = "HTTP Port of Chat UI")
+        @Nullable Integer chatPort;
 
         @CommandLine.Option(
                 names = {"--sshPort"},

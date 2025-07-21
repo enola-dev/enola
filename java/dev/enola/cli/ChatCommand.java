@@ -54,6 +54,8 @@ import java.util.concurrent.Callable;
         description = "Chat with Enola, LLMs, Bots, Tools, Agents, and more.")
 public class ChatCommand implements Callable<Integer> {
 
+    // TODO Alt. AdkChatCommand name = "chat2" based on TBD dev.enola.ai.adk.cli
+
     @CommandLine.Spec CommandLine.Model.CommandSpec spec;
 
     @Override

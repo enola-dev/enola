@@ -17,18 +17,25 @@
  */
 package dev.enola.ai.adk.web;
 
-import org.junit.Test;
+import com.google.adk.agents.BaseAgent;
 
-public class DemoAdkWebServerTest {
+import dev.enola.ai.adk.core.QuickstartDemo;
+import dev.enola.ai.adk.test.MockAgent;
 
-    // TODO Use Spring Boot's integration test support stuff
+import java.util.Map;
 
-    // TODO Upstream (something like) this, because ADK has no test coverage for dev/
+public class QuickstartDemoWebMain {
 
-    @Test
-    public void startStop() throws Exception {
-        try (var server = DemoAdkWebServer.start(0)) {
-            // TODO Test HTTP API
-        }
+    static Map<String, BaseAgent> demo() {
+        var root =
+                System.getenv("GOOGLE_API_KEY") != null
+                        ? QuickstartDemo.initAgent()
+                        : new MockAgent("bar");
+        return Map.of(root.name(), root);
+    }
+
+    public static void main(String[] args) {
+        AdkHttpServer.agents(demo());
+        AdkHttpServer.start(8080);
     }
 }

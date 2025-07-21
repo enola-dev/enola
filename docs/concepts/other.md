@@ -248,6 +248,12 @@ Vector _("Embedding")_ databases of possible future interest:
 
 ## AI
 
+### Prompt Management
+
+* https://github.com/google/DotPrompt
+* https://github.com/elastacloud/DotPrompt #c#
+* https://github.com/Akoscianski/dotprompt #python
+
 ### Symbolic AI Reasoning (GOFAI?)
 
 <!-- other.ttl has Datalog related research... TODO generate this from that! -->

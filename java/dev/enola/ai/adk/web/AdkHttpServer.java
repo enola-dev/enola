@@ -21,10 +21,9 @@ import com.google.adk.agents.BaseAgent;
 import com.google.adk.web.AdkWebServer;
 import com.google.adk.web.AgentCompilerLoader;
 import com.google.adk.web.config.AgentLoadingProperties;
+import com.google.common.collect.ImmutableMap;
 
-import dev.enola.ai.adk.core.QuickstartDemo;
-import dev.enola.ai.adk.test.MockAgent;
-
+import org.jspecify.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 
 import java.util.Map;
@@ -34,32 +33,34 @@ import java.util.Map;
  *
  * <p>See <a href="https://github.com/google/adk-java/issues/149">ADK issue #149</a>.
  */
-public class DemoAdkWebServer extends AdkWebServer {
+public class AdkHttpServer extends AdkWebServer {
 
-    public static AutoCloseable start(int port) {
+    private static @Nullable ImmutableMap<String, BaseAgent> rootAgents;
+
+    public static synchronized void agents(Map<String, BaseAgent> agents) {
+        if (rootAgents != null)
+            throw new IllegalStateException("AdkHttpServer.agents() already set");
+        rootAgents = ImmutableMap.copyOf(agents);
+    }
+
+    public static synchronized AutoCloseable start(int port) {
+        if (rootAgents == null) throw new IllegalStateException("Call agents() before start()");
+
         System.setProperty("server.port", Integer.toString(port)); // Add this line
 
         // As in com.google.adk.web.AdkWebServer#main()
-        // TODO Avoid copy/paste by making this re-usable in a (static) method AdkWebServer
         System.setProperty(
                 "org.apache.tomcat.websocket.DEFAULT_BUFFER_SIZE",
                 String.valueOf(10 * 1024 * 1024));
 
-        return SpringApplication.run(DemoAdkWebServer.class);
+        return SpringApplication.run(AdkHttpServer.class);
     }
 
     @Override
     public Map<String, BaseAgent> loadedAgentRegistry(
             AgentCompilerLoader loader, AgentLoadingProperties props) {
-        var root =
-                System.getenv("GOOGLE_API_KEY") != null
-                        // TODO Don't hard-code QuickstartDemo
-                        ? QuickstartDemo.initAgent()
-                        : new MockAgent("bar");
-        return Map.of(root.name(), root);
-    }
-
-    public static void main(String[] args) {
-        DemoAdkWebServer.start(8080);
+        if (rootAgents == null)
+            throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
+        return rootAgents;
     }
 }

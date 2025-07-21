@@ -50,6 +50,8 @@ java_library(
     visibility = ["//java/dev/enola:__pkg__"],
     deps = [
         # TODO Remove most of these direct deps, through new "//java/dev/enola" API...
+        "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/adk/web",
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
         "//java/dev/enola/chat/sshd",
@@ -67,6 +69,7 @@ java_library(
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/secret",
+        "//java/dev/enola/common/secret/auto",
         "//java/dev/enola/common/xml",
         "//java/dev/enola/data/iri",
         "//java/dev/enola/data/iri/namespace/repo",
@@ -91,6 +94,7 @@ java_library(
         "@enola_maven//:com_github_ipld_java_cid",
         "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
+        "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:com_google_protobuf_protobuf_java",
         "@enola_maven//:info_picocli_picocli",

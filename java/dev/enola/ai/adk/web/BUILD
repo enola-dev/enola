@@ -20,7 +20,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "demo",
-    main_class = "dev.enola.ai.adk.web.DemoAdkWebServer",
+    main_class = "dev.enola.ai.adk.web.QuickstartDemoWebMain",
     runtime_deps = [
         ":web",
         "@enola_maven//:org_slf4j_slf4j_simple",
@@ -57,5 +57,8 @@ junit_tests(
     ),
     deps = [
         ":web",
+        "//java/dev/enola/ai/adk/core",
+        "//java/dev/enola/ai/adk/test",
+        "@enola_maven//:com_google_adk_google_adk",
     ],
 )

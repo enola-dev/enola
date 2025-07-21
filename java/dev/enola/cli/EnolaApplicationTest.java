@@ -43,11 +43,10 @@ import java.nio.file.Path;
 // See also //test-cli.bash
 public class EnolaApplicationTest {
 
-    public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
-
     private static final String MODEL = "classpath:/enola.dev/enola.ttl";
-
     private static CLI cli;
+
+    public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
 
     private static CLI cli(String... args) {
         // This was intended to make initialization one time and faster, but it doesn't help.
@@ -279,6 +278,16 @@ public class EnolaApplicationTest {
         run.err().isEmpty();
         var out = run.hasExitCode(0).out();
         out.startsWith("gRPC API server now available on port ");
+        out.doesNotContain("HTML");
+    }
+
+    @Test
+    public void serveOnlyChat() {
+        var exec = cli("-v", "server", "--chatPort=0", "--immediateExitOnlyForTest=true");
+        var run = assertThat(exec);
+        run.err().isEmpty();
+        var out = run.hasExitCode(0).out();
+        out.startsWith("HTTP Chat UI server started");
         out.doesNotContain("HTML");
     }
 
