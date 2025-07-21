@@ -52,7 +52,7 @@ public interface Provider<T> {
             return get(new URI(uri));
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(
-                    "Invalid Model URI '"
+                    "Invalid Model URI (see https://docs.enola.dev/specs/aiuri/) '"
                             + uri
                             + "' (raw input: '"
                             + e.getInput()

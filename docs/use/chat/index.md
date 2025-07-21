@@ -20,6 +20,8 @@
 
 Enola’s Chat is _The Shell for the 2030s+_ and the _“last Chat you'll ever need”._
 
+This is the text-based Console UI ("TUI"); for the Web UI, see [`server`](../server/index.md#chat).
+
 [After installing](../index.md), you can use it like this:
 
 ## Screencast

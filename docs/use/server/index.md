@@ -16,7 +16,25 @@
     limitations under the License.
 -->
 
-# Web, SSH & gRPC Server 🤵
+# Web, SSH & gRPC Server/s 🤵
+
+## Chat
+
+    $ mkdir -p ~/.config/enola
+    $ echo "GOOGLE_AI_API_KEY: ..." >>~/.config/enola/azkaban.yaml
+
+    $ ./enola server --lm=google://?model=gemini-2.5-flash --chatPort=7070
+    (...)
+    HTTP Chat UI server started; open http://localhost:7070 ...
+
+The `--lm` argument needs to be a valid [AI LM URI](../../specs/aiuri/index.md).
+
+The first command sets the API key which remote Language Models
+will typically require into Enola's (fallback) [secret manager](../secret/index.md).
+
+You can now open e.g. <http://localhost:7070> to chat with AI agents.
+
+[Chat](../chat/index.md) is the text (Console "TUI") equivalent.
 
 ## UI
 

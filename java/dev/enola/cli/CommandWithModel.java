@@ -53,6 +53,7 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
 import java.net.URI;
+import java.util.List;
 import java.util.stream.Stream;
 
 public abstract class CommandWithModel extends CommandWithResourceProviderAndLoader {
@@ -60,9 +61,7 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
     protected EnolaServiceProvider esp;
 
     @Spec CommandSpec spec;
-
-    @ArgGroup(multiplicity = "1")
-    ModelOrServer group;
+    @ArgGroup @Nullable ModelOrServer group;
 
     @CommandLine.Option(
             names = {"--validate"},
@@ -83,6 +82,11 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
         super.run();
         try (var ctx1 = TLC.open()) {
             setup(ctx1);
+
+            if (group == null) {
+                group = new ModelOrServer();
+                group.load = List.of();
+            }
 
             // TODO Move elsewhere for continuous ("shell") mode, as this is "expensive".
             ServiceProvider grpc = null;
@@ -141,7 +145,7 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
             try {
                 run(gRPCService);
             } finally {
-                grpc.close();
+                if (grpc != null) grpc.close();
             }
         }
     }
@@ -159,9 +163,8 @@ public abstract class CommandWithModel extends CommandWithResourceProviderAndLoa
 
         @Option(
                 names = {"--load", "-l"},
-                required = true,
                 description = "URI Glob of Models to load (e.g. file:\"**.ttl\")")
-        java.util.List<String> load;
+        /* TODO @Nullable */ java.util.List<String> load;
     }
 
     static class ModelOrServer extends LoadableModelURIs {
