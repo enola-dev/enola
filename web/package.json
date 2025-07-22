@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",
-    "@jest/types": "^30.0.1",
+    "@jest/types": "^30.0.5",
     "@types/bun": "^1.2.19",
     "@types/jest": "^30.0.0",
     "@types/sigmajs": "^1.0.32",
