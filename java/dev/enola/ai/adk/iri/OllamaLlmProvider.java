@@ -21,11 +21,10 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.langchain4j.LangChain4j;
 
 import dev.enola.ai.iri.OllamaModelProvider;
-import dev.enola.ai.iri.Provider;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
-public class OllamaLlmProvider extends OllamaModelProvider<BaseLlm> implements Provider<BaseLlm> {
+public class OllamaLlmProvider extends OllamaModelProvider<BaseLlm> {
 
     @Override
     protected BaseLlm create(String baseURL, String modelName) {

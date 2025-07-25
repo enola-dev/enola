@@ -21,8 +21,7 @@ import dev.enola.ai.iri.OllamaModelProvider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
-public class OllamaChatModelProvider extends OllamaModelProvider<StreamingChatModel>
-        implements ChatModelProvider {
+public class OllamaChatModelProvider extends OllamaModelProvider<StreamingChatModel> {
 
     @Override
     protected StreamingChatModel create(String baseURL, String modelName) {

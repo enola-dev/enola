@@ -26,8 +26,7 @@ import dev.enola.ai.iri.Provider;
  * AnthropicBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
  * href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI URI spec</a>.
  */
-public abstract class AnthropicLlmProvider extends AnthropicModelProvider<BaseLlm>
-        implements Provider<BaseLlm> {
+public abstract class AnthropicLlmProvider extends AnthropicModelProvider<BaseLlm> {
 
     // TODO ...
 }
