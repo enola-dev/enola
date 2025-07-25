@@ -80,7 +80,7 @@ com.google.cloud:google-cloud-speech:4.51.0
 com.google.cloud:google-cloud-storage:2.47.0
 com.google.code.findbugs:jsr305:3.0.2
 com.google.code.gson:gson:2.13.1
-com.google.errorprone:error_prone_annotations:2.40.0
+com.google.errorprone:error_prone_annotations:2.41.0
 com.google.genai:google-genai:1.0.0
 com.google.guava:failureaccess:1.0.3
 com.google.guava:guava:33.4.8-jre
