@@ -21,9 +21,9 @@ set -euox pipefail
 tools/distro/build.bash
 
 # TODO Test output
-site/download/latest/enola help
-site/download/latest/enola --version
-site/download/latest/enola get --load test/picasso.ttl http://example.enola.dev/Picasso
+java -jar site/download/latest/enola.jar help
+java -jar site/download/latest/enola.jar --version
+java -jar site/download/latest/enola.jar get --load test/picasso.ttl http://example.enola.dev/Picasso
 
 # TODO Test output
 ENOLA_IMAGE=localhost/enola:latest docs/download/latest/enolac help

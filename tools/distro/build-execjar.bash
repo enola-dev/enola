@@ -36,7 +36,5 @@ fi
 
 # NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
 "$BZL" build --color=yes //java/dev/enola/cli:enola_deploy.jar
-
-cp "$ROOT"/tools/distro/execjar-header.bash "$ROOT"/site/download/latest/enola
-cat "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar >>"$ROOT"/site/download/latest/enola
-chmod +x "$ROOT"/site/download/latest/enola
+rm -f "$ROOT"/site/download/latest/enola.jar
+ln "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar "$ROOT"/site/download/latest/enola.jar

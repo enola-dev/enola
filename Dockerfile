@@ -39,8 +39,8 @@ LABEL org.opencontainers.image.licenses=Apache-2.0
 # see docs/use/index.md.
 
 WORKDIR /app/CWD/
-COPY --chmod=0777 --chown=nonroot:nonroot site/download/latest/enola /app/enola
-ENTRYPOINT [ "java", "-jar", "../enola" ]
+COPY --chmod=0444 --chown=nonroot:nonroot site/download/latest/enola.jar /app/enola.jar
+ENTRYPOINT [ "java", "-jar", "../enola.jar" ]
 
 # To debug, replace FROM :nonroot with :debug-nonroot,
 # and use ENTRYPOINT [ "/busybox/sh" ] instead of above,
