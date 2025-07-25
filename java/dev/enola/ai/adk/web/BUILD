@@ -39,10 +39,8 @@ java_library(
     deps = [
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/test",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_google_adk_java_google_adk",
-        # "@enola_maven//:com_google_adk_google_adk_dev",
-        "@enola_maven//:com_github_google_adk_java_google_adk_dev",
+        "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_google_adk_google_adk_dev",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
@@ -61,7 +59,6 @@ junit_tests(
         ":web",
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/test",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_google_adk_java_google_adk",
+        "@enola_maven//:com_google_adk_google_adk",
     ],
 )
