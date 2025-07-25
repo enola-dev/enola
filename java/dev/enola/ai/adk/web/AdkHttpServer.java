@@ -25,6 +25,10 @@ import com.google.common.collect.ImmutableMap;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.web.ErrorProperties;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 import java.util.Map;
 
@@ -62,5 +66,19 @@ public class AdkHttpServer extends AdkWebServer {
         if (rootAgents == null)
             throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
         return rootAgents;
+    }
+
+    @Bean
+    @Primary
+    // Nota bene: @Primary takes precedence over the default ServerPropertiesAutoConfiguration,
+    // and might therefore disable some of its functionality. Maybe we'll have to make this more
+    // configurable later? TODO Perhaps with a --mode=dev|prod sort of CLI flag?
+    public ServerProperties serverProperties() {
+        var serverProperties = new ServerProperties();
+        var errorProperties = serverProperties.getError();
+        errorProperties.setIncludeStacktrace(ErrorProperties.IncludeAttribute.ALWAYS);
+        errorProperties.setIncludeMessage(ErrorProperties.IncludeAttribute.ALWAYS);
+        errorProperties.setIncludeException(true);
+        return serverProperties;
     }
 }
