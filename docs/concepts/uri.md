@@ -20,7 +20,7 @@
 
 ??? warning
 
-    _This page needs some updates to fully match the current code._
+    _This page needs some updates to fully match the current code. [Anything](anything.md) is more up-to-date._
 
 ## Introduction
 
