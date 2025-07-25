@@ -56,20 +56,21 @@ public class ChatModelProvidersTest {
     }
 
     @Test
-    public void ollama() {
+    public void gemmaOnOllama() {
         if (!Net.portAvailable(11434)) return;
-        check(p.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b")));
+        var model = p.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b"));
+        check(model);
+    }
+
+    @Test
+    public void gemmaOnGCP() throws IOException {
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(URI.create("google://?model=gemma-3-1b-it")));
     }
 
     @Test
     public void gemini() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(GoogleModelProvider.FLASH));
-    }
-
-    @Test
-    public void gemma() throws IOException {
-        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
-            check(p.get(URI.create("google://?model=gemma-3-1b-it")));
     }
 }
