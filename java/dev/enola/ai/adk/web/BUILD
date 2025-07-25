@@ -45,6 +45,7 @@ java_library(
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
         "@enola_maven//:org_springframework_boot_spring_boot",
+        "@enola_maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@enola_maven//:org_springframework_spring_beans",
         "@enola_maven//:org_springframework_spring_context",
     ],
