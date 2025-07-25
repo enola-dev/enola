@@ -17,8 +17,12 @@
  */
 package dev.enola.common.secret.auto;
 
+import dev.enola.common.function.CheckedSupplier;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.yaml.YamlSecretManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +35,18 @@ import java.nio.file.Path;
  */
 class InsecureUnencryptedYamlFileSecretManager extends YamlSecretManager {
 
+    private static final Logger LOG =
+            LoggerFactory.getLogger(InsecureUnencryptedYamlFileSecretManager.class);
+
     InsecureUnencryptedYamlFileSecretManager(Path path) throws IOException {
-        super(yaml -> Files.writeString(path, yaml), () -> Files.readString(path));
+        super(yaml -> Files.writeString(path, yaml), readOrEmpty(path));
+    }
+
+    private static CheckedSupplier<String, IOException> readOrEmpty(Path path) {
+        return () -> {
+            LOG.info("Read {}", path);
+            if (path.toFile().exists()) return Files.readString(path);
+            else return "";
+        };
     }
 }
