@@ -17,71 +17,20 @@
  */
 package dev.enola.ai.langchain4j;
 
-import com.google.common.base.Strings;
-
-import dev.enola.common.io.iri.URIs;
+import dev.enola.ai.iri.OllamaModelProvider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 
-import io.github.ollama4j.OllamaAPI;
-import io.github.ollama4j.exceptions.OllamaBaseException;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-
-public class OllamaChatModelProvider implements ChatModelProvider {
+public class OllamaChatModelProvider extends OllamaModelProvider<StreamingChatModel>
+        implements ChatModelProvider {
 
     @Override
-    public String name() {
-        return "Ollama 🦙";
-    }
-
-    @Override
-    public Iterable<String> uriTemplates() {
-        return List.of("http://{HOST}:{PORT}?type=ollama&model={MODEL}");
-    }
-
-    @Override
-    public Iterable<URI> uriExamples() {
-        return List.of(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b"));
-    }
-
-    @Override
-    public Optional<StreamingChatModel> optional(URI uri)
-            throws IllegalArgumentException, UncheckedIOException {
-        var queryMap = URIs.getQueryMap(uri);
-        if (!"ollama".equalsIgnoreCase(queryMap.get("type"))) return Optional.empty();
-
-        var model = queryMap.get("model");
-        if (Strings.isNullOrEmpty(model.trim()))
-            throw new IllegalArgumentException(
-                    "http://localhost:11434?type=ollama&model=$MODEL, see"
-                            + " https://ollama.com/search");
-
-        var baseURL = uri.getScheme() + "://" + uri.getAuthority();
-        var ollamaAPI = new OllamaAPI(baseURL);
-        ollamaAPI.setVerbose(true);
-        if (!ollamaAPI.ping())
-            throw new IllegalStateException("Failed to ping Ollama at " + ollamaAPI);
-        try {
-            ollamaAPI.pullModel(model);
-        } catch (OllamaBaseException | IOException | URISyntaxException e) {
-            throw new IllegalArgumentException(model, e);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Restore interrupt status
-            throw new IllegalArgumentException(model, e);
-        }
-
-        return Optional.of(
-                OllamaStreamingChatModel.builder()
-                        .logRequests(true)
-                        .logResponses(true)
-                        .baseUrl(baseURL)
-                        .modelName(model)
-                        .build());
+    protected StreamingChatModel create(String baseURL, String modelName) {
+        return OllamaStreamingChatModel.builder()
+                .logRequests(true)
+                .logResponses(true)
+                .baseUrl(baseURL)
+                .modelName(modelName)
+                .build();
     }
 }

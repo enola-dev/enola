@@ -33,6 +33,8 @@ import java.net.URI;
 
 public class Prompter {
 
+    // TODO See DemoTest and avoid hard-coding Net.portAvailable(11434) but use a constructor
+
     // TODO MOTD with LLM? ;-)
     static final String MOTD = "Welcome here! Type /help if you're lost.\n\n";
 

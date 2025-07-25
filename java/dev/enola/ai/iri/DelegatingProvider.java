@@ -15,23 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.iri;
+package dev.enola.ai.iri;
 
-import com.google.adk.models.BaseLlm;
+import java.net.URI;
 
-import dev.enola.ai.iri.CachingProvider;
-import dev.enola.ai.iri.ProviderChain;
-import dev.enola.common.secret.SecretManager;
+public abstract class DelegatingProvider<T> implements Provider<T> {
 
-public class LlmProviders extends CachingProvider<BaseLlm> {
+    private final Provider<?> delegate;
 
-    public LlmProviders(SecretManager secretManager) {
-        super(
-                new ProviderChain<>(
-                        new GoogleLlmProvider(secretManager),
-                        // TODO new AnthropicLlmProvider(secretManager),
-                        new OllamaLlmProvider(),
-                        new MockLlmProvider(),
-                        new EchoLlmProvider()));
+    protected DelegatingProvider(Provider<?> delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public String name() {
+        return delegate.name();
+    }
+
+    @Override
+    public Iterable<String> uriTemplates() {
+        return delegate.uriTemplates();
+    }
+
+    @Override
+    public Iterable<URI> uriExamples() {
+        return delegate.uriExamples();
     }
 }

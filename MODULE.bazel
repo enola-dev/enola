@@ -188,6 +188,7 @@ enola_maven.install(
         # https://google.github.io/adk-docs/get-started/installation/
         "com.google.adk:google-adk:0.2.0",
         "com.google.adk:google-adk-dev:0.2.0",
+        "com.google.adk:google-adk-contrib-langchain4j:0.2.0",
 
         # https://github.com/jknack/handlebars.java
         "com.github.jknack:handlebars:4.4.0",

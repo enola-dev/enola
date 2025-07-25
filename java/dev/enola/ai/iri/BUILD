@@ -30,6 +30,7 @@ java_library(
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_github_ollama4j_ollama4j",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],

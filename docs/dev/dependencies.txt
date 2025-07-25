@@ -40,6 +40,7 @@ com.github.spotbugs:spotbugs-annotations:4.9.3
 com.github.valfirst:slf4j-test:3.0.1
 com.github.virtuald:curvesapi:1.08
 com.google.adk:google-adk:0.2.0
+com.google.adk:google-adk-contrib-langchain4j:0.2.0
 com.google.adk:google-adk-dev:0.2.0
 com.google.android:annotations:4.1.1.4
 com.google.api-client:google-api-client:2.7.1
@@ -116,7 +117,7 @@ commons-io:commons-io:2.19.0
 de.swiesend:secret-service:2.0.1-alpha
 dev.dirs:directories:26
 dev.langchain4j:langchain4j:1.0.0-rc1
-dev.langchain4j:langchain4j-core:1.0.0-rc1
+dev.langchain4j:langchain4j-core:1.1.0
 dev.langchain4j:langchain4j-google-ai-gemini:1.0.0-beta4
 dev.langchain4j:langchain4j-http-client:1.0.0-rc1
 dev.langchain4j:langchain4j-http-client-jdk:1.0.0-rc1

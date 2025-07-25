@@ -27,6 +27,7 @@ import com.google.adk.models.Gemini;
 import dev.enola.ai.adk.test.ModelTester;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.Provider;
+import dev.enola.common.Net;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
@@ -59,8 +60,8 @@ public class LlmProvidersTest {
     public void geminiUnitTest() {
         var secretManager = new InMemorySecretManager(GOOGLE_AI_API_KEY_SECRET_NAME, "...");
         var provider = new LlmProviders(secretManager);
-        var exampleURI = provider.uriExamples().iterator().next();
-        assertThat(provider.get(exampleURI)).isInstanceOf(Gemini.class);
+        var uri = provider.uriExamples().iterator().next();
+        assertThat(provider.get(uri)).isInstanceOf(Gemini.class);
     }
 
     @Test
@@ -69,7 +70,20 @@ public class LlmProvidersTest {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
 
         Provider<BaseLlm> p = new LlmProviders(secretManager);
-        new ModelTester(p.get(GoogleModelProvider.FLASH))
+        var geminiFlash = p.get(GoogleModelProvider.FLASH);
+        check(geminiFlash);
+    }
+
+    @Test
+    public void ollama() {
+        if (!Net.portAvailable(11434)) return;
+        var provider = new LlmProviders(new UnavailableSecretManager());
+        var uri = new OllamaLlmProvider().uriExamples().iterator().next();
+        check(provider.get(uri));
+    }
+
+    private void check(BaseLlm model) {
+        new ModelTester(model)
                 .assertTextResponseContains("List top 3 cites in Switzerland", "Zurich");
     }
 }
