@@ -58,7 +58,7 @@ public class AdkHttpServer implements AutoCloseable {
         rootAgents = ImmutableMap.copyOf(agents);
     }
 
-    public static void agent(BaseAgent agent) {
+    public static synchronized void agent(BaseAgent agent) {
         agents(ImmutableMap.of(agent.name(), agent));
     }
 
