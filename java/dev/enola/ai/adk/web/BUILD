@@ -48,6 +48,7 @@ java_library(
         "@enola_maven//:org_springframework_boot_spring_boot_autoconfigure",
         "@enola_maven//:org_springframework_spring_beans",
         "@enola_maven//:org_springframework_spring_context",
+        "@enola_maven//:org_springframework_spring_core",
     ],
 )
 
@@ -60,6 +61,7 @@ junit_tests(
         ":web",
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/test",
+        "//java/dev/enola/common/io",
         "@enola_maven//:com_google_adk_google_adk",
     ],
 )
