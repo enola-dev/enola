@@ -32,10 +32,9 @@ This distribution includes an appropriate Java Runtime Environment (JRE).
 
 ## JAR
 
-If you have `java` on your `$PATH`, then you can
-download the [`enola`](../download/latest/enola) binary, then `chmod +x enola`
-and launch it directly using `./enola` (on Linux, FreeBSD & macOS); or
-`java -jar enola` (e.g. on 🪟 Windows).
+If you have `java` (>=21) on your `$PATH`, then you can download
+[`enola.jar`](../download/latest/enola.jar) and launch it using
+`java -jar enola.jar`.
 
 ## Downloader
 
