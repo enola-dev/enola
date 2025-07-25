@@ -55,9 +55,10 @@ public abstract class OllamaModelProvider<T> implements Provider<T> {
         if (!"ollama".equalsIgnoreCase(queryMap.get("type"))) return Optional.empty();
 
         var model = queryMap.get("model");
-        if (Strings.isNullOrEmpty(model.trim()))
+        if (Strings.isNullOrEmpty(model))
             throw new IllegalArgumentException(
-                    "http://localhost:11434?type=ollama&model=$MODEL, see"
+                    uri
+                            + "; use e.g. http://localhost:11434?type=ollama&model=$MODEL, see"
                             + " https://ollama.com/search");
 
         var baseURL = uri.getScheme() + "://" + uri.getAuthority();
