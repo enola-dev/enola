@@ -29,7 +29,9 @@ final class InvocationContexts {
     public static InvocationContext replaceUserContent(
             InvocationContext ctx, Optional<Content> newUserContent) {
 
-        BaseSessionService sessionService = ctx.sessionService();
+        // TODO https://github.com/google/adk-java/pull/287 :
+        //   Make sessionService() in InvocationContext public instead of protected
+        BaseSessionService sessionService = null;
 
         if (newUserContent.isEmpty()) return ctx;
         if (ctx.liveRequestQueue().isEmpty()) {
