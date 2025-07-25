@@ -78,6 +78,9 @@ public class LoggingMixin {
     }
 
     private static void configureJUL(Level level) {
+        // We don't want Spring Boot, which is used in ADK Web, to do configure logging:
+        System.setProperty("org.springframework.boot.logging.LoggingSystem", "none");
+
         System.setProperty(
                 "java.util.logging.SimpleFormatter.format",
                 "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$s %2$s %5$s%6$s%n"

@@ -103,6 +103,7 @@ java_library(
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_model",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_rio_api",
         "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_jcl_over_slf4j",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )

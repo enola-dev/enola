@@ -31,26 +31,33 @@ public class LoggingTestCommand implements Runnable {
     @Override
     public void run() {
         org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(getClass());
+        org.apache.commons.logging.Log jclLogger =
+                org.apache.commons.logging.LogFactory.getLog(getClass());
         Logger julLogger = Logger.getLogger(getClass().getName());
 
         // Visible with -v
+        jclLogger.error("JCL ERROR Logging Test");
         slf4jLogger.error("SLF ERROR Logging Test");
         julLogger.severe("JUL SEVERE Logging Test");
 
         // Visible with -vv
+        jclLogger.warn("JCL WARN Logging Test");
         slf4jLogger.warn("SLF WARN Logging Test");
         julLogger.warning("JUL WARNING Logging Test");
 
         // Visible with -vvv
+        jclLogger.info("JCL INFO Logging Test");
         slf4jLogger.info("SLF INFO Logging Test");
         julLogger.info("JUL INFO Logging Test");
         julLogger.config("JUL CONFIG Logging Test");
 
         // Visible with -vvvv
+        jclLogger.debug("JCL DEBUG Logging Test");
         slf4jLogger.debug("SLF DEBUG Logging Test");
         julLogger.fine("JUL FINE Logging Test");
 
         // Visible with -vvvvv
+        jclLogger.trace("JCL TRACE Logging Test");
         slf4jLogger.trace("SLF TRACE Logging Test");
         julLogger.finer("JUL FINER Logging Test");
         julLogger.finest("JUL FINEST Logging Test");
