@@ -30,6 +30,7 @@ import java.net.URI;
 import java.util.Optional;
 
 public class MockChatModel implements StreamingChatModel {
+
     private final String reply;
 
     public MockChatModel(String reply) {

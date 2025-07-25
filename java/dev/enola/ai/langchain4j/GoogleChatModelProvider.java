@@ -23,8 +23,7 @@ import dev.enola.common.secret.SecretManager;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiStreamingChatModel;
 
-public class GoogleChatModelProvider extends GoogleModelProvider<StreamingChatModel>
-        implements ChatModelProvider {
+public class GoogleChatModelProvider extends GoogleModelProvider<StreamingChatModel> {
 
     public GoogleChatModelProvider(SecretManager secretManager) {
         super(secretManager);
