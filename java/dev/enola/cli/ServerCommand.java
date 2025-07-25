@@ -34,8 +34,6 @@ import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
-import java.util.Map;
-
 @CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
 public class ServerCommand extends CommandWithModel {
 
@@ -97,7 +95,7 @@ public class ServerCommand extends CommandWithModel {
                     aiOptions != null ? aiOptions.defaultLanguageModelURI : AiOptions.DEFAULT_MODEL;
             var model = provider.get(modelURI, "CLI");
             var agent = LlmAgent.builder().name("multi_tool_agent").model(model).build();
-            AdkHttpServer.agents(Map.of(agent.name(), agent));
+            AdkHttpServer.agent(agent);
             chatServer = AdkHttpServer.start(ports.chatPort);
             out.println(
                     "HTTP Chat UI server started; open http://localhost:"

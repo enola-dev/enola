@@ -22,20 +22,16 @@ import com.google.adk.agents.BaseAgent;
 import dev.enola.ai.adk.core.QuickstartDemo;
 import dev.enola.ai.adk.test.MockAgent;
 
-import java.util.Map;
-
 public class QuickstartDemoWebMain {
 
-    static Map<String, BaseAgent> demo() {
-        var root =
-                System.getenv("GOOGLE_API_KEY") != null
-                        ? QuickstartDemo.initAgent()
-                        : new MockAgent("bar");
-        return Map.of(root.name(), root);
+    static BaseAgent demo() {
+        return System.getenv("GOOGLE_API_KEY") != null
+                ? QuickstartDemo.initAgent()
+                : new MockAgent("bar");
     }
 
     public static void main(String[] args) {
-        AdkHttpServer.agents(demo());
+        AdkHttpServer.agent(demo());
         AdkHttpServer.start(8080);
     }
 }

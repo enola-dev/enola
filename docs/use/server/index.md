@@ -23,7 +23,7 @@
     $ mkdir -p ~/.config/enola
     $ echo "GOOGLE_AI_API_KEY: ..." >>~/.config/enola/azkaban.yaml
 
-    $ ./enola server --lm=google://?model=gemini-2.5-flash --chatPort=7070
+    $ ./enola server --lm="google://?model=gemini-2.5-flash" --chatPort=7070
     (...)
     HTTP Chat UI server started; open http://localhost:7070 ...
 
