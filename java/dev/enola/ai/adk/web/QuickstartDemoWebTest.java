@@ -17,9 +17,15 @@
  */
 package dev.enola.ai.adk.web;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import dev.enola.common.io.resource.OkHttpResource;
+
 import org.junit.Test;
 
 public class QuickstartDemoWebTest {
+
+    // TODO AdkHttpServerTest with MockAgent instead of QuickstartDemoWebTest
 
     // TODO Use Spring Boot's integration test support stuff?
 
@@ -29,7 +35,9 @@ public class QuickstartDemoWebTest {
     public void startStop() throws Exception {
         AdkHttpServer.agents(QuickstartDemoWebMain.demo());
         try (var server = AdkHttpServer.start(0)) {
-            // TODO Test HTTP API
+            var tester = new OkHttpResource("http://localhost:" + server.httpPort());
+            var html = tester.charSource().read();
+            assertThat(html).contains("<title>Agent Development Kit Dev UI</title>");
         }
     }
 }

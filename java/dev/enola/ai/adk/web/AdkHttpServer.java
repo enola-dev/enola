@@ -27,8 +27,10 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 
 import java.util.Map;
 
@@ -37,9 +39,17 @@ import java.util.Map;
  *
  * <p>See <a href="https://github.com/google/adk-java/issues/149">ADK issue #149</a>.
  */
-public class AdkHttpServer extends AdkWebServer {
+public class AdkHttpServer implements AutoCloseable {
 
     private static @Nullable ImmutableMap<String, BaseAgent> rootAgents;
+
+    private final ConfigurableApplicationContext springContext;
+    private final int httpPort;
+
+    private AdkHttpServer(ConfigurableApplicationContext springContext, int httpPort) {
+        this.springContext = springContext;
+        this.httpPort = httpPort;
+    }
 
     public static synchronized void agents(Map<String, BaseAgent> agents) {
         if (rootAgents != null)
@@ -47,7 +57,7 @@ public class AdkHttpServer extends AdkWebServer {
         rootAgents = ImmutableMap.copyOf(agents);
     }
 
-    public static synchronized AutoCloseable start(int port) {
+    public static synchronized AdkHttpServer start(int port) {
         if (rootAgents == null) throw new IllegalStateException("Call agents() before start()");
 
         System.setProperty("server.port", Integer.toString(port)); // Add this line
@@ -57,28 +67,43 @@ public class AdkHttpServer extends AdkWebServer {
                 "org.apache.tomcat.websocket.DEFAULT_BUFFER_SIZE",
                 String.valueOf(10 * 1024 * 1024));
 
-        return SpringApplication.run(AdkHttpServer.class);
+        var context = SpringApplication.run(ImprovedAdkWebServer.class);
+        Environment environment = context.getBean(Environment.class);
+        String httpPort = environment.getProperty("local.server.port");
+        return new AdkHttpServer(context, Integer.parseInt(httpPort));
+    }
+
+    public int httpPort() {
+        return httpPort;
     }
 
     @Override
-    public Map<String, BaseAgent> loadedAgentRegistry(
-            AgentCompilerLoader loader, AgentLoadingProperties props) {
-        if (rootAgents == null)
-            throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
-        return rootAgents;
+    public void close() {
+        springContext.close();
     }
 
-    @Bean
-    @Primary
-    // Nota bene: @Primary takes precedence over the default ServerPropertiesAutoConfiguration,
-    // and might therefore disable some of its functionality. Maybe we'll have to make this more
-    // configurable later? TODO Perhaps with a --mode=dev|prod sort of CLI flag?
-    public ServerProperties serverProperties() {
-        var serverProperties = new ServerProperties();
-        var errorProperties = serverProperties.getError();
-        errorProperties.setIncludeStacktrace(ErrorProperties.IncludeAttribute.ALWAYS);
-        errorProperties.setIncludeMessage(ErrorProperties.IncludeAttribute.ALWAYS);
-        errorProperties.setIncludeException(true);
-        return serverProperties;
+    static class ImprovedAdkWebServer extends AdkWebServer {
+
+        @Override
+        public Map<String, BaseAgent> loadedAgentRegistry(
+                AgentCompilerLoader loader, AgentLoadingProperties props) {
+            if (rootAgents == null)
+                throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
+            return rootAgents;
+        }
+
+        @Bean
+        @Primary
+        // Nota bene: @Primary takes precedence over the default ServerPropertiesAutoConfiguration,
+        // and might therefore disable some of its functionality. Maybe we'll have to make this more
+        // configurable later? TODO Perhaps with a --mode=dev|prod sort of CLI flag?
+        public ServerProperties serverProperties() {
+            var serverProperties = new ServerProperties();
+            var errorProperties = serverProperties.getError();
+            errorProperties.setIncludeStacktrace(ErrorProperties.IncludeAttribute.ALWAYS);
+            errorProperties.setIncludeMessage(ErrorProperties.IncludeAttribute.ALWAYS);
+            errorProperties.setIncludeException(true);
+            return serverProperties;
+        }
     }
 }
