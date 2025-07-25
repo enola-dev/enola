@@ -24,6 +24,7 @@ import com.google.adk.web.config.AgentLoadingProperties;
 import com.google.common.collect.ImmutableMap;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -67,7 +68,9 @@ public class AdkHttpServer implements AutoCloseable {
                 "org.apache.tomcat.websocket.DEFAULT_BUFFER_SIZE",
                 String.valueOf(10 * 1024 * 1024));
 
-        var context = SpringApplication.run(ImprovedAdkWebServer.class);
+        var app = new SpringApplication(ImprovedAdkWebServer.class);
+        app.setBannerMode(Banner.Mode.OFF);
+        var context = app.run();
         Environment environment = context.getBean(Environment.class);
         String httpPort = environment.getProperty("local.server.port");
         return new AdkHttpServer(context, Integer.parseInt(httpPort));
