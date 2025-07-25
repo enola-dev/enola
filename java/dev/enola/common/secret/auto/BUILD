@@ -39,6 +39,7 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/exec",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/exec",
         "//java/dev/enola/common/secret/yaml",
@@ -54,5 +55,6 @@ junit_tests(
     srcs = glob(include = ["*Test.java"]),
     deps = [
         ":auto",
+        "//java/dev/enola/common/secret",
     ],
 )

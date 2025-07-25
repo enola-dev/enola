@@ -35,4 +35,9 @@ public class YAMLTest {
         var resource = StringResource.of("name: it", YamlMediaType.YAML_UTF_8);
         YAML.readSingleMap(resource, map -> assertThat(map).containsExactly("name", "it"));
     }
+
+    @Test
+    public void testEmpty() {
+        assertThat(YAML.readSingleMap("")).isEmpty();
+    }
 }

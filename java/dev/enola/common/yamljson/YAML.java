@@ -39,6 +39,8 @@ import java.util.function.Consumer;
 @Deprecated
 public final class YAML {
 
+    private YAML() {}
+
     private static Load newLoad() {
         // NB: No need for new SafeConstructor(), here; because that's
         // for org.yaml.snakeyaml, whereas this is for org.snakeyaml.engine.
@@ -52,7 +54,7 @@ public final class YAML {
 
     private static Map<?, ?> iterable2singleMap(Iterable<?> iterable) {
         var iterator = iterable.iterator();
-        if (!iterator.hasNext()) throw new IllegalArgumentException("Empty YAML");
+        if (!iterator.hasNext()) return Map.of();
         var root = iterator.next();
         if (root instanceof Map<?, ?> map) {
             if (iterator.hasNext())
@@ -90,6 +92,4 @@ public final class YAML {
     public static void write(Object object, WritableResource yaml) throws IOException {
         yaml.charSink().write(write(object));
     }
-
-    private YAML() {}
 }
