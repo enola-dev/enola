@@ -33,10 +33,12 @@ fi
 NEW_VERSION=$(git describe --tags --always --first-parent)
 NEW_VERSION=${NEW_VERSION%$'\n'}
 
-# Skip this, because it still causes too frequent rebuilds during development while commiting
-# if ! git update-index --refresh >/dev/null; then
-#   NEW_VERSION="${NEW_VERSION}.dirty"
-# fi
+# Check for uncommitted files (that are not in .gitignore)
+# Beware that this could cause too frequent rebuilds during development while commiting;
+# but it's fine here because we only get this far if we are not on $CI anyway, so all good.
+if [ -n "$(git status --porcelain)" ]; then
+  NEW_VERSION="${NEW_VERSION}.dirty"
+fi
 
 if [ ! -f tools/version/VERSION ] || [ "$(cat tools/version/VERSION)" != "$NEW_VERSION" ]; then
   echo -n "$NEW_VERSION" > tools/version/VERSION
