@@ -24,6 +24,8 @@ import com.google.common.collect.Iterables;
 public final class Agents {
 
     public static ImmutableMap<String, BaseAgent> toMap(Iterable<BaseAgent> agents) {
+        // NB: ImmutableMap.Builder will raise an error when adding an agent with the same name as
+        // another
         var builder =
                 ImmutableMap.<String, BaseAgent>builderWithExpectedSize(Iterables.size(agents));
         agents.forEach(agent -> builder.put(agent.name(), agent));

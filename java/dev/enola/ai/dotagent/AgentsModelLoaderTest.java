@@ -97,6 +97,8 @@ public class AgentsModelLoaderTest {
         assertThat(pessimist.name).isEqualTo("pessimist");
         assertThat(pessimist.instruction)
                 .startsWith("You are a jaded, perpetually unimpressed chef who");
+
+        assertThat(optimist.id).isNotEqualTo(pessimist.id);
     }
 
     @Test

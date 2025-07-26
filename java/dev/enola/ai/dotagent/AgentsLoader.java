@@ -37,6 +37,8 @@ import java.util.stream.Stream;
 
 public class AgentsLoader {
 
+    // TODO Detect Agent name/id conflicts between agents in DIFFERENT resources
+
     private final Provider<BaseLlm> llmProvider;
     private final BaseLlm defaultLLM;
 
