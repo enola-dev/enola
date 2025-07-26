@@ -48,8 +48,12 @@ We will not read _"secrets"_ from environment variables, as this is not secure.
 
 ## Tests
 
-Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. If it's not set, then no secrets are available. We test for the presence of secrets, and skip tests if the required is not available. Launch such integration tests like this, as the `test.bash` script also does:
+Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. If it's not set, then no secrets are available. We test for the presence of secrets and skip tests if the required is not available. Launch such integration tests like this, as the `test.bash` script also does:
 
-    bazelisk test --test_env=ENOLA.DEV_AZKABAN="$HOME/keys.yaml" //java/dev/enola/common/secret/auto:tests
+    bazelisk test --test_env=ENOLA.DEV_AZKABAN=/home/YOUR-UID/.config/enola/azkaban.yaml //java/dev/enola/common/secret/auto:tests
+
+Because Bazel might reduce the visible environment, it's best NOT to use `$HOME` but instead just use the full path.
 
 To run integration tests [in an IDE](../../dev/ide.md), add this environment variable in the Bazel Test launch config.
+
+In configuration UIs of IDEs such as IntelliJ, be careful NOT to accidentally include quotes!

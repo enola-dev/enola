@@ -15,31 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.secret.auto;
-
-import dev.enola.common.secret.ReadOnlySecretManager;
-import dev.enola.common.secret.Secret;
-import dev.enola.common.secret.SecretManager;
+package dev.enola.common.secret;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Optional;
 
-public class TestSecretManager extends ReadOnlySecretManager {
+/**
+ * SecretManager that reads secrets from the value of named environment variables.
+ *
+ * <p>This is not secure at all, and other implementations are preferred - but sometimes this is
+ * still useful.
+ */
+public class EnvironmentSecretManager extends ReadOnlySecretManager {
 
-    private final SecretManager delegate;
-
-    public TestSecretManager() {
-        try {
-            // TODO Later use another more direct implementation...
-            delegate = new AutoSecretManager();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+    // TODO Use in AutoSecretManager, and document on https://docs.enola.dev/use/secret/
 
     @Override
+    @SuppressWarnings("deprecation")
     public Optional<Secret> getOptional(String key) throws IOException {
-        return delegate.getOptional(key);
+        String value = System.getenv(key);
+        return Optional.ofNullable(value).map(Secret::new);
     }
 }

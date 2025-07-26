@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class UnavailableSecretManager implements SecretManager {
+    // TODO Move UnavailableSecretManager from secret.auto to just parent secret package.
 
     @Override
     public void store(String key, char[] value) throws IOException {
