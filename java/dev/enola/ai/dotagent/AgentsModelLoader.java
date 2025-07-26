@@ -74,7 +74,7 @@ public class AgentsModelLoader {
             if (Strings.isNullOrEmpty(agent.name))
                 agent.name = isMultiAgent ? fileName + "-" + agentIndex : fileName;
         }
-        agentsModel.agents.addAll(toCollection(agents));
+        agentsModel.agents.addAll(agents);
         return agentsModel;
     }
 }
