@@ -18,11 +18,15 @@
 
 # Enola.dev 🕵🏾‍♀️
 
-Enola is a tool which helps IT ⛑️ Sysadmins,
+_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)!_
+
+Enola is many things, including an awesome Agentic AI tool.
+
+Enola will also be a useful tool which helps IT ⛑️ Sysadmins,
 [Site Reliability Engineers](https://en.wikipedia.org/wiki/Site_reliability_engineering)
 (see [Google's SRE page](https://sre.google)), and other _samideanaj adminopsions_ to
-document their systems and relationships to increase visibility (knowledge management)
-and investigate the root causes of complex production issues (troubleshoot)
+document their systems and relationships. This increased visibility (knowledge management)
+helps to investigate the root causes of complex production issues (troubleshoot)
 to operate them reliably with efficiency.
 
 Enola has a _model_ of an organization's IT landscape,
@@ -37,8 +41,6 @@ do this incrementally over time, improving with each incident
 It complements [related existing tools](concepts/other.md).
 
 We call this _"Infrastructure as Linked Data"_ graphs.
-
-_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)!_
 
 <!-- Due to its inherently modular underlying technical framework, its internal data model is highly extensible to a variety
 of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups. -->

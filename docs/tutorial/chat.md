@@ -26,7 +26,9 @@ They all have an `--agents` argument to configure [AI Agents](agents.md).
 
 For the simplest possible initial demo, try to just launch:
 
-    ./enola server --lm=echo:/ --chatPort=7070
+    docker pull ghcr.io/enola-dev/enola:main
+    docker run --rm --volume "$PWD":/app/CWD/:Z --tty -p7070:7070 ghcr.io/enola-dev/enola:main \
+        server --chatPort=7070 --lm=echo:/
 
 This will give you a Chat web UI on <http://localhost:7070> which will simply echo everything you write back to you, for starters.
 

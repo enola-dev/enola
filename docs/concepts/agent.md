@@ -34,7 +34,7 @@ Instructions for LLM model, guiding the agent's behaviour. You should describe c
 
 ### Description
 
-Instructions for LLM model, guiding the agent's behaviour. You should describe concisely what the agent will do, when it should defer to other agents/tools, and how it should respond to the user.
+One-line description of the agent's capability. The model uses this to determine whether to delegate control to the agent.
 
 ### Name
 
