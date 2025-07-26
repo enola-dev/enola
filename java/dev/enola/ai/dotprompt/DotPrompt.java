@@ -49,14 +49,14 @@ public class DotPrompt {
     // because... there is really no need for that, here - this is totally fine and enough.
 
     /** The URL of where this DotPrompt originated. */
-    public URI id;
+    public @Nullable URI id;
 
     /**
      * The name of the prompt. If not specified, it will be inferred from the filename in the URL of
      * the loaded prompt (e.g. {@code http://example.org/stuff/example.prompt.md} has an inferred
      * name of {@code example}).
      */
-    public String name;
+    public @Nullable String name;
 
     /**
      * The variant name for the prompt. If null, then inferred from the filename in the URL of the
@@ -71,7 +71,7 @@ public class DotPrompt {
      * {@code google://?model=gemini-2.5-flash}. May be omitted, in which case a default model will
      * be used.
      */
-    public String model;
+    public @Nullable String model;
 
     /**
      * Configuration to be passed to the model. The specific options may vary depending on the
@@ -104,7 +104,7 @@ public class DotPrompt {
     public @Nullable String prompt;
 
     /** Template of Prompt, as Template (from parsed {@link #prompt}). */
-    public Template template;
+    public @Nullable Template template;
 
     // TODO How to class input Map<String, Object> extends Map<String, Object> ?!
     public static class Input {

@@ -42,8 +42,7 @@ public class DotPromptLoader {
     }
 
     public DotPrompt load(URI uri) throws IOException {
-        var resource = resourceProvider.getReadableResource(uri);
-        if (resource == null) throw new IOException("Resource not found: " + uri);
+        var resource = resourceProvider.getNonNull(uri);
         var md = new MarkdownResource(resource, HANDLEBARS);
 
         var reader = new YamlObjectReaderWriter();

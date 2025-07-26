@@ -17,13 +17,10 @@
  */
 package dev.enola.ai.dotagent;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.enola.ai.dotprompt.DotPrompt;
 
 import org.jspecify.annotations.Nullable;
 
-import java.net.URI;
 import java.util.*;
 
 /**
@@ -36,10 +33,10 @@ public class AgentsModel {
 
     // TODO Write the corresponding agents.schema.json and agents.proto
 
-    @JsonProperty("import") // cauz "import" is a reserved keyword in Java
-    public final Set<URI> imports = new HashSet<>();
+    // TODO @JsonProperty("import") // cauz "import" is a reserved keyword in Java
+    // TODO public final Set<URI> imports = new HashSet<>();
 
-    public final Map<String, Agent> agents = new HashMap<>();
+    public final Set<Agent> agents = new HashSet<>();
 
     public static class Agent extends DotPrompt {
 
@@ -48,14 +45,21 @@ public class AgentsModel {
             internal
         }
 
-        public Visibility visibility = Visibility.user;
+        // TODO public Visibility visibility = Visibility.user;
 
+        /**
+         * One-line description of the agent's capability. The model uses this to determine whether
+         * to delegate control to the agent.
+         */
         public @Nullable String description;
 
-        public final List<String> sequence = new ArrayList<>();
+        // TODO How does instruction related to DotPrompt's template => prompt ?!
+        public @Nullable String instruction;
 
-        public final Set<String> parallel = new HashSet<>();
+        // TODO public final List<String> sequence = new ArrayList<>();
 
-        public final Set<String> loop = new HashSet<>();
+        // TODO public final Set<String> parallel = new HashSet<>();
+
+        // TODO public final Set<String> loop = new HashSet<>();
     }
 }
