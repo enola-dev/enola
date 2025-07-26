@@ -20,17 +20,18 @@
 
 ## Chat
 
-    $ mkdir -p ~/.config/enola
-    $ echo "GOOGLE_AI_API_KEY: ..." >>~/.config/enola/azkaban.yaml
-
-    $ ./enola server --lm="google://?model=gemini-2.5-flash" --chatPort=7070
+    docker pull ghcr.io/enola-dev/enola:main
+    docker run --rm --volume "$PWD":/app/CWD/:Z --tty -p7070:7070 \
+        -e GOOGLE_AI_API_KEY=... ghcr.io/enola-dev/enola:main \
+        server --chatPort=7070 --lm="google://?model=gemini-2.5-flash"
     (...)
     HTTP Chat UI server started; open http://localhost:7070 ...
 
 The `--lm` argument needs to be a valid [AI LM URI](../../specs/aiuri/index.md).
 
-The first command sets the API key which remote Language Models
-will typically require into Enola's (fallback) [secret manager](../secret/index.md).
+Note that remote Language Models will typically require an API key as a secret;
+when running Enola from a container image, then it's typically simplest to use
+the environment variable (fallback) [secret manager](../secret/index.md).
 
 You can now open <http://localhost:7070> to chat with the AI.
 

@@ -21,19 +21,18 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * SecretManager that reads secrets from the value of named environment variables.
+ * SecretManager that reads secrets from the JVM properties (AKA <code>java -D...</code>).
  *
- * <p>This is not secure at all, and other implementations are preferred - but sometimes this is
- * still quite useful, unfortunately. It's generally a Bad Idea to use this in any application which
- * "shells out" (exec) to any other process, when would then be able to see any such (not so)
- * "secret" environment variables!
+ * <p>This is not very secure, and really only marginally better than the {@link
+ * EnvironmentSecretManager} (because JVM process launch parameters are often still too broadly
+ * visible). Other implementations are preferred - but sometimes this may be useful.
  */
-public class EnvironmentSecretManager extends ReadOnlySecretManager {
+public class JavaPropertySecretManager extends ReadOnlySecretManager {
 
     @Override
     @SuppressWarnings("deprecation")
     public Optional<Secret> getOptional(String key) throws IOException {
-        String value = System.getenv(key);
+        String value = System.getProperty(key);
         return Optional.ofNullable(value).map(Secret::new);
     }
 }
