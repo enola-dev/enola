@@ -17,18 +17,10 @@
  */
 package dev.enola.cli;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
-import com.google.adk.agents.BaseAgent;
-import com.google.adk.agents.LlmAgent;
-
-import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.web.AdkHttpServer;
-import dev.enola.ai.dotagent.AgentsLoader;
 import dev.enola.chat.sshd.EnolaSshServer;
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.context.TLC;
-import dev.enola.common.secret.auto.AutoSecretManager;
 import dev.enola.core.grpc.EnolaGrpcServer;
 import dev.enola.core.proto.EnolaServiceGrpc;
 import dev.enola.web.*;
@@ -37,9 +29,6 @@ import dev.enola.web.netty.NettyHttpServer;
 import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
-
-import java.net.URI;
-import java.util.Set;
 
 @CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
 public class ServerCommand extends CommandWithModel {
@@ -95,24 +84,7 @@ public class ServerCommand extends CommandWithModel {
 
         // Chat (ADK) UI
         if (ports.chatPort != null) {
-            // TODO Move this code somewhere else so that (TBD) AdkChatCommand can re-use it
-            // TODO Configurable agents!!
-            var modelProvider = new LlmProviders(AutoSecretManager.INSTANCE());
-            var defaultModelURI = AiOptions.DEFAULT_MODEL;
-            if (aiOptions != null && !isNullOrEmpty(aiOptions.defaultLanguageModelURI)) {
-                defaultModelURI = aiOptions.defaultLanguageModelURI;
-            }
-            var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider);
-            Iterable<BaseAgent> agents;
-            if (aiOptions != null
-                    && aiOptions.agentURIs != null
-                    && !aiOptions.agentURIs.isEmpty()) {
-                agents = agentsLoader.load(aiOptions.agentURIs.stream());
-            } else {
-                var model = modelProvider.get(defaultModelURI, "CLI");
-                var agent = LlmAgent.builder().name("AI").model(model).build();
-                agents = Set.of(agent);
-            }
+            var agents = AI.load(rp, aiOptions);
             AdkHttpServer.agents(agents);
             chatServer = AdkHttpServer.start(ports.chatPort);
             out.println(
