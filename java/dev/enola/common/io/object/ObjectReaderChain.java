@@ -54,7 +54,7 @@ public class ObjectReaderChain implements ObjectReader {
     public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
             var collection = toCollection(reader.readArray(resource, type));
-            if (collection.isEmpty()) {
+            if (!collection.isEmpty()) {
                 return collection;
             }
         }
@@ -65,7 +65,7 @@ public class ObjectReaderChain implements ObjectReader {
     public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
             var collection = toCollection(reader.readStream(resource, type));
-            if (collection.isEmpty()) {
+            if (!collection.isEmpty()) {
                 return collection;
             }
         }
