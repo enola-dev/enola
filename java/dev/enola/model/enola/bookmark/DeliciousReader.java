@@ -28,7 +28,7 @@ public class DeliciousReader {
     // TODO Consider using Stream<Delicious> instead of Iterable
     public Iterable<Delicious> readJSON(ReadableResource resource) throws IOException {
         ObjectReader r = new JsonObjectReaderWriter();
-        return r.readAll(resource, Delicious.class);
+        return r.readArray(resource, Delicious.class);
     }
 
     public Bookmark map(Delicious delicious) {

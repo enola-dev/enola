@@ -46,9 +46,9 @@ public class ObjectReaderChain implements ObjectReader {
     }
 
     @Override
-    public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
+    public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
-            Iterable<T> iterable = reader.readAll(resource, type);
+            Iterable<T> iterable = reader.readArray(resource, type);
             if (!Iterables.isEmpty(iterable)) {
                 return iterable;
             }
