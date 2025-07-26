@@ -15,31 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.secret.auto;
-
-import dev.enola.common.secret.ReadOnlySecretManager;
-import dev.enola.common.secret.Secret;
-import dev.enola.common.secret.SecretManager;
+package dev.enola.common.secret;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Optional;
 
-public class TestSecretManager extends ReadOnlySecretManager {
+public abstract class ReadOnlySecretManager implements SecretManager {
 
-    private final SecretManager delegate;
-
-    public TestSecretManager() {
-        try {
-            // TODO Later use another more direct implementation...
-            delegate = new AutoSecretManager();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    @Override
+    public final void store(String key, char[] value) throws IOException {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " is read-only.");
     }
 
     @Override
-    public Optional<Secret> getOptional(String key) throws IOException {
-        return delegate.getOptional(key);
+    public final void delete(String key) throws IOException {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " is read-only.");
     }
 }
