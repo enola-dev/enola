@@ -430,6 +430,7 @@ public final class URIs {
     }
 
     public static URI addFragment(URI uri, String fragment) {
+        if (Strings.isNullOrEmpty(fragment)) return uri;
         try {
             return new URI(
                     uri.getScheme(),
