@@ -70,7 +70,7 @@ public class AgentsModelLoader {
         for (var agent : agents) {
             ++agentIndex;
             if (agent.id == null || agent.id.toString().isEmpty())
-                agent.id = isMultiAgent ? URI.create(uri + "#" + agentIndex) : uri;
+                agent.id = isMultiAgent ? URIs.addFragment(uri, Integer.toString(agentIndex)) : uri;
             if (Strings.isNullOrEmpty(agent.name))
                 agent.name = isMultiAgent ? fileName + "-" + agentIndex : fileName;
         }

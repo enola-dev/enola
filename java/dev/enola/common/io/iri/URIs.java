@@ -356,7 +356,7 @@ public final class URIs {
 
     /**
      * This converts e.g. "file:relative.txt" to "file:///tmp/.../relative.txt" (depending on the
-     * current working directory, obviously). It looses any query parameters and fragment.
+     * current working directory, obviously). It loses any query parameters and fragments.
      */
     @Deprecated // TODO Get rid of the support for the fake "file:relative.txt" syntax
     public static URI rel2abs(URI uri) {
@@ -418,7 +418,7 @@ public final class URIs {
                 return URI.create("");
             if (path.endsWith("/"))
                 if (uri.getQuery() == null && uri.getFragment() == null) return uri;
-                // NB: Both query as well as fragment are *intentionally* dropped in this case!
+                // NB: Both query and fragment are *intentionally* dropped in this case!
                 else return new URI(uri.getScheme(), uri.getAuthority(), path, null);
 
             path = path.substring(0, path.lastIndexOf('/'));
@@ -426,6 +426,19 @@ public final class URIs {
             return new URI(uri.getScheme(), uri.getAuthority(), path, null);
         } catch (URISyntaxException e) {
             throw new IOException("TODO Why is this new URI invalid: " + uri, e);
+        }
+    }
+
+    public static URI addFragment(URI uri, String fragment) {
+        try {
+            return new URI(
+                    uri.getScheme(),
+                    uri.getAuthority(),
+                    uri.getPath(),
+                    uri.getQuery(),
+                    (uri.getFragment() != null ? uri.getFragment() : "") + fragment);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Failed to addFragment", e);
         }
     }
 
