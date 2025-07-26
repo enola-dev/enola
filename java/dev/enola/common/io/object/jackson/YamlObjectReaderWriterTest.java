@@ -21,6 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.io.object.ExamplePlainClass;
@@ -30,7 +31,6 @@ import dev.enola.common.io.object.ObjectWriter;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -76,16 +76,16 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    @Ignore // TODO
     public void readStreamOfYAML_toExampleClassList() throws IOException {
-        var yaml = "string: hello, world\n---string: saluton\n";
+        var yaml = "string: hello, world\n---\nstring: saluton\n";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
 
-        var examples = or.readArray(resource, ExampleRecord.class);
-        assertThat(examples).hasSize(2);
-        assertThat(examples.iterator().next().string()).isEqualTo("hello, world");
-        assertThat(examples.iterator().next().string()).isEqualTo("saluton");
+        var examples = or.readStream(resource, ExampleRecord.class);
+        var exampleList = ImmutableList.copyOf(examples);
+        assertThat(exampleList).hasSize(2);
+        assertThat(exampleList.get(0).string()).isEqualTo("hello, world");
+        assertThat(exampleList.get(1).string()).isEqualTo("saluton");
     }
 
     @Test
