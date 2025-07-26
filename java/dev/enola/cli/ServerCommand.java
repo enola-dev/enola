@@ -39,7 +39,6 @@ import org.jspecify.annotations.Nullable;
 import picocli.CommandLine;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.Set;
 
 @CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
@@ -99,11 +98,10 @@ public class ServerCommand extends CommandWithModel {
             // TODO Move this code somewhere else so that (TBD) AdkChatCommand can re-use it
             // TODO Configurable agents!!
             var modelProvider = new LlmProviders(new AutoSecretManager());
-            var defaultModelURI =
-                    Optional.ofNullable(aiOptions)
-                            .map(options -> options.defaultLanguageModelURI)
-                            .filter(uri -> !isNullOrEmpty(uri))
-                            .orElse(AiOptions.DEFAULT_MODEL);
+            var defaultModelURI = AiOptions.DEFAULT_MODEL;
+            if (aiOptions != null && !isNullOrEmpty(aiOptions.defaultLanguageModelURI)) {
+                defaultModelURI = aiOptions.defaultLanguageModelURI;
+            }
             var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider);
             Iterable<BaseAgent> agents;
             if (aiOptions != null
