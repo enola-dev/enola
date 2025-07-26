@@ -49,7 +49,6 @@ public class ObjectReaderChain implements ObjectReader {
     public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
             Iterable<T> iterable = reader.readAll(resource, type);
-            // TODO Rethink this further... does this really make sense, as-is?
             if (!Iterables.isEmpty(iterable)) {
                 return iterable;
             }
