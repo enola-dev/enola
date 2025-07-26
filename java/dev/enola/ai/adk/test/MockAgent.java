@@ -35,14 +35,23 @@ public class MockAgent extends BaseAgent {
     //   TODO Propose a related refactoring!
 
     private final Supplier<Flowable<Event>> eventSupplier;
+    private String reply;
 
     public MockAgent(String reply) {
-        super("Mock:" + reply, "Mock Agent for Testing", List.of(), null, null);
+        super("Mock", "Mock Agent for Testing", List.of(), null, null);
+        this.reply = reply;
 
-        var part = Part.fromText(reply);
-        var content = Content.fromParts(part);
-        var event = Event.builder().id(Event.generateEventId()).content(content).build();
-        this.eventSupplier = () -> Flowable.just(event);
+        this.eventSupplier =
+                () ->
+                        Flowable.just(
+                                Event.builder()
+                                        .id(Event.generateEventId())
+                                        .content(Content.fromParts(Part.fromText(this.reply)))
+                                        .build());
+    }
+
+    public void replyWith(String text) {
+        this.reply = text;
     }
 
     @Override
