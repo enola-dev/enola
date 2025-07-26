@@ -33,6 +33,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import org.junit.ComparisonFailure;
 
+import java.util.Arrays;
+
 public class AgentTester {
 
     // TODO Re-write this as a Truth Subject?
@@ -43,10 +45,17 @@ public class AgentTester {
         this.agent = agent;
     }
 
-    public void assertTextResponseContains(String prompt, String responseMustContain) {
+    public void assertTextResponseContains(
+            String prompt, String... responseMustContainAtLeastOneOf) {
         var response = invoke(prompt);
-        if (!response.toLowerCase().contains(responseMustContain.toLowerCase()))
-            throw new AssertionError(response + " does not contain: " + responseMustContain);
+
+        for (var responseMustContain : responseMustContainAtLeastOneOf)
+            if (response.toLowerCase().contains(responseMustContain.toLowerCase())) return;
+
+        throw new AssertionError(
+                response
+                        + " does not contain any of: "
+                        + Arrays.toString(responseMustContainAtLeastOneOf));
     }
 
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
