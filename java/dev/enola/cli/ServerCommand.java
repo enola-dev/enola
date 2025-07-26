@@ -17,9 +17,10 @@
  */
 package dev.enola.cli;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
-import com.google.common.base.Strings;
 
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.web.AdkHttpServer;
@@ -38,6 +39,7 @@ import org.jspecify.annotations.Nullable;
 import picocli.CommandLine;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.Set;
 
 @CommandLine.Command(name = "server", description = "Start HTTP, SSH and/or gRPC Server/s")
@@ -98,9 +100,10 @@ public class ServerCommand extends CommandWithModel {
             // TODO Configurable agents!!
             var modelProvider = new LlmProviders(new AutoSecretManager());
             var defaultModelURI =
-                    aiOptions != null && !Strings.isNullOrEmpty(aiOptions.defaultLanguageModelURI)
-                            ? aiOptions.defaultLanguageModelURI
-                            : AiOptions.DEFAULT_MODEL;
+                    Optional.ofNullable(aiOptions)
+                            .map(options -> options.defaultLanguageModelURI)
+                            .filter(uri -> !isNullOrEmpty(uri))
+                            .orElse(AiOptions.DEFAULT_MODEL);
             var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider);
             Iterable<BaseAgent> agents;
             if (aiOptions != null
