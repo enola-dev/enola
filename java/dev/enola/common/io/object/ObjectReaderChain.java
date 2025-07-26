@@ -17,8 +17,9 @@
  */
 package dev.enola.common.io.object;
 
+import static dev.enola.common.collect.MoreIterables.toCollection;
+
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 
 import dev.enola.common.io.resource.ReadableResource;
 
@@ -52,9 +53,9 @@ public class ObjectReaderChain implements ObjectReader {
     @Override
     public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
-            Iterable<T> iterable = reader.readArray(resource, type);
-            if (!Iterables.isEmpty(iterable)) {
-                return iterable;
+            var collection = toCollection(reader.readArray(resource, type));
+            if (collection.isEmpty()) {
+                return collection;
             }
         }
         return List.of();
@@ -63,9 +64,9 @@ public class ObjectReaderChain implements ObjectReader {
     @Override
     public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
-            Iterable<T> iterable = reader.readStream(resource, type);
-            if (!Iterables.isEmpty(iterable)) {
-                return iterable;
+            var collection = toCollection(reader.readStream(resource, type));
+            if (collection.isEmpty()) {
+                return collection;
             }
         }
         return List.of();
