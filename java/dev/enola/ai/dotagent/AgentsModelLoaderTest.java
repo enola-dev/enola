@@ -85,9 +85,8 @@ public class AgentsModelLoaderTest {
     private void checkOppositeChefs(AgentsModel agentsModel) {
         assertThat(agentsModel.agents).hasSize(2);
         var agentModels = agentsModel.agents.stream().toList();
-        // TODO Why are they read in the opposite order than they are in the file?!
-        var optimist = agentModels.get(1);
-        var pessimist = agentModels.get(0);
+        var optimist = agentModels.get(0);
+        var pessimist = agentModels.get(1);
 
         assertThat(optimist.id).isNotNull();
         assertThat(optimist.name).isEqualTo("optimist");
@@ -98,5 +97,10 @@ public class AgentsModelLoaderTest {
         assertThat(pessimist.name).isEqualTo("pessimist");
         assertThat(pessimist.instruction)
                 .startsWith("You are a jaded, perpetually unimpressed chef who");
+    }
+
+    @Test
+    public void confirmValidEmptyURI() {
+        assertThat(URI.create("").toString()).isEmpty();
     }
 }
