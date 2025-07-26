@@ -38,8 +38,8 @@ public class AgentsModelLoaderTest {
     public @Rule SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
-    ResourceProvider rp = new ClasspathResource.Provider("agents");
-    AgentsModelLoader aml = new AgentsModelLoader(rp);
+    final ResourceProvider rp = new ClasspathResource.Provider("agents");
+    final AgentsModelLoader aml = new AgentsModelLoader(rp);
 
     @Test
     public void optimisticChefYAML() throws IOException {

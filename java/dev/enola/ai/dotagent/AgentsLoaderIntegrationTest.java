@@ -45,9 +45,10 @@ public class AgentsLoaderIntegrationTest {
     public @Rule SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
-    SecretManager secretManager = new TestSecretManager();
-    ResourceProvider rp = new ClasspathResource.Provider("agents");
-    AgentsLoader loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager));
+    final SecretManager secretManager = new TestSecretManager();
+    final ResourceProvider rp = new ClasspathResource.Provider("agents");
+    final AgentsLoader loader =
+            new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager));
 
     @Test
     public void optimisticChefYAML() throws IOException {
