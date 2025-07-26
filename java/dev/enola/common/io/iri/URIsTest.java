@@ -378,4 +378,13 @@ public class URIsTest {
         assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/?q=abc#f")))
                 .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
     }
+
+    @Test
+    public void addFragment() {
+        assertThat(URIs.addFragment(URI.create("http://example.org"), "fragment"))
+                .isEqualTo(URI.create("http://example.org#fragment"));
+
+        assertThat(URIs.addFragment(URI.create("http://example.org#foo"), "bar"))
+                .isEqualTo(URI.create("http://example.org#foobar"));
+    }
 }
