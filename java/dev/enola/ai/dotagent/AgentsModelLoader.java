@@ -17,10 +17,11 @@
  */
 package dev.enola.ai.dotagent;
 
+import static com.google.common.collect.Iterables.isEmpty;
+
 import static dev.enola.common.collect.MoreIterables.toCollection;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.object.ObjectReader;
@@ -60,14 +61,18 @@ public class AgentsModelLoader {
     public AgentsModel load(URI uri) throws IOException {
         var agentsModel = new AgentsModel();
         var resource = resourceProvider.getNonNull(uri);
-        var agents = objectReader.readStream(resource, AgentsModel.Agent.class);
-        if (Iterables.isEmpty(agents)) throw new IOException("No agent/s in: " + uri);
+        var agents = toCollection(objectReader.readStream(resource, AgentsModel.Agent.class));
+        if (isEmpty(agents)) throw new IOException("No agent/s in: " + uri);
 
+        int agentIndex = 0;
+        boolean isMultiAgent = agents.size() > 1;
         var fileName = URIs.getFilenameWithoutExtension(uri, ".agent.yaml", ".agent.json");
         for (var agent : agents) {
-            // TODO Handle multiple agents as #1, #2 etc. instead of same name & id for all...
-            if (agent.id == null || agent.id.toString().isEmpty()) agent.id = uri;
-            if (Strings.isNullOrEmpty(agent.name)) agent.name = fileName;
+            ++agentIndex;
+            if (agent.id == null || agent.id.toString().isEmpty())
+                agent.id = isMultiAgent ? URI.create(uri + "#" + agentIndex) : uri;
+            if (Strings.isNullOrEmpty(agent.name))
+                agent.name = isMultiAgent ? fileName + "-" + agentIndex : fileName;
         }
         agentsModel.agents.addAll(toCollection(agents));
         return agentsModel;
