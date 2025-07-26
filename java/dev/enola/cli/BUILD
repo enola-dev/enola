@@ -52,6 +52,7 @@ java_library(
         # TODO Remove most of these direct deps, through new "//java/dev/enola" API...
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/web",
+        "//java/dev/enola/ai/dotagent",
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
         "//java/dev/enola/chat/sshd",

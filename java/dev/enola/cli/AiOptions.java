@@ -21,6 +21,9 @@ import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
+import java.net.URI;
+import java.util.List;
+
 /** CLI Options related to AI shared between ServerCommand and (TBD) AdkChatCommand. */
 public class AiOptions {
 
@@ -32,6 +35,11 @@ public class AiOptions {
             defaultValue = DEFAULT_MODEL,
             description = "Default Language Model AI URI; see https://docs.enola.dev/specs/aiuri/")
     @Nullable String defaultLanguageModelURI;
+
+    @CommandLine.Option(
+            names = {"-a", "--agents"},
+            description = "URLs of Agents; see https://docs.enola.dev/concepts/agent/")
+    @Nullable List<URI> agentURIs;
 
     // TODO Agent Resources...
 }
