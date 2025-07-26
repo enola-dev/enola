@@ -28,7 +28,7 @@ public interface ObjectReader {
     <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException;
 
     /**
-     * Read e.g. a <a href="https://yaml.org/spec/1.2.2/#chapter-9-document-stream-productions>YAML
+     * Read e.g. a <a href="https://yaml.org/spec/1.2.2/#chapter-9-document-stream-productions">YAML
      * stream</a>. (For formats such as plain JSON which do not directly support a streams syntax,
      * this will always return a single element.)
      */

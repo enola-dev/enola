@@ -41,8 +41,8 @@ nav:
       - Tutorials: # Just "Linked Data"?
           - Introduction: index.md
           - Download: use/index.md
-          # TODO AI Chat: tutorial/chat.md
-          # TODO Agent: tutorial/agents.md
+          - AI Chat: tutorial/chat.md
+          - AI Agents: tutorial/agents.md
           - Hello World: models/example.org/hello.md
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md
@@ -58,12 +58,12 @@ nav:
           - Repo Created: blog/posts/git-repo-created.md
   - Commands:
       - 🦮 Help: use/help/index.md
+      - 🤵 Server: use/server/index.md
       - 💬 Chat/Shell: use/chat/index.md
       # TODO git rm docs/use/library/* ? - Example Model: use/library/index.md
       - 📃 DocGen: use/docgen/index.md
       - 🏗️ Generate: use/gen/index.md
       - ⬇️ Get Thing: use/get/index.md
-      - 🤵 Server: use/server/index.md
       - 🌐 Rosetta: use/rosetta/index.md
       - ➰ JSON-LD: use/json-ld/index.md
       - 📚 Canonicalize: use/canonicalize/index.md

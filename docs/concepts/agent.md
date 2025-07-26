@@ -22,8 +22,20 @@ _Agents_ use a _[Large Language Model (LLM)](../specs/aiuri/index.md#language-mo
 
 Enola lets you create agents declaratively in YAML or JSON (and maybe TextProto later), based on its [Agent Schema](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/agent.schema.yaml).
 
-<!-- TODO Link to tutorial example -->
+**[Check out the tutorial](../tutorial/agents.md)!**
 
-<!-- TODO Write hand-written documentation about Agent schema... just copy/paste from Schema, for now. -->
+## Schema
 
-<!-- TODO Add a JSON Schema Documentation Generator to Enola, and use it to gen agent.schema.md and link to that from here! -->
+<!-- NB: This is copy/pasted from agent.schema.yaml; please keep them (manually, for now) in sync! TODO Add a JSON Schema Documentation Generator to Enola, and use it to gen agent.schema.md and link to that from here... -->
+
+### Instruction
+
+Instructions for LLM model, guiding the agent's behaviour. You should describe concisely what the agent will do, when it should defer to other agents/tools, and how it should respond to the user.
+
+### Description
+
+Instructions for LLM model, guiding the agent's behaviour. You should describe concisely what the agent will do, when it should defer to other agents/tools, and how it should respond to the user.
+
+### Name
+
+Name ("nick") of agent. Typically, it's set automatically by a loader from a portion of the origin URL. This is just a recommendation, and a loader could change it if another agent (with another ID) already uses this name. Users can also change the nicknames of their agents.
