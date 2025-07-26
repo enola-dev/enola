@@ -49,6 +49,10 @@ Commands are currently executed using `/usr/bin/env bash -c ...`, but this may b
 
 ## AI
 
+???+ info
+
+    This will soon be more tightly & fully integrated with the [other Agentic AI chat features](../../tutorial/chat.md) of Enola; watch this space!
+
 If you have [Ollama](https://ollama.com/) up and running locally on its default port `11434`, then this _Chat_ will have an `LLM>` participant using [`gemma3:1b`](https://ai.google.dev/gemma) which will chime into the conversation, like this:
 
 ```sh

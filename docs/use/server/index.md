@@ -32,7 +32,7 @@ The `--lm` argument needs to be a valid [AI LM URI](../../specs/aiuri/index.md).
 The first command sets the API key which remote Language Models
 will typically require into Enola's (fallback) [secret manager](../secret/index.md).
 
-You can now open e.g. <http://localhost:7070> to chat with AI agents.
+You can now open <http://localhost:7070> to chat with the AI.
 
 [Chat](../chat/index.md) is the text (Console "TUI") equivalent.
 

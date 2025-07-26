@@ -30,6 +30,7 @@ type: object
 #   ... but they were never exactly entirely identical from the start anyway (e.g. id/name, model, etc.);
 #   and conceptually this is really pretty general anyway, and quite similar to most other agent frameworks.
 properties:
+  # NB: Descriptions are copy/pasted in //docs/concepts/agent.md; please keep them (manually, for now) in sync!
   id:
     description:
       Unique ID of agent. Uniqueness should typically be "world-wide", so it's highly recommended to use an URL.
@@ -37,9 +38,9 @@ properties:
     type: string
   name:
     description:
-      Name ("nick") of agent. Typically set automatically by a loader from a portion of the origin URL. This is just a
-      recommendation, and a loader could change it if an another agent (with another ID) already uses this name. Users
-      can also change the nicknames of their agents.
+      Name ("nick") of agent. Typically, it's set automatically by a loader from a portion of the origin URL. This is
+      just a recommendation, and a loader could change it if another agent (with another ID) already uses this name.
+      Users can also change the nicknames of their agents.
     type: string
   description:
     description:
@@ -48,7 +49,7 @@ properties:
     type: string
   instruction:
     description:
-      Instructions for LLM model, guiding the agent's behavior. You should describe concisely what the agent will do,
+      Instructions for LLM model, guiding the agent's behaviour. You should describe concisely what the agent will do,
       when it should defer to other agents/tools, and how it should respond to the user.
     type: string
   # TODO globalInstruction:
