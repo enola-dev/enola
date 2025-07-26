@@ -386,5 +386,8 @@ public class URIsTest {
 
         assertThat(URIs.addFragment(URI.create("http://example.org#foo"), "bar"))
                 .isEqualTo(URI.create("http://example.org#foobar"));
+
+        assertThat(URIs.addFragment(URI.create("http://example.org"), ""))
+                .isEqualTo(URI.create("http://example.org"));
     }
 }
