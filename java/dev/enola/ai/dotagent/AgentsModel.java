@@ -53,6 +53,7 @@ public class AgentsModel {
          */
         public @Nullable String description;
 
+        /** Instruction; see schema for full description. */
         // TODO How does instruction related to DotPrompt's template => prompt ?!
         public @Nullable String instruction;
 
