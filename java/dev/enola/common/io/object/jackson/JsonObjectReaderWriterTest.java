@@ -79,7 +79,7 @@ public class JsonObjectReaderWriterTest {
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
 
-        var examples = or.readAll(resource, ExampleRecord.class);
+        var examples = or.readArray(resource, ExampleRecord.class);
         assertThat(examples).hasSize(2);
         var iterator = examples.iterator();
         assertThat(iterator.next().string()).isEqualTo("hello, world");

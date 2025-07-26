@@ -82,7 +82,7 @@ public class YamlObjectReaderWriterTest {
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
 
-        var examples = or.readAll(resource, ExampleRecord.class);
+        var examples = or.readArray(resource, ExampleRecord.class);
         assertThat(examples).hasSize(2);
         assertThat(examples.iterator().next().string()).isEqualTo("hello, world");
         assertThat(examples.iterator().next().string()).isEqualTo("saluton");

@@ -24,7 +24,7 @@ import java.util.Optional;
 
 public interface ObjectReader {
 
-    <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException;
+    <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException;
 
     default <T> T read(ReadableResource resource, Class<T> type) throws IOException {
         return optional(resource, type)
