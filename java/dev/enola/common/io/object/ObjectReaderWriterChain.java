@@ -20,42 +20,24 @@ package dev.enola.common.io.object;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
-public class ObjectReaderWriterChain implements ObjectReaderWriter {
+public class ObjectReaderWriterChain extends ObjectReaderChain implements ObjectReaderWriter {
 
     private final Iterable<ObjectReaderWriter> readerWriters;
 
     public ObjectReaderWriterChain(Iterable<ObjectReaderWriter> readerWriters) {
-        this.readerWriters = ImmutableList.copyOf(readerWriters);
+        super(map(readerWriters));
+        this.readerWriters = readerWriters;
     }
 
-    @Override
-    public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
-        for (var reader : readerWriters) {
-            Optional<T> optional = reader.optional(resource, type);
-            if (optional.isPresent()) {
-                return optional;
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
-        for (var reader : readerWriters) {
-            Iterable<T> iterable = reader.readAll(resource, type);
-            // TODO Rethink this further... does this really make sense, as-is?
-            if (!Iterables.isEmpty(iterable)) {
-                return iterable;
-            }
-        }
-        return List.of();
+    private static Iterable<ObjectReader> map(Iterable<ObjectReaderWriter> readerWriters) {
+        var readers =
+                ImmutableList.<ObjectReader>builderWithExpectedSize(Iterables.size(readerWriters));
+        readers.addAll(readerWriters);
+        return readers.build();
     }
 
     @Override

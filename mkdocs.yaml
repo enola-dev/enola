@@ -41,6 +41,8 @@ nav:
       - Tutorials: # Just "Linked Data"?
           - Introduction: index.md
           - Download: use/index.md
+          # TODO AI Chat: tutorial/chat.md
+          # TODO Agent: tutorial/agents.md
           - Hello World: models/example.org/hello.md
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md
@@ -54,7 +56,7 @@ nav:
           - DocGen v0.1: blog/posts/docgen1.md
           - First Model: blog/posts/model1.md
           - Repo Created: blog/posts/git-repo-created.md
-  - Tools:
+  - Commands:
       - 🦮 Help: use/help/index.md
       - 💬 Chat/Shell: use/chat/index.md
       # TODO git rm docs/use/library/* ? - Example Model: use/library/index.md
@@ -78,6 +80,8 @@ nav:
           - MIME Simple: models/enola.dev/mediaType/graph.gv.svg
           - MIME Full: models/enola.dev/mediaType/graphviz.gv.svg
   - Concepts:
+      - Agents: concepts/agent.md
+      - Tools: concepts/tool.md
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
       - Roadmap: concepts/roadmap.md

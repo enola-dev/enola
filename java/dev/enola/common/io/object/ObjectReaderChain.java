@@ -34,6 +34,10 @@ public class ObjectReaderChain implements ObjectReader {
         this.readers = ImmutableList.copyOf(readers);
     }
 
+    public ObjectReaderChain(ObjectReader... readers) {
+        this(ImmutableList.copyOf(readers));
+    }
+
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
@@ -46,10 +50,20 @@ public class ObjectReaderChain implements ObjectReader {
     }
 
     @Override
-    public <T> Iterable<T> readAll(ReadableResource resource, Class<T> type) throws IOException {
+    public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
-            Iterable<T> iterable = reader.readAll(resource, type);
-            // TODO Rethink this further... does this really make sense, as-is?
+            Iterable<T> iterable = reader.readArray(resource, type);
+            if (!Iterables.isEmpty(iterable)) {
+                return iterable;
+            }
+        }
+        return List.of();
+    }
+
+    @Override
+    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
+        for (var reader : readers) {
+            Iterable<T> iterable = reader.readStream(resource, type);
             if (!Iterables.isEmpty(iterable)) {
                 return iterable;
             }

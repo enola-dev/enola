@@ -1,4 +1,5 @@
-adkQuickstart:
+$schema: https://enola.dev/ai/agent
+weather:
   model: google://?model=gemini-2.5-flash
   description: Agent to answer questions about the time and weather in a city.
   instruction: You are a helpful agent who can answer user questions about the time and weather in a city.

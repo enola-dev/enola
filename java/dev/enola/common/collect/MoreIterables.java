@@ -17,6 +17,8 @@
  */
 package dev.enola.common.collect;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Collection;
 import java.util.OptionalInt;
 
@@ -30,6 +32,22 @@ public final class MoreIterables {
         return (iterable instanceof Collection)
                 ? OptionalInt.of(((Collection<?>) iterable).size())
                 : OptionalInt.empty();
+    }
+
+    /**
+     * Convert an {@link Iterable} to a {@link Collection}.
+     *
+     * @param iterable an {@link Iterable} (of any kind)
+     * @return Collection which may just be the argument if that {@link Iterable} was a Collection
+     *     already (as an optimization), or otherwise an {@link ImmutableList}. Note that this means
+     *     that callers should always assume that the returned collection is logically immutable.
+     *     Due to the optimization for Iterables that are Collections, we just cannot (efficiently)
+     *     actually declare the return type to be an ImmutableCollection.
+     * @param <T> Type
+     */
+    public static <T> Collection<T> toCollection(Iterable<T> iterable) {
+        if (iterable instanceof Collection<T> collection) return collection;
+        else return ImmutableList.copyOf(iterable);
     }
 
     private MoreIterables() {}
