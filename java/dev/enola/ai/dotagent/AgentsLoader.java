@@ -31,8 +31,8 @@ import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
 public class AgentsLoader {
@@ -56,8 +56,8 @@ public class AgentsLoader {
     }
 
     public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {
-        var allLoadedAgents = new ConcurrentLinkedQueue<BaseAgent>();
-        // TODO Load in parallel!
+        var allLoadedAgents = new ArrayList<BaseAgent>();
+        // TODO Load in parallel! (Req. using ConcurrentLinkedQueue instead of ArrayList.)
         MoreStreams.forEach(
                 uris,
                 uri -> {
