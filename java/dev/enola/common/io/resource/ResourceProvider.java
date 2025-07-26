@@ -21,6 +21,7 @@ import dev.enola.data.ProviderFromIRI;
 
 import org.jspecify.annotations.Nullable;
 
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -33,9 +34,16 @@ import java.net.URI;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
-    // TODO Avoid @Nullable Resource, by using the pattern from ChatLanguageModelProvider
+    // TODO Avoid @Nullable Resource, by using the get() and optional() pattern
+    //   (as used e.g. in ChatLanguageModelProvider) and rename methods accordingly...
 
     // TODO Add (strongly typed) "metadata headers" (instead of e.g. only MediaType)
+
+    default Resource getNonNull(URI uri) throws IOException {
+        var resource = getResource(uri);
+        if (resource == null) throw new IOException("Not found: " + uri);
+        return resource;
+    }
 
     @Override
     default @Nullable Resource get(String uri) {

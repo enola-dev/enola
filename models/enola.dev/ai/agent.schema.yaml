@@ -1,0 +1,82 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2025 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+$id: https://enola.dev/ai/agent
+# TODO Make this file actually served at its $id URL!
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Enola.dev AI Agent
+description: See https://docs.enola.dev/concepts/agent/.
+x-intellij-html-description: See <a href="https://docs.enola.dev/concepts/agent/">docs.enola.dev</a>.
+examples:
+  - ../../../test/agents/optimistic-chef.agent.yaml
+
+# TODO Create agents.schema.yaml for multiple agents in single resource? But YAML already can...
+
+type: object
+# These properties were originally partially inspired by the Google Agent Development Kit (ADK)...
+#   ... but they were never exactly entirely identical from the start anyway (e.g. id/name, model, etc.);
+#   and conceptually this is really pretty general anyway, and quite similar to most other agent frameworks.
+properties:
+  id:
+    description:
+      Unique ID of agent. Uniqueness should typically be "world-wide", so it's highly recommended to use an URL.
+      Typically set automatically by a loader from the origin URL.
+    type: string
+  name:
+    description:
+      Name ("nick") of agent. Typically set automatically by a loader from a portion of the origin URL. This is just a
+      recommendation, and a loader could change it if an another agent (with another ID) already uses this name. Users
+      can also change the nicknames of their agents.
+    type: string
+  description:
+    description:
+      One-line description of the agent's capability. The model uses this to determine whether to delegate control to
+      the agent.
+    type: string
+  instruction:
+    description: Instructions for LLM model, guiding the agent's behavior.
+    type: string
+  # TODO globalInstruction:
+  #   description:
+  #     Instructions for all the agents in the entire agent tree. ONLY the globalInstruction in the root agent
+  #     will take effect. For example: use globalInstruction to make all agents have a stable identity or personality.
+  # BUT in ADK this is a property of LlmAgent, not BaseAgent, so... this doesn't really make sense?!
+  model:
+    description:
+      The language model to use, based on the Enola.dev AI URI specification <https://docs.enola.dev/specs/aiuri/>; so
+      e.g. google://?model=gemini-2.5-flash. May be omitted, in which case a default one will be used.
+    x-intellij-html-description:
+      The language model to use, based on the <a href="https://docs.enola.dev/specs/aiuri/">Enola.dev AI URI
+      specification</a>; so e.g. <code>google://?model=gemini-2.5-flash</code>. May be omitted, in which case a default
+      one will be used.
+    type: string
+  # TODO tools
+  # TODO planning
+  # TODO examples
+  # TODO tests
+  # TODO disallowTransferToParent & disallowTransferToPeers
+  # TODO input & output Schemas
+  # TODO outputKey
+  # TODO metadata
+  # TODO config
+  # TODO sequence, parallel, loop (but not parent; that's implicit)
+  # TODO visibility: [user, internal]
+
+# TODO Write Java code to validate all models/**.[json|yaml]
+failValidation: true
+# TODO Eventually contribute this to https://www.schemastore.org
+
+# TODO Write an agent.proto (or agents.proto?) transliteration of this and allow text proto files

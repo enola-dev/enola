@@ -34,6 +34,10 @@ public class ObjectReaderChain implements ObjectReader {
         this.readers = ImmutableList.copyOf(readers);
     }
 
+    public ObjectReaderChain(ObjectReader... readers) {
+        this(ImmutableList.copyOf(readers));
+    }
+
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
         for (var reader : readers) {
