@@ -97,7 +97,7 @@ public class ServerCommand extends CommandWithModel {
         if (ports.chatPort != null) {
             // TODO Move this code somewhere else so that (TBD) AdkChatCommand can re-use it
             // TODO Configurable agents!!
-            var modelProvider = new LlmProviders(new AutoSecretManager());
+            var modelProvider = new LlmProviders(AutoSecretManager.INSTANCE());
             var defaultModelURI = AiOptions.DEFAULT_MODEL;
             if (aiOptions != null && !isNullOrEmpty(aiOptions.defaultLanguageModelURI)) {
                 defaultModelURI = aiOptions.defaultLanguageModelURI;

@@ -31,6 +31,16 @@ An insecure unencrypted plain text (YAML) file 😭 is used if `pass` is not ins
 
 This file is must be in an OS specific configuration direction; on Linux it's `~/.config/enola/azkaban.yaml`.
 
+## JVM Properties
+
+If the secret is not found in the aforementioned managers, then JVM properties (AKA `java -D...`) are checked.
+
+## Environment Variables
+
+If the secret is not found anywhere else, then Environment Variables are checked as a last resort.
+
+When setting Environment Variables to "secret" values, be aware that all child processes can see them.
+
 ## Other
 
 Support for other secret managers may be added in the future. Please open an issue if you need a specific one; like:
@@ -43,8 +53,6 @@ Support for other secret managers may be added in the future. Please open an iss
 * Windows
 
 Which one is used is currently automatically determined. This may be made more configurable in the future.
-
-We will not read _"secrets"_ from environment variables, as this is not secure.
 
 ## Tests
 

@@ -29,17 +29,8 @@ import java.util.Optional;
  */
 public interface SecretManager {
 
-    // NB: Do *NEVER* write an implementation of this interface that uses System.getenv()
-    //   because that, while perhaps tempting at first, is a terrible idea whenever this is used
-    //   in any application which "shells out" (exec) to any other process, when would then be able
-    //   to see any such (not so) "secret" environment variables!
-    //
-    // Similarly, an implementation which uses System.getProperty() is also not such a great idea,
-    //   really only marginally better than using System.getenv(). That's because the "java -D"
-    //   launch parameters are often still too broadly visible.
-    //
-    // Lastly, a FileSecretManager which stores the secrets in an encrypted file vault which is
-    //   decrypted with a passphrase which the user must type when starting an application is a
+    // TODO: Implement a FileSecretManager which stores the secrets in an encrypted file vault which
+    //   is decrypted with a passphrase which the user must type when starting an application is a
     //   possibility.  We, however, prefer focusing on implementations based on OS support.
 
     // TODO Write an ExecAgeSecretManager for https://github.com/Foxboron/age-plugin-tpm

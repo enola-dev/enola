@@ -30,7 +30,7 @@ public class AutoSecretManagerTest {
 
     @Test
     public void test() throws IOException {
-        var secretManager = new AutoSecretManager();
+        var secretManager = AutoSecretManager.INSTANCE();
         // CANNOT secretManager.store("test", "testit".toCharArray());
         secretManager
                 .getOptional("test")

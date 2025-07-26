@@ -22,7 +22,6 @@ import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Optional;
 
 public class TestSecretManager extends ReadOnlySecretManager {
@@ -30,12 +29,8 @@ public class TestSecretManager extends ReadOnlySecretManager {
     private final SecretManager delegate;
 
     public TestSecretManager() {
-        try {
-            // TODO Later use another more direct implementation...
-            delegate = new AutoSecretManager();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        // TODO Move code from AutoSecretManager to here...
+        delegate = AutoSecretManager.INSTANCE();
     }
 
     @Override

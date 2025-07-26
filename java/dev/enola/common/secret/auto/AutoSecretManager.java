@@ -21,24 +21,30 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.exec.ExecPATH;
-import dev.enola.common.secret.Secret;
-import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.*;
 import dev.enola.common.secret.exec.ExecPassSecretManager;
 import dev.enola.common.secret.yaml.YamlSecretManager;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public class AutoSecretManager implements SecretManager {
+public final class AutoSecretManager {
+    // TODO Rename AutoSecretManager to AutoSecretManagers
+
+    // TODO Use Singleton<SecretManager> and context key
 
     private static final Logger LOG = getLogger(AutoSecretManager.class);
 
+    private static @Nullable SecretManager INSTANCE;
+
     // main() just for quick demo / usage illustration
     public static void main(String[] args) throws IOException {
-        var secretManager = new AutoSecretManager();
+        var secretManager = AutoSecretManager.INSTANCE();
         // secretManager.store("test", "hello, world".toCharArray());
         secretManager.get("test").process(System.out::println);
     }
@@ -57,51 +63,51 @@ public class AutoSecretManager implements SecretManager {
                                         .map(String::new)));
     }
 
-    private final SecretManager delegate;
+    public static synchronized SecretManager INSTANCE() {
+        if (INSTANCE == null) {
+            try {
+                INSTANCE = create();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return INSTANCE;
+    }
 
-    public AutoSecretManager() throws IOException {
+    private static SecretManager create() throws IOException {
         // TODO Add support for GnomeSecretManager, using class DesktopDetector
 
         if (System.getenv("BAZEL_TEST") != null) {
+            // TODO Move this into TestSecretManager?
             var azkaban = System.getenv("ENOLA.DEV_AZKABAN");
             if (azkaban == null) {
-                this.delegate = new UnavailableSecretManager();
                 LOG.warn("No Secrets! Set ENOLA.DEV_AZKABAN under BAZEL_TEST for test secrets.");
+                return new UnavailableSecretManager();
             } else {
                 var azkabanPath = Path.of(azkaban);
                 if (azkabanPath.toFile().exists()) {
-                    this.delegate = new InsecureUnencryptedYamlFileSecretManager(azkabanPath);
+                    return new InsecureUnencryptedYamlFileSecretManager(azkabanPath);
                 } else {
-                    this.delegate = new UnavailableSecretManager();
                     LOG.warn("ENOLA.DEV_AZKABAN is set, but does not exist: {}", azkabanPath);
+                    return new UnavailableSecretManager();
                 }
             }
         } else {
-            var opt = yamlInExecPass();
-            if (opt.isPresent()) this.delegate = opt.get();
+            SecretManager primary;
+            var pass = yamlInExecPass();
+            if (pass.isPresent()) primary = pass.get();
             else {
-                LOG.warn(
+                LOG.debug(
                         "The ExecPassSecretManager is N/A, so using"
                                 + " InsecureUnencryptedYamlFileSecretManager");
-                this.delegate =
+                primary =
                         new InsecureUnencryptedYamlFileSecretManager(
                                 FreedesktopDirectories.PLAINTEXT_VAULT_FILE);
             }
+            return new SecretManagerChain(
+                    primary, new JavaPropertySecretManager(), new EnvironmentSecretManager());
         }
     }
 
-    @Override
-    public void store(String key, char[] value) throws IOException {
-        delegate.store(key, value);
-    }
-
-    @Override
-    public Optional<Secret> getOptional(String key) throws IOException {
-        return delegate.getOptional(key);
-    }
-
-    @Override
-    public void delete(String key) throws IOException {
-        delegate.delete(key);
-    }
+    private AutoSecretManager() {}
 }
