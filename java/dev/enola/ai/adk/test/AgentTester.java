@@ -37,6 +37,8 @@ import java.util.Arrays;
 
 public class AgentTester {
 
+    // TODO Support Multiple root agents?!
+
     // TODO Re-write this as a Truth Subject?
 
     private final BaseAgent agent;

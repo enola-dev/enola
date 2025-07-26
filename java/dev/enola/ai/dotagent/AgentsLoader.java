@@ -18,54 +18,80 @@
 package dev.enola.ai.dotagent;
 
 import com.google.adk.agents.BaseAgent;
+import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
+import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Map;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
 public class AgentsLoader {
 
     private final Provider<BaseLlm> llmProvider;
+    private final BaseLlm defaultLLM;
 
     private final DotPromptLoader dotPromptLoader;
-
     // TODO private final DotPrompt2LlmAgentConverter dotPrompt2LlmAgentConverter;
 
-    // TODO AgentsModelLoader
+    private final AgentsModelLoader agentsModelLoader;
 
     public AgentsLoader(
             ResourceProvider resourceProvider, URI defaultLLM, Provider<BaseLlm> llmProvider) {
         this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultLLM);
+        this.agentsModelLoader = new AgentsModelLoader(resourceProvider);
         this.llmProvider = llmProvider;
+        this.defaultLLM = llmProvider.get(defaultLLM);
     }
 
-    public Map<String, BaseAgent> load(Stream<URI> uris) throws IOException {
-        var agents = ImmutableMap.<String, BaseAgent>builder();
+    public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {
+        var allLoadedAgents = new ConcurrentLinkedQueue<BaseAgent>();
         // TODO Load in parallel!
         MoreStreams.forEach(
                 uris,
                 uri -> {
-                    var agent = load(uri);
-                    agents.put(agent.name(), agent);
+                    var agents = load(uri);
+                    allLoadedAgents.addAll(agents);
                 });
-        return agents.build();
+        return ImmutableList.copyOf(allLoadedAgents);
     }
 
-    public BaseAgent load(URI uri) throws IOException {
-        if (uri.getPath() != null && uri.getPath().endsWith(".prompt")) {
+    private List<BaseAgent> load(URI uri) throws IOException {
+        if (URIs.hasExtension(uri, ".prompt", ".prompt.md")) {
             var loadedDotPrompt = dotPromptLoader.load(uri);
-            // TODO loadedDotPrompt.
+            throw new UnsupportedOperationException(
+                    "https://github.com/google/adk-java/issues/288");
         }
-        // TODO if (uri.getPath().endsWith(".agents.yaml")) {
 
-        throw new IllegalArgumentException("Unknown extension on URI: " + uri);
+        var agentsModel = agentsModelLoader.load(uri);
+        var agents = ImmutableList.<BaseAgent>builderWithExpectedSize(agentsModel.agents.size());
+        for (var agent : agentsModel.agents) {
+            // TODO Support SequentialAgent, ParallelAgent, LoopAgent
+            var agentBuilder = new LlmAgent.Builder();
+
+            // TODO Share code with DotPromptLoader!
+
+            agentBuilder.name(agent.name);
+            // TODO Handle agent.variant ...
+
+            agentBuilder.description(agent.description);
+            agentBuilder.instruction(agent.instruction);
+
+            if (Strings.isNullOrEmpty(agent.model)) agentBuilder.model(defaultLLM);
+            else agentBuilder.model(llmProvider.get(URI.create(agent.model)));
+
+            agents.add(agentBuilder.build());
+        }
+
+        return agents.build();
     }
 }

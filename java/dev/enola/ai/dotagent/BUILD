@@ -68,8 +68,11 @@ junit_tests(
         ":dotagent",
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/test",
+        "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/secret",
+        "//java/dev/enola/common/secret/auto",
         "//test",
     ],
 )

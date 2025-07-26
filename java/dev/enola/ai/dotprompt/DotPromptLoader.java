@@ -55,8 +55,10 @@ public class DotPromptLoader {
 
         if (dotPrompt.name == null)
             dotPrompt.name = URIs.getFilenameWithoutExtension(uri, ".prompt.md", ".prompt");
-        // TODO dotPrompt.variant
+        // TODO Handle dotPrompt.variant ...
         if (dotPrompt.model == null) dotPrompt.model = defaultModel;
+
+        // TODO Share code with AgentsLoader!
 
         // TODO https://github.com/google/dotprompt/issues/307 Translate Picoschema to JSON Schema
 

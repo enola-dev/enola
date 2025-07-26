@@ -17,16 +17,56 @@
  */
 package dev.enola.ai.dotagent;
 
-import org.junit.Ignore;
+import static com.google.common.truth.Truth.assertThat;
+
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+
+import dev.enola.ai.adk.iri.GoogleLlmProvider;
+import dev.enola.ai.adk.test.AgentTester;
+import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
+import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.auto.TestSecretManager;
+
+import org.junit.Rule;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.stream.Stream;
 
 public class AgentsLoaderIntegrationTest {
 
-    // TODO @Test quickstart()
+    public @Rule SingletonRule r =
+            SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
+
+    SecretManager secretManager = new TestSecretManager();
+    ResourceProvider rp = new ClasspathResource.Provider("agents");
+    AgentsLoader loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager));
 
     @Test
-    @Ignore // TODO Remove again later!!
-    public void TODO() {
-        // Use the AgentTester utility
+    public void optimisticChefYAML() throws IOException {
+        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+
+        var agents = loader.load(Stream.of(URI.create("chef-optimist.agent.yaml")));
+        assertThat(agents).hasSize(1);
+        var agent = agents.iterator().next();
+
+        var agentTester = new AgentTester(agent);
+        agentTester.assertTextResponseContains(
+                "How to make scrambled eggs?",
+                "darling",
+                "epiphany",
+                "odyssey",
+                "sunshine",
+                "symphony",
+                "precious",
+                "jewels",
+                "bliss");
     }
 }

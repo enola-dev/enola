@@ -314,6 +314,13 @@ public final class URIs {
         return Files.getNameWithoutExtension(fileName);
     }
 
+    public static boolean hasExtension(URI uri, String... extensions) {
+        var path = uri.getPath();
+        if (path == null) return false;
+        for (String extension : extensions) if (path.endsWith(extension)) return true;
+        return false;
+    }
+
     public static String getFilenameOrLastPathSegmentOrHost(URI uri) {
         return getLastPathSegmentOrHost(uri, true);
     }

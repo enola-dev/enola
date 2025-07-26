@@ -23,6 +23,8 @@ import com.google.adk.web.AgentCompilerLoader;
 import com.google.adk.web.config.AgentLoadingProperties;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.ai.adk.core.Agents;
+
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -34,6 +36,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Extended ADK Dev Web Server.
@@ -52,14 +55,14 @@ public class AdkHttpServer implements AutoCloseable {
         this.httpPort = httpPort;
     }
 
-    public static synchronized void agents(Map<String, BaseAgent> agents) {
+    public static synchronized void agents(Iterable<BaseAgent> agents) {
         if (rootAgents != null)
             throw new IllegalStateException("AdkHttpServer.agents() already set");
-        rootAgents = ImmutableMap.copyOf(agents);
+        rootAgents = Agents.toMap(agents);
     }
 
     public static synchronized void agent(BaseAgent agent) {
-        agents(ImmutableMap.of(agent.name(), agent));
+        agents(Set.of(agent));
     }
 
     public static synchronized AdkHttpServer start(int port) {
