@@ -36,7 +36,7 @@ public class AgentsModel {
     // TODO @JsonProperty("import") // cauz "import" is a reserved keyword in Java
     // TODO public final Set<URI> imports = new HashSet<>();
 
-    public final Set<Agent> agents = new HashSet<>();
+    public final List<Agent> agents = new ArrayList<>();
 
     public static class Agent extends DotPrompt {
 

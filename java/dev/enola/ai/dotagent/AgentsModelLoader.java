@@ -34,11 +34,17 @@ import java.net.URI;
 
 public class AgentsModelLoader {
 
+    // TODO Validate against agent.schema.yaml while loading
+
+    // TODO Reload agent model definitions when files change
+
+    // TODO Refuse load new agents with the same id as previously loaded ones
+
+    // TODO Rename name when loading into a system that already uses those names
+
     // TODO Support chefs-opposites-map.agent.yaml in addition to chefs-opposites-stream.agent.yaml
     //   But how to determine which? Use *.agents.yaml vs. *agent.yaml filename? Or $schema ?
     //   See AgentsModelLoaderTest.oppositeChefsMap()
-
-    // TODO Validate against agent.schema.yaml while loading
 
     // TODO Later support loading from .txtpb, in addition to .yaml and .json
 

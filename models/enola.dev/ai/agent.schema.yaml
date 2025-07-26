@@ -63,20 +63,20 @@ properties:
       specification</a>; so e.g. <code>google://?model=gemini-2.5-flash</code>. May be omitted, in which case a default
       one will be used.
     type: string
-  # TODO tools
-  # TODO planning
-  # TODO examples
-  # TODO tests
-  # TODO disallowTransferToParent & disallowTransferToPeers
-  # TODO input & output Schemas
-  # TODO outputKey
-  # TODO metadata
-  # TODO config
-  # TODO sequence, parallel, loop (but not parent; that's implicit)
-  # TODO visibility: [user, internal]
+# TODO tools
+# TODO planning
+# TODO examples
+# TODO tests
+# TODO disallowTransferToParent & disallowTransferToPeers
+# TODO input & output Schemas
+# TODO outputKey
+# TODO metadata
+# TODO config
+# TODO sequence, parallel, loop (but not parent; that's implicit)
+# TODO visibility: [user, internal]
 
-# TODO Write Java code to validate all models/**.[json|yaml]
-failValidation: true
+# TODO Write Enola Java code to validate all models/**.[json|yaml] incl. this one.
+
 # TODO Eventually contribute this to https://www.schemastore.org
 
 # TODO Write an agent.proto (or agents.proto?) transliteration of this and allow text proto files
