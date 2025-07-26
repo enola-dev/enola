@@ -22,7 +22,8 @@
 
 Agents work in [all Chat UXs of Enola](chat.md). Here are some examples to use them.
 
-<!-- TODO Replace ./enola with container, and test/agents with http://github.com ... raw ... -->
+<!-- TODO Implement Secret by EnvVar, then replace ./enola with container,
+     and use a new builtin: URL scheme instead of local file or test/agents with http://github.com ... raw ... -->
 
 ## Optimistic Chef 👨🏽‍🍳
 

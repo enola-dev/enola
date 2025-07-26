@@ -19,6 +19,10 @@ set -euo pipefail
 : "${ENOLA_IMAGE:=ghcr.io/enola-dev/enola:main}"
 
 set -x
+
+# To get updates, you should periodically run:
+#   docker pull ghcr.io/enola-dev/enola:main
+
 docker run --rm --volume "$PWD":/app/CWD/:Z --tty "$ENOLA_IMAGE" "$@"
 
 # NB: --tty is required so that output is colourful
