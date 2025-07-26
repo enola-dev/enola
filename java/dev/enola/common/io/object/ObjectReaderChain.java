@@ -55,4 +55,15 @@ public class ObjectReaderChain implements ObjectReader {
         }
         return List.of();
     }
+
+    @Override
+    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
+        for (var reader : readers) {
+            Iterable<T> iterable = reader.readStream(resource, type);
+            if (!Iterables.isEmpty(iterable)) {
+                return iterable;
+            }
+        }
+        return List.of();
+    }
 }

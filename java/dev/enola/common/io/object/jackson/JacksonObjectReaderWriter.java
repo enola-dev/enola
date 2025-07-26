@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
@@ -91,6 +92,19 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         try (var reader = resource.charSource().openBufferedStream()) {
             var javaType = mapper.getTypeFactory().constructCollectionType(List.class, type);
             return mapper.readValue(reader, javaType);
+        } catch (DatabindException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @Override
+    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
+        if (!canHandle(resource.mediaType())) return List.of();
+        try (var reader = resource.charSource().openBufferedStream()) {
+            var parser = mapper.getFactory().createParser(reader);
+            try (MappingIterator<T> mappingIterator = mapper.readValues(parser, type)) {
+                return mappingIterator.readAll();
+            }
         } catch (DatabindException e) {
             throw new IOException(e);
         }
