@@ -53,7 +53,7 @@ final class AI {
 
         } else {
             var model = modelProvider.get(defaultModelURI, "CLI");
-            var agent = LlmAgent.builder().name("AI").model(model).build();
+            var agent = LlmAgent.builder().name(model.model()).model(model).build();
             return Set.of(agent);
         }
     }
