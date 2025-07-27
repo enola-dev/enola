@@ -20,7 +20,6 @@ package dev.enola.ai.adk.test;
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.events.Event;
 import com.google.adk.runner.InMemoryRunner;
-import com.google.adk.sessions.Session;
 import com.google.common.base.Strings;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
@@ -91,10 +90,11 @@ public class AgentTester {
     }
 
     private String invoke(String prompt) {
+        // NB: Similarly in AiCommand... TODO reduce copy/paste?
         String userID = "tester";
         InMemoryRunner runner = new InMemoryRunner(agent);
         var sessionService = runner.sessionService();
-        Session session = sessionService.createSession(agent.name(), userID).blockingGet();
+        var session = sessionService.createSession(agent.name(), userID).blockingGet();
         try {
             Content userMsg = Content.fromParts(Part.fromText(prompt));
             Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);

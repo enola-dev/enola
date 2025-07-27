@@ -49,6 +49,9 @@ java_library(
     # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
     visibility = ["//java/dev/enola:__pkg__"],
     deps = [
+        "@enola_maven//:com_google_genai_google_genai",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
+        "//java/dev/enola/ai/adk/core",
         # TODO Remove most of these direct deps, through new "//java/dev/enola" API...
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/web",

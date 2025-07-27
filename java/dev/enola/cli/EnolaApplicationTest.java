@@ -364,6 +364,15 @@ public class EnolaApplicationTest {
     }
 
     @Test
+    @Ignore // TODO This causes serveOnlyChat(), which also uses ADK, to fail.
+    public void aiEcho() {
+        var exec = assertThat(cli("-vvv", "ai", "--llm=echo:/", "--in=hello, world"));
+        exec.err().isEmpty();
+        exec.out().isEqualTo("hello, world\n");
+        exec.hasExitCode(0);
+    }
+
+    @Test
     @Ignore // TODO Make CLI tests isolated so that this test does not break because -vvv elsewhere
     public void exception() {
         var exec = assertThat(cli("test-exception"));
