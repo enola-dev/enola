@@ -34,9 +34,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public final class AutoSecretManager {
-    // TODO Rename AutoSecretManager to AutoSecretManagers
-
-    // TODO Use Singleton<SecretManager> and context key
 
     private static final Logger LOG = getLogger(AutoSecretManager.class);
 

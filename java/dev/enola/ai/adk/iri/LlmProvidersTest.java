@@ -30,8 +30,8 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.Net;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.UnavailableSecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
-import dev.enola.common.secret.auto.UnavailableSecretManager;
 
 import org.junit.Test;
 
