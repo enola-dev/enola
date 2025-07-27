@@ -15,10 +15,20 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
+java_binary(
+    name = "quickstart",
+    main_class = "dev.enola.ai.adk.demo.QuickstartDemo",
+    runtime_deps = [
+        ":demo",
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
+)
+
 java_library(
-    name = "core",
+    name = "demo",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -31,7 +41,7 @@ java_library(
         "@enola_maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
-        "//java/dev/enola/common/function",
+        "//java/dev/enola/ai/adk/web",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",
@@ -47,7 +57,7 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":core",
+        ":demo",
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
