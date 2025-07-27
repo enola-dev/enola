@@ -18,10 +18,15 @@
 
 # Enola.dev 🕵🏾‍♀️
 
-_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)!_
+<a class="github-button" href="https://github.com/enola-dev/enola" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star enola-dev/enola on GitHub">⭐ Star Us on GitHub! 🫶</a>
 
-Enola is many things, including an awesome Agentic AI tool.
+Thanks for checking out this project! Starring it helps with visibility and shows your support.
 
+_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)_ to receive news!
+
+Enola is many things, including [an awesome Agentic AI tool](tutorial/agents.md).
+
+<!-- TODO
 Enola will also be a useful tool which helps IT ⛑️ Sysadmins,
 [Site Reliability Engineers](https://en.wikipedia.org/wiki/Site_reliability_engineering)
 (see [Google's SRE page](https://sre.google)), and other _samideanaj adminopsions_ to
@@ -42,14 +47,17 @@ It complements [related existing tools](concepts/other.md).
 
 We call this _"Infrastructure as Linked Data"_ graphs.
 
+-->
+
 <!-- Due to its inherently modular underlying technical framework, its internal data model is highly extensible to a variety
 of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups. -->
 
 <!-- TODO The actual usage of [the underlying core](core.md) can be illustrated e.g. by its [Kubernetes Edition](k8s/index.md). -->
 
-<sub>PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola
-Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub>
+<!-- TODO Re-add, later: <sub>PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub> -->
 
 <script type="application/ld+json">
 {% include "models/enola.dev.jsonld" %}
 </script>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>

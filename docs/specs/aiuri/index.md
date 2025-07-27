@@ -48,6 +48,10 @@ The `model` query parameter of the URI needs to use a model name from https://ol
 
 Note that the _Google (Gemini) AI API_ is a **different** API from the _Google Cloud Vertex AI Platform API._
 
+<!-- TODO Anthropic -->
+
+<!-- TODO OpenAI -->
+
 ### Mock 🦜
 
 `mocklm:hello,%20world` is the URI of a [mock](https://en.wikipedia.org/wiki/Mock_object) LM which, like a 🦜 parrot, always replies with _"hello, world"_ to any prompt.

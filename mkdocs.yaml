@@ -39,10 +39,10 @@ nav:
   #     - Linked Data CLI & Shell:
   - Tutorial:
       - Tutorials: # Just "Linked Data"?
-          - Introduction: index.md
-          - Download: use/index.md
-          - AI Chat: tutorial/chat.md
+          - About: index.md
           - AI Agents: tutorial/agents.md
+          - AI Chat: tutorial/chat.md
+          - Download: use/index.md
           - Hello World: models/example.org/hello.md
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md

@@ -30,12 +30,14 @@ Agents work in [all Chat UXs of Enola](chat.md). Here are some examples to use t
 {% include "../../test/agents/chef-optimist.agent.yaml" %}
 ```
 
-can be used like this to chat with a very optimistic 👨🏽‍🍳 chef:
+can be used like this to chat with a very enthusiastic 👨🏽‍🍳 chef:
 
     docker run --rm --volume "$PWD":/app/CWD/:Z --tty -p7070:7070 \
       -e GOOGLE_AI_API_KEY=... ghcr.io/enola-dev/enola:main \
       server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" \
       --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
+
+[See here](../specs/aiuri/index.md#google-ai-) re. `GOOGLE_AI_API_KEY` etc.
 
 ## Cynical Chef 😾
 
@@ -45,4 +47,4 @@ can be used like this to chat with a very optimistic 👨🏽‍🍳 chef:
 
 can be used by replacing `chef-optimist.agent.yaml` with `chefs-opposites-stream.agent.yaml` in the command above.
 
-The drop-down in the Web UI will let you select the `optimist` _vs._ the `pessimist` chef agent.
+The drop-down in the Web UI will now let you select the `optimist` _vs._ the `pessimist` chef agent.
