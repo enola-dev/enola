@@ -65,8 +65,13 @@ Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL
 
     bazelisk test --test_env=ENOLA.DEV_AZKABAN=/home/YOUR-UID/.config/enola/azkaban.yaml //java/dev/enola/common/secret/auto:tests
 
-Because Bazel might reduce the visible environment, it's best NOT to use `$HOME` but instead just use the full path.
+Note that Bazel [will reduce the visible environment variables](https://bazel.build/reference/test-encyclopedia),
+so if you quote `$HOME` it would be expanded "too late". It's simplest to just use the full path to your home directory.
 
 To run integration tests [in an IDE](../../dev/ide.md), add this environment variable in the Bazel Test launch config.
 
 In configuration UIs of IDEs such as IntelliJ, be careful NOT to accidentally include quotes!
+
+PS: Note that this mechanism (erm, work-around) means that Bazel won't be aware of changes made to this "external" file,
+so it will not re-run tests using new or updated secrets if (only) the content of `azkaban.yaml` change. _TODO: Find a
+smarter way by somehow making the external secret file part of Bazel's build dependencies..._

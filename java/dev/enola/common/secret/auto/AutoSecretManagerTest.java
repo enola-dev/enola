@@ -25,8 +25,8 @@ import java.io.IOException;
 
 public class AutoSecretManagerTest {
 
-    // echo "test: it" >~/keys.yaml
-    // see /docs/use/secret/index.md#tests
+    // echo "test: it" >~/.config/enola/azkaban.yaml
+    // see //docs/use/secret/index.md#tests
 
     @Test
     public void test() throws IOException {
