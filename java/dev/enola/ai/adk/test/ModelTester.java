@@ -22,6 +22,8 @@ import com.google.adk.models.LlmRequest;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import org.junit.ComparisonFailure;
+
 import java.util.List;
 
 public class ModelTester {
@@ -35,12 +37,23 @@ public class ModelTester {
     }
 
     public void assertTextResponseContains(String prompt, String responseMustContain) {
+        var text = invoke(prompt);
+        if (!invoke(prompt).toLowerCase().contains(responseMustContain.toLowerCase()))
+            throw new AssertionError(text + " does not contain: " + responseMustContain);
+    }
+
+    public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
+        var text = invoke(prompt);
+        if (!invoke(prompt).equals(responseMustBeEqualTo))
+            throw new ComparisonFailure("!equals()", responseMustBeEqualTo, text);
+    }
+
+    private String invoke(String prompt) {
         var content = Content.fromParts(Part.fromText(prompt));
         var request = LlmRequest.builder().contents(List.of(content)).build();
         var response = llm.generateContent(request, false).blockingFirst();
         var text = response.content().orElseThrow().text();
         if (text == null) throw new AssertionError("Reponse text is null");
-        if (!text.toLowerCase().contains(responseMustContain.toLowerCase()))
-            throw new AssertionError(text + " does not contain: " + responseMustContain);
+        return text;
     }
 }
