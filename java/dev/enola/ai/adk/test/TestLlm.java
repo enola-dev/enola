@@ -42,7 +42,8 @@ class TestLlm extends BaseLlm {
     private final List<LlmResponse> responseSequence;
     private final AtomicInteger responseIndex = new AtomicInteger(0);
 
-    private final Supplier<Flowable<LlmResponse>> responsesSupplier;
+    // TODO Find a better design than removing final and making protected instead of private?
+    protected Supplier<Flowable<LlmResponse>> responsesSupplier;
 
     public TestLlm(List<LlmResponse> responses) {
         super("test-llm");
