@@ -17,8 +17,6 @@
  */
 package dev.enola.common.secret.auto;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 import dev.enola.common.FreedesktopDirectories;
 import dev.enola.common.exec.ExecPATH;
 import dev.enola.common.secret.*;
@@ -26,7 +24,6 @@ import dev.enola.common.secret.exec.ExecPassSecretManager;
 import dev.enola.common.secret.yaml.YamlSecretManager;
 
 import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,8 +34,6 @@ import java.util.List;
 import java.util.Optional;
 
 public final class AutoSecretManager {
-
-    private static final Logger LOG = getLogger(AutoSecretManager.class);
 
     private static @Nullable SecretManager INSTANCE;
 

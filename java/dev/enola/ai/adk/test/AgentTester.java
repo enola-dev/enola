@@ -19,11 +19,11 @@ package dev.enola.ai.adk.test;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.events.Event;
-import com.google.adk.runner.InMemoryRunner;
 import com.google.common.base.Strings;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import dev.enola.ai.adk.core.UserSessionRunner;
 import dev.enola.common.markdown.Markdown;
 import dev.enola.common.yamljson.JSON;
 
@@ -32,37 +32,29 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import org.junit.ComparisonFailure;
 
-import java.util.Arrays;
-
 public class AgentTester {
 
     // TODO Support Multiple root agents?!
 
+    // TODO Avoid (almost) copy/paste in ModelTester
+
     // TODO Re-write this as a Truth Subject?
 
-    private final BaseAgent agent;
+    private final UserSessionRunner runner;
 
     public AgentTester(BaseAgent agent) {
-        this.agent = agent;
+        this.runner = new UserSessionRunner("tester", agent);
     }
 
     public void assertTextResponseContains(
             String prompt, String... responseMustContainAtLeastOneOf) {
         var response = invoke(prompt);
-
-        for (var responseMustContain : responseMustContainAtLeastOneOf)
-            if (response.toLowerCase().contains(responseMustContain.toLowerCase())) return;
-
-        throw new AssertionError(
-                response
-                        + " does not contain any of: "
-                        + Arrays.toString(responseMustContainAtLeastOneOf));
+        Asserter.assertTextResponseContains(response, responseMustContainAtLeastOneOf);
     }
 
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
         var response = invoke(prompt);
-        if (!response.equalsIgnoreCase(responseMustBeEqualTo))
-            throw new ComparisonFailure("!equalsIgnoreCase", responseMustBeEqualTo, response);
+        Asserter.assertTextResponseEquals(response, responseMustBeEqualTo);
     }
 
     public void assertJsonResponseEquals(String prompt, String expectedJSON) {
@@ -90,46 +82,33 @@ public class AgentTester {
     }
 
     private String invoke(String prompt) {
-        // TODO #HIGH This is *WRONG* cauz this needs to be done per @Test not per assert!
-        String userID = "tester";
-        // NB: Similarly in AiCommand & Chat2Command... TODO reduce copy/paste?
-        InMemoryRunner runner = new InMemoryRunner(agent);
-        var sessionService = runner.sessionService();
-        var session = sessionService.createSession(agent.name(), userID).blockingGet();
-        try {
-            Content userMsg = Content.fromParts(Part.fromText(prompt));
-            Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);
-            // TestSubscriber<Event> testSubscriber = TestSubscriber.create();
-            // eventsFlow.subscribe(testSubscriber);
-            // testSubscriber.assertNoErrors();runConfigBuilder
-            // testSubscriber.assertComplete();
-            // var events = testSubscriber.values();
-            var events =
-                    eventsFlow
-                            .subscribeOn(Schedulers.trampoline())
-                            .observeOn(Schedulers.trampoline())
-                            .blockingIterable();
+        Content userMsg = Content.fromParts(Part.fromText(prompt));
+        Flowable<Event> eventsFlow = runner.runAsync(userMsg);
+        // TestSubscriber<Event> testSubscriber = TestSubscriber.create();
+        // eventsFlow.subscribe(testSubscriber);
+        // testSubscriber.assertNoErrors();runConfigBuilder
+        // testSubscriber.assertComplete();
+        // var events = testSubscriber.values();
+        var events =
+                eventsFlow
+                        .subscribeOn(Schedulers.trampoline())
+                        .observeOn(Schedulers.trampoline())
+                        .blockingIterable();
 
-            var sb = new StringBuilder();
-            for (var event : events) {
-                if (event.content().isPresent()) {
-                    var content = event.content().get();
-                    var text = content.text();
-                    if (!Strings.isNullOrEmpty(text)) sb.append(text);
-                    // TODO Re-review more closely if this is even needed?!
-                    else if (content.parts().isPresent()) {
-                        for (var part : content.parts().get()) {
-                            part.text().ifPresent(sb::append);
-                        }
+        var sb = new StringBuilder();
+        for (var event : events) {
+            if (event.content().isPresent()) {
+                var content = event.content().get();
+                var text = content.text();
+                if (!Strings.isNullOrEmpty(text)) sb.append(text);
+                // TODO Re-review more closely if this is even needed?!
+                else if (content.parts().isPresent()) {
+                    for (var part : content.parts().get()) {
+                        part.text().ifPresent(sb::append);
                     }
                 }
             }
-            return sb.toString();
-
-        } finally {
-            sessionService.closeSession(session);
-            // TODO Propose deleteSession(Sesssion session)
-            sessionService.deleteSession(session.appName(), session.userId(), session.id());
         }
+        return sb.toString();
     }
 }

@@ -75,11 +75,5 @@ final class AI {
         return agent;
     }
 
-    static String userID() {
-        String userID = System.getProperty("user.name");
-        if (userID == null) userID = "CLI";
-        return userID;
-    }
-
     private AI() {}
 }

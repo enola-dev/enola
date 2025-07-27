@@ -19,26 +19,18 @@ package dev.enola.ai.adk.demo;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
-import com.google.adk.events.Event;
 import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
-import com.google.adk.runner.InMemoryRunner;
-import com.google.adk.runner.Runner;
-import com.google.adk.sessions.Session;
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.FunctionTool;
-import com.google.genai.types.Content;
-import com.google.genai.types.Part;
 
-import io.reactivex.rxjava3.core.Flowable;
+import dev.enola.ai.adk.core.CLI;
 
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Demo using <a
@@ -128,44 +120,6 @@ public class QuickstartDemo {
     }
 
     public static void main(String[] args) {
-        String userID = "student";
-        var agent = initAgent();
-        // TODO Persistence (and share to use the same config in DemoAdkWebServer)
-        InMemoryRunner runner = new InMemoryRunner(agent);
-        Session session = runner.sessionService().createSession(agent.name(), userID).blockingGet();
-
-        if (args.length > 0) {
-            var prompt = String.join(" ", args);
-            run(runner, session, prompt);
-            return;
-        }
-
-        // TODO Use JLineIO (but in the non-core package)
-        try (Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8)) {
-            while (true) {
-                System.out.print("\nYou > ");
-                String userInput = scanner.nextLine();
-
-                if ("quit".equalsIgnoreCase(userInput)) {
-                    break;
-                }
-
-                System.out.print("\nAgent > ");
-                run(runner, session, userInput);
-            }
-        }
-    }
-
-    private static void run(Runner runner, Session session, String userInput) {
-        Content userMsg = Content.fromParts(Part.fromText(userInput));
-        Flowable<Event> events = runner.runAsync(session.userId(), session.id(), userMsg);
-        // TODO Don't print function calls, but log them; only print the actual responses.
-        events.blockingForEach(event -> System.out.println(toString(event) + "\n"));
-    }
-
-    private static String toString(Event event) {
-        // event.stringifyContent()
-        // TODO Skip empty fields!
-        return event.toJson();
+        CLI.main(args, initAgent());
     }
 }
