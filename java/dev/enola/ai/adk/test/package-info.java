@@ -15,24 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/** <a href="https://google.github.io/adk-docs/">Agent Development Kit</a> Testing utilities. */
+@NullMarked
 package dev.enola.ai.adk.test;
 
-import com.google.adk.models.LlmResponse;
-import com.google.genai.types.Content;
-import com.google.genai.types.Part;
-
-import java.util.List;
-
-public class MockModel extends TestLlm {
-
-    public MockModel(String reply) {
-        super(create(reply));
-    }
-
-    private static List<LlmResponse> create(String textReply) {
-        var replyParts = List.of(Part.fromText(textReply));
-        var content = Content.builder().role("model").parts(replyParts).build();
-        var llmResponse = LlmResponse.builder().content(content).build();
-        return List.of(llmResponse);
-    }
-}
+import org.jspecify.annotations.NullMarked;
