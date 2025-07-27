@@ -27,6 +27,7 @@ public class AgentTesterTest {
         var agent = new MockAgent("foo");
         var tester = new AgentTester(agent);
         tester.assertTextResponseEquals("...", "foo");
+
         agent.replyWith("bar");
         tester.assertTextResponseEquals("...", "bar");
     }

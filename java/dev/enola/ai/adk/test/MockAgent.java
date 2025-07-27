@@ -46,6 +46,7 @@ public class MockAgent extends BaseAgent {
                         Flowable.just(
                                 Event.builder()
                                         .id(Event.generateEventId())
+                                        .author("MockAgent")
                                         .content(Content.fromParts(Part.fromText(this.reply)))
                                         .build());
     }

@@ -84,6 +84,7 @@ public class LlmProvidersTest {
 
     private void check(BaseLlm model) {
         new ModelTester(model)
-                .assertTextResponseContains("List top 3 cites in Switzerland", "Zurich");
+                .assertTextResponseContains(
+                        "List top 3 cites in Switzerland", "Zurich", "Bern", "Geneva");
     }
 }

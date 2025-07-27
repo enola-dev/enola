@@ -31,6 +31,7 @@ java_library(
         "@enola_maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
+        "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/common/markdown",
         "//java/dev/enola/common/yamljson",
         "@enola_maven//:com_google_adk_google_adk",

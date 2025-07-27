@@ -20,11 +20,11 @@ package dev.enola.cli;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.adk.events.Event;
-import com.google.adk.runner.InMemoryRunner;
-import com.google.adk.runner.Runner;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import dev.enola.ai.adk.core.CLI;
+import dev.enola.ai.adk.core.UserSessionRunner;
 import dev.enola.cli.AiOptions.WithAgentName;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -62,30 +62,26 @@ public class AiCommand extends CommandWithResourceProvider {
         super.run();
         var out = spec.commandLine().getOut();
 
-        var agent = AI.load1(rp, aiOptions);
-        var userID = AI.userID();
-
-        // NB: Similarly in Chat2Command & AgentTester... TODO reduce copy/paste?
-        Runner runner = new InMemoryRunner(agent);
-        var sessionService = runner.sessionService();
-        var session = sessionService.createSession(agent.name(), userID).blockingGet();
-
         if (isNullOrEmpty(prompt))
-            if (promptURL != null) prompt = rp.getReadableResource(promptURL).charSource().read();
+            if (promptURL != null) prompt = rp.getNonNull(promptURL).charSource().read();
             else throw new IllegalArgumentException("No prompt; use --in or --inURL");
 
-        Content userMsg = Content.fromParts(Part.fromText(prompt));
-        Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);
+        var agent = AI.load1(rp, aiOptions);
+        try (var runner = new UserSessionRunner(CLI.userID(), agent)) {
 
-        eventsFlow.blockingSubscribe(
-                event -> {
-                    // TODO stringifyContent() will need to be improved... see also Chat2Command!
-                    out.println(event.stringifyContent());
-                },
-                e -> {
-                    throw e;
-                });
+            // TODO Share code here with dev.enola.ai.adk.core.CLI#run()
 
-        // TODO Close, like in AgentTester? No need, as we're just about to exit the JVM anyways...
+            Content userMsg = Content.fromParts(Part.fromText(prompt));
+            Flowable<Event> eventsFlow = runner.runAsync(userMsg);
+
+            eventsFlow.blockingSubscribe(
+                    event -> {
+                        // TODO stringifyContent() needs to be improved... see also Chat2Command!
+                        out.println(event.stringifyContent());
+                    },
+                    e -> {
+                        throw e;
+                    });
+        }
     }
 }

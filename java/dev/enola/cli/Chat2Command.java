@@ -19,12 +19,12 @@ package dev.enola.cli;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.events.Event;
-import com.google.adk.runner.InMemoryRunner;
-import com.google.adk.runner.Runner;
 import com.google.common.collect.ImmutableMap;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import dev.enola.ai.adk.core.CLI;
+import dev.enola.ai.adk.core.UserSessionRunner;
 import dev.enola.cli.AiOptions.WithAgentName;
 import dev.enola.common.context.TLC;
 import dev.enola.common.linereader.IO;
@@ -113,16 +113,11 @@ public class Chat2Command extends CommandWithResourceProvider {
         }
     }
 
+    // TODO Factor some of this out into new class
+    //   dev.enola.ai.adk.jline.CLI; see also dev.enola.ai.adk.core.CLI
     private void ai(IO io, BaseAgent agent) throws IOException {
-        var userID = AI.userID();
-
-        // NB: Similarly in Chat2Command & AgentTester... TODO reduce copy/paste?
-        Runner runner = new InMemoryRunner(agent);
-        var sessionService = runner.sessionService();
-        var session = sessionService.createSession(agent.name(), userID).blockingGet();
-
         var disposables = new CompositeDisposable();
-        try {
+        try (var runner = new UserSessionRunner(CLI.userID(), agent)) {
             do {
                 var prompt = io.readLine(agent.name() + ">");
                 if (prompt == null
@@ -135,7 +130,7 @@ public class Chat2Command extends CommandWithResourceProvider {
 
                 // TODO Make this "streaming" and trickle in text, instead of wait & print all...
                 Content userMsg = Content.fromParts(Part.fromText(prompt));
-                Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);
+                Flowable<Event> eventsFlow = runner.runAsync(userMsg);
 
                 // TODO stringifyContent() will need to be improved... see also AiCommand!
                 disposables.add(
@@ -144,9 +139,6 @@ public class Chat2Command extends CommandWithResourceProvider {
             } while (true); // TODO Add /quit ?
         } finally {
             disposables.dispose();
-
-            sessionService.closeSession(session);
-            sessionService.deleteSession(session.appName(), session.userId(), session.id());
         }
     }
 
