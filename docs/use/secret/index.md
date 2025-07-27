@@ -23,7 +23,12 @@ The following ones are currently supported:
 
 ## `pass`
 
-We recommend using [`pass`](https://www.passwordstore.org) with GPG on a YubiKey that requires "touch" to decrypt secrets.
+We recommend using [`pass`](https://www.passwordstore.org) with GPG, ideally on a YubiKey that requires "touch" to decrypt secrets.
+
+Enola will store all of its secrets as YAML inside the pass secret named `enola.dev`, i.e. in `~/.password-store/enola.dev.gpg`.
+
+This secret manager is used when `pass` is available on the `PATH` **and** `$HOME/.password-store/enola.dev.gpg` exists.
+On first use, you have to manually enable it once e.g. using `pass edit enola.dev` with a first secret (in YAML syntax).
 
 ## YAML
 
