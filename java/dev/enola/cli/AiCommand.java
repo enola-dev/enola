@@ -19,14 +19,13 @@ package dev.enola.cli;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
-import com.google.adk.agents.BaseAgent;
 import com.google.adk.events.Event;
 import com.google.adk.runner.InMemoryRunner;
 import com.google.adk.runner.Runner;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
-import dev.enola.ai.adk.core.Agents;
+import dev.enola.cli.AiOptions.WithAgentName;
 
 import io.reactivex.rxjava3.core.Flowable;
 
@@ -44,12 +43,7 @@ public class AiCommand extends CommandWithResourceProvider {
     @Spec CommandSpec spec;
 
     @CommandLine.ArgGroup(exclusive = false)
-    @Nullable AiOptions aiOptions;
-
-    @CommandLine.Option(
-            names = {"-d", "--default-agent"},
-            description = "Agent Name; see https://docs.enola.dev/use/ai/")
-    @Nullable String agentName;
+    @Nullable WithAgentName aiOptions;
 
     @CommandLine.Option(
             names = {"--inURL"},
@@ -65,20 +59,13 @@ public class AiCommand extends CommandWithResourceProvider {
 
     @Override
     public void run() throws Exception {
+        super.run();
         var out = spec.commandLine().getOut();
 
-        BaseAgent agent;
-        var agents = AI.load(rp, aiOptions);
-        var agentsMap = Agents.toMap(agents);
-        if (agentsMap.size() == 1) agent = agentsMap.values().iterator().next();
-        else agent = agentsMap.get(agentName);
-        if (agent == null)
-            throw new IllegalArgumentException(
-                    "No such agent: " + agentName + "; only: " + agentsMap.keySet());
+        var agent = AI.load1(rp, aiOptions);
+        var userID = AI.userID();
 
-        // NB: Similarly in AgentTester... TODO reduce copy/paste?
-        String userID = System.getProperty("user.name");
-        if (userID == null) userID = "CLI";
+        // NB: Similarly in Chat2Command & AgentTester... TODO reduce copy/paste?
         Runner runner = new InMemoryRunner(agent);
         var sessionService = runner.sessionService();
         var session = sessionService.createSession(agent.name(), userID).blockingGet();
@@ -86,12 +73,13 @@ public class AiCommand extends CommandWithResourceProvider {
         if (isNullOrEmpty(prompt))
             if (promptURL != null) prompt = rp.getReadableResource(promptURL).charSource().read();
             else throw new IllegalArgumentException("No prompt; use --in or --inURL");
+
         Content userMsg = Content.fromParts(Part.fromText(prompt));
         Flowable<Event> eventsFlow = runner.runAsync(userID, session.id(), userMsg);
 
         eventsFlow.blockingSubscribe(
                 event -> {
-                    // TODO This will need to be improved later...
+                    // TODO stringifyContent() will need to be improved... see also Chat2Command!
                     out.println(event.stringifyContent());
                 },
                 e -> {

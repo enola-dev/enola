@@ -124,7 +124,7 @@ public class JLineIO implements IO, Closeable {
                         .variable(LineReader.MOUSE, true)
                         //
                         .completer(completer)
-                        .option(Option.USE_FORWARD_SLASH, true) // use '/' as directory separator
+                        .option(Option.USE_FORWARD_SLASH, true) // use / as the directory separator
                         .option(Option.AUTO_LIST, true) // Automatically list options
                         .option(Option.LIST_PACKED, true) // Display compact completions
                         .option(Option.AUTO_MENU, true) // Show menu automatically

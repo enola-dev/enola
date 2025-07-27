@@ -25,3 +25,5 @@ The `ai` command [works with Agents](../../tutorial/chat.md) with input from the
 
     $ ./enola ai --llm="google://?model=gemini-2.5-flash-lite" --in="hello, world"
     Hello, world! How can I help you today?
+
+**TODO** _Document how [this also (already) supports](../../tutorial/agents.md) `--agents`..._

@@ -42,4 +42,11 @@ public class AiOptions {
     @Nullable List<URI> agentURIs;
 
     // TODO Agent Resources...
+
+    public static class WithAgentName extends AiOptions {
+        @CommandLine.Option(
+                names = {"-d", "--default-agent"},
+                description = "Agent Name; see https://docs.enola.dev/use/ai/")
+        @Nullable String agentName;
+    }
 }

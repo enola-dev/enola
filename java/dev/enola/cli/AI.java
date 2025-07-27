@@ -21,9 +21,12 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
+import com.google.common.base.Strings;
 
+import dev.enola.ai.adk.core.Agents;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.dotagent.AgentsLoader;
+import dev.enola.cli.AiOptions.WithAgentName;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.secret.auto.AutoSecretManager;
 
@@ -53,6 +56,29 @@ final class AI {
             var agent = LlmAgent.builder().name("AI").model(model).build();
             return Set.of(agent);
         }
+    }
+
+    static BaseAgent load1(ResourceProvider rp, @Nullable WithAgentName aiOptions)
+            throws IOException {
+        BaseAgent agent = null;
+        var agents = AI.load(rp, aiOptions);
+        var agentsMap = Agents.toMap(agents);
+        if (agentsMap.size() == 1) agent = agentsMap.values().iterator().next();
+        if (agent == null)
+            if (aiOptions == null || Strings.isNullOrEmpty(aiOptions.agentName))
+                throw new IllegalArgumentException(
+                        "Use --default-agent to pick the agent: " + agentsMap.keySet());
+            else agent = agentsMap.get(aiOptions.agentName);
+        if (agent == null)
+            throw new IllegalArgumentException(
+                    "No such agent: " + aiOptions.agentName + "; only: " + agentsMap.keySet());
+        return agent;
+    }
+
+    static String userID() {
+        String userID = System.getProperty("user.name");
+        if (userID == null) userID = "CLI";
+        return userID;
     }
 
     private AI() {}

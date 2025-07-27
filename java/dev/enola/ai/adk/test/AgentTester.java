@@ -90,8 +90,8 @@ public class AgentTester {
     }
 
     private String invoke(String prompt) {
-        // NB: Similarly in AiCommand... TODO reduce copy/paste?
         String userID = "tester";
+        // NB: Similarly in AiCommand & Chat2Command... TODO reduce copy/paste?
         InMemoryRunner runner = new InMemoryRunner(agent);
         var sessionService = runner.sessionService();
         var session = sessionService.createSession(agent.name(), userID).blockingGet();
