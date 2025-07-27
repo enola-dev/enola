@@ -17,10 +17,6 @@
  */
 package dev.enola.common.context;
 
-import org.jspecify.annotations.Nullable;
-
-import java.util.function.Supplier;
-
 /**
  * Singleton.
  *
@@ -36,30 +32,24 @@ import java.util.function.Supplier;
  *
  * <p>See also SingleTest for how to use this. TODO Provide 2 inline code examples (main() + Test).
  */
-abstract class SingletonWithTLC<T> implements Supplier<T> {
+abstract class SingletonWithTLC<T> extends Singleton<T> {
 
     // TODO This was a previous version of class Singleton - keep, or now remove?
 
     private final Class<T> klass;
-    private @Nullable T value;
 
     protected SingletonWithTLC(Class<T> klass) {
         this.klass = klass;
     }
 
-    public void set(T value) {
-        if (this.value != null) throw new IllegalStateException();
-        if (value == null) throw new IllegalArgumentException();
-        this.value = value;
-    }
-
     @Override
     public T get() {
-        if (value == null) {
+        // TODO Rethink if this should FIRST check the Singleton and THEN the TLC, or the other way?
+        if (!isSet()) {
             var opt = TLC.optional(klass);
             if (opt.isPresent()) return opt.get();
             throw new IllegalStateException();
-        } else return value;
+        } else return super.get();
     }
 
     // NOT public void reset() { this.value = null; }

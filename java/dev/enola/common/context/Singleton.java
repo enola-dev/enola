@@ -51,7 +51,13 @@ public abstract class Singleton<T> implements Supplier<T> {
     @CanIgnoreReturnValue
     public Singleton<T> set(T value) {
         if (this.value != null && this.value.equals(value)) return this;
-        if (this.value != null) throw new IllegalStateException();
+        if (this.value != null)
+            throw new IllegalStateException(
+                    "Singleton value already set to "
+                            + this.value
+                            + " - cannot set to "
+                            + value
+                            + " again!");
         if (value == null) throw new IllegalArgumentException("Use reset() instead of set(null)");
         this.value = value;
         return this;
@@ -69,6 +75,7 @@ public abstract class Singleton<T> implements Supplier<T> {
         return Optional.ofNullable(value);
     }
 
+    // @VisibleForTesting // Not worth depending on Guava JUST for this...
     // TODO Make Move SingletonRule to this package, and make this package private!
     public void reset() {
         if (value == null) throw new IllegalStateException();
