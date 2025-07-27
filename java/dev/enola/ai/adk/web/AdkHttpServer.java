@@ -24,6 +24,7 @@ import com.google.adk.web.config.AgentLoadingProperties;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.adk.core.Agents;
+import dev.enola.common.rx.RxJavaPluginsSetup;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.Banner;
@@ -53,6 +54,8 @@ public class AdkHttpServer implements AutoCloseable {
     private AdkHttpServer(ConfigurableApplicationContext springContext, int httpPort) {
         this.springContext = springContext;
         this.httpPort = httpPort;
+
+        RxJavaPluginsSetup.setUp();
     }
 
     public static synchronized void agents(Iterable<BaseAgent> agents) {
