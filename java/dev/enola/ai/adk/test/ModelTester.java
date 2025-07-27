@@ -38,7 +38,7 @@ public class ModelTester {
 
     public void assertTextResponseContains(String prompt, String responseMustContain) {
         var text = invoke(prompt);
-        if (!invoke(prompt).toLowerCase().contains(responseMustContain.toLowerCase()))
+        if (!text.toLowerCase().contains(responseMustContain.toLowerCase()))
             throw new AssertionError(text + " does not contain: " + responseMustContain);
     }
 
