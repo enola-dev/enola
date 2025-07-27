@@ -46,6 +46,4 @@ For more details, see [`chat`](../use/chat/index.md#ai).
 
 ## AI CLI
 
-???+ info
-
-    The Enola CLI will soon also have a non-interactive "batch" AI CLI mode; watch this space!
+See [`ai` command](../use/ai/index.md).

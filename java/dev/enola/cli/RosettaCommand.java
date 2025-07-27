@@ -46,13 +46,13 @@ public class RosettaCommand extends CommandWithResourceProviderAndLoader {
     @CommandLine.Option(
             names = {"--in"},
             required = true,
-            description = "URI to Input (e.g. file:model.json)")
+            description = "URI to Input (e.g. model.json)")
     URI in;
 
     @CommandLine.Option(
             names = {"--out", "--output", "-o"},
             required = true,
-            description = "URI to Output (e.g. file:model.yaml)")
+            description = "URI to Output (e.g. model.yaml)")
     URI out;
 
     @Override

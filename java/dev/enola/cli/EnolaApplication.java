@@ -51,6 +51,7 @@ import picocli.CommandLine.Mixin;
             CanonicalizeCommand.class,
             FetchCommand.class,
             ChatCommand.class,
+            AiCommand.class
         })
 public class EnolaApplication extends Application {
 

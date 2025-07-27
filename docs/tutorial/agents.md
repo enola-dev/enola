@@ -37,7 +37,7 @@ can be used like this to chat with a very enthusiastic 👨🏽‍🍳 chef:
       server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" \
       --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
 
-[See here](../specs/aiuri/index.md#google-ai-) re. `GOOGLE_AI_API_KEY` etc.
+[See here](../specs/aiuri/index.md#google-ai) re. `GOOGLE_AI_API_KEY` etc.
 
 ## Cynical Chef 😾
 

@@ -44,6 +44,15 @@ $ ./enola help chat
 ...
 ```
 
+## AI
+
+[AI](../ai/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help ai
+...
+```
+
 ## DocGen
 
 [Documentation Generation](../docgen/index.md) has the following options:
