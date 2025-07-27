@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public final class AutoSecretManager {
@@ -79,36 +81,29 @@ public final class AutoSecretManager {
     private static SecretManager create() throws IOException {
         // TODO Add support for GnomeSecretManager, using class DesktopDetector
 
+        List<SecretManager> secretManagers = new ArrayList<>();
+
+        // TODO Move this into TestSecretManager?
         if (System.getenv("BAZEL_TEST") != null) {
-            // TODO Move this into TestSecretManager?
             var azkaban = System.getenv("ENOLA.DEV_AZKABAN");
-            if (azkaban == null) {
-                LOG.warn("No Secrets! Set ENOLA.DEV_AZKABAN under BAZEL_TEST for test secrets.");
-                return new UnavailableSecretManager();
-            } else {
+            if (azkaban != null) {
                 var azkabanPath = Path.of(azkaban);
                 if (azkabanPath.toFile().exists()) {
-                    return new InsecureUnencryptedYamlFileSecretManager(azkabanPath);
-                } else {
-                    LOG.warn("ENOLA.DEV_AZKABAN is set, but does not exist: {}", azkabanPath);
-                    return new UnavailableSecretManager();
+                    secretManagers.add(new InsecureUnencryptedYamlFileSecretManager(azkabanPath));
                 }
             }
-        } else {
-            SecretManager primary;
-            var pass = yamlInExecPass();
-            if (pass.isPresent()) primary = pass.get();
-            else {
-                LOG.debug(
-                        "The ExecPassSecretManager is N/A, so using"
-                                + " InsecureUnencryptedYamlFileSecretManager");
-                primary =
-                        new InsecureUnencryptedYamlFileSecretManager(
-                                FreedesktopDirectories.PLAINTEXT_VAULT_FILE);
-            }
-            return new SecretManagerChain(
-                    primary, new JavaPropertySecretManager(), new EnvironmentSecretManager());
         }
+
+        var pass = yamlInExecPass();
+        if (pass.isPresent()) secretManagers.add(pass.get());
+        else
+            secretManagers.add(
+                    new InsecureUnencryptedYamlFileSecretManager(
+                            FreedesktopDirectories.PLAINTEXT_VAULT_FILE));
+
+        secretManagers.add(new JavaPropertySecretManager());
+        secretManagers.add(new EnvironmentSecretManager());
+        return new SecretManagerChain(secretManagers);
     }
 
     private AutoSecretManager() {}

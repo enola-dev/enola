@@ -17,9 +17,13 @@
  */
 package dev.enola.common.secret;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public class SecretManagerChain implements SecretManager {
@@ -27,13 +31,19 @@ public class SecretManagerChain implements SecretManager {
     private final SecretManager primary;
     private final ImmutableList<SecretManager> secondaries;
 
-    public SecretManagerChain(SecretManager primary, ImmutableList<SecretManager> secondaries) {
-        this.primary = primary;
-        this.secondaries = secondaries;
+    public SecretManagerChain(SecretManager primary, List<SecretManager> secondaries) {
+        this.primary = requireNonNull(primary);
+        this.secondaries = ImmutableList.copyOf(secondaries);
     }
 
     public SecretManagerChain(SecretManager primary, SecretManager... secondaries) {
         this(primary, ImmutableList.copyOf(secondaries));
+    }
+
+    public SecretManagerChain(List<SecretManager> managers) {
+        this(
+                requireNonNull(Iterables.getFirst(managers, new UnavailableSecretManager())),
+                managers.subList(1, managers.size()));
     }
 
     @Override
