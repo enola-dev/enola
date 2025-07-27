@@ -20,9 +20,6 @@ java_library(
     name = "context",
     srcs = glob(
         ["*.java"],
-        exclude = [
-            "*Test.java",
-        ],
     ),
     visibility = ["//:__subpackages__"],
     deps = [

@@ -48,21 +48,25 @@ public class SecretManagerTLC implements SecretManager {
 
     @Override
     public void store(String key, char[] value) throws IOException {
-        TLC.optional(SecretManager.class).orElse(fallback).store(key, value);
+        delegate().store(key, value);
     }
 
     @Override
     public Optional<Secret> getOptional(String key) throws IOException {
-        return TLC.optional(SecretManager.class).orElse(fallback).getOptional(key);
+        return delegate().getOptional(key);
     }
 
     @Override
     public Secret get(String key) throws IllegalStateException, IOException {
-        return TLC.optional(SecretManager.class).orElse(fallback).get(key);
+        return delegate().get(key);
     }
 
     @Override
     public void delete(String key) throws IOException {
-        TLC.optional(SecretManager.class).orElse(fallback).delete(key);
+        delegate().delete(key);
+    }
+
+    private SecretManager delegate() {
+        return TLC.optional(SecretManager.class).orElse(fallback);
     }
 }
