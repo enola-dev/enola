@@ -28,6 +28,7 @@ import dev.enola.common.secret.yaml.YamlSecretManager;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
@@ -48,15 +49,19 @@ public final class AutoSecretManager {
 
     private static Optional<SecretManager> yamlInExecPass() throws IOException {
         if (!ExecPATH.scan().containsKey("pass")) return Optional.empty();
+
         var id = "enola.dev"; // TODO Use (~) FreedesktopDirectories
-        var TD = "Please create (empty) pass edit " + id;
+        var homeDir = System.getProperty("user.home");
+        if (homeDir == null) return Optional.empty();
+        if (!new File(homeDir, ".password-store/" + id + ".gpg").exists()) return Optional.empty();
+
         var pass = new ExecPassSecretManager(true);
         return Optional.of(
                 new YamlSecretManager(
                         input -> pass.store(id, input.toCharArray()),
                         () ->
                                 pass.getOptional(id)
-                                        .orElseThrow(() -> new IOException(TD))
+                                        .orElseThrow(() -> new IOException("No " + id))
                                         .map(String::new)));
     }
 
