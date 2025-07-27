@@ -61,7 +61,7 @@ Which one is used is currently automatically determined. This may be made more c
 
 ## Tests
 
-Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. If it's not set, then no secrets are available. We test for the presence of secrets and skip tests if the required is not available. Launch such integration tests like this, as the `test.bash` script also does:
+Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. Launch such integration tests like this, as the `test.bash` script also does:
 
     bazelisk test --test_env=ENOLA.DEV_AZKABAN=/home/YOUR-UID/.config/enola/azkaban.yaml //java/dev/enola/common/secret/auto:tests
 
@@ -69,9 +69,13 @@ Note that Bazel [will reduce the visible environment variables](https://bazel.bu
 so if you quote `$HOME` it would be expanded "too late". It's simplest to just use the full path to your home directory.
 
 To run integration tests [in an IDE](../../dev/ide.md), add this environment variable in the Bazel Test launch config.
+(Alternatively, when manually launching individual tests, you also just set a JVM property or environment variable,
+because it will ultimately fall back to those secret managers, even when running tests.)
 
 In configuration UIs of IDEs such as IntelliJ, be careful NOT to accidentally include quotes!
 
 PS: Note that this mechanism (erm, work-around) means that Bazel won't be aware of changes made to this "external" file,
 so it will not re-run tests using new or updated secrets if (only) the content of `azkaban.yaml` change. _TODO: Find a
 smarter way by somehow making the external secret file part of Bazel's build dependencies..._
+
+PPS: We test for the presence of secrets and skip tests if the required secret is not available.
