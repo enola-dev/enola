@@ -20,6 +20,7 @@ package dev.enola.common.secret.context;
 import dev.enola.common.context.TLC;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.UnavailableSecretManager;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import java.util.Optional;
 /**
  * SecretManagerTLC is a {@link SecretManager} implementation that looks up the current {@link
  * SecretManager} from the {@link TLC}. If it's not found there, then it falls back to one passed to
- * the constructor, which defaults to an UnavailableSecretManager.
+ * the constructor, which defaults to an {@link dev.enola.common.secret.UnavailableSecretManager}.
  */
 public class SecretManagerTLC implements SecretManager {
 
@@ -39,6 +40,10 @@ public class SecretManagerTLC implements SecretManager {
     /** Creates a new instance which falls back to the SecretManager passed to this constructor. */
     public SecretManagerTLC(SecretManager fallback) {
         this.fallback = fallback;
+    }
+
+    public SecretManagerTLC() {
+        this(new UnavailableSecretManager());
     }
 
     @Override

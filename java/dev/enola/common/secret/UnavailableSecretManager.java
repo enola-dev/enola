@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.secret.auto;
-
-import dev.enola.common.secret.Secret;
-import dev.enola.common.secret.SecretManager;
+package dev.enola.common.secret;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public class UnavailableSecretManager implements SecretManager {
-    // TODO Move UnavailableSecretManager from secret.auto to just parent secret package.
 
     @Override
     public void store(String key, char[] value) throws IOException {
