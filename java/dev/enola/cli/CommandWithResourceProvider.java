@@ -106,7 +106,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
         builder.add(new DataResource.Provider());
         builder.add(new MultibaseResource.Provider());
         builder.add(new EmptyResource.Provider());
-        builder.add(new StringResource.Provider());
+        builder.add(new StringResource.Provider()); // TODO Remove...
         if (file) {
             builder.add(new FileResource.Provider());
             builder.add(new FileDescriptorResource.Provider());
