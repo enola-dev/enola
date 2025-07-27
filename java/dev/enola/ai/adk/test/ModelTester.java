@@ -44,7 +44,7 @@ public class ModelTester {
 
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
         var text = invoke(prompt);
-        if (!invoke(prompt).equals(responseMustBeEqualTo))
+        if (!text.equals(responseMustBeEqualTo))
             throw new ComparisonFailure("!equals()", responseMustBeEqualTo, text);
     }
 
