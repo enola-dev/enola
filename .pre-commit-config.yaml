@@ -124,7 +124,7 @@ repos:
     rev: v0.17.2
     hooks:
       - id: markdownlint-cli2
-        exclude: (^.github/|test/|docs/use/docgen/docgen.md)
+        exclude: (^.github/|test/|docs/use/docgen/docgen.md|docs/index.md)
 
     # TODO Deactivated since
     #   * Even with older version it sometimes just fails without showing errors

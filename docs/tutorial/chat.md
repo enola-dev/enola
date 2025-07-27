@@ -18,7 +18,7 @@
 
 # AI Chat 💬 Tutorial
 
-You can interact with Enola's AI using any of the following commands.
+You can interact with Enola's AI using any of the following [commands](../use/help/index.md).
 
 They all have an `--agents` argument to configure [AI Agents](agents.md).
 
