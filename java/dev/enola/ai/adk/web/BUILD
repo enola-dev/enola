@@ -39,6 +39,7 @@ java_library(
     deps = [
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/test",
+        "//java/dev/enola/common/rx",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_adk_google_adk_dev",
         "@enola_maven//:com_google_guava_guava",
