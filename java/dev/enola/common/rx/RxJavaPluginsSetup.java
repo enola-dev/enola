@@ -19,6 +19,8 @@ package dev.enola.common.rx;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import static java.util.Objects.requireNonNull;
+
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
@@ -27,6 +29,11 @@ import org.slf4j.Logger;
 public final class RxJavaPluginsSetup {
 
     private static final Logger LOG = getLogger(RxJavaPluginsSetup.class);
+
+    private static final Consumer<? super Throwable> ERROR_HANDLER =
+            throwable -> {
+                LOG.warn("Uncaught RxJava exception: {}", throwable.getMessage(), throwable);
+            };
 
     public static void setUp() {
         errorHandler();
@@ -40,13 +47,8 @@ public final class RxJavaPluginsSetup {
         var errorHandler = RxJavaPlugins.getErrorHandler();
         if (errorHandler != null && errorHandler != ERROR_HANDLER) {
             LOG.error("RxJavaErrorHandler already set: {}", errorHandler);
-        } else RxJavaPlugins.setErrorHandler(ERROR_HANDLER);
+        } else RxJavaPlugins.setErrorHandler(requireNonNull(ERROR_HANDLER));
     }
-
-    private static final Consumer<? super Throwable> ERROR_HANDLER =
-            throwable -> {
-                LOG.warn("Uncaught RxJava exception: {}", throwable.getMessage(), throwable);
-            };
 
     private RxJavaPluginsSetup() {}
 }
