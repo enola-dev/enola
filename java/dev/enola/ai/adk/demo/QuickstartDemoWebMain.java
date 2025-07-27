@@ -15,23 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.web;
+package dev.enola.ai.adk.demo;
 
-import com.google.adk.agents.BaseAgent;
-
-import dev.enola.ai.adk.core.QuickstartDemo;
-import dev.enola.ai.adk.test.MockAgent;
+import dev.enola.ai.adk.web.AdkHttpServer;
 
 public class QuickstartDemoWebMain {
 
-    static BaseAgent demo() {
-        return System.getenv("GOOGLE_API_KEY") != null
-                ? QuickstartDemo.initAgent()
-                : new MockAgent("bar");
-    }
+    // TODO Move to QuickstartDemo.main() and merge with CLI
 
     public static void main(String[] args) {
-        AdkHttpServer.agent(demo());
+        AdkHttpServer.agent(QuickstartDemo.initAgent());
         AdkHttpServer.start(8080);
+        System.out.println("Quickstart demo started on http://localhost:8080");
     }
 }

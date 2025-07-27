@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.core;
+package dev.enola.ai.adk.demo;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;

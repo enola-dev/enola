@@ -90,6 +90,7 @@ public class AgentTester {
     }
 
     private String invoke(String prompt) {
+        // TODO #HIGH This is *WRONG* cauz this needs to be done per @Test not per assert!
         String userID = "tester";
         // NB: Similarly in AiCommand & Chat2Command... TODO reduce copy/paste?
         InMemoryRunner runner = new InMemoryRunner(agent);
