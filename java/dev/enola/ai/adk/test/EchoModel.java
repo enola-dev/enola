@@ -17,35 +17,30 @@
  */
 package dev.enola.ai.adk.test;
 
-import com.google.adk.models.BaseLlm;
-import com.google.adk.models.BaseLlmConnection;
 import com.google.adk.models.LlmRequest;
 import com.google.adk.models.LlmResponse;
+import com.google.genai.types.Content;
 
 import io.reactivex.rxjava3.core.Flowable;
 
-public class EchoModel extends BaseLlm {
+public class EchoModel extends TestLlm {
 
     public EchoModel() {
-        super("Echo");
+        // TODO Fix this ugly temporary hack...
+        super(() -> null);
+        this.responsesSupplier = () -> Flowable.just(echo(getLastRequest()));
     }
 
-    @Override
-    public Flowable<LlmResponse> generateContent(LlmRequest llmRequest, boolean stream) {
-        var requestContents = llmRequest.contents();
-        if (requestContents.size() == 1) {
-            var requestContent = requestContents.getFirst();
-            return Flowable.just(LlmResponse.builder().content(requestContent).build());
-        } else if (requestContents.isEmpty()) {
-            return Flowable.just(LlmResponse.builder().build());
-        } else // requestContents.size() > 1
-            // TODO Or should we just log a warning and return only the first content?!
-            throw new IllegalArgumentException("Cannot echo requests with more than one content");
-    }
-
-    @Override
-    public BaseLlmConnection connect(LlmRequest llmRequest) {
-        // TODO How should EchoModel implement connect() ?! See also MockModel.
-        throw new UnsupportedOperationException("EchoModel does not yet support connections!");
+    private LlmResponse echo(LlmRequest llmRequest) {
+        var builder = LlmResponse.builder();
+        llmRequest.contents().stream()
+                .map(
+                        content -> {
+                            var copy = Content.builder().role("model");
+                            content.parts().ifPresent(copy::parts);
+                            return copy.build();
+                        })
+                .forEach(builder::content);
+        return builder.build();
     }
 }
