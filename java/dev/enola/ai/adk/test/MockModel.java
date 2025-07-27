@@ -21,18 +21,20 @@ import com.google.adk.models.LlmResponse;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
+import io.reactivex.rxjava3.core.Flowable;
+
 import java.util.List;
 
 public class MockModel extends TestLlm {
 
     public MockModel(String reply) {
-        super(create(reply));
+        super(() -> create(reply));
     }
 
-    private static List<LlmResponse> create(String textReply) {
+    private static Flowable<LlmResponse> create(String textReply) {
         var replyParts = List.of(Part.fromText(textReply));
         var content = Content.builder().role("model").parts(replyParts).build();
         var llmResponse = LlmResponse.builder().content(content).build();
-        return List.of(llmResponse);
+        return Flowable.just(llmResponse);
     }
 }

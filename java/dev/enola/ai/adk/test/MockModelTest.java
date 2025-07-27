@@ -24,7 +24,12 @@ public class MockModelTest {
     @Test
     public void mock() {
         var model = new MockModel("bar");
-        new ModelTester(model).assertTextResponseContains("foo", "bar");
+        var modelTester = new ModelTester(model);
+
+        modelTester.assertTextResponseEquals("foo", "bar");
         // TODO assertThat(model).prompt("foo").responseContains("bar");
+
+        // Prompt it again, and it should reply with "bar" again (not with nothing, or error)
+        modelTester.assertTextResponseEquals("foo", "bar");
     }
 }
