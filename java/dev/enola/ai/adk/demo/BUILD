@@ -43,6 +43,8 @@ java_library(
     deps = [
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/ai/adk/web",
+        "//java/dev/enola/ai/iri",
+        "//java/dev/enola/common/io/iri",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",
