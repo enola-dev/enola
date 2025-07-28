@@ -25,6 +25,7 @@ import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.FunctionTool;
 
 import dev.enola.ai.adk.core.CLI;
+import dev.enola.ai.adk.web.AdkHttpServer;
 
 import java.text.Normalizer;
 import java.time.ZoneId;
@@ -120,6 +121,11 @@ public class QuickstartDemo {
     }
 
     public static void main(String[] args) {
-        CLI.main(args, initAgent());
+        var agent = initAgent();
+
+        AdkHttpServer.start(agent, 8080);
+        System.out.println("Web UI started on http://localhost:8080");
+
+        CLI.main(args, agent);
     }
 }

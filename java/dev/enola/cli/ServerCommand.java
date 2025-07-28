@@ -85,8 +85,7 @@ public class ServerCommand extends CommandWithModel {
         // Chat (ADK) UI
         if (ports.chatPort != null) {
             var agents = AI.load(rp, aiOptions);
-            AdkHttpServer.agents(agents);
-            chatServer = AdkHttpServer.start(ports.chatPort);
+            chatServer = AdkHttpServer.start(agents, ports.chatPort);
             out.println(
                     "HTTP Chat UI server started; open http://localhost:"
                             + ports.chatPort

@@ -30,8 +30,7 @@ public class AdkHttpServerTest {
 
     @Test
     public void startStop() throws Exception {
-        AdkHttpServer.agent(new MockAgent("hello, world"));
-        try (var server = AdkHttpServer.start(0)) {
+        try (var server = AdkHttpServer.start(new MockAgent("hello, world"), 0)) {
             var tester = new OkHttpResource("http://localhost:" + server.httpPort());
             var html = tester.charSource().read();
             assertThat(html).contains("<title>Agent Development Kit Dev UI</title>");
