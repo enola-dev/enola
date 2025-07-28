@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,38 +18,37 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "iri",
+    name = "tool",
     srcs = glob(
-        [
-            "*.java",
-        ],
+        ["*.java"],
         exclude = [
             "*Test.java",
         ],
     ),
     visibility = ["//:__subpackages__"],
+    runtime_deps = [
+        # Google GenAI uses Apache HttpComponents which uses Apache Commons Logging, which this bridges into SLF4j!
+        "@enola_maven//:org_slf4j_jcl_over_slf4j",
+    ],
     deps = [
-        "//java/dev/enola/common/context",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_truth_truth",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
         "@enola_maven//:org_jspecify_jspecify",
+        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
 junit_tests(
     name = "tests",
     srcs = glob(
-        include = [
-            "*Test.java",
-        ],
-        allow_empty = True,
+        ["*Test.java"],
     ),
     deps = [
-        ":iri",
-        "//java/dev/enola/common/context",
-        "//test",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
-        "@enola_maven//:org_jspecify_jspecify",
+        ":tool",
+        "//java/dev/enola/ai/adk/iri",
+        "//java/dev/enola/ai/adk/test",
+        "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:io_reactivex_rxjava3_rxjava",
     ],
 )
