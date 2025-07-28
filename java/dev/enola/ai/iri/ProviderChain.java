@@ -31,10 +31,6 @@ public class ProviderChain<X, T extends Provider<X>> implements Provider<X> {
         this.providers = ImmutableList.copyOf(providers);
     }
 
-    public ProviderChain(T... providers) {
-        this(ImmutableList.copyOf(providers));
-    }
-
     @Override
     public Iterable<String> uriTemplates() {
         var uriTemplates = new ImmutableList.Builder<String>();

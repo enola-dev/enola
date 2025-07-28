@@ -25,36 +25,13 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
 
 import dev.enola.ai.adk.test.ModelTester;
-import dev.enola.ai.iri.GoogleModelProvider;
-import dev.enola.ai.iri.Provider;
-import dev.enola.common.Net;
+import dev.enola.ai.iri.*;
 import dev.enola.common.secret.InMemorySecretManager;
-import dev.enola.common.secret.SecretManager;
-import dev.enola.common.secret.UnavailableSecretManager;
-import dev.enola.common.secret.auto.TestSecretManager;
 
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class LlmProvidersTest {
     // See also the similarly structured ChatModelProviderTest
-
-    @Test
-    public void mock() {
-        var provider = new LlmProviders(new UnavailableSecretManager());
-        var uri = new MockLlmProvider().uriExamples().iterator().next();
-        var model = provider.get(uri);
-        new ModelTester(model).assertTextResponseContains("What up?", "hello");
-    }
-
-    @Test
-    public void echo() {
-        var provider = new LlmProviders(new UnavailableSecretManager());
-        var uri = new EchoLlmProvider().uriExamples().iterator().next();
-        var model = provider.get(uri);
-        new ModelTester(model).assertTextResponseContains("What up?", "What up?");
-    }
 
     @Test
     public void geminiUnitTest() {
@@ -64,23 +41,35 @@ public class LlmProvidersTest {
         assertThat(provider.get(uri)).isInstanceOf(Gemini.class);
     }
 
-    @Test
-    public void geminiIntegrationTest() throws IOException {
-        SecretManager secretManager = new TestSecretManager();
-        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+    Provider<BaseLlm> p = new TestsLlmProvider();
 
-        Provider<BaseLlm> p = new LlmProviders(secretManager);
-        var geminiFlash = p.get(GoogleModelProvider.FLASH);
-        check(geminiFlash);
+    @Test
+    public void mock() {
+        var model = p.get(MockModelProvider.EXAMPLE_URI);
+        new ModelTester(model).assertTextResponseContains("What up?", "hello");
     }
 
     @Test
-    public void ollama() {
-        if (!Net.portAvailable(11434)) return;
-        var provider = new LlmProviders(new UnavailableSecretManager());
-        var uri = new OllamaLlmProvider().uriExamples().iterator().next();
-        check(provider.get(uri));
+    public void echo() {
+        var model = p.get(EchoModelProvider.ECHO_URI);
+        new ModelTester(model).assertTextResponseContains("What up?", "What up?");
     }
+
+    @Test
+    public void geminiFlashLiteIntegrationTest() {
+        var model = p.optional(GoogleModelProvider.FLASH_LITE);
+        if (model.isEmpty()) return;
+        check(model.get());
+    }
+
+    @Test
+    public void ollamaGemma31bIntegrationTest() {
+        var model = p.optional(OllamaLlmProvider.GEMMA3_1B);
+        if (model.isEmpty()) return;
+        check(model.get());
+    }
+
+    // TODO anthropicIntegrationTest()
 
     private void check(BaseLlm model) {
         new ModelTester(model)

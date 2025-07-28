@@ -33,6 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * AutoSecretManager offers an {@link #INSTANCE} of {@link SecretManager} which implements <a
+ * href="https://docs.enola.dev/use/secret/">the logic described here</a>.
+ */
 public final class AutoSecretManager {
 
     private static @Nullable SecretManager INSTANCE;

@@ -40,6 +40,7 @@ import java.net.URI;
 
 public class DotPrompt2LlmAgentTest {
 
+    // TODO Use TestsLlmProvider ? Or why not just directly MockChatModel.Provider?
     URI defaultLLM = URI.create("mocklm:hello");
     SecretManager secretManager = new TestSecretManager();
     Provider<BaseLlm> llmProvider = new LlmProviders(secretManager);
@@ -61,7 +62,7 @@ public class DotPrompt2LlmAgentTest {
     public void template() throws IOException {
         var dotPromptLoader = new DotPromptLoader(rp, defaultLLM);
         var dotPrompt = dotPromptLoader.load(URI.create("classpath:/prompts/person.prompt.md"));
-        dotPrompt.model = EchoModelProvider.ECHO_URI;
+        dotPrompt.model = EchoModelProvider.ECHO_URI.toString();
         var agent = loader.convert(dotPrompt);
         var tester = new AgentTester(agent);
 

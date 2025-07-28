@@ -15,8 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.demo;
+package dev.enola.ai.adk.tool;
 
+import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.adk.iri.TestsLlmProvider;
@@ -28,28 +29,24 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class QuickstartDemoTest {
+public class DateTimeToolTest {
 
     Provider<BaseLlm> p = new TestsLlmProvider();
 
     @Test
-    public void test() throws IOException {
-        var model = p.optional(GoogleModelProvider.FLASH_LITE);
+    public void geminiFlashLite() throws IOException {
+        var model = p.optional(GoogleModelProvider.FLASH);
         if (model.isEmpty()) return;
 
-        var agent = QuickstartDemo.initAgent(model.get());
+        var agent =
+                LlmAgent.builder()
+                        .name("DateTimeToolTest")
+                        .model(model.get())
+                        .tools(DateTimeTool.INSTANCE)
+                        .build();
 
-        var tester = new AgentTester(agent);
-        tester.assertTextResponseContains(
-                "What's the weather in New York?", QuickstartDemo.NYC_WEATHER);
-
-        tester.assertTextResponseContains(
+        var agentTester = new AgentTester(agent);
+        agentTester.assertTextResponseContains(
                 "What's the time in Zürich?", "The current time in Zürich is ");
-
-        // TODO Test status=error vs success
-        tester.assertTextResponseContains("What's the time now in Lausanne?", "sorry");
-        // TODO lower temperature (?) to reduce variability?
-        //   "Sorry, I don't have timezone information for Lausanne"
-        //   "Sorry, I am not able to retrieve the current time in Lausanne."
     }
 }

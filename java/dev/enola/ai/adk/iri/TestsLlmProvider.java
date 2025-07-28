@@ -18,22 +18,31 @@
 package dev.enola.ai.adk.iri;
 
 import com.google.adk.models.BaseLlm;
-import com.google.common.collect.ImmutableList;
 
-import dev.enola.ai.iri.CachingProvider;
-import dev.enola.ai.iri.ProviderChain;
-import dev.enola.common.secret.SecretManager;
+import dev.enola.ai.iri.DelegatingProvider;
+import dev.enola.common.secret.auto.TestSecretManager;
 
-public class LlmProviders extends CachingProvider<BaseLlm> {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    public LlmProviders(SecretManager secretManager) {
-        super(
-                new ProviderChain<>(
-                        ImmutableList.of(
-                                new GoogleLlmProvider(secretManager),
-                                // TODO new AnthropicLlmProvider(secretManager),
-                                new OllamaLlmProvider(),
-                                new MockLlmProvider(),
-                                new EchoLlmProvider())));
+import java.net.URI;
+import java.util.Optional;
+
+public class TestsLlmProvider extends DelegatingProvider<BaseLlm> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestsLlmProvider.class);
+
+    public TestsLlmProvider() {
+        super(new LlmProviders(new TestSecretManager()));
+    }
+
+    @Override
+    public Optional<BaseLlm> optional(URI uri) {
+        try {
+            return delegate.optional(uri);
+        } catch (Exception e) {
+            LOG.warn("Failed to create LLM for URI: {}", uri, e);
+            return Optional.empty();
+        }
     }
 }

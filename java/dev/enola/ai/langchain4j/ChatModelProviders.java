@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.langchain4j;
 
+import com.google.common.collect.ImmutableList;
+
 import dev.enola.ai.iri.CachingProvider;
 import dev.enola.ai.iri.ProviderChain;
 import dev.enola.common.secret.SecretManager;
@@ -27,8 +29,9 @@ public class ChatModelProviders extends CachingProvider<StreamingChatModel> {
     public ChatModelProviders(SecretManager secretManager) {
         super(
                 new ProviderChain<>(
-                        new OllamaChatModelProvider(),
-                        new GoogleChatModelProvider(secretManager),
-                        new MockChatModel.Provider()));
+                        ImmutableList.of(
+                                new OllamaChatModelProvider(),
+                                new GoogleChatModelProvider(secretManager),
+                                new MockChatModel.Provider())));
     }
 }
