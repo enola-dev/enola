@@ -37,12 +37,12 @@ import java.util.Optional;
  */
 public abstract class GoogleModelProvider<T> implements Provider<T> {
 
-    private static final String SCHEME = "google";
-
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
+
+    private static final String SCHEME = "google";
+    public static final URI FLASH_LITE = URI.create(SCHEME + "://?model=gemini-2.5-flash-lite");
     public static final URI FLASH = URI.create(SCHEME + "://?model=gemini-2.5-flash");
-    public static final URI FLASH_LITE =
-            URI.create(SCHEME + "://?model=gemini-2.5-flash-lite-preview-06-17");
+    public static final URI PRO = URI.create(SCHEME + "://?model=gemini-2.5-pro");
 
     protected final SecretManager secretManager;
 
