@@ -17,24 +17,19 @@
  */
 package dev.enola.ai.adk.demo;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
-import com.google.adk.models.Gemini;
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.FunctionTool;
 
 import dev.enola.ai.adk.core.CLI;
+import dev.enola.ai.adk.iri.LlmProviders;
+import dev.enola.ai.adk.tool.DateTimeTool;
 import dev.enola.ai.adk.web.AdkHttpServer;
 import dev.enola.ai.iri.GoogleModelProvider;
-import dev.enola.common.io.iri.URIs;
+import dev.enola.common.secret.auto.AutoSecretManager;
 
-import java.text.Normalizer;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -50,15 +45,6 @@ public class QuickstartDemo {
             "The weather in New York is sunny with a temperature of 25 degrees Celsius (77"
                     + " degrees Fahrenheit).";
 
-    public static BaseAgent initAgent() {
-        return initAgent(System.getenv("GOOGLE_API_KEY"));
-    }
-
-    public static BaseAgent initAgent(String apiKey) {
-        var model = URIs.getQueryMap(GoogleModelProvider.FLASH_LITE).get("model");
-        return initAgent(new Gemini(requireNonNull(model), apiKey));
-    }
-
     public static BaseAgent initAgent(BaseLlm baseLLM) {
         return LlmAgent.builder()
                 .name("multi_tool_agent")
@@ -68,45 +54,10 @@ public class QuickstartDemo {
                         "You are a helpful agent who can answer user questions about the time and"
                                 + " weather in a city.")
                 .tools(
-                        // TODO Create separate Agent classes
-                        FunctionTool.create(QuickstartDemo.class, "getCurrentTime"),
+                        DateTimeTool.INSTANCE,
+                        // TODO Create separate WeatherTool class (like DateTimeTool)
                         FunctionTool.create(QuickstartDemo.class, "getWeather"))
                 .build();
-    }
-
-    public static Map<String, String> getCurrentTime(
-            @Schema(description = "The name of the city for which to retrieve the current time")
-                    String city) {
-        String normalizedCity =
-                Normalizer.normalize(city, Normalizer.Form.NFD)
-                        .trim()
-                        .toLowerCase()
-                        .replaceAll("(\\p{IsM}+|\\p{IsP}+)", "")
-                        .replaceAll("\\s+", "_");
-
-        return ZoneId.getAvailableZoneIds().stream()
-                .filter(zid -> zid.toLowerCase().endsWith("/" + normalizedCity))
-                .findFirst()
-                .map(
-                        zid ->
-                                Map.of(
-                                        "status",
-                                        "success",
-                                        "report",
-                                        "The current time in "
-                                                + city
-                                                + " is "
-                                                + ZonedDateTime.now(ZoneId.of(zid))
-                                                        .format(
-                                                                DateTimeFormatter.ofPattern(
-                                                                        "HH:mm"))
-                                                + "."))
-                .orElse(
-                        Map.of(
-                                "status",
-                                "error",
-                                "report",
-                                "Sorry, I don't have timezone information for " + city + "."));
     }
 
     public static Map<String, String> getWeather(
@@ -125,7 +76,9 @@ public class QuickstartDemo {
     }
 
     public static void main(String[] args) {
-        var agent = initAgent();
+        var provider = new LlmProviders(AutoSecretManager.INSTANCE());
+        var model = provider.get(GoogleModelProvider.FLASH_LITE);
+        var agent = initAgent(model);
 
         AdkHttpServer.start(agent, 8080);
         System.out.println("Web UI started on http://localhost:8080");

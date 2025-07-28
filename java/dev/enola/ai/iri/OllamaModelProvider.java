@@ -33,6 +33,9 @@ import java.util.Optional;
 
 public abstract class OllamaModelProvider<T> implements Provider<T> {
 
+    public static final URI GEMMA3_1B =
+            URI.create("http://localhost:11434?type=ollama&model=gemma3:1b");
+
     @Override
     public String name() {
         return "Ollama 🦙";
@@ -45,7 +48,7 @@ public abstract class OllamaModelProvider<T> implements Provider<T> {
 
     @Override
     public Iterable<URI> uriExamples() {
-        return List.of(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b"));
+        return List.of(GEMMA3_1B);
     }
 
     @Override

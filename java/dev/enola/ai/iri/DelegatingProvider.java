@@ -21,9 +21,9 @@ import java.net.URI;
 
 public abstract class DelegatingProvider<T> implements Provider<T> {
 
-    private final Provider<?> delegate;
+    protected final Provider<T> delegate;
 
-    protected DelegatingProvider(Provider<?> delegate) {
+    protected DelegatingProvider(Provider<T> delegate) {
         this.delegate = delegate;
     }
 

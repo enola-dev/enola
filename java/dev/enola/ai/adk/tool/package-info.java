@@ -15,28 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.iri;
 
-import java.net.URI;
-import java.util.List;
+/** 🪛 Tools for 🕵🏾‍♀️ Agents. */
+@NullMarked
+package dev.enola.ai.adk.tool;
 
-public abstract class MockModelProvider<T> implements Provider<T> {
-
-    protected static final String SCHEME = "mocklm";
-    public static final URI EXAMPLE_URI = URI.create(SCHEME + ":Hello,%20world!");
-
-    @Override
-    public String name() {
-        return "Mock 🦜";
-    }
-
-    @Override
-    public Iterable<String> uriTemplates() {
-        return List.of(SCHEME + ":{reply}");
-    }
-
-    @Override
-    public Iterable<URI> uriExamples() {
-        return List.of(EXAMPLE_URI);
-    }
-}
+import org.jspecify.annotations.NullMarked;
