@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.adk.demo;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
@@ -26,6 +28,8 @@ import com.google.adk.tools.FunctionTool;
 
 import dev.enola.ai.adk.core.CLI;
 import dev.enola.ai.adk.web.AdkHttpServer;
+import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.common.io.iri.URIs;
 
 import java.text.Normalizer;
 import java.time.ZoneId;
@@ -51,8 +55,8 @@ public class QuickstartDemo {
     }
 
     public static BaseAgent initAgent(String apiKey) {
-        // TODO Use 2.5 instead of 2.0
-        return initAgent(new Gemini("gemini-2.0-flash", apiKey));
+        var model = URIs.getQueryMap(GoogleModelProvider.FLASH_LITE).get("model");
+        return initAgent(new Gemini(requireNonNull(model), apiKey));
     }
 
     public static BaseAgent initAgent(BaseLlm baseLLM) {

@@ -25,8 +25,6 @@ java_library(
         ],
         exclude = [
             "*Test.java",
-            "namespace/*Test.java",
-            "template/*Test.java",
         ],
     ),
     visibility = ["//:__subpackages__"],

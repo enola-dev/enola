@@ -158,7 +158,7 @@ public final class URIs {
         return getQueryMapGivenQueryString(getQueryString(uri));
     }
 
-    static Map<String, String> getQueryMapGivenQueryString(String query) {
+    private static Map<String, String> getQueryMapGivenQueryString(String query) {
         if (Strings.isNullOrEmpty(query)) {
             return emptyMap();
         }
