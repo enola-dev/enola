@@ -58,18 +58,14 @@ public class AdkHttpServer implements AutoCloseable {
         RxJavaPluginsSetup.setUp();
     }
 
-    public static synchronized void agents(Iterable<BaseAgent> agents) {
+    public static synchronized AdkHttpServer start(BaseAgent agent, int port) {
+        return start(Set.of(agent), port);
+    }
+
+    public static synchronized AdkHttpServer start(Iterable<BaseAgent> agents, int port) {
         if (rootAgents != null)
             throw new IllegalStateException("AdkHttpServer.agents() already set");
         rootAgents = Agents.toMap(agents);
-    }
-
-    public static synchronized void agent(BaseAgent agent) {
-        agents(Set.of(agent));
-    }
-
-    public static synchronized AdkHttpServer start(int port) {
-        if (rootAgents == null) throw new IllegalStateException("Call agents() before start()");
 
         System.setProperty("server.port", Integer.toString(port)); // Add this line
 
