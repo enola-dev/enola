@@ -29,10 +29,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import dev.enola.common.io.object.ExampleIdentifiableRecord;
 import dev.enola.common.io.object.Identifiable;
 import dev.enola.common.io.object.ObjectReaderWriter;
+import dev.enola.common.io.object.ProviderFromID;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
+
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,16 +48,35 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
     // TODO Upgrade from Jackson 2.x to 3.0
 
+    // TODO Use an EmptyProviderFromID instead of @Nullable ProviderFromID ?
+
     private final ObjectMapper mapper;
+    private final @Nullable ProviderFromID provider;
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
+        this(mapper, null, false);
+    }
+
+    protected JacksonObjectReaderWriter(ObjectMapper mapper, ProviderFromID provider) {
+        this(mapper, provider, true);
+    }
+
+    private JacksonObjectReaderWriter(
+            ObjectMapper mapper, @Nullable ProviderFromID provider, boolean fake) {
         this.mapper = mapper;
+        this.provider = provider;
 
         // Do NOT use mapper.findAndRegisterModules();
         // because that would mean that mapping would depend on (un-controllable) classpath
 
         var module = new SimpleModule();
         module.addSerializer(Identifiable.class, new IdentifiableIdSerializer());
+        if (provider != null)
+            // module.setDeserializers(new IdentifiableDeserializers(provider));
+            module.addDeserializer(
+                    ExampleIdentifiableRecord.class,
+                    new ExampleIdentifiableRecordDeserializer(provider));
+
         mapper.registerModule(module);
 
         // https://github.com/FasterXML/jackson-modules-java8
