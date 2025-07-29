@@ -24,10 +24,7 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.io.object.ExamplePlainClass;
-import dev.enola.common.io.object.ExampleRecord;
-import dev.enola.common.io.object.ObjectReader;
-import dev.enola.common.io.object.ObjectWriter;
+import dev.enola.common.io.object.*;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
@@ -135,12 +132,15 @@ public class YamlObjectReaderWriterTest {
 
         var sr = new MemoryResource(YAML_UTF_8);
         var example =
-                new ExampleRecord("hello, world", Set.of(), List.of(), null, null, null, null);
+                new ExampleRecord(
+                        "hello, world", Set.of(), List.of(), null, null, null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
         sr = new MemoryResource(YAML_UTF_8);
-        example = new ExampleRecord("hello world", Set.of(), List.of(), null, null, null, null);
+        example =
+                new ExampleRecord(
+                        "hello world", Set.of(), List.of(), null, null, null, null, null, null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
@@ -152,5 +152,56 @@ public class YamlObjectReaderWriterTest {
         var map = ImmutableMap.of("string", "hello, world");
         assertThat(ow.write(map, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
+    }
+
+    @Test
+    public void readExampleRecordWithExampleIdentifiableRecord() throws IOException {
+        var yaml =
+                """
+                string: "hello, world"
+                exampleIdentifiableRecord: id123
+                exampleIdentifiableRecords:
+                - id123
+                - id123
+                """;
+        var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
+        var store = new ObjectStore().store(exampleIdentifiableRecord);
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter(store);
+        var example = or.read(resource, ExampleRecord.class);
+        assertThat(example.exampleIdentifiableRecord()).isSameInstanceAs(exampleIdentifiableRecord);
+        assertThat(example.exampleIdentifiableRecords().get(0))
+                .isSameInstanceAs(exampleIdentifiableRecord);
+        assertThat(example.exampleIdentifiableRecords().get(1))
+                .isSameInstanceAs(exampleIdentifiableRecord);
+    }
+
+    @Test
+    // TODO Make this also write out the exampleIdentifiableRecord - but only once!
+    public void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
+        var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
+        var example =
+                new ExampleRecord(
+                        "hello, world",
+                        Set.of(),
+                        List.of(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        exampleIdentifiableRecord,
+                        List.of(exampleIdentifiableRecord, exampleIdentifiableRecord));
+        var sr = new MemoryResource(YAML_UTF_8);
+        ObjectWriter ow = new YamlObjectReaderWriter();
+        assertThat(ow.write(example, sr)).isTrue();
+        assertThat(sr.charSource().read())
+                .isEqualTo(
+                        """
+                        string: "hello, world"
+                        exampleIdentifiableRecord: id123
+                        exampleIdentifiableRecords:
+                        - id123
+                        - id123
+                        """);
     }
 }

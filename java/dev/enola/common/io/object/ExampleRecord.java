@@ -29,7 +29,13 @@ public record ExampleRecord(
         @Nullable String string,
         Set<String> stringSet,
         List<String> stringList,
+        // TODO NOT @Nullable #eventually, but use default EMPTY instances when unset
+        //   (BUT NOT to String and Instant - only anything traversable!!)
         @Nullable ExampleRecord example,
         @Nullable @JsonProperty("default") String defaultValue,
         @Nullable Instant timestamp,
-        @Nullable @JsonProperty("private") Boolean isPrivate) {}
+        @Nullable @JsonProperty("private") Boolean isPrivate,
+        @Nullable ExampleIdentifiableRecord exampleIdentifiableRecord,
+        List<ExampleIdentifiableRecord> exampleIdentifiableRecords
+        // TODO Map<String, ExampleIdentifiableRecord> exampleIdentifiableRecordMap
+        ) {}
