@@ -17,5 +17,4 @@
  */
 package dev.enola.common.io.object;
 
-public record ExampleIdentifiableRecord(String id, Double number)
-        implements Identifiable<ExampleIdentifiableRecord> {}
+public record ExampleIdentifiableRecord(String id, Double number) implements Identifiable {}

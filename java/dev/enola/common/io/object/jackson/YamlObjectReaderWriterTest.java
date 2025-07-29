@@ -24,7 +24,11 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.io.object.*;
+import dev.enola.common.io.object.ExampleIdentifiableRecord;
+import dev.enola.common.io.object.ExamplePlainClass;
+import dev.enola.common.io.object.ExampleRecord;
+import dev.enola.common.io.object.ObjectReader;
+import dev.enola.common.io.object.ObjectWriter;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
