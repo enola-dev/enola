@@ -38,11 +38,12 @@ class IdentifiableIdSerializer extends StdSerializer<Identifiable> {
     public void serialize(
             @Nullable Identifiable value, JsonGenerator gen, SerializerProvider provider)
             throws IOException {
-        if (value != null) {
-            if (!Strings.isNullOrEmpty(value.id())) gen.writeString(value.id());
-            else throw new IllegalArgumentException("id() is null or empty: " + value);
-        } else {
+        if (value == null) {
             gen.writeNull();
+            return;
         }
+        var id = value.id();
+        if (!Strings.isNullOrEmpty(id)) gen.writeString(id);
+        else throw new IllegalArgumentException("id() is null or empty: " + value);
     }
 }
