@@ -18,10 +18,10 @@
 package dev.enola.common.io.object;
 
 // TODO Allow <T> instead of 🧵 String… See dev.enola.data.id!
-public interface Identifiable<B> {
+public interface Identifiable {
     String id();
 
-    interface Builder<B> {
+    interface Builder<B extends Builder<B>> {
         B id(String id);
     }
 }

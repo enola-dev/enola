@@ -28,7 +28,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 
-@SuppressWarnings("rawtypes")
 class IdentifiableIdSerializer extends StdSerializer<Identifiable> {
 
     IdentifiableIdSerializer() {
