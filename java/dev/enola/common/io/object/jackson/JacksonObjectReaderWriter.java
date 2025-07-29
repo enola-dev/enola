@@ -24,10 +24,12 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import dev.enola.common.io.object.Identifiable;
 import dev.enola.common.io.object.ObjectReaderWriter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
@@ -49,6 +51,10 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
         // Do NOT use mapper.findAndRegisterModules();
         // because that would mean that mapping would depend on (un-controllable) classpath
+
+        var module = new SimpleModule();
+        module.addSerializer(Identifiable.class, new IdentifiableIdSerializer());
+        mapper.registerModule(module);
 
         // https://github.com/FasterXML/jackson-modules-java8
         mapper.registerModule(new JavaTimeModule());
