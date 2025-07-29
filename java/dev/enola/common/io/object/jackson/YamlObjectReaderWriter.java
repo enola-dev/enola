@@ -25,11 +25,20 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.object.ProviderFromID;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 
 public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
+
+    public YamlObjectReaderWriter() {
+        super(newObjectMapper());
+    }
+
+    public YamlObjectReaderWriter(ProviderFromID provider) {
+        super(newObjectMapper(), provider);
+    }
 
     private static ObjectMapper newObjectMapper() {
         // NB: Keep in-sync with the similar (but not the same, different API!) in
@@ -54,10 +63,6 @@ public class YamlObjectReaderWriter extends JacksonObjectReaderWriter {
         yamlMapper.enable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
 
         return yamlMapper;
-    }
-
-    public YamlObjectReaderWriter() {
-        super(newObjectMapper());
     }
 
     @Override
