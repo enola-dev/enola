@@ -20,6 +20,7 @@ package dev.enola.common.io.object.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.base.Strings;
 
 import dev.enola.common.io.object.Identifiable;
 
@@ -39,7 +40,8 @@ class IdentifiableIdSerializer extends StdSerializer<Identifiable> {
             @Nullable Identifiable value, JsonGenerator gen, SerializerProvider provider)
             throws IOException {
         if (value != null) {
-            gen.writeString(value.id());
+            if (!Strings.isNullOrEmpty(value.id())) gen.writeString(value.id());
+            else throw new IllegalArgumentException("id() is null or empty: " + value);
         } else {
             gen.writeNull();
         }
