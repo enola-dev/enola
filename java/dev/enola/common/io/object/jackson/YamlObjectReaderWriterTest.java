@@ -24,11 +24,7 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import dev.enola.common.io.object.ExampleIdentifiableRecord;
-import dev.enola.common.io.object.ExamplePlainClass;
-import dev.enola.common.io.object.ExampleRecord;
-import dev.enola.common.io.object.ObjectReader;
-import dev.enola.common.io.object.ObjectWriter;
+import dev.enola.common.io.object.*;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
@@ -159,6 +155,29 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
+    public void readExampleRecordWithExampleIdentifiableRecord() throws IOException {
+        var yaml =
+                """
+                string: "hello, world"
+                exampleIdentifiableRecord: id123
+                exampleIdentifiableRecords:
+                - id123
+                - id123
+                """;
+        var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
+        var store = new ObjectStore().store(exampleIdentifiableRecord);
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter(store);
+        var example = or.read(resource, ExampleRecord.class);
+        assertThat(example.exampleIdentifiableRecord()).isSameInstanceAs(exampleIdentifiableRecord);
+        assertThat(example.exampleIdentifiableRecords().get(0))
+                .isSameInstanceAs(exampleIdentifiableRecord);
+        assertThat(example.exampleIdentifiableRecords().get(1))
+                .isSameInstanceAs(exampleIdentifiableRecord);
+    }
+
+    @Test
+    // TODO Make this also write out the exampleIdentifiableRecord - but only once!
     public void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
         var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
         var example =

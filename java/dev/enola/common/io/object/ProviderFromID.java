@@ -17,16 +17,8 @@
  */
 package dev.enola.common.io.object;
 
-/**
- * Identifiable by a (String) ID.
- *
- * <p>See also {@link ProviderFromID}.
- */
-// TODO Allow <T> instead of 🧵 String… See dev.enola.data.id!
-public interface Identifiable {
-    String id();
+/** Provides {@link Identifiable} objects, given their ID <b>and</b> Class. */
+public interface ProviderFromID {
 
-    interface Builder<B extends Builder<B>> {
-        B id(String id);
-    }
+    <T extends Identifiable> T get(String id, Class<T> clazz);
 }
