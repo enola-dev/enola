@@ -21,9 +21,8 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-import org.jspecify.annotations.Nullable;
-
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -78,15 +77,15 @@ public class ObjectStore implements ProviderFromID {
      *     stored object is not assignable to the requested class.
      */
     @Override
-    public <T extends Identifiable> @Nullable T get(String id, Class<T> clazz) {
+    public <T extends Identifiable> Optional<T> opt(String id, Class<T> clazz) {
         // Get the inner map for the specific class
         Map<String, Identifiable> classSpecificStore = store.get(clazz);
         if (classSpecificStore == null) {
             // No objects of this class type have been stored yet at all
-            return null;
+            return Optional.empty();
         }
 
         // No need for isInstance check here, as it's already scoped by class
-        return clazz.cast(classSpecificStore.get(id));
+        return Optional.ofNullable(clazz.cast(classSpecificStore.get(id)));
     }
 }
