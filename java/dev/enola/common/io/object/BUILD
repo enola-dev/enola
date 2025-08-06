@@ -23,6 +23,7 @@ java_library(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    plugins = ["//tools/bazel/java_plugin:record-builder"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/collect",
@@ -30,6 +31,7 @@ java_library(
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_soabase_record_builder_record_builder_core",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],

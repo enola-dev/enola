@@ -131,6 +131,7 @@ public class YamlObjectReaderWriterTest {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YAML_UTF_8);
+        ExampleRecordBuilder.builder.build(); // TODO
         var example =
                 new ExampleRecord(
                         "hello, world",
