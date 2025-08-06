@@ -53,18 +53,18 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
     private final @Nullable ProviderFromID provider;
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
-        this(mapper, null, false);
+        this.mapper = mapper;
+        this.provider = null;
+        init();
     }
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper, ProviderFromID provider) {
-        this(mapper, provider, true);
-    }
-
-    private JacksonObjectReaderWriter(
-            ObjectMapper mapper, @Nullable ProviderFromID provider, boolean fake) {
         this.mapper = mapper;
         this.provider = provider;
+        init();
+    }
 
+    private void init() {
         // Do NOT use mapper.findAndRegisterModules();
         // because that would mean that mapping would depend on (un-controllable) classpath
 
