@@ -133,14 +133,32 @@ public class YamlObjectReaderWriterTest {
         var sr = new MemoryResource(YAML_UTF_8);
         var example =
                 new ExampleRecord(
-                        "hello, world", Set.of(), List.of(), null, null, null, null, null, null);
+                        "hello, world",
+                        Set.of(),
+                        List.of(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: \"hello, world\"\n");
 
         sr = new MemoryResource(YAML_UTF_8);
         example =
                 new ExampleRecord(
-                        "hello world", Set.of(), List.of(), null, null, null, null, null, null);
+                        "hello world",
+                        Set.of(),
+                        List.of(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("string: hello world\n");
     }
@@ -190,7 +208,8 @@ public class YamlObjectReaderWriterTest {
                         null,
                         null,
                         exampleIdentifiableRecord,
-                        List.of(exampleIdentifiableRecord, exampleIdentifiableRecord));
+                        List.of(exampleIdentifiableRecord, exampleIdentifiableRecord),
+                        Map.of("id?", exampleIdentifiableRecord));
         var sr = new MemoryResource(YAML_UTF_8);
         ObjectWriter ow = new YamlObjectReaderWriter();
         assertThat(ow.write(example, sr)).isTrue();
@@ -202,6 +221,8 @@ public class YamlObjectReaderWriterTest {
                         exampleIdentifiableRecords:
                         - id123
                         - id123
+                        exampleIdentifiableRecordMap:
+                          id?: id123
                         """);
     }
 }

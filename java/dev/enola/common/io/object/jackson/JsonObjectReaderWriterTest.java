@@ -133,14 +133,32 @@ public class JsonObjectReaderWriterTest {
         var sr = new MemoryResource(JSON_UTF_8);
         var example =
                 new ExampleRecord(
-                        "hello, world", Set.of(), List.of(), null, null, null, null, null, null);
+                        "hello, world",
+                        Set.of(),
+                        List.of(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello, world\"}");
 
         sr = new MemoryResource(JSON_UTF_8);
         example =
                 new ExampleRecord(
-                        "hello world", Set.of(), List.of(), null, null, null, null, null, null);
+                        "hello world",
+                        Set.of(),
+                        List.of(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
         assertThat(ow.write(example, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello world\"}");
     }
