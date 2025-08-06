@@ -29,13 +29,12 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 
 /**
- * Custom Jackson Deserializer for Identifiable objects. This deserializer expects to receive a
- * String (the ID) and uses a ProviderFromID (like ObjectStore) to fetch the full object.
+ * Custom Jackson Deserializer for {@link Identifiable} objects. This deserializer expects to
+ * receive a String (the ID) and uses a {@link ProviderFromID} (like {@link
+ * dev.enola.common.io.object.ObjectStore}) to fetch the full object.
  *
- * <p>It implements ContextualDeserializer to determine the concrete type it needs to deserialize
- * into based on the field's type in the containing object.
- *
- * <p>This version allows the ProviderFromID to be injected via the constructor.
+ * <p>It implements {@link ContextualDeserializer} to determine the concrete type it needs to
+ * deserialize into based on the field's type in the containing object.
  */
 class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
         implements ContextualDeserializer {
@@ -52,7 +51,7 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
      *
      * @param provider The ProviderFromID to use for fetching objects.
      */
-    public IdentifiableDeserializer(ProviderFromID provider) {
+    IdentifiableDeserializer(ProviderFromID provider) {
         this(provider, null); // Handled type will be set in createContextual
     }
 
@@ -94,8 +93,8 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
             // but acts as a safeguard.
             throw new IllegalStateException(
                     "IdentifiableDeserializer not properly contextualized. Provider or handledType"
-                            + " is missing. Ensure it's registered via SimpleModule with an injected"
-                            + " ProviderFromID, and that the type is Identifiable.");
+                        + " is missing. Ensure it's registered via SimpleModule with an injected"
+                        + " ProviderFromID, and that the type is Identifiable.");
         }
 
         // Use the provider to get the actual Identifiable object based on ID and type
@@ -135,13 +134,13 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
         if (!type.isTypeOrSubTypeOf(Identifiable.class)) {
             // If the type is not Identifiable, let Jackson find a default deserializer
             // This can happen if the deserializer is registered globally but used on a
-            // non-Identifiable type
+            // non-Identifiable type.
             return ctx.findContextualValueDeserializer(type, property);
         }
 
         // Create a new instance of the deserializer with the specific provider and handledType
         // We cast type.getRawClass() to Class<? extends Identifiable> because we've checked
-        // isAssignableFrom
+        // isAssignableFrom.
         return new IdentifiableDeserializer(provider, (Class<? extends Identifiable>) rawClass);
     }
 }
