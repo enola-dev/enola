@@ -88,7 +88,6 @@ enola_maven.install(
         # which should be updated when this will be refined.
         "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.123.1",
         "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.123.1",
-        "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
         "com.google.guava:guava:33.4.0-jre",
