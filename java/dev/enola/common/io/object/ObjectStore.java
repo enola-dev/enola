@@ -21,26 +21,32 @@ import static java.util.Objects.requireNonNull;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ObjectStore is a concurrency-safe in-memory store (and {@link ProviderFromID}) for {@link
- * Identifiable} objects.
+ * ObjectStore is an in-memory store (and {@link ProviderFromID}) for {@link Identifiable} objects.
  *
  * <p>It supports distinct objects with the same ID but different classes, effectively "scoping"
  * them by their class.
  */
 public class ObjectStore implements ProviderFromID {
 
-    // TODO Offer a more efficient non concurrency-safe single thread variant!
+    public static ObjectStore newConcurrent() {
+        return new ObjectStore(new ConcurrentHashMap<>());
+    }
+
+    public static ObjectStore newSingleThreaded() {
+        return new ObjectStore(new HashMap<>());
+    }
 
     // Objects, keyed first by Class, then by ID.
     private final Map<Class<?>, Map<String, Identifiable>> store;
 
-    public ObjectStore() {
-        this.store = new ConcurrentHashMap<>();
+    private ObjectStore(Map<Class<?>, Map<String, Identifiable>> store) {
+        this.store = store;
     }
 
     /**

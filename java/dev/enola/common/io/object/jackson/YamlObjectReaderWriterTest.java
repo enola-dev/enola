@@ -183,7 +183,7 @@ public class YamlObjectReaderWriterTest {
                 - id123
                 """;
         var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
-        var store = new ObjectStore().store(exampleIdentifiableRecord);
+        var store = ObjectStore.newSingleThreaded().store(exampleIdentifiableRecord);
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter(store);
         var example = or.read(resource, ExampleRecord.class);
