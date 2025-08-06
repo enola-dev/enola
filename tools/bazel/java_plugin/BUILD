@@ -16,6 +16,7 @@ java_plugin(
 
 java_plugin(
     name = "record-builder",
+    generates_api = True,
     processor_class = "io.soabase.recordbuilder.processor.RecordBuilderProcessor",
     visibility = ["//:__subpackages__"],
     deps = ["@enola_maven//:io_soabase_record_builder_record_builder_processor"],
