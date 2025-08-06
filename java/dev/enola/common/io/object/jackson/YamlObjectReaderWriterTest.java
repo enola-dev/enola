@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.io.object.*;
+// import dev.enola.common.io.object.ExampleRecordBuilder;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
@@ -131,7 +132,7 @@ public class YamlObjectReaderWriterTest {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YAML_UTF_8);
-        ExampleRecordBuilder.builder.build(); // TODO
+        // ExampleRecordBuilder.builder.build(); // TODO
         var example =
                 new ExampleRecord(
                         "hello, world",
