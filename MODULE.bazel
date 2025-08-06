@@ -35,7 +35,7 @@ register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_de
 bazel_dep(name = "protobuf", version = "31.1")
 
 # https://registry.bazel.build/modules/rules_java
-bazel_dep(name = "rules_java", version = "8.14.0")
+bazel_dep(name = "rules_java", version = "8.15.0")
 
 # Required by gRPC
 # (from https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L1)
