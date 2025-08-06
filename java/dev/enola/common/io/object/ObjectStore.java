@@ -86,12 +86,7 @@ public class ObjectStore implements ProviderFromID {
             return null;
         }
 
-        Identifiable identifiable = classSpecificStore.get(id);
-        if (identifiable != null) {
-            // No need for isInstance check here, as it's already scoped by class
-            return clazz.cast(identifiable);
-        }
-
-        return null;
+        // No need for isInstance check here, as it's already scoped by class
+        return clazz.cast(classSpecificStore.get(id));
     }
 }
