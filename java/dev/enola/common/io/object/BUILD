@@ -32,6 +32,7 @@ java_library(
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:io_soabase_record_builder_record_builder_core",
+        # NOT "@enola_maven//:io_soabase_record_builder_record_builder_processor",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
