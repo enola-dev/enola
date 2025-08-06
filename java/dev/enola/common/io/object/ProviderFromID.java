@@ -17,8 +17,15 @@
  */
 package dev.enola.common.io.object;
 
+import java.util.Optional;
+
 /** Provides {@link Identifiable} objects, given their ID <b>and</b> Class. */
 public interface ProviderFromID {
 
-    <T extends Identifiable> T get(String id, Class<T> clazz);
+    <T extends Identifiable> Optional<T> opt(String id, Class<T> clazz);
+
+    default <T extends Identifiable> T get(String id, Class<T> clazz) {
+        return opt(id, clazz)
+                .orElseThrow(() -> new IllegalArgumentException("No object with ID " + id));
+    }
 }

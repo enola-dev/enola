@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import dev.enola.common.io.object.Identifiable;
 import dev.enola.common.io.object.ProviderFromID;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 
 /**
@@ -76,7 +78,7 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
      * @throws IOException If there's an issue reading from the parser.
      */
     @Override
-    public Identifiable deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+    public @Nullable Identifiable deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
         String id = p.getText(); // Read the string value (which is the ID)
 
         if (id == null || id.isEmpty()) {
@@ -87,7 +89,7 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
         // The provider should always be non-null if registered correctly.
         // handledType will be null for the initial instance, but non-null for contextualized ones.
         if (provider == null || handledType == null) {
-            // This case should ideally not be reached if setup is correct,
+            // This case should ideally not be reached if the setup is correct
             // but acts as a safeguard.
             throw new IllegalStateException(
                     "IdentifiableDeserializer not properly contextualized. Provider or handledType"
