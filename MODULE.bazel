@@ -194,6 +194,10 @@ enola_maven.install(
 
         # https://github.com/commonmark/commonmark-java
         "org.commonmark:commonmark:0.25.0",
+
+        # https://github.com/Randgalt/record-builder
+        "io.soabase.record-builder:record-builder-core:47",
+        "io.soabase.record-builder:record-builder-processor:47",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which

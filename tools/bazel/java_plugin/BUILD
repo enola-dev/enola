@@ -13,3 +13,10 @@ java_plugin(
     visibility = ["//:__subpackages__"],
     deps = ["@enola_maven//:info_picocli_picocli_codegen"],
 )
+
+java_plugin(
+    name = "record-builder",
+    processor_class = "io.soabase.recordbuilder.processor.RecordBuilderProcessor",
+    visibility = ["//:__subpackages__"],
+    deps = ["@enola_maven//:io_soabase_record_builder_record_builder_processor"],
+)
