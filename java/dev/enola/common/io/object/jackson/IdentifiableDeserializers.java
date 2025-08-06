@@ -28,7 +28,7 @@ class IdentifiableDeserializers extends SimpleDeserializers {
         // we return null, letting Jackson's default bean deserializer handle the introspection
         // of that concrete class. Our IdentifiableDeserializer will then be picked up
         // by createContextual for the *field* itself.
-        if (type.getRawClass() == Identifiable.class) {
+        if (type.isTypeOrSubTypeOf(Identifiable.class)) {
             return new IdentifiableDeserializer(provider);
         }
 

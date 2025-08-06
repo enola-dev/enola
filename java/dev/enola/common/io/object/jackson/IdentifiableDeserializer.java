@@ -44,7 +44,7 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
 
     // The actual concrete type this deserializer instance is responsible for.
     // This is set during createContextual().
-    private final Class<? extends Identifiable> handledType;
+    private final @Nullable Class<? extends Identifiable> handledType;
 
     /**
      * Constructor to allow injection of ProviderFromID. This constructor is used when registering
@@ -63,7 +63,7 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
      * @param handledType The specific concrete Identifiable type to deserialize to.
      */
     private IdentifiableDeserializer(
-            ProviderFromID provider, Class<? extends Identifiable> handledType) {
+            ProviderFromID provider, @Nullable Class<? extends Identifiable> handledType) {
         this.provider = provider;
         this.handledType = handledType;
     }
@@ -78,7 +78,8 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
      * @throws IOException If there's an issue reading from the parser.
      */
     @Override
-    public @Nullable Identifiable deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+    public @Nullable Identifiable deserialize(JsonParser p, DeserializationContext ctx)
+            throws IOException {
         String id = p.getText(); // Read the string value (which is the ID)
 
         if (id == null || id.isEmpty()) {
@@ -111,15 +112,27 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
      * @throws JsonMappingException If there's an error in mapping.
      */
     @Override
-    public JsonDeserializer<?> createContextual(DeserializationContext ctx, BeanProperty property)
+    @SuppressWarnings("unchecked")
+    public JsonDeserializer<?> createContextual(
+            DeserializationContext ctx, @Nullable BeanProperty property)
             throws JsonMappingException {
         // Determine the actual type that this deserializer needs to produce.
         // For a field like 'ExampleIdentifiableRecord exampleIdentifiableRecord',
         // 'type' will be JavaType for ExampleIdentifiableRecord.
         JavaType type = (property != null) ? property.getType() : ctx.getContextualType();
+        if (type.isContainerType()) {
+            type = type.getContentType();
+        }
+        Class<?> rawClass = type.getRawClass();
+
+        // If this instance is already contextualized for the target type, stop recursion.
+        // This check is crucial to break an infinite loop causing java.lang.StackOverflowError.
+        if (handledType != null && handledType.equals(rawClass)) {
+            return this;
+        }
 
         // Ensure the type is assignable from Identifiable. If not, let Jackson use its default.
-        if (type == null || !Identifiable.class.isAssignableFrom(type.getRawClass())) {
+        if (!type.isTypeOrSubTypeOf(Identifiable.class)) {
             // If the type is not Identifiable, let Jackson find a default deserializer
             // This can happen if the deserializer is registered globally but used on a
             // non-Identifiable type
@@ -129,7 +142,6 @@ class IdentifiableDeserializer extends JsonDeserializer<Identifiable>
         // Create a new instance of the deserializer with the specific provider and handledType
         // We cast type.getRawClass() to Class<? extends Identifiable> because we've checked
         // isAssignableFrom
-        return new IdentifiableDeserializer(
-                provider, (Class<? extends Identifiable>) type.getRawClass());
+        return new IdentifiableDeserializer(provider, (Class<? extends Identifiable>) rawClass);
     }
 }

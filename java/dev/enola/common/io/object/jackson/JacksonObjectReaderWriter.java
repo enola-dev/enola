@@ -29,7 +29,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-import dev.enola.common.io.object.ExampleIdentifiableRecord;
 import dev.enola.common.io.object.Identifiable;
 import dev.enola.common.io.object.ObjectReaderWriter;
 import dev.enola.common.io.object.ProviderFromID;
@@ -71,12 +70,7 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
         var module = new SimpleModule();
         module.addSerializer(Identifiable.class, new IdentifiableIdSerializer());
-        if (provider != null)
-            // module.setDeserializers(new IdentifiableDeserializers(provider));
-            module.addDeserializer(
-                    ExampleIdentifiableRecord.class,
-                    new ExampleIdentifiableRecordDeserializer(provider));
-
+        if (provider != null) module.setDeserializers(new IdentifiableDeserializers(provider));
         mapper.registerModule(module);
 
         // https://github.com/FasterXML/jackson-modules-java8
