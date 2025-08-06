@@ -26,8 +26,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ObjectStore is a concurrency-safe in-memory store (and {@link ProviderFromID}) for Identifiable
- * objects.
+ * ObjectStore is a concurrency-safe in-memory store (and {@link ProviderFromID}) for {@link
+ * Identifiable} objects.
  *
  * <p>It supports distinct objects with the same ID but different classes, effectively "scoping"
  * them by their class.

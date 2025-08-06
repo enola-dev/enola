@@ -26,6 +26,9 @@ public interface ProviderFromID {
 
     default <T extends Identifiable> T get(String id, Class<T> clazz) {
         return opt(id, clazz)
-                .orElseThrow(() -> new IllegalArgumentException("No object with ID " + id));
+                .orElseThrow(
+                        () ->
+                                new IllegalArgumentException(
+                                        "No " + clazz.getName() + " object with ID " + id));
     }
 }

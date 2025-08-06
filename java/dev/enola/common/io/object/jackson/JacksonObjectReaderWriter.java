@@ -47,8 +47,6 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
     // TODO Upgrade from Jackson 2.x to 3.0
 
-    // TODO Use an EmptyProviderFromID instead of @Nullable ProviderFromID ?
-
     private final ObjectMapper mapper;
     private final @Nullable ProviderFromID provider;
 
@@ -66,7 +64,7 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
 
     private void init() {
         // Do NOT use mapper.findAndRegisterModules();
-        // because that would mean that mapping would depend on (un-controllable) classpath
+        // because that would mean that mapping would depend on (uncontrollable) classpath
 
         var module = new SimpleModule();
         module.addSerializer(Identifiable.class, new IdentifiableIdSerializer());
