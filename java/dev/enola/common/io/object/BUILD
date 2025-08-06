@@ -23,6 +23,7 @@ java_library(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    javacopts = ["-XprintRounds"],
     plugins = ["//tools/bazel/java_plugin:record-builder"],
     visibility = ["//:__subpackages__"],
     deps = [
