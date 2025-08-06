@@ -23,6 +23,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public record ExampleRecord(
@@ -36,6 +37,5 @@ public record ExampleRecord(
         @Nullable Instant timestamp,
         @Nullable @JsonProperty("private") Boolean isPrivate,
         @Nullable ExampleIdentifiableRecord exampleIdentifiableRecord,
-        List<ExampleIdentifiableRecord> exampleIdentifiableRecords
-        // TODO Map<String, ExampleIdentifiableRecord> exampleIdentifiableRecordMap
-        ) {}
+        List<ExampleIdentifiableRecord> exampleIdentifiableRecords,
+        Map<String, ExampleIdentifiableRecord> exampleIdentifiableRecordMap) {}
