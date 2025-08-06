@@ -88,7 +88,6 @@ enola_maven.install(
         # which should be updated when this will be refined.
         "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.123.1",
         "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.123.1",
-        "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
         "com.google.guava:guava:33.4.0-jre",
@@ -195,6 +194,10 @@ enola_maven.install(
 
         # https://github.com/commonmark/commonmark-java
         "org.commonmark:commonmark:0.25.0",
+
+        # https://github.com/Randgalt/record-builder
+        "io.soabase.record-builder:record-builder-core:47",
+        "io.soabase.record-builder:record-builder-processor:47",
     ],
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which

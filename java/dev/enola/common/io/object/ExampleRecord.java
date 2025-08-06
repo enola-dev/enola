@@ -19,6 +19,8 @@ package dev.enola.common.io.object;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.soabase.recordbuilder.core.RecordBuilder;
+
 import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@RecordBuilder
 public record ExampleRecord(
         @Nullable String string,
         Set<String> stringSet,
