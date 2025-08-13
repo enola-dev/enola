@@ -32,7 +32,8 @@ java_library(
     ],
     deps = [
         "//java/dev/enola/common",
-        "@enola_maven//:com_google_adk_google_adk",
+        # "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_github_google_adk_java_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:io_reactivex_rxjava3_rxjava",
@@ -51,7 +52,8 @@ junit_tests(
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
-        "@enola_maven//:com_google_adk_google_adk",
+        # "@enola_maven//:com_google_adk_google_adk",
+        "@enola_maven//:com_github_google_adk_java_google_adk",
         "@enola_maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

@@ -21,6 +21,9 @@ com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2
 com.fasterxml.jackson.module:jackson-module-parameter-names:2.18.2
 com.fasterxml.woodstox:woodstox-core:7.1.0
 com.github.albfernandez:juniversalchardet:2.5.0
+com.github.google.adk-java:google-adk:cb95b56b28
+com.github.google.adk-java:google-adk-contrib-langchain4j:cb95b56b28
+com.github.google.adk-java:google-adk-dev:cb95b56b28
 com.github.hypfvieh:dbus-java-core:4.3.1
 com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.3.1
 com.github.ipfs:java-ipfs-http-client:d982fc0fa1
@@ -39,9 +42,6 @@ com.github.package-url:packageurl-java:1.5.0
 com.github.spotbugs:spotbugs-annotations:4.9.3
 com.github.valfirst:slf4j-test:3.0.1
 com.github.virtuald:curvesapi:1.08
-com.google.adk:google-adk:0.2.0
-com.google.adk:google-adk-contrib-langchain4j:0.2.0
-com.google.adk:google-adk-dev:0.2.0
 com.google.android:annotations:4.1.1.4
 com.google.api-client:google-api-client:2.7.1
 com.google.api.grpc:gapic-google-cloud-storage-v2:2.47.0
@@ -82,7 +82,7 @@ com.google.cloud:google-cloud-storage:2.47.0
 com.google.code.findbugs:jsr305:3.0.2
 com.google.code.gson:gson:2.13.1
 com.google.errorprone:error_prone_annotations:2.41.0
-com.google.genai:google-genai:1.0.0
+com.google.genai:google-genai:1.8.0
 com.google.guava:failureaccess:1.0.3
 com.google.guava:guava:33.4.8-jre
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
