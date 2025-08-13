@@ -21,9 +21,9 @@ com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2
 com.fasterxml.jackson.module:jackson-module-parameter-names:2.18.2
 com.fasterxml.woodstox:woodstox-core:7.1.0
 com.github.albfernandez:juniversalchardet:2.5.0
-com.github.google.adk-java:google-adk:cb95b56b28
-com.github.google.adk-java:google-adk-contrib-langchain4j:cb95b56b28
-com.github.google.adk-java:google-adk-dev:cb95b56b28
+com.github.google.adk-java:google-adk:55fffb753464010f559cce17931d4db3244524db
+com.github.google.adk-java:google-adk-contrib-langchain4j:55fffb753464010f559cce17931d4db3244524db
+com.github.google.adk-java:google-adk-dev:55fffb753464010f559cce17931d4db3244524db
 com.github.hypfvieh:dbus-java-core:4.3.1
 com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.3.1
 com.github.ipfs:java-ipfs-http-client:d982fc0fa1
