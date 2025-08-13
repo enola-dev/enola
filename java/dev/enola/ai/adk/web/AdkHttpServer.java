@@ -19,7 +19,6 @@ package dev.enola.ai.adk.web;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.web.AdkWebServer;
-import com.google.adk.web.AgentCompilerLoader;
 import com.google.adk.web.config.AgentLoadingProperties;
 import com.google.common.collect.ImmutableMap;
 
@@ -95,7 +94,7 @@ public class AdkHttpServer implements AutoCloseable {
 
         @Override
         public Map<String, BaseAgent> loadedAgentRegistry(
-                AgentCompilerLoader loader, AgentLoadingProperties props) {
+                AgentLoadingProperties props, RunnerService runnerService) {
             if (rootAgents == null)
                 throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
             return rootAgents;
