@@ -26,13 +26,15 @@ import com.google.adk.models.BaseLlm;
 import dev.enola.ai.adk.iri.TestsLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.iri.Provider;
+import dev.enola.common.context.TLC;
 
 import org.junit.Test;
 
 import java.time.Instant;
 import java.time.InstantSource;
+import java.time.ZoneId;
 
-public class DateTimeToolTest {
+public class DateTimeToolsTest {
 
     Provider<BaseLlm> llm = new TestsLlmProvider();
 
@@ -45,8 +47,12 @@ public class DateTimeToolTest {
                 .containsExactly(
                         "status", "success", "report", "The current time in Zürich is 23:05.");
         assertThat(dateTimeTools.getCurrentTime())
-                .containsExactly(
-                        "status", "success", "report", "The current time in UTC is 21:05.");
+                .containsExactly("status", "success", "report", "The current time in Z is 21:05.");
+        try (var ctx = TLC.open().push(ZoneId.class, ZoneId.of("Europe/Zurich"))) {
+            assertThat(dateTimeTools.getCurrentTime())
+                    .containsExactly(
+                            "status", "success", "report", "The current time in CET is 23:05.");
+        }
     }
 
     @Test
@@ -59,8 +65,11 @@ public class DateTimeToolTest {
                                             model, DateTimeTools.TIME, DateTimeTools.CITY_TIME);
                             agentTester.assertTextResponseContains(
                                     "What's the time in Zürich?", "The current time in Zürich is ");
-                            agentTester.assertTextResponseContains(
-                                    "What's the time?", "The current time in UTC is ");
+                            try (var ctx =
+                                    TLC.open().push(ZoneId.class, ZoneId.of("Europe/Zurich"))) {
+                                agentTester.assertTextResponseContains(
+                                        "What's the time?", "The current time in CET is ");
+                            }
                         });
     }
 }

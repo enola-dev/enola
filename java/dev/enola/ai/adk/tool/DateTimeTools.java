@@ -27,12 +27,18 @@ import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.FunctionTool;
 
 import dev.enola.common.SuccessOrError;
+import dev.enola.common.locale.LocaleSupplier;
+import dev.enola.common.locale.LocaleSupplierTLC;
+import dev.enola.common.time.ZoneIdSupplier;
+import dev.enola.common.time.ZoneIdSupplierTLC;
 
 import java.text.Normalizer;
 import java.time.InstantSource;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Map;
 
 public class DateTimeTools {
@@ -58,16 +64,29 @@ public class DateTimeTools {
     }
 
     private final InstantSource instantSource;
+    private final ZoneIdSupplier zoneIdSupplier;
+    private final LocaleSupplier localeSupplier;
+
+    public DateTimeTools(
+            InstantSource instantSource,
+            ZoneIdSupplier zoneIdSupplier,
+            LocaleSupplier localeSupplier) {
+        this.instantSource = instantSource;
+        this.zoneIdSupplier = zoneIdSupplier;
+        this.localeSupplier = localeSupplier;
+    }
 
     public DateTimeTools(InstantSource instantSource) {
-        this.instantSource = instantSource;
+        this(instantSource, ZoneIdSupplierTLC.UTC, new LocaleSupplierTLC(Locale.ENGLISH));
     }
 
     @Schema(description = "Returns the current time")
     public Map<String, String> getCurrentTime() {
-        // TODO Get ZoneId from ZoneIdSupplierTLC.SINGLETON
-        var zid = ZoneId.systemDefault().getId();
-        return Tools.toMap(formatTimeForZone(zid, zid));
+        var locale = localeSupplier.get();
+        var zid = zoneIdSupplier.get();
+        return Tools.toMap(
+                formatTimeForZone(
+                        zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale), zid.getId()));
     }
 
     @Schema(description = "Returns the current time in the given city")
