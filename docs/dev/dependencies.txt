@@ -311,7 +311,6 @@ org.eclipse.angus:angus-activation:2.0.2
 org.eclipse.collections:eclipse-collections:10.4.0
 org.eclipse.collections:eclipse-collections-api:10.4.0
 org.eclipse.collections:eclipse-collections-forkjoin:10.4.0
-org.eclipse.jdt:ecj:3.41.0
 org.eclipse.rdf4j:rdf4j-collection-factory-api:5.1.4
 org.eclipse.rdf4j:rdf4j-collection-factory-mapdb3:5.1.4
 org.eclipse.rdf4j:rdf4j-common-annotation:5.1.4
