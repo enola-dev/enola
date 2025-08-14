@@ -28,11 +28,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 // TODO WIP...
-public class DateTimeTool extends BaseTool {
+public class DateTimeTool {
 
-    public static final BaseTool INSTANCE =
-            FunctionTool.create(new DateTimeTool(), "getCurrentTime");
+    public static final BaseTool INSTANCE = asAdkTool(new DateTimeTool());
 
+    public static BaseTool asAdkTool(DateTimeTool dateTimeTool) {
+        return FunctionTool.create(dateTimeTool, "getCurrentTime");
+    }
+
+    @Annotations.Schema(description = "Returns the current time in the given city")
     public Map<String, String> getCurrentTime(
             @Annotations.Schema(
                             description =
@@ -68,9 +72,5 @@ public class DateTimeTool extends BaseTool {
                                 "error",
                                 "report",
                                 "Sorry, I don't have timezone information for " + city + "."));
-    }
-
-    public DateTimeTool() {
-        super("Current Date & Time", "Returns the current date and time.");
     }
 }
