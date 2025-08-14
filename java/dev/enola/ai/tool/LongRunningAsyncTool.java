@@ -15,7 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.tool;
 
-// TODO and also extends (TBD) "Job"
-public interface LongRunningAsyncTool extends AsyncTool {}
+// TODO This is archived / parked here, just for potential future use; currently not built/used.
+public interface LongRunningAsyncTool extends AsyncTool {
+    // TODO and also extends (TBD) "Job" ...
+
+}

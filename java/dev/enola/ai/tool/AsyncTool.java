@@ -15,11 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.tool;
 
-public interface ToolNameDescription {
+import io.reactivex.rxjava3.core.Single;
 
-    String name();
+import java.util.Map;
 
-    String description();
+// TODO This is archived / parked here, just for potential future use; currently not built/used.
+public interface AsyncTool extends ToolNameDescription {
+
+    // TODO Single or Maybe ?
+    Single<Map<String, Object>> execute(Map<String, Object> input);
 }
