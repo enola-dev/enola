@@ -37,22 +37,30 @@ public class DateTimeToolTest {
     Provider<BaseLlm> llm = new TestsLlmProvider();
 
     @Test
-    public void cityCurrentTimeUnitTest() {
+    public void unit() {
         var testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
         var instantSource = InstantSource.fixed(testInstant);
-        assertThat(new DateTimeTools(instantSource).getCityCurrentTime("Zürich"))
+        var dateTimeTools = new DateTimeTools(instantSource);
+        assertThat(dateTimeTools.getCityCurrentTime("Zürich"))
                 .containsExactly(
                         "status", "success", "report", "The current time in Zürich is 23:05.");
+        assertThat(dateTimeTools.getCurrentTime())
+                .containsExactly(
+                        "status", "success", "report", "The current time in UTC is 21:05.");
     }
 
     @Test
-    public void cityCurrentTimeWithGeminiFlashLite() {
+    public void geminiFlashLite() {
         llm.optional(FLASH)
                 .ifPresent(
                         model -> {
-                            var agentTester = new AgentTester(model, DateTimeTools.CITY_TIME);
+                            var agentTester =
+                                    new AgentTester(
+                                            model, DateTimeTools.TIME, DateTimeTools.CITY_TIME);
                             agentTester.assertTextResponseContains(
                                     "What's the time in Zürich?", "The current time in Zürich is ");
+                            agentTester.assertTextResponseContains(
+                                    "What's the time?", "The current time in UTC is ");
                         });
     }
 }
