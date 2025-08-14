@@ -29,3 +29,7 @@ import java.util.function.Supplier;
  */
 @Immutable
 public interface ZoneIdSupplier extends Supplier<ZoneId> {}
+
+// TODO java.time.InstantSourceSupplier
+
+// TODO java.time.ClockSupplier ?
