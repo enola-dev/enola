@@ -35,30 +35,33 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-public class DateTimeTool {
+public class DateTimeTools {
+
+    // TODO Support "What's the time in Lausanne?" Does it suffice to use Pro instead of Flash-Lite?
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-    public static final BaseTool INSTANCE = asAdkTool(new DateTimeTool(InstantSource.system()));
+    public static final BaseTool INSTANCE =
+            cityCurrentTimeAdkTool(new DateTimeTools(InstantSource.system()));
 
-    public static BaseTool asAdkTool(DateTimeTool dateTimeTool) {
-        return FunctionTool.create(dateTimeTool, "getCurrentTime");
+    public static BaseTool cityCurrentTimeAdkTool(DateTimeTools dateTimeTool) {
+        return FunctionTool.create(dateTimeTool, "getCityCurrentTime");
     }
 
     private final InstantSource instantSource;
 
-    public DateTimeTool(InstantSource instantSource) {
+    public DateTimeTools(InstantSource instantSource) {
         this.instantSource = instantSource;
     }
 
     @Schema(description = "Returns the current time in the given city")
-    public Map<String, String> getCurrentTime(
+    public Map<String, String> getCityCurrentTime(
             @Schema(description = "The name of the city for which to retrieve the current time")
                     String city) {
-        return Tools.toMap(currentTime(city));
+        return Tools.toMap(cityCurrentTime(city));
     }
 
-    private SuccessOrError<String> currentTime(String city) {
+    private SuccessOrError<String> cityCurrentTime(String city) {
         String normalizedCity =
                 Normalizer.normalize(city, Normalizer.Form.NFD)
                         .trim()

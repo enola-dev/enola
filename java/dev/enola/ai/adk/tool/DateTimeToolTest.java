@@ -40,7 +40,7 @@ public class DateTimeToolTest {
     public void unit() {
         var testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
         var instantSource = InstantSource.fixed(testInstant);
-        assertThat(new DateTimeTool(instantSource).getCurrentTime("Zürich"))
+        assertThat(new DateTimeTools(instantSource).getCityCurrentTime("Zürich"))
                 .containsExactly(
                         "status", "success", "report", "The current time in Zürich is 23:05.");
     }
@@ -54,7 +54,7 @@ public class DateTimeToolTest {
                 LlmAgent.builder()
                         .name("DateTimeToolTest")
                         .model(model.get())
-                        .tools(DateTimeTool.INSTANCE)
+                        .tools(DateTimeTools.INSTANCE)
                         .build();
 
         var agentTester = new AgentTester(agent);
