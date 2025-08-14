@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.tool;
 
-import java.util.Map;
+// TODO This is archived / parked here, just for potential future use; currently not built/used.
+public interface ToolNameDescription {
 
-// TODO Move from package dev.enola.ai.adk.tool to package dev.enola.ai.tool
-public interface Tool extends ToolNameDescription {
+    String name();
 
-    Map<String, Object> execute(Map<String, Object> input);
+    String description();
 }

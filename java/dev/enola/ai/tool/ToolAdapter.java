@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.tool;
 
 import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.ToolContext;
@@ -26,7 +26,7 @@ import io.reactivex.rxjava3.core.Single;
 import java.util.Map;
 import java.util.Optional;
 
-// TODO WIP...
+// TODO This is archived / parked here, just for potential future use; currently not built/used.
 public class ToolAdapter extends BaseTool {
 
     public ToolAdapter(Tool tool) {
@@ -37,17 +37,17 @@ public class ToolAdapter extends BaseTool {
         this(tool.name(), tool.description(), false);
     }
 
-    protected ToolAdapter(String name, String description, boolean isLongRunning) {
+    private ToolAdapter(String name, String description, boolean isLongRunning) {
         super(name, description, isLongRunning);
     }
 
     @Override
     public Optional<FunctionDeclaration> declaration() {
-        return super.declaration();
+        throw new UnsupportedOperationException("TODO Implement this method.");
     }
 
     @Override
     public Single<Map<String, Object>> runAsync(Map<String, Object> args, ToolContext toolContext) {
-        return super.runAsync(args, toolContext);
+        throw new UnsupportedOperationException("TODO Implement this method.");
     }
 }
