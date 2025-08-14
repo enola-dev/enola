@@ -33,25 +33,37 @@ import org.junit.Test;
 import java.time.Instant;
 import java.time.InstantSource;
 import java.time.ZoneId;
+import java.util.Locale;
 
 public class DateTimeToolsTest {
 
+    // TODO Make the DateTimeTools reply in German, given that the test Locale is GERMANY!
+
     Provider<BaseLlm> llm = new TestsLlmProvider();
+
+    Instant testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
+    InstantSource instantSource = InstantSource.fixed(testInstant);
+    DateTimeTools dateTimeTools = new DateTimeTools(instantSource);
 
     @Test
     public void unit() {
-        var testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
-        var instantSource = InstantSource.fixed(testInstant);
-        var dateTimeTools = new DateTimeTools(instantSource);
-        assertThat(dateTimeTools.getCityCurrentTime("Zürich"))
-                .containsExactly(
-                        "status", "success", "report", "The current time in Zürich is 23:05.");
-        assertThat(dateTimeTools.getCurrentTime())
-                .containsExactly("status", "success", "report", "The current time in Z is 21:05.");
-        try (var ctx = TLC.open().push(ZoneId.class, ZoneId.of("Europe/Zurich"))) {
+        try (var ctx =
+                TLC.open()
+                        .push(ZoneId.class, ZoneId.of("Europe/Zurich"))
+                        .push(Locale.class, Locale.GERMANY)) {
+            assertThat(dateTimeTools.getCityCurrentTime("Zürich"))
+                    .containsExactly(
+                            "status", "success", "report", "The current time in Zürich is 23:05.");
             assertThat(dateTimeTools.getCurrentTime())
                     .containsExactly(
-                            "status", "success", "report", "The current time in CET is 23:05.");
+                            "status", "success", "report", "The current time in MEZ is 23:05.");
+            assertThat(dateTimeTools.getCurrentDateAndTime())
+                    .containsExactly(
+                            "status",
+                            "success",
+                            "report",
+                            "The current date & time in MEZ is Donnerstag, 14. August 2025,"
+                                    + " 23:05.");
         }
     }
 
@@ -62,14 +74,25 @@ public class DateTimeToolsTest {
                         model -> {
                             var agentTester =
                                     new AgentTester(
-                                            model, DateTimeTools.TIME, DateTimeTools.CITY_TIME);
-                            agentTester.assertTextResponseContains(
-                                    "What's the time in Zürich?", "The current time in Zürich is ");
+                                            model,
+                                            DateTimeTools.currentDateAndTimeAdkTool(dateTimeTools),
+                                            DateTimeTools.currentTimeAdkTool(dateTimeTools),
+                                            DateTimeTools.cityCurrentTimeAdkTool(dateTimeTools));
                             try (var ctx =
-                                    TLC.open().push(ZoneId.class, ZoneId.of("Europe/Zurich"))) {
-                                agentTester.assertTextResponseContains(
-                                        "What's the time?", "The current time in CET is ");
+                                    TLC.open()
+                                            .push(ZoneId.class, ZoneId.of("Europe/Zurich"))
+                                            .push(Locale.class, Locale.GERMANY)) {
+                                agentTester.assertTextResponseEquals(
+                                        "What's the time in Zürich?",
+                                        "The current time in Zürich is 23:05.");
+                                agentTester.assertTextResponseEquals(
+                                        "What's the time?", "The current time in MEZ is 23:05.");
+                                agentTester.assertTextResponseEquals(
+                                        "What's today?", "Today is Thursday, 14. August, 2025.");
                             }
                         });
+        // TODO Sometimes it's "Today is Thursday, 14. August, 2025."
+        //   but other times   "Today is Donnerstag, 14. August 2025."
+        //   See if fixing the temperature (?) can stabilize this?
     }
 }
