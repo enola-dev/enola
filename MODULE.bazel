@@ -228,6 +228,9 @@ enola_maven.install(
 
         # ROME Utils classes appear to also be included in com.rometools:rome - at least via Tika.
         "com.rometools:rome-utils",
+
+        # ADK drags this cat along; Thanks, but No Thanks!
+        "org.eclipse.jdt:ecj",
     ],
     fail_if_repin_required = True,
     fetch_sources = True,
