@@ -30,10 +30,10 @@ import java.util.Map;
 // TODO WIP...
 public class DateTimeTool extends BaseTool {
 
-    public static final BaseTool INSTANCE = // TODO new DateTimeTool();
-            FunctionTool.create(DateTimeTool.class, "getCurrentTime");
+    public static final BaseTool INSTANCE =
+            FunctionTool.create(new DateTimeTool(), "getCurrentTime");
 
-    public static Map<String, String> getCurrentTime(
+    public Map<String, String> getCurrentTime(
             @Annotations.Schema(
                             description =
                                     "The name of the city for which to retrieve the current time")
