@@ -31,6 +31,7 @@ java_library(
         "@enola_maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
+        "//java/dev/enola/common",
         "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_google_genai_google_genai",
         "@enola_maven//:com_google_guava_guava",

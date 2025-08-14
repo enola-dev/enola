@@ -29,8 +29,9 @@ final class Asserter {
             if (response.toLowerCase().contains(responseMustContain.toLowerCase())) return;
 
         throw new AssertionError(
-                response
-                        + " does not contain any of: "
+                "'"
+                        + response
+                        + "' does not contain any of: "
                         + Arrays.toString(responseMustContainAtLeastOneOf));
     }
 

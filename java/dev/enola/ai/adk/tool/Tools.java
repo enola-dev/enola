@@ -1,0 +1,39 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2025 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.enola.ai.adk.tool;
+
+import dev.enola.common.SuccessOrError;
+
+import java.util.Map;
+
+public final class Tools {
+
+    public static Map<String, String> toMap(SuccessOrError<String> soe) {
+        return soe.map(Tools::successMap, Tools::errorMap);
+    }
+
+    public static Map<String, String> successMap(String report) {
+        return Map.of("status", "success", "report", report);
+    }
+
+    public static Map<String, String> errorMap(String error) {
+        return Map.of("status", "error", "report", error);
+    }
+
+    private Tools() {}
+}

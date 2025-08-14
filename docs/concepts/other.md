@@ -74,6 +74,7 @@ Enola 🕵🏾‍♀️ is not a Communication tool.
 
 ### Platforms (?)
 
+* [GraphAware](https://graphaware.com) #commercial
 * [Stardog](https://www.stardog.com) #freemium #commercial #GraphML? #LLM?
 * [Protégé](https://protege.stanford.edu) #opensource #editor #ontology #ToDo
 * [Corese](https://project.inria.fr/corese/) #opensource #ToDo

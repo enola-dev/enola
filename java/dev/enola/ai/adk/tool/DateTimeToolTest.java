@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.adk.tool;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
 
@@ -27,14 +29,24 @@ import dev.enola.ai.iri.Provider;
 
 import org.junit.Test;
 
-import java.io.IOException;
+import java.time.Instant;
+import java.time.InstantSource;
 
 public class DateTimeToolTest {
 
     Provider<BaseLlm> p = new TestsLlmProvider();
 
     @Test
-    public void geminiFlashLite() throws IOException {
+    public void unit() {
+        var testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
+        var instantSource = InstantSource.fixed(testInstant);
+        assertThat(new DateTimeTool(instantSource).getCurrentTime("Zürich"))
+                .containsExactly(
+                        "status", "success", "report", "The current time in Zürich is 23:05.");
+    }
+
+    @Test
+    public void geminiFlashLite() {
         var model = p.optional(GoogleModelProvider.FLASH);
         if (model.isEmpty()) return;
 

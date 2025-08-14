@@ -26,6 +26,7 @@ import com.google.adk.tools.FunctionTool;
 import dev.enola.ai.adk.core.CLI;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.tool.DateTimeTool;
+import dev.enola.ai.adk.tool.Tools;
 import dev.enola.ai.adk.web.AdkHttpServer;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.common.secret.auto.AutoSecretManager;
@@ -55,7 +56,6 @@ public class QuickstartDemo {
                                 + " weather in a city.")
                 .tools(
                         DateTimeTool.INSTANCE,
-                        // TODO Create separate WeatherTool class (like DateTimeTool)
                         FunctionTool.create(QuickstartDemo.class, "getWeather"))
                 .build();
     }
@@ -64,14 +64,9 @@ public class QuickstartDemo {
             @Schema(description = "The name of the city for which to retrieve the weather report")
                     String city) {
         if (city.equalsIgnoreCase("new york")) {
-            return Map.of("status", "success", "report", NYC_WEATHER);
-
+            return Tools.successMap(NYC_WEATHER);
         } else {
-            return Map.of(
-                    "status",
-                    "error",
-                    "report",
-                    "Weather information for " + city + " is not available.");
+            return Tools.errorMap("Weather information for " + city + " is not available.");
         }
     }
 

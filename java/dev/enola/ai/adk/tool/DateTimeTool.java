@@ -17,31 +17,48 @@
  */
 package dev.enola.ai.adk.tool;
 
-import com.google.adk.tools.Annotations;
+import static dev.enola.common.SuccessOrError.error;
+import static dev.enola.common.SuccessOrError.success;
+
+import static java.lang.String.format;
+
+import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.FunctionTool;
 
+import dev.enola.common.SuccessOrError;
+
 import java.text.Normalizer;
+import java.time.InstantSource;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-// TODO WIP...
 public class DateTimeTool {
 
-    public static final BaseTool INSTANCE = asAdkTool(new DateTimeTool());
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
+    public static final BaseTool INSTANCE = asAdkTool(new DateTimeTool(InstantSource.system()));
 
     public static BaseTool asAdkTool(DateTimeTool dateTimeTool) {
         return FunctionTool.create(dateTimeTool, "getCurrentTime");
     }
 
-    @Annotations.Schema(description = "Returns the current time in the given city")
+    private final InstantSource instantSource;
+
+    public DateTimeTool(InstantSource instantSource) {
+        this.instantSource = instantSource;
+    }
+
+    @Schema(description = "Returns the current time in the given city")
     public Map<String, String> getCurrentTime(
-            @Annotations.Schema(
-                            description =
-                                    "The name of the city for which to retrieve the current time")
+            @Schema(description = "The name of the city for which to retrieve the current time")
                     String city) {
+        return Tools.toMap(currentTime(city));
+    }
+
+    private SuccessOrError<String> currentTime(String city) {
         String normalizedCity =
                 Normalizer.normalize(city, Normalizer.Form.NFD)
                         .trim()
@@ -52,25 +69,14 @@ public class DateTimeTool {
         return ZoneId.getAvailableZoneIds().stream()
                 .filter(zid -> zid.toLowerCase().endsWith("/" + normalizedCity))
                 .findFirst()
-                .map(
-                        zid ->
-                                Map.of(
-                                        "status",
-                                        "success",
-                                        "report",
-                                        "The current time in "
-                                                + city
-                                                + " is "
-                                                + ZonedDateTime.now(ZoneId.of(zid))
-                                                        .format(
-                                                                DateTimeFormatter.ofPattern(
-                                                                        "HH:mm"))
-                                                + "."))
-                .orElse(
-                        Map.of(
-                                "status",
-                                "error",
-                                "report",
-                                "Sorry, I don't have timezone information for " + city + "."));
+                .map(zid -> formatTimeForZone(city, zid))
+                .orElse(error("Sorry, I don't have timezone information for " + city + "."));
+    }
+
+    private SuccessOrError<String> formatTimeForZone(String city, String zid) {
+        var now = instantSource.instant();
+        var zoneId = ZoneId.of(zid);
+        var time = ZonedDateTime.ofInstant(now, zoneId).format(FORMATTER);
+        return success(format("The current time in %s is %s.", city, time));
     }
 }
