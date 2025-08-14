@@ -20,7 +20,8 @@
 
 _Agents_ use a _[Large Language Model (LLM)](../specs/aiuri/index.md#language-models-lm)_ to reason, plan, and execute actions to achieve a specific goal, often interacting with _[Tools](tool.md)._ They augment LLMs to go beyond just generating text by enabling them to perform tasks and solve problems proactively.
 
-Enola lets you create agents declaratively in YAML or JSON (and maybe TextProto later), based on its [Agent Schema](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/agent.schema.yaml).
+Enola lets you easily create ‘opinionated’ (“only one way to do it”) _No Code_ agents
+declaratively in YAML or JSON (and maybe TextProto later), based on its [Agent Schema](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/agent.schema.yaml).
 
 **[Check out the tutorial](../tutorial/agents.md)!**
 

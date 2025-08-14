@@ -34,6 +34,8 @@ Perhaps your favorite one could adopt it!
 
 ## Language Models (LM)
 
+Great for _Bring Your Own Model_ (“BYOM”) configuration!
+
 ### Ollama 🦙
 
 `http://localhost:11434?type=ollama&model=gemma3:1b` is the URI of the [Gemma 3 (1B)](https://ai.google.dev/gemma/) large language model running in [Ollama](https://ollama.com), at `http://localhost:11434`.
