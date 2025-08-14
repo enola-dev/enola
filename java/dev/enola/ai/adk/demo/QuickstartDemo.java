@@ -55,7 +55,7 @@ public class QuickstartDemo {
                         "You are a helpful agent who can answer user questions about the time and"
                                 + " weather in a city.")
                 .tools(
-                        DateTimeTools.INSTANCE,
+                        DateTimeTools.CITY_TIME,
                         FunctionTool.create(QuickstartDemo.class, "getWeather"))
                 .build();
     }

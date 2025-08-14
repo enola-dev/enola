@@ -18,7 +18,10 @@
 package dev.enola.ai.adk.test;
 
 import com.google.adk.agents.BaseAgent;
+import com.google.adk.agents.LlmAgent;
 import com.google.adk.events.Event;
+import com.google.adk.models.BaseLlm;
+import com.google.adk.tools.BaseTool;
 import com.google.common.base.Strings;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
@@ -36,14 +39,22 @@ public class AgentTester {
 
     // TODO Support Multiple root agents?!
 
-    // TODO Avoid (almost) copy/paste in ModelTester
-
     // TODO Re-write this as a Truth Subject?
+
+    // TODO Avoid (almost) copy/paste in ModelTester
 
     private final UserSessionRunner runner;
 
     public AgentTester(BaseAgent agent) {
         this.runner = new UserSessionRunner("tester", agent);
+    }
+
+    public AgentTester(BaseLlm model) {
+        this(LlmAgent.builder().name(model.model()).model(model).build());
+    }
+
+    public AgentTester(BaseLlm model, BaseTool... tool) {
+        this(LlmAgent.builder().name(model.model()).model(model).tools(tool).build());
     }
 
     public void assertTextResponseContains(
