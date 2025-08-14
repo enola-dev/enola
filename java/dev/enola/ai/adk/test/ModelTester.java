@@ -26,6 +26,8 @@ import java.util.List;
 
 public class ModelTester {
 
+    // TODO Abandon and replace this with AgentTester(BaseLlm model) ?
+
     // TODO Re-write this as a Truth Subject?
 
     private final BaseLlm llm;

@@ -19,12 +19,12 @@ package dev.enola.ai.adk.tool;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.adk.agents.LlmAgent;
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
+
 import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.adk.iri.TestsLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
-import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.Provider;
 
 import org.junit.Test;
@@ -34,10 +34,10 @@ import java.time.InstantSource;
 
 public class DateTimeToolTest {
 
-    Provider<BaseLlm> p = new TestsLlmProvider();
+    Provider<BaseLlm> llm = new TestsLlmProvider();
 
     @Test
-    public void unit() {
+    public void cityCurrentTimeUnitTest() {
         var testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
         var instantSource = InstantSource.fixed(testInstant);
         assertThat(new DateTimeTools(instantSource).getCityCurrentTime("Zürich"))
@@ -46,19 +46,13 @@ public class DateTimeToolTest {
     }
 
     @Test
-    public void geminiFlashLite() {
-        var model = p.optional(GoogleModelProvider.FLASH);
-        if (model.isEmpty()) return;
-
-        var agent =
-                LlmAgent.builder()
-                        .name("DateTimeToolTest")
-                        .model(model.get())
-                        .tools(DateTimeTools.INSTANCE)
-                        .build();
-
-        var agentTester = new AgentTester(agent);
-        agentTester.assertTextResponseContains(
-                "What's the time in Zürich?", "The current time in Zürich is ");
+    public void cityCurrentTimeWithGeminiFlashLite() {
+        llm.optional(FLASH)
+                .ifPresent(
+                        model -> {
+                            var agentTester = new AgentTester(model, DateTimeTools.CITY_TIME);
+                            agentTester.assertTextResponseContains(
+                                    "What's the time in Zürich?", "The current time in Zürich is ");
+                        });
     }
 }

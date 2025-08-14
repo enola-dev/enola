@@ -41,7 +41,7 @@ public class DateTimeTools {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-    public static final BaseTool INSTANCE =
+    public static final BaseTool CITY_TIME =
             cityCurrentTimeAdkTool(new DateTimeTools(InstantSource.system()));
 
     public static BaseTool cityCurrentTimeAdkTool(DateTimeTools dateTimeTool) {
