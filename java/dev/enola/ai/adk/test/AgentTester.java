@@ -53,8 +53,8 @@ public class AgentTester {
         this(LlmAgent.builder().name(model.model()).model(model).build());
     }
 
-    public AgentTester(BaseLlm model, BaseTool... tool) {
-        this(LlmAgent.builder().name(model.model()).model(model).tools(tool).build());
+    public AgentTester(BaseLlm model, BaseTool... tools) {
+        this(LlmAgent.builder().name(model.model()).model(model).tools(tools).build());
     }
 
     public void assertTextResponseContains(

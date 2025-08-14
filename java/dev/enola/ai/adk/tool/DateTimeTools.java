@@ -37,23 +37,29 @@ import java.time.InstantSource;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Map;
 
-public class DateTimeTools {
+public final class DateTimeTools {
 
     // TODO Merge cityCurrentTime & currentTime by making City optional
 
     // TODO Support "What's the time in Lausanne?" Does it suffice to use Pro instead of Flash-Lite?
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    public static final BaseTool DATE_TIME =
+            currentDateAndTimeAdkTool(new DateTimeTools(InstantSource.system()));
 
     public static final BaseTool TIME =
             currentTimeAdkTool(new DateTimeTools(InstantSource.system()));
 
     public static final BaseTool CITY_TIME =
             cityCurrentTimeAdkTool(new DateTimeTools(InstantSource.system()));
+
+    public static BaseTool currentDateAndTimeAdkTool(DateTimeTools dateTimeTool) {
+        return FunctionTool.create(dateTimeTool, "getCurrentDateAndTime");
+    }
 
     public static BaseTool currentTimeAdkTool(DateTimeTools dateTimeTool) {
         return FunctionTool.create(dateTimeTool, "getCurrentTime");
@@ -80,13 +86,21 @@ public class DateTimeTools {
         this(instantSource, ZoneIdSupplierTLC.UTC, new LocaleSupplierTLC(Locale.ENGLISH));
     }
 
+    @Schema(description = "Returns the current date and time")
+    public Map<String, String> getCurrentDateAndTime() {
+        var locale = localeSupplier.get();
+        var zid = zoneIdSupplier.get();
+        var zidLabel = zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
+        return Tools.toMap(
+                formatTimeForZone(zidLabel, zid.getId(), dateTimeFormatter(), "date & time"));
+    }
+
     @Schema(description = "Returns the current time")
     public Map<String, String> getCurrentTime() {
         var locale = localeSupplier.get();
         var zid = zoneIdSupplier.get();
-        return Tools.toMap(
-                formatTimeForZone(
-                        zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale), zid.getId()));
+        var zidLabel = zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
+        return Tools.toMap(formatTimeForZone(zidLabel, zid.getId(), timeFormatter(), "time"));
     }
 
     @Schema(description = "Returns the current time in the given city")
@@ -97,7 +111,7 @@ public class DateTimeTools {
     }
 
     private SuccessOrError<String> cityCurrentTime(String city) {
-        String normalizedCity =
+        var normalizedCity =
                 Normalizer.normalize(city, Normalizer.Form.NFD)
                         .trim()
                         .toLowerCase()
@@ -107,14 +121,27 @@ public class DateTimeTools {
         return ZoneId.getAvailableZoneIds().stream()
                 .filter(zid -> zid.toLowerCase().endsWith("/" + normalizedCity))
                 .findFirst()
-                .map(zid -> formatTimeForZone(city, zid))
+                .map(zid -> formatTimeForZone(city, zid, timeFormatter(), "time"))
                 .orElse(error("Sorry, I don't have timezone information for " + city + "."));
     }
 
-    private SuccessOrError<String> formatTimeForZone(String city, String zid) {
+    private DateTimeFormatter dateTimeFormatter() {
+        return DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.SHORT)
+                .withLocale(localeSupplier.get());
+    }
+
+    private DateTimeFormatter timeFormatter() {
+        return DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                .withLocale(localeSupplier.get());
+    }
+
+    private SuccessOrError<String> formatTimeForZone(
+            String city, String zid, DateTimeFormatter formatter, String label) {
         var now = instantSource.instant();
         var zoneId = ZoneId.of(zid);
-        var time = ZonedDateTime.ofInstant(now, zoneId).format(FORMATTER);
-        return success(format("The current time in %s is %s.", city, time));
+        var time = ZonedDateTime.ofInstant(now, zoneId).format(formatter);
+
+        // TODO Message Bundle (?) to translate - or could/should we let the LLM do this?!
+        return success(format("The current %s in %s is %s.", label, city, time));
     }
 }
