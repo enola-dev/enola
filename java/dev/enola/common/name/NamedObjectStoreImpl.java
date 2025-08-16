@@ -25,6 +25,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -73,15 +74,18 @@ class NamedObjectStoreImpl implements NamedObjectStore {
      */
     @Override
     public <T> Optional<T> opt(String name, Class<T> clazz) {
-        // Get the inner map for the specific class
-        Map<String, Object> classSpecificStore = store.get(clazz);
-        if (classSpecificStore == null) {
-            // No objects of this class type have been stored yet at all
-            return Optional.empty();
-        }
-
-        // No need for isInstance check here, as it's already scoped by class
-        return Optional.ofNullable(clazz.cast(classSpecificStore.get(name)));
+        // Find the first matching object from any compatible class type.
+        return store.entrySet().stream()
+                // Filter for entries where the stored class is a subtype of the requested class.
+                .filter(entry -> clazz.isAssignableFrom(entry.getKey()))
+                // Get the object from the inner map using the name.
+                .map(entry -> entry.getValue().get(name))
+                // Filter out nulls in case the name doesn't exist in a compatible map.
+                .filter(Objects::nonNull)
+                // We only expect one, so take the first one found.
+                .findFirst()
+                // Safely cast the found object to the requested type.
+                .map(clazz::cast);
     }
 
     @Override
