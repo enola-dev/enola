@@ -49,6 +49,7 @@ java_library(
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/name",
         "//java/dev/enola/common/secret",
         "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         # "@enola_maven//:com_google_adk_google_adk",

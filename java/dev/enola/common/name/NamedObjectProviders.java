@@ -33,7 +33,7 @@ public class NamedObjectProviders {
         return new NamedObjectStoreImpl(new HashMap<>());
     }
 
-    public static NamedObjectProvider newImmutable(Map<String, Object> flatMap) {
+    public static NamedObjectProvider newImmutable(Map<String, ?> flatMap) {
         // Group the flat map's entries by the value's class
         Map<Class<?>, Map<String, Object>> groupedByClass =
                 flatMap.entrySet().stream()

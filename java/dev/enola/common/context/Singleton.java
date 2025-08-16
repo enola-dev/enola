@@ -42,6 +42,8 @@ import java.util.function.Supplier;
  * public static Singleton&lt;MyService&gt; set(...) { return SINGLETON.set(new MyService(...));
  * </code>
  *
+ * <p>This class is intentionally not thread safe, for performance reasons.
+ *
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */
 public abstract class Singleton<T> implements Supplier<T> {

@@ -21,7 +21,6 @@ import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
 import com.google.adk.tools.BaseTool;
-import com.google.adk.utils.ComponentRegistry;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -30,6 +29,8 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ResourceProvider;
+import dev.enola.common.name.NamedObjectProvider;
+import dev.enola.common.name.NamedObjectProviders;
 
 import java.io.IOException;
 import java.net.URI;
@@ -42,7 +43,7 @@ public class AgentsLoader {
 
     // TODO Detect Agent name/id conflicts between agents in DIFFERENT resources
 
-    private final ComponentRegistry adkComponentRegistry;
+    private final NamedObjectProvider namedObjectProvider;
 
     private final Provider<BaseLlm> llmProvider;
     private final BaseLlm defaultLLM;
@@ -62,8 +63,7 @@ public class AgentsLoader {
         this.llmProvider = llmProvider;
         this.defaultLLM = llmProvider.get(defaultLLM);
 
-        this.adkComponentRegistry = ComponentRegistry.getInstance();
-        tools.forEach(adkComponentRegistry::register);
+        this.namedObjectProvider = NamedObjectProviders.newImmutable(tools);
     }
 
     public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {
@@ -104,11 +104,7 @@ public class AgentsLoader {
 
             var tools = new ArrayList<BaseTool>(agent.tools.size());
             for (var toolName : agent.tools) {
-                var opt = adkComponentRegistry.get(toolName, BaseTool.class);
-                if (opt.isEmpty())
-                    throw new IllegalArgumentException(
-                            toolName + " is needed in " + uri + ", but not available");
-                tools.add(opt.get());
+                tools.add(namedObjectProvider.get(toolName, BaseTool.class, uri));
             }
             agentBuilder.tools(tools);
 
