@@ -21,6 +21,7 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
 
 import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
@@ -36,7 +37,8 @@ public class GoogleLlmProvider extends GoogleModelProvider<BaseLlm> {
     }
 
     @Override
-    protected BaseLlm create(Secret apiKey, String modelName) {
-        return Gemini.builder().apiKey(apiKey.map(String::new)).modelName(modelName).build();
+    protected BaseLlm create(Secret apiKey, String modelName, ModelConfig config) {
+        var gemini = Gemini.builder().apiKey(apiKey.map(String::new)).modelName(modelName).build();
+        return WrappedBaseLlm.wrap(gemini, config);
     }
 }

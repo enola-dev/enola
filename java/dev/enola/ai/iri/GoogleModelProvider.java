@@ -79,12 +79,14 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
                             + " but was: "
                             + model);
 
+        var config = ModelConfig.from(queryMap);
+
         try (var apiKey = secretManager.get(GOOGLE_AI_API_KEY_SECRET_NAME)) {
-            return Optional.of(create(apiKey, model));
+            return Optional.of(create(apiKey, model, config));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    protected abstract T create(Secret apiKey, String modelName);
+    protected abstract T create(Secret apiKey, String modelName, ModelConfig config);
 }

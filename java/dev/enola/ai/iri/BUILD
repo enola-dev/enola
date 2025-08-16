@@ -27,8 +27,10 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret",
+        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:io_github_ollama4j_ollama4j",
         "@enola_maven//:org_jspecify_jspecify",

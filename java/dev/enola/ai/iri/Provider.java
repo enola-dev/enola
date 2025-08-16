@@ -40,6 +40,9 @@ public interface Provider<T> {
 
     // TODO Set<String> secrets();
 
+    /**
+     * Return AI Thing if it's available. Empty if its configuration like secrets etc. is missing.
+     */
     Optional<T> optional(URI uri);
 
     default T get(URI uri) throws IllegalArgumentException {

@@ -17,6 +17,7 @@
  */
 package dev.enola.ai.langchain4j;
 
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.OllamaModelProvider;
 import dev.langchain4j.model.chat.StreamingChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
@@ -24,12 +25,18 @@ import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 public class OllamaChatModelProvider extends OllamaModelProvider<StreamingChatModel> {
 
     @Override
-    protected StreamingChatModel create(String baseURL, String modelName) {
-        return OllamaStreamingChatModel.builder()
-                .logRequests(true)
-                .logResponses(true)
-                .baseUrl(baseURL)
-                .modelName(modelName)
-                .build();
+    protected StreamingChatModel create(String baseURL, String modelName, ModelConfig config) {
+        var builder =
+                OllamaStreamingChatModel.builder()
+                        .logRequests(true)
+                        .logResponses(true)
+                        .baseUrl(baseURL)
+                        .modelName(modelName);
+
+        config.topP().ifPresent(builder::topP);
+        config.topK().map(Double::intValue).ifPresent(builder::topK);
+        config.temperature().ifPresent(builder::temperature);
+        // TODO How? config.maxOutputTokens().ifPresent(builder::maxOutputTokens);
+        return builder.build();
     }
 }
