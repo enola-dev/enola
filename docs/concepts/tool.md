@@ -22,4 +22,33 @@ _Tools_ allow [Agents](agent.md) to access information which is not in a _[Large
 
 ## Clock 🕰️
 
-The `clock` tool makes the current date and time available to a model.
+The `clock` tool makes the current date and time available to a model:
+
+```shell
+$ enola ai --lm="google://?model=gemini-2.5-flash-lite" --in "What's the time?"
+I cannot tell you the current time. I do not have access to real-time information.
+
+$ enola ai --agents=test/agents/clock.agent.yaml --in "What's the time?"
+The current date & time in CET is Saturday, August 16, 2025, 11:42 PM.
+```
+
+## Google 🔎 🌐
+
+The `search_google` tool makes the [Google Search Engine](https://search.google/) available:
+
+```shell
+$ enola ai --lm="google://?model=gemini-2.5-flash-lite" --in "What happened today?"
+As a large language model, I don't have access to real-time information or a concept of "today." My knowledge cutoff is **June 2024**, so I can't tell you what happened today specifically.
+
+$ enola ai --agents=test/agents/google.agent.yaml --in "What happened today?"
+Here's a summary of what happened on August 16, 2025:
+
+**International News:**
+*   The Indian tricolor was hoisted atop Seattle's iconic Space Needle for the first time, coinciding with India's 79th Independence Day celebrations.
+
+(...)
+**Other Notable Events:**
+*   August 16th is recognized as National Airborne Day, National Bratwurst Day, National Rum Day, National Roller Coaster Day, and National Tell a Joke Day.
+```
+
+This tool is currently only supported [on Gemini](../specs/aiuri/index.md#google-ai-).

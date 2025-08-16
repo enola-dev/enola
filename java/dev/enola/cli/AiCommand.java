@@ -85,7 +85,9 @@ public class AiCommand extends CommandWithResourceProvider {
 
             eventsFlow.blockingSubscribe(
                     event -> {
-                        // TODO stringifyContent() needs to be improved... see also Chat2Command!
+                        // TODO stringifyContent() needs to be improved...
+                        //   Only output for user should be printed, tool calls etc. must be logged!
+                        //   see also Chat2Command!
                         out.println(event.stringifyContent());
                     },
                     e -> {
