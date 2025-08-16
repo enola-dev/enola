@@ -15,23 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object;
+package dev.enola.common.name;
 
 import java.util.Optional;
 
-/** Provides {@link Identifiable} objects, given their ID <b>and</b> Class. */
-public interface ProviderFromID {
+/** Provides read-only access to named objects, scoped by their class. */
+public interface NamedObjectProvider {
 
-    // TODO Just use (retrofit) the [new] NamedObjectProvider instead!
+    Iterable<String> names(Class<?> clazz);
 
-    <T extends Identifiable> Optional<T> opt(String id, Class<T> clazz);
+    <T> Optional<T> opt(String name, Class<T> clazz);
 
-    default <T extends Identifiable> T get(String id, Class<T> clazz)
-            throws IllegalArgumentException {
-        return opt(id, clazz)
+    default <T> T get(String name, Class<T> clazz, Object context) throws IllegalArgumentException {
+        return opt(name, clazz)
                 .orElseThrow(
                         () ->
                                 new IllegalArgumentException(
-                                        "No " + clazz.getName() + " object with ID " + id));
+                                        name
+                                                + " is needed in "
+                                                + context
+                                                + ", but not available, only: "
+                                                + names(clazz)));
     }
 }

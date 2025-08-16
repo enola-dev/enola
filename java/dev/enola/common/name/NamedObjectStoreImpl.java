@@ -1,0 +1,95 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2025 The Enola <https://enola.dev> Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package dev.enola.common.name;
+
+import static com.google.common.base.Strings.emptyToNull;
+
+import static java.util.Objects.requireNonNull;
+
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+
+class NamedObjectStoreImpl implements NamedObjectStore {
+
+    // Objects, keyed first by Class, then by ID.
+    private final Map<Class<?>, Map<String, Object>> store;
+
+    NamedObjectStoreImpl(Map<Class<?>, Map<String, Object>> store) {
+        this.store = store;
+    }
+
+    /**
+     * Stores an Identifiable object in the map, scoped by its class.
+     *
+     * @param o The Identifiable object to store.
+     * @return this itself, just as a convenience for one line chaining
+     * @throws IllegalStateException If an object with the same ID and class already exists.
+     */
+    @Override
+    @CanIgnoreReturnValue
+    public NamedObjectStore store(String name, Object o) throws IllegalStateException {
+        requireNonNull(o, "Object to store cannot be null.");
+        requireNonNull(emptyToNull(name), "Object ID cannot be null or empty");
+
+        // Get or create the inner map for this object's class
+        Map<String, Object> classSpecificStore =
+                store.computeIfAbsent(o.getClass(), k -> new ConcurrentHashMap<>());
+
+        var current = classSpecificStore.putIfAbsent(name, o);
+        if (current != null) throw new IllegalStateException("Already stores: " + current);
+
+        return this;
+    }
+
+    /**
+     * Retrieves an Identifiable object by its ID and expected class type. The lookup is scoped by
+     * the provided class.
+     *
+     * @param id The ID of the object to retrieve.
+     * @param clazz The expected class type of the object. This is crucial for type safety and
+     *     scoping.
+     * @param <T> The type of the Identifiable object.
+     * @return The retrieved object, cast to the specified class, or null if not found or if the
+     *     stored object is not assignable to the requested class.
+     */
+    @Override
+    public <T> Optional<T> opt(String id, Class<T> clazz) {
+        // Get the inner map for the specific class
+        Map<String, Object> classSpecificStore = store.get(clazz);
+        if (classSpecificStore == null) {
+            // No objects of this class type have been stored yet at all
+            return Optional.empty();
+        }
+
+        // No need for isInstance check here, as it's already scoped by class
+        return Optional.ofNullable(clazz.cast(classSpecificStore.get(id)));
+    }
+
+    @Override
+    public Iterable<String> names(Class<?> clazz) {
+        Map<String, Object> classSpecificStore = store.get(clazz);
+        if (classSpecificStore == null) {
+            return List.of();
+        }
+        return classSpecificStore.keySet();
+    }
+}

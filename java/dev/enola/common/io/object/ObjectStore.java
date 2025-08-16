@@ -17,14 +17,12 @@
  */
 package dev.enola.common.io.object;
 
-import static java.util.Objects.requireNonNull;
-
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
-import java.util.HashMap;
-import java.util.Map;
+import dev.enola.common.name.NamedObjectProviders;
+import dev.enola.common.name.NamedObjectStore;
+
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ObjectStore is an in-memory store (and {@link ProviderFromID}) for {@link Identifiable} objects.
@@ -34,64 +32,30 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ObjectStore implements ProviderFromID {
 
+    // TODO ObjectStore newImmutable(Map<String, Identifiable> map)
+
     public static ObjectStore newConcurrent() {
-        return new ObjectStore(new ConcurrentHashMap<>());
+        return new ObjectStore(NamedObjectProviders.newConcurrent());
     }
 
     public static ObjectStore newSingleThreaded() {
-        return new ObjectStore(new HashMap<>());
+        return new ObjectStore(NamedObjectProviders.newSingleThreaded());
     }
 
-    // Objects, keyed first by Class, then by ID.
-    private final Map<Class<?>, Map<String, Identifiable>> store;
+    private final NamedObjectStore namedObjectStore;
 
-    private ObjectStore(Map<Class<?>, Map<String, Identifiable>> store) {
-        this.store = store;
+    public ObjectStore(NamedObjectStore namedObjectStore) {
+        this.namedObjectStore = namedObjectStore;
     }
 
-    /**
-     * Stores an Identifiable object in the map, scoped by its class.
-     *
-     * @param o The Identifiable object to store.
-     * @return this itself, just as a convenience for one line chaining
-     * @throws IllegalStateException If an object with the same ID and class already exists.
-     */
     @CanIgnoreReturnValue
     public ObjectStore store(Identifiable o) throws IllegalStateException {
-        requireNonNull(o, "Object to store cannot be null.");
-        requireNonNull(o.id(), "Object ID cannot be null.");
-
-        // Get or create the inner map for this object's class
-        Map<String, Identifiable> classSpecificStore =
-                store.computeIfAbsent(o.getClass(), k -> new ConcurrentHashMap<>());
-
-        var current = classSpecificStore.putIfAbsent(o.id(), o);
-        if (current != null) throw new IllegalStateException("Already stores: " + current);
-
+        namedObjectStore.store(o.id(), o);
         return this;
     }
 
-    /**
-     * Retrieves an Identifiable object by its ID and expected class type. The lookup is scoped by
-     * the provided class.
-     *
-     * @param id The ID of the object to retrieve.
-     * @param clazz The expected class type of the object. This is crucial for type safety and
-     *     scoping.
-     * @param <T> The type of the Identifiable object.
-     * @return The retrieved object, cast to the specified class, or null if not found or if the
-     *     stored object is not assignable to the requested class.
-     */
     @Override
     public <T extends Identifiable> Optional<T> opt(String id, Class<T> clazz) {
-        // Get the inner map for the specific class
-        Map<String, Identifiable> classSpecificStore = store.get(clazz);
-        if (classSpecificStore == null) {
-            // No objects of this class type have been stored yet at all
-            return Optional.empty();
-        }
-
-        // No need for isInstance check here, as it's already scoped by class
-        return Optional.ofNullable(clazz.cast(classSpecificStore.get(id)));
+        return namedObjectStore.opt(id, clazz);
     }
 }
