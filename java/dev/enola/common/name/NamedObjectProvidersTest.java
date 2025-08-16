@@ -19,12 +19,11 @@ package dev.enola.common.name;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NamedObjectProvidersTest {
 
@@ -43,5 +42,15 @@ public class NamedObjectProvidersTest {
         assertThat(nop.get("list", List.class, "Test")).isInstanceOf(ArrayList.class);
         assertThat(nop.get("list", Collection.class, "Test")).isInstanceOf(ArrayList.class);
         assertThat(nop.get("list", Iterable.class, "Test")).isInstanceOf(ArrayList.class);
+    }
+
+    @Test
+    @Ignore // TODO Improve NamedObjectProviders to allow creating immutable stores with same names
+    public void implementationVsInterfaceClassConflict() {
+        var nop =
+                NamedObjectProviders.newImmutable(
+                        Map.of("list", new ArrayList<String>(), "list", new LinkedList<>()));
+        Assert.assertThrows(
+                IllegalArgumentException.class, () -> nop.get("list", List.class, "Test"));
     }
 }
