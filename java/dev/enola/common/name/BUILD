@@ -18,33 +18,23 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "object",
+    name = "name",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/collect",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/name",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(
-        include = ["*Test.java"],
-        allow_empty = True,
-    ),
+    srcs = glob(["*Test.java"]),
     deps = [
-        ":object",
-        "//java/dev/enola/common/io",
-        "@enola_maven//:org_jspecify_jspecify",
+        ":name",
     ],
 )
