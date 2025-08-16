@@ -18,6 +18,7 @@
 package dev.enola.ai.adk.tool;
 
 import com.google.adk.tools.BaseTool;
+import com.google.adk.tools.GoogleSearchTool;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.SuccessOrError;
@@ -29,7 +30,10 @@ public final class Tools {
 
     public static ImmutableMap<String, BaseTool> builtin(InstantSource instantSource) {
         return ImmutableMap.of(
-                "clock", DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)));
+                "clock",
+                DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)),
+                "search_google",
+                new GoogleSearchTool());
     }
 
     public static Map<String, String> toMap(SuccessOrError<String> soe) {
