@@ -17,11 +17,20 @@
  */
 package dev.enola.ai.adk.tool;
 
+import com.google.adk.tools.BaseTool;
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.SuccessOrError;
 
+import java.time.InstantSource;
 import java.util.Map;
 
 public final class Tools {
+
+    public static ImmutableMap<String, BaseTool> builtin(InstantSource instantSource) {
+        return ImmutableMap.of(
+                "clock", DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)));
+    }
 
     public static Map<String, String> toMap(SuccessOrError<String> soe) {
         return soe.map(Tools::successMap, Tools::errorMap);

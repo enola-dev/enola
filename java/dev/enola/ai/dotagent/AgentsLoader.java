@@ -25,7 +25,6 @@ import com.google.adk.utils.ComponentRegistry;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
-import dev.enola.ai.adk.tool.DateTimeTools;
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class AgentsLoader {
@@ -53,14 +53,17 @@ public class AgentsLoader {
     private final AgentsModelLoader agentsModelLoader;
 
     public AgentsLoader(
-            ResourceProvider resourceProvider, URI defaultLLM, Provider<BaseLlm> llmProvider) {
+            ResourceProvider resourceProvider,
+            URI defaultLLM,
+            Provider<BaseLlm> llmProvider,
+            Map<String, BaseTool> tools) {
         this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultLLM);
         this.agentsModelLoader = new AgentsModelLoader(resourceProvider);
         this.llmProvider = llmProvider;
         this.defaultLLM = llmProvider.get(defaultLLM);
 
         this.adkComponentRegistry = ComponentRegistry.getInstance();
-        this.adkComponentRegistry.register("clock", DateTimeTools.DATE_TIME);
+        tools.forEach(adkComponentRegistry::register);
     }
 
     public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {

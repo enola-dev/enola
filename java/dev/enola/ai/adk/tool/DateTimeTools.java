@@ -29,7 +29,6 @@ import com.google.adk.tools.FunctionTool;
 import dev.enola.common.SuccessOrError;
 import dev.enola.common.locale.LocaleSupplier;
 import dev.enola.common.locale.LocaleSupplierTLC;
-import dev.enola.common.time.InstantSourceTLC;
 import dev.enola.common.time.ZoneIdSupplier;
 import dev.enola.common.time.ZoneIdSupplierTLC;
 
@@ -49,15 +48,8 @@ public final class DateTimeTools {
 
     // TODO Support "What's the time in Lausanne?" Does it suffice to use Pro instead of Flash-Lite?
 
-    private static final InstantSource INSTANT_SOURCE_TLC = new InstantSourceTLC();
-
-    public static final BaseTool DATE_TIME =
-            currentDateAndTimeAdkTool(new DateTimeTools(INSTANT_SOURCE_TLC));
-
-    public static final BaseTool TIME = currentTimeAdkTool(new DateTimeTools(INSTANT_SOURCE_TLC));
-
     public static final BaseTool CITY_TIME =
-            cityCurrentTimeAdkTool(new DateTimeTools(INSTANT_SOURCE_TLC));
+            cityCurrentTimeAdkTool(new DateTimeTools(InstantSource.system()));
 
     public static BaseTool currentDateAndTimeAdkTool(DateTimeTools dateTimeTool) {
         return FunctionTool.create(dateTimeTool, "getCurrentDateAndTime");
