@@ -26,6 +26,7 @@ import com.google.genai.types.Part;
 import dev.enola.ai.adk.core.CLI;
 import dev.enola.ai.adk.core.UserSessionRunner;
 import dev.enola.cli.AiOptions.WithAgentName;
+import dev.enola.common.context.TLC;
 
 import io.reactivex.rxjava3.core.Flowable;
 
@@ -35,6 +36,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Spec;
 
+import java.io.IOException;
 import java.net.URI;
 
 @CommandLine.Command(name = "ai", description = "Run AI, print response (and then exit)")
@@ -60,6 +62,13 @@ public class AiCommand extends CommandWithResourceProvider {
     @Override
     public void run() throws Exception {
         super.run();
+        try (var ctx = TLC.open()) {
+            setup(ctx);
+            runInContext();
+        }
+    }
+
+    private void runInContext() throws IOException {
         var out = spec.commandLine().getOut();
 
         if (isNullOrEmpty(prompt))
