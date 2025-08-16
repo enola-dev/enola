@@ -21,6 +21,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class NamedObjectProvidersTest {
@@ -34,6 +37,11 @@ public class NamedObjectProvidersTest {
         assertThat(nop.get("bar", Long.class, "Test")).isEqualTo(2L);
     }
 
-    // TODO @Test implementationVsInterfaceClass .. won't work, need to register an object under all
-    // its interfaces
+    @Test
+    public void implementationVsInterfaceClass() {
+        var nop = NamedObjectProviders.newImmutable(Map.of("list", new ArrayList<String>()));
+        assertThat(nop.get("list", List.class, "Test")).isInstanceOf(ArrayList.class);
+        assertThat(nop.get("list", Collection.class, "Test")).isInstanceOf(ArrayList.class);
+        assertThat(nop.get("list", Iterable.class, "Test")).isInstanceOf(ArrayList.class);
+    }
 }
