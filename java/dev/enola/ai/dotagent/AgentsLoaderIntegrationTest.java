@@ -22,8 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
+import static java.util.Collections.emptyMap;
+
 import dev.enola.ai.adk.iri.GoogleLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
+import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -38,6 +41,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Instant;
+import java.time.InstantSource;
 import java.util.stream.Stream;
 
 public class AgentsLoaderIntegrationTest {
@@ -52,7 +57,8 @@ public class AgentsLoaderIntegrationTest {
     public void optimisticChefYAML() throws IOException {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
         // We must create the AgentsLoader AFTER we know that the API secret is available:
-        var loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager));
+        var loader =
+                new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), emptyMap());
 
         var agents = loader.load(Stream.of(URI.create("chef-optimist.agent.yaml")));
         assertThat(agents).hasSize(1);
@@ -69,5 +75,24 @@ public class AgentsLoaderIntegrationTest {
                 "precious",
                 "jewels",
                 "bliss");
+    }
+
+    @Test
+    public void clock() throws IOException {
+        Instant testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
+        InstantSource testInstantSource = InstantSource.fixed(testInstant);
+        var tools = Tools.builtin(testInstantSource);
+
+        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+        var loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), tools);
+
+        var agents = loader.load(Stream.of(URI.create("clock.agent.yaml")));
+        assertThat(agents).hasSize(1);
+        var agent = agents.iterator().next();
+
+        var agentTester = new AgentTester(agent);
+        agentTester.assertTextResponseContains(
+                "What's the current date and time?",
+                "The current date and time is Thursday, August 14, 2025, 9:05 PM.");
     }
 }

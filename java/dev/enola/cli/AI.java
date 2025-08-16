@@ -25,6 +25,7 @@ import com.google.common.base.Strings;
 
 import dev.enola.ai.adk.core.Agents;
 import dev.enola.ai.adk.iri.LlmProviders;
+import dev.enola.ai.adk.tool.Tools;
 import dev.enola.ai.dotagent.AgentsLoader;
 import dev.enola.cli.AiOptions.WithAgentName;
 import dev.enola.common.io.resource.ResourceProvider;
@@ -34,6 +35,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.InstantSource;
 import java.util.Set;
 
 final class AI {
@@ -47,7 +49,8 @@ final class AI {
         if (aiOptions != null && !isNullOrEmpty(aiOptions.defaultLanguageModelURI)) {
             defaultModelURI = aiOptions.defaultLanguageModelURI;
         }
-        var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider);
+        var tools = Tools.builtin(InstantSource.system());
+        var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider, tools);
         if (aiOptions != null && aiOptions.agentURIs != null && !aiOptions.agentURIs.isEmpty()) {
             return agentsLoader.load(aiOptions.agentURIs.stream());
 

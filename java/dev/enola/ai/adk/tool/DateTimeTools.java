@@ -48,12 +48,6 @@ public final class DateTimeTools {
 
     // TODO Support "What's the time in Lausanne?" Does it suffice to use Pro instead of Flash-Lite?
 
-    public static final BaseTool DATE_TIME =
-            currentDateAndTimeAdkTool(new DateTimeTools(InstantSource.system()));
-
-    public static final BaseTool TIME =
-            currentTimeAdkTool(new DateTimeTools(InstantSource.system()));
-
     public static final BaseTool CITY_TIME =
             cityCurrentTimeAdkTool(new DateTimeTools(InstantSource.system()));
 

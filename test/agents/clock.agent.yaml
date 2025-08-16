@@ -1,0 +1,7 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash-lite
+description: Agent to answer questions about the current time.
+instruction: You are a helpful agent who can answer user questions about the current time.
+# TODO prompt: What's the current date and time?
+tools:
+  - clock

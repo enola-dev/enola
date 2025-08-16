@@ -42,6 +42,15 @@ public class AgentsModelLoaderTest {
     final AgentsModelLoader aml = new AgentsModelLoader(rp);
 
     @Test
+    public void clock() throws IOException {
+        var clockAgentModel = aml.load(URI.create("clock.agent.yaml"));
+        var aClockAgent = clockAgentModel.agents.iterator().next();
+        assertThat(aClockAgent.description)
+                .isEqualTo("Agent to answer questions about the current time.");
+        assertThat(aClockAgent.tools).containsExactly("clock");
+    }
+
+    @Test
     public void optimisticChefYAML() throws IOException {
         checkOptimisticChef(aml.load(URI.create("chef-optimist.agent.yaml")));
     }

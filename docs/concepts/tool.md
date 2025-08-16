@@ -19,3 +19,7 @@
 # Tool 🧰
 
 _Tools_ allow [Agents](agent.md) to access information which is not in a _[Large Language Model (LLM)](../specs/aiuri/index.md#language-models-lm)_ and to interact with their environment.
+
+## Clock 🕰️
+
+The `clock` tool makes the current date and time available to a model.

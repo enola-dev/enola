@@ -17,8 +17,6 @@
  */
 package dev.enola.ai.dotprompt;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import dev.enola.common.template.Template;
 
 import org.jspecify.annotations.Nullable;
@@ -63,7 +61,7 @@ public class DotPrompt {
      * loaded prompt (e.g. {@code http://example.org/stuff/example.variant1.prompt.md} has an
      * inferred name of {@code example} and inferred variant of {@code variant1}).
      */
-    public @Nullable String variant;
+    // TODO public @Nullable String variant;
 
     /**
      * The name of the model to use for this prompt, based on the <a
@@ -78,13 +76,13 @@ public class DotPrompt {
      * model. Note that version, temperature, topK, topP & maxOutputTokens are already specified as
      * query parameters in the model AI URI instead of here.
      */
-    public final Map<String, Object> config = new HashMap<>();
+    // TODO public final Map<String, Object> config = new HashMap<>();
 
     /** Names of registered tools to allow use of in this prompt. */
     public final Set<String> tools = new HashSet<>();
 
     /** Arbitrary metadata to be used by code, tools, and libraries. */
-    public final Map<String, Object> metadata = new HashMap<>();
+    // TODO public final Map<String, Object> metadata = new HashMap<>();
 
     /** Defines the (schema of the) input variables the prompt. */
     public @Nullable Input input;
@@ -114,9 +112,9 @@ public class DotPrompt {
          * passed from the implementation should be merged into these values with a shallow merge
          * strategy.
          */
-        @JsonProperty("default") // cauz "default" is a reserved keyword
+        // TODO @JsonProperty("default") // cauz "default" is a reserved keyword
         // TODO https://github.com/google/dotprompt/issues/306 re. Map<String, Object>
-        public final Map<String, Object> defaults = new HashMap<>();
+        // TODO public final Map<String, Object> defaults = new HashMap<>();
 
         /**
          * Schema representing the input values for the prompt. Must correspond to a JSON Schema

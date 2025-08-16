@@ -15,18 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.time;
+package dev.enola.common.name;
 
-import com.google.errorprone.annotations.Immutable;
+import static com.google.common.truth.Truth.assertThat;
 
-import java.time.ZoneId;
-import java.util.function.Supplier;
+import org.junit.Test;
 
-/**
- * Supplies the "current" {@link ZoneId} (Time Zone, TZ).
- *
- * <p>It's up to the implementation how to determine the "current" TZ.
- */
-@Immutable
-// TODO Get rid of this again? Could just use Supplier<ZoneId> directly..
-public interface ZoneIdSupplier extends Supplier<ZoneId> {}
+import java.util.Map;
+
+public class NamedObjectProvidersTest {
+
+    // TODO @Test public void newSingleThreaded() & newConcurrent()
+
+    @Test
+    public void newImmutable() {
+        var nop = NamedObjectProviders.newImmutable(Map.of("foo", 1, "bar", 2L));
+        assertThat(nop.get("foo", Integer.class, "Test")).isEqualTo(1);
+        assertThat(nop.get("bar", Long.class, "Test")).isEqualTo(2L);
+    }
+
+    // TODO @Test implementationVsInterfaceClass .. won't work, need to register an object under all
+    // its interfaces
+}

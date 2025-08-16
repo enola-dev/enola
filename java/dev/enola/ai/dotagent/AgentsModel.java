@@ -31,7 +31,7 @@ import java.util.*;
  */
 public class AgentsModel {
 
-    // TODO Write the corresponding agents.schema.json and agents.proto
+    // TODO Write the agents.proto corresponding to the (existing) agent.schema.yaml
 
     // TODO @JsonProperty("import") // cauz "import" is a reserved keyword in Java
     // TODO public final Set<URI> imports = new HashSet<>();
@@ -40,11 +40,7 @@ public class AgentsModel {
 
     public static class Agent extends DotPrompt {
 
-        public enum Visibility {
-            user,
-            internal
-        }
-
+        // public enum Visibility { user, internal }
         // TODO public Visibility visibility = Visibility.user;
 
         /**

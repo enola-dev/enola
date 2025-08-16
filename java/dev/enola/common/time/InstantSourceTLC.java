@@ -17,16 +17,21 @@
  */
 package dev.enola.common.time;
 
-import com.google.errorprone.annotations.Immutable;
+import dev.enola.common.context.TLC;
 
-import java.time.ZoneId;
-import java.util.function.Supplier;
+import java.time.Instant;
+import java.time.InstantSource;
 
 /**
- * Supplies the "current" {@link ZoneId} (Time Zone, TZ).
+ * InstantSourceTLC is an {@link InstantSource} which checks if there is an {@link InstantSource}
+ * available in the {@link TLC}, and otherwise uses the {@link InstantSource#system()}.
  *
- * <p>It's up to the implementation how to determine the "current" TZ.
+ * <p>Use this as InstanceSource so that tests can set a fixed Instant.
  */
-@Immutable
-// TODO Get rid of this again? Could just use Supplier<ZoneId> directly..
-public interface ZoneIdSupplier extends Supplier<ZoneId> {}
+public class InstantSourceTLC implements InstantSource {
+
+    @Override
+    public Instant instant() {
+        return TLC.optional(InstantSource.class).orElse(InstantSource.system()).instant();
+    }
+}
