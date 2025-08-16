@@ -15,22 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.name;
+package dev.enola.common.time;
 
-import static com.google.common.truth.Truth.assertThat;
+import dev.enola.common.context.TLC;
 
-import org.junit.Test;
+import java.time.Instant;
+import java.time.InstantSource;
 
-import java.util.Map;
+/**
+ * InstantSourceTLC is an {@link InstantSource} which checks if there is an {@link InstantSource}
+ * available in the {@link TLC}, and otherwise uses the {@link InstantSource#system()}.
+ *
+ * <p>Use this as InstanceSource so that tests can set a fixed Instant.
+ */
+public class InstantSourceTLC implements InstantSource {
 
-public class ImmutableNamedObjectProviderTest {
-
-    // TODO @Test public void newSingleThreaded() & newConcurrent()
-
-    @Test
-    public void newImmutable() {
-        var nop = NamedObjectProviders.newImmutable(Map.of("foo", 1, "bar", 2L));
-        assertThat(nop.get("foo", Integer.class, "Test")).isEqualTo(1);
-        assertThat(nop.get("bar", Long.class, "Test")).isEqualTo(2L);
+    @Override
+    public Instant instant() {
+        return TLC.optional(InstantSource.class).orElse(InstantSource.system()).instant();
     }
 }

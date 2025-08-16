@@ -19,7 +19,7 @@ package dev.enola.ai.adk.tool;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
 
 import com.google.adk.models.BaseLlm;
 
@@ -70,7 +70,7 @@ public class DateTimeToolsTest {
 
     @Test
     public void geminiFlashLite() {
-        llm.optional(ModelConfig.temperature(FLASH, 0))
+        llm.optional(ModelConfig.temperature(FLASH_LITE, 0))
                 .ifPresent(
                         model -> {
                             var agentTester =
@@ -89,7 +89,9 @@ public class DateTimeToolsTest {
                                 agentTester.assertTextResponseEquals(
                                         "What's the time?", "The current time in MEZ is 23:05.");
                                 agentTester.assertTextResponseEquals(
-                                        "What's today?", "Today is Donnerstag, 14. August 2025.");
+                                        "What's today?",
+                                        "The current date & time in MEZ is Donnerstag, 14. August"
+                                                + " 2025, 23:05.");
                             }
                         });
     }

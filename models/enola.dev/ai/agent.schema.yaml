@@ -66,6 +66,9 @@ properties:
       specification</a>; so e.g. <code>google://?model=gemini-2.5-flash</code>. May be omitted, in which case a default
       one will be used.
     type: string
+  tools:
+    type: array
+    description: The tools to which the agent has access; see https://docs.enola.dev/concepts/tool.
 # TODO tools
 # TODO planning
 # TODO examples

@@ -20,9 +20,12 @@ package dev.enola.ai.dotagent;
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
+import com.google.adk.tools.BaseTool;
+import com.google.adk.utils.ComponentRegistry;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.ai.adk.tool.DateTimeTools;
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
@@ -39,6 +42,8 @@ public class AgentsLoader {
 
     // TODO Detect Agent name/id conflicts between agents in DIFFERENT resources
 
+    private final ComponentRegistry adkComponentRegistry;
+
     private final Provider<BaseLlm> llmProvider;
     private final BaseLlm defaultLLM;
 
@@ -53,6 +58,9 @@ public class AgentsLoader {
         this.agentsModelLoader = new AgentsModelLoader(resourceProvider);
         this.llmProvider = llmProvider;
         this.defaultLLM = llmProvider.get(defaultLLM);
+
+        this.adkComponentRegistry = ComponentRegistry.getInstance();
+        this.adkComponentRegistry.register("clock", DateTimeTools.DATE_TIME);
     }
 
     public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {
@@ -90,6 +98,16 @@ public class AgentsLoader {
 
             if (Strings.isNullOrEmpty(agent.model)) agentBuilder.model(defaultLLM);
             else agentBuilder.model(llmProvider.get(URI.create(agent.model)));
+
+            var tools = new ArrayList<BaseTool>(agent.tools.size());
+            for (var toolName : agent.tools) {
+                var opt = adkComponentRegistry.get(toolName, BaseTool.class);
+                if (opt.isEmpty())
+                    throw new IllegalArgumentException(
+                            toolName + " is needed in " + uri + ", but not available");
+                tools.add(opt.get());
+            }
+            agentBuilder.tools(tools);
 
             agents.add(agentBuilder.build());
         }

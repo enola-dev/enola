@@ -38,9 +38,9 @@ class NamedObjectStoreImpl implements NamedObjectStore {
     }
 
     /**
-     * Stores an Identifiable object in the map, scoped by its class.
+     * Stores an object in the map, scoped by its class.
      *
-     * @param o The Identifiable object to store.
+     * @param o The object to store.
      * @return this itself, just as a convenience for one line chaining
      * @throws IllegalStateException If an object with the same ID and class already exists.
      */
@@ -61,18 +61,18 @@ class NamedObjectStoreImpl implements NamedObjectStore {
     }
 
     /**
-     * Retrieves an Identifiable object by its ID and expected class type. The lookup is scoped by
-     * the provided class.
+     * Retrieves an object by its ID and expected class type. The lookup is scoped by the provided
+     * class.
      *
-     * @param id The ID of the object to retrieve.
+     * @param name The ID of the object to retrieve.
      * @param clazz The expected class type of the object. This is crucial for type safety and
      *     scoping.
-     * @param <T> The type of the Identifiable object.
+     * @param <T> The type of the object.
      * @return The retrieved object, cast to the specified class, or null if not found or if the
      *     stored object is not assignable to the requested class.
      */
     @Override
-    public <T> Optional<T> opt(String id, Class<T> clazz) {
+    public <T> Optional<T> opt(String name, Class<T> clazz) {
         // Get the inner map for the specific class
         Map<String, Object> classSpecificStore = store.get(clazz);
         if (classSpecificStore == null) {
@@ -81,7 +81,7 @@ class NamedObjectStoreImpl implements NamedObjectStore {
         }
 
         // No need for isInstance check here, as it's already scoped by class
-        return Optional.ofNullable(clazz.cast(classSpecificStore.get(id)));
+        return Optional.ofNullable(clazz.cast(classSpecificStore.get(name)));
     }
 
     @Override
