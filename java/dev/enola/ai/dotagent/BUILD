@@ -70,6 +70,7 @@ junit_tests(
         ":dotagent",
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/test",
+        "//java/dev/enola/ai/adk/tool",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
