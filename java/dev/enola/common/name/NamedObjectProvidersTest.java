@@ -20,7 +20,6 @@ package dev.enola.common.name;
 import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.*;
@@ -45,11 +44,11 @@ public class NamedObjectProvidersTest {
     }
 
     @Test
-    @Ignore // TODO Improve NamedObjectProviders to allow creating immutable stores with same names
     public void implementationVsInterfaceClassConflict() {
         var nop =
-                NamedObjectProviders.newImmutable(
-                        Map.of("list", new ArrayList<String>(), "list", new LinkedList<>()));
+                NamedObjectProviders.newSingleThreaded()
+                        .store("list", new ArrayList<String>())
+                        .store("list", new LinkedList<>());
         Assert.assertThrows(
                 IllegalArgumentException.class, () -> nop.get("list", List.class, "Test"));
     }

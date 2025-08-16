@@ -88,7 +88,7 @@ class NamedObjectStoreImpl implements NamedObjectStore {
 
         if (matches.size() > 1) {
             // TODO Also list the classes of the matches in this exception message
-            throw new IllegalStateException(
+            throw new IllegalArgumentException(
                     "Found "
                             + matches.size()
                             + " objects for name '"
