@@ -17,6 +17,7 @@
  */
 package dev.enola.common.name;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,8 +40,9 @@ public class NamedObjectProviders {
                         .collect(
                                 Collectors.groupingBy(
                                         entry -> entry.getValue().getClass(),
-                                        Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
-
-        return new NamedObjectStoreImpl(groupedByClass);
+                                        Collectors.toUnmodifiableMap(
+                                                Map.Entry::getKey, Map.Entry::getValue)));
+        return new NamedObjectStoreImpl(Collections.unmodifiableMap(groupedByClass));
+        // TODO Use Guava ImmutableMap instead of JDK Collections.unmodifiableMap.
     }
 }

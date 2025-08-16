@@ -40,3 +40,7 @@ One-line description of the agent's capability. The model uses this to determine
 ### Name
 
 Name ("nick") of agent. Typically, it's set automatically by a loader from a portion of the origin URL. This is just a recommendation, and a loader could change it if another agent (with another ID) already uses this name. Users can also change the nicknames of their agents.
+
+## Tools
+
+[Tools](tool.md) to which the agent has access.
