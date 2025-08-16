@@ -25,6 +25,7 @@ import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.adk.iri.TestsLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.context.TLC;
 
@@ -69,7 +70,7 @@ public class DateTimeToolsTest {
 
     @Test
     public void geminiFlashLite() {
-        llm.optional(FLASH)
+        llm.optional(ModelConfig.temperature(FLASH, 0))
                 .ifPresent(
                         model -> {
                             var agentTester =
@@ -88,11 +89,8 @@ public class DateTimeToolsTest {
                                 agentTester.assertTextResponseEquals(
                                         "What's the time?", "The current time in MEZ is 23:05.");
                                 agentTester.assertTextResponseEquals(
-                                        "What's today?", "Today is Thursday, 14. August, 2025.");
+                                        "What's today?", "Today is Donnerstag, 14. August 2025.");
                             }
                         });
-        // TODO Sometimes it's "Today is Thursday, 14. August, 2025."
-        //   but other times   "Today is Donnerstag, 14. August 2025."
-        //   See if fixing the temperature (?) can stabilize this?
     }
 }

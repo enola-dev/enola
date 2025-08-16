@@ -18,6 +18,7 @@
 package dev.enola.ai.langchain4j;
 
 import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
 import dev.langchain4j.model.chat.StreamingChatModel;
@@ -30,11 +31,17 @@ public class GoogleChatModelProvider extends GoogleModelProvider<StreamingChatMo
     }
 
     @Override
-    protected StreamingChatModel create(Secret apiKey, String modelName) {
-        return GoogleAiGeminiStreamingChatModel.builder()
-                .apiKey(apiKey.map(String::new))
-                .modelName(modelName)
-                .logRequestsAndResponses(true)
-                .build();
+    protected StreamingChatModel create(Secret apiKey, String modelName, ModelConfig config) {
+        var builder =
+                GoogleAiGeminiStreamingChatModel.builder()
+                        .apiKey(apiKey.map(String::new))
+                        .modelName(modelName)
+                        .logRequestsAndResponses(true);
+        config.topP().ifPresent(builder::topP);
+        config.topK().map(Double::intValue).ifPresent(builder::topK);
+        config.temperature().ifPresent(builder::temperature);
+        config.maxOutputTokens().ifPresent(builder::maxOutputTokens);
+
+        return builder.build();
     }
 }

@@ -78,8 +78,10 @@ public abstract class OllamaModelProvider<T> implements Provider<T> {
             throw new IllegalArgumentException(model, e);
         }
 
-        return Optional.of(create(baseURL, model));
+        var config = ModelConfig.from(queryMap);
+
+        return Optional.of(create(baseURL, model, config));
     }
 
-    protected abstract T create(String baseURL, String modelName);
+    protected abstract T create(String baseURL, String modelName, ModelConfig config);
 }

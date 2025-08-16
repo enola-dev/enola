@@ -64,6 +64,17 @@ Note that the _Google (Gemini) AI API_ is a **different** API from the _Google C
 
 This is sometimes suitable e.g. for testing.
 
+### Common
+
+Language Model (LM) may include the following common configuration URI parameters:
+
+* `temperature`
+* `topP`
+* `topK`
+* `maxOutputTokens`
+
+Some models and/or the client libraries we use for them might not support some of these.
+
 ## Security
 
 It is intentional that none of these URIs contain API keys. They are configured "elsewhere", with a mechanism specific to the [supporting framework or tool](#support); typically in a _[secret](../../use/secret/index.md)._
@@ -79,7 +90,7 @@ We are not aware of any similar LM URI naming scheme. Please add any that you kn
 ## ToDo
 
 1. Add many more URIs
-1. Support (default) "standard" `?topP` / `topK`, `temperature`, `maxOutputTokens`, `seed`, `stopSequences`, `version` (?) etc. query parameters (see also [dotprompt config](https://google.github.io/dotprompt/reference/frontmatter/#config))
+1. Add additional common parameters: `seed`, `stopSequences` etc. (see [dotprompt config](https://google.github.io/dotprompt/reference/frontmatter/#config))
 
 ## Support
 

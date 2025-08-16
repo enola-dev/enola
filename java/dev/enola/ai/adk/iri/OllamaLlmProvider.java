@@ -20,6 +20,7 @@ package dev.enola.ai.adk.iri;
 import com.google.adk.models.BaseLlm;
 import com.google.adk.models.langchain4j.LangChain4j;
 
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.OllamaModelProvider;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
@@ -27,7 +28,7 @@ import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 public class OllamaLlmProvider extends OllamaModelProvider<BaseLlm> {
 
     @Override
-    protected BaseLlm create(String baseURL, String modelName) {
+    protected BaseLlm create(String baseURL, String modelName, ModelConfig config) {
         var sync =
                 OllamaChatModel.builder()
                         .logRequests(true)
@@ -44,6 +45,7 @@ public class OllamaLlmProvider extends OllamaModelProvider<BaseLlm> {
                         .modelName(modelName)
                         .build();
 
-        return new LangChain4j(sync, streaming, modelName);
+        var langChain4jLlm = new LangChain4j(sync, streaming, modelName);
+        return WrappedBaseLlm.wrap(langChain4jLlm, config);
     }
 }

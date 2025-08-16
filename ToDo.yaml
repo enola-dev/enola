@@ -20,6 +20,9 @@
 label: Enola.dev ToDo
 type: https://enola.dev/todo/List
 items:
+  - Upstream AI URI e.g. to LangChain4j:
+      tags: [upstream]
+
   - Gephi/SigmaJS Network Graph Format:
       tags: [visualization, ui, docgen, rosetta]
       links:
