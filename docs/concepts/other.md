@@ -249,6 +249,10 @@ Vector _("Embedding")_ databases of possible future interest:
 
 ## AI
 
+### MCP
+
+See [MCP Directories](mcp.md#directories).
+
 ### Prompt Management
 
 * https://github.com/google/DotPrompt

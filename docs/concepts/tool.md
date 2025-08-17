@@ -52,3 +52,7 @@ Here's a summary of what happened on August 16, 2025:
 ```
 
 This tool is currently only supported [on Gemini](../specs/aiuri/index.md#google-ai-).
+
+## MCP
+
+[MCP](mcp.md) allows Enola to access many thousands of other tools!
