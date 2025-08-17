@@ -39,7 +39,7 @@ public class ModelTester {
     public void assertTextResponseContains(
             String prompt, String... responseMustContainAtLeastOneOf) {
         var response = invoke(prompt);
-        Asserter.assertTextResponseContains(response, responseMustContainAtLeastOneOf);
+        Asserter.assertTextResponseContainsAny(response, responseMustContainAtLeastOneOf);
     }
 
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {

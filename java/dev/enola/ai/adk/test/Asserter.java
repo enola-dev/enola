@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 final class Asserter {
 
-    static void assertTextResponseContains(
+    static void assertTextResponseContainsAny(
             String response, String[] responseMustContainAtLeastOneOf) {
         for (var responseMustContain : responseMustContainAtLeastOneOf)
             if (response.toLowerCase().contains(responseMustContain.toLowerCase())) return;
@@ -39,10 +39,11 @@ final class Asserter {
         for (var responseMustContain : responseMustContainAllOf)
             if (!response.toLowerCase().contains(responseMustContain.toLowerCase()))
                 throw new AssertionError(
-                        "'"
-                                + response
-                                + "' does not contain (some) of: "
-                                + Arrays.toString(responseMustContainAllOf));
+                        String.format(
+                                "'%s' does not contain '%s' from: %s",
+                                response,
+                                responseMustContain,
+                                Arrays.toString(responseMustContainAllOf)));
     }
 
     static void assertTextResponseEquals(String response, String responseMustBeEqualTo) {

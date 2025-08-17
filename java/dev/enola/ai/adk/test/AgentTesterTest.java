@@ -36,13 +36,13 @@ public class AgentTesterTest {
     public void contains() {
         var agent = new MockAgent("foo");
         final var tester = new AgentTester(agent);
-        tester.assertTextResponseContains("...", "foo", "bar");
+        tester.assertTextResponseContainsAny("...", "foo", "bar");
 
         agent.replyWith("bar");
-        tester.assertTextResponseContains("...", "foo", "bar");
+        tester.assertTextResponseContainsAny("...", "foo", "bar");
 
         Assert.assertThrows(
-                AssertionError.class, () -> tester.assertTextResponseContains("...", "baz"));
+                AssertionError.class, () -> tester.assertTextResponseContainsAny("...", "baz"));
     }
 
     // TODO cover AgentTester's other methods
