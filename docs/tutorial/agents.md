@@ -48,3 +48,7 @@ can be used like this to chat with a very enthusiastic 👨🏽‍🍳 chef:
 can be used by replacing `chef-optimist.agent.yaml` with `chefs-opposites-stream.agent.yaml` in the command above.
 
 The drop-down in the Web UI will now let you select the `optimist` _vs._ the `pessimist` chef agent.
+
+## Tools
+
+Agents become a lot more powerful [with Tools](../concepts/tool.md).

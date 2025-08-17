@@ -42,6 +42,8 @@ Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agent
 
 ## Examples
 
+<!-- Generate these, from an example prompt in YAML... -->
+
 ### Everything
 
 The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:
@@ -49,6 +51,17 @@ The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tr
 ```shell
 enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
 ```
+
+### Fetch
+
+The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) can fetch a webpage, and extract its contents as Markdown:
+
+```shell
+enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev/tutorial/agents/ ?"
+```
+
+CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
+Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
 ## Directories
 
