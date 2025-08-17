@@ -35,6 +35,16 @@ final class Asserter {
                         + Arrays.toString(responseMustContainAtLeastOneOf));
     }
 
+    static void assertTextResponseContainsAll(String response, String[] responseMustContainAllOf) {
+        for (var responseMustContain : responseMustContainAllOf)
+            if (!response.toLowerCase().contains(responseMustContain.toLowerCase()))
+                throw new AssertionError(
+                        "'"
+                                + response
+                                + "' does not contain (some) of: "
+                                + Arrays.toString(responseMustContainAllOf));
+    }
+
     static void assertTextResponseEquals(String response, String responseMustBeEqualTo) {
         if (!response.equals(responseMustBeEqualTo))
             throw new ComparisonFailure("!equals()", responseMustBeEqualTo, response);

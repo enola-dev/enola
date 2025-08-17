@@ -17,6 +17,7 @@
  */
 package dev.enola.ai.dotprompt;
 
+import dev.enola.common.io.object.WithSchema;
 import dev.enola.common.template.Template;
 
 import org.jspecify.annotations.Nullable;
@@ -35,7 +36,7 @@ import java.util.Set;
  *
  * @author <a href="http://www.vorburger.ch">Michael Vorburger.ch</a>
  */
-public class DotPrompt {
+public class DotPrompt extends WithSchema {
 
     // TODO Rethink @Nullable ... it's a mess because some fields MAY be null
     //   initially, e.g. in a YAML frontmatter, but then WONT be null after DotPromptLoader;

@@ -118,9 +118,10 @@ public class JsonObjectReaderWriterTest {
                 "stringList": ["hello", "world"],
                 "example": { "string": "hey" },
                 "default": "hallo",
-                "timestamp": "1463554285",
-                "ignoreUnknown": "yolo" }
+                "timestamp": "1463554285"
+                }
                 """; // TODO "private": "1",
+        // NO! "ignoreUnknown": "yolo"
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
         return or.read(resource, clazz);

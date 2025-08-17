@@ -18,6 +18,7 @@
 package dev.enola.ai.dotagent;
 
 import dev.enola.ai.dotprompt.DotPrompt;
+import dev.enola.common.io.object.WithSchema;
 
 import org.jspecify.annotations.Nullable;
 
@@ -29,7 +30,7 @@ import java.util.*;
  * <p>Partially by inspired by {@link DotPrompt}, but significantly expanding upon it to allow
  * declaring graphs of collaborating agents.
  */
-public class AgentsModel {
+public class AgentsModel extends WithSchema {
 
     // TODO Write the agents.proto corresponding to the (existing) agent.schema.yaml
 

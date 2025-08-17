@@ -66,6 +66,14 @@ public class AgentTester {
         Asserter.assertTextResponseContains(response, responseMustContainAtLeastOneOf);
     }
 
+    public void assertTextResponseContainsAll(String prompt, String... responseMustContainAllOf) {
+        // TODO Instead of this check, have String, String, String...
+        if (responseMustContainAllOf.length == 0)
+            throw new IllegalArgumentException("Specify at least one more argument");
+        var response = invoke(prompt);
+        Asserter.assertTextResponseContainsAll(response, responseMustContainAllOf);
+    }
+
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
         var response = invoke(prompt);
         Asserter.assertTextResponseEquals(response, responseMustBeEqualTo);
