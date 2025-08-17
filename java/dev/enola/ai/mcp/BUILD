@@ -27,7 +27,11 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/object",
+        "//java/dev/enola/common/io/object/jackson",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:io_modelcontextprotocol_sdk_mcp",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
     ],
@@ -40,5 +44,9 @@ junit_tests(
     ),
     deps = [
         ":mcp",
+        "//java/dev/enola/common/context",
+        "//java/dev/enola/common/context/testlib",
+        "//java/dev/enola/common/io",
+        "//models",
     ],
 )

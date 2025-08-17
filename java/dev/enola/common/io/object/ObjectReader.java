@@ -34,6 +34,7 @@ public interface ObjectReader {
      */
     <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException;
 
+    // TODO This should check and fail if there is "more than one" because its a stream, and fail
     default <T> T read(ReadableResource resource, Class<T> type) throws IOException {
         return optional(resource, type)
                 .orElseThrow(
