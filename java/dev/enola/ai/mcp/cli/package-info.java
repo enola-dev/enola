@@ -15,28 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.mcp;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+/** Model Context Protocol (🔱 MCP) CLI. */
+@NullMarked
+package dev.enola.ai.mcp.cli;
 
-/**
- * Metadata about an MCP Server.
- *
- * <p>This cannot be read from an MCP Server itself, but is "human (or LLM...) authored".
- *
- * @see McpServerConnectionsConfig
- */
-public class McpServerMetadata {
-    // implements Identifiable ?
-
-    // TODO https://schema.org/SoftwareApplication
-
-    /** See {@link McpServerConnectionsConfig.ServerConnection#origin}. */
-    public URI id;
-
-    public String description;
-
-    public final List<String> tags = new ArrayList<>();
-}
+import org.jspecify.annotations.NullMarked;

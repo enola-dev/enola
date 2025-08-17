@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2023-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli;
+package dev.enola.ai.mcp.cli;
 
-import dev.enola.cli.common.*;
+import dev.enola.cli.common.Application;
+import dev.enola.cli.common.CLI;
+import dev.enola.cli.common.LoggingMixin;
+import dev.enola.cli.common.VersionProvider;
+import dev.enola.common.io.mediatype.MarkdownMediaTypes;
+import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.common.io.mediatype.StandardMediaTypes;
+import dev.enola.common.io.mediatype.YamlMediaType;
 
 import picocli.AutoComplete;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.Mixin;
 
 @Command(
-        name = "enola",
+        name = "mcp",
         mixinStandardHelpOptions = true,
         showDefaultValues = true,
         synopsisSubcommandLabel = "COMMAND",
@@ -33,46 +39,31 @@ import picocli.CommandLine.Mixin;
         versionProvider = VersionProvider.class,
         subcommands = {
             // Generic to all CLIs
-            HelpCommand.class,
+            CommandLine.HelpCommand.class,
             AutoComplete.GenerateCompletion.class,
 
             // Specific to this CLI
-            GenCommand.class,
-            DocGenCommand.class,
-            GetCommand.class,
-            RosettaCommand.class,
-            ServerCommand.class,
-            ExecMdCommand.class,
-            LoggingTestCommand.class,
-            LocaleTestCommand.class,
-            ExceptionTestCommand.class,
-            InfoCommand.class,
-            ValidateCommand.class,
-            CanonicalizeCommand.class,
-            FetchCommand.class,
-            ChatCommand.class,
-            Chat2Command.class,
-            AiCommand.class,
-            McpCommand.class,
+            ListToolsCommand.class
         })
-public class EnolaApplication extends Application {
+public class McpApplication extends Application {
 
-    @Mixin LoggingMixin loggingMixin;
-    @Mixin LocaleOption localeOption;
+    @CommandLine.Mixin LoggingMixin loggingMixin;
 
     public static void main(String[] args) {
         System.exit(cli(args).execute());
     }
 
     static CLI cli(String... args) {
-        return new CLI(args, new EnolaApplication());
+        return new CLI(args, new McpApplication());
     }
 
     @Override
     protected void start() {
-        // TODO Move this (and LocaleOption localeOption) up into Application?
-        localeOption.initializeSINGLETON();
-
-        Configuration.setSingletons();
+        MediaTypeProviders.SINGLETON.set(MTP);
     }
+
+    private static final MediaTypeProviders MTP =
+            new MediaTypeProviders(
+                    // NB: The order in which we list the MediaTypeProvider here matters!
+                    new MarkdownMediaTypes(), new StandardMediaTypes(), new YamlMediaType());
 }

@@ -15,28 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.mcp;
+package dev.enola.ai.adk.tool;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.adk.tools.BaseToolset;
 
-/**
- * Metadata about an MCP Server.
- *
- * <p>This cannot be read from an MCP Server itself, but is "human (or LLM...) authored".
- *
- * @see McpServerConnectionsConfig
- */
-public class McpServerMetadata {
-    // implements Identifiable ?
+import dev.enola.common.name.NamedTypedObjectProviderChain;
 
-    // TODO https://schema.org/SoftwareApplication
+public class ToolsetProviderChain extends NamedTypedObjectProviderChain<BaseToolset>
+        implements ToolsetProvider {
 
-    /** See {@link McpServerConnectionsConfig.ServerConnection#origin}. */
-    public URI id;
-
-    public String description;
-
-    public final List<String> tags = new ArrayList<>();
+    public ToolsetProviderChain(ToolsetProvider... providers) {
+        super(providers);
+    }
 }

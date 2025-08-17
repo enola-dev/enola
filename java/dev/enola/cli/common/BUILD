@@ -22,6 +22,7 @@ java_library(
     visibility = [
         # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
         "//java/dev/enola:__pkg__",
+        "//java/dev/enola/ai/mcp/cli:__pkg__",
         "//java/dev/enola/cli:__subpackages__",
     ],
     runtime_deps = [

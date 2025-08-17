@@ -31,7 +31,6 @@ import java.util.Map;
  *
  * <p>This is inspired by e.g. Claude's or VSC's mcp.json etc.
  *
- * @see McpServerDescription
  * @see McpServerMetadata
  */
 public class McpServerConnectionsConfig extends WithSchema {

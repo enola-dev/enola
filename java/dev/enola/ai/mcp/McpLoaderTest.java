@@ -39,21 +39,24 @@ public class McpLoaderTest {
     @Test
     public void loadConfig() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
-        var config = new McpLoader().load(r);
+        var loader = new McpLoader();
+        var config = loader.load(r);
         var everything = config.servers.get("everything");
         assertThat(everything.command).isEqualTo("npx");
         assertThat(everything.args)
                 .containsExactly("-y", "@modelcontextprotocol/server-everything");
+        assertThat(loader.names()).isNotEmpty();
     }
 
     @Test
     @Ignore // TODO Figure out how to make this work under Bazel... :=(
     public void createClient() throws IOException {
+        var loader = new McpLoader();
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
-        var config = new McpLoader().load(r);
-
-        for (var name : config.servers.keySet()) {
-            try (var client = McpLoader.createSyncClient(config, name)) {
+        var config = loader.load(r);
+        assertThat(loader.names()).isNotEmpty();
+        for (var name : loader.names()) {
+            try (var client = loader.get(name, "Test")) {
                 assertThat(client).isNotNull();
             }
         }

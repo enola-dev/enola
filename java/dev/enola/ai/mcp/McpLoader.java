@@ -21,12 +21,15 @@ import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.stdio;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.MapMaker;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection;
 import dev.enola.common.Version;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.name.NamedTypedObjectProvider;
 
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
@@ -43,26 +46,56 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class McpLoader {
+public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
     private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
+    private final Map<String, McpServerConnectionsConfig> configs = new MapMaker().makeMap();
+    private final Map<String, McpSyncClient> clients = new MapMaker().makeMap();
+    private final Queue<String> names = new ConcurrentLinkedQueue<>();
 
+    @CanIgnoreReturnValue
     public McpServerConnectionsConfig load(ReadableResource resource) throws IOException {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
+        var serverNames = config.servers.keySet();
+        names.addAll(serverNames);
+        for (var name : serverNames) configs.put(name, config);
         return config;
+    }
+
+    public Iterable<McpServerConnectionsConfig> configs() {
+        return configs.values();
+    }
+
+    @Override
+    public Iterable<String> names() {
+        return names;
+    }
+
+    @Override
+    public Optional<McpSyncClient> opt(String name) {
+        var config = configs.get(name);
+        if (config == null) return Optional.empty();
+
+        return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));
     }
 
     // TODO Remove this method again, if both dev.enola.ai.adk.tool.ADK and McpLoaderTest don't use?
     // TODO create MCP transports in parallel, and asynchronously?
-    public Map<String, McpTransport> createTransports(McpServerConnectionsConfig config) {
+    private Map<String, McpTransport> createTransports(
+            Iterable<McpServerConnectionsConfig> configs) {
         var transports = new ImmutableMap.Builder<String, McpTransport>();
-        for (var name : config.servers.keySet()) {
-            var transport = createTransport(config, name);
-            transports.put(name, transport);
+        for (var config : configs) {
+            for (var name : config.servers.keySet()) {
+                var transport = createTransport(config, name);
+                transports.put(name, transport);
+            }
         }
         return transports.build();
     }
@@ -88,13 +121,13 @@ public class McpLoader {
         return transport;
     }
 
-    public static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
+    private static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
         var origin = config.origin + "#" + name;
         var transport = createTransport(config, name);
         return createSyncClient(transport, origin);
     }
 
-    public static McpSyncClient createSyncClient(McpClientTransport transport, String origin) {
+    private static McpSyncClient createSyncClient(McpClientTransport transport, String origin) {
         var implementation = new McpSchema.Implementation("https://Enola.dev", Version.get());
         var client =
                 McpClient.sync(transport)
