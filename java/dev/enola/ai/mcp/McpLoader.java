@@ -20,7 +20,6 @@ package dev.enola.ai.mcp;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.http;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.stdio;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -38,7 +37,6 @@ import io.modelcontextprotocol.client.transport.ServerParameters;
 import io.modelcontextprotocol.client.transport.StdioClientTransport;
 import io.modelcontextprotocol.spec.McpClientTransport;
 import io.modelcontextprotocol.spec.McpSchema;
-import io.modelcontextprotocol.spec.McpTransport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,20 +86,6 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         if (config == null) return Optional.empty();
 
         return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));
-    }
-
-    // TODO Remove this method again, if both dev.enola.ai.adk.tool.ADK and McpLoaderTest don't use?
-    // TODO create MCP transports in parallel, and asynchronously?
-    private Map<String, McpTransport> createTransports(
-            Iterable<McpServerConnectionsConfig> configs) {
-        var transports = new ImmutableMap.Builder<String, McpTransport>();
-        for (var config : configs) {
-            for (var name : config.servers.keySet()) {
-                var transport = createTransport(config, name);
-                transports.put(name, transport);
-            }
-        }
-        return transports.build();
     }
 
     public static McpClientTransport createTransport(
