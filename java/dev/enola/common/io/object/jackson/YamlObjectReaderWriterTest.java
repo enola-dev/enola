@@ -109,6 +109,14 @@ public class YamlObjectReaderWriterTest {
         // TODO assertThat(example.isPrivate).isTrue();
     }
 
+    @Test
+    public void readComplexYAML_with_empty_map_which_used_to_cause_an_error() throws IOException {
+        var yaml = "example:";
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
+        or.read(resource, ExamplePlainClass.class);
+    }
+
     private <T> T readComplexYAML_toExample(Class<T> clazz) throws IOException {
         var yaml =
                 """
