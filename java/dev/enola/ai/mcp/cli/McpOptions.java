@@ -40,18 +40,18 @@ public class McpOptions {
             description =
                     "URL/s of MCP Configurations; see"
                             + " https://docs.enola.dev/concepts/mcp/#configuration")
-    @Nullable List<URI> agentURIs;
+    @Nullable List<URI> mcpConfigURIs;
 
     public static McpOptions handleDefault(@Nullable McpOptions mcpOptions) {
         if (mcpOptions == null) {
             mcpOptions = new McpOptions();
-            mcpOptions.agentURIs = List.of(URI.create(McpOptions.DEFAULT_MCP_YAML));
+            mcpOptions.mcpConfigURIs = List.of(URI.create(McpOptions.DEFAULT_MCP_YAML));
         }
         return mcpOptions;
     }
 
     public void load(McpLoader loader, ResourceProvider rp) throws IOException {
-        if (agentURIs == null) return;
-        for (var uri : agentURIs) loader.load(rp.getNonNull(uri));
+        if (mcpConfigURIs == null) return;
+        for (var uri : mcpConfigURIs) loader.load(rp.getNonNull(uri));
     }
 }
