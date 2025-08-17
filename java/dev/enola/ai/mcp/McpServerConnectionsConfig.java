@@ -20,6 +20,7 @@ package dev.enola.ai.mcp;
 import dev.enola.common.io.object.WithSchema;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ public class McpServerConnectionsConfig extends WithSchema {
     // TODO roots? Or does that not belong here?
 
     /** Origin of configuration; e.g. file:/.../mcp.yaml, or something like that. * */
+    // TODO extends WithOrigin implements HasOrigin; and set it in ObjectReader
     public URI origin;
 
     public final Map<String, ServerConnection> servers = new HashMap<>();
@@ -52,6 +54,7 @@ public class McpServerConnectionsConfig extends WithSchema {
          *
          * <p>This is NOT its "package", so don't put a NPM or Container Image etc. 'PURL' here.
          */
+        // TODO Use another name than 'origin' here, to avoid confusion with the outer origin above?
         public URI origin;
 
         public enum Type {
@@ -61,14 +64,15 @@ public class McpServerConnectionsConfig extends WithSchema {
 
         public Type type = Type.stdio;
 
-        // STDIO
+        // STDIO; like io.modelcontextprotocol.client.transport.ServerParameters
         public String command;
         public final List<String> args = new ArrayList<>();
         public final Map<String, String> env = new HashMap<>();
 
-        // HTTP
+        // HTTP; like com.google.adk.tools.mcp.SseServerParameters
         public String url;
         public final Map<String, String> headers = new HashMap<>();
+        public Duration timeout;
     }
 
     public static class Input {

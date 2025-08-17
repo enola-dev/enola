@@ -25,6 +25,7 @@ import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -36,12 +37,25 @@ public class McpLoaderTest {
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     @Test
-    public void load() throws IOException {
+    public void loadConfig() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var config = new McpLoader().load(r);
         var everything = config.servers.get("everything");
         assertThat(everything.command).isEqualTo("npx");
         assertThat(everything.args)
                 .containsExactly("-y", "@modelcontextprotocol/server-everything");
+    }
+
+    @Test
+    @Ignore // TODO Figure out how to make this work under Bazel... :=(
+    public void createClient() throws IOException {
+        var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
+        var config = new McpLoader().load(r);
+
+        for (var name : config.servers.keySet()) {
+            try (var client = McpLoader.createSyncClient(config, name)) {
+                assertThat(client).isNotNull();
+            }
+        }
     }
 }

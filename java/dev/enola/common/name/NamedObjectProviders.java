@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 public class NamedObjectProviders {
 
+    // TODO public static NamedObjectProvider union(NamedObjectProvider... providers)
+
     public static NamedObjectStore newConcurrent() {
         return new NamedObjectStoreImpl(new ConcurrentHashMap<>());
     }
