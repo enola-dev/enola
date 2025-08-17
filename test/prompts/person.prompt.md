@@ -19,10 +19,10 @@ output:
             occupation:
                 type: string
                 description: the person's occupation
-test:
-    text: John Doe is a 35-year-old software engineer living in Zürich.
-    expected:
-        equals: { "name": "John Doe", "age": 35, "occupation": "software engineer" }
+#test:
+#    text: John Doe is a 35-year-old software engineer living in Zürich.
+#    expected:
+#        equals: { "name": "John Doe", "age": 35, "occupation": "software engineer" }
 ---
 
 Extract the requested information from the given text.

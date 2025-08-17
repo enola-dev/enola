@@ -17,6 +17,8 @@
  */
 package dev.enola.ai.mcp;
 
+import dev.enola.common.io.object.WithSchema;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import java.util.Map;
  * @see McpServerDescription
  * @see McpServerMetadata
  */
-public class McpServerConnectionsConfig {
+public class McpServerConnectionsConfig extends WithSchema {
     // implements Identifiable ?  String id() { return origin.toString(); }
 
     // TODO roots? Or does that not belong here?

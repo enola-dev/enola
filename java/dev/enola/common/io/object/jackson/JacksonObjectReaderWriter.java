@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
@@ -78,7 +77,8 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         mapper.registerModule(new JavaTimeModule());
         // TODO Optional<T> support with mapper.registerModule(new Jdk8Module());
 
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        // DO fail on unknown properties - this helps to spot errors in configuration files etc.
+        // NO! mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // Always skip empty sequences ([]) and maps
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);

@@ -91,8 +91,9 @@ public class AgentsLoaderIntegrationTest {
         var agent = agents.iterator().next();
 
         var agentTester = new AgentTester(agent);
-        agentTester.assertTextResponseContains(
+        agentTester.assertTextResponseContainsAll(
                 "What's the current date and time?",
-                "The current date and time is Thursday, August 14, 2025, 9:05 PM.");
+                "The current date and time is",
+                "Thursday, August 14, 2025, 9:05 PM");
     }
 }

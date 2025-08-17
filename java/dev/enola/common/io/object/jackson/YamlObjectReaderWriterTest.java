@@ -109,6 +109,14 @@ public class YamlObjectReaderWriterTest {
         // TODO assertThat(example.isPrivate).isTrue();
     }
 
+    @Test(expected = IOException.class)
+    public void readComplexYAML_fail_on_unknown_field() throws IOException {
+        var yaml = "bad:";
+        var resource = DataResource.of(yaml, YAML_UTF_8);
+        ObjectReader or = new YamlObjectReaderWriter();
+        or.read(resource, ExamplePlainClass.class);
+    }
+
     @Test
     public void readComplexYAML_with_empty_map_which_used_to_cause_an_error() throws IOException {
         var yaml = "example:";
@@ -127,7 +135,7 @@ public class YamlObjectReaderWriterTest {
                   string: hey
                 default: hallo
                 timestamp: 1463554285
-                ignoreUnknown: yolo
+                # NO! ignoreUnknown: yolo
                 """; // TODO private: 1
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();

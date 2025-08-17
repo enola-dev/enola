@@ -29,6 +29,7 @@ java_library(
     deps = [
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
+        "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/template",
         "//java/dev/enola/common/template/handlebars",
