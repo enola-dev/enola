@@ -82,6 +82,7 @@ nav:
   - Concepts:
       - Agents: concepts/agent.md
       - Tools: concepts/tool.md
+      - MCP: concepts/mcp.md
       - Core: concepts/core.md
       - Architecture Diagrams: concepts/core-arch.md
       - Roadmap: concepts/roadmap.md
