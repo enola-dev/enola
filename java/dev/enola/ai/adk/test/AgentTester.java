@@ -35,6 +35,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import org.junit.ComparisonFailure;
 
+import java.util.stream.Stream;
+
 public class AgentTester {
 
     // TODO Support Multiple root agents?!
@@ -57,21 +59,21 @@ public class AgentTester {
         this(LlmAgent.builder().name(model.model()).model(model).tools(tools).build());
     }
 
-    public void assertTextResponseContains(
-            String prompt, String... responseMustContainAtLeastOneOf) {
-        // TODO Instead of this check, have String, String, String...
-        if (responseMustContainAtLeastOneOf.length == 0)
-            throw new IllegalArgumentException("Specify at least one more argument");
+    public void assertTextResponseContains(String prompt, String contains) {
         var response = invoke(prompt);
-        Asserter.assertTextResponseContains(response, responseMustContainAtLeastOneOf);
+        Asserter.assertTextResponseContainsAny(response, new String[] {contains});
     }
 
-    public void assertTextResponseContainsAll(String prompt, String... responseMustContainAllOf) {
-        // TODO Instead of this check, have String, String, String...
-        if (responseMustContainAllOf.length == 0)
-            throw new IllegalArgumentException("Specify at least one more argument");
+    public void assertTextResponseContainsAny(String prompt, String first, String... rest) {
         var response = invoke(prompt);
-        Asserter.assertTextResponseContainsAll(response, responseMustContainAllOf);
+        var all = Stream.concat(Stream.of(first), Stream.of(rest)).toArray(String[]::new);
+        Asserter.assertTextResponseContainsAny(response, all);
+    }
+
+    public void assertTextResponseContainsAll(String prompt, String first, String... rest) {
+        var response = invoke(prompt);
+        var all = Stream.concat(Stream.of(first), Stream.of(rest)).toArray(String[]::new);
+        Asserter.assertTextResponseContainsAll(response, all);
     }
 
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {

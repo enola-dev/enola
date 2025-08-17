@@ -65,7 +65,7 @@ public class AgentsLoaderIntegrationTest {
         var agent = agents.iterator().next();
 
         var agentTester = new AgentTester(agent);
-        agentTester.assertTextResponseContains(
+        agentTester.assertTextResponseContainsAny(
                 "How to make scrambled eggs?",
                 "darling",
                 "epiphany",
