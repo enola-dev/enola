@@ -20,31 +20,28 @@ package dev.enola.ai.dotagent;
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.BaseLlm;
-import com.google.adk.tools.BaseTool;
+import com.google.adk.tools.BaseToolset;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.ai.adk.tool.ToolsetProvider;
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.resource.ResourceProvider;
-import dev.enola.common.name.NamedObjectProvider;
-import dev.enola.common.name.NamedObjectProviders;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class AgentsLoader {
 
     // TODO Detect Agent name/id conflicts between agents in DIFFERENT resources
 
-    private final NamedObjectProvider namedObjectProvider;
-
+    private final ToolsetProvider toolsProvider;
     private final Provider<BaseLlm> llmProvider;
     private final BaseLlm defaultLLM;
 
@@ -57,13 +54,12 @@ public class AgentsLoader {
             ResourceProvider resourceProvider,
             URI defaultLLM,
             Provider<BaseLlm> llmProvider,
-            Map<String, BaseTool> tools) {
+            ToolsetProvider toolsProvider) {
         this.dotPromptLoader = new DotPromptLoader(resourceProvider, defaultLLM);
         this.agentsModelLoader = new AgentsModelLoader(resourceProvider);
         this.llmProvider = llmProvider;
         this.defaultLLM = llmProvider.get(defaultLLM);
-
-        this.namedObjectProvider = NamedObjectProviders.newImmutable(tools);
+        this.toolsProvider = toolsProvider;
     }
 
     public Iterable<BaseAgent> load(Stream<URI> uris) throws IOException {
@@ -102,9 +98,9 @@ public class AgentsLoader {
             if (Strings.isNullOrEmpty(agent.model)) agentBuilder.model(defaultLLM);
             else agentBuilder.model(llmProvider.get(URI.create(agent.model)));
 
-            var tools = new ArrayList<BaseTool>(agent.tools.size());
+            var tools = new ArrayList<BaseToolset>(agent.tools.size());
             for (var toolName : agent.tools) {
-                tools.add(namedObjectProvider.get(toolName, BaseTool.class, uri));
+                tools.add(toolsProvider.get(toolName, uri));
             }
             agentBuilder.tools(tools);
 

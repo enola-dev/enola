@@ -17,10 +17,10 @@
  */
 package dev.enola.ai.adk.tool;
 
-import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.GoogleSearchTool;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.ai.mcp.McpServerConnectionsConfig;
 import dev.enola.common.SuccessOrError;
 
 import java.time.InstantSource;
@@ -28,12 +28,23 @@ import java.util.Map;
 
 public final class Tools {
 
-    public static ImmutableMap<String, BaseTool> builtin(InstantSource instantSource) {
-        return ImmutableMap.of(
-                "clock",
-                DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)),
-                "search_google",
-                new GoogleSearchTool());
+    // TODO Always add builtin() even if loading MCP ? Probably makes sense...
+
+    public static ToolsetProvider mcp(Iterable<McpServerConnectionsConfig> configs) {
+        return new MCP(configs);
+    }
+
+    public static ToolsetProvider none() {
+        return ToolsetProvider.immutableToolsets(Map.of());
+    }
+
+    public static ToolsetProvider builtin(InstantSource instantSource) {
+        return ToolsetProvider.immutableTools(
+                ImmutableMap.of(
+                        "clock",
+                        DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)),
+                        "search_google",
+                        new GoogleSearchTool()));
     }
 
     public static Map<String, String> toMap(SuccessOrError<String> soe) {

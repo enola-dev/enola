@@ -22,8 +22,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
-import static java.util.Collections.emptyMap;
-
 import dev.enola.ai.adk.iri.GoogleLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.adk.tool.Tools;
@@ -58,7 +56,8 @@ public class AgentsLoaderIntegrationTest {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
         // We must create the AgentsLoader AFTER we know that the API secret is available:
         var loader =
-                new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), emptyMap());
+                new AgentsLoader(
+                        rp, FLASH_LITE, new GoogleLlmProvider(secretManager), Tools.none());
 
         var agents = loader.load(Stream.of(URI.create("chef-optimist.agent.yaml")));
         assertThat(agents).hasSize(1);

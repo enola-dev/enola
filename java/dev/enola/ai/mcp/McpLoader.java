@@ -46,7 +46,7 @@ import java.util.Map;
 
 public class McpLoader {
 
-    private static final Logger LOG = LoggerFactory.getLogger(McpServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
     private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
 
