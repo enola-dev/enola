@@ -28,6 +28,6 @@ servers:
     # Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
     command: uvx
     args: [mcp-server-fetch]
-    origin: https://github.com//servers/tree/main/src/fetch
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
 
 inputs:

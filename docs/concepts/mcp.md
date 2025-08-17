@@ -22,9 +22,13 @@ The 🔱 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is a st
 
 ## Configuration
 
-See [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml).
+The `--mcp` CLI argument specifies which MCP servers are available to Agents.
+
+If not specified it uses the built-in [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml) by default.
 
 Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agents](agent.md).
+
+MCP servers are only started (or connected to), and queried for their 🧰 Tools, if any of the loaded `--agents` use them.
 
 <!--
     ## Recommended
@@ -54,7 +58,7 @@ enola ai --agents=test/agents/everything.agent.yaml --in "Print environment vari
 
 ### Fetch
 
-The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) can fetch a webpage, and extract its contents as Markdown:
+The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) can fetch a webpage, and extract its contents as Markdown:
 
 ```shell
 enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev/tutorial/agents/ ?"
