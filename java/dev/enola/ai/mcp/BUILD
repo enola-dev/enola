@@ -27,6 +27,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
@@ -42,6 +43,9 @@ junit_tests(
     srcs = glob(
         ["*Test.java"],
     ),
+    runtime_deps = [
+        "@enola_maven//:org_slf4j_slf4j_simple",
+    ],
     deps = [
         ":mcp",
         "//java/dev/enola/common/context",
