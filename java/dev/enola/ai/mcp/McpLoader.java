@@ -55,7 +55,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
     private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
-    private final Map<String, McpServerConnectionsConfig> configs = new MapMaker().makeMap();
+    private final Queue<McpServerConnectionsConfig> configs = new ConcurrentLinkedQueue<>();
+    private final Map<String, McpServerConnectionsConfig> serverToConfig = new MapMaker().makeMap();
     private final Map<String, McpSyncClient> clients = new MapMaker().makeMap();
     private final Queue<String> names = new ConcurrentLinkedQueue<>();
 
@@ -63,14 +64,17 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     public McpServerConnectionsConfig load(ReadableResource resource) throws IOException {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
+        configs.add(config);
+
         var serverNames = config.servers.keySet();
         names.addAll(serverNames);
-        for (var name : serverNames) configs.put(name, config);
+        for (var name : serverNames) serverToConfig.put(name, config);
+
         return config;
     }
 
     public Iterable<McpServerConnectionsConfig> configs() {
-        return configs.values();
+        return configs;
     }
 
     @Override
@@ -80,7 +84,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     @Override
     public Optional<McpSyncClient> opt(String name) {
-        var config = configs.get(name);
+        var config = serverToConfig.get(name);
         if (config == null) return Optional.empty();
 
         return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));

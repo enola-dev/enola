@@ -41,7 +41,7 @@ public class McpLoaderTest {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader();
         var config = loader.load(r);
-        var everything = config.servers.get("everything");
+        var everything = config.servers.get("modelcontextprotocol/everything");
         assertThat(everything.command).isEqualTo("npx");
         assertThat(everything.args)
                 .containsExactly("-y", "@modelcontextprotocol/server-everything");

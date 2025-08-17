@@ -18,9 +18,16 @@
 $schema: https://enola.dev/ai/mcp/server/connections
 
 servers:
-  everything:
+  modelcontextprotocol/everything:
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+
+  modelcontextprotocol/fetch:
+    # CAUTION: This server can access local/internal IP addresses and may represent a security risk.
+    # Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
+    command: uvx
+    args: [mcp-server-fetch]
+    origin: https://github.com//servers/tree/main/src/fetch
 
 inputs:

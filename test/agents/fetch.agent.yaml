@@ -1,0 +1,11 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash
+description: >
+  Demo Agent with access to a fetch tool.
+  CAUTION: This server can access local/internal IP addresses and may represent a security risk.
+  Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
+instruction: >
+  You are a helpful agent who can answer user questions about any web page
+  by fetching its content and then summarizing it in 3 sentences.
+tools:
+  - modelcontextprotocol/fetch
