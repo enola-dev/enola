@@ -53,6 +53,15 @@ $ ./enola help ai
 ...
 ```
 
+## MCP
+
+[MCP](../mcp/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help mcp
+...
+```
+
 ## DocGen
 
 [Documentation Generation](../docgen/index.md) has the following options:

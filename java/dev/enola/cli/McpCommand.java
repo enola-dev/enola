@@ -15,25 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.mcp;
+package dev.enola.cli;
 
-import java.net.URI;
+import dev.enola.ai.mcp.cli.ListToolsCommand;
 
-/**
- * Description of an MCP Server.
- *
- * <p>This is read from an MCP server.
- *
- * @see McpServerConnectionsConfig
- * @see McpServerMetadata
- */
-// TODO Such a class probably already exists in the MCP SDK?
-//   But is a "struct" that can serialized to JSON/YAML?
-public class McpServerDescription {
-    // implements Identifiable ?
+import picocli.CommandLine;
 
-    /** See {@link McpServerConnectionsConfig.ServerConnection#origin}. */
-    public URI id;
-
-    // TODO Tools, Arguments, Descriptions, etc.
-}
+@CommandLine.Command(
+        name = "mcp",
+        description = "Model Context Protocol (\uD83D\uDD31 MCP)",
+        subcommands = {
+            ListToolsCommand.class,
+        })
+public class McpCommand {}

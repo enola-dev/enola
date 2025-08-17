@@ -19,8 +19,8 @@ $schema: https://enola.dev/ai/mcp/server/connections
 
 servers:
   everything:
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
 
 inputs:

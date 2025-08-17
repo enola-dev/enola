@@ -22,13 +22,15 @@ The 🔱 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is a st
 
 ## Configuration
 
-TODO
+See [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml).
 
-## Recommended
-
-TODO
+Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agents](agent.md).
 
 <!--
+    ## Recommended
+
+    TODO
+
     Filesystem!
     Memory...
         https://github.com/modelcontextprotocol/servers/tree/main/src/memory
@@ -37,6 +39,16 @@ TODO
     RAG with Pinecone, LlamaIndex?
     OpenAPI (HF)?
 -->
+
+## Examples
+
+### Everything
+
+The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:
+
+```shell
+enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
+```
 
 ## Directories
 

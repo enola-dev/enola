@@ -27,8 +27,6 @@ import java.util.Map;
 
 public interface ToolsetProvider extends NamedTypedObjectProvider<BaseToolset> {
 
-    // TODO Rethink ;( this, as a ToolsetProvider is close enough to a BaseToolset
-
     static ToolsetProvider immutableToolsets(Map<String, BaseToolset> map) {
         return new ImmutableToolsetProvider(map);
     }

@@ -17,6 +17,8 @@
  */
 package dev.enola.cli;
 
+import dev.enola.ai.mcp.cli.McpOptions;
+
 import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
@@ -24,7 +26,7 @@ import picocli.CommandLine;
 import java.net.URI;
 import java.util.List;
 
-/** CLI Options related to AI shared between ServerCommand and (TBD) AdkChatCommand. */
+/** CLI Options related to AI shared between AiCommand, ServerCommand and Chat2Command. */
 public class AiOptions {
 
     static final String DEFAULT_MODEL =
@@ -38,8 +40,12 @@ public class AiOptions {
 
     @CommandLine.Option(
             names = {"-a", "--agents"},
-            description = "URLs of Agents; see https://docs.enola.dev/concepts/agent/")
+            description = "URL/s of Agents; see https://docs.enola.dev/concepts/agent/")
     @Nullable List<URI> agentURIs;
+
+    @Nullable
+    @CommandLine.ArgGroup(exclusive = false)
+    McpOptions mcpOptions;
 
     // TODO Agent Resources...
 

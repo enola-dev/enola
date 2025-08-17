@@ -19,6 +19,8 @@ package dev.enola.cli;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 
+import static java.net.URI.create;
+
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.agents.LlmAgent;
 import com.google.common.base.Strings;
@@ -27,6 +29,8 @@ import dev.enola.ai.adk.core.Agents;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.tool.Tools;
 import dev.enola.ai.dotagent.AgentsLoader;
+import dev.enola.ai.mcp.McpLoader;
+import dev.enola.ai.mcp.cli.McpOptions;
 import dev.enola.cli.AiOptions.WithAgentName;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.secret.auto.AutoSecretManager;
@@ -34,24 +38,26 @@ import dev.enola.common.secret.auto.AutoSecretManager;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
-import java.net.URI;
-import java.time.InstantSource;
 import java.util.Set;
 
 final class AI {
 
-    // TODO Create an AdkChatCommand and use this there as well
-
     static Iterable<BaseAgent> load(ResourceProvider rp, @Nullable AiOptions aiOptions)
             throws IOException {
         var modelProvider = new LlmProviders(AutoSecretManager.INSTANCE());
-        var defaultModelURI = AiOptions.DEFAULT_MODEL;
-        if (aiOptions != null && !isNullOrEmpty(aiOptions.defaultLanguageModelURI)) {
-            defaultModelURI = aiOptions.defaultLanguageModelURI;
-        }
-        var tools = Tools.builtin(InstantSource.system());
-        var agentsLoader = new AgentsLoader(rp, URI.create(defaultModelURI), modelProvider, tools);
-        if (aiOptions != null && aiOptions.agentURIs != null && !aiOptions.agentURIs.isEmpty()) {
+
+        String defaultModelURI;
+        if (aiOptions == null) aiOptions = new AiOptions();
+        if (isNullOrEmpty(aiOptions.defaultLanguageModelURI))
+            defaultModelURI = AiOptions.DEFAULT_MODEL;
+        else defaultModelURI = aiOptions.defaultLanguageModelURI;
+
+        if (aiOptions.agentURIs != null && !aiOptions.agentURIs.isEmpty()) {
+            var mcpLoader = new McpLoader();
+            aiOptions.mcpOptions = McpOptions.handleDefault(aiOptions.mcpOptions);
+            aiOptions.mcpOptions.load(mcpLoader, rp);
+            var tools = Tools.mcp(mcpLoader.configs());
+            var agentsLoader = new AgentsLoader(rp, create(defaultModelURI), modelProvider, tools);
             return agentsLoader.load(aiOptions.agentURIs.stream());
 
         } else {
@@ -64,7 +70,7 @@ final class AI {
     static BaseAgent load1(ResourceProvider rp, @Nullable WithAgentName aiOptions)
             throws IOException {
         BaseAgent agent = null;
-        var agents = AI.load(rp, aiOptions);
+        var agents = load(rp, aiOptions);
         var agentsMap = Agents.toMap(agents);
         if (agentsMap.size() == 1) agent = agentsMap.values().iterator().next();
         if (agent == null)

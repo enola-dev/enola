@@ -28,14 +28,12 @@ import java.util.Map;
 
 public final class Tools {
 
-    // TODO Always add builtin() even if loading MCP ? Probably makes sense...
-
-    public static ToolsetProvider mcp(Iterable<McpServerConnectionsConfig> configs) {
-        return new MCP(configs);
-    }
-
     public static ToolsetProvider none() {
         return ToolsetProvider.immutableToolsets(Map.of());
+    }
+
+    public static ToolsetProvider mcp(Iterable<McpServerConnectionsConfig> configs) {
+        return new ToolsetProviderChain(builtin(InstantSource.system()), new MCP(configs));
     }
 
     public static ToolsetProvider builtin(InstantSource instantSource) {

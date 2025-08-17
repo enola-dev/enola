@@ -15,44 +15,31 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bazel:junit.bzl", "junit_tests")
+load("@rules_java//java:java_binary.bzl", "java_binary")
+
+java_binary(
+    name = "mcp",
+    main_class = "dev.enola.ai.mcp.cli.McpApplication",
+    runtime_deps = [":cli"],
+)
 
 java_library(
-    name = "mcp",
+    name = "cli",
     srcs = glob(
         ["*.java"],
-        exclude = [
-            "*Test.java",
-        ],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common",
+        "//java/dev/enola/ai/mcp",
+        "//java/dev/enola/cli/common",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/object",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object/jackson",
-        "//java/dev/enola/common/name",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_guava_guava",
+        "@enola_maven//:info_picocli_picocli",
         "@enola_maven//:io_modelcontextprotocol_sdk_mcp",
         "@enola_maven//:org_jspecify_jspecify",
         "@enola_maven//:org_slf4j_slf4j_api",
-    ],
-)
-
-junit_tests(
-    name = "tests",
-    srcs = glob(
-        ["*Test.java"],
-    ),
-    runtime_deps = [
-        "@enola_maven//:org_slf4j_slf4j_simple",
-    ],
-    deps = [
-        ":mcp",
-        "//java/dev/enola/common/context",
-        "//java/dev/enola/common/context/testlib",
-        "//java/dev/enola/common/io",
-        "//models",
     ],
 )

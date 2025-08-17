@@ -57,6 +57,8 @@ java_library(
         "//java/dev/enola/ai/adk/tool",
         "//java/dev/enola/ai/adk/web",
         "//java/dev/enola/ai/dotagent",
+        "//java/dev/enola/ai/mcp",
+        "//java/dev/enola/ai/mcp/cli",
         "//java/dev/enola/cas",
         "//java/dev/enola/chat",
         "//java/dev/enola/chat/sshd",
