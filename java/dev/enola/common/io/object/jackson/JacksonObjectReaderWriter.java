@@ -24,7 +24,10 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.type.LogicalType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.net.MediaType;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -85,6 +88,17 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         mapper.configOverride(List.class).setSetterInfo(nullAsEmpty);
         mapper.configOverride(Set.class).setSetterInfo(nullAsEmpty);
         mapper.configOverride(Map.class).setSetterInfo(nullAsEmpty);
+
+        // Always allow coercion for e.g. empty Map keys etc.
+        mapper.coercionConfigFor(LogicalType.POJO)
+                .setAcceptBlankAsEmpty(true)
+                .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+        mapper.coercionConfigFor(LogicalType.Array)
+                .setAcceptBlankAsEmpty(true)
+                .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+        mapper.coercionConfigFor(LogicalType.Map)
+                .setAcceptBlankAsEmpty(true)
+                .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
     }
 
     abstract boolean canHandle(MediaType mediaType);

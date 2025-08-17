@@ -22,4 +22,5 @@ servers:
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]
-# TODO inputs:
+
+inputs:
