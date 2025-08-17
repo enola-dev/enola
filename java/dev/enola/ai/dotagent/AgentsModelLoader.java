@@ -25,9 +25,7 @@ import com.google.common.base.Strings;
 
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.object.ObjectReader;
-import dev.enola.common.io.object.ObjectReaderChain;
-import dev.enola.common.io.object.jackson.JsonObjectReaderWriter;
-import dev.enola.common.io.object.jackson.YamlObjectReaderWriter;
+import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
@@ -47,11 +45,7 @@ public class AgentsModelLoader {
     //   But how to determine which? Use *.agents.yaml vs. *agent.yaml filename? Or $schema ?
     //   See AgentsModelLoaderTest.oppositeChefsMap()
 
-    // TODO Later support loading from .txtpb, in addition to .yaml and .json
-
-    private final ObjectReader objectReader =
-            new ObjectReaderChain(new YamlObjectReaderWriter(), new JsonObjectReaderWriter());
-
+    private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
     private final ResourceProvider resourceProvider;
 
     public AgentsModelLoader(ResourceProvider resourceProvider) {

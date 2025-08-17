@@ -27,6 +27,10 @@ public class ObjectWriterChain implements ObjectWriter {
 
     private final Iterable<ObjectWriter> writers;
 
+    public ObjectWriterChain(ObjectWriter... writers) {
+        this(ImmutableList.copyOf(writers));
+    }
+
     public ObjectWriterChain(Iterable<ObjectWriter> writers) {
         this.writers = ImmutableList.copyOf(writers);
     }

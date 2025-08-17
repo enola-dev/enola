@@ -33,6 +33,10 @@ public class ObjectReaderWriterChain extends ObjectReaderChain implements Object
         this.readerWriters = readerWriters;
     }
 
+    public ObjectReaderWriterChain(ObjectReaderWriter... readerWriters) {
+        this(ImmutableList.copyOf(readerWriters));
+    }
+
     private static Iterable<ObjectReader> map(Iterable<ObjectReaderWriter> readerWriters) {
         var readers =
                 ImmutableList.<ObjectReader>builderWithExpectedSize(Iterables.size(readerWriters));
