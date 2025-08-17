@@ -18,6 +18,7 @@
 package dev.enola.ai.adk.tool;
 
 import com.google.adk.JsonBaseModel;
+import com.google.adk.tools.BaseToolset;
 import com.google.adk.tools.mcp.McpSessionManager;
 import com.google.adk.tools.mcp.McpToolset;
 import com.google.adk.tools.mcp.McpTransportBuilder;
@@ -27,18 +28,17 @@ import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.ai.mcp.McpLoader;
 import dev.enola.ai.mcp.McpServerConnectionsConfig;
-import dev.enola.common.name.NamedTypedObjectProvider;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
 @ThreadSafe
-public class MCP implements NamedTypedObjectProvider<McpToolset> {
+class MCP implements ToolsetProvider {
 
     private final ImmutableMap<String, McpServerConnectionsConfig> configMap;
     private final ConcurrentMap<String, McpToolset> toolsetMap = new MapMaker().makeMap();
 
-    public MCP(Iterable<McpServerConnectionsConfig> configs) {
+    MCP(Iterable<McpServerConnectionsConfig> configs) {
         var mapBuilder = ImmutableMap.<String, McpServerConnectionsConfig>builder();
         for (var config : configs) {
             for (var name : config.servers.keySet()) {
@@ -54,7 +54,7 @@ public class MCP implements NamedTypedObjectProvider<McpToolset> {
     }
 
     @Override
-    public Optional<McpToolset> opt(String name) {
+    public Optional<BaseToolset> opt(String name) {
         var config = configMap.get(name);
         if (config == null) return Optional.empty();
         else return Optional.of(toolsetMap.computeIfAbsent(name, k -> createToolset(config, name)));
