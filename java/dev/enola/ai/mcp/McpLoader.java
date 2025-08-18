@@ -124,7 +124,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
                         // TODO Make this configurable - but how & from where?
                         // .initializationTimeout(Duration.ofSeconds(7))
                         // .requestTimeout(Duration.ofSeconds(7))
-                        .loggingConsumer(new McpServer(origin))
+                        .loggingConsumer(new Slf4jLoggingConsumer(origin))
                         .build();
         client.initialize();
         client.ping();
