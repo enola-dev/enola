@@ -20,6 +20,8 @@
 # not the bazel_dep, or vice versa, leading to inconsistencies (see
 # https://github.com/VirtusLab/bazel-steward/issues/404).
 
+ADK_JAVA_COMMIT = "806e985805ae47bfdf6931f02d12f928a0f3bcc8"
+
 RDF4J_VERSION = "5.1.4"
 
 GRPC_JAVA_VERSION = "1.73.0"
@@ -189,9 +191,9 @@ enola_maven.install(
         # "com.google.adk:google-adk:0.2.0",
         # "com.google.adk:google-adk-dev:0.2.0",
         # "com.google.adk:google-adk-contrib-langchain4j:0.2.0",
-        "com.github.google.adk-java:google-adk:55fffb753464010f559cce17931d4db3244524db",
-        "com.github.google.adk-java:google-adk-dev:55fffb753464010f559cce17931d4db3244524db",
-        "com.github.google.adk-java:google-adk-contrib-langchain4j:55fffb753464010f559cce17931d4db3244524db",
+        "com.github.google.adk-java:google-adk:" + ADK_JAVA_COMMIT,
+        "com.github.google.adk-java:google-adk-dev:" + ADK_JAVA_COMMIT,
+        "com.github.google.adk-java:google-adk-contrib-langchain4j:" + ADK_JAVA_COMMIT,
 
         # https://github.com/jknack/handlebars.java
         "com.github.jknack:handlebars:4.4.0",
