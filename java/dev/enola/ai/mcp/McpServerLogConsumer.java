@@ -26,13 +26,17 @@ import org.slf4j.event.Level;
 
 import java.util.function.Consumer;
 
-class McpServer implements Consumer<LoggingMessageNotification> {
+class McpServerLogConsumer implements Consumer<LoggingMessageNotification> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(McpServer.class);
+    // TODO: If https://github.com/modelcontextprotocol/java-sdk/pull/503
+    //   is accepted and merged, the eventually replace this by that?
+    //   But that doesn't have the origin... hm. Add it?
+
+    private static final Logger LOG = LoggerFactory.getLogger(McpServerLogConsumer.class);
 
     private final String origin;
 
-    public McpServer(String origin) {
+    public McpServerLogConsumer(String origin) {
         this.origin = origin;
     }
 
