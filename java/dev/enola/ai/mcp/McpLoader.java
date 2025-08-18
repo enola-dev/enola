@@ -127,6 +127,12 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
                         .loggingConsumer(new McpServer(origin))
                         .build();
         client.initialize();
+
+        // To avoid "Method not found", check logging capability before setting it
+        if (client.getServerCapabilities().logging() != null)
+            // TODO Ideally this should be passed through from the CLI's -vv Logging config...
+            client.setLoggingLevel(McpSchema.LoggingLevel.INFO);
+
         client.ping();
         var serverInfo = client.getServerInfo();
         LOG.info("{} initialized: {} @ {}", origin, serverInfo.name(), serverInfo.version());

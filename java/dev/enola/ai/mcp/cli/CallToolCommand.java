@@ -17,44 +17,51 @@
  */
 package dev.enola.ai.mcp.cli;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 import dev.enola.ai.mcp.McpLoader;
+import dev.enola.common.concurrent.Threads;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs;
-import dev.enola.common.io.mediatype.YamlMediaType;
-import dev.enola.common.io.object.jackson.YamlObjectReaderWriter;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 
-import io.modelcontextprotocol.spec.McpSchema;
+import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
 
 import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "list-tools", description = "List all loaded MCP Tools")
-public class ListToolsCommand implements Callable<Integer> {
+@CommandLine.Command(name = "call-tool", description = "Calls a tool on an MCP Server")
+public class CallToolCommand implements Callable<Integer> {
 
     @Nullable
     @CommandLine.ArgGroup(exclusive = false)
     McpOptions mcpOptions;
 
+    // For testing (only)
+    @CommandLine.Option(
+            names = {"--wait"},
+            hidden = true)
+    boolean wait;
+
+    @CommandLine.Parameters(index = "0", paramLabel = "server", description = "Server")
+    String server;
+
+    @CommandLine.Parameters(index = "1", paramLabel = "tool", description = "Tool")
+    String tool;
+
+    @CommandLine.Parameters(index = "2", paramLabel = "args", description = "Arguments (as JSON)")
+    String argumentsAsJson;
+
     // TODO Move this somewhere else, so that it can be shared between commands
     McpLoader loader = new McpLoader();
     ResourceProvider rp =
             new ResourceProviders(new FileResource.Provider(), new ClasspathResource.Provider());
-
-    YamlObjectReaderWriter objectWriter = new YamlObjectReaderWriter();
 
     @Override
     public Integer call() throws Exception {
@@ -62,24 +69,16 @@ public class ListToolsCommand implements Callable<Integer> {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             mcpOptions.load(loader, rp);
         }
-
-        Map<String, List<McpSchema.Tool>> tools = new HashMap<>();
-        for (var name : loader.names()) {
-            var thisTool = new ArrayList<McpSchema.Tool>();
-            var toolClient = loader.get(name, "CLI");
-            var listToolsResult = toolClient.listTools();
-            var nextCursor = listToolsResult.nextCursor();
-            do {
-                thisTool.addAll(listToolsResult.tools());
-                if (!isNullOrEmpty(nextCursor)) listToolsResult = toolClient.listTools(nextCursor);
-                else listToolsResult = null;
-            } while (listToolsResult != null);
-            tools.put(name, thisTool);
+        var toolClient = loader.get(server, "CLI");
+        var callToolRequest = new CallToolRequest(tool, argumentsAsJson);
+        var callToolResult = toolClient.callTool(callToolRequest);
+        for (var content : callToolResult.content()) {
+            System.out.println(content);
         }
 
-        var yaml = objectWriter.write(tools, YamlMediaType.YAML_UTF_8).get();
-        System.out.println(yaml);
+        if (wait) Threads.sleep(Duration.ofDays(1));
 
-        return 0;
+        var error = callToolResult.isError();
+        return Boolean.TRUE.equals(error) ? 1 : 0;
     }
 }

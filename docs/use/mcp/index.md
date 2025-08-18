@@ -20,9 +20,21 @@
 
 `mcp` has useful commands for exploring [MCP Tools](../../concepts/mcp.md).
 
+## Call MCP Tool
+
+```bash cd ../.././..
+$ ./enola mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
+...
+```
+
 ## List MCP Tools
 
 ```bash $? cd ../.././..
 $ ./enola mcp list-tools --help
+...
+```
+
+```bash cd ../.././..
+$ ./enola mcp list-tools
 ...
 ```

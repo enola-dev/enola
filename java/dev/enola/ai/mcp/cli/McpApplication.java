@@ -43,7 +43,8 @@ import picocli.CommandLine.Command;
             AutoComplete.GenerateCompletion.class,
 
             // Specific to this CLI
-            ListToolsCommand.class
+            ListToolsCommand.class,
+            CallToolCommand.class
         })
 public class McpApplication extends Application {
 

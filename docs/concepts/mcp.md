@@ -67,6 +67,10 @@ enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev
 CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
 Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
+## CLI
+
+To debug MCP, use the dedicated [MCP CLI commands](../use/mcp/index.md).
+
 ## Directories
 
 <!-- TODO Crawl these, and gen. MD pushed to https://github.com/enola-dev/awesome-mcp ... -->

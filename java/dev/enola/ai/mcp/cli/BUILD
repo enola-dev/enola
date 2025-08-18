@@ -32,6 +32,7 @@ java_library(
     deps = [
         "//java/dev/enola/ai/mcp",
         "//java/dev/enola/cli/common",
+        "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",

@@ -17,6 +17,7 @@
  */
 package dev.enola.cli;
 
+import dev.enola.ai.mcp.cli.CallToolCommand;
 import dev.enola.ai.mcp.cli.ListToolsCommand;
 
 import picocli.CommandLine;
@@ -24,7 +25,5 @@ import picocli.CommandLine;
 @CommandLine.Command(
         name = "mcp",
         description = "Model Context Protocol (\uD83D\uDD31 MCP)",
-        subcommands = {
-            ListToolsCommand.class,
-        })
+        subcommands = {ListToolsCommand.class, CallToolCommand.class})
 public class McpCommand {}
