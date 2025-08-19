@@ -19,6 +19,8 @@ package dev.enola.ai.mcp;
 
 import dev.enola.common.io.object.WithSchema;
 
+import io.modelcontextprotocol.spec.McpSchema;
+
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -72,6 +74,8 @@ public class McpServerConnectionsConfig extends WithSchema {
         public String url;
         public final Map<String, String> headers = new HashMap<>();
         public Duration timeout;
+
+        public McpSchema.LoggingLevel log = McpSchema.LoggingLevel.WARNING;
     }
 
     public static class Input {

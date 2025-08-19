@@ -112,10 +112,11 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
         var origin = config.origin + "#" + name;
         var transport = createTransport(config, name);
-        return createSyncClient(transport, origin);
+        return createSyncClient(transport, config.servers.get(name).log, origin);
     }
 
-    private static McpSyncClient createSyncClient(McpClientTransport transport, String origin) {
+    private static McpSyncClient createSyncClient(
+            McpClientTransport transport, McpSchema.LoggingLevel log, String origin) {
         var implementation = new McpSchema.Implementation("https://Enola.dev", Version.get());
         var client =
                 McpClient.sync(transport)
@@ -129,9 +130,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         client.initialize();
 
         // To avoid "Method not found", check logging capability before setting it
-        if (client.getServerCapabilities().logging() != null)
-            // TODO Ideally this should be passed through from the CLI's -vv Logging config...
-            client.setLoggingLevel(McpSchema.LoggingLevel.INFO);
+        if (client.getServerCapabilities().logging() != null) client.setLoggingLevel(log);
 
         client.ping();
         var serverInfo = client.getServerInfo();
