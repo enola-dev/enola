@@ -16,6 +16,9 @@
 
 syntax = "proto3";
 
+// TODO Move this file, and related part of BUILD, into .test sub-package
+
+// TODO Change dev.enola.protobuf.test to dev.enola.common.protobuf.test
 package dev.enola.protobuf.test;
 
 // import "google/protobuf/any.proto";
@@ -23,8 +26,10 @@ import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_string_check_utf8 = true;
+// TODO Change dev.enola.protobuf.test to dev.enola.common.protobuf.test
 option java_package = "dev.enola.protobuf.test";
 option java_multiple_files = true;
+// TODO Change dev/enola/core/test to dev/enola/common/protobuf/test
 option go_package = "dev/enola/core/test";
 
 enum TestEnum {
