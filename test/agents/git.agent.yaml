@@ -1,0 +1,8 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash
+description: >
+  Demo Agent with access to the git CLI tool.
+instruction: >
+  You are a helpful agent who can use Git.
+tools:
+  - modelcontextprotocol/git
