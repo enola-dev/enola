@@ -20,6 +20,7 @@ package dev.enola.ai.adk.tool;
 import com.google.adk.tools.GoogleSearchTool;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.ai.mcp.McpLoader;
 import dev.enola.ai.mcp.McpServerConnectionsConfig;
 import dev.enola.common.SuccessOrError;
 
@@ -32,8 +33,10 @@ public final class Tools {
         return ToolsetProvider.immutableToolsets(Map.of());
     }
 
-    public static ToolsetProvider mcp(Iterable<McpServerConnectionsConfig> configs) {
-        return new ToolsetProviderChain(builtin(InstantSource.system()), new MCP(configs));
+    public static ToolsetProvider mcp(
+            Iterable<McpServerConnectionsConfig> configs, McpLoader mcpLoader) {
+        return new ToolsetProviderChain(
+                builtin(InstantSource.system()), new MCP(configs, mcpLoader));
     }
 
     public static ToolsetProvider builtin(InstantSource instantSource) {

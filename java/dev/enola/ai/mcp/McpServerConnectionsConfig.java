@@ -38,8 +38,6 @@ import java.util.Map;
 public class McpServerConnectionsConfig extends WithSchema {
     // implements Identifiable ?  String id() { return origin.toString(); }
 
-    // TODO roots? Or does that not belong here?
-
     /** Origin of configuration; e.g. file:/.../mcp.yaml, or something like that. * */
     // TODO extends WithOrigin implements HasOrigin; and set it in ObjectReader
     public URI origin;
@@ -74,6 +72,8 @@ public class McpServerConnectionsConfig extends WithSchema {
         public String url;
         public final Map<String, String> headers = new HashMap<>();
         public Duration timeout;
+
+        public boolean roots = false;
 
         public McpSchema.LoggingLevel log = McpSchema.LoggingLevel.WARNING;
     }

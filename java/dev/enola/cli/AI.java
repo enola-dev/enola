@@ -56,7 +56,7 @@ final class AI {
             var mcpLoader = new McpLoader();
             aiOptions.mcpOptions = McpOptions.handleDefault(aiOptions.mcpOptions);
             aiOptions.mcpOptions.load(mcpLoader, rp);
-            var tools = Tools.mcp(mcpLoader.configs());
+            var tools = Tools.mcp(mcpLoader.configs(), mcpLoader);
             var agentsLoader = new AgentsLoader(rp, create(defaultModelURI), modelProvider, tools);
             return agentsLoader.load(aiOptions.agentURIs.stream());
 

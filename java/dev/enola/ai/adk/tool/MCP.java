@@ -21,7 +21,6 @@ import com.google.adk.JsonBaseModel;
 import com.google.adk.tools.BaseToolset;
 import com.google.adk.tools.mcp.McpSessionManager;
 import com.google.adk.tools.mcp.McpToolset;
-import com.google.adk.tools.mcp.McpTransportBuilder;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.google.errorprone.annotations.ThreadSafe;
@@ -29,16 +28,21 @@ import com.google.errorprone.annotations.ThreadSafe;
 import dev.enola.ai.mcp.McpLoader;
 import dev.enola.ai.mcp.McpServerConnectionsConfig;
 
+import io.modelcontextprotocol.client.McpAsyncClient;
+import io.modelcontextprotocol.client.McpSyncClient;
+
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
 @ThreadSafe
 class MCP implements ToolsetProvider {
 
+    private final McpLoader mcpLoader;
     private final ImmutableMap<String, McpServerConnectionsConfig> configMap;
     private final ConcurrentMap<String, McpToolset> toolsetMap = new MapMaker().makeMap();
 
-    MCP(Iterable<McpServerConnectionsConfig> configs) {
+    MCP(Iterable<McpServerConnectionsConfig> configs, McpLoader mcpLoader) {
+        this.mcpLoader = mcpLoader;
         var mapBuilder = ImmutableMap.<String, McpServerConnectionsConfig>builder();
         for (var config : configs) {
             for (var name : config.servers.keySet()) {
@@ -50,23 +54,43 @@ class MCP implements ToolsetProvider {
 
     @Override
     public Iterable<String> names() {
-        return configMap.keySet();
+        return mcpLoader.names();
     }
 
     @Override
     public Optional<BaseToolset> opt(String name) {
         var config = configMap.get(name);
         if (config == null) return Optional.empty();
-        else return Optional.of(toolsetMap.computeIfAbsent(name, k -> createToolset(config, name)));
+        else return Optional.of(toolsetMap.computeIfAbsent(name, k -> createToolset(name)));
     }
 
-    private McpToolset createToolset(McpServerConnectionsConfig config, String name) {
-        var transport = McpLoader.createTransport(config, name);
-        McpTransportBuilder mcpTransportBuilder = connectionParams -> transport;
-        var mcpSessionManager = new McpSessionManager(null, mcpTransportBuilder);
-
+    private McpToolset createToolset(String name) {
+        var mcpSessionManager = new MyMcpSessionManager(name, mcpLoader);
         var toolFilter = Optional.empty();
         var objectMapper = JsonBaseModel.getMapper(); // TODO Use Enola's own instead?!
         return new McpToolset(mcpSessionManager, objectMapper, toolFilter);
+    }
+
+    private static final class MyMcpSessionManager extends McpSessionManager {
+
+        private final String name;
+        private final McpLoader mcpLoader;
+
+        MyMcpSessionManager(String name, McpLoader mcpLoader) {
+            super(null, null);
+            this.mcpLoader = mcpLoader;
+            this.name = name;
+        }
+
+        @Override
+        public McpSyncClient createSession() {
+            return mcpLoader.get(name, mcpLoader);
+        }
+
+        @Override
+        public McpAsyncClient createAsyncSession() {
+            throw new UnsupportedOperationException(
+                    "TODO Implement McpAsyncClient support in McpLoader");
+        }
     }
 }

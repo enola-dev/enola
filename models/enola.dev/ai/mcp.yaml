@@ -18,6 +18,12 @@
 $schema: https://enola.dev/ai/mcp/server/connections
 
 servers:
+  modelcontextprotocol/filesystem:
+    command: npx
+    args: [-y, "@modelcontextprotocol/server-filesystem"]
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+    roots: true
+
   modelcontextprotocol/everything:
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]

@@ -43,12 +43,17 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
+
+    // TODO Also support McpAsyncClient
+
+    // TODO Replace the (not really required) concurrency support with a Builder with load()
 
     private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
@@ -88,7 +93,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));
     }
 
-    public static McpClientTransport createTransport(
+    private static McpClientTransport createTransport(
             McpServerConnectionsConfig config, String name) {
         McpClientTransport transport;
         URI origin = config.origin;
@@ -112,29 +117,39 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
         var origin = config.origin + "#" + name;
         var transport = createTransport(config, name);
-        return createSyncClient(transport, config.servers.get(name).log, origin);
-    }
-
-    private static McpSyncClient createSyncClient(
-            McpClientTransport transport, McpSchema.LoggingLevel log, String origin) {
+        var withRoots = config.servers.get(name).roots;
+        var logLevel = config.servers.get(name).log;
         var implementation = new McpSchema.Implementation("https://Enola.dev", Version.get());
+        var capabilities = McpSchema.ClientCapabilities.builder();
+        if (withRoots) capabilities.roots(false);
         var client =
                 McpClient.sync(transport)
                         .clientInfo(implementation)
-                        .capabilities(McpSchema.ClientCapabilities.builder().build())
+                        .capabilities(capabilities.build())
                         // TODO Make this configurable - but how & from where?
                         // .initializationTimeout(Duration.ofSeconds(7))
                         // .requestTimeout(Duration.ofSeconds(7))
                         .loggingConsumer(new McpServerLogConsumer(origin))
                         .build();
-        client.initialize();
+
+        var initResult = client.initialize();
+        LOG.info("{} initializing: {}", origin, initResult);
 
         // To avoid "Method not found", check logging capability before setting it
-        if (client.getServerCapabilities().logging() != null) client.setLoggingLevel(log);
+        if (client.getServerCapabilities().logging() != null) client.setLoggingLevel(logLevel);
+
+        if (withRoots) {
+            // TODO Allow adding several roots?
+            // TODO Allow configuring root(s) other than the current directory
+            var cwd = Paths.get("").toUri().toString();
+            var root = new McpSchema.Root(cwd, null);
+            client.addRoot(root);
+        }
 
         client.ping();
+
         var serverInfo = client.getServerInfo();
-        LOG.info("{} initialized: {} @ {}", origin, serverInfo.name(), serverInfo.version());
+        LOG.info("{} fully initialized: {} @ {}", origin, serverInfo.name(), serverInfo.version());
         return client;
     }
 
