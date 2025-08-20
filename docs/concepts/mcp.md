@@ -26,6 +26,16 @@ The `--mcp` CLI argument specifies which MCP servers are available to Agents.
 
 If not specified it uses the built-in [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml) by default.
 
+The `command`, `args` & `env` are self-explanatory; `origin` is just for documentation.
+
+<!-- TODO Document type, url, headers, timeout - once that's tested to work... -->
+
+<!-- TODO Document input, once that's implemented... -->
+
+The boolean `roots` flag controls whether the current working directory is exposed; it defaults to false.
+
+The `log` field controls the logging level of the MCP server, and can be set to `debug`, `info`, `notice`, `warning`, `error`, `critical`, `alert` and `emergency`. If unspecified, it defaults to the `warning` level. This only controls what the MCP server sends. To actually see all log messages on the client, you must start Enola with `-vvvvv`.
+
 Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agents](agent.md).
 
 MCP servers are only started (or connected to), and queried for their 🧰 Tools, if any of the loaded `--agents` use them.
@@ -48,14 +58,6 @@ MCP servers are only started (or connected to), and queried for their 🧰 Tools
 
 <!-- Generate these, from an example prompt in YAML... -->
 
-### Everything
-
-The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:
-
-```shell
-enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
-```
-
 ### Fetch
 
 The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) can fetch a webpage, and extract its contents as Markdown:
@@ -67,7 +69,21 @@ enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev
 CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
 Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
-## CLI
+### Filesystem
+
+```shell
+enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
+```
+
+### Everything
+
+The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:
+
+```shell
+enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
+```
+
+## CLI for Debugging
 
 To debug MCP, use the dedicated [MCP CLI commands](../use/mcp/index.md).
 
