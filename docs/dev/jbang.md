@@ -32,3 +32,6 @@ has an example project illustrating how this works; clone and go there, and then
 (But then how to test it in CI? A Monorepo is very nice for that.
 Perhaps just write a script to automagically extract (copy) it into a small repo?)
 -->
+
+PS: You can also [launch Enola via JBang](../use/index.md#jbang) as an end-user,
+which has nothing to do with this example of using Enola as a library from JBang as a Java developer.

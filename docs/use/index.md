@@ -63,3 +63,14 @@ via a container image, instead of a "local installation", as above.
 It appropriately "mounts" the current working directory into the container, so that
 relative `file:` URIs should work. Absolute paths on your host won't work, because they
 are not accessible to the container ("by design").
+
+## JBang
+
+From [our Maven repo](../dev/maven.md), using [JBang](https://www.jbang.dev/):
+
+    jbang --repos https://docs.enola.dev/maven-repo/,mavencentral,jitpack --main=dev.enola.cli.EnolaApplication dev.enola:enola:0.0.1-SNAPSHOT
+
+<!-- TODO Make this work... it doesn't quite, yet:
+
+    jbang --repos https://docs.enola.dev/maven-repo/,mavencentral,jitpack --main=dev.enola.cli.EnolaApplication dev.enola:enola:0.0.1-SNAPSHOT server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yam
+-->
