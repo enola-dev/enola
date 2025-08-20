@@ -18,7 +18,7 @@
 
 # Using Enola.dev
 
-The following chapters demonstrate different usage scenarios with recorded demos.
+<!--The following chapters demonstrate different usage scenarios with recorded demos.-->
 
 This page documents several options available to locally install and run Enola.
 

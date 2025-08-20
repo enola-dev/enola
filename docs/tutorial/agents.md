@@ -22,6 +22,8 @@
 
 Agents work in [all Chat UXs of Enola](chat.md). Here are some examples to use them.
 
+This tutorial uses Enola from a [container](../use/index.md#container), but there are other ways to [install Enola](../use/index.md).
+
 <!-- TODO Use a new builtin: URL scheme instead of http://github.com URLs! -->
 
 ## Optimistic Chef 👨🏽‍🍳
@@ -37,7 +39,7 @@ can be used like this to chat with a very enthusiastic 👨🏽‍🍳 chef:
       server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" \
       --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
 
-[See here](../specs/aiuri/index.md#google-ai) re. `GOOGLE_AI_API_KEY` etc.
+[See here](../specs/aiuri/index.md#google-ai) re. `GOOGLE_AI_API_KEY` etc. and now open <http://localhost:7070> to open the UI.
 
 ## Cynical Chef 😾
 
