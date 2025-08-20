@@ -22,7 +22,11 @@ _Tools_ allow [Agents](agent.md) to access information which is not in a _[Large
 
 ## Clock 🕰️
 
-The `clock` tool makes the current date and time available to a model:
+```yaml
+{% include "../../test/agents/clock.agent.yaml" %}
+```
+
+This `clock` tool makes the current date and time available to a model:
 
 ```shell
 $ enola ai --lm="google://?model=gemini-2.5-flash-lite" --in "What's the time?"
@@ -34,7 +38,11 @@ The current date & time in CET is Saturday, August 16, 2025, 11:42 PM.
 
 ## Google 🔎 🌐
 
-The `search_google` tool makes the [Google Search Engine](https://search.google/) available:
+```yaml
+{% include "../../test/agents/google.agent.yaml" %}
+```
+
+This `search_google` tool makes the [Google Search Engine](https://search.google/) available:
 
 ```shell
 $ enola ai --lm="google://?model=gemini-2.5-flash-lite" --in "What happened today?"

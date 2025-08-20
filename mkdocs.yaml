@@ -42,7 +42,7 @@ nav:
           - About: index.md
           - AI Agents: tutorial/agents.md
           - AI Chat: tutorial/chat.md
-          - Download: use/index.md
+          - Install: use/index.md
           - Hello World: models/example.org/hello.md
           - Linked Data: models/example.org/linked.md
           - Classy: models/example.org/class.md
