@@ -24,10 +24,10 @@ servers:
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
     roots: true
 
-  modelcontextprotocol/everything:
-    command: npx
-    args: [-y, "@modelcontextprotocol/server-everything"]
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+  modelcontextprotocol/git:
+    command: uvx
+    args: [mcp-server-git]
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/git
 
   modelcontextprotocol/fetch:
     # CAUTION: This server can access local/internal IP addresses and may represent a security risk.
@@ -35,5 +35,10 @@ servers:
     command: uvx
     args: [mcp-server-fetch]
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+
+  modelcontextprotocol/everything:
+    command: npx
+    args: [-y, "@modelcontextprotocol/server-everything"]
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
 
 inputs:
