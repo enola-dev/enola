@@ -36,6 +36,10 @@ $ enola ai --agents=test/agents/clock.agent.yaml --in "What's the time?"
 The current date & time in CET is Saturday, August 16, 2025, 11:42 PM.
 ```
 
+## Exec
+
+**TODO** _Enola is planning to offer an `exec` tool. We intended to make this highly configurable._
+
 ## Google 🔎 🌐
 
 ```yaml

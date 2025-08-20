@@ -24,7 +24,7 @@ Java developers can also use [our code](common.md) from our Maven repository at 
 
 Accessing the aforementioned URL in a Web Browser will show a 404 (because there is no `index.html`), but Maven-like build tools can download artifacts from there.
 
-We currently only publish `dev.enola:enola:0.0.1-SNAPSHOT`, and may publish finer grained ones in the future. Please [open an issue](https://github.com/enola-dev/enola/issues) to request making smaller JARs available, if you have an interest in and would use any of these as simple separate standalone libraries.
+We currently only publish `dev.enola:enola:0.0.1-SNAPSHOT`, and may publish finer grained ones in the future. Please [open an issue](https://github.com/enola-dev/enola/issues) to request making smaller JARs available if you have an interest in and would use any of our packages as simple separate standalone libraries.
 
 The dependencies of JAR are either on Maven Central or JitPack; your Maven resolver needs to be configured for both.
 

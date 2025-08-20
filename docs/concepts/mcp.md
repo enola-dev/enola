@@ -75,6 +75,14 @@ Exercise caution when using this MCP server to ensure this does not expose any s
 enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
 ```
 
+### Git
+
+```shell
+enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit message for the uncommited files in $PWD"
+```
+
+CAUTION: This server is inherently insecure; you should carefully evaluate if it meets your needs.
+
 ### Everything
 
 The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:

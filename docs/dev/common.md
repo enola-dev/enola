@@ -20,6 +20,7 @@
 
 Enola's code base includes _"common"_ technical framework components which are not specific to Enola:
 
+1. Agent Development Kit (ADK) Java utilities
 1. [Secret](https://docs.enola.dev/dev/javadoc/dev/enola/common/secret/package-summary.html): A credentials managers, with e.g. [`age`](https://age-encryption.org) and [`pass`](https://www.passwordstore.org) etc. integration
 1. [Context](https://docs.enola.dev/dev/javadoc/dev/enola/common/context/package-summary.html): Implicit context passing, via Thread Local and `ScopedValue` (JEP 446 - TBD)
 1. [Functional](https://docs.enola.dev/dev/javadoc/dev/enola/common/function/package-summary.html), notably [`MoreStreams`](https://docs.enola.dev/dev/javadoc/dev/enola/common/function/MoreStreams.html) with the [`Sneaker`](https://docs.enola.dev/dev/javadoc/dev/enola/common/function/Sneaker.html)
