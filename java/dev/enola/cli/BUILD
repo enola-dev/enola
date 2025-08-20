@@ -107,6 +107,7 @@ java_library(
         "@enola_maven//:com_google_protobuf_protobuf_java",
         "@enola_maven//:info_picocli_picocli",
         "@enola_maven//:info_picocli_picocli_shell_jline3",
+        # TODO "@enola_maven//:org_apache_httpcomponents_client5_httpclient5",
         "@enola_maven//:org_jline_jline",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_model",
         "@enola_maven//:org_eclipse_rdf4j_rdf4j_rio_api",

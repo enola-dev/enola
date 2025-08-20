@@ -103,6 +103,7 @@ nav:
           - JBang: dev/jbang.md
           - Common: dev/common.md
           - JavaDoc: dev/javadoc/index.html
+          - Maven: dev/maven.md
       # - Contributors:
       - Set-Up: dev/setup.md
       - IDE: dev/ide.md

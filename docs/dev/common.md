@@ -26,5 +26,6 @@ Enola's code base includes _"common"_ technical framework components which are n
 1. I/O: [Resource](https://docs.enola.dev/dev/javadoc/dev/enola/common/io/resource/package-summary.html), with [URL utils](https://docs.enola.dev/dev/javadoc/dev/enola/common/io/iri/package-summary.html), the [Media Types](https://docs.enola.dev/dev/javadoc/dev/enola/common/io/mediatype/package-summary.html) and [hashing](https://docs.enola.dev/dev/javadoc/dev/enola/common/io/hashbrown/package-summary.html)
 1. [Convert](https://docs.enola.dev/dev/javadoc/dev/enola/common/convert/package-summary.html): Extensible Java object conversion framework
 
-These are already available via the Maven Repo used by the [JBang](jbang.md) usage examples. Please [open an issue](https://github.com/enola-dev/enola/issues) to request making them available
-in a small JAR if you have an interest in and would use any of these as simple separate standalone libraries.
+These are already available via [our Maven Repo](maven.md), as seen e.g. in the [JBang](jbang.md) usage examples.
+
+[See the JavaDoc](javadoc/index.html).
