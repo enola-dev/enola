@@ -45,9 +45,6 @@ MCP servers are only started (or connected to), and queried for their 🧰 Tools
 
     TODO
 
-    Filesystem!
-    Memory...
-        https://github.com/modelcontextprotocol/servers/tree/main/src/memory
     Zapier
     Google Mail & Calendar & Drive!
     RAG with Pinecone, LlamaIndex?
@@ -60,6 +57,10 @@ MCP servers are only started (or connected to), and queried for their 🧰 Tools
 
 ### Fetch
 
+```yaml
+{% include "../../test/agents/fetch.agent.yaml" %}
+```
+
 The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) can fetch a webpage, and extract its contents as Markdown:
 
 ```shell
@@ -71,17 +72,45 @@ Exercise caution when using this MCP server to ensure this does not expose any s
 
 ### Filesystem
 
+```yaml
+{% include "../../test/agents/filesystem.agent.yaml" %}
+```
+
 ```shell
 enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
 ```
 
 ### Git
 
+```yaml
+{% include "../../test/agents/git.agent.yaml" %}
+```
+
 ```shell
-enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit message for the uncommited files in $PWD"
+enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit message for the uncommitted files in $PWD"
 ```
 
 CAUTION: This server is inherently insecure; you should carefully evaluate if it meets your needs.
+
+### Memory
+
+```yaml
+{% include "../../test/agents/memory.agent.yaml" %}
+```
+
+[Memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory) can remember things:
+
+```shell
+$ enola -vv ai --agents=test/agents/memory.agent.yaml --in "John Smith is a person who speaks fluent Spanish."
+I have noted that John Smith is a person who speaks fluent Spanish.
+```
+
+`cat ~/memory.json` let's you see the memory 🧠 cells! 😝 Now, perhaps another day:
+
+```shell
+$ enola -v ai --agents=test/agents/memory.agent.yaml --in "Does John Smith speak Italian?"
+Remembering...Based on my memory, John Smith speaks fluent Spanish. I do not have any information indicating that he speaks Italian.
+```
 
 ### Everything
 

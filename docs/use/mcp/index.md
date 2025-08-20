@@ -20,7 +20,7 @@
 
 `mcp` has useful commands for exploring [MCP Tools](../../concepts/mcp.md).
 
-This is similar to the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), and other such tools
+This is similar to the [MCP Inspector](https://github.com/modelcontextprotocol/inspector), and other such tools.
 
 ## Call MCP Tool
 

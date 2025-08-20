@@ -46,3 +46,7 @@ Name ("nick") of agent. Typically, it's set automatically by a loader from a por
 ## Tools
 
 [Tools](tool.md) to which the agent has access, including [MCP](mcp.md).
+
+## TODO
+
+_Agents will soon allow configuring parallel (or sequential) and "looped" execution of other agents!_

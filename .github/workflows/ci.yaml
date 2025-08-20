@@ -96,6 +96,12 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
+      - name: pre-commit run --all-files
+        uses: flox/activate-action@v1
+        with:
+          command: pre-commit run --all-files
+
       # TODO Explore further how to appropriately use "env -i" isolation to see failure locally (due to missing protoc, at this stage, while still with AFDS, before Flox)
       # TODO Remove this duplication; normally this only runs at the end, only here to debug:
       # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
@@ -195,8 +201,7 @@ jobs:
       - name: tools/git/test.bash
         run: tools/git/test.bash
 
-      # Any "dirty" changes will cause build to abort. This intentionally runs after the build.
-      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
+      # Any "dirty" changes will cause build to abort. This intentionally runs again after the build.
       - name: pre-commit run --all-files
         uses: flox/activate-action@v1
         with:

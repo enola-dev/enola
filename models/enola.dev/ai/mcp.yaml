@@ -36,6 +36,15 @@ servers:
     args: [mcp-server-fetch]
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
 
+  modelcontextprotocol/memory:
+    command: npx
+    args: [-y, "@modelcontextprotocol/server-memory"]
+    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+    log: debug
+    env:
+      # TODO Support ~ and $HOME expansion
+      MEMORY_FILE_PATH: /home/vorburger/memory.json
+
   modelcontextprotocol/everything:
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]

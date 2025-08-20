@@ -147,12 +147,14 @@ repos:
       - id: buildifier-lint
         args: *args
 
+  # TODO Replace, because it's archived=unmaintained ("prettier made some changes that breaks plugins entirely")
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         # NOT markdown, because we use markdownlint for that
-        types_or: [css, html, javascript, json, json5, scss, ts, tsx, yaml]
+        # NOT YAML, because ... it suddenly, and without version change (?!) wanted to change them all
+        types_or: [css, html, javascript, json, json5, scss, ts, tsx]
         exclude: ^docs/use|test/|.devcontainer/devcontainer.json|third_party/
         additional_dependencies:
           # TODO Avoid duplicating the Prettier version here and in web/package.json
