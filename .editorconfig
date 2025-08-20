@@ -41,7 +41,6 @@ indent_size = unset
 
 [*.json]
 max_line_length = unset
-max_line_length = unset
 
 [*.jsonc]
 max_line_length = unset
@@ -92,13 +91,7 @@ insert_final_newline = false
 indent_size = unset
 max_line_length = unset
 
-[mkdocs.yaml]
-max_line_length = unset
-
 [WORKSPACE.bazel]
-max_line_length = unset
-
-[ci.yaml]
 max_line_length = unset
 
 [CITATION.cff]
@@ -111,9 +104,6 @@ max_line_length = unset
 [jbang*]
 max_line_length = unset
 
-[pnpm-lock.yaml]
-max_line_length = unset
-
 [bun.lock]
 max_line_length = unset
 
@@ -122,6 +112,10 @@ max_line_length = unset
 insert_final_newline = unset
 
 [.deepsource.toml]
+max_line_length = unset
+
+[*.yaml]
+indent_size = unset
 max_line_length = unset
 
 # Note that https://github.com/editorconfig-checker/editorconfig-checker

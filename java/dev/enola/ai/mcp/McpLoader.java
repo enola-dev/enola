@@ -42,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
@@ -95,23 +94,23 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     private static McpClientTransport createTransport(
             McpServerConnectionsConfig config, String name) {
-        McpClientTransport transport;
-        URI origin = config.origin;
+        var origin = config.origin + "#" + name;
         ServerConnection connectionConfig = config.servers.get(name);
         switch (connectionConfig.type) {
             case stdio -> {
                 var params = createStdIoServerParameters(connectionConfig);
-                transport = new StdioClientTransport(params);
+                var transport = new StdioClientTransport(params);
+                transport.setStdErrorHandler(new McpServerStdErrLogConsumer(origin));
+                return transport;
             }
             case http -> {
-                transport = createHttpClientSseClientTransport(connectionConfig);
+                return createHttpClientSseClientTransport(connectionConfig);
             }
             default ->
                     throw new IllegalArgumentException(
-                            "%s#%s: Unknown MCP transport type: %s"
-                                    .formatted(origin, name, connectionConfig.type));
+                            "%s: Unknown MCP transport type: %s"
+                                    .formatted(origin, connectionConfig.type));
         }
-        return transport;
     }
 
     private static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
