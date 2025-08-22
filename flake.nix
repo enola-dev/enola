@@ -1,15 +1,10 @@
 {
-  inputs = {
-    # Track a specific tag on the nixpkgs repo.
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+  description = "Enola AI; see https://enola.dev";
 
-    # The flake format itself is very minimal, so the use of this
-    # library is common.
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     flake-utils.url = "github:numtide/flake-utils";
   };
-
-  # Here we can define various kinds of "outputs": packages, tests,
-  # and so on, but we will only define a development shell.
 
   outputs = { nixpkgs, flake-utils, ... }:
 
@@ -20,7 +15,6 @@
       let pkgs = import nixpkgs { inherit system; };
       in
       {
-        # ... and define a development shell for it.
         # TODO: for https://nix-bazel.build, replace with mkShellNoCC.
         devShells.default = pkgs.mkShell {
           # Pinned packages available in the environment
@@ -53,7 +47,7 @@
 
           # A hook run every time you enter the environment
           postShellHook = ''
-            echo Welcome!
+            echo Welcome to contributing to Enola.dev! You can now run e.g. ./enola or ./test.bash etc. here.
           '';
         };
     }
