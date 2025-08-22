@@ -17,6 +17,8 @@
 
 set -euox pipefail
 
+# TODO Actually use this? (It's not, yet; see related TODO in tools/docs/build.bash)
+
 tools/javadoc/classpath.bash
 
 # TODO Make cs available via Nix on GitHub Runner so that we can run this on CI
