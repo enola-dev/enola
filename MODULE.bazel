@@ -245,23 +245,3 @@ enola_maven.install(
     ],
 )
 use_repo(enola_maven, "enola_maven")
-
-# https://github.com/sgammon/rules_graalvm
-# TODO https://github.com/sgammon/rules_graalvm/issues/401
-# TODO https://github.com/sgammon/rules_graalvm/issues/556
-# TODO https://github.com/sgammon/rules_graalvm/issues/555
-
-bazel_dep(name = "rules_graalvm", version = "0.11.1")
-
-gvm = use_extension("@rules_graalvm//:extensions.bzl", "graalvm")
-gvm.graalvm(
-    name = "graalvm",
-    distribution = "ce",  # `oracle`, `ce`, or `community`
-    java_version = "21",  # `17`, `20`, `22`, `23`, etc.
-    version = "21.0.2",  # pass graalvm or specific jdk version supported by gvm
-)
-use_repo(gvm, "graalvm")
-
-register_toolchains("@graalvm//:jvm")
-
-register_toolchains("@graalvm//:sdk")
