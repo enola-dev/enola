@@ -31,7 +31,9 @@
             (with python311Packages; [ pip virtualenv ])
             curl
             git
-            bazel
+            go
+            jq
+            bazelisk
             shellcheck
             mkdocs
             python311Packages.pre-commit-hooks
