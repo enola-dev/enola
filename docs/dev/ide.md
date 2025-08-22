@@ -20,6 +20,13 @@
 
 Ensure you are [set-up](setup.md) with a working build on the CLI before configuring your IDE.
 
+!!! failure "VSC broken for Java development"
+
+    [Use only IntelliJ](#jetbrains-intellij-idea-ij) for Java development, until
+    [bazel-vscode-java#114](https://github.com/salesforce/bazel-vscode-java/issues/114) is fixed.
+
+    For `web/` development, and documentation writing, you can still use VSC etc.
+
 ## GitHub Codespaces
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
