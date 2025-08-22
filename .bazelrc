@@ -1,8 +1,5 @@
 # https://bazel.build/run/bazelrc
 
-# https://github.com/sgammon/rules_graalvm/issues/555
-common --noincompatible_disallow_ctx_resolve_tools
-
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 common --enable_bzlmod
 
