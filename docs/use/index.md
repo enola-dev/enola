@@ -75,5 +75,5 @@ You can now run Enola with:
     enola --help
 
 <!-- TODO Make this work... it doesn't quite, yet:
-    enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yam
+    enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
 -->
