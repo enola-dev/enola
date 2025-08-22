@@ -20,7 +20,7 @@
 # not the bazel_dep, or vice versa, leading to inconsistencies (see
 # https://github.com/VirtusLab/bazel-steward/issues/404).
 
-ADK_JAVA_COMMIT = "806e985805ae47bfdf6931f02d12f928a0f3bcc8"
+ADK_JAVA_COMMIT = "eb232ee780c986bfdbae708882c7766854bba5d5"
 
 RDF4J_VERSION = "5.1.4"
 

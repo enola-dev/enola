@@ -195,7 +195,7 @@ jobs:
       - name: tools/git/test.bash
         run: tools/git/test.bash
 
-      # Any "dirty" changes willl cause build to abort. This intentionally runs after the build.
+      # Any "dirty" changes will cause build to abort. This intentionally runs after the build.
       # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
       - name: pre-commit run --all-files
         uses: flox/activate-action@v1
