@@ -17,7 +17,10 @@
 
 set -euox pipefail
 
-# TODO Actually use this? (It's not, yet; see related TODO in tools/docs/build.bash)
+# FTR: We're using this instead of @rules_jvm_external' javadoc rule because:
+#   - That one includes com.google.protobuf & io.grpc & javax.annotation - WTF?!
+#   - https://github.com/bazel-contrib/rules_jvm_external/issues/1343
+#   - https://github.com/bazel-contrib/rules_jvm_external/issues/1344
 
 tools/javadoc/classpath.bash
 
@@ -33,6 +36,8 @@ javadoc -Xdoclint:none -Werror -linksource -d site/dev/javadoc/ @/tmp/enola-java
   -link https://guava.dev/releases/33.4.8-jre/api/docs/ \
   2>&1 | grep -v "Loading source file " | grep -v "Generating "
 
-# TODO -Xdoclint:all
+jar --create --file .built/javadoc.jar -C site/dev/javadoc/ .
+
+# TODO -Xdoclint:all & -Werror
 
 # TODO -link for all 3rd party libraries
