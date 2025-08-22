@@ -66,11 +66,14 @@ are not accessible to the container ("by design").
 
 ## JBang
 
-From [our Maven repo](../dev/maven.md), using [JBang](https://www.jbang.dev/):
+After [installing JBang](https://www.jbang.dev/download/), do:
 
-    jbang --repos https://docs.enola.dev/maven-repo/,mavencentral,jitpack --main=dev.enola.cli.EnolaApplication dev.enola:enola:0.0.1-SNAPSHOT
+    jbang app install enola@enola-dev
+
+You can now run Enola with:
+
+    enola --help
 
 <!-- TODO Make this work... it doesn't quite, yet:
-
-    jbang --repos https://docs.enola.dev/maven-repo/,mavencentral,jitpack --main=dev.enola.cli.EnolaApplication dev.enola:enola:0.0.1-SNAPSHOT server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yam
+    enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yam
 -->
