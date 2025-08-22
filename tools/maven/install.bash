@@ -21,8 +21,10 @@ set -euox pipefail
 
 bazelisk build //java/dev/enola
 
+tools/javadoc/build.bash
+
 ./java/mvnw install:install-file \
     -Dfile=bazel-bin/java/dev/enola/enola-project.jar \
     -Dsources=bazel-bin/java/dev/enola/enola-project-src.jar \
     -DpomFile=bazel-bin/java/dev/enola/enola-pom.xml \
-    -Djavadoc=bazel-bin/java/dev/enola/javadoc.jar
+    -Djavadoc=.built/javadoc.jar

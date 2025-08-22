@@ -15,7 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_jvm_external//:defs.bzl", "java_export", "javadoc")
+load("@rules_jvm_external//:defs.bzl", "java_export")
 
 java_library(
     name = "api",
@@ -38,29 +38,4 @@ java_export(
     visibility = ["//:__subpackages__"],
     # TODO runtime_deps or exports = [ ?!
     runtime_deps = ["//java/dev/enola/cli:lib"],
-)
-
-# TODO Replace Bazel JavaDoc with tools/javadoc/build.bash (but Maven JAR?)
-# This is used by tools/docs/build.bash (and tools/maven/install.bash)
-javadoc(
-    name = "javadoc",
-    doc_url = "https://docs.enola.dev/dev/javadoc/",
-    # Note that even merely javadocopts = [] makes the build fail?! ;=(
-    # TODO javadocopts = [
-    #   TODO "-Xdoclint:all",
-    #   TODO "-Werror",
-    #"-encoding",
-    #"UTF-8",
-    #"-charset",
-    #"UTF-8",
-    #],
-    deps = [
-        ":enola",
-        # TODO Remove, but how not to fail?! https://github.com/bazel-contrib/rules_jvm_external/issues/1344
-        "@enola_maven//:com_google_protobuf_protobuf_java",
-        "@enola_maven//:com_google_protobuf_protobuf_java_util",
-        "@enola_maven//:javax_annotation_javax_annotation_api",
-        # NB: We cannot use "@enola_maven//:com_google_guava_guava" here,
-        # due to https://github.com/bazel-contrib/rules_jvm_external/issues/1343.
-    ],
 )
