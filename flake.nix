@@ -38,6 +38,8 @@
             mkdocs
             python311Packages.pre-commit-hooks
             nixpkgs-fmt
+            unzip
+            zlib
           ];
 
           # A hook run every time you enter the environment
