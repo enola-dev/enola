@@ -14,15 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_graalvm//graalvm:defs.bzl", "native_image")
 load("@rules_java//java:defs.bzl", "java_binary", "java_library")
-
-native_image(
-    name = "hello-native",
-    main_class = "dev.enola.common.hello.Hello",
-    native_image_tool = "@graalvm//:native-image",
-    deps = [":hello_lib1"],
-)
 
 java_binary(
     name = "hello",
