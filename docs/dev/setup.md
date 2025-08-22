@@ -18,6 +18,32 @@
 
 # Dev Set-Up
 
+## Nix
+
+[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project, and then enter:
+
+    nix develop
+
+We recommend that you also [install `direnv`](https://direnv.net) which conveniently automates this.
+
+This project's build scripts assume that Nix is "activated" (`PATH`) in your shell; they currently do not do this by themselves.
+So launching e.g. `./enola` or `./test.bash` etc. from outside the the Nix build environment (AKA `nix develop`) is not supported.
+
+<!-- **TODO** How about IDEs? Does IntelliJ HAVE to be started from within `nix develop` or does it not matter? -->
+
+!!! warning "Setup is in flux, WIP full Nix adoption!"
+
+    This project is in the process of fully adopting <https://nixos.org> for all required tools. _Much of following is out of date!_
+
+## Further Reading
+
+You can now read more about:
+
+* [Code Style](style.md)
+* [IDE Support](ide.md)
+* [Dependencies](dependencies.md)
+* [Bazel](bazel.md)
+
 ## GitHub Codespaces
 
 **We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
@@ -54,22 +80,7 @@ To work on documentation, launch:
 * `tools/docs/serve-build.bash` for a  "real" (full) docs build, without without the demo "screen cast" recordings (which are slow)
 * `tools/docs/serve.bash` for generating the "real" (full) static `site/` exactly as it's deployed on <https://docs.enola.dev>
 
-## Flox
-
-[Please install Flox.dev](https://flox.dev/docs/install-flox) to work locally on this project, using its _virtual development environment._
-
-This project's build scripts do not assume that Flox (Nix) is "activated" in your shell; they do this by themselves.
-So once you have `flox` available on your `PATH`, launching e.g. `./test.bash` should _"just work"_ (please feel free to raise a bug if it does not).
-
-To directly use tools installed into the Flox _virtual development environment_ from your shell (instead of **indirectly,** via the build scripts of this project), activate it in your shell using [something like this](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/fish/functions/flox.fish), or e.g. `eval ...` (or `...| source` for Fish) [as described here](https://flox.dev/docs/tutorials/default-environment/#initial-setup). (We recommend this approach, instead of just using the alternative `flox activate`, like _Flox_ documentation suggests elsewhere, because it might preserve your own personal fancy shell customizations better - especially if you don't have `$SHELL` or `$FLOX_SHELL` set up correctly for an altnernative shell.)
-
-TODO In IDEs? Like https://mise.jdx.dev/ide-integration.html#ide-plugins...
-
 ## Manual Tools Installation
-
-!!! warning "Setup is in flux, with flox!"
-
-    This project is in the process of adopting <https://flox.dev>. _The following is out of date!_
 
 If you do still want to try, here's how to manually install what the development environment container comes built-in with:
 
@@ -108,7 +119,7 @@ You should now be able to proceed as above (but without requiring _Docker)._
 
 ### Clean Up
 
-Use [Flox](#flox) and do not do `pip install -r requirements.txt` outside of the _virtual environment!_
+Use [Nix](#nix) and do not do `pip install -r requirements.txt` outside of the _virtual environment!_
 
 In case of errors such as `ModuleNotFoundError: No module named 'pre_commit'`, try wiping the cache of https://pre-commit.com:
 
@@ -121,17 +132,6 @@ In cases like `ImportError: cannot import name '...' from '...'`, maybe try wipi
 For _"cannot parse .renovaterc.json5 because support is missing for json5"_ from `pre-commit run --all-files` you may have to:
 
     rm -rf ~/.cache/pre-commit/
-    rm -rf .flox/cache/python/
-    flox activate
     pip install -r requirements.txt
 
-But if you are correctly in Flox's virtual environment, there should normally be no need for any this.
-
-## Further Reading
-
-You can now read more about:
-
-* [Code Style](style.md)
-* [IDE Support](ide.md)
-* [Dependencies](dependencies.md)
-* [Bazel](bazel.md)
+But if you are correctly in Nix's development environment (`nix develop`), then there should normally be no need for any this.
