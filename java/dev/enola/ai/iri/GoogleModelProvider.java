@@ -40,6 +40,7 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
     public static final String GOOGLE_AI_API_KEY_SECRET_NAME = "GOOGLE_AI_API_KEY";
 
     private static final String SCHEME = "google";
+    public static final URI GEMMA3_1B = URI.create(SCHEME + "://?model=gemma-3-1b-it");
     public static final URI FLASH_LITE = URI.create(SCHEME + "://?model=gemini-2.5-flash-lite");
     public static final URI FLASH = URI.create(SCHEME + "://?model=gemini-2.5-flash");
     public static final URI PRO = URI.create(SCHEME + "://?model=gemini-2.5-pro");

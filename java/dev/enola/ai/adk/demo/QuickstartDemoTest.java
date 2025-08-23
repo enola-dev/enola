@@ -17,12 +17,16 @@
  */
 package dev.enola.ai.adk.demo;
 
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.adk.iri.TestsLlmProvider;
+import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.Provider;
+import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.auto.TestSecretManager;
 
 import org.junit.Test;
 
@@ -30,15 +34,15 @@ import java.io.IOException;
 
 public class QuickstartDemoTest {
 
-    Provider<BaseLlm> p = new TestsLlmProvider();
+    SecretManager sm = new TestSecretManager();
+    Provider<BaseLlm> p = new LlmProviders(sm);
 
     @Test
     public void test() throws IOException {
-        var model = p.optional(GoogleModelProvider.FLASH_LITE);
-        if (model.isEmpty()) return;
+        if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
+        var model = p.get(GoogleModelProvider.FLASH_LITE);
 
-        var agent = QuickstartDemo.initAgent(model.get());
-
+        var agent = QuickstartDemo.initAgent(model);
         var tester = new AgentTester(agent);
         tester.assertTextResponseContains(
                 "What's the weather in New York?", QuickstartDemo.NYC_WEATHER);

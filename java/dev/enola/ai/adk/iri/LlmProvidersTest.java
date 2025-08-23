@@ -26,9 +26,14 @@ import com.google.adk.models.Gemini;
 
 import dev.enola.ai.adk.test.ModelTester;
 import dev.enola.ai.iri.*;
+import dev.enola.common.Net;
 import dev.enola.common.secret.InMemorySecretManager;
+import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.auto.TestSecretManager;
 
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class LlmProvidersTest {
     // See also the similarly structured ChatModelProviderTest
@@ -41,7 +46,8 @@ public class LlmProvidersTest {
         assertThat(provider.get(uri)).isInstanceOf(Gemini.class);
     }
 
-    Provider<BaseLlm> p = new TestsLlmProvider();
+    SecretManager sm = new TestSecretManager();
+    Provider<BaseLlm> p = new LlmProviders(sm);
 
     @Test
     public void mock() {
@@ -56,17 +62,14 @@ public class LlmProvidersTest {
     }
 
     @Test
-    public void geminiFlashLiteIntegrationTest() {
-        var model = p.optional(GoogleModelProvider.FLASH_LITE);
-        if (model.isEmpty()) return;
-        check(model.get());
+    public void geminiFlashLiteIntegrationTest() throws IOException {
+        if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(GoogleModelProvider.FLASH_LITE));
     }
 
     @Test
     public void ollamaGemma31bIntegrationTest() {
-        var model = p.optional(OllamaLlmProvider.GEMMA3_1B);
-        if (model.isEmpty()) return;
-        check(model.get());
+        if (Net.portAvailable(11434)) check(p.get(OllamaLlmProvider.GEMMA3_1B));
     }
 
     // TODO anthropicIntegrationTest()

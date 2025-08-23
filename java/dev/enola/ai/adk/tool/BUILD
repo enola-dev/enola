@@ -59,6 +59,8 @@ junit_tests(
         "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/context",
+        "//java/dev/enola/common/secret",
+        "//java/dev/enola/common/secret/auto",
         # "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_github_google_adk_java_google_adk",
         "@enola_maven//:io_reactivex_rxjava3_rxjava",

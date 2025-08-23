@@ -57,15 +57,13 @@ public class ChatModelProvidersTest {
 
     @Test
     public void gemmaOnOllama() {
-        if (!Net.portAvailable(11434)) return;
-        var model = p.get(URI.create("http://localhost:11434?type=ollama&model=gemma3:1b"));
-        check(model);
+        if (Net.portAvailable(11434)) check(p.get(OllamaChatModelProvider.GEMMA3_1B));
     }
 
     @Test
     public void gemmaOnGCP() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
-            check(p.get(URI.create("google://?model=gemma-3-1b-it")));
+            check(p.get(GoogleModelProvider.GEMMA3_1B));
     }
 
     @Test
