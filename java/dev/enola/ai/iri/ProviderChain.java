@@ -32,6 +32,16 @@ public class ProviderChain<X, T extends Provider<X>> implements Provider<X> {
     }
 
     @Override
+    public String name() {
+        return "ProviderChain";
+    }
+
+    @Override
+    public String docURL() {
+        return "https://docs.enola.dev/specs/aiuri/";
+    }
+
+    @Override
     public Iterable<String> uriTemplates() {
         var uriTemplates = new ImmutableList.Builder<String>();
         uriTemplates.add("https://docs.enola.dev/specs/aiuri");

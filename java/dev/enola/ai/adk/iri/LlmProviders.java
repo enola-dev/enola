@@ -31,7 +31,7 @@ public class LlmProviders extends CachingProvider<BaseLlm> {
                 new ProviderChain<>(
                         ImmutableList.of(
                                 new GoogleLlmProvider(secretManager),
-                                // TODO new AnthropicLlmProvider(secretManager),
+                                new AnthropicLlmProvider(secretManager),
                                 new OllamaLlmProvider(),
                                 new MockLlmProvider(),
                                 new EchoLlmProvider())));

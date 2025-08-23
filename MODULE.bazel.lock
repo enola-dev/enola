@@ -755,7 +755,7 @@
     },
     "@@grpc+//bazel:grpc_extra_deps.bzl%grpc_extra_deps_ext": {
       "general": {
-        "bzlTransitiveDigest": "70V6W0N/iEdvAZCkz5z6toLieyqnJ3yEL5ApZqRonJQ=",
+        "bzlTransitiveDigest": "nQr4xuOUZ3rB8ZN/hEdn27N9Mqne9+LFMNg+G+nz+5Q=",
         "usagesDigest": "BY9iaBuI51W+iyhY4Nmom6cjK/1zFFYXkN9SiDcmjzg=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},

@@ -38,19 +38,33 @@ Great for _Bring Your Own Model_ (“BYOM”) configuration!
 
 ### Ollama 🦙
 
+This is free!
+
 `http://localhost:11434?type=ollama&model=gemma3:1b` is the URI of the [Gemma 3 (1B)](https://ai.google.dev/gemma/) large language model running in [Ollama](https://ollama.com), at `http://localhost:11434`.
 
 The `model` query parameter of the URI needs to use a model name from https://ollama.com/search.
 
+[MCP Tools](../../concepts/mcp.md) support may still have some bugs (see #[1628](https://github.com/enola-dev/enola/issues/1628)).
+
 ### Google AI 🔮
+
+This API has a very generous free tier. It requires a Google account.
 
 `google://?model=gemini-2.5-flash` is the URI of the [Gemini 2.5 Flash](https://ai.google.dev/gemini-api/docs/models) LLM, used via the [Google (Gemini) AI API](https://ai.google.dev/gemini-api/).
 
-[For security](#security), the API key is not part of this URI, but configured elsewhere; typically in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`. Such keys can be easily obtained by clicking on _Get API key_ in https://aistudio.google.com.
+[For security](#security), the API key is not part of this URI, but configured in a _[secret](../../use/secret/index.md)_ named `GOOGLE_AI_API_KEY`. Such keys can be easily obtained by clicking on _Get API key_ in https://aistudio.google.com.
 
 Note that the _Google (Gemini) AI API_ is a **different** API from the _Google Cloud Vertex AI Platform API._
 
-<!-- TODO Anthropic -->
+## Anthropic Claude
+
+This API requires registering a credit card to purchase credits.
+
+<!-- TODO See AnthropicModelProvider re. GCP & AWS... -->
+
+`claude://?model=claude-3-haiku-20240307` is the URI of the [Anthropic Claude 3 Haiku](https://docs.anthropic.com/en/docs/about-claude/models/overview) LLM.
+
+[For security](#security), the API key is not part of this URI, but configured in a _[secret](../../use/secret/index.md)_ named `ANTHROPIC_API_KEY`. Such keys can be easily obtained on https://console.anthropic.com/settings/keys.
 
 <!-- TODO OpenAI -->
 

@@ -19,6 +19,7 @@ package dev.enola.ai.adk.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.ai.iri.AnthropicModelProvider.ANTHROPIC_API_KEY_SECRET_NAME;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import com.google.adk.models.BaseLlm;
@@ -31,6 +32,7 @@ import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -72,7 +74,12 @@ public class LlmProvidersTest {
         if (Net.portAvailable(11434)) check(p.get(OllamaLlmProvider.GEMMA3_1B));
     }
 
-    // TODO anthropicIntegrationTest()
+    @Test
+    @Ignore // TODO https://github.com/google/adk-java/issues/382
+    public void claudeIntegrationTest() throws IOException {
+        if (sm.getOptional(ANTHROPIC_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(AnthropicModelProvider.CLAUDE_HAIKU_3));
+    }
 
     private void check(BaseLlm model) {
         new ModelTester(model)

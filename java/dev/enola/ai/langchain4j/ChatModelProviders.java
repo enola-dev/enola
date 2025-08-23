@@ -32,6 +32,7 @@ public class ChatModelProviders extends CachingProvider<StreamingChatModel> {
                         ImmutableList.of(
                                 new OllamaChatModelProvider(),
                                 new GoogleChatModelProvider(secretManager),
+                                new AnthropicChatModelProvider(secretManager),
                                 new MockChatModel.Provider())));
     }
 }

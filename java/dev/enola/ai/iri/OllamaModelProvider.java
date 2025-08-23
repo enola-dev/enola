@@ -17,8 +17,6 @@
  */
 package dev.enola.ai.iri;
 
-import com.google.common.base.Strings;
-
 import dev.enola.common.io.iri.URIs;
 
 import io.github.ollama4j.OllamaAPI;
@@ -42,6 +40,11 @@ public abstract class OllamaModelProvider<T> implements Provider<T> {
     }
 
     @Override
+    public String docURL() {
+        return "https://docs.enola.dev/specs/aiuri/#ollama";
+    }
+
+    @Override
     public Iterable<String> uriTemplates() {
         return List.of("http://{HOST}:{PORT}?type=ollama&model={MODEL}");
     }
@@ -57,13 +60,7 @@ public abstract class OllamaModelProvider<T> implements Provider<T> {
         var queryMap = URIs.getQueryMap(uri);
         if (!"ollama".equalsIgnoreCase(queryMap.get("type"))) return Optional.empty();
 
-        var model = queryMap.get("model");
-        if (Strings.isNullOrEmpty(model))
-            throw new IllegalArgumentException(
-                    uri
-                            + "; use e.g. http://localhost:11434?type=ollama&model=$MODEL, see"
-                            + " https://ollama.com/search");
-
+        var model = Providers.model(uri, queryMap, this);
         var baseURL = uri.getScheme() + "://" + uri.getAuthority();
         var ollamaAPI = new OllamaAPI(baseURL);
         ollamaAPI.setVerbose(true);

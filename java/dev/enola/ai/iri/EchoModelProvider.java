@@ -34,6 +34,11 @@ public abstract class EchoModelProvider<T> implements Provider<T> {
     }
 
     @Override
+    public String docURL() {
+        return "https://docs.enola.dev/specs/aiuri/#echo";
+    }
+
+    @Override
     public Iterable<String> uriTemplates() {
         return TEMPLATES;
     }
