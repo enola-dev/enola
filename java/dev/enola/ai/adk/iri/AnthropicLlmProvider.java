@@ -17,16 +17,30 @@
  */
 package dev.enola.ai.adk.iri;
 
+import com.anthropic.client.okhttp.AnthropicOkHttpClient;
 import com.google.adk.models.BaseLlm;
+import com.google.adk.models.Claude;
 
 import dev.enola.ai.iri.AnthropicModelProvider;
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.Provider;
+import dev.enola.common.secret.SecretManager;
 
 /**
  * AnthropicBaseLlmProvider is a {@link Provider} of an ADK {@link BaseLlm} based on the <a
  * href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI URI spec</a>.
  */
-public abstract class AnthropicLlmProvider extends AnthropicModelProvider<BaseLlm> {
+public class AnthropicLlmProvider extends AnthropicModelProvider<BaseLlm> {
 
-    // TODO ...
+    public AnthropicLlmProvider(SecretManager secretManager) {
+        super(secretManager);
+    }
+
+    @Override
+    protected BaseLlm create(String apiKey, String modelName, ModelConfig config) {
+        int maxTokens = config.maxOutputTokens().orElse(8192);
+        var anthropicClient = AnthropicOkHttpClient.builder().apiKey(apiKey).build();
+        var claude = new Claude(modelName, anthropicClient, maxTokens);
+        return WrappedBaseLlm.wrap(claude, config);
+    }
 }

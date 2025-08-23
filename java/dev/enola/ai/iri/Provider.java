@@ -27,9 +27,9 @@ import java.util.Optional;
  */
 public interface Provider<T> {
 
-    default String name() {
-        return getClass().getSimpleName();
-    }
+    String name();
+
+    String docURL();
 
     Iterable<String> uriTemplates();
 

@@ -17,31 +17,20 @@
  */
 package dev.enola.ai.iri;
 
+import com.google.common.base.Strings;
+
 import java.net.URI;
-import java.util.List;
+import java.util.Map;
 
-public abstract class MockModelProvider<T> implements Provider<T> {
+final class Providers {
 
-    protected static final String SCHEME = "mocklm";
-    public static final URI EXAMPLE_URI = URI.create(SCHEME + ":Hello,%20world!");
+    static String model(URI uri, Map<String, String> queryMap, Provider<?> provider) {
+        var model = queryMap.get("model");
+        if (!Strings.isNullOrEmpty(model)) return model;
 
-    @Override
-    public String name() {
-        return "Mock 🦜";
+        throw new IllegalArgumentException(
+                uri + "; use e.g. " + provider.uriExamples() + ", see " + provider.docURL());
     }
 
-    @Override
-    public String docURL() {
-        return "https://docs.enola.dev/specs/aiuri/#mock";
-    }
-
-    @Override
-    public Iterable<String> uriTemplates() {
-        return List.of(SCHEME + ":{reply}");
-    }
-
-    @Override
-    public Iterable<URI> uriExamples() {
-        return List.of(EXAMPLE_URI);
-    }
+    private Providers() {}
 }

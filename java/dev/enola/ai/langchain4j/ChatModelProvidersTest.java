@@ -19,8 +19,10 @@ package dev.enola.ai.langchain4j;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static dev.enola.ai.iri.AnthropicModelProvider.ANTHROPIC_API_KEY_SECRET_NAME;
 import static dev.enola.ai.langchain4j.GoogleChatModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
+import dev.enola.ai.iri.AnthropicModelProvider;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.Net;
@@ -34,7 +36,7 @@ import java.io.IOException;
 import java.net.URI;
 
 public class ChatModelProvidersTest {
-    // See also the similarly structured BaseLlmProvidersTest
+    // See also the similarly structured LlmProvidersTest
 
     SecretManager secretManager = new TestSecretManager();
     Provider<StreamingChatModel> p = new ChatModelProviders(secretManager);
@@ -70,5 +72,11 @@ public class ChatModelProvidersTest {
     public void gemini() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(GoogleModelProvider.FLASH));
+    }
+
+    @Test
+    public void claude() throws IOException {
+        if (secretManager.getOptional(ANTHROPIC_API_KEY_SECRET_NAME).isPresent())
+            check(p.get(AnthropicModelProvider.CLAUDE_HAIKU_3));
     }
 }

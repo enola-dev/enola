@@ -17,6 +17,15 @@
  */
 package dev.enola.ai.iri;
 
+import dev.enola.common.io.iri.URIs;
+import dev.enola.common.secret.SecretManager;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Base class for <a href="https://docs.enola.dev/specs/aiuri#anthropic">Enola.dev Anthropic AI
  * URI</a> implementations.
@@ -25,6 +34,59 @@ package dev.enola.ai.iri;
  */
 public abstract class AnthropicModelProvider<T> implements Provider<T> {
 
-    // TODO ...
+    // See https://github.com/anthropics/anthropic-sdk-java
+    // and https://docs.anthropic.com/en/api/client-sdks#java
 
+    // TODO Test and document how to use Claude/s on GCP Vertex AI, and AWS Bedrock,
+    //   instead of via Anthropic's own API? .baseUrl() ? Or .backend(VertexBackend.builder()) ?
+    // See also https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude
+
+    public static final String ANTHROPIC_API_KEY_SECRET_NAME = "ANTHROPIC_API_KEY";
+
+    private static final String SCHEME = "claude";
+    public static final URI CLAUDE_HAIKU_3 =
+            URI.create(SCHEME + "://?model=claude-3-haiku-20240307");
+
+    protected final SecretManager secretManager;
+
+    protected AnthropicModelProvider(SecretManager secretManager) {
+        this.secretManager = secretManager;
+    }
+
+    @Override
+    public String name() {
+        return "Anthropic's Claudes";
+    }
+
+    @Override
+    public String docURL() {
+        return "https://docs.enola.dev/specs/aiuri/#anthropic-claude";
+    }
+
+    @Override
+    public Iterable<String> uriTemplates() {
+        return List.of(SCHEME + "://?model={MODEL}");
+    }
+
+    @Override
+    public Iterable<URI> uriExamples() {
+        return List.of(CLAUDE_HAIKU_3);
+    }
+
+    @Override
+    public final Optional<T> optional(URI uri) {
+        if (!SCHEME.equalsIgnoreCase(uri.getScheme())) return Optional.empty();
+        var queryMap = URIs.getQueryMap(uri);
+        var model = Providers.model(uri, queryMap, this);
+        var config = ModelConfig.from(queryMap);
+
+        try (var apiKeySecret = secretManager.get(ANTHROPIC_API_KEY_SECRET_NAME)) {
+            var apiKey = apiKeySecret.map(String::new);
+            return Optional.of(create(apiKey, model, config));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    protected abstract T create(String apiKey, String modelName, ModelConfig config);
 }

@@ -48,6 +48,16 @@ public class CachingProvider<T> implements Provider<T> {
     }
 
     @Override
+    public String name() {
+        return delegate.name();
+    }
+
+    @Override
+    public String docURL() {
+        return delegate.docURL();
+    }
+
+    @Override
     public Iterable<String> uriTemplates() {
         return this.uriTemplates;
     }

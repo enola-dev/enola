@@ -36,6 +36,8 @@ java_library(
         "//java/dev/enola/ai/langchain4j",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
+        "@enola_maven//:com_anthropic_anthropic_java_client_okhttp",
+        "@enola_maven//:com_anthropic_anthropic_java_core",
         # "@enola_maven//:com_google_adk_google_adk",
         "@enola_maven//:com_github_google_adk_java_google_adk",
         # "@enola_maven//:com_google_adk_google_adk_contrib_langchain4j",

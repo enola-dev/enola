@@ -17,8 +17,6 @@
  */
 package dev.enola.ai.iri;
 
-import com.google.common.base.Strings;
-
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.secret.Secret;
 import dev.enola.common.secret.SecretManager;
@@ -57,6 +55,11 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
     }
 
     @Override
+    public String docURL() {
+        return "https://docs.enola.dev/specs/aiuri/#google-ai";
+    }
+
+    @Override
     public Iterable<String> uriTemplates() {
         return List.of(SCHEME + "://?model={MODEL}");
     }
@@ -71,15 +74,7 @@ public abstract class GoogleModelProvider<T> implements Provider<T> {
             throws IllegalArgumentException, UncheckedIOException {
         if (!SCHEME.equalsIgnoreCase(uri.getScheme())) return Optional.empty();
         var queryMap = URIs.getQueryMap(uri);
-        var model = Optional.ofNullable(queryMap.get("model")).map(String::trim).orElse(null);
-        if (Strings.isNullOrEmpty(model))
-            throw new IllegalArgumentException(
-                    "Missing model; URI must be "
-                            + SCHEME
-                            + "://?model=$MODEL, see https://ai.google.dev/gemini-api/docs/models;"
-                            + " but was: "
-                            + model);
-
+        var model = Providers.model(uri, queryMap, this);
         var config = ModelConfig.from(queryMap);
 
         try (var apiKey = secretManager.get(GOOGLE_AI_API_KEY_SECRET_NAME)) {
