@@ -96,6 +96,13 @@ jobs:
           # NB: Repeated below in push-container-image: job; must keep in sync!
           java-version: "21"
 
+      - name: Install Coursier (cs)
+        run: |
+          tools/maven/install-coursier.bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          cs about
+          cs version
+
       # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
       - name: pre-commit run --all-files
         uses: flox/activate-action@v1
