@@ -54,15 +54,17 @@ with such an approach e.g. from a security perspective, is entirely your choice 
 
 ## Container
 
-[`enolac`](../download/latest/enolac) runs Enola from a Container, on Docker (or Podman,
-or CRI-O; locally or e.g. on Kubernetes).
+Enola is also available to run from a Container image,
+using Docker (or Podman, or CRI-O; locally or e.g. on Kubernetes), like this:
+
+    docker run --rm --volume "$PWD":/app/CWD/:Z --tty ghcr.io/enola-dev/enola:main -V
 
 It takes the exact same CLI arguments as the "regular" `enola` binary, but pulls it
 via a container image, instead of a "local installation", as above.
 
-It appropriately "mounts" the current working directory into the container, so that
-relative `file:` URIs should work. Absolute paths on your host won't work, because they
-are not accessible to the container ("by design").
+The `--volume` argument appropriately mounts the current working directory into the container, so that relative `file:` URIs should work. Absolute paths on your host won't work, because they are not accessible to the container ("by design").
+
+PS: The [`enolac`](../download/latest/enolac) script contains the line above.
 
 ## JBang
 
