@@ -20,17 +20,21 @@ package dev.enola.ai.adk.tool;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import com.google.adk.models.BaseLlm;
 
-import dev.enola.ai.adk.iri.TestsLlmProvider;
+import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.context.TLC;
+import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.auto.TestSecretManager;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.InstantSource;
 import java.time.ZoneId;
@@ -40,7 +44,8 @@ public class DateTimeToolsTest {
 
     // TODO Make the DateTimeTools reply in German, given that the test Locale is GERMANY!
 
-    Provider<BaseLlm> llm = new TestsLlmProvider();
+    SecretManager sm = new TestSecretManager();
+    Provider<BaseLlm> llm = new LlmProviders(sm);
 
     Instant testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
     InstantSource instantSource = InstantSource.fixed(testInstant);
@@ -69,30 +74,27 @@ public class DateTimeToolsTest {
     }
 
     @Test
-    public void geminiFlashLite() {
-        llm.optional(ModelConfig.temperature(FLASH_LITE, 0))
-                .ifPresent(
-                        model -> {
-                            var agentTester =
-                                    new AgentTester(
-                                            model,
-                                            DateTimeTools.currentDateAndTimeAdkTool(dateTimeTools),
-                                            DateTimeTools.currentTimeAdkTool(dateTimeTools),
-                                            DateTimeTools.cityCurrentTimeAdkTool(dateTimeTools));
-                            try (var ctx =
-                                    TLC.open()
-                                            .push(ZoneId.class, ZoneId.of("Europe/Zurich"))
-                                            .push(Locale.class, Locale.GERMANY)) {
-                                agentTester.assertTextResponseEquals(
-                                        "What's the time in Zürich?",
-                                        "The current time in Zürich is 23:05.");
-                                agentTester.assertTextResponseEquals(
-                                        "What's the time?", "The current time in MEZ is 23:05.");
-                                agentTester.assertTextResponseEquals(
-                                        "What's today?",
-                                        "The current date & time in MEZ is Donnerstag, 14. August"
-                                                + " 2025, 23:05.");
-                            }
-                        });
+    public void geminiFlashLite() throws IOException {
+        if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
+        var model = llm.get(ModelConfig.temperature(FLASH_LITE, 0));
+
+        var agentTester =
+                new AgentTester(
+                        model,
+                        DateTimeTools.currentDateAndTimeAdkTool(dateTimeTools),
+                        DateTimeTools.currentTimeAdkTool(dateTimeTools),
+                        DateTimeTools.cityCurrentTimeAdkTool(dateTimeTools));
+        try (var ctx =
+                TLC.open()
+                        .push(ZoneId.class, ZoneId.of("Europe/Zurich"))
+                        .push(Locale.class, Locale.GERMANY)) {
+            agentTester.assertTextResponseEquals(
+                    "What's the time in Zürich?", "The current time in Zürich is 23:05.");
+            agentTester.assertTextResponseEquals(
+                    "What's the time?", "The current time in MEZ is 23:05.");
+            agentTester.assertTextResponseEquals(
+                    "What's today's date and time?",
+                    "The current date & time in MEZ is Donnerstag, 14. August" + " 2025, 23:05.");
+        }
     }
 }
