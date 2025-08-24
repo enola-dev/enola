@@ -37,25 +37,19 @@ nav:
   #     - Java Architecture:
   #     - Beancount:
   #     - Linked Data CLI & Shell:
-  - Tutorial:
-      - Tutorials: # Just "Linked Data"?
-          - About: index.md
-          - AI Agents: tutorial/agents.md
-          - AI Chat: tutorial/chat.md
-          - Install: use/index.md
-          - Hello World: models/example.org/hello.md
-          - Linked Data: models/example.org/linked.md
-          - Classy: models/example.org/class.md
-          - Graph: models/example.org/graph.md
-          - Timeline: models/example.org/timeline.md
-          - Templates: models/example.org/templates.md
-          - JSON-LD: models/example.org/json-ld.md
-      - News (Blog): # Move to Appendix? Or top-level "Blog" menu?
-          - April 2024 News: blog/posts/2024-04.md
-          - Linked Thing UI: blog/posts/ui1.md
-          - DocGen v0.1: blog/posts/docgen1.md
-          - First Model: blog/posts/model1.md
-          - Repo Created: blog/posts/git-repo-created.md
+  - Home: index.md
+  - Agents: agents.md
+  - Tutorials:
+      - Install: use/index.md
+      - AI Agents: tutorial/agents.md
+      - AI Chat: tutorial/chat.md
+      - Hello World: models/example.org/hello.md
+      - Linked Data: models/example.org/linked.md
+      - Classy: models/example.org/class.md
+      - Graph: models/example.org/graph.md
+      - Timeline: models/example.org/timeline.md
+      - Templates: models/example.org/templates.md
+      - JSON-LD: models/example.org/json-ld.md
   - Commands:
       - 🦮 Help: use/help/index.md
       - 🤵 Server: use/server/index.md
@@ -115,6 +109,7 @@ nav:
       - Contributor Guide: contributing.md
   - Appendix:
       # ? - Playbooks: concepts/playbook.md
+      - Support: support.md
       - Specs:
           - specs/index.md
           - AI URI: specs/aiuri/index.md
@@ -131,6 +126,12 @@ nav:
       - Comparison: concepts/other.md
       - Security Policy: SECURITY.md
       - Code of Conduct: code-of-conduct.md
+      - News (Blog): # Move to Appendix? Or top-level "Blog" menu?
+          - April 2024 News: blog/posts/2024-04.md
+          - Linked Thing UI: blog/posts/ui1.md
+          - DocGen v0.1: blog/posts/docgen1.md
+          - First Model: blog/posts/model1.md
+          - Repo Created: blog/posts/git-repo-created.md
 
 not_in_nav: |
   models/**
