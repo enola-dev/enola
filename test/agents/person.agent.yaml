@@ -1,0 +1,25 @@
+# Origin: https://github.com/google/dotprompt#example-prompt-file
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash&temperature=0
+instruction:
+  Extract the requested information from the given text.
+  If a piece of information is not present, omit that field from the output.
+output:
+  # TODO schemaRef: person.schema.yaml
+  schema:
+    type: object
+    properties:
+      name:
+        type: string
+        description: the full name of the person
+      age:
+        type: number
+        description: the age of the person
+      occupation:
+        type: string
+        description: the person's occupation
+
+#test:
+#    text: John Doe is a 35-year-old software engineer living in Zürich.
+#    expected:
+#        equals: { "name": "John Doe", "age": 35, "occupation": "software engineer" }

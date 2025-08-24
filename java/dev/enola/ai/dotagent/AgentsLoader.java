@@ -23,18 +23,23 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.tools.BaseToolset;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.common.net.MediaType;
+import com.google.genai.types.Schema;
 
 import dev.enola.ai.adk.tool.ToolsetProvider;
 import dev.enola.ai.dotprompt.DotPromptLoader;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
+import dev.enola.common.io.object.ObjectWriter;
+import dev.enola.common.io.object.jackson.JsonObjectReaderWriter;
 import dev.enola.common.io.resource.ResourceProvider;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class AgentsLoader {
@@ -47,6 +52,7 @@ public class AgentsLoader {
 
     private final DotPromptLoader dotPromptLoader;
     // TODO private final DotPrompt2LlmAgentConverter dotPrompt2LlmAgentConverter;
+    private final ObjectWriter objectWriter = new JsonObjectReaderWriter();
 
     private final AgentsModelLoader agentsModelLoader;
 
@@ -87,7 +93,7 @@ public class AgentsLoader {
             // TODO Support SequentialAgent, ParallelAgent, LoopAgent
             var agentBuilder = new LlmAgent.Builder();
 
-            // TODO Share code with DotPromptLoader!
+            // TODO Share this code with DotPromptLoader / DotPrompt2LlmAgent !!
 
             agentBuilder.name(agent.name);
             // TODO Handle agent.variant ...
@@ -96,7 +102,11 @@ public class AgentsLoader {
             agentBuilder.instruction(agent.instruction);
 
             if (Strings.isNullOrEmpty(agent.model)) agentBuilder.model(defaultLLM);
-            else agentBuilder.model(llmProvider.get(URI.create(agent.model)));
+            else agentBuilder.model(llmProvider.get(agent.model, uri));
+
+            // TODO Validate both input & output JSON Schemas!!
+            if (agent.input != null) agentBuilder.inputSchema(schema(agent.input.schema));
+            if (agent.output != null) agentBuilder.outputSchema(schema(agent.output.schema));
 
             var tools = new ArrayList<BaseToolset>(agent.tools.size());
             for (var toolName : agent.tools) {
@@ -108,5 +118,10 @@ public class AgentsLoader {
         }
 
         return agents.build();
+    }
+
+    private Schema schema(Map<String, Object> jsonSchemaMap) throws IOException {
+        var jsonText = objectWriter.write(jsonSchemaMap, MediaType.JSON_UTF_8).get();
+        return Schema.fromJson(jsonText);
     }
 }

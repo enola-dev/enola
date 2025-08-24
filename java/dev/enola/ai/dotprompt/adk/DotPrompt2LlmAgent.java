@@ -61,6 +61,9 @@ public class DotPrompt2LlmAgent {
     }
 
     public BaseAgent convert(DotPrompt dotPrompt) throws IOException {
+        // TODO Share this code with ADK AgentsLoader !!
+        //   Actually, DotPrompt may soon be completely abandoned, in favour of DotAgent ..
+
         var model = llmProvider.get(dotPrompt.model, dotPrompt.id);
         var llmAgentBuilder = LlmAgent.builder().name(dotPrompt.name).model(model);
 
@@ -68,6 +71,7 @@ public class DotPrompt2LlmAgent {
         //   TODO llmAgentBuilder.instruction( ? )
         //   TODO llmAgentBuilder.globalInstruction( ? )
 
+        // TODO Validate both input & output JSON Schemas!!
         if (dotPrompt.input != null) llmAgentBuilder.inputSchema(schema(dotPrompt.input.schema));
         if (dotPrompt.output != null) llmAgentBuilder.outputSchema(schema(dotPrompt.output.schema));
 
