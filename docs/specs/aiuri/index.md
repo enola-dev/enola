@@ -56,7 +56,7 @@ This API has a very generous free tier. It requires a Google account.
 
 Note that the _Google (Gemini) AI API_ is a **different** API from the _Google Cloud Vertex AI Platform API._
 
-## Anthropic Claude
+### Anthropic Claude
 
 This API requires registering a credit card to purchase credits.
 

@@ -18,7 +18,11 @@
 
 # Agents
 
+Try out any of our ready-to-use _**FREE**_ agents:
+
 * [Git Commit Message Agent](https://github.com/enola-dev/git-commit-message-agent)
+
+Or [Contact Us](support.md) to have us build an 🥷 Agent for YOU?
 
 Or _[make your own](tutorial/agents.md)!_
 
