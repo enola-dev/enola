@@ -20,4 +20,4 @@
 
 Depending on your needs, we may be able to offer commercial support for Enola.
 
-Please [contact us](mailto:michael.vorburger+enola.dev+support@gmail.com) to discuss.
+Please [contact us](mailto:support1@enola.dev) to discuss.

@@ -68,13 +68,16 @@ PS: The [`enolac`](../download/latest/enolac) script contains the line above.
 
 ## JBang
 
-After [installing JBang](https://www.jbang.dev/download/), do:
+After [installing JBang](https://www.jbang.dev/download/), please [do](https://github.com/enola-dev/enola/issues/1641):
 
-    jbang app install enola@enola-dev
+    jbang catalog add --name enola-dev https://raw.githubusercontent.com/enola-dev/jbang-catalog/main/jbang-catalog.json
+    jbang --fresh app install enola@enola-dev
 
 You can now run Enola with:
 
     enola --help
+
+This runs it from `~/.jbang/bin`, which JBang [added](https://github.com/jbangdev/jbang/issues/2189) to your `PATH`.
 
 <!-- TODO Make this work... it doesn't quite, yet:
     enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
