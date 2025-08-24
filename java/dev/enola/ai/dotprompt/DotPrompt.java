@@ -88,12 +88,8 @@ public class DotPrompt extends WithSchema {
     /** Defines the (schema of the) input variables the prompt. */
     public @Nullable Input input;
 
-    // TODO public Optional<Schema> inputSchema();
-
     /** Defines the expected model output format. */
     public @Nullable Output output;
-
-    // TODO public Optional<Schema> outputSchema();
 
     /**
      * Template of Prompt, as text.
@@ -123,6 +119,8 @@ public class DotPrompt extends WithSchema {
          */
         // TODO Validate by parsing with JSON Schema parser, not (just) text to basic JSON Map
         public final Map<String, Object> schema = new HashMap<>();
+
+        // TODO public @Nullable URI schemaRef;
     }
 
     public static class Output {
@@ -132,7 +130,10 @@ public class DotPrompt extends WithSchema {
             text
         }
 
-        /** Desired output format for this prompt. */
+        /**
+         * Desired output format for this prompt. Implicitly set to JSON if the schema is specified.
+         */
+        // TODO Remove? ADK doesn't seem to support this; it just has LlmAgent.outputSchema(Schema)
         public Format format = Format.text;
 
         /**
@@ -141,5 +142,9 @@ public class DotPrompt extends WithSchema {
          */
         // TODO Validate by parsing with JSON Schema parser, not (just) text to basic JSON Map
         public final Map<String, Object> schema = new HashMap<>();
+
+        // TODO public @Nullable URI schemaRef;
+
+        // TODO public @Nullable String outputKey;
     }
 }

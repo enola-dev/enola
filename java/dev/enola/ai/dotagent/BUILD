@@ -79,5 +79,6 @@ junit_tests(
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
         "//test",
+        "@enola_maven//:com_github_google_adk_java_google_adk",
     ],
 )

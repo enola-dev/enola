@@ -32,7 +32,7 @@ import java.util.Optional;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class ModelConfig {
 
-    // TODO Also `seed`, `stopSequences` ?
+    // TODO Also `thinking`, `maxSteps`, `seed`, `stopSequences` ?
 
     private Optional<Double> temperature = Optional.empty();
     private Optional<Double> topP = Optional.empty();

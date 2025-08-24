@@ -19,8 +19,9 @@ package dev.enola.ai.dotagent;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
-import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+import static dev.enola.ai.iri.GoogleModelProvider.*;
+
+import com.google.adk.agents.BaseAgent;
 
 import dev.enola.ai.adk.iri.GoogleLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
@@ -53,17 +54,14 @@ public class AgentsLoaderIntegrationTest {
 
     @Test
     public void optimisticChefYAML() throws IOException {
-        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         // We must create the AgentsLoader AFTER we know that the API secret is available:
         var loader =
                 new AgentsLoader(
                         rp, FLASH_LITE, new GoogleLlmProvider(secretManager), Tools.none());
-
-        var agents = loader.load(Stream.of(URI.create("chef-optimist.agent.yaml")));
-        assertThat(agents).hasSize(1);
-        var agent = agents.iterator().next();
-
+        var agent = load(loader, "chef-optimist.agent.yaml");
         var agentTester = new AgentTester(agent);
+
         agentTester.assertTextResponseContainsAny(
                 "How to make scrambled eggs?",
                 "darling",
@@ -82,19 +80,34 @@ public class AgentsLoaderIntegrationTest {
         InstantSource testInstantSource = InstantSource.fixed(testInstant);
         var tools = Tools.builtin(testInstantSource);
 
-        if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), tools);
-
-        var agents = loader.load(Stream.of(URI.create("clock.agent.yaml")));
-        assertThat(agents).hasSize(1);
-        var agent = agents.iterator().next();
-
+        var agent = load(loader, "clock.agent.yaml");
         var agentTester = new AgentTester(agent);
+
         agentTester.assertTextResponseContainsAll(
                 "What's the current date and time?",
                 "The current",
                 "date",
                 "time",
                 "Thursday, August 14, 2025, 9:05 PM");
+    }
+
+    @Test
+    public void person() throws IOException {
+        if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
+        var loader =
+                new AgentsLoader(rp, FLASH, new GoogleLlmProvider(secretManager), Tools.none());
+        var agent = load(loader, "person.agent.yaml");
+        var agentTester = new AgentTester(agent);
+        agentTester.assertJsonResponseEquals(
+                "John Doe is a 35-year-old software engineer living in Zürich.",
+                "{ \"name\": \"John Doe\", \"age\": 35, \"occupation\": \"software engineer\" }");
+    }
+
+    private BaseAgent load(AgentsLoader loader, String uri) throws IOException {
+        var agents = loader.load(Stream.of(URI.create(uri)));
+        assertThat(agents).hasSize(1);
+        return agents.iterator().next();
     }
 }

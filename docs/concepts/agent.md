@@ -43,7 +43,13 @@ One-line description of the agent's capability. The model uses this to determine
 
 Name ("nick") of agent. Typically, it's set automatically by a loader from a portion of the origin URL. <!-- This is just a recommendation, and a loader could change it if another agent (with another ID) already uses this name. Users can also change the nicknames of their agents. -->
 
-## Tools
+### Output Schema
+
+The `output.schema` allows specifying the expected structure of the output from the agent in JSON Schema.
+
+The [`person.agent.yaml`](https://github.com/enola-dev/enola/blob/main/test/agents/person.agent.yaml) example illustrates how to use this.
+
+### Tools
 
 [Tools](tool.md) to which the agent has access, including [MCP](mcp.md).
 
