@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2025 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+$schema: https://enola.dev/exec
+$id: https://enola.dev/exec/git
+
+# Originally inspired by
+# https://github.com/modelcontextprotocol/servers/blob/338d8af7a6d117b848d42e07b9ac480e16b80343/src/git/src/mcp_server_git/server.py#L21
+
+actions:
+  status:
+    description: Shows the working tree status
+    inSchemaRef: git.schema.yaml#/$defs/status
+    command: git
+    args: [status, -C, "{{in.repo_path}}"]
+    out: "Repository Status: {{OUT}} {{ERR}}"
+
+  commit:
+    description: Records changes to the repository
+    inSchemaRef: git.schema.yaml#/$defs/commit
+    command: git
+    args: [commit, -C, "{{in.repo_path}}", -m, "{{in.message}}"]
+    out: "{{OUT}} {{ERR}}"
+
+# TODO Add everything missing from
+#   https://github.com/modelcontextprotocol/servers/blob/338d8af7a6d117b848d42e07b9ac480e16b80343/src/git/src/mcp_server_git/server.py#L221
+
+sets:
+  all-read:
+    - status
+  all-read-and-commit:
+    - all-read
+    - commit
+  all-write:
+    - commit
+  all:
+    - all-read
+    - all-write
