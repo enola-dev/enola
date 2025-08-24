@@ -68,7 +68,7 @@ PS: The [`enolac`](../download/latest/enolac) script contains the line above.
 
 ## JBang
 
-After [installing JBang](https://www.jbang.dev/download/), please [do](https://github.com/enola-dev/enola/issues/1641):
+After [installing JBang](https://www.jbang.dev/download/), please run the [following](https://github.com/enola-dev/enola/issues/1641) commands:
 
     jbang catalog add --name enola-dev https://raw.githubusercontent.com/enola-dev/jbang-catalog/main/jbang-catalog.json
     jbang --fresh app install enola@enola-dev
