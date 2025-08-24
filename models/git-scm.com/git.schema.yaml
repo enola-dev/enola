@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2025 The Enola <https://enola.dev> Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+$id: https://git-scm.com/schema
+$schema: https://json-schema.org/draft/2020-12/schema
+
+oneOf:
+  - $ref: #/$defs/status
+  - $ref: #/$defs/commit
+
+$defs:
+  repo:
+    type: object
+    title: Git repository
+    properties:
+      repo_path:
+        type: string
+        description: Git Repo Local Filesystem Path.
+    required:
+      - repo_path
+
+  # Originally inspired by
+  # https://github.com/modelcontextprotocol/servers/blob/338d8af7a6d117b848d42e07b9ac480e16b80343/src/git/src/mcp_server_git/server.py#L21
+
+  status:
+    title: Git Status
+    allOf:
+      - $ref: #/$defs/repo
+
+  commit:
+    title: Git Commit
+    allOf:
+      - $ref: #/$defs/repo
+      - type: object
+        properties:
+          message:
+            title: Message
+            type: string
+        required:
+          - message
+
+# TODO Test if LLMs dig allOf, and then add everything from git-TODO.schema.yaml
