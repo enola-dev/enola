@@ -192,7 +192,7 @@ public final class URIs {
                 throw new IllegalArgumentException(
                         "URI Query Parameter has duplicate key: " + queryParameter);
             var value = queryParameter.substring(p + 1);
-            map.put(key.toLowerCase(), value);
+            map.put(key, value);
         }
     }
 

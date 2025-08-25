@@ -32,7 +32,6 @@ import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -75,7 +74,6 @@ public class LlmProvidersTest {
     }
 
     @Test
-    @Ignore // TODO https://github.com/google/adk-java/issues/382
     public void claudeIntegrationTest() throws IOException {
         if (sm.getOptional(ANTHROPIC_API_KEY_SECRET_NAME).isPresent())
             check(p.get(AnthropicModelProvider.CLAUDE_HAIKU_3));

@@ -44,8 +44,11 @@ public abstract class AnthropicModelProvider<T> implements Provider<T> {
     public static final String ANTHROPIC_API_KEY_SECRET_NAME = "ANTHROPIC_API_KEY";
 
     private static final String SCHEME = "claude";
+
+    // NB: The default maxOutputTokens of 8192 (in AnthropicLlmProvider) fails with Haiku 3;
+    //     as its max. is 4096; but for initial simple tests, let's cap it at even just 1024:
     public static final URI CLAUDE_HAIKU_3 =
-            URI.create(SCHEME + "://?model=claude-3-haiku-20240307");
+            URI.create(SCHEME + "://?model=claude-3-haiku-20240307&maxOutputTokens=1024");
 
     protected final SecretManager secretManager;
 

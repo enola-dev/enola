@@ -61,6 +61,10 @@ public class URIsTest {
         assertThat(URIs.getQueryMap(URI.create("scheme:thing?ping=pong=pang#fragment")))
                 .containsExactly("ping", "pong=pang");
 
+        // Ensure that query parameters are not artificially lower-cased, but kept as-is:
+        assertThat(URIs.getQueryMap(URI.create("claude://?model=haiku&maxOutputTokens=512")))
+                .containsExactly("model", "haiku", "maxOutputTokens", "512");
+
         // Glob URIs
         assertThat(URIs.getQueryMap("file:/tmp//?.txt")).isEmpty();
         assertThat(URIs.getQueryMap("file:/tmp//?q=.")).containsExactly("q", ".");
@@ -78,7 +82,7 @@ public class URIsTest {
         var uri = URI.create("fd:1?something=else&mediaType=application/yaml;charset=utf-16be");
         assertThat(URIs.getQueryMap(uri))
                 .containsExactly(
-                        "something", "else", "mediatype", "application/yaml;charset=utf-16be");
+                        "something", "else", "mediaType", "application/yaml;charset=utf-16be");
         assertThat(URIs.getMediaTypeAndCharset(uri))
                 .isEqualTo(new MediaTypeAndOrCharset("application/yaml;charset=utf-16be", null));
     }
