@@ -68,13 +68,16 @@ jobs:
           run_daemon: true
 
       - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - uses: nicknovitski/nix-develop@v1
+        # TODO: remove non-nix paths from PATH
 
-      - name: "Install Flox"
-        uses: "flox/install-flox-action@v2"
-      - name: Test Flox Installation PATH
-        uses: flox/activate-action@v1
-        with:
-          command: flox --version && echo $PATH
+      - name: Check which package versions we are using
+        run: |
+          which go
+          go version
+          which java
+          java --version
 
       - name: Install bun
         uses: oven-sh/setup-bun@v2
@@ -90,24 +93,7 @@ jobs:
         working-directory: web
         run: ./build
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          # NB: Repeated below in push-container-image: job; must keep in sync!
-          java-version: "21"
-
-      - name: Install Coursier (cs)
-        run: |
-          tools/maven/install-coursier.bash
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          cs about
-          cs version
-
-      # This must ALWAYS run AFTER actions/setup-java, due to https://github.com/google/google-java-format/pull/1228/files.
-      - name: pre-commit run --all-files
-        uses: flox/activate-action@v1
-        with:
-          command: pre-commit run --all-files
+      - run: pre-commit run --all-files
 
       # TODO Explore further how to appropriately use "env -i" isolation to see failure locally (due to missing protoc, at this stage, while still with AFDS, before Flox)
       # TODO Remove this duplication; normally this only runs at the end, only here to debug:
@@ -116,11 +102,6 @@ jobs:
       #   uses: flox/activate-action@v1
       #   with:
       #     command: tools/protoc/protoc.bash && pre-commit run --all-files
-
-      - name: Install graphviz
-        # NB: We unfortunately cannot cache this, see https://github.com/enola-dev/enola/issues/823
-        run: sudo apt-get install -y graphviz && dot -V
-        shell: bash
 
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.15.0
@@ -210,9 +191,7 @@ jobs:
 
       # Any "dirty" changes will cause build to abort. This intentionally runs again after the build.
       - name: pre-commit run --all-files
-        uses: flox/activate-action@v1
-        with:
-          command: pre-commit run --all-files
+        run: pre-commit run --all-files
 
       # The following steps deploy site/ (using GitHub Pages)
       # to https://enola-dev.github.io = https://docs.enola.dev
@@ -259,11 +238,10 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: "temurin"
-          # NB: Repeated above in build: job; must keep in sync!
-          java-version: "21"
+      - uses: cachix/install-nix-action@v31
+      - uses: nicknovitski/nix-develop@v1
+        # TODO: remove non-nix paths from PATH
+
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.15.0
         with:

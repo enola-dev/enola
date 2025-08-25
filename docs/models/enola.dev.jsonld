@@ -2,3 +2,9 @@ THIS FILE WILL BE OVERWRITTEN WITH THE GENERATED
 
 It's useful to have it (force added, because .gitgignore)
 in Git so that e.g. tools/docs/serve-quick.bash "just works".
+
+You can run
+
+$ git update-index --assume-unchanged docs/models/enola.dev.jsonld
+
+to hide changes to this file from commands like "git status".
