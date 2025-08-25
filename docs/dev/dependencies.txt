@@ -31,9 +31,9 @@ com.github.docker-java:docker-java-transport:3.3.6
 com.github.docker-java:docker-java-transport-httpclient5:3.3.6
 com.github.docker-java:docker-java-transport-jersey:3.3.6
 com.github.docker-java:docker-java-transport-netty:3.3.6
-com.github.google.adk-java:google-adk:eb232ee780c986bfdbae708882c7766854bba5d5
-com.github.google.adk-java:google-adk-contrib-langchain4j:eb232ee780c986bfdbae708882c7766854bba5d5
-com.github.google.adk-java:google-adk-dev:eb232ee780c986bfdbae708882c7766854bba5d5
+com.github.google.adk-java:google-adk:99265cf268be4dbd0a82decf5c48bf57b3725b53
+com.github.google.adk-java:google-adk-contrib-langchain4j:99265cf268be4dbd0a82decf5c48bf57b3725b53
+com.github.google.adk-java:google-adk-dev:99265cf268be4dbd0a82decf5c48bf57b3725b53
 com.github.hypfvieh:dbus-java-core:4.3.1
 com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.3.1
 com.github.ipfs:java-ipfs-http-client:d982fc0fa1
