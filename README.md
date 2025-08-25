@@ -23,6 +23,7 @@
 1. [Join group](https://groups.google.com/g/enoladev-announcements) <!-- TODO Later also create enola.dev-discuss@ --> and please ⭐ on GitHub
 2. Read the [user guide](https://docs.enola.dev/use/) documentation
 3. See [developer](https://docs.enola.dev/dev/setup/) docs and [Contribute](https://docs.enola.dev/contributing/)!
+4. Comment on [issue #1649](https://github.com/enola-dev/enola/issues/1649) re. a chat room
 
 This project is not an official Google project. It is not supported by
 Google, and Google specifically disclaims all warranties as to its quality,
