@@ -177,13 +177,11 @@ jobs:
       - run: ./tools/test-ci/test.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
-      # TODO: Un-comment temporararily commented out section again (which was just to test PR)
-      #- name:
-      #    Build Docs Site (but skip [slow] screencast recording, because on PR)
-      #  if: ${{ github.event_name == 'pull_request' }}
-      #  run: ./tools/docs/build.bash --without-demo-screencasts
+      - name: Build Docs Site (but skip [slow] screencast recording, because on PR)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: ./tools/docs/build.bash --without-demo-screencasts
       - name: Build Docs Site, now with Screencasts (because on branch)
-        # if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' }}
         run: ./tools/docs/build.bash
 
       # Double-check that the build steps have not touched any (non-ignored) files

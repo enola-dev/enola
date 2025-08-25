@@ -40,17 +40,22 @@ rm -f docs/BUILT/third_party/{BUILD*,*.bash}
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
+# We just always install https://github.com/marionebl/svg-term-cli, even if
+# we're then skipping it below, because this is quick, and doing it anyway helps
+# to detecting any CI build system regression with Nix etc.
+if ! [ -f "node_modules/.bin/svg-term" ]; then
+  npm install svg-term-cli
+fi
+PATH="$(pwd)/node_modules/.bin:$PATH"
+export PATH
+svg-term --version
+
+# This is very slow (so the svg-term-cli install is before; but its use has to be after this)
 # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
 ./enola execmd -vvvi "docs/use/**/*.md"
 
 # Skip (lengthy!) demo screencasts build if this script is called with any argument (handy during dev)
 if [ $# -eq 0 ]; then
-  if ! [ -f "node_modules/.bin/svg-term" ]; then
-    npm install svg-term-cli
-  fi
-  PATH="$(pwd)/node_modules/.bin:$PATH"
-  export PATH
-
   # shellcheck disable=SC2016
   # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
   find docs/use -maxdepth 1 -not -path docs/use -type d -print0 | \
