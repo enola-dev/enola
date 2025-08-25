@@ -19,9 +19,6 @@ set -euo pipefail
 
 # This script assumes that ../../test.bash already ran, to set up tools, and build!
 
-# shellcheck disable=SC1091
-source tools/flox
-
 tools/git/test.bash
 
 DIR=$(pwd)

@@ -69,12 +69,16 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: "Install Flox"
-        uses: "flox/install-flox-action@v2"
-      - name: Test Flox Installation PATH
-        uses: flox/activate-action@v1
-        with:
-          command: flox --version && echo $PATH
+      - uses: cachix/install-nix-action@v31
+        # If you face rate limiting, consider:
+        # with:
+        #   github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: nicknovitski/nix-develop@v1
+
+        # TODO: remove before merge!
+      - name: Check which Go we are using
+        run: "which -a go && go version"
 
       - name: Install bun
         uses: oven-sh/setup-bun@v2
@@ -210,9 +214,7 @@ jobs:
 
       # Any "dirty" changes will cause build to abort. This intentionally runs again after the build.
       - name: pre-commit run --all-files
-        uses: flox/activate-action@v1
-        with:
-          command: pre-commit run --all-files
+        run: pre-commit run --all-files
 
       # The following steps deploy site/ (using GitHub Pages)
       # to https://enola-dev.github.io = https://docs.enola.dev

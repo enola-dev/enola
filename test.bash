@@ -73,8 +73,6 @@ fi
 # This is intentionally only done here at the END of successfully running the tests above,
 # because only if we reach here we now that everything above actually works well locally.
 
-source tools/flox
-
 echo
 # Run https://pre-commit.com, see .pre-commit-config.yaml;
 # locally run only on last commit (quick), but on CI
