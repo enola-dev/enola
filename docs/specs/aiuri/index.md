@@ -66,8 +66,6 @@ This API requires registering a credit card to purchase credits.
 
 [For security](#security), the API key is not part of this URI, but configured in a _[secret](../../use/secret/index.md)_ named `ANTHROPIC_API_KEY`. Such keys can be easily obtained on https://console.anthropic.com/settings/keys.
 
-This may still have some bugs; see pending e.g. #[382](https://github.com/google/adk-java/issues/382), please request [support](../../support.md) if you need this.
-
 <!-- TODO OpenAI -->
 
 ### Mock 🦜
