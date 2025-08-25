@@ -45,9 +45,11 @@ find docs/ -type f -name "*.md" -print0 \
 
 # Skip (lengthy!) demo screencasts build if this script is called with any argument (handy during dev)
 if [ $# -eq 0 ]; then
-  if ! [ -x "$(command -v svg-term)" ]; then
-    npm install -g svg-term-cli
+  if ! [ -f "node_modules/.bin/svg-term" ]; then
+    npm install svg-term-cli
   fi
+  PATH="$(pwd)/node_modules/.bin:$PATH"
+  export PATH
 
   # shellcheck disable=SC2016
   # TODO Replace this with docs/use/**/BUILD files, so that demo tests only run if inputs change!
