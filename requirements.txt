@@ -12,7 +12,6 @@ linkml-runtime==1.9.4
 hashdir==0.24
 
 # MkDocs
-mkdocs==1.6.1
 mkdocs-material==9.6.16
 mkdocs-git-revision-date-localized-plugin==1.4.7
 
