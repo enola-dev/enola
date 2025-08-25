@@ -18,6 +18,21 @@
 
 # Dev Set-Up
 
+## Nix
+
+[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project.
+
+    nix develop
+
+**TODO** _This project's build scripts do not assume that Nix is "activated" in your shell; they do this by themselves.
+So once you have `nix` available on your `PATH`, launching e.g. `./test.bash` should _"just work"_ (please feel free to raise a bug if it does not)._
+
+To directly use tools installed into the Nix _development environment_ from your shell (instead of **indirectly,** via the build scripts of this project), use `nix develop`.
+
+**TODO** _`direnv` ? Dotfiles_ 
+
+**TODO** _In IDEs? Like https://mise.jdx.dev/ide-integration.html#ide-plugins..._
+
 ## GitHub Codespaces
 
 **We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
@@ -54,20 +69,9 @@ To work on documentation, launch:
 * `tools/docs/serve-build.bash` for a  "real" (full) docs build, without without the demo "screen cast" recordings (which are slow)
 * `tools/docs/serve.bash` for generating the "real" (full) static `site/` exactly as it's deployed on <https://docs.enola.dev>
 
-## Flox
-
-[Please install Flox.dev](https://flox.dev/docs/install-flox) to work locally on this project, using its _virtual development environment._
-
-This project's build scripts do not assume that Flox (Nix) is "activated" in your shell; they do this by themselves.
-So once you have `flox` available on your `PATH`, launching e.g. `./test.bash` should _"just work"_ (please feel free to raise a bug if it does not).
-
-To directly use tools installed into the Flox _virtual development environment_ from your shell (instead of **indirectly,** via the build scripts of this project), activate it in your shell using [something like this](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/fish/functions/flox.fish), or e.g. `eval ...` (or `...| source` for Fish) [as described here](https://flox.dev/docs/tutorials/default-environment/#initial-setup). (We recommend this approach, instead of just using the alternative `flox activate`, like _Flox_ documentation suggests elsewhere, because it might preserve your own personal fancy shell customizations better - especially if you don't have `$SHELL` or `$FLOX_SHELL` set up correctly for an altnernative shell.)
-
-TODO In IDEs? Like https://mise.jdx.dev/ide-integration.html#ide-plugins...
-
 ## Manual Tools Installation
 
-!!! warning "Setup is in flux, with flox!"
+!!! warning "Setup is in flux, with Nix!"
 
     This project is in the process of adopting <https://flox.dev>. _The following is out of date!_
 
