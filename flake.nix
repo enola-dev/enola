@@ -32,7 +32,6 @@
             jq
             bazelisk
             shellcheck
-            mkdocs
             nixpkgs-fmt
             unzip
             nodejs
