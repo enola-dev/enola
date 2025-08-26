@@ -44,7 +44,7 @@ find docs/ -type f -name "*.md" -print0 \
 # we're then skipping it below, because this is quick, and doing it anyway helps
 # to detecting any CI build system regression with Nix etc.
 if ! [ -f "node_modules/.bin/svg-term" ]; then
-  npm install svg-term-cli
+  npm ci
 fi
 PATH="$(pwd)/node_modules/.bin:$PATH"
 export PATH
