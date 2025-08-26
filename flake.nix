@@ -51,6 +51,17 @@
             echo Welcome to contributing to Enola.dev! You can now run e.g. ./enola or ./test.bash etc. here.
           '';
         };
+
+        apps = {
+          test = {
+            type = "app";
+            program = "${pkgs.writeShellApplication {
+              name = "test";
+              runtimeInputs = buildTools;
+              text = builtins.readFile ./test.bash;
+            }}/bin/test";
+          };
+        };
     }
   );
 }

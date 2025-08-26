@@ -20,7 +20,11 @@
 
 ## Nix
 
-[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project, and then enter:
+[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project, and run:
+
+* `nix run .#test` to execute unit and integration tests, which should be (relatively) fast
+
+You can also enter the Nix build environment to have the same tools available, which is convenient for development:
 
     nix develop
 
@@ -40,7 +44,7 @@ We recommend that you also [install `direnv`](https://direnv.net) which convenie
 * `./update.bash` [updates dependencies](dependencies.md)
 
 These scripts assume that Nix is "activated" (`PATH`) in your shell, see above; they currently do not do this by themselves.
-So launching them from outside the the Nix build environment (AKA `nix develop`) is not supported.
+So launching them from outside the Nix build environment (AKA `nix develop`) is not supported.
 
 **TODO** _Hashbang magic, if any?_
 
