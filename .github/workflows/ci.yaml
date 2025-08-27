@@ -79,10 +79,6 @@ jobs:
           which java
           java --version
 
-      - name: Install bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .tool-versions
       - name: Install Web dependencies
         working-directory: web
         run: bun install
