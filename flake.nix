@@ -3,13 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-bun.url = "github:nixos/nixpkgs/ab1f3b61279dfe63cdc938ed90660b99e9d46619"; # bun==1.2.19
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, nixpkgs-bun, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        pkgs-bun = import nixpkgs-bun { inherit system; };
         buildTools = with pkgs; [
           python312
           curl
@@ -25,6 +27,8 @@
           jdk21
           graphviz
           docker
+
+          pkgs-bun.bun
         ];
       in
       {

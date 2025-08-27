@@ -32,7 +32,3 @@ protoc 29.5
 # FYI Go is required to install Bazelisk, if required
 # (and perhaps for Go development later); and it's used
 # by Bazel, due to go_sdk.host() in MODULE.bazel.
-
-# https://bun.sh (with https://github.com/cometkim/asdf-bun)
-# TODO Replace completely with rules_bun from //tools/bun
-bun 1.2.19
