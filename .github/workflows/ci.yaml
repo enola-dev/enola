@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install IPFS Node daemon
-        uses: oduwsdl/setup-ipfs@e92fedca9f61ab9184cb74940254859f4d7af4d9
+        uses: oduwsdl/setup-ipfs@678755ac20f92d2dfca7e16138e40ae75f7a0f6f
         with:
           ipfs_version: ^0.33
           run_daemon: true
