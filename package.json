@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "svg-term-cli": "^2.1.1"
+    "@okhsunrog/svg-term-cli": "^2.1.1"
   }
 }
