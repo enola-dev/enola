@@ -24,7 +24,7 @@ ADK_JAVA_COMMIT = "99265cf268be4dbd0a82decf5c48bf57b3725b53"
 
 RDF4J_VERSION = "5.1.4"
 
-GRPC_JAVA_VERSION = "1.73.0"
+GRPC_JAVA_VERSION = "1.75.0"
 
 # Separate because of https://github.com/VirtusLab/bazel-steward/issues/404:
 GRPC_JAVA_VERSION_BUILD = "1.73.0"
