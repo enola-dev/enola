@@ -13,4 +13,17 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>enola</id>
+      <name>Enola.dev</name>
+      <url>https://docs.enola.dev/maven-repo/</url>
+    </repository>
+    <repository>
+      <id>jitpack</id>
+      <name>JitPack.io</name>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
 </project>
