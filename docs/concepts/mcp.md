@@ -34,7 +34,7 @@ The `command`, `args` & `env` are self-explanatory; `origin` is just for documen
 
 The boolean `roots` flag controls whether the current working directory is exposed; it defaults to false.
 
-The `log` field controls the logging level of the MCP server, and can be set to `debug`, `info`, `notice`, `warning`, `error`, `critical`, `alert` and `emergency`. If unspecified, it defaults to the `warning` level. This only controls what the MCP server sends. To actually see all log messages on the client, you must start Enola with `-vvvvv`.
+The `log` field controls the logging level of the MCP server, and can be set to `debug`, `info`, `notice`, `warning`, `error`, `critical`, `alert` and `emergency`. If unspecified, it defaults to the `warning` level. This only controls what the MCP server sends. To actually see all log messages on the client, you must [start Enola with `-vvvvv`](../use/log/index.md).
 
 Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agents](agent.md).
 
@@ -67,6 +67,8 @@ The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/ma
 enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev/tutorial/agents/ ?"
 ```
 
+This needs `uvx` to be available; test if launching `uvx mcp-server-fetch` works, first.
+
 CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
 Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
@@ -80,6 +82,8 @@ Exercise caution when using this MCP server to ensure this does not expose any s
 enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
 ```
 
+This [currently](https://github.com/enola-dev/enola/issues/1631) needs `npx` to be available; test if launching `npx @modelcontextprotocol/server-filesystem` works, first.
+
 ### Git
 
 ```yaml
@@ -91,6 +95,8 @@ enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit messa
 ```
 
 CAUTION: This server is inherently insecure; you should carefully evaluate if it meets your needs.
+
+This needs `uvx` to be available; test if launching `uvx mcp-server-git` works, first.
 
 ### Memory
 
@@ -112,9 +118,11 @@ $ enola -v ai --agents=test/agents/memory.agent.yaml --in "Does John Smith speak
 Remembering...Based on my memory, John Smith speaks fluent Spanish. I do not have any information indicating that he speaks Italian.
 ```
 
+This needs `npx` to be available; test if launching `npx @modelcontextprotocol/server-memory` works, first.
+
 ### Everything
 
-The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for testing:
+The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for debugging and testing the MCP protocol:
 
 ```shell
 enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
