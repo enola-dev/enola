@@ -129,7 +129,7 @@ enola_maven.install(
         "info.picocli:picocli-shell-jline3:4.7.7",
         "info.picocli:picocli-codegen:4.7.6",
         "org.snakeyaml:snakeyaml-engine:2.10",
-        "org.yaml:snakeyaml:2.4",
+        "org.yaml:snakeyaml:2.5",
         "org.slf4j:slf4j-jdk14:2.0.17",
         "org.slf4j:slf4j-simple:2.0.17",
         # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
