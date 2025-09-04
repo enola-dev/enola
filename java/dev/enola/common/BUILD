@@ -26,10 +26,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//tools/version",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:dev_dirs_directories",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:dev_dirs_directories",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 

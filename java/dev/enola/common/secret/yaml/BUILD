@@ -30,9 +30,9 @@ java_library(
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/yamljson",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

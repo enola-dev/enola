@@ -26,7 +26,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     runtime_deps = [
-        "@enola_maven//:org_apache_tika_tika_parsers_standard_package",
+        "@maven//:org_apache_tika_tika_parsers_standard_package",
     ],
     deps = [
         "//java/dev/enola/common",
@@ -38,12 +38,12 @@ java_library(
         "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/format/xml",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_auto_service_auto_service_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_apache_tika_tika_core",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_auto_service_auto_service_annotations",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_apache_tika_tika_core",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -58,6 +58,6 @@ junit_tests(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/testlib",
         "//test",
-        "@enola_maven//:org_apache_tika_tika_core",
+        "@maven//:org_apache_tika_tika_core",
     ],
 )
