@@ -30,9 +30,9 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 1. Edit [dependencies](dependencies.md) in [`WORKSPACE.bazel`](//WORKSPACE.bazel) (later [`MODULE.bazel`](//MODULE.bazel))
 
-1. `REPIN=1 bazelisk run @enola_maven//:pin`
+1. `REPIN=1 bazelisk run @maven//:pin`
 
-PS: Use `bazelisk query "@enola_maven//:*"` to see all targets.
+PS: Use `bazelisk query "@maven//:*"` to see all targets.
 
 ### Update Existing Maven dependencies
 

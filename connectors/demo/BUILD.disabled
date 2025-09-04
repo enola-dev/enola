@@ -42,16 +42,16 @@ java_binary(
     # ONLY for tests:
     visibility = ["//:__subpackages__"],
     runtime_deps = [
-        "@enola_maven//:io_grpc_grpc_netty",
+        "@maven//:io_grpc_grpc_netty",
     ],
     deps = [
         ":demo_java_proto",
         "//java/dev/enola/core:connector_java_grpc",
         "//java/dev/enola/core:core_java_proto",
-        "@enola_maven//:com_google_protobuf_protobuf_java",
-        "@enola_maven//:com_google_protobuf_protobuf_java_util",
-        "@enola_maven//:io_grpc_grpc_api",
-        "@enola_maven//:io_grpc_grpc_stub",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:io_grpc_grpc_api",
+        "@maven//:io_grpc_grpc_stub",
     ],
 )
 
@@ -61,8 +61,8 @@ java_binary(
     srcs = glob(["src/test/java/**/*.java"]),
     # resources = glob(["src/test/resources/**/*"]),
     runtime_deps = [
-        "@enola_maven//:io_grpc_grpc_netty",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:io_grpc_grpc_netty",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":demo",
@@ -74,12 +74,12 @@ java_binary(
         "//java/dev/enola/core:core_java_grpc",
         "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/core",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_protobuf_protobuf_java",
-        "@enola_maven//:com_google_protobuf_protobuf_java_util",
-        "@enola_maven//:com_google_truth_truth",
-        "@enola_maven//:io_grpc_grpc_api",
-        "@enola_maven//:junit_junit",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:com_google_truth_truth",
+        "@maven//:io_grpc_grpc_api",
+        "@maven//:junit_junit",
     ],
 ) for name in glob([
     "src/test/java/**/*Test.java",

@@ -28,20 +28,20 @@ java_library(
     visibility = ["//:__subpackages__"],
     runtime_deps = [
         # Google GenAI uses Apache HttpComponents which uses Apache Commons Logging, which this bridges into SLF4j!
-        "@enola_maven//:org_slf4j_jcl_over_slf4j",
+        "@maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
         "//java/dev/enola/ai/adk/core",
         "//java/dev/enola/common/markdown",
         "//java/dev/enola/common/yamljson",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_reactivex_rxjava3_rxjava",
-        "@enola_maven//:junit_junit",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        # "@maven//:com_google_adk_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_reactivex_rxjava3_rxjava",
+        "@maven//:junit_junit",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -52,9 +52,9 @@ junit_tests(
     ),
     deps = [
         ":test",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:io_reactivex_rxjava3_rxjava",
+        # "@maven//:com_google_adk_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

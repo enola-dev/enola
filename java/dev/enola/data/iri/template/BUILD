@@ -29,10 +29,10 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/data/iri",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -42,7 +42,7 @@ junit_tests(
     deps = [
         ":template",
         "//java/dev/enola/common",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_google_errorprone_error_prone_annotations",
     ],
 )

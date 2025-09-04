@@ -28,11 +28,11 @@ java_library(
         "//java/dev/enola/common/collect",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/name",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -45,6 +45,6 @@ junit_tests(
     deps = [
         ":object",
         "//java/dev/enola/common/io",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.common.secret.exec.ExecPassSecretManager",
     runtime_deps = [
         ":exec",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -38,10 +38,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/secret",
-        "@enola_maven//:ch_vorburger_exec_exec",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:ch_vorburger_exec_exec",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

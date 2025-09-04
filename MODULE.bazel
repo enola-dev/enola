@@ -72,36 +72,16 @@ go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
 go_sdk.download(version = "1.22.4")
 
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
-# When bumping the version here, must always run: REPIN=1 bazelisk run @enola_maven//:pin
+# When bumping the version here, must always run: REPIN=1 bazelisk run @maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 
-# https://github.com/enola-dev/enola/issues/1686
-# https://github.com/bazel-contrib/rules_jvm_external/blob/master/docs/bzlmod.md#module-dependency-layering
-modules_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
-modules_maven.install(
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
     name = "maven",
     artifacts = [
+        # https://github.com/enola-dev/enola/issues/1154
         "com.google.code.findbugs:jsr305:3.0.2",
         "com.google.code.gson:gson:2.13.1",
-        "com.google.errorprone:error_prone_annotations:%s" % ERRORPRONE_VERSION,
-        "com.google.guava:guava:%s" % GUAVA_VERSION,
-    ],
-    known_contributing_modules = [
-        "",
-        "grpc-java",
-        "protobuf",
-    ],
-)
-
-enola_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
-enola_maven.install(
-    # NB: Do *ALWAYS* specify a name, and NEVER use the (default) name = "maven";
-    # this is because it's not "namespaced" (or "scoped") like you might think it
-    # really should be... use the default name *WILL* cause conflicts with other modules;
-    # notably grpc-java! See e.g. https://github.com/bazel-contrib/rules_jvm_external/issues/916
-    # and https://github.com/bazel-contrib/rules_jvm_external/issues/708 for more background.
-    name = "enola_maven",
-    artifacts = [
         "junit:junit:4.13.2",
         # NB: Using GCP Cloud PubSub is a bit too broad, and could be refined,
         # but it avoids us (TODO) having to figure out exactly which narrower
@@ -257,6 +237,13 @@ enola_maven.install(
     ],
     fail_if_repin_required = True,
     fetch_sources = True,
+    # https://github.com/enola-dev/enola/issues/1686
+    # https://github.com/bazel-contrib/rules_jvm_external/blob/master/docs/bzlmod.md#module-dependency-layering
+    known_contributing_modules = [
+        "",
+        "grpc-java",
+        "protobuf",
+    ],
     lock_file = "//:maven_install.json",
     repositories = [
         # Override legacy default https://repo1.maven.org/maven2/
@@ -265,4 +252,4 @@ enola_maven.install(
         "https://jitpack.io",
     ],
 )
-use_repo(enola_maven, "enola_maven")
+use_repo(maven, "maven")

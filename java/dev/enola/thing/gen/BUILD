@@ -48,12 +48,12 @@ java_library(
         "//java/dev/enola/thing:thing_java",
         # TODO Remove Proto dependency, switch to pure Java API
         "//java/dev/enola/thing:thing_java_proto",
-        "@enola_maven//:com_google_auto_service_auto_service_annotations",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_code_gson_gson",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_auto_service_auto_service_annotations",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.common.exec.pty.Demo",
     runtime_deps = [
         ":pty",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -41,12 +41,12 @@ java_library(
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/exec",
         "//java/dev/enola/common/io/util",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jetbrains_pty4j_pty4j",
-        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size & WriterOutputStream
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jetbrains_pty4j_pty4j",
+        "@maven//:org_jline_jline",  # for Terminal WINCH size & WriterOutputStream
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -61,7 +61,7 @@ junit_tests(
     deps = [
         ":pty",
         "//java/dev/enola/common/concurrent",
-        "@enola_maven//:org_jline_jline",  # for Terminal WINCH size
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:org_jline_jline",  # for Terminal WINCH size
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )

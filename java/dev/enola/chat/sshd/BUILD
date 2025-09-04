@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.chat.sshd.Demo",
     runtime_deps = [
         ":sshd",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -43,13 +43,13 @@ java_library(
         "//java/dev/enola/common/secret",
         "//java/dev/enola/identity",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_apache_sshd_sshd_common",
-        "@enola_maven//:org_apache_sshd_sshd_core",
-        "@enola_maven//:org_jline_jline",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_apache_sshd_sshd_common",
+        "@maven//:org_apache_sshd_sshd_core",
+        "@maven//:org_jline_jline",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

@@ -27,8 +27,8 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "@enola_maven//:org_commonmark_commonmark",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:org_commonmark_commonmark",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 

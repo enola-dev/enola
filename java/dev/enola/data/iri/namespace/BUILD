@@ -29,9 +29,9 @@ java_library(
     deps = [
         "//java/dev/enola/common/context",
         "//java/dev/enola/data/iri",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -46,6 +46,6 @@ junit_tests(
     deps = [
         ":namespace",
         "//java/dev/enola/common",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_errorprone_error_prone_annotations",
     ],
 )

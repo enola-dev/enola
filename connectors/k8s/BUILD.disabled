@@ -21,8 +21,8 @@ java_binary(
     srcs = glob(["src/main/java/**/*.java"]),
     main_class = "dev.enola.k8s.Bek",
     deps = [
-        "@enola_maven//:io_kubernetes_client_java",
-        "@enola_maven//:io_kubernetes_client_java_api",
-        "@enola_maven//:io_kubernetes_client_java_proto",
+        "@maven//:io_kubernetes_client_java",
+        "@maven//:io_kubernetes_client_java_api",
+        "@maven//:io_kubernetes_client_java_proto",
     ],
 )

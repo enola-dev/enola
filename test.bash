@@ -64,7 +64,7 @@ else # On CI
   bazelisk mod graph --depth=1
 
   # See https://github.com/enola-dev/enola/issues/1116 why it's worth to re-PIN, on CI:
-  REPIN=1 bazelisk run @enola_maven//:pin
+  REPIN=1 bazelisk run @maven//:pin
 
   # Runs git status and git diff to ensure no uncommitted changes
   tools/git/test.bash
