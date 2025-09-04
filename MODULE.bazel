@@ -73,6 +73,20 @@ go_sdk.download(version = "1.22.4")
 # When bumping the version here, must always run: REPIN=1 bazelisk run @enola_maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 
+# https://github.com/enola-dev/enola/issues/1686
+# https://github.com/bazel-contrib/rules_jvm_external/blob/master/docs/bzlmod.md#module-dependency-layering
+modules_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+modules_maven.install(
+    name = "maven",
+    artifacts = [
+    ],
+    known_contributing_modules = [
+        "",
+        "grpc-java",
+        "protobuf",
+    ],
+)
+
 enola_maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 enola_maven.install(
     # NB: Do *ALWAYS* specify a name, and NEVER use the (default) name = "maven";
