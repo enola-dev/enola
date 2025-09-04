@@ -23,7 +23,7 @@
     <repository>
       <id>jitpack</id>
       <name>JitPack.io</name>
-      <url>https://docs.enola.dev/maven-repo/</url>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 </project>
