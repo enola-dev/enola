@@ -44,7 +44,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: DevContainer
         # TODO if: ${{ github.event_name == 'push' }}
         uses: devcontainers/ci@v0.3
@@ -71,7 +71,7 @@ jobs:
           ipfs_version: ^0.33
           run_daemon: true
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
@@ -236,7 +236,7 @@ jobs:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
