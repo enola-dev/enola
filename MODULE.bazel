@@ -94,8 +94,6 @@ maven.install(
         # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
         "com.fasterxml.jackson.core:jackson-databind:2.19.2",
         "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2",
-        # kubernetes:client-java also depends on Protobuf (+gRPC?), version may need to be upgraded together
-        "io.kubernetes:client-java:24.0.0",
         # Other
         "ch.vorburger.exec:exec:3.3.2",
         "com.github.java-json-tools:uri-template:0.10",
