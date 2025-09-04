@@ -62,7 +62,7 @@ pull-requests:
 post-update-hooks:
   - kinds: maven
     commands:
-      - "REPIN=1 bazelisk run @enola_maven//:pin"
+      - "REPIN=1 bazelisk run @maven//:pin"
       - "tools/javadoc/classpath.bash"
     files-to-commit:
       - "maven_install.json"

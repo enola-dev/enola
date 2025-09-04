@@ -28,9 +28,9 @@ java_library(
     deps = [
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
-        "@enola_maven//:com_google_auto_service_auto_service_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_auto_service_auto_service_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 

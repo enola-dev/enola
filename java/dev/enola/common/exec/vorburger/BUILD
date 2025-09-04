@@ -28,10 +28,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/exec",
-        "@enola_maven//:ch_vorburger_exec_exec",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:ch_vorburger_exec_exec",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -44,6 +44,6 @@ junit_tests(
     visibility = ["//:__subpackages__"],
     deps = [
         ":vorburger",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )

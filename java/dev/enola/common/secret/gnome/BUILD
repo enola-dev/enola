@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.common.secret.gnome.GnomeSecretManager",
     runtime_deps = [
         ":gnome",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -38,10 +38,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/secret",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:de_swiesend_secret_service",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:de_swiesend_secret_service",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -53,6 +53,6 @@ junit_tests(
     deps = [
         ":gnome",
         "//java/dev/enola/common/io",
-        "@enola_maven//:de_swiesend_secret_service",
+        "@maven//:de_swiesend_secret_service",
     ],
 )

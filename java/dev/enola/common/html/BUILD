@@ -27,9 +27,9 @@ java_library(
     deps = [
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jsoup_jsoup",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jsoup_jsoup",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 

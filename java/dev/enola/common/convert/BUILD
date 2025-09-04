@@ -29,11 +29,11 @@ java_library(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/locale",
         "//java/dev/enola/common/time",
-        "@enola_maven//:com_github_multiformats_java_multibase",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_github_multiformats_java_multibase",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

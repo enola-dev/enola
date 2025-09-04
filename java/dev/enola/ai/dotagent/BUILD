@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.ai.agent.Demo",
     runtime_deps = [
         ":dotagent",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -51,14 +51,14 @@ java_library(
         "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/name",
         "//java/dev/enola/common/secret",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_reactivex_rxjava3_rxjava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        # "@maven//:com_google_adk_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_reactivex_rxjava3_rxjava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -79,6 +79,6 @@ junit_tests(
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
         "//test",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
     ],
 )

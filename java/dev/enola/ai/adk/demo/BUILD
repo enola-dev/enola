@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.ai.adk.demo.QuickstartDemo",
     runtime_deps = [
         ":demo",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -38,7 +38,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     runtime_deps = [
         # Google GenAI uses Apache HttpComponents which uses Apache Commons Logging, which this bridges into SLF4j!
-        "@enola_maven//:org_slf4j_jcl_over_slf4j",
+        "@maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
         "//java/dev/enola/ai/adk/core",
@@ -48,13 +48,13 @@ java_library(
         "//java/dev/enola/ai/iri",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/secret/auto",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_reactivex_rxjava3_rxjava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        # "@maven//:com_google_adk_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_reactivex_rxjava3_rxjava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -71,9 +71,9 @@ junit_tests(
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
-        # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:io_reactivex_rxjava3_rxjava",
+        # "@maven//:com_google_adk_google_adk",
+        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

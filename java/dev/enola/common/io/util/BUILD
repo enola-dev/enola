@@ -24,7 +24,7 @@ java_library(
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
-    deps = ["@enola_maven//:org_jspecify_jspecify"],
+    deps = ["@maven//:org_jspecify_jspecify"],
 )
 
 junit_tests(

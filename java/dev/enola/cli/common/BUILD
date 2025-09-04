@@ -26,16 +26,16 @@ java_library(
         "//java/dev/enola/cli:__subpackages__",
     ],
     runtime_deps = [
-        "@enola_maven//:org_apache_logging_log4j_log4j_to_jul",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@maven//:org_apache_logging_log4j_log4j_to_jul",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/common/locale",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/time",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:info_picocli_picocli",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_guava_guava",
+        "@maven//:info_picocli_picocli",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )

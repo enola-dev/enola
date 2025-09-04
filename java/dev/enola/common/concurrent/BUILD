@@ -28,10 +28,10 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/function",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -41,6 +41,6 @@ junit_tests(
     deps = [
         ":concurrent",
         "//java/dev/enola/common/context",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )

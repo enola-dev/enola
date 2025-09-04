@@ -22,7 +22,7 @@ java_binary(
     main_class = "dev.enola.common.linereader.jline.Demo",
     runtime_deps = [
         ":jline",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -41,10 +41,10 @@ java_library(
         "//java/dev/enola/common/function",
         "//java/dev/enola/common/linereader",
         "//java/dev/enola/identity",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jline_jline",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jline_jline",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )

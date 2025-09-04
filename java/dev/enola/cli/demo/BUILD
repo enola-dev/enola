@@ -22,7 +22,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:picocli"],
     deps = [
         "//java/dev/enola/cli/common",
-        "@enola_maven//:info_picocli_picocli",
+        "@maven//:info_picocli_picocli",
     ],
 )
 

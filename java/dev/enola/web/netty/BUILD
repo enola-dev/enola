@@ -28,14 +28,14 @@ java_library(
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/io",
         "//java/dev/enola/web",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_netty_netty_buffer",
-        "@enola_maven//:io_netty_netty_codec",
-        "@enola_maven//:io_netty_netty_codec_http",
-        "@enola_maven//:io_netty_netty_handler",
-        "@enola_maven//:io_netty_netty_transport",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_netty_netty_buffer",
+        "@maven//:io_netty_netty_codec",
+        "@maven//:io_netty_netty_codec_http",
+        "@maven//:io_netty_netty_handler",
+        "@maven//:io_netty_netty_transport",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -44,13 +44,13 @@ junit_tests(
     size = "medium",
     srcs = glob(["*Test.java"]),
     runtime_deps = [
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":netty",
         "//java/dev/enola/common/io",
         "//java/dev/enola/web",
         "//java/dev/enola/web/testlib",
-        "@enola_maven//:com_github_spotbugs_spotbugs_annotations",
+        "@maven//:com_github_spotbugs_spotbugs_annotations",
     ],
 )
