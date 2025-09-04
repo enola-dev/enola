@@ -55,11 +55,11 @@ public class LoggingTestCommand implements Runnable {
         jclLogger.debug("JCL DEBUG Logging Test");
         slf4jLogger.debug("SLF DEBUG Logging Test");
         julLogger.fine("JUL FINE Logging Test");
+        julLogger.finer("JUL FINER Logging Test");
 
         // Visible with -vvvvv
         jclLogger.trace("JCL TRACE Logging Test");
         slf4jLogger.trace("SLF TRACE Logging Test");
-        julLogger.finer("JUL FINER Logging Test");
         julLogger.finest("JUL FINEST Logging Test");
     }
 }
