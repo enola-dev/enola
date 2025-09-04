@@ -14,20 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Nota bene, any shared version numbers defined here should ONLY be
-# for Maven versions (of multiple artifacts), and NOT also used in bazel_dep()
-# mod versions; because bazel-steward may update the variable but
-# not the bazel_dep, or vice versa, leading to inconsistencies (see
-# https://github.com/VirtusLab/bazel-steward/issues/404).
-
 ADK_JAVA_COMMIT = "99265cf268be4dbd0a82decf5c48bf57b3725b53"
 
 RDF4J_VERSION = "5.1.4"
 
 GRPC_JAVA_VERSION = "1.75.0"
-
-# Separate because of https://github.com/VirtusLab/bazel-steward/issues/404:
-GRPC_JAVA_VERSION_BUILD = "1.73.0"
 
 # see ./tools/java_toolchain/BUILD
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
@@ -51,9 +42,10 @@ switched_rules.use_languages(java = True)
 # https://registry.bazel.build/modules/grpc-java
 # TODO How to avoid the ugly WARNING & DEBUG once https://github.com/grpc/grpc-java/issues/11792
 #  and https://github.com/grpc/grpc-java/issues/11791 are fixed (and released).
-bazel_dep(name = "grpc-java", version = GRPC_JAVA_VERSION_BUILD, repo_name = "io_grpc_grpc_java")
+bazel_dep(name = "grpc-java", version = GRPC_JAVA_VERSION, repo_name = "io_grpc_grpc_java")
 
 # https://github.com/grpc/grpc-java/issues/12055
+# https://github.com/grpc/grpc-java/pull/12135
 git_override(
     module_name = "grpc-java",
     remote = "https://github.com/grpc/grpc-java.git",
