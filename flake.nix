@@ -36,6 +36,8 @@
           graphviz
           docker
 
+          statix
+
           pkgs-bun.bun
         ];
       in
