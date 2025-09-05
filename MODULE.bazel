@@ -28,6 +28,9 @@ GRPC_JAVA_VERSION = "1.75.0"
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
 register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
 
+# https://github.com/bazelbuild/apple_support/
+bazel_dep(name = "apple_support", version = "1.23.1", repo_name = "build_bazel_apple_support")
+
 # https://github.com/protocolbuffers/protobuf/tree/main?tab=readme-ov-file#bazel-with-bzlmod
 bazel_dep(name = "protobuf", version = "31.1")
 
