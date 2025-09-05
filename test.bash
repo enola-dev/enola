@@ -23,17 +23,18 @@ set -euo pipefail
 # Abort if there are any broken symlinks
 (find . -xtype l -ls | grep .) && exit 1
 
-# Similar also in the ./enola script:
-GO_BIN_PATH=$(go env GOPATH)/bin
-BZL=$GO_BIN_PATH/bazelisk
-if ! [ -x "$(command -v "$BZL")" ]; then
-  if [ -x "$(command -v go)" ]; then
+if command -v bazelisk &> /dev/null; then
+  BZL=bazelisk
+else
+  if ! command -v go &> /dev/null; then
+    echo "Error: 'go' command not found, and 'bazelisk' is not in PATH." >&2
+    echo "Please install Go (see https://go.dev/doc/install) or set up your environment with Nix." >&2
+    exit 1
+  fi
+  GO_BIN_PATH=$(go env GOPATH)/bin
+  BZL=$GO_BIN_PATH/bazelisk
+  if ! [ -x "$BZL" ]; then
     tools/go/install.bash
-
-  else
-    echo "Please install Go from https://go.dev/doc/install and re-run this script!"
-    echo "See also https://docs.enola.dev/dev/setup/"
-    exit 255
   fi
 fi
 

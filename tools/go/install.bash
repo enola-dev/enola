@@ -17,6 +17,12 @@
 
 set -euox pipefail
 
+if ! command -v go &> /dev/null; then
+  echo "Please install Go from https://go.dev/doc/install and re-run this script!"
+  echo "See also https://docs.enola.dev/dev/setup/"
+  exit 255
+fi
+
 # This script install pre-requisite go tools
 echo "$PATH"
 GO_BIN_PATH=$(go env GOPATH)/bin
