@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-bun.url = "github:nixos/nixpkgs/ab1f3b61279dfe63cdc938ed90660b99e9d46619"; # bun==1.2.19
     flake-utils.url = "github:numtide/flake-utils";
+    deadnix.url = "github:astro/deadnix";
   };
 
   outputs =
@@ -12,6 +13,7 @@
       nixpkgs,
       nixpkgs-bun,
       flake-utils,
+      deadnix,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -37,6 +39,7 @@
           docker
 
           statix
+          deadnix.packages.${system}.default
 
           pkgs-bun.bun
         ];
