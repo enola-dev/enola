@@ -7,8 +7,15 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, nixpkgs-bun, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-bun,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
         pkgs-bun = import nixpkgs-bun { inherit system; };
@@ -52,16 +59,70 @@
           '';
         };
 
+        packages = {
+          enola = pkgs.stdenv.mkDerivation {
+            pname = "enola";
+            version = "1.1";
+
+            buildInputs = buildTools ++ [
+              pkgs.cacert
+              pkgs.makeWrapper
+            ];
+            nativeBuildInputs = [
+              pkgs.makeWrapper
+            ];
+            src = ./.;
+            # unpackPhase = "true";
+            buildPhase = ''
+              # Prevent Bazel from trying to write to the user's home directory
+              export HOME=$TMPDIR
+              export COURSIER_CACHE=$TMPDIR/coursier-cache
+
+              # Copy sources into a writable directory
+              cp -r ${./.} $TMPDIR/src
+              chmod -R +w $TMPDIR/src
+              cd $TMPDIR/src
+
+              # This Bazel command fetches all external dependencies and populates the cache.
+              # We point the disk cache to our output directory ($out).
+              #bazelisk --output_user_root=$TMPDIR/bazel_root \
+              #  fetch \
+              #  --nobuild \
+              #  --disk_cache=$out
+
+              #echo FETCH DONE
+              #echo ==================================================
+
+              # --fetch=false --disk_cache=$out
+              bazelisk build \
+                //java/dev/enola/cli:enola_deploy.jar
+            '';
+
+            installPhase = ''
+              mkdir -p "$out/share/java"
+              cp bazel-bin/java/dev/enola/cli/*.jar "$out/share/java"
+
+              makeWrapper ${pkgs.jdk21}/bin/java $out/bin/enola \
+                --add-flags "-jar $out/share/java/enola_deploy.jar" \
+                --set-default HOME "$(mktemp -d)"
+            '';
+
+          };
+
+        };
+
         apps = {
           test = {
             type = "app";
-            program = "${pkgs.writeShellApplication {
-              name = "test";
-              runtimeInputs = buildTools;
-              text = builtins.readFile ./test.bash;
-            }}/bin/test";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "test";
+                runtimeInputs = buildTools;
+                text = builtins.readFile ./test.bash;
+              }
+            }/bin/test";
           };
         };
-    }
-  );
+      }
+    );
 }
