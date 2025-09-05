@@ -204,10 +204,9 @@ enola_maven.install(
 
         # https://google.github.io/adk-docs/get-started/installation/
         # "com.google.adk:google-adk:0.2.0",
-        # "com.google.adk:google-adk-dev:0.2.0",
         # "com.google.adk:google-adk-contrib-langchain4j:0.2.0",
+        # "com.google.adk:google-adk-dev:0.2.0",
         "com.github.google.adk-java:google-adk:" + ADK_JAVA_COMMIT,
-        "com.github.google.adk-java:google-adk-dev:" + ADK_JAVA_COMMIT,
         "com.github.google.adk-java:google-adk-contrib-langchain4j:" + ADK_JAVA_COMMIT,
 
         # https://github.com/jknack/handlebars.java
@@ -223,10 +222,6 @@ enola_maven.install(
     # to clean versions at build time!
     duplicate_version_warning = "error",
     excluded_artifacts = [
-        # Thanks, but No Thanks! (Spring Boot drags this along, with ADK.)
-        "ch.qos.logback:logback-core",
-        "ch.qos.logback:logback-classic",
-
         # Most certainly no JS scripting! (jknack:handlebars drags this cat along)
         "org.openjdk.nashorn:nashorn-core",
 
@@ -237,11 +232,6 @@ enola_maven.install(
         # because it contains package org.apache.commons.logging, which we
         # already get from org.slf4j:jcl-over-slf4j, see https://www.slf4j.org/legacy.html
         "commons-logging:commons-logging",
-
-        # Spring Boot (which we unfortunately use due to ADK Web's reliance on Spring Boot)
-        # aggressively configures logging on its own, but we actually don't want that, because
-        # our CLI already does it, so:
-        "org.springframework.boot:spring-boot-starter-logging",
 
         # ROME Utils classes appear to also be included in com.rometools:rome - at least via Tika.
         "com.rometools:rome-utils",
@@ -258,5 +248,23 @@ enola_maven.install(
         # Used by Multiformats, IPFS & IPLD
         "https://jitpack.io",
     ],
+)
+enola_maven.artifact(
+    artifact = "google-adk-dev",
+    # Due to https://github.com/enola-dev/enola/issues/1635,
+    # this has to be excluded here, not in excluded_artifacts below:
+    exclusions = [
+        # Spring Boot (which we unfortunately use due to ADK Web's reliance on Spring Boot)
+        # aggressively configures logging on its own, but we actually don't want that, because
+        # our CLI already does it, so:
+        "org.springframework.boot:spring-boot-starter-logging",
+        # Thanks, but No Thanks! (Spring Boot drags this along.)
+        "ch.qos.logback:logback-core",
+        "ch.qos.logback:logback-classic",
+    ],
+    group = "com.github.google.adk-java",
+    # TODO https://github.com/bazel-contrib/rules_jvm_external/issues/1446
+    repositories = ["https://jitpack.io"],
+    version = ADK_JAVA_COMMIT,
 )
 use_repo(enola_maven, "enola_maven")
