@@ -1,0 +1,5 @@
+FROM nixos/nix
+
+COPY . /app
+WORKDIR /app
+RUN nix --extra-experimental-features 'flakes nix-command' build .#enola
