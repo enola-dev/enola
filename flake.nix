@@ -26,7 +26,7 @@
           git
           go
           jq
-          bazelisk
+          bazel
           shellcheck
           nixpkgs-fmt
           unzip
@@ -76,7 +76,7 @@
 
             buildPhase = ''
               export HOME=$TMPDIR
-              bazelisk build //java/dev/enola/cli:enola_deploy.jar
+              bazel build //java/dev/enola/cli:enola_deploy.jar
             '';
 
             installPhase = ''
