@@ -19,11 +19,18 @@ set -euox pipefail
 
 # This script runs on CI and tests the project.
 
+# Nix specific non-regression test coverage
+nix develop -c echo "✅ Nix Dev shell works!"
+nix run .#test
+# See https://github.com/enola-dev/enola/issues/1713 re. --no-sandbox
+nix run --no-sandbox .#enola -- --help
+
 # shellcheck source=/dev/null
 source tools/asdf/install.bash
 
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
-./test.bash
+# Skippping test, because Nix did already just run this...
+# ./test.bash
 
 # This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
 models/build.bash
