@@ -69,7 +69,7 @@ properties:
   tools:
     type: array
     description: The tools to which the agent has access; see https://docs.enola.dev/concepts/tool.
-# TODO tools
+# TODO prompt
 # TODO planning
 # TODO examples
 # TODO tests
