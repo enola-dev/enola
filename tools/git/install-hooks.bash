@@ -19,7 +19,4 @@ set -euo pipefail
 
 DIR=$(realpath "$(dirname "$0")")
 
-if ! [ -e "$DIR/../../.git/hooks/pre-commit" ]; then
-  cp -v "$DIR/hooks/"* "$DIR/../../.git/hooks/"
-  chmod +x "$DIR/../../.git/hooks/"*
-fi
+ln --force --symbolic --relative "$DIR/hooks/"* "$DIR/../../.git/hooks/"
