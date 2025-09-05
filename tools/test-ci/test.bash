@@ -23,7 +23,7 @@ set -euox pipefail
 nix develop -c echo "✅ Nix Dev shell works!"
 nix run .#test
 # See https://github.com/enola-dev/enola/issues/1713 re. --no-sandbox
-nix run --no-sandbox .#enola -- --help
+nix run --no-sandbox . -- help
 
 # shellcheck source=/dev/null
 source tools/asdf/install.bash

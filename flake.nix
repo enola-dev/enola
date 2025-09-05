@@ -65,9 +65,11 @@
           '';
         };
 
-        packages = {
+        packages = rec {
+          # $ nix run
           # $ nix build .#enola
           # $ result/bin/enola --help
+          default = enola;
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
             version = "0.0.1"; # TODO: read from file

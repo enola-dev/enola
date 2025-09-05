@@ -85,7 +85,7 @@ This runs it from `~/.jbang/bin`, which JBang [added](https://github.com/jbangde
 
 ## Nix
 
-    nix run --no-sandbox github:enola-dev/enola#enola
+    nix run --no-sandbox github:enola-dev/enola
 
 If this fails after printing _"warning: ignoring the client-specified setting 'sandbox', because it is a restricted setting and you are not a trusted user",_ then you need to add your username to the `trusted-users` list in `/etc/nix/nix.conf` (e.g., `trusted-users = root your-username-here`), and then restart the Nix daemon with `sudo systemctl restart nix-daemon.service`.
 
