@@ -74,6 +74,7 @@ flox.x86_64-linux.deb
 # Nix & direnv
 # TODO https://github.com/direnv/direnv/issues/1434
 .direnv/
+/result
 
 # Python Virtual Environment (venv)
 .venv/

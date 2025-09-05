@@ -7,11 +7,19 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { nixpkgs, nixpkgs-bun, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-bun,
+      flake-utils,
+      ...
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
         pkgs-bun = import nixpkgs-bun { inherit system; };
+        jdk' = pkgs.jdk21;
         buildTools = with pkgs; [
           python312
           curl
@@ -24,7 +32,7 @@
           unzip
           nodejs
           coursier
-          jdk21
+          jdk'
           graphviz
           docker
 
@@ -52,16 +60,46 @@
           '';
         };
 
+        packages = {
+          # $ nix build .#enola
+          # $ result/bin/enola --help
+          enola = pkgs.stdenv.mkDerivation {
+            pname = "enola";
+            version = "0.0.1"; # TODO: read from file
+
+            buildInputs = [ jdk' ];
+            nativeBuildInputs = buildTools ++ [
+              pkgs.cacert
+              pkgs.makeWrapper
+            ];
+            src = ./.;
+
+            buildPhase = ''
+              export HOME=$TMPDIR
+              bazelisk build //java/dev/enola/cli:enola_deploy.jar
+            '';
+
+            installPhase = ''
+              mkdir -p "$out/share/java"
+              cp bazel-bin/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
+              makeWrapper ${jdk'}/bin/java $out/bin/enola \
+                --add-flags "-jar $out/share/java/enola_deploy.jar"
+            '';
+          };
+        };
+
         apps = {
           test = {
             type = "app";
-            program = "${pkgs.writeShellApplication {
-              name = "test";
-              runtimeInputs = buildTools;
-              text = builtins.readFile ./test.bash;
-            }}/bin/test";
+            program = "${
+              pkgs.writeShellApplication {
+                name = "test";
+                runtimeInputs = buildTools;
+                text = builtins.readFile ./test.bash;
+              }
+            }/bin/test";
           };
         };
-    }
-  );
+      }
+    );
 }
