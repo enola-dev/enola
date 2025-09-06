@@ -17,8 +17,6 @@
 
 set -euo pipefail
 
-# Inspired e.g. by https://github.com/palantir/gradle-git-version
-
 # This is a PITA (!) during development, because every change and commit on //web/
 # triggers a full rebuild of //java/. We therefore now only run this on CI:
 if [ -z "${CI:-""}" ]; then
@@ -30,15 +28,7 @@ fi
 # because Bazel (also?) looks at the timestamp of the file to determine if it needs
 # to rebuild, not ([only?] a hash of) its content.
 
-NEW_VERSION=$(git describe --tags --always --first-parent)
-NEW_VERSION=${NEW_VERSION%$'\n'}
-
-# Check for uncommitted files (that are not in .gitignore)
-# Beware that this could cause too frequent rebuilds during development while commiting;
-# but it's fine here because we only get this far if we are not on $CI anyway, so all good.
-if [ -n "$(git status --porcelain)" ]; then
-  NEW_VERSION="${NEW_VERSION}.dirty"
-fi
+NEW_VERSION=$(tools/version/version-out.bash)
 
 if [ ! -f tools/version/VERSION ] || [ "$(cat tools/version/VERSION)" != "$NEW_VERSION" ]; then
   echo -n "$NEW_VERSION" > tools/version/VERSION
