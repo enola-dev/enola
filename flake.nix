@@ -27,6 +27,9 @@
         pkgs-bun = import nixpkgs-bun { inherit system; };
         jdk' = pkgs.jdk21;
         buildTools = with pkgs; [
+          # https://github.com/NixOS/nixfmt/issues/335
+          nix
+
           python312
           curl
           git
