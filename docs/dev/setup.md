@@ -107,13 +107,6 @@ If you do still want to try, here's how to manually install what the development
 
         sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
 
-   An alternative is to use e.g. [the SDKMAN!](https://sdkman.io)
-   If you work on several projects using different Java versions,
-   then we recommend using something like
-   [jEnv (with `.java-version`)](https://www.jenv.be), or
-   [asdf (with `.tool-versions`)](https://asdf-vm.com), or
-   [direnv (with `.envrc`)](https://direnv.net).
-
 1. Install C/C++ etc. (it's required by the
    [Proto rule for Bazel](https://github.com/bazelbuild/rules_proto)), e.g. do:
 

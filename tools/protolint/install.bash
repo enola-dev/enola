@@ -20,8 +20,7 @@ set -euo pipefail
 # protolint, for VSC plex.vscode-protolint extension.
 # NB: Pre-Commit installs it's own version; this install is only for the IDE.
 
-# TODO Install protolint via .tools.versions instead of with this
-# when https://github.com/spencergilbert/asdf-protolint/issues/37 is fixed
+# TODO Install protolint via Nix instead of like this
 
 if ! [ -x "$(command -v "$(go env GOPATH)/bin/protolint")" ]; then
   # This version must be kept in the sync with the one in .pre-commit-config.yaml

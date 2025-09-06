@@ -46,8 +46,8 @@ ln -fs "$BZL" "$GO_BIN_PATH"/b
 # The Language Server from the VSC Bazel Java extension
 # needs to be able to launch "bazel" from PATH - and that only works if it's in a
 # directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
-# VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or ~/.asdf or
-# whatever; see https://github.com/salesforce/bazel-vscode-java/issues/94
+# VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or wherever;
+# see https://github.com/salesforce/bazel-vscode-java/issues/94
 # (and //.devcontainer/devcontainer.json) for further background.
 set +u
 if [ -n "$CODESPACES" ]; then

@@ -25,9 +25,6 @@ nix run .#test
 # See https://github.com/enola-dev/enola/issues/1713 re. --no-sandbox
 nix run --no-sandbox . -- help
 
-# shellcheck source=/dev/null
-source tools/asdf/install.bash
-
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 # Skippping test, because Nix did already just run this...
 # ./test.bash
