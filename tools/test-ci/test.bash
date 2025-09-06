@@ -22,8 +22,6 @@ set -euox pipefail
 # Nix specific non-regression test coverage
 nix develop -c echo "✅ Nix Dev shell works!"
 nix run .#test
-# See https://github.com/enola-dev/enola/issues/1713 re. --no-sandbox
-nix run --no-sandbox . -- help
 
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas
 # Skippping test, because Nix did already just run this...

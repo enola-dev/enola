@@ -56,6 +56,23 @@ jobs:
           runCmd: echo DevContainer OK!
           # TODO runCmd: ./tools/test-ci/test.bash
 
+  # https://docs.enola.dev/use#nix non-regression testing
+  # This is *SO* slow... because as-is it can't re-use the Bazel cache :(
+  # TODO How could we make this run faster?
+  nix-run:
+    # https://github.com/orgs/community/discussions/25722
+    if:
+      (github.repository == 'enola-dev/enola') &&
+      (github.event.pull_request.draft == false)
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: cachix/install-nix-action@v31
+      # TODO Remove --no-sandbox after https://github.com/enola-dev/enola/issues/1713
+      - run: nix run --no-sandbox . -- help
+
   build:
     # https://github.com/orgs/community/discussions/25722
     if:
