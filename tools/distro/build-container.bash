@@ -19,4 +19,5 @@
 # NB: This must work both on Docker (which turns it into docker buildx build) and Podman!
 docker build -t localhost/enola:latest .
 
-docker run --rm --tty localhost/enola:latest --version
+# Mount current directory to replicate exactly the command from documentation.
+docker run --rm --volume "$PWD":/app/CWD/:Z --tty localhost/enola:latest --version
