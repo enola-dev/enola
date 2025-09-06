@@ -210,6 +210,12 @@ repos:
         files: \.thing\.yaml$
         args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Thing.schema.json"]
 
+  # https://github.com/NixOS/nixfmt#pre-commit
+  - repo: https://github.com/NixOS/nixfmt
+    rev: 2caa09642c3cde5985cf8d239ffc66094c344c57
+    hooks:
+      - id: nixfmt-nix
+
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
     rev: 3.2.0
