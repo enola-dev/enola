@@ -40,6 +40,7 @@
           coursier
           jdk'
           graphviz
+          protobuf
           docker
 
           statix
