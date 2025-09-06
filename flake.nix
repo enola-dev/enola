@@ -13,6 +13,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       nixpkgs-bun,
       flake-utils,
@@ -46,6 +47,9 @@
 
           pkgs-bun.bun
         ];
+        # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
+        gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
+
       in
       {
         # TODO: for https://nix-bazel.build, replace with mkShellNoCC.
@@ -75,7 +79,7 @@
           default = enola;
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
-            version = "0.0.1"; # TODO: read from file
+            version = gitRev;
 
             buildInputs = [ jdk' ];
             nativeBuildInputs = buildTools ++ [
@@ -85,6 +89,9 @@
             src = ./.;
 
             buildPhase = ''
+              # class dev.enola.common.Version reads VERSION
+              echo -n "${gitRev}" >tools/version/VERSION
+
               export HOME=$TMPDIR
               bazelisk build //java/dev/enola/cli:enola_deploy.jar
             '';
