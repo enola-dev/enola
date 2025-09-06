@@ -32,9 +32,9 @@ java_library(
         "//java/dev/enola/data/id",
         "//java/dev/enola/model",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

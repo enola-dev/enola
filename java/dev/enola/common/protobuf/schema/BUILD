@@ -25,13 +25,13 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_genai_google_genai",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_protobuf_protobuf_java",
-        "@enola_maven//:com_google_protobuf_protobuf_java_util",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_genai_google_genai",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

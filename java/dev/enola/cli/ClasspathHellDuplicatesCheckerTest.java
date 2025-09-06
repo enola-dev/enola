@@ -35,7 +35,7 @@ public class ClasspathHellDuplicatesCheckerTest {
     public void NOOP() {}
 
     @Test
-    @Ignore // TODO Fix why Netty from grpc-java maven@ CP on *OUR* enola_maven@ ?!
+    @Ignore // TODO Fix why Netty from grpc-java maven@ CP on *OUR* maven@ ?!
     public void testIfThereAreAnyDuplicateJARsOnTheClasspath() throws Exception {
         var problems = new HashMap<String, List<String>>();
         try (ScanResult scanResult = new ClassGraph().scan()) {

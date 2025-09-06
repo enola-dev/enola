@@ -32,11 +32,11 @@ java_library(
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/name",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:io_modelcontextprotocol_sdk_mcp",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:io_modelcontextprotocol_sdk_mcp",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -46,7 +46,7 @@ junit_tests(
         ["*Test.java"],
     ),
     runtime_deps = [
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":mcp",

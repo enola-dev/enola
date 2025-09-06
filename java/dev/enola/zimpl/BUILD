@@ -32,11 +32,11 @@ java_binary(
         "//java/dev/enola/data",
         "//java/dev/enola/model",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
 
@@ -46,7 +46,7 @@ java_test(
     size = "small",
     srcs = ["EnolaTest.java"],
     runtime_deps = [
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
     deps = [
         ":zimpl",
@@ -54,10 +54,10 @@ java_test(
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/model",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_truth_extensions_truth_java8_extension",
-        "@enola_maven//:com_google_truth_truth",
-        "@enola_maven//:junit_junit",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_extensions_truth_java8_extension",
+        "@maven//:com_google_truth_truth",
+        "@maven//:junit_junit",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
