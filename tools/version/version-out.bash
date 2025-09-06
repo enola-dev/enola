@@ -26,7 +26,8 @@ VERSION=${VERSION%$'\n'}
 # Beware that this could cause too frequent rebuilds during development while commiting;
 # but it's fine here because we only get this far if we are not on $CI anyway, so all good.
 if [ -n "$(git status --porcelain)" ]; then
-  VERSION="${VERSION}.dirty"
+  # Use -dirty instead of .dirty so that it's in the same format as Nix's self.dirtyShortRev
+  VERSION="${VERSION}-dirty"
 fi
 
 echo "$VERSION"
