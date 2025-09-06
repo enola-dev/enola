@@ -82,3 +82,11 @@ This runs it from `~/.jbang/bin`, which JBang [added](https://github.com/jbangde
 <!-- TODO Make this work... it doesn't quite, yet:
     enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
 -->
+
+## Nix
+
+    nix run --no-sandbox github:enola-dev/enola#enola
+
+If this fails after printing _"warning: ignoring the client-specified setting 'sandbox', because it is a restricted setting and you are not a trusted user",_ then you need to add `trusted-users = YOUR-UID` to `/etc/nix/nix.conf` and do `sudo systemctl restart nix-daemon.service` and it will work.
+
+PS: See [issue #1713](https://github.com/enola-dev/enola/issues/1713) re. why `--no-sandbox` is still needed.
