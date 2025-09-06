@@ -199,17 +199,16 @@ repos:
         args: ["--verbose"]
       # Keep this in sync with yaml.schemas in settings.json
       # TODO Change once https://github.com/python-jsonschema/check-jsonschema/issues/340 is implemented
-      # TODO Re-activate after switching to Nix and auto-installing protoc with plugin etc.
-      # - id: check-jsonschema
-      #   # files: .+/models/.+\.(yaml|json)$
-      #   files: \.types\.yaml$
-      #   args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Types.schema.json"]
-      # - id: check-jsonschema
-      #   files: \.type\.yaml$
-      #   args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Type.schema.json"]
-      # - id: check-jsonschema
-      #   files: \.thing\.yaml$
-      #   args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Thing.schema.json"]
+      - id: check-jsonschema
+        # files: .+/models/.+\.(yaml|json)$
+        files: \.types\.yaml$
+        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Types.schema.json"]
+      - id: check-jsonschema
+        files: \.type\.yaml$
+        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Type.schema.json"]
+      - id: check-jsonschema
+        files: \.thing\.yaml$
+        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Thing.schema.json"]
 
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
