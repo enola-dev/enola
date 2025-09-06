@@ -28,13 +28,12 @@
     //
     // The reason is that, while the CLI build with ./test.bash and all will still work,
     // the Visual Studio Code Web on GitHub Codespaces will break without this - even
-    // if you installed Bazel/Bazelisk in another script, e.g. via ASDF or go install.
+    // if you installed Bazel/Bazelisk in another script.
     //
     // The reason for that is that the Language Server from the VSC Bazel Java extension
     // needs to be able to launch "bazel" from PATH - and that only works if it's in a
     // directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
-    // VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or ~/.asdf or
-    // whatever.
+    // VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or wherever.
     //
     // See also https://github.com/salesforce/bazel-vscode-java/issues/94
     // and use https://github.com/vorburger/LearningBazelJavaVSC as reference.
@@ -46,8 +45,7 @@
     //      "bazelisk_version": "v1.19.0"
     //   }
     //
-    // Do *NOT* add anything else here; most other tools are always only installed
-    // via https://asdf-vm.com from //.tool-versions!
+    // Do *NOT* add anything else here; most other tools installed differently.
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

@@ -38,9 +38,6 @@ echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
 echo "Don't forget to run 'REPIN=1 bazelisk run @enola_maven//:pin' after changes!"
 tools/javadoc/classpath.bash
 
-# ASDF
-asdf plugin update --all
-
 # Web
 cd web
 bun outdated

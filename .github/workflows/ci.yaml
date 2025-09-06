@@ -144,31 +144,6 @@ jobs:
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
           restore-keys: ${{ runner.os }}-demo-
 
-      # https://asdf-vm.com
-      - name: Setup ASDF itself
-        uses: asdf-vm/actions/setup@v3
-      - name: Cache ASDF
-        uses: actions/cache@v4
-        id: asdf-cache
-        with:
-          # https://github.com/asdf-vm/asdf/blob/master/.gitignore
-          path: |
-            ~/.asdf/installs
-            ~/.asdf/plugins
-            ~/.asdf/shims
-          key: ${{ runner.os }}-asdf-tools-${{ hashFiles('.tool-versions') }}
-          restore-keys: ${{ runner.os }}-asdf-tools-
-      - name: Install ASDF plugins
-        uses: asdf-vm/actions/install@v3
-        # See https://github.com/asdf-vm/actions/issues/445
-        if: ${{ steps.asdf-cache.outputs.cache-hit != 'true' }}
-        with:
-          # Keep this asdf_branch version in sync with //tools/asdf/install.bash
-          asdf_branch: v0.14.0
-      - name: Reshim installed ASDF tools
-        run: asdf reshim
-        shell: bash
-
       - run: ./tools/test-ci/test.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
