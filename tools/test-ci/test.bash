@@ -21,6 +21,7 @@ set -euox pipefail
 
 # Nix specific non-regression test coverage
 nix develop -c echo "✅ Nix Dev shell works!"
+nix flake check
 nix run .#test
 
 # Run ./test.bash after models/build.bash, because this also runs pre-commit, which validates stuff using the generated JSON Schemas

@@ -121,6 +121,8 @@
             }/bin/test";
           };
         };
+
+        formatter = pkgs.nixfmt-tree;
       }
     );
 }
