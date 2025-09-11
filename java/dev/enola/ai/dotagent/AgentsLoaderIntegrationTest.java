@@ -22,10 +22,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.iri.GoogleModelProvider.*;
 
 import com.google.adk.agents.BaseAgent;
+import com.google.adk.models.BaseLlm;
 
 import dev.enola.ai.adk.iri.GoogleLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.adk.tool.Tools;
+import dev.enola.ai.iri.Provider;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -50,15 +52,20 @@ public class AgentsLoaderIntegrationTest {
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     final SecretManager secretManager = new TestSecretManager();
+    final Provider<BaseLlm> llmProvider = new GoogleLlmProvider(secretManager);
     final ResourceProvider rp = new ClasspathResource.Provider("agents");
+
+    @Test
+    public void optimisticChefYAML_() throws IOException {
+        var yamlTester = new AgentsTester(rp, FLASH_LITE, llmProvider, Tools.none());
+        yamlTester.test("chef-optimist.agent.yaml");
+    }
 
     @Test
     public void optimisticChefYAML() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         // We must create the AgentsLoader AFTER we know that the API secret is available:
-        var loader =
-                new AgentsLoader(
-                        rp, FLASH_LITE, new GoogleLlmProvider(secretManager), Tools.none());
+        var loader = new AgentsLoader(rp, FLASH_LITE, llmProvider, Tools.none());
         var agent = load(loader, "chef-optimist.agent.yaml");
         var agentTester = new AgentTester(agent);
 
@@ -81,7 +88,7 @@ public class AgentsLoaderIntegrationTest {
         var tools = Tools.builtin(testInstantSource);
 
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
-        var loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), tools);
+        var loader = new AgentsLoader(rp, FLASH_LITE, llmProvider, tools);
         var agent = load(loader, "clock.agent.yaml");
         var agentTester = new AgentTester(agent);
 
@@ -96,8 +103,7 @@ public class AgentsLoaderIntegrationTest {
     @Test
     public void person() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
-        var loader =
-                new AgentsLoader(rp, FLASH, new GoogleLlmProvider(secretManager), Tools.none());
+        var loader = new AgentsLoader(rp, FLASH, llmProvider, Tools.none());
         var agent = load(loader, "person.agent.yaml");
         var agentTester = new AgentTester(agent);
         agentTester.assertJsonResponseEquals(
