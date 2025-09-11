@@ -29,10 +29,10 @@ java_library(
         "//java/dev/enola/common/diff/testlib",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/yamljson",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_truth_truth",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_truth",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -45,6 +45,6 @@ junit_tests(
     deps = [
         ":testlib",
         "//java/dev/enola/common/io",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

@@ -23,7 +23,7 @@ java_binary(
     main_class = "dev.enola.chat.Demo",
     runtime_deps = [
         ":chat",
-        "@enola_maven//:org_slf4j_slf4j_simple",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
@@ -50,11 +50,11 @@ java_library(
         "//java/dev/enola/data/id",
         "//java/dev/enola/identity",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:dev_langchain4j_langchain4j_core",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:dev_langchain4j_langchain4j_core",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 

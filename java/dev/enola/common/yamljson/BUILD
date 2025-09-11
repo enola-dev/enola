@@ -26,12 +26,12 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/io",
-        "@enola_maven//:com_google_auto_service_auto_service_annotations",
-        "@enola_maven//:com_google_code_gson_gson",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_api",
-        "@enola_maven//:org_snakeyaml_snakeyaml_engine",
+        "@maven//:com_google_auto_service_auto_service_annotations",
+        "@maven//:com_google_code_gson_gson",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
+        "@maven//:org_snakeyaml_snakeyaml_engine",
     ],
 )
 

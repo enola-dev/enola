@@ -30,10 +30,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/context",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_truth_truth",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_truth",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -49,7 +49,7 @@ junit_tests(
         ":iri",
         "//java/dev/enola/common/context",
         "//test",
-        "@enola_maven//:com_github_java_json_tools_uri_template",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

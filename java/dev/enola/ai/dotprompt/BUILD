@@ -33,9 +33,9 @@ java_library(
         "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/template",
         "//java/dev/enola/common/template/handlebars",
-        "@enola_maven//:com_fasterxml_jackson_core_jackson_annotations",
-        "@enola_maven//:org_jspecify_jspecify",
-        "@enola_maven//:org_slf4j_slf4j_jdk14",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )
 

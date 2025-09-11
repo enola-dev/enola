@@ -29,12 +29,12 @@ java_library(
         "//java/dev/enola/common/io/testlib",
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/thing:thing_java",
-        "@enola_maven//:com_google_errorprone_error_prone_annotations",
-        "@enola_maven//:com_google_guava_guava",
-        "@enola_maven//:com_google_truth_truth",
-        "@enola_maven//:org_eclipse_rdf4j_rdf4j_model",
-        "@enola_maven//:org_eclipse_rdf4j_rdf4j_model_api",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:com_google_errorprone_error_prone_annotations",
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_truth_truth",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model",
+        "@maven//:org_eclipse_rdf4j_rdf4j_model_api",
+        "@maven//:org_jspecify_jspecify",
     ],
 )
 
@@ -49,6 +49,6 @@ junit_tests(
         "//java/dev/enola/thing:thing_java",
         "//models",
         "//test",
-        "@enola_maven//:org_jspecify_jspecify",
+        "@maven//:org_jspecify_jspecify",
     ],
 )

@@ -33,9 +33,9 @@ pre-commit run --all-files
 # Update Bazel's Maven dependencies MODULE.bazel (and maven_install.json)
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#outdated-artifacts
 # Note that this doesn't actually update, just prints if *YOU* (manually) can.
-bazelisk run @enola_maven//:outdated
+bazelisk run @maven//:outdated
 echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
-echo "Don't forget to run 'REPIN=1 bazelisk run @enola_maven//:pin' after changes!"
+echo "Don't forget to run 'REPIN=1 bazelisk run @maven//:pin' after changes!"
 tools/javadoc/classpath.bash
 
 # Web
