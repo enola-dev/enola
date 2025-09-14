@@ -23,8 +23,9 @@ set -euo pipefail
 # Run Nix tools:
 #   - https://github.com/oppiliappan/statix
 #   - https://github.com/astro/deadnix
-statix check .
-deadnix .
+# BUT only on our own flake.nix; NOT on node_modules/ etc.
+statix check flake.nix
+deadnix --fail flake.nix
 
 # Abort if there are any broken symlinks
 (find . -xtype l -ls | grep .) && exit 1
