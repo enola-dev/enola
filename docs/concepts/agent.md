@@ -16,7 +16,7 @@
     limitations under the License.
 -->
 
-# Agent 🕵🏾‍♀️
+# Agent 🕵🏾‍♀️ Concept
 
 _Agents_ use a _[Large Language Model (LLM)](../specs/aiuri/index.md#language-models-lm)_ to reason, plan, and execute actions to achieve a specific goal, often interacting with _[Tools](tool.md)._ They augment LLMs to go beyond just generating text by enabling them to perform tasks and solve problems proactively.
 
@@ -24,6 +24,8 @@ Enola lets you easily create ‘opinionated’ (“only one way to do it”) _No
 declaratively in YAML or JSON (and maybe TextProto later), based on its [Agent Schema](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/agent.schema.yaml).
 
 **[Check out the tutorial](../tutorial/agents.md)!**
+
+_[Check out our existing agents!](../agents/index.md)_
 
 ## Schema
 
@@ -38,6 +40,10 @@ Instructions for LLM model, guiding the agent's behaviour. You should describe c
 ### Description
 
 One-line description of the agent's capability. The model uses this to determine whether to delegate control to the agent.
+
+### Model
+
+The language model to use, based on the [Enola.dev AI URI specification](../specs/aiuri/index.md); so e.g. `google://?model=gemini-2.5-flash`. May be omitted, in which case a default one (built-in, or specified as a parameter to a CLI) will typically be used.
 
 ### Name
 

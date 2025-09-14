@@ -24,7 +24,7 @@ Thanks for checking out this project! Starring it helps with visibility and show
 
 _[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)_ to receive news!
 
-Enola is many things, including [an awesome Agentic AI tool](agents.md).
+Enola [is](concepts/whatis.md) many things, including [an awesome Agentic AI tool](agents/index.md).
 
 <!-- TODO
 Enola will also be a useful tool which helps IT ⛑️ Sysadmins,

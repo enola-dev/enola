@@ -165,7 +165,7 @@ Vaguely related other such tools include:
 
 * [Reactome](https://en.wikipedia.org/wiki/Reactome)'s [Pathway Browser](https://reactome.org/PathwayBrowser)
 
-### Frameworks
+### Graph Frameworks
 
 * [`com.google.common.graph`](https://github.com/google/guava/wiki/GraphsExplained) Java API
 * [JGraphT](https://jgrapht.org) Java Library
@@ -248,6 +248,18 @@ Vector _("Embedding")_ databases of possible future interest:
 * [CouchDB](https://couchdb.apache.org) #opensource
 
 ## AI
+
+### AI Tools
+
+* [Gemini CLI](https://google-gemini.github.io/gemini-cli/)
+* [Claude Code](https://www.anthropic.com/claude-code)
+* [Chat GPT Desktop](https://chatgpt.com/features/desktop) #no-linux
+
+### Agents Frameworks
+
+* [Google Agent Development Kit](https://google.github.io/adk-docs/) #Google #LLM #agents
+* [LangChain](https://langchain.com) #opensource #LLM #agents
+* [Java AI Agents Frameworks](https://github.com/enola-dev/awesome-java-ai/?tab=readme-ov-file#agents)
 
 ### MCP
 
