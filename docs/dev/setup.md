@@ -30,7 +30,7 @@ You can also enter the Nix build environment to have the same tools available, w
 
 We recommend that you also [install `direnv`](https://direnv.net) which conveniently automates this.
 
-We recommend that also [start the IntelliJ IDEA IDE from within](ide.md#jetbrains-intellij-idea-ij) this `nix develop` environment.
+We recommend that you also [start the IntelliJ IDEA IDE from within](ide.md#jetbrains-intellij-idea-ij) this `nix develop` environment.
 
 !!! warning "Setup is in flux, WIP full Nix adoption!"
 
