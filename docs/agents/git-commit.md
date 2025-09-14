@@ -4,7 +4,7 @@ This will generate Git Commit messages for you using an LLM:
 
 1. First, make sure that you [have `uvx` available](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) (until #[1632](https://github.com/enola-dev/enola/issues/1632))
 1. Next, [create a Google Gemini API key](https://aistudio.google.com/apikey)
-1. Now [store this secret](https://docs.enola.dev/use/secret/), using: `mkdir -p ~/.config/enola && echo GOOGLE_AI_API_KEY=...
+1. Now [store this secret](https://docs.enola.dev/use/secret/), using: `mkdir -p ~/.config/enola && echo GOOGLE_AI_API_KEY=...`
 1. Finally, [install Enola.dev](https://docs.enola.dev/use/), and now run:
 
 ```sh

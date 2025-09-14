@@ -37,8 +37,8 @@ nav:
   #     - Java Architecture:
   #     - Beancount:
   #     - Linked Data CLI & Shell:
-  - Home: index.md
   - Agents:
+      - 👋 Introduction: index.md
       - ℹ️ Overview: agents/index.md
       - ✨ Commit: agents/git-commit.md
       - 🐛 Issue: agents/github-issue.md
