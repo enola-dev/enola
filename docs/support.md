@@ -18,6 +18,18 @@
 
 # Support
 
-Depending on your needs, we may be able to offer commercial support for Enola.
+📬 [Join Announcements mailing list](https://groups.google.com/g/enoladev-announcements)!
 
-Please [contact us](mailto:support1@enola.dev) to discuss.
+Got a tricky problem or just need a hand getting started? We've got you covered!
+
+## Professional
+
+Depending on your needs, we may be able to offer 💼 commercial support for Enola; please 📧 [contact us](mailto:support1@enola.dev) to discuss.
+
+## Community
+
+For free, community-based support, you can connect with other amazing users like yourself and our awesome contributors through our 🤝 [Discussions](https://github.com/orgs/enola-dev/discussions) Forum or 💬 [Chat](https://github.com/enola-dev/enola/issues/1649). Please note that this support is provided on a best-effort basis by volunteers and does not include any guarantees for response time or issue resolution.
+
+## Documentation
+
+You might also find what you're looking for in our 📖 [`docs.enola.dev`](https://docs.enola.dev) RTFM? 🤷‍♂️ 🤦‍♀️ 😉
