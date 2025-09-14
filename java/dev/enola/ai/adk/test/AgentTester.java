@@ -56,7 +56,8 @@ public class AgentTester {
     }
 
     public AgentTester(BaseLlm model, BaseTool... tools) {
-        this(LlmAgent.builder().name(model.model()).model(model).tools(tools).build());
+        // The cast to Object[] is needed to avoid a compiler warning about ambiguous varargs.
+        this(LlmAgent.builder().name(model.model()).model(model).tools((Object[]) tools).build());
     }
 
     public void assertTextResponseContains(String prompt, String contains) {
