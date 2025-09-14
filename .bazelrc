@@ -3,15 +3,13 @@
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 common --enable_bzlmod
 
-# Do *NOT* use "common --extra_toolchains=@local_jdk//:all", as we want **ONLY** remotejdk_21!
-
 # Java version must match .devcontainer/devcontainer.json
 # https://bazel.build/docs/bazel-and-java#java-versions
 common --java_language_version=21
 common --tool_java_language_version=21
 # https://bazel.build/docs/user-manual#java_runtime_version
-common --java_runtime_version=remotejdk_21
-common --tool_java_runtime_version=remotejdk_21
+common --java_runtime_version=local_jdk_21
+common --tool_java_runtime_version=local_jdk_21
 
 # https://github.com/bazelbuild/intellij/issues/1169
 common --incompatible_strict_action_env
