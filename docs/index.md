@@ -20,41 +20,41 @@
 
 <a class="github-button" href="https://github.com/enola-dev/enola" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star enola-dev/enola on GitHub">⭐ Star Us on GitHub! 🫶</a>
 
-Thanks for checking out this project! Starring it helps with visibility and shows your support.
+_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)_ to receive our news & updates!
 
-_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)_ to receive news!
+Enola.dev is an open-source project and community with a three-fold mission:
 
-Enola [is](concepts/whatis.md) many things, including [an awesome Agentic AI tool](agents/index.md).
+1. Build a vibrant community for hands-on learning in the rapidly evolving world of AI. (As Feynman famously said: _"What I cannot create, I do not understand.")_
+1. [Provide powerful directly useful 🔮 AI-driven 🧙 agents](agents/index.md) that automate your work. These can be used with several AI tools.
+1. Offer one such AI Tool; the Enola Application.
 
-<!-- TODO
-Enola will also be a useful tool which helps IT ⛑️ Sysadmins,
-[Site Reliability Engineers](https://en.wikipedia.org/wiki/Site_reliability_engineering)
-(see [Google's SRE page](https://sre.google)), and other _samideanaj adminopsions_ to
-document their systems and relationships. This increased visibility (knowledge management)
-helps to investigate the root causes of complex production issues (troubleshoot)
-to operate them reliably with efficiency.
+This Enola application itself is an **Agentic AI Tool for Everyone:** It enables you to easily create and use [your own _"No Code"_ AI 🥷 agents](tutorial/agents.md). These agents leverage Large Language Models (LLMs) and can interact with external [🧰 Tools](concepts/tool.md) to perform actions, going far beyond simple chat and text generation.
 
-Enola has a _model_ of an organization's IT landscape,
-offering a _"single pane of glass"_ (SPOG) view of it.
-This mimics the _"picture in the head"_ that knowledgeable senior engineers
-typically have of systems, their relations, failure modes, etc. All too often
-these are incompletely fully captured by existing mechanisms. Teams often do
-have e.g. related documents, Playbooks, various ad-hoc scripts etc.
-This tool can bring them all together, fully integrated. An organization can
-do this incrementally over time, improving with each incident
-([until 🔮](concepts/singularity.md)).
-It complements [related existing tools](concepts/other.md).
+* **Accessible:** It provides both a [CLI and a Web UI](tutorial/chat.md) for interacting with agents.
+* **End-User Focused:** It's designed as a "[packaged](use/index.md)" tool that's easy to get started with.
+* **Extensible:** While user-friendly, it's also a full-fledged [technical framework](dev/javadoc/index.html) that you can [use as a library](dev/maven.md) to build your own solutions.
+* **Forward-Looking:** We are actively exploring advanced concepts like "multi-agent" scenarios.
 
-We call this _"Infrastructure as Linked Data"_ graphs.
+## Our Vision
 
--->
+We believe the future of AI lies in Knowledge Management Platforms benefiting from the synergy between Large Language Models and structured Knowledge Graphs (KG). Our goal is to further explore the fascinating intersection of these fields, particularly with _AI Graph RAG (Retrieval-Augmented Generation)_. By providing agents with a rich, contextual understanding of _"IT Infrastructure (or other) as Linked Data"_ systems through knowledge graphs, we aim to create more powerful, accurate, and intelligent ⛑️ automation ([until singularity](concepts/singularity.md)).
 
-<!-- Due to its inherently modular underlying technical framework, its internal data model is highly extensible to a variety
-of environments by modeling concepts from private environments and writing bespoke custom API connectors for in-house setups. -->
+We may also offer our [built-in Tools for LLMs](concepts/tool.md) as standalone MCP servers for [other AI tools](concepts/other.md#ai-tools) to use in the future.
 
-<!-- TODO The actual usage of [the underlying core](core.md) can be illustrated e.g. by its [Kubernetes Edition](k8s/index.md). -->
+## Other Tools
 
-<!-- TODO Re-add, later: <sub>PS: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter, and this is an SRE detective's tool!</sub> -->
+Enola includes also a suite of AI unrelated tools:
+
+* **Resource Abstraction:** The [`fetch`](use/fetch/index.md) command can retrieve resources from diverse sources like HTTP(S), Git repositories, and local files.
+* **Data Transformation (Rosetta):** The [`rosetta`](use/rosetta/index.md) command converts between numerous data formats (RDF, JSON, YAML, XML, etc.), and can generate diagrams to visualize your models.
+* **Executable Markdown:** The [`execmd`](use/execmd/index.md) command allows you to embed executable commands within your Markdown documents, enabling dynamic content generation.
+* **Canonicalizing Formatter:** The [`canonicalize`](use/canonicalize/index.md) command helps maintain consistent formatting across your project files.
+
+BTW: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter. And this is like a detective's tool!
+
+## See You!
+
+Come join us and help build the future of open AI-powered knowledge and automation together! 🫶
 
 <script type="application/ld+json">
 {% include "models/enola.dev.jsonld" %}

@@ -78,7 +78,6 @@ nav:
           - MIME Simple: models/enola.dev/mediaType/graph.gv.svg
           - MIME Full: models/enola.dev/mediaType/graphviz.gv.svg
   - Concepts:
-      - What: concepts/whatis.md
       - Agents: concepts/agent.md
       - Tools: concepts/tool.md
       - MCP: concepts/mcp.md
