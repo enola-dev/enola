@@ -18,12 +18,13 @@
 
 # Agents
 
-Try out any of our ready-to-use _**FREE**_ agents:
+Try out any of our ready-to-use _**FREE**_ AI agents:
 
-* [Git Commit Message Agent](https://github.com/enola-dev/git-commit-message-agent)
+* [Git Commit ✨ Message 🔮 Agent](git-commit.md)
+* [GitHub Issue 🐛 Agent](github-issue.md)
 
-Or [Contact Us](support.md) to have us build an 🥷 Agent for YOU?
+See our [Ideas for New 🧙 Agents](https://github.com/orgs/enola-dev/discussions/categories/ideas-for-new-agents), and contribute to _[make your own](../tutorial/agents.md)!_
 
-Or _[make your own](tutorial/agents.md)!_
+Or [Contact Us](../support.md) to have us build an 🥷 Agent for YOU?
 
 <!-- TODO ## By the Enola.dev community -vs- ## Elsewhere -->
