@@ -25,9 +25,9 @@ Ensure you are [set-up](setup.md) with a working build on the CLI before configu
 Because of [the Nix requirement](setup.md), we recommend that you launch IJ not graphically via Toolbox, but
 from within a `nix develop` shell on the CLI, where `PATH` is the same Bazel environment. This avoids problems like
 [issue #1657](https://github.com/enola-dev/enola/issues/1657). To do this, start JetBrains Toolbox, click on Settings of IJ
-(in Toolbox, BEFORE starting it), and `Configure...` the _shell scripts location_ to be a directory on your `PATH`, such
-as e.g. your `$HOME/.local/bin`. It doesn't really matter if Toolbox says that (it) _Cannot find the specified directory
-in the system PATH,_ as long as it actually will be so in the shell where you'll launch it from within a `nix develop` env.
+(in Toolbox, BEFORE starting it), and `Configure...` the _shell scripts location_ to be a directory on your `PATH` (e.g., `$HOME/.local/bin`).
+Toolbox may warn that it _Cannot find the specified directory in the system PATH_.
+You can ignore this, as long as the directory is on the `PATH` in the `nix develop` shell from which you will launch IJ.
 Toolbox will now have put a launch script into that directory.
 
 The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins) are managed via the [`.idea/externalDependencies.xml`](https://github.com/enola-dev/enola/blob/main/.idea/externalDependencies.xml).
