@@ -57,6 +57,8 @@ nav:
       - 🦮 Help: use/help/index.md
       - 🤵 Server: use/server/index.md
       - 💬 Chat/Shell: use/chat/index.md
+      - 🔮 AI Task: use/ai/index.md
+      - 🔱 MCP: use/mcp/index.md
       # TODO git rm docs/use/library/* ? - Example Model: use/library/index.md
       - 📃 DocGen: use/docgen/index.md
       - 🏗️ Generate: use/gen/index.md
