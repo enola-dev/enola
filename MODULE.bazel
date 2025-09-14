@@ -24,6 +24,9 @@ RDF4J_VERSION = "5.1.4"
 
 GRPC_JAVA_VERSION = "1.75.0"
 
+# https://github.com/bazel-contrib/rules_jvm_external/issues/1426
+bazel_dep(name = "bazel_skylib", version = "1.8.1")
+
 # see ./tools/java_toolchain/BUILD
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
 register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
