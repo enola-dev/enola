@@ -38,7 +38,7 @@ nav:
   #     - Beancount:
   #     - Linked Data CLI & Shell:
   - Home: index.md
-  - Agents: agents.md
+  - Agents: agents/index.md
   - Tutorials:
       - Install: use/index.md
       - AI Agents: tutorial/agents.md
