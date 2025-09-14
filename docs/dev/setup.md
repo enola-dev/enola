@@ -20,7 +20,7 @@
 
 ## Nix
 
-[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project, and run:
+[Please install Nix](https://github.com/vorburger/LearningLinux/blob/develop/nix/docs/install.md) to contribute to this project and run:
 
 * `nix run .#test` to execute unit and integration tests, which should be (relatively) fast
 
@@ -30,7 +30,7 @@ You can also enter the Nix build environment to have the same tools available, w
 
 We recommend that you also [install `direnv`](https://direnv.net) which conveniently automates this.
 
-<!-- **TODO** How about IDEs? Does IntelliJ HAVE to be started from within `nix develop` or does it not matter? -->
+We recommend that also [start the IntelliJ IDEA IDE from within](ide.md#jetbrains-intellij-idea-ij) this `nix develop` environment.
 
 !!! warning "Setup is in flux, WIP full Nix adoption!"
 
