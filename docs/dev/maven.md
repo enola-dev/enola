@@ -26,8 +26,8 @@ Accessing the aforementioned URL in a Web Browser will show a 404 (because there
 
 We currently only publish `dev.enola:enola:0.0.1-SNAPSHOT`, and may publish finer grained ones in the future. Please [open an issue](https://github.com/enola-dev/enola/issues) to request making smaller JARs available if you have an interest in and would use any of our packages as simple separate standalone libraries.
 
-The dependencies of JAR are either on Maven Central or JitPack; your Maven resolver needs to be configured for both.
+The dependencies of that JAR are either on Maven Central or JitPack; your Maven resolver needs to be configured for both.
 
-Both the [JBang demo](jbang.md) and the [launch via JBang](../use/index.md) use this repo.
+Both the [JBang demo](jbang.md) and the [launch via JBang](../use/index.md#jbang) use this repo.
 
 [See the JavaDoc](javadoc/index.html).

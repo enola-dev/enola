@@ -42,7 +42,7 @@ This is free!
 
 `http://localhost:11434?type=ollama&model=gemma3:1b` is the URI of the [Gemma 3 (1B)](https://ai.google.dev/gemma/) large language model running in [Ollama](https://ollama.com), at `http://localhost:11434`.
 
-The `model` query parameter of the URI needs to use a model name from https://ollama.com/search.
+The `model` query parameter of the URI can be any of the several hundred models from https://ollama.com/search.
 
 [MCP Tools](../../concepts/mcp.md) support may still have some bugs (see #[1628](https://github.com/enola-dev/enola/issues/1628)).
 
@@ -103,7 +103,7 @@ We are not aware of any similar LM URI naming scheme. Please add any that you kn
 
 ## ToDo
 
-1. Add many more URIs
+1. Add many more URIs; notably OpenAI
 1. Add additional common parameters: `seed`, `stopSequences` etc. (see [dotprompt config](https://google.github.io/dotprompt/reference/frontmatter/#config))
 
 ## Support
