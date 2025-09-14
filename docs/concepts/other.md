@@ -251,6 +251,7 @@ Vector _("Embedding")_ databases of possible future interest:
 
 ### AI Tools
 
+* [Enola.dev Application](../use/index.md)
 * [Gemini CLI](https://google-gemini.github.io/gemini-cli/)
 * [Claude Code](https://www.anthropic.com/claude-code)
 * [Chat GPT Desktop](https://chatgpt.com/features/desktop) #no-linux
