@@ -38,7 +38,10 @@ nav:
   #     - Beancount:
   #     - Linked Data CLI & Shell:
   - Home: index.md
-  - Agents: agents/index.md
+  - Agents:
+      - ℹ️ Overview: agents/index.md
+      - ✨ Commit: agents/git-commit.md
+      - 🐛 Issue: agents/github-issue.md
   - Tutorials:
       - Install: use/index.md
       - AI Agents: tutorial/agents.md
