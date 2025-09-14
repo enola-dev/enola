@@ -127,7 +127,7 @@ If you do still want to try, here's how to manually install what the development
 
 You should now be able to proceed as above (but without requiring _Docker)._
 
-### Clean Up
+## Clean Up
 
 Use [Nix](#nix) and do not do `pip install -r requirements.txt` outside of the _virtual environment!_
 
@@ -145,3 +145,17 @@ For _"cannot parse .renovaterc.json5 because support is missing for json5"_ from
     pip install -r requirements.txt
 
 But if you are correctly in Nix's development environment (`nix develop`), then there should normally be no need for any this.
+
+## Troubleshooting
+
+### Nix: warning: download buffer is full; consider increasing the 'download-buffer-size' setting (won't work)
+
+Add `download-buffer-size = 524288000` to your `~/.config/nix/nix.conf`.
+
+Remember to `systemctl restart nix-daemon.service`.
+
+See https://github.com/NixOS/nix/issues/11728.
+
+### Nix: warning: ignoring the client-specified setting 'download-buffer-size', because it is a restricted setting and you are not a trusted user
+
+Add `trusted-users = $USER root` to your `/etc/nix/nix.conf` (or `/etc/nix/nix.custom.conf` if your `/etc/nix/nix.conf` has an `!include` for it), replacing `$USER` with your actual username. Remember to `systemctl restart nix-daemon.service`.

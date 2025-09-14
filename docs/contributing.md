@@ -20,6 +20,8 @@
 
 We would love to accept your patches and contributions to this project.
 
+[Dev Set-Up](dev/setup.md) describes how to set up your development environment.
+
 ## Before you begin
 
 ### Sign our Contributor License Agreement
