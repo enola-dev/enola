@@ -1,7 +1,7 @@
 <!--
     SPDX-License-Identifier: Apache-2.0
 
-    Copyright 2025 The Enola <https://enola.dev> Authors
+    Copyright 2023-2025 The Enola <https://enola.dev> Authors
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,15 +16,17 @@
     limitations under the License.
 -->
 
-# What is Enola.dev?
+# Enola.dev 🕵🏾‍♀️
 
-Enola.dev is an open-source project and community with a three fold mission:
+_[Click **_Join_** on our Announcements Google Group](https://groups.google.com/g/enoladev-announcements)_ to receive our news & updates!
+
+Enola.dev is an open-source project and community with a three-fold mission:
 
 1. Build a vibrant community for hands-on learning in the rapidly evolving world of AI. (As Feynman famously said: _"What I cannot create, I do not understand.")_
-1. [Provide powerful directly useful AI-driven agents](../agents/index.md) that automate your work. These can be used with several AI tools.
+1. [Provide powerful directly useful 🔮 AI-driven 🧙 agents](../agents/index.md) that automate your work. These can be used with several AI tools.
 1. Offer one such AI Tool; the Enola Application.
 
-This Enola Application itself is an **Agentic AI Tool for Everyone:** It enables you to easily create and use [your own _"No Code"_ AI agents](../tutorial/agents.md). These agents leverage Large Language Models (LLMs) and can interact with external [Tools](tool.md) to perform actions, going far beyond simple chat and text generation.
+This Enola application itself is an **Agentic AI Tool for Everyone:** It enables you to easily create and use [your own _"No Code"_ AI 🥷 agents](../tutorial/agents.md). These agents leverage Large Language Models (LLMs) and can interact with external [🧰 Tools](tool.md) to perform actions, going far beyond simple chat and text generation.
 
 * **Accessible:** It provides both a [CLI and a Web UI](../tutorial/chat.md) for interacting with agents.
 * **End-User Focused:** It's designed as a "[packaged](../use/index.md)" tool that's easy to get started with.
@@ -33,9 +35,9 @@ This Enola Application itself is an **Agentic AI Tool for Everyone:** It enables
 
 ## Our Vision
 
-We believe the future of AI lies in Knowledge Management Platforms benefiting from the synergy between Large Language Models and structured Knowledge Graphs (KG). Our goal is to further explore the fascinating intersection of these fields, particularly with _AI Graph RAG (Retrieval-Augmented Generation)_. By providing agents with a rich, contextual understanding of systems (IT or other) through knowledge graphs, we aim to create more powerful, accurate, and intelligent automation.
+We believe the future of AI lies in Knowledge Management Platforms benefiting from the synergy between Large Language Models and structured Knowledge Graphs (KG). Our goal is to further explore the fascinating intersection of these fields, particularly with _AI Graph RAG (Retrieval-Augmented Generation)_. By providing agents with a rich, contextual understanding of _"IT Infrastructure (or other) as Linked Data"_ systems through knowledge graphs, we aim to create more powerful, accurate, and intelligent ⛑️ automation ([until singularity](singularity.md)).
 
-We may also offer Enola's [built-in Tools for LLMs](tool.md) as standalone MCP servers for [other AI tools](other.md#ai-tools) to use.
+We may also offer our [built-in Tools for LLMs](tool.md) as standalone MCP servers for [other AI tools](other.md#ai-tools) to use in the future.
 
 ## Other Tools
 
@@ -46,6 +48,14 @@ Enola includes also a suite of AI unrelated tools:
 * **Executable Markdown:** The [`execmd`](../use/execmd/index.md) command allows you to embed executable commands within your Markdown documents, enabling dynamic content generation.
 * **Canonicalizing Formatter:** The [`canonicalize`](../use/canonicalize/index.md) command helps maintain consistent formatting across your project files.
 
+BTW: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter. And this is like a detective's tool!
+
 ## See You!
 
-Come join us and help build the future of open AI-powered knowledge and automation together!
+Come join us and help build the future of open AI-powered knowledge and automation together! 🫶
+
+<script type="application/ld+json">
+{% include "models/enola.dev.jsonld" %}
+</script>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
