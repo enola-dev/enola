@@ -10,6 +10,7 @@ com.anthropic:anthropic-java-core:1.4.0
 com.anthropic:anthropic-java-vertex:1.4.0
 com.drewnoakes:metadata-extractor:2.19.0
 com.epam:parso:2.0.14
+com.ethlo.time:itu:1.10.3
 com.fasterxml.jackson.core:jackson-annotations:2.19.2
 com.fasterxml.jackson.core:jackson-core:2.19.2
 com.fasterxml.jackson.core:jackson-databind:2.19.2
@@ -31,9 +32,6 @@ com.github.docker-java:docker-java-transport:3.3.6
 com.github.docker-java:docker-java-transport-httpclient5:3.3.6
 com.github.docker-java:docker-java-transport-jersey:3.3.6
 com.github.docker-java:docker-java-transport-netty:3.3.6
-com.github.google.adk-java:google-adk:99265cf268be4dbd0a82decf5c48bf57b3725b53
-com.github.google.adk-java:google-adk-contrib-langchain4j:99265cf268be4dbd0a82decf5c48bf57b3725b53
-com.github.google.adk-java:google-adk-dev:99265cf268be4dbd0a82decf5c48bf57b3725b53
 com.github.hypfvieh:dbus-java-core:4.3.1
 com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.3.1
 com.github.ipfs:java-ipfs-http-client:d982fc0fa1
@@ -52,6 +50,9 @@ com.github.package-url:packageurl-java:1.5.0
 com.github.spotbugs:spotbugs-annotations:4.9.3
 com.github.valfirst:slf4j-test:3.0.1
 com.github.virtuald:curvesapi:1.08
+com.github.vorburger.adk-java:google-adk:0c4eed584f
+com.github.vorburger.adk-java:google-adk-dev:0c4eed584f
+com.github.vorburger.adk-java:google-adk-langchain4j:0c4eed584f
 com.google.android:annotations:4.1.1.4
 com.google.api-client:google-api-client:2.7.1
 com.google.api.grpc:gapic-google-cloud-storage-v2:2.47.0
@@ -116,6 +117,7 @@ com.healthmarketscience.jackcess:jackcess:4.0.7
 com.healthmarketscience.jackcess:jackcess-encrypt:4.0.2
 com.kohlschutter.junixsocket:junixsocket-common:2.6.1
 com.kohlschutter.junixsocket:junixsocket-native-common:2.6.1
+com.networknt:json-schema-validator:1.5.7
 com.pff:java-libpst:0.9.3
 com.rometools:rome:2.1.0
 com.squareup.okhttp3:logging-interceptor:4.12.0
@@ -172,7 +174,7 @@ io.kubernetes:client-java-api:24.0.0
 io.kubernetes:client-java-proto:24.0.0
 io.micrometer:micrometer-commons:1.14.2
 io.micrometer:micrometer-observation:1.14.2
-io.modelcontextprotocol.sdk:mcp:0.10.0
+io.modelcontextprotocol.sdk:mcp:0.11.3
 io.netty:netty-buffer:4.1.124.Final
 io.netty:netty-codec:4.1.124.Final
 io.netty:netty-codec-http:4.1.124.Final
@@ -236,7 +238,7 @@ org.apache.commons:commons-exec:1.4.0
 org.apache.commons:commons-lang3:3.17.0
 org.apache.commons:commons-math3:3.6.1
 org.apache.commons:commons-text:1.11.0
-org.apache.httpcomponents.client5:httpclient5:5.4.1
+org.apache.httpcomponents.client5:httpclient5:5.4.3
 org.apache.httpcomponents.core5:httpcore5:5.3.1
 org.apache.httpcomponents.core5:httpcore5-h2:5.3.1
 org.apache.httpcomponents:httpclient:4.5.14

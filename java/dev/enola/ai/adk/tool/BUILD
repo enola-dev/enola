@@ -37,7 +37,7 @@ java_library(
         "//java/dev/enola/common/time",
         "//java/dev/enola/common/name",
         # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_google_adk_java_google_adk",
+        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
         "@enola_maven//:io_modelcontextprotocol_sdk_mcp",
         "@enola_maven//:com_google_errorprone_error_prone_annotations",
         "@enola_maven//:com_google_genai_google_genai",
@@ -62,7 +62,7 @@ junit_tests(
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
         # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_google_adk_java_google_adk",
+        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
         "@enola_maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

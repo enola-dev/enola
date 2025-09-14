@@ -214,7 +214,7 @@ enola_maven.install(
         # "com.google.adk:google-adk-contrib-langchain4j:0.2.0",
         "com.github.vorburger.adk-java:google-adk:" + ADK_JAVA_COMMIT,
         "com.github.vorburger.adk-java:google-adk-dev:" + ADK_JAVA_COMMIT,
-        "com.github.vorburger.adk-java:google-adk-contrib-langchain4j:" + ADK_JAVA_COMMIT,
+        "com.github.vorburger.adk-java:google-adk-langchain4j:" + ADK_JAVA_COMMIT,
 
         # https://github.com/jknack/handlebars.java
         "com.github.jknack:handlebars:4.4.0",
