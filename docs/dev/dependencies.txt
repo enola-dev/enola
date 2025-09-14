@@ -108,8 +108,8 @@ com.google.protobuf:protobuf-java:4.32.0
 com.google.protobuf:protobuf-java-util:4.32.0
 com.google.re2j:re2j:1.7
 com.google.truth.extensions:truth-java8-extension:1.4.5
-com.google.truth.extensions:truth-liteproto-extension:1.4.4
-com.google.truth.extensions:truth-proto-extension:1.4.4
+com.google.truth.extensions:truth-liteproto-extension:1.4.5
+com.google.truth.extensions:truth-proto-extension:1.4.5
 com.google.truth:truth:1.4.5
 com.googlecode.plist:dd-plist:1.28
 com.healthmarketscience.jackcess:jackcess:4.0.7
