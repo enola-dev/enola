@@ -27,3 +27,5 @@ The `ai` command [works with Agents](../../tutorial/chat.md) with input from the
     Hello, world! How can I help you today?
 
 **TODO** _Document how [this also (already) supports](../../tutorial/agents.md) `--agents`..._
+
+You, of course, also use the [Chat Web UI](../server/index.md#chat) or the [Console Chat](../chat/index.md) to interact with Agents.
