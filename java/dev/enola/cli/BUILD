@@ -93,7 +93,7 @@ java_library(
         "@enola_maven//:com_github_multiformats_java_multibase",
         "@enola_maven//:com_github_multiformats_java_multihash",
         # "@enola_maven//:com_google_adk_google_adk",
-        "@enola_maven//:com_github_google_adk_java_google_adk",
+        "@enola_maven//:com_github_vorburger_adk_java_google_adk",
         "@enola_maven//:com_google_guava_guava",
         "@enola_maven//:com_google_protobuf_protobuf_java",
         "@enola_maven//:info_picocli_picocli",

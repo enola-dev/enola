@@ -19,13 +19,13 @@ package dev.enola.ai.adk.web;
 
 import com.google.adk.agents.BaseAgent;
 import com.google.adk.web.AdkWebServer;
-import com.google.adk.web.config.AgentLoadingProperties;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.adk.core.Agents;
 import dev.enola.common.rx.RxJavaPluginsSetup;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -35,7 +35,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -73,8 +72,16 @@ public class AdkHttpServer implements AutoCloseable {
                 "org.apache.tomcat.websocket.DEFAULT_BUFFER_SIZE",
                 String.valueOf(10 * 1024 * 1024));
 
-        var app = new SpringApplication(ImprovedAdkWebServer.class);
-        app.setBannerMode(Banner.Mode.OFF);
+        // As in com.google.adk.web.AdkWebServer#start()
+        System.setProperty("adk.agents.loader", "static");
+        SpringApplication app = new SpringApplication(ImprovedAdkWebServer.class);
+        app.setBannerMode(Banner.Mode.OFF); // ADDED NEW, not there in the original
+        app.addInitializers(
+                context -> {
+                    DefaultListableBeanFactory beanFactory =
+                            (DefaultListableBeanFactory) context.getBeanFactory();
+                    beanFactory.registerSingleton("agentLoader", new AgentStaticLoader(agents));
+                });
         var context = app.run();
         Environment environment = context.getBean(Environment.class);
         String httpPort = environment.getProperty("local.server.port");
@@ -91,14 +98,6 @@ public class AdkHttpServer implements AutoCloseable {
     }
 
     static class ImprovedAdkWebServer extends AdkWebServer {
-
-        @Override
-        public Map<String, BaseAgent> loadedAgentRegistry(
-                AgentLoadingProperties props, RunnerService runnerService) {
-            if (rootAgents == null)
-                throw new IllegalStateException("Call AdkHttpServer.agents(...) before start()");
-            return rootAgents;
-        }
 
         @Bean
         @Primary

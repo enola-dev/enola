@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ADK_JAVA_COMMIT = "99265cf268be4dbd0a82decf5c48bf57b3725b53"
+ADK_JAVA_COMMIT = "0c4eed584f"
 
 GUAVA_VERSION = "33.4.8-jre"
 
@@ -212,9 +212,9 @@ enola_maven.install(
         # "com.google.adk:google-adk:0.2.0",
         # "com.google.adk:google-adk-dev:0.2.0",
         # "com.google.adk:google-adk-contrib-langchain4j:0.2.0",
-        "com.github.google.adk-java:google-adk:" + ADK_JAVA_COMMIT,
-        "com.github.google.adk-java:google-adk-dev:" + ADK_JAVA_COMMIT,
-        "com.github.google.adk-java:google-adk-contrib-langchain4j:" + ADK_JAVA_COMMIT,
+        "com.github.vorburger.adk-java:google-adk:" + ADK_JAVA_COMMIT,
+        "com.github.vorburger.adk-java:google-adk-dev:" + ADK_JAVA_COMMIT,
+        "com.github.vorburger.adk-java:google-adk-langchain4j:" + ADK_JAVA_COMMIT,
 
         # https://github.com/jknack/handlebars.java
         "com.github.jknack:handlebars:4.4.0",
