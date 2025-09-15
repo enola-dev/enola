@@ -236,7 +236,7 @@
   "moduleExtensions": {
     "@@bazel_jar_jar+//internal:non_module_deps.bzl%non_module_deps": {
       "general": {
-        "bzlTransitiveDigest": "TmNwwnBdOvS108qTpUJ80Hqt004Hml0uYtKkRB9u0jE=",
+        "bzlTransitiveDigest": "ouYMiATuGdGdv7HizLQTZo4/2DEVyMMcwOx+X4Vn7EE=",
         "usagesDigest": "P1uSZ4XnqOp90Mkh0A4Nrjx12Bgz/iceROnSbTsawGk=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
