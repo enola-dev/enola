@@ -20,6 +20,20 @@
 
 Ensure you are [set-up](setup.md) with a working build on the CLI before configuring your IDE.
 
+## JetBrains IntelliJ IDEA (IJ)
+
+Because of [the Nix requirement](setup.md), we recommend that you launch IJ not graphically via Toolbox, but
+from within a `nix develop` shell on the CLI, where `PATH` is the same Bazel environment. This avoids problems like
+[issue #1657](https://github.com/enola-dev/enola/issues/1657). To do this, start JetBrains Toolbox, click on Settings of IJ
+(in Toolbox, BEFORE starting it), and `Configure...` the _shell scripts location_ to be a directory on your `PATH` (e.g., `$HOME/.local/bin`).
+Toolbox may warn that it _Cannot find the specified directory in the system PATH_.
+You can ignore this, as long as the directory is on the `PATH` in the `nix develop` shell from which you will launch IJ.
+Toolbox will now have put a launch script into that directory.
+
+The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins) are managed via the [`.idea/externalDependencies.xml`](https://github.com/enola-dev/enola/blob/main/.idea/externalDependencies.xml).
+
+<!-- TODO Other IDEs than JetBrains IntelliJ IDEA (IJ) don't actually currently really work for working on the Java code...
+
 ## GitHub Codespaces
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/enola-dev/enola?quickstart=1)
@@ -88,12 +102,6 @@ $ sudo apt get install clang-format
 
 * [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat) (this requires `clang-package`, see above) for `*.textproto` formatting
 
-## JetBrains IntelliJ IDEA (IJ)
-
-IJ can be used as a complete alternative to VSC, or only for Java coding.
-
-The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins) are managed via the [`.idea/externalDependencies.xml`](https://github.com/enola-dev/enola/blob/main/.idea/externalDependencies.xml).
-
 ## Eclipse
 
 Eclipse is not actively supported by this project as an IDE.
@@ -101,6 +109,8 @@ Eclipse is not actively supported by this project as an IDE.
 It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
 
 We recommend using VSC.
+
+-->
 
 ## Debug
 
