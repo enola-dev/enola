@@ -43,6 +43,11 @@ public class AiOptions {
             description = "URL/s of Agents; see https://docs.enola.dev/concepts/agent/")
     @Nullable List<URI> agentURIs;
 
+    @CommandLine.Option(
+            names = {"-n", "--name"},
+            description = "Agent Name; see https://docs.enola.dev/use/ai/")
+    @Nullable String agentName;
+
     @Nullable
     @CommandLine.ArgGroup(exclusive = false)
     McpOptions mcpOptions;

@@ -38,16 +38,54 @@ import dev.enola.common.secret.auto.AutoSecretManager;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 final class AI {
 
+    private static final String AGENTS_BASE_URI = "https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/%s.agent.yaml";
+
+    private static URI createAgentURI(String agentName) {
+        return create(AGENTS_BASE_URI.formatted(agentName));
+    }
+
+    private static final Map<String, URI> AGENT_NAME_TO_URI;
+    static {
+        // can't use Map.of() because of 10 limit
+        var map = new HashMap<String, URI>();
+        map.put("chef-optimist", createAgentURI("chef-optimist"));
+        map.put("chefs-opposites-map", createAgentURI("chefs-opposites-map"));
+        map.put("chefs-opposites-stream", createAgentURI("chefs-opposites-stream"));
+        map.put("clock", createAgentURI("clock"));
+        map.put("everything", createAgentURI("everything"));
+        map.put("fetch", createAgentURI("fetch"));
+        map.put("filesystem", createAgentURI("filesystem"));
+        map.put("commit", createAgentURI("git-commit-message"));
+        map.put("git", createAgentURI("git"));
+        map.put("google", createAgentURI("google"));
+        map.put("memory", createAgentURI("memory"));
+        map.put("person", createAgentURI("person"));
+        // TODO Remove this once we have a weather agent renamed to weather.agent.yaml
+        map.put("weather", create("https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/weather.yaml"));
+        AGENT_NAME_TO_URI = Map.copyOf(map);
+    }
+
     static Iterable<BaseAgent> load(ResourceProvider rp, @Nullable AiOptions aiOptions)
             throws IOException {
+        if (aiOptions == null) aiOptions = new AiOptions();
+
+        if (aiOptions.agentName != null) {
+            URI agentURI = AGENT_NAME_TO_URI.get(aiOptions.agentName);
+            if (agentURI == null) throw new IllegalArgumentException("No such agent: " + aiOptions.agentName);
+            aiOptions.agentURIs = List.of(agentURI);
+        }
+
         var modelProvider = new LlmProviders(AutoSecretManager.INSTANCE());
 
         String defaultModelURI;
-        if (aiOptions == null) aiOptions = new AiOptions();
         if (isNullOrEmpty(aiOptions.defaultLanguageModelURI))
             defaultModelURI = AiOptions.DEFAULT_MODEL;
         else defaultModelURI = aiOptions.defaultLanguageModelURI;
