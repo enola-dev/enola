@@ -27,7 +27,6 @@ import com.google.genai.types.Part;
 import dev.enola.ai.adk.core.Agents;
 import dev.enola.ai.adk.core.CLI;
 import dev.enola.ai.adk.core.UserSessionRunner;
-import dev.enola.cli.AiOptions;
 import dev.enola.common.context.TLC;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -49,7 +48,10 @@ public class AiCommand extends CommandWithResourceProvider {
     @CommandLine.Parameters(
             index = "0",
             arity = "0..1",
-            description = "Agent name (optional). Available agents: chef-optimist, chefs-opposites-map, chefs-opposites-stream, clock, everything, fetch, filesystem, git-commit-message, git, google, memory, person, weather")
+            description =
+                    "Agent name (optional). Available agents: chef-optimist, chefs-opposites-map,"
+                            + " chefs-opposites-stream, clock, everything, fetch, filesystem,"
+                            + " git-commit-message, git, google, memory, person, weather")
     @Nullable String agentName;
 
     @CommandLine.ArgGroup(exclusive = false)
@@ -105,10 +107,12 @@ public class AiCommand extends CommandWithResourceProvider {
         } else if (agentName != null) {
             agent = agentsMap.get(agentName);
             if (agent == null) {
-                throw new IllegalArgumentException("No such agent: " + agentName + "; available: " + agentsMap.keySet());
+                throw new IllegalArgumentException(
+                        "No such agent: " + agentName + "; available: " + agentsMap.keySet());
             }
         } else {
-            throw new IllegalArgumentException("Use agent name to pick the agent: " + agentsMap.keySet());
+            throw new IllegalArgumentException(
+                    "Use agent name to pick the agent: " + agentsMap.keySet());
         }
         try (var runner = new UserSessionRunner(CLI.userID(), agent)) {
 

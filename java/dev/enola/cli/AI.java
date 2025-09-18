@@ -46,13 +46,15 @@ import java.util.Set;
 
 final class AI {
 
-    private static final String AGENTS_BASE_URI = "https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/%s.agent.yaml";
+    private static final String AGENTS_BASE_URI =
+            "https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/%s.agent.yaml";
 
     private static URI createAgentURI(String agentName) {
         return create(AGENTS_BASE_URI.formatted(agentName));
     }
 
     private static final Map<String, URI> AGENT_NAME_TO_URI;
+
     static {
         // can't use Map.of() because of 10 limit
         var map = new HashMap<String, URI>();
@@ -69,7 +71,10 @@ final class AI {
         map.put("memory", createAgentURI("memory"));
         map.put("person", createAgentURI("person"));
         // TODO Remove this once we have a weather agent renamed to weather.agent.yaml
-        map.put("weather", create("https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/weather.yaml"));
+        map.put(
+                "weather",
+                create(
+                        "https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/weather.yaml"));
         AGENT_NAME_TO_URI = Map.copyOf(map);
     }
 
@@ -79,7 +84,8 @@ final class AI {
 
         if (aiOptions.agentName != null) {
             URI agentURI = AGENT_NAME_TO_URI.get(aiOptions.agentName);
-            if (agentURI == null) throw new IllegalArgumentException("No such agent: " + aiOptions.agentName);
+            if (agentURI == null)
+                throw new IllegalArgumentException("No such agent: " + aiOptions.agentName);
             aiOptions.agentURIs = List.of(agentURI);
         }
 
