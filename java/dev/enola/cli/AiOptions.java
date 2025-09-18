@@ -58,6 +58,6 @@ public class AiOptions {
         @CommandLine.Option(
                 names = {"-d", "--default-agent"},
                 description = "Agent Name; see https://docs.enola.dev/use/ai/")
-        @Nullable String agentName;
+        @Nullable String name;
     }
 }
