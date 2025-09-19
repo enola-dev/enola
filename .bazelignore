@@ -3,5 +3,7 @@ node_modules
 site
 
 .be
+.bazelbsp
 .cache
+.direnv
 .eclipse
