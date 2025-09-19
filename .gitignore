@@ -78,3 +78,6 @@ flox.x86_64-linux.deb
 
 # Python Virtual Environment (venv)
 .venv/
+
+# The *.java etc. under generated/ are created at build-time by tools/protoc
+generated/

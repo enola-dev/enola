@@ -52,6 +52,7 @@
           jdk'
           graphviz
           protobuf
+          protoc-gen-grpc-java
           docker
 
           statix
@@ -80,6 +81,9 @@
 
           # A hook run every time you enter the environment
           postShellHook = ''
+            # TODO Huh, why is this ugly hack required!?
+            export PATH="${pkgs.protoc-gen-grpc-java}/bin:$PATH"
+
             echo Welcome to contributing to Enola.dev! You can now run e.g. ./enola or ./test.bash etc. here.
           '';
         };
