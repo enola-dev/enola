@@ -57,7 +57,7 @@ tools/evilurl/test.bash
 echo $ Bazel testing...
 if [ -z "${CI:-""}" ]; then
   # Skip (slow!) JavaDoc generation when not running on CI
-  "$BZL" query //... | grep -v .direnv/ | grep -v .bazelbsp | grep -v //java/dev/enola:javadoc | xargs "$BZL" test --test_env=ENOLA.DEV_AZKABAN="$HOME/.config/enola/azkaban.yaml" --explain ~/bazel-test-explain.txt --test_size_filters=small
+  "$BZL" query //... | grep -v //java/dev/enola:javadoc | xargs "$BZL" test --test_env=ENOLA.DEV_AZKABAN="$HOME/.config/enola/azkaban.yaml" --explain ~/bazel-test-explain.txt --test_size_filters=small
 
 else # On CI
   # Non-regression for problems like https://github.com/enola-dev/enola/issues/1146 and https://github.com/enola-dev/enola/issues/1164
