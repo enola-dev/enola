@@ -80,4 +80,12 @@ flox.x86_64-linux.deb
 .venv/
 
 # The *.java etc. under generated/ are created at build-time by tools/protoc
-generated/
+# Ignore everything under generated/, except for the generated/protoc/java/BUILD file.
+# This is done by ignoring all top-level entries in generated/, then un-ignoring protoc/,
+# then ignoring all in protoc/, then un-ignoring java/, and so on.
+/generated/*
+!/generated/protoc
+/generated/protoc/*
+!/generated/protoc/java
+/generated/protoc/java/*
+!/generated/protoc/java/BUILD
