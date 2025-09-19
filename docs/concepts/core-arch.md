@@ -19,6 +19,3 @@
 # Core Architecture
 
 These _logical models_ were originally [implemented](implementation.md) as Protobuf messages, but this is changing.
-
-<!-- TODO They are also published as JSON Schemas, for [`EntityKind`](../models/enola/schemas/EntityKind.schema.json)
-and [`Type`](../models/enola/schemas/Type.schema.json) et al. -->

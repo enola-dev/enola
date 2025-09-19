@@ -109,10 +109,7 @@
     "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yaml",
 
     // TODO https://github.com/linkml/linkml/issues/2179
-    "https://raw.githubusercontent.com/linkml/linkml-model/main/linkml_model/jsonschema/meta.schema.json": "*.linkml.yaml",
-
-    // Keep this in sync with check-jsonschema in .pre-commit-config.yaml
-    "docs/models/enola/schemas/Thing.schema.json": "*.thing.yaml"
+    "https://raw.githubusercontent.com/linkml/linkml-model/main/linkml_model/jsonschema/meta.schema.json": "*.linkml.yaml"
   },
   "yaml.customTags": [
     "!ENV scalar",

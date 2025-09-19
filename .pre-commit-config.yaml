@@ -197,18 +197,6 @@ repos:
       - id: check-metaschema
         files: \.schema\.json$
         args: ["--verbose"]
-      # Keep this in sync with yaml.schemas in settings.json
-      # TODO Change once https://github.com/python-jsonschema/check-jsonschema/issues/340 is implemented
-      - id: check-jsonschema
-        # files: .+/models/.+\.(yaml|json)$
-        files: \.types\.yaml$
-        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Types.schema.json"]
-      - id: check-jsonschema
-        files: \.type\.yaml$
-        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Type.schema.json"]
-      - id: check-jsonschema
-        files: \.thing\.yaml$
-        args: ["--verbose", "--schemafile", "docs/models/enola/schemas/Thing.schema.json"]
 
   # https://github.com/NixOS/nixfmt#pre-commit
   - repo: https://github.com/NixOS/nixfmt

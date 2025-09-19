@@ -24,27 +24,3 @@ set -euox pipefail
 # (It's kind of dumb how as-is there is a protoc "in" Bazel and a separate one.)
 
 protoc --version
-
-# https://github.com/chrusty/protoc-gen-jsonschema
-if ! [ -x "$(command -v protoc-gen-jsonschema)" ]; then
-  # As always, it's NEVER a good idea to use @latest here, but always a fixed version
-  go install github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema@1.4.1
-fi
-
-PLUGIN=$(go env GOPATH)/bin/protoc-gen-jsonschema
-${PLUGIN} --version
-
-mkdir -pv docs/models/enola/schemas/
-protoc \
-  --plugin="${PLUGIN}" \
-  --jsonschema_opt=allow_null_values \
-  --jsonschema_opt=file_extension=schema.json \
-  --jsonschema_opt=disallow_additional_properties \
-  --jsonschema_out=docs/models/enola/schemas/ \
-  java/dev/enola/thing/thing.proto
-
-# TODO Add core/lib/src/main/java/dev/enola/core/enola_core.proto
-# when https://github.com/chrusty/protoc-gen-jsonschema/issues/180 is fixed
-
-mkdir -pv ~/.npm/lib/
-npx --yes prettier --write docs/models/enola/schemas/*.json
