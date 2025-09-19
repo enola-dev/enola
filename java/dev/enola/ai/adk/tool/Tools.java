@@ -18,6 +18,7 @@
 package dev.enola.ai.adk.tool;
 
 import com.google.adk.tools.GoogleSearchTool;
+import com.google.adk.tools.BaseTool;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.mcp.McpLoader;
@@ -40,12 +41,31 @@ public final class Tools {
     }
 
     public static ToolsetProvider builtin(InstantSource instantSource) {
+        Map<String, BaseTool> fileSystemTools = FileSystemTools.createToolSet(new FileSystemTools());
+
         return ToolsetProvider.immutableTools(
                 ImmutableMap.of(
                         "clock",
                         DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)),
                         "search_google",
-                        new GoogleSearchTool()));
+                        new GoogleSearchTool(),
+                        "list_directory",
+                        fileSystemTools.get("listDirectory"),
+                        "read_file",
+                        fileSystemTools.get("readFile"),
+                        "write_file",
+                        fileSystemTools.get("writeFile"),
+                        "edit_file",
+                        fileSystemTools.get("editFile"),
+                        "search_files",
+                        fileSystemTools.get("searchFiles"),
+                        "create_directory",
+                        fileSystemTools.get("createDirectory"),
+                        "grep_file",
+                        fileSystemTools.get("grepFile"),
+                        "execute_command",
+                        fileSystemTools.get("executeCommand")
+                        ));
     }
 
     public static Map<String, String> toMap(SuccessOrError<String> soe) {
