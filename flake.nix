@@ -54,6 +54,7 @@
           protobuf
           protoc-gen-grpc-java
           docker
+          which
 
           statix
           deadnix.packages.${system}.default
@@ -101,12 +102,16 @@
             nativeBuildInputs = buildTools ++ [
               pkgs.cacert
               pkgs.makeWrapper
+              pkgs.which
             ];
             src = ./.;
 
             buildPhase = ''
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
+
+              # See https://github.com/NixOS/nix/issues/14024
+              bash tools/protoc/protoc.bash
 
               export HOME=$TMPDIR
               bazel build //java/dev/enola/cli:enola_deploy.jar

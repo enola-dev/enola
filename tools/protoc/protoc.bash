@@ -18,8 +18,6 @@
 # TODO Transform this into a Bazel BUILD target with genrule instead? Or an enola exec: resource?
 set -euox pipefail
 
-# TODO Combine the x3 protoc invocations into x1?
-
 protoc --version
 
 # gRPC plugin installed by Nix
@@ -27,5 +25,6 @@ GRPC_PLUGIN=$(which protoc-gen-grpc-java)
 
 rm -rf generated/protoc
 mkdir -p generated/protoc/java
+# TODO Combine the x2 protoc invocations into x1?
 find java -name "*.proto" -exec protoc --java_out=generated/protoc/java {} +
 find java -name "*.proto" -exec protoc --plugin="${GRPC_PLUGIN}" --grpc-java_out=generated/protoc/java {} +

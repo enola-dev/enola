@@ -50,13 +50,6 @@ java/target
 # https://jbang.dev
 .jbang/
 
-# Ignore generated proto
-java/dev/enola/common/validation/
-java/dev/enola/core/meta/proto/
-java/dev/enola/core/proto/
-java/dev/enola/protobuf/
-java/dev/enola/thing/proto/
-
 tools/version/VERSION
 
 # LinkML
@@ -79,13 +72,7 @@ flox.x86_64-linux.deb
 # Python Virtual Environment (venv)
 .venv/
 
-# The *.java etc. under generated/ are created at build-time by tools/protoc
-# Ignore everything under generated/, except for the generated/protoc/java/BUILD file.
-# This is done by ignoring all top-level entries in generated/, then un-ignoring protoc/,
-# then ignoring all in protoc/, then un-ignoring java/, and so on.
-/generated/*
-!/generated/protoc
-/generated/protoc/*
-!/generated/protoc/java
-/generated/protoc/java/*
-!/generated/protoc/java/BUILD
+# The *.java etc. under generated/ are created at build-time by tools/protoc.
+# So we ignore everything them, except for the generated/protoc/java/BUILD file.
+# Due to https://github.com/NixOS/nix/issues/14024, it's done like this.
+generated/protoc/java/dev/
