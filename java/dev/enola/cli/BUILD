@@ -40,8 +40,7 @@ java_library(
     # TODO Change "//java/dev/enola:__pkg__" visibility to tools/javadoc/all
     visibility = ["//java/dev/enola:__pkg__"],
     deps = [
-        "@maven//:com_google_genai_google_genai",
-        "@maven//:io_reactivex_rxjava3_rxjava",
+        "//generated/protoc/java",
         "//java/dev/enola/ai/adk/core",
         # TODO Remove most of these direct deps, through new "//java/dev/enola" API...
         "//java/dev/enola/ai/adk/iri",
@@ -75,8 +74,6 @@ java_library(
         "//java/dev/enola/infer/datalog",
         "//java/dev/enola/infer/rdf",
         "//java/dev/enola/core",
-        "//java/dev/enola/core:core_java_grpc",
-        "//java/dev/enola/core:core_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/datatype",
         "//java/dev/enola/format/tika",
@@ -85,10 +82,10 @@ java_library(
         "//java/dev/enola/rdf/io",
         "//java/dev/enola/rdf/proto",
         "//java/dev/enola/thing:thing_java",
-        "//java/dev/enola/thing:thing_java_proto",
         "//java/dev/enola/thing/gen",
         "//java/dev/enola/web",
         "//java/dev/enola/web/netty",
+        "@maven//:com_google_genai_google_genai",
         "@maven//:com_github_ipld_java_cid",
         "@maven//:com_github_multiformats_java_multibase",
         "@maven//:com_github_multiformats_java_multihash",
@@ -99,6 +96,7 @@ java_library(
         "@maven//:info_picocli_picocli",
         "@maven//:info_picocli_picocli_shell_jline3",
         # TODO "@maven//:org_apache_httpcomponents_client5_httpclient5",
+        "@maven//:io_reactivex_rxjava3_rxjava",
         "@maven//:org_jline_jline",
         "@maven//:org_eclipse_rdf4j_rdf4j_model",
         "@maven//:org_eclipse_rdf4j_rdf4j_rio_api",

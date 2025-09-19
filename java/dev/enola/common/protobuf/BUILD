@@ -14,43 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@protobuf//bazel:java_proto_library.bzl", "java_proto_library")
-load("@protobuf//bazel:proto_library.bzl", "proto_library")
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
-
-proto_library(
-    name = "validation_proto",
-    srcs = ["validation.proto"],
-    deps = [
-        "@protobuf//:any_proto",
-    ],
-)
-
-java_proto_library(
-    name = "validation_proto_java_library",
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "validation_proto",
-    ],
-)
-
-proto_library(
-    name = "test_proto",
-    srcs = ["test.proto"],
-    deps = [
-        "@protobuf//:any_proto",
-        "@protobuf//:descriptor_proto",
-        "@protobuf//:struct_proto",
-        "@protobuf//:timestamp_proto",
-    ],
-)
-
-java_proto_library(
-    name = "test_java_proto",
-    visibility = ["//:__subpackages__"],
-    deps = ["test_proto"],
-)
 
 java_library(
     name = "protobuf",
@@ -61,7 +26,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":validation_proto_java_library",
+        "//generated/protoc/java",
         "//java/dev/enola/common",
         "//java/dev/enola/common/convert",
         "//java/dev/enola/common/io",
@@ -81,7 +46,7 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":protobuf",
-        ":test_java_proto",
+        "//generated/protoc/java",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
         "//test",

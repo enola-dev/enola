@@ -40,7 +40,7 @@ junit_tests(
     srcs = glob(["*Test.java"]),
     deps = [
         ":schema",
-        "//java/dev/enola/common/protobuf:test_java_proto",
+        "//generated/protoc/java",
         "//java/dev/enola/common/protobuf/test:test-resources",
         "//java/dev/enola/common/yamljson",
     ],
