@@ -278,7 +278,7 @@ public final class FileSystemTools {
 
             int exitCode = process.exitValue();
             return success(
-                    String.format("Exit Code: %d\nOutput:\n%s", exitCode, output.toString().trim()));
+                    String.format("Exit Code: %d%nOutput:%n%s", exitCode, output.toString().trim()));
         } catch (IOException | InterruptedException e) {
             return error("Failed to execute command: " + e.getMessage());
         }
