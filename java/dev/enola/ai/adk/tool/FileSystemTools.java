@@ -7,7 +7,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,34 +19,32 @@ package dev.enola.ai.adk.tool;
 
 import static dev.enola.common.SuccessOrError.error;
 import static dev.enola.common.SuccessOrError.success;
-import dev.enola.common.SuccessOrError;
 
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
-import com.google.adk.tools.BaseToolset;
 import com.google.adk.tools.FunctionTool;
-
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.common.SuccessOrError;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class FileSystemTools {
     public static Map<String, BaseTool> createToolSet(FileSystemTools fileSystemTool) {
@@ -84,7 +82,10 @@ public final class FileSystemTools {
     }
 
     // TODO: add a confirmation step for editing files
-    @Schema(description ="Replaces a specific range of lines in a file and returns a git-style diff of the changes.")
+    @Schema(
+            description =
+                    "Replaces a specific range of lines in a file and returns a git-style diff of"
+                            + " the changes.")
     public Map<String, String> editFile(
             @Schema(description = "The path to the file to edit.") String path,
             @Schema(description = "The 1-based starting line number to replace.") int startLine,
@@ -101,7 +102,10 @@ public final class FileSystemTools {
         return Tools.toMap(searchFilesHelper(startPath, glob));
     }
 
-    @Schema(description = "Lists the contents of a directory with details like size and modification date.")
+    @Schema(
+            description =
+                    "Lists the contents of a directory with details like size and modification"
+                            + " date.")
     public Map<String, String> listDirectory(
             @Schema(description = "The path of the directory to list.") String path) {
         return Tools.toMap(listDirectoryHelper(path));
@@ -122,7 +126,9 @@ public final class FileSystemTools {
         return Tools.toMap(grepFileHelper(path, pattern, context));
     }
 
-    @Schema(description = "Executes a shell command and captures its standard output and standard error.")
+    @Schema(
+            description =
+                    "Executes a shell command and captures its standard output and standard error.")
     public Map<String, String> executeCommand(
             @Schema(description = "The command to execute (e.g., 'ls -l').") String command) {
         return Tools.toMap(executeCommandHelper(command));
@@ -142,9 +148,9 @@ public final class FileSystemTools {
     private SuccessOrError<String> writeFileHelper(String pathString, String content) {
         try {
             Path path = Paths.get(pathString);
-            if (Files.exists(path))
-                return error("File already exists: " + path);
-            Files.writeString(path, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            if (Files.exists(path)) return error("File already exists: " + path);
+            Files.writeString(
+                    path, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             return success("Successfully wrote " + content.length() + " characters to " + path);
         } catch (IOException e) {
             return error("Failed to write file: " + e.getMessage());
@@ -155,7 +161,8 @@ public final class FileSystemTools {
             String pathString, int startLine, int linesToRemove, String newContent) {
         try {
             Path path = Paths.get(pathString);
-            if (!Files.isRegularFile(path)) return error("File not found or not a regular file: " + path);
+            if (!Files.isRegularFile(path))
+                return error("File not found or not a regular file: " + path);
 
             List<String> originalLines = Files.readAllLines(path);
             if (startLine < 1 || startLine > originalLines.size() + 1)
@@ -167,13 +174,18 @@ public final class FileSystemTools {
             if (startIndex < end) {
                 newLines.subList(startIndex, end).clear();
             }
-            List<String> insertLines = newContent.isEmpty() ? List.of() : Arrays.asList(newContent.split("\n"));
+            List<String> insertLines =
+                    newContent.isEmpty() ? List.of() : Arrays.asList(newContent.split("\n"));
             newLines.addAll(startIndex, insertLines);
 
             Files.write(path, newLines);
 
             // Generate Diff
-            String diff = generateDiff(pathString, String.join("\n", originalLines), String.join("\n", newLines));
+            String diff =
+                    generateDiff(
+                            pathString,
+                            String.join("\n", originalLines),
+                            String.join("\n", newLines));
             if (diff.isEmpty()) {
                 return success("File edited, but no changes were made.");
             }
@@ -187,11 +199,11 @@ public final class FileSystemTools {
         Path start = Paths.get(startPath);
         PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + glob);
         try (Stream<Path> stream = Files.walk(start)) {
-            String results = stream
-                    .filter(path -> matcher.matches(path.getFileName()))
-                    .map(start::relativize)
-                    .map(Path::toString)
-                    .collect(Collectors.joining("\n"));
+            String results =
+                    stream.filter(path -> matcher.matches(path.getFileName()))
+                            .map(start::relativize)
+                            .map(Path::toString)
+                            .collect(Collectors.joining("\n"));
             return success(results.isEmpty() ? "No matches found." : "Matches:\n" + results);
         } catch (IOException e) {
             return error("Error searching files: " + e.getMessage());
@@ -200,25 +212,36 @@ public final class FileSystemTools {
 
     private SuccessOrError<String> listDirectoryHelper(String pathString) {
         try (Stream<Path> stream = Files.list(Paths.get(pathString))) {
-            String details = stream
-                    .filter(path -> !path.getFileName().toString().startsWith(".")) // Exclude hidden files
-                    .sorted(FileSystemTools::sortPaths)
-                    .map(
-                            path -> {
-                                try {
-                                    BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
-                                    String type = attrs.isDirectory() ? "d" : "-";
-                                    long size = attrs.size();
-                                    String modified = DateTimeFormatter.ofPattern("MMM dd HH:mm")
-                                            .withZone(ZoneId.systemDefault())
-                                            .format(attrs.lastModifiedTime().toInstant());
-                                    return String.format(
-                                            "%s %10d %s %s", type, size, modified, path.getFileName());
-                                } catch (IOException e) {
-                                    return path.getFileName() + " (error reading attributes)";
-                                }
-                            })
-                    .collect(Collectors.joining("\n"));
+            String details =
+                    stream.filter(
+                                    path ->
+                                            !path.getFileName()
+                                                    .toString()
+                                                    .startsWith(".")) // Exclude hidden files
+                            .sorted(FileSystemTools::sortPaths)
+                            .map(
+                                    path -> {
+                                        try {
+                                            BasicFileAttributes attrs =
+                                                    Files.readAttributes(
+                                                            path, BasicFileAttributes.class);
+                                            String type = attrs.isDirectory() ? "d" : "-";
+                                            long size = attrs.size();
+                                            String modified =
+                                                    DateTimeFormatter.ofPattern("MMM dd HH:mm")
+                                                            .withZone(ZoneId.systemDefault())
+                                                            .format(
+                                                                    attrs.lastModifiedTime()
+                                                                            .toInstant());
+                                            return String.format(
+                                                    "%s %10d %s %s",
+                                                    type, size, modified, path.getFileName());
+                                        } catch (IOException e) {
+                                            return path.getFileName()
+                                                    + " (error reading attributes)";
+                                        }
+                                    })
+                            .collect(Collectors.joining("\n"));
             return success(details);
         } catch (IOException e) {
             return error("Could not list directory: " + e.getMessage());
@@ -264,7 +287,8 @@ public final class FileSystemTools {
             Process process = pb.start();
 
             StringBuilder output = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            try (BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append("\n");
@@ -278,12 +302,12 @@ public final class FileSystemTools {
 
             int exitCode = process.exitValue();
             return success(
-                    String.format("Exit Code: %d%nOutput:%n%s", exitCode, output.toString().trim()));
+                    String.format(
+                            "Exit Code: %d%nOutput:%n%s", exitCode, output.toString().trim()));
         } catch (IOException | InterruptedException e) {
             return error("Failed to execute command: " + e.getMessage());
         }
     }
-
 
     private static int sortPaths(Path a, Path b) {
         boolean isDirectoryA = Files.isDirectory(a);
@@ -296,17 +320,13 @@ public final class FileSystemTools {
         }
     }
 
-    /**
-     * Normalize line endings to make replacements more consistent
-     */
+    /** Normalize line endings to make replacements more consistent */
     private String normalizeLineEndings(String text) {
         String normalized = text.replace("\r\n", "\n");
         return normalized.replace("\r", "\n");
     }
 
-    /**
-     * Generate a git-style diff between original and modified content
-     */
+    /** Generate a git-style diff between original and modified content */
     private String generateDiff(String filePath, String originalContent, String modifiedContent) {
         originalContent = normalizeLineEndings(originalContent);
         modifiedContent = normalizeLineEndings(modifiedContent);
@@ -319,7 +339,11 @@ public final class FileSystemTools {
         String[] modifiedLines = modifiedContent.split("\n");
 
         if (!originalContent.equals(modifiedContent)) {
-            diff.append("@@ -1,").append(originalLines.length).append(" +1,").append(modifiedLines.length).append(" @@\n");
+            diff.append("@@ -1,")
+                    .append(originalLines.length)
+                    .append(" +1,")
+                    .append(modifiedLines.length)
+                    .append(" @@\n");
             for (String line : originalLines) {
                 diff.append("-").append(line).append("\n");
             }
