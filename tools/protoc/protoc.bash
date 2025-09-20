@@ -23,7 +23,8 @@ protoc --version
 # gRPC plugin installed by Nix
 GRPC_PLUGIN=$(which protoc-gen-grpc-java)
 
-rm -rf generated/protoc
+# BEWARE: Do *NOT* rm the generated/protoc/java/BUILD file!
+rm -rf generated/protoc/java/dev
 mkdir -p generated/protoc/java
 # TODO Combine the x2 protoc invocations into x1?
 find java -name "*.proto" -exec protoc --java_out=generated/protoc/java {} +

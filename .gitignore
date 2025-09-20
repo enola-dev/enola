@@ -73,6 +73,7 @@ flox.x86_64-linux.deb
 .venv/
 
 # The *.java etc. under generated/ are created at build-time by tools/protoc.
-# So we ignore everything them, except for the generated/protoc/java/BUILD file.
-# Due to https://github.com/NixOS/nix/issues/14024, it's done like this.
+# So we ignore everything in it, EXCEPT for the generated/protoc/java/BUILD file.
+# PS: Due to https://github.com/NixOS/nix/issues/14024, it's done like this?
+# (That was the initial thought, but it may not be true; did not re-verify.)
 generated/protoc/java/dev/
