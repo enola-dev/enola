@@ -81,7 +81,7 @@ public class AgentsLoaderIntegrationTest {
         var tools = Tools.builtin(testInstantSource);
 
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
-        var loader = new AgentsLoader(rp, FLASH_LITE, new GoogleLlmProvider(secretManager), tools);
+        var loader = new AgentsLoader(rp, FLASH, new GoogleLlmProvider(secretManager), tools);
         var agent = load(loader, "clock.agent.yaml");
         var agentTester = new AgentTester(agent);
 

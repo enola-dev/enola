@@ -1,4 +1,10 @@
 $schema: https://enola.dev/ai/agent
-model: google://?model=gemini-2.5-flash-lite
+model: google://?model=gemini-2.5-flash
 tools:
-  - modelcontextprotocol/filesystem
+  - read_file
+  - write_file
+  - list_directory
+  - edit_file
+  - search_files
+  - create_directory
+  - grep_file
