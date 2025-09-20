@@ -36,9 +36,29 @@ $ enola ai --agents=test/agents/clock.agent.yaml --in "What's the time?"
 The current date & time in CET is Saturday, August 16, 2025, 11:42 PM.
 ```
 
-## Exec
+## Exec ▶️
 
-**TODO** _Enola is planning to offer an `exec` tool. We intended to make this highly configurable._
+The `exec` tool can be used to run any command; for example, for something like this:
+
+```yaml
+{% include "../../test/agents/linux-system-summary.agent.yaml" %}
+```
+
+When this Agent is run, it would print (something like) this:
+
+```shell
+$ enola ai --agents=test/agents/linux-system-summary.agent.yaml --in="do it"
+
+Xeon CPU runs fast,
+Twelve cores, power strong.
+Memory 62GiB,
+56GiB now in use.
+One day, twenty-one mins.
+System running well,
+Tasks flow with ease.
+```
+
+**TODO** _We intended to make this highly configurable in the future._
 
 ## Google 🔎 🌐
 
