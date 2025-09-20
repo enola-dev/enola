@@ -27,7 +27,7 @@ tools/javadoc/classpath.bash
 # TODO Make cs available via Nix on GitHub Runner so that we can run this on CI
 ENOLA_CLASSPATH=$(cs fetch --classpath --dependency-file docs/dev/dependencies.txt --repository https://jitpack.io)
 
-find java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
+find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
 
 rm -rf site/dev/javadoc/
 

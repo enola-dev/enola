@@ -49,6 +49,8 @@ tools/javadoc/classpath.bash
 
 tools/version/version.bash
 
+tools/protoc/protoc.bash
+
 # TODO Remove this once evilurl is Bazel test BUILD integrated...
 tools/evilurl/test.bash
 
