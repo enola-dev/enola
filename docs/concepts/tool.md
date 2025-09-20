@@ -58,7 +58,11 @@ System running well,
 Tasks flow with ease.
 ```
 
-**TODO** _We intended to make this highly configurable in the future._
+!!! danger "Security Consideration"
+
+    The exec tool is very powerful, as it can run any shell command if added to an agent. This may introduce a significant security risk, as a compromised or manipulated prompt or instruction could lead to arbitrary code execution on the machine running Enola. Note that Enola (currently) does not yet double-check tool execution with the user. Please carefully consider this when using this tool.
+
+    **TODO** _We intended to make this highly configurable in the future._
 
 ## Google 🔎 🌐
 
@@ -100,6 +104,12 @@ The following built-in tools let an Agent work with the filesystem:
 ```shell
 enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
 ```
+
+!!! danger "Security Consideration"
+
+    The filesystem related tools are very powerful, because when enabled in an agent, they can currently access the full filesystem. This may introduce a significant security risk, as a compromised or manipulated prompt or instruction could unintentionally expose data from sensitive files on the machine running Enola. Note that Enola (currently) does not yet double-check tool execution with the user. Please carefully consider this when using this tool, and only add actually required tools to agents.
+
+    **TODO** _We intended to be able to limit accessible directories (like MCP roots) in the future._
 
 ## MCP
 
