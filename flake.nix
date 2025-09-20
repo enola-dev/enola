@@ -53,7 +53,6 @@
           graphviz
           protobuf
           protoc-gen-grpc-java
-          docker
           which
 
           statix
