@@ -15,12 +15,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO Transform this into a Bazel target instead?
-# Or an enola exec: resource?
-# (Or no need, for either?)
+# TODO Transform this into a Bazel BUILD target with genrule instead? Or an enola exec: resource?
 set -euox pipefail
 
-# TODO Make this using Bazel with a BUILD instead
-# (It's kind of dumb how as-is there is a protoc "in" Bazel and a separate one.)
-
 protoc --version
+
+# gRPC plugin installed by Nix
+GRPC_PLUGIN=$(which protoc-gen-grpc-java)
+
+# BEWARE: Do *NOT* rm the generated/protoc/java/BUILD file!
+rm -rf generated/protoc/java/dev
+mkdir -p generated/protoc/java
+find java -name "*.proto" -exec protoc --java_out=generated/protoc/java --plugin="${GRPC_PLUGIN}" --grpc-java_out=generated/protoc/java {} +

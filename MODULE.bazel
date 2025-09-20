@@ -24,39 +24,8 @@ RDF4J_VERSION = "5.1.4"
 
 GRPC_JAVA_VERSION = "1.75.0"
 
-# https://github.com/bazel-contrib/rules_jvm_external/issues/1426
-bazel_dep(name = "bazel_skylib", version = "1.8.1")
-
-# https://github.com/bazelbuild/apple_support/
-bazel_dep(name = "apple_support", version = "1.23.1", repo_name = "build_bazel_apple_support")
-
-# https://github.com/protocolbuffers/protobuf/tree/main?tab=readme-ov-file#bazel-with-bzlmod
-bazel_dep(name = "protobuf", version = "32.0")
-
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "8.15.2")
-
-# Required by gRPC
-# (from https://github.com/grpc/grpc-java/blob/8c261c3f28c7d83e1e976acfc34b62027078252b/examples/MODULE.bazel#L1)
-bazel_dep(name = "googleapis", version = "0.0.0-20250703-f9d6fe4a", repo_name = "com_google_googleapis")
-bazel_dep(name = "googleapis-java", version = "1.0.0")
-
-switched_rules = use_extension("@com_google_googleapis//:extensions.bzl", "switched_rules")
-switched_rules.use_languages(java = True)
-
-# https://github.com/grpc/grpc-java/
-# https://registry.bazel.build/modules/grpc-java
-# TODO How to avoid the ugly WARNING & DEBUG once https://github.com/grpc/grpc-java/issues/11792
-#  and https://github.com/grpc/grpc-java/issues/11791 are fixed (and released).
-bazel_dep(name = "grpc-java", version = GRPC_JAVA_VERSION, repo_name = "io_grpc_grpc_java")
-
-# https://github.com/grpc/grpc-java/issues/12055
-# https://github.com/grpc/grpc-java/pull/12135
-git_override(
-    module_name = "grpc-java",
-    remote = "https://github.com/grpc/grpc-java.git",
-    tag = "v" + GRPC_JAVA_VERSION,
-)
 
 # https://github.com/bazelbuild/rules_go/blob/master/docs/go/core/bzlmod.md
 bazel_dep(name = "rules_go", version = "0.57.0")

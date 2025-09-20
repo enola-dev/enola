@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023-2024 The Enola <https://enola.dev> Authors
+# Copyright 2023 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@protobuf//bazel:proto_library.bzl", "proto_library")
+load("@rules_java//java:defs.bzl", "java_library")
 
-proto_library(
-    name = "meta_proto",
-    srcs = ["meta.proto"],
-    deps = [],
+java_library(
+    name = "java",
+    srcs = glob(
+        ["**/*.java"],
+    ),
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@maven//:com_google_guava_guava",
+        "@maven//:com_google_protobuf_protobuf_java",
+        "@maven//:com_google_protobuf_protobuf_java_util",
+        "@maven//:io_grpc_grpc_api",
+        "@maven//:io_grpc_grpc_protobuf",
+        "@maven//:io_grpc_grpc_stub",
+        "@maven//:javax_annotation_javax_annotation_api",
+    ],
 )

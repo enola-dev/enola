@@ -14,34 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@protobuf//bazel:java_proto_library.bzl", "java_proto_library")
-load("@protobuf//bazel:proto_library.bzl", "proto_library")
-load("@rules_go//proto:def.bzl", "go_proto_library")
 load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
-
-proto_library(
-    name = "thing_proto",
-    srcs = ["thing.proto"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "@protobuf//:timestamp_proto",
-    ],
-)
-
-java_proto_library(
-    name = "thing_java_proto",
-    visibility = ["//:__subpackages__"],
-    deps = ["thing_proto"],
-)
-
-go_proto_library(
-    name = "thing_go_proto",
-    importpath = "dev/enola/thing",
-    protos = [":thing_proto"],
-    visibility = ["//:__subpackages__"],
-    deps = [],
-)
 
 java_library(
     # TODO Rename to thing
@@ -57,7 +31,7 @@ java_library(
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":thing_java_proto",
+        "//generated/protoc/java",
         "//java/dev/enola/common",
         "//java/dev/enola/common/collect",
         "//java/dev/enola/common/context",
@@ -96,7 +70,7 @@ junit_tests(
     ),
     deps = [
         ":thing_java",
-        ":thing_java_proto",
+        "//generated/protoc/java",
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/convert",
@@ -104,7 +78,6 @@ junit_tests(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/protobuf",
-        "//java/dev/enola/common/protobuf:test_java_proto",
         "//java/dev/enola/data",
         "//java/dev/enola/data/iri",
         "//java/dev/enola/data/iri/namespace/repo",
