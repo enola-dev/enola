@@ -19,7 +19,7 @@ package dev.enola.ai.adk.tool;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import com.google.adk.models.BaseLlm;
@@ -76,7 +76,7 @@ public class DateTimeToolsTest {
     @Test
     public void geminiFlashLite() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
-        var model = llm.get(ModelConfig.temperature(FLASH_LITE, 0));
+        var model = llm.get(ModelConfig.temperature(FLASH, 0));
 
         var agentTester =
                 new AgentTester(
