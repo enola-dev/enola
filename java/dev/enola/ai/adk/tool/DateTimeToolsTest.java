@@ -74,7 +74,7 @@ public class DateTimeToolsTest {
     }
 
     @Test
-    public void geminiFlashLite() throws IOException {
+    public void geminiFlash() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var model = llm.get(ModelConfig.temperature(FLASH, 0));
 

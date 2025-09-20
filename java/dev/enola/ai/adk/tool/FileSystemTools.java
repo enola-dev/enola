@@ -46,24 +46,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class FileSystemTools {
-    public static Map<String, BaseTool> createToolSet(FileSystemTools fileSystemTool) {
-        return ImmutableMap.of(
-                "readFile", FunctionTool.create(fileSystemTool, "readFile"),
-                "writeFile", FunctionTool.create(fileSystemTool, "writeFile"),
-                "editFile", FunctionTool.create(fileSystemTool, "editFile"),
-                "searchFiles", FunctionTool.create(fileSystemTool, "searchFiles"),
-                "listDirectory", FunctionTool.create(fileSystemTool, "listDirectory"),
-                "createDirectory", FunctionTool.create(fileSystemTool, "createDirectory"),
-                "grepFile", FunctionTool.create(fileSystemTool, "grepFile"),
-                "executeCommand", FunctionTool.create(fileSystemTool, "executeCommand"));
-    }
+public class FileSystemTools {
 
-    @Schema(description = "Lists all files and directories inside a given file system path.")
-    public Map<String, String> getListDirectory(
-            @Schema(description = "The absolute or relative path of the directory to inspect.")
-                    String path) {
-        return Tools.toMap(listDirectoryHelper(path));
+    public Map<String, BaseTool> createToolSet() {
+        return ImmutableMap.of(
+                "read_file", FunctionTool.create(this, "readFile"),
+                "write_file", FunctionTool.create(this, "writeFile"),
+                "edit_file", FunctionTool.create(this, "editFile"),
+                "search_files", FunctionTool.create(this, "searchFiles"),
+                "list_directory", FunctionTool.create(this, "listDirectory"),
+                "create_directory", FunctionTool.create(this, "createDirectory"),
+                "grep_file", FunctionTool.create(this, "grepFile"),
+                "execute_command", FunctionTool.create(this, "executeCommand"));
     }
 
     @Schema(description = "Reads the entire content of a specified file.")
@@ -104,10 +98,11 @@ public final class FileSystemTools {
 
     @Schema(
             description =
-                    "Lists the contents of a directory with details like size and modification"
-                            + " date.")
+                    "Given a file system path, lists the contents of a directory with all files and"
+                            + " directories and details like size and modification date.")
     public Map<String, String> listDirectory(
-            @Schema(description = "The path of the directory to list.") String path) {
+            @Schema(description = "The absolute or relative path of the directory to list.")
+                    String path) {
         return Tools.toMap(listDirectoryHelper(path));
     }
 

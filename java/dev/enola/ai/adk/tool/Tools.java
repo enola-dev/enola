@@ -19,13 +19,13 @@ package dev.enola.ai.adk.tool;
 
 import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.GoogleSearchTool;
-import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.mcp.McpLoader;
 import dev.enola.ai.mcp.McpServerConnectionsConfig;
 import dev.enola.common.SuccessOrError;
 
 import java.time.InstantSource;
+import java.util.HashMap;
 import java.util.Map;
 
 public final class Tools {
@@ -41,31 +41,14 @@ public final class Tools {
     }
 
     public static ToolsetProvider builtin(InstantSource instantSource) {
-        Map<String, BaseTool> fileSystemTools =
-                FileSystemTools.createToolSet(new FileSystemTools());
+        var tools = new HashMap<String, BaseTool>();
 
-        return ToolsetProvider.immutableTools(
-                ImmutableMap.of(
-                        "clock",
-                        DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)),
-                        "search_google",
-                        new GoogleSearchTool(),
-                        "list_directory",
-                        fileSystemTools.get("listDirectory"),
-                        "read_file",
-                        fileSystemTools.get("readFile"),
-                        "write_file",
-                        fileSystemTools.get("writeFile"),
-                        "edit_file",
-                        fileSystemTools.get("editFile"),
-                        "search_files",
-                        fileSystemTools.get("searchFiles"),
-                        "create_directory",
-                        fileSystemTools.get("createDirectory"),
-                        "grep_file",
-                        fileSystemTools.get("grepFile"),
-                        "execute_command",
-                        fileSystemTools.get("executeCommand")));
+        tools.put(
+                "clock", DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)));
+        tools.put("search_google", new GoogleSearchTool());
+        tools.putAll(new FileSystemTools().createToolSet());
+
+        return ToolsetProvider.immutableTools(tools);
     }
 
     public static Map<String, String> toMap(SuccessOrError<String> soe) {
