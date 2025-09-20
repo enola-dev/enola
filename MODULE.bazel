@@ -31,7 +31,7 @@ bazel_dep(name = "bazel_skylib", version = "1.8.1")
 bazel_dep(name = "apple_support", version = "1.23.1", repo_name = "build_bazel_apple_support")
 
 # https://github.com/protocolbuffers/protobuf/tree/main?tab=readme-ov-file#bazel-with-bzlmod
-bazel_dep(name = "protobuf", version = "32.0")
+bazel_dep(name = "protobuf", version = "32.1")
 
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "8.15.2")
