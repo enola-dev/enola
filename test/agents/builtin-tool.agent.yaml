@@ -9,4 +9,4 @@ tools:
   - search_files
   - create_directory
   - grep_file
-  - execute_command
+  - exec

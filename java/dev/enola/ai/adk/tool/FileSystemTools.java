@@ -57,7 +57,7 @@ public class FileSystemTools {
                 "list_directory", FunctionTool.create(this, "listDirectory"),
                 "create_directory", FunctionTool.create(this, "createDirectory"),
                 "grep_file", FunctionTool.create(this, "grepFile"),
-                "execute_command", FunctionTool.create(this, "executeCommand"));
+                "exec", FunctionTool.create(this, "executeCommand"));
     }
 
     @Schema(description = "Reads the entire content of a specified file.")
