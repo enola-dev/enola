@@ -1,0 +1,10 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash
+# TODO prompt
+instruction:
+  Generate a system summary using various Linux commands and format the output as a haiku of 7 lines.
+  For memory, do include both total as well as used, including buff/cache.
+  For uptime, run it without any options, because not all versions support.
+# TODO Limit allowed commands to e.g. only "uname -a", "df -h /", "free -m", "uptime" (or whatever)
+tools:
+  - exec
