@@ -85,6 +85,22 @@ Here's a summary of what happened on August 16, 2025:
 
 This tool is currently only supported [on Gemini](../specs/aiuri/index.md#google-ai-).
 
+## Files 📂
+
+The following built-in tools let an Agent work with the filesystem:
+
+* `read_file`: Reads the entire content of a specified file.
+* `write_file`: Writes content into a file.
+* `edit_file`: Replaces a specific range of lines in a file and returns a git-style diff of the changes.
+* `search_files`: Recursively searches for files and directories using a glob pattern.
+* `list_directory`: Lists the files and directory contents of a given directory with, with details like size and modification date.
+* `create_directory`: Creates a directory, including any necessary parent directories.
+* `grep_file`: Searches for a text pattern within a file.
+
+```shell
+enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
+```
+
 ## MCP
 
 [MCP](mcp.md) allows Enola to access many thousands of other tools!

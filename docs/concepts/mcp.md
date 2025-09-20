@@ -72,18 +72,6 @@ This needs `uvx` to be available; test if launching `uvx mcp-server-fetch` works
 CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
 Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
-### Filesystem
-
-```yaml
-{% include "../../test/agents/filesystem.agent.yaml" %}
-```
-
-```shell
-enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
-```
-
-This [currently](https://github.com/enola-dev/enola/issues/1631) needs `npx` to be available; test if launching `npx @modelcontextprotocol/server-filesystem` works, first.
-
 ### Git
 
 ```yaml
