@@ -27,9 +27,7 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.SuccessOrError;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,12 +39,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileSystemTools {
+
+    // TODO Enforce root(s); see "root" related TODO in McpLoader
 
     public Map<String, BaseTool> createToolSet() {
         return ImmutableMap.of(
@@ -56,8 +55,7 @@ public class FileSystemTools {
                 "search_files", FunctionTool.create(this, "searchFiles"),
                 "list_directory", FunctionTool.create(this, "listDirectory"),
                 "create_directory", FunctionTool.create(this, "createDirectory"),
-                "grep_file", FunctionTool.create(this, "grepFile"),
-                "exec", FunctionTool.create(this, "executeCommand"));
+                "grep_file", FunctionTool.create(this, "grepFile"));
     }
 
     @Schema(description = "Reads the entire content of a specified file.")
@@ -119,14 +117,6 @@ public class FileSystemTools {
             @Schema(description = "Number of context lines to show before and after a match.")
                     int context) {
         return Tools.toMap(grepFileHelper(path, pattern, context));
-    }
-
-    @Schema(
-            description =
-                    "Executes a shell command and captures its standard output and standard error.")
-    public Map<String, String> executeCommand(
-            @Schema(description = "The command to execute (e.g., 'ls -l').") String command) {
-        return Tools.toMap(executeCommandHelper(command));
     }
 
     // Private Helper Methods
@@ -272,35 +262,6 @@ public class FileSystemTools {
             return success(results.isEmpty() ? "No matches found." : String.join("\n", results));
         } catch (IOException e) {
             return error("Error reading or searching file: " + e.getMessage());
-        }
-    }
-
-    private SuccessOrError<String> executeCommandHelper(String command) {
-        try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
-            pb.redirectErrorStream(true); // Combine stdout and stderr
-            Process process = pb.start();
-
-            StringBuilder output = new StringBuilder();
-            try (BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    output.append(line).append("\n");
-                }
-            }
-
-            if (!process.waitFor(10, TimeUnit.SECONDS)) {
-                process.destroy();
-                return error("Command timed out after 10 seconds.");
-            }
-
-            int exitCode = process.exitValue();
-            return success(
-                    String.format(
-                            "Exit Code: %d%nOutput:%n%s", exitCode, output.toString().trim()));
-        } catch (IOException | InterruptedException e) {
-            return error("Failed to execute command: " + e.getMessage());
         }
     }
 

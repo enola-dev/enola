@@ -47,6 +47,7 @@ public final class Tools {
                 "clock", DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)));
         tools.put("search_google", new GoogleSearchTool());
         tools.putAll(new FileSystemTools().createToolSet());
+        tools.put("exec", new ExecTool().createTool());
 
         return ToolsetProvider.immutableTools(tools);
     }
