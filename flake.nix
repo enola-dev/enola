@@ -2,7 +2,7 @@
   description = "Enola AI; see https://enola.dev";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     nixpkgs-bun.url = "github:nixos/nixpkgs/ab1f3b61279dfe63cdc938ed90660b99e9d46619"; # bun==1.2.19
@@ -39,6 +39,10 @@
           git
           go
           jq
+          bazel_8
+          # TODO Finish switch from Bazelisk to Bazel package
+          #   by cleaning up all scripts etc. which still use
+          #   bazelisk, and then rm this, and .bazelversion
           bazelisk
           shellcheck
           nixpkgs-fmt
@@ -101,7 +105,7 @@
               echo -n "${gitRev}" >tools/version/VERSION
 
               export HOME=$TMPDIR
-              bazelisk build //java/dev/enola/cli:enola_deploy.jar
+              bazel build //java/dev/enola/cli:enola_deploy.jar
             '';
 
             installPhase = ''
