@@ -17,11 +17,17 @@
 
 set -euox pipefail
 
-# TODO Automate finding all ../*-agent instead of hard-coding each name here
-
-cp ../git-commit-message-agent/README.md docs/agents/git-commit.md
-cp ../github-issue-agent/README.md docs/agents/github-issue.md
-
 MSG="\n<!-- DO NOT MODIFY here; @see tools/agents/update-docs.bash -->"
-echo -e "$MSG" >>docs/agents/git-commit.md
-echo -e "$MSG" >>docs/agents/github-issue.md
+
+for agent_dir in ../*-agent; do
+    agent_name=$(basename "$agent_dir")
+    # NB: The destination file name is derived from the agent directory name.
+    # E.g. ../github-issue-agent -> github-issue.md
+    # E.g. ../git-commit-message-agent -> git-commit.md
+    dest_name_base=${agent_name%-agent}
+    dest_name=${dest_name_base%-message}
+
+    dest_file="docs/agents/$dest_name.md"
+    cp "$agent_dir/README.md" "$dest_file"
+    echo -e "$MSG" >> "$dest_file"
+done

@@ -20,8 +20,16 @@
 
 Try out any of our ready-to-use _**FREE**_ AI agents:
 
+## Developers
+
 * [Git Commit ✨ Message 🔮 Agent](git-commit.md)
 * [GitHub Issue 🐛 Agent](github-issue.md)
+
+## Exploratory
+
+* [Voice User Interface (VUI)](vui.md)
+
+## Moar
 
 See our [Ideas for New 🧙 Agents](https://github.com/orgs/enola-dev/discussions/categories/ideas-for-new-agents), and contribute to _[make your own](../tutorial/agents.md)!_
 

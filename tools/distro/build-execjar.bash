@@ -34,7 +34,7 @@ else
   exit 255
 fi
 
-tools/protoc/protoc.bash
+"$ROOT"/tools/protoc/protoc.bash
 
 # NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
 "$BZL" build --color=yes //java/dev/enola/cli:enola_deploy.jar
