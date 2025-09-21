@@ -116,6 +116,7 @@ nav:
   - Appendix:
       # ? - Playbooks: concepts/playbook.md
       - Support: support.md
+      - Chat: chat.md
       - Specs:
           - specs/index.md
           - AI URI: specs/aiuri/index.md

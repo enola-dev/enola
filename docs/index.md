@@ -54,7 +54,7 @@ BTW: The name "Enola" was originally inspired by the project's creator having wa
 
 ## See You!
 
-Come join us and help build the future of open AI-powered knowledge and automation together! 🫶
+Come join us and help build the future of open AI-powered knowledge and automation together! 🫶 [Chat](chat.md) with us, and [set up your dev env](dev/setup.md).
 
 <script type="application/ld+json">
 {% include "models/enola.dev.jsonld" %}
