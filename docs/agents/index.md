@@ -20,6 +20,10 @@
 
 Try out any of our ready-to-use _**FREE**_ AI agents:
 
+## Everyone
+
+* [Weather 🌞⛅☔🌈🌦️☀️](weather.md)
+
 ## Developers
 
 * [Git Commit ✨ Message 🔮 Agent](git-commit.md)
@@ -27,7 +31,7 @@ Try out any of our ready-to-use _**FREE**_ AI agents:
 
 ## Exploratory
 
-* [Voice User Interface (VUI)](vui.md)
+* [Voice User Interface (VUI) 🗣️](vui.md)
 
 ## Moar
 
