@@ -19,10 +19,9 @@ package dev.enola.common.io.resource;
 
 import static java.util.Objects.requireNonNull;
 
+import com.google.common.base.Suppliers;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
-
-import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
 import java.util.function.Supplier;
@@ -41,12 +40,14 @@ public abstract class BaseResource implements AbstractResource {
 
     protected BaseResource(URI uri, ByteSource byteSource) {
         this.uri = requireNonNull(uri, "uri");
-        this.mediaType = () -> mtd.detect(uri, byteSource);
+        this.mediaType = Suppliers.memoize(() -> mtd.detect(uri, byteSource));
     }
 
     protected BaseResource(URI uri, MediaType mediaType) {
         this.uri = requireNonNull(uri, "uri");
-        this.mediaType = () -> mtd.adjustCharset(uri, requireNonNull(mediaType, "mediaType"));
+        this.mediaType =
+                Suppliers.memoize(
+                        () -> mtd.adjustCharset(uri, requireNonNull(mediaType, "mediaType")));
     }
 
     // No need for: protected BaseResource(URI uri, MediaType mediaType, ByteSource byteSource) {
@@ -54,22 +55,10 @@ public abstract class BaseResource implements AbstractResource {
     protected BaseResource(URI uri, Supplier<MediaType> mediaTypeSupplier) {
         this.uri = requireNonNull(uri, "uri");
         this.mediaType =
-                caching(
+                Suppliers.memoize(
                         () ->
                                 mtd.adjustCharset(
                                         uri, requireNonNull(mediaTypeSupplier.get(), "mediaType")));
-    }
-
-    private static Supplier<MediaType> caching(Supplier<MediaType> mediaTypeSupplier) {
-        return new Supplier<>() {
-            private @Nullable MediaType cached;
-
-            @Override
-            public MediaType get() {
-                if (cached == null) cached = mediaTypeSupplier.get();
-                return cached;
-            }
-        };
     }
 
     @Override
