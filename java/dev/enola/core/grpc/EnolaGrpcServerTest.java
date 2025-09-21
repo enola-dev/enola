@@ -30,6 +30,7 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.protobuf.Anys;
 import dev.enola.common.protobuf.ValidationException;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
@@ -94,8 +95,7 @@ public class EnolaGrpcServerTest {
         var response = client.getThing(request);
         var any = response.getThing();
         // TODO Need to check if the Any is multiple Things or single Thing? Or ditch.. too complex!
-        var things = any.unpack(Things.class);
-        return things;
+        return Anys.unpack(any, Things.class);
     }
 
     private void checkGetProtoMessage(EnolaServiceBlockingStub client)

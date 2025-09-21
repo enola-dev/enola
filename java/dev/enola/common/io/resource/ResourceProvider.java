@@ -23,6 +23,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Optional;
 
 /**
  * Resource Provider.
@@ -34,7 +35,7 @@ import java.net.URI;
  */
 public interface ResourceProvider extends ProviderFromIRI<Resource> {
 
-    // TODO Avoid @Nullable Resource, by using the get() and optional() pattern
+    // TODO Replace @Nullable with get() and optional() pattern
     //   (as used e.g. in ChatLanguageModelProvider) and rename methods accordingly...
 
     // TODO Add (strongly typed) "metadata headers" (instead of e.g. only MediaType)
@@ -43,6 +44,15 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         var resource = getResource(uri);
         if (resource == null) throw new IOException("Not found: " + uri);
         return resource;
+    }
+
+    default Optional<Resource> optional(URI uri) {
+        try {
+            return Optional.ofNullable(getResource(uri));
+        } catch (Exception e) {
+            ResourceProviders.LOG.info("Exception for {}", uri, e);
+            return Optional.empty();
+        }
     }
 
     @Override

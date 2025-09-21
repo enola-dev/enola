@@ -17,21 +17,16 @@
  */
 package dev.enola.rdf.io;
 
-import com.google.protobuf.Message;
-
 import dev.enola.common.convert.ConversionException;
-import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.proto.Thing;
-import dev.enola.thing.proto.Things;
 
 import java.util.List;
 import java.util.Optional;
 
-public class RdfResourceIntoProtoThingConverter
-        implements OptionalConverter<ReadableResource, List<Thing.Builder>> {
+public class RdfResourceIntoProtoThingConverter implements ResourceIntoProtoThingConverter {
 
     // TODO Also implement e.g. an MarkdownResourceIntoThingConverter
     // TODO Also implement e.g. JavaResourceIntoThingConverter
@@ -46,22 +41,6 @@ public class RdfResourceIntoProtoThingConverter
     @Override
     public Optional<List<Thing.Builder>> convert(ReadableResource from) throws ConversionException {
         var optModel = rdfReaderConverter.convert(from);
-        if (optModel.isEmpty()) return Optional.empty();
-
-        return Optional.of(rdfThingConverter.convertToList(optModel.get()));
-    }
-
-    /** This returns thingsList as Thing (if there is 1) or a {@link Things} pb. */
-    public Message.Builder asMessage(List<Thing.Builder> thingsList) {
-        Message.Builder messageBuilder;
-        if (thingsList.size() == 1) messageBuilder = thingsList.get(0);
-        else {
-            var thingsBuilder = Things.newBuilder();
-            for (var thing : thingsList) {
-                thingsBuilder.addThings(thing);
-            }
-            messageBuilder = thingsBuilder;
-        }
-        return messageBuilder;
+        return optModel.map(rdfThingConverter::convertToList);
     }
 }

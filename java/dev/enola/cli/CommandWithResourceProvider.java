@@ -45,7 +45,7 @@ public abstract class CommandWithResourceProvider implements Callable<Integer> {
             names = {"--http-scheme"},
             negatable = true,
             required = true,
-            defaultValue = "false",
+            defaultValue = "true",
             fallbackValue = "true",
             showDefaultValue = CommandLine.Help.Visibility.ALWAYS,
             description = "Whether external HTTP requests are allowed")
