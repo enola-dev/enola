@@ -27,7 +27,7 @@
     (...)
     HTTP Chat UI server started; open http://localhost:7070 ...
 
-The `--lm` argument needs to be a valid [AI LM URI](../../specs/aiuri/index.md).
+[See here](../ai/index.md) re. the `--lm` and `--agents` arguments.
 
 Note that remote Language Models will typically require an API key as a secret;
 when running Enola from a container image, then it's typically simplest to use

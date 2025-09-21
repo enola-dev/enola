@@ -38,9 +38,14 @@ import dev.enola.common.secret.auto.AutoSecretManager;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 final class AI {
+
+    private static final Pattern AGENT_SHORT_NAME = Pattern.compile("^[a-zA-Z0-9\\-]+$");
 
     static Iterable<BaseAgent> load(ResourceProvider rp, @Nullable AiOptions aiOptions)
             throws IOException {
@@ -58,6 +63,7 @@ final class AI {
             aiOptions.mcpOptions.load(mcpLoader, rp);
             var tools = Tools.mcp(mcpLoader.configs(), mcpLoader);
             var agentsLoader = new AgentsLoader(rp, create(defaultModelURI), modelProvider, tools);
+            replaceShortAgentNames(aiOptions.agentURIs);
             return agentsLoader.load(aiOptions.agentURIs.stream());
 
         } else {
@@ -82,6 +88,19 @@ final class AI {
             throw new IllegalArgumentException(
                     "No such agent: " + aiOptions.agentName + "; only: " + agentsMap.keySet());
         return agent;
+    }
+
+    static void replaceShortAgentNames(List<URI> agentURLs) {
+        for (int i = 0; i < agentURLs.size(); i++) {
+            var agent = agentURLs.get(i).toString();
+            if (AGENT_SHORT_NAME.asMatchPredicate().test(agent)) {
+                var realURL =
+                        "https://raw.githubusercontent.com/enola-dev/"
+                                + agent
+                                + "-agent/refs/heads/main/enola.agent.yaml";
+                agentURLs.set(i, URI.create(realURL));
+            }
+        }
     }
 
     private AI() {}
