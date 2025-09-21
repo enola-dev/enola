@@ -29,7 +29,7 @@ import java.net.URI;
 
 public class ResourceProviders implements ResourceProvider {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ResourceProviders.class);
+    static final Logger LOG = LoggerFactory.getLogger(ResourceProviders.class);
 
     private final Iterable<ResourceProvider> resourceProviders;
 

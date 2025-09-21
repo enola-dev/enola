@@ -19,12 +19,12 @@ package dev.enola.core.resource;
 
 import com.google.protobuf.Any;
 
-import dev.enola.common.convert.OptionalConverter;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.core.EnolaException;
 import dev.enola.core.EnolaService;
 import dev.enola.core.proto.*;
 import dev.enola.rdf.io.RdfResourceIntoProtoThingConverter;
+import dev.enola.rdf.io.ResourceIntoProtoThingConverter;
 import dev.enola.thing.message.ProtoThingProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.template.Templates;
@@ -38,35 +38,31 @@ import java.util.List;
 
 /**
  * ResourceEnolaService implements {@link EnolaService} by fetching bytes from a {@link
- * ResourceProvider} and converting them into Things using an {@link OptionalConverter}, such as its
- * default {@link RdfResourceIntoProtoThingConverter}.
+ * ResourceProvider} and converting them into Things using an {@link
+ * ResourceIntoProtoThingConverter}, such as its default {@link RdfResourceIntoProtoThingConverter}.
  */
 public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
     // TODO Remove implements EnolaService (only ProtoThingProvider)
 
     private static final Logger LOG = LoggerFactory.getLogger(ResourceEnolaService.class);
 
-    private final RdfResourceIntoProtoThingConverter resourceToThingConverter;
+    private final ResourceIntoProtoThingConverter resourceToThingConverter;
     private final ResourceProvider rp;
 
     public ResourceEnolaService(
-            ResourceProvider rp, RdfResourceIntoProtoThingConverter resourceToThingConverter) {
+            ResourceProvider rp, ResourceIntoProtoThingConverter resourceToThingConverter) {
         this.resourceToThingConverter = resourceToThingConverter;
         this.rp = rp;
-    }
-
-    public ResourceEnolaService(ResourceProvider rp) {
-        this(rp, new RdfResourceIntoProtoThingConverter(rp));
     }
 
     public @Nullable List<Thing.Builder> getThingsAsBuilderList(String iri) {
         if (Templates.hasVariables(iri)) return null;
         var uri = URI.create(iri); // TODO IRIs.toURI(iri);
-        var resource = rp.getReadableResource(uri);
-        if (resource == null) {
-            LOG.debug("Could not load: {}", iri);
+        var optionalResource = rp.optional(uri);
+        if (optionalResource.isEmpty()) {
             return null;
         }
+        var resource = optionalResource.get();
         var opt = resourceToThingConverter.convert(resource);
         if (opt.isEmpty()) {
             LOG.debug("Filtered; or unknown format, no parser for {}", iri);

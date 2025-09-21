@@ -26,6 +26,8 @@ import dev.enola.core.thing.ListThingService;
 import dev.enola.core.thing.ThingRepositoryThingService;
 import dev.enola.core.thing.ThingService;
 import dev.enola.data.iri.template.URITemplateMatcherChain;
+import dev.enola.rdf.io.FilteringResourceIntoProtoThingConverter;
+import dev.enola.rdf.io.RdfResourceIntoProtoThingConverter;
 import dev.enola.thing.Thing;
 import dev.enola.thing.message.JavaThingToProtoThingConverter;
 import dev.enola.thing.message.ProtoThingRepository;
@@ -147,8 +149,11 @@ class EnolaServiceRegistry implements EnolaService, ProtoThingRepository {
             b.add(ListThingService.ENOLA_ROOT_LIST_IRIS, wrap(listThingService));
             b.add(ListThingService.ENOLA_ROOT_LIST_THINGS, wrap(listThingService));
             var uriTemplateMatcherChain = b.build();
-            var esr =
-                    new EnolaServiceRegistry(uriTemplateMatcherChain, new ResourceEnolaService(rp));
+            var riptc =
+                    new FilteringResourceIntoProtoThingConverter(
+                            new RdfResourceIntoProtoThingConverter(rp));
+            var res = new ResourceEnolaService(rp, riptc);
+            var esr = new EnolaServiceRegistry(uriTemplateMatcherChain, res);
             listThingService.setProtoThingProvider(esr);
             return esr;
         }
