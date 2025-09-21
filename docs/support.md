@@ -28,7 +28,7 @@ Depending on your needs, we may be able to offer 💼 commercial support for Eno
 
 ## Community
 
-For free, community-based support, you can connect with other amazing users like yourself and our awesome contributors through our 🤝 [Discussions](https://github.com/orgs/enola-dev/discussions) Forum or 💬 [Chat](https://github.com/enola-dev/enola/issues/1649). Please note that this support is provided on a best-effort basis by volunteers and does not include any guarantees for response time or issue resolution.
+For free, community-based support, you can connect with other amazing users like yourself and our awesome contributors through our 🤝 [Discussions](https://github.com/orgs/enola-dev/discussions) Forum or 💬 [Chat](chat.md). Please note that this support is provided on a best-effort basis by volunteers and does not include any guarantees for response time or issue resolution.
 
 ## Documentation
 
