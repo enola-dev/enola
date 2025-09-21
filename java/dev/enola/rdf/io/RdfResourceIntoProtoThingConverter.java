@@ -51,7 +51,7 @@ public class RdfResourceIntoProtoThingConverter
         return Optional.of(rdfThingConverter.convertToList(optModel.get()));
     }
 
-    /** This return thingsList as Thing (if there is 1) or a {@link Things} pb. */
+    /** This returns thingsList as Thing (if there is 1) or a {@link Things} pb. */
     public Message.Builder asMessage(List<Thing.Builder> thingsList) {
         Message.Builder messageBuilder;
         if (thingsList.size() == 1) messageBuilder = thingsList.get(0);
