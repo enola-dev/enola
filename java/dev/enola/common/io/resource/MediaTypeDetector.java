@@ -31,6 +31,7 @@ import org.jspecify.annotations.Nullable;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Set;
 
 /**
@@ -107,8 +108,14 @@ class MediaTypeDetector {
         if (uriMediaType != null) mediaType = MediaType.parse(uriMediaType);
 
         var cs = uriCharset.charset();
-        if (cs != null) mediaType = mediaType.withCharset(Charset.forName(cs));
-        else {
+        if (cs != null) {
+            try {
+                mediaType = mediaType.withCharset(Charset.forName(cs));
+            } catch (UnsupportedCharsetException e) {
+                e.addSuppressed(new IllegalArgumentException(uri.toString()));
+                throw e;
+            }
+        } else {
             if (!mediaType.charset().isPresent() && proposedMediaType.charset().isPresent()) {
                 mediaType = mediaType.withCharset(proposedMediaType.charset().get());
             } else {

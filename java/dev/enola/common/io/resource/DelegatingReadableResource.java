@@ -25,7 +25,7 @@ public abstract class DelegatingReadableResource extends BaseResource implements
     protected final ReadableResource delegate;
 
     protected DelegatingReadableResource(ReadableResource delegate) {
-        super(delegate.uri(), delegate.mediaType());
+        super(delegate.uri(), delegate::mediaType);
         this.delegate = delegate;
     }
 

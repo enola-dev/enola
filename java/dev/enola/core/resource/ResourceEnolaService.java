@@ -64,12 +64,12 @@ public class ResourceEnolaService implements EnolaService, ProtoThingProvider {
         var uri = URI.create(iri); // TODO IRIs.toURI(iri);
         var resource = rp.getReadableResource(uri);
         if (resource == null) {
-            LOG.debug("Could not load: " + iri);
+            LOG.debug("Could not load: {}", iri);
             return null;
         }
         var opt = resourceToThingConverter.convert(resource);
         if (opt.isEmpty()) {
-            LOG.warn("Unknown format, no parser for " + resource.mediaType() + " from " + iri);
+            LOG.debug("Filtered; or unknown format, no parser for {}", iri);
             return null;
         }
         return opt.get();
