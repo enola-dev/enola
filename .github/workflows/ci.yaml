@@ -147,6 +147,13 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
+      - name: Cache Python Virtual Env
+        uses: actions/cache@v4
+        with:
+          path: .venv/
+          key:
+            ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-venv-
       - name: Cache Pre-Commit
         uses: actions/cache@v4
         with:
