@@ -22,17 +22,18 @@ import static java.util.Objects.requireNonNull;
 import com.google.common.io.ByteSource;
 import com.google.common.net.MediaType;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
+import java.util.function.Supplier;
 
 public abstract class BaseResource implements AbstractResource {
-
-    // TODO For implementations such as OkHttpResource, MediaType should be "lazily" initialized...
 
     private static final MediaTypeDetector mtd = new MediaTypeDetector();
 
     // Always keep the user-specified URI (because e.g. ?query parameters & #fragment may get lost)
     protected final URI uri;
-    protected final MediaType mediaType;
+    protected final Supplier<MediaType> mediaType;
 
     protected BaseResource(URI uri) {
         this(uri, ByteSource.empty());
@@ -40,15 +41,36 @@ public abstract class BaseResource implements AbstractResource {
 
     protected BaseResource(URI uri, ByteSource byteSource) {
         this.uri = requireNonNull(uri, "uri");
-        this.mediaType = mtd.detect(uri, byteSource);
+        this.mediaType = () -> mtd.detect(uri, byteSource);
     }
 
     protected BaseResource(URI uri, MediaType mediaType) {
         this.uri = requireNonNull(uri, "uri");
-        this.mediaType = mtd.adjustCharset(uri, requireNonNull(mediaType, "mediaType"));
+        this.mediaType = () -> mtd.adjustCharset(uri, requireNonNull(mediaType, "mediaType"));
     }
 
     // No need for: protected BaseResource(URI uri, MediaType mediaType, ByteSource byteSource) {
+
+    protected BaseResource(URI uri, Supplier<MediaType> mediaTypeSupplier) {
+        this.uri = requireNonNull(uri, "uri");
+        this.mediaType =
+                caching(
+                        () ->
+                                mtd.adjustCharset(
+                                        uri, requireNonNull(mediaTypeSupplier.get(), "mediaType")));
+    }
+
+    private static Supplier<MediaType> caching(Supplier<MediaType> mediaTypeSupplier) {
+        return new Supplier<>() {
+            private @Nullable MediaType cached;
+
+            @Override
+            public MediaType get() {
+                if (cached == null) cached = mediaTypeSupplier.get();
+                return cached;
+            }
+        };
+    }
 
     @Override
     public final URI uri() {
@@ -57,7 +79,7 @@ public abstract class BaseResource implements AbstractResource {
 
     @Override
     public final MediaType mediaType() {
-        return mediaType;
+        return mediaType.get();
     }
 
     @Override

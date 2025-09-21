@@ -40,6 +40,9 @@ public class OkHttpResourceTest {
 
     // TODO Use https://square.github.io/okhttp/#mockwebserver
 
+    // TODO Add test coverage to ensure that simply constructing an OkHttpResource object
+    //   does not cause any network activity, as the mediaType must be obtained lazily, on demand!
+
     @Test
     public void google() throws IOException {
         var r = new OkHttpResource("http://www.google.com");

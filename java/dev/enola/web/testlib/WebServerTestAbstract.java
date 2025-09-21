@@ -23,6 +23,8 @@ import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static org.junit.Assert.assertThrows;
+
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.Context;
@@ -35,7 +37,6 @@ import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -97,12 +98,12 @@ public abstract class WebServerTestAbstract {
                 assertThat(response2.charSource().read()).isEqualTo("hi, you\n");
 
                 var error1 = URI.create(prefix + "/error1");
-                Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error1));
+                assertThrows(IOException.class, () -> rp.getNonNull(error1).byteSource().read());
                 // var errorResponse1 = rp.getResource(error1);
                 // Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
 
                 var error2 = URI.create(prefix + "/error2");
-                Assert.assertThrows(IllegalArgumentException.class, () -> rp.getResource(error2));
+                assertThrows(IOException.class, () -> rp.getNonNull(error2).byteSource().read());
                 // var errorResponse2 = rp.getResource(error2);
                 // Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
 

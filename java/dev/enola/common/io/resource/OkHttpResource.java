@@ -98,11 +98,11 @@ public class OkHttpResource extends BaseResource implements ReadableResource {
     }
 
     public OkHttpResource(String url) {
-        super(URI.create(url), mediaType(url));
+        super(URI.create(url), () -> mediaType(url));
     }
 
     public OkHttpResource(URI uri) {
-        super(uri, mediaType(uri.toString()));
+        super(uri, () -> mediaType(uri.toString()));
     }
 
     private static Request newRequest(String url) {
