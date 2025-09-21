@@ -40,6 +40,9 @@ go_sdk.download(version = "1.22.4")
 # When bumping the version here, must always run: REPIN=1 bazelisk run @maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 
+# https://github.com/bazel-contrib/rules_jvm_external/issues/1426
+bazel_dep(name = "bazel_skylib", version = "1.8.1")
+
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "maven",
