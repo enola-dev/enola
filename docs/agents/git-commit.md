@@ -4,11 +4,11 @@ This will generate Git Commit messages for you using an LLM:
 
 1. First, make sure that you [have `uvx` available](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer) (until #[1632](https://github.com/enola-dev/enola/issues/1632))
 1. Next, [create a Google Gemini API key](https://aistudio.google.com/apikey)
-1. Now [store this secret](https://docs.enola.dev/use/secret/), using: `mkdir -p ~/.config/enola && echo GOOGLE_AI_API_KEY=...`
+1. Now [store this secret](https://docs.enola.dev/use/secret/), using: `mkdir -p ~/.config/enola && echo GOOGLE_AI_API_KEY=... >>~/.config/enola/azkaban.yaml`
 1. Finally, [install Enola.dev](https://docs.enola.dev/use/), and now run:
 
 ```sh
-enola ai --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/git-commit-message-agent/refs/heads/main/git-commit-message.agent.yaml --in="Make it so!"
+enola ai --agents=git-commit-message --in="Make it so!"
 ```
 
 We recommend that you create an `alias` for this in your [dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/alias), e.g. `ac` for _AI Commit!_

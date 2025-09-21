@@ -22,7 +22,7 @@ The 🔱 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is a st
 
 ## Configuration
 
-The `--mcp` CLI argument specifies which MCP servers are available to Agents.
+[The `--mcp` CLI argument](../use/ai/index.md#mcp) specifies which MCP servers are available to Agents.
 
 If not specified it uses the built-in [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml) by default.
 
