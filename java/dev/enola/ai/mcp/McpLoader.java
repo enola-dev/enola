@@ -81,7 +81,9 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         for (var name : serverNames) {
             var serverConnectionConfig = config.servers.get(name);
             if (serverConnectionConfig.origin != null)
-                throw new IOException("Use homepage: instead of origin: in " + config.origin);
+                throw new IOException(
+                        "The 'origin' field is reserved; use 'docs' for the documentation URL in "
+                                + config.origin);
             serverConnectionConfig.origin = URI.create(config.origin + "#" + name);
             var previousConfig = serverToConfig.putIfAbsent(name, serverConnectionConfig);
             if (previousConfig != null) {
