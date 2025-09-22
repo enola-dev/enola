@@ -63,6 +63,12 @@
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
 
+        bazel-central-registry = pkgs.fetchFromGitHub {
+          owner = "bazelbuild";
+          repo = "bazel-central-registry";
+          rev = "4fcc47180cfe24915dae5705074c3994c60dc6b7";
+          hash = "sha256-Th7gamXEzJnoA65VKVfARCDnLup5URJT0R1g2Jw3S/0=";
+        };
       in
       {
         # TODO: for https://nix-bazel.build, replace with mkShellNoCC.
@@ -93,36 +99,97 @@
           # $ nix build .#enola
           # $ result/bin/enola --help
           default = enola;
-          enola = pkgs.stdenv.mkDerivation {
-            pname = "enola";
-            version = gitRev;
+          enola =
+            let
+              bazel = pkgs.bazel_8;
+            in
+            pkgs.stdenv.mkDerivation {
+              pname = "enola";
+              version = gitRev;
 
-            buildInputs = [ jdk' ];
-            nativeBuildInputs = buildTools ++ [
-              pkgs.cacert
-              pkgs.makeWrapper
-              pkgs.which
-            ];
-            src = ./.;
+              deps = pkgs.stdenv.mkDerivation {
+                pname = "enola-deps";
+                version = gitRev + "_v18";
 
-            buildPhase = ''
-              # class dev.enola.common.Version reads VERSION
-              echo -n "${gitRev}" >tools/version/VERSION
+                nativeBuildInputs = [
+                  bazel
+                  pkgs.cacert
+                  jdk'
+                  pkgs.git
+                  pkgs.python3
+                  pkgs.protoc-gen-grpc-java
+                  pkgs.protobuf
+                  pkgs.which
+                ];
+                src = ./.;
 
-              # See https://github.com/NixOS/nix/issues/14024
-              bash tools/protoc/protoc.bash
+                buildPhase = ''
+                  runHook preBuild
 
-              export HOME=$TMPDIR
-              bazel build //java/dev/enola/cli:enola_deploy.jar
-            '';
+                  bash tools/protoc/protoc.bash
 
-            installPhase = ''
-              mkdir -p "$out/share/java"
-              cp bazel-bin/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
-              makeWrapper ${jdk'}/bin/java $out/bin/enola \
-                --add-flags "-jar $out/share/java/enola_deploy.jar"
-            '';
-          };
+                  export HOME="$NIX_BUILD_TOP"
+                  mkdir -p "$NIX_BUILD_TOP/output/cache"
+                  ${bazel}/bin/bazel --batch fetch \
+                    --registry=file://${bazel-central-registry} \
+                    --repository_cache="$NIX_BUILD_TOP/output/cache" \
+                    //java/dev/enola/cli:enola_deploy.jar
+
+                  runHook postBuild
+                '';
+                installPhase = ''
+                  runHook preInstall
+
+                  (
+                    cd $NIX_BUILD_TOP && tar czvf $out \
+                      --sort=name \
+                      --mtime='UTC 2080-02-01' \
+                      --owner=0 \
+                      --group=0 \
+                      --numeric-owner output/cache
+                  )
+
+                  runHook postInstall
+                '';
+
+                dontFixup = true;
+                outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
+              };
+
+              src = ./.;
+
+              buildInputs = [ jdk' ];
+              nativeBuildInputs = buildTools ++ [
+                pkgs.makeWrapper
+                pkgs.which
+                jdk'
+              ];
+
+              buildPhase = ''
+                runHook preBuild
+
+                export HOME="$NIX_BUILD_TOP"
+                ( cd "$NIX_BUILD_TOP" && tar xfz $deps )
+                ${bazel}/bin/bazel --batch build \
+                  --nofetch \
+                  --repository_cache="$NIX_BUILD_TOP/output/cache" \
+                  --registry=file://${bazel-central-registry} \
+                  //java/dev/enola/cli:enola_deploy.jar
+
+                runHook postBuild
+              '';
+
+              installPhase = ''
+                runHook preInstall
+
+                mkdir -p "$out/share/java"
+                cp $bazelOut/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
+                makeWrapper ${jdk'}/bin/java $out/bin/enola \
+                  --add-flags "-jar $out/share/java/enola_deploy.jar"
+
+                runHook postInstall
+              '';
+            };
         };
 
         apps = {
