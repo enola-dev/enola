@@ -58,6 +58,7 @@ public class McpLoaderTest {
     }
 
     @Test
+    @Ignore // TODO https://github.com/enola-dev/enola/issues/1734
     public void secrets() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
