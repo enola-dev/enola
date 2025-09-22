@@ -68,7 +68,10 @@ public class ListToolsCommand implements Callable<Integer> {
         Map<String, List<McpSchema.Tool>> tools = new HashMap<>();
         for (var name : loader.names()) {
             var thisTool = new ArrayList<McpSchema.Tool>();
-            var toolClient = loader.get(name, "CLI");
+            var optToolClient = loader.opt(name);
+            if (optToolClient.isEmpty()) continue;
+
+            var toolClient = optToolClient.get();
             var listToolsResult = toolClient.listTools();
             var nextCursor = listToolsResult.nextCursor();
             do {

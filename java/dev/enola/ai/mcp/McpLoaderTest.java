@@ -26,6 +26,7 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
+import dev.enola.common.secret.UnavailableSecretManager;
 
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -44,6 +45,16 @@ public class McpLoaderTest {
     public McpLoaderTest() throws IOException {
         sm = new InMemorySecretManager();
         sm.store("BRAVE_API_KEY", SECRET.toCharArray());
+    }
+
+    @Test
+    public void empty() throws IOException {
+        var loader = new McpLoader(sm);
+        assertThat(loader.opt("not_available")).isEmpty();
+
+        var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
+        loader.load(r);
+        assertThat(loader.opt("not_available")).isEmpty();
     }
 
     @Test
@@ -73,6 +84,14 @@ public class McpLoaderTest {
         var serverConfig2 = loader.replaceSecretPlaceholders(serverConfig);
         var key2 = serverConfig2.env.get("BRAVE_API_KEY");
         assertThat(key2).isEqualTo(SECRET);
+    }
+
+    @Test
+    public void secretNotAvailable() throws IOException {
+        var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
+        var loader = new McpLoader(new UnavailableSecretManager());
+        loader.load(r);
+        assertThat(loader.opt("search_brave")).isEmpty();
     }
 
     @Test
