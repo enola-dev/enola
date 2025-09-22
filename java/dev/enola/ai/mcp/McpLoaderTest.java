@@ -61,7 +61,7 @@ public class McpLoaderTest {
     public void loadConfig() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
-        var config = loader.load(r);
+        var config = loader.loadAndReturn(r);
         var everything = config.servers.get("modelcontextprotocol/everything");
         assertThat(everything.command).isEqualTo("npx");
         assertThat(everything.args)
@@ -75,7 +75,7 @@ public class McpLoaderTest {
         var loader = new McpLoader(sm);
 
         // NB: Loading alone should not replace secrets, yet:
-        var config = loader.load(r);
+        var config = loader.loadAndReturn(r);
         var serverConfig = config.servers.get("search_brave");
         var key = serverConfig.env.get("BRAVE_API_KEY");
         assertThat(key).isEqualTo("${secret:BRAVE_API_KEY}");
@@ -99,7 +99,7 @@ public class McpLoaderTest {
     public void createClient() throws IOException {
         var loader = new McpLoader(sm);
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
-        var config = loader.load(r);
+        loader.load(r);
         assertThat(loader.names()).isNotEmpty();
         for (var name : loader.names()) {
             try (var client = loader.get(name, "Test")) {

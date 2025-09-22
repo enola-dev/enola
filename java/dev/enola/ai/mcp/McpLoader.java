@@ -24,7 +24,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 import dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection;
 import dev.enola.common.Version;
@@ -69,8 +68,12 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         this.secretManager = secretManager;
     }
 
-    @CanIgnoreReturnValue // TODO Separate public from testing API more clearly
-    public McpServerConnectionsConfig load(ReadableResource resource) throws IOException {
+    public void load(ReadableResource resource) throws IOException {
+        loadAndReturn(resource);
+    }
+
+    @VisibleForTesting
+    McpServerConnectionsConfig loadAndReturn(ReadableResource resource) throws IOException {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
 
@@ -94,11 +97,18 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return config;
     }
 
+    /** List available MCP tool names. */
     @Override
     public Set<String> names() {
         return serverToConfig.keySet();
     }
 
+    /**
+     * Get an (optional) MCP tool by name.
+     *
+     * <p>Note that it's possible that this returns {@link Optional#empty()} for a name returned by
+     * {@link #names()} in case the tool failed to load, including due to a missing secret.
+     */
     @Override
     public Optional<McpSyncClient> opt(String name) {
         LOG.info("Get (optional) {}", name);
