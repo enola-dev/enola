@@ -1,0 +1,8 @@
+$schema: https://enola.dev/ai/agent
+# TODO https://github.com/enola-dev/enola/issues/1628
+# model: http://localhost:11434?type=ollama&model=gemma3:1b
+model: google://?model=gemini-2.5-flash
+# NB: Gemini Flash LITE doesn't cope well with the JSON returned by the Brave News Search Tool; so use Flash.
+# TODO prompt: instead instruction:
+tools:
+  - search_brave
