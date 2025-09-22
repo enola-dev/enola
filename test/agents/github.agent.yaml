@@ -1,0 +1,4 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash
+tools:
+  - github

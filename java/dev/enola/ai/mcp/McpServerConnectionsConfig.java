@@ -86,7 +86,8 @@ public class McpServerConnectionsConfig extends WithSchema {
 
         public enum Type {
             stdio,
-            http, // TODO http_sse? streamable_http?
+            http,
+            sse
         }
 
         public Type type = Type.stdio;
@@ -99,7 +100,7 @@ public class McpServerConnectionsConfig extends WithSchema {
         // HTTP; like com.google.adk.tools.mcp.SseServerParameters
         public String url;
         public Map<String, String> headers = new HashMap<>();
-        public Duration timeout;
+        public Duration timeout = Duration.ofSeconds(7);
 
         public boolean roots = false;
 

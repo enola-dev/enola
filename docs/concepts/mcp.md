@@ -26,11 +26,13 @@ The 🔱 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is a st
 
 If not specified it uses the built-in [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml) by default.
 
-The `command`, `args` & `env` are self-explanatory; `docs` is for a link to documentation.
+For STDIO, the `command`, `args` & `env` are self-explanatory.
 
-<!-- TODO Document type, url, headers, timeout - once that's tested to work... -->
+For Streamable HTTP (Chunked Transfer), set `url:` - and possibly `headers:` e.g. with `Authorization: Bearer ${secret:XYZ}`. For Server-Sent Events (SSE), use `type: sse`.
 
-<!-- TODO Document input, once that's implemented... -->
+The `timeout` specifies Timeout duration, for both STDIO & HTTP; it defaults to _7 seconds._
+
+The `docs` field is for a URL to link to documentation.
 
 The boolean `roots` flag controls whether the current working directory is exposed; it defaults to false.
 
@@ -104,6 +106,18 @@ enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit messa
 CAUTION: This server is inherently insecure; you should carefully evaluate if it meets your needs.
 
 This needs `uvx` to be available; test if launching `uvx mcp-server-git` works, first.
+
+### GitHub
+
+```yaml
+{% include "../../test/agents/github.agent.yaml" %}
+```
+
+Create a [secret](../use/secret/index.md) named `GITHUB_PAT` (GitHub Personal Access Token) [here](https://github.com/settings/personal-access-tokens/new).
+
+```shell
+enola ai --agents=test/agents/github.agent.yaml --in "How many stars do the top 3 repos that I own on GitHub repo have? (Use the GitHub context tool to find by GitHub user name.)"
+```
 
 ### Memory
 

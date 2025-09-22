@@ -17,10 +17,11 @@
  */
 package dev.enola.ai.mcp;
 
+import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.*;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.http;
-import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.stdio;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
@@ -36,6 +37,7 @@ import dev.enola.common.secret.SecretManager;
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
 import io.modelcontextprotocol.client.transport.HttpClientSseClientTransport;
+import io.modelcontextprotocol.client.transport.HttpClientStreamableHttpTransport;
 import io.modelcontextprotocol.client.transport.ServerParameters;
 import io.modelcontextprotocol.client.transport.StdioClientTransport;
 import io.modelcontextprotocol.spec.McpClientTransport;
@@ -46,6 +48,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpRequest;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +143,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private McpClientTransport createTransport(
             McpServerConnectionsConfig.ServerConnection connectionConfig) {
         var origin = connectionConfig.origin.toString();
+        if (!Strings.isNullOrEmpty(connectionConfig.url) && !sse.equals(connectionConfig.type))
+            connectionConfig.type = http;
         switch (connectionConfig.type) {
             case stdio -> {
                 var params = createStdIoServerParameters(connectionConfig);
@@ -147,8 +152,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
                 transport.setStdErrorHandler(new McpServerStdErrLogConsumer(origin));
                 return transport;
             }
-            case http -> {
-                return createHttpClientSseClientTransport(connectionConfig);
+            case http, sse -> {
+                return createHttpTransport(connectionConfig);
             }
             default ->
                     throw new IllegalArgumentException(
@@ -169,9 +174,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
                 McpClient.sync(transport)
                         .clientInfo(implementation)
                         .capabilities(capabilities.build())
-                        // TODO Make this configurable - but how & from where?
-                        // .initializationTimeout(Duration.ofSeconds(7))
-                        // .requestTimeout(Duration.ofSeconds(7))
+                        .initializationTimeout(config.timeout)
+                        .requestTimeout(config.timeout)
                         .loggingConsumer(new McpServerLogConsumer(origin))
                         .build();
 
@@ -196,21 +200,27 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return client;
     }
 
-    // TODO Inline (again) into above?
-
     private ServerParameters createStdIoServerParameters(ServerConnection connectionConfig) {
-        if (connectionConfig.type != stdio) throw new IllegalArgumentException();
         return ServerParameters.builder(connectionConfig.command)
                 .args(connectionConfig.args)
                 .env(connectionConfig.env)
                 .build();
     }
 
-    private HttpClientSseClientTransport createHttpClientSseClientTransport(
-            ServerConnection connectionConfig) {
-        if (connectionConfig.type != http) throw new IllegalArgumentException();
-        // TODO Set headers, timeout etc.
-        return HttpClientSseClientTransport.builder(connectionConfig.url).build();
+    private McpClientTransport createHttpTransport(ServerConnection connectionConfig) {
+        var requestBuilder = HttpRequest.newBuilder();
+        connectionConfig.headers.forEach(requestBuilder::header);
+        if (connectionConfig.type == http) {
+            var transportBuilder = HttpClientStreamableHttpTransport.builder(connectionConfig.url);
+            transportBuilder.requestBuilder(requestBuilder);
+            transportBuilder.connectTimeout(connectionConfig.timeout);
+            return transportBuilder.build();
+        } else { // SSE
+            var transportBuilder = HttpClientSseClientTransport.builder(connectionConfig.url);
+            transportBuilder.requestBuilder(requestBuilder);
+            transportBuilder.connectTimeout(connectionConfig.timeout);
+            return transportBuilder.build();
+        }
     }
 
     private Map<String, String> replaceSecretPlaceholders(Map<String, String> map)
@@ -237,19 +247,31 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     }
 
     private String replaceSecretPlaceholders(String value) throws IOException {
-        final String prefix = "${secret:";
-        final String suffix = "}";
-        if (!value.startsWith(prefix) || !value.endsWith(suffix)) return value;
+        final var prefix = "${secret:";
+        final var suffix = '}';
+        if (value.contains("${") && !value.contains(prefix))
+            throw new IOException("Invalid secret placeholder; must be ${secret:XYZ}: " + value);
+        if (!value.contains(prefix)) return value;
 
-        var nameStartIndex = prefix.length();
-        var nameEndIndex = value.length() - suffix.length();
-        if (nameStartIndex >= nameEndIndex)
-            throw new IOException("Invalid secret placeholder: " + value);
-        var secretName = value.substring(nameStartIndex, nameEndIndex);
+        int placeholderStart = value.indexOf(prefix);
+        if (placeholderStart == -1) {
+            return value;
+        }
 
-        return secretManager
-                .getOptional(secretName)
-                .map(secret -> secret.map(String::new))
-                .orElseThrow(() -> new IOException("Secret not found: " + value));
+        int nameEnd = value.indexOf(suffix, placeholderStart);
+        if (nameEnd == -1) {
+            throw new IOException("Invalid secret placeholder, missing " + suffix + ": " + value);
+        }
+
+        int nameStart = placeholderStart + prefix.length();
+        var secretName = value.substring(nameStart, nameEnd);
+
+        var secretValue =
+                secretManager
+                        .getOptional(secretName)
+                        .map(secretOpt -> secretOpt.map(String::new))
+                        .orElseThrow(() -> new IOException("Secret not found: " + secretName));
+
+        return value.substring(0, placeholderStart) + secretValue + value.substring(nameEnd + 1);
     }
 }
