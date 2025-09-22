@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.exec.ExecPATH;
+import dev.enola.common.exec.vorburger.ExpectedExitCode;
 import dev.enola.common.exec.vorburger.Runner;
 import dev.enola.common.exec.vorburger.VorburgerExecRunner;
 import dev.enola.common.io.resource.ClasspathResource;
@@ -152,7 +153,13 @@ public class ExecAgent extends AbstractAgent {
             //   Well, just like in Bash/Fish, with Emoji emoji (😊 for success, 😞 for failure)
             //   in the NEXT prompt... how how to "generalize" this here?
             // TODO Run command in $SHELL instead of hard-coding bash -c.
-            var exitCode = runner.bash(false, cwd, potentialCommand, outputBuilder, timeout);
+            var exitCode =
+                    runner.bash(
+                            ExpectedExitCode.SUCCESS,
+                            cwd,
+                            potentialCommand,
+                            outputBuilder,
+                            timeout);
             LOG.debug("Executed: {} => {}", potentialCommand, exitCode);
             var output = outputBuilder.toString();
             if (!output.trim().isEmpty()) {

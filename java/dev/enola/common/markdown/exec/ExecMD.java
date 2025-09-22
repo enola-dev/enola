@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.io.Files;
 
+import dev.enola.common.exec.vorburger.ExpectedExitCode;
 import dev.enola.common.exec.vorburger.Runner;
 import dev.enola.common.exec.vorburger.VorburgerExecRunner;
 
@@ -117,11 +118,14 @@ public class ExecMD {
         if (!preamble.startsWith("```bash")) throw new IllegalArgumentException(preamble);
         preamble = preamble.substring("```bash".length()).trim();
 
-        boolean expectFailure;
+        ExpectedExitCode expectedExitCode;
         if (preamble.startsWith("$?")) {
-            expectFailure = true;
+            expectedExitCode = ExpectedExitCode.FAIL;
             preamble = preamble.substring("$?".length()).trim();
-        } else expectFailure = false;
+        } else if (preamble.startsWith("$%")) {
+            expectedExitCode = ExpectedExitCode.IGNORE;
+            preamble = preamble.substring("$%".length()).trim();
+        } else expectedExitCode = ExpectedExitCode.SUCCESS;
 
         String fullCommand;
         script.append(":CWD=$(pwd)\n");
@@ -143,7 +147,7 @@ public class ExecMD {
         Duration timeout = Duration.ofSeconds(7);
 
         try {
-            return runner.bash(expectFailure, dir, fullCommand, md, timeout);
+            return runner.bash(expectedExitCode, dir, fullCommand, md, timeout);
         } catch (Exception e) {
             throw new MarkdownProcessingException(
                     "exec failed (use ```bash $? marker if that's expected): " + fullCommand, e);

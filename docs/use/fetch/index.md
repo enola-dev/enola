@@ -74,7 +74,7 @@ Enola locally caches HTTP responses on the filesystem.
 Enola, like e.g. [`curl`](https://curl.se), has a _"native protocol handler"_
 to [support `ipfs:` URLs for decentralized content from IPFS](https://ipfs.tech/):
 
-```bash cd ../.././..
+```bash $% cd ../.././..
 $ ./enola fetch --ipfs-gateway=https://dweb.link/ipfs/ ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu
 ...
 ```
