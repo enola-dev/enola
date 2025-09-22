@@ -69,7 +69,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         this.secretManager = secretManager;
     }
 
-    @CanIgnoreReturnValue
+    @CanIgnoreReturnValue // TODO Separate public from testing API more clearly
     public McpServerConnectionsConfig load(ReadableResource resource) throws IOException {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
