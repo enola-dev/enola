@@ -77,6 +77,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         var serverNames = config.servers.keySet();
         for (var name : serverNames) {
             var serverConnectionConfig = config.servers.get(name);
+            if (serverConnectionConfig.origin != null)
+                throw new IOException("Use homepage: instead of origin: in " + config.origin);
             serverConnectionConfig.origin = URI.create(config.origin + "#" + name);
             var previousConfig = serverToConfig.putIfAbsent(name, serverConnectionConfig);
             if (previousConfig != null) {
@@ -227,7 +229,12 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         final String suffix = "}";
         if (!value.startsWith(prefix) || !value.endsWith(suffix)) return value;
 
-        var secretName = value.substring(prefix.length(), value.length() - suffix.length());
+        var nameStartIndex = prefix.length();
+        var nameEndIndex = value.length() - suffix.length();
+        if (nameStartIndex >= nameEndIndex)
+            throw new IOException("Invalid secret placeholder: " + value);
+        var secretName = value.substring(nameStartIndex, nameEndIndex);
+
         return secretManager
                 .getOptional(secretName)
                 .map(secret -> secret.map(String::new))
