@@ -153,7 +153,7 @@ Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
 Web-based:
 
-* [Linkurious](https://linkurious.com) #Meo4j #Memgraph #ToDo
+* [Linkurious](https://linkurious.com) #Neo4j #Memgraph #ToDo
 * **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** is #RDF #[opensource](https://github.com/LodLive/LodLive)
 * [isSemantic's RDF Visualizer](https://issemantic.net/rdf-visualizer)
 * [Triply's Yasgui](https://docs.triply.cc/yasgui-api/)

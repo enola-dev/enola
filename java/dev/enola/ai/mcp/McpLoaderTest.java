@@ -45,6 +45,7 @@ public class McpLoaderTest {
     public McpLoaderTest() throws IOException {
         sm = new InMemorySecretManager();
         sm.store("BRAVE_API_KEY", SECRET.toCharArray());
+        sm.store("GITHUB_PAT", SECRET.toCharArray());
     }
 
     @Test
@@ -84,6 +85,17 @@ public class McpLoaderTest {
         var serverConfig2 = loader.replaceSecretPlaceholders(serverConfig);
         var key2 = serverConfig2.env.get("BRAVE_API_KEY");
         assertThat(key2).isEqualTo(SECRET);
+    }
+
+    @Test
+    public void secretsContainsNotStartsWith() throws IOException {
+        var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
+        var loader = new McpLoader(sm);
+        var config = loader.loadAndReturn(r);
+        var serverConfig = config.servers.get("github");
+        var serverConfig2 = loader.replaceSecretPlaceholders(serverConfig);
+        var key2 = serverConfig2.headers.get("Authorization");
+        assertThat(key2).isEqualTo("Bearer " + SECRET);
     }
 
     @Test

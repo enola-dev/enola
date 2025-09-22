@@ -50,3 +50,9 @@ servers:
     docs: https://github.com/brave/brave-search-mcp-server
     env:
       BRAVE_API_KEY: ${secret:BRAVE_API_KEY}
+
+  github:
+    docs: https://github.com/github/github-mcp-server
+    url: https://api.githubcopilot.com/mcp/
+    headers:
+      Authorization: Bearer ${secret:GITHUB_PAT}
