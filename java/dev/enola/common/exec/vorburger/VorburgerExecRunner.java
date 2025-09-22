@@ -28,9 +28,10 @@ import java.time.Duration;
 import java.util.List;
 
 public class VorburgerExecRunner implements Runner {
+
     @Override
     public int exec(
-            boolean expectNonZeroExitCode,
+            ExpectedExitCode expectedExitCode,
             Path dir,
             List<String> command,
             Appendable output,
@@ -48,8 +49,10 @@ public class VorburgerExecRunner implements Runner {
         for (var arg : command.subList(1, command.size())) {
             pb.addArgument(arg, false);
         }
-        if (expectNonZeroExitCode) {
-            pb.setIsSuccessExitValueChecker(exitValue -> exitValue != 0);
+        switch (expectedExitCode) {
+            case SUCCESS -> pb.setIsSuccessExitValueChecker(exitValue -> exitValue == 0);
+            case FAIL -> pb.setIsSuccessExitValueChecker(exitValue -> exitValue != 0);
+            case IGNORE -> pb.setIsSuccessExitValueChecker(exitValue -> true);
         }
         ManagedProcess p = pb.build();
 

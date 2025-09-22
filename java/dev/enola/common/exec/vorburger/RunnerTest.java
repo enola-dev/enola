@@ -18,6 +18,7 @@
 package dev.enola.common.exec.vorburger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import static java.nio.file.Path.of;
 import static java.time.Duration.ofSeconds;
@@ -32,31 +33,42 @@ public class RunnerTest {
 
     Runner runner = new VorburgerExecRunner(); // NuProcessRunner();
 
-    void check(String command, boolean expectNonZeroExitCode, String expectedOutput)
+    void check(String command, ExpectedExitCode expectedExitCode, String expectedOutput)
             throws Exception {
         var sb = new StringBuilder();
-        var actualExitCode = runner.bash(expectNonZeroExitCode, of("."), command, sb, ofSeconds(3));
+        var actualExitCode = runner.bash(expectedExitCode, of("."), command, sb, ofSeconds(3));
         Truth.assertThat(sb.toString()).contains(expectedOutput);
-        assertEquals(expectNonZeroExitCode, actualExitCode != 0);
-    }
 
-    @Test
-    public void testTrue() throws Exception {
-        check("true", false, "");
+        switch (expectedExitCode) {
+            case SUCCESS -> assertEquals(0, actualExitCode);
+            case FAIL -> assertTrue(actualExitCode != 0);
+            case IGNORE -> {}
+        }
     }
 
     @Test
     public void testEcho() throws Exception {
-        check("echo hi", false, "hi\n");
+        check("echo hi", ExpectedExitCode.SUCCESS, "hi\n");
+    }
+
+    @Test
+    public void testTrue() throws Exception {
+        check("true", ExpectedExitCode.SUCCESS, "");
     }
 
     @Test
     public void testFalse() throws Exception {
-        check("false", true, "");
+        check("false", ExpectedExitCode.FAIL, "");
+    }
+
+    @Test
+    public void testIgnoreExitCode() throws Exception {
+        check("true", ExpectedExitCode.IGNORE, "");
+        check("false", ExpectedExitCode.IGNORE, "");
     }
 
     @Test
     public void testInexistantCommand() throws Exception {
-        check("does-not-exist", true, "does-not-exist: command not found\n");
+        check("does-not-exist", ExpectedExitCode.FAIL, "does-not-exist: command not found\n");
     }
 }
