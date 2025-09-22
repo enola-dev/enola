@@ -24,6 +24,8 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
+import dev.enola.common.secret.InMemorySecretManager;
+import dev.enola.common.secret.SecretManager;
 
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -36,10 +38,17 @@ public class McpLoaderTest {
     public @Rule SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
+    private final SecretManager sm;
+
+    public McpLoaderTest() throws IOException {
+        sm = new InMemorySecretManager();
+        sm.store("BRAVE_API_KEY", "TestingTesting".toCharArray());
+    }
+
     @Test
     public void loadConfig() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
-        var loader = new McpLoader();
+        var loader = new McpLoader(sm);
         var config = loader.load(r);
         var everything = config.servers.get("modelcontextprotocol/everything");
         assertThat(everything.command).isEqualTo("npx");
@@ -49,9 +58,18 @@ public class McpLoaderTest {
     }
 
     @Test
+    public void secrets() throws IOException {
+        var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
+        var loader = new McpLoader(sm);
+        var config = loader.load(r);
+        var key = config.servers.get("search_brave").env.get("BRAVE_API_KEY");
+        assertThat(key).isEqualTo("TestingTesting");
+    }
+
+    @Test
     @Ignore // TODO Figure out how to make this work under Bazel... :=(
     public void createClient() throws IOException {
-        var loader = new McpLoader();
+        var loader = new McpLoader(sm);
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var config = loader.load(r);
         assertThat(loader.names()).isNotEmpty();

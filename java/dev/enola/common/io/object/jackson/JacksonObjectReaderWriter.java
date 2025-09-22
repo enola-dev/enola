@@ -20,7 +20,6 @@ package dev.enola.common.io.object.jackson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
@@ -116,8 +115,9 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
                 else reader.reset();
             }
             return Optional.of(mapper.readValue(reader, type));
-        } catch (DatabindException e) {
-            throw new IOException(e);
+        } catch (IOException e) {
+            e.addSuppressed(new IOException(resource.uri().toString()));
+            throw e;
         }
     }
 
@@ -127,8 +127,9 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         try (var reader = resource.charSource().openBufferedStream()) {
             var javaType = mapper.getTypeFactory().constructCollectionType(List.class, type);
             return mapper.readValue(reader, javaType);
-        } catch (DatabindException e) {
-            throw new IOException(e);
+        } catch (IOException e) {
+            e.addSuppressed(new IOException(resource.uri().toString()));
+            throw e;
         }
     }
 
@@ -140,8 +141,9 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
             try (MappingIterator<T> mappingIterator = mapper.readValues(parser, type)) {
                 return mappingIterator.readAll();
             }
-        } catch (DatabindException e) {
-            throw new IOException(e);
+        } catch (IOException e) {
+            e.addSuppressed(new IOException(resource.uri().toString()));
+            throw e;
         }
     }
 
@@ -151,8 +153,9 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         try (var writer = resource.charSink().openBufferedStream()) {
             mapper.writeValue(writer, instance);
             return true;
-        } catch (DatabindException e) {
-            throw new IOException(e);
+        } catch (IOException e) {
+            e.addSuppressed(new IOException(resource.uri().toString()));
+            throw e;
         }
     }
 }

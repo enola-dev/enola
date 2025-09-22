@@ -43,7 +43,8 @@ public class McpServerConnectionsConfig extends WithSchema {
     public URI origin;
 
     public final Map<String, ServerConnection> servers = new HashMap<>();
-    public final Map<String, Input> inputs = new HashMap<>();
+
+    // public final Map<String, Input> inputs = new HashMap<>();
 
     public static class ServerConnection {
         /**
@@ -78,16 +79,17 @@ public class McpServerConnectionsConfig extends WithSchema {
         public McpSchema.LoggingLevel log = McpSchema.LoggingLevel.WARNING;
     }
 
-    public static class Input {
-        public enum Type {
-            http
+    /*
+        public static class Input {
+            public enum Type {
+                http
+            }
+
+            public Type type;
+            public String id;
+            public String description;
+            public boolean password;
         }
-
-        public Type type;
-        public String id;
-        public String description;
-        public boolean password;
-    }
-
+    */
     // TODO public Optional<String> validate() {}
 }

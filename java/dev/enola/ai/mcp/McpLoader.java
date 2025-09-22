@@ -29,6 +29,7 @@ import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.name.NamedTypedObjectProvider;
+import dev.enola.common.secret.SecretManager;
 
 import io.modelcontextprotocol.client.McpClient;
 import io.modelcontextprotocol.client.McpSyncClient;
@@ -61,11 +62,21 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private final Map<String, McpServerConnectionsConfig> serverToConfig = new MapMaker().makeMap();
     private final Map<String, McpSyncClient> clients = new MapMaker().makeMap();
     private final Queue<String> names = new ConcurrentLinkedQueue<>();
+    private final SecretManager secretManager;
+
+    public McpLoader(SecretManager secretManager) {
+        this.secretManager = secretManager;
+    }
 
     @CanIgnoreReturnValue
     public McpServerConnectionsConfig load(ReadableResource resource) throws IOException {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
+
+        for (var serverConnection : config.servers.values()) {
+            replaceSecretPlaceholders(serverConnection.env);
+        }
+
         configs.add(config);
 
         var serverNames = config.servers.keySet();
@@ -92,8 +103,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));
     }
 
-    private static McpClientTransport createTransport(
-            McpServerConnectionsConfig config, String name) {
+    private McpClientTransport createTransport(McpServerConnectionsConfig config, String name) {
         var origin = config.origin + "#" + name;
         ServerConnection connectionConfig = config.servers.get(name);
         switch (connectionConfig.type) {
@@ -113,7 +123,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         }
     }
 
-    private static McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
+    private McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
         var origin = config.origin + "#" + name;
         var transport = createTransport(config, name);
         var withRoots = config.servers.get(name).roots;
@@ -154,19 +164,38 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     // TODO Inline (again) into above?
 
-    private static ServerParameters createStdIoServerParameters(ServerConnection connectionConfig) {
+    private ServerParameters createStdIoServerParameters(ServerConnection connectionConfig) {
         if (connectionConfig.type != stdio) throw new IllegalArgumentException();
         return ServerParameters.builder(connectionConfig.command)
                 .args(connectionConfig.args)
-                // TODO Process env to substitute secrets and $HOME etc.
                 .env(connectionConfig.env)
                 .build();
     }
 
-    private static HttpClientSseClientTransport createHttpClientSseClientTransport(
+    private HttpClientSseClientTransport createHttpClientSseClientTransport(
             ServerConnection connectionConfig) {
         if (connectionConfig.type != http) throw new IllegalArgumentException();
         // TODO Set headers, timeout etc.
         return HttpClientSseClientTransport.builder(connectionConfig.url).build();
+    }
+
+    private void replaceSecretPlaceholders(Map<String, String> env) throws IOException {
+        if (env.isEmpty()) {
+            return;
+        }
+
+        final String prefix = "${secret:";
+        final String suffix = "}";
+
+        for (Map.Entry<String, String> entry : env.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if (value.startsWith(prefix) && value.endsWith(suffix)) {
+                var secretName = value.substring(prefix.length(), value.length() - suffix.length());
+                var secret = secretManager.get(secretName);
+                env.put(key, secret.map(String::new));
+            }
+        }
     }
 }

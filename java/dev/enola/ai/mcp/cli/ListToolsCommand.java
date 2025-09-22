@@ -28,6 +28,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.secret.auto.AutoSecretManager;
 
 import io.modelcontextprotocol.spec.McpSchema;
 
@@ -50,7 +51,7 @@ public class ListToolsCommand implements Callable<Integer> {
     McpOptions mcpOptions;
 
     // TODO Move this somewhere else, so that it can be shared between commands
-    McpLoader loader = new McpLoader();
+    McpLoader loader = new McpLoader(AutoSecretManager.INSTANCE());
     ResourceProvider rp =
             new ResourceProviders(new FileResource.Provider(), new ClasspathResource.Provider());
 
