@@ -97,6 +97,7 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     @Override
     public Optional<McpSyncClient> opt(String name) {
+        LOG.info("Get (optional) {}", name);
         var config = serverToConfig.get(name);
         if (config == null) return Optional.empty();
 
