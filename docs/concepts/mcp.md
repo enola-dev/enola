@@ -40,6 +40,12 @@ Use the names under the `servers:` key of a `mcp.yaml` in the `tools:` of [Agent
 
 MCP servers are only started (or connected to), and queried for their 🧰 Tools, if any of the loaded `--agents` use them.
 
+### Secrets
+
+The `env` will replace values of `${secret:XYZ}` with the [secret](../use/secret/index.md) named `XYZ`.
+
+## Examples
+
 <!--
     ## Recommended
 
@@ -51,9 +57,7 @@ MCP servers are only started (or connected to), and queried for their 🧰 Tools
     OpenAPI (HF)?
 -->
 
-## Examples
-
-<!-- Generate these, from an example prompt in YAML... -->
+<!-- TODO Generate all of this, from an example prompt in mcp.yaml... -->
 
 ### Fetch
 

@@ -37,6 +37,7 @@ java_library(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/secret/auto",
         "@maven//:com_google_guava_guava",
         "@maven//:info_picocli_picocli",
         "@maven//:io_modelcontextprotocol_sdk_mcp",

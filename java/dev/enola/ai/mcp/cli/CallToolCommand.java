@@ -25,6 +25,7 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.secret.auto.AutoSecretManager;
 
 import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
 
@@ -58,13 +59,14 @@ public class CallToolCommand implements Callable<Integer> {
     @CommandLine.Parameters(index = "2", paramLabel = "args", description = "Arguments (as JSON)")
     String argumentsAsJson;
 
-    // TODO Move this somewhere else, so that it can be shared between commands
-    McpLoader loader = new McpLoader();
     ResourceProvider rp =
             new ResourceProviders(new FileResource.Provider(), new ClasspathResource.Provider());
 
     @Override
     public Integer call() throws Exception {
+        // TODO Move this somewhere else, so that it can be shared between commands
+        McpLoader loader = new McpLoader(AutoSecretManager.INSTANCE());
+
         mcpOptions = McpOptions.handleDefault(mcpOptions);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             mcpOptions.load(loader, rp);

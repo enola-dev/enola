@@ -32,6 +32,7 @@ java_library(
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/name",
+        "//java/dev/enola/common/secret",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:io_modelcontextprotocol_sdk_mcp",
@@ -53,6 +54,7 @@ junit_tests(
         "//java/dev/enola/common/context",
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/secret",
         "//models",
     ],
 )

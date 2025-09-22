@@ -58,7 +58,7 @@ final class AI {
         else defaultModelURI = aiOptions.defaultLanguageModelURI;
 
         if (aiOptions.agentURIs != null && !aiOptions.agentURIs.isEmpty()) {
-            var mcpLoader = new McpLoader();
+            var mcpLoader = new McpLoader(AutoSecretManager.INSTANCE());
             aiOptions.mcpOptions = McpOptions.handleDefault(aiOptions.mcpOptions);
             aiOptions.mcpOptions.load(mcpLoader, rp);
             var tools = Tools.mcp(mcpLoader.configs(), mcpLoader);
