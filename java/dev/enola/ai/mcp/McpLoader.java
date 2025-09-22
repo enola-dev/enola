@@ -46,8 +46,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
@@ -58,10 +56,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
     private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
     private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
-    private final Queue<McpServerConnectionsConfig> configs = new ConcurrentLinkedQueue<>();
     private final Map<String, McpServerConnectionsConfig> serverToConfig = new MapMaker().makeMap();
     private final Map<String, McpSyncClient> clients = new MapMaker().makeMap();
-    private final Queue<String> names = new ConcurrentLinkedQueue<>();
     private final SecretManager secretManager;
 
     public McpLoader(SecretManager secretManager) {
@@ -77,22 +73,19 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
             replaceSecretPlaceholders(serverConnection.env);
         }
 
-        configs.add(config);
-
         var serverNames = config.servers.keySet();
-        names.addAll(serverNames);
         for (var name : serverNames) serverToConfig.put(name, config);
 
         return config;
     }
 
     public Iterable<McpServerConnectionsConfig> configs() {
-        return configs;
+        return serverToConfig.values();
     }
 
     @Override
     public Iterable<String> names() {
-        return names;
+        return serverToConfig.keySet();
     }
 
     @Override
