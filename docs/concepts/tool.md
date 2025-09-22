@@ -89,6 +89,8 @@ Here's a summary of what happened on August 16, 2025:
 
 This tool is currently only supported [on Gemini](../specs/aiuri/index.md#google-ai-).
 
+This tool [is known to cause problems](https://github.com/enola-dev/enola/issues/1784) when used together with other tools. If you encounter a _Tool use with function calling is unsupported_ error, then we recommend that you consider using the [Brave Search tool](mcp.md#brave) instead.
+
 ## Files 📂
 
 The following built-in tools let an Agent work with the filesystem:
