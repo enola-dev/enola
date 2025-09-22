@@ -42,11 +42,27 @@ public class McpServerConnectionsConfig extends WithSchema {
     // TODO extends WithOrigin implements HasOrigin; and set it in ObjectReader
     public URI origin;
 
-    public final Map<String, ServerConnection> servers = new HashMap<>();
+    public Map<String, ServerConnection> servers = new HashMap<>();
 
     // public final Map<String, Input> inputs = new HashMap<>();
 
     public static class ServerConnection {
+
+        public ServerConnection() {}
+
+        public ServerConnection(ServerConnection other) {
+            this.origin = other.origin;
+            this.type = other.type;
+            this.command = other.command;
+            this.args = other.args;
+            this.env = other.env;
+            this.url = other.url;
+            this.headers = other.headers;
+            this.timeout = other.timeout;
+            this.roots = other.roots;
+            this.log = other.log;
+        }
+
         /**
          * Server's homepage or GitHub repo, or whatever uniquely identifies it.
          *
@@ -66,12 +82,12 @@ public class McpServerConnectionsConfig extends WithSchema {
 
         // STDIO; like io.modelcontextprotocol.client.transport.ServerParameters
         public String command;
-        public final List<String> args = new ArrayList<>();
-        public final Map<String, String> env = new HashMap<>();
+        public List<String> args = new ArrayList<>();
+        public Map<String, String> env = new HashMap<>();
 
         // HTTP; like com.google.adk.tools.mcp.SseServerParameters
         public String url;
-        public final Map<String, String> headers = new HashMap<>();
+        public Map<String, String> headers = new HashMap<>();
         public Duration timeout;
 
         public boolean roots = false;

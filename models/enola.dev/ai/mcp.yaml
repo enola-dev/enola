@@ -44,9 +44,8 @@ servers:
     args: [-y, "@modelcontextprotocol/server-everything"]
     origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
 
-  # TODO https://github.com/enola-dev/enola/issues/1785
-  # search_brave:
-  #   command: docker
-  #   args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "docker.io/mcp/brave-search"]
-  #   env:
-  #     BRAVE_API_KEY: ${secret:BRAVE_API_KEY}
+  search_brave:
+    command: docker
+    args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "docker.io/mcp/brave-search"]
+    env:
+      BRAVE_API_KEY: ${secret:BRAVE_API_KEY}
