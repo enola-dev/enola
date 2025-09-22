@@ -50,8 +50,6 @@ public class ListToolsCommand implements Callable<Integer> {
     @CommandLine.ArgGroup(exclusive = false)
     McpOptions mcpOptions;
 
-    // TODO Move this somewhere else, so that it can be shared between commands
-    McpLoader loader = new McpLoader(AutoSecretManager.INSTANCE());
     ResourceProvider rp =
             new ResourceProviders(new FileResource.Provider(), new ClasspathResource.Provider());
 
@@ -59,6 +57,9 @@ public class ListToolsCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
+        // TODO Move this somewhere else, so that it can be shared between commands
+        McpLoader loader = new McpLoader(AutoSecretManager.INSTANCE());
+
         mcpOptions = McpOptions.handleDefault(mcpOptions);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             mcpOptions.load(loader, rp);
