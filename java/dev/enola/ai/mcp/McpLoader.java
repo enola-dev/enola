@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
@@ -79,12 +80,8 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return config;
     }
 
-    public Iterable<McpServerConnectionsConfig> configs() {
-        return serverToConfig.values();
-    }
-
     @Override
-    public Iterable<String> names() {
+    public Set<String> names() {
         return serverToConfig.keySet();
     }
 

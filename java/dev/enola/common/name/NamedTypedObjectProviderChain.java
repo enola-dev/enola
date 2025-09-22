@@ -18,17 +18,19 @@
 package dev.enola.common.name;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.Optional;
+import java.util.Set;
 
 public class NamedTypedObjectProviderChain<T> implements NamedTypedObjectProvider<T> {
 
     private final ImmutableList<NamedTypedObjectProvider<T>> chain;
-    private final Iterable<String> names;
+    private final Set<String> names;
 
     public NamedTypedObjectProviderChain(NamedTypedObjectProvider<T>... chain) {
         this.chain = ImmutableList.copyOf(chain);
-        var namesBuilder = ImmutableList.<String>builder();
+        var namesBuilder = ImmutableSet.<String>builder();
         for (var provider : chain) {
             namesBuilder.addAll(provider.names());
         }
@@ -36,7 +38,7 @@ public class NamedTypedObjectProviderChain<T> implements NamedTypedObjectProvide
     }
 
     @Override
-    public Iterable<String> names() {
+    public Set<String> names() {
         return names;
     }
 

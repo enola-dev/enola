@@ -18,10 +18,11 @@
 package dev.enola.common.name;
 
 import java.util.Optional;
+import java.util.Set;
 
 public interface NamedTypedObjectProvider<T> {
 
-    Iterable<String> names();
+    Set<String> names();
 
     Optional<T> opt(String name);
 
