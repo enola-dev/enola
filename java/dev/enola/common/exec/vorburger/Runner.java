@@ -33,7 +33,7 @@ public interface Runner {
     // TODO Fully replace Runner exec() with ProcessLauncher eventually
 
     int exec(
-            boolean expectNonZeroExitCode,
+            ExpectedExitCode expectedExitCode,
             Path dir,
             List<String> command,
             Appendable output,
@@ -43,14 +43,14 @@ public interface Runner {
     // TODO Replace bash() with a new BashProcessLauncher? Or just replace usages.
 
     default int bash(
-            boolean expectNonZeroExitCode,
+            ExpectedExitCode expectedExitCode,
             Path dir,
             String command,
             Appendable output,
             Duration timeout)
             throws Exception {
         return exec(
-                expectNonZeroExitCode,
+                expectedExitCode,
                 dir,
                 // TODO if(IS_WINDOWS) "cmd.exe", "/c"
                 List.of("/usr/bin/env", "bash", "-c", command),

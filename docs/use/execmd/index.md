@@ -49,6 +49,7 @@ OVERWRITTEN
 
 Some flags can be specified in the _preamble_ after ` ```bash`:
 
+* ` ```bash $%` = command's exit code is completely ignored
 * ` ```bash $?` = command is expected to have non-zero exit code
 * ` ```bash INIT` = runs `INIT` before the command after the `$` (but "hidden" from MD)
 

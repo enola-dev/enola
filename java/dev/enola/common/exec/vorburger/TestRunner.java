@@ -36,7 +36,7 @@ public class TestRunner implements Runner {
     public final String output;
     private final @Nullable Exception exception;
 
-    public Boolean expectNonZeroExitCode;
+    public ExpectedExitCode expectedExitCode;
     public Path dir;
     public List<String> command;
     public Duration timeout;
@@ -55,7 +55,7 @@ public class TestRunner implements Runner {
 
     @Override
     public int exec(
-            boolean expectNonZeroExitCode,
+            ExpectedExitCode expectedExitCode,
             Path dir,
             List<String> command,
             Appendable output,
@@ -64,7 +64,7 @@ public class TestRunner implements Runner {
 
         if (exception != null) throw exception;
 
-        this.expectNonZeroExitCode = expectNonZeroExitCode;
+        this.expectedExitCode = expectedExitCode;
         this.dir = dir;
         this.command = command;
         this.timeout = timeout;
