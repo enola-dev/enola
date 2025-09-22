@@ -21,19 +21,19 @@ servers:
   modelcontextprotocol/git:
     command: uvx
     args: [mcp-server-git]
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/git
+    docs: https://github.com/modelcontextprotocol/servers/tree/main/src/git
 
   modelcontextprotocol/fetch:
     # CAUTION: This server can access local/internal IP addresses and may represent a security risk.
     # Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
     command: uvx
     args: [mcp-server-fetch]
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
+    docs: https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
 
   modelcontextprotocol/memory:
     command: npx
     args: [-y, "@modelcontextprotocol/server-memory"]
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
+    docs: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
     log: debug
     env:
       # TODO Support ~ and $HOME expansion
@@ -42,10 +42,11 @@ servers:
   modelcontextprotocol/everything:
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]
-    origin: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+    docs: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
 
   search_brave:
     command: docker
     args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "docker.io/mcp/brave-search"]
+    docs: https://github.com/brave/brave-search-mcp-server
     env:
       BRAVE_API_KEY: ${secret:BRAVE_API_KEY}

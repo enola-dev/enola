@@ -26,7 +26,7 @@ The 🔱 [Model Context Protocol](https://modelcontextprotocol.io) (MCP) is a st
 
 If not specified it uses the built-in [`mcp.yaml`](https://github.com/enola-dev/enola/blob/main/models/enola.dev/ai/mcp.yaml) by default.
 
-The `command`, `args` & `env` are self-explanatory; `origin` is just for documentation.
+The `command`, `args` & `env` are self-explanatory; `docs` is for a link to documentation.
 
 <!-- TODO Document type, url, headers, timeout - once that's tested to work... -->
 

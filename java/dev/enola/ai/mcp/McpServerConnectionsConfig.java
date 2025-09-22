@@ -21,6 +21,8 @@ import dev.enola.common.io.object.WithSchema;
 
 import io.modelcontextprotocol.spec.McpSchema;
 
+import org.jspecify.annotations.Nullable;
+
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ import java.util.Map;
 public class McpServerConnectionsConfig extends WithSchema {
     // implements Identifiable ?  String id() { return origin.toString(); }
 
-    /** Origin of configuration; e.g. file:/.../mcp.yaml, or something like that. * */
+    /** Origin of configuration; e.g. file:/.../mcp.yaml, or something like that. */
     // TODO extends WithOrigin implements HasOrigin; and set it in ObjectReader
     public URI origin;
 
@@ -52,6 +54,7 @@ public class McpServerConnectionsConfig extends WithSchema {
 
         public ServerConnection(ServerConnection other) {
             this.origin = other.origin;
+            this.docs = other.docs;
             this.type = other.type;
             this.command = other.command;
             this.args = other.args;
@@ -64,6 +67,14 @@ public class McpServerConnectionsConfig extends WithSchema {
         }
 
         /**
+         * Origin of configuration; e.g. file:/.../mcp.yaml#github, or something like that. This is
+         * automatically set by the {@link McpLoader}. (This originally used to be confused with
+         * {@link #docs}.)
+         */
+        // TODO extends WithOrigin implements HasOrigin; and set it in ObjectReader
+        public @Nullable URI origin;
+
+        /**
          * Server's homepage or GitHub repo, or whatever uniquely identifies it.
          *
          * <p>There could be (external) sameAs equivalencies defined for disambiguation.
@@ -71,7 +82,7 @@ public class McpServerConnectionsConfig extends WithSchema {
          * <p>This is NOT its "package", so don't put a NPM or Container Image etc. 'PURL' here.
          */
         // TODO Use another name than 'origin' here, to avoid confusion with the outer origin above?
-        public URI origin;
+        public String docs;
 
         public enum Type {
             stdio,
