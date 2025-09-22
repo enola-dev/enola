@@ -114,7 +114,7 @@ repos:
   # https://get-coursier.io to be installed as a pre-req, which seems overkill just
   # for a single fat JAR without any dependencies.
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-    rev: v2.14.0
+    rev: v2.15.0
     hooks:
       - id: pretty-format-java
         # Keep this version in sync with the same version in .vscode/settings.json
