@@ -153,6 +153,7 @@ Other _"Graph Explorer"_ kind of UIs that we have heard about include:
 
 Web-based:
 
+* [Linkurious](https://linkurious.com) #Meo4j #Memgraph #ToDo
 * **[lodlive.it](http://en.lodlive.it/?https://w3id.org/italia/env/ld/place/municipality/00201_042002)** is #RDF #[opensource](https://github.com/LodLive/LodLive)
 * [isSemantic's RDF Visualizer](https://issemantic.net/rdf-visualizer)
 * [Triply's Yasgui](https://docs.triply.cc/yasgui-api/)
@@ -220,6 +221,7 @@ Some [db-engines.com](https://db-engines.com/en/ranking/rdf+store):
 
 * [JanusGraph](https://janusgraph.org) #opensource
 * [Neo4j](https://neo4j.com), with [neosemantics](https://neo4j.com/labs/neosemantics/) for RDF
+* [Memgraph](https://memgraph.com) ##Memgraph #Neo4j #CypherQL #GraphDB #opensource #commercial #ToDo
 * [Tiger](https://www.tigergraph.com) #commercial #ML
 * [Other Graph databases](https://en.wikipedia.org/wiki/Graph_database#List_of_graph_databases)...
 
@@ -261,6 +263,10 @@ Vector _("Embedding")_ databases of possible future interest:
 * [Google Agent Development Kit](https://google.github.io/adk-docs/) #Google #LLM #agents
 * [LangChain](https://langchain.com) #opensource #LLM #agents
 * [Java AI Agents Frameworks](https://github.com/enola-dev/awesome-java-ai/?tab=readme-ov-file#agents)
+
+### RAG
+
+* [Kapa](https://www.kapa.ai) #graphRAG #SaaS #replicate #ToDo
 
 ### MCP
 
