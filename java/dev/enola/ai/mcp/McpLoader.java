@@ -20,6 +20,9 @@ package dev.enola.ai.mcp;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.http;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.stdio;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -43,7 +46,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -52,12 +57,11 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
 
     // TODO Also support McpAsyncClient
 
-    // TODO Replace the (not really required) concurrency support with a Builder with load()
-
     private static final Logger LOG = LoggerFactory.getLogger(McpLoader.class);
 
     private final ObjectReader objectReader = new JacksonObjectReaderWriterChain();
-    private final Map<String, McpServerConnectionsConfig> serverToConfig = new MapMaker().makeMap();
+    private final Map<String, McpServerConnectionsConfig.ServerConnection> serverToConfig =
+            new MapMaker().makeMap();
     private final Map<String, McpSyncClient> clients = new MapMaker().makeMap();
     private final SecretManager secretManager;
 
@@ -70,13 +74,21 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         var config = objectReader.read(resource, McpServerConnectionsConfig.class);
         config.origin = resource.uri();
 
-        for (var serverConnection : config.servers.values()) {
-            replaceSecretPlaceholders(serverConnection.env);
-        }
-
         var serverNames = config.servers.keySet();
-        for (var name : serverNames) serverToConfig.put(name, config);
-
+        for (var name : serverNames) {
+            var serverConnectionConfig = config.servers.get(name);
+            serverConnectionConfig.origin = URI.create(config.origin + "#" + name);
+            var previousConfig = serverToConfig.putIfAbsent(name, serverConnectionConfig);
+            if (previousConfig != null) {
+                throw new IOException(
+                        "Duplicate MCP server name '"
+                                + name
+                                + "' from "
+                                + config.origin
+                                + ", already defined in "
+                                + previousConfig.origin);
+            }
+        }
         return config;
     }
 
@@ -91,12 +103,29 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         var config = serverToConfig.get(name);
         if (config == null) return Optional.empty();
 
-        return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config, name)));
+        try {
+            var config2 = replaceSecretPlaceholders(config);
+            return Optional.of(clients.computeIfAbsent(name, k -> createSyncClient(config2)));
+        } catch (IOException e) {
+            LOG.error("Exception during Secret retrieval: {}", config.origin, e);
+            return Optional.empty();
+        }
     }
 
-    private McpClientTransport createTransport(McpServerConnectionsConfig config, String name) {
-        var origin = config.origin + "#" + name;
-        ServerConnection connectionConfig = config.servers.get(name);
+    @VisibleForTesting
+    McpServerConnectionsConfig.ServerConnection replaceSecretPlaceholders(
+            McpServerConnectionsConfig.ServerConnection originalServerConnection)
+            throws IOException {
+        var newServerConnection = new ServerConnection(originalServerConnection);
+        newServerConnection.args = replaceSecretPlaceholders(originalServerConnection.args);
+        newServerConnection.env = replaceSecretPlaceholders(originalServerConnection.env);
+        newServerConnection.headers = replaceSecretPlaceholders(originalServerConnection.headers);
+        return newServerConnection;
+    }
+
+    private McpClientTransport createTransport(
+            McpServerConnectionsConfig.ServerConnection connectionConfig) {
+        var origin = connectionConfig.origin.toString();
         switch (connectionConfig.type) {
             case stdio -> {
                 var params = createStdIoServerParameters(connectionConfig);
@@ -114,11 +143,11 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         }
     }
 
-    private McpSyncClient createSyncClient(McpServerConnectionsConfig config, String name) {
-        var origin = config.origin + "#" + name;
-        var transport = createTransport(config, name);
-        var withRoots = config.servers.get(name).roots;
-        var logLevel = config.servers.get(name).log;
+    private McpSyncClient createSyncClient(McpServerConnectionsConfig.ServerConnection config) {
+        var origin = config.origin.toString();
+        var transport = createTransport(config);
+        var withRoots = config.roots;
+        var logLevel = config.log;
         var implementation = new McpSchema.Implementation("https://Enola.dev", Version.get());
         var capabilities = McpSchema.ClientCapabilities.builder();
         if (withRoots) capabilities.roots(false);
@@ -170,23 +199,38 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         return HttpClientSseClientTransport.builder(connectionConfig.url).build();
     }
 
-    private void replaceSecretPlaceholders(Map<String, String> env) throws IOException {
-        if (env.isEmpty()) {
-            return;
+    private Map<String, String> replaceSecretPlaceholders(Map<String, String> map)
+            throws IOException {
+        if (map.isEmpty()) {
+            return Map.of();
         }
+        var mapBuilder = ImmutableMap.<String, String>builderWithExpectedSize(map.size());
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            mapBuilder.put(entry.getKey(), replaceSecretPlaceholders(entry.getValue()));
+        }
+        return mapBuilder.build();
+    }
 
+    private List<String> replaceSecretPlaceholders(List<String> list) throws IOException {
+        if (list.isEmpty()) {
+            return List.of();
+        }
+        var listBuilder = ImmutableList.<String>builderWithExpectedSize(list.size());
+        for (String value : list) {
+            listBuilder.add(replaceSecretPlaceholders(value));
+        }
+        return listBuilder.build();
+    }
+
+    private String replaceSecretPlaceholders(String value) throws IOException {
         final String prefix = "${secret:";
         final String suffix = "}";
+        if (!value.startsWith(prefix) || !value.endsWith(suffix)) return value;
 
-        for (Map.Entry<String, String> entry : env.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-
-            if (value.startsWith(prefix) && value.endsWith(suffix)) {
-                var secretName = value.substring(prefix.length(), value.length() - suffix.length());
-                var secret = secretManager.get(secretName);
-                env.put(key, secret.map(String::new));
-            }
-        }
+        var secretName = value.substring(prefix.length(), value.length() - suffix.length());
+        return secretManager
+                .getOptional(secretName)
+                .map(secret -> secret.map(String::new))
+                .orElseThrow(() -> new IOException("Secret not found: " + value));
     }
 }

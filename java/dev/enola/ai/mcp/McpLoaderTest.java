@@ -38,11 +38,12 @@ public class McpLoaderTest {
     public @Rule SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
+    private final String SECRET = "TestingTesting";
     private final SecretManager sm;
 
     public McpLoaderTest() throws IOException {
         sm = new InMemorySecretManager();
-        sm.store("BRAVE_API_KEY", "TestingTesting".toCharArray());
+        sm.store("BRAVE_API_KEY", SECRET.toCharArray());
     }
 
     @Test
@@ -58,13 +59,20 @@ public class McpLoaderTest {
     }
 
     @Test
-    @Ignore // TODO https://github.com/enola-dev/enola/issues/1734
     public void secrets() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
+
+        // NB: Loading alone should not replace secrets, yet:
         var config = loader.load(r);
-        var key = config.servers.get("search_brave").env.get("BRAVE_API_KEY");
-        assertThat(key).isEqualTo("TestingTesting");
+        var serverConfig = config.servers.get("search_brave");
+        var key = serverConfig.env.get("BRAVE_API_KEY");
+        assertThat(key).isEqualTo("${secret:BRAVE_API_KEY}");
+
+        // NB: Secrets are only replaced in get() / opt(), simulated here:
+        var serverConfig2 = loader.replaceSecretPlaceholders(serverConfig);
+        var key2 = serverConfig2.env.get("BRAVE_API_KEY");
+        assertThat(key2).isEqualTo(SECRET);
     }
 
     @Test

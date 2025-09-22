@@ -42,7 +42,7 @@ MCP servers are only started (or connected to), and queried for their 🧰 Tools
 
 ### Secrets
 
-The `env` will replace values of `${secret:XYZ}` with the [secret](../use/secret/index.md) named `XYZ`.
+Enola will replace values of `${secret:XYZ}` with the [secret](../use/secret/index.md) named `XYZ` in `args`, `env` and `headers`.
 
 ## Examples
 
