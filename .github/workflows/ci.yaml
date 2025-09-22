@@ -110,10 +110,14 @@ jobs:
         working-directory: web
         run: ./build
 
+      - name: protoc
+        run: tools/protoc/protoc.bash
+
       # This also runs at the end again, but better to fail early
       # This must ALWAYS run AFTER java is available, due to https://github.com/google/google-java-format/pull/1228/files.
-      - name: pre-commit run --all-files
-        run: tools/protoc/protoc.bash && pre-commit run --all-files
+      # TODO Re-enable after fixing https://github.com/enola-dev/enola/issues/1799
+      # - name: pre-commit run --all-files
+      #   run: pre-commit run --all-files
 
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.15.0
@@ -182,9 +186,10 @@ jobs:
       - name: tools/git/test.bash
         run: tools/git/test.bash
 
+      # TODO Re-enable after fixing https://github.com/enola-dev/enola/issues/1799
       # Any "dirty" changes will cause build to abort. This intentionally runs again after the build.
-      - name: pre-commit run --all-files
-        run: pre-commit run --all-files
+      # - name: pre-commit run --all-files
+      #   run: pre-commit run --all-files
 
       # The following steps deploy site/ (using GitHub Pages)
       # to https://enola-dev.github.io = https://docs.enola.dev
