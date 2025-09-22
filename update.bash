@@ -28,7 +28,9 @@ tools/javadoc/classpath.bash
 pre-commit autoupdate
 pre-commit clean
 pre-commit gc
-pre-commit run --all-files
+
+# TODO Re-enable after fixing https://github.com/enola-dev/enola/issues/1799
+# pre-commit run --all-files
 
 # Update Bazel's Maven dependencies MODULE.bazel (and maven_install.json)
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#outdated-artifacts
