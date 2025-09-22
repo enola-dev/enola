@@ -42,6 +42,8 @@ nav:
       - ℹ️ Overview: agents/index.md
       - ✨ Commit: agents/git-commit.md
       - 🐛 Issue: agents/github-issue.md
+      - 🌞 Weather: agents/weather.md
+      - 🗣 VUI: agents/vui.md
   - Tutorials:
       - Install: use/index.md
       - AI Agents: tutorial/agents.md
