@@ -21,46 +21,36 @@ import com.google.adk.JsonBaseModel;
 import com.google.adk.tools.BaseToolset;
 import com.google.adk.tools.mcp.McpSessionManager;
 import com.google.adk.tools.mcp.McpToolset;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.MapMaker;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.ai.mcp.McpLoader;
-import dev.enola.ai.mcp.McpServerConnectionsConfig;
 
 import io.modelcontextprotocol.client.McpAsyncClient;
 import io.modelcontextprotocol.client.McpSyncClient;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 @ThreadSafe
 class MCP implements ToolsetProvider {
 
     private final McpLoader mcpLoader;
-    private final ImmutableMap<String, McpServerConnectionsConfig> configMap;
     private final ConcurrentMap<String, McpToolset> toolsetMap = new MapMaker().makeMap();
 
-    MCP(Iterable<McpServerConnectionsConfig> configs, McpLoader mcpLoader) {
+    MCP(McpLoader mcpLoader) {
         this.mcpLoader = mcpLoader;
-        var mapBuilder = ImmutableMap.<String, McpServerConnectionsConfig>builder();
-        for (var config : configs) {
-            for (var name : config.servers.keySet()) {
-                mapBuilder.put(name, config);
-            }
-        }
-        this.configMap = mapBuilder.buildOrThrow();
     }
 
     @Override
-    public Iterable<String> names() {
+    public Set<String> names() {
         return mcpLoader.names();
     }
 
     @Override
     public Optional<BaseToolset> opt(String name) {
-        var config = configMap.get(name);
-        if (config == null) return Optional.empty();
+        if (!names().contains(name)) return Optional.empty();
         else return Optional.of(toolsetMap.computeIfAbsent(name, k -> createToolset(name)));
     }
 

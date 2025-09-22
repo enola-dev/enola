@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class ImmutableNamedTypedObjectProvider<T> implements NamedTypedObjectProvider<T> {
 
@@ -31,7 +32,7 @@ public class ImmutableNamedTypedObjectProvider<T> implements NamedTypedObjectPro
     }
 
     @Override
-    public Iterable<String> names() {
+    public Set<String> names() {
         return map.keySet();
     }
 
