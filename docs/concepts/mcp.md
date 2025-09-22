@@ -76,6 +76,21 @@ This needs `uvx` to be available; test if launching `uvx mcp-server-fetch` works
 CAUTION: This server can access local/internal IP addresses, which may represent a security risk.
 Exercise caution when using this MCP server to ensure this does not expose any sensitive data!
 
+### Brave
+
+Create a [secret](../use/secret/index.md) named `BRAVE_API_KEY` with a [Brave Search API Key](https://api-dashboard.search.brave.com/app/keys).
+
+```yaml
+{% include "../../test/agents/brave.agent.yaml" %}
+```
+
+The [`search-brave`](https://github.com/brave/brave-search-mcp-server) tool uses <https://search.brave.com>
+(via its [API](https://brave.com/search/api/)) for Web / Local / Video / Image / News Searches; for example:
+
+```shell
+enola ai --agents=test/agents/brave.agent.yaml --in="Use the brave_news_search tool to obtain what's new in world politics today and summarize the top 7 developments in bullet points of maximum 3 sentences each."
+```
+
 ### Git
 
 ```yaml
