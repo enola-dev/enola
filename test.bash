@@ -28,7 +28,7 @@ statix check flake.nix
 deadnix --fail flake.nix
 
 # Abort if there are any broken symlinks
-(find . -xtype l -ls | grep .) && exit 1
+(find . -xtype l -ls | grep .) && echo "Broken symlinks! Try: bazel clean --expunge" && exit 1
 
 if command -v bazelisk &> /dev/null; then
   BZL=bazelisk
