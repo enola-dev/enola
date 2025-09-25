@@ -23,6 +23,7 @@ Try out any of our ready-to-use _**FREE**_ AI agents:
 ## Everyone
 
 * [Weather 🌞⛅☔🌈🌦️☀️](weather.md)
+* [Cooking 🧑‍🍳](cooking.md)
 
 ## Developers
 

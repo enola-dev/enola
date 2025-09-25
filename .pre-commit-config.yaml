@@ -120,7 +120,8 @@ repos:
         # Keep this version in sync with the same version in .vscode/settings.json
         args: [--autofix, --aosp, --google-java-formatter-version=1.27.0]
         # See https://github.com/google/google-java-format/issues/1216
-        exclude: learn/jbang
+        exclude: ^(learn/jbang/|bazel-bin/|bazel-out/).*$
+        files: ^java/.*\.java$
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.17.2

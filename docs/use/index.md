@@ -79,9 +79,13 @@ You can now run Enola with:
 
 This runs it from `~/.jbang/bin`, which JBang [added](https://github.com/jbangdev/jbang/issues/2189) to your `PATH`.
 
-<!-- TODO Make this work... it doesn't quite, yet:
-    enola server --chatPort=7070 --lm="google://?model=gemini-2.5-flash" --http-scheme --agents=https://raw.githubusercontent.com/enola-dev/enola/refs/heads/main/test/agents/chef-optimist.agent.yaml
--->
+To upgrade to the latest version, you need to manually clear the local Maven cache.
+The next run of `enola` will then automatically download the latest version:
+
+    rm -rf ~/.m2/repository/dev/enola
+
+This is a workaround, as standard upgrade commands like `jbang --fresh app install --force enola@enola-dev`,
+or clearing `~/.jbang/cache`, do not currently work for this application due to its use of `SNAPSHOT`.
 
 ## Nix
 
