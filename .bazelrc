@@ -30,3 +30,9 @@ test --nobuild_tests_only
 # https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/classpath.md#basics-classpath
 # For having sources available in the IDE always create source jars, as Bazel doesn't do this by default.
 build --output_groups=+_source_jars
+
+build --enable_platform_specific_config
+build --java_runtime_version=local_jdk_21
+build --tool_java_runtime_version=local_jdk_21
+build --action_env=PATH
+build --action_env=JAVA_HOME

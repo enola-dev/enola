@@ -27,6 +27,10 @@ GRPC_JAVA_VERSION = "1.75.0"
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "8.15.2")
 
+java = use_extension("@rules_java//java:extensions.bzl", "java")
+java.auto_configure_remote_jdks(enabled = False)
+java.register_local_java_toolchains()
+
 # https://github.com/bazelbuild/rules_go/blob/master/docs/go/core/bzlmod.md
 bazel_dep(name = "rules_go", version = "0.57.0")
 bazel_dep(name = "gazelle", version = "0.45.0")
