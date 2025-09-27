@@ -22,7 +22,7 @@ set -euox pipefail
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1343
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1344
 
-ENOLA_CLASSPATH=$(tools/javadoc/classpath.bash)
+ENOLA_CLASSPATH=$(tools/javac/classpath.bash)
 
 find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
 

@@ -45,7 +45,7 @@ else
   fi
 fi
 
-tools/javadoc/classpath.bash
+tools/javac/classpath.bash
 
 tools/version/version.bash
 
