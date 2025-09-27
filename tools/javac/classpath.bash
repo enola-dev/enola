@@ -22,13 +22,29 @@ tools/javac/dependencies.bash
 mkdir -p generated/classpath
 mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout >generated/classpath/enola.classpath
 
-ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
+ENOLA_CLASSPATH_DIR=generated/classpath/enola
+rm -rf "${ENOLA_CLASSPATH_DIR:?}"/*
+mkdir -p "$ENOLA_CLASSPATH_DIR"
+
+ENOLA_CLASSPATH=$(cat "$ENOLA_CLASSPATH_DIR.classpath")
 IFS=':' read -ra JAR_PATHS <<< "$ENOLA_CLASSPATH"
-mkdir -p generated/classpath/enola
+
+MAVEN_REPO_PATH="$HOME/.m2/repository"
 for JAR in "${JAR_PATHS[@]}"; do
     if [[ "$JAR" == *.jar ]]; then
-        cp "$JAR" generated/classpath/enola
+        if [[ "$JAR" == "$MAVEN_REPO_PATH"* ]]; then
+          RELATIVE_PATH="${JAR#"$MAVEN_REPO_PATH"/}"
+          FILENAME="${RELATIVE_PATH##*/}"
+          VERSION_PATH="${RELATIVE_PATH%/*}"
+          BASE_PATH_FULL="${VERSION_PATH%/*}"
+          GROUP_PATH="${BASE_PATH_FULL%/*}"
+          MODIFIED_RELATIVE_PATH="$GROUP_PATH/$FILENAME"
+          NEW_FILENAME="${MODIFIED_RELATIVE_PATH//\//_}"
+          cp "$JAR" "$ENOLA_CLASSPATH_DIR/$NEW_FILENAME"
+        else
+          cp "$JAR" "$ENOLA_CLASSPATH_DIR"
+        fi
     else
-        echo "NOT a JAR: $JAR"
+      echo "NOT a JAR: $JAR"
     fi
 done
