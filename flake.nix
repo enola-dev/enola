@@ -5,12 +5,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs-bun.url = "github:nixos/nixpkgs/ab1f3b61279dfe63cdc938ed90660b99e9d46619"; # bun==1.2.19
-    # TODO How-to do this? Or is this not possible?!
-    # nix develop: warning: input 'nixpkgs-bun' has an override for a non-existent input 'nixpkgs'
-    # nix flake metadata shows that it does not work
-    #   nixpkgs-bun.inputs.nixpkgs.follows = "nixpkgs";
-
     deadnix.url = "github:astro/deadnix";
     deadnix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -19,7 +13,6 @@
     {
       self,
       nixpkgs,
-      nixpkgs-bun,
       flake-utils,
       deadnix,
       ...
@@ -28,7 +21,6 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        pkgs-bun = import nixpkgs-bun { inherit system; };
         jdk' = pkgs.jdk21;
         buildTools = with pkgs; [
           # https://github.com/NixOS/nixfmt/issues/335
@@ -58,7 +50,7 @@
           statix
           deadnix.packages.${system}.default
 
-          pkgs-bun.bun
+          bun
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
