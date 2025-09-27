@@ -17,6 +17,9 @@
 
 set -euox pipefail
 
+# Nix!
+nix flake update
+
 # See docs/dev/dependencies.md
 
 tools/javac/dependencies.bash
