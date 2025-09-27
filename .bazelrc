@@ -30,3 +30,24 @@ test --nobuild_tests_only
 # https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/classpath.md#basics-classpath
 # For having sources available in the IDE always create source jars, as Bazel doesn't do this by default.
 build --output_groups=+_source_jars
+
+# ---
+
+# https://app.buildbuddy.io/invocation/32415476-cb59-443b-a9a9-f7d3124b3362#suggestions
+
+build --remote_cache_compression
+build --experimental_remote_cache_compression_threshold=100
+
+# https://bazel.build/reference/command-line-reference#flag--jobs
+build --jobs=50
+
+build --noslim_profile
+build --experimental_profile_include_target_label
+build --experimental_profile_include_primary_output
+
+build --bes_results_url=https://app.buildbuddy.io/invocation/
+build --bes_backend=grpcs://remote.buildbuddy.io
+build --remote_cache=grpcs://remote.buildbuddy.io
+build --remote_timeout=10m
+
+build --remote_executor=grpcs://remote.buildbuddy.io
