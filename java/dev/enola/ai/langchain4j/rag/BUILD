@@ -28,6 +28,7 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "@maven//:com_google_guava_guava",
+        "@maven//:dev_langchain4j_langchain4j",
         "@maven//:dev_langchain4j_langchain4j_core",
         "@maven//:dev_langchain4j_langchain4j_easy_rag",
         "@maven//:org_jspecify_jspecify",
@@ -42,5 +43,12 @@ junit_tests(
     ),
     deps = [
         ":rag",
+        "//java/dev/enola/ai/iri",
+        "//java/dev/enola/ai/langchain4j",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/secret",
+        "//test",
+        "@maven//:dev_langchain4j_langchain4j",
+        "@maven//:dev_langchain4j_langchain4j_core",
     ],
 )

@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class TestStreamingChatResponseHandler implements StreamingChatResponseHandler {
 
-    // TODO Propose contribution of this class to upstream LangChain4j
+    // TODO Upstream this class (and TokenStreams) to LangChain4j
 
     private final CompletableFuture<ChatResponse> responseFuture = new CompletableFuture<>();
 

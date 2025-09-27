@@ -24,6 +24,7 @@ import static dev.enola.ai.langchain4j.GoogleChatModelProvider.GOOGLE_AI_API_KEY
 
 import dev.enola.ai.iri.AnthropicModelProvider;
 import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.OllamaModelProvider;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.Net;
 import dev.enola.common.secret.SecretManager;
@@ -59,7 +60,7 @@ public class ChatModelProvidersTest {
 
     @Test
     public void gemmaOnOllama() {
-        if (Net.portAvailable(11434)) check(p.get(OllamaChatModelProvider.GEMMA3_1B));
+        if (Net.portAvailable(11434)) check(p.get(OllamaModelProvider.GEMMA3_1B));
     }
 
     @Test
