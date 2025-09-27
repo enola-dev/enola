@@ -122,6 +122,9 @@
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
             '';
+
+            # TODO https://github.com/enola-dev/enola/issues/1730
+            # outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
           };
         };
 
