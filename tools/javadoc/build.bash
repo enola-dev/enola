@@ -22,9 +22,7 @@ set -euox pipefail
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1343
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1344
 
-tools/javadoc/classpath.bash
-
-ENOLA_CLASSPATH=$(mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout)
+ENOLA_CLASSPATH=$(tools/javadoc/classpath.bash)
 
 find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
 
