@@ -21,3 +21,14 @@ tools/javac/dependencies.bash
 
 mkdir -p generated/classpath
 mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout >generated/classpath/enola.classpath
+
+ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
+IFS=':' read -ra JAR_PATHS <<< "$ENOLA_CLASSPATH"
+mkdir -p generated/classpath/enola
+for JAR in "${JAR_PATHS[@]}"; do
+    if [[ "$JAR" == *.jar ]]; then
+        cp "$JAR" generated/classpath/enola
+    else
+        echo "NOT a JAR: $JAR"
+    fi
+done

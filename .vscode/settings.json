@@ -14,6 +14,7 @@
     "Classpath",
     "Datatypes",
     "Enola",
+    "hexedit",
     "Intelli",
     "Ollama",
     "protolint",
@@ -56,7 +57,7 @@
   "markdown.validate.ignoredLinks": ["../dev/proto/core#id"],
 
   // https://github.com/salesforce/bazel-vscode-java/issues/82
-  "java.import.bazel.enabled": true,
+  "java.import.bazel.enabled": false,
   "java.import.maven.enabled": false,
   "java.import.gradle.enabled": false,
 
@@ -71,6 +72,8 @@
       "source.addMissingImports": "never"
     }
   },
+
+  "java.editor.reloadChangedSources": "auto",
   "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
   // Keep this version in sync with the same version in .pre-commit-config.yaml
   // NB: Changes to this are only taken into account on start-up, so need to restart.
@@ -86,6 +89,15 @@
   // https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md#lightweight-java-mode
   "java.server.launchMode": "Standard",
   // NOT "java": { ... see https://github.com/JoseVSeb/google-java-format-for-vs-code/issues/12
+
+  "java.project.sourcePaths": [
+    "tools/hello/src/main/java",
+    "generated/protoc/java/",
+    "java/",
+    "test/"
+  ],
+  "java.project.referencedLibraries": ["generated/classpath/**/*.jar"],
+  // TODO "sources" https://code.visualstudio.com/docs/java/java-project#_manage-dependencies-for-unmanaged-folder
 
   "[json5]": {
     "editor.tabSize": 2,

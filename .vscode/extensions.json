@@ -1,8 +1,6 @@
 {
   "recommendations": [
     "redhat.java",
-    "sfdc.bazel-vscode-java",
-    "bazelbuild.vscode-bazel",
     "josevseb.google-java-format-for-vs-code",
     "editorconfig.editorconfig",
     "davidanson.vscode-markdownlint",
@@ -19,7 +17,6 @@
     "zazuko.vscode-rdf-sketch",
     "redhat.vscode-yaml",
     "gruntfuggly.todo-tree",
-    "jbangdev.jbang-vscode",
     "oven.bun-vscode",
     "zaucy.symlink-follow"
   ],
