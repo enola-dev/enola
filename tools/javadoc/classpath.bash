@@ -18,3 +18,5 @@
 set -euo pipefail
 
 jq -r '.artifacts | to_entries | sort_by(.key)[] | "\(.key):\(.value.version)"' maven_install.json >docs/dev/dependencies.txt
+
+mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout
