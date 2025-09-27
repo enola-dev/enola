@@ -19,7 +19,7 @@ set -euox pipefail
 
 # See docs/dev/dependencies.md
 
-tools/javadoc/classpath.bash
+tools/javac/dependencies.bash
 
 # TODO How-to automagically update dependencies.txt if PyPI has newer versions? (pip-tools & requirements.in?)
 
@@ -38,7 +38,7 @@ pre-commit gc
 bazelisk run @maven//:outdated
 echo "PLEASE READ ^^^ TO SEE IF YOU CAN UPDATE ANYTHING IN MODULE.bazel?"
 echo "Don't forget to run 'REPIN=1 bazelisk run @maven//:pin' after changes!"
-tools/javadoc/classpath.bash
+tools/javac/dependencies.bash
 
 # Web
 cd web
