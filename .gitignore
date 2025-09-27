@@ -78,3 +78,5 @@ flox.x86_64-linux.deb
 # (That was the initial thought, but it may not be true; did not re-verify.)
 generated/protoc/java/dev/
 generated/classpath
+generated/javac-processors/
+generated/java-class

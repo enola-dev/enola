@@ -28,6 +28,9 @@ nix run .#test
 # Skippping test, because Nix did already just run this...
 # ./test.bash
 
+# Ensure non-regression on exploratory possible future entirely non-Bazel based build infrastructure idea...
+tools/javac/build.bash
+
 # This writes into docs/models/ (which is on .gitignore), not site/ (which mkdocs cleans when it starts; à la rm -rf site/)
 models/build.bash
 

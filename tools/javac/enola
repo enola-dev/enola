@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+java --class-path "$(cat generated/classpath/enola.classpath)":generated/java-class/ dev.enola.cli.EnolaApplication "$@"
