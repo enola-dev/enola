@@ -55,28 +55,11 @@
         "type": "github"
       }
     },
-    "nixpkgs-bun": {
-      "locked": {
-        "lastModified": 1754924942,
-        "narHash": "sha256-UwXgX0R3RiiweHz/XnF7irz+QJF861t4Oq8ffiNznoY=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ab1f3b61279dfe63cdc938ed90660b99e9d46619",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ab1f3b61279dfe63cdc938ed90660b99e9d46619",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "deadnix": "deadnix",
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-bun": "nixpkgs-bun"
+        "nixpkgs": "nixpkgs"
       }
     },
     "systems": {
