@@ -22,4 +22,4 @@ Enola can visualize Things on “timeline” diagrams with <!-- TODO [Rosetta](.
 
 <!-- Write a short but illustrative example TTL, with both start & end, only timestamp, and neither; and link, after integrating https://github.com/javdome/timeline-arrows -->
 
-[Here](../../concepts/timeline.md) is an example.
+[Timeline](../../concepts/timeline.md) is an example.
