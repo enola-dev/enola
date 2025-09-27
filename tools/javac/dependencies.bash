@@ -17,7 +17,4 @@
 
 set -euo pipefail
 
-tools/javac/dependencies.bash
-
-mkdir -p generated/classpath
-mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout >generated/classpath/enola.classpath
+jq -r '.artifacts | to_entries | sort_by(.key)[] | "\(.key):\(.value.version)"' maven_install.json >docs/dev/dependencies.txt

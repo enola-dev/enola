@@ -77,3 +77,4 @@ flox.x86_64-linux.deb
 # PS: Due to https://github.com/NixOS/nix/issues/14024, it's done like this?
 # (That was the initial thought, but it may not be true; did not re-verify.)
 generated/protoc/java/dev/
+generated/classpath
