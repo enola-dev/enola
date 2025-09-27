@@ -24,8 +24,7 @@ set -euox pipefail
 
 tools/javadoc/classpath.bash
 
-# TODO Make cs available via Nix on GitHub Runner so that we can run this on CI
-ENOLA_CLASSPATH=$(cs fetch --classpath --dependency-file docs/dev/dependencies.txt --repository https://jitpack.io)
+ENOLA_CLASSPATH=$(mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout)
 
 find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
 

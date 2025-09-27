@@ -48,7 +48,7 @@
           nixpkgs-fmt
           unzip
           nodejs
-          coursier
+          maven
           jdk'
           graphviz
           protobuf
