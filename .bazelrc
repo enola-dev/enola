@@ -10,6 +10,7 @@ common --tool_java_language_version=21
 # https://bazel.build/docs/user-manual#java_runtime_version
 common --java_runtime_version=local_jdk_21
 common --tool_java_runtime_version=local_jdk_21
+common --action_env=JAVA_HOME
 
 # https://github.com/bazelbuild/intellij/issues/1169
 common --incompatible_strict_action_env
