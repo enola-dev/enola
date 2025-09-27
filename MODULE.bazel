@@ -116,6 +116,8 @@ maven.install(
         "dev.langchain4j:langchain4j-ollama:%s" % LANGCHAIN4J_VERSION,
         "dev.langchain4j:langchain4j-google-ai-gemini:%s" % LANGCHAIN4J_VERSION,
         "dev.langchain4j:langchain4j-anthropic:%s" % LANGCHAIN4J_VERSION,
+        # TODO "dev.langchain4j:langchain4j-easy-rag:%s" % LANGCHAIN4J_VERSION,
+        "dev.langchain4j:langchain4j-easy-rag:1.6.0-beta12",
         "io.github.ollama4j:ollama4j:1.0.100",
         "com.github.spotbugs:spotbugs-annotations:4.9.3",
         "io.github.java-diff-utils:java-diff-utils:4.16",
