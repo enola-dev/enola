@@ -18,19 +18,39 @@
 
 # IDE
 
-Ensure you are [set-up](setup.md) with a working build on the CLI before configuring your IDE.
+Ensure you are [set up](setup.md) with a working build on the CLI before configuring your IDE.
+
+Because of [the Nix requirement](setup.md), please launch your IDE not via its usual graphical Desktop launch, but
+from within a `nix develop` shell on the CLI, where `PATH` is the _Nix_ environment. This avoids many problems, like
+[issue #1657](https://github.com/enola-dev/enola/issues/1657), etc.
 
 ## JetBrains IntelliJ IDEA (IJ)
 
-Because of [the Nix requirement](setup.md), we recommend that you launch IJ not graphically via Toolbox, but
-from within a `nix develop` shell on the CLI, where `PATH` is the same Bazel environment. This avoids problems like
-[issue #1657](https://github.com/enola-dev/enola/issues/1657). To do this, start JetBrains Toolbox, click on Settings of IJ
-(in Toolbox, BEFORE starting it), and `Configure...` the _shell scripts location_ to be a directory on your `PATH` (e.g., `$HOME/.local/bin`).
+Do not launch IDEA graphically via Toolbox, but from the CLI. To do this, start JetBrains Toolbox, click on Settings of IJ
+(in Toolbox, BEFORE starting it), and `Configure...` the _shell scripts' location_ to be a directory on your `PATH` (e.g., `$HOME/.local/bin`).
 Toolbox may warn that it _Cannot find the specified directory in the system PATH_.
 You can ignore this, as long as the directory is on the `PATH` in the `nix develop` shell from which you will launch IJ.
 Toolbox will now have put a launch script into that directory.
 
 The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html#required-plugins) are managed via the [`.idea/externalDependencies.xml`](https://github.com/enola-dev/enola/blob/main/.idea/externalDependencies.xml).
+
+## Visual Studio Code (VSC)
+
+In the context of [issue #1812](https://github.com/enola-dev/enola/issues/1812), we are exploring supporting VSC (again).
+
+Please launch VSC via `code .` in the `nix develop` environment, not via another starting mechanism (see the introduction of this page).
+
+This is not using Bazel IDE integration (anymore now), but just simple "[unmanaged](https://code.visualstudio.com/docs/java/java-project#_manage-dependencies-for-unmanaged-folder) source folders", configured in `.vscode/settings.json`. Please let us know if you find any discrepancies with the build system.
+
+The required VSC extensions are managed via [`.vscode/extensions.json`](https://github.com/enola-dev/enola/blob/main/.vscode/extensions.json). They will automagically pick up their options from the respective configuration files in this repository; this makes the VSC IDE and pre-commit use the same parameters for these tools.
+
+## Eclipse
+
+Eclipse is not actively supported by this project as an IDE.
+
+It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
+
+We recommend using VSC.
 
 <!-- TODO Other IDEs than JetBrains IntelliJ IDEA (IJ) don't actually currently really work for working on the Java code...
 
@@ -75,40 +95,7 @@ You must manually install the following tools locally for all VSC extensions to 
 
 ```bash
 $ go install github.com/yoheimuta/protolint/cmd/protolint@latest
-
-$ sudo apt get install clang-format
-# sudo dnf install clang-format
 ```
-
-[The code style used in this project](style.md) will be enforced while typing in VSC using the extensions below. They are automatically proposed to be installed (because they are all listed in [`.vscode/extensions.json`](https://github.com/enola-dev/enola/blob/main/.vscode/extensions.json)). They will all also automagically pick up their options from the respective configuration files in this repository; this makes the VSC IDE and pre-commit use the same parameters for these tools.
-
-* [`.editorconfig`](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig) for normalized line endings etc. on all files
-
-* [VSC Bazel](https://marketplace.visualstudio.com/items?itemName=BazelBuild.vscode-bazel) for syntax highlighting, linting and formatting `BUILD` files
-
-* [VSC Bazel for Java, by Salesforce](https://marketplace.visualstudio.com/items?itemName=sfdc.bazel-vscode-java) for Java support (it's **awesome,** and much better than [alternatives](https://github.com/vorburger/LearningBazel/blob/85aee3c956cbb84c8cd7d4f317be8ac36b62bad8/ToDo.md)). Check out its [great Troubleshooting Guide](https://github.com/salesforce/bazel-vscode-java/blob/main/docs/troubleshoot.md) in case of any set-up problems.
-
-* [google-java-format](https://marketplace.visualstudio.com/items?itemName=JoseVSeb.google-java-format-for-vs-code)
-
-* [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)
-
-* [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-
-* [protolint](https://marketplace.visualstudio.com/items?itemName=Plex.vscode-protolint) for `*.proto` validation (this requires `protolint`, see above)
-
-* [proto3](https://marketplace.visualstudio.com/items?itemName=zxh404.vscode-proto3) for `*.proto` editing
-
-* [TextProto](https://marketplace.visualstudio.com/items?itemName=thejustinwalsh.textproto-grammer) for `*.textproto` syntax highlighting
-
-* [Clang Formatter](https://marketplace.visualstudio.com/items?itemName=Seaube.clangformat) (this requires `clang-package`, see above) for `*.textproto` formatting
-
-## Eclipse
-
-Eclipse is not actively supported by this project as an IDE.
-
-It may work using the [Bazel Eclipse Feature](https://github.com/salesforce/bazel-eclipse/blob/main/docs/bef/README.md), but this has not been tested yet.
-
-We recommend using VSC.
 
 -->
 

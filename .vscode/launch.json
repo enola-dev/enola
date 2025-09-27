@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Hello",
+      "request": "launch",
+      "mainClass": "dev.enola.common.hello.Hello",
+      "projectName": "enola_4e8a1435"
+    },
+    {
+      "type": "java",
       "name": "Attach",
       "request": "attach",
       "hostName": "localhost",

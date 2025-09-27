@@ -28,6 +28,7 @@
 
           python312
           curl
+          clang-tools # clang-format
           git
           go
           jq
