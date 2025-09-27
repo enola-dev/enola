@@ -101,5 +101,3 @@ else
 fi
 
 tools/git/install-hooks.bash
-
-tools/protolint/install.bash
