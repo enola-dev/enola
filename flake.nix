@@ -63,6 +63,12 @@
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
 
+        bazel-central-registry = pkgs.fetchFromGitHub {
+          owner = "bazelbuild";
+          repo = "bazel-central-registry";
+          rev = "4fcc47180cfe24915dae5705074c3994c60dc6b7";
+          hash = "sha256-Th7gamXEzJnoA65VKVfARCDnLup5URJT0R1g2Jw3S/0=";
+        };
       in
       {
         # TODO: for https://nix-bazel.build, replace with mkShellNoCC.
@@ -113,7 +119,7 @@
               bash tools/protoc/protoc.bash
 
               export HOME=$TMPDIR
-              bazel build //java/dev/enola/cli:enola_deploy.jar
+              bazel build --registry=file://${bazel-central-registry} //java/dev/enola/cli:enola_deploy.jar
             '';
 
             installPhase = ''
@@ -122,6 +128,8 @@
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
             '';
+
+            outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
           };
         };
 
