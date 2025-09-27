@@ -113,7 +113,7 @@ This needs `uvx` to be available; test if launching `uvx mcp-server-git` works, 
 {% include "../../test/agents/github.agent.yaml" %}
 ```
 
-Create a [secret](../use/secret/index.md) named `GITHUB_PAT` (GitHub Personal Access Token) [here](https://github.com/settings/personal-access-tokens/new).
+Create a [secret](../use/secret/index.md) named `GITHUB_PAT` [GitHub Personal Access Token](https://github.com/settings/personal-access-tokens/new).
 
 ```shell
 enola ai --agents=test/agents/github.agent.yaml --in "How many stars do the top 3 repos that I own on GitHub repo have? (Use the GitHub context tool to find by GitHub user name.)"
