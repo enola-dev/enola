@@ -89,14 +89,6 @@ While GitHub Codespaces are built on VSC Web technologies, this project is curre
 to unfortunately not work well with such non-GitHub Codespaces VSC Web environments.
 The [bazel-vscode-java issue #94](https://github.com/salesforce/bazel-vscode-java/issues/94) has more background about this.
 
-## Local Visual Studio Code (VSC)
-
-You must manually install the following tools locally for all VSC extensions to work:
-
-```bash
-$ go install github.com/yoheimuta/protolint/cmd/protolint@latest
-```
-
 -->
 
 ## Debug

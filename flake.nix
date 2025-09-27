@@ -46,6 +46,7 @@
           graphviz
           protobuf
           protoc-gen-grpc-java
+          protolint
           which
 
           statix
