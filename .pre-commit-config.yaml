@@ -23,7 +23,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -91,7 +91,7 @@ repos:
           - --use-current-year
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.7
+    rev: v21.1.2
     hooks:
       - id: clang-format
         # clang-format can also do e.g. *.java and *.json but we only want proto
@@ -105,7 +105,7 @@ repos:
   - repo: https://github.com/yoheimuta/protolint
     # This version must be kept in the sync with the one in tools/protolint/install.bash
     # NB: v0.51.0 requires go v1.23 (so Fedora 41 not 40; TODO check GitHub Runner...)
-    rev: v0.53.0
+    rev: v0.56.4
     hooks:
       - id: protolint
 
@@ -124,7 +124,7 @@ repos:
         files: ^java/.*\.java$
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         exclude: (^.github/|test/|docs/use/docgen/docgen.md|docs/index.md)
@@ -142,7 +142,7 @@ repos:
 
   # Alternative: https://github.com/bazelbuild/buildtools/blob/master/buildifier/README.md
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 8.0.1
+    rev: 8.2.1
     hooks:
       - id: buildifier
         args: &args
@@ -170,20 +170,20 @@ repos:
 
   # https://yamllint.readthedocs.io/en/stable/integration.html#integration-with-pre-commit
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.35.1
+    rev: v1.37.1
     hooks:
       - id: yamllint
         # https://yamllint.readthedocs.io/en/stable/configuration.html#errors-and-warnings
         args: [--strict]
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.10.0.1
+    rev: v0.11.0.1
     hooks:
       - id: shellcheck
         exclude: mvnw
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.31.3
+    rev: 0.34.0
     hooks:
       - id: check-github-actions
         args: ["--verbose"]
@@ -201,13 +201,13 @@ repos:
 
   # https://github.com/NixOS/nixfmt#pre-commit
   - repo: https://github.com/NixOS/nixfmt
-    rev: 2caa09642c3cde5985cf8d239ffc66094c344c57
+    rev: v1.0.1
     hooks:
       - id: nixfmt-nix
 
   # https://editorconfig.org check should run AFTER all of the formatters (above)
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: 3.2.0
+    rev: 3.4.0
     hooks:
       - id: editorconfig-checker
         exclude: mvnw
