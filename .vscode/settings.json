@@ -125,11 +125,11 @@
     "**/.hg": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
-    "**/*.crswap": true,
     "**/.classpath": true,
+    "**/.factorypath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true,
+    "**/*.crswap": true,
     "**/CVS": true,
     "**/eclipse-bin/": true,
     "**/eclipse-testbin/": true,
@@ -168,7 +168,12 @@
     "META-INF": false,
     "learn": false,
     ".flox": false,
-    ".venv": false
+    ".venv": false,
+    ".bazelbsp": false,
+    ".direnv": false,
+    ".gemini": false,
+    ".run": false,
+    "generated": false
   },
 
   "npm.packageManager": "pnpm"
