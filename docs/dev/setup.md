@@ -30,7 +30,7 @@ You can also enter the Nix build environment to have the same tools available, w
 
     nix develop
 
-We recommend that you also [start the IntelliJ IDEA IDE from within](ide.md#jetbrains-intellij-idea-ij) this `nix develop` environment.
+Please [start your IDE from within](ide.md) this `nix develop` environment.
 
 We recommend that you also [install `direnv`](https://direnv.net), which conveniently automates running `nix develop` when you `cd`.
 
@@ -63,6 +63,8 @@ You can now read more about:
 * [Dependencies](dependencies.md)
 * [Bazel](bazel.md)
 
+<!-- TODO Review if & how this still works...
+
 ## GitHub Codespaces
 
 **We highly recommend you use our ready-made "1 click" [Web/Cloud IDE](ide.md) set-up.**
@@ -91,6 +93,8 @@ this project comes with a containerized ("Docker") development environment, whic
 
 When tests ran fully successfully, then a `.git/hooks/pre-commit` that's useful for development is installed.
 
+-->
+
 ## Documentation Writing
 
 To work on documentation, launch:
@@ -98,36 +102,6 @@ To work on documentation, launch:
 * `tools/docs/serve-quick.bash` for hot reloading live refresh, which is great while writing (even though it has some limitations)
 * `tools/docs/serve-build.bash` for a  "real" (full) docs build, without without the demo "screen cast" recordings (which are slow)
 * `tools/docs/serve.bash` for generating the "real" (full) static `site/` exactly as it's deployed on <https://docs.enola.dev>
-
-## Manual Tools Installation
-
-If you do still want to try, here's how to manually install what the development environment container comes built-in with:
-
-1. Install Java Development Kit (JDK), [same version as in `.bazelrc`](//.bazelrc).
-   There are different Java (like Linux) "distributions" (all based on OpenJDK).
-   The easiest way to install one of them is typically to use your OS' package manager:
-
-        sudo apt-get install openjdk-21-jdk openjdk-21-doc openjdk-21-source
-
-1. Install C/C++ etc. (it's required by the
-   [Proto rule for Bazel](https://github.com/bazelbuild/rules_proto)), e.g. do:
-
-        sudo apt-get install build-essential
-
-1. Install [Python venv](https://docs.python.org/3/library/venv.html)
-   (it's used by the presubmit and docs site generation), e.g. with:
-
-        sudo apt-get install python3-venv
-
-1. Install [Bazelisk](https://github.com/bazelbuild/bazelisk) (NOT Bazel),
-   on a (recent enough...) Debian/Ubuntu [with Go](https://go.dev/doc/install)
-   e.g. like this (or some more manual equivalent):
-
-        sudo apt update
-        sudo apt install golang-go
-        go install github.com/bazelbuild/bazelisk@latest
-
-You should now be able to proceed as above (but without requiring _Docker)._
 
 ## Clean Up
 

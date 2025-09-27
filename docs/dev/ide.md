@@ -20,6 +20,8 @@
 
 Ensure you are [set up](setup.md) with a working build on the CLI before configuring your IDE.
 
+Enter `nix develop` and run `./test.bash` to verify that the setup is correct; it should complete without errors.
+
 Because of [the Nix requirement](setup.md), please launch your IDE not via its usual graphical Desktop launch, but
 from within a `nix develop` shell on the CLI, where `PATH` is the _Nix_ environment. This avoids many problems, like
 [issue #1657](https://github.com/enola-dev/enola/issues/1657), etc.
@@ -36,13 +38,13 @@ The [required plugins](https://www.jetbrains.com/help/idea/managing-plugins.html
 
 ## Visual Studio Code (VSC)
 
-In the context of [issue #1812](https://github.com/enola-dev/enola/issues/1812), we are exploring supporting VSC (again).
-
 Please launch VSC via `code .` in the `nix develop` environment, not via another starting mechanism (see the introduction of this page).
 
 This is not using Bazel IDE integration (anymore now), but just simple "[unmanaged](https://code.visualstudio.com/docs/java/java-project#_manage-dependencies-for-unmanaged-folder) source folders", configured in `.vscode/settings.json`. Please let us know if you find any discrepancies with the build system.
 
 The required VSC extensions are managed via [`.vscode/extensions.json`](https://github.com/enola-dev/enola/blob/main/.vscode/extensions.json). They will automagically pick up their options from the respective configuration files in this repository; this makes the VSC IDE and pre-commit use the same parameters for these tools.
+
+The JAR libraries in the `generated/classpath` directory are placed there by the `tools/javac/classpath.bash` script.
 
 ## Eclipse
 
