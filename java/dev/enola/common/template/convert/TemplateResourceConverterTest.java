@@ -33,16 +33,6 @@ import java.io.IOException;
 
 public class TemplateResourceConverterTest {
 
-    /*
-    public @Rule SingletonRule r =
-            SingletonRule.$(
-                    MediaTypeProviders.set(
-                            // TODO ? new HandlebarsMediaType(),
-                            // TODO ? new YamlMediaType(),
-                            // TODO ? new StandardMediaTypes()
-                            ));
-    */
-
     @Test
     public void simpleHandlebarTemplateWithProgrammaticData() throws IOException {
         var data = ImmutableMap.of("world", "Enola");

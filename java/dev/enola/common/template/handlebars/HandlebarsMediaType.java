@@ -32,11 +32,6 @@ public class HandlebarsMediaType implements MediaTypeProvider {
 
     @Override
     public Multimap<String, MediaType> extensionsToTypes() {
-        return ImmutableMultimap.of(".hbs", HANDLEBARS, ".handlebars", HANDLEBARS /* ,
-                ".hbs.yaml",
-                HANDLEBARS,
-                ".hbs.json",
-                HANDLEBARS
-                */);
+        return ImmutableMultimap.of(".hbs", HANDLEBARS, ".handlebars", HANDLEBARS);
     }
 }
