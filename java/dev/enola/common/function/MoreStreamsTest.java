@@ -37,9 +37,9 @@ public final class MoreStreamsTest {
 
     @Test
     public void testForEachParallel() throws Exception {
-        var list = new ArrayList<String>();
-        MoreStreams.forEach(Stream.of("a", "b").parallel(), e -> list.add(e));
-        assertThat(list).containsExactly("a", "b");
+        var list = new java.util.concurrent.CopyOnWriteArrayList<String>();
+        MoreStreams.forEach(Stream.of("a", "b").parallel(), list::add);
+        assertThat(list).containsExactlyInAnyOrder("a", "b");
     }
 
     @Test
