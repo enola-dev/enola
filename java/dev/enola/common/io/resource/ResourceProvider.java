@@ -46,12 +46,6 @@ public interface ResourceProvider extends ProviderFromIRI<Resource> {
         return resource;
     }
 
-    default Resource getNonNull2(URI uri) throws IllegalArgumentException {
-        var resource = getResource(uri);
-        if (resource == null) throw new IllegalArgumentException("Not found: " + uri);
-        return resource;
-    }
-
     default Optional<Resource> optional(URI uri) {
         try {
             return Optional.ofNullable(getResource(uri));

@@ -20,6 +20,7 @@ package dev.enola.common.template.tool;
 import static dev.enola.common.io.resource.FileDescriptorResource.STDOUT_URI;
 
 import dev.enola.common.context.TLC;
+import dev.enola.common.function.MoreStreams;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -82,7 +83,7 @@ public class TemplyMain {
     }
 
     public void run(List<URI> dataURIs, URI templateURI, URI outURI) throws IOException {
-        var dataResources = dataURIs.stream().map(rp::getNonNull2).toList();
+        var dataResources = MoreStreams.map(dataURIs.stream(), rp::getNonNull).toList();
         var templateResource = rp.getNonNull(templateURI);
         var outResource = rp.getNonNull(outURI);
 
