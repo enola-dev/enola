@@ -32,11 +32,12 @@ source_files=("${@:1:$#-1}")
 
 ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
 
-javadoc -Xdoclint:none -Werror -linksource -d site/dev/javadoc/ "${source_files[@]}" \
+javadoc -linksource -d site/dev/javadoc/ "${source_files[@]}" \
   -classpath "${additional_classpath:+$additional_classpath:}$ENOLA_CLASSPATH":bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/thing/libthing_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_java_grpc.jar:bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/common/protobuf/libvalidation_proto-speed.jar \
   -link https://guava.dev/releases/33.4.8-jre/api/docs/ \
+  -Werror -Xdoclint:all,-missing \
   -quiet 2>&1
 
-# TODO -Xdoclint:all & -Werror
+# Please keep -Xdoclint in sync with .bazelrc
 
 # TODO -link for all 3rd party libraries
