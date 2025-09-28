@@ -19,6 +19,8 @@ package dev.enola.common.template.convert;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.TestResource;
@@ -28,7 +30,6 @@ import dev.enola.common.template.handlebars.HandlebarsTemplateProvider;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class TemplateResourceConverterTest {
 
@@ -44,8 +45,8 @@ public class TemplateResourceConverterTest {
 
     @Test
     public void simpleHandlebarTemplateWithProgrammaticData() throws IOException {
-        var converter = new TemplateResourceConverter(new HandlebarsTemplateProvider());
-        converter.putAll(Map.of("world", "Enola"));
+        var data = ImmutableMap.of("world", "Enola");
+        var converter = new TemplateResourceConverter(new HandlebarsTemplateProvider(), data);
         var in = DataResource.of("hello: {{world}}", HandlebarsMediaType.HANDLEBARS);
         try (var out = TestResource.create(YamlMediaType.YAML_UTF_8)) {
             converter.convertIntoOrThrow(in, out);

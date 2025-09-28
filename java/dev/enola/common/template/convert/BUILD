@@ -27,6 +27,7 @@ java_library(
     deps = [
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/template",
+        "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
     ],
 )

@@ -17,28 +17,25 @@
  */
 package dev.enola.common.template.convert;
 
+import com.google.common.collect.ImmutableMap;
+
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
 import dev.enola.common.template.TemplateProvider;
 
-import java.util.HashMap;
 import java.util.Map;
 
-// @NotThreadSafe
 public class TemplateResourceConverter implements CatchingResourceConverter {
 
     // TODO Expose this as an ./enola template CLI sub-command
 
     private final TemplateProvider templateProvider;
-    private final Map<String, Object> data = new HashMap<>();
+    private final ImmutableMap<String, Object> data;
 
-    public TemplateResourceConverter(TemplateProvider templateProvider) {
+    public TemplateResourceConverter(TemplateProvider templateProvider, Map<String, ?> data) {
         this.templateProvider = templateProvider;
-    }
-
-    public void putAll(Map<String, Object> moreData) {
-        this.data.putAll(moreData);
+        this.data = ImmutableMap.copyOf(data);
     }
 
     @Override
