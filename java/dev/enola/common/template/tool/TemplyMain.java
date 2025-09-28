@@ -76,9 +76,8 @@ public class TemplyMain {
         var templateURI = URI.create(args[args.length - 1]);
 
         MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes());
-        var outURI = URIs.addMediaType(STDOUT_URI, YamlMediaType.YAML_UTF_8);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            INSTANCE.run(dataURIs, templateURI, outURI);
+            INSTANCE.run(dataURIs, templateURI, STDOUT_URI);
         }
     }
 
