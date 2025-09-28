@@ -81,7 +81,7 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
 
         String mediaType;
         int lastSemicolonIndex = mediaTypePart.lastIndexOf(';');
-        if (mediaTypePart.substring(lastSemicolonIndex).equals(";base64")) {
+        if (";base64".equals(mediaTypePart.substring(lastSemicolonIndex))) {
             mediaType = mediaTypePart.substring(0, lastSemicolonIndex);
             if (mediaType.isEmpty()) mediaType = DEFAULT_MEDIA_TYPE.toString();
         } else mediaType = mediaTypePart;

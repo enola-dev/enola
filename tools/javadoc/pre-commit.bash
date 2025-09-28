@@ -15,17 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euox pipefail
+set -euo pipefail
 
-# FTR: We're using this instead of @rules_jvm_external' javadoc rule because:
-#   - That one includes com.google.protobuf & io.grpc & javax.annotation - WTF?!
-#   - https://github.com/bazel-contrib/rules_jvm_external/issues/1343
-#   - https://github.com/bazel-contrib/rules_jvm_external/issues/1344
-
-find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > /tmp/enola-java-sources.txt
-
-rm -rf site/dev/javadoc/
-
-tools/javadoc/run.bash '@/tmp/enola-java-sources.txt' ""
-
-jar --create --file .built/javadoc.jar -C site/dev/javadoc/ .
+tools/javadoc/run.bash "$@" java:generated/protoc/java
