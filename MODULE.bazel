@@ -18,10 +18,6 @@ LANGCHAIN4J_VERSION = "1.6.0"
 
 ADK_JAVA_COMMIT = "0c4eed584f"
 
-GUAVA_VERSION = "33.4.8-jre"
-
-ERRORPRONE_VERSION = "2.41.0"
-
 RDF4J_VERSION = "5.1.4"
 
 GRPC_JAVA_VERSION = "1.75.0"
@@ -53,7 +49,6 @@ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "maven",
     artifacts = [
-        # https://github.com/enola-dev/enola/issues/1154
         "com.google.code.findbugs:jsr305:3.0.2",
         "com.google.code.gson:gson:2.13.1",
         "junit:junit:4.13.2",
@@ -67,7 +62,7 @@ maven.install(
         "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
-        "com.google.guava:guava:%s" % GUAVA_VERSION,
+        "com.google.guava:guava:33.4.8-jre",
         "com.google.jimfs:jimfs:1.3.1",
         "com.google.truth.extensions:truth-java8-extension:1.4.5",
         "com.google.truth.extensions:truth-proto-extension:1.4.5",
@@ -107,7 +102,7 @@ maven.install(
         # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
         "org.apache.logging.log4j:log4j-to-jul:2.25.1",
         "io.github.classgraph:classgraph:4.8.181",
-        "com.google.errorprone:error_prone_annotations:%s" % ERRORPRONE_VERSION,
+        "com.google.errorprone:error_prone_annotations:2.41.0",
         "org.jspecify:jspecify:1.0.0",
         "com.squareup.okhttp3:okhttp:4.12.0",
         "com.squareup.okhttp3:logging-interceptor:4.12.0",

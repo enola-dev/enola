@@ -54,12 +54,12 @@ public class StringResource extends BaseResource implements ReadableButNotWritab
 
     private final String string;
 
+    /**
+     * @deprecated Replace with {@link StringResource2#of(String, MediaType, URI)}
+     */
+    @Deprecated
     public static Resource of(@Nullable String text, MediaType mediaType, URI fragmentURI) {
-        if (Strings.isNullOrEmpty(text)) {
-            return new EmptyResource(fragmentURI, mediaType);
-        } else {
-            return new StringResource(text, mediaType, fragmentURI);
-        }
+        return StringResource2.of(text, mediaType, fragmentURI);
     }
 
     /**

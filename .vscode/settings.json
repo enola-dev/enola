@@ -74,6 +74,7 @@
     }
   },
 
+  "java.debug.settings.onBuildFailureProceed": true,
   "java.editor.reloadChangedSources": "auto",
   "java.format.settings.google.extra": "--aosp", // For 4 instead of 2 spaces!
   // Keep this version in sync with the same version in .pre-commit-config.yaml

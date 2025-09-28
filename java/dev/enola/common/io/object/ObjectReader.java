@@ -24,6 +24,9 @@ import java.util.Optional;
 
 public interface ObjectReader {
 
+    /** Read an object of Class T from the resource, if present. */
+    <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException;
+
     /** Read e.g. a JSON (or YAML) [ ... ] array. */
     <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException;
 
@@ -46,8 +49,6 @@ public interface ObjectReader {
                                                 + " as "
                                                 + type.getTypeName()));
     }
-
-    <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException;
 
     // PS: There is intentionally no ResolvedType / TypeReference / TypeToken sorta support!
 }
