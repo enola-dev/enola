@@ -54,7 +54,6 @@ maven.install(
         "com.google.auto.value:auto-value:1.11.0",
         "com.google.auto.service:auto-service:1.1.1",
         "com.google.auto.service:auto-service-annotations:1.1.1",
-        "com.google.guava:guava:33.4.8-jre",
         "com.google.jimfs:jimfs:1.3.1",
         "com.google.truth.extensions:truth-java8-extension:1.4.5",
         "com.google.truth.extensions:truth-proto-extension:1.4.5",
@@ -100,8 +99,6 @@ maven.install(
         "com.github.spotbugs:spotbugs-annotations:4.9.3",
         "io.github.java-diff-utils:java-diff-utils:4.16",
         "org.jsoup:jsoup:1.21.1",
-        "org.apache.tika:tika-core:3.0.0-BETA2",
-        "org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2",
         "com.github.package-url:packageurl-java:1.5.0",
         "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.31",
         "eu.maveniverse.maven.mima:context:2.4.31",
@@ -121,8 +118,6 @@ maven.install(
         "de.swiesend:secret-service:2.0.1-alpha",
         "com.github.vorburger.adk-java:google-adk:0c4eed584f",
         "com.github.vorburger.adk-java:google-adk-dev:0c4eed584f",
-        "com.github.vorburger.adk-java:google-adk-langchain4j:0c4eed584f",
-        "com.github.jknack:handlebars:4.4.0",
         "org.commonmark:commonmark:0.25.0",
     ],
 
@@ -132,6 +127,7 @@ maven.install(
     # runtime problems due to "classpath hell" later; it's ALWAYS better
     # to clean versions at build time!
     duplicate_version_warning = "error",
+    # TODO Investigate why 'excluded_artifacts' is still needed, despite maven.artifact() exclusions?!
     excluded_artifacts = [
         # Thanks, but No Thanks! (Spring Boot drags this along, with ADK.)
         "ch.qos.logback:logback-core",
@@ -173,5 +169,55 @@ maven.install(
         # Used by Multiformats, IPFS & IPLD
         "https://jitpack.io",
     ],
+)
+maven.artifact(
+    artifact = "google-adk-langchain4j",
+    exclusions = [
+        "org.eclipse.jdt:ecj",
+        "ch.qos.logback:logback-core",
+        "ch.qos.logback:logback-classic",
+        "org.springframework.boot:spring-boot-starter-logging",
+    ],
+    group = "com.github.vorburger.adk-java",
+    version = "0c4eed584f",
+)
+maven.artifact(
+    artifact = "guava",
+    exclusions = [
+        "org.codehaus.mojo:animal-sniffer-annotations",
+        "com.google.j2objc:j2objc-annotations",
+    ],
+    group = "com.google.guava",
+    version = "33.4.8-jre",
+)
+maven.artifact(
+    artifact = "handlebars",
+    exclusions = [
+        "org.openjdk.nashorn:nashorn-core",
+    ],
+    group = "com.github.jknack",
+    version = "4.4.0",
+)
+maven.artifact(
+    artifact = "google-genai",
+    exclusions = [
+        "commons-logging:commons-logging",
+    ],
+    group = "com.google.genai",
+    version = "1.8.0",
+)
+maven.artifact(
+    artifact = "tika-core",
+    exclusions = [],
+    group = "org.apache.tika",
+    version = "3.0.0-BETA2",
+)
+maven.artifact(
+    artifact = "tika-parsers-standard-package",
+    exclusions = [
+        "com.rometools:rome-utils",
+    ],
+    group = "org.apache.tika",
+    version = "3.0.0-BETA2",
 )
 use_repo(maven, "maven")
