@@ -30,11 +30,24 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * An ObjectReader that first processes a resource as a template.
+ *
+ * <p>It reads a resource, parses it as a {@link java.util.Map} to be used as a model, then treats
+ * the original resource content as a template, applies the model to it, and finally delegates
+ * parsing of the resulting content to another {@link ObjectReader}.
+ *
+ * <p>This allows for self-referential templates, where values defined in a file (e.g. YAML) can be
+ * used in other parts of the same file.
+ *
+ * <p><b>NOTE:</b> This implementation reads the entire resource into memory to perform templating.
+ * It is not suitable for very large resources.
+ */
 public class TemplatedObjectReader implements ObjectReader {
 
     private final ObjectReader delegate;
-    private final TemplateProvider templateProvider = new HandlebarsTemplateProvider();
-    private final MediaType templatesMediaType = HandlebarsMediaType.HANDLEBARS;
+    private static final TemplateProvider templateProvider = new HandlebarsTemplateProvider();
+    private static final MediaType templatesMediaType = HandlebarsMediaType.HANDLEBARS;
 
     public TemplatedObjectReader(ObjectReader delegate) {
         this.delegate = delegate;
