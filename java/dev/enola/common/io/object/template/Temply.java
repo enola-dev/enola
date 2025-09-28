@@ -33,8 +33,6 @@ public class Temply implements CatchingResourceConverter {
 
     // TODO Remove; as replaced by TemplateResourceConverter?
 
-    // TODO Constructor with Map<String, Object> data
-
     private final ObjectReader templatedObjectReader;
     private final ObjectWriter outputObjectWriter;
 

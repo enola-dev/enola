@@ -26,6 +26,7 @@ import dev.enola.common.io.resource.TestResource;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.List;
 
 public class TemplyMainTest {
 
@@ -38,7 +39,7 @@ public class TemplyMainTest {
         var template = "world: Enola\nhello: \"{{world}}\"";
         var in = DataResource.of(template, YamlMediaType.YAML_UTF_8);
         try (var out = TestResource.create(YamlMediaType.YAML_UTF_8)) {
-            templyMain.run(in.uri(), out.uri());
+            templyMain.run(List.of(), in.uri(), out.uri());
             assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: Enola\n");
         }
     }

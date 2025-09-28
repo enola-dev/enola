@@ -35,6 +35,8 @@ import dev.enola.common.io.resource.TestResource;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 // This can be used e.g. as:
 //   b run //java/dev/enola/common/io/object/template:temply -- $PWD/bom.hbs.yaml
@@ -55,24 +57,28 @@ public class TemplyMain {
     }
 
     public static void main(String[] args) throws ConversionException, IOException {
-        if (args.length != 1) {
-            System.err.println("USAGE: TemplyMain <XYZ.hbs.yaml>");
+        if (args.length < 1) {
+            var use = "USAGE: [<data1/2.yaml|json>...] <config.hbs.yaml> | <template.handlebars>";
+            System.out.println(use);
             System.exit(1);
         }
-        var templateURI = URI.create(args[0]);
+        var data = List.of(Arrays.copyOfRange(args, 0, args.length - 1));
+        var dataURIs = data.stream().map(URI::create).toList();
+        var templateURI = URI.create(args[args.length - 1]);
 
         MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes());
-
+        var outURI = URIs.addMediaType(STDOUT_URI, YamlMediaType.YAML_UTF_8);
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
-            var outURI = URIs.addMediaType(STDOUT_URI, YamlMediaType.YAML_UTF_8);
-            new TemplyMain().run(templateURI, outURI);
+            new TemplyMain().run(dataURIs, templateURI, outURI);
         }
     }
 
-    public void run(URI templateURI, URI outURI) throws ConversionException, IOException {
-        var in = rp.getReadableResource(templateURI);
-        var out = rp.getNonNull(outURI);
+    public void run(Iterable<URI> dataURIs, URI templateURI, URI outURI)
+            throws ConversionException, IOException {
+        var templateResource = rp.getReadableResource(templateURI);
+        var outResource = rp.getNonNull(outURI);
+
         var temply = new Temply();
-        temply.convertIntoOrThrow(in, out);
+        temply.convertIntoOrThrow(templateResource, outResource);
     }
 }
