@@ -86,4 +86,21 @@ public class DataResourceTest {
     public void spaceIsInvalid() {
         new DataResource(URI.create("data:hello world"));
     }
+
+    @Test
+    public void extractMediaTypeWithoutSemicolon1() throws IOException {
+        var resource1 = DataResource.of("hello, world");
+        var uri = resource1.uri();
+        var resource2 = new DataResource(uri);
+        assertThat(resource2.charSource().read()).isEqualTo("hello, world");
+        assertThat(resource2.mediaType()).isEqualTo(PLAIN_TEXT_ASCII);
+    }
+
+    @Test
+    public void extractMediaTypeWithoutSemicolon2() throws IOException {
+        var uri = URI.create("data:text/plain,hi");
+        var resource = new DataResource(uri);
+        assertThat(resource.byteSource().read()).isEqualTo("hi".getBytes(US_ASCII));
+        assertThat(resource.mediaType()).isEqualTo(MediaType.parse("text/plain"));
+    }
 }

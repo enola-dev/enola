@@ -17,6 +17,11 @@
 
 set -euo pipefail
 
+if [[ $# -eq 0 ]]; then
+  echo "Usage: $0 <source files> [<additional classpath entry>]" >&2
+  exit 1
+fi
+
 # The last argument is an optional additional classpath entry;
 # see e.g. tools/javadoc/pre-commit.bash
 additional_classpath="${*: -1}"
