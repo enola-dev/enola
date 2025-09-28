@@ -31,3 +31,7 @@ test --nobuild_tests_only
 # https://github.com/salesforce/bazel-eclipse/blob/main/docs/common/classpath.md#basics-classpath
 # For having sources available in the IDE always create source jars, as Bazel doesn't do this by default.
 build --output_groups=+_source_jars
+
+# Apply Javadoc linting to all Java builds
+# Please keep this in sync with tools/javadoc/run.bash
+build --javacopt="-Xdoclint:all,-missing"

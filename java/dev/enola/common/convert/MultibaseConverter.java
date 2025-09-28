@@ -26,7 +26,8 @@ import io.ipfs.multibase.Multibase;
 import org.jspecify.annotations.Nullable;
 
 /**
- * <a href="https://github.com/multiformats/multibase">Multibase</a> <=> {@link ByteSeq} Converter.
+ * <a href="https://github.com/multiformats/multibase">Multibase</a> &lt;=&gt; {@link ByteSeq}
+ * Converter.
  */
 final class MultibaseConverter implements ObjectToStringBiConverter<ByteSeq> {
 

@@ -197,9 +197,9 @@ public final class URIs {
     }
 
     /**
-     * Get a {@link Path} from an {@link URI}. This method is used internally by {@link
+     * Get a {@link Path} from an {@link URI}. This method is used internally by {@code
      * dev.enola.common.io.resource.Resource} framework implementations, and typically shouldn't be
-     * called directly by users. Please see the {@link dev.enola.common.io.resource.FileResource}
+     * called directly by users. Please see the {@code dev.enola.common.io.resource.FileResource}
      * for more related background.
      */
     public static Path getFilePath(URI uri) {

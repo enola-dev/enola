@@ -56,8 +56,9 @@ public record GAVR(
     // TODO Consider #performance - make this a class to cache GAV & PkgURL its representations?
 
     /**
-     * Parse a coordinates in the <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>
-     * format, like e.g. "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0" to a GAVR.
+     * Parse a coordinates in the {@code
+     * <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>} format, like e.g.
+     * "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0" to a GAVR.
      *
      * <p>This format is not a URL; use {@link #parsePkgURL(String)} if you have a URL, or {@link
      * #toPkgURL()} if you want one.

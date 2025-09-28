@@ -88,7 +88,7 @@ public class DataResourceTest {
     }
 
     @Test
-    public void extractMediaTypeWithoutSemicolon1() throws IOException {
+    public void dataURIWithEmptyMediaTypePartDefaultsToTextPlain() throws IOException {
         var resource1 = DataResource.of("hello, world");
         var uri = resource1.uri();
         var resource2 = new DataResource(uri);
@@ -97,7 +97,7 @@ public class DataResourceTest {
     }
 
     @Test
-    public void extractMediaTypeWithoutSemicolon2() throws IOException {
+    public void dataURIWithMediaTypeAndNoParameters() throws IOException {
         var uri = URI.create("data:text/plain,hi");
         var resource = new DataResource(uri);
         assertThat(resource.byteSource().read()).isEqualTo("hi".getBytes(US_ASCII));

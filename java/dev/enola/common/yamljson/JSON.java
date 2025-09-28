@@ -24,7 +24,10 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public final class JSON {
 
@@ -74,10 +77,9 @@ public final class JSON {
      * Canonicalize JSON, inspired by <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC 8785</a>,
      * but not 100% fully compliant; because Java uses e.g. 1.0E30 instead of 1e+30, and a few other
      * such differences.
-     *
-     * @see dev.enola.common.canonicalize.Canonicalizer
      */
     @SuppressWarnings("rawtypes")
+    // This is used by dev.enola.common.canonicalize.Canonicalizer
     public static String canonicalize(String json, boolean format) {
         // TODO Consider instead using
         // https://github.com/filip26/titanium-json-ld/blob/5c2c02c1f65b8e885fb689a460efba3f6925b479/src/main/java/com/apicatalog/jsonld/json/JsonCanonicalizer.java#L39

@@ -30,7 +30,7 @@ import java.util.Optional;
  *
  * <p>Applications may have an implementation of this which permits "dynamic" datatypes.
  *
- * <p>Tests might want to use the fixed {@link dev.enola.model.Datatypes#DTR}.
+ * <p>Tests might want to use the fixed {@code dev.enola.model.Datatypes#DTR}.
  */
 public interface DatatypeRepository extends Repository<Datatype<?>> {
 
