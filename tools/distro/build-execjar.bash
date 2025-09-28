@@ -25,6 +25,8 @@ set -euox pipefail
 
 if [ -x "$(command -v gbazelisk)" ]; then
   BZL=gbazelisk
+elif [ -x "$(command -v bazel)" ]; then
+  BZL=bazel
 elif [ -x "$(command -v bazelisk)" ]; then
   BZL=bazelisk
 else

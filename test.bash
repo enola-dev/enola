@@ -30,6 +30,10 @@ deadnix --fail flake.nix
 # Abort if there are any broken symlinks
 (find . -xtype l -ls | grep .) && echo "Broken symlinks! Try: bazel clean --expunge" && exit 1
 
+# TODO https://github.com/enola-dev/enola/issues/1789
+#if command -v bazel &> /dev/null; then
+#  BZL=bazel
+# elif...
 if command -v bazelisk &> /dev/null; then
   BZL=bazelisk
 else
@@ -63,10 +67,10 @@ if [ -z "${CI:-""}" ]; then
 
 else # On CI
   # Non-regression for problems like https://github.com/enola-dev/enola/issues/1146 and https://github.com/enola-dev/enola/issues/1164
-  bazelisk mod graph --depth=1
+  bazel mod graph --depth=1
 
   # See https://github.com/enola-dev/enola/issues/1116 why it's worth to re-PIN, on CI:
-  REPIN=1 bazelisk run @maven//:pin
+  REPIN=1 bazel run @maven//:pin
 
   # Runs git status and git diff to ensure no uncommitted changes
   tools/git/test.bash
@@ -80,7 +84,7 @@ fi
 ./test-cli.bash
 
 # The following makes sure that this test.bash will run as a pre-commit hook.
-# NB: We DO NOT want to "pre-commit install" because that won't run bazelisk!
+# NB: We DO NOT want to "pre-commit install" because that won't run Bazel!
 # (And because our own venv etc. stuff above is better for the "first touch" contributor experience.)
 # This is intentionally only done here at the END of successfully running the tests above,
 # because only if we reach here we now that everything above actually works well locally.
