@@ -63,6 +63,12 @@ public final class MoreStreamsTest {
     }
 
     @Test
+    public void testMapParallel() throws Exception {
+        var list = MoreStreams.map(Stream.of("a", "b").parallel(), String::toUpperCase).toList();
+        assertThat(list).containsExactly("A", "B");
+    }
+
+    @Test
     public void testMapException() {
         assertThrows(
                 MyCheckedException.class,
@@ -74,6 +80,19 @@ public final class MoreStreamsTest {
                                     })
                             .toList();
                 });
+    }
+
+    @Test
+    public void testMapParallelException() {
+        assertThrows(
+                MyCheckedException.class,
+                () ->
+                        MoreStreams.map(
+                                        Stream.of("a", "b").parallel(),
+                                        s -> {
+                                            throw new MyCheckedException();
+                                        })
+                                .toList());
     }
 
     private static class MyCheckedException extends Exception {}

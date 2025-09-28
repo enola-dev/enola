@@ -47,6 +47,30 @@ public final class MoreStreams {
         }
     }
 
+    /**
+     * Returns a stream consisting of the results of applying the given function to the elements of
+     * this stream, allowing the mapping function to throw a checked exception.
+     *
+     * <p>This is an <a
+     * href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps">
+     * intermediate operation</a>. The {@code mapper} function is not executed, and no exception is
+     * thrown, until a <a
+     * href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps">
+     * terminal operation</a> is invoked on the returned stream.
+     *
+     * @param stream the stream to map
+     * @param mapper a <a
+     *     href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#Statelessness">
+     *     non-interfering, stateless</a> function to apply to each element, which may throw a
+     *     checked exception
+     * @param <T> The type of the input elements of the stream
+     * @param <R> The type of the output elements of the stream
+     * @param <E> The type of the checked exception that can be thrown by the mapper
+     * @return the new stream
+     * @throws E when a terminal operation is executed on the returned stream and the mapper throws
+     *     a checked exception. Note that with parallel streams, the exception may (!) be wrapped in
+     *     a {@link RuntimeException}.
+     */
     public static <T, R, E extends Exception> Stream<R> map(
             Stream<T> stream, CheckedFunction<T, R, E> mapper) throws E {
         return stream.map(Sneaker.sneakyFunction(mapper));
