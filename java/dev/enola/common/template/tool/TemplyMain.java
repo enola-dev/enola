@@ -36,6 +36,7 @@ import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.template.TemplateProvider;
 import dev.enola.common.template.handlebars.HandlebarsTemplateProvider;
 
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -69,10 +70,10 @@ public class TemplyMain {
             new TemplyMain(
                     rp(), new JacksonObjectReaderWriterChain(), new HandlebarsTemplateProvider());
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         if (args.length < 1) {
             var use = "USAGE: [<data1/2.yaml|json>...] <config.hbs.yaml> | <template.handlebars>";
-            System.out.println(use);
+            System.err.println(use);
             System.exit(1);
         }
         var data = List.of(Arrays.copyOfRange(args, 0, args.length - 1));
@@ -86,7 +87,7 @@ public class TemplyMain {
         }
     }
 
-    public void run(List<URI> dataURIs, URI templateURI, URI outURI) throws Exception {
+    public void run(List<URI> dataURIs, URI templateURI, URI outURI) throws IOException {
         var dataResources = dataURIs.stream().map(uri -> rp.getReadableResource(uri)).toList();
         var templateResource = rp.getReadableResource(templateURI);
         var outResource = rp.getNonNull(outURI);

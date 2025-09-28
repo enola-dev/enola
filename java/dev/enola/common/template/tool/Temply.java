@@ -24,6 +24,7 @@ import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.template.TemplateProvider;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class Temply {
@@ -41,7 +42,7 @@ public class Temply {
             Iterable<ReadableResource> dataResources,
             ReadableResource templateResource,
             WritableResource into)
-            throws Exception {
+            throws IOException {
 
         var mapBuilder = ImmutableMap.builder();
         for (var dataResource : dataResources) {

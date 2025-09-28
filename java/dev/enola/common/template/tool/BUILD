@@ -20,15 +20,15 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "temply",
-    main_class = "dev.enola.common.template.convert.TemplyMain",
+    main_class = "dev.enola.common.template.tool.TemplyMain",
     visibility = ["//visibility:public"],
     runtime_deps = [
-        ":convert",
+        ":tool",
     ],
 )
 
 java_library(
-    name = "convert",
+    name = "tool",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
@@ -54,7 +54,7 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":convert",
+        ":tool",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/template",
         "//java/dev/enola/common/template/handlebars",
