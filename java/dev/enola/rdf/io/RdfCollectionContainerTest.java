@@ -41,12 +41,12 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Test RDF4j Collections & Containers I/O conversion to Proto Thing and Java Thing API.
+ * Test RDF4j Collections &amp; Containers I/O conversion to Proto Thing and Java Thing API.
  *
  * <p>See:
  *
  * <ol>
- *   <li><a href="https://rdf4j.org/documentation/programming/model/#rdf-collections>RDF4j API
+ *   <li><a href="https://rdf4j.org/documentation/programming/model/#rdf-collections">RDF4j API
  *       documentation</a>
  *   <li><a href="https://www.w3.org/TR/rdf-schema/#ch_containervocab">RDFS Spec</a>
  *   <li><a href="https://www.w3.org/TR/turtle/#collections">Turtle Spec</a>

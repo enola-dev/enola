@@ -211,3 +211,12 @@ repos:
     hooks:
       - id: editorconfig-checker
         exclude: mvnw
+
+  - repo: local
+    hooks:
+      - id: check-javadoc
+        name: Check JavaDoc
+        description: Check that JavaDoc is valid
+        language: script
+        entry: tools/javadoc/pre-commit.bash
+        files: ^java/.*\.java$
