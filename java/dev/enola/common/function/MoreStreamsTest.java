@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThrows;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 public final class MoreStreamsTest {
@@ -37,9 +38,9 @@ public final class MoreStreamsTest {
 
     @Test
     public void testForEachParallel() throws Exception {
-        var list = new java.util.concurrent.CopyOnWriteArrayList<String>();
+        var list = new CopyOnWriteArrayList<String>();
         MoreStreams.forEach(Stream.of("a", "b").parallel(), list::add);
-        assertThat(list).containsExactlyInAnyOrder("a", "b");
+        assertThat(list).containsExactly("a", "b");
     }
 
     @Test
