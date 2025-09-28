@@ -32,6 +32,8 @@ import java.util.Optional;
  */
 public interface TemplateProvider {
 
+    // TODO Write a CachingTemplateProvider
+
     Optional<Template> optional(ReadableResource source) throws IOException;
 
     default Template get(ReadableResource source) throws IOException {

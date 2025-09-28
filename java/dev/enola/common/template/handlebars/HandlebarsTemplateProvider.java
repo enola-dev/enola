@@ -17,6 +17,9 @@
  */
 package dev.enola.common.template.handlebars;
 
+import static com.google.common.net.MediaType.JSON_UTF_8;
+
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.template.handlebars.HandlebarsMediaType.HANDLEBARS;
 
 import com.github.jknack.handlebars.Handlebars;
@@ -41,8 +44,9 @@ public class HandlebarsTemplateProvider implements TemplateProvider {
 
     @Override
     public Optional<Template> optional(ReadableResource resource) throws IOException {
-        if (!MediaTypes.normalizedNoParamsEquals(resource.mediaType(), HANDLEBARS))
-            return Optional.empty();
+        // NB: We accept *.handlebars as well as *.yaml and *.json, to support them as templates
+        if (!MediaTypes.normalizedNoParamsEquals(
+                resource.mediaType(), HANDLEBARS, YAML_UTF_8, JSON_UTF_8)) return Optional.empty();
 
         var resourceTemplateSource = new ResourceTemplateSource(resource);
         var template = handlebars.compile(resourceTemplateSource);

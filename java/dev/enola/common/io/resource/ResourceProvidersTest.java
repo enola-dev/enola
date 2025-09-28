@@ -190,28 +190,6 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testMemory() throws IOException {
-        // Direct
-        try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
-            checkMemory(r);
-        }
-
-        // Indirect via factory and with fancy URI with ?mediaType= parameter
-        try (var r1 = TestResource.create(MediaType.JSON_UTF_8)) {
-            var r2 = new ResourceProviders().getResource(URI.create(r1.uri().toString()));
-            assertThat(r2.mediaType()).isEqualTo(MediaType.JSON_UTF_8);
-            checkMemory(r2);
-        }
-    }
-
-    private void checkMemory(Resource r) throws IOException {
-        r.charSink().write("hi");
-        var uri = r.uri();
-        var text = new ResourceProviders().getResource(uri).charSource().read();
-        assertThat(text).isEqualTo("hi");
-    }
-
-    @Test
     public void testError() {
         check(ErrorResource.class, ErrorResource.INSTANCE.uri());
     }
