@@ -40,7 +40,12 @@ import java.util.Optional;
  */
 public class HandlebarsTemplateProvider implements TemplateProvider {
 
-    private final Handlebars handlebars = new Handlebars(new ThrowingTemplateLoader());
+    private final Handlebars handlebars;
+
+    public HandlebarsTemplateProvider() {
+        handlebars = new Handlebars(new ThrowingTemplateLoader());
+        handlebars.registerHelper("gav", new GavHelper());
+    }
 
     @Override
     public Optional<Template> optional(ReadableResource resource) throws IOException {

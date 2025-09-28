@@ -56,6 +56,7 @@ maven.install(
     # runtime problems due to "classpath hell" later; it's ALWAYS better
     # to clean versions at build time!
     duplicate_version_warning = "error",
+    # TODO Investigate why 'excluded_artifacts' is still needed, despite maven.artifact() exclusions?!
     excluded_artifacts = [
         # Thanks, but No Thanks! (Spring Boot drags this along, with ADK.)
         "ch.qos.logback:logback-core",
@@ -97,5 +98,9 @@ maven.install(
         # Used by Multiformats, IPFS & IPLD
         "https://jitpack.io",
     ],
+){{#bomx}}
+maven.artifact(
+    {{gav this}}
 )
+{{~/bomx}}
 use_repo(maven, "maven")
