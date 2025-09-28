@@ -24,6 +24,7 @@ java_binary(
     visibility = ["//visibility:public"],
     runtime_deps = [
         ":tool",
+        "@maven//:org_slf4j_slf4j_simple",
     ],
 )
 
