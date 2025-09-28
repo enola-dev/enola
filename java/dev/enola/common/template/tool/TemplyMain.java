@@ -27,12 +27,10 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.object.template.TemplatedObjectReader;
-import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
-import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.template.TemplateProvider;
 import dev.enola.common.template.handlebars.HandlebarsTemplateProvider;
 
@@ -61,18 +59,16 @@ public class TemplyMain {
     private static ResourceProvider rp() {
         var fileRP = new FileResource.Provider();
         var fdRP = new FileDescriptorResource.Provider();
-        var dataRP = new DataResource.Provider();
-        var testRP = new TestResource.Provider();
-        return new ResourceProviders(fileRP, fdRP, dataRP, testRP);
+        return new ResourceProviders(fileRP, fdRP);
     }
 
-    static TemplyMain INSTANCE =
+    private static TemplyMain INSTANCE =
             new TemplyMain(
                     rp(), new JacksonObjectReaderWriterChain(), new HandlebarsTemplateProvider());
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            var use = "USAGE: [<data1/2.yaml|json>...] <config.hbs.yaml> | <template.handlebars>";
+            var use = "USAGE: temply [data1.yaml data2.json ...] <template.handlebars>";
             System.err.println(use);
             System.exit(1);
         }
