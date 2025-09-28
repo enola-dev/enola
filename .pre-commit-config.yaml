@@ -220,3 +220,4 @@ repos:
         language: script
         entry: tools/javadoc/pre-commit.bash
         files: ^java/.*\.java$
+        require_serial: true
