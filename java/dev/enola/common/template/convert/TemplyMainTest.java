@@ -27,7 +27,6 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.TestResource;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -55,7 +54,6 @@ public class TemplyMainTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
     public void selfReferentialAndTemplate() throws Exception {
         var data = DataResource.of("world: Enola\nhello: \"{{world}}\"", YAML_UTF_8);
         var template = DataResource.of("Not YAML... {{world}} {{hello}}", HANDLEBARS);

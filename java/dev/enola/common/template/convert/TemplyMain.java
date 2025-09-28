@@ -26,6 +26,7 @@ import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
+import dev.enola.common.io.object.template.TemplatedObjectReader;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.FileResource;
@@ -50,13 +51,11 @@ public class TemplyMain {
     private final ResourceProvider rp;
 
     public TemplyMain(
-            ResourceProvider rp, ObjectReader objectReader, TemplateProvider templateProvider) {
+            ResourceProvider rp,
+            ObjectReader delegateObjectReader,
+            TemplateProvider templateProvider) {
         this.rp = rp;
-        this.temply = new Temply(objectReader, templateProvider);
-    }
-
-    public TemplyMain(ObjectReader objectReader, TemplateProvider templateProvider) {
-        this(rp(), objectReader, templateProvider);
+        this.temply = new Temply(new TemplatedObjectReader(delegateObjectReader), templateProvider);
     }
 
     private static ResourceProvider rp() {

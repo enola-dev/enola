@@ -40,6 +40,7 @@ java_library(
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/io/object/template",
         "//java/dev/enola/common/template",
         "//java/dev/enola/common/template/handlebars",
         "@maven//:com_google_guava_guava",

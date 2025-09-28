@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class TemplateResourceConverter implements CatchingResourceConverter {
 
+    // TODO Move to parent package; fix BUILD, rename package-info.java and directory
+
     private final TemplateProvider templateProvider;
     private final ImmutableMap<String, Object> data;
 
