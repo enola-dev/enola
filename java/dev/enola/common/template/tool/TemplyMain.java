@@ -33,6 +33,7 @@ import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.template.TemplateProvider;
+import dev.enola.common.template.handlebars.HandlebarsMediaType;
 import dev.enola.common.template.handlebars.HandlebarsTemplateProvider;
 
 import java.io.IOException;
@@ -76,7 +77,8 @@ public class TemplyMain {
         var dataURIs = Arrays.stream(args, 0, args.length - 1).map(URI::create).toList();
         var templateURI = URI.create(args[args.length - 1]);
 
-        MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes());
+        MediaTypeProviders.set(
+                new HandlebarsMediaType(), new YamlMediaType(), new StandardMediaTypes());
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             INSTANCE.run(dataURIs, templateURI, STDOUT_URI);
         }
