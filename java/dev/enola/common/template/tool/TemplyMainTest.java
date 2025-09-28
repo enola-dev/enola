@@ -29,12 +29,13 @@ import dev.enola.common.io.resource.TestResource;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class TemplyMainTest {
 
     @Test
-    public void selfReferential() throws Exception {
+    public void selfReferential() throws IOException {
         var template = "world: Enola\nhello: \"{{world}}\"";
         var in = DataResource.of(template, YAML_UTF_8);
         try (var out = TestResource.create(YAML_UTF_8)) {
@@ -44,7 +45,7 @@ public class TemplyMainTest {
     }
 
     @Test
-    public void simpleTemplate() throws Exception {
+    public void simpleTemplate() throws IOException {
         var data = DataResource.of("hello: world", YAML_UTF_8);
         var template = DataResource.of("Not YAML... hello, {{hello}}", HANDLEBARS);
         try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
@@ -54,7 +55,7 @@ public class TemplyMainTest {
     }
 
     @Test
-    public void selfReferentialAndTemplate() throws Exception {
+    public void selfReferentialAndTemplate() throws IOException {
         var data = DataResource.of("world: Enola\nhello: \"{{world}}\"", YAML_UTF_8);
         var template = DataResource.of("Not YAML... {{world}} {{hello}}", HANDLEBARS);
         try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {

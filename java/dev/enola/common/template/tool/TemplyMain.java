@@ -76,8 +76,7 @@ public class TemplyMain {
             System.err.println(use);
             System.exit(1);
         }
-        var data = List.of(Arrays.copyOfRange(args, 0, args.length - 1));
-        var dataURIs = data.stream().map(URI::create).toList();
+        var dataURIs = Arrays.stream(args, 0, args.length - 1).map(URI::create).toList();
         var templateURI = URI.create(args[args.length - 1]);
 
         MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes());
@@ -88,7 +87,7 @@ public class TemplyMain {
     }
 
     public void run(List<URI> dataURIs, URI templateURI, URI outURI) throws IOException {
-        var dataResources = dataURIs.stream().map(uri -> rp.getReadableResource(uri)).toList();
+        var dataResources = dataURIs.stream().map(rp::getReadableResource).toList();
         var templateResource = rp.getReadableResource(templateURI);
         var outResource = rp.getNonNull(outURI);
 
