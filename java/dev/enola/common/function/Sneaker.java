@@ -18,6 +18,7 @@
 package dev.enola.common.function;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -49,6 +50,19 @@ public final class Sneaker {
                 checkedConsumer.accept(t);
             } catch (Exception e) {
                 sneakyThrow(e);
+            }
+        };
+    }
+
+    static <T, R, E extends Exception> Function<T, R> sneakyFunction(
+            CheckedFunction<T, R, E> checkedFunction) {
+        return t -> {
+            try {
+                return checkedFunction.apply(t);
+            } catch (RuntimeException | Error e) {
+                throw e;
+            } catch (Exception e) {
+                return sneakyThrow(e);
             }
         };
     }
