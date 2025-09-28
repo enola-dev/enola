@@ -19,11 +19,13 @@ package dev.enola.common.function;
 
 import com.google.common.collect.Streams;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 /** Static utility methods related to {@code Stream} instances. {@link Streams} has more. */
 public final class MoreStreams {
+
+    // TODO Use more unchecked instead of checked exceptions in Enola, to reduce the need for
+    // this...
 
     // TODO Move to package dev.enola.common.collect (but must figure out Sneaker relationship)
 
@@ -45,6 +47,11 @@ public final class MoreStreams {
         }
     }
 
+    public static <T, R, E extends Exception> Stream<R> map(
+            Stream<T> stream, CheckedFunction<T, R, E> mapper) throws E {
+        return stream.map(Sneaker.sneakyFunction(mapper));
+    }
+
     // This (probably, not verified) loose parallelism, if the stream even has it?
     private static <T, E extends Exception> void forEachInSeq(
             Stream<T> stream, CheckedConsumer<T, E> action) throws E {
@@ -59,19 +66,6 @@ public final class MoreStreams {
     private static <T, E extends Exception> void sneakyForEach(
             Stream<T> stream, CheckedConsumer<T, E> action) throws E {
         stream.forEach(Sneaker.sneakyConsumer(action));
-    }
-
-    public static <T, R, E extends Exception> Stream<R> map(
-            Stream<T> stream, CheckedFunction<T, R, E> mapper) throws E {
-        if (stream.isParallel()) {
-            return stream.map(Sneaker.sneakyFunction(mapper));
-        } else {
-            // TODO This is not ideal, as it fully consumes and buffers the stream.
-            // How can this be implemented in a better way, without "sneaky throw"?
-            var list = new ArrayList<R>();
-            forEach(stream, item -> list.add(mapper.apply(item)));
-            return list.stream();
-        }
     }
 
     private MoreStreams() {}

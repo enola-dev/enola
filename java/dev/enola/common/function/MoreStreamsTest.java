@@ -45,17 +45,15 @@ public final class MoreStreamsTest {
 
     @Test
     public void testForEachException() {
-        var ex =
-                assertThrows(
-                        MyCheckedException.class,
-                        () -> {
-                            MoreStreams.forEach(
-                                    Stream.of("a"),
-                                    e -> {
-                                        throw new MyCheckedException();
-                                    });
-                        });
-        assertThat(ex).isInstanceOf(MyCheckedException.class);
+        assertThrows(
+                MyCheckedException.class,
+                () -> {
+                    MoreStreams.forEach(
+                            Stream.of("a"),
+                            e -> {
+                                throw new MyCheckedException();
+                            });
+                });
     }
 
     @Test
@@ -66,17 +64,16 @@ public final class MoreStreamsTest {
 
     @Test
     public void testMapException() {
-        var ex =
-                assertThrows(
-                        MyCheckedException.class,
-                        () -> {
-                            MoreStreams.map(
+        assertThrows(
+                MyCheckedException.class,
+                () -> {
+                    MoreStreams.map(
                                     Stream.of("a"),
                                     e -> {
                                         throw new MyCheckedException();
-                                    });
-                        });
-        assertThat(ex).isInstanceOf(MyCheckedException.class);
+                                    })
+                            .toList();
+                });
     }
 
     private static class MyCheckedException extends Exception {}
