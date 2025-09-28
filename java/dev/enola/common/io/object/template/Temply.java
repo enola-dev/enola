@@ -29,6 +29,8 @@ import java.util.Map;
 
 public class Temply implements CatchingResourceConverter {
 
+    // TODO Rename, to avoid name conflict with dev.enola.common.template.convert.Temply
+
     // TODO Remove; as replaced by TemplateResourceConverter?
 
     // TODO Constructor with Map<String, Object> data
