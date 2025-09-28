@@ -19,10 +19,15 @@ package dev.enola.common.template.convert;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.mediatype.YamlMediaType;
+import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
+import static dev.enola.common.template.handlebars.HandlebarsMediaType.HANDLEBARS;
+
+import com.google.common.net.MediaType;
+
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.TestResource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -32,10 +37,31 @@ public class TemplyMainTest {
     @Test
     public void selfReferential() throws Exception {
         var template = "world: Enola\nhello: \"{{world}}\"";
-        var in = DataResource.of(template, YamlMediaType.YAML_UTF_8);
-        try (var out = TestResource.create(YamlMediaType.YAML_UTF_8)) {
+        var in = DataResource.of(template, YAML_UTF_8);
+        try (var out = TestResource.create(YAML_UTF_8)) {
             TemplyMain.INSTANCE.run(List.of(), in.uri(), out.uri());
             assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: \"Enola\"");
+        }
+    }
+
+    @Test
+    public void simpleTemplate() throws Exception {
+        var data = DataResource.of("hello: world", YAML_UTF_8);
+        var template = DataResource.of("Not YAML... hello, {{hello}}", HANDLEBARS);
+        try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
+            TemplyMain.INSTANCE.run(List.of(data.uri()), template.uri(), out.uri());
+            assertThat(out.charSource().read()).isEqualTo("Not YAML... hello, world");
+        }
+    }
+
+    @Test
+    @Ignore // TODO FIXME
+    public void selfReferentialAndTemplate() throws Exception {
+        var data = DataResource.of("world: Enola\nhello: \"{{world}}\"", YAML_UTF_8);
+        var template = DataResource.of("Not YAML... {{world}} {{hello}}", HANDLEBARS);
+        try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
+            TemplyMain.INSTANCE.run(List.of(data.uri()), template.uri(), out.uri());
+            assertThat(out.charSource().read()).isEqualTo("Not YAML... Enola Enola");
         }
     }
 }

@@ -47,7 +47,8 @@ public class Temply {
         for (var dataResource : dataResources) {
             mapBuilder.putAll(objectReader.read(dataResource, Map.class));
         }
-        mapBuilder.putAll(objectReader.read(templateResource, Map.class));
+
+        objectReader.optional(templateResource, Map.class).ifPresent(map -> mapBuilder.putAll(map));
 
         var allDataMap = mapBuilder.build();
         var template = templateProvider.get(templateResource);
