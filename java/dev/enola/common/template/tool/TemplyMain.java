@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.template.convert;
+package dev.enola.common.template.tool;
 
 import static dev.enola.common.io.resource.FileDescriptorResource.STDOUT_URI;
 
@@ -41,8 +41,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-// This can be used e.g. as:
-//   b run //java/dev/enola/common/template/convert:temply -- $PWD/bom.hbs.yaml
+// This is used by //MODULE.update.bash
 public class TemplyMain {
 
     // TODO Expose this as an ./enola template CLI sub-command too

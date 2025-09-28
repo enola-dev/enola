@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/** Template Engines I/O Resource Converter, with a main() CLI. */
+/** Template Tool, with a main() CLI. */
 @NullMarked
-package dev.enola.common.template.convert;
+package dev.enola.common.template.tool;
 
 import org.jspecify.annotations.NullMarked;
