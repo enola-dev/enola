@@ -46,7 +46,11 @@ public class TemplatedObjectReader implements ObjectReader {
         var mediaType = resource.mediaType();
         var rawTemplate = resource.charSource().read();
 
-        var rawTemplateResource = StringResource2.of(rawTemplate, mediaType, uri);
+        var objectsMediaType = mediaType;
+        // if (URIs.hasExtension(uri, ".hbs.yaml")) objectsMediaType = YamlMediaType.YAML_UTF_8;
+        // if (URIs.hasExtension(uri, ".hbs.json")) objectsMediaType = MediaType.JSON_UTF_8;
+
+        var rawTemplateResource = StringResource2.of(rawTemplate, objectsMediaType, uri);
         var map = delegate.optional(rawTemplateResource, Map.class);
         if (map.isEmpty()) return Optional.empty();
 

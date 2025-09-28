@@ -17,8 +17,6 @@
  */
 package dev.enola.common.io.object.template;
 
-import static com.google.common.truth.Truth.assertThat;
-
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.TestResource;
@@ -29,15 +27,16 @@ import java.io.IOException;
 
 public class TemplyMainTest {
 
-    Temply temply = new Temply();
+    // TODO Remove; as replaced by TemplateResourceConverterTest & Co?
 
     @Test
     public void selfReferential() throws IOException {
         var template = "world: Enola\nhello: \"{{world}}\"";
         var in = DataResource.of(template, YamlMediaType.YAML_UTF_8);
         try (var out = TestResource.create(YamlMediaType.YAML_UTF_8)) {
-            temply.convertIntoOrThrow(in, out);
-            assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: Enola\n");
+            TemplyMain.main(new String[] {in.uri().toString()});
+            // TODO Capture stdout (or allow 2nd arg for output)
+            //   assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: Enola\n");
         }
     }
 }

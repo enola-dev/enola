@@ -43,7 +43,7 @@ public class TemplateResourceConverterTest {
     */
 
     @Test
-    public void selfReferential() throws IOException {
+    public void simpleHandlebarTemplateWithProgrammaticData() throws IOException {
         var converter = new TemplateResourceConverter(new HandlebarsTemplateProvider());
         converter.putAll(Map.of("world", "Enola"));
         var in = DataResource.of("hello: {{world}}", HandlebarsMediaType.HANDLEBARS);

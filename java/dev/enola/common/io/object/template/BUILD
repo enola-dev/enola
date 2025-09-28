@@ -57,5 +57,6 @@ junit_tests(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
+        "//java/dev/enola/common/template/handlebars",
     ],
 )

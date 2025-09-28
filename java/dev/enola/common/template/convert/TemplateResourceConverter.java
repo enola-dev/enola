@@ -28,6 +28,8 @@ import java.util.Map;
 // @NotThreadSafe
 public class TemplateResourceConverter implements CatchingResourceConverter {
 
+    // TODO Expose this as an ./enola template CLI sub-command
+
     private final TemplateProvider templateProvider;
     private final Map<String, Object> data = new HashMap<>();
 

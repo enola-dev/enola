@@ -23,14 +23,20 @@ import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.FileDescriptorResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.io.resource.TestResource;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 
+// This can be used e.g. as:
+//   b run //java/dev/enola/common/io/object/template:temply -- $PWD/bom.hbs.yaml
 public class TemplyMain {
+
+    // TODO Remove; as replaced by TemplateResourceConverter & Co?
 
     // TODO Expose this as an ./enola template CLI sub-command too
 
@@ -45,11 +51,16 @@ public class TemplyMain {
 
         var fileRP = new FileResource.Provider();
         var fdRP = new FileDescriptorResource.Provider();
-        var rp = new ResourceProviders(fileRP, fdRP);
+        var dataRP = new DataResource.Provider();
+        var testRP = new TestResource.Provider();
+        var rp = new ResourceProviders(fileRP, fdRP, dataRP, testRP);
 
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var in = rp.getReadableResource(templateFile);
-            var out = rp.getNonNull(FileDescriptorResource.STDOUT_URI);
+            var out =
+                    rp.getNonNull(
+                            URIs.addMediaType(
+                                    FileDescriptorResource.STDOUT_URI, YamlMediaType.YAML_UTF_8));
 
             var temply = new Temply();
             temply.convertIntoOrThrow(in, out);
