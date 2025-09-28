@@ -15,40 +15,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object.template;
+package dev.enola.common.template.convert;
 
-import dev.enola.common.io.object.ObjectReader;
-import dev.enola.common.io.object.ObjectReaderWriter;
-import dev.enola.common.io.object.ObjectWriter;
-import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.ReadableResource;
 import dev.enola.common.io.resource.WritableResource;
 import dev.enola.common.io.resource.convert.CatchingResourceConverter;
+import dev.enola.common.template.TemplateProvider;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class Temply implements CatchingResourceConverter {
+// @NotThreadSafe
+public class TemplateResourceConverter implements CatchingResourceConverter {
 
-    // TODO Remove; as replaced by TemplateResourceConverter?
+    private final TemplateProvider templateProvider;
+    private final Map<String, Object> data = new HashMap<>();
 
-    // TODO Constructor with Map<String, Object> data
-
-    private final ObjectReader templatedObjectReader;
-    private final ObjectWriter outputObjectWriter;
-
-    public Temply(ObjectReaderWriter delegate) {
-        this.templatedObjectReader = new TemplatedObjectReader(delegate);
-        this.outputObjectWriter = delegate;
+    public TemplateResourceConverter(TemplateProvider templateProvider) {
+        this.templateProvider = templateProvider;
     }
 
-    public Temply() {
-        this(new JacksonObjectReaderWriterChain());
+    public void putAll(Map<String, Object> moreData) {
+        this.data.putAll(moreData);
     }
 
     @Override
     public boolean convertIntoThrows(ReadableResource from, WritableResource into)
             throws Exception {
-        var map = templatedObjectReader.read(from, Map.class);
-        return outputObjectWriter.write(map, into);
+        var template = templateProvider.get(from);
+        try (var appendable = into.charSink().openBufferedStream()) {
+            template.apply(data, appendable);
+        }
+        return true;
     }
 }

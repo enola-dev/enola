@@ -29,6 +29,8 @@ import java.io.IOException;
 
 public class TemplyTest {
 
+    // TODO Remove; as replaced by TemplateResourceConverterTest?
+
     Temply temply = new Temply();
 
     @Test
