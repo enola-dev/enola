@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.io.object.template;
+package dev.enola.common.template.convert;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -25,22 +25,19 @@ import dev.enola.common.io.resource.TestResource;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 public class TemplyMainTest {
 
     // TODO Remove; as replaced by other TemplyMainTest/TemplateResourceConverterTest & Co?
 
-    private final TemplyMain templyMain = new TemplyMain();
-
     @Test
-    public void selfReferential() throws IOException {
+    public void selfReferential() throws Exception {
         var template = "world: Enola\nhello: \"{{world}}\"";
         var in = DataResource.of(template, YamlMediaType.YAML_UTF_8);
         try (var out = TestResource.create(YamlMediaType.YAML_UTF_8)) {
-            templyMain.run(List.of(), in.uri(), out.uri());
-            assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: Enola\n");
+            TemplyMain.INSTANCE.run(List.of(), in.uri(), out.uri());
+            assertThat(out.charSource().read()).isEqualTo("world: Enola\nhello: \"Enola\"");
         }
     }
 }

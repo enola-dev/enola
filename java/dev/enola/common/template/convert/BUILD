@@ -25,9 +25,13 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
+        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/io/object",
+        "//java/dev/enola/common/io/object/jackson",
         "//java/dev/enola/common/template",
+        "//java/dev/enola/common/template/handlebars",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
     ],
