@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import com.google.common.net.MediaType;
+
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
@@ -28,6 +30,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 public class StringResourceTest {
@@ -46,5 +49,8 @@ public class StringResourceTest {
         // URI.create("string:") causes an java.net.URISyntaxException.
         var r3 = StringResource.of("");
         assertThat(r3.charSource().read()).isEmpty();
+
+        var r4 = StringResource.of("", MediaType.PLAIN_TEXT_UTF_8, URI.create("string:/r4"));
+        assertThat(r4.charSource().read()).isEmpty();
     }
 }
