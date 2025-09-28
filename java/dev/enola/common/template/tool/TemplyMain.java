@@ -62,7 +62,7 @@ public class TemplyMain {
         return new ResourceProviders(fileRP, fdRP);
     }
 
-    private static TemplyMain INSTANCE =
+    private static final TemplyMain INSTANCE =
             new TemplyMain(
                     rp(), new JacksonObjectReaderWriterChain(), new HandlebarsTemplateProvider());
 
@@ -82,8 +82,8 @@ public class TemplyMain {
     }
 
     public void run(List<URI> dataURIs, URI templateURI, URI outURI) throws IOException {
-        var dataResources = dataURIs.stream().map(rp::getReadableResource).toList();
-        var templateResource = rp.getReadableResource(templateURI);
+        var dataResources = dataURIs.stream().map(rp::getNonNull2).toList();
+        var templateResource = rp.getNonNull(templateURI);
         var outResource = rp.getNonNull(outURI);
 
         temply.convert(dataResources, templateResource, outResource);

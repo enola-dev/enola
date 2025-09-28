@@ -37,14 +37,14 @@ public class Temply {
         this.templateProvider = templateProvider;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // Due to ObjectReader API using Class<T> without TypeReference
     public void convert(
-            Iterable<ReadableResource> dataResources,
+            Iterable<? extends ReadableResource> dataResources,
             ReadableResource templateResource,
             WritableResource into)
             throws IOException {
 
-        var mapBuilder = ImmutableMap.builder();
+        var mapBuilder = ImmutableMap.<String, Object>builder();
         for (var dataResource : dataResources) {
             mapBuilder.putAll(objectReader.read(dataResource, Map.class));
         }
