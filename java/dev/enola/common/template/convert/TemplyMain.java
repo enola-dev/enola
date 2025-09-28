@@ -41,10 +41,8 @@ import java.util.Arrays;
 import java.util.List;
 
 // This can be used e.g. as:
-//   b run //java/dev/enola/common/io/object/template:temply -- /bom.hbs.yaml
+//   b run //java/dev/enola/common/template/convert:temply -- $PWD/bom.hbs.yaml
 public class TemplyMain {
-
-    // TODO Remove; as replaced by other TemplyMain/TemplateResourceConverter & Co?
 
     // TODO Expose this as an ./enola template CLI sub-command too
 

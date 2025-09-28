@@ -28,8 +28,6 @@ import java.util.Map;
 
 public class TemplateResourceConverter implements CatchingResourceConverter {
 
-    // TODO Expose this as an ./enola template CLI sub-command
-
     private final TemplateProvider templateProvider;
     private final ImmutableMap<String, Object> data;
 

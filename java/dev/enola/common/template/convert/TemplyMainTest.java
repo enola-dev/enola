@@ -29,8 +29,6 @@ import java.util.List;
 
 public class TemplyMainTest {
 
-    // TODO Remove; as replaced by other TemplyMainTest/TemplateResourceConverterTest & Co?
-
     @Test
     public void selfReferential() throws Exception {
         var template = "world: Enola\nhello: \"{{world}}\"";

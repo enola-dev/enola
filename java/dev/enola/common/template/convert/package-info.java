@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-/** Template Engines I/O Resource Converter. */
+/** Template Engines I/O Resource Converter, with a main() CLI. */
 @NullMarked
 package dev.enola.common.template.convert;
 

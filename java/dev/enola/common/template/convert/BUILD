@@ -15,7 +15,17 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
+
+java_binary(
+    name = "temply",
+    main_class = "dev.enola.common.template.convert.TemplyMain",
+    visibility = ["//visibility:public"],
+    runtime_deps = [
+        ":convert",
+    ],
+)
 
 java_library(
     name = "convert",
