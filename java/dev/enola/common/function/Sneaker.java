@@ -59,6 +59,8 @@ public final class Sneaker {
         return t -> {
             try {
                 return checkedFunction.apply(t);
+            } catch (RuntimeException | Error e) {
+                throw e;
             } catch (Exception e) {
                 return sneakyThrow(e);
             }
