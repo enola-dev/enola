@@ -88,7 +88,7 @@ public class AiCommand extends CommandWithResourceProvider {
 
             var partsBuilder = ImmutableList.<Part>builder();
             partsBuilder.add(Part.fromText(prompt));
-            
+
             if (attachments != null) {
                 for (var attachmentURI : attachments) {
                     var resource = rp.getNonNull(attachmentURI);
