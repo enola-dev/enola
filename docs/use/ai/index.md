@@ -58,6 +58,8 @@ It is optional, because [Agents can set this via `model:` as well](../../concept
 
 `--inURL` is an alternative to `--in`, reading the prompt from a local file or [fetching](../fetch/index.md) it from a remote URL.
 
+`--attach` allows attaching files to the LLM prompt. It can be repeated to attach multiple files (e.g. `--attach=image.png --attach=document.pdf`). The files are referenced by URL, similar to `--inURL`, and support all the same [URL schemes](../fetch/index.md#schemes).
+
 ## MCP
 
 `--mcp` enables [MCP](../../concepts/mcp.md#configuration) for the Agent(s).

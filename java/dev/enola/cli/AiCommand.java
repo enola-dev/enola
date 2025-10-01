@@ -57,6 +57,11 @@ public class AiCommand extends CommandWithResourceProvider {
             description = "Text Input (e.g. 'hello, world')")
     @Nullable String prompt;
 
+    @CommandLine.Option(
+            names = {"--attach"},
+            description = "URL to file to attach (e.g. image.png)")
+    @Nullable URI[] attachments;
+
     // TODO Input? For consistency, check other commands...
 
     @Override
@@ -80,7 +85,18 @@ public class AiCommand extends CommandWithResourceProvider {
 
             // TODO Share code here with dev.enola.ai.adk.core.CLI#run()
 
-            Content userMsg = Content.fromParts(Part.fromText(prompt));
+            var parts = new java.util.ArrayList<Part>();
+            parts.add(Part.fromText(prompt));
+            
+            if (attachments != null) {
+                for (var attachmentURI : attachments) {
+                    var resource = rp.getNonNull(attachmentURI);
+                    var mediaType = resource.mediaType().toString();
+                    parts.add(Part.fromUri(attachmentURI.toString(), mediaType));
+                }
+            }
+
+            Content userMsg = Content.fromParts(parts);
             Flowable<Event> eventsFlow = runner.runAsync(userMsg);
 
             eventsFlow.blockingSubscribe(
