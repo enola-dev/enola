@@ -20,6 +20,7 @@ package dev.enola.cli;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.adk.events.Event;
+import com.google.common.collect.ImmutableList;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
@@ -85,18 +86,18 @@ public class AiCommand extends CommandWithResourceProvider {
 
             // TODO Share code here with dev.enola.ai.adk.core.CLI#run()
 
-            var parts = new java.util.ArrayList<Part>();
-            parts.add(Part.fromText(prompt));
+            var partsBuilder = ImmutableList.<Part>builder();
+            partsBuilder.add(Part.fromText(prompt));
             
             if (attachments != null) {
                 for (var attachmentURI : attachments) {
                     var resource = rp.getNonNull(attachmentURI);
                     var mediaType = resource.mediaType().toString();
-                    parts.add(Part.fromUri(attachmentURI.toString(), mediaType));
+                    partsBuilder.add(Part.fromUri(attachmentURI.toString(), mediaType));
                 }
             }
 
-            Content userMsg = Content.fromParts(parts);
+            Content userMsg = Content.fromParts(partsBuilder.build());
             Flowable<Event> eventsFlow = runner.runAsync(userMsg);
 
             eventsFlow.blockingSubscribe(
