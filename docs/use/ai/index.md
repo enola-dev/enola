@@ -60,6 +60,12 @@ It is optional, because [Agents can set this via `model:` as well](../../concept
 
 `--attach` allows attaching files to the LLM prompt. It can be repeated to attach multiple files (e.g. `--attach=image.png --attach=document.pdf`). The files are referenced by URL, similar to `--inURL`, and support all the same [URL schemes](../fetch/index.md#schemes).
 
+Example with image attachment:
+
+    $ ./enola ai --llm="google://?model=gemini-2.0-flash-exp" \
+        --in="What do you see in this image?" \
+        --attach=test/empty.png
+
 ## MCP
 
 `--mcp` enables [MCP](../../concepts/mcp.md#configuration) for the Agent(s).
