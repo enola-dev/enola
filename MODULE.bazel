@@ -113,7 +113,7 @@ maven.install(
         "com.github.multiformats:java-multihash:d238c77f11a0ff33970ad43578ae11f049324848",
         "org.jline:jline:3.30.4",
         "org.jetbrains.pty4j:pty4j:0.13.4",
-        "com.github.valfirst:slf4j-test:3.0.1",
+        "com.github.valfirst:slf4j-test:3.0.3",
         "org.apache.sshd:sshd-core:2.15.0",
         "de.swiesend:secret-service:2.0.1-alpha",
         "com.github.vorburger.adk-java:google-adk:0c4eed584f",
