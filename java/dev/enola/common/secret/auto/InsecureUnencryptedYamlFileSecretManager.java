@@ -27,26 +27,54 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 
 /**
  * InsecureUnencryptedYamlFileSecretManager is a {@link SecretManager} implementation that stores
  * secrets in an unencrypted YAML file. You should ideally really not use this in the real world.
- * It's included here as a "fallback" for autoconfiguration when no other SecretManager can be used.
+ * It's used by {@link AutoSecretManager} as a "fallback" for auto-configuration when no other
+ * SecretManager can be used.
+ *
+ * <p>As a precaution, it checks that the file permissions are set to be readable and writeable only
+ * by the user, but not their primary group, or even world (chmod 600). The implementation of this
+ * check is theoretically vulnerable to Time-of-check to time-of-use (TOCTOU) race conditions, where
+ * an attacker could change the file permissions between this check and the subsequent file
+ * read/write operation, but it is good enough for this purpose.
  */
-class InsecureUnencryptedYamlFileSecretManager extends YamlSecretManager {
+public class InsecureUnencryptedYamlFileSecretManager extends YamlSecretManager {
 
     private static final Logger LOG =
             LoggerFactory.getLogger(InsecureUnencryptedYamlFileSecretManager.class);
 
     InsecureUnencryptedYamlFileSecretManager(Path path) throws IOException {
-        super(yaml -> Files.writeString(path, yaml), readOrEmpty(path));
+        super(
+                yaml -> {
+                    checkOnlyUserNotGroupOrEvenWorldCanRead(path);
+                    Files.writeString(path, yaml);
+                },
+                readOrEmpty(path));
     }
 
     private static CheckedSupplier<String, IOException> readOrEmpty(Path path) {
         return () -> {
+            checkOnlyUserNotGroupOrEvenWorldCanRead(path);
             LOG.info("Read {}", path);
             if (path.toFile().exists()) return Files.readString(path);
             else return "";
         };
+    }
+
+    private static void checkOnlyUserNotGroupOrEvenWorldCanRead(Path path) throws IOException {
+        if (!path.toFile().exists()) return;
+        if (!path.getFileSystem().supportedFileAttributeViews().contains("posix")) return;
+
+        var expected = PosixFilePermissions.fromString("rw-------"); // 600
+        var actual = Files.getPosixFilePermissions(path);
+        if (!actual.equals(expected))
+            throw new IOException(
+                    "Insecure file permissions "
+                            + PosixFilePermissions.toString(actual)
+                            + ", please fix with: chmod 600 "
+                            + path);
     }
 }

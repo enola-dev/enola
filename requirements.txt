@@ -12,7 +12,7 @@ linkml-runtime==1.9.5
 hashdir==0.24
 
 # MkDocs
-mkdocs-material==9.6.18
+mkdocs-material==9.6.21
 mkdocs-git-revision-date-localized-plugin==1.4.7
 
 # Used by mkdocs.yaml#plugins.blog, see
@@ -24,4 +24,4 @@ asciinema==2.4.0
 
 # https://github.com/mondeja/mkdocs-include-markdown-plugin (ASL)
 # Possible alternative: https://github.com/cmacmackin/markdown-include (GPL)
-mkdocs-include-markdown-plugin==7.1.7
+mkdocs-include-markdown-plugin==7.2.0
