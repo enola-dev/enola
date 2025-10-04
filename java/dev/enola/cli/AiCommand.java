@@ -20,6 +20,7 @@ package dev.enola.cli;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.adk.events.Event;
+import com.google.common.collect.ImmutableList;
 import com.google.genai.types.Content;
 import com.google.genai.types.Part;
 
@@ -57,6 +58,11 @@ public class AiCommand extends CommandWithResourceProvider {
             description = "Text Input (e.g. 'hello, world')")
     @Nullable String prompt;
 
+    @CommandLine.Option(
+            names = {"--attach"},
+            description = "URL to file to attach (e.g. image.png)")
+    @Nullable URI[] attachments;
+
     // TODO Input? For consistency, check other commands...
 
     @Override
@@ -80,7 +86,18 @@ public class AiCommand extends CommandWithResourceProvider {
 
             // TODO Share code here with dev.enola.ai.adk.core.CLI#run()
 
-            Content userMsg = Content.fromParts(Part.fromText(prompt));
+            var partsBuilder = ImmutableList.<Part>builder();
+            partsBuilder.add(Part.fromText(prompt));
+
+            if (attachments != null) {
+                for (var attachmentURI : attachments) {
+                    var resource = rp.getNonNull(attachmentURI);
+                    var mediaType = resource.mediaType().toString();
+                    partsBuilder.add(Part.fromUri(attachmentURI.toString(), mediaType));
+                }
+            }
+
+            Content userMsg = Content.fromParts(partsBuilder.build());
             Flowable<Event> eventsFlow = runner.runAsync(userMsg);
 
             eventsFlow.blockingSubscribe(
