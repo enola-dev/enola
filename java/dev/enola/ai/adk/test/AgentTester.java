@@ -105,7 +105,7 @@ public class AgentTester {
             actualCanonicalFormattedJSON = response; // not even valid JSON
         }
 
-        if (!actualCanonicalFormattedJSON.equalsIgnoreCase(expectedCanonicalFormattedJSON))
+        if (!actualCanonicalFormattedJSON.equals(expectedCanonicalFormattedJSON))
             throw new ComparisonFailure(
                     "JSON is not equal",
                     expectedCanonicalFormattedJSON,
