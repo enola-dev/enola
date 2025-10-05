@@ -26,11 +26,11 @@ import org.junit.Test;
 import java.net.URI;
 import java.util.ArrayList;
 
-public class ToDoRepositoryMemoryTest {
+public class ToDoRepositoryInMemoryTest {
 
     @Test
     public void basics() {
-        var repo = new ToDoRepositoryMemory();
+        var repo = new ToDoRepositoryInMemory();
 
         var todo1 = new ToDo();
         todo1.id = URI.create("urn:todo:1");

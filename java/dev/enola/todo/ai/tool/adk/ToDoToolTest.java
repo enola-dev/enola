@@ -30,7 +30,7 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 import dev.enola.todo.ToDoRepository;
-import dev.enola.todo.ToDoRepositoryMemory;
+import dev.enola.todo.ToDoRepositoryInMemory;
 
 import org.junit.Test;
 
@@ -42,7 +42,7 @@ public class ToDoToolTest {
     SecretManager sm = new TestSecretManager();
     Provider<BaseLlm> llm = new LlmProviders(sm);
 
-    ToDoRepository toDoRepository = new ToDoRepositoryMemory();
+    ToDoRepository toDoRepository = new ToDoRepositoryInMemory();
     Map<String, BaseTool> toDoTool = new ToDoTool(toDoRepository).createToolSet();
 
     @Test

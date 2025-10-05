@@ -23,14 +23,14 @@ import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.Resource;
 import dev.enola.todo.ToDo;
 import dev.enola.todo.ToDoRepository;
-import dev.enola.todo.ToDoRepositoryMemory;
+import dev.enola.todo.ToDoRepositoryInMemory;
 
 import java.io.IOException;
 import java.net.URI;
 
 public class ToDoRepositoryFile implements ToDoRepository {
 
-    private final ToDoRepository delegate = new ToDoRepositoryMemory();
+    private final ToDoRepository delegate = new ToDoRepositoryInMemory();
     private final ObjectReaderWriter readerWriter;
     private final Resource resource;
 
