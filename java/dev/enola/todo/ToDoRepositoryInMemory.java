@@ -41,9 +41,7 @@ public class ToDoRepositoryInMemory implements ToDoRepository {
 
     @Override
     public void store(ToDo todo) {
-        if (todo.id == null) {
-            throw new IllegalArgumentException("ToDo item must have an ID: " + todo);
-        }
+        todo.complete();
         store.put(todo.id, todo);
     }
 

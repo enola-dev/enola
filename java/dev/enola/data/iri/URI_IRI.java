@@ -21,7 +21,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /* non-public! */ final /*TODO value*/ class URI_IRI extends IRI {
 
@@ -61,7 +60,7 @@ import java.net.URISyntaxException;
     }
 
     @Override
-    public URI toURI() throws URISyntaxException {
+    public URI toURI() {
         return uri;
     }
 }

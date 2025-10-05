@@ -25,6 +25,7 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/data/id",
         "@maven//:org_jspecify_jspecify",
     ],
 )

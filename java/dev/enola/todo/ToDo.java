@@ -17,6 +17,8 @@
  */
 package dev.enola.todo;
 
+import dev.enola.data.id.UUID_IRI;
+
 import java.net.URI;
 import java.time.Instant;
 import java.util.List;
@@ -53,4 +55,18 @@ public class ToDo {
     // TODO Discussion, like in a bug tracker, with comments by users etc.
 
     // TODO public Set<URI> attachments = new HashSet<>();
+
+    public void complete() {
+        if (title == null) throw new IllegalStateException("Task title is required: " + this);
+        if (id == null) id = new UUID_IRI().toURI();
+        if (created == null) created = Instant.now();
+        else modified = Instant.now();
+        if (isCompleted != null) {
+            if (isCompleted) {
+                completed = Instant.now();
+            } else {
+                completed = null;
+            }
+        }
+    }
 }

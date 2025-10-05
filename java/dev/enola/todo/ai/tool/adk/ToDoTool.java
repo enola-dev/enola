@@ -17,18 +17,22 @@
  */
 package dev.enola.todo.ai.tool.adk;
 
-import com.google.adk.tools.Annotations;
+import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.FunctionTool;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.SuccessOrError;
+import dev.enola.todo.ToDo;
 import dev.enola.todo.ToDoRepository;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class ToDoTool {
+
+    // TODO complete_todo ... but how will the LLM identify the item by id?
 
     private final ToDoRepository toDoRepository;
 
@@ -37,11 +41,27 @@ public class ToDoTool {
     }
 
     public Map<String, BaseTool> createToolSet() {
-        return ImmutableMap.of("list_todo", FunctionTool.create(this, "listToDos"));
+        return ImmutableMap.of(
+                "add_todo",
+                FunctionTool.create(this, "addToDo"),
+                "list_todo",
+                FunctionTool.create(this, "listToDos"));
     }
 
-    @Annotations.Schema(description = "List all of my ToDo Task items")
+    @Schema(description = "List all of my ToDo Task items")
     public Map<String, ?> listToDos() {
-        return Tools.toMap(SuccessOrError.success(toDoRepository.list()));
+        var items = toDoRepository.list();
+        return Tools.toMap(SuccessOrError.success(items));
+    }
+
+    @Schema(description = "Add a new ToDo Task item")
+    public void addToDo(
+            @Schema(description = "The title of the ToDo Task item") String title,
+            @Schema(description = "The description of the ToDo Task item") String description)
+            throws IOException {
+        ToDo todo = new ToDo();
+        todo.title = title;
+        todo.description = description;
+        toDoRepository.store(todo);
     }
 }
