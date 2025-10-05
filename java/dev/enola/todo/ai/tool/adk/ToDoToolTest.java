@@ -34,6 +34,7 @@ import dev.enola.common.secret.auto.TestSecretManager;
 import dev.enola.todo.ToDoRepository;
 import dev.enola.todo.ToDoRepositoryInMemory;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -41,20 +42,27 @@ import java.util.Map;
 
 public class ToDoToolTest {
 
-    SecretManager sm = new TestSecretManager();
-    Provider<BaseLlm> llm = new LlmProviders(sm);
+    AgentTester agentTester;
 
-    ToDoRepository toDoRepository = new ToDoRepositoryInMemory();
-    Map<String, BaseTool> toDoTool = new ToDoTool(toDoRepository).createToolSet();
-
-    @Test
-    public void noToDos() throws IOException {
+    @Before
+    public void setup() throws IOException {
+        // TODO Move this into a re-usable test harness utility class?
+        SecretManager sm = new TestSecretManager();
         assumeTrue(
                 "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set",
                 sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent());
-        var model = llm.get(ModelConfig.temperature(FLASH, 0));
-        var agentTester = new AgentTester(model, toDoTool);
 
+        Provider<BaseLlm> llm = new LlmProviders(sm);
+
+        ToDoRepository toDoRepository = new ToDoRepositoryInMemory();
+        Map<String, BaseTool> toDoTool = new ToDoTool(toDoRepository).createToolSet();
+
+        var model = llm.get(ModelConfig.temperature(FLASH, 0));
+        agentTester = new AgentTester(model, toDoTool);
+    }
+
+    @Test
+    public void noToDos() throws IOException {
         agentTester.assertTextResponseEquals(
                 "List all of my ToDo Task items.", "I don't have any ToDo items at the moment.");
     }
