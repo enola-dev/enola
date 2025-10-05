@@ -20,7 +20,6 @@ package dev.enola.todo;
 import dev.enola.data.id.UUID_IRI;
 
 import java.net.URI;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -36,9 +35,10 @@ public class ToDo {
     public final List<String> tags = new java.util.ArrayList<>();
     public final Map<String, String> attributes = new java.util.HashMap<>();
 
-    public Instant created;
-    public Instant modified;
-    public Instant completed;
+    // TODO https://github.com/enola-dev/enola/issues/1854
+    // public Instant created;
+    // public Instant modified;
+    // public Instant completed;
     public Boolean isCompleted;
 
     // status is intentionally omitted, because different backends will have differences.
@@ -59,6 +59,8 @@ public class ToDo {
     public void prepareForSave() {
         if (title == null) throw new IllegalStateException("Task title is required: " + this);
         if (id == null) id = new UUID_IRI().toURI();
+
+        /* TODO Re-enable after https://github.com/enola-dev/enola/issues/1854
         if (created == null) created = Instant.now();
         else modified = Instant.now();
         if (isCompleted != null) {
@@ -68,5 +70,6 @@ public class ToDo {
                 completed = null;
             }
         }
+        */
     }
 }
