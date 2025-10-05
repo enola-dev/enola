@@ -35,7 +35,6 @@ import dev.enola.todo.ToDoRepository;
 import dev.enola.todo.ToDoRepositoryInMemory;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -71,14 +70,13 @@ public class ToDoToolTest {
     }
 
     @Test
-    @Ignore // TODO Enable after debugging and fixing why this doesn't work?!
     public void createAndList() throws IOException {
-        agentTester.assertTextResponseEquals(
+        agentTester.assertTextResponseContainsAll(
                 "Add a new ToDo Task item to remind me to add task completion to Enola",
-                "OK. I've added that to your ToDo list.");
+                "OK. I've added",
+                "to your ToDo list");
 
-        agentTester.assertTextResponseEquals(
-                "List all of my ToDo Task items.",
-                "1. Title: add task completion to Enola\nDescription: ...");
+        agentTester.assertTextResponseContainsAll(
+                "List all of my ToDo Task items.", "Add task completion to Enola");
     }
 }
