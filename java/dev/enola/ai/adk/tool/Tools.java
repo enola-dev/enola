@@ -49,15 +49,16 @@ public final class Tools {
         return ToolsetProvider.immutableTools(tools);
     }
 
-    public static Map<String, String> toMap(SuccessOrError<String> soe) {
-        return soe.map(Tools::successMap, Tools::errorMap);
+    @SuppressWarnings("unchecked")
+    public static <T> Map<String, T> toMap(SuccessOrError<T> soe) {
+        return (Map<String, T>) soe.map(Tools::successMap, Tools::errorMap);
     }
 
-    public static Map<String, String> successMap(String report) {
+    public static <T> Map<String, ?> successMap(T report) {
         return Map.of("status", "success", "report", report);
     }
 
-    public static Map<String, String> errorMap(String error) {
+    public static <T> Map<String, ?> errorMap(T error) {
         return Map.of("status", "error", "report", error);
     }
 

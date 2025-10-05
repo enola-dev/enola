@@ -35,6 +35,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import org.junit.ComparisonFailure;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class AgentTester {
@@ -60,6 +62,15 @@ public class AgentTester {
         this(LlmAgent.builder().name(model.model()).model(model).tools((Object[]) tools).build());
     }
 
+    public AgentTester(BaseLlm model, Map<String, BaseTool> tools) {
+        this(
+                LlmAgent.builder()
+                        .name(model.model())
+                        .model(model)
+                        .tools(List.copyOf(tools.values()))
+                        .build());
+    }
+
     public void assertTextResponseContains(String prompt, String contains) {
         var response = invoke(prompt);
         Asserter.assertTextResponseContainsAny(response, new String[] {contains});
@@ -77,15 +88,22 @@ public class AgentTester {
         Asserter.assertTextResponseContainsAll(response, all);
     }
 
+    // TODO This is quasi useless, no?
     public void assertTextResponseEquals(String prompt, String responseMustBeEqualTo) {
         var response = invoke(prompt);
         Asserter.assertTextResponseEquals(response, responseMustBeEqualTo);
     }
 
+    // TODO This doesn't actually work... yet; we need to invoke with expected MediaType JSON
     public void assertJsonResponseEquals(String prompt, String expectedJSON) {
         var response = invoke(prompt);
-        var actualCanonicalFormattedJSON = JSON.canonicalize(response, true);
         var expectedCanonicalFormattedJSON = JSON.canonicalize(expectedJSON, true);
+        String actualCanonicalFormattedJSON;
+        try {
+            actualCanonicalFormattedJSON = JSON.canonicalize(response, true);
+        } catch (IllegalArgumentException e) {
+            actualCanonicalFormattedJSON = response; // not even valid JSON
+        }
 
         if (!actualCanonicalFormattedJSON.equalsIgnoreCase(expectedCanonicalFormattedJSON))
             throw new ComparisonFailure(
@@ -106,6 +124,7 @@ public class AgentTester {
                     actualCanonicalFormattedMarkdown);
     }
 
+    // TODO Support expected MediaType of response; e.g. image, or JSON!
     private String invoke(String prompt) {
         Content userMsg = Content.fromParts(Part.fromText(prompt));
         Flowable<Event> eventsFlow = runner.runAsync(userMsg);
