@@ -28,10 +28,12 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.SuccessOrError;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -59,7 +61,7 @@ public class FileSystemTools {
     }
 
     @Schema(description = "Reads the entire content of a specified file.")
-    public Map<String, String> readFile(
+    public Map<String, ?> readFile(
             @Schema(description = "The path to the file to read.") String path) {
         return Tools.toMap(readFileHelper(path));
     }
@@ -67,7 +69,7 @@ public class FileSystemTools {
     // TODO: add a confirmation step for overwriting files
     // atm this will only write if the files does not exist
     @Schema(description = "Writes content to a file.")
-    public Map<String, String> writeFile(
+    public Map<String, ?> writeFile(
             @Schema(description = "The path to the file to write.") String path,
             @Schema(description = "The content to write to the file.") String content) {
         return Tools.toMap(writeFileHelper(path, content));
@@ -78,7 +80,7 @@ public class FileSystemTools {
             description =
                     "Replaces a specific range of lines in a file and returns a git-style diff of"
                             + " the changes.")
-    public Map<String, String> editFile(
+    public Map<String, ?> editFile(
             @Schema(description = "The path to the file to edit.") String path,
             @Schema(description = "The 1-based starting line number to replace.") int startLine,
             @Schema(description = "The number of old lines to remove.") int linesToRemove,
@@ -87,7 +89,7 @@ public class FileSystemTools {
     }
 
     @Schema(description = "Recursively searches for files and directories using a glob pattern.")
-    public Map<String, String> searchFiles(
+    public Map<String, ?> searchFiles(
             @Schema(description = "The starting directory for the search.") String startPath,
             @Schema(description = "The glob pattern to match (e.g., '**.java', '*.txt').")
                     String glob) {
@@ -98,20 +100,20 @@ public class FileSystemTools {
             description =
                     "Given a file system path, lists the contents of a directory with all files and"
                             + " directories and details like size and modification date.")
-    public Map<String, String> listDirectory(
+    public Map<String, ?> listDirectory(
             @Schema(description = "The absolute or relative path of the directory to list.")
                     String path) {
         return Tools.toMap(listDirectoryHelper(path));
     }
 
     @Schema(description = "Creates a directory, including any necessary parent directories.")
-    public Map<String, String> createDirectory(
+    public Map<String, ?> createDirectory(
             @Schema(description = "The path of the directory to create.") String path) {
         return Tools.toMap(createDirectoryHelper(path));
     }
 
     @Schema(description = "Searches for a text pattern within a file, like the 'grep' command.")
-    public Map<String, String> grepFile(
+    public Map<String, ?> grepFile(
             @Schema(description = "The path to the file to search.") String path,
             @Schema(description = "The text or regex pattern to search for.") String pattern,
             @Schema(description = "Number of context lines to show before and after a match.")

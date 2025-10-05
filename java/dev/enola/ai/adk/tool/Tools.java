@@ -49,9 +49,8 @@ public final class Tools {
         return ToolsetProvider.immutableTools(tools);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> Map<String, T> toMap(SuccessOrError<T> soe) {
-        return (Map<String, T>) soe.map(Tools::successMap, Tools::errorMap);
+    public static <T> Map<String, ?> toMap(SuccessOrError<T> soe) {
+        return soe.map(Tools::successMap, Tools::errorMap);
     }
 
     public static <T> Map<String, ?> successMap(T report) {
