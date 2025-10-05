@@ -113,56 +113,74 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return Optional.empty();
-        try (var reader = resource.charSource().openBufferedStream()) {
-            if (!reader.ready()) return Optional.of(mapper.readValue(empty(), type));
-            if (reader.markSupported()) {
-                reader.mark(1);
-                if (reader.read() == -1) return Optional.of(mapper.readValue(empty(), type));
-                else reader.reset();
-            }
-            return Optional.of(mapper.readValue(reader, type));
-        } catch (IOException e) {
-            e.addSuppressed(new IOException(resource.uri().toString()));
-            throw e;
-        }
+        return read(
+                resource,
+                reader -> Optional.of(mapper.readValue(reader, type)),
+                () -> Optional.of(mapper.readValue(empty(), type)));
     }
 
     @Override
     public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return List.of();
+        return read(
+                resource,
+                reader -> {
+                    var javaType =
+                            mapper.getTypeFactory().constructCollectionType(List.class, type);
+                    return mapper.readValue(reader, javaType);
+                },
+                () -> List.of());
+    }
+
+    @Override
+    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
+        if (!canHandle(resource.mediaType())) return List.of();
+        return read(
+                resource,
+                reader -> {
+                    var parser = mapper.getFactory().createParser(reader);
+                    try (MappingIterator<T> mappingIterator = mapper.readValues(parser, type)) {
+                        return mappingIterator.readAll();
+                    }
+                },
+                () -> List.of());
+    }
+
+    private <R> R read(
+            ReadableResource resource,
+            IOThrowingFunction<java.io.Reader, R> function,
+            IOThrowingSupplier<R> emptyValueSupplier)
+            throws IOException {
         try (var reader = resource.charSource().openBufferedStream()) {
-            if (!reader.ready()) return List.of();
-            if (reader.markSupported()) {
-                reader.mark(1);
-                if (reader.read() == -1) return List.of();
-                else reader.reset();
-            }
-            var javaType = mapper.getTypeFactory().constructCollectionType(List.class, type);
-            return mapper.readValue(reader, javaType);
+            if (isEmpty(reader)) return emptyValueSupplier.get();
+            return function.apply(reader);
         } catch (IOException e) {
             e.addSuppressed(new IOException(resource.uri().toString()));
             throw e;
         }
     }
 
-    @Override
-    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
-        if (!canHandle(resource.mediaType())) return List.of();
-        try (var reader = resource.charSource().openBufferedStream()) {
-            if (!reader.ready()) return List.of();
-            if (reader.markSupported()) {
-                reader.mark(1);
-                if (reader.read() == -1) return List.of();
-                else reader.reset();
+    private boolean isEmpty(java.io.Reader reader) throws IOException {
+        if (!reader.ready()) return true;
+        if (reader.markSupported()) {
+            reader.mark(1);
+            if (reader.read() == -1) {
+                return true;
+            } else {
+                reader.reset();
             }
-            var parser = mapper.getFactory().createParser(reader);
-            try (MappingIterator<T> mappingIterator = mapper.readValues(parser, type)) {
-                return mappingIterator.readAll();
-            }
-        } catch (IOException e) {
-            e.addSuppressed(new IOException(resource.uri().toString()));
-            throw e;
         }
+        return false;
+    }
+
+    @FunctionalInterface
+    private interface IOThrowingFunction<T, R> {
+        R apply(T t) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface IOThrowingSupplier<T> {
+        T get() throws IOException;
     }
 
     @Override
