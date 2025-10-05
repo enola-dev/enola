@@ -37,12 +37,11 @@ concurrency:
 jobs:
   devcontainer:
     # https://github.com/orgs/community/discussions/25722
-    if:
-      (github.repository == 'enola-dev/enola') &&
+    if: (github.repository == 'enola-dev/enola') &&
       (github.event.pull_request.draft == false)
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: DevContainer
@@ -61,8 +60,7 @@ jobs:
   # TODO How could we make this run faster?
   nix-run:
     # https://github.com/orgs/community/discussions/25722
-    if:
-      (github.repository == 'enola-dev/enola') &&
+    if: (github.repository == 'enola-dev/enola') &&
       (github.event.pull_request.draft == false)
     permissions:
       contents: read
@@ -75,12 +73,11 @@ jobs:
 
   build:
     # https://github.com/orgs/community/discussions/25722
-    if:
-      (github.repository == 'enola-dev/enola') &&
+    if: (github.repository == 'enola-dev/enola') &&
       (github.event.pull_request.draft == false)
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-    runs-on: ubuntu-latest
     steps:
       - name: Install IPFS Node daemon
         uses: oduwsdl/setup-ipfs@678755ac20f92d2dfca7e16138e40ae75f7a0f6f
@@ -155,15 +152,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv/
-          key:
-            ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
       - name: Cache Pre-Commit
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit/
-          key:
-            ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Cache Demo
         uses: actions/cache@v4
