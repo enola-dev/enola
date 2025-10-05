@@ -172,4 +172,92 @@ public class JsonObjectReaderWriterTest {
         assertThat(ow.write(map, sr)).isTrue();
         assertThat(sr.charSource().read()).isEqualTo("{\"string\":\"hello, world\"}");
     }
+
+    // Tests for JSONc support: https://github.com/enola-dev/enola/issues/1847
+
+    @Test
+    public void readJSON_withSingleLineComments() throws IOException {
+        var json =
+                """
+                {
+                  // This is a single-line comment
+                  "string": "hello, world"
+                }
+                """;
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, Map.class);
+        assertThat(example).containsExactly("string", "hello, world");
+    }
+
+    @Test
+    public void readJSON_withMultiLineComments() throws IOException {
+        var json =
+                """
+                {
+                  /* This is a
+                     multi-line comment */
+                  "string": "hello, world"
+                }
+                """;
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, Map.class);
+        assertThat(example).containsExactly("string", "hello, world");
+    }
+
+    @Test
+    public void readJSON_withTrailingCommaInObject() throws IOException {
+        var json =
+                """
+                {
+                  "string": "hello, world",
+                  "number": 42,
+                }
+                """;
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, Map.class);
+        assertThat(example).containsExactly("string", "hello, world", "number", 42);
+    }
+
+    @Test
+    public void readJSON_withTrailingCommaInArray() throws IOException {
+        var json =
+                """
+                {
+                  "stringList": ["hello", "world",]
+                }
+                """;
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, ExampleRecord.class);
+        assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
+    }
+
+    @Test
+    public void readJSON_withCommentsAndTrailingCommas() throws IOException {
+        var json =
+                """
+                {
+                  // Name of the person
+                  "string": "hello, world",
+                  /* List of items */
+                  "stringList": [
+                    "hello",
+                    "world", // trailing comma here
+                  ],
+                }
+                """;
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var example = or.read(resource, ExampleRecord.class);
+        assertThat(example.string()).isEqualTo("hello, world");
+        assertThat(example.stringList()).containsExactly("hello", "world").inOrder();
+    }
 }
