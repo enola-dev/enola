@@ -26,7 +26,7 @@ public class ToDoRepositoryMemory implements ToDoRepository {
     private final Map<URI, ToDo> store = new ConcurrentHashMap<>();
 
     @Override
-    public ToDo findById(URI id) {
+    public ToDo get(URI id) {
         var toDo = store.get(id);
         if (toDo == null) {
             throw new IllegalArgumentException("ToDo item not found: " + id);
@@ -35,12 +35,12 @@ public class ToDoRepositoryMemory implements ToDoRepository {
     }
 
     @Override
-    public Iterable<ToDo> findAll() {
+    public Iterable<ToDo> list() {
         return store.values();
     }
 
     @Override
-    public void save(ToDo todo) {
+    public void store(ToDo todo) {
         if (todo.id == null) {
             throw new IllegalArgumentException("ToDo item must have an ID: " + todo);
         }

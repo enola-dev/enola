@@ -38,29 +38,29 @@ public class ToDoRepositoryFile implements ToDoRepository {
         this.readerWriter = new JacksonObjectReaderWriterChain();
         this.resource = resource;
 
-        MoreIterables.forEach(readerWriter.readArray(resource, ToDo.class), delegate::save);
+        MoreIterables.forEach(readerWriter.readArray(resource, ToDo.class), delegate::store);
     }
 
     private void write() throws IOException {
-        var tasks = delegate.findAll();
+        var tasks = delegate.list();
         if (!readerWriter.write(tasks, resource)) {
             throw new IOException("Failed to write ToDos to " + resource);
         }
     }
 
     @Override
-    public ToDo findById(URI id) {
-        return delegate.findById(id);
+    public ToDo get(URI id) {
+        return delegate.get(id);
     }
 
     @Override
-    public Iterable<ToDo> findAll() {
-        return delegate.findAll();
+    public Iterable<ToDo> list() {
+        return delegate.list();
     }
 
     @Override
-    public void save(ToDo todo) throws IOException {
-        delegate.save(todo);
+    public void store(ToDo todo) throws IOException {
+        delegate.store(todo);
         write();
     }
 

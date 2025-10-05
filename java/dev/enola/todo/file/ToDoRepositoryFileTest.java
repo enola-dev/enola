@@ -38,10 +38,10 @@ public class ToDoRepositoryFileTest {
         var todo1 = new ToDo();
         todo1.id = URI.create("urn:todo:1");
         todo1.title = "Test ToDo 1";
-        repo1.save(todo1);
+        repo1.store(todo1);
 
         var repo2 = new ToDoRepositoryFile(resource);
-        var fetched = repo2.findById(todo1.id);
+        var fetched = repo2.get(todo1.id);
         assertThat(fetched).isNotNull();
         assertThat(fetched.id).isEqualTo(todo1.id);
         assertThat(fetched.title).isEqualTo(todo1.title);
