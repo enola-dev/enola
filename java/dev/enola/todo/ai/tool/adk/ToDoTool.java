@@ -37,10 +37,7 @@ public class ToDoTool {
     }
 
     public Map<String, BaseTool> createToolSet() {
-        return ImmutableMap.of(
-                "list_todo", FunctionTool.create(this, "listToDos")
-                // "write_file", FunctionTool.create(this, "writeFile")
-                );
+        return ImmutableMap.of("list_todo", FunctionTool.create(this, "listToDos"));
     }
 
     @Annotations.Schema(description = "List all of my ToDo Task items")
