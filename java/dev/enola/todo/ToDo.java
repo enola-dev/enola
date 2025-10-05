@@ -56,7 +56,7 @@ public class ToDo {
 
     // TODO public Set<URI> attachments = new HashSet<>();
 
-    public void complete() {
+    public void prepareForSave() {
         if (title == null) throw new IllegalStateException("Task title is required: " + this);
         if (id == null) id = new UUID_IRI().toURI();
         if (created == null) created = Instant.now();

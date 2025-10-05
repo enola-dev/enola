@@ -55,7 +55,7 @@ public class ToDoTool {
     }
 
     @Schema(description = "Add a new ToDo Task item")
-    public void addToDo(
+    public Map<String, ?> addToDo(
             @Schema(description = "The title of the ToDo Task item") String title,
             @Schema(description = "The description of the ToDo Task item") String description)
             throws IOException {
@@ -63,5 +63,6 @@ public class ToDoTool {
         todo.title = title;
         todo.description = description;
         toDoRepository.store(todo);
+        return Tools.successMap("Successfully added the ToDo item.");
     }
 }
