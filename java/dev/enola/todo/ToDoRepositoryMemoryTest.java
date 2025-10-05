@@ -41,9 +41,9 @@ public class ToDoRepositoryMemoryTest {
         todo1.attributes.put("key1", "value1");
         todo1.attributes.put("key2", "value2");
 
-        repo.save(todo1);
+        repo.store(todo1);
 
-        var fetched = repo.findById(todo1.id);
+        var fetched = repo.get(todo1.id);
         assertThat(fetched).isNotNull();
         assertThat(fetched.id).isEqualTo(todo1.id);
         assertThat(fetched.title).isEqualTo(todo1.title);
@@ -51,12 +51,12 @@ public class ToDoRepositoryMemoryTest {
         assertThat(fetched.tags).hasSize(2);
         assertThat(fetched.attributes).hasSize(2);
 
-        var all = repo.findAll();
+        var all = repo.list();
         var list = new ArrayList<ToDo>();
         all.forEach(list::add);
         assertThat(list).hasSize(1);
 
         repo.delete(URI.create("urn:todo:1"));
-        assertThrows(IllegalArgumentException.class, () -> repo.findById(URI.create("urn:todo:1")));
+        assertThrows(IllegalArgumentException.class, () -> repo.get(URI.create("urn:todo:1")));
     }
 }

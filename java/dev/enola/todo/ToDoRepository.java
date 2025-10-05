@@ -39,11 +39,13 @@ import java.net.URI;
  */
 public interface ToDoRepository {
 
-    ToDo findById(URI id);
+    // TODO Implement dev.enola.data.Provider, Store etc. and use existing implementations
 
-    Iterable<ToDo> findAll();
+    ToDo get(URI id);
 
-    void save(ToDo todo) throws IOException;
+    Iterable<ToDo> list();
+
+    void store(ToDo todo) throws IOException;
 
     void delete(URI id) throws IOException;
 }
