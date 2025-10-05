@@ -20,6 +20,7 @@ package dev.enola.common.io.object.jackson;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
@@ -75,6 +76,11 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         // https://github.com/FasterXML/jackson-modules-java8
         mapper.registerModule(new JavaTimeModule());
         // TODO Optional<T> support with mapper.registerModule(new Jdk8Module());
+
+        // Enable JSONc features: Java-style comments and trailing commas
+        // https://github.com/enola-dev/enola/issues/1847
+        mapper.getFactory().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature());
+        mapper.getFactory().enable(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature());
 
         // DO fail on unknown properties - this helps to spot errors in configuration files etc.
         // NO! mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
