@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ToDo {
+    // TODO implements Identifiable<URI>
 
     // TODO Generate record and Builder, from a model; but for now, this is good enough
 

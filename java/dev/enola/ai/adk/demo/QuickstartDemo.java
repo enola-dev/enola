@@ -60,10 +60,10 @@ public class QuickstartDemo {
                 .build();
     }
 
-    public static Map<String, String> getWeather(
+    public static Map<String, ?> getWeather(
             @Schema(description = "The name of the city for which to retrieve the weather report")
                     String city) {
-        if (city.equalsIgnoreCase("new york")) {
+        if ("new york".equalsIgnoreCase(city)) {
             return Tools.successMap(NYC_WEATHER);
         } else {
             return Tools.errorMap("Weather information for " + city + " is not available.");

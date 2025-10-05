@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ModelTester {
 
-    // TODO Abandon and replace this with AgentTester(BaseLlm model) ?
+    // TODO Abandon and replace this with similar (!) AgentTester(BaseLlm model) ?
 
     // TODO Re-write this as a Truth Subject?
 
@@ -47,6 +47,7 @@ public class ModelTester {
         Asserter.assertTextResponseEquals(response, responseMustBeEqualTo);
     }
 
+    // TODO Support expected MediaType of response; e.g. image, or JSON!
     private String invoke(String prompt) {
         var content = Content.fromParts(Part.fromText(prompt));
         var request = LlmRequest.builder().contents(List.of(content)).build();

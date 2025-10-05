@@ -17,4 +17,35 @@
  */
 package dev.enola.todo.ai.tool.adk;
 
-public class ToDoTool {}
+import com.google.adk.tools.Annotations;
+import com.google.adk.tools.BaseTool;
+import com.google.adk.tools.FunctionTool;
+import com.google.common.collect.ImmutableMap;
+
+import dev.enola.ai.adk.tool.Tools;
+import dev.enola.common.SuccessOrError;
+import dev.enola.todo.ToDo;
+import dev.enola.todo.ToDoRepository;
+
+import java.util.Map;
+
+public class ToDoTool {
+
+    private final ToDoRepository toDoRepository;
+
+    public ToDoTool(ToDoRepository toDoRepository) {
+        this.toDoRepository = toDoRepository;
+    }
+
+    public Map<String, BaseTool> createToolSet() {
+        return ImmutableMap.of(
+                "list_todo", FunctionTool.create(this, "listToDos")
+                // "write_file", FunctionTool.create(this, "writeFile")
+                );
+    }
+
+    @Annotations.Schema(description = "List all of my ToDo Task items")
+    public Map<String, Iterable<ToDo>> listToDos() {
+        return Tools.toMap(SuccessOrError.success(toDoRepository.list()));
+    }
+}
