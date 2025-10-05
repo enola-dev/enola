@@ -21,8 +21,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ToDoRepositoryMemory implements ToDoRepository {
-    // TODO Rename to ToDoRepositoryInMemory
+public class ToDoRepositoryInMemory implements ToDoRepository {
 
     private final Map<URI, ToDo> store = new ConcurrentHashMap<>();
 
