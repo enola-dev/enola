@@ -21,7 +21,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /* non-public! */
 /*TODO value*/ class HolderIRI extends IRI {
@@ -35,11 +34,11 @@ import java.net.URISyntaxException;
     }
 
     @Override
-    public URI toURI() throws URISyntaxException {
+    public URI toURI() {
         if (iri instanceof URI_IRI uriIRI) {
             return uriIRI.toURI();
         } else {
-            var uriIRI = new URI_IRI(new URI(iri.toString()));
+            var uriIRI = new URI_IRI(URI.create(iri.toString()));
             iri = uriIRI;
             return uriIRI.toURI();
         }

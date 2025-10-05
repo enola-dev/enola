@@ -21,7 +21,6 @@ import com.google.errorprone.annotations.Immutable;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * IRI (Internationalized Resource Identifier) at its core is basically just any object which can be
@@ -91,8 +90,8 @@ public abstract /*TODO value*/ class IRI implements Comparable<IRI> {
     @Override
     public abstract int compareTo(IRI other);
 
-    public URI toURI() throws URISyntaxException {
-        return new URI(toString());
+    public URI toURI() {
+        return URI.create(toString());
     }
 
     public final String toCURIE() {

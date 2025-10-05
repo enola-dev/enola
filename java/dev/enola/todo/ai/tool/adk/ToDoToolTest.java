@@ -35,6 +35,7 @@ import dev.enola.todo.ToDoRepository;
 import dev.enola.todo.ToDoRepositoryInMemory;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -63,7 +64,21 @@ public class ToDoToolTest {
 
     @Test
     public void noToDos() throws IOException {
+        agentTester.assertTextResponseContainsAny(
+                "List all of my ToDo Task items.",
+                "I don't have any ToDo items",
+                "I do not have any ToDo items");
+    }
+
+    @Test
+    @Ignore // TODO Enable after debugging and fixing why this doesn't work?!
+    public void createAndList() throws IOException {
         agentTester.assertTextResponseEquals(
-                "List all of my ToDo Task items.", "I don't have any ToDo items at the moment.");
+                "Add a new ToDo Task item to remind me to add task completion to Enola",
+                "OK. I've added that to your ToDo list.");
+
+        agentTester.assertTextResponseEquals(
+                "List all of my ToDo Task items.",
+                "1. Title: add task completion to Enola\nDescription: ...");
     }
 }

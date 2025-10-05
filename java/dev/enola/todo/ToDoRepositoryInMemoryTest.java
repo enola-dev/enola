@@ -40,7 +40,6 @@ public class ToDoRepositoryInMemoryTest {
         todo1.tags.add("todo");
         todo1.attributes.put("key1", "value1");
         todo1.attributes.put("key2", "value2");
-
         repo.store(todo1);
 
         var fetched = repo.get(todo1.id);
@@ -56,7 +55,7 @@ public class ToDoRepositoryInMemoryTest {
         all.forEach(list::add);
         assertThat(list).hasSize(1);
 
-        repo.delete(URI.create("urn:todo:1"));
+        repo.delete(todo1.id);
         assertThrows(IllegalArgumentException.class, () -> repo.get(URI.create("urn:todo:1")));
     }
 }
