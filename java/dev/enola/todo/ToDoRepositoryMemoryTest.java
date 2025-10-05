@@ -17,6 +17,10 @@
  */
 package dev.enola.todo;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import static org.junit.Assert.assertThrows;
+
 import org.junit.Test;
 
 import java.net.URI;
@@ -40,24 +44,19 @@ public class ToDoRepositoryMemoryTest {
         repo.save(todo1);
 
         var fetched = repo.findById(todo1.id);
-        assert fetched != null;
-        assert fetched.id.equals(todo1.id);
-        assert fetched.title.equals(todo1.title);
-        assert fetched.description.equals(todo1.description);
-        assert fetched.tags.size() == 2;
-        assert fetched.attributes.size() == 2;
+        assertThat(fetched).isNotNull();
+        assertThat(fetched.id).isEqualTo(todo1.id);
+        assertThat(fetched.title).isEqualTo(todo1.title);
+        assertThat(fetched.description).isEqualTo(todo1.description);
+        assertThat(fetched.tags).hasSize(2);
+        assertThat(fetched.attributes).hasSize(2);
 
         var all = repo.findAll();
         var list = new ArrayList<ToDo>();
         all.forEach(list::add);
-        assert list.size() == 1;
+        assertThat(list).hasSize(1);
 
         repo.delete(URI.create("urn:todo:1"));
-        try {
-            repo.findById(URI.create("urn:todo:1"));
-            assert false; // Should not reach here
-        } catch (IllegalArgumentException e) {
-            // Expected
-        }
+        assertThrows(IllegalArgumentException.class, () -> repo.findById(URI.create("urn:todo:1")));
     }
 }

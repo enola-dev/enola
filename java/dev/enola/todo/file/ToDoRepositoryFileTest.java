@@ -17,6 +17,8 @@
  */
 package dev.enola.todo.file;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.todo.ToDo;
@@ -40,8 +42,8 @@ public class ToDoRepositoryFileTest {
 
         var repo2 = new ToDoRepositoryFile(resource);
         var fetched = repo2.findById(todo1.id);
-        assert fetched != null;
-        assert fetched.id.equals(todo1.id);
-        assert fetched.title.equals(todo1.title);
+        assertThat(fetched).isNotNull();
+        assertThat(fetched.id).isEqualTo(todo1.id);
+        assertThat(fetched.title).isEqualTo(todo1.title);
     }
 }
