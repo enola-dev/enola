@@ -87,6 +87,16 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
+    public void readArray_empty() throws IOException {
+        var json = "";
+        var resource = DataResource.of(json, JSON_UTF_8);
+        ObjectReader or = new JsonObjectReaderWriter();
+
+        var examples = or.readArray(resource, ExampleRecord.class);
+        assertThat(examples).isEmpty();
+    }
+
+    @Test
     public void readComplexJSON_toExampleRecord() throws IOException {
         var example = readComplexJSON_toExample(ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");

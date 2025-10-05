@@ -41,7 +41,7 @@ public final class MoreStreams {
     public static <T, E extends Exception> void forEach(
             Stream<T> stream, CheckedConsumer<T, E> action) throws E {
         if (stream.isParallel()) {
-            sneakyForEach(stream, action);
+            stream.forEach(Sneaker.sneakyConsumer(action));
         } else {
             forEachInSeq(stream, action);
         }
@@ -85,11 +85,6 @@ public final class MoreStreams {
             T element = iterator.next();
             action.accept(element);
         }
-    }
-
-    private static <T, E extends Exception> void sneakyForEach(
-            Stream<T> stream, CheckedConsumer<T, E> action) throws E {
-        stream.forEach(Sneaker.sneakyConsumer(action));
     }
 
     private MoreStreams() {}

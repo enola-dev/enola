@@ -131,6 +131,12 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
     public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return List.of();
         try (var reader = resource.charSource().openBufferedStream()) {
+            if (!reader.ready()) return List.of();
+            if (reader.markSupported()) {
+                reader.mark(1);
+                if (reader.read() == -1) return List.of();
+                else reader.reset();
+            }
             var javaType = mapper.getTypeFactory().constructCollectionType(List.class, type);
             return mapper.readValue(reader, javaType);
         } catch (IOException e) {
@@ -143,6 +149,12 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
     public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
         if (!canHandle(resource.mediaType())) return List.of();
         try (var reader = resource.charSource().openBufferedStream()) {
+            if (!reader.ready()) return List.of();
+            if (reader.markSupported()) {
+                reader.mark(1);
+                if (reader.read() == -1) return List.of();
+                else reader.reset();
+            }
             var parser = mapper.getFactory().createParser(reader);
             try (MappingIterator<T> mappingIterator = mapper.readValues(parser, type)) {
                 return mappingIterator.readAll();
@@ -153,6 +165,7 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
         }
     }
 
+    @Override
     @CanIgnoreReturnValue
     public boolean write(Object instance, WritableResource resource) throws IOException {
         if (!canHandle(resource.mediaType())) return false;

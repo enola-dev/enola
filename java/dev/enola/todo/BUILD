@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2025 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,18 +15,24 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "collect",
+    name = "todo",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/function",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(["*Test.java"]),
+    deps = [
+        ":todo",
     ],
 )
