@@ -33,6 +33,7 @@ import java.util.Set;
 
 public final class ObjectMappers {
 
+    /** Configure the given ObjectMapper with Enola-specific settings. */
     public static void configure(ObjectMapper mapper) {
         // Do NOT use mapper.findAndRegisterModules();
         // because that would mean that mapping would depend on (uncontrollable) classpath

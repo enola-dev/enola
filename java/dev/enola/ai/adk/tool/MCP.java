@@ -25,6 +25,7 @@ import com.google.common.collect.MapMaker;
 import com.google.errorprone.annotations.ThreadSafe;
 
 import dev.enola.ai.mcp.McpLoader;
+import dev.enola.common.jackson.ObjectMappers;
 
 import io.modelcontextprotocol.client.McpAsyncClient;
 import io.modelcontextprotocol.client.McpSyncClient;
@@ -57,8 +58,10 @@ class MCP implements ToolsetProvider {
     private McpToolset createToolset(String name) {
         var mcpSessionManager = new MyMcpSessionManager(name, mcpLoader);
         var toolFilter = Optional.empty();
-        var objectMapper = JsonBaseModel.getMapper(); // TODO Use Enola's own instead?!
-        return new McpToolset(mcpSessionManager, objectMapper, toolFilter);
+        var adkObjectMapper = JsonBaseModel.getMapper();
+        var newObjectMapper = adkObjectMapper.copy();
+        ObjectMappers.configure(newObjectMapper);
+        return new McpToolset(mcpSessionManager, newObjectMapper, toolFilter);
     }
 
     private static final class MyMcpSessionManager extends McpSessionManager {

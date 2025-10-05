@@ -31,6 +31,7 @@ java_library(
         "@maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
+        "//java/dev/enola/common/jackson",
         "//java/dev/enola/ai/mcp",
         "//java/dev/enola/common",
         "//java/dev/enola/common/locale",
