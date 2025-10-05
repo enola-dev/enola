@@ -20,6 +20,8 @@ package dev.enola.todo.ai.tool.adk;
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
+import static org.junit.Assume.assumeTrue;
+
 import com.google.adk.models.BaseLlm;
 import com.google.adk.tools.BaseTool;
 
@@ -47,7 +49,9 @@ public class ToDoToolTest {
 
     @Test
     public void noToDos() throws IOException {
-        if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
+        assumeTrue(
+                "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set",
+                sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent());
         var model = llm.get(ModelConfig.temperature(FLASH, 0));
         var agentTester = new AgentTester(model, toDoTool);
 

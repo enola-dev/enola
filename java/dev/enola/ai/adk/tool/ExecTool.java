@@ -45,7 +45,7 @@ public class ExecTool {
     @Annotations.Schema(
             description =
                     "Executes a shell command and captures its standard output and standard error.")
-    public Map<String, String> executeCommand(
+    public Map<String, ?> executeCommand(
             @Annotations.Schema(description = "The command to execute (e.g., 'ls -l').")
                     String command) {
         return Tools.toMap(executeCommandHelper(command));

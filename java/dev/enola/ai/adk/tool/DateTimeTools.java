@@ -81,7 +81,7 @@ public final class DateTimeTools {
     }
 
     @Schema(description = "Returns the current date and time")
-    public Map<String, String> getCurrentDateAndTime() {
+    public Map<String, ?> getCurrentDateAndTime() {
         var locale = localeSupplier.get();
         var zid = zoneIdSupplier.get();
         var zidLabel = zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
@@ -90,7 +90,7 @@ public final class DateTimeTools {
     }
 
     @Schema(description = "Returns the current time")
-    public Map<String, String> getCurrentTime() {
+    public Map<String, ?> getCurrentTime() {
         var locale = localeSupplier.get();
         var zid = zoneIdSupplier.get();
         var zidLabel = zid.getDisplayName(TextStyle.SHORT_STANDALONE, locale);
@@ -98,7 +98,7 @@ public final class DateTimeTools {
     }
 
     @Schema(description = "Returns the current time in the given city")
-    public Map<String, String> getCityCurrentTime(
+    public Map<String, ?> getCityCurrentTime(
             @Schema(description = "The name of the city for which to retrieve the current time")
                     String city) {
         return Tools.toMap(cityCurrentTime(city));

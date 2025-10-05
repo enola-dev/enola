@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.SuccessOrError;
-import dev.enola.todo.ToDo;
 import dev.enola.todo.ToDoRepository;
 
 import java.util.Map;
@@ -45,7 +44,7 @@ public class ToDoTool {
     }
 
     @Annotations.Schema(description = "List all of my ToDo Task items")
-    public Map<String, Iterable<ToDo>> listToDos() {
+    public Map<String, ?> listToDos() {
         return Tools.toMap(SuccessOrError.success(toDoRepository.list()));
     }
 }
