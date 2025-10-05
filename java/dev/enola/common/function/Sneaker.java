@@ -42,8 +42,7 @@ public final class Sneaker {
         throw (T) t; // ( ͡° ͜ʖ ͡°)
     }
 
-    // This method is intentionally only package local, as is this entire class.
-    static <T, E extends Exception> Consumer<T> sneakyConsumer(
+    public static <T, E extends Exception> Consumer<T> sneakyConsumer(
             CheckedConsumer<T, E> checkedConsumer) {
         return t -> {
             try {
@@ -54,7 +53,7 @@ public final class Sneaker {
         };
     }
 
-    static <T, R, E extends Exception> Function<T, R> sneakyFunction(
+    public static <T, R, E extends Exception> Function<T, R> sneakyFunction(
             CheckedFunction<T, R, E> checkedFunction) {
         return t -> {
             try {

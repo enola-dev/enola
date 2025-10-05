@@ -19,10 +19,18 @@ package dev.enola.common.collect;
 
 import com.google.common.collect.ImmutableList;
 
+import dev.enola.common.function.CheckedConsumer;
+import dev.enola.common.function.Sneaker;
+
 import java.util.Collection;
 import java.util.OptionalInt;
 
 public final class MoreIterables {
+
+    public static <T, E extends Exception> void forEach(
+            Iterable<T> iterable, CheckedConsumer<T, E> action) throws E {
+        iterable.forEach(Sneaker.sneakyConsumer(action));
+    }
 
     /**
      * Size of an {@link Iterable}, if there is an efficient way of obtaining it. Useful for
