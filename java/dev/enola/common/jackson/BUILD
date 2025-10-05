@@ -15,40 +15,22 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "jackson",
     srcs = glob(
-        ["*.java"],
-        exclude = ["*Test.java"],
+        [
+            "*.java",
+        ],
+        exclude = ["**/*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/object",
-        "//java/dev/enola/common/jackson",
         "@maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@maven//:com_fasterxml_jackson_core_jackson_core",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_jsr310",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:org_jspecify_jspecify",
-        "@maven//:org_slf4j_slf4j_api",
-        "@maven//:org_yaml_snakeyaml",
-    ],
-)
-
-junit_tests(
-    name = "tests",
-    srcs = glob(["*Test.java"]),
-    deps = [
-        ":jackson",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/io/object",
-        "//test",
         "@maven//:org_jspecify_jspecify",
     ],
 )
