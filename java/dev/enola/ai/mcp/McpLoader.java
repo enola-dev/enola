@@ -17,8 +17,8 @@
  */
 package dev.enola.ai.mcp;
 
-import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.*;
 import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.http;
+import static dev.enola.ai.mcp.McpServerConnectionsConfig.ServerConnection.Type.sse;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
@@ -31,6 +31,7 @@ import dev.enola.common.Version;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.ReadableResource;
+import dev.enola.common.jackson.ObjectMappers;
 import dev.enola.common.name.NamedTypedObjectProvider;
 import dev.enola.common.secret.SecretManager;
 
@@ -40,6 +41,7 @@ import io.modelcontextprotocol.client.transport.HttpClientSseClientTransport;
 import io.modelcontextprotocol.client.transport.HttpClientStreamableHttpTransport;
 import io.modelcontextprotocol.client.transport.ServerParameters;
 import io.modelcontextprotocol.client.transport.StdioClientTransport;
+import io.modelcontextprotocol.json.jackson.JacksonMcpJsonMapper;
 import io.modelcontextprotocol.spec.McpClientTransport;
 import io.modelcontextprotocol.spec.McpSchema;
 
@@ -148,7 +150,9 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         switch (connectionConfig.type) {
             case stdio -> {
                 var params = createStdIoServerParameters(connectionConfig);
-                var transport = new StdioClientTransport(params);
+                var transport =
+                        new StdioClientTransport(
+                                params, new JacksonMcpJsonMapper(ObjectMappers.INSTANCE));
                 transport.setStdErrorHandler(new McpServerStdErrLogConsumer(origin));
                 return transport;
             }

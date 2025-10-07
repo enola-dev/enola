@@ -146,7 +146,7 @@ bom:
   - "org.commonmark:commonmark:0.25.0"
 
   # Beware of https://github.com/enola-dev/enola/issues/1857
-  - io.modelcontextprotocol.sdk:mcp:0.12.1
+  - io.modelcontextprotocol.sdk:mcp:0.13.1
 
 bomx:
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
