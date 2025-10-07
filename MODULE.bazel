@@ -119,7 +119,7 @@ maven.install(
         "com.github.vorburger.adk-java:google-adk:0c4eed584f",
         "com.github.vorburger.adk-java:google-adk-dev:0c4eed584f",
         "org.commonmark:commonmark:0.25.0",
-        "io.modelcontextprotocol.sdk:mcp:0.13.1",
+        "io.modelcontextprotocol.sdk:mcp:0.14.1",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
