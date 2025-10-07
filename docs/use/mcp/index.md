@@ -25,7 +25,7 @@ This is similar to the [MCP Inspector](https://github.com/modelcontextprotocol/i
 ## Call MCP Tool
 
 ```bash cd ../.././..
-$ ./enola mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
+$ ./enola -v mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
 ...
 ```
 
@@ -39,7 +39,7 @@ $ ./enola mcp list-tools --help
 <!-- TODO This doesn't work?!
 
 ```bash cd ../.././..
-$ ./enola mcp list-tools
+$ ./enola -vv mcp list-tools
 ...
 ```
 --->
