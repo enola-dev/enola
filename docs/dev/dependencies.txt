@@ -48,9 +48,9 @@ com.github.package-url:packageurl-java:1.5.0
 com.github.spotbugs:spotbugs-annotations:4.9.3
 com.github.valfirst:slf4j-test:3.0.1
 com.github.virtuald:curvesapi:1.08
-com.github.vorburger.adk-java:google-adk:0c4eed584f
-com.github.vorburger.adk-java:google-adk-dev:0c4eed584f
-com.github.vorburger.adk-java:google-adk-langchain4j:0c4eed584f
+com.github.vorburger.adk-java:google-adk:e60bddf6502bbfac5af3fb993acc100439c0d90f
+com.github.vorburger.adk-java:google-adk-dev:e60bddf6502bbfac5af3fb993acc100439c0d90f
+com.github.vorburger.adk-java:google-adk-langchain4j:e60bddf6502bbfac5af3fb993acc100439c0d90f
 com.google.android:annotations:4.1.1.4
 com.google.api-client:google-api-client:2.7.1
 com.google.api.grpc:gapic-google-cloud-storage-v2:2.47.0
