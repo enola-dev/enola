@@ -33,6 +33,14 @@ import java.util.Set;
 
 public final class ObjectMappers {
 
+    public static final ObjectMapper INSTANCE = newObjectMapper();
+
+    private static ObjectMapper newObjectMapper() {
+        var objectMapper = new ObjectMapper();
+        configure(objectMapper);
+        return objectMapper;
+    }
+
     /** Configure the given ObjectMapper with Enola-specific settings. */
     public static void configure(ObjectMapper mapper) {
         // Do NOT use mapper.findAndRegisterModules();

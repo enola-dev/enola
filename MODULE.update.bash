@@ -24,4 +24,6 @@ mv MODULE.bazel.new MODULE.bazel
 
 REPIN=1 bazel run @maven//:pin
 
+tools/javac/classpath.bash
+
 ./test.bash

@@ -25,8 +25,10 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
+import dev.enola.common.jackson.ObjectMappers;
 import dev.enola.common.secret.auto.AutoSecretManager;
 
+import io.modelcontextprotocol.json.jackson.JacksonMcpJsonMapper;
 import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
 
 import org.jspecify.annotations.Nullable;
@@ -72,7 +74,12 @@ public class CallToolCommand implements Callable<Integer> {
             mcpOptions.load(loader, rp);
         }
         var toolClient = loader.get(server, "CLI");
-        var callToolRequest = new CallToolRequest(tool, argumentsAsJson);
+        var callToolRequest =
+                CallToolRequest.builder()
+                        .name(tool)
+                        .arguments(
+                                new JacksonMcpJsonMapper(ObjectMappers.INSTANCE), argumentsAsJson)
+                        .build();
         var callToolResult = toolClient.callTool(callToolRequest);
         for (var content : callToolResult.content()) {
             System.out.println(content);

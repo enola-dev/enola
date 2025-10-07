@@ -28,9 +28,9 @@
 
 As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#updating-maven_installjson :
 
-1. Edit [dependencies](dependencies.md) in [`WORKSPACE.bazel`](//WORKSPACE.bazel) (later [`MODULE.bazel`](//MODULE.bazel))
+1. Edit [dependencies](dependencies.md) in [`MODULE.bom.handlebars.yaml`](//MODULE.bom.handlebars.yaml)
 
-1. `REPIN=1 bazelisk run @maven//:pin`
+1. Run `MODULE.update.bash`
 
 PS: Use `bazelisk query "@maven//:*"` to see all targets.
 
