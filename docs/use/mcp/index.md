@@ -24,14 +24,18 @@ This is similar to the [MCP Inspector](https://github.com/modelcontextprotocol/i
 
 ## Call MCP Tool
 
-```bash cd ../.././..
+<!-- TODO Re-add the 'bash cd ../.././..' header AFTER https://github.com/enola-dev/enola/issues/1862 is fixed... -->
+
+```sh
 $ ./enola -v mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
 ...
 ```
 
 ## List MCP Tools
 
-```bash $? cd ../.././..
+<!-- TODO Re-add the 'bash $? cd ../.././..' header AFTER https://github.com/enola-dev/enola/issues/1862 is fixed... -->
+
+```sh
 $ ./enola mcp list-tools --help
 ...
 ```
