@@ -116,9 +116,9 @@ maven.install(
         "com.github.valfirst:slf4j-test:3.0.1",
         "org.apache.sshd:sshd-core:2.15.0",
         "de.swiesend:secret-service:2.0.1-alpha",
-        "com.github.vorburger.adk-java:google-adk:0c4eed584f",
-        "com.github.vorburger.adk-java:google-adk-dev:0c4eed584f",
+        "com.github.vorburger.adk-java:google-adk-dev:e60bddf6502bbfac5af3fb993acc100439c0d90f",
         "org.commonmark:commonmark:0.25.0",
+        "io.modelcontextprotocol.sdk:mcp:0.11.3",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
@@ -169,6 +169,15 @@ maven.install(
         # Used by Multiformats, IPFS & IPLD
         "https://jitpack.io",
     ],
+    resolver = "maven",
+)
+maven.artifact(
+    artifact = "google-adk",
+    exclusions = [
+        "io.modelcontextprotocol.sdk:mcp",
+    ],
+    group = "com.github.vorburger.adk-java",
+    version = "e60bddf6502bbfac5af3fb993acc100439c0d90f",
 )
 maven.artifact(
     artifact = "google-adk-langchain4j",
@@ -177,9 +186,10 @@ maven.artifact(
         "ch.qos.logback:logback-core",
         "ch.qos.logback:logback-classic",
         "org.springframework.boot:spring-boot-starter-logging",
+        "io.modelcontextprotocol.sdk:mcp",
     ],
     group = "com.github.vorburger.adk-java",
-    version = "0c4eed584f",
+    version = "e60bddf6502bbfac5af3fb993acc100439c0d90f",
 )
 maven.artifact(
     artifact = "guava",

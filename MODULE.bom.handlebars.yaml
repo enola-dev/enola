@@ -17,7 +17,8 @@
 version:
   langchain4j: 1.6.0
   langchain4j-beta: 1.6.0-beta12
-  adk: 0c4eed584f
+  # https://github.com/google/adk-java/pull/486
+  adk: e60bddf6502bbfac5af3fb993acc100439c0d90f
   rdf4j: 5.1.4
   grpc: 1.75.0
 
@@ -136,22 +137,31 @@ bom:
   # "org.purejava:kdewallet:1.6.0"
 
   # https://google.github.io/adk-docs/get-started/installation/
-  # "com.google.adk:google-adk:0.2.0"
   # "com.google.adk:google-adk-dev:0.2.0"
-  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
-  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}"
   - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
 
   # https://github.com/commonmark/commonmark-java
   - "org.commonmark:commonmark:0.25.0"
 
+  # Beware of https://github.com/enola-dev/enola/issues/1857
+  - io.modelcontextprotocol.sdk:mcp:0.11.3
+
 bomx:
+  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}":
+    exclusions:
+      - io.modelcontextprotocol.sdk:mcp
+
+  # NB: No com.github.vorburger.adk-java:google-adk (com.google.adk:google-adk),
+  #     as that's transitively included by google-adk-langchain4j anyway.
+  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
     exclusions:
       - org.eclipse.jdt:ecj
       - ch.qos.logback:logback-core
       - ch.qos.logback:logback-classic
       - org.springframework.boot:spring-boot-starter-logging
+      # Due to https://github.com/enola-dev/enola/issues/1857
+      - io.modelcontextprotocol.sdk:mcp
 
   - com.google.guava:guava:33.4.8-jre:
     exclusions:
