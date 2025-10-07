@@ -17,7 +17,8 @@
 version:
   langchain4j: 1.6.0
   langchain4j-beta: 1.6.0-beta12
-  adk: 0c4eed584f
+  # https://github.com/google/adk-java/pull/486
+  adk: e60bddf6502bbfac5af3fb993acc100439c0d90f
   rdf4j: 5.1.4
   grpc: 1.75.0
 
@@ -145,7 +146,7 @@ bom:
   # https://github.com/commonmark/commonmark-java
   - "org.commonmark:commonmark:0.25.0"
 
-  # Beware of https://github.com/enola-dev/enola/issues/1857
+  # https://github.com/modelcontextprotocol/java-sdk
   - io.modelcontextprotocol.sdk:mcp:0.14.1
 
 bomx:
