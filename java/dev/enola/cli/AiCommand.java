@@ -60,7 +60,12 @@ public class AiCommand extends CommandWithResourceProvider {
 
     @CommandLine.Option(
             names = {"--attach"},
-            description = "URL to file to attach (e.g. image.png)")
+            description =
+                    """
+                    URL of file to attach (e.g. relative local image.png;
+                    or remote HTTP etc. fetchable, https://docs.enola.dev/use/fetch).
+                    Can be repeated for multiple images etc.\
+                    """)
     @Nullable URI[] attachments;
 
     // TODO Input? For consistency, check other commands...
@@ -91,13 +96,23 @@ public class AiCommand extends CommandWithResourceProvider {
 
             if (attachments != null) {
                 for (var attachmentURI : attachments) {
+                    Part part;
                     var resource = rp.getNonNull(attachmentURI);
                     var mediaType = resource.mediaType().toString();
-                    partsBuilder.add(Part.fromUri(attachmentURI.toString(), mediaType));
+                    var resourceURI = resource.uri();
+                    String scheme = resourceURI.getScheme();
+                    // com.google.genai (obviously?) only supports HTTP URLs
+                    if (scheme != null && scheme.startsWith("http")) {
+                        part = Part.fromUri(resource.uri().toString(), mediaType);
+                    } else {
+                        // TODO Use https://ai.google.dev/gemini-api/docs/files to upload files?
+                        part = Part.fromBytes(resource.byteSource().read(), mediaType);
+                    }
+                    partsBuilder.add(part);
                 }
             }
 
-            Content userMsg = Content.fromParts(partsBuilder.build());
+            Content userMsg = Content.builder().role("user").parts(partsBuilder.build()).build();
             Flowable<Event> eventsFlow = runner.runAsync(userMsg);
 
             eventsFlow.blockingSubscribe(
