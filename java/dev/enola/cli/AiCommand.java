@@ -49,12 +49,12 @@ public class AiCommand extends CommandWithResourceProvider {
     @Nullable WithAgentName aiOptions;
 
     @CommandLine.Option(
-            names = {"--in"},
-            description = "Text Input (e.g. 'hello, world')")
+            names = {"-p", "--prompt"},
+            description = "Prompt (as text; e.g. 'hello, world')")
     @Nullable String prompt;
 
     @CommandLine.Option(
-            names = {"--attach"},
+            names = {"-f", "--attach"},
             description =
                     """
                     URL of file to attach (e.g. relative local image.png;
@@ -77,7 +77,7 @@ public class AiCommand extends CommandWithResourceProvider {
     private void runInContext() throws IOException {
         var out = spec.commandLine().getOut();
 
-        if (isNullOrEmpty(prompt)) throw new IllegalArgumentException("No prompt; use --in");
+        if (isNullOrEmpty(prompt)) throw new IllegalArgumentException("No prompt; use --prompt");
 
         var agent = AI.load1(rp, aiOptions);
         try (var runner = new UserSessionRunner(CLI.userID(), agent)) {

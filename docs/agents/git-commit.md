@@ -8,7 +8,7 @@ This will generate Git Commit messages for you using an LLM:
 1. Finally, [install Enola.dev](https://docs.enola.dev/use/), and now run:
 
 ```sh
-enola ai --agents=git-commit-message --in="Make it so!"
+enola ai --agents=git-commit-message --prompt="Make it so!"
 ```
 
 We recommend that you create an `alias` for this in your [dotfiles](https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/main/dotfiles/alias), e.g. `ac` for _AI Commit!_
