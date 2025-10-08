@@ -68,7 +68,7 @@ Example with image attachment:
         --prompt="What do you see in this image?" \
         --attach=test/mystery.jpeg
 
-<!-- The mystery.png is from, and an homage to, my https://github.com/vorburger/SimpleHTTPServer/blob/master/src/test/resources/devdog.jpg from http://blog1.vorburger.ch/2006/06/simple-http-server-in-java.html -->
+<!-- The mystery.jpeg is from, and an homage to, my https://github.com/vorburger/SimpleHTTPServer/blob/master/src/test/resources/devdog.jpg from http://blog1.vorburger.ch/2006/06/simple-http-server-in-java.html -->
 
 Supported image formats, understanding, token cost, maximum number of images per request and their maximum sizes obviously depend on the LLM used:
 
