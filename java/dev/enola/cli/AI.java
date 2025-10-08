@@ -27,7 +27,7 @@ import com.google.common.base.Strings;
 
 import dev.enola.ai.adk.core.Agents;
 import dev.enola.ai.adk.iri.LlmProviders;
-import dev.enola.ai.adk.tool.Tools;
+import dev.enola.ai.adk.tool.builtin.BuiltinTools;
 import dev.enola.ai.dotagent.AgentsLoader;
 import dev.enola.ai.mcp.McpLoader;
 import dev.enola.ai.mcp.cli.McpOptions;
@@ -61,7 +61,7 @@ final class AI {
             var mcpLoader = new McpLoader(AutoSecretManager.INSTANCE());
             aiOptions.mcpOptions = McpOptions.handleDefault(aiOptions.mcpOptions);
             aiOptions.mcpOptions.load(mcpLoader, rp);
-            var tools = Tools.mcp(mcpLoader);
+            var tools = BuiltinTools.builtinAndMcp(mcpLoader);
             var agentsLoader = new AgentsLoader(rp, create(defaultModelURI), modelProvider, tools);
             replaceShortAgentNames(aiOptions.agentURIs);
             return agentsLoader.load(aiOptions.agentURIs.stream());
