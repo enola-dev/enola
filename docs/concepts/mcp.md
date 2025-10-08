@@ -70,7 +70,7 @@ Enola will replace values of `${secret:XYZ}` with the [secret](../use/secret/ind
 The [`fetch` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/fetch) can fetch a webpage, and extract its contents as Markdown:
 
 ```shell
-enola ai -a test/agents/fetch.agent.yaml --in="What is on https://docs.enola.dev/tutorial/agents/ ?"
+enola ai -a test/agents/fetch.agent.yaml --prompt="What is on https://docs.enola.dev/tutorial/agents/ ?"
 ```
 
 This needs `uvx` to be available; test if launching `uvx mcp-server-fetch` works, first.
@@ -90,7 +90,7 @@ The [`search-brave`](https://github.com/brave/brave-search-mcp-server) tool uses
 (via its [API](https://brave.com/search/api/)) for Web / Local / Video / Image / News Searches; for example:
 
 ```shell
-enola ai --agents=test/agents/brave.agent.yaml --in="Use the brave_news_search tool to obtain what's new in world politics today and summarize the top 7 developments in bullet points of maximum 3 sentences each."
+enola ai --agents=test/agents/brave.agent.yaml --prompt="Use the brave_news_search tool to obtain what's new in world politics today and summarize the top 7 developments in bullet points of maximum 3 sentences each."
 ```
 
 ### Git
@@ -100,7 +100,7 @@ enola ai --agents=test/agents/brave.agent.yaml --in="Use the brave_news_search t
 ```
 
 ```shell
-enola ai --agents=test/agents/git.agent.yaml --in "Write a proposed commit message for the uncommitted files in $PWD"
+enola ai --agents=test/agents/git.agent.yaml --prompt "Write a proposed commit message for the uncommitted files in $PWD"
 ```
 
 CAUTION: This server is inherently insecure; you should carefully evaluate if it meets your needs.
@@ -116,7 +116,7 @@ This needs `uvx` to be available; test if launching `uvx mcp-server-git` works, 
 Create a [secret](../use/secret/index.md) named `GITHUB_PAT` [GitHub Personal Access Token](https://github.com/settings/personal-access-tokens/new).
 
 ```shell
-enola ai --agents=test/agents/github.agent.yaml --in "How many stars do the top 3 repos that I own on GitHub repo have? (Use the GitHub context tool to find by GitHub user name.)"
+enola ai --agents=test/agents/github.agent.yaml --prompt "How many stars do the top 3 repos that I own on GitHub repo have? (Use the GitHub context tool to find by GitHub user name.)"
 ```
 
 ### Memory
@@ -128,14 +128,14 @@ enola ai --agents=test/agents/github.agent.yaml --in "How many stars do the top 
 [Memory](https://github.com/modelcontextprotocol/servers/tree/main/src/memory) can remember things:
 
 ```shell
-$ enola -vv ai --agents=test/agents/memory.agent.yaml --in "John Smith is a person who speaks fluent Spanish."
+$ enola -vv ai --agents=test/agents/memory.agent.yaml --prompt "John Smith is a person who speaks fluent Spanish."
 I have noted that John Smith is a person who speaks fluent Spanish.
 ```
 
 `cat ~/memory.json` let's you see the memory 🧠 cells! 😝 Now, perhaps another day:
 
 ```shell
-$ enola -v ai --agents=test/agents/memory.agent.yaml --in "Does John Smith speak Italian?"
+$ enola -v ai --agents=test/agents/memory.agent.yaml --prompt "Does John Smith speak Italian?"
 Remembering...Based on my memory, John Smith speaks fluent Spanish. I do not have any information indicating that he speaks Italian.
 ```
 
@@ -146,7 +146,7 @@ This needs `npx` to be available; test if launching `npx @modelcontextprotocol/s
 The [`everything` MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) has a number of tools useful for debugging and testing the MCP protocol:
 
 ```shell
-enola ai --agents=test/agents/everything.agent.yaml --in "Print environment variables to debug MCP"
+enola ai --agents=test/agents/everything.agent.yaml --prompt "Print environment variables to debug MCP"
 ```
 
 ## CLI for Debugging

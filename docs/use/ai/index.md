@@ -20,10 +20,10 @@
 
 The `ai` command [works with Agents](../../tutorial/chat.md) with input from the CLI:
 
-    $ enola ai --llm=echo:/ --in="hello, world"
+    $ enola ai --llm=echo:/ --prompt="hello, world"
     hello, world
 
-    $ enola ai --llm="google://?model=gemini-2.5-flash-lite" --in="hello, world"
+    $ enola ai --llm="google://?model=gemini-2.5-flash-lite" --prompt="hello, world"
     Hello, world! How can I help you today?
 
 You, of course, also use the [Chat Web UI](../server/index.md#chat) or the [Console Chat](../chat/index.md) to interact with Agents.
@@ -54,7 +54,7 @@ It is optional, because [Agents can set this via `model:` as well](../../concept
 
 ## Prompt
 
-`--in` is the input prompt to the LLM / Agent.
+`--prompt` is the input prompt to the LLM / Agent.
 
 ## Attach
 
@@ -65,8 +65,8 @@ The files are referenced by URL, and support relative URLs for local files and f
 Example with image attachment:
 
     $ enola ai --llm="google://?model=gemini-2.5-flash-lite" \
-        --in="What do you see in this image?" \
-        --attach=test/mystery.png
+        --prompt="What do you see in this image?" \
+        --attach=test/mystery.jpeg
 
 <!-- The mystery.png is from, and an homage to, my https://github.com/vorburger/SimpleHTTPServer/blob/master/src/test/resources/devdog.jpg from http://blog1.vorburger.ch/2006/06/simple-http-server-in-java.html -->
 

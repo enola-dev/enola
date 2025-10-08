@@ -6,7 +6,7 @@
 1. [Store this secret](https://docs.enola.dev/use/secret/), using: `mkdir -p ~/.config/enola && echo GOOGLE_AI_API_KEY=... >>~/.config/enola/azkaban.yaml`
 1. [Install Enola.dev](https://docs.enola.dev/use/), and run:
 
-`enola ai --agents=weather --in="for Lausanne, Switzerland; provide it in English, German, French, Italian, Rhaeto-Romance, Esperanto, Hindi and Tamil"`
+`enola ai --agents=weather --prompt="for Lausanne, Switzerland; provide it in English, German, French, Italian, Rhaeto-Romance, Esperanto, Hindi and Tamil"`
 
 ## Example
 
