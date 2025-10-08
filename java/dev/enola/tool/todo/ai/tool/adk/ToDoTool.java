@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.todo.ai.tool.adk;
+package dev.enola.tool.todo.ai.tool.adk;
 
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
@@ -24,8 +24,8 @@ import com.google.common.collect.ImmutableMap;
 
 import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.SuccessOrError;
-import dev.enola.todo.ToDo;
-import dev.enola.todo.ToDoRepository;
+import dev.enola.tool.todo.ToDo;
+import dev.enola.tool.todo.ToDoRepository;
 
 import java.io.IOException;
 import java.util.Map;

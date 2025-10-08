@@ -29,7 +29,7 @@ java_library(
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
         "//java/dev/enola/common/io/object/jackson",
-        "//java/dev/enola/todo",
+        "//java/dev/enola/tool/todo",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
@@ -42,6 +42,6 @@ junit_tests(
     deps = [
         ":file",
         "//java/dev/enola/common/io",
-        "//java/dev/enola/todo",
+        "//java/dev/enola/tool/todo",
     ],
 )

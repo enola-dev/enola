@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/** Human ToDo Tasks model and connectors. */
+/** Human ToDo Tasks AI Tool for ADK. */
 @NullMarked
-package dev.enola.todo;
+package dev.enola.tool.todo.ai.tool.adk;
 
 import org.jspecify.annotations.NullMarked;
