@@ -29,3 +29,7 @@ After making any changes to the codebase, you MUST run the full test suite to ve
 ```bash
 ./test.bash
 ```
+
+## Terminology
+
+* MCP stands for Model Context Protocol, see https://modelcontextprotocol.io
