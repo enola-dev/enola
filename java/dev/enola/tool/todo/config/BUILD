@@ -15,40 +15,19 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "adk",
+    name = "config",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/ai/adk/tool",
-        "//java/dev/enola/common",
-        "//java/dev/enola/todo",
-        "@maven//:com_google_guava_guava",
-        # "@maven//:com_google_adk_google_adk",
-        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/tool/todo",
+        "//java/dev/enola/tool/todo/file",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
-    ],
-)
-
-junit_tests(
-    name = "tests",
-    srcs = glob(["*Test.java"]),
-    deps = [
-        ":adk",
-        "//java/dev/enola/ai/adk/iri",
-        "//java/dev/enola/ai/adk/test",
-        "//java/dev/enola/ai/iri",
-        "//java/dev/enola/common/io",
-        "//java/dev/enola/common/secret",
-        "//java/dev/enola/common/secret/auto",
-        "//java/dev/enola/todo",
-        "//java/dev/enola/todo/file",
-        "@maven//:com_github_vorburger_adk_java_google_adk",
     ],
 )

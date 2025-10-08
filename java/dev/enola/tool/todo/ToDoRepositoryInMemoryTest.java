@@ -15,47 +15,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.todo.file;
+package dev.enola.tool.todo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import dev.enola.common.io.mediatype.YamlMediaType;
-import dev.enola.common.io.resource.FileResource;
-import dev.enola.common.io.resource.MemoryResource;
-import dev.enola.todo.ToDo;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.nio.file.Files;
+import java.util.ArrayList;
 
-public class ToDoRepositoryFileTest {
+public class ToDoRepositoryInMemoryTest {
 
     @Test
-    public void testSaveAndFind() throws IOException {
-        var resource = new MemoryResource(YamlMediaType.YAML_UTF_8);
-        var repo1 = new ToDoRepositoryFile(resource);
+    public void basics() {
+        var repo = new ToDoRepositoryInMemory();
 
         var todo1 = new ToDo();
         todo1.id = URI.create("urn:todo:1");
         todo1.title = "Test ToDo 1";
-        repo1.store(todo1);
+        todo1.description = "This is a test ToDo item.";
+        todo1.tags.add("test");
+        todo1.tags.add("todo");
+        todo1.attributes.put("key1", "value1");
+        todo1.attributes.put("key2", "value2");
+        repo.store(todo1);
 
-        var repo2 = new ToDoRepositoryFile(resource);
-        var fetched = repo2.get(todo1.id);
+        var fetched = repo.get(todo1.id);
         assertThat(fetched).isNotNull();
         assertThat(fetched.id).isEqualTo(todo1.id);
         assertThat(fetched.title).isEqualTo(todo1.title);
-    }
+        assertThat(fetched.description).isEqualTo(todo1.description);
+        assertThat(fetched.tags).hasSize(2);
+        assertThat(fetched.attributes).hasSize(2);
 
-    @Test
-    public void noSuchFileException() throws IOException {
-        var file = new File("non_existent_file.yaml");
-        if (file.exists()) Files.delete(file.toPath());
-        var resource = new FileResource(file.toURI());
-        var repo = new ToDoRepositoryFile(resource);
-        assertThat(repo.list()).isEmpty();
+        var all = repo.list();
+        var list = new ArrayList<ToDo>();
+        all.forEach(list::add);
+        assertThat(list).hasSize(1);
+
+        repo.delete(todo1.id);
+        assertThrows(IllegalArgumentException.class, () -> repo.get(URI.create("urn:todo:1")));
     }
 }

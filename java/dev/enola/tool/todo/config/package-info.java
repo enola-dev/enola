@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/** Human ToDo Tasks YAML/JSON/... File-based repository. */
+/** Human ToDo Tasks AI Tool for ADK. */
 @NullMarked
-package dev.enola.todo.file;
+package dev.enola.tool.todo.config;
 
 import org.jspecify.annotations.NullMarked;
