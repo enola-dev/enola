@@ -113,6 +113,22 @@ enola ai -a test/agents/filesystem.agent.yaml --in="list the files in $PWD"
 
     **TODO** _We intended to be able to limit accessible directories (like MCP roots) in the future._
 
+## ToDo ✅
+
+```yaml
+{% include "../../test/agents/todo.agent.yaml" %}
+```
+
+```shell
+$ enola ai -a test/agents/filesystem.agent.yaml --in="Add buying rösti to my ToDo"
+OK. I've added buying rösti to your ToDo list
+
+$ enola ai --agents=test/agents/todo.agent.yaml --in "What's on my ToDo?"
+You have buying rösti on your ToDo list.
+```
+
+This is saved in the `~/ToDo.yaml` file.
+
 ## MCP
 
 [MCP](mcp.md) allows Enola to access many thousands of other tools!

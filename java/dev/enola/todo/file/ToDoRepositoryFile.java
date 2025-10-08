@@ -27,6 +27,7 @@ import dev.enola.todo.ToDoRepositoryInMemory;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.NoSuchFileException;
 
 public class ToDoRepositoryFile implements ToDoRepository {
 
@@ -38,7 +39,11 @@ public class ToDoRepositoryFile implements ToDoRepository {
         this.readerWriter = new JacksonObjectReaderWriterChain();
         this.resource = resource;
 
-        MoreIterables.forEach(readerWriter.readArray(resource, ToDo.class), delegate::store);
+        try {
+            MoreIterables.forEach(readerWriter.readArray(resource, ToDo.class), delegate::store);
+        } catch (NoSuchFileException e) {
+            // That's OK; we will create the file on first write.
+        }
     }
 
     private void write() throws IOException {

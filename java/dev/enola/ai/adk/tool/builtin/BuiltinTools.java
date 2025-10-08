@@ -25,6 +25,8 @@ import dev.enola.ai.adk.tool.Tools;
 import dev.enola.ai.adk.tool.ToolsetProvider;
 import dev.enola.ai.adk.tool.ToolsetProviderChain;
 import dev.enola.ai.mcp.McpLoader;
+import dev.enola.todo.ai.tool.adk.ToDoTool;
+import dev.enola.todo.config.ToDoRepositorySupplier;
 
 import java.time.InstantSource;
 
@@ -47,6 +49,9 @@ public final class BuiltinTools {
         tools.put("search_google", new GoogleSearchTool());
         tools.putAll(new FileSystemTools().createToolSet());
         tools.put("exec", new ExecTool().createTool());
+
+        var toDoRepository = new ToDoRepositorySupplier().get();
+        tools.putAll(new ToDoTool(toDoRepository).createToolSet());
 
         return ToolsetProvider.immutableTools(tools.build());
     }

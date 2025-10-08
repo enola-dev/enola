@@ -44,7 +44,7 @@ public class ToDoTool {
         return ImmutableMap.of(
                 "add_todo",
                 FunctionTool.create(this, "addToDo"),
-                "list_todo",
+                "list_todos",
                 FunctionTool.create(this, "listToDos"));
     }
 
@@ -57,7 +57,8 @@ public class ToDoTool {
     @Schema(description = "Add a new ToDo Task item")
     public Map<String, ?> addToDo(
             @Schema(description = "The title of the ToDo Task item") String title,
-            @Schema(description = "The description of the ToDo Task item") String description)
+            @Schema(description = "The optional description of the ToDo Task item")
+                    String description)
             throws IOException {
         ToDo todo = new ToDo();
         todo.title = title;
