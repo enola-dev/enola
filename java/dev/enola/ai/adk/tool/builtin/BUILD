@@ -32,12 +32,10 @@ java_library(
     ],
     deps = [
         "//java/dev/enola/ai/adk/tool",
-        "//java/dev/enola/common/jackson",
         "//java/dev/enola/ai/mcp",
         "//java/dev/enola/common",
         "//java/dev/enola/common/locale",
         "//java/dev/enola/common/time",
-        "//java/dev/enola/common/name",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",
         "@maven//:com_google_guava_guava",
@@ -61,6 +59,5 @@ junit_tests(
         "//java/dev/enola/common/secret/auto",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",
-        "@maven//:io_reactivex_rxjava3_rxjava",
     ],
 )
