@@ -15,20 +15,10 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_java//java:java_binary.bzl", "java_binary")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
-    name = "quickstart",
-    main_class = "dev.enola.ai.adk.demo.QuickstartDemo",
-    runtime_deps = [
-        ":demo",
-        "@maven//:org_slf4j_slf4j_simple",
-    ],
-)
-
 java_library(
-    name = "demo",
+    name = "builtin",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -41,19 +31,16 @@ java_library(
         "@maven//:org_slf4j_jcl_over_slf4j",
     ],
     deps = [
-        "//java/dev/enola/ai/adk/core",
-        "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/tool",
-        "//java/dev/enola/ai/adk/tool/builtin",
-        "//java/dev/enola/ai/adk/web",
-        "//java/dev/enola/ai/iri",
-        "//java/dev/enola/common/io/iri",
-        "//java/dev/enola/common/secret/auto",
+        "//java/dev/enola/common/jackson",
+        "//java/dev/enola/ai/mcp",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/locale",
+        "//java/dev/enola/common/time",
+        "//java/dev/enola/common/name",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",
-        "@maven//:com_google_genai_google_genai",
         "@maven//:com_google_guava_guava",
-        "@maven//:io_reactivex_rxjava3_rxjava",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
@@ -65,16 +52,15 @@ junit_tests(
         ["*Test.java"],
     ),
     deps = [
-        ":demo",
+        ":builtin",
         "//java/dev/enola/ai/adk/iri",
         "//java/dev/enola/ai/adk/test",
         "//java/dev/enola/ai/iri",
-        "//java/dev/enola/common/function",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",
-        "@maven//:com_google_genai_google_genai",
         "@maven//:io_reactivex_rxjava3_rxjava",
     ],
 )

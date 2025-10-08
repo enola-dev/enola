@@ -84,6 +84,18 @@
   "java.compile.nullAnalysis.mode": "automatic",
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static
   "java.completion.favoriteStaticMembers": ["com.google.common.truth.Truth.*"],
+  "java.completion.filteredTypes": [
+    "java.awt.*",
+    "com.sun.*",
+    "sun.*",
+    "jdk.*",
+    "autovalue.shaded.*",
+    "com.github.jsonldjava.shaded.*",
+    "com.google.auto.value.extension.serializable.serializer.impl",
+    "org.eclipse.collections.*",
+    "org.graalvm.*",
+    "io.micrometer.shaded.*"
+  ],
   "java.configuration.updateBuildConfiguration": "automatic",
   // JDT sometimes hits OOM with this project without increased memory
   // -Djava.bazel.staticProcessStreamSocket=22222 for https://github.com/salesforce/bazel-vscode-java/pull/98/commits/956213d1510e8001a672d4fa3dc103229adde814

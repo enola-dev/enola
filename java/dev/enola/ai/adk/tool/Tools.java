@@ -17,14 +17,9 @@
  */
 package dev.enola.ai.adk.tool;
 
-import com.google.adk.tools.BaseTool;
-import com.google.adk.tools.GoogleSearchTool;
-
 import dev.enola.ai.mcp.McpLoader;
 import dev.enola.common.SuccessOrError;
 
-import java.time.InstantSource;
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Tools {
@@ -34,19 +29,7 @@ public final class Tools {
     }
 
     public static ToolsetProvider mcp(McpLoader mcpLoader) {
-        return new ToolsetProviderChain(builtin(InstantSource.system()), new MCP(mcpLoader));
-    }
-
-    public static ToolsetProvider builtin(InstantSource instantSource) {
-        var tools = new HashMap<String, BaseTool>();
-
-        tools.put(
-                "clock", DateTimeTools.currentDateAndTimeAdkTool(new DateTimeTools(instantSource)));
-        tools.put("search_google", new GoogleSearchTool());
-        tools.putAll(new FileSystemTools().createToolSet());
-        tools.put("exec", new ExecTool().createTool());
-
-        return ToolsetProvider.immutableTools(tools);
+        return new MCP(mcpLoader);
     }
 
     public static <T> Map<String, ?> toMap(SuccessOrError<T> soe) {
