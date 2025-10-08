@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.adk.tool.builtin;
 
 import static dev.enola.common.SuccessOrError.error;
 import static dev.enola.common.SuccessOrError.success;
@@ -26,6 +26,7 @@ import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.FunctionTool;
 
+import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.SuccessOrError;
 import dev.enola.common.locale.LocaleSupplier;
 import dev.enola.common.locale.LocaleSupplierTLC;

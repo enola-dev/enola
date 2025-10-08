@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.ai.adk.tool;
+package dev.enola.ai.adk.tool.builtin;
 
 import static dev.enola.common.SuccessOrError.error;
 import static dev.enola.common.SuccessOrError.success;
@@ -25,6 +25,7 @@ import com.google.adk.tools.BaseTool;
 import com.google.adk.tools.FunctionTool;
 import com.google.common.collect.ImmutableMap;
 
+import dev.enola.ai.adk.tool.Tools;
 import dev.enola.common.SuccessOrError;
 
 import java.io.IOException;

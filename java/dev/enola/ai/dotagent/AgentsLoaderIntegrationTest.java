@@ -19,13 +19,16 @@ package dev.enola.ai.dotagent;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static dev.enola.ai.iri.GoogleModelProvider.*;
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
+import static dev.enola.ai.iri.GoogleModelProvider.FLASH_LITE;
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import com.google.adk.agents.BaseAgent;
 
 import dev.enola.ai.adk.iri.GoogleLlmProvider;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.adk.tool.Tools;
+import dev.enola.ai.adk.tool.builtin.BuiltinTools;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -78,7 +81,7 @@ public class AgentsLoaderIntegrationTest {
     public void clock() throws IOException {
         Instant testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
         InstantSource testInstantSource = InstantSource.fixed(testInstant);
-        var tools = Tools.builtin(testInstantSource);
+        var tools = BuiltinTools.builtin(testInstantSource);
 
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var loader = new AgentsLoader(rp, FLASH, new GoogleLlmProvider(secretManager), tools);
