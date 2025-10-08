@@ -56,8 +56,6 @@ It is optional, because [Agents can set this via `model:` as well](../../concept
 
 `--in` is the input prompt to the LLM / Agent.
 
-`--inURL` is an alternative to `--in`, reading the prompt from a local file or [fetching](../fetch/index.md) it from a remote URL.
-
 ## Attach
 
 `--attach` allows attaching files to the LLM / Agent prompt. It can be repeated to attach multiple files (e.g. `--attach=image.png --attach=document.pdf`).

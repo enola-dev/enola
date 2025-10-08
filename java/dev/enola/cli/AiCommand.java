@@ -49,11 +49,6 @@ public class AiCommand extends CommandWithResourceProvider {
     @Nullable WithAgentName aiOptions;
 
     @CommandLine.Option(
-            names = {"--inURL"},
-            description = "URL to Input (e.g. prompt.txt)")
-    @Nullable URI promptURL;
-
-    @CommandLine.Option(
             names = {"--in"},
             description = "Text Input (e.g. 'hello, world')")
     @Nullable String prompt;
@@ -82,9 +77,7 @@ public class AiCommand extends CommandWithResourceProvider {
     private void runInContext() throws IOException {
         var out = spec.commandLine().getOut();
 
-        if (isNullOrEmpty(prompt))
-            if (promptURL != null) prompt = rp.getNonNull(promptURL).charSource().read();
-            else throw new IllegalArgumentException("No prompt; use --in or --inURL");
+        if (isNullOrEmpty(prompt)) throw new IllegalArgumentException("No prompt; use --in");
 
         var agent = AI.load1(rp, aiOptions);
         try (var runner = new UserSessionRunner(CLI.userID(), agent)) {
