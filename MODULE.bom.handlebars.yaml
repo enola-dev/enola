@@ -15,7 +15,7 @@
 # limitations under the License.
 
 version:
-  langchain4j: 1.6.0
+  langchain4j: 1.7.1
   langchain4j-beta: 1.6.0-beta12
   # https://github.com/google/adk-java/pull/486
   adk: e60bddf6502bbfac5af3fb993acc100439c0d90f
@@ -24,7 +24,7 @@ version:
 
 bom:
   - "com.google.code.findbugs:jsr305:3.0.2"
-  - "com.google.code.gson:gson:2.13.1"
+  - "com.google.code.gson:gson:2.13.2"
   - "junit:junit:4.13.2"
 
   # NB: Using GCP Cloud PubSub is a bit too broad, and could be refined
@@ -66,8 +66,8 @@ bom:
   #   "org.eclipse.rdf4j:rdf4j-sail-lmdb:{{version.rdf4j}}"
 
   # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
-  - "com.fasterxml.jackson.core:jackson-databind:2.19.2"
-  - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.19.2"
+  - "com.fasterxml.jackson.core:jackson-databind:2.20.0"
+  - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0"
 
   # Other
   - "ch.vorburger.exec:exec:3.3.2"
@@ -80,7 +80,7 @@ bom:
   - "org.slf4j:slf4j-jdk14:2.0.17"
   - "org.slf4j:slf4j-simple:2.0.17"
     # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
-  - "org.apache.logging.log4j:log4j-to-jul:2.25.1"
+  - "org.apache.logging.log4j:log4j-to-jul:2.25.2"
   - "io.github.classgraph:classgraph:4.8.181"
   - "com.google.errorprone:error_prone_annotations:2.41.0"
   - "org.jspecify:jspecify:1.0.0"
@@ -94,17 +94,17 @@ bom:
     # TODO - "dev.langchain4j:langchain4j-easy-rag:{{version.langchain4j}}"
   - "dev.langchain4j:langchain4j-easy-rag:{{version.langchain4j-beta}}"
   - "io.github.ollama4j:ollama4j:1.0.100"
-  - "com.github.spotbugs:spotbugs-annotations:4.9.3"
+  - "com.github.spotbugs:spotbugs-annotations:4.9.6"
   - "io.github.java-diff-utils:java-diff-utils:4.16"
-  - "org.jsoup:jsoup:1.21.1"
+  - "org.jsoup:jsoup:1.21.2"
   - "com.github.package-url:packageurl-java:1.5.0"
 
     # Maven Connector
-  - "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.31"
-  - "eu.maveniverse.maven.mima:context:2.4.31"
-  - "eu.maveniverse.maven.mima.extensions:mmr:2.4.31"
-  - "org.apache.maven.resolver:maven-resolver-api:2.0.10"
-  - "org.apache.maven.resolver:maven-resolver-util:2.0.10"
+  - "eu.maveniverse.maven.mima.runtime:standalone-static:2.4.34"
+  - "eu.maveniverse.maven.mima:context:2.4.34"
+  - "eu.maveniverse.maven.mima.extensions:mmr:2.4.34"
+  - "org.apache.maven.resolver:maven-resolver-api:2.0.11"
+  - "org.apache.maven.resolver:maven-resolver-util:2.0.11"
   - "org.apache.maven:maven-model:3.9.11"
   - "org.codehaus.plexus:plexus-xml:4.1.0"
 
@@ -116,7 +116,7 @@ bom:
 
     # TODO Use finer-grained individual JARs?
     # TODO Support MS Windows? See https://github.com/jline/jline3#artifacts.
-  - "org.jline:jline:3.30.4"
+  - "org.jline:jline:3.30.6"
 
     # https://github.com/JetBrains/pty4j
   - "org.jetbrains.pty4j:pty4j:0.13.4"
@@ -125,7 +125,7 @@ bom:
     #   - https://github.com/Hakky54/log-captor
     #   - https://github.com/portingle/slf4jtesting
     #   - https://www.spf4j.org/spf4j-slf4j-test/
-  - "com.github.valfirst:slf4j-test:3.0.1"
+  - "com.github.valfirst:slf4j-test:3.0.3"
 
     # TODO Use sshd-netty? See https://github.com/apache/mina-sshd/blob/master/docs/dependencies.md#netty
   - "org.apache.sshd:sshd-core:2.15.0"
@@ -144,7 +144,7 @@ bom:
   - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
 
   # https://github.com/commonmark/commonmark-java
-  - "org.commonmark:commonmark:0.25.0"
+  - "org.commonmark:commonmark:0.26.0"
 
   # https://github.com/modelcontextprotocol/java-sdk
   - io.modelcontextprotocol.sdk:mcp:0.14.1
@@ -157,13 +157,13 @@ bomx:
       - ch.qos.logback:logback-classic
       - org.springframework.boot:spring-boot-starter-logging
 
-  - com.google.guava:guava:33.4.8-jre:
+  - com.google.guava:guava:33.5.0-jre:
     exclusions:
       - org.codehaus.mojo:animal-sniffer-annotations
       - com.google.j2objc:j2objc-annotations
 
   # https://github.com/jknack/handlebars.java
-  - com.github.jknack:handlebars:4.4.0:
+  - com.github.jknack:handlebars:4.5.0:
     exclusions:
       - org.openjdk.nashorn:nashorn-core
 
@@ -171,7 +171,7 @@ bomx:
     exclusions:
       - commons-logging:commons-logging
 
-  - org.apache.tika:tika-core:3.0.0-BETA2:
-  - org.apache.tika:tika-parsers-standard-package:3.0.0-BETA2:
+  - org.apache.tika:tika-core:3.2.3:
+  - org.apache.tika:tika-parsers-standard-package:3.2.3:
     exclusions:
       - com.rometools:rome-utils
