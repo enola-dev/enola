@@ -20,10 +20,10 @@
 
 The `ai` command [works with Agents](../../tutorial/chat.md) with input from the CLI:
 
-    $ ./enola ai --llm=echo:/ --in="hello, world"
+    $ enola ai --llm=echo:/ --in="hello, world"
     hello, world
 
-    $ ./enola ai --llm="google://?model=gemini-2.5-flash-lite" --in="hello, world"
+    $ enola ai --llm="google://?model=gemini-2.5-flash-lite" --in="hello, world"
     Hello, world! How can I help you today?
 
 You, of course, also use the [Chat Web UI](../server/index.md#chat) or the [Console Chat](../chat/index.md) to interact with Agents.
@@ -58,13 +58,23 @@ It is optional, because [Agents can set this via `model:` as well](../../concept
 
 `--inURL` is an alternative to `--in`, reading the prompt from a local file or [fetching](../fetch/index.md) it from a remote URL.
 
-`--attach` allows attaching files to the LLM prompt. It can be repeated to attach multiple files (e.g. `--attach=image.png --attach=document.pdf`). The files are referenced by URL, similar to `--inURL`, and support all the same [URL schemes](../fetch/index.md#schemes).
+## Attach
+
+`--attach` allows attaching files to the LLM / Agent prompt. It can be repeated to attach multiple files (e.g. `--attach=image.png --attach=document.pdf`).
+
+The files are referenced by URL, and support relative URLs for local files and fetching remote URLs with [various schemes](../fetch/index.md#schemes).
 
 Example with image attachment:
 
-    $ ./enola ai --llm="google://?model=gemini-2.0-flash-exp" \
+    $ enola ai --llm="google://?model=gemini-2.5-flash-lite" \
         --in="What do you see in this image?" \
-        --attach=test/empty.png
+        --attach=test/mystery.png
+
+<!-- The mystery.png is from, and an homage to, my https://github.com/vorburger/SimpleHTTPServer/blob/master/src/test/resources/devdog.jpg from http://blog1.vorburger.ch/2006/06/simple-http-server-in-java.html -->
+
+Supported image formats, understanding, token cost, maximum number of images per request and their maximum sizes obviously depend on the LLM used:
+
+* [Gemini](https://ai.google.dev/gemini-api/docs/image-understanding)
 
 ## MCP
 
