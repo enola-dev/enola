@@ -205,7 +205,7 @@ maven.artifact(
         "commons-logging:commons-logging",
     ],
     group = "com.google.genai",
-    version = "1.8.0",
+    version = "1.21.0",
 )
 maven.artifact(
     artifact = "tika-core",

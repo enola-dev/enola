@@ -91,7 +91,7 @@ com.google.cloud:google-cloud-storage:2.47.0
 com.google.code.findbugs:jsr305:3.0.2
 com.google.code.gson:gson:2.13.2
 com.google.errorprone:error_prone_annotations:2.41.0
-com.google.genai:google-genai:1.8.0
+com.google.genai:google-genai:1.21.0
 com.google.guava:failureaccess:1.0.3
 com.google.guava:guava:33.5.0-jre
 com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
