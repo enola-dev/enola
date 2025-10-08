@@ -132,10 +132,10 @@ dev.dirs:directories:26
 dev.langchain4j:langchain4j:1.7.1
 dev.langchain4j:langchain4j-anthropic:1.7.1
 dev.langchain4j:langchain4j-core:1.7.1
-dev.langchain4j:langchain4j-document-parser-apache-tika:1.6.0-beta12
-dev.langchain4j:langchain4j-easy-rag:1.6.0-beta12
-dev.langchain4j:langchain4j-embeddings:1.6.0-beta12
-dev.langchain4j:langchain4j-embeddings-bge-small-en-v15-q:1.6.0-beta12
+dev.langchain4j:langchain4j-document-parser-apache-tika:1.7.1-beta14
+dev.langchain4j:langchain4j-easy-rag:1.7.1-beta14
+dev.langchain4j:langchain4j-embeddings:1.7.1-beta14
+dev.langchain4j:langchain4j-embeddings-bge-small-en-v15-q:1.7.1-beta14
 dev.langchain4j:langchain4j-google-ai-gemini:1.7.1
 dev.langchain4j:langchain4j-http-client:1.7.1
 dev.langchain4j:langchain4j-http-client-jdk:1.7.1

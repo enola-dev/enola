@@ -16,7 +16,7 @@
 
 version:
   langchain4j: 1.7.1
-  langchain4j-beta: 1.6.0-beta12
+  langchain4j-beta: 1.7.1-beta14
   # https://github.com/google/adk-java/pull/486
   adk: e60bddf6502bbfac5af3fb993acc100439c0d90f
   rdf4j: 5.1.4
@@ -65,7 +65,6 @@ bom:
   # TODO https://rdf4j.org/documentation/programming/lmdb-store/
   #   "org.eclipse.rdf4j:rdf4j-sail-lmdb:{{version.rdf4j}}"
 
-  # TODO Remove jackson-databind when https://github.com/eclipse-rdf4j/rdf4j/issues/4907 Link Bug is fixed!
   - "com.fasterxml.jackson.core:jackson-databind:2.20.0"
   - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0"
 
