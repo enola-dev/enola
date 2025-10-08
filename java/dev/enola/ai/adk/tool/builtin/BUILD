@@ -36,7 +36,7 @@ java_library(
         "//java/dev/enola/common",
         "//java/dev/enola/common/locale",
         "//java/dev/enola/common/time",
-        "//java/dev/enola/tool/todo/ai/tool/adk",
+        "//java/dev/enola/tool/todo/adk",
         "//java/dev/enola/tool/todo/config",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.tool.todo.ai.tool.adk;
+package dev.enola.tool.todo.adk;
 
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.BaseTool;
