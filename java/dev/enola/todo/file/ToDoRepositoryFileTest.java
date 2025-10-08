@@ -20,13 +20,16 @@ package dev.enola.todo.file;
 import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.mediatype.YamlMediaType;
+import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.todo.ToDo;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 
 public class ToDoRepositoryFileTest {
 
@@ -45,5 +48,14 @@ public class ToDoRepositoryFileTest {
         assertThat(fetched).isNotNull();
         assertThat(fetched.id).isEqualTo(todo1.id);
         assertThat(fetched.title).isEqualTo(todo1.title);
+    }
+
+    @Test
+    public void noSuchFileException() throws IOException {
+        var file = new File("non_existent_file.yaml");
+        if (file.exists()) Files.delete(file.toPath());
+        var resource = new FileResource(file.toURI());
+        var repo = new ToDoRepositoryFile(resource);
+        assertThat(repo.list()).isEmpty();
     }
 }
