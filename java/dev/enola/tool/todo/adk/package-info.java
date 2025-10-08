@@ -18,6 +18,6 @@
 
 /** Human ToDo Tasks AI Tool for ADK. */
 @NullMarked
-package dev.enola.tool.todo.ai.tool.adk;
+package dev.enola.tool.todo.adk;
 
 import org.jspecify.annotations.NullMarked;

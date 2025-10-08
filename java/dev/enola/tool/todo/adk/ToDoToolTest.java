@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.tool.todo.ai.tool.adk;
+package dev.enola.tool.todo.adk;
 
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
