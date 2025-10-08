@@ -166,7 +166,7 @@ bomx:
     exclusions:
       - org.openjdk.nashorn:nashorn-core
 
-  - com.google.genai:google-genai:1.8.0:
+  - com.google.genai:google-genai:1.21.0:
     exclusions:
       - commons-logging:commons-logging
 
