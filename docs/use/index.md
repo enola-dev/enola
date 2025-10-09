@@ -89,8 +89,4 @@ or clearing `~/.jbang/cache`, do not currently work for this application due to 
 
 ## Nix
 
-    nix run --no-sandbox github:enola-dev/enola
-
-If this fails after printing _"warning: ignoring the client-specified setting 'sandbox', because it is a restricted setting and you are not a trusted user",_ then you need to add your username to the `trusted-users` list in `/etc/nix/nix.conf` (e.g., `trusted-users = root your-username-here`), and then restart the Nix daemon with `sudo systemctl restart nix-daemon.service`.
-
-PS: See [issue #1713](https://github.com/enola-dev/enola/issues/1713) re. why `--no-sandbox` is still needed.
+    nix run github:enola-dev/enola
