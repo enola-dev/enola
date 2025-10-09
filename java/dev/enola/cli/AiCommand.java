@@ -99,6 +99,10 @@ public class AiCommand extends CommandWithResourceProvider {
                         part = Part.fromUri(resource.uri().toString(), mediaType);
                     } else {
                         // TODO Use https://ai.google.dev/gemini-api/docs/files to upload files?
+                        //   See https://github.com/googleapis/java-genai/issues/595, and note
+                        //   upload(InputStream inputStream, long size, UploadFileConfig config)
+                        //   in com.google.genai.Files ... but this class needs to be independent
+                        //   of Google Cloud Gemini GenAI SDK etc. so we would need an abstraction.
                         part = Part.fromBytes(resource.byteSource().read(), mediaType);
                     }
                     partsBuilder.add(part);

@@ -1,0 +1,8 @@
+
+https://github.com/bazel-contrib/unused-jvm-deps #Bazel #clean #deps
+
+https://www.buildbuddy.io #Bazel https://github.com/enola-dev/enola/pull/1295
+
+https://github.com/bazel-contrib/rules_jvm #Bazel java_test_suite #JUnit java_junit5_test
+
+https://github.com/bazel-contrib/rules_img #Bazel #Container
