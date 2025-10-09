@@ -8,3 +8,5 @@ site
 .cache
 .direnv
 .eclipse
+
+VENDOR
