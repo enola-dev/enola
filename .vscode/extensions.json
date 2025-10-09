@@ -18,7 +18,8 @@
     "redhat.vscode-yaml",
     "gruntfuggly.todo-tree",
     "oven.bun-vscode",
-    "zaucy.symlink-follow"
+    "zaucy.symlink-follow",
+    "bazelbuild.vscode-bazel"
   ],
   "unwantedRecommendations": [
     // https://github.com/kshetline/ligatures-limited/issues/39
