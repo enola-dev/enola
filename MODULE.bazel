@@ -26,15 +26,6 @@ bazel_dep(name = "rules_java", version = "8.16.1")
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
 register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_definition")
 
-# https://github.com/bazelbuild/rules_go/blob/master/docs/go/core/bzlmod.md
-bazel_dep(name = "rules_go", version = "0.57.0")
-bazel_dep(name = "gazelle", version = "0.45.0")
-
-go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-
-# Do NOT use go_sdk.host(), see https://github.com/enola-dev/enola/issues/713
-go_sdk.download(version = "1.22.4")
-
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 # When bumping the version here, must always run: REPIN=1 bazelisk run @maven//:pin
 bazel_dep(name = "rules_jvm_external", version = "6.8")
