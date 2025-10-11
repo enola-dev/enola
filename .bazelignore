@@ -4,6 +4,7 @@ site
 
 .be
 .bazelbsp
+.built
 .cache
 .direnv
 .eclipse
