@@ -45,14 +45,13 @@ web/web-out/
 # Maven
 java/.mvn/wrapper/maven-wrapper.jar
 java/target
-.built/.m2
 
 # https://jbang.dev
 .jbang/
 
 tools/version/VERSION
 
-# LinkML
+# Miscellaneous generated/output varia (incl. LinkML, .m2, HOME, VENDOR, etc.)
 .built
 
 # https://github.com/VirtusLab/bazel-steward/issues/424

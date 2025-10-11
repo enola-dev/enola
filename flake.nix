@@ -87,6 +87,49 @@
           # $ nix build .#enola
           # $ result/bin/enola --help
           default = enola;
+          # Testing https://github.com/enola-dev/enola/issues/1875 ...
+          bazel-vendor-dir = pkgs.stdenv.mkDerivation {
+            pname = "bazel-vendor-dir";
+            version = gitRev;
+
+            nativeBuildInputs = [
+              pkgs.bazel_8
+              pkgs.protobuf
+              pkgs.protoc-gen-grpc-java
+              pkgs.which
+              jdk'
+            ];
+            src = ./.;
+            buildPhase = ''
+              runHook preBuild
+
+              bash tools/protoc/protoc.bash
+
+              # https://github.com/enola-dev/enola/issues/1876
+              export HOME=.built/HOME
+              mkdir -p $HOME
+
+              export VENDOR=.built/VENDOR
+              mkdir -p $VENDOR
+              bazel vendor --vendor_dir=$VENDOR //...
+
+              runHook postBuild
+            '';
+            installPhase = ''
+              runHook preInstall
+
+              tar czvf $out \
+                  --sort=name \
+                  --mtime='UTC 2080-02-01' \
+                  --owner=0 \
+                  --group=0 \
+                  --numeric-owner $VENDOR
+
+              runHook postInstall
+            '';
+            # outputHash = pkgs.lib.fakeHash;
+            outputHash = "sha256-ExeaXCtvUJa27pDQPixoGQH1Vu1Nh8NzciAqPOJJwRE=";
+          };
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
             version = gitRev;
@@ -100,13 +143,19 @@
             src = ./.;
 
             buildPhase = ''
+              # This currently only serves to force a dependency to above
+              ls -al ${bazel-vendor-dir}
+
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
 
               # See https://github.com/NixOS/nix/issues/14024
               bash tools/protoc/protoc.bash
 
-              export HOME=$TMPDIR
+              # https://github.com/enola-dev/enola/issues/1876
+              export HOME=.built/HOME
+              mkdir -p $HOME
+
               bazel build //java/dev/enola/cli:enola_deploy.jar
             '';
 
@@ -116,9 +165,6 @@
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
             '';
-
-            # TODO https://github.com/enola-dev/enola/issues/1730
-            # outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
           };
         };
 
