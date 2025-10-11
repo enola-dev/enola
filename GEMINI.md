@@ -1,0 +1,3 @@
+# Gemini
+
+@./AGENTS.md
