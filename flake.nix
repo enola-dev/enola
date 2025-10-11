@@ -87,6 +87,53 @@
           # $ nix build .#enola
           # $ result/bin/enola --help
           default = enola;
+
+          bazel-vendor-dir = pkgs.stdenv.mkDerivation {
+            #pname = "bazel-vendor-dir";
+            #version = gitRev;
+            name = "bazel-vendor-dir";
+
+            nativeBuildInputs = [
+              pkgs.bazel_8
+              pkgs.protobuf
+              pkgs.protoc-gen-grpc-java
+              pkgs.which
+              jdk'
+            ];
+            src = ./.;
+            buildPhase = ''
+              runHook preBuild
+
+              bash tools/protoc/protoc.bash
+              mkdir VENDOR
+              pwd
+              ls
+              # export HOME=$TMPDIR
+              # export HOME=$(pwd)/home
+              export HOME=/build/home
+              mkdir -p $HOME
+              pwd
+              ls
+              bazel vendor --vendor_dir=VENDOR //...
+
+              runHook postBuild
+            '';
+            installPhase = ''
+              runHook preInstall
+
+              tar czvf $out \
+                  --sort=name \
+                  --mtime='UTC 2080-02-01' \
+                  --owner=0 \
+                  --group=0 \
+                  --numeric-owner VENDOR
+
+              runHook postInstall
+            '';
+            # outputHash = pkgs.lib.fakeHash;
+            outputHash = "sha256-kkEI1w0CNPYhzx516DAkiu1+enRSYkDA/xe0Mn33zMA=";
+          };
+
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
             version = gitRev;
@@ -96,29 +143,45 @@
               pkgs.cacert
               pkgs.makeWrapper
               pkgs.which
+              jdk'
             ];
             src = ./.;
 
             buildPhase = ''
+              runHook preBuild
+
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
 
-              # See https://github.com/NixOS/nix/issues/14024
-              bash tools/protoc/protoc.bash
+              #echo ${bazel-vendor-dir}...
+              #ls -al ${bazel-vendor-dir}
+              #cp -R ${bazel-vendor-dir} bazel-vendor
+              #chmod -R u+w bazel-vendor
+              #echo bazel-vendor...
+              #ls -al bazel-vendor
 
-              export HOME=$TMPDIR
-              bazel build //java/dev/enola/cli:enola_deploy.jar
+              # export HOME=$TMPDIR
+              #export HOME=$(pwd)/home
+              export HOME=/build/home
+              mkdir -p $HOME
+              tar xfz ${bazel-vendor-dir}
+              pwd
+              bash tools/protoc/protoc.bash
+              bazel build --vendor_dir=VENDOR //java/dev/enola/cli:enola_deploy.jar
+
+              runHook postBuild
             '';
 
             installPhase = ''
+              runHook preInstall
+
               mkdir -p "$out/share/java"
               cp bazel-bin/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
-            '';
 
-            # TODO https://github.com/enola-dev/enola/issues/1730
-            # outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
+              runHook postInstall
+            '';
           };
         };
 
