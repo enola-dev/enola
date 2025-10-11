@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "bazel": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760193480,
+        "narHash": "sha256-cVwJZjoS3YDkIIapwcgFS7yxBZRnI1lilW3Reu15DQs=",
+        "owner": "vorburger",
+        "repo": "bazel-nix",
+        "rev": "fb4635096ac939ff4fb6169bda93dca7a31d0369",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vorburger",
+        "repo": "bazel-nix",
+        "type": "github"
+      }
+    },
     "deadnix": {
       "inputs": {
         "nixpkgs": [
@@ -57,6 +77,7 @@
     },
     "root": {
       "inputs": {
+        "bazel": "bazel",
         "deadnix": "deadnix",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
