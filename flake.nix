@@ -7,6 +7,9 @@
 
     deadnix.url = "github:astro/deadnix";
     deadnix.inputs.nixpkgs.follows = "nixpkgs";
+
+    bazel.url = "github:vorburger/bazel-nix";
+    bazel.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -15,6 +18,7 @@
       nixpkgs,
       flake-utils,
       deadnix,
+      bazel,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -32,7 +36,6 @@
           git
           go
           jq
-          bazel_8
           # TODO Finish switch from Bazelisk to Bazel package
           #   by cleaning up all scripts etc. which still use
           #   bazelisk, and then rm this, and .bazelversion
@@ -50,9 +53,11 @@
           which
 
           statix
-          deadnix.packages.${system}.default
 
           bun
+
+          deadnix.packages.${system}.default
+          bazel.packages.${system}.default
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");

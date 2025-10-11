@@ -8,6 +8,8 @@
   // https://github.com/bazelbuild/vscode-bazel/issues/261
   "bazel.queriesShareServer": true,
 
+  "chat.useNestedAgentsMdFiles": true,
+
   "cSpell.words": [
     "Bazel",
     "bazelisk",
