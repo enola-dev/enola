@@ -105,25 +105,33 @@
             src = ./.;
 
             buildPhase = ''
+              runHook preBuild
+
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
 
               # See https://github.com/NixOS/nix/issues/14024
               bash tools/protoc/protoc.bash
 
-              export HOME=$TMPDIR
+              # https://github.com/enola-dev/enola/issues/1876
+              export HOME="$PWD/.built/HOME"
+              mkdir -p "$HOME"
+
               bazel build //java/dev/enola/cli:enola_deploy.jar
+
+              runHook postBuild
             '';
 
             installPhase = ''
+              runHook preInstall
+
               mkdir -p "$out/share/java"
               cp bazel-bin/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
-            '';
 
-            # TODO https://github.com/enola-dev/enola/issues/1730
-            # outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
+              runHook postInstall
+            '';
           };
         };
 
