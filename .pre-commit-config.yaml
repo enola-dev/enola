@@ -81,7 +81,7 @@ repos:
         files: \.(md|html)$
         # docs/specs/**.md is starting to use YAML Frontmatter, and can't have license headers
         # due to the https://github.com/markdownlint/markdownlint/issues/515 limitation... :=()
-        exclude: ^.github/|.gemini/|test/|docs/blog/posts/|docs/use/execmd/demo.md|docs/specs/|docs/agents
+        exclude: ^.github/|.gemini/|test/|docs/blog/posts/|docs/use/execmd/demo.md|docs/specs/|docs/agents|GEMINI.md
         args:
           - --comment-style
           - "<!--|   |-->"

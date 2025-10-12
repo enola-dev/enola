@@ -7,6 +7,9 @@
 
     deadnix.url = "github:astro/deadnix";
     deadnix.inputs.nixpkgs.follows = "nixpkgs";
+
+    bazel.url = "github:vorburger/bazel-nix";
+    bazel.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -15,6 +18,7 @@
       nixpkgs,
       flake-utils,
       deadnix,
+      bazel,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -32,7 +36,6 @@
           git
           go
           jq
-          bazel_8
           # TODO Finish switch from Bazelisk to Bazel package
           #   by cleaning up all scripts etc. which still use
           #   bazelisk, and then rm this, and .bazelversion
@@ -50,9 +53,11 @@
           which
 
           statix
-          deadnix.packages.${system}.default
 
           bun
+
+          deadnix.packages.${system}.default
+          bazel.packages.${system}.default
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
@@ -100,25 +105,33 @@
             src = ./.;
 
             buildPhase = ''
+              runHook preBuild
+
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
 
               # See https://github.com/NixOS/nix/issues/14024
               bash tools/protoc/protoc.bash
 
-              export HOME=$TMPDIR
+              # https://github.com/enola-dev/enola/issues/1876
+              export HOME="$PWD/.built/HOME"
+              mkdir -p "$HOME"
+
               bazel build //java/dev/enola/cli:enola_deploy.jar
+
+              runHook postBuild
             '';
 
             installPhase = ''
+              runHook preInstall
+
               mkdir -p "$out/share/java"
               cp bazel-bin/java/dev/enola/cli/enola_deploy.jar "$out/share/java"
               makeWrapper ${jdk'}/bin/java $out/bin/enola \
                 --add-flags "-jar $out/share/java/enola_deploy.jar"
-            '';
 
-            # TODO https://github.com/enola-dev/enola/issues/1730
-            # outputHash = "sha256-hHa+tqNDxe3+Tl190xPWiNiCq0HWU5qcc52rjo3Ncl0=";
+              runHook postInstall
+            '';
           };
         };
 
