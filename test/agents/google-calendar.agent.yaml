@@ -1,0 +1,9 @@
+$schema: https://enola.dev/ai/agent
+model: google://?model=gemini-2.5-flash
+description: Agent to work with Google Calendar via MCP.
+instruction:
+  You are a helpful agent who can answer user questions about and work with
+  their Google Calendar.
+tools:
+  # TODO https://github.com/enola-dev/enola/issues/1906: google-calendar#list-events
+  - google-calendar
