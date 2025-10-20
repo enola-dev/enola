@@ -54,7 +54,7 @@ Enola will replace values of `${secret:XYZ}` with the [secret](../use/secret/ind
     TODO
 
     Zapier
-    Google Mail & Calendar & Drive!
+    Google Mail & Drive!
     RAG with Pinecone, LlamaIndex?
     OpenAPI (HF)?
 -->
@@ -92,6 +92,29 @@ The [`search-brave`](https://github.com/brave/brave-search-mcp-server) tool uses
 ```shell
 enola ai --agents=test/agents/brave.agent.yaml --prompt="Use the brave_news_search tool to obtain what's new in world politics today and summarize the top 7 developments in bullet points of maximum 3 sentences each."
 ```
+
+### Google Calendar
+
+Follow https://github.com/nspady/google-calendar-mcp#quick-start to obtain the GCP OAuth Key JSON file.
+
+Edit `test/mcp/google-calendar.yaml` and set `GOOGLE_OAUTH_CREDENTIALS` to the path of this JSON file. Now run:
+
+```shell
+./enola -vvvv mcp list-tools --mcp=test/mcp/google-calendar.yaml
+```
+
+This will open a web-browser, where you need to authorize access to your Google account.
+The token from this authorization will be saved to `~/.config/google-calendar-mcp/tokens.json`.
+Re-run `mcp list-tools` and make sure that it prints the calendar MCP tools.
+If that's successful, then you can use it e.g. like this:
+
+```shell
+./enola ai --mcp=test/mcp/google-calendar.yaml --agents=test/agents/google-calendar.agent.yaml --prompt="What upcoming meetings do I have scheduled?"
+```
+
+TODO Contribute an improvement to `nspady/google-calendar-mcp` so that JSON can be provided directly via
+an environment variable or argument (secret), instead of via file; then simplify above,
+and move `test/mcp/google-calendar.yaml` to `models/enola.dev/ai/mcp.yaml`.
 
 ### Git
 
