@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CsvReaderTest {
@@ -45,7 +46,7 @@ public class CsvReaderTest {
         var csv = "name,age\nAlice,30\nBob,25\n";
         var resource =
                 StringResource2.of(csv, MediaType.CSV_UTF_8, URI.create("string://test.csv"));
-        try (var result = csvReader.readStream(resource, Map.class)) {
+        try (var result = csvReader.readStream(resource, HashMap.class)) {
             assertThat(result)
                     .containsExactly(
                             Map.of("name", "Alice", "age", "30"),

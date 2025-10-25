@@ -65,7 +65,7 @@ public class CsvReader implements ObjectReader {
     @Override
     public <T> CloseableIterable<T> readStream(ReadableResource resource, Class<T> type)
             throws IOException {
-        if (!type.isAssignableFrom(Map.class))
+        if (!Map.class.isAssignableFrom(type))
             throw new IllegalArgumentException("CsvReader currently only supports Map types");
 
         if (!MediaTypes.normalizedNoParamsEquals(resource.mediaType(), MediaType.CSV_UTF_8))
