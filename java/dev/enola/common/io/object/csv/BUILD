@@ -42,7 +42,6 @@ junit_tests(
         ":csv",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
-        "@maven//:org_apache_commons_commons_csv",
         "@maven//:org_jspecify_jspecify",
     ],
 )
