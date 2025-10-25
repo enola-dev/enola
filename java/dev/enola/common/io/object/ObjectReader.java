@@ -24,6 +24,8 @@ import java.util.Optional;
 
 public interface ObjectReader {
 
+    // TODO Merge readArray() and readStream() into one method, returning CloseableIterable<T>
+
     /** Read an object of Class T from the resource, if present. */
     <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException;
 

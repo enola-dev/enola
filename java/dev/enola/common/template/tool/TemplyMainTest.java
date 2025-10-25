@@ -24,7 +24,6 @@ import static dev.enola.common.template.handlebars.HandlebarsMediaType.HANDLEBAR
 
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.TestResource;
@@ -40,7 +39,6 @@ public class TemplyMainTest {
     TemplyMain temply =
             new TemplyMain(
                     new ResourceProviders(new DataResource.Provider(), new TestResource.Provider()),
-                    new JacksonObjectReaderWriterChain(),
                     new HandlebarsTemplateProvider());
 
     @Test
@@ -70,6 +68,17 @@ public class TemplyMainTest {
         try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             temply.run(List.of(data.uri()), template.uri(), out.uri());
             assertThat(out.charSource().read()).isEqualTo("Not YAML... Enola Enola");
+        }
+    }
+
+    @Test
+    public void csv() throws IOException {
+        var csv = DataResource.of("name,age\nAlice,30\nBob,25\n", MediaType.CSV_UTF_8);
+        var template =
+                DataResource.of("Not YAML...{{#each row}} {{name}} {{age}}{{/each}}", HANDLEBARS);
+        try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
+            temply.run(List.of(csv.uri()), template.uri(), out.uri());
+            assertThat(out.charSource().read()).isEqualTo("Not YAML... Alice 30 Bob 25");
         }
     }
 }

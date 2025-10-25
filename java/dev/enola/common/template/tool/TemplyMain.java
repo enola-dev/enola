@@ -25,7 +25,8 @@ import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
-import dev.enola.common.io.object.ObjectReader;
+import dev.enola.common.io.object.ObjectReaderChain;
+import dev.enola.common.io.object.csv.CsvReader;
 import dev.enola.common.io.object.jackson.JacksonObjectReaderWriterChain;
 import dev.enola.common.io.object.template.TemplatedObjectReader;
 import dev.enola.common.io.resource.FileDescriptorResource;
@@ -50,11 +51,10 @@ public class TemplyMain {
     private final Temply temply;
     private final ResourceProvider rp;
 
-    public TemplyMain(
-            ResourceProvider rp,
-            ObjectReader delegateObjectReader,
-            TemplateProvider templateProvider) {
+    public TemplyMain(ResourceProvider rp, TemplateProvider templateProvider) {
         this.rp = rp;
+        ObjectReaderChain delegateObjectReader =
+                new ObjectReaderChain(new JacksonObjectReaderWriterChain(), new CsvReader());
         this.temply = new Temply(new TemplatedObjectReader(delegateObjectReader), templateProvider);
     }
 
@@ -65,12 +65,11 @@ public class TemplyMain {
     }
 
     private static final TemplyMain INSTANCE =
-            new TemplyMain(
-                    rp(), new JacksonObjectReaderWriterChain(), new HandlebarsTemplateProvider());
+            new TemplyMain(rp(), new HandlebarsTemplateProvider());
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            var use = "USAGE: temply [data1.yaml data2.json ...] <template.handlebars>";
+            var use = "USAGE: temply [data1.yaml data2.json data3.csv...] <template.handlebars>";
             System.err.println(use);
             System.exit(1);
         }
