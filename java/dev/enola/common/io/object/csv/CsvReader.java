@@ -20,6 +20,7 @@ package dev.enola.common.io.object.csv;
 import static dev.enola.common.collect.MoreIterators.map;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
@@ -41,6 +42,11 @@ import java.util.Optional;
 
 public class CsvReader implements ObjectReader {
 
+    // NB: Instead of using Apache Commons CSV, we could also have implemented this using
+    //   https://github.com/FasterXML/jackson-dataformats-text/tree/3.x/csv... This would have the
+    //   advantage of reusing the JacksonObjectReaderWriter. The (only?) practical advantage of that
+    //   approach would be to support CSV (de)serialization from/into POJOs, not just Maps.
+
     private final CSVFormat csvFormat;
 
     public CsvReader(CSVFormat csvFormat) {
@@ -53,12 +59,24 @@ public class CsvReader implements ObjectReader {
 
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
-        throw new UnsupportedOperationException("Use readStream or readArray for CSV reading");
+        var listBuilder = ImmutableList.<T>builder();
+        try (CloseableIterable<T> iterable = readStream(resource, type)) {
+            listBuilder.addAll(iterable);
+        }
+        var list = listBuilder.build();
+        if (list.isEmpty()) {
+            return Optional.empty();
+        } else {
+            @SuppressWarnings("unchecked")
+            var optional = (Optional<T>) Optional.of(ImmutableMap.of("row", list));
+            return optional;
+        }
     }
 
     @Override
     @Deprecated
-    public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
+    public <T> CloseableIterable<T> readArray(ReadableResource resource, Class<T> type)
+            throws IOException {
         return readStream(resource, type);
     }
 
