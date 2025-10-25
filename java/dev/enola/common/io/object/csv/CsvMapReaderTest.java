@@ -25,15 +25,10 @@ import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.StringResource2;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class CsvMapReaderTest {
@@ -53,29 +48,6 @@ public class CsvMapReaderTest {
                 StringResource2.of(csv, MediaType.CSV_UTF_8, URI.create("string://test.csv"));
         var result = csvReader.readStream(resource, Map.class);
         assertThat(result)
-                .containsExactly(
-                        Map.of("name", "Alice", "age", "30"), Map.of("name", "Bob", "age", "25"))
-                .inOrder();
-    }
-
-    @Test
-    public void learningCsv() throws IOException {
-        var csv = "name,age\nAlice,30\nBob,25\n";
-        var reader = new StringReader(csv);
-        var list = new ArrayList<Map<String, String>>();
-        try (CSVParser csvParser =
-                CSVFormat.RFC4180
-                        .builder()
-                        .setHeader()
-                        .setSkipHeaderRecord(true)
-                        .get()
-                        .parse(reader)) {
-            for (CSVRecord record : csvParser) {
-                list.add(record.toMap());
-                // throw new IOException(record.toString());
-            }
-        }
-        assertThat(list)
                 .containsExactly(
                         Map.of("name", "Alice", "age", "30"), Map.of("name", "Bob", "age", "25"))
                 .inOrder();

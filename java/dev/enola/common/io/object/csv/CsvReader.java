@@ -37,6 +37,16 @@ import java.util.Optional;
 
 public class CsvReader implements ObjectReader {
 
+    private final CSVFormat csvFormat;
+
+    public CsvReader(CSVFormat csvFormat) {
+        this.csvFormat = csvFormat;
+    }
+
+    public CsvReader() {
+        this(CSVFormat.RFC4180.builder().setHeader().setSkipHeaderRecord(true).get());
+    }
+
     @Override
     public <T> Optional<T> optional(ReadableResource resource, Class<T> type) throws IOException {
         throw new UnsupportedOperationException("Use readStream or readArray for CSV reading");
@@ -57,16 +67,7 @@ public class CsvReader implements ObjectReader {
             return List.of();
 
         try (Reader reader = resource.charSource().openStream()) {
-            try (CSVParser csvParser =
-                    CSVFormat.RFC4180
-                            .builder()
-                            .setHeader()
-                            .setSkipHeaderRecord(true)
-                            .get()
-                            .builder()
-                            .setSkipHeaderRecord(true)
-                            .get()
-                            .parse(reader)) {
+            try (CSVParser csvParser = csvFormat.parse(reader)) {
                 // TODO How to "lazily" transform a Java Stream to an Iterable?!
                 return (Iterable<T>) csvParser.stream().map(CsvReader::csvRecordToMap).toList();
             }
