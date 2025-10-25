@@ -19,6 +19,8 @@ package dev.enola.common.function;
 
 import com.google.common.collect.Streams;
 
+import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 /** Static utility methods related to {@code Stream} instances. {@link Streams} has more. */
@@ -33,8 +35,37 @@ public final class MoreStreams {
     // and rm this may be better? (That would likely be better than doing something such as e.g.
     // https://stackoverflow.com/questions/30117134/aggregate-runtime-exceptions-in-java-8-streams)
 
-    public static <T> Iterable<T> toIterable(Stream<T> stream) {
-        return stream::iterator;
+    public static <T> CloseableIterable<T> toIterable(Stream<T> stream) {
+        // NOT return stream::iterator; because:
+        //   (a) This doesn't truly achieve "lazy" transformation in the sense that the Stream's
+        //       pipeline  elements (like map, filter) are only executed when the Iterator.next() is
+        //       called. This is as lazy as a Stream gets.
+        //   (b) The resulting Iterable is single-use. If you try to iterate over it a second time,
+        //       you'll get an IllegalStateException because the underlying Stream is closed after
+        //       its first consumption.
+        return new StreamSingleSupplierCloseableIterable<>(stream);
+    }
+
+    // See also dev.enola.common.collect.MoreIterators#SingleIterable
+    static final class StreamSingleSupplierCloseableIterable<T> implements CloseableIterable<T> {
+        private final AtomicBoolean supplied = new AtomicBoolean(false);
+        private final Stream<T> stream;
+
+        private StreamSingleSupplierCloseableIterable(Stream<T> stream) {
+            this.stream = stream;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            if (!supplied.compareAndSet(false, true))
+                throw new IllegalStateException("Value already supplied");
+            return stream.iterator();
+        }
+
+        @Override
+        public void close() {
+            stream.close();
+        }
     }
 
     // While waiting for e.g. something like https://bugs.openjdk.org/browse/JDK-8148917

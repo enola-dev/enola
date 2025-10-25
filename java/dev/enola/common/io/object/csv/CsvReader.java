@@ -17,10 +17,14 @@
  */
 package dev.enola.common.io.object.csv;
 
+import static dev.enola.common.collect.MoreIterators.map;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.net.MediaType;
 
+import dev.enola.common.collect.MoreIterators;
+import dev.enola.common.function.CloseableIterable;
 import dev.enola.common.io.mediatype.MediaTypes;
 import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.resource.ReadableResource;
@@ -31,7 +35,7 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,20 +62,30 @@ public class CsvReader implements ObjectReader {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T> Iterable<T> readStream(ReadableResource resource, Class<T> type) throws IOException {
+    public <T> CloseableIterable<T> readStream(ReadableResource resource, Class<T> type)
+            throws IOException {
         if (!type.isAssignableFrom(Map.class))
             throw new IllegalArgumentException("CsvReader currently only supports Map types");
 
         if (!MediaTypes.normalizedNoParamsEquals(resource.mediaType(), MediaType.CSV_UTF_8))
-            return List.of();
+            return CloseableIterable.empty();
 
-        try (Reader reader = resource.charSource().openStream()) {
-            try (CSVParser csvParser = csvFormat.parse(reader)) {
-                // TODO How to "lazily" transform a Java Stream to an Iterable?!
-                return (Iterable<T>) csvParser.stream().map(CsvReader::csvRecordToMap).toList();
-            }
-        }
+        Reader reader = resource.charSource().openStream();
+        CSVParser csvParser = csvFormat.parse(reader);
+        Iterator<CSVRecord> csvIterator = csvParser.iterator();
+        Iterator<Map<String, String>> mapIterator = map(csvIterator, CsvReader::csvRecordToMap);
+        Iterable<Map<String, String>> mapIterable = MoreIterators.toIterable(mapIterator);
+        CloseableIterable<Map<String, String>> closeableMapIterable =
+                CloseableIterable.wrap(
+                        mapIterable,
+                        () -> {
+                            csvParser.close();
+                            reader.close();
+                        });
+
+        @SuppressWarnings("unchecked")
+        CloseableIterable<T> mapsT = (CloseableIterable<T>) closeableMapIterable;
+        return mapsT;
     }
 
     @VisibleForTesting

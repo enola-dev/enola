@@ -25,6 +25,8 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/collect",
+        "//java/dev/enola/common/function",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
         "@maven//:com_google_errorprone_error_prone_annotations",
