@@ -18,11 +18,44 @@
 package dev.enola.common.collect;
 
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 public final class MoreIterators {
 
+    public static <T, R> Iterator<R> map(Iterator<T> iterator, Function<T, R> mapper) {
+        return new Iterator<R>() {
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public R next() {
+                return mapper.apply(iterator.next());
+            }
+        };
+    }
+
     public static <T> Iterable<T> toIterable(Iterator<T> iterator) {
-        return () -> iterator;
+        return new SingleIterable<T>(iterator);
+    }
+
+    // See also dev.enola.common.function.MoreStreams#StreamSingleSupplierCloseableIterable
+    private static final class SingleIterable<T> implements Iterable<T> {
+        private final AtomicBoolean supplied = new AtomicBoolean(false);
+        private final Iterator<T> iterator;
+
+        private SingleIterable(Iterator<T> iterator) {
+            this.iterator = iterator;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            if (!supplied.compareAndSet(false, true))
+                throw new IllegalStateException("Value already supplied");
+            return iterator;
+        }
     }
 
     private MoreIterators() {}

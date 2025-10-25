@@ -95,5 +95,11 @@ public final class MoreStreamsTest {
                                 .toList());
     }
 
+    @Test
+    public void testToIterable() {
+        Iterable<String> iterable = MoreStreams.toIterable(Stream.of("a", "b"));
+        assertThat(iterable).containsExactly("a", "b").inOrder();
+    }
+
     private static class MyCheckedException extends Exception {}
 }

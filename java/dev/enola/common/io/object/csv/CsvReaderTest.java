@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.net.MediaType;
 
-import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.StringResource2;
 
@@ -31,9 +30,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
-public class CsvMapReaderTest {
+public class CsvReaderTest {
 
-    ObjectReader csvReader = new CsvReader();
+    CsvReader csvReader = new CsvReader();
 
     @Test
     public void empty() throws IOException {
@@ -46,10 +45,12 @@ public class CsvMapReaderTest {
         var csv = "name,age\nAlice,30\nBob,25\n";
         var resource =
                 StringResource2.of(csv, MediaType.CSV_UTF_8, URI.create("string://test.csv"));
-        var result = csvReader.readStream(resource, Map.class);
-        assertThat(result)
-                .containsExactly(
-                        Map.of("name", "Alice", "age", "30"), Map.of("name", "Bob", "age", "25"))
-                .inOrder();
+        try (var result = csvReader.readStream(resource, Map.class)) {
+            assertThat(result)
+                    .containsExactly(
+                            Map.of("name", "Alice", "age", "30"),
+                            Map.of("name", "Bob", "age", "25"))
+                    .inOrder();
+        }
     }
 }
