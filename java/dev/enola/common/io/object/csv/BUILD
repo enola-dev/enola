@@ -29,6 +29,7 @@ java_library(
         "//java/dev/enola/common/io/object",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
+        "@maven//:org_apache_commons_commons_csv",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
@@ -41,6 +42,7 @@ junit_tests(
         ":csv",
         "//java/dev/enola/common/io",
         "//java/dev/enola/common/io/object",
+        "@maven//:org_apache_commons_commons_csv",
         "@maven//:org_jspecify_jspecify",
     ],
 )

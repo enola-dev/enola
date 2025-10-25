@@ -40,7 +40,8 @@ public class URLTest {
             String query,
             String fragment) {}
 
-    // TODO Use e.g. a CSV instead of coding these out here?
+    // TODO Use e.g. a CSV (with dev.enola.common.io.object.csv.CsvReader) instead of coding these
+    // out here?
     TestURL[] tests =
             new TestURL[] {
                 new TestURL(
