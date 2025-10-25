@@ -57,6 +57,7 @@ public class CsvReader implements ObjectReader {
     }
 
     @Override
+    @Deprecated
     public <T> Iterable<T> readArray(ReadableResource resource, Class<T> type) throws IOException {
         return readStream(resource, type);
     }
