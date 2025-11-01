@@ -87,7 +87,7 @@ maven.install(
         "dev.langchain4j:langchain4j-anthropic:1.7.1",
         "dev.langchain4j:langchain4j-easy-rag:1.7.1-beta14",
         "io.github.ollama4j:ollama4j:1.0.100",
-        "com.github.spotbugs:spotbugs-annotations:4.9.6",
+        "com.github.spotbugs:spotbugs-annotations:4.9.8",
         "io.github.java-diff-utils:java-diff-utils:4.16",
         "org.jsoup:jsoup:1.21.2",
         "com.github.package-url:packageurl-java:1.5.0",
