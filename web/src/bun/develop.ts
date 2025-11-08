@@ -31,7 +31,7 @@ serve({
   port: PORT,
   development: { hmr: false },
 
-  static: {
+  routes: {
     "/": index,
     "/chat": chat,
   },
