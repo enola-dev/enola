@@ -26,7 +26,15 @@ ROOT="$(dirname "$(realpath "$0")")"
 if [ -x "$(command -v hashdir)" ]; then
   mkdir -p "$ROOT"/.cache
   mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
-  hashdir --quiet "$ROOT"/java/ > "$ROOT"/.cache/java.hash
+  # TODO Replace (Python) hashdir with my own (Java) tool, see https://docs.enola.dev/use/info/#digest
+  {
+    hashdir --quiet "$ROOT"/java/
+    # https://github.com/enola-dev/enola/issues/1901
+    hashdir --quiet "$ROOT"/generated/protoc/java
+    hashdir --quiet "$ROOT"/models/
+    hashdir --quiet "$ROOT"/web/
+    sha512sum "$ROOT/MODULE.bazel"
+  } >"$ROOT"/.cache/java.hash
   set +e
   diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
   DIFF="$?"
@@ -38,6 +46,7 @@ fi
 LOG=$(mktemp)
 if [ "$DIFF" -ne 0 ] || [ ! -f "$ROOT"/site/download/latest/enola.jar ]; then
   set +e
+  echo "Input hash changed, re-building enola.jar..."
   "$ROOT"/tools/distro/build-execjar.bash >"$LOG" 2>&1
   exit_code="$?"
   set -e
