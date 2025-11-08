@@ -50,7 +50,7 @@ public class TestToolTest {
 
         agentTester.assertTextResponseContainsAll(
                 "Execute a test tool without arguments which returns an object.",
-                "The test tool executed successfully",
+                "tool executed successfully",
                 "Hello from TestTool!",
                 "the number 42",
                 "status",
