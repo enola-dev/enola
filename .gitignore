@@ -51,7 +51,7 @@ java/target
 
 tools/version/VERSION
 
-# Miscellaneous generated/output varia (incl. .m2, JavaDoc JAR, LinkML, HOME, etc.)
+# Miscellaneous generated/output varia (incl. .m2, JavaDoc JAR, HOME, etc.)
 .built
 
 # https://github.com/VirtusLab/bazel-steward/issues/424

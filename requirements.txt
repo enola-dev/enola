@@ -3,11 +3,6 @@
 # https://pre-commit.com
 pre-commit==4.3.0
 
-# https://linkml.io
-linkml==1.9.2
-# TODO https://github.com/linkml/linkml/issues/2592
-linkml-runtime==1.9.5
-
 # https://github.com/fcivaner/hashdir
 hashdir==0.24
 
