@@ -28,6 +28,8 @@ nix run .#test
 # Skippping test, because Nix did already just run this...
 # ./test.bash
 
+# NB: The //test-cli.bash script is run from within test.bash (if we're on CI)
+
 # Ensure non-regression on exploratory possible future entirely non-Bazel based build infrastructure idea...
 tools/javac/build.bash
 

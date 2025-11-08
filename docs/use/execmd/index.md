@@ -57,7 +57,7 @@ The tool does the following:
 
 * The line is not directly `exec`, but passed as-is to `bash -c`
 * The working directory is set to the processed Markdown file's directory (use e.g. ` ```bash cd ..` to change it)
-* Command must exit with `0`, otherwise the tool aborts and returns that code (unless ` ```bash $?`)
+* Command must exit with `0`, otherwise the tool aborts and returns that code (unless ` ```bash $?` or `$%` is used)
 * Command is killed (times out) after 7s if it "hangs" (useful on CI)
 * `STDOUT` & `STDERR` are both captured, and interspersed in MD
 * `STDIN` is closed (but you can use `< ...`)

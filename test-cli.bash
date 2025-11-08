@@ -20,6 +20,10 @@ set -euox pipefail
 # This script tests Enola CLI invocations.
 # See also EnolaCLITest
 
-# ...
+# Integration test the MCP related stuff; initially added to catch https://github.com/enola-dev/enola/issues/1862 regressions:
+# TODO FIXME ./enola -vv mcp list-tools
+./enola -vv mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
+# TODO The ai sub-command currently doesn't actually return 1 instead of 0 on errors, so this is not really not testable yet, but still useful:
+./enola -vv ai --agents=test/agents/everything.agent.yaml --prompt "Print environment variables to debug MCP"
 
 # PS: Update tika.md with anything (of interest) added here
