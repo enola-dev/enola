@@ -17,23 +17,13 @@
 
 set -euox pipefail
 
-rm -rf docs/models/ .built/linkml/
+rm -rf docs/models/
 
 tools/protoc/protoc.bash
 
 find models/ -type d -exec mkdir -p docs/{} \;
 find models/ -type f -exec ln -f {} docs/{} \;
 rm docs/models/{BUILD,build.bash}
-
-# https://linkml.io
-mkdir -p .built/linkml/
-find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 linkml-lint --validate --config models/.linkmllint.yaml
-find docs/models/ -name "*.linkml.yaml" -print0 | xargs -n 1 -0 gen-project -X prefixmap -X owl -X shacl -d .built/linkml/
-# TODO Re-enable OWL after fixing https://github.com/enola-dev/enola/issues/759
-# TODO Drop all *.linkml.* e.g. to rename file.linkml.context.jsonld to just file.linkml.context.jsonld
-# TODO --no-mergeimports? https://linkml.io/linkml/schemas/imports.html#making-merged-files-for-distribution ?
-# TODO https://linkml.io/linkml/generators/linkml.html ?
-mv .built/linkml docs/models/
 
 # TODO Parent directories' Things are missing? Perhaps load them "on-demand" automagically, with flag?
 # TODO Support --load *.rdf application/rdf+xml : That's quite simple, really; just requires piping through RIO.

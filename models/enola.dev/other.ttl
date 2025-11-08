@@ -26,7 +26,7 @@
 # This is the (future...) //docs/concepts/other.md equivalent in machine-readable form.
 
 # TODO Write a generator (template, probably) to generate other.md from this!
-# TODO Write a //models/enola.dev/awesome/awesome.linkml.yaml and validate this against that?
+# TODO Write a Schema to validate this
 # TODO Convert this from TTL to Enola RDF YAML format? Write a //models/enola.dev/awesome/awesome-context.jsonld?
 # TODO After YAML, make it hierarchical - like an Awesome list typically is.
 

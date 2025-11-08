@@ -145,9 +145,6 @@ items:
   - Don't load JS from unpkg.com, but use the local copies from the //third_party module:
       tags: [google]
 
-  - Re-evaluate LinkML:
-      tags: [clean]
-
   - Document Web Server in Tutorial:
       tags: [docs]
 
