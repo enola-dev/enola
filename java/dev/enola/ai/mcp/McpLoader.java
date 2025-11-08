@@ -43,6 +43,8 @@ import io.modelcontextprotocol.client.transport.StdioClientTransport;
 import io.modelcontextprotocol.json.McpJsonMapper;
 import io.modelcontextprotocol.spec.McpClientTransport;
 import io.modelcontextprotocol.spec.McpSchema;
+import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
+import io.modelcontextprotocol.spec.McpSchema.CallToolResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,8 +132,18 @@ public class McpLoader implements NamedTypedObjectProvider<McpSyncClient> {
         }
     }
 
-    // TODO Make mcpJsonMapper() private instead of public when CallToolCommand doesn't need it
-    public McpJsonMapper mcpJsonMapper() {
+    public CallToolResult call(Object context, String server, String tool, String argumentsAsJson)
+            throws IOException {
+        var toolClient = get(server, context);
+        var callToolRequest =
+                CallToolRequest.builder()
+                        .name(tool)
+                        .arguments(mcpJsonMapper(), argumentsAsJson)
+                        .build();
+        return toolClient.callTool(callToolRequest);
+    }
+
+    private static McpJsonMapper mcpJsonMapper() {
         return McpJsonMapper.getDefault();
     }
 

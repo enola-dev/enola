@@ -27,8 +27,6 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.secret.auto.AutoSecretManager;
 
-import io.modelcontextprotocol.spec.McpSchema.CallToolRequest;
-
 import org.jspecify.annotations.Nullable;
 
 import picocli.CommandLine;
@@ -71,13 +69,7 @@ public class CallToolCommand implements Callable<Integer> {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             mcpOptions.load(loader, rp);
         }
-        var toolClient = loader.get(server, "CLI");
-        var callToolRequest =
-                CallToolRequest.builder()
-                        .name(tool)
-                        .arguments(loader.mcpJsonMapper(), argumentsAsJson)
-                        .build();
-        var callToolResult = toolClient.callTool(callToolRequest);
+        var callToolResult = loader.call("CLI", server, tool, argumentsAsJson);
         for (var content : callToolResult.content()) {
             System.out.println(content);
         }
