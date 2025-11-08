@@ -136,26 +136,41 @@ bom:
   # TODO https://github.com/swiesend/secret-service/issues/51
   # "org.purejava:kdewallet:1.6.0"
 
-  # https://google.github.io/adk-docs/get-started/installation/
-  # "com.google.adk:google-adk:0.2.0"
-  # "com.google.adk:google-adk-dev:0.2.0"
-  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
-  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}"
-  - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
-
   # https://github.com/commonmark/commonmark-java
   - "org.commonmark:commonmark:0.26.0"
 
   # https://github.com/modelcontextprotocol/java-sdk
-  - io.modelcontextprotocol.sdk:mcp:0.14.1
+  # https://jitpack.io/#vorburger/java-sdk
+  - com.github.vorburger.java-sdk:mcp:c49241c854
 
 bomx:
+  # https://google.github.io/adk-docs/get-started/installation/
+  # "com.google.adk:google-adk:0.2.0"
+  # "com.google.adk:google-adk-dev:0.2.0"
+  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
+  - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}":
+    exclusions:
+      - io.modelcontextprotocol.sdk:mcp
+      - io.modelcontextprotocol.sdk:mcp-core
+      - io.modelcontextprotocol.sdk:mcp-json
+      - io.modelcontextprotocol.sdk:mcp-json-jackson2
+  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}":
+    exclusions:
+      - io.modelcontextprotocol.sdk:mcp
+      - io.modelcontextprotocol.sdk:mcp-core
+      - io.modelcontextprotocol.sdk:mcp-json
+      - io.modelcontextprotocol.sdk:mcp-json-jackson2
+
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
     exclusions:
       - org.eclipse.jdt:ecj
       - ch.qos.logback:logback-core
       - ch.qos.logback:logback-classic
       - org.springframework.boot:spring-boot-starter-logging
+      - io.modelcontextprotocol.sdk:mcp
+      - io.modelcontextprotocol.sdk:mcp-core
+      - io.modelcontextprotocol.sdk:mcp-json
+      - io.modelcontextprotocol.sdk:mcp-json-jackson2
 
   - com.google.guava:guava:33.5.0-jre:
     exclusions:

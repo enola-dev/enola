@@ -107,10 +107,8 @@ maven.install(
         "com.github.valfirst:slf4j-test:3.0.3",
         "org.apache.sshd:sshd-core:2.15.0",
         "de.swiesend:secret-service:2.0.1-alpha",
-        "com.github.vorburger.adk-java:google-adk:e60bddf6502bbfac5af3fb993acc100439c0d90f",
-        "com.github.vorburger.adk-java:google-adk-dev:e60bddf6502bbfac5af3fb993acc100439c0d90f",
         "org.commonmark:commonmark:0.26.0",
-        "io.modelcontextprotocol.sdk:mcp:0.14.1",
+        "com.github.vorburger.java-sdk:mcp:c49241c854",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
@@ -163,12 +161,38 @@ maven.install(
     ],
 )
 maven.artifact(
+    artifact = "google-adk-dev",
+    exclusions = [
+        "io.modelcontextprotocol.sdk:mcp",
+        "io.modelcontextprotocol.sdk:mcp-core",
+        "io.modelcontextprotocol.sdk:mcp-json",
+        "io.modelcontextprotocol.sdk:mcp-json-jackson2",
+    ],
+    group = "com.github.vorburger.adk-java",
+    version = "e60bddf6502bbfac5af3fb993acc100439c0d90f",
+)
+maven.artifact(
+    artifact = "google-adk",
+    exclusions = [
+        "io.modelcontextprotocol.sdk:mcp",
+        "io.modelcontextprotocol.sdk:mcp-core",
+        "io.modelcontextprotocol.sdk:mcp-json",
+        "io.modelcontextprotocol.sdk:mcp-json-jackson2",
+    ],
+    group = "com.github.vorburger.adk-java",
+    version = "e60bddf6502bbfac5af3fb993acc100439c0d90f",
+)
+maven.artifact(
     artifact = "google-adk-langchain4j",
     exclusions = [
         "org.eclipse.jdt:ecj",
         "ch.qos.logback:logback-core",
         "ch.qos.logback:logback-classic",
         "org.springframework.boot:spring-boot-starter-logging",
+        "io.modelcontextprotocol.sdk:mcp",
+        "io.modelcontextprotocol.sdk:mcp-core",
+        "io.modelcontextprotocol.sdk:mcp-json",
+        "io.modelcontextprotocol.sdk:mcp-json-jackson2",
     ],
     group = "com.github.vorburger.adk-java",
     version = "e60bddf6502bbfac5af3fb993acc100439c0d90f",

@@ -37,7 +37,7 @@ java_library(
         "//java/dev/enola/common/name",
         # "@maven//:com_google_adk_google_adk",
         "@maven//:com_github_vorburger_adk_java_google_adk",
-        "@maven//:io_modelcontextprotocol_sdk_mcp_core",
+        "@maven//:com_github_vorburger_java_sdk_mcp_core",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:io_reactivex_rxjava3_rxjava",
