@@ -147,7 +147,7 @@ bom:
   - "org.commonmark:commonmark:0.26.0"
 
   # https://github.com/modelcontextprotocol/java-sdk
-  - io.modelcontextprotocol.sdk:mcp:0.14.1
+  - io.modelcontextprotocol.sdk:mcp:0.15.0
 
 bomx:
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
