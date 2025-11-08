@@ -24,23 +24,19 @@ This is similar to the [MCP Inspector](https://github.com/modelcontextprotocol/i
 
 ## Call MCP Tool
 
-<!-- TODO Re-add the 'bash cd ../.././..' header AFTER https://github.com/enola-dev/enola/issues/1862 is fixed... -->
-
-```sh
+```bash cd ../.././..
 $ ./enola -v mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
 ...
 ```
 
 ## List MCP Tools
 
-<!-- TODO Re-add the 'bash $? cd ../.././..' header AFTER https://github.com/enola-dev/enola/issues/1862 is fixed... -->
-
-```sh
+```bash $% cd ../.././..
 $ ./enola mcp list-tools --help
 ...
 ```
 
-<!-- TODO This doesn't work?!
+<!-- TODO Why does this not work?! Is it just because secrets are missing on CI? See also test-cli.bash ...
 
 ```bash cd ../.././..
 $ ./enola -vv mcp list-tools
