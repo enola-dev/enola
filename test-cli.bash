@@ -21,9 +21,10 @@ set -euox pipefail
 # See also EnolaCLITest
 
 # Integration test the MCP related stuff; initially added to catch https://github.com/enola-dev/enola/issues/1862 regressions:
-# TODO FIXME ./enola -vv mcp list-tools
 ./enola -vv mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"}'
 # TODO The ai sub-command currently doesn't actually return 1 instead of 0 on errors, so this is not really not testable yet, but still useful:
 ./enola -vv ai --agents=test/agents/everything.agent.yaml --prompt "Print environment variables to debug MCP"
+# TODO GitHub Token on CI? LLM?? ./enola ai --agents=test/agents/github.agent.yaml --prompt "How many stars do the top 3 repos that I own on GitHub repo have? (Use the GitHub context tool to find by GitHub user name.)"
+./enola -vv mcp list-tools
 
 # PS: Update tika.md with anything (of interest) added here
