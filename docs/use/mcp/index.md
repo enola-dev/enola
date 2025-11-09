@@ -31,15 +31,13 @@ $ ./enola -v mcp call-tool modelcontextprotocol/everything echo '{"message":"hi"
 
 ## List MCP Tools
 
-```bash $% cd ../.././..
-$ ./enola mcp list-tools --help
-...
-```
-
-<!-- TODO Why does this not work?! Is it just because secrets are missing on CI? See also test-cli.bash ...
-
 ```bash cd ../.././..
-$ ./enola -vv mcp list-tools
+$ ./enola mcp list-tools
 ...
 ```
---->
+
+## Screencast
+
+![Demo](script.svg)
+
+<!-- PS: This is also exercised in the test-cli.bash script. -->
