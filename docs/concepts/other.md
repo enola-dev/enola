@@ -306,6 +306,7 @@ Enola 🕵🏾‍♀️ models may internally gain (optional) `hash` support, fo
 * [Bob](https://bob.build)
 * [Justbuild](https://github.com/just-buildsystem/justbuild) (not to be confused with [just.systems](https://just.systems) and similar [command runners](https://github.com/casey/just?tab=readme-ov-file#alternatives-and-prior-art))
 * [Bazel](https://bazel.build) (and its flattering imitations, such as [Buck2](https://buck2.build) and [Pants](https://www.pantsbuild.org))
+* [Taskfile](https://taskfile.dev)
 
 ## Conferences & Events
 
