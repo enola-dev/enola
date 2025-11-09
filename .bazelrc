@@ -32,6 +32,8 @@ test --nobuild_tests_only
 # For having sources available in the IDE always create source jars, as Bazel doesn't do this by default.
 build --output_groups=+_source_jars
 
-# Apply Javadoc linting to all Java builds
-# Please keep this in sync with tools/javadoc/run.bash
+# Apply Javadoc linting to all Java builds, and error on any warnings (including @Deprecated).
+# Please keep this in sync with tools/javadoc/run.bash and tools/javac/build.bash
+# Applies to all Java compilation commands (java_library, java_binary, etc.)
+build --javacopt="-Werror"
 build --javacopt="-Xdoclint:all,-missing"
