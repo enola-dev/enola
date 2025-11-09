@@ -90,12 +90,25 @@ jobs:
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
 
+      # uvx is used in mcp.yaml, and test-cli.bash runs: ./enola -vv mcp list-tools
+      # So we need to install https://docs.astral.sh/uv/guides/integration/github here.
+      # We prefer this over installing it with Nix just because of its enable-cache option.
+      - name: Install uv for Python MCP servers
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          version: "0.9.8" # Pin a specific version of uv.
+      # This could be removed again later; it's only needed until for initial quick testing that this works:
+      - run: uvx mcp-server-git --help
+
       - name: Check which package versions we are using
         run: |
           which go
           go version
           which java
           java --version
+          which uvx
+          uvx --version
 
       - name: Install Web dependencies
         working-directory: web
