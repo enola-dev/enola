@@ -178,7 +178,15 @@ To debug MCP, use the dedicated [MCP CLI commands](../use/mcp/index.md).
 
 ## Directories
 
+[Browsers](https://github.com/modelcontextprotocol/registry/blob/main/docs/community-projects.md) for the [Registry](https://github.com/modelcontextprotocol/registry/):
+
 <!-- TODO Crawl these, and gen. MD pushed to https://github.com/enola-dev/awesome-mcp ... -->
+
+* **[MCP Bench](https://mcpbench.ai/)**
+* [TeamSpark MCP Server Discovery](https://teamsparkai.github.io/ToolCatalog/)
+* [Datasette](https://lite.datasette.io/?url=https%3A%2F%2Fraw.githubusercontent.com%2Frosmur%2Fofficial-mcp-registry-database%2Fmain%2Fofficial_mcp_registry.db#/official_mcp_registry/servers)
+
+Other:
 
 * https://glama.ai/mcp/servers == https://github.com/punkpeye/awesome-mcp-servers
 * https://github.com/wong2/awesome-mcp-servers
