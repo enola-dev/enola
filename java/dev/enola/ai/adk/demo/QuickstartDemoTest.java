@@ -24,6 +24,7 @@ import com.google.adk.models.BaseLlm;
 import dev.enola.ai.adk.iri.LlmProviders;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.ModelConfig;
 import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
@@ -40,7 +41,7 @@ public class QuickstartDemoTest {
     @Test
     public void test() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
-        var model = p.get(GoogleModelProvider.FLASH_LITE);
+        var model = p.get(ModelConfig.temperature(GoogleModelProvider.FLASH_LITE, 0.1));
 
         var agent = QuickstartDemo.initAgent(model);
         var tester = new AgentTester(agent);
@@ -51,9 +52,12 @@ public class QuickstartDemoTest {
                 "What's the time in Zürich?", "The current time in Zürich is ");
 
         // TODO Test status=error vs success
-        tester.assertTextResponseContains("What's the time now in Lausanne?", "sorry");
-        // TODO lower temperature (?) to reduce variability?
-        //   "Sorry, I don't have timezone information for Lausanne"
-        //   "Sorry, I am not able to retrieve the current time in Lausanne."
+        tester.assertTextResponseContainsAny(
+                "What's the time now in Lausanne?",
+                "sorry",
+                "cannot provide you with the time in Lausanne",
+                "cannot provide the time in Lausanne",
+                "cannot provide the time for Lausanne",
+                "don't have the time for Lausanne");
     }
 }
