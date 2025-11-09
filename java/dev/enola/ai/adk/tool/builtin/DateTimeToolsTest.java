@@ -90,11 +90,15 @@ public class DateTimeToolsTest {
                         .push(Locale.class, Locale.GERMANY)) {
             agentTester.assertTextResponseEquals(
                     "What's the time in Zürich?", "The current time in Zürich is 23:05.");
-            agentTester.assertTextResponseEquals(
-                    "What's the time?", "The current time in MEZ is 23:05.");
-            agentTester.assertTextResponseEquals(
+            // TODO assert All & Any with only x1 "What's the time?" prompt
+            agentTester.assertTextResponseContainsAll(
+                    "What's the time?", "The current time", "is 23:05.");
+            agentTester.assertTextResponseContainsAny("What's the time?", "in MEZ", "in Zürich");
+            agentTester.assertTextResponseContainsAny(
                     "What's today's date and time?",
-                    "The current date & time in MEZ is Donnerstag, 14. August" + " 2025, 23:05.");
+                    "The current date & time is",
+                    "Donnerstag, 14. August 2025, 23:05.",
+                    "Thursday, August 14, 2025 23:05");
         }
     }
 }

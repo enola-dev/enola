@@ -17,8 +17,7 @@
 version:
   langchain4j: 1.7.1
   langchain4j-beta: 1.7.1-beta14
-  # https://github.com/google/adk-java/pull/486
-  adk: e60bddf6502bbfac5af3fb993acc100439c0d90f
+  adk: 4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
   rdf4j: 5.1.4
   grpc: 1.75.0
   mima: 2.4.36
@@ -167,7 +166,7 @@ bomx:
     exclusions:
       - org.openjdk.nashorn:nashorn-core
 
-  - com.google.genai:google-genai:1.21.0:
+  - com.google.genai:google-genai:1.22.0:
     exclusions:
       - commons-logging:commons-logging
 
