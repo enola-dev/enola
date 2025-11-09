@@ -58,7 +58,7 @@ public class UserSessionRunner implements AutoCloseable {
     }
 
     public Flowable<Event> runAsync(Content newMessage, RunConfig runConfig) {
-        return runner.runAsync(this.session, newMessage, runConfig);
+        return runner.runAsync(session.userId(), session.id(), newMessage, runConfig);
     }
 
     public Flowable<Event> runAsync(Content newMessage) {

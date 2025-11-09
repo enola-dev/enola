@@ -58,6 +58,7 @@ public class QuickstartDemoTest {
                 "cannot provide you with the time in Lausanne",
                 "cannot provide the time in Lausanne",
                 "cannot provide the time for Lausanne",
+                "couldn't retrieve the time for Lausanne",
                 "don't have the time for Lausanne");
     }
 }

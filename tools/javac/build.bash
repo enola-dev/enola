@@ -32,6 +32,7 @@ ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
 
 # TODO -Xdoclint:all/protected
 
+# Keep options in sync with .bazelrc and tools/javadoc/run.bash
 javac --class-path "$ENOLA_CLASSPATH" \
   --enable-preview -encoding UTF-8 -g -parameters \
   -d generated/java-class/ -s generated/javac-processors/ --source-path java/ \
