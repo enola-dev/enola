@@ -46,13 +46,28 @@ servers:
 
   search_brave:
     command: docker
-    args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "docker.io/mcp/brave-search"]
+    args:
+      ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "docker.io/mcp/brave-search"]
     docs: https://github.com/brave/brave-search-mcp-server
     env:
       BRAVE_API_KEY: ${secret:BRAVE_API_KEY}
 
   github:
     docs: https://github.com/github/github-mcp-server
-    url: https://api.githubcopilot.com/mcp/
+    # TODO https://github.com/enola-dev/enola/issues/1907
+    # url: https://api.githubcopilot.com/mcp/
     headers:
+      # Leave this here (although un-used), just so that dev.enola.ai.mcp.McpLoaderTest#secretsContainsNotStartsWith does not fails
       Authorization: Bearer ${secret:GITHUB_PAT}
+    command: docker
+    args:
+      [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server",
+      ]
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: ${secret:GITHUB_PAT}
