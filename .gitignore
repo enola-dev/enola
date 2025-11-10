@@ -79,3 +79,6 @@ generated/protoc/java/dev/
 generated/classpath
 generated/javac-processors/
 generated/java-class
+
+# bazel vendor --vendor_dir=
+VENDOR

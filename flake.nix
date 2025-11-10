@@ -92,6 +92,52 @@
           # $ nix build .#enola
           # $ result/bin/enola --help
           default = enola;
+
+          bazel-vendor-dir = pkgs.stdenv.mkDerivation {
+            #pname = "bazel-vendor-dir";
+            #version = gitRev;
+            name = "bazel-vendor-dir";
+
+            nativeBuildInputs = [
+              pkgs.protobuf
+              pkgs.protoc-gen-grpc-java
+              pkgs.which
+              jdk'
+            ];
+            src = ./.;
+            buildPhase = ''
+              runHook preBuild
+
+              bash tools/protoc/protoc.bash
+              mkdir VENDOR
+              pwd
+              ls
+              # export HOME=$TMPDIR
+              # export HOME=$(pwd)/home
+              export HOME=/build/home
+              mkdir -p $HOME
+              pwd
+              ls
+              bazel vendor --vendor_dir=VENDOR //...
+
+              runHook postBuild
+            '';
+            installPhase = ''
+              runHook preInstall
+
+              tar czvf $out \
+                  --sort=name \
+                  --mtime='UTC 2080-02-01' \
+                  --owner=0 \
+                  --group=0 \
+                  --numeric-owner VENDOR
+
+              runHook postInstall
+            '';
+            # outputHash = pkgs.lib.fakeHash;
+            outputHash = "sha256-kpDyYdYTlC179qHOusvTncRXAGV7549GGoR1y4b8okA=";
+          };
+
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
             version = gitRev;
@@ -101,6 +147,7 @@
               pkgs.cacert
               pkgs.makeWrapper
               pkgs.which
+              jdk'
             ];
             src = ./.;
 
@@ -110,14 +157,13 @@
               # class dev.enola.common.Version reads VERSION
               echo -n "${gitRev}" >tools/version/VERSION
 
-              # See https://github.com/NixOS/nix/issues/14024
-              bash tools/protoc/protoc.bash
-
               # https://github.com/enola-dev/enola/issues/1876
               export HOME="$PWD/.built/HOME"
               mkdir -p "$HOME"
 
-              bazel build //java/dev/enola/cli:enola_deploy.jar
+              tar xfz ${bazel-vendor-dir}
+              bash tools/protoc/protoc.bash
+              bazel build --vendor_dir=VENDOR //java/dev/enola/cli:enola_deploy.jar
 
               runHook postBuild
             '';
