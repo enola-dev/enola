@@ -70,6 +70,7 @@ public class DataResourceTest {
         check(DataResource.of(""), PLAIN_TEXT_ASCII, new byte[] {});
         check(DataResource.of("hello"), PLAIN_TEXT_ASCII, "hello".getBytes(US_ASCII));
         check(DataResource.of("hello, world"), PLAIN_TEXT_ASCII, "hello, world".getBytes(US_ASCII));
+        check(DataResource.of("hello+ world"), PLAIN_TEXT_ASCII, "hello+ world".getBytes(US_ASCII));
 
         check(DataResource.of("{ }", JSON_UTF_8), JSON_UTF_8, "{ }".getBytes(US_ASCII));
 
