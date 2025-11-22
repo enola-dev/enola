@@ -15,15 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.cli.common;
+package dev.enola.common.logging;
 
 import java.util.logging.ConsoleHandler;
+import java.util.logging.ErrorManager;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 // Inspired by https://github.com/mihnita/java-color-loggers (Apache License 2.0)
-public class LoggingColorConsoleHandler extends ConsoleHandler {
+class LoggingColorConsoleHandler extends ConsoleHandler {
 
     // TODO Add magic to turn off colors when "there is no ANSI"
     // Use https://picocli.info/#_heuristics_for_enabling_ansi
@@ -41,8 +42,17 @@ public class LoggingColorConsoleHandler extends ConsoleHandler {
 
     @Override
     public void publish(LogRecord record) {
-        System.err.print(logRecordToString(record));
-        System.err.flush();
+        if (!isLoggable(record)) {
+            return;
+        }
+        synchronized (this) {
+            try {
+                System.err.print(logRecordToString(record));
+                System.err.flush();
+            } catch (Exception ex) {
+                reportError(null, ex, ErrorManager.GENERIC_FAILURE);
+            }
+        }
     }
 
     private String logRecordToString(LogRecord record) {
