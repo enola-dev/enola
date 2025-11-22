@@ -21,15 +21,14 @@ import static picocli.CommandLine.ScopeType.INHERIT;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
 import dev.enola.common.Version;
+import dev.enola.common.logging.JavaUtilLogging;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Spec;
 
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class LoggingMixin {
 
@@ -62,49 +61,21 @@ public class LoggingMixin {
         var app = (Application) parseResult.commandSpec().root().userObject();
         var level = calcLogLevel(app.loggingVerbosity);
 
-        configureJUL(level);
+        JavaUtilLogging.configure(level);
         app.loggingIsConfigured();
         app.log()
                 .error(
-                        "Hi! \uD83D\uDC4B I'm https://Enola.dev {}. "
-                                + "\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE. "
-                                + "What's your goal, today?\n",
+                        """
+                        Hi! \uD83D\uDC4B I'm https://Enola.dev {}. \
+                        \uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE. \
+                        What's your goal, today? \
+                        """,
                         Version.get());
 
         app.start();
 
         // And now back to and onwards with the default execution strategy
         return new CommandLine.RunLast().execute(parseResult);
-    }
-
-    private static void configureJUL(Level level) {
-        // We don't want Spring Boot, which is used in ADK Web, to do configure logging:
-        System.setProperty("org.springframework.boot.logging.LoggingSystem", "none");
-
-        System.setProperty(
-                "java.util.logging.SimpleFormatter.format",
-                "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$s %2$s %5$s%6$s%n"
-                // "%1$tF %1$tT %4$s %2$s %5$s%6$s%n"
-                // "%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$-6s %2$s %5$s%6$s%n"
-                );
-
-        // Root Logger, so for dev.enola.* but also e.g. ch.vorburger.exec or gRPC, etc.
-        var rootLogger = Logger.getLogger("");
-        rootLogger.setLevel(level);
-
-        // see https://stackoverflow.com/a/48455401/421602
-        rootLogger.getHandlers()[0].setLevel(level);
-
-        // Remove all existing handlers
-        Handler[] handlers = rootLogger.getHandlers();
-        for (Handler handler : handlers) {
-            rootLogger.removeHandler(handler);
-        }
-
-        // Add (only) our fancy colouring handler
-        var handler = new LoggingColorConsoleHandler();
-        handler.setLevel(level);
-        rootLogger.addHandler(handler);
     }
 
     @Option(
