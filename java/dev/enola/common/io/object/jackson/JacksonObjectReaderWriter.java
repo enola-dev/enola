@@ -44,13 +44,11 @@ abstract class JacksonObjectReaderWriter implements ObjectReaderWriter {
     private final @Nullable ProviderFromID provider;
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper) {
-        this.mapper = mapper;
-        this.provider = null;
-        init();
+        this(mapper, null);
     }
 
     protected JacksonObjectReaderWriter(ObjectMapper mapper, ProviderFromID provider) {
-        this.mapper = mapper;
+        this.mapper = mapper.copy();
         this.provider = provider;
         init();
     }

@@ -15,6 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "jackson",
@@ -32,5 +33,16 @@ java_library(
         "@maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_jsr310",
         "@maven//:org_jspecify_jspecify",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob([
+        "*Test.java",
+    ]),
+    deps = [
+        ":jackson",
+        "@maven//:com_fasterxml_jackson_core_jackson_databind",
     ],
 )
