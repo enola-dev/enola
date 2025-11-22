@@ -27,6 +27,9 @@ java_library(
     ),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common/jackson",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
@@ -38,5 +41,6 @@ junit_tests(
     ),
     deps = [
         ":relay",
+        "//java/dev/enola/common/yamljson",
     ],
 )
