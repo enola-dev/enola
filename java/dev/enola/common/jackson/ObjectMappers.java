@@ -33,9 +33,28 @@ import java.util.Set;
 
 public final class ObjectMappers {
 
+    /**
+     * A shared, thread-safe, "immutable" default {@link ObjectMapper} instance.
+     *
+     * <p>This instance MUST NOT be reconfigured (e.g. by calling {@link
+     * ObjectMapper#configure(com.fasterxml.jackson.databind.DeserializationFeature, boolean)} or
+     * similar methods) because it is shared.
+     *
+     * <p>If you need a specific configuration, use {@link #newObjectMapper()} to obtain a separate
+     * new instance, configure it, and then keep it for re-use.
+     */
     public static final ObjectMapper INSTANCE = newObjectMapper();
 
-    private static ObjectMapper newObjectMapper() {
+    /**
+     * Creates a new {@link ObjectMapper} pre-configured with Enola defaults.
+     *
+     * <p>The returned instance is a new separate object which can be safely re-configured (e.g. to
+     * set {@link com.fasterxml.jackson.databind.DeserializationFeature#FAIL_ON_UNKNOWN_PROPERTIES}
+     * to false).
+     *
+     * <p>It is recommended to keep and re-use the obtained instance for performance reasons.
+     */
+    public static ObjectMapper newObjectMapper() {
         var objectMapper = new ObjectMapper();
         configure(objectMapper);
         return objectMapper;
