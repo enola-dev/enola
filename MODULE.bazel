@@ -111,6 +111,7 @@ maven.install(
         "com.github.vorburger.adk-java:google-adk-dev:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
         "org.commonmark:commonmark:0.26.0",
         "io.modelcontextprotocol.sdk:mcp:0.15.0",
+        "org.java-websocket:Java-WebSocket:1.6.0",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
