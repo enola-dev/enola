@@ -24,8 +24,12 @@ import dev.enola.common.io.mediatype.MediaTypes;
 
 public class JsonObjectReaderWriter extends JacksonObjectReaderWriter {
 
+    public JsonObjectReaderWriter(ObjectMapper om) {
+        super(om);
+    }
+
     public JsonObjectReaderWriter() {
-        super(new ObjectMapper());
+        this(new ObjectMapper());
     }
 
     @Override

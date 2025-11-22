@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-class ConversationRelayServer extends LoggingWebSocketServer {
+public class ConversationRelayServer extends LoggingWebSocketServer {
 
     private static final Logger logger = LoggerFactory.getLogger(ConversationRelayServer.class);
 
@@ -33,7 +33,10 @@ class ConversationRelayServer extends LoggingWebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        // TODO Change info to debug - and actually parse the JSON, into ConversationRelay
+        // TODO Validate X-Twilio-Signature, see
+        //   https://www.twilio.com/docs/voice/conversationrelay/websocket-messages
+        // TODO Parse JSON message with ConversationRelayIO.read()
         logger.info("WebSocket message received: message={}", message);
+        // TODO conn.send(ConversationRelayIO.write(...));
     }
 }
