@@ -148,6 +148,9 @@ bom:
   # https://github.com/modelcontextprotocol/java-sdk
   - io.modelcontextprotocol.sdk:mcp:0.15.0
 
+  # https://github.com/TooTallNate/Java-WebSocket
+  - org.java-websocket:Java-WebSocket:1.6.0
+
 bomx:
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
     exclusions:

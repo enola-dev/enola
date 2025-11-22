@@ -41,6 +41,7 @@
           #   bazelisk, and then rm this, and .bazelversion
           bazelisk
           shellcheck
+          twilio-cli
           nixpkgs-fmt
           unzip
           nodejs
