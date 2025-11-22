@@ -30,6 +30,7 @@ import org.jspecify.annotations.Nullable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
@@ -109,9 +110,10 @@ public class DataResource extends BaseResource implements ReadableButNotWritable
     //   java.util.Base64.getEncoder().withoutPadding().encode(byteSource.read());
 
     public static Resource of(@Nullable String text, @Nullable MediaType mediaType) {
-        var data = MediaTypes.toStringWithoutSpaces(mediaType) + "," + Strings.nullToEmpty(text);
+        var encodedText = URLEncoder.encode(Strings.nullToEmpty(text), DATA_DEFAULT_CHARSET);
+        var data = MediaTypes.toStringWithoutSpaces(mediaType) + "," + encodedText;
         try {
-            return new DataResource(new URI(SCHEME, data, null));
+            return new DataResource(new URI(SCHEME + ":" + data));
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(data, e);
         }
