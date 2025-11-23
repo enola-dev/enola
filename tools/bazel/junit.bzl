@@ -83,6 +83,7 @@ def junit_tests(name, srcs, deps, srcs_utils = [], **kwargs):
     s_name = name.replace("-", "_") + "TestSuite"
     _gen_suite(
         name = s_name,
+        testonly = True,
         srcs = srcs,
         deps = deps,
         outname = s_name,

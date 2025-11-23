@@ -18,25 +18,27 @@ load("@rules_java//java:defs.bzl", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "common",
+    name = "testlib",
+    testonly = True,
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
     visibility = ["//:__subpackages__"],
     deps = [
-        "//tools/version",
-        "@maven//:com_google_errorprone_error_prone_annotations",
-        "@maven//:com_google_guava_guava",
-        "@maven//:dev_dirs_directories",  # TODO Move FreedesktopDirectories into a separate library!
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/jackson",
+        "@maven//:com_google_truth_truth",
         "@maven//:org_jspecify_jspecify",
     ],
 )
 
 junit_tests(
     name = "tests",
-    srcs = glob(["*Test.java"]),
+    srcs = glob(
+        include = ["*Test.java"],
+    ),
     deps = [
-        ":common",
+        ":testlib",
     ],
 )

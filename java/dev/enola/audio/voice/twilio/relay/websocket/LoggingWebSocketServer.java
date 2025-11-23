@@ -19,14 +19,14 @@ package dev.enola.audio.voice.twilio.relay.websocket;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
-import org.java_websocket.server.WebSocketServer;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-public abstract class LoggingWebSocketServer extends WebSocketServer {
+// TODO Move to a (TBD) dev.enola.common.net.websocket package
+public abstract class LoggingWebSocketServer extends CloseableWebSocketServer {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingWebSocketServer.class);
 
@@ -41,15 +41,24 @@ public abstract class LoggingWebSocketServer extends WebSocketServer {
 
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
-        logger.info(
+        logger.debug(
                 "WebSocket connection opened: remote={}, local={}",
                 conn.getRemoteSocketAddress(),
                 conn.getLocalSocketAddress());
     }
 
     @Override
+    public void onMessage(WebSocket conn, String message) {
+        logger.trace(
+                "WebSocket message received: remote={}, local={}, message={}",
+                conn.getRemoteSocketAddress(),
+                conn.getLocalSocketAddress(),
+                message);
+    }
+
+    @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-        logger.info(
+        logger.debug(
                 "WebSocket connection closed: remote={}, local={}, code={}, reason={}, remote={}",
                 conn.getRemoteSocketAddress(),
                 conn.getLocalSocketAddress(),

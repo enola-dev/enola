@@ -17,6 +17,9 @@
  */
 package dev.enola.audio.voice.twilio.relay.websocket;
 
+import dev.enola.audio.voice.twilio.relay.ConversationHandler;
+import dev.enola.audio.voice.twilio.relay.ConversationRelay;
+
 import org.java_websocket.WebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,16 +30,32 @@ public class ConversationRelayServer extends LoggingWebSocketServer {
 
     private static final Logger logger = LoggerFactory.getLogger(ConversationRelayServer.class);
 
-    public ConversationRelayServer(InetSocketAddress address) {
+    private final ConversationRelay conversationRelay;
+
+    public ConversationRelayServer(InetSocketAddress address, ConversationRelay conversationRelay) {
         super(address);
+        this.conversationRelay = conversationRelay;
+    }
+
+    public ConversationRelayServer(InetSocketAddress address, ConversationHandler handler) {
+        this(address, new ConversationRelay(handler));
     }
 
     @Override
     public void onMessage(WebSocket conn, String message) {
+        super.onMessage(conn, message);
+
         // TODO Validate X-Twilio-Signature, see
         //   https://www.twilio.com/docs/voice/conversationrelay/websocket-messages
-        // TODO Parse JSON message with ConversationRelayIO.read()
-        logger.info("WebSocket message received: message={}", message);
-        // TODO conn.send(ConversationRelayIO.write(...));
+
+        var jsonResponse = conversationRelay.handle(message);
+        if (jsonResponse != null) {
+            logger.trace(
+                    "WebSocket message response: remote={}, local={}, message={}",
+                    conn.getRemoteSocketAddress(),
+                    conn.getLocalSocketAddress(),
+                    jsonResponse);
+            conn.send(jsonResponse);
+        }
     }
 }

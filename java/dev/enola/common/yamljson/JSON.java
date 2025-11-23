@@ -17,18 +17,22 @@
  */
 package dev.enola.common.yamljson;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import dev.enola.common.ObjectTreeSorter;
+
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * JSON utilities.
+ *
+ * @deprecated Use dev.enola.common.jackson.ObjectMappers instead.
+ */
+@Deprecated // TODO Replace with dev.enola.common.jackson.ObjectMappers and then remove GSON
 public final class JSON {
 
     private static GsonBuilder newBuilder() {
@@ -56,16 +60,19 @@ public final class JSON {
         }
     }
 
+    @Deprecated
     public static Object readObject(String json) {
         if (json.isEmpty()) return ""; // NOT Collections.emptyMap();
         return read(json, Object.class);
     }
 
+    @Deprecated
     public static Map<String, Object> readMap(String json) {
         TypeToken<Map<String, Object>> mapType = new TypeToken<Map<String, Object>>() {};
         return read(json, mapType);
     }
 
+    @Deprecated
     public static String write(Object root, boolean format) {
         if ("".equals(root)) return "";
         var builder = newBuilder();
@@ -78,58 +85,14 @@ public final class JSON {
      * but not 100% fully compliant; because Java uses e.g. 1.0E30 instead of 1e+30, and a few other
      * such differences.
      */
+    @Deprecated // ?
     @SuppressWarnings("rawtypes")
     // This is used by dev.enola.common.canonicalize.Canonicalizer
+    // There is now very similar code in dev.enola.common.jackson.testlib.JsonTester
     public static String canonicalize(String json, boolean format) {
         // TODO Consider instead using
         // https://github.com/filip26/titanium-json-ld/blob/5c2c02c1f65b8e885fb689a460efba3f6925b479/src/main/java/com/apicatalog/jsonld/json/JsonCanonicalizer.java#L39
-        return write(sortByKeyIfMap(readObject(json)), format);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Object sortByKeyIfMap(Object object) {
-        if (object instanceof Map) {
-            var map = (Map<String, Object>) object;
-            return sortByKey(map);
-        } else if (object instanceof List list) {
-            // NB: We cannot use an ImmutableList here, because null is permitted!
-            var newList = new ArrayList<>(list.size());
-            for (var element : list) {
-                var sorted = sortByKeyIfMap(element);
-                newList.add(sorted);
-            }
-            // TODO Do this only when canonicalizing JSON-LD, not any JSON:
-            sortListByID(newList);
-            return newList;
-        }
-        return object;
-    }
-
-    private static Map<String, Object> sortByKey(Map<String, Object> map) {
-        List<String> keys = new ArrayList<>(map.keySet());
-        Collections.sort(keys);
-
-        var newMap = ImmutableMap.<String, Object>builderWithExpectedSize(keys.size());
-        for (var key : keys) {
-            newMap.put(key, sortByKeyIfMap(map.get(key)));
-        }
-        return newMap.build();
-    }
-
-    private static void sortListByID(List<Object> list) {
-        Collections.sort(
-                list,
-                (o1, o2) -> {
-                    // skipcq: JAVA-C1003
-                    if (o1 instanceof Map m1 && o2 instanceof Map m2) {
-                        var oid1 = m1.get("@id");
-                        var oid2 = m2.get("@id");
-                        // skipcq: JAVA-C1003
-                        if (oid1 instanceof String id1 && oid2 instanceof String id2)
-                            return id1.compareTo(id2);
-                        return 0;
-                    } else return 0;
-                });
+        return write(ObjectTreeSorter.sortByKeyIfMap(readObject(json)), format);
     }
 
     private JSON() {}
