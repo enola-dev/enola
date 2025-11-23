@@ -33,7 +33,7 @@ FROM docker.io/library/fedora:43
 
 RUN dnf update -y
 
-RUN dnf install -y fish gcc-c++ golang \
+RUN dnf install -y fish gcc-c++ \
     java-21-openjdk-devel java-21-openjdk-src java-21-openjdk-javadoc \
     java-21-openjdk-javadoc-zip java-21-openjdk-jmods
 
