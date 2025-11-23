@@ -29,8 +29,18 @@ import java.io.IOException;
 
 public class ConversationRelayIO {
 
-    private static final ObjectMapper objectMapper =
+    private static final ObjectMapper DEFAULT_OBJECT_MAPPER =
             ObjectMappers.newObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    private final ObjectMapper objectMapper;
+
+    public ConversationRelayIO() {
+        this(DEFAULT_OBJECT_MAPPER);
+    }
+
+    public ConversationRelayIO(ObjectMapper objectMapper) {
+        this.objectMapper = requireNonNull(objectMapper);
+    }
 
     public ConversationRelayRequest read(String json) {
         try {

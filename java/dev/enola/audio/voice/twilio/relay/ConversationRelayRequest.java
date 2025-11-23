@@ -51,13 +51,17 @@ public sealed interface ConversationRelayRequest {
             String to,
             String forwardedFrom,
             String callerName,
+            // TODO Use direction enum; escalate to Twilio for missing Source of Truth documentation
             String direction,
+            // TODO Use callType enum; escalate to Twilio for missing Source of Truth documentation
             String callType,
+            // TODO Use https://www.twilio.com/docs/voice/api/call-resource#call-status-values enum
             String callStatus,
             String accountSid,
             Map<String, Object> customParameters)
             implements ConversationRelayRequest {}
 
+    // TODO Use Locale for lang
     record Prompt(String voicePrompt, String lang, boolean last)
             implements ConversationRelayRequest {}
 

@@ -30,6 +30,7 @@ java_library(
         "//java/dev/enola/common/jackson",
         "@maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
+        "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )
@@ -41,6 +42,6 @@ junit_tests(
     ),
     deps = [
         ":relay",
-        "//java/dev/enola/common/yamljson",
+        "//java/dev/enola/common/jackson/testlib",
     ],
 )

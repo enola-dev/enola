@@ -28,7 +28,8 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import java.io.IOException;
 
-public class TestYaml {
+public final class TestYaml {
+    private TestYaml() {}
 
     public static String write(Object object) {
         var options = new DumperOptions();
