@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1760193480,
-        "narHash": "sha256-cVwJZjoS3YDkIIapwcgFS7yxBZRnI1lilW3Reu15DQs=",
+        "lastModified": 1763887154,
+        "narHash": "sha256-2NTxmR8vVdtmC+3nNbL+k6V/ZUnacVeC2HMA1yUN0mw=",
         "owner": "vorburger",
         "repo": "bazel-nix",
-        "rev": "fb4635096ac939ff4fb6169bda93dca7a31d0369",
+        "rev": "6fe9c4532acfde994c9c7a5ba6b6d73876808f98",
         "type": "github"
       },
       "original": {
