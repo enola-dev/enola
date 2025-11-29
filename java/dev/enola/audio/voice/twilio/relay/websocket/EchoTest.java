@@ -36,8 +36,8 @@ public class EchoTest {
                 var response =
                         ws.send(
                                 """
-                                    {
-                                      "type": "prompt",
+                                {
+                                  "type": "prompt",
                                   "voicePrompt": "hello",
                                   "lang": "en-US",
                                   "last": true

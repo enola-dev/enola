@@ -38,7 +38,13 @@ java_library(
 
 java_binary(
     name = "echo",
-    main_class = "dev.enola.audio.voice.twilio.relay.websocket.EchoMain",
+    main_class = "dev.enola.audio.voice.twilio.relay.websocket.EchoConversationMain",
+    runtime_deps = [":websocket"],
+)
+
+java_binary(
+    name = "logging",
+    main_class = "dev.enola.audio.voice.twilio.relay.websocket.LoggingMain",
     runtime_deps = [":websocket"],
 )
 
