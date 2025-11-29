@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
 import dev.enola.common.concurrent.Threads;
 
@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 
-// TODO Move to a (TBD) dev.enola.common.net.websocket package
 public abstract class CloseableWebSocketServer extends WebSocketServer implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(CloseableWebSocketServer.class);

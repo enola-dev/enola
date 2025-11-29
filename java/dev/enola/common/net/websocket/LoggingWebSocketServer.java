@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-// TODO Move to a (TBD) dev.enola.common.net.websocket package
 public abstract class LoggingWebSocketServer extends CloseableWebSocketServer {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingWebSocketServer.class);

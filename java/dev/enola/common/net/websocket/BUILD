@@ -25,12 +25,11 @@ java_library(
             "*Test.java",
         ],
     ),
+    visibility = ["//:__subpackages__"],
     deps = [
-        "//java/dev/enola/audio/voice/twilio/relay",
         "//java/dev/enola/common",
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/logging",
-        "//java/dev/enola/common/net/websocket",
         "@maven//:org_java_websocket_Java_WebSocket",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
@@ -38,8 +37,8 @@ java_library(
 )
 
 java_binary(
-    name = "echo",
-    main_class = "dev.enola.audio.voice.twilio.relay.websocket.EchoConversationMain",
+    name = "logging",
+    main_class = "dev.enola.common.net.websocket.LoggingMain",
     runtime_deps = [":websocket"],
 )
 
@@ -50,9 +49,7 @@ junit_tests(
     ),
     deps = [
         ":websocket",
-        "//java/dev/enola/audio/voice/twilio/relay",
         "//java/dev/enola/common/jackson/testlib",
-        "//java/dev/enola/common/net/websocket",
         "@maven//:org_java_websocket_Java_WebSocket",
     ],
 )
