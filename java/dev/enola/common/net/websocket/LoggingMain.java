@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
 import dev.enola.common.ShutdownCloser;
 import dev.enola.common.logging.JavaUtilLogging;
@@ -26,7 +26,6 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
-// TODO Move to a (TBD) dev.enola.common.net.websocket package
 public class LoggingMain {
 
     public static void main(String[] args) {

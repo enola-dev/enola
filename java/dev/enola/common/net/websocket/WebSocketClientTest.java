@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -26,7 +26,6 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
 
-// TODO Move to a (TBD) dev.enola.common.net.websocket package
 public class WebSocketClientTest {
 
     private static class EchoWebSocketServer extends LoggingWebSocketServer {

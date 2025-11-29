@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -31,7 +31,6 @@ import java.util.concurrent.TimeUnit;
  * for testing. Consider using a more feature-complete library for production code; e.g. {@link
  * org.java_websocket.client.WebSocketClient} or similar.
  */
-// TODO Move to a (TBD) dev.enola.common.net.websocket package
 public class WebSocketClient implements AutoCloseable {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();

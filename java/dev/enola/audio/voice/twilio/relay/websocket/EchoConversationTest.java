@@ -19,13 +19,14 @@ package dev.enola.audio.voice.twilio.relay.websocket;
 
 import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
 import dev.enola.common.jackson.testlib.JsonTester;
+import dev.enola.common.net.websocket.WebSocketClient;
 
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-public class EchoTest {
+public class EchoConversationTest {
 
     @Test
     public void echo() throws Exception {
