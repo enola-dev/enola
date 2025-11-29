@@ -27,6 +27,7 @@ import dev.enola.audio.voice.twilio.relay.ConversationRelayResponse.Play;
 import dev.enola.audio.voice.twilio.relay.ConversationRelayResponse.Text;
 
 import java.net.URI;
+import java.util.Locale;
 
 /**
  * Twilio's <a
@@ -43,7 +44,7 @@ import java.net.URI;
 })
 public sealed interface ConversationRelayResponse {
 
-    record Text(String token, String lang, boolean last, boolean interruptible, boolean preemptible)
+    record Text(String token, Locale lang, boolean last, boolean interruptible, boolean preemptible)
             implements ConversationRelayResponse {}
 
     record Play(URI source, boolean interruptible, boolean preemptible)
@@ -51,8 +52,7 @@ public sealed interface ConversationRelayResponse {
 
     record DTMF(String digits) implements ConversationRelayResponse {}
 
-    // TODO Use Locale for ttsLanguage and transcriptionLanguage
-    record Language(String ttsLanguage, String transcriptionLanguage)
+    record Language(Locale ttsLanguage, Locale transcriptionLanguage)
             implements ConversationRelayResponse {}
 
     // TODO Should handoffData be Map<String, Object> instead of String?

@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 public class ConversationRelayRequestTest {
 
     ConversationRelayIO reader = new ConversationRelayIO();
@@ -46,7 +48,7 @@ public class ConversationRelayRequestTest {
                                 {"type":"prompt","voicePrompt":"Hi. Can I make a reservation, please? Hello. I'd like to make a reservation.","lang":"en-US","last":true}
                                 """);
         assertThat(prompt.voicePrompt()).startsWith("Hi. Can I");
-        assertThat(prompt.lang()).isEqualTo("en-US");
+        assertThat(prompt.lang()).isEqualTo(Locale.US);
         assertThat(prompt.last()).isTrue();
     }
 
@@ -59,7 +61,7 @@ public class ConversationRelayRequestTest {
                                 {"type":"prompt","voicePrompt":"Hi. Can I make a reservation, please? Hello. I'd like to make a reservation.","lang":"en-US","last":true,"extraField":"extraValue"}
                                 """);
         assertThat(prompt.voicePrompt()).startsWith("Hi. Can I");
-        assertThat(prompt.lang()).isEqualTo("en-US");
+        assertThat(prompt.lang()).isEqualTo(Locale.US);
         assertThat(prompt.last()).isTrue();
     }
 
