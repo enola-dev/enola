@@ -25,16 +25,18 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 public class ObjectMappersTest {
 
-    static record Something(String name) {}
+    static record Something(String name, Locale lang) {}
 
-    String expectedJSON = "{\"name\":\"test\"}";
+    String expectedJSON = "{\"name\":\"test\",\"lang\":\"en-US\"}";
     String jsonWithUnknown = "{\"name\":\"test\",\"unknown\":\"property\"}";
 
     @Test
     public void testSomething() throws Exception {
-        Something something = new Something("test");
+        Something something = new Something("test", Locale.of("en", "US"));
         ObjectMapper objectMapper = ObjectMappers.INSTANCE;
         String json = objectMapper.writeValueAsString(something);
         assertThat(json).isEqualTo(expectedJSON);

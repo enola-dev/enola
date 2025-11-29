@@ -24,10 +24,12 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.LogicalType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,6 +70,11 @@ public final class ObjectMappers {
         // https://github.com/FasterXML/jackson-modules-java8
         mapper.registerModule(new JavaTimeModule());
         // TODO Optional<T> support with mapper.registerModule(new Jdk8Module());
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Locale.class, new LocaleSerializer());
+        module.addDeserializer(Locale.class, new LocaleDeserializer());
+        mapper.registerModule(module);
 
         // Enable JSONc features: Java-style comments and trailing commas
         // https://github.com/enola-dev/enola/issues/1847

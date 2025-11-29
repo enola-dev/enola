@@ -26,6 +26,7 @@ import dev.enola.audio.voice.twilio.relay.ConversationRelayRequest.Interrupt;
 import dev.enola.audio.voice.twilio.relay.ConversationRelayRequest.Prompt;
 import dev.enola.audio.voice.twilio.relay.ConversationRelayRequest.Setup;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -51,18 +52,17 @@ public sealed interface ConversationRelayRequest {
             String to,
             String forwardedFrom,
             String callerName,
-            // TODO Use direction enum; escalate to Twilio for missing Source of Truth documentation
-            String direction,
-            // TODO Use callType enum; escalate to Twilio for missing Source of Truth documentation
-            String callType,
-            // TODO Use https://www.twilio.com/docs/voice/api/call-resource#call-status-values enum
-            String callStatus,
+            // TODO Use direction enum { PSTN, ... ? }; escalate to Twilio for missing documentation
+            // String direction,
+            // TODO Use callType enum; escalate to Twilio for missing documentation
+            // String callType,
+            // TODO Use UPPER https://www.twilio.com/docs/voice/api/call-resource#call-status-values
+            // String callStatus,
             String accountSid,
             Map<String, Object> customParameters)
             implements ConversationRelayRequest {}
 
-    // TODO Use Locale for lang
-    record Prompt(String voicePrompt, String lang, boolean last)
+    record Prompt(String voicePrompt, Locale lang, boolean last)
             implements ConversationRelayRequest {}
 
     record DTMF(String digit) implements ConversationRelayRequest {}

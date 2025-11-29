@@ -21,12 +21,15 @@ import dev.enola.common.jackson.testlib.JsonTester;
 
 import org.junit.Test;
 
+import java.util.Locale;
+
 public class ConversationRelayResponseTest {
 
     @Test
     public void textMessage() throws Exception {
         JsonTester.assertEqualsTo(
-                new ConversationRelayResponse.Text("hello, world!", "en", false, true, true),
+                new ConversationRelayResponse.Text(
+                        "hello, world!", Locale.of("en"), false, true, true),
                 """
                 {
                   "interruptible": true,
@@ -68,8 +71,9 @@ public class ConversationRelayResponseTest {
 
     @Test
     public void languageMessage() throws Exception {
+        var lang = Locale.of("en", "US");
         JsonTester.assertEqualsTo(
-                new ConversationRelayResponse.Language("en-US", "en-US"),
+                new ConversationRelayResponse.Language(lang, lang),
                 """
                 {
                   "transcriptionLanguage": "en-US",
