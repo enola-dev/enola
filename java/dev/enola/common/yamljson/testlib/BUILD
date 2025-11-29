@@ -19,6 +19,7 @@ load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "testlib",
+    testonly = True,
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],

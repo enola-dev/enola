@@ -24,20 +24,12 @@ import dev.enola.common.logging.JavaUtilLogging;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 
-public class Main {
-    @SuppressWarnings("resource") // TODO Remove after adding a /quitquit
+public class EchoMain {
+
+    @SuppressWarnings("resource")
     public static void main(String[] args) {
-        String host = args.length > 0 ? args[0] : "localhost";
-        int port = args.length > 1 ? Integer.parseInt(args[1]) : 8888;
-        var address = new InetSocketAddress(host, port);
-
         JavaUtilLogging.configure(Level.ALL);
-
-        // TODO Add a (localhost only) /quitquit sort of command to close() the server
-
-        // TODO Move Main class to another module, and replace echo with AI conversation handler...
-        var handler = new EchoConversationHandler();
-
-        ShutdownCloser.add(new ConversationRelayServer(address, handler));
+        var sock = new InetSocketAddress(8888);
+        ShutdownCloser.add(new ConversationRelayServer(sock, new EchoConversationHandler()));
     }
 }

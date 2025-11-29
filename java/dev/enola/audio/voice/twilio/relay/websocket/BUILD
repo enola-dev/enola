@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:java_binary.bzl", "java_binary")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_binary(
+java_library(
     name = "websocket",
     srcs = glob(
         ["*.java"],
@@ -24,14 +25,32 @@ java_binary(
             "*Test.java",
         ],
     ),
-    main_class = "dev.enola.audio.voice.twilio.relay.websocket.Main",
-    runtime_deps = [
-        "//java/dev/enola/audio/voice/twilio/relay",
-    ],
     deps = [
+        "//java/dev/enola/audio/voice/twilio/relay",
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/logging",
         "@maven//:org_java_websocket_Java_WebSocket",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+java_binary(
+    name = "echo",
+    main_class = "dev.enola.audio.voice.twilio.relay.websocket.EchoMain",
+    runtime_deps = [":websocket"],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(
+        ["*Test.java"],
+    ),
+    deps = [
+        ":websocket",
+        "//java/dev/enola/audio/voice/twilio/relay",
+        "//java/dev/enola/common/jackson/testlib",
+        "@maven//:org_java_websocket_Java_WebSocket",
     ],
 )

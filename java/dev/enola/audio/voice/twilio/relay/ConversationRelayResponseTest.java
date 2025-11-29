@@ -17,91 +17,77 @@
  */
 package dev.enola.audio.voice.twilio.relay;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import dev.enola.common.yamljson.JSON;
+import dev.enola.common.jackson.testlib.JsonTester;
 
 import org.junit.Test;
 
 public class ConversationRelayResponseTest {
-    ConversationRelayIO io = new ConversationRelayIO();
 
     @Test
-    public void textMessage() {
-        var response = new ConversationRelayResponse.Text("hello, world!", false, "en", true, true);
-        var json = JSON.canonicalize(io.write(response), true);
-        assertThat(json)
-                .isEqualTo(
-                        """
-                        {
-                          "interruptible": true,
-                          "lang": "en",
-                          "last": false,
-                          "preemptible": true,
-                          "token": "hello, world!",
-                          "type": "text"
-                        }\
-                        """);
+    public void textMessage() throws Exception {
+        JsonTester.assertEqualsTo(
+                new ConversationRelayResponse.Text("hello, world!", "en", false, true, true),
+                """
+                {
+                  "interruptible": true,
+                  "lang": "en",
+                  "last": false,
+                  "preemptible": true,
+                  "token": "hello, world!",
+                  "type": "text"
+                }
+                """);
     }
 
     @Test
-    public void playMessage() {
-        var response =
+    public void playMessage() throws Exception {
+        JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.Play(
-                        java.net.URI.create("http://example.com/audio.mp3"), true, true);
-        var json = JSON.canonicalize(io.write(response), true);
-        assertThat(json)
-                .isEqualTo(
-                        """
-                        {
-                          "interruptible": true,
-                          "preemptible": true,
-                          "source": "http://example.com/audio.mp3",
-                          "type": "play"
-                        }\
-                        """);
+                        java.net.URI.create("http://example.com/audio.mp3"), true, true),
+                """
+                {
+                  "interruptible": true,
+                  "preemptible": true,
+                  "source": "http://example.com/audio.mp3",
+                  "type": "play"
+                }
+                """);
     }
 
     @Test
-    public void dtmfMessage() {
-        var response = new ConversationRelayResponse.DTMF("1234");
-        var json = JSON.canonicalize(io.write(response), true);
-        assertThat(json)
-                .isEqualTo(
-                        """
-                        {
-                          "digits": "1234",
-                          "type": "sendDigits"
-                        }\
-                        """);
+    public void dtmfMessage() throws Exception {
+        JsonTester.assertEqualsTo(
+                new ConversationRelayResponse.DTMF("1234"),
+                """
+                {
+                  "digits": "1234",
+                  "type": "sendDigits"
+                }
+                """);
     }
 
     @Test
-    public void languageMessage() {
-        var response = new ConversationRelayResponse.Language("en-US", "en-US");
-        var json = JSON.canonicalize(io.write(response), true);
-        assertThat(json)
-                .isEqualTo(
-                        """
-                        {
-                          "transcriptionLanguage": "en-US",
-                          "ttsLanguage": "en-US",
-                          "type": "language"
-                        }\
-                        """);
+    public void languageMessage() throws Exception {
+        JsonTester.assertEqualsTo(
+                new ConversationRelayResponse.Language("en-US", "en-US"),
+                """
+                {
+                  "transcriptionLanguage": "en-US",
+                  "ttsLanguage": "en-US",
+                  "type": "language"
+                }
+                """);
     }
 
     @Test
-    public void endMessage() {
-        var response = new ConversationRelayResponse.End("some-handoff-data");
-        var json = JSON.canonicalize(io.write(response), true);
-        assertThat(json)
-                .isEqualTo(
-                        """
-                        {
-                          "handoffData": "some-handoff-data",
-                          "type": "end"
-                        }\
-                        """);
+    public void endMessage() throws Exception {
+        JsonTester.assertEqualsTo(
+                new ConversationRelayResponse.End("some-handoff-data"),
+                """
+                {
+                  "handoffData": "some-handoff-data",
+                  "type": "end"
+                }
+                """);
     }
 }
