@@ -63,5 +63,14 @@ public final class JavaUtilLogging {
         var handler = new LoggingColorConsoleHandler();
         handler.setLevel(level);
         rootLogger.addHandler(handler);
+
+        // =============================
+        // Configure specific frameworks
+        //   TODO Make these modular and injectable!
+
+        // Disable Java WebSockets logging entirely. The problem is that it, at FINEST, prints
+        //   BINARY data, which BREAKS subsequent logging, and that's (very) confusing.
+        //   Our own LoggingWebSocketServer already logs what we are interested in.
+        Logger.getLogger("org.java_websocket").setLevel(Level.OFF);
     }
 }

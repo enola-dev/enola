@@ -17,19 +17,34 @@
  */
 package dev.enola.audio.voice.twilio.relay.websocket;
 
-import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
 import dev.enola.common.ShutdownCloser;
 import dev.enola.common.logging.JavaUtilLogging;
 
+import org.java_websocket.WebSocket;
+
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
-public class EchoMain {
+// TODO Move to a (TBD) dev.enola.common.net.websocket package
+public class LoggingMain {
 
-    @SuppressWarnings("resource")
     public static void main(String[] args) {
-        JavaUtilLogging.configure(Level.ALL);
+        JavaUtilLogging.configure(Level.INFO);
         var sock = new InetSocketAddress(8888);
-        ShutdownCloser.add(new ConversationRelayServer(sock, new EchoConversationHandler()));
+        ShutdownCloser.add(
+                new LoggingWebSocketServer(sock) {
+                    @Override
+                    public void onMessage(WebSocket conn, String message) {
+                        super.onMessage(conn, message);
+                        System.out.println(message);
+                    }
+
+                    @Override
+                    public void onMessage(WebSocket conn, ByteBuffer message) {
+                        super.onMessage(conn, message);
+                        System.err.println(message.array().length + " bytes...");
+                    }
+                });
     }
 }

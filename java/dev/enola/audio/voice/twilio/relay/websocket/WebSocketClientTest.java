@@ -24,6 +24,7 @@ import org.junit.Test;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
 
 // TODO Move to a (TBD) dev.enola.common.net.websocket package
 public class WebSocketClientTest {
@@ -35,6 +36,13 @@ public class WebSocketClientTest {
 
         @Override
         public void onMessage(WebSocket conn, String message) {
+            super.onMessage(conn, message);
+            conn.send(message);
+        }
+
+        @Override
+        public void onMessage(WebSocket conn, ByteBuffer message) {
+            super.onMessage(conn, message);
             conn.send(message);
         }
     }

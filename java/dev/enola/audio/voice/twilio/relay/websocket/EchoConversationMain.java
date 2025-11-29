@@ -15,21 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay;
+package dev.enola.audio.voice.twilio.relay.websocket;
 
-import dev.enola.audio.voice.twilio.relay.ConversationRelayRequest.Prompt;
+import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
+import dev.enola.common.ShutdownCloser;
+import dev.enola.common.logging.JavaUtilLogging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.net.InetSocketAddress;
+import java.util.logging.Level;
 
-public class EchoConversationHandler implements ConversationHandler {
+public class EchoConversationMain {
 
-    private static final Logger logger = LoggerFactory.getLogger(EchoConversationHandler.class);
-
-    @Override
-    public ConversationRelayResponse onPrompt(Prompt prompt) {
-        logger.info("onPrompt: {}", prompt);
-        return new ConversationRelayResponse.Text(
-                prompt.voicePrompt(), prompt.lang(), prompt.last(), true, true);
+    public static void main(String[] args) {
+        JavaUtilLogging.configure(Level.ALL);
+        var sock = new InetSocketAddress(8888);
+        ShutdownCloser.add(new ConversationRelayServer(sock, new EchoConversationHandler()));
     }
 }
