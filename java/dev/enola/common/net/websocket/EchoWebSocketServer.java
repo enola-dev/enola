@@ -15,24 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
-import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
-import dev.enola.common.ShutdownCloser;
-import dev.enola.common.logging.JavaUtilLogging;
-import dev.enola.common.secret.auto.AutoSecretManager;
+import org.java_websocket.WebSocket;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.logging.Level;
+import java.nio.ByteBuffer;
 
-public class EchoConversationMain {
+class EchoWebSocketServer extends LoggingWebSocketServer {
+    public EchoWebSocketServer(InetSocketAddress address) {
+        super(address);
+    }
 
-    public static void main(String[] args) throws IOException {
-        JavaUtilLogging.configure(Level.ALL);
-        var sock = new InetSocketAddress(8888);
-        ShutdownCloser.add(
-                new ConversationRelayServer(
-                        sock, new EchoConversationHandler(), AutoSecretManager.INSTANCE()));
+    @Override
+    public void onMessage(WebSocket conn, String message) {
+        super.onMessage(conn, message);
+        conn.send(message);
+    }
+
+    @Override
+    public void onMessage(WebSocket conn, ByteBuffer message) {
+        super.onMessage(conn, message);
+        conn.send(message);
     }
 }

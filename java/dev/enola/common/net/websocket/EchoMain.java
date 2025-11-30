@@ -15,24 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.audio.voice.twilio.relay.websocket;
+package dev.enola.common.net.websocket;
 
-import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
 import dev.enola.common.ShutdownCloser;
 import dev.enola.common.logging.JavaUtilLogging;
-import dev.enola.common.secret.auto.AutoSecretManager;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 
-public class EchoConversationMain {
+public class EchoMain {
 
-    public static void main(String[] args) throws IOException {
-        JavaUtilLogging.configure(Level.ALL);
+    public static void main(String[] args) {
+        JavaUtilLogging.configure(Level.INFO);
         var sock = new InetSocketAddress(8888);
-        ShutdownCloser.add(
-                new ConversationRelayServer(
-                        sock, new EchoConversationHandler(), AutoSecretManager.INSTANCE()));
+        ShutdownCloser.add(new EchoWebSocketServer(sock));
     }
 }

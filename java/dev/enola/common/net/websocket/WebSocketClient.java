@@ -37,6 +37,10 @@ public class WebSocketClient implements AutoCloseable {
     private final Queue<CompletableFuture<String>> pending = new ConcurrentLinkedQueue<>();
     private final WebSocket ws;
 
+    public WebSocketClient(int localhostPort) {
+        this(URI.create("ws://localhost:" + localhostPort));
+    }
+
     public WebSocketClient(URI uri) {
         ws =
                 httpClient

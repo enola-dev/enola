@@ -20,12 +20,14 @@ package dev.enola.audio.voice.twilio.relay.websocket;
 import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
 import dev.enola.common.ShutdownCloser;
 import dev.enola.common.logging.JavaUtilLogging;
+import dev.enola.common.secret.auto.AutoSecretManager;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.logging.Level;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String host = args.length > 0 ? args[0] : "localhost";
         int port = args.length > 1 ? Integer.parseInt(args[1]) : 8888;
         var address = new InetSocketAddress(host, port);
@@ -37,6 +39,7 @@ public class Main {
         // TODO Move Main class to another module, and replace echo with AI conversation handler...
         var handler = new EchoConversationHandler();
 
-        ShutdownCloser.add(new ConversationRelayServer(address, handler));
+        ShutdownCloser.add(
+                new ConversationRelayServer(address, handler, AutoSecretManager.INSTANCE()));
     }
 }

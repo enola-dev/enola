@@ -177,3 +177,10 @@ bomx:
   - org.apache.tika:tika-parsers-standard-package:3.2.3:
     exclusions:
       - com.rometools:rome-utils
+
+  # https://github.com/twilio/twilio-java
+  # NB: We *ONLY* use this for its RequestValidator to validate signatures of incoming webhook requests.
+  - com.twilio.sdk:twilio:11.1.0:
+    exclusions:
+      # TODO Remove https://github.com/twilio/twilio-java/pull/930 is merged and a new version is released
+      - org.json:json

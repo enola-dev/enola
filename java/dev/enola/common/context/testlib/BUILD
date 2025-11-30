@@ -45,10 +45,10 @@ junit_tests(
     name = "tests",
     srcs = glob(
         include = ["*Test.java"],
-        allow_empty = True,
     ),
     deps = [
         ":testlib",
+        "//java/dev/enola/common/context",
         "//java/dev/enola/common/io",
         "@maven//:org_jspecify_jspecify",
     ],
