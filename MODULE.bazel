@@ -213,4 +213,12 @@ maven.artifact(
     group = "org.apache.tika",
     version = "3.2.3",
 )
+maven.artifact(
+    artifact = "twilio",
+    exclusions = [
+        "org.json:json",
+    ],
+    group = "com.twilio.sdk",
+    version = "11.1.0",
+)
 use_repo(maven, "maven")

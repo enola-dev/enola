@@ -47,13 +47,13 @@ public class TestTLCRule implements TestRule {
         this.pushedKeys = ImmutableMap.of();
     }
 
-    private TestTLCRule(ImmutableMap<Context.Key<?>, ?> pushes, boolean ignore) {
+    protected TestTLCRule(ImmutableMap<Context.Key<?>, ?> pushes, boolean ignore) {
         this.pushedClasses = ImmutableMap.of();
         this.pushedKeys = pushes;
     }
 
     @Override
-    public Statement apply(Statement base, Description description) {
+    public final Statement apply(Statement base, Description description) {
         return statement(base);
     }
 
@@ -62,6 +62,7 @@ public class TestTLCRule implements TestRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
+                before();
                 try (var ctx = TLC.open()) {
                     for (var push : pushedClasses.entrySet()) {
                         Class<T> clazz = (Class<T>) push.getKey();
@@ -74,8 +75,14 @@ public class TestTLCRule implements TestRule {
                         ctx.push(key, instance);
                     }
                     base.evaluate();
+                } finally {
+                    after();
                 }
             }
         };
     }
+
+    protected void before() {}
+
+    protected void after() {}
 }

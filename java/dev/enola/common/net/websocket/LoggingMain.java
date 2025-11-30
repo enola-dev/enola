@@ -42,7 +42,7 @@ public class LoggingMain {
                     @Override
                     public void onMessage(WebSocket conn, ByteBuffer message) {
                         super.onMessage(conn, message);
-                        System.err.println(message.array().length + " bytes...");
+                        System.out.println(message.remaining() + " bytes...");
                     }
                 });
     }

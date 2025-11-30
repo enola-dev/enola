@@ -15,27 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.common.net.websocket;
+package dev.enola.common.context.testlib;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.context.TLC;
+import dev.enola.common.context.TestContext;
+
+import org.junit.Rule;
 import org.junit.Test;
 
-import java.net.InetSocketAddress;
+public class TestContextRuleTest {
 
-public class WebSocketClientTest {
+    @Rule public TestContextRule rule = new TestContextRule();
 
     @Test
-    public void multiple() throws Exception {
-        var sock = new InetSocketAddress(0);
-        try (var server = new EchoWebSocketServer(sock)) {
-            try (var ws = new WebSocketClient(server.awaitPort())) {
-                var response1 = ws.send("hello, world #1", true);
-                assertThat(response1).contains("hello, world #1");
+    public void isUnderTest() {
+        assertThat(TestContext.isUnderTest()).isTrue();
+    }
 
-                var response2 = ws.send("hello, world #2", true);
-                assertThat(response2).contains("hello, world #2");
-            }
+    @Test
+    public void notUnderTest() {
+        try (var ctx = TLC.open().push(TestContext.Keys.UNDER_TEST, false)) {
+            assertThat(TestContext.isUnderTest()).isFalse();
         }
     }
 }

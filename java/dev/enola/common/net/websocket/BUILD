@@ -42,6 +42,12 @@ java_binary(
     runtime_deps = [":websocket"],
 )
 
+java_binary(
+    name = "echo",
+    main_class = "dev.enola.common.net.websocket.EchoMain",
+    runtime_deps = [":websocket"],
+)
+
 junit_tests(
     name = "tests",
     srcs = glob(
@@ -49,6 +55,8 @@ junit_tests(
     ),
     deps = [
         ":websocket",
+        "//java/dev/enola/common/context",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/jackson/testlib",
         "@maven//:org_java_websocket_Java_WebSocket",
     ],

@@ -31,6 +31,9 @@ java_library(
         "//java/dev/enola/common/concurrent",
         "//java/dev/enola/common/logging",
         "//java/dev/enola/common/net/websocket",
+        "//java/dev/enola/common/secret",
+        "//java/dev/enola/common/secret/auto",
+        "@maven//:com_google_guava_guava",
         "@maven//:org_java_websocket_Java_WebSocket",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
@@ -51,8 +54,10 @@ junit_tests(
     deps = [
         ":websocket",
         "//java/dev/enola/audio/voice/twilio/relay",
+        "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/jackson/testlib",
         "//java/dev/enola/common/net/websocket",
+        "//java/dev/enola/common/secret/auto",
         "@maven//:org_java_websocket_Java_WebSocket",
     ],
 )

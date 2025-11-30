@@ -18,9 +18,12 @@
 package dev.enola.audio.voice.twilio.relay.websocket;
 
 import dev.enola.audio.voice.twilio.relay.EchoConversationHandler;
+import dev.enola.common.context.testlib.TestContextRule;
 import dev.enola.common.jackson.testlib.JsonTester;
 import dev.enola.common.net.websocket.WebSocketClient;
+import dev.enola.common.secret.auto.TestSecretManager;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
@@ -28,10 +31,14 @@ import java.net.URI;
 
 public class EchoConversationTest {
 
+    @Rule public TestContextRule rule = new TestContextRule();
+
     @Test
     public void echo() throws Exception {
         var sock = new InetSocketAddress(0);
-        try (var server = new ConversationRelayServer(sock, new EchoConversationHandler())) {
+        try (var server =
+                new ConversationRelayServer(
+                        sock, new EchoConversationHandler(), new TestSecretManager())) {
             int port = server.awaitPort();
             try (var ws = new WebSocketClient(URI.create("ws://localhost:" + port))) {
                 var response =

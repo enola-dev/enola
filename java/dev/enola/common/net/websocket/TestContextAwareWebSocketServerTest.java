@@ -19,22 +19,38 @@ package dev.enola.common.net.websocket;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import dev.enola.common.context.TestContext;
+import dev.enola.common.context.testlib.TestContextRule;
+
+import org.java_websocket.WebSocket;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.net.InetSocketAddress;
 
-public class WebSocketClientTest {
+public class TestContextAwareWebSocketServerTest {
+
+    private static class TestWebSocketServer extends EchoWebSocketServer {
+
+        public TestWebSocketServer(InetSocketAddress address) {
+            super(address);
+        }
+
+        @Override
+        public void onMessage(WebSocket conn, String message) {
+            if (!TestContext.isUnderTest()) throw new IllegalStateException("Not under test");
+            super.onMessage(conn, message);
+        }
+    }
+
+    @Rule public TestContextRule rule = new TestContextRule();
 
     @Test
-    public void multiple() throws Exception {
+    public void test() throws Exception {
         var sock = new InetSocketAddress(0);
-        try (var server = new EchoWebSocketServer(sock)) {
+        try (var server = new TestWebSocketServer(sock)) {
             try (var ws = new WebSocketClient(server.awaitPort())) {
-                var response1 = ws.send("hello, world #1", true);
-                assertThat(response1).contains("hello, world #1");
-
-                var response2 = ws.send("hello, world #2", true);
-                assertThat(response2).contains("hello, world #2");
+                assertThat(ws.send("hello, world", true)).isEqualTo("hello, world");
             }
         }
     }
