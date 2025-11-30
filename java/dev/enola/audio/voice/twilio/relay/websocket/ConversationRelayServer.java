@@ -60,7 +60,13 @@ public class ConversationRelayServer extends LoggingWebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         super.onOpen(conn, handshake);
 
-        String url = handshake.getResourceDescriptor();
+        String host = handshake.getFieldValue("X-Forwarded-Host");
+        if (host == null) {
+            host = handshake.getFieldValue("Host");
+        }
+        // Twilio needs HTTPS for webhook signature validation, even for WSS connections.
+        var url = "https://" + host + handshake.getResourceDescriptor();
+
         var signature = handshake.getFieldValue("x-twilio-signature");
         if (!signatureValidator.validate(url, signature)) {
             var msg = "Invalid Twilio Signature header";
