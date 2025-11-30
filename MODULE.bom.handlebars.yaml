@@ -184,3 +184,13 @@ bomx:
     exclusions:
       # TODO Remove https://github.com/twilio/twilio-java/pull/930 is merged and a new version is released
       - org.json:json
+      # Exclude anything from https://github.com/twilio/twilio-java/blob/48ed0a084a184154e6216f0530910d39fc44b6d2/pom.xml#L180
+      # that's not imported on https://github.com/twilio/twilio-java/blob/main/src/main/java/com/twilio/security/RequestValidator.java
+      - com.auth0:java-jwt
+      - com.fasterxml.jackson.core:jackson-dataformat-xml
+      - com.google.code.gson:gson
+      - commons-io:commons-io
+      - io.jsonwebtoken:jjwt-api
+      - io.jsonwebtoken:jjwt-impl
+      - io.jsonwebtoken:jjwt-jackson
+      - org.apache.httpcomponents.client5:httpclient5
