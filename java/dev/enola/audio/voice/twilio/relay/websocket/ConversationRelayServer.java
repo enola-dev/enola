@@ -59,7 +59,15 @@ public class ConversationRelayServer extends LoggingWebSocketServer {
         super.onOpen(conn, handshake);
 
         String host = handshake.getFieldValue("X-Forwarded-Host");
-        if (host == null) {
+        if (host != null) {
+            // The X-Forwarded-Host header can be a comma-separated list of hosts.
+            // The first one is the original host.
+            int commaIndex = host.indexOf(',');
+            if (commaIndex != -1) {
+                host = host.substring(0, commaIndex);
+            }
+            host = host.trim();
+        } else {
             host = handshake.getFieldValue("Host");
         }
         var url = "wss://" + host + handshake.getResourceDescriptor();
