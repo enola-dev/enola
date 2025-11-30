@@ -17,6 +17,8 @@
  */
 package dev.enola.audio.voice.twilio.relay.websocket;
 
+import com.google.common.base.Strings;
+
 import dev.enola.audio.voice.twilio.relay.ConversationHandler;
 import dev.enola.audio.voice.twilio.relay.ConversationRelay;
 import dev.enola.audio.voice.twilio.security.SignatureValidator;
@@ -58,25 +60,24 @@ public class ConversationRelayServer extends LoggingWebSocketServer {
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         super.onOpen(conn, handshake);
 
-        String host = handshake.getFieldValue("X-Forwarded-Host");
-        if (host != null) {
-            // The X-Forwarded-Host header can be a comma-separated list of hosts.
-            // The first one is the original host.
-            int commaIndex = host.indexOf(',');
-            if (commaIndex != -1) {
-                host = host.substring(0, commaIndex);
-            }
-            host = host.trim();
-        } else {
-            host = handshake.getFieldValue("Host");
-        }
-        var url = "wss://" + host + handshake.getResourceDescriptor();
-
+        var remote = conn.getRemoteSocketAddress();
+        var host = handshake.getFieldValue("Host");
+        var forwardedHosts = handshake.getFieldValue("X-Forwarded-Host");
         var signature = handshake.getFieldValue("x-twilio-signature");
-        if (!signatureValidator.validate(url, signature)) {
-            var msg = "Invalid Twilio Signature header";
-            logger.error(msg + "; remote={}", conn.getRemoteSocketAddress());
+        var requestURI = handshake.getResourceDescriptor();
+
+        if (Strings.isNullOrEmpty(host) && Strings.isNullOrEmpty(forwardedHosts)) {
+            var msg = "Cannot validate Twilio Signature; missing Host (and X-Forwarded-Host)";
+            logger.error(msg + "; remote={}, requestURI={}", remote, requestURI);
+            conn.closeConnection(1002, msg); // 1002 = Protocol Error
+            return;
+        }
+
+        if (!signatureValidator.validate(host, forwardedHosts, requestURI, signature)) {
+            var msg = "Invalid Twilio Signature";
+            logger.error(msg + "; remote={}, requestURI={}", remote, requestURI);
             conn.closeConnection(1008, msg); // 1008 = Policy Violation (like HTTP 401 Unauthorized)
+            return;
         }
     }
 
