@@ -15,10 +15,9 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
-load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
-    name = "relay",
+    name = "security",
     srcs = glob(
         ["*.java"],
         exclude = [
@@ -28,23 +27,10 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/context",
-        "//java/dev/enola/common/jackson",
         "//java/dev/enola/common/secret",
-        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
-        "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_google_guava_guava",
+        "@maven//:com_twilio_sdk_twilio",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
-    ],
-)
-
-junit_tests(
-    name = "tests",
-    srcs = glob(
-        ["*Test.java"],
-    ),
-    deps = [
-        ":relay",
-        "//java/dev/enola/common/jackson/testlib",
     ],
 )
