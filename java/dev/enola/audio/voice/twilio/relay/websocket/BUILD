@@ -34,6 +34,7 @@ java_library(
         "//java/dev/enola/common/net/websocket",
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
+        "@maven//:com_google_guava_guava",
         "@maven//:org_java_websocket_Java_WebSocket",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",

@@ -53,4 +53,11 @@ public class SignatureValidatorTest {
         var validator = new SignatureValidator(sm);
         assertThat(validator.validate(BAD_URL, signature)).isFalse();
     }
+
+    @Test
+    public void validSignatureWithHostHeader() throws Exception {
+        var validator = new SignatureValidator(sm);
+        assertThat(validator.validate("70cd1a93aa44.ngrok-free.app", null, "/", signature))
+                .isTrue();
+    }
 }
