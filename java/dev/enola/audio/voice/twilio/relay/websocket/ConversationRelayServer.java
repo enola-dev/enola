@@ -17,11 +17,9 @@
  */
 package dev.enola.audio.voice.twilio.relay.websocket;
 
-import com.google.common.collect.Iterators;
-
 import dev.enola.audio.voice.twilio.relay.ConversationHandler;
 import dev.enola.audio.voice.twilio.relay.ConversationRelay;
-import dev.enola.audio.voice.twilio.relay.SignatureValidator;
+import dev.enola.audio.voice.twilio.security.SignatureValidator;
 import dev.enola.common.net.websocket.LoggingWebSocketServer;
 import dev.enola.common.secret.SecretManager;
 
@@ -69,10 +67,7 @@ public class ConversationRelayServer extends LoggingWebSocketServer {
         var signature = handshake.getFieldValue("x-twilio-signature");
         if (!signatureValidator.validate(url, signature)) {
             var msg = "Invalid Twilio Signature header";
-            logger.error(
-                    msg + "; remote={}, headers={}",
-                    conn.getRemoteSocketAddress(),
-                    Iterators.toString(handshake.iterateHttpFields()));
+            logger.error(msg + "; remote={}", conn.getRemoteSocketAddress());
             conn.closeConnection(1008, msg); // 1008 = Policy Violation (like HTTP 401 Unauthorized)
         }
     }
