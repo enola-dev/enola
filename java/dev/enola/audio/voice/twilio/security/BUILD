@@ -15,6 +15,7 @@
 # limitations under the License.
 
 load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_library(
     name = "security",
@@ -32,5 +33,17 @@ java_library(
         "@maven//:com_twilio_sdk_twilio",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
+    ],
+)
+
+junit_tests(
+    name = "tests",
+    srcs = glob(
+        ["*Test.java"],
+    ),
+    deps = [
+        ":security",
+        "//java/dev/enola/common/context",
+        "//java/dev/enola/common/secret",
     ],
 )
