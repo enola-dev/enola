@@ -21,13 +21,13 @@ import com.google.common.base.Strings;
 import com.twilio.security.RequestValidator;
 
 import dev.enola.common.context.TestContext;
-import dev.enola.common.io.iri.URIs;
 import dev.enola.common.secret.SecretManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 
 public final class SignatureValidator {
 
@@ -37,14 +37,14 @@ public final class SignatureValidator {
 
     public SignatureValidator(SecretManager secretManager)
             throws IllegalStateException, IOException {
-        var token =
+        String token =
                 TestContext.isUnderTest()
                         ? "TESTING"
                         : secretManager.get("TWILIO_AUTH_TOKEN").map(String::new);
         this.validator = new RequestValidator(token);
     }
 
-    public boolean validate(String fullURL, String expectedSignature) {
+    public boolean validate(String externalURL, String expectedSignature) {
         if ("TRUE".equals(System.getenv("TWILIO_SKIP_AUTH"))) {
             logger.warn("Skipping Twilio signature validation! :(");
             return true;
@@ -55,19 +55,9 @@ public final class SignatureValidator {
             return false;
         }
 
-        var urlWithoutParameters = URIs.getPath(fullURL);
-        var parameters = URIs.getQueryMap(fullURL);
-
-        var isValid = validator.validate(urlWithoutParameters, parameters, expectedSignature);
-        if (!isValid) {
-            logger.warn(
-                    "Invalid Twilio signature: fullURL={}, urlWithoutParameters={}, parameters={},"
-                            + " expectedSignature={}",
-                    fullURL,
-                    urlWithoutParameters,
-                    parameters,
-                    expectedSignature);
-        }
+        var isValid = validator.validate(externalURL, Map.of(), expectedSignature);
+        if (!isValid)
+            logger.warn("Invalid Twilio signature: {} for {}", expectedSignature, externalURL);
         return isValid;
     }
 }

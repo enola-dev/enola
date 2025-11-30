@@ -28,7 +28,6 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/common/context",
-        "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/jackson",
         "//java/dev/enola/common/secret",
         "@maven//:com_fasterxml_jackson_core_jackson_annotations",
