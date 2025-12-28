@@ -19,12 +19,12 @@ set -euo pipefail
 
 ROOT="$(dirname "$(realpath "$0")")"
 
-bazel run //java/dev/enola/common/template/tool:temply -- \
+bazelisk run //java/dev/enola/common/template/tool:temply -- \
     "$PWD"/MODULE.bom.handlebars.yaml "$PWD"/MODULE.bazel.handlebars >MODULE.bazel.new
 
 mv MODULE.bazel.new MODULE.bazel
 
-REPIN=1 bazel run @maven//:pin
+REPIN=1 bazelisk run @maven//:pin
 
 tools/javac/classpath.bash
 
