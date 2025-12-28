@@ -86,6 +86,7 @@ maven.install(
         "org.snakeyaml:snakeyaml-engine:2.10",
         "org.yaml:snakeyaml:2.5",
         "org.slf4j:slf4j-jdk14:2.0.17",
+        "org.slf4j:jul-to-slf4j:2.0.17",
         "org.slf4j:slf4j-simple:2.0.17",
         "org.apache.logging.log4j:log4j-to-jul:2.25.2",
         "io.github.classgraph:classgraph:4.8.184",

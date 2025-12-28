@@ -22,6 +22,7 @@ version:
   grpc: 1.75.0
   mima: 2.4.36
   jackson: 2.20.0
+  slf4j: 2.0.17
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -92,8 +93,9 @@ bom:
   - "info.picocli:picocli-codegen:4.7.6"
   - "org.snakeyaml:snakeyaml-engine:2.10"
   - "org.yaml:snakeyaml:2.5"
-  - "org.slf4j:slf4j-jdk14:2.0.17"
-  - "org.slf4j:slf4j-simple:2.0.17"
+  - "org.slf4j:slf4j-jdk14:{{version.slf4j}}"
+  - "org.slf4j:jul-to-slf4j:{{version.slf4j}}"
+  - "org.slf4j:slf4j-simple:{{version.slf4j}}"
     # Tika (unfortunately!) uses Log4j (v2) instead of SLF4j, so:
   - "org.apache.logging.log4j:log4j-to-jul:2.25.2"
   - "io.github.classgraph:classgraph:4.8.184"
