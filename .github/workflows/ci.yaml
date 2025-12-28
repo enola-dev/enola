@@ -130,7 +130,7 @@ jobs:
       #   run: pre-commit run --all-files
 
       - name: Cache Bazel
-        uses: bazel-contrib/setup-bazel@0.15.0
+        uses: bazel-contrib/setup-bazel@0.16.0
         with:
           # KEEP IN SYNC WITH BELOW!
           bazelisk-cache: true
@@ -249,7 +249,7 @@ jobs:
         # TODO: remove non-nix paths from PATH
 
       - name: Cache Bazel
-        uses: bazel-contrib/setup-bazel@0.15.0
+        uses: bazel-contrib/setup-bazel@0.16.0
         with:
           # KEEP IN SYNC WITH ABOVE!
           bazelisk-cache: true
