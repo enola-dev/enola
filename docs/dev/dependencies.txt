@@ -76,7 +76,7 @@ com.google.auth:google-auth-library-credentials:1.33.0
 com.google.auth:google-auth-library-oauth2-http:1.33.0
 com.google.auto.service:auto-service:1.1.1
 com.google.auto.service:auto-service-annotations:1.1.1
-com.google.auto.value:auto-value:1.11.0
+com.google.auto.value:auto-value:1.11.1
 com.google.auto.value:auto-value-annotations:1.11.0
 com.google.auto:auto-common:1.2.1
 com.google.cloud.opentelemetry:detector-resources-support:0.33.0
@@ -152,7 +152,7 @@ guru.nidi:graphviz-java:0.18.1
 info.picocli:picocli:4.7.7
 info.picocli:picocli-codegen:4.7.6
 info.picocli:picocli-shell-jline3:4.7.7
-io.github.classgraph:classgraph:4.8.181
+io.github.classgraph:classgraph:4.8.184
 io.github.java-diff-utils:java-diff-utils:4.16
 io.github.ollama4j:ollama4j:1.0.100
 io.grpc:grpc-alts:1.69.0
