@@ -31,7 +31,7 @@ register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_de
 bazel_dep(name = "rules_jvm_external", version = "6.8")
 
 # https://github.com/bazel-contrib/rules_jvm_external/issues/1426
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
