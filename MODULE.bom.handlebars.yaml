@@ -154,13 +154,6 @@ bom:
   # TODO https://github.com/swiesend/secret-service/issues/51
   # "org.purejava:kdewallet:1.6.0"
 
-  # https://google.github.io/adk-docs/get-started/installation/
-  # "com.google.adk:google-adk:0.2.0"
-  # "com.google.adk:google-adk-dev:0.2.0"
-  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
-  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}"
-  - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
-
   # https://github.com/commonmark/commonmark-java
   - "org.commonmark:commonmark:0.26.0"
 
@@ -170,7 +163,18 @@ bom:
   # https://github.com/TooTallNate/Java-WebSocket
   - org.java-websocket:Java-WebSocket:1.6.0
 
+  # https://google.github.io/adk-docs/get-started/installation/
+  # "com.google.adk:google-adk:0.2.0"
+  # "com.google.adk:google-adk-dev:0.2.0"
+  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
+  - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
+
 bomx:
+  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}":
+    exclusions:
+      - com.github.docker-java:docker-java
+      - com.github.docker-java:docker-java-transport-httpclient5
+
   - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
     exclusions:
       - org.eclipse.jdt:ecj
