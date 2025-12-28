@@ -15,8 +15,8 @@
 # limitations under the License.
 
 version:
-  langchain4j: 1.7.1
-  langchain4j-beta: 1.7.1-beta14
+  langchain4j: 1.10.0
+  langchain4j-beta: 1.10.0-beta18
   adk: 4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
   rdf4j: 5.1.4
   grpc: 1.75.0
