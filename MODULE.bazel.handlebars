@@ -63,12 +63,15 @@ maven.install(
         # because it contains package org.apache.commons.logging, which we
         # already get from org.slf4j:jcl-over-slf4j, see https://www.slf4j.org/legacy.html
         "commons-logging:commons-logging",
+
         # Spring Boot (which we unfortunately use due to ADK Web's reliance on Spring Boot)
         # aggressively configures logging on its own, but we actually don't want that, because
         # our CLI already does it, so:
         "org.springframework.boot:spring-boot-starter-logging",
+
         # ROME Utils classes appear to also be included in com.rometools:rome - at least via Tika.
         "com.rometools:rome-utils",
+
         # ADK drags this cat along; Thanks, but No Thanks!
         "org.eclipse.jdt:ecj",
     ],
