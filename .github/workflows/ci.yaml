@@ -140,20 +140,20 @@ jobs:
           external-cache: true
           repository-cache: true
       - name: Cache Node.js
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           # -${{ hashFiles('**/package-lock.json') }}
           key: ${{ runner.os }}-npm
           restore-keys: ${{ runner.os }}-npm
       - name: Cache Maven
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven
           restore-keys: ${{ runner.os }}-maven
       - name: Cache Go
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
@@ -162,19 +162,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
       - name: Cache Python Virtual Env
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .venv/
           key: ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
           restore-keys: ${{ runner.os }}-venv-
       - name: Cache Pre-Commit
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pre-commit/
           key: ${{ runner.os }}-cache-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: ${{ runner.os }}-cache-
       - name: Cache Demo
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .cache/demo/
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
