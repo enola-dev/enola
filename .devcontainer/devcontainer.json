@@ -5,11 +5,12 @@
   // TODO https://containers.dev/guide/prebuild
   // with https://github.com/marketplace/actions/dev-container-build-and-run-action
 
-  // This is the "fat" container with a lot of ready tools
-  // from https://github.com/devcontainers/images/tree/main/src/universal
-  // TODO This image is (too!) huge... try switching to https://github.com/devcontainers/images/tree/main/src/base-debian?
-  // Make sure https://github.com/vorburger/vorburger-dotfiles-bin-etc still work... ;-)
-  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  // NB: We must use "base-debian" instead of "universal",
+  // see https://github.com/devcontainers/images/tree/main/src,
+  // because the "universal" breaks the nix feature (below),
+  // see https://github.com/enola-dev/enola/issues/1921.
+  // PS: Make sure https://github.com/vorburger/vorburger-dotfiles-bin-etc still works.
+  "image": "mcr.microsoft.com/devcontainers/base:trixie",
 
   // TODO https://containers.dev/guide/dockerfile
   // "build": {
@@ -24,7 +25,12 @@
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    // DO NOT REMOVE THIS! Unless you *really* know what you're doing! Like really.
+    "ghcr.io/devcontainers/features/nix:1": {
+      // TODO https://github.com/devcontainers/features/issues/1519
+      "extraNixConfig": "experimental-features = nix-command flakes"
+    }
+
+    // DO NOT REMOVE Bazel! Unless you *really* know what you're doing! Like really.
     //
     // The reason is that, while the CLI build with ./test.bash and all will still work,
     // the Visual Studio Code Web on GitHub Codespaces will break without this - even
