@@ -26,7 +26,11 @@ import com.google.adk.models.BaseLlm;
 import com.google.adk.models.Gemini;
 
 import dev.enola.ai.adk.test.ModelTester;
-import dev.enola.ai.iri.*;
+import dev.enola.ai.iri.AnthropicModelProvider;
+import dev.enola.ai.iri.EchoModelProvider;
+import dev.enola.ai.iri.GoogleModelProvider;
+import dev.enola.ai.iri.MockModelProvider;
+import dev.enola.ai.iri.Provider;
 import dev.enola.common.Net;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
@@ -82,6 +86,6 @@ public class LlmProvidersTest {
     private void check(BaseLlm model) {
         new ModelTester(model)
                 .assertTextResponseContains(
-                        "List top 3 cites in Switzerland", "Zurich", "Bern", "Geneva");
+                        "List top 3 cities in Switzerland", "Zurich", "Bern", "Geneva");
     }
 }

@@ -27,7 +27,7 @@ public class MockChatModelTest {
     public void mock() {
         var model = new MockChatModel("Zurich");
         var answer = new TestStreamingChatResponseHandler();
-        model.chat("List top 3 cites in Switzerland", answer);
+        model.chat("List top 3 cities in Switzerland", answer);
         assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");
     }
 }

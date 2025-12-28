@@ -44,7 +44,7 @@ public class ChatModelProvidersTest {
 
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
-        model.chat("List top 3 cites in Switzerland", answer);
+        model.chat("List top 3 cities in Switzerland", answer);
         assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");
     }
 
