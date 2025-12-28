@@ -82,10 +82,11 @@ public class FileResourceTest {
         assertThat(dir.delete()).isTrue();
     }
 
+    @SuppressWarnings("unused")
     @Test(expected = NoSuchFileException.class)
     public void readNonExisting() throws IOException {
         var r = new FileResource(URI.create("file:/does-not-exist.txt"), PLAIN_TEXT_UTF_8);
-        r.charSource().read();
+        var unused = r.charSource().read();
     }
 
     @Test
