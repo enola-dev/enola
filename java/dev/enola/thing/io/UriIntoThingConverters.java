@@ -55,10 +55,10 @@ public class UriIntoThingConverters implements ConverterInto<URI, ThingRepositor
         try (var ctx = TLC.open()) {
             ctx.push(INPUT, from);
             for (var converter : converters) {
-                converter.convertInto(from, into);
+                if (converter.convertInto(from, into)) return true;
             }
         }
-        return true;
+        return false;
     }
 
     // TODO Actually TLC.get(INPUT) *read* this somewhere... ;-) else remove again later.

@@ -17,13 +17,13 @@
  */
 package dev.enola.data.iri.namespace.repo;
 
-import com.google.common.base.Strings;
+import static com.google.common.base.Strings.emptyToNull;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
 
 public record ImmutableNamespace(String prefix, String iri) implements Namespace {
     public ImmutableNamespace {
-        Objects.nonNull(prefix);
-        Objects.nonNull(Strings.emptyToNull(iri));
+        requireNonNull(prefix);
+        requireNonNull(emptyToNull(iri));
     }
 }

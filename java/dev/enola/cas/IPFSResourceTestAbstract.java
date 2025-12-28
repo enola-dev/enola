@@ -80,12 +80,13 @@ public abstract class IPFSResourceTestAbstract {
         new IPFSGatewayResource(URI.create(url), null, null);
     }
 
+    @SuppressWarnings("unused")
     @Test(expected = CidEncodingException.class)
     public void badCID() throws IOException {
         var rp = getResourceProvider();
         if (rp == null) throw new CidEncodingException("");
 
         var url = "ipfs://bad";
-        getResourceProvider().get(url).byteSource().read();
+        var unused = getResourceProvider().get(url).byteSource().read();
     }
 }

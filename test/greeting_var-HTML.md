@@ -6,5 +6,5 @@
 * [`enola:example`](https://docs.enola.dev/models/enola.dev/example/): [`ex:greet/42`](greet/_NUMBER.md?var.NUMBER=42)
 * [`enola:iriTemplate`](https://docs.enola.dev/models/enola.dev/iriTemplate/): https://example.org/greet/{NUMBER}
 * [`enola:origin`](https://docs.enola.dev/models/enola.dev/origin/):
-    * [greetingN.ttl](../classpath/example.org/greetingN.ttl.md)
+    * [greetingN.ttl](classpath:/example.org/greetingN.ttl)
 * [`ex:yo`](https://example.org/yo): http://example.org/hi/{NUMBER} _[`enola:IRITemplate`](https://docs.enola.dev/models/enola.dev/IRITemplate/)_
