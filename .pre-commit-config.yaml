@@ -118,7 +118,7 @@ repos:
     hooks:
       - id: pretty-format-java
         # Keep this version in sync with the same version in .vscode/settings.json
-        args: [--autofix, --aosp, --google-java-formatter-version=1.27.0]
+        args: [--autofix, --aosp, --google-java-formatter-version=1.33.0]
         # See https://github.com/google/google-java-format/issues/1216
         exclude: ^(learn/jbang/|bazel-bin/|bazel-out/).*$
         files: ^java/.*\.java$
