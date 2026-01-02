@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,14 @@ public class ObjectMappersTest {
 
     static record Something(String name, Locale lang) {}
 
+    String expectedYAML = "name: test\nlang: en-US\n";
     String expectedJSON = "{\"name\":\"test\",\"lang\":\"en-US\"}";
     String jsonWithUnknown = "{\"name\":\"test\",\"unknown\":\"property\"}";
 
     @Test
-    public void testSomething() throws Exception {
+    public void testSomethingWithJSON() throws Exception {
         Something something = new Something("test", Locale.of("en", "US"));
-        ObjectMapper objectMapper = ObjectMappers.INSTANCE;
+        ObjectMapper objectMapper = ObjectMappers.JSON;
         String json = objectMapper.writeValueAsString(something);
         assertThat(json).isEqualTo(expectedJSON);
 
@@ -45,14 +46,25 @@ public class ObjectMappersTest {
         assertThat(something).isEqualTo(something2);
     }
 
+    @Test
+    public void testSomethingWithYAML() throws Exception {
+        Something something = new Something("test", Locale.of("en", "US"));
+        ObjectMapper objectMapper = ObjectMappers.YAML;
+        String yaml = objectMapper.writeValueAsString(something);
+        assertThat(yaml).isEqualTo(expectedYAML);
+
+        Something something2 = objectMapper.readValue(yaml, Something.class);
+        assertThat(something).isEqualTo(something2);
+    }
+
     @Test(expected = UnrecognizedPropertyException.class)
-    public void testSomethingWithUnknown() throws Exception {
-        ObjectMappers.INSTANCE.readValue(jsonWithUnknown, Something.class);
+    public void testSomethingWithUnknownProperty() throws Exception {
+        ObjectMappers.JSON.readValue(jsonWithUnknown, Something.class);
     }
 
     @Test
     public void newObjectMapperIsIndependent() throws Exception {
-        ObjectMapper newMapper = ObjectMappers.newObjectMapper();
+        ObjectMapper newMapper = ObjectMappers.newJsonObjectMapper();
         newMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         Something deserializedWithNewMapper = newMapper.readValue(jsonWithUnknown, Something.class);

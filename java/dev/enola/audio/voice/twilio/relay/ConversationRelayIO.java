@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import java.io.IOException;
 public class ConversationRelayIO {
 
     private static final ObjectMapper DEFAULT_OBJECT_MAPPER =
-            ObjectMappers.newObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+            ObjectMappers.newJsonObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     private final ObjectMapper objectMapper;
 

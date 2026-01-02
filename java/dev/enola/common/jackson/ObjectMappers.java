@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,13 @@ import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.LogicalType;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.LoaderOptions;
 
 import java.util.List;
 import java.util.Locale;
@@ -36,19 +42,19 @@ import java.util.Set;
 public final class ObjectMappers {
 
     /**
-     * A shared, thread-safe, "immutable" default {@link ObjectMapper} instance.
+     * A shared, thread-safe, "immutable" default JSON {@link ObjectMapper} instance.
      *
      * <p>This instance MUST NOT be reconfigured (e.g. by calling {@link
      * ObjectMapper#configure(com.fasterxml.jackson.databind.DeserializationFeature, boolean)} or
      * similar methods) because it is shared.
      *
-     * <p>If you need a specific configuration, use {@link #newObjectMapper()} to obtain a separate
-     * new instance, configure it, and then keep it for re-use.
+     * <p>If you need a specific configuration, use {@link #newJsonObjectMapper()} to obtain a
+     * separate new instance, configure it, and then keep it for re-use.
      */
-    public static final ObjectMapper INSTANCE = newObjectMapper();
+    public static final ObjectMapper JSON = newJsonObjectMapper();
 
     /**
-     * Creates a new {@link ObjectMapper} pre-configured with Enola defaults.
+     * Creates a new JSON {@link ObjectMapper} pre-configured with Enola defaults.
      *
      * <p>The returned instance is a new separate object which can be safely re-configured (e.g. to
      * set {@link com.fasterxml.jackson.databind.DeserializationFeature#FAIL_ON_UNKNOWN_PROPERTIES}
@@ -56,10 +62,38 @@ public final class ObjectMappers {
      *
      * <p>It is recommended to keep and re-use the obtained instance for performance reasons.
      */
-    public static ObjectMapper newObjectMapper() {
+    public static ObjectMapper newJsonObjectMapper() {
         var objectMapper = new ObjectMapper();
         configure(objectMapper);
         return objectMapper;
+    }
+
+    public static final ObjectMapper YAML = newYamlObjectMapper();
+
+    private static ObjectMapper newYamlObjectMapper() {
+        // NB: Keep in-sync with the similar (but not the same, different API!) in
+        //       the dev.enola.common.yamljson.YAML class.
+        var loaderOptions = new LoaderOptions();
+        loaderOptions.setAllowDuplicateKeys(false);
+        loaderOptions.setAllowRecursiveKeys(false);
+        loaderOptions.setCodePointLimit(10 * 1024 * 1024); // 10 MB
+
+        var dumperOptions = new DumperOptions();
+        dumperOptions.setExplicitStart(false);
+        dumperOptions.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
+
+        var yamlFactory =
+                YAMLFactory.builder()
+                        .loaderOptions(loaderOptions)
+                        .dumperOptions(dumperOptions)
+                        .build();
+
+        var yamlMapper = new YAMLMapper(yamlFactory);
+        yamlMapper.disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
+        yamlMapper.enable(YAMLGenerator.Feature.MINIMIZE_QUOTES);
+
+        configure(yamlMapper);
+        return yamlMapper;
     }
 
     /** Configure the given ObjectMapper with Enola-specific settings. */
