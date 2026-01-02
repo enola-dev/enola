@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023-2025 The Enola <https://enola.dev> Authors
+# Copyright 2023-2026 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -79,13 +79,40 @@ jobs:
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@v5
+
+      # https://github.com/enola-dev/enola/issues/1959
+      - name: Print Disk Usage
+        run: tools/disk-use/du.bash
+      - name: Free Disk Space (Ubuntu)
+        # https://github.com/jlumbroso/free-disk-space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+      - name: Maximize Build Space
+        # This is likely a bit redundant with the above action, but can't really hurt either:
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          docker system prune -af
+      - name: Print Disk Usage
+        run: tools/disk-use/du.bash
+
       - name: Install IPFS Node daemon
         uses: oduwsdl/setup-ipfs@678755ac20f92d2dfca7e16138e40ae75f7a0f6f
         with:
           ipfs_version: ^0.33
           run_daemon: true
 
-      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
@@ -128,6 +155,9 @@ jobs:
       # TODO Re-enable after fixing https://github.com/enola-dev/enola/issues/1799
       # - name: pre-commit run --all-files
       #   run: pre-commit run --all-files
+
+      - name: Print Disk Usage
+        run: tools/disk-use/du.bash
 
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.16.0
@@ -180,6 +210,9 @@ jobs:
           key: ${{ runner.os }}-demo-${{ hashFiles('tools/demo/*.bash') }}
           restore-keys: ${{ runner.os }}-demo-
 
+      - name: Print Disk Usage
+        run: tools/disk-use/du.bash
+
       - run: ./tools/test-ci/test.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
@@ -193,6 +226,9 @@ jobs:
       # Double-check that the build steps have not touched any (non-ignored) files
       - name: tools/git/test.bash
         run: tools/git/test.bash
+
+      - name: Print Disk Usage
+        run: tools/disk-use/du.bash
 
       # TODO Re-enable after fixing https://github.com/enola-dev/enola/issues/1799
       # Any "dirty" changes will cause build to abort. This intentionally runs again after the build.
@@ -211,6 +247,11 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: "site/"
+
+      # https://github.com/enola-dev/enola/issues/1959
+      - name: Clean a few [BIG] un-cached (!) directories, before (implicit) final "Post * Cache" archival steps
+        # NB: site/ must obviously be removed AFTER Pages deployment only (just done above)
+        run: rm -rf generated/ site/
 
   deploy-website:
     needs: build
