@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ package dev.enola.cas;
 import dev.enola.common.io.resource.OkHttpResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
+import org.jspecify.annotations.Nullable;
+
 public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
 
     // See https://docs.enola.dev/use/fetch/#ipfs
@@ -28,7 +30,7 @@ public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
     private static final ResourceProvider httpResourceProvider = new OkHttpResource.Provider();
 
     @Override
-    protected ResourceProvider getResourceProvider() {
+    protected @Nullable ResourceProvider getResourceProvider() {
         return new IPFSGatewayResource.Provider(httpResourceProvider, IPFS_GATEWAY);
     }
 }
