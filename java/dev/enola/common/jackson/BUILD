@@ -33,6 +33,7 @@ java_library(
         "@maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
         "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_jsr310",
         "@maven//:org_jspecify_jspecify",
+        "@maven//:org_yaml_snakeyaml",
     ],
 )
 
