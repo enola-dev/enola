@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2024-2025 The Enola <https://enola.dev> Authors
+ * Copyright 2024-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,8 @@ import java.util.function.Consumer;
  * YAML Utility.
  *
  * @deprecated Consider using the (newer) {@code
- *     dev.enola.common.io.object.jackson.YamlObjectReaderWriter} instead.
+ *     dev.enola.common.io.object.jackson.YamlObjectReaderWriter} and/or {@code
+ *     dev.enola.common.jackson.ObjectMappers} instead.
  */
 @Deprecated
 public final class YAML {
@@ -45,7 +46,8 @@ public final class YAML {
         // NB: No need for new SafeConstructor(), here; because that's
         // for org.yaml.snakeyaml, whereas this is for org.snakeyaml.engine.
         var loadSettings = LoadSettings.builder();
-        // NB: Keep in-sync with similar (but not same, different API!) in YamlObjectReader
+        // NB: Keep in-sync with similar (but not same, different API!) in
+        // dev.enola.common.jackson.ObjectMappers
         loadSettings.setAllowDuplicateKeys(false);
         loadSettings.setAllowRecursiveKeys(false);
         loadSettings.setCodePointLimit(10 * 1024 * 1024); // 10 MB
@@ -63,25 +65,30 @@ public final class YAML {
         } else throw new IllegalArgumentException("YAML document is not Map");
     }
 
+    @Deprecated
     public static Iterable<?> read(String yaml) {
         return newLoad().loadAllFromString(yaml);
     }
 
+    @Deprecated
     public static Map<?, ?> readSingleMap(String yaml) {
         return iterable2singleMap(read(yaml));
     }
 
+    @Deprecated
     public static void read(ReadableResource yaml, Consumer<Iterable> itery) throws IOException {
         try (var is = yaml.byteSource().openBufferedStream()) {
             itery.accept(newLoad().loadAllFromInputStream(is));
         }
     }
 
+    @Deprecated
     public static void readSingleMap(ReadableResource yaml, Consumer<Map<?, ?>> mappy)
             throws IOException {
         read(yaml, iterable -> mappy.accept(iterable2singleMap(iterable)));
     }
 
+    @Deprecated
     public static String write(Object object) {
         DumpSettings settings =
                 DumpSettings.builder().setDefaultScalarStyle(ScalarStyle.PLAIN).build();
@@ -89,6 +96,7 @@ public final class YAML {
         return dump.dumpToString(object);
     }
 
+    @Deprecated
     public static void write(Object object, WritableResource yaml) throws IOException {
         yaml.charSink().write(write(object));
     }

@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2025 The Enola <https://enola.dev> Authors
+ * Copyright 2025-2026 The Enola <https://enola.dev> Authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ public final class JsonTester {
         // TODO Consider instead using
         // https://github.com/filip26/titanium-json-ld/blob/5c2c02c1f65b8e885fb689a460efba3f6925b479/src/main/java/com/apicatalog/jsonld/json/JsonCanonicalizer.java#L39
 
-        var actualObject = ObjectMappers.INSTANCE.readValue(json, Object.class);
+        var actualObject = ObjectMappers.JSON.readValue(json, Object.class);
         var canonicalizedObject = ObjectTreeSorter.sortByKeyIfMap(actualObject);
-        var canonicalizedJSON = ObjectMappers.INSTANCE.writeValueAsString(canonicalizedObject);
+        var canonicalizedJSON = ObjectMappers.JSON.writeValueAsString(canonicalizedObject);
 
         return canonicalizedJSON;
     }
@@ -43,7 +43,7 @@ public final class JsonTester {
     }
 
     public static void assertEqualsTo(Object object, String expectedJSON) throws Exception {
-        var actualJSON = ObjectMappers.INSTANCE.writeValueAsString(object);
+        var actualJSON = ObjectMappers.JSON.writeValueAsString(object);
         assertEqualsTo(actualJSON, expectedJSON);
     }
 }
