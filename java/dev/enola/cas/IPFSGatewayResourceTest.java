@@ -20,6 +20,8 @@ package dev.enola.cas;
 import dev.enola.common.io.resource.OkHttpResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
+import org.jspecify.annotations.Nullable;
+
 public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
 
     // See https://docs.enola.dev/use/fetch/#ipfs
@@ -28,7 +30,7 @@ public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
     private static final ResourceProvider httpResourceProvider = new OkHttpResource.Provider();
 
     @Override
-    protected ResourceProvider getResourceProvider() {
+    protected @Nullable ResourceProvider getResourceProvider() {
         return new IPFSGatewayResource.Provider(httpResourceProvider, IPFS_GATEWAY);
     }
 }
