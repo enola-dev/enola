@@ -51,12 +51,50 @@
   rdfs:comment "A description of the item." ;
   owl:equivalentProperty dc:description .
 
+:email a rdf:Property ;
+  rdfs:label "email" ;
+  rdfs:comment "Email address." ;
+  :domainIncludes :ContactPoint,
+  :Organization,
+  :Person ;
+  :rangeIncludes :Text .
+
 :image a rdf:Property ;
   rdfs:label "image" ;
   :domainIncludes :Thing ;
   :rangeIncludes :ImageObject,
                    :URL ;
   rdfs:comment "An image of the item. This can be a [[URL]] or a fully described [[ImageObject]]." .
+
+:Boolean a rdfs:Class, :DataType ;
+  rdfs:label "Boolean" ;
+  rdfs:comment "Boolean: True or False." .
+
+
+:DataType a rdfs:Class ;
+  rdfs:label "DataType" ;
+  rdfs:comment "The basic data types such as Integers, Strings, etc." ;
+  rdfs:subClassOf rdfs:Class .
+
+:Date a rdfs:Class, :DataType ;
+  rdfs:label "Date" ;
+  rdfs:comment "A date value in [ISO 8601 date format](http://en.wikipedia.org/wiki/ISO_8601)." .
+
+:DateTime a rdfs:Class, :DataType ;
+  rdfs:label "DateTime" ;
+  rdfs:comment "A combination of date and time of day in the form [-]CCYY-MM-DDThh:mm:ss[Z|(+|-)hh:mm] (see Chapter 5.4 of ISO 8601)." .
+
+:Number a rdfs:Class, :DataType ;
+  rdfs:label "Number" ;
+  rdfs:comment "Data type: Number.\\n\\nUsage guidelines:\\n\\n* Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similar Unicode symbols.\\n* Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator." .
+
+:Text a rdfs:Class, :DataType ;
+  rdfs:label "Text" ;
+  rdfs:comment "Data type: Text." .
+
+:Time a rdfs:Class, :DataType ;
+  rdfs:label "Time" ;
+  rdfs:comment "A point in time recurring on multiple days in the form hh:mm:ss[Z|(+|-)hh:mm] (see [XML schema for details](http://www.w3.org/TR/xmlschema-2/#time))." .
 
 :URL a rdfs:Class ;
   rdfs:label "URL" ;
