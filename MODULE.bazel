@@ -82,7 +82,7 @@ maven.install(
         "com.github.java-json-tools:uri-template:0.10",
         "info.picocli:picocli:4.7.7",
         "info.picocli:picocli-shell-jline3:4.7.7",
-        "info.picocli:picocli-codegen:4.7.6",
+        "info.picocli:picocli-codegen:4.7.7",
         "org.snakeyaml:snakeyaml-engine:2.10",
         "org.yaml:snakeyaml:2.5",
         "org.slf4j:slf4j-jdk14:2.0.17",
