@@ -43,7 +43,7 @@ jobs:
         run: |
           go install github.com/bazelbuild/buildtools/buildifier@latest
           echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Configure steward@ Git User
