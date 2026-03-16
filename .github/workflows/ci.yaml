@@ -213,7 +213,12 @@ jobs:
       - name: Print Disk Usage
         run: tools/disk-use/du.bash
 
-      - run: ./tools/test-ci/test.bash
+      - name: Run CI Tests
+        run: ./tools/test-ci/test.bash
+
+      # TODO https://github.com/enola-dev/enola/issues/458 turn this "upside down"...
+      - name: Test Development Environment (DevEnv)
+        run: ./devenv.bash
 
       # Build docs/ into site/ (not just on main branch but also for pull requests, as test)
       - name: Build Docs Site (but skip [slow] screencast recording, because on PR)
