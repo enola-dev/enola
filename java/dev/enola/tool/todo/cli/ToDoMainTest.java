@@ -33,20 +33,29 @@ public class ToDoMainTest {
 
     @Test
     public void addAndList() throws IOException {
-        // Redirect user.home to a temporary directory for this test
-        System.setProperty("user.home", tempFolder.getRoot().getAbsolutePath());
+        String previousUserHome = System.getProperty("user.home");
+        try {
+            // Redirect user.home to a temporary directory for this test
+            System.setProperty("user.home", tempFolder.getRoot().getAbsolutePath());
 
-        // Add
-        var addCli = new CLI(new String[] {"add", "Task 1"}, new ToDoMain());
-        addCli.setOutAndErrStrings();
-        assertThat(addCli.execute()).isEqualTo(0);
-        assertThat(addCli.getErrString()).isEmpty();
+            // Add
+            var addCli = new CLI(new String[] {"add", "Task 1"}, new ToDoMain());
+            addCli.setOutAndErrStrings();
+            assertThat(addCli.execute()).isEqualTo(0);
+            assertThat(addCli.getErrString()).isEmpty();
 
-        // List
-        var listCli = new CLI(new String[] {"list"}, new ToDoMain());
-        listCli.setOutAndErrStrings();
-        assertThat(listCli.execute()).isEqualTo(0);
-        assertThat(listCli.getErrString()).isEmpty();
-        assertThat(listCli.getOutString()).contains("title: Task 1");
+            // List
+            var listCli = new CLI(new String[] {"list"}, new ToDoMain());
+            listCli.setOutAndErrStrings();
+            assertThat(listCli.execute()).isEqualTo(0);
+            assertThat(listCli.getErrString()).isEmpty();
+            assertThat(listCli.getOutString()).contains("title: Task 1");
+        } finally {
+            if (previousUserHome == null) {
+                System.clearProperty("user.home");
+            } else {
+                System.setProperty("user.home", previousUserHome);
+            }
+        }
     }
 }
