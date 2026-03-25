@@ -220,4 +220,5 @@ repos:
         language: script
         entry: tools/javadoc/pre-commit.bash
         files: ^java/.*\.java$
+        exclude: (Test|Tester)\.java$
         require_serial: true
