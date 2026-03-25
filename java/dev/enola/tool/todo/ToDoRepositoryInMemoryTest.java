@@ -64,7 +64,7 @@ public class ToDoRepositoryInMemoryTest {
     }
 
     @Test
-    public void timestamps() throws InterruptedException {
+    public void timestamps() {
         var repo = new ToDoRepositoryInMemory();
         var todo = ToDo.builder().title("Test").build();
 
@@ -83,7 +83,6 @@ public class ToDoRepositoryInMemoryTest {
 
         // 3. Update while completed
         var completedAt = stored3.completed();
-        Thread.sleep(1);
         var stored4 = stored3.toBuilder().description("updated").build();
         repo.store(stored4);
         var stored5 = repo.get(todo.id());

@@ -56,6 +56,19 @@ public record ToDo(
         // TODO public Set<URI> attachments = new HashSet<>();
         ) {
 
+    public ToDo {
+        if (id == null) throw new IllegalArgumentException("id is required");
+        if (title == null) throw new IllegalArgumentException("title is required");
+        if (description == null) description = Optional.empty();
+        if (tags == null) tags = ImmutableList.of();
+        if (attributes == null) attributes = ImmutableMap.of();
+        if (created == null) created = Optional.empty();
+        if (completed == null) completed = Optional.empty();
+        if (priority == null) priority = Optional.empty();
+        if (assignee == null) assignee = Optional.empty();
+        if (parent == null) parent = Optional.empty();
+    }
+
     @JsonIgnore
     public boolean isCompleted() {
         return completed.isPresent();
@@ -120,7 +133,7 @@ public record ToDo(
             @Nullable Optional<URI> assignee,
             @Nullable Optional<URI> parent) {
 
-        if (title == null) throw new IllegalStateException("Task title is required");
+        // TODO Generate a Multihash from content...
         if (id == null) id = new UUID_IRI().toURI();
 
         if (created == null || created.isEmpty()) {
