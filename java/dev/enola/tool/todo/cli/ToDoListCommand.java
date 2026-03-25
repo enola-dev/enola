@@ -35,16 +35,23 @@ public class ToDoListCommand implements Callable<Integer> {
 
     @Spec CommandSpec spec;
 
+    private final JacksonObjectReaderWriterChain writer = new JacksonObjectReaderWriterChain();
+
     @Override
     public Integer call() throws IOException {
-        var writer = new JacksonObjectReaderWriterChain();
+        var hadFailure = false;
         var yaml = YamlMediaType.YAML_UTF_8;
         for (var todo : parent.repository.list()) {
             var opt = writer.write(todo, yaml);
             if (opt.isPresent()) {
                 spec.commandLine().getOut().println(opt.get());
+            } else {
+                spec.commandLine()
+                        .getErr()
+                        .println("warning: failed to serialize ToDo item: " + todo);
+                hadFailure = true;
             }
         }
-        return 0;
+        return hadFailure ? 1 : 0;
     }
 }
