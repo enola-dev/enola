@@ -22,10 +22,12 @@ set -euox pipefail
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1343
 #   - https://github.com/bazel-contrib/rules_jvm_external/issues/1344
 
-mapfile -t java_sources < <(find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java)
+SOURCES_FILE=$(mktemp)
+trap 'rm -f "$SOURCES_FILE"' EXIT
+find java/ generated/protoc/java/ -name "*.java" | grep -v Test.java | grep -v Tester.java > "$SOURCES_FILE"
 
 rm -rf site/dev/javadoc/
 
-tools/javadoc/run.bash "${java_sources[@]}" ""
+tools/javadoc/run.bash "@$SOURCES_FILE" ""
 
 jar --create --file .built/javadoc.jar -C site/dev/javadoc/ .

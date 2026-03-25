@@ -32,11 +32,30 @@ source_files=("${@:1:$#-1}")
 
 ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
 
-javadoc -linksource -d site/dev/javadoc/ "${source_files[@]}" \
-  -classpath "${additional_classpath:+$additional_classpath:}$ENOLA_CLASSPATH":bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/thing/libthing_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_java_grpc.jar:bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/common/protobuf/libvalidation_proto-speed.jar \
-  -link https://guava.dev/releases/33.4.8-jre/api/docs/ \
-  -Werror -Xdoclint:all,-missing \
-  -quiet 2>&1
+OPTIONS_FILE=$(mktemp)
+trap 'rm -f "$OPTIONS_FILE"' EXIT
+{
+  echo "-linksource"
+  echo "-d"
+  echo "site/dev/javadoc/"
+  echo "-classpath"
+  echo "${additional_classpath:+$additional_classpath:}$ENOLA_CLASSPATH":bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/thing/libthing_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_java_grpc.jar:bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/common/protobuf/libvalidation_proto-speed.jar
+  echo "-link"
+  echo "https://guava.dev/releases/33.4.8-jre/api/docs/"
+  echo "-Werror"
+  echo "-Xdoclint:all,-missing"
+  echo "-quiet"
+  for f in "${source_files[@]}"; do
+    if [[ "$f" == @* ]]; then
+      # Expand @file: javadoc does not expand nested @file references in options files
+      cat "${f:1}"
+    else
+      echo "$f"
+    fi
+  done
+} > "$OPTIONS_FILE"
+
+javadoc "@$OPTIONS_FILE" 2>&1
 
 # Please keep -Xdoclint in sync with .bazelrc
 
