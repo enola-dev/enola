@@ -78,6 +78,7 @@ bom:
   - "com.fasterxml.jackson.core:jackson-core:{{version.jackson}}"
   - "com.fasterxml.jackson.core:jackson-databind:{{version.jackson}}"
   - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:{{version.jackson}}"
+  - "com.fasterxml.jackson.datatype:jackson-datatype-guava:{{version.jackson}}"
   - "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:{{version.jackson}}"
   - "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:{{version.jackson}}"
   - "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:{{version.jackson}}"

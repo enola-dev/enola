@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.type.LogicalType;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.yaml.snakeyaml.DumperOptions;
@@ -103,7 +105,8 @@ public final class ObjectMappers {
 
         // https://github.com/FasterXML/jackson-modules-java8
         mapper.registerModule(new JavaTimeModule());
-        // TODO Optional<T> support with mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new Jdk8Module());
+        mapper.registerModule(new GuavaModule());
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(Locale.class, new LocaleSerializer());

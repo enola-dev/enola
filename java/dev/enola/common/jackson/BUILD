@@ -31,6 +31,8 @@ java_library(
         "@maven//:com_fasterxml_jackson_core_jackson_core",
         "@maven//:com_fasterxml_jackson_core_jackson_databind",
         "@maven//:com_fasterxml_jackson_dataformat_jackson_dataformat_yaml",
+        "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_guava",
+        "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_jdk8",
         "@maven//:com_fasterxml_jackson_datatype_jackson_datatype_jsr310",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_yaml_snakeyaml",

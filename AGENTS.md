@@ -22,6 +22,8 @@ This project can be developed and maintained by AI agents, such as https://enola
 
 This https://agents.md file documents conventions which agentic AI tools must follow when working on this project.
 
+@https://raw.githubusercontent.com/vorburger/aifiles/refs/heads/main/knowledge/code/java.md
+
 ## Development Process
 
 After making any changes to the codebase, you MUST run the full test suite to verify that the requested goal was achieved and that you did not accidentally break anything else in the process. To run the tests, execute the following command from the root of the project:
