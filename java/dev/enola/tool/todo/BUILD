@@ -23,9 +23,14 @@ java_library(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    plugins = [
+        "//tools/bazel/java_plugin:autovalue",
+        "//tools/bazel/java_plugin:autobuilder",
+    ],
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/data/id",
+        "@maven//:com_google_auto_value_auto_value_annotations",
         "@maven//:org_jspecify_jspecify",
     ],
 )
