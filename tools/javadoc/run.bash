@@ -30,9 +30,13 @@ additional_classpath="${*: -1}"
 # see e.g. tools/javadoc/build.bash
 source_files=("${@:1:$#-1}")
 
+if [ ! -s generated/classpath/enola.classpath ]; then
+  tools/javac/classpath.bash
+fi
 ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
 
 javadoc -linksource -d site/dev/javadoc/ "${source_files[@]}" \
+  -sourcepath java:generated/protoc/java \
   -classpath "${additional_classpath:+$additional_classpath:}$ENOLA_CLASSPATH":bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/thing/libthing_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_proto-speed.jar:bazel-bin/java/dev/enola/core/libcore_java_grpc.jar:bazel-bin/java/dev/enola/core/tests.runfiles/_main/java/dev/enola/common/protobuf/libvalidation_proto-speed.jar \
   -link https://guava.dev/releases/33.4.8-jre/api/docs/ \
   -Werror -Xdoclint:all,-missing \
