@@ -30,6 +30,9 @@ additional_classpath="${*: -1}"
 # see e.g. tools/javadoc/build.bash
 source_files=("${@:1:$#-1}")
 
+if [ ! -s generated/classpath/enola.classpath ]; then
+  tools/javac/classpath.bash
+fi
 ENOLA_CLASSPATH=$(cat generated/classpath/enola.classpath)
 
 OPTIONS_FILE=$(mktemp)
