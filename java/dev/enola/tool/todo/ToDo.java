@@ -17,11 +17,14 @@
  */
 package dev.enola.tool.todo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.auto.value.AutoBuilder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.data.id.UUID_IRI;
+
+import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
 import java.time.Instant;
@@ -53,7 +56,7 @@ public record ToDo(
         // TODO public Set<URI> attachments = new HashSet<>();
         ) {
 
-    @com.fasterxml.jackson.annotation.JsonIgnore
+    @JsonIgnore
     public boolean isCompleted() {
         return completed.isPresent();
     }
@@ -106,16 +109,16 @@ public record ToDo(
     }
 
     static ToDo create(
-            @org.jspecify.annotations.Nullable URI id,
+            @Nullable URI id,
             String title,
-            @org.jspecify.annotations.Nullable Optional<String> description,
-            @org.jspecify.annotations.Nullable List<String> tags,
-            @org.jspecify.annotations.Nullable Map<String, String> attributes,
-            @org.jspecify.annotations.Nullable Optional<Instant> created,
-            @org.jspecify.annotations.Nullable Optional<Instant> completed,
-            @org.jspecify.annotations.Nullable Optional<Byte> priority,
-            @org.jspecify.annotations.Nullable Optional<URI> assignee,
-            @org.jspecify.annotations.Nullable Optional<URI> parent) {
+            @Nullable Optional<String> description,
+            @Nullable List<String> tags,
+            @Nullable Map<String, String> attributes,
+            @Nullable Optional<Instant> created,
+            @Nullable Optional<Instant> completed,
+            @Nullable Optional<Byte> priority,
+            @Nullable Optional<URI> assignee,
+            @Nullable Optional<URI> parent) {
 
         if (title == null) throw new IllegalStateException("Task title is required");
         if (id == null) id = new UUID_IRI().toURI();
