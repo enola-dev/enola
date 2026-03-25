@@ -15,6 +15,7 @@ com.fasterxml.jackson.core:jackson-core:2.20.0
 com.fasterxml.jackson.core:jackson-databind:2.20.0
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0
 com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.20.0
+com.fasterxml.jackson.datatype:jackson-datatype-guava:2.20.0
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.20.0
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.0
 com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.20.0

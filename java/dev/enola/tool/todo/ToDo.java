@@ -18,41 +18,45 @@
 package dev.enola.tool.todo;
 
 import com.google.auto.value.AutoBuilder;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import dev.enola.data.id.UUID_IRI;
-
-import org.jspecify.annotations.Nullable;
 
 import java.net.URI;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public record ToDo(
         // TODO implements Identifiable<URI>
         URI id,
         String title,
-        @Nullable String description,
-        List<String> tags,
-        Map<String, String> attributes,
-        @Nullable Instant created,
-        @Nullable Instant modified,
-        @Nullable Instant completed,
-        @Nullable Boolean isCompleted,
-        @Nullable Byte priority,
+        Optional<String> description,
+        ImmutableList<String> tags,
+        ImmutableMap<String, String> attributes,
+        Optional<Instant> created,
+        Optional<Instant> completed,
+        Optional<Byte> priority,
 
         /** Assignee URI; e.g. <code>mailto:user@example.org</code>. */
-        @Nullable URI assignee,
+        Optional<URI> assignee,
 
         /** Parent ToDo ID; e.g. a "Project". */
         // TODO Add other more flexible relationships, e.g. "depends on", "related to" etc.
         // TODO public Set<URI> children = new HashSet<>();
-        @Nullable URI parent
+        Optional<URI> parent
 
         // TODO Discussion, like in a bug tracker, with comments by users etc.
 
         // TODO public Set<URI> attachments = new HashSet<>();
         ) {
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    public boolean isCompleted() {
+        return completed.isPresent();
+    }
 
     public static Builder builder() {
         return new AutoBuilder_ToDo_Builder();
@@ -64,91 +68,72 @@ public record ToDo(
 
     @AutoBuilder(callMethod = "create")
     public abstract static class Builder {
-        public abstract Builder id(@Nullable URI id);
+        public abstract Builder id(URI id);
 
         public abstract Builder title(String title);
 
-        public abstract Builder description(@Nullable String description);
+        public abstract Builder description(String description);
 
-        public abstract Builder tags(@Nullable List<String> tags);
+        public abstract Builder tags(List<String> tags);
 
-        public abstract Builder attributes(@Nullable Map<String, String> attributes);
+        public abstract Builder attributes(Map<String, String> attributes);
 
-        public abstract Builder created(@Nullable Instant created);
+        public abstract Builder created(Instant created);
 
-        public abstract Builder modified(@Nullable Instant modified);
+        public abstract Builder completed(Instant completed);
 
-        public abstract Builder completed(@Nullable Instant completed);
+        public abstract Builder priority(Byte priority);
 
-        public abstract Builder isCompleted(@Nullable Boolean isCompleted);
+        public abstract Builder assignee(URI assignee);
 
-        public abstract Builder priority(@Nullable Byte priority);
-
-        public abstract Builder assignee(@Nullable URI assignee);
-
-        public abstract Builder parent(@Nullable URI parent);
+        public abstract Builder parent(URI parent);
 
         public Builder from(ToDo todo) {
-            return id(todo.id())
-                    .title(todo.title())
-                    .description(todo.description())
-                    .tags(todo.tags())
-                    .attributes(todo.attributes())
-                    .created(todo.created())
-                    .modified(todo.modified())
-                    .completed(todo.completed())
-                    .isCompleted(todo.isCompleted())
-                    .priority(todo.priority())
-                    .assignee(todo.assignee())
-                    .parent(todo.parent());
+            id(todo.id());
+            title(todo.title());
+            todo.description().ifPresent(this::description);
+            tags(todo.tags());
+            attributes(todo.attributes());
+            todo.created().ifPresent(this::created);
+            todo.completed().ifPresent(this::completed);
+            todo.priority().ifPresent(this::priority);
+            todo.assignee().ifPresent(this::assignee);
+            todo.parent().ifPresent(this::parent);
+            return this;
         }
 
         public abstract ToDo build();
     }
 
     static ToDo create(
-            @Nullable URI id,
+            @org.jspecify.annotations.Nullable URI id,
             String title,
-            @Nullable String description,
-            @Nullable List<String> tags,
-            @Nullable Map<String, String> attributes,
-            @Nullable Instant created,
-            @Nullable Instant modified,
-            @Nullable Instant completed,
-            @Nullable Boolean isCompleted,
-            @Nullable Byte priority,
-            @Nullable URI assignee,
-            @Nullable URI parent) {
+            @org.jspecify.annotations.Nullable Optional<String> description,
+            @org.jspecify.annotations.Nullable List<String> tags,
+            @org.jspecify.annotations.Nullable Map<String, String> attributes,
+            @org.jspecify.annotations.Nullable Optional<Instant> created,
+            @org.jspecify.annotations.Nullable Optional<Instant> completed,
+            @org.jspecify.annotations.Nullable Optional<Byte> priority,
+            @org.jspecify.annotations.Nullable Optional<URI> assignee,
+            @org.jspecify.annotations.Nullable Optional<URI> parent) {
 
         if (title == null) throw new IllegalStateException("Task title is required");
         if (id == null) id = new UUID_IRI().toURI();
-        if (tags == null) tags = List.of();
-        if (attributes == null) attributes = Map.of();
 
-        if (created == null) {
-            created = Instant.now();
-        } else {
-            modified = Instant.now();
+        if (created == null || created.isEmpty()) {
+            created = Optional.of(Instant.now());
         }
-        if (isCompleted != null) {
-            if (isCompleted) {
-                completed = Instant.now();
-            } else {
-                completed = null;
-            }
-        }
+
         return new ToDo(
                 id,
                 title,
-                description,
-                tags,
-                attributes,
+                description == null ? Optional.empty() : description,
+                tags == null ? ImmutableList.of() : ImmutableList.copyOf(tags),
+                attributes == null ? ImmutableMap.of() : ImmutableMap.copyOf(attributes),
                 created,
-                modified,
-                completed,
-                isCompleted,
-                priority,
-                assignee,
-                parent);
+                completed == null ? Optional.empty() : completed,
+                priority == null ? Optional.empty() : priority,
+                assignee == null ? Optional.empty() : assignee,
+                parent == null ? Optional.empty() : parent);
     }
 }

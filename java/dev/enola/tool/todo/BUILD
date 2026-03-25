@@ -30,7 +30,9 @@ java_library(
     visibility = ["//:__subpackages__"],
     deps = [
         "//java/dev/enola/data/id",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
         "@maven//:com_google_auto_value_auto_value_annotations",
+        "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
     ],
 )

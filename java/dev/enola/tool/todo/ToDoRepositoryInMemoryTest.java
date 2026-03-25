@@ -21,12 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
 import org.junit.Test;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class ToDoRepositoryInMemoryTest {
 
@@ -39,8 +41,8 @@ public class ToDoRepositoryInMemoryTest {
                         .id(URI.create("urn:todo:1"))
                         .title("Test ToDo 1")
                         .description("This is a test ToDo item.")
-                        .tags(List.of("test", "todo"))
-                        .attributes(Map.of("key1", "value1", "key2", "value2"))
+                        .tags(ImmutableList.of("test", "todo"))
+                        .attributes(ImmutableMap.of("key1", "value1", "key2", "value2"))
                         .build();
         repo.store(todo1);
 
@@ -48,7 +50,7 @@ public class ToDoRepositoryInMemoryTest {
         assertThat(fetched).isNotNull();
         assertThat(fetched.id()).isEqualTo(todo1.id());
         assertThat(fetched.title()).isEqualTo(todo1.title());
-        assertThat(fetched.description()).isEqualTo(todo1.description());
+        assertThat(fetched.description().get()).isEqualTo(todo1.description().get());
         assertThat(fetched.tags()).hasSize(2);
         assertThat(fetched.attributes()).hasSize(2);
 
@@ -59,5 +61,32 @@ public class ToDoRepositoryInMemoryTest {
 
         repo.delete(todo1.id());
         assertThrows(IllegalArgumentException.class, () -> repo.get(URI.create("urn:todo:1")));
+    }
+
+    @Test
+    public void timestamps() throws InterruptedException {
+        var repo = new ToDoRepositoryInMemory();
+        var todo = ToDo.builder().title("Test").build();
+
+        // 1. Initial Store (NEW)
+        repo.store(todo);
+        var stored1 = repo.get(todo.id());
+        assertThat(stored1.created().isPresent()).isTrue();
+        assertThat(stored1.completed().isPresent()).isFalse();
+
+        // 2. Mark Completed
+        var stored2 = stored1.toBuilder().completed(Instant.now()).build();
+        repo.store(stored2);
+        var stored3 = repo.get(todo.id());
+        assertThat(stored3.isCompleted()).isTrue();
+        assertThat(stored3.completed().isPresent()).isTrue();
+
+        // 3. Update while completed
+        var completedAt = stored3.completed();
+        Thread.sleep(1);
+        var stored4 = stored3.toBuilder().description("updated").build();
+        repo.store(stored4);
+        var stored5 = repo.get(todo.id());
+        assertThat(stored5.completed()).isEqualTo(completedAt);
     }
 }

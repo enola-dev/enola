@@ -48,7 +48,7 @@ public class ToDoListCommand implements Callable<Integer> {
             } else {
                 spec.commandLine()
                         .getErr()
-                        .println("warning: failed to serialize ToDo item: " + todo);
+                        .println("error: failed to serialize ToDo item: " + todo);
                 hadFailure = true;
             }
         }
