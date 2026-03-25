@@ -60,9 +60,7 @@ public class ToDoTool {
             @Schema(description = "The optional description of the ToDo Task item")
                     String description)
             throws IOException {
-        ToDo todo = new ToDo();
-        todo.title = title;
-        todo.description = description;
+        var todo = ToDo.builder().title(title).description(description).build();
         toDoRepository.store(todo);
         return Tools.successMap("Successfully added the ToDo item.");
     }

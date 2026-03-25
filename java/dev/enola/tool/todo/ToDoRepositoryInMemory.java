@@ -41,8 +41,8 @@ public class ToDoRepositoryInMemory implements ToDoRepository {
 
     @Override
     public void store(ToDo todo) {
-        todo.prepareForSave();
-        store.put(todo.id, todo);
+        var preparedTodo = todo.toBuilder().build();
+        store.put(preparedTodo.id(), preparedTodo);
     }
 
     @Override

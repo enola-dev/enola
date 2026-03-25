@@ -25,6 +25,8 @@ import org.junit.Test;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ToDoRepositoryInMemoryTest {
 
@@ -32,30 +34,30 @@ public class ToDoRepositoryInMemoryTest {
     public void basics() {
         var repo = new ToDoRepositoryInMemory();
 
-        var todo1 = new ToDo();
-        todo1.id = URI.create("urn:todo:1");
-        todo1.title = "Test ToDo 1";
-        todo1.description = "This is a test ToDo item.";
-        todo1.tags.add("test");
-        todo1.tags.add("todo");
-        todo1.attributes.put("key1", "value1");
-        todo1.attributes.put("key2", "value2");
+        var todo1 =
+                ToDo.builder()
+                        .id(URI.create("urn:todo:1"))
+                        .title("Test ToDo 1")
+                        .description("This is a test ToDo item.")
+                        .tags(List.of("test", "todo"))
+                        .attributes(Map.of("key1", "value1", "key2", "value2"))
+                        .build();
         repo.store(todo1);
 
-        var fetched = repo.get(todo1.id);
+        var fetched = repo.get(todo1.id());
         assertThat(fetched).isNotNull();
-        assertThat(fetched.id).isEqualTo(todo1.id);
-        assertThat(fetched.title).isEqualTo(todo1.title);
-        assertThat(fetched.description).isEqualTo(todo1.description);
-        assertThat(fetched.tags).hasSize(2);
-        assertThat(fetched.attributes).hasSize(2);
+        assertThat(fetched.id()).isEqualTo(todo1.id());
+        assertThat(fetched.title()).isEqualTo(todo1.title());
+        assertThat(fetched.description()).isEqualTo(todo1.description());
+        assertThat(fetched.tags()).hasSize(2);
+        assertThat(fetched.attributes()).hasSize(2);
 
         var all = repo.list();
         var list = new ArrayList<ToDo>();
         all.forEach(list::add);
         assertThat(list).hasSize(1);
 
-        repo.delete(todo1.id);
+        repo.delete(todo1.id());
         assertThrows(IllegalArgumentException.class, () -> repo.get(URI.create("urn:todo:1")));
     }
 }

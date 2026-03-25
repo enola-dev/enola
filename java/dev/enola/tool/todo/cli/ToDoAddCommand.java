@@ -36,8 +36,7 @@ public class ToDoAddCommand implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
-        var todo = new ToDo();
-        todo.title = title;
+        var todo = ToDo.builder().title(title).build();
         parent.repository.store(todo);
         return 0;
     }

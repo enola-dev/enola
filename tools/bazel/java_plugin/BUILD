@@ -8,6 +8,13 @@ java_plugin(
 )
 
 java_plugin(
+    name = "autobuilder",
+    processor_class = "com.google.auto.value.processor.AutoBuilderProcessor",
+    visibility = ["//:__subpackages__"],
+    deps = ["@maven//:com_google_auto_value_auto_value"],
+)
+
+java_plugin(
     name = "autoservice",
     processor_class = "com.google.auto.service.processor.AutoServiceProcessor",
     visibility = ["//:__subpackages__"],
