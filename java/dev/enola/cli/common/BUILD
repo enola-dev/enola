@@ -24,6 +24,7 @@ java_library(
         "//java/dev/enola:__pkg__",
         "//java/dev/enola/ai/mcp/cli:__pkg__",
         "//java/dev/enola/cli:__subpackages__",
+        "//java/dev/enola/tool/todo/cli:__pkg__",
     ],
     deps = [
         "//java/dev/enola/common",
