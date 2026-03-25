@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-/** Human ToDo Tasks YAML/JSON/... File-based repository. */
+/** Human ToDo Tasks YAML File-based repository. */
 @NullMarked
-package dev.enola.tool.todo.file;
+package dev.enola.tool.todo.yaml;
 
 import org.jspecify.annotations.NullMarked;

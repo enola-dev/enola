@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.tool.todo.file;
+package dev.enola.tool.todo.yaml;
 
 import dev.enola.common.collect.MoreIterables;
 import dev.enola.common.io.object.ObjectReaderWriter;
@@ -29,13 +29,13 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.NoSuchFileException;
 
-public class ToDoRepositoryFile implements ToDoRepository {
+public class ToDoYamlFileRepository implements ToDoRepository {
 
     private final ToDoRepository delegate = new ToDoRepositoryInMemory();
     private final ObjectReaderWriter readerWriter;
     private final Resource resource;
 
-    public ToDoRepositoryFile(Resource resource) throws IOException {
+    public ToDoYamlFileRepository(Resource resource) throws IOException {
         this.readerWriter = new JacksonObjectReaderWriterChain();
         this.resource = resource;
 
