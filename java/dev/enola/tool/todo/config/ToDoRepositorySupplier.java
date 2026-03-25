@@ -19,7 +19,7 @@ package dev.enola.tool.todo.config;
 
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.tool.todo.ToDoRepository;
-import dev.enola.tool.todo.file.ToDoRepositoryFile;
+import dev.enola.tool.todo.yaml.ToDoYamlFileRepository;
 
 import java.io.IOException;
 import java.util.function.Supplier;
@@ -32,7 +32,7 @@ public final class ToDoRepositorySupplier implements Supplier<ToDoRepository> {
         var toDoFile = new java.io.File(homeDir, "ToDo.yaml").toURI();
         var toDoResource = new FileResource(toDoFile);
         try {
-            return new ToDoRepositoryFile(toDoResource);
+            return new ToDoYamlFileRepository(toDoResource);
         } catch (IOException e) {
             throw new IllegalArgumentException(toDoResource.toString(), e);
         }

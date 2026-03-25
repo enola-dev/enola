@@ -26,7 +26,7 @@ java_library(
     deps = [
         "//java/dev/enola/common/io",
         "//java/dev/enola/tool/todo",
-        "//java/dev/enola/tool/todo/file",
+        "//java/dev/enola/tool/todo/yaml",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],

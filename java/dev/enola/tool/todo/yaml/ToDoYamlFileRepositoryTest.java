@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.enola.tool.todo.file;
+package dev.enola.tool.todo.yaml;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -31,19 +31,19 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 
-public class ToDoRepositoryFileTest {
+public class ToDoYamlFileRepositoryTest {
 
     @Test
     public void testSaveAndFind() throws IOException {
         var resource = new MemoryResource(YamlMediaType.YAML_UTF_8);
-        var repo1 = new ToDoRepositoryFile(resource);
+        var repo1 = new ToDoYamlFileRepository(resource);
 
         var todo1 = new ToDo();
         todo1.id = URI.create("urn:todo:1");
         todo1.title = "Test ToDo 1";
         repo1.store(todo1);
 
-        var repo2 = new ToDoRepositoryFile(resource);
+        var repo2 = new ToDoYamlFileRepository(resource);
         var fetched = repo2.get(todo1.id);
         assertThat(fetched).isNotNull();
         assertThat(fetched.id).isEqualTo(todo1.id);
@@ -55,7 +55,7 @@ public class ToDoRepositoryFileTest {
         var file = new File("non_existent_file.yaml");
         if (file.exists()) Files.delete(file.toPath());
         var resource = new FileResource(file.toURI());
-        var repo = new ToDoRepositoryFile(resource);
+        var repo = new ToDoYamlFileRepository(resource);
         assertThat(repo.list()).isEmpty();
     }
 }

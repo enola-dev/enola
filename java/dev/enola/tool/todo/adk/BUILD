@@ -48,7 +48,7 @@ junit_tests(
         "//java/dev/enola/common/secret",
         "//java/dev/enola/common/secret/auto",
         "//java/dev/enola/tool/todo",
-        "//java/dev/enola/tool/todo/file",
+        "//java/dev/enola/tool/todo/yaml",
         "@maven//:com_github_vorburger_adk_java_google_adk",
     ],
 )
