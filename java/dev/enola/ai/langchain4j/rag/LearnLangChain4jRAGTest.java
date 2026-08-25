@@ -70,7 +70,7 @@ public class LearnLangChain4jRAGTest {
 
         // TODO var answer = new TestStreamingChatResponseHandler();
         var answer = assistant.chat("Which country is Tony from?");
-        // assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Switzerland");
-        assertThat(TokenStreams.get(answer).aiMessage().text()).contains("Swiss"); // "Switzerland"?
+        assertThat(TokenStreams.get(answer).aiMessage().text())
+                .containsMatch("Swiss|Switzerland");
     }
 }
