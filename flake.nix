@@ -26,6 +26,12 @@
           # https://github.com/NixOS/nixfmt/issues/335
           nix
 
+          coreutils
+          gnused
+          gnugrep
+          findutils
+          gawk
+
           python312
           curl
           clang-tools # clang-format
