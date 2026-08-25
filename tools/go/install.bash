@@ -29,13 +29,10 @@ GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
 
 go install github.com/bazelbuild/bazelisk@v1.19.0
-# TODO https://github.com/bazelbuild/buildtools/issues/1237
-# We should install a fixed version? @v6.4.0 doesn't work:
-# 'invalid version: module contains a go.mod file, so module path must match major version
-# ("github.com/bazelbuild/buildtools/v6")', but "go install github.com/bazelbuild/buildtools/buildifier@v6"
-# also fails, with: 'go: github.com/bazelbuild/buildtools/buildifier@v6: no matching versions for query "v6"'
-go install github.com/bazelbuild/buildtools/buildifier@latest
-go install github.com/bazelbuild/buildtools/buildozer@latest
+# buildtools v8.x tags can't be used directly due to go module path mismatch (see
+# https://github.com/bazelbuild/buildtools/issues/1237); use the pseudo-version for v8.5.1:
+go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20260128144711-f6a198225003
+go install github.com/bazelbuild/buildtools/buildozer@v0.0.0-20260128144711-f6a198225003
 
 # Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
 # https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/

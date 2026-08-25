@@ -68,6 +68,20 @@ TOOLS_DIR=$(realpath "$(dirname "$0")")
 ENOLA="$TOOLS_DIR"/../../enola
 "$ENOLA" -vvvvvvv execmd -i docs/models/example.org/*.md
 
+# Ensure Python venv is activated. The nix-develop shellHook PATH changes don't always
+# persist between CI steps (e.g. when the venv cache is restored AFTER nix-develop ran).
+# shellcheck disable=SC1091
+if [ -f .venv/bin/activate ]; then
+  source .venv/bin/activate
+else
+  python -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+fi
+if ! command -v mkdocs &>/dev/null; then
+  pip install -r requirements.txt
+fi
+
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml
 
