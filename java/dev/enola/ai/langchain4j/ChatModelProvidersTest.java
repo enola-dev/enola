@@ -20,7 +20,7 @@ package dev.enola.ai.langchain4j;
 import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.ai.iri.AnthropicModelProvider.ANTHROPIC_API_KEY_SECRET_NAME;
-import static dev.enola.ai.langchain4j.GoogleChatModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
+import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
 import dev.enola.ai.iri.AnthropicModelProvider;
 import dev.enola.ai.iri.GoogleModelProvider;
@@ -45,7 +45,7 @@ public class ChatModelProvidersTest {
     void check(StreamingChatModel model) {
         var answer = new TestStreamingChatResponseHandler();
         model.chat("List top 3 cities in Switzerland", answer);
-        assertThat(answer.awaitChatResponse().aiMessage().text()).contains("Zurich");
+        assertThat(answer.awaitChatResponse().aiMessage().text()).containsMatch("Zurich|Zürich");
     }
 
     @Test(expected = IllegalArgumentException.class)
