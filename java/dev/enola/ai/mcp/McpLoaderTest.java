@@ -33,6 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.time.Duration;
 
 public class McpLoaderTest {
 
@@ -67,6 +68,7 @@ public class McpLoaderTest {
         assertThat(everything.command).isEqualTo("npx");
         assertThat(everything.args)
                 .containsExactly("-y", "@modelcontextprotocol/server-everything");
+        assertThat(everything.timeout).isEqualTo(Duration.ofSeconds(30));
         assertThat(loader.names()).isNotEmpty();
     }
 
