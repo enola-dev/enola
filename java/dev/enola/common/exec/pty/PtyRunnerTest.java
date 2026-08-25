@@ -65,7 +65,7 @@ public class PtyRunnerTest {
 
     @Test
     public void echo() throws IOException {
-        try (var r = run(new String[] {"/usr/bin/echo", "hello,", "world"}, noInput)) {
+        try (var r = run(new String[] {"echo", "hello,", "world"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(err.toString(US_ASCII)).isEmpty();
@@ -75,7 +75,7 @@ public class PtyRunnerTest {
     @Test
     public void cat() throws IOException {
         var in = new ByteArrayInputStream("hello, world\r\n".getBytes(US_ASCII));
-        try (var r = run(new String[] {"/usr/bin/cat"}, in)) {
+        try (var r = run(new String[] {"cat"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(err.toString(US_ASCII)).isEmpty();
@@ -87,7 +87,7 @@ public class PtyRunnerTest {
     public void head() throws IOException {
         var in = new ByteArrayInputStream("line 1\nline 2\nline 3\n".getBytes(US_ASCII));
         // NB: The "head -n 1" command reads only the first line, ignored lines 2 & 3, and exits.
-        try (var r = run(new String[] {"/usr/bin/head", "-n", "1"}, in)) {
+        try (var r = run(new String[] {"head", "-n", "1"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(err.toString(US_ASCII)).isEmpty();
@@ -99,7 +99,7 @@ public class PtyRunnerTest {
 
     @Test
     public void tty() throws IOException {
-        try (var r = run(new String[] {"/usr/bin/tty"}, noInput)) {
+        try (var r = run(new String[] {"tty"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
         assertThat(err.toString(US_ASCII)).isEmpty();
@@ -112,7 +112,7 @@ public class PtyRunnerTest {
         try (var aos = new AppendableOutputStream(appendable, US_ASCII)) {
             // TODO Test System.out with SystemStdinStdoutTester ?
             var os = new TeeOutputStream(out, aos);
-            try (var r = run(new String[] {"/usr/bin/tty"}, noInput, os)) {
+            try (var r = run(new String[] {"tty"}, noInput, os)) {
                 assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
             }
             assertThat(err.toString(US_ASCII)).isEmpty();
