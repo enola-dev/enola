@@ -29,8 +29,10 @@ GO_BIN_PATH=$(go env GOPATH)/bin
 BZL=$GO_BIN_PATH/bazelisk
 
 go install github.com/bazelbuild/bazelisk@v1.19.0
-go install github.com/bazelbuild/buildtools/buildifier@v8.5.1
-go install github.com/bazelbuild/buildtools/buildozer@v8.5.1
+# buildtools v8.x tags can't be used directly due to go module path mismatch (see
+# https://github.com/bazelbuild/buildtools/issues/1237); use the pseudo-version for v8.5.1:
+go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20260128144711-f6a198225003
+go install github.com/bazelbuild/buildtools/buildozer@v0.0.0-20260128144711-f6a198225003
 
 # Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
 # https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/
