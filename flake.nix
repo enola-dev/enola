@@ -7,9 +7,6 @@
 
     deadnix.url = "github:astro/deadnix";
     deadnix.inputs.nixpkgs.follows = "nixpkgs";
-
-    bazel.url = "github:vorburger/bazel-nix";
-    bazel.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -18,7 +15,6 @@
       nixpkgs,
       flake-utils,
       deadnix,
-      bazel,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -58,7 +54,7 @@
           bun
 
           deadnix.packages.${system}.default
-          bazel.packages.${system}.default
+          bazel_8
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
