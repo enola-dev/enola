@@ -129,9 +129,11 @@ Some other Markdown implementations already support something like this syntax:
 
 ## References
 
-* [MediaWiki Link Syntax](https://www.mediawiki.org/wiki/Help:Links)
+* [WikiLink](https://en.wikipedia.org/wiki/Wikilink) (the [MediaWiki Link Syntax](https://www.mediawiki.org/wiki/Help:Links))
 
-* [mkdocs-ezlinks-plugin](https://github.com/orbikm/mkdocs-ezlinks-plugin) adds some support to [MkDocs](https://www.mkdocs.org)
+* [Python Markdown WikiLinks Extensions](https://python-markdown.github.io/extensions/wikilinks/)
+
+* [`mkdocs-ezlinks-plugin`](https://github.com/orbikm/mkdocs-ezlinks-plugin) adds some support to [MkDocs](https://www.mkdocs.org)
 
 * [Obsidian](https://help.obsidian.md/Linking+notes+and+files/Internal+links) supports some of this syntax
 
