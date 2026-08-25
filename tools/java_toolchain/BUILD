@@ -2,7 +2,7 @@
 
 load(
     "@bazel_tools//tools/jdk:default_java_toolchain.bzl",
-    "DEFAULT_TOOLCHAIN_CONFIGURATION",
+    "NONPREBUILT_TOOLCHAIN_CONFIGURATION",
     "default_java_toolchain",
 )
 #load("@rules_java//java/toolchains:java_runtime.bzl", "java_runtime")
@@ -16,7 +16,7 @@ load(
 
 default_java_toolchain(
     name = "repository_default_java_toolchain",
-    configuration = DEFAULT_TOOLCHAIN_CONFIGURATION,
+    configuration = NONPREBUILT_TOOLCHAIN_CONFIGURATION,
 
     # INSTEAD of: java_runtime = "@rules_java//toolchains:remotejdk_21",
     # OR above's: java_runtime = ":jdk_runtime",
