@@ -95,7 +95,7 @@ The [bazel-vscode-java issue #94](https://github.com/salesforce/bazel-vscode-jav
 
 ## Debug
 
-    bazelisk run //java/dev/enola/chat:demo  -- --debug
+    bazel run //java/dev/enola/chat:demo  -- --debug
     (...)
     Listening for transport dt_socket at address: 5005
 

@@ -30,24 +30,7 @@ deadnix --fail flake.nix
 # Abort if there are any broken symlinks
 (find . -xtype l -ls | grep .) && echo "Broken symlinks! Try: bazel clean --expunge" && exit 1
 
-# TODO https://github.com/enola-dev/enola/issues/1789
-#if command -v bazel &> /dev/null; then
-#  BZL=bazel
-# elif...
-if command -v bazelisk &> /dev/null; then
-  BZL=bazelisk
-else
-  if ! command -v go &> /dev/null; then
-    echo "Error: 'go' command not found, and 'bazelisk' is not in PATH." >&2
-    echo "Please install Go (see https://go.dev/doc/install) or set up your environment with Nix." >&2
-    exit 1
-  fi
-  GO_BIN_PATH=$(go env GOPATH)/bin
-  BZL=$GO_BIN_PATH/bazelisk
-  if ! [ -x "$BZL" ]; then
-    tools/go/install.bash
-  fi
-fi
+BZL=bazel
 
 tools/javac/dependencies.bash
 

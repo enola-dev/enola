@@ -23,22 +23,11 @@ ROOT="$THIS"/../..
 mkdir -p "$ROOT"/site/download/latest/
 set -euox pipefail
 
-if [ -x "$(command -v gbazelisk)" ]; then
-  BZL=gbazelisk
-elif [ -x "$(command -v bazel)" ]; then
-  BZL=bazel
-elif [ -x "$(command -v bazelisk)" ]; then
-  BZL=bazelisk
-else
-  # Also in test.bash
-  echo "bazelisk is not installed, please run e.g. 'go install github.com/bazelbuild/bazelisk@latest' "
-  echo "or an equivalent from https://github.com/bazelbuild/bazelisk#installation or see docs/dev/setup.md"
-  exit 255
-fi
+BZL=bazel
 
 "$ROOT"/tools/protoc/protoc.bash
 
-# NB: "bazelisk build //..." does *NOT* build *_deploy.jar, for some reason
+# NB: "bazel build //..." does *NOT* build *_deploy.jar, for some reason
 "$BZL" build --color=yes //java/dev/enola/cli:enola_deploy.jar
 rm -f "$ROOT"/site/download/latest/enola.jar
 ln "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar "$ROOT"/site/download/latest/enola.jar

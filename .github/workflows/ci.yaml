@@ -162,9 +162,6 @@ jobs:
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.18.0
         with:
-          # KEEP IN SYNC WITH BELOW!
-          bazelisk-cache: true
-          bazelisk-version: 1.25.0
           disk-cache: ${{ github.workflow }}
           # TODO manifest: npm: package-lock.json ??
           external-cache: true
@@ -292,9 +289,6 @@ jobs:
       - name: Cache Bazel
         uses: bazel-contrib/setup-bazel@0.18.0
         with:
-          # KEEP IN SYNC WITH ABOVE!
-          bazelisk-cache: true
-          bazelisk-version: 1.25.0
           disk-cache: ${{ github.workflow }}
           # TODO manifest: npm: package-lock.json ??
           external-cache: true

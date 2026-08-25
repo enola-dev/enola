@@ -25,32 +25,8 @@ fi
 
 # This script install pre-requisite go tools
 echo "$PATH"
-GO_BIN_PATH=$(go env GOPATH)/bin
-BZL=$GO_BIN_PATH/bazelisk
 
-go install github.com/bazelbuild/bazelisk@v1.19.0
 # buildtools v8.x tags can't be used directly due to go module path mismatch (see
 # https://github.com/bazelbuild/buildtools/issues/1237); use the pseudo-version for v8.5.1:
 go install github.com/bazelbuild/buildtools/buildifier@v0.0.0-20260128144711-f6a198225003
 go install github.com/bazelbuild/buildtools/buildozer@v0.0.0-20260128144711-f6a198225003
-
-# Due to https://github.com/salesforce/bazel-vscode-java/issues/88, like in
-# https://github.com/vorburger/vorburger-dotfiles-bin-etc/blob/
-# 64d3854b40f57183c81a0c9e054bafcbe3026ff7/all-install.sh#L66
-ln -fs "$BZL" "$GO_BIN_PATH"/bazel
-ln -fs "$BZL" "$GO_BIN_PATH"/b
-
-# The Language Server from the VSC Bazel Java extension
-# needs to be able to launch "bazel" from PATH - and that only works if it's in a
-# directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
-# VSC (Web) WON'T WORK if bazelisk is in some place like ~/go/bin/ or wherever;
-# see https://github.com/salesforce/bazel-vscode-java/issues/94
-# (and //.devcontainer/devcontainer.json) for further background.
-set +u
-if [ -n "$CODESPACES" ]; then
-  sudo ln -fs "$BZL" /usr/local/bin/bazelisk
-  sudo ln -fs "$BZL" /usr/local/bin/bazel
-fi
-set -u
-
-"$BZL" version

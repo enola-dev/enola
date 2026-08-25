@@ -35,7 +35,7 @@ It should be regularly (manually) run by maintainers of this project. Where poss
 
 ## Build-time (only) Dependencies
 
-* [`.bazelversion`](//.bazelversion) has the Bazel version itself
+* [`flake.nix`](//flake.nix) contains the Bazel version and build tool packages (via Nix)
 * [`WORKSPACE.bazel`](//WORKSPACE.bazel) contains versioned `http_archive` of Bazel rules
 * [`MODULE.bazel`](//MODULE.bazel) contains `bazel_dep` versions
 * [`.pre-commit-config.yaml`](//.pre-commit-config.yaml) contains the versions of various `pre-commit` hooks used to enforce [the Code Styles](style.md)

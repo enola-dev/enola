@@ -20,6 +20,6 @@ set -euo pipefail
 # This script prepares the Development Environment container.
 
 # TODO After https://github.com/enola-dev/enola/pull/452, uncomment:
-# $(go env GOPATH)/bin/bazelisk run //tools/hello
+# bazel run //tools/hello
 
 # TODO tools/git/install-hooks.bash

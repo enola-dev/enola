@@ -32,7 +32,7 @@ As per https://github.com/bazelbuild/rules_jvm_external/blob/master/README.md#up
 
 1. Run `MODULE.update.bash`
 
-PS: Use `bazelisk query "@maven//:*"` to see all targets.
+PS: Use `bazel query "@maven//:*"` to see all targets.
 
 ### Update Existing Maven dependencies
 
