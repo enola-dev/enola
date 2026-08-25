@@ -43,6 +43,7 @@ servers:
     command: npx
     args: [-y, "@modelcontextprotocol/server-everything"]
     docs: https://github.com/modelcontextprotocol/servers/tree/main/src/everything
+    timeout: PT30S
 
   search_brave:
     command: docker
