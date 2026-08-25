@@ -63,7 +63,7 @@ Which one is used is currently automatically determined. This may be made more c
 
 Because Bazel changes `$HOME`, the integration tests running under Bazel (`BAZEL_TEST`) will read secrets from the file to which the `ENOLA.DEV_AZKABAN` environment variable points. Launch such integration tests like this, as the `test.bash` script also does:
 
-    bazelisk test --test_env=ENOLA.DEV_AZKABAN=/home/YOUR-UID/.config/enola/azkaban.yaml //java/dev/enola/common/secret/auto:tests
+    bazel test --test_env=ENOLA.DEV_AZKABAN=/home/YOUR-UID/.config/enola/azkaban.yaml //java/dev/enola/common/secret/auto:tests
 
 Note that Bazel [will reduce the visible environment variables](https://bazel.build/reference/test-encyclopedia),
 so if you quote `$HOME` it would be expanded "too late". It's simplest to just use the full path to your home directory.

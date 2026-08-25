@@ -1,7 +1,7 @@
 {
   "bazel.buildifierFixOnFormat": true,
   "bazel.enableCodeLens": true,
-  "bazel.executable": "bazelisk",
+  "bazel.executable": "bazel",
   "bazel.projectview.open": false,
   // https://github.com/bazelbuild/vscode-bazel/issues/216
   // https://github.com/bazelbuild/vscode-bazel/issues/223
@@ -12,7 +12,6 @@
 
   "cSpell.words": [
     "Bazel",
-    "bazelisk",
     "Classpath",
     "Datatypes",
     "Enola",

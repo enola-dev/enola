@@ -32,10 +32,6 @@
           git
           go
           jq
-          # TODO Finish switch from Bazelisk to Bazel package
-          #   by cleaning up all scripts etc. which still use
-          #   bazelisk, and then rm this, and .bazelversion
-          bazelisk
           shellcheck
           twilio-cli
           nixpkgs-fmt

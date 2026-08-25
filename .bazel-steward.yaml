@@ -62,7 +62,7 @@ pull-requests:
 post-update-hooks:
   - kinds: maven
     commands:
-      - "REPIN=1 bazelisk run @maven//:pin"
+      - "REPIN=1 bazel run @maven//:pin"
       - "tools/javac/dependencies.bash"
     files-to-commit:
       - "maven_install.json"
@@ -73,7 +73,7 @@ post-update-hooks:
   # TODO https://stackoverflow.com/q/79567769/421602
   - kinds: bzlmod
     commands:
-      - "bazelisk sync --enable_workspace"
+      - "bazel sync --enable_workspace"
     files-to-commit:
       - "MODULE.bazel.lock"
 
