@@ -46,7 +46,7 @@ fi
 LOG=$(mktemp)
 if [ "$DIFF" -ne 0 ] || [ ! -f "$ROOT"/site/download/latest/enola.jar ]; then
   set +e
-  echo "Input hash changed, re-building enola.jar..."
+  echo "Input hash changed, re-building enola.jar..." >&2
   "$ROOT"/tools/distro/build-execjar.bash >"$LOG" 2>&1
   exit_code="$?"
   set -e
