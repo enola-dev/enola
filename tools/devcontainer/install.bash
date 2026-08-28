@@ -24,8 +24,10 @@ set -euox pipefail
 
 ROOT_DIR=$(realpath "$(dirname "$0")")/../..
 
-java --version
+# Nix Setup
+# ToDo https://github.com/devcontainers/features/issues/1518: nix develop
 
 # This is required, otherwise when opening *.java it will be all red;
 # see /usr/local/bin/bazel related inline documentation in tools/go/install.bash.
-"$ROOT_DIR"/tools/go/install.bash
+# TODO Clean-up entirely....
+# "$ROOT_DIR"/tools/go/install.bash
