@@ -1,0 +1,173 @@
+  <https://data.example.org/john#> a <https://jsonschema.org#object>, <https://example.org/person.schema.json#>;
+    <https://example.org/person.schema.json#properties.age> <https://data.example.org/john#age>;
+    <https://example.org/person.schema.json#properties.address> <https://data.example.org/john#address>;
+    <https://example.org/person.schema.json#properties.lastName> <https://data.example.org/john#lastName>;
+    <https://example.org/person.schema.json#properties.family> <https://data.example.org/john#family>;
+    <https://example.org/person.schema.json#properties.tags> <https://data.example.org/john#tags>;
+    <https://example.org/person.schema.json#properties.recruitment> <https://data.example.org/john#recruitment>;
+    <https://example.org/person.schema.json#properties.firstName> <https://data.example.org/john#firstName>;
+    <https://example.org/person.schema.json#properties.deliveryAddresses> <https://data.example.org/john#deliveryAddresses> .
+  
+  <https://example.org/person.schema.json#properties.age> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "age";
+    <http://www.w3.org/2000/01/rdf-schema#comment> "Age in years which must be equal to or greater than zero.";
+    <https://jsonschema.org#description> "Age in years which must be equal to or greater than zero.";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#integer>;
+    <https://jsonschema.org#type> "integer";
+    <https://jsonschema.org#minimum> "0"^^<http://www.w3.org/2001/XMLSchema#int> .
+  
+  <https://data.example.org/john#age> a <https://jsonschema.org#integer>, <https://example.org/person.schema.json#properties.age>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "21"^^<http://www.w3.org/2001/XMLSchema#int>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "21" .
+  
+  <https://jsonschema.org#integer> a <http://www.w3.org/2000/01/rdf-schema#Class> .
+  
+  <https://jsonschema.org#object> a <http://www.w3.org/2000/01/rdf-schema#Class> .
+  
+  <https://example.org/person.schema.json#> a <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <https://jsonschema.org#$schema> "https://json-schema.org/draft/2020-12/schema";
+    <https://jsonschema.org#title> "Person";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#object>;
+    <https://jsonschema.org#type> "object";
+    <https://jsonschema.org#$id> "https://example.org/person.schema.json" .
+  
+  <https://example.org/person.schema.json#properties.address> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "address" .
+  
+  <https://data.example.org/john#address> a <https://jsonschema.org#object>, <https://example.org/person.schema.json#definitions.Address>;
+    <https://example.org/person.schema.json#definitions.Address.properties.street> <https://data.example.org/john#address.street> .
+  
+  <https://example.org/person.schema.json#definitions.Address> a <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Address";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#object>;
+    <https://jsonschema.org#type> "object" .
+  
+  <https://data.example.org/john#tags> a <https://jsonschema.org#array>, <https://example.org/person.schema.json#properties.tags>;
+    <https://example.org/person.schema.json#properties.tags.items> <https://data.example.org/john#tags.0>,
+      <https://data.example.org/john#tags.1> .
+  
+  <https://example.org/person.schema.json#properties.tags.items> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "items";
+    <http://www.w3.org/2000/01/rdf-schema#comment> "Arbitrary label";
+    <https://jsonschema.org#description> "Arbitrary label";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#tags.0> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.tags.items>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "new";
+    <http://www.w3.org/2000/01/rdf-schema#label> "new" .
+  
+  <https://jsonschema.org#string> a <http://www.w3.org/2000/01/rdf-schema#Class> .
+  
+  <https://data.example.org/john#tags.1> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.tags.items>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "good";
+    <http://www.w3.org/2000/01/rdf-schema#label> "good" .
+  
+  <https://example.org/person.schema.json#properties.lastName> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "lastName";
+    <http://www.w3.org/2000/01/rdf-schema#comment> "The person's last name.";
+    <https://jsonschema.org#description> "The person's last name.";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#lastName> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.lastName>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Doe";
+    <http://www.w3.org/2000/01/rdf-schema#label> "Doe" .
+  
+  <https://example.org/person.schema.json#properties.family> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "family";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#object>;
+    <https://jsonschema.org#type> "object" .
+  
+  <https://data.example.org/john#family> a <https://jsonschema.org#object>, <https://example.org/person.schema.json#properties.family>;
+    <https://example.org/person.schema.json#properties.family.properties.spouse> <https://data.example.org/john#family.spouse> .
+  
+  <https://example.org/person.schema.json#properties.tags> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "tags";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#array>;
+    <https://jsonschema.org#type> "array" .
+  
+  <https://jsonschema.org#array> a <http://www.w3.org/2000/01/rdf-schema#Class> .
+  
+  <https://example.org/person.schema.json#definitions.Address.properties.street> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "street";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#address.street> a <https://jsonschema.org#string>,
+      <https://example.org/person.schema.json#definitions.Address.properties.street>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Baker St.";
+    <http://www.w3.org/2000/01/rdf-schema#label> "Baker St." .
+  
+  <https://example.org/person.schema.json#properties.recruitment> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "recruitment";
+    <https://jsonschema.org#format> "date";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#recruitment> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.recruitment>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "2020-01-01"^^<http://www.w3.org/2001/XMLSchema#date>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "2020-01-01" .
+  
+  <https://data.example.org/john#deliveryAddresses> a <https://jsonschema.org#array>,
+      <https://example.org/person.schema.json#properties.deliveryAddresses>;
+    <https://example.org/person.schema.json#properties.deliveryAddresses.items> <https://data.example.org/john#deliveryAddresses.1>,
+      <https://data.example.org/john#deliveryAddresses.0> .
+  
+  <https://example.org/person.schema.json#properties.deliveryAddresses.items> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "items" .
+  
+  <https://data.example.org/john#deliveryAddresses.1> a <https://jsonschema.org#object>,
+      <https://example.org/person.schema.json#definitions.Address>;
+    <https://example.org/person.schema.json#definitions.Address.properties.street> <https://data.example.org/john#deliveryAddresses.1.street> .
+  
+  <https://example.org/person.schema.json#properties.family.properties.spouse> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "spouse";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#family.spouse> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.family.properties.spouse>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Mary";
+    <http://www.w3.org/2000/01/rdf-schema#label> "Mary" .
+  
+  <https://data.example.org/john#deliveryAddresses.0> a <https://jsonschema.org#object>,
+      <https://example.org/person.schema.json#definitions.Address>;
+    <https://example.org/person.schema.json#definitions.Address.properties.street> <https://data.example.org/john#deliveryAddresses.0.street> .
+  
+  <https://data.example.org/john#deliveryAddresses.1.street> a <https://jsonschema.org#string>,
+      <https://example.org/person.schema.json#definitions.Address.properties.street>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Second St.";
+    <http://www.w3.org/2000/01/rdf-schema#label> "Second St." .
+  
+  <https://example.org/person.schema.json#properties.firstName> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "firstName";
+    <http://www.w3.org/2000/01/rdf-schema#comment> "The person's first name.";
+    <https://jsonschema.org#description> "The person's first name.";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#string>;
+    <https://jsonschema.org#type> "string" .
+  
+  <https://data.example.org/john#firstName> a <https://jsonschema.org#string>, <https://example.org/person.schema.json#properties.firstName>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "John";
+    <http://www.w3.org/2000/01/rdf-schema#label> "John" .
+
+  <https://example.org/person.schema.json#properties.deliveryAddresses> a <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>,
+      <http://www.w3.org/2000/01/rdf-schema#Class>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "deliveryAddresses";
+    <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://jsonschema.org#array>;
+    <https://jsonschema.org#type> "array" .
+
+  <https://data.example.org/john#deliveryAddresses.0.street> a <https://jsonschema.org#string>,
+      <https://example.org/person.schema.json#definitions.Address.properties.street>;
+    <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Main St.";
+    <http://www.w3.org/2000/01/rdf-schema#label> "Main St." .
