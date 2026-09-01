@@ -4,9 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    deadnix.url = "github:astro/deadnix";
-    deadnix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -14,7 +11,6 @@
       self,
       nixpkgs,
       flake-utils,
-      deadnix,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -55,7 +51,7 @@
 
           bun
 
-          deadnix.packages.${system}.default
+          deadnix
           bazel_8
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
