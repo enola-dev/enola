@@ -69,7 +69,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(bash|bazel|textproto|ttl|yaml)$
-        exclude: ^docs/use|test/|.*test.ttl|pnpm-lock.yaml
+        exclude: ^models/openresponses.org|docs/use|test/|.*test.ttl|pnpm-lock.yaml
         args:
           - --comment-style
           - "#"

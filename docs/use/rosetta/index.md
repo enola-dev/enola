@@ -98,6 +98,13 @@ $ ./enola rosetta --in test/picasso.yaml --out /tmp/picasso.json
 ...
 ```
 
+## JSON to YAML
+
+```bash cd ../.././..
+$ ./enola rosetta --in /tmp/picasso.json --out test/picasso.yaml
+...
+```
+
 ## Turtle 🐢 to JSON-LD 🔗
 
 ```bash cd ../.././..
