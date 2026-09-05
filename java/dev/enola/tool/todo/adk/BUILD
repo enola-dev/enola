@@ -28,9 +28,8 @@ java_library(
         "//java/dev/enola/ai/adk/tool",
         "//java/dev/enola/common",
         "//java/dev/enola/tool/todo",
+        "@maven//:com_google_adk_google_adk",
         "@maven//:com_google_guava_guava",
-        # "@maven//:com_google_adk_google_adk",
-        "@maven//:com_github_vorburger_adk_java_google_adk",
         "@maven//:org_jspecify_jspecify",
         "@maven//:org_slf4j_slf4j_api",
     ],
@@ -49,6 +48,6 @@ junit_tests(
         "//java/dev/enola/common/secret/auto",
         "//java/dev/enola/tool/todo",
         "//java/dev/enola/tool/todo/yaml",
-        "@maven//:com_github_vorburger_adk_java_google_adk",
+        "@maven//:com_google_adk_google_adk",
     ],
 )
