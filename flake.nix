@@ -53,6 +53,7 @@
 
           deadnix
           bazel_8
+          buildifier
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
