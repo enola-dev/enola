@@ -30,7 +30,24 @@ rm -rf "${ENOLA_CLASSPATH_DIR:?}"/*
 mkdir -p "$ENOLA_CLASSPATH_DIR"
 
 ENOLA_CLASSPATH=$(cat "$ENOLA_CLASSPATH_DIR.classpath")
-IFS=':' read -ra JAR_PATHS <<< "$ENOLA_CLASSPATH"
+IFS=':' read -ra ALL_JAR_PATHS <<< "$ENOLA_CLASSPATH"
+JAR_PATHS=()
+for JAR in "${ALL_JAR_PATHS[@]}"; do
+  if [[ "$JAR" == *"/io/modelcontextprotocol/sdk/mcp/"* ]] \
+    || [[ "$JAR" == *"/ch/qos/logback/"* ]] \
+    || [[ "$JAR" == *"/org/openjdk/nashorn/"* ]] \
+    || [[ "$JAR" == *"/commons-logging/commons-logging/"* ]] \
+    || [[ "$JAR" == *"/spring-boot-starter-logging/"* ]] \
+    || [[ "$JAR" == *"/com/rometools/rome-utils/"* ]] \
+    || [[ "$JAR" == *"/org/eclipse/jdt/ecj/"* ]]; then
+    continue
+  fi
+  JAR_PATHS+=("$JAR")
+done
+
+printf -v ENOLA_CLASSPATH '%s:' "${JAR_PATHS[@]}"
+ENOLA_CLASSPATH="${ENOLA_CLASSPATH%:}"
+echo "$ENOLA_CLASSPATH" >"$ENOLA_CLASSPATH_DIR.classpath"
 
 MAVEN_REPO_PATH="$HOME/.m2/repository"
 for JAR in "${JAR_PATHS[@]}"; do
