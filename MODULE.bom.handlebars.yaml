@@ -24,6 +24,7 @@ version:
   mima: 2.4.36
   jackson: 2.20.0
   slf4j: 2.0.17
+  mcp: 0.15.0
 
 boms:
   - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
@@ -31,6 +32,7 @@ boms:
   - "io.grpc:grpc-bom:{{version.grpc}}"
   - "com.fasterxml.jackson:jackson-bom:{{version.jackson}}"
   - "dev.langchain4j:langchain4j-bom:{{version.langchain4j}}"
+  - "io.modelcontextprotocol.sdk:mcp-bom:{{version.mcp}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -167,8 +169,8 @@ bom:
 
   # https://github.com/modelcontextprotocol/java-sdk
   # Note: io.modelcontextprotocol.sdk:mcp is an empty aggregate POM with no sources jar published.
-  - io.modelcontextprotocol.sdk:mcp-core:0.15.0
-  - io.modelcontextprotocol.sdk:mcp-json-jackson2:0.15.0
+  - "io.modelcontextprotocol.sdk:mcp-core"
+  - "io.modelcontextprotocol.sdk:mcp-json-jackson2"
 
   # https://github.com/TooTallNate/Java-WebSocket
   - org.java-websocket:Java-WebSocket:1.6.0
