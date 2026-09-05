@@ -14,10 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library")
-load("@rules_jvm_external//:defs.bzl", "java_export")
+load("//tools/bazel:java_module.bzl", "java_module")
 
-java_library(
+java_module(
     name = "api",
     srcs = glob(
         ["*.java"],
@@ -30,11 +29,9 @@ java_library(
     ],
 )
 
-java_export(
+java_module(
     name = "enola",
-    maven_coordinates = "dev.enola:enola:0.0.1-SNAPSHOT",
-    # NB: JavaDoc does not work here, but below it's fine
-    tags = ["no-javadocs"],
+    export_maven = "enola",
     visibility = ["//:__subpackages__"],
     # TODO runtime_deps or exports = [ ?!
     runtime_deps = ["//java/dev/enola/cli:lib"],

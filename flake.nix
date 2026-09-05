@@ -41,6 +41,7 @@
           nodejs
           maven
           jdk'
+          jbang
           graphviz
           protobuf
           protoc-gen-grpc-java
