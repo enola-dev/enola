@@ -108,9 +108,10 @@
     "org.jsoup:jsoup": 1971336796,
     "org.jspecify:jspecify": -382205121,
     "org.openjdk.nashorn:nashorn-core": 1548346233,
-    "org.slf4j:jul-to-slf4j": -387828120,
-    "org.slf4j:slf4j-jdk14": 1467713585,
-    "org.slf4j:slf4j-simple": -487947767,
+    "org.slf4j:jul-to-slf4j": 784239112,
+    "org.slf4j:slf4j-bom": 997924141,
+    "org.slf4j:slf4j-jdk14": 403121809,
+    "org.slf4j:slf4j-simple": -1186176407,
     "org.snakeyaml:snakeyaml-engine": 1905827124,
     "org.springframework.boot:spring-boot-starter-logging": -1757566223,
     "org.yaml:snakeyaml": -2128220551,
@@ -2979,18 +2980,7 @@
     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10",
     "org.jetbrains.kotlin:kotlin-stdlib:1.9.10": "org.jetbrains.kotlin:kotlin-stdlib:1.9.22",
     "org.jetbrains.kotlin:kotlin-stdlib:2.0.21": "org.jetbrains.kotlin:kotlin-stdlib:1.9.22",
-    "org.jetbrains:annotations:13.0": "org.jetbrains:annotations:24.0.1",
-    "org.slf4j:jcl-over-slf4j:1.7.30": "org.slf4j:jcl-over-slf4j:2.0.17",
-    "org.slf4j:jcl-over-slf4j:1.7.36": "org.slf4j:jcl-over-slf4j:2.0.17",
-    "org.slf4j:slf4j-api:1.7.25": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:1.7.30": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:1.7.36": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:1.7.5": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:2.0.11": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:2.0.13": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:2.0.16": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:2.0.6": "org.slf4j:slf4j-api:2.0.17",
-    "org.slf4j:slf4j-api:2.0.9": "org.slf4j:slf4j-api:2.0.17"
+    "org.jetbrains:annotations:13.0": "org.jetbrains:annotations:24.0.1"
   },
   "dependencies": {
     "ai.djl.huggingface:tokenizers": [

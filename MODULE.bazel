@@ -93,9 +93,9 @@ maven.install(
         "info.picocli:picocli-codegen:4.7.6",
         "org.snakeyaml:snakeyaml-engine:2.10",
         "org.yaml:snakeyaml:2.5",
-        "org.slf4j:slf4j-jdk14:2.0.17",
-        "org.slf4j:jul-to-slf4j:2.0.17",
-        "org.slf4j:slf4j-simple:2.0.17",
+        "org.slf4j:slf4j-jdk14",
+        "org.slf4j:jul-to-slf4j",
+        "org.slf4j:slf4j-simple",
         "org.apache.logging.log4j:log4j-to-jul:2.25.2",
         "io.github.classgraph:classgraph:4.8.184",
         "com.google.errorprone:error_prone_annotations:2.41.0",
@@ -142,6 +142,7 @@ maven.install(
         "com.fasterxml.jackson:jackson-bom:2.20.0",
         "dev.langchain4j:langchain4j-bom:1.10.0",
         "io.modelcontextprotocol.sdk:mcp-bom:0.15.0",
+        "org.slf4j:slf4j-bom:2.0.17",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
