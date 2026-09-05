@@ -54,7 +54,7 @@ public class ObjectToStringBiConvertersTest {
         BiConverter<Boolean, String> bic = ObjectToStringBiConverters.BOOLEAN;
         assertThat(bic.convertTo(Boolean.TRUE)).isEqualTo("true");
         assertThat(bic.convertTo(Boolean.FALSE)).isEqualTo("false");
-        assertThat(bic.convertTo(null)).isEqualTo(null);
+        assertThat(bic.convertTo(null)).isNull();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ObjectToStringBiConvertersTest {
         BiConverter<Boolean, String> bic = ObjectToStringBiConverters.BOOLEAN;
         assertThat(bic.convertFrom("true")).isEqualTo(Boolean.TRUE);
         assertThat(bic.convertFrom("false")).isEqualTo(Boolean.FALSE);
-        assertThat(bic.convertFrom(null)).isEqualTo(null);
+        assertThat(bic.convertFrom(null)).isNull();
     }
 
     // ObjectToStringBiConverters.INSTANT is tested in TemporalAccessorToStringConverterTest

@@ -167,7 +167,6 @@ io.grpc:grpc-util:1.75.0
 io.grpc:grpc-xds:1.69.0
 io.micrometer:micrometer-commons:1.14.2
 io.micrometer:micrometer-observation:1.14.2
-io.modelcontextprotocol.sdk:mcp:0.15.0
 io.modelcontextprotocol.sdk:mcp-core:0.15.0
 io.modelcontextprotocol.sdk:mcp-json:0.15.0
 io.modelcontextprotocol.sdk:mcp-json-jackson2:0.15.0
