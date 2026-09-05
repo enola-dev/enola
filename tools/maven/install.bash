@@ -17,14 +17,27 @@
 
 set -euox pipefail
 
-# This installs the Maven Artifacts into a local repository...
+# This installs all exported Maven Artifacts into the local repository (~/.m2/repository/dev/enola/)
 
 bazel build //java/dev/enola/...
 
 tools/javadoc/build.bash
 
-./java/mvnw install:install-file \
-    -Dfile=bazel-bin/java/dev/enola/enola-project.jar \
-    -Dsources=bazel-bin/java/dev/enola/enola-project-src.jar \
-    -DpomFile=bazel-bin/java/dev/enola/enola-pom.xml \
-    -Djavadoc=.built/javadoc.jar
+TARGETS=$(bazel query 'kind("maven_project_jar", //java/dev/enola/...)')
+
+for TARGET in $TARGETS; do
+    PKG="${TARGET#//}"
+    PKG="${PKG%%:*}"
+    TARGET_NAME="${TARGET##*:}"
+    BASE="${TARGET_NAME%-project}"
+
+    JAR="bazel-bin/${PKG}/${BASE}-project.jar"
+    SOURCES="bazel-bin/${PKG}/${BASE}-project-src.jar"
+    POM="bazel-bin/${PKG}/${BASE}-pom.xml"
+
+    ./java/mvnw install:install-file \
+        -Dfile="${JAR}" \
+        -Dsources="${SOURCES}" \
+        -DpomFile="${POM}" \
+        -Djavadoc=.built/javadoc.jar
+done

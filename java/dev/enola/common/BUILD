@@ -14,15 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_library")
+load("//tools/bazel:java_module.bzl", "java_module")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
-java_library(
+java_module(
     name = "common",
     srcs = glob(
         ["*.java"],
         exclude = ["*Test.java"],
     ),
+    export_maven = "common",
     visibility = ["//:__subpackages__"],
     deps = [
         "//tools/version",
