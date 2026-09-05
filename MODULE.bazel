@@ -135,6 +135,10 @@ maven.install(
         "io.modelcontextprotocol.sdk:mcp-json-jackson2:0.15.0",
         "org.java-websocket:Java-WebSocket:1.6.0",
     ],
+    boms = [
+        "io.opentelemetry:opentelemetry-bom:1.49.0",
+        "io.opentelemetry:opentelemetry-bom-alpha:1.49.0-alpha",
+    ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which

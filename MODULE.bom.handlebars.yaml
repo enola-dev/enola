@@ -18,11 +18,17 @@ version:
   langchain4j: 1.10.0
   langchain4j-beta: 1.10.0-beta18
   adk: 0.3.0
+  opentelemetry: 1.49.0
+  opentelemetry-alpha: 1.49.0-alpha
   rdf4j: 5.1.4
   grpc: 1.75.0
   mima: 2.4.36
   jackson: 2.20.0
   slf4j: 2.0.17
+
+boms:
+  - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
+  - "io.opentelemetry:opentelemetry-bom-alpha:{{version.opentelemetry-alpha}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"

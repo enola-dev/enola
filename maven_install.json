@@ -72,6 +72,8 @@
     "io.modelcontextprotocol.sdk:mcp": 1417452222,
     "io.modelcontextprotocol.sdk:mcp-core": 451357214,
     "io.modelcontextprotocol.sdk:mcp-json-jackson2": -1451500651,
+    "io.opentelemetry:opentelemetry-bom": -1092771611,
+    "io.opentelemetry:opentelemetry-bom-alpha": -729663997,
     "junit:junit": -744267592,
     "org.apache.commons:commons-compress": -1289113474,
     "org.apache.commons:commons-exec": -1027113833,
@@ -156,9 +158,9 @@
     "com.github.spotbugs:spotbugs-annotations": -1310692639,
     "com.github.valfirst:slf4j-test": 1750992686,
     "com.github.virtuald:curvesapi": 807271115,
-    "com.google.adk:google-adk": -1177910546,
-    "com.google.adk:google-adk-dev": 1727555628,
-    "com.google.adk:google-adk-langchain4j": 815642832,
+    "com.google.adk:google-adk": 1675811292,
+    "com.google.adk:google-adk-dev": -821898379,
+    "com.google.adk:google-adk-langchain4j": -141295572,
     "com.google.android:annotations": 769933135,
     "com.google.api-client:google-api-client": -241085737,
     "com.google.api.grpc:gapic-google-cloud-storage-v2": -40399424,
@@ -195,7 +197,7 @@
     "com.google.cloud:google-cloud-core-http": 930376453,
     "com.google.cloud:google-cloud-monitoring": 2057844003,
     "com.google.cloud:google-cloud-speech": -620291529,
-    "com.google.cloud:google-cloud-storage": -93133516,
+    "com.google.cloud:google-cloud-storage": 559868439,
     "com.google.code.findbugs:jsr305": -1038659426,
     "com.google.code.gson:gson": -1702228308,
     "com.google.errorprone:error_prone_annotations": -469431223,
@@ -298,19 +300,19 @@
     "io.opencensus:opencensus-contrib-http-util": -1479830873,
     "io.opentelemetry.contrib:opentelemetry-gcp-resources": -4501188,
     "io.opentelemetry.semconv:opentelemetry-semconv": 1239046203,
-    "io.opentelemetry:opentelemetry-api": 180617030,
-    "io.opentelemetry:opentelemetry-api-incubator": 134480833,
-    "io.opentelemetry:opentelemetry-context": 1581978555,
-    "io.opentelemetry:opentelemetry-exporter-common": 1072027260,
-    "io.opentelemetry:opentelemetry-exporter-otlp": -797658558,
-    "io.opentelemetry:opentelemetry-exporter-otlp-common": 427922519,
-    "io.opentelemetry:opentelemetry-exporter-sender-okhttp": -766250503,
-    "io.opentelemetry:opentelemetry-sdk": -1277786905,
-    "io.opentelemetry:opentelemetry-sdk-common": 1893024172,
-    "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi": -861766384,
-    "io.opentelemetry:opentelemetry-sdk-logs": 895278798,
-    "io.opentelemetry:opentelemetry-sdk-metrics": -971377167,
-    "io.opentelemetry:opentelemetry-sdk-trace": 855862844,
+    "io.opentelemetry:opentelemetry-api": 1542014345,
+    "io.opentelemetry:opentelemetry-api-incubator": 24703677,
+    "io.opentelemetry:opentelemetry-context": 2045701532,
+    "io.opentelemetry:opentelemetry-exporter-common": 178095451,
+    "io.opentelemetry:opentelemetry-exporter-otlp": 719573372,
+    "io.opentelemetry:opentelemetry-exporter-otlp-common": -939433392,
+    "io.opentelemetry:opentelemetry-exporter-sender-okhttp": -114646700,
+    "io.opentelemetry:opentelemetry-sdk": -382415848,
+    "io.opentelemetry:opentelemetry-sdk-common": -422767903,
+    "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi": -807592271,
+    "io.opentelemetry:opentelemetry-sdk-logs": -667432663,
+    "io.opentelemetry:opentelemetry-sdk-metrics": -1733312936,
+    "io.opentelemetry:opentelemetry-sdk-trace": -1889327237,
     "io.perfmark:perfmark-api": -752483303,
     "io.projectreactor:reactor-core": 1339261107,
     "io.reactivex.rxjava3:rxjava": 1945729557,
@@ -1648,15 +1650,15 @@
     },
     "io.opentelemetry:opentelemetry-api-incubator": {
       "shasums": {
-        "jar": "4a664ae100e727c42d22b099b168cdd4f43ed6fec9dc152f2e3afc6aa1143b03"
+        "jar": "ed55879e73b61127a4aed6cf0612387fa9dc2cee531f04578738568f6a8fe32e"
       },
-      "version": "1.45.0-alpha"
+      "version": "1.49.0-alpha"
     },
     "io.opentelemetry:opentelemetry-context": {
       "shasums": {
-        "jar": "9b6dd4a2e758b0fd6da81faa882856085821ec60e1407a1113e1ba13a0eff5e0"
+        "jar": "17de3c85b341240b3b216c43adbd244c9fbd39c9e5448306d56460f80599a76b"
       },
-      "version": "1.45.0"
+      "version": "1.49.0"
     },
     "io.opentelemetry:opentelemetry-exporter-common": {
       "shasums": {
@@ -1690,15 +1692,15 @@
     },
     "io.opentelemetry:opentelemetry-sdk-common": {
       "shasums": {
-        "jar": "cb58926cc8341a03e8bda7530de8b4516c5dfd6829271d2fe156d0c558800d77"
+        "jar": "b06214ccf3cda749edcd426c1492483e201e1fcfadb9f9cba8ecb439ff5c5d0f"
       },
-      "version": "1.45.0"
+      "version": "1.49.0"
     },
     "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi": {
       "shasums": {
-        "jar": "d55d8e2e877d5b0424375c79a891c82e78d00eb1b1273295763e1b55b0374123"
+        "jar": "b3091033e5b4b4b49334709707858d993afb92fe5c32d4a0b27e02d2e956c5b7"
       },
-      "version": "1.45.0"
+      "version": "1.49.0"
     },
     "io.opentelemetry:opentelemetry-sdk-logs": {
       "shasums": {
@@ -1708,9 +1710,9 @@
     },
     "io.opentelemetry:opentelemetry-sdk-metrics": {
       "shasums": {
-        "jar": "cf8711fc3d2b2c6af3fe039be1d355dfe4310e468f6761b080e1e42fe8617f5a"
+        "jar": "cf28ea29fcfd4577a4a3bda388ac08cbbb86e4b1b534822848ea5c5554bfd603"
       },
-      "version": "1.45.0"
+      "version": "1.49.0"
     },
     "io.opentelemetry:opentelemetry-sdk-trace": {
       "shasums": {
@@ -2963,14 +2965,6 @@
     "io.grpc:grpc-protobuf-lite:1.69.0": "io.grpc:grpc-protobuf-lite:1.71.0",
     "io.grpc:grpc-protobuf:1.69.0": "io.grpc:grpc-protobuf:1.71.0",
     "io.grpc:grpc-util:1.69.0": "io.grpc:grpc-util:1.75.0",
-    "io.opentelemetry:opentelemetry-api:1.45.0": "io.opentelemetry:opentelemetry-api:1.49.0",
-    "io.opentelemetry:opentelemetry-context:1.49.0": "io.opentelemetry:opentelemetry-context:1.45.0",
-    "io.opentelemetry:opentelemetry-sdk-common:1.49.0": "io.opentelemetry:opentelemetry-sdk-common:1.45.0",
-    "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.49.0": "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.45.0",
-    "io.opentelemetry:opentelemetry-sdk-logs:1.45.0": "io.opentelemetry:opentelemetry-sdk-logs:1.49.0",
-    "io.opentelemetry:opentelemetry-sdk-metrics:1.49.0": "io.opentelemetry:opentelemetry-sdk-metrics:1.45.0",
-    "io.opentelemetry:opentelemetry-sdk-trace:1.45.0": "io.opentelemetry:opentelemetry-sdk-trace:1.49.0",
-    "io.opentelemetry:opentelemetry-sdk:1.45.0": "io.opentelemetry:opentelemetry-sdk:1.49.0",
     "jakarta.activation:jakarta.activation-api:2.1.3": "jakarta.activation:jakarta.activation-api:1.2.2",
     "org.apache.commons:commons-collections4:4.4": "org.apache.commons:commons-collections4:4.5.0",
     "org.apache.commons:commons-text:1.10.0": "org.apache.commons:commons-text:1.14.0",
@@ -6407,7 +6401,7 @@
       "io.opentelemetry.api.trace.propagation.internal"
     ],
     "io.opentelemetry:opentelemetry-api-incubator": [
-      "io.opentelemetry.api.incubator.events",
+      "io.opentelemetry.api.incubator.config",
       "io.opentelemetry.api.incubator.logs",
       "io.opentelemetry.api.incubator.metrics",
       "io.opentelemetry.api.incubator.propagation",
