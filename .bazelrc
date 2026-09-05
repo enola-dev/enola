@@ -12,6 +12,10 @@ common --java_runtime_version=local_jdk_21
 common --tool_java_runtime_version=local_jdk_21
 common --action_env=JAVA_HOME
 
+# Prevent rules_android from attempting to bind to a deleted or invalid host Android SDK
+common --repo_env=ANDROID_HOME=
+common --repo_env=ANDROID_SDK_ROOT=
+
 # https://github.com/bazelbuild/intellij/issues/1169
 common --incompatible_strict_action_env
 

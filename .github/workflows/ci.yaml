@@ -100,6 +100,8 @@ jobs:
         run: |
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
+          echo "ANDROID_HOME=" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=" >> "$GITHUB_ENV"
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
