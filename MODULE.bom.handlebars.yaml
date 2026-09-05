@@ -29,6 +29,7 @@ version:
 boms:
   - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
   - "io.opentelemetry:opentelemetry-bom-alpha:{{version.opentelemetry-alpha}}"
+  - "io.grpc:grpc-bom:{{version.grpc}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -60,10 +61,10 @@ bom:
   - "com.google.protobuf:protobuf-java-util:4.32.1"
 
   # gRPC
-  - "io.grpc:grpc-api:{{version.grpc}}"
-  - "io.grpc:grpc-netty:{{version.grpc}}"
-  - "io.grpc:grpc-stub:{{version.grpc}}"
-  - "io.grpc:grpc-inprocess:{{version.grpc}}"
+  - "io.grpc:grpc-api"
+  - "io.grpc:grpc-netty"
+  - "io.grpc:grpc-stub"
+  - "io.grpc:grpc-inprocess"
   - "org.apache.tomcat:annotations-api:6.0.53" # NOT :tomcat-annotations-api
 
   # RDF4j <https://rdf4j.org>

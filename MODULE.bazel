@@ -61,10 +61,10 @@ maven.install(
         "com.google.truth.extensions:truth-proto-extension:1.4.5",
         "com.google.protobuf:protobuf-java:4.32.1",
         "com.google.protobuf:protobuf-java-util:4.32.1",
-        "io.grpc:grpc-api:1.75.0",
-        "io.grpc:grpc-netty:1.75.0",
-        "io.grpc:grpc-stub:1.75.0",
-        "io.grpc:grpc-inprocess:1.75.0",
+        "io.grpc:grpc-api",
+        "io.grpc:grpc-netty",
+        "io.grpc:grpc-stub",
+        "io.grpc:grpc-inprocess",
         "org.apache.tomcat:annotations-api:6.0.53",
         "org.eclipse.rdf4j:rdf4j-common-iterator:5.1.4",
         "org.eclipse.rdf4j:rdf4j-common-transaction:5.1.4",
@@ -138,6 +138,7 @@ maven.install(
     boms = [
         "io.opentelemetry:opentelemetry-bom:1.49.0",
         "io.opentelemetry:opentelemetry-bom-alpha:1.49.0-alpha",
+        "io.grpc:grpc-bom:1.75.0",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
