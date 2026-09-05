@@ -133,7 +133,6 @@ maven.install(
         "org.commonmark:commonmark:0.26.0",
         "io.modelcontextprotocol.sdk:mcp:0.15.0",
         "org.java-websocket:Java-WebSocket:1.6.0",
-        "com.github.vorburger.adk-java:google-adk-dev:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
@@ -195,8 +194,8 @@ maven.artifact(
         "com.github.docker-java:docker-java",
         "com.github.docker-java:docker-java-transport-httpclient5",
     ],
-    group = "com.github.vorburger.adk-java",
-    version = "4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
+    group = "com.google.adk",
+    version = "0.3.0",
 )
 maven.artifact(
     artifact = "google-adk-langchain4j",
@@ -206,8 +205,8 @@ maven.artifact(
         "ch.qos.logback:logback-classic",
         "org.springframework.boot:spring-boot-starter-logging",
     ],
-    group = "com.github.vorburger.adk-java",
-    version = "4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
+    group = "com.google.adk",
+    version = "0.3.0",
 )
 maven.artifact(
     artifact = "guava",
