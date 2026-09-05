@@ -28,13 +28,13 @@ if [ -x "$(command -v hashdir)" ]; then
   mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
   # TODO Replace (Python) hashdir with my own (Java) tool, see https://docs.enola.dev/use/info/#digest
   {
-    hashdir --quiet "$ROOT"/java/
+    hashdir --log-level error --quiet "$ROOT"/java/
     # https://github.com/enola-dev/enola/issues/1901
-    hashdir --quiet "$ROOT"/generated/protoc/java
-    hashdir --quiet "$ROOT"/models/
-    hashdir --quiet "$ROOT"/web/
+    hashdir --log-level error --quiet "$ROOT"/generated/protoc/java
+    hashdir --log-level error --quiet "$ROOT"/models/
+    hashdir --log-level error --quiet --exclude node_modules "$ROOT"/web/
     sha512sum "$ROOT/MODULE.bazel"
-  } >"$ROOT"/.cache/java.hash
+  } >"$ROOT"/.cache/java.hash 2>/dev/null
   set +e
   diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
   DIFF="$?"
