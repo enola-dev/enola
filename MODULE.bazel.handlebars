@@ -47,7 +47,12 @@ maven.install(
         "{{this}}",
 {{~/bom}}
     ],
-
+{{~#if boms}}
+    boms = [{{#boms}}
+        "{{this}}",
+{{~/boms}}
+    ],
+{{/if}}
     # NB: Never de-activate duplicate_version_warning = "error"!
     # While it can be tempting to resolve a build-time problem which
     # may have occurred when changing dependencies, it will only cause
