@@ -26,6 +26,7 @@ version:
   slf4j: 2.0.17
   mcp: 0.15.0
   protobuf: 4.32.1
+  okhttp: 4.12.0
 
 boms:
   - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
@@ -36,6 +37,7 @@ boms:
   - "io.modelcontextprotocol.sdk:mcp-bom:{{version.mcp}}"
   - "org.slf4j:slf4j-bom:{{version.slf4j}}"
   - "com.google.protobuf:protobuf-bom:{{version.protobuf}}"
+  - "com.squareup.okhttp3:okhttp-bom:{{version.okhttp}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -115,8 +117,8 @@ bom:
   - "io.github.classgraph:classgraph:4.8.184"
   - "com.google.errorprone:error_prone_annotations:2.41.0"
   - "org.jspecify:jspecify:1.0.0"
-  - "com.squareup.okhttp3:okhttp:4.12.0"
-  - "com.squareup.okhttp3:logging-interceptor:4.12.0"
+  - "com.squareup.okhttp3:okhttp"
+  - "com.squareup.okhttp3:logging-interceptor"
   - "dev.dirs:directories:26"
   - "dev.langchain4j:langchain4j"
   - "dev.langchain4j:langchain4j-core"

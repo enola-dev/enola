@@ -100,8 +100,8 @@ maven.install(
         "io.github.classgraph:classgraph:4.8.184",
         "com.google.errorprone:error_prone_annotations:2.41.0",
         "org.jspecify:jspecify:1.0.0",
-        "com.squareup.okhttp3:okhttp:4.12.0",
-        "com.squareup.okhttp3:logging-interceptor:4.12.0",
+        "com.squareup.okhttp3:okhttp",
+        "com.squareup.okhttp3:logging-interceptor",
         "dev.dirs:directories:26",
         "dev.langchain4j:langchain4j",
         "dev.langchain4j:langchain4j-core",
@@ -144,6 +144,7 @@ maven.install(
         "io.modelcontextprotocol.sdk:mcp-bom:0.15.0",
         "org.slf4j:slf4j-bom:2.0.17",
         "com.google.protobuf:protobuf-bom:4.32.1",
+        "com.squareup.okhttp3:okhttp-bom:4.12.0",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
