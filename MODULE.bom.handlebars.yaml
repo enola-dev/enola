@@ -15,29 +15,20 @@
 # limitations under the License.
 
 version:
-  langchain4j: 1.10.0
   adk: 0.3.0
-  opentelemetry: 1.49.0
-  opentelemetry-alpha: 1.49.0-alpha
-  rdf4j: 5.1.4
-  grpc: 1.75.0
   mima: 2.4.36
-  jackson: 2.20.0
-  slf4j: 2.0.17
-  mcp: 0.15.0
-  protobuf: 4.32.1
-  okhttp: 4.12.0
+  rdf4j: 5.1.4
 
 boms:
-  - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
-  - "io.opentelemetry:opentelemetry-bom-alpha:{{version.opentelemetry-alpha}}"
-  - "io.grpc:grpc-bom:{{version.grpc}}"
-  - "com.fasterxml.jackson:jackson-bom:{{version.jackson}}"
-  - "dev.langchain4j:langchain4j-bom:{{version.langchain4j}}"
-  - "io.modelcontextprotocol.sdk:mcp-bom:{{version.mcp}}"
-  - "org.slf4j:slf4j-bom:{{version.slf4j}}"
-  - "com.google.protobuf:protobuf-bom:{{version.protobuf}}"
-  - "com.squareup.okhttp3:okhttp-bom:{{version.okhttp}}"
+  - "io.opentelemetry:opentelemetry-bom:1.49.0"
+  - "io.opentelemetry:opentelemetry-bom-alpha:1.49.0-alpha"
+  - "io.grpc:grpc-bom:1.75.0"
+  - "com.fasterxml.jackson:jackson-bom:2.20.0"
+  - "dev.langchain4j:langchain4j-bom:1.10.0"
+  - "io.modelcontextprotocol.sdk:mcp-bom:0.15.0"
+  - "org.slf4j:slf4j-bom:2.0.17"
+  - "com.google.protobuf:protobuf-bom:4.32.1"
+  - "com.squareup.okhttp3:okhttp-bom:4.12.0"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
