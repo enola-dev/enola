@@ -20,7 +20,7 @@
 # and then re-run ./MODULE.update.bash
 
 # https://registry.bazel.build/modules/rules_java
-bazel_dep(name = "rules_java", version = "9.3.0")
+bazel_dep(name = "rules_java", version = "9.9.0")
 single_version_override(
     module_name = "rules_java",
     patch_strip = 1,
@@ -35,10 +35,10 @@ register_toolchains("//tools/java_toolchain:repository_default_java_toolchain_de
 
 # https://github.com/bazelbuild/rules_jvm_external/blob/master/docs/bzlmod.md#installation
 # When bumping the version here, must always run: REPIN=1 bazel run @maven//:pin
-bazel_dep(name = "rules_jvm_external", version = "6.8")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
 
 # https://github.com/bazel-contrib/rules_jvm_external/issues/1426
-bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
 
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
@@ -131,9 +131,9 @@ maven.install(
         "org.apache.sshd:sshd-core:2.15.0",
         "de.swiesend:secret-service:2.0.1-alpha",
         "org.commonmark:commonmark:0.26.0",
-        "io.modelcontextprotocol.sdk:mcp:0.15.0",
+        "io.modelcontextprotocol.sdk:mcp-core:0.15.0",
+        "io.modelcontextprotocol.sdk:mcp-json-jackson2:0.15.0",
         "org.java-websocket:Java-WebSocket:1.6.0",
-        "com.github.vorburger.adk-java:google-adk-dev:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
     ],
 
     # NB: Never de-activate duplicate_version_warning = "error"!
@@ -169,9 +169,12 @@ maven.install(
 
         # ADK drags this cat along; Thanks, but No Thanks!
         "org.eclipse.jdt:ecj",
+
+        # Aggregate POM without sources jar; mcp-core and mcp-json-jackson2 are used directly instead
+        "io.modelcontextprotocol.sdk:mcp",
     ],
     fail_if_repin_required = True,
-    fetch_sources = True,
+    fetch_sources = False,
     # https://github.com/enola-dev/enola/issues/1686
     # https://github.com/bazel-contrib/rules_jvm_external/blob/master/docs/bzlmod.md#module-dependency-layering
     known_contributing_modules = [
@@ -195,19 +198,20 @@ maven.artifact(
         "com.github.docker-java:docker-java",
         "com.github.docker-java:docker-java-transport-httpclient5",
     ],
-    group = "com.github.vorburger.adk-java",
-    version = "4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
+    group = "com.google.adk",
+    version = "0.3.0",
 )
 maven.artifact(
     artifact = "google-adk-langchain4j",
     exclusions = [
+        "io.modelcontextprotocol.sdk:mcp",
         "org.eclipse.jdt:ecj",
         "ch.qos.logback:logback-core",
         "ch.qos.logback:logback-classic",
         "org.springframework.boot:spring-boot-starter-logging",
     ],
-    group = "com.github.vorburger.adk-java",
-    version = "4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7",
+    group = "com.google.adk",
+    version = "0.3.0",
 )
 maven.artifact(
     artifact = "guava",

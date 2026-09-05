@@ -17,7 +17,7 @@
 version:
   langchain4j: 1.10.0
   langchain4j-beta: 1.10.0-beta18
-  adk: 4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
+  adk: 0.3.0
   rdf4j: 5.1.4
   grpc: 1.75.0
   mima: 2.4.36
@@ -159,25 +159,22 @@ bom:
   - "org.commonmark:commonmark:0.26.0"
 
   # https://github.com/modelcontextprotocol/java-sdk
-  - io.modelcontextprotocol.sdk:mcp:0.15.0
+  # Note: io.modelcontextprotocol.sdk:mcp is an empty aggregate POM with no sources jar published.
+  - io.modelcontextprotocol.sdk:mcp-core:0.15.0
+  - io.modelcontextprotocol.sdk:mcp-json-jackson2:0.15.0
 
   # https://github.com/TooTallNate/Java-WebSocket
   - org.java-websocket:Java-WebSocket:1.6.0
 
-  # https://google.github.io/adk-docs/get-started/installation/
-  # "com.google.adk:google-adk:0.2.0"
-  # "com.google.adk:google-adk-dev:0.2.0"
-  # "com.google.adk:google-adk-contrib-langchain4j:0.2.0"
-  - "com.github.vorburger.adk-java:google-adk-dev:{{version.adk}}"
-
 bomx:
-  - "com.github.vorburger.adk-java:google-adk:{{version.adk}}":
+  # https://google.github.io/adk-docs/get-started/installation/
+  - "com.google.adk:google-adk:{{version.adk}}":
     exclusions:
       - com.github.docker-java:docker-java
       - com.github.docker-java:docker-java-transport-httpclient5
-
-  - "com.github.vorburger.adk-java:google-adk-langchain4j:{{version.adk}}":
+  - "com.google.adk:google-adk-langchain4j:{{version.adk}}":
     exclusions:
+      - io.modelcontextprotocol.sdk:mcp
       - org.eclipse.jdt:ecj
       - ch.qos.logback:logback-core
       - ch.qos.logback:logback-classic
