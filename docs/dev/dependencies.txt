@@ -43,9 +43,9 @@ com.github.package-url:packageurl-java:1.5.0
 com.github.spotbugs:spotbugs-annotations:4.9.8
 com.github.valfirst:slf4j-test:3.0.3
 com.github.virtuald:curvesapi:1.08
-com.github.vorburger.adk-java:google-adk:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
-com.github.vorburger.adk-java:google-adk-dev:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
-com.github.vorburger.adk-java:google-adk-langchain4j:4dd09e7a3c008b0da11dbf25e1fed0efa9c5f2d7
+com.google.adk:google-adk:0.3.0
+com.google.adk:google-adk-dev:0.3.0
+com.google.adk:google-adk-langchain4j:0.3.0
 com.google.android:annotations:4.1.1.4
 com.google.api-client:google-api-client:2.7.1
 com.google.api.grpc:gapic-google-cloud-storage-v2:2.47.0
@@ -194,7 +194,7 @@ io.opentelemetry:opentelemetry-exporter-otlp:1.49.0
 io.opentelemetry:opentelemetry-exporter-otlp-common:1.49.0
 io.opentelemetry:opentelemetry-exporter-sender-okhttp:1.49.0
 io.opentelemetry:opentelemetry-sdk:1.49.0
-io.opentelemetry:opentelemetry-sdk-common:1.49.0
+io.opentelemetry:opentelemetry-sdk-common:1.45.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:1.45.0
 io.opentelemetry:opentelemetry-sdk-logs:1.49.0
 io.opentelemetry:opentelemetry-sdk-metrics:1.45.0
