@@ -4,16 +4,17 @@
     "ch.qos.logback:logback-classic": 645414475,
     "ch.qos.logback:logback-core": -481033134,
     "ch.vorburger.exec:exec": -1009677555,
-    "com.fasterxml.jackson.core:jackson-annotations": 1010237291,
-    "com.fasterxml.jackson.core:jackson-core": -1029826862,
-    "com.fasterxml.jackson.core:jackson-databind": 458810266,
-    "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml": -358276390,
-    "com.fasterxml.jackson.datatype:jackson-datatype-guava": -909176829,
-    "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": -838925356,
-    "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": 906131606,
-    "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base": -1906470134,
-    "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider": -903680731,
-    "com.fasterxml.jackson.module:jackson-module-jaxb-annotations": 1283261141,
+    "com.fasterxml.jackson.core:jackson-annotations": -921857167,
+    "com.fasterxml.jackson.core:jackson-core": 1977162006,
+    "com.fasterxml.jackson.core:jackson-databind": 1925127134,
+    "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml": -1023685858,
+    "com.fasterxml.jackson.datatype:jackson-datatype-guava": -1899689209,
+    "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": 598241176,
+    "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": -578085414,
+    "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base": -182968498,
+    "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider": -570037847,
+    "com.fasterxml.jackson.module:jackson-module-jaxb-annotations": 1548616537,
+    "com.fasterxml.jackson:jackson-bom": -375013874,
     "com.fasterxml.woodstox:woodstox-core": 1620189890,
     "com.github.ipfs:java-ipfs-http-client": 120387282,
     "com.github.ipld:java-cid": 1928280997,
@@ -119,17 +120,17 @@
     "at.favre.lib:hkdf": 1826673958,
     "ch.vorburger.exec:exec": -1120932920,
     "com.adobe.xmp:xmpcore": -1351616412,
-    "com.anthropic:anthropic-java": 1291001845,
-    "com.anthropic:anthropic-java-client-okhttp": -608375675,
-    "com.anthropic:anthropic-java-core": 1614279233,
-    "com.anthropic:anthropic-java-vertex": 1263472856,
+    "com.anthropic:anthropic-java": 1574539079,
+    "com.anthropic:anthropic-java-client-okhttp": -411304057,
+    "com.anthropic:anthropic-java-core": 460567945,
+    "com.anthropic:anthropic-java-vertex": 480471166,
     "com.drewnoakes:metadata-extractor": -1634911408,
     "com.epam:parso": 415524000,
     "com.ethlo.time:itu": 1024951720,
     "com.fasterxml.jackson.core:jackson-annotations": -1634608575,
     "com.fasterxml.jackson.core:jackson-core": -342597641,
     "com.fasterxml.jackson.core:jackson-databind": 1237028725,
-    "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": 1401920225,
+    "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": -1527412057,
     "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml": 296111805,
     "com.fasterxml.jackson.datatype:jackson-datatype-guava": 961030222,
     "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": -396814818,
@@ -137,8 +138,8 @@
     "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base": -389017320,
     "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider": -409585887,
     "com.fasterxml.jackson.module:jackson-module-jaxb-annotations": -11711709,
-    "com.fasterxml.jackson.module:jackson-module-kotlin": 1133766077,
-    "com.fasterxml.jackson.module:jackson-module-parameter-names": -1375169684,
+    "com.fasterxml.jackson.module:jackson-module-kotlin": -1774597271,
+    "com.fasterxml.jackson.module:jackson-module-parameter-names": -1396291333,
     "com.fasterxml.woodstox:woodstox-core": -2067605528,
     "com.github.albfernandez:juniversalchardet": -2131241563,
     "com.github.hypfvieh:dbus-java-core": 1182471851,
@@ -159,9 +160,9 @@
     "com.github.spotbugs:spotbugs-annotations": -1310692639,
     "com.github.valfirst:slf4j-test": 1750992686,
     "com.github.virtuald:curvesapi": 807271115,
-    "com.google.adk:google-adk": -360963187,
-    "com.google.adk:google-adk-dev": 2030566801,
-    "com.google.adk:google-adk-langchain4j": 2145454009,
+    "com.google.adk:google-adk": 539191285,
+    "com.google.adk:google-adk-dev": 850697439,
+    "com.google.adk:google-adk-langchain4j": -628460284,
     "com.google.android:annotations": 769933135,
     "com.google.api-client:google-api-client": -241085737,
     "com.google.api.grpc:gapic-google-cloud-storage-v2": -40399424,
@@ -233,7 +234,7 @@
     "com.squareup.okio:okio": -14303813,
     "com.squareup.okio:okio-jvm": 459550020,
     "com.sun.istack:istack-commons-runtime": 1703762133,
-    "com.twilio.sdk:twilio": 1900594261,
+    "com.twilio.sdk:twilio": -595550302,
     "com.zaxxer:SparseBitSet": -746710317,
     "commons-codec:commons-codec": -1921286432,
     "commons-io:commons-io": -1021273518,
@@ -475,7 +476,7 @@
     "org.hamcrest:hamcrest-core": 866476646,
     "org.java-websocket:Java-WebSocket": 1354273269,
     "org.jdom:jdom2": -1259539796,
-    "org.jetbrains.kotlin:kotlin-reflect": -620354054,
+    "org.jetbrains.kotlin:kotlin-reflect": -1730311545,
     "org.jetbrains.kotlin:kotlin-stdlib": 1068067239,
     "org.jetbrains.kotlin:kotlin-stdlib-common": -63002677,
     "org.jetbrains.kotlin:kotlin-stdlib-jdk7": 1474402563,
@@ -500,10 +501,10 @@
     "org.springframework.boot:spring-boot": 1671764495,
     "org.springframework.boot:spring-boot-autoconfigure": -1846716630,
     "org.springframework.boot:spring-boot-starter": -1759642261,
-    "org.springframework.boot:spring-boot-starter-json": 1163944276,
+    "org.springframework.boot:spring-boot-starter-json": -1175493346,
     "org.springframework.boot:spring-boot-starter-tomcat": 174179327,
-    "org.springframework.boot:spring-boot-starter-web": -238720535,
-    "org.springframework.boot:spring-boot-starter-websocket": 1697165551,
+    "org.springframework.boot:spring-boot-starter-web": 432214988,
+    "org.springframework.boot:spring-boot-starter-websocket": 825153222,
     "org.springframework:spring-aop": 1525974460,
     "org.springframework:spring-beans": 35560452,
     "org.springframework:spring-context": -278011256,
@@ -613,9 +614,9 @@
     },
     "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": {
       "shasums": {
-        "jar": "e3137c89b08d0c3d9f7dfeae11d5b941b310f5f7bfdea90063f29c0b3b1f6807"
+        "jar": "0d4ebb4d583dda91801d37c7565d462a25fe929f0d76c34767ec4b80413110c0"
       },
-      "version": "2.15.0"
+      "version": "2.20.0"
     },
     "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml": {
       "shasums": {
@@ -661,15 +662,15 @@
     },
     "com.fasterxml.jackson.module:jackson-module-kotlin": {
       "shasums": {
-        "jar": "77f373478d7f124717863f9545d64974bb9b3062acd7c0f37ed94a3b70433a01"
+        "jar": "fa7d1467bbf85d3c3ee155c4d26f293f89f9d681fd788c74be86ef599c58e9e8"
       },
-      "version": "2.18.2"
+      "version": "2.20.0"
     },
     "com.fasterxml.jackson.module:jackson-module-parameter-names": {
       "shasums": {
-        "jar": "67a6a4b6b91f3d450df21e77417f400be663be0cf528e48349ccc381cf74b3b0"
+        "jar": "6cc8343b2ce1d4047fb9e294f315c019ab216bfad0c24288cd7b50d02e74162f"
       },
-      "version": "2.18.2"
+      "version": "2.20.0"
     },
     "com.fasterxml.woodstox:woodstox-core": {
       "shasums": {
@@ -2684,9 +2685,9 @@
     },
     "org.jetbrains.kotlin:kotlin-reflect": {
       "shasums": {
-        "jar": "99672410459045090d062a0194ed87008e2371f06946b6bfa7287c697f924bea"
+        "jar": "3ad2fcad0c09ddc0922debab4444d612144b7b465b75a8bb7587e20ddfafd799"
       },
-      "version": "1.8.10"
+      "version": "2.0.21"
     },
     "org.jetbrains.kotlin:kotlin-stdlib": {
       "shasums": {
@@ -2972,11 +2973,10 @@
     "org.bouncycastle:bcprov-jdk18on:1.81.1": "org.bouncycastle:bcprov-jdk18on:1.81",
     "org.checkerframework:checker-qual:3.48.3": "org.checkerframework:checker-qual:3.49.0",
     "org.codehaus.plexus:plexus-utils:3.4.1": "org.codehaus.plexus:plexus-utils:3.6.0",
-    "org.codehaus.woodstox:stax2-api:4.2.1": "org.codehaus.woodstox:stax2-api:4.2.2",
     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10",
     "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.21": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10",
-    "org.jetbrains.kotlin:kotlin-stdlib:1.8.10": "org.jetbrains.kotlin:kotlin-stdlib:1.9.22",
     "org.jetbrains.kotlin:kotlin-stdlib:1.9.10": "org.jetbrains.kotlin:kotlin-stdlib:1.9.22",
+    "org.jetbrains.kotlin:kotlin-stdlib:2.0.21": "org.jetbrains.kotlin:kotlin-stdlib:1.9.22",
     "org.jetbrains:annotations:13.0": "org.jetbrains:annotations:24.0.1",
     "org.slf4j:jcl-over-slf4j:1.7.30": "org.slf4j:jcl-over-slf4j:2.0.17",
     "org.slf4j:jcl-over-slf4j:1.7.36": "org.slf4j:jcl-over-slf4j:2.0.17",
@@ -8956,7 +8956,8 @@
       "kotlin.reflect.jvm.internal.impl.util",
       "kotlin.reflect.jvm.internal.impl.util.capitalizeDecapitalize",
       "kotlin.reflect.jvm.internal.impl.util.collectionUtils",
-      "kotlin.reflect.jvm.internal.impl.utils"
+      "kotlin.reflect.jvm.internal.impl.utils",
+      "kotlin.reflect.jvm.internal.impl.utils.addToStdlib"
     ],
     "org.jetbrains.kotlin:kotlin-stdlib": [
       "kotlin",

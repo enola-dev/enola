@@ -30,6 +30,7 @@ boms:
   - "io.opentelemetry:opentelemetry-bom:{{version.opentelemetry}}"
   - "io.opentelemetry:opentelemetry-bom-alpha:{{version.opentelemetry-alpha}}"
   - "io.grpc:grpc-bom:{{version.grpc}}"
+  - "com.fasterxml.jackson:jackson-bom:{{version.jackson}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -81,16 +82,16 @@ bom:
   #   "org.eclipse.rdf4j:rdf4j-sail-lmdb:{{version.rdf4j}}"
 
   # Jackson <https://github.com/FasterXML/jackson>
-  - "com.fasterxml.jackson.core:jackson-annotations:2.20"
-  - "com.fasterxml.jackson.core:jackson-core:{{version.jackson}}"
-  - "com.fasterxml.jackson.core:jackson-databind:{{version.jackson}}"
-  - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:{{version.jackson}}"
-  - "com.fasterxml.jackson.datatype:jackson-datatype-guava:{{version.jackson}}"
-  - "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:{{version.jackson}}"
-  - "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:{{version.jackson}}"
-  - "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:{{version.jackson}}"
-  - "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:{{version.jackson}}"
-  - "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:{{version.jackson}}"
+  - "com.fasterxml.jackson.core:jackson-annotations"
+  - "com.fasterxml.jackson.core:jackson-core"
+  - "com.fasterxml.jackson.core:jackson-databind"
+  - "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
+  - "com.fasterxml.jackson.datatype:jackson-datatype-guava"
+  - "com.fasterxml.jackson.datatype:jackson-datatype-jdk8"
+  - "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+  - "com.fasterxml.jackson.jaxrs:jackson-jaxrs-base"
+  - "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider"
+  - "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
   - "com.fasterxml.woodstox:woodstox-core:7.1.1"
 
   # Other
