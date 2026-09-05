@@ -65,10 +65,11 @@
     "io.github.classgraph:classgraph": -1461122240,
     "io.github.java-diff-utils:java-diff-utils": 1296992014,
     "io.github.ollama4j:ollama4j": -1752281607,
-    "io.grpc:grpc-api": 1642070474,
-    "io.grpc:grpc-inprocess": 286061882,
-    "io.grpc:grpc-netty": 1593041666,
-    "io.grpc:grpc-stub": -2047951826,
+    "io.grpc:grpc-api": -623437235,
+    "io.grpc:grpc-bom": 1169937006,
+    "io.grpc:grpc-inprocess": -572825155,
+    "io.grpc:grpc-netty": -1478867579,
+    "io.grpc:grpc-stub": -175476815,
     "io.modelcontextprotocol.sdk:mcp": 1417452222,
     "io.modelcontextprotocol.sdk:mcp-core": 451357214,
     "io.modelcontextprotocol.sdk:mcp-json-jackson2": -1451500651,
@@ -158,13 +159,13 @@
     "com.github.spotbugs:spotbugs-annotations": -1310692639,
     "com.github.valfirst:slf4j-test": 1750992686,
     "com.github.virtuald:curvesapi": 807271115,
-    "com.google.adk:google-adk": 1675811292,
-    "com.google.adk:google-adk-dev": -821898379,
-    "com.google.adk:google-adk-langchain4j": -141295572,
+    "com.google.adk:google-adk": -360963187,
+    "com.google.adk:google-adk-dev": 2030566801,
+    "com.google.adk:google-adk-langchain4j": 2145454009,
     "com.google.android:annotations": 769933135,
     "com.google.api-client:google-api-client": -241085737,
     "com.google.api.grpc:gapic-google-cloud-storage-v2": -40399424,
-    "com.google.api.grpc:grpc-google-cloud-pubsub-v1": -1125028514,
+    "com.google.api.grpc:grpc-google-cloud-pubsub-v1": 820123714,
     "com.google.api.grpc:grpc-google-cloud-storage-v2": -1772166900,
     "com.google.api.grpc:proto-google-cloud-aiplatform-v1": 214934771,
     "com.google.api.grpc:proto-google-cloud-aiplatform-v1beta1": -351509601,
@@ -191,13 +192,13 @@
     "com.google.cloud.opentelemetry:detector-resources-support": -1751040224,
     "com.google.cloud.opentelemetry:exporter-metrics": -802944575,
     "com.google.cloud.opentelemetry:shared-resourcemapping": -721667772,
-    "com.google.cloud:google-cloud-aiplatform": 259441643,
+    "com.google.cloud:google-cloud-aiplatform": -1626573370,
     "com.google.cloud:google-cloud-core": -841927973,
     "com.google.cloud:google-cloud-core-grpc": 2073187094,
     "com.google.cloud:google-cloud-core-http": 930376453,
     "com.google.cloud:google-cloud-monitoring": 2057844003,
-    "com.google.cloud:google-cloud-speech": -620291529,
-    "com.google.cloud:google-cloud-storage": 559868439,
+    "com.google.cloud:google-cloud-speech": -427252998,
+    "com.google.cloud:google-cloud-storage": 1898062351,
     "com.google.code.findbugs:jsr305": -1038659426,
     "com.google.code.gson:gson": -1702228308,
     "com.google.errorprone:error_prone_annotations": -469431223,
@@ -262,24 +263,24 @@
     "io.github.classgraph:classgraph": 1454075988,
     "io.github.java-diff-utils:java-diff-utils": 1636095913,
     "io.github.ollama4j:ollama4j": 467613039,
-    "io.grpc:grpc-alts": 1475481758,
+    "io.grpc:grpc-alts": -1163080520,
     "io.grpc:grpc-api": 393289014,
-    "io.grpc:grpc-auth": 438912009,
-    "io.grpc:grpc-context": -1666253311,
-    "io.grpc:grpc-core": -1509821743,
-    "io.grpc:grpc-googleapis": 1561317500,
-    "io.grpc:grpc-grpclb": -946675020,
-    "io.grpc:grpc-inprocess": 2139784996,
-    "io.grpc:grpc-netty": -2014275854,
-    "io.grpc:grpc-netty-shaded": 258360543,
-    "io.grpc:grpc-opentelemetry": 1614056174,
-    "io.grpc:grpc-protobuf": -231389627,
-    "io.grpc:grpc-protobuf-lite": -1263917030,
-    "io.grpc:grpc-rls": -819683233,
-    "io.grpc:grpc-services": 1549680341,
+    "io.grpc:grpc-auth": 136134742,
+    "io.grpc:grpc-context": 732349499,
+    "io.grpc:grpc-core": 875309102,
+    "io.grpc:grpc-googleapis": -617855586,
+    "io.grpc:grpc-grpclb": 768092857,
+    "io.grpc:grpc-inprocess": -725052936,
+    "io.grpc:grpc-netty": -1599949360,
+    "io.grpc:grpc-netty-shaded": 688193280,
+    "io.grpc:grpc-opentelemetry": -1549535598,
+    "io.grpc:grpc-protobuf": 1747726985,
+    "io.grpc:grpc-protobuf-lite": 593166306,
+    "io.grpc:grpc-rls": -1691873803,
+    "io.grpc:grpc-services": -1837695900,
     "io.grpc:grpc-stub": -341238448,
-    "io.grpc:grpc-util": 1661023310,
-    "io.grpc:grpc-xds": 1239211929,
+    "io.grpc:grpc-util": -1953055390,
+    "io.grpc:grpc-xds": -1242722042,
     "io.micrometer:micrometer-commons": 1899106157,
     "io.micrometer:micrometer-observation": 1388919033,
     "io.modelcontextprotocol.sdk:mcp-core": -875079992,
@@ -1416,9 +1417,9 @@
     },
     "io.grpc:grpc-alts": {
       "shasums": {
-        "jar": "9c9b3e6455ee4568a62cce4d0a251121fbb59ff22974acbf16f3b2cdea0c0d43"
+        "jar": "61a0536d9cc1fda8b98a9bbeab2bb3c33438f1184337666fd8940e9bb3e13abe"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-api": {
       "shasums": {
@@ -1428,15 +1429,15 @@
     },
     "io.grpc:grpc-auth": {
       "shasums": {
-        "jar": "06577b8c390991b196000153b80fd67861fb98906be26547183df171306dcde8"
+        "jar": "216e551be78b4c080edd6ed43aef63af21019a2bd92a81f3c31d4cadb4185520"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-context": {
       "shasums": {
-        "jar": "e682d036496d4429442955b615b931ee65486bd318d0ab13d9937d11cb36ffd5"
+        "jar": "7e1de7847ea621a9ec7cb988a8baa947748d0eaef94bfe457d04d9b57105079f"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-core": {
       "shasums": {
@@ -1446,15 +1447,15 @@
     },
     "io.grpc:grpc-googleapis": {
       "shasums": {
-        "jar": "4b5fd5861f07104f71709db0e3942db84493590b387f27ac889b3682a1027d75"
+        "jar": "e5c5237ad23f989c61c410db7a717b69c3adb5d78961c814e5b1d328d8e2ef80"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-grpclb": {
       "shasums": {
-        "jar": "0c3c99aa353386cf0e03eb1aab913efe939a14cc92483e899f4677b859916e26"
+        "jar": "f6bed322a9512ad5c3802213744fc31e3c3839ad6f206925a4f10850b34cbe98"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-inprocess": {
       "shasums": {
@@ -1470,39 +1471,39 @@
     },
     "io.grpc:grpc-netty-shaded": {
       "shasums": {
-        "jar": "958a6b82350ff808d289603eba8f0847dc35f236d109fdfe3c8e5295687e387b"
+        "jar": "d33d47a9720a392512c4e4ceaa17a458a0e3ed6188d17e98d6c4faf0679374d7"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-opentelemetry": {
       "shasums": {
-        "jar": "233cfe9548d10759fdf320def3cf8e49608dbba3f73e2610a086049a99b33a8f"
+        "jar": "4b59d814dc4c2f154f1d84ea6d09fa5a82d9681f3ad4c4e51b76b5a0d0d814eb"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-protobuf": {
       "shasums": {
-        "jar": "7eba0625fba8e176c0fc1b80610fc2c52c036d95805ffdd3f6985a51c968de94"
+        "jar": "f52b53c349b0776815e437636dff3d3844e9b10cbb25be419a786bf3d6f20269"
       },
-      "version": "1.71.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-protobuf-lite": {
       "shasums": {
-        "jar": "ffad977400b49649fa2d5404abaadfca66c7e5956974f192411e8946a12e5f53"
+        "jar": "60fafc627aa04bcab328dcc9206f0e7aa71d95f1b612774a18272dfe7dc24cf1"
       },
-      "version": "1.71.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-rls": {
       "shasums": {
-        "jar": "a7cca3feda9504872bc7f19bd9b3eb4f6986fc04eb015da1448c29c404f86ec5"
+        "jar": "0a05619da56ea32548991ccbb531c08c93ceacc3921a53b4f070cd3eee35c5cd"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-services": {
       "shasums": {
-        "jar": "5b855f3820f6578f28bf306482e6b00715743e757bde9c9223444cb7d9b4444d"
+        "jar": "b6b3db6fecf14220db17d085eb2143f7c68879f6072f2159692c24c607e9391f"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.grpc:grpc-stub": {
       "shasums": {
@@ -1518,9 +1519,9 @@
     },
     "io.grpc:grpc-xds": {
       "shasums": {
-        "jar": "6edabf669e3b4d2ef694b27a5acb8656ca165e9823535c8a32b10e06bc849243"
+        "jar": "8b4b01d75e7f52c3c78180b14e45002142bfc7156b8d906950ef4ba3b4fda0e6"
       },
-      "version": "1.69.0"
+      "version": "1.75.0"
     },
     "io.micrometer:micrometer-commons": {
       "shasums": {
@@ -2960,11 +2961,6 @@
     "commons-io:commons-io:2.18.0": "commons-io:commons-io:2.20.0",
     "commons-io:commons-io:2.19.0": "commons-io:commons-io:2.20.0",
     "commons-io:commons-io:2.7": "commons-io:commons-io:2.20.0",
-    "io.grpc:grpc-context:1.75.0": "io.grpc:grpc-context:1.69.0",
-    "io.grpc:grpc-core:1.69.0": "io.grpc:grpc-core:1.75.0",
-    "io.grpc:grpc-protobuf-lite:1.69.0": "io.grpc:grpc-protobuf-lite:1.71.0",
-    "io.grpc:grpc-protobuf:1.69.0": "io.grpc:grpc-protobuf:1.71.0",
-    "io.grpc:grpc-util:1.69.0": "io.grpc:grpc-util:1.75.0",
     "jakarta.activation:jakarta.activation-api:2.1.3": "jakarta.activation:jakarta.activation-api:1.2.2",
     "org.apache.commons:commons-collections4:4.4": "org.apache.commons:commons-collections4:4.5.0",
     "org.apache.commons:commons-text:1.10.0": "org.apache.commons:commons-text:1.14.0",
@@ -3728,6 +3724,9 @@
       "io.netty:netty-handler-proxy",
       "io.netty:netty-transport-native-unix-common",
       "io.perfmark:perfmark-api",
+      "org.codehaus.mojo:animal-sniffer-annotations"
+    ],
+    "io.grpc:grpc-netty-shaded": [
       "org.codehaus.mojo:animal-sniffer-annotations"
     ],
     "io.grpc:grpc-stub": [
@@ -6143,6 +6142,8 @@
       "io.grpc.netty.shaded.io.netty.util.internal.logging",
       "io.grpc.netty.shaded.io.netty.util.internal.shaded.org.jctools.queues",
       "io.grpc.netty.shaded.io.netty.util.internal.shaded.org.jctools.queues.atomic",
+      "io.grpc.netty.shaded.io.netty.util.internal.shaded.org.jctools.queues.atomic.unpadded",
+      "io.grpc.netty.shaded.io.netty.util.internal.shaded.org.jctools.queues.unpadded",
       "io.grpc.netty.shaded.io.netty.util.internal.shaded.org.jctools.util",
       "io.grpc.netty.shaded.io.netty.util.internal.svm"
     ],
@@ -6223,6 +6224,7 @@
       "io.grpc.xds.shaded.io.envoyproxy.envoy.extensions.load_balancing_policies.ring_hash.v3",
       "io.grpc.xds.shaded.io.envoyproxy.envoy.extensions.load_balancing_policies.round_robin.v3",
       "io.grpc.xds.shaded.io.envoyproxy.envoy.extensions.load_balancing_policies.wrr_locality.v3",
+      "io.grpc.xds.shaded.io.envoyproxy.envoy.extensions.transport_sockets.http_11_proxy.v3",
       "io.grpc.xds.shaded.io.envoyproxy.envoy.extensions.transport_sockets.tls.v3",
       "io.grpc.xds.shaded.io.envoyproxy.envoy.service.discovery.v3",
       "io.grpc.xds.shaded.io.envoyproxy.envoy.service.load_stats.v3",
