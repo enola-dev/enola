@@ -16,7 +16,6 @@
 
 version:
   langchain4j: 1.10.0
-  langchain4j-beta: 1.10.0-beta18
   adk: 0.3.0
   opentelemetry: 1.49.0
   opentelemetry-alpha: 1.49.0-alpha
@@ -31,6 +30,7 @@ boms:
   - "io.opentelemetry:opentelemetry-bom-alpha:{{version.opentelemetry-alpha}}"
   - "io.grpc:grpc-bom:{{version.grpc}}"
   - "com.fasterxml.jackson:jackson-bom:{{version.jackson}}"
+  - "dev.langchain4j:langchain4j-bom:{{version.langchain4j}}"
 
 bom:
   - "commons-codec:commons-codec:1.20.0"
@@ -113,13 +113,12 @@ bom:
   - "com.squareup.okhttp3:okhttp:4.12.0"
   - "com.squareup.okhttp3:logging-interceptor:4.12.0"
   - "dev.dirs:directories:26"
-  - "dev.langchain4j:langchain4j:{{version.langchain4j}}"
-  - "dev.langchain4j:langchain4j-core:{{version.langchain4j}}"
-  - "dev.langchain4j:langchain4j-ollama:{{version.langchain4j}}"
-  - "dev.langchain4j:langchain4j-google-ai-gemini:{{version.langchain4j}}"
-  - "dev.langchain4j:langchain4j-anthropic:{{version.langchain4j}}"
-    # TODO - "dev.langchain4j:langchain4j-easy-rag:{{version.langchain4j}}"
-  - "dev.langchain4j:langchain4j-easy-rag:{{version.langchain4j-beta}}"
+  - "dev.langchain4j:langchain4j"
+  - "dev.langchain4j:langchain4j-core"
+  - "dev.langchain4j:langchain4j-ollama"
+  - "dev.langchain4j:langchain4j-google-ai-gemini"
+  - "dev.langchain4j:langchain4j-anthropic"
+  - "dev.langchain4j:langchain4j-easy-rag"
   - "io.github.ollama4j:ollama4j:1.0.100"
   - "com.github.spotbugs:spotbugs-annotations:4.9.8"
   - "io.github.java-diff-utils:java-diff-utils:4.16"
