@@ -1,0 +1,11 @@
+--- a/toolchains/BUILD	2026-09-05 18:16:05.320351207 +0200
++++ b/toolchains/BUILD	2026-09-05 18:16:05.327204923 +0200
+@@ -227,7 +227,7 @@
+
+ alias(
+     name = "singlejar",
+-    actual = ":singlejar_prebuilt_or_cc_binary",
++    actual = "@remote_java_tools//:singlejar_cc_bin",
+ )
+
+ alias(

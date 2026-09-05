@@ -21,6 +21,13 @@
 
 # https://registry.bazel.build/modules/rules_java
 bazel_dep(name = "rules_java", version = "9.3.0")
+single_version_override(
+    module_name = "rules_java",
+    patch_strip = 1,
+    patches = [
+        "//tools/patches:rules_java_singlejar.patch",
+    ],
+)
 
 # see ./tools/java_toolchain/BUILD
 # see https://github.com/bazelbuild/bazel/issues/20877, NB the "_definition" suffix!
