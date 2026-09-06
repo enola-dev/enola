@@ -26,6 +26,7 @@ set -euox pipefail
 BZL=bazel
 
 "$ROOT"/tools/protoc/protoc.bash
+"$ROOT"/tools/version/version.bash
 
 # NB: "bazel build //..." does *NOT* build *_deploy.jar, for some reason
 "$BZL" build --color=yes //java/dev/enola/cli:enola_deploy.jar

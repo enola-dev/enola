@@ -181,7 +181,6 @@ repos:
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
-        exclude: mvnw
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.34.0
@@ -211,7 +210,6 @@ repos:
     rev: 3.4.0
     hooks:
       - id: editorconfig-checker
-        exclude: mvnw
 
   - repo: local
     hooks:

@@ -35,8 +35,7 @@
   "editor.foldingImportsByDefault": true,
 
   "files.associations": {
-    "*.json": "jsonc",
-    ".tool-versions": "properties"
+    "*.json": "jsonc"
   },
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
@@ -188,17 +187,12 @@
     "BUILT": false,
     ".built": false,
     "third_party": false,
-    ".jbang": false,
     "META-INF": false,
     "learn": false,
-    ".flox": false,
-    ".venv": false,
     ".bazelbsp": false,
     ".direnv": false,
     ".gemini": false,
     ".run": false,
     "generated": false
-  },
-
-  "npm.packageManager": "pnpm"
+  }
 }

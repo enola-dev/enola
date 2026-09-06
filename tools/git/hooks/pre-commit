@@ -16,11 +16,9 @@
 # limitations under the License.
 set -euo pipefail
 
-if command -v nix &> /dev/null; then
-    echo ".git/hooks/pre-commit now runs ./test.bash inside a 'nix develop' environment..."
-    nix develop --ignore-env --keep-env-var HOME --keep-env-var TERM --command ./test.bash
-
-else
-    echo ".git/hooks/pre-commit now runs ./test.bash directly - without Nix; see https://docs.enola.dev/dev/setup"
-    ./test.bash
+if ! command -v nix &> /dev/null; then
+    echo "Error: Nix is required to develop Enola. Please install Nix: https://docs.enola.dev/dev/setup" >&2
+    exit 1
 fi
+
+nix develop --ignore-environment -k HOME -k TERM --command ./test.bash

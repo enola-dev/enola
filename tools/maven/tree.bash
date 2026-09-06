@@ -17,4 +17,4 @@
 
 set -euox pipefail
 
-java/mvnw -f tools/maven/enola-dep.pom.xml dependency:tree
+mvn -f tools/maven/enola-dep.pom.xml dependency:tree

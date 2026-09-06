@@ -39,6 +39,7 @@ dot -Tsvg -O docs/models/graphviz.gv
 # But for the "smaller" one, the default "dot" layout looks better; for the "full" one, the sfdp https://en.wikipedia.org/wiki/Force-directed_graph_drawing
 # looks "better" (kind of; but not really, it perhaps would be if it were more "dynamic"?).
 ./enola rosetta --no-file-loader --in models/enola.dev/mediaTypes.ttl --out="docs/models/enola.dev/mediaType/graph.gv?full=true" && dot -Tsvg -O docs/models/enola.dev/mediaType/graph.gv
-./enola -v gen graphviz --no-file-loader --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Ksfdp -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
+# https://gitlab.com/graphviz/graphviz/-/issues/2589: Graphviz 15.1.1 crashes with SIGABRT in sfdp engine
+./enola -v gen graphviz --no-file-loader --load=enola:TikaMediaTypes --output docs/models/enola.dev/mediaType/ && dot -Tsvg -O docs/models/enola.dev/mediaType/graphviz.gv
 
 # TODO RDF* --load="models/**.ttl[s?]"

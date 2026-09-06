@@ -23,25 +23,24 @@ set -euo pipefail
 
 ROOT="$(dirname "$(realpath "$0")")"
 
-if [ -x "$(command -v hashdir)" ]; then
-  mkdir -p "$ROOT"/.cache
-  mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
-  # TODO Replace (Python) hashdir with my own (Java) tool, see https://docs.enola.dev/use/info/#digest
-  {
-    hashdir --log-level error --quiet "$ROOT"/java/
-    # https://github.com/enola-dev/enola/issues/1901
-    hashdir --log-level error --quiet "$ROOT"/generated/protoc/java
-    hashdir --log-level error --quiet "$ROOT"/models/
-    hashdir --log-level error --quiet --exclude node_modules "$ROOT"/web/
-    sha512sum "$ROOT/MODULE.bazel"
-  } >"$ROOT"/.cache/java.hash 2>/dev/null
-  set +e
-  diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
-  DIFF="$?"
-  set -e
-else
-  DIFF=3
-fi
+compute_hash() {
+  find "$1" -type f -print0 2>/dev/null | LC_ALL=C sort -z | xargs -0 -r sha256sum
+}
+
+mkdir -p "$ROOT"/.cache
+mv "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous 2>/dev/null || true
+{
+  compute_hash "$ROOT"/java/
+  # https://github.com/enola-dev/enola/issues/1901
+  compute_hash "$ROOT"/generated/protoc/java
+  compute_hash "$ROOT"/models/
+  find "$ROOT"/web/ -type f -not -path "*/node_modules/*" -print0 2>/dev/null | LC_ALL=C sort -z | xargs -0 -r sha256sum
+  sha512sum "$ROOT/MODULE.bazel"
+} >"$ROOT"/.cache/java.hash 2>/dev/null
+set +e
+diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/dev/null
+DIFF="$?"
+set -e
 
 LOG=$(mktemp)
 if [ "$DIFF" -ne 0 ] || [ ! -f "$ROOT"/site/download/latest/enola.jar ]; then
