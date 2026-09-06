@@ -45,7 +45,7 @@ public abstract class ThingTester {
     private static final String THING_IRI = "https://example.org/thing";
     private static final String PREDICATE_IRI = "https://example.org/predicate";
 
-    private Thing.Builder<IImmutableThing> thingBuilder;
+    private Thing.Builder<IImmutableThing> thingBuilder = null;
 
     protected abstract TBF getThingBuilderFactory();
 
@@ -89,7 +89,7 @@ public abstract class ThingTester {
     }
 
     @Test // TODO This is a mess - Literal should be removed!
-    public void literal() {
+    void literal() {
         thingBuilder.iri(THING_IRI);
         var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
         thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI));
@@ -100,7 +100,7 @@ public abstract class ThingTester {
 
     @Test
     // TODO This is a mess - Literal should be removed!
-    public void literalAndDatatype() {
+    void literalAndDatatype() {
         thingBuilder.iri(THING_IRI);
         var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
         assertThrows(
@@ -114,7 +114,7 @@ public abstract class ThingTester {
 
     @Test
     // TODO Test if we can CLEAR a previously set value!
-    public void setNullIsIgnored() {
+    void setNullIsIgnored() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, null);
         var thing = thingBuilder.build();
@@ -131,7 +131,7 @@ public abstract class ThingTester {
 
     @Test
     @Disabled // No need (anymore), we're (now) preventing this using EP's @ImmutableTypeParameter
-    public void setEmptyCollectionIsIgnored() {
+    void setEmptyCollectionIsIgnored() {
         thingBuilder.iri(THING_IRI);
         // CANNOT: thingBuilder.set(PREDICATE_IRI, Set.of());
         // CANNOT: thingBuilder.addAll(PREDICATE_IRI, Set.of());
@@ -141,7 +141,7 @@ public abstract class ThingTester {
 
     @Test
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void add() {
+    void add() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.add(PREDICATE_IRI, "a");
         thingBuilder.add(PREDICATE_IRI, "b");

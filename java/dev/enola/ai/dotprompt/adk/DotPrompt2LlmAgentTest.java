@@ -59,7 +59,7 @@ class DotPrompt2LlmAgentTest {
 
     @Test
     @Disabled // TODO https://github.com/google/adk-java/issues/288
-    public void template() throws IOException {
+    void template() throws IOException {
         var dotPromptLoader = new DotPromptLoader(rp, defaultLLM);
         var dotPrompt = dotPromptLoader.load(URI.create("classpath:/prompts/person.prompt.md"));
         dotPrompt.model = EchoModelProvider.ECHO_URI.toString();
@@ -80,7 +80,7 @@ class DotPrompt2LlmAgentTest {
     // this is because Gemini is "smart enough" to 'respect' the output schema in the prompt
     // EVEN if the prompt template actually is not passed through correctly (with {{text}}
     // replacement).
-    public void person() throws IOException {
+    void person() throws IOException {
         if (!secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent()) return;
 
         var agent = loader.load(URI.create("classpath:/prompts/person.prompt.md"));

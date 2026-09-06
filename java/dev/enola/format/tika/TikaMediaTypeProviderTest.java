@@ -56,7 +56,7 @@ class TikaMediaTypeProviderTest {
 
     @Test
     @Disabled // TODO FIXME Debug and fix why this still doesn't work
-    public void detectWarcGz() {
+    void detectWarcGz() {
         var r = new FileResource(URI.create("file:///test.warc.gz"));
         assertThat(r.mediaType()).isEqualTo(MediaType.parse("application/warc+gz"));
     }

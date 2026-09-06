@@ -118,7 +118,7 @@ class XMLToThingsHandlerTest {
 
     @Test
     @Disabled // TODO FIXME
-    public void xhtml() throws IOException {
+    void xhtml() throws IOException {
         assertThat(loader.convertInto(URI.create("classpath:/test.html.xml"), store)).isTrue();
         throw new IllegalStateException(store.toString());
         // TODO ThingsSubject.assertThat(thingsBuilder).isEqualTo("classpath:/test.html.xml.ttl");

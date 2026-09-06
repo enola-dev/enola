@@ -42,7 +42,7 @@ class ProtoEnumValueToThingConnectorTest {
 
     @Test
     // @Disabled // TODO Implement this test and make ProtoEnumValueToThingConnector work..
-    public void label() throws IOException, ConversionException {
+    void label() throws IOException, ConversionException {
         ProtocolMessageEnum enumValue = DescriptorProtos.FileOptions.OptimizeMode.SPEED;
 
         EnumValueDescriptor enumValueDescriptor = enumValue.getValueDescriptor();

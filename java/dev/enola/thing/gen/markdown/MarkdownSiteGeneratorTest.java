@@ -141,7 +141,7 @@ class MarkdownSiteGeneratorTest {
 
     @Test // ~same (as integration instead of unit test) also in
     // EnolaCLITest#docGenTemplatedGreetingN()
-    public void templatedGreetingN() throws Exception {
+    void templatedGreetingN() throws Exception {
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
         generate(dir, "example.org/greetingN.ttl");
         check(dir, "example.org/greeting.md", "greeting.md");

@@ -67,7 +67,7 @@ class RdfResourceIntoThingConverterTest {
     }
 
     @Test // Load testSomething.ttl and ensure it's an instance of TestSomething and not just Thing
-    public void testSomething() throws IOException {
+    void testSomething() throws IOException {
         var things = convert(new ClasspathResource("testSomething.ttl").uri());
         Thing thing = things.iterator().next();
         TestSomething testSomething = (TestSomething) thing;

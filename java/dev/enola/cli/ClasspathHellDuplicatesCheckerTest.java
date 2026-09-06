@@ -36,7 +36,7 @@ class ClasspathHellDuplicatesCheckerTest {
 
     @Test
     @Disabled // TODO Fix why Netty from grpc-java maven@ CP on *OUR* maven@ ?!
-    public void testIfThereAreAnyDuplicateJARsOnTheClasspath() throws Exception {
+    void testIfThereAreAnyDuplicateJARsOnTheClasspath() throws Exception {
         var problems = new HashMap<String, List<String>>();
         try (ScanResult scanResult = new ClassGraph().scan()) {
             var results = scanResult.getAllResources().classFilesOnly().findDuplicatePaths();

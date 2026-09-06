@@ -43,6 +43,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.net.URI;
 
+// skipcq: JAVA-W1058
 public abstract class WebServerTestAbstract {
 
     @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
@@ -73,6 +74,7 @@ public abstract class WebServerTestAbstract {
     }
 
     @Test
+    // skipcq: JAVA-W1058
     public void testServer() throws IOException, InterruptedException {
         try (var ctx = TLC.open()) {
             ctx.push(TestCtxKey.MAGIC, 123);

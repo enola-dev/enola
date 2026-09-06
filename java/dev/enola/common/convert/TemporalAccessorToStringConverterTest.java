@@ -92,7 +92,7 @@ class TemporalAccessorToStringConverterTest {
 
     @Test
     @Disabled // TODO FIXME PITA
-    public void INSTANT_MIN1d() {
+    void INSTANT_MIN1d() {
         check(
                 Instant.MIN.plus(Duration.ofDays(1)),
                 new ObjectToStringWithToStringBiConverter<>(Instant.class, Instant::parse),

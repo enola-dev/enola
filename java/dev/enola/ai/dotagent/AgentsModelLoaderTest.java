@@ -62,7 +62,7 @@ class AgentsModelLoaderTest {
     }
 
     @Test // The goal of this is to make sure newline processing works as intended
-    public void optimisticChefJSONYAML() throws IOException {
+    void optimisticChefJSONYAML() throws IOException {
         var fromJSON = aml.load(URI.create("chef-optimist.agent.json"));
         var instructionJSON = fromJSON.agents.iterator().next().instruction;
 
@@ -79,7 +79,7 @@ class AgentsModelLoaderTest {
 
     @Test
     @Disabled // TODO
-    public void oppositeChefsMap() throws IOException {
+    void oppositeChefsMap() throws IOException {
         checkOppositeChefs(aml.load(URI.create("chefs-opposites-map.agent.yaml")));
     }
 

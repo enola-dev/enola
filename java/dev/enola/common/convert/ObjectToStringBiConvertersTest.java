@@ -31,7 +31,7 @@ class ObjectToStringBiConvertersTest {
 
     @Test
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void BOOLEAN_convertToType() throws IOException {
+    void BOOLEAN_convertToType() throws IOException {
         ObjectClassConverter occ = ObjectToStringBiConverters.BOOLEAN;
         assertThat(occ.convertToType(Boolean.TRUE, String.class)).hasValue("true");
         assertThat(occ.convertToType(Boolean.FALSE, String.class)).hasValue("false");
@@ -43,7 +43,7 @@ class ObjectToStringBiConvertersTest {
 
     @Test
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void STRING_convertToType() throws IOException {
+    void STRING_convertToType() throws IOException {
         ObjectClassConverter occ = ObjectToStringBiConverters.STRING;
         assertThat(occ.convertToType(123, String.class)).isEmpty();
         assertThat(occ.convertToType("hello, world", URI.class)).isEmpty();

@@ -44,7 +44,7 @@ class MessageDescriptorToSchemaConverterTest {
 
     @Test
     @Disabled
-    public void testSimple() throws IOException {
+    void testSimple() throws IOException {
         var testSimple = TestSimple.newBuilder().build();
         var schema = c.convert(testSimple);
         assertEquals(schema.toJson(), "TestSimple.schema.yaml");

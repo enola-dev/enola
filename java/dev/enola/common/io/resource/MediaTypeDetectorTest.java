@@ -125,7 +125,7 @@ class MediaTypeDetectorTest {
     // If a caller of an EmptyResource constructor says its TEXT, then it is that!
     // What this meant to test is that if a HTTP server says something is TEXT, then
     // that may be wrong, and we should detect if it may be YAML; but that goes elsewhere.
-    public void testTextYAML() {
+    void testTextYAML() {
         // A text/plain with *.yaml is still application/yaml
         var r = new EmptyResource(create("http://server/hello.yaml"), PLAIN_TEXT_UTF_8);
         assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);

@@ -111,7 +111,7 @@ class McpLoaderTest {
 
     @Test
     @Disabled // TODO Figure out how to make this work under Bazel... :=(
-    public void createClient() throws IOException {
+    void createClient() throws IOException {
         var loader = new McpLoader(sm);
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         loader.load(r);

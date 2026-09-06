@@ -29,7 +29,7 @@ class URITemplateMatcherChainTest {
 
     @Test
     @SuppressWarnings("unchecked") // TODO
-    public void empty() throws Exception {
+    void empty() throws Exception {
         var empty = URITemplateMatcherChain.builder().build();
         assertThat(empty.match("")).isEmpty();
         assertThat(empty.match("another/something")).isEmpty();
@@ -37,7 +37,7 @@ class URITemplateMatcherChainTest {
 
     @Test
     @SuppressWarnings("unchecked") // TODO
-    public void basic() throws Exception {
+    void basic() throws Exception {
         var chainBuilder = URITemplateMatcherChain.builder();
         chainBuilder.add("thing/{name}", 1);
         chainBuilder.add("people/{firstName}-{lastName}/overview", 2);
@@ -61,7 +61,7 @@ class URITemplateMatcherChainTest {
 
     @Test
     @SuppressWarnings("unchecked") // TODO
-    public void doNotMatchContained() throws Exception {
+    void doNotMatchContained() throws Exception {
         var chain =
                 URITemplateMatcherChain.builder().add("thing", 1).add("thing/{name}", 1).build();
         assertThat(chain.match("thingxoxo")).isEmpty();

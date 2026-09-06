@@ -214,7 +214,7 @@ class YamlObjectReaderWriterTest {
 
     @Test
     // TODO Make this also write out the exampleIdentifiableRecord - but only once!
-    public void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
+    void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
         var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
         var example =
                 new ExampleRecord(

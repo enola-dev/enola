@@ -110,7 +110,7 @@ class EnolaApplicationTest {
 
     @Test // ~same (as unit instead of integration test) also in
     // MarkdownSiteGeneratorTest#templatedGreetingN()
-    public void docGenTemplatedGreetingN() throws IOException {
+    void docGenTemplatedGreetingN() throws IOException {
         Path dir = Files.createTempDirectory("EnolaTest");
 
         var exec =
@@ -292,7 +292,7 @@ class EnolaApplicationTest {
     }
 
     @Test // NB: RosettaTest has more
-    public void rosetta() throws IOException {
+    void rosetta() throws IOException {
         try (var r = TestResource.create(THING_YAML_UTF_8)) {
             var exec =
                     cli(
@@ -341,7 +341,7 @@ class EnolaApplicationTest {
 
     @Test
     @Disabled // JUST for debugging
-    public void modelsDocGen() {
+    void modelsDocGen() {
         var exec =
                 assertThat(
                         cli(
@@ -365,7 +365,7 @@ class EnolaApplicationTest {
 
     @Test
     @Disabled // TODO This causes serveOnlyChat(), which also uses ADK, to fail.
-    public void aiEcho() {
+    void aiEcho() {
         var exec = assertThat(cli("-vvv", "ai", "--llm=echo:/", "--in=hello, world"));
         exec.err().isEmpty();
         exec.out().isEqualTo("hello, world\n");
@@ -375,7 +375,7 @@ class EnolaApplicationTest {
     @Test
     @Disabled // TODO Make CLI tests isolated so that this test does not break because -vvv
     // elsewhere
-    public void exception() {
+    void exception() {
         var exec = assertThat(cli("test-exception"));
         exec.err()
                 .isEqualTo(
@@ -388,7 +388,7 @@ class EnolaApplicationTest {
 
     @Test
     @Disabled // TODO Make CLI stateless so that enabling this does not break the exception() test
-    public void exceptionWithLogging() {
+    void exceptionWithLogging() {
         var exec = assertThat(cli("-v", "test-exception"));
         exec.err().contains("java.lang.RuntimeException: Test Exception");
         exec.err().contains("at dev.enola.cli.ExceptionTestCommand.run(ExceptionTestCommand.java:");

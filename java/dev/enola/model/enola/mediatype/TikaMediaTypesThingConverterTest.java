@@ -45,7 +45,7 @@ class TikaMediaTypesThingConverterTest {
 
     @Test
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void convert() throws IOException {
+    void convert() throws IOException {
         try (var ctx = TLC.open().push(TBF.class, new ProxyTBF(MutableThing.FACTORY))) {
             ThingRepositoryStore builder = new ThingMemoryRepositoryROBuilder();
             new TikaMediaTypesThingConverter().convertInto(IRI, builder);

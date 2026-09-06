@@ -39,7 +39,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.net.URI;
 
-public abstract class IPFSResourceTestAbstract {
+abstract class IPFSResourceTestAbstract {
 
     abstract @Nullable ResourceProvider getResourceProvider();
 
@@ -48,7 +48,7 @@ public abstract class IPFSResourceTestAbstract {
     @Test
     @Disabled // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail
     // CI?
-    public void hello() throws IOException {
+    void hello() throws IOException {
         if (getResourceProvider() == null) return;
         assertThat(bytesFromIPFS("ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu"))
                 .isEqualTo("hello, world\n".getBytes(UTF_8));
@@ -57,7 +57,7 @@ public abstract class IPFSResourceTestAbstract {
     @Test
     @Disabled // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail
     // CI?
-    public void vanGogh() throws IOException {
+    void vanGogh() throws IOException {
         var rp = getResourceProvider();
         if (rp == null) return;
 

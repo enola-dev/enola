@@ -76,7 +76,7 @@ class MetaTest {
 
     @Test
     @Disabled // TODO Make this work (again)... it doesn't work anymore since switching to ProxyTBL
-    public void testSchemaYAML() throws IOException {
+    void testSchemaYAML() throws IOException {
         var test = expected("test.esch");
         assertThat(test.name()).isEqualTo("Test");
         // NB: We're not asserting on every attribute, because test.esch.expected.yaml did!

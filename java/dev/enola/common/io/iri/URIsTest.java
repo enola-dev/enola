@@ -359,7 +359,7 @@ class URIsTest {
 
     @Test
     @Disabled // TODO FIXME, see class IRIs
-    public void baseOfIRI() throws IOException {
+    void baseOfIRI() throws IOException {
         assertThat(URIs.getBase(URI.create("https://dév.dev/projects/alt/index.html?q=abc#f")))
                 .isEqualTo(URI.create("https://dév.dev/projects/alt"));
 
@@ -372,7 +372,7 @@ class URIsTest {
 
     @Test
     @Disabled // TODO FIXME, see class IRIs
-    public void baseOfIRIwithPort() throws IOException {
+    void baseOfIRIwithPort() throws IOException {
         assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/index.html?q=abc#f")))
                 .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
 

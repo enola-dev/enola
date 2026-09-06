@@ -30,7 +30,8 @@ import java.io.IOException;
 
 class DatatypesTest {
 
-    public @Test void unsignedLong() throws ConversionException, IOException {
+    @Test
+    void unsignedLong() throws ConversionException, IOException {
         var datatype = Datatypes.UNSIGNED_LONG;
         checkInvariants(datatype);
         assertThat(datatype.javaType()).hasValue(UnsignedLong.class);

@@ -67,7 +67,7 @@ class FileThingConverterTest {
     }
 
     @Test // classpath:
-    public void skipClasspath() throws IOException {
+    void skipClasspath() throws IOException {
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
         var store = new ThingMemoryRepositoryROBuilder();
@@ -76,7 +76,7 @@ class FileThingConverterTest {
     }
 
     @Test // jar:file:
-    public void skipJarFile() throws IOException {
+    void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
         var store = new ThingMemoryRepositoryROBuilder();
         assertThat(converter.convertInto(new ClasspathResource("test.png").uri(), store)).isFalse();

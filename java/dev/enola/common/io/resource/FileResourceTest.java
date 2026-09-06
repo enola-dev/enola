@@ -91,7 +91,7 @@ class FileResourceTest {
     @Test
     @Disabled // TODO Support jar: scheme in FileResource, for writeable ZIPs!
     // For now, ResourceProvidersTest#testJarScheme() makes sure it works via ClasspathResource
-    public void jarScheme() throws IOException, URISyntaxException {
+    void jarScheme() throws IOException, URISyntaxException {
         var uri = Resources.getResource("test-hello-ascii.txt").toURI();
         var r = new FileResource.Provider().getResource(uri);
         assertThat(r).isNotNull();
@@ -99,7 +99,7 @@ class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testBasicJimFS() throws IOException {
+    void testBasicJimFS() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path foo = fs.getPath("/testBasicJimFS");
             Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
@@ -110,7 +110,7 @@ class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testPathToURIonJimFSwithNewName() throws IOException {
+    void testPathToURIonJimFSwithNewName() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path foo = fs.getPath("/testPathToURIonJimFSwithNewName");
 
@@ -137,7 +137,7 @@ class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testSeparatePathJimFS() throws IOException {
+    void testSeparatePathJimFS() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path folder = fs.getPath("/testSeparatePathJimFS");
             Files.createDirectories(folder);

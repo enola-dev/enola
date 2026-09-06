@@ -56,7 +56,7 @@ class EnolaTest {
 
     @Test
     @Disabled // TODO FIXME
-    public void getList() {
+    void getList() {
         // TODO Constant for "enola:/" from where? It's also a Model...
         var r = e.act("enola:/", Actions.GET);
         assertThat(r).isInstanceOf(Iterable.class);

@@ -65,7 +65,7 @@ class RdfReaderWriterTest {
 
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
-    public void writeTurtle() throws ConversionException, IOException {
+    void writeTurtle() throws ConversionException, IOException {
         Resource actual =
                 new MemoryResource(PICASSO_TURTLE_WRITTEN_RESOURCE.uri(), RdfMediaTypes.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
@@ -82,7 +82,7 @@ class RdfReaderWriterTest {
 
     @Test
     // 🎨 as https://json-ld.org
-    public void writeJsonLD() throws ConversionException, IOException {
+    void writeJsonLD() throws ConversionException, IOException {
         var actual = new MemoryResource(RdfMediaTypes.JSON_LD);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 

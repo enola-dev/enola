@@ -68,7 +68,7 @@ class URLTest {
 
     @Test
     @Disabled // TODO
-    public void iri() throws URISyntaxException, URL.ValidationException {
+    void iri() throws URISyntaxException, URL.ValidationException {
         for (var test : tests) {
             var iri = URL.parseUnencoded(test.text);
             check2(iri, test);

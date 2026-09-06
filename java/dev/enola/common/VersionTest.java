@@ -31,7 +31,7 @@ class VersionTest {
 
     @Test
     @Disabled // This could fail on a CI due to shallow Git clone
-    public void isKnown() {
+    void isKnown() {
         assertThat(Version.isKnown()).isTrue();
     }
 }

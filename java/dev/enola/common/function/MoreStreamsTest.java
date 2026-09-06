@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-public final class MoreStreamsTest {
+class MoreStreamsTest {
 
     @Test
     void testForEachSeq() throws Exception {

@@ -26,7 +26,7 @@ import java.io.InputStream;
 
 class NullResourceTest {
     @Test
-    public <is> void testNullResource() throws IOException {
+    <is> void testNullResource() throws IOException {
         var e = NullResource.INSTANCE;
         assertThat(e.byteSource().isEmpty()).isFalse();
         assertThat(e.mediaType()).isNotNull();

@@ -34,7 +34,7 @@ class GlobResolversTest extends FileGlobResolverTestAbstract {
 
     @Test
     @Disabled // TODO Write a test, and fix the code, to glob over a JAR file...
-    public void globOnZIP() {
+    void globOnZIP() {
         // ...
     }
 }

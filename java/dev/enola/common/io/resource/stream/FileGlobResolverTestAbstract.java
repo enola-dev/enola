@@ -33,7 +33,7 @@ import java.nio.file.Paths;
 
 abstract class FileGlobResolverTestAbstract {
 
-    @TempDir static File tempFolder;
+    static File tempFolder;
 
     protected GlobResolver newGlobResolver() {
         return new FileGlobResolver();
@@ -46,7 +46,8 @@ abstract class FileGlobResolverTestAbstract {
     }
 
     @BeforeAll
-    static void beforeClass() throws IOException {
+    static void beforeClass(@TempDir File tempDir) throws IOException {
+        tempFolder = tempDir;
         var tempRoot = tempFolder;
         Files.createFile(new File(tempRoot, "a.txt").toPath());
         Files.createFile(new File(tempRoot, "b.txt").toPath());
