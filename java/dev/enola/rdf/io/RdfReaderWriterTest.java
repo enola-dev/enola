@@ -39,7 +39,8 @@ import java.io.IOException;
 
 class RdfReaderWriterTest {
 
-    public static final @RegisterExtension SingletonRule r =
+    @RegisterExtension
+    public static final SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new RdfMediaTypes(), new RdfMediaTypeYamlLd(), new YamlMediaType()));
