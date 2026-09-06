@@ -35,7 +35,7 @@ for TARGET in $TARGETS; do
     SOURCES="bazel-bin/${PKG}/${BASE}-project-src.jar"
     POM="bazel-bin/${PKG}/${BASE}-pom.xml"
 
-    ./java/mvnw install:install-file \
+    mvn install:install-file \
         -Dfile="${JAR}" \
         -Dsources="${SOURCES}" \
         -DpomFile="${POM}" \

@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO And where does coursier come from?! ;-)
+# Coursier (cs) is provided natively by Nix (pkgs.coursier)
 
 git branch | grep bazel-steward/ | xargs git branch -D
 

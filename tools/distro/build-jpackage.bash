@@ -23,9 +23,20 @@ mkdir -p /tmp/enola/distro/jpackage/in
 cp "$ROOT"/bazel-bin/java/dev/enola/cli/enola_deploy.jar /tmp/enola/distro/jpackage/in/
 mkdir -p /tmp/enola/distro/jpackage/out
 
+if [ -d "${JAVA_HOME:-}/jmods" ]; then
+  JMODS_DIR="${JAVA_HOME}/jmods"
+elif [ -d "${JAVA_HOME:-}/lib/openjdk/jmods" ]; then
+  JMODS_DIR="${JAVA_HOME}/lib/openjdk/jmods"
+elif [ -d "/usr/lib/jvm/java-21-openjdk/jmods" ]; then
+  JMODS_DIR="/usr/lib/jvm/java-21-openjdk/jmods"
+else
+  echo "Could not find OpenJDK jmods directory in JAVA_HOME" >&2
+  exit 1
+fi
+
 # TODO https://github.com/enola-dev/enola/issues/748: --generate-cds-archive
 jlink --output /tmp/enola/distro/jpackage/out/jlink --include-locales=en \
-  --module-path /usr/lib/jvm/java-21-openjdk/jmods --add-modules java.xml,jdk.xml.dom,jdk.zipfs,java.base,jdk.crypto.ec,jdk.unsupported,java.logging,jdk.crypto.cryptoki,jdk.net,jdk.random,jdk.internal.ed,java.net.http,jdk.internal.opt,jdk.internal.le,jdk.localedata \
+  --module-path "$JMODS_DIR" --add-modules java.xml,jdk.xml.dom,jdk.zipfs,java.base,jdk.crypto.ec,jdk.unsupported,java.logging,jdk.crypto.cryptoki,jdk.net,jdk.random,jdk.internal.ed,java.net.http,jdk.internal.opt,jdk.internal.le,jdk.localedata \
   --strip-native-commands --strip-debug --no-man-pages --no-header-files
 
 jpackage --verbose --type app-image \

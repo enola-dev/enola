@@ -39,7 +39,6 @@ It should be regularly (manually) run by maintainers of this project. Where poss
 * [`WORKSPACE.bazel`](//WORKSPACE.bazel) contains versioned `http_archive` of Bazel rules
 * [`MODULE.bazel`](//MODULE.bazel) contains `bazel_dep` versions
 * [`.pre-commit-config.yaml`](//.pre-commit-config.yaml) contains the versions of various `pre-commit` hooks used to enforce [the Code Styles](style.md)
-* [`requirements.txt`](//requirements.txt) contains versions of Python packages used as build tools
 
 ## GitHub Action Cache
 

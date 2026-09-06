@@ -35,25 +35,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  devcontainer:
-    # https://github.com/orgs/community/discussions/25722
-    if: (github.repository == 'enola-dev/enola') &&
-      (github.event.pull_request.draft == false)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v6
-      - name: DevContainer
-        # TODO if: ${{ github.event_name == 'push' }}
-        uses: devcontainers/ci@v0.3
-        with:
-          # TODO imageName: ghcr.io/example/example-devcontainer
-          # TODO cacheFrom: ghcr.io/example/example-devcontainer
-          # TODO push: always
-          push: never
-          runCmd: echo DevContainer OK!
-          # TODO runCmd: ./tools/test-ci/test.bash
 
   # https://docs.enola.dev/use#nix non-regression testing
   # This is *SO* slow... because as-is it can't re-use the Bazel cache :(
@@ -119,16 +100,6 @@ jobs:
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
 
-      # uvx is used in mcp.yaml, and test-cli.bash runs: ./enola -vv mcp list-tools
-      # So we need to install https://docs.astral.sh/uv/guides/integration/github here.
-      # We prefer this over installing it with Nix just because of its enable-cache option.
-      - name: Install uv for Python MCP servers
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          version: "0.10.9" # Pin a specific version of uv.
-      # This could be removed again later; it's only needed until for initial quick testing that this works:
-      - run: uvx mcp-server-git --help
 
       - name: Check which package versions we are using
         run: |
@@ -168,34 +139,7 @@ jobs:
           # TODO manifest: npm: package-lock.json ??
           external-cache: true
           repository-cache: true
-      - name: Cache Node.js
-        uses: actions/cache@v5
-        with:
-          path: ~/.npm
-          # -${{ hashFiles('**/package-lock.json') }}
-          key: ${{ runner.os }}-npm
-          restore-keys: ${{ runner.os }}-npm
-      - name: Cache Maven
-        uses: actions/cache@v5
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven
-          restore-keys: ${{ runner.os }}-maven
-      - name: Cache Go
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: Cache Python Virtual Env
-        uses: actions/cache@v5
-        with:
-          path: .venv/
-          key: ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
-          restore-keys: ${{ runner.os }}-venv-
+
       - name: Cache Pre-Commit
         uses: actions/cache@v5
         with:

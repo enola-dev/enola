@@ -17,28 +17,11 @@
   //   "dockerfile": "../Dockerfile-DevEnv"
   // }
 
-  // https://containers.dev/implementors/json_reference/#lifecycle-scripts
-  // is what you want, NOT features' "ghcr.io/devcontainers-contrib/features/bash-command:1"
-  // (because that doesn't seem to have access to the workspace, whereas this does)
-  "onCreateCommand": "pwd && ls && tools/devcontainer/install.bash",
+  "onCreateCommand": "nix develop --command echo 'Nix dev environment ready!'",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
-    // DO NOT REMOVE THIS! Unless you *really* know what you're doing! Like really.
-    //
-    // The reason is that, while the CLI build with ./test.bash and all will still work,
-    // the Visual Studio Code Web on GitHub Codespaces will break without this - even
-    // if you installed Bazel in another script.
-    //
-    // The reason for that is that the Language Server from the VSC Bazel Java extension
-    // needs to be able to launch "bazel" from PATH - and that only works if it's in a
-    // directory that's on the OS default PATH, such as e.g. in /usr/local/bin/ - but
-    // VSC (Web) WON'T WORK if bazel is in some place like ~/go/bin/ or wherever.
-    //
-    // See also https://github.com/salesforce/bazel-vscode-java/issues/94
-    // and use https://github.com/vorburger/LearningBazelJavaVSC as reference.
-    //
-    // Do *NOT* add anything else here; most other tools installed differently.
+    "ghcr.io/devcontainers/features/nix:1": {}
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.

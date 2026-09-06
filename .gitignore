@@ -1,8 +1,5 @@
 # Bazel
-/bazel-bin
-/bazel-enola
-/bazel-out
-/bazel-testlogs
+/bazel-*
 
 # Gradle
 build/
@@ -43,11 +40,10 @@ web/web-out/
 .be/
 
 # Maven
-java/.mvn/wrapper/maven-wrapper.jar
 java/target
 
-# https://jbang.dev
-.jbang/
+# Git worktrees
+.worktrees/
 
 tools/version/VERSION
 
@@ -60,16 +56,10 @@ bazel-steward.jar
 # Bazel BSP, by https://docs.google.com/document/d/1fdLN1iONuRm--PhpDNYXpEOPPwKML8bG5OJv9AbCvEI/edit?tab=t.0
 .bazelbsp/
 
-# https://github.com/flox/install-flox-action/issues/106
-flox.x86_64-linux.deb
-
 # Nix & direnv
 # TODO https://github.com/direnv/direnv/issues/1434
 .direnv/
 /result
-
-# Python Virtual Environment (venv)
-.venv/
 
 # The *.java etc. under generated/ are created at build-time by tools/protoc.
 # So we ignore everything in it, EXCEPT for the generated/protoc/java/BUILD file.

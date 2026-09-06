@@ -54,7 +54,7 @@ PATH="$TOOLS_DIR/../../bazel-bin/cli/:$PATH" \
 
 # SVG with https://github.com/marionebl/svg-term-cli
 # is better than GIF with https://github.com/asciinema/agg
-svg-term --window --width 80 --height 25 --in "$SCRIPT_DIR"/script.cast --out "$SCRIPT_DIR"/script.svg
+bunx @okhsunrog/svg-term-cli --window --width 80 --height 25 --in "$SCRIPT_DIR"/script.cast --out "$SCRIPT_DIR"/script.svg
 
 # TODO Replace this, see https://github.com/zechris/asciinema-rec_script/issues/63
 # NB: asciinema cat fails with "OSError: [Errno 6] No such device or address: '/dev/tty'"

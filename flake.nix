@@ -18,6 +18,11 @@
       let
         pkgs = import nixpkgs { inherit system; };
         jdk' = pkgs.jdk21;
+        pythonEnv = pkgs.python3.withPackages (ps: [
+          ps."mkdocs-material"
+          ps."mkdocs-git-revision-date-localized-plugin"
+          ps."mkdocs-include-markdown-plugin"
+        ]);
         buildTools = with pkgs; [
           # https://github.com/NixOS/nixfmt/issues/335
           nix
@@ -28,7 +33,8 @@
           findutils
           gawk
 
-          python312
+          pythonEnv
+          asciinema
           curl
           clang-tools # clang-format
           git
@@ -40,10 +46,11 @@
           unzip
           nodejs
           maven
+          coursier
           jdk'
           jbang
           graphviz
-          protobuf
+          protobuf_32
           protoc-gen-grpc-java
           protolint
           which
@@ -55,6 +62,10 @@
           deadnix
           bazel_8
           buildifier
+          buildozer
+          uv
+          kubo
+          pre-commit
         ];
         # NB: This doesn't actually use tools/version/version-out.bash (like the non-Nix build does)
         gitRev = toString (self.shortRev or self.dirtyShortRev or self.lastModified or "DEVELOPMENT");
@@ -64,16 +75,6 @@
         # TODO: for https://nix-bazel.build, replace with mkShellNoCC.
         devShells.default = pkgs.mkShell {
           packages = buildTools;
-
-          # Python venv. Warning: impure! We mitigate impurity through
-          # specifying exact package versions in requirements.txt
-          venvDir = "./.venv";
-          postVenvCreation = ''
-            pip install -r requirements.txt
-          '';
-          buildInputs = with pkgs.python312Packages; [
-            venvShellHook
-          ];
 
           # A hook run every time you enter the environment
           postShellHook = ''

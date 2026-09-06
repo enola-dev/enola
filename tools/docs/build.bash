@@ -40,17 +40,9 @@ rm -f docs/BUILT/third_party/{BUILD*,*.bash}
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
-# We just always install https://github.com/marionebl/svg-term-cli, even if
-# we're then skipping it below, because this is quick, and doing it anyway helps
-# to detecting any CI build system regression with Nix etc.
-if ! [ -f "node_modules/.bin/svg-term" ]; then
-  npm ci
-fi
-PATH="$(pwd)/node_modules/.bin:$PATH"
-export PATH
-svg-term --version
+bunx @okhsunrog/svg-term-cli --version
 
-# This is very slow (so the svg-term-cli install is before; but its use has to be after this)
+# This is very slow (so the svg-term-cli check is before; but its use has to be after this)
 # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below
 ./enola execmd -vvvi "docs/use/**/*.md"
 
@@ -68,19 +60,7 @@ TOOLS_DIR=$(realpath "$(dirname "$0")")
 ENOLA="$TOOLS_DIR"/../../enola
 "$ENOLA" -vvvvvvv execmd -i docs/models/example.org/*.md
 
-# Ensure Python venv is activated. The nix-develop shellHook PATH changes don't always
-# persist between CI steps (e.g. when the venv cache is restored AFTER nix-develop ran).
-# shellcheck disable=SC1091
-if [ -f .venv/bin/activate ]; then
-  source .venv/bin/activate
-else
-  python -m venv .venv
-  source .venv/bin/activate
-  pip install -r requirements.txt
-fi
-if ! command -v mkdocs &>/dev/null; then
-  pip install -r requirements.txt
-fi
+mkdocs --version
 
 # TODO https://github.com/mkdocs/mkdocs/issues/1755
 mkdocs build --strict --config-file mkdocs.yaml

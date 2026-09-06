@@ -19,4 +19,9 @@ set -euo pipefail
 
 DIR=$(realpath "$(dirname "$0")")
 
+if [ -f "$DIR/../../.git" ]; then
+  # In a git worktree, .git is a file. Avoid touching shared hooks from a worktree.
+  exit 0
+fi
+
 ln --force --symbolic --relative "$DIR/hooks/"* "$DIR/../../.git/hooks/"
