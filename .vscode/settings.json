@@ -80,6 +80,8 @@
   // Keep this version in sync with the same version in .pre-commit-config.yaml
   // NB: Changes to this are only taken into account on start-up, so need to restart.
   "java.format.settings.google.version": "1.33.0",
+  // native-binary fails on NixOS due to dynamic linking against standard FHS glibc (stub-ld)
+  "java.format.settings.google.mode": "jar-file",
   // TODO https://github.com/eclipse-jdtls/eclipse.jdt.ls/issues/3050
   "java.compile.nullAnalysis.mode": "automatic",
   "java.completion.importOrder": ["#", "", "javax", "java"], //# is static

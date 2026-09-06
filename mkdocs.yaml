@@ -69,6 +69,7 @@ nav:
       - ➰ JSON-LD: use/json-ld/index.md
       - 📚 Canonicalize: use/canonicalize/index.md
       - 📝 ExecMD: use/execmd/index.md
+      - 📄 Markdown: use/markdown/index.md
       - ℹ️ Info: use/info/index.md
       - ⤵️ Fetch: use/fetch/index.md
       - 🔑 Secrets: use/secret/index.md

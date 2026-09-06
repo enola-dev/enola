@@ -149,4 +149,22 @@ public final class MediaTypes {
         }
         return escaped.append('"').toString();
     }
+
+    public static boolean isMarkdown(@Nullable MediaType mediaType) {
+        if (mediaType == null) {
+            return false;
+        }
+        return mediaType.is(MediaType.MD_UTF_8.withoutParameters())
+                || "markdown".equalsIgnoreCase(mediaType.subtype())
+                || "x-markdown".equalsIgnoreCase(mediaType.subtype());
+    }
+
+    public static boolean isHtml(@Nullable MediaType mediaType) {
+        if (mediaType == null) {
+            return false;
+        }
+        return mediaType.is(MediaType.HTML_UTF_8.withoutParameters())
+                || "html".equalsIgnoreCase(mediaType.subtype())
+                || "xhtml+xml".equalsIgnoreCase(mediaType.subtype());
+    }
 }

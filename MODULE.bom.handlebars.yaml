@@ -167,7 +167,12 @@ bom:
   # "org.purejava:kdewallet:1.6.0"
 
   # https://github.com/commonmark/commonmark-java
-  - "org.commonmark:commonmark:0.26.0"
+  - "org.commonmark:commonmark:0.30.0"
+  - "org.commonmark:commonmark-ext-yaml-front-matter:0.30.0"
+  - "org.commonmark:commonmark-ext-gfm-tables:0.30.0"
+  - "org.commonmark:commonmark-ext-heading-anchor:0.30.0"
+  - "org.commonmark:commonmark-ext-autolink:0.30.0"
+  - "org.commonmark:commonmark-ext-task-list-items:0.30.0"
 
   # https://github.com/modelcontextprotocol/java-sdk
   # Note: io.modelcontextprotocol.sdk:mcp is an empty aggregate POM with no sources jar published.

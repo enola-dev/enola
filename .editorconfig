@@ -81,6 +81,14 @@ generated_code = true
 indent_size = unset
 max_line_length = unset
 
+[java/dev/enola/common/markdown/resources/web/**]
+generated_code = true
+indent_size = unset
+indent_style = unset
+tab_width = unset
+max_line_length = unset
+trim_trailing_whitespace = unset
+
 [*.owl]
 max_line_length = unset
 

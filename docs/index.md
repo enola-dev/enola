@@ -48,6 +48,7 @@ Enola includes also a suite of AI unrelated tools:
 * **Resource Abstraction:** The [`fetch`](use/fetch/index.md) command can retrieve resources from diverse sources like HTTP(S), Git repositories, and local files.
 * **Data Transformation (Rosetta):** The [`rosetta`](use/rosetta/index.md) command converts between numerous data formats (RDF, JSON, YAML, XML, etc.), and can generate diagrams to visualize your models.
 * **Executable Markdown:** The [`execmd`](use/execmd/index.md) command allows you to embed executable commands within your Markdown documents, enabling dynamic content generation.
+* **Markdown Processing:** The [`markdown`](use/markdown/index.md) command formats Markdown, resolves magic links, generates directory indexes, and converts documentation into static HTML sites.
 * **Canonicalizing Formatter:** The [`canonicalize`](use/canonicalize/index.md) command helps maintain consistent formatting across your project files.
 
 BTW: The name "Enola" was originally inspired by the project's creator having watched the _Enola Holmes_ 🕵🏾‍♀️ detective movie with his daughter. And this is like a detective's tool!
