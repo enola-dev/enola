@@ -22,22 +22,22 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.StringResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class YAMLTest {
+class YAMLTest {
 
     // See YamlJsonTest for more tests.
 
     @Test
-    public void readResource() throws IOException {
+    void readResource() throws IOException {
         var resource = StringResource.of("name: it", YamlMediaType.YAML_UTF_8);
         YAML.readSingleMap(resource, map -> assertThat(map).containsExactly("name", "it"));
     }
 
     @Test
-    public void testEmpty() {
+    void testEmpty() {
         assertThat(YAML.readSingleMap("")).isEmpty();
     }
 }

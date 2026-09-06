@@ -17,17 +17,17 @@
  */
 package dev.enola.common.exec.vorburger;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static java.nio.file.Path.of;
 import static java.time.Duration.ofSeconds;
 
 import com.google.common.truth.Truth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class RunnerTest {
+class RunnerTest {
 
     // TODO Merge with PtyRunnerTest
 
@@ -47,28 +47,28 @@ public class RunnerTest {
     }
 
     @Test
-    public void testEcho() throws Exception {
+    void testEcho() throws Exception {
         check("echo hi", ExpectedExitCode.SUCCESS, "hi\n");
     }
 
     @Test
-    public void testTrue() throws Exception {
+    void testTrue() throws Exception {
         check("true", ExpectedExitCode.SUCCESS, "");
     }
 
     @Test
-    public void testFalse() throws Exception {
+    void testFalse() throws Exception {
         check("false", ExpectedExitCode.FAIL, "");
     }
 
     @Test
-    public void testIgnoreExitCode() throws Exception {
+    void testIgnoreExitCode() throws Exception {
         check("true", ExpectedExitCode.IGNORE, "");
         check("false", ExpectedExitCode.IGNORE, "");
     }
 
     @Test
-    public void testInexistantCommand() throws Exception {
+    void testInexistantCommand() throws Exception {
         check("does-not-exist", ExpectedExitCode.FAIL, "does-not-exist: command not found\n");
     }
 }

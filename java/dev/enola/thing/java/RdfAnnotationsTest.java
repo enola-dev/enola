@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.java.test.TestSomething;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class RdfAnnotationsTest {
+class RdfAnnotationsTest {
 
     @Test
-    public void rdfClassIRI() {
+    void rdfClassIRI() {
         assertThat(RdfAnnotations.classIRI(TestSomething.class)).hasValue(TestSomething.CLASS_IRI);
     }
 }

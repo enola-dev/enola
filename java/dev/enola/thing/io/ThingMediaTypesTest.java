@@ -28,30 +28,30 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.ResourceProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ThingMediaTypesTest {
+class ThingMediaTypesTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new ThingMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new ThingMediaTypes()));
 
-    @Rule
-    public TestTLCRule rule =
+    @RegisterExtension
+    TestTLCRule rule =
             TestTLCRule.of(
                     MediaTypeProviders.class,
                     new MediaTypeProviders(new ThingMediaTypes(), new YamlMediaType()));
 
     @Test
-    public void loaded() {
+    void loaded() {
         assertThat(MediaTypeProviders.SINGLETON.get().extensionsToTypes())
                 .containsKey(".thing.yaml");
     }
 
     @Test
-    public void thingYAML() throws URISyntaxException {
+    void thingYAML() throws URISyntaxException {
         var rp = new ResourceProviders(new FileResource.Provider());
         var resource = rp.getResource(new URI("file:/picasso.thing.yaml"));
         assertThat(resource.mediaType()).isEqualTo(ThingMediaTypes.THING_YAML_UTF_8);

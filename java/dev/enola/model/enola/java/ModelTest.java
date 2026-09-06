@@ -17,10 +17,10 @@
  */
 package dev.enola.model.enola.java;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ModelTest {
+class ModelTest {
 
     @Test
-    public void model() {}
+    void model() {}
 }

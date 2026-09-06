@@ -28,16 +28,17 @@ import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.UnavailableSecretManager;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.time.Duration;
 
-public class McpLoaderTest {
+class McpLoaderTest {
 
-    public @Rule SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     private final String SECRET = "TestingTesting";
@@ -50,7 +51,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var loader = new McpLoader(sm);
         assertThat(loader.opt("not_available")).isEmpty();
 
@@ -60,7 +61,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    public void loadConfig() throws IOException {
+    void loadConfig() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
         var config = loader.loadAndReturn(r);
@@ -73,7 +74,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    public void secrets() throws IOException {
+    void secrets() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
 
@@ -90,7 +91,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    public void secretsContainsNotStartsWith() throws IOException {
+    void secretsContainsNotStartsWith() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(sm);
         var config = loader.loadAndReturn(r);
@@ -101,7 +102,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    public void secretNotAvailable() throws IOException {
+    void secretNotAvailable() throws IOException {
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");
         var loader = new McpLoader(new UnavailableSecretManager());
         loader.load(r);
@@ -109,7 +110,7 @@ public class McpLoaderTest {
     }
 
     @Test
-    @Ignore // TODO Figure out how to make this work under Bazel... :=(
+    @Disabled // TODO Figure out how to make this work under Bazel... :=(
     public void createClient() throws IOException {
         var loader = new McpLoader(sm);
         var r = new ClasspathResource("enola.dev/ai/mcp.yaml");

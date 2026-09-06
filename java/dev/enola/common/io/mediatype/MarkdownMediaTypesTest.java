@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.net.MediaType;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MarkdownMediaTypesTest {
+class MarkdownMediaTypesTest {
 
     @Test
-    public void testMarkdownMediaTypes() {
+    void testMarkdownMediaTypes() {
         assertThat(MarkdownMediaTypes.MARKDOWN_UTF_8).isEqualTo(MediaType.MD_UTF_8);
     }
 }

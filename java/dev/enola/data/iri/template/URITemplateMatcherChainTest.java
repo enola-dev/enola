@@ -21,11 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap.SimpleEntry;
 
-public class URITemplateMatcherChainTest {
+class URITemplateMatcherChainTest {
 
     @Test
     @SuppressWarnings("unchecked") // TODO
@@ -74,7 +74,7 @@ public class URITemplateMatcherChainTest {
     }
 
     @Test
-    public void matchLongest() throws Exception {
+    void matchLongest() throws Exception {
         var chain1 =
                 URITemplateMatcherChain.<Integer>builder()
                         .add("aNS.anEntityKindName", 1)

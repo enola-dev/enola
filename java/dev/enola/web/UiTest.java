@@ -40,20 +40,20 @@ import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.proto.Thing;
 import dev.enola.web.netty.NettyHttpServer;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class UiTest {
+class UiTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     @Test
-    public void testUi() throws Exception {
+    void testUi() throws Exception {
         // TODO Change this to use a "real" set-up; to detect e.g. broken wiring issues
         // TODO Try new ResourceProviders(new ClasspathResource.Provider())
         var rp = new ResourceProviders();
         var esp = new EnolaServiceProvider(rp);
-        var service = new RestTest.TestService();
+        var service = new WebTestService();
         try (var grpc = new EnolaGrpcInProcess(esp, service, false)) {
             var testGrpcService = grpc.get();
             var ui =

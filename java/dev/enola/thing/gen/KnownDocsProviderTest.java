@@ -19,12 +19,12 @@ package dev.enola.thing.gen;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class KnownDocsProviderTest {
+class KnownDocsProviderTest {
 
     @Test
-    public void fixedKnownDocsProvider() {
+    void fixedKnownDocsProvider() {
         var kdp = new EnolaDevKnownDocsProvider();
         assertThat(kdp.get("https://some.other.tld/thing"))
                 .isEqualTo("https://some.other.tld/thing");

@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.datatype.DatatypeRepositoryBuilder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class DatatypeRepositoryTest {
+class DatatypeRepositoryTest {
 
     @Test
-    public void match() {
+    void match() {
         var r = new DatatypeRepositoryBuilder().storeAll(Datatypes.ALL).build();
         assertThat(r.match("hello, world")).hasValue(Datatypes.STRING);
         assertThat(r.match("hello,\n\tworld")).hasValue(Datatypes.STRING);

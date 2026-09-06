@@ -35,25 +35,25 @@ import dev.enola.common.io.resource.NullResource;
 import dev.enola.protobuf.test.TestEnum;
 import dev.enola.protobuf.test.TestSimple;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TypeRegistryWrapperTest {
+class TypeRegistryWrapperTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
 
     @Test
-    public void empty() {
+    void empty() {
         var wrapper = TypeRegistryWrapper.newBuilder().build();
         assertThat(wrapper.fileDescriptorSet().getFileList()).isEmpty();
         assertThat(wrapper.names()).isEmpty();
     }
 
     @Test
-    public void one() {
+    void one() {
         var wrapper =
                 TypeRegistryWrapper.newBuilder().add(List.of(Timestamp.getDescriptor())).build();
         assertThat(wrapper.fileDescriptorSet().getFileCount()).isEqualTo(1);
@@ -61,7 +61,7 @@ public class TypeRegistryWrapperTest {
     }
 
     @Test
-    public void aLot() throws IOException, Descriptors.DescriptorValidationException {
+    void aLot() throws IOException, Descriptors.DescriptorValidationException {
         var wrapper1 =
                 TypeRegistryWrapper.newBuilder()
                         .add(

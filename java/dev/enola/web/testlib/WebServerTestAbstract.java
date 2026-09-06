@@ -23,7 +23,7 @@ import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.common.net.MediaType;
 
@@ -37,15 +37,15 @@ import dev.enola.web.StaticWebHandler;
 import dev.enola.web.WebHandlers;
 import dev.enola.web.WebServer;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
 public abstract class WebServerTestAbstract {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     protected abstract WebServer create(WebHandlers handlers) throws IOException;
 
@@ -100,12 +100,12 @@ public abstract class WebServerTestAbstract {
                 var error1 = URI.create(prefix + "/error1");
                 assertThrows(IOException.class, () -> rp.getNonNull(error1).byteSource().read());
                 // var errorResponse1 = rp.getResource(error1);
-                // Assert.assertThrows(IOException.class, () -> errorResponse1.charSource().read());
+                // assertThrows(IOException.class, () -> errorResponse1.charSource().read());
 
                 var error2 = URI.create(prefix + "/error2");
                 assertThrows(IOException.class, () -> rp.getNonNull(error2).byteSource().read());
                 // var errorResponse2 = rp.getResource(error2);
-                // Assert.assertThrows(IOException.class, () -> errorResponse2.charSource().read());
+                // assertThrows(IOException.class, () -> errorResponse2.charSource().read());
 
                 // TODO expect HTTP Error 500
             }

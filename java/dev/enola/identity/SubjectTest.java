@@ -23,12 +23,12 @@ import dev.enola.common.context.TLC;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.ProxyTBF;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SubjectTest {
+class SubjectTest {
 
     @Test
-    public void ctx() {
+    void ctx() {
         var tbf = new ProxyTBF(ImmutableThing.FACTORY);
         var sb = tbf.create(Subject.Builder.class, Subject.class);
 

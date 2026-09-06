@@ -26,12 +26,12 @@ import com.google.common.io.Resources;
 import dev.enola.common.yamljson.YamlJson;
 import dev.enola.protobuf.test.TestSimple;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class MessageDescriptorToSchemaConverterTest {
+class MessageDescriptorToSchemaConverterTest {
 
     // TODO Add an actual JSON Schema parser, to validate gen. JSON
 
@@ -40,10 +40,10 @@ public class MessageDescriptorToSchemaConverterTest {
     MessageDescriptorToSchemaConverter c = new MessageDescriptorToSchemaConverter();
 
     @Test
-    public void EMPTY() {} // TODO Remove!
+    void EMPTY() {} // TODO Remove!
 
     @Test
-    @Ignore
+    @Disabled
     public void testSimple() throws IOException {
         var testSimple = TestSimple.newBuilder().build();
         var schema = c.convert(testSimple);

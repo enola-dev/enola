@@ -24,17 +24,17 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class ReplacingResourceTest {
+class ReplacingResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     @Test
-    public void replace() throws IOException {
+    void replace() throws IOException {
         var r = new ReplacingResource(StringResource.of("hello, XXX"), "XXX", "world");
         assertThat(r.charSource().read()).isEqualTo("hello, world");
     }

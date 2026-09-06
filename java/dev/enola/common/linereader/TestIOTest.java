@@ -19,22 +19,22 @@ package dev.enola.common.linereader;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TestIOTest {
+class TestIOTest {
 
     @Test
-    public void empty() {
+    void empty() {
         var io = new TestIO(List.of());
         assertThat(io.readLine()).isNull();
         assertThat(io.readLine("prompt> ")).isNull();
     }
 
     @Test
-    public void in() {
+    void in() {
         var io = new TestIO(List.of("hello", "world"));
         assertThat(io.readLine()).isEqualTo("hello");
         assertThat(io.readLine()).isEqualTo("world");
@@ -42,20 +42,20 @@ public class TestIOTest {
     }
 
     @Test
-    public void out() {
+    void out() {
         var io = new TestIO(List.of());
         io.printf("hello, %s\nTHE END", "world");
         assertThat(io.getOutput()).isEqualTo("hello, world\nTHE END");
     }
 
     @Test
-    public void env() {
+    void env() {
         var io = new TestIO(List.of());
         assertThat(io.ctx().environment()).isEmpty();
     }
 
     @Test
-    public void is() throws IOException {
+    void is() throws IOException {
         var io = new TestIO(List.of("hello", "world"));
         var text = new String(io.ctx().input().readAllBytes(), TestIO.CHARSET);
         assertThat(text).isEqualTo("hello\nworld");

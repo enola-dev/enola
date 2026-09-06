@@ -19,17 +19,17 @@ package dev.enola.common.secret.auto;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class AutoSecretManagerTest {
+class AutoSecretManagerTest {
 
     // echo "test: it" >~/.config/enola/azkaban.yaml
     // see //docs/use/secret/index.md#tests
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         var secretManager = AutoSecretManager.INSTANCE();
         // CANNOT secretManager.store("test", "testit".toCharArray());
         secretManager

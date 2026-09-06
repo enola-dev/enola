@@ -24,11 +24,11 @@ import com.google.common.primitives.UnsignedLong;
 import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.Datatype;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class DatatypesTest {
+class DatatypesTest {
 
     public @Test void unsignedLong() throws ConversionException, IOException {
         var datatype = Datatypes.UNSIGNED_LONG;

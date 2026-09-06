@@ -19,12 +19,22 @@ package dev.enola.common.context.testlib;
 
 import dev.enola.common.context.Singleton;
 
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 
-/** JUnit <code>@ClassRule</code> (or even just <code>@Rule</code>) for {@link Singleton}. */
-public class SingletonRule implements TestRule {
+import java.util.Optional;
+
+/** JUnit Jupiter Extension for {@link Singleton}. */
+public class SingletonRule
+        implements BeforeAllCallback,
+                BeforeEachCallback,
+                AfterEachCallback,
+                AfterAllCallback,
+                TestWatcher {
 
     /** Intended to be statically imported into *Test classes. */
     public static SingletonRule $(Singleton<?>... singletons) {
@@ -36,9 +46,12 @@ public class SingletonRule implements TestRule {
     }
 
     private final Singleton<?>[] singletons;
+    private final boolean get;
     private boolean doNotReset = false;
+    private boolean isClassLevel = false;
 
     private SingletonRule(Singleton<?>[] singletons, boolean get) {
+        this.get = get;
         if (get)
             for (var singleton : singletons)
                 // This may throw IllegalStateException (which is what we want)
@@ -47,28 +60,44 @@ public class SingletonRule implements TestRule {
     }
 
     @Override
-    public Statement apply(Statement base, Description description) {
-        return statement(base);
+    public void beforeAll(ExtensionContext context) {
+        this.isClassLevel = true;
+        if (get) for (var singleton : singletons) singleton.get();
     }
 
-    private <T> Statement statement(Statement base) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
+    @Override
+    public void beforeEach(ExtensionContext context) {
+        if (get) for (var singleton : singletons) singleton.get();
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) {
+        if (!isClassLevel) {
+            reset();
+        }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) {
+        reset();
+    }
+
+    @Override
+    public void testDisabled(ExtensionContext context, Optional<String> reason) {
+        if (!isClassLevel) {
+            reset();
+        }
+    }
+
+    private void reset() {
+        if (!doNotReset)
+            for (var singleton : singletons)
                 try {
-                    base.evaluate();
-                } finally {
-                    if (!doNotReset)
-                        for (var singleton : singletons)
-                            try {
-                                singleton.reset();
-                            } catch (IllegalStateException ignored) {
-                                // IGNORE!
-                            }
-                    doNotReset = false;
+                    singleton.reset();
+                } catch (IllegalStateException ignored) {
+                    // IGNORE!
                 }
-            }
-        };
+        doNotReset = false;
     }
 
     public void doNotReset() {

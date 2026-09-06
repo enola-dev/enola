@@ -21,7 +21,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.common.io.Files;
 import com.google.common.net.MediaType;
@@ -33,8 +33,8 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +43,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-public class ResourceProvidersTest {
+class ResourceProvidersTest {
 
-    public @Rule SingletonRule r =
-            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
+    @RegisterExtension
+    SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     private static final byte[] BYTES = new byte[] {1, 2, 3};
 
@@ -55,14 +55,14 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testNull() throws IOException {
+    void testNull() throws IOException {
         var uri = NullResource.INSTANCE.uri();
         check(NullResource.class, uri);
         new ResourceProviders().getResource(uri).charSink().write("hi");
     }
 
     @Test
-    public void testEmpty() throws IOException {
+    void testEmpty() throws IOException {
         // NB: URI.create("empty:") causes an java.net.URISyntaxException, so:
         var uri = URI.create("empty:?");
         var r = new ResourceProviders().getResource(uri);
@@ -76,7 +76,7 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testFileMediaType() {
+    void testFileMediaType() {
         Resource r;
         var rp = new ResourceProviders();
 
@@ -106,7 +106,7 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testReadAbsoluteFile() throws IOException {
+    void testReadAbsoluteFile() throws IOException {
         check(FileResource.class, URI.create("file:///dev/null"));
 
         var r = new ResourceProviders().getResource(URI.create("file:///dev/null"));
@@ -117,7 +117,7 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testReadRelativeFile() throws IOException {
+    void testReadRelativeFile() throws IOException {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             checkReadFile(new File("relative"), URI.create("relative"));
 
@@ -142,14 +142,14 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testWriteAbsoluteFileMediaTypeEncoding() throws IOException {
+    void testWriteAbsoluteFileMediaTypeEncoding() throws IOException {
         var cs = StandardCharsets.UTF_16LE;
         var f = new File("testWriteFileMediaTypeEncoding.txt").getAbsoluteFile();
         checkWriteFile(f, cs, f.toURI());
     }
 
     @Test
-    public void testWriteRelativeFileMediaTypeEncoding() throws IOException {
+    void testWriteRelativeFileMediaTypeEncoding() throws IOException {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, Paths.get("").toUri())) {
             var cs = StandardCharsets.UTF_16LE;
             var f = new File("testWriteFileMediaTypeEncoding.txt");
@@ -159,14 +159,14 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testClasspath() throws IOException {
+    void testClasspath() throws IOException {
         var uri = URI.create(ClasspathResource.SCHEME + ":/test-emoji.txt");
         var emoji = new ResourceProviders().getReadableResource(uri).charSource().read();
         assertThat(emoji).isEqualTo("🕵🏾‍♀️\n");
     }
 
     @Test
-    public void testString() throws IOException {
+    void testString() throws IOException {
         var rp = new ResourceProviders();
 
         var uri = URI.create(StringResource.SCHEME + ":hello");
@@ -182,7 +182,7 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testSTDOUT() throws IOException {
+    void testSTDOUT() throws IOException {
         new ResourceProviders()
                 .getResource(URI.create("fd:1?charset=UTF-8"))
                 .charSink()
@@ -190,19 +190,19 @@ public class ResourceProvidersTest {
     }
 
     @Test
-    public void testError() {
+    void testError() {
         check(ErrorResource.class, ErrorResource.INSTANCE.uri());
     }
 
     @Test
-    public void testNoScheme() {
+    void testNoScheme() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new ResourceProviders().getResource(URI.create("test:something")));
     }
 
     @Test
-    public void testUnknownScheme() {
+    void testUnknownScheme() {
         assertThat(new ResourceProviders().getResource(URI.create("xyz-unknown:test"))).isNull();
     }
 }

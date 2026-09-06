@@ -19,16 +19,16 @@ package dev.enola.audio.voice.twilio.relay;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-public class ConversationRelayRequestTest {
+class ConversationRelayRequestTest {
 
     ConversationRelayIO reader = new ConversationRelayIO();
 
     @Test
-    public void setupMessage() {
+    void setupMessage() {
         var setup =
                 (ConversationRelayRequest.Setup)
                         reader.read(
@@ -40,7 +40,7 @@ public class ConversationRelayRequestTest {
     }
 
     @Test
-    public void promptMessage() {
+    void promptMessage() {
         var prompt =
                 (ConversationRelayRequest.Prompt)
                         reader.read(
@@ -53,7 +53,7 @@ public class ConversationRelayRequestTest {
     }
 
     @Test
-    public void promptMessageWithUnknownExtraField() {
+    void promptMessageWithUnknownExtraField() {
         var prompt =
                 (ConversationRelayRequest.Prompt)
                         reader.read(
@@ -66,7 +66,7 @@ public class ConversationRelayRequestTest {
     }
 
     @Test
-    public void dtmfMessage() {
+    void dtmfMessage() {
         var dtmf =
                 (ConversationRelayRequest.DTMF)
                         reader.read(
@@ -77,7 +77,7 @@ public class ConversationRelayRequestTest {
     }
 
     @Test
-    public void interruptMessage() {
+    void interruptMessage() {
         var interrupt =
                 (ConversationRelayRequest.Interrupt)
                         reader.read(
@@ -89,7 +89,7 @@ public class ConversationRelayRequestTest {
     }
 
     @Test
-    public void errorMessage() {
+    void errorMessage() {
         var error =
                 (ConversationRelayRequest.Error)
                         reader.read(

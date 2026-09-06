@@ -22,14 +22,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.common.context.ContextsTest.TestContextLongKeys.OTHER;
 import static dev.enola.common.context.ContextsTest.TestContextStringKeys.FOO;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ContextsTest {
+class ContextsTest {
 
     enum TestContextStringKeys implements Context.Key<String> {
         FOO,
@@ -41,12 +41,12 @@ public class ContextsTest {
     }
 
     @Test
-    public void empty() {
+    void empty() {
         assertThrows(IllegalStateException.class, () -> TLC.get(OTHER));
     }
 
     @Test
-    public void one() {
+    void one() {
         try (var ctx = TLC.open()) {
             ctx.push(FOO, "bar");
             String foo = TLC.get(FOO);
@@ -54,16 +54,20 @@ public class ContextsTest {
         }
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void two() {
-        try (var ctx = TLC.open()) {
-            ctx.push(FOO, "bar");
-            ctx.push(FOO, "baz");
-        }
+    @Test
+    void two() {
+        assertThrows(
+                IllegalStateException.class,
+                () -> {
+                    try (var ctx = TLC.open()) {
+                        ctx.push(FOO, "bar");
+                        ctx.push(FOO, "baz");
+                    }
+                });
     }
 
     @Test
-    public void nested() {
+    void nested() {
         try (var ctx1 = TLC.open()) {
             ctx1.push(FOO, "bar");
             assertThat(TLC.get(FOO)).isEqualTo("bar");
@@ -78,7 +82,7 @@ public class ContextsTest {
     }
 
     @Test
-    public void exceptionWithContext() {
+    void exceptionWithContext() {
         try (var ctx1 = TLC.open()) {
             ctx1.push(FOO, "bar");
 
@@ -100,26 +104,26 @@ public class ContextsTest {
     }
 
     @Test
-    public void exceptionsWithoutContext() {
+    void exceptionsWithoutContext() {
         // Just to make sure that printStackTrace() doesn't throw a NullPointerException if no TLC
         stackTrace(new ContextualizedException("TEST"));
         stackTrace(new ContextualizedRuntimeException("TEST"));
     }
 
     @Test
-    public void useAfterClose() {
+    void useAfterClose() {
         Context ctx = TLC.open();
         ctx.close();
         assertThrows(IllegalStateException.class, () -> ctx.get(OTHER));
     }
 
     @Test
-    public void optionalNoTLC() {
+    void optionalNoTLC() {
         assertThat(TLC.optional(OTHER)).isEmpty();
     }
 
     @Test
-    public void optionalNoKey() {
+    void optionalNoKey() {
         try (var ctx = TLC.open()) {
             assertThat(TLC.optional(OTHER)).isEmpty();
         }

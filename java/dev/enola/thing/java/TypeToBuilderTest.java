@@ -21,15 +21,15 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.java.test.TestSomething;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TypeToBuilderTest {
+class TypeToBuilderTest {
 
     // TODO Write an APT processor that generates
     // //test/META-INF/dev.enola/https_--example.org-TestSomething
 
     @Test
-    public void testSomethingBuilder() {
+    void testSomethingBuilder() {
         var pair = TypeToBuilder.typeToBuilder(TestSomething.CLASS_IRI);
         assertThat(pair.builderClass()).isEqualTo(TestSomething.Builder.class);
         assertThat(pair.thingClass()).isEqualTo(TestSomething.class);

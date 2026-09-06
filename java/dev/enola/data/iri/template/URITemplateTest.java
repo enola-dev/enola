@@ -22,11 +22,11 @@ import static com.google.common.truth.Truth.assertThat;
 import com.github.fge.uritemplate.URITemplate;
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class URITemplateTest {
+class URITemplateTest {
 
     // TODO Use https://github.com/uri-templates/uritemplate-test as a test suite
     // TODO Test query parameters % encoding, see https://en.m.wikipedia.org/wiki/URI_Template
@@ -37,7 +37,7 @@ public class URITemplateTest {
     // TODO Test type of entry value, and fully support real nested and not just flat maps
 
     @Test
-    public void testSimpleURITemplates() throws Exception {
+    void testSimpleURITemplates() throws Exception {
         check(
                 "http://example.com/people/{firstName}-{lastName}/SSN",
                 "http://example.com/people/Michael-Vorburger/SSN",

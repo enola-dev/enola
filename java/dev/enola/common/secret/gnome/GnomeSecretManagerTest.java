@@ -19,14 +19,14 @@ package dev.enola.common.secret.gnome;
 
 import de.swiesend.secretservice.simple.SimpleCollection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class GnomeSecretManagerTest {
+class GnomeSecretManagerTest {
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         // NOTE: This is not working when running from Bazel (because env variables are not set)
         if (!SimpleCollection.isGnomeKeyringAvailable()) return;
         GnomeSecretManager.main(new String[0]);

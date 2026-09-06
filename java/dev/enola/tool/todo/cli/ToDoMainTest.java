@@ -21,22 +21,22 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.cli.common.CLI;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.File;
 import java.io.IOException;
 
-public class ToDoMainTest {
+class ToDoMainTest {
 
-    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir File tempFolder;
 
     @Test
-    public void addAndList() throws IOException {
+    void addAndList() throws IOException {
         String previousUserHome = System.getProperty("user.home");
         try {
             // Redirect user.home to a temporary directory for this test
-            System.setProperty("user.home", tempFolder.getRoot().getAbsolutePath());
+            System.setProperty("user.home", tempFolder.getAbsolutePath());
 
             // Add
             var addCli = new CLI(new String[] {"add", "Task 1"}, new ToDoMain());

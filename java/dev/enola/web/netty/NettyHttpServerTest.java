@@ -23,11 +23,11 @@ import dev.enola.web.testlib.WebServerTestAbstract;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class NettyHttpServerTest extends WebServerTestAbstract {
+class NettyHttpServerTest extends WebServerTestAbstract {
 
     @Override
     protected WebServer create(WebHandlers handlers) throws IOException {

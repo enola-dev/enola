@@ -32,7 +32,7 @@ import dev.enola.common.context.TLC;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -40,7 +40,7 @@ import java.time.InstantSource;
 import java.time.ZoneId;
 import java.util.Locale;
 
-public class DateTimeToolsTest {
+class DateTimeToolsTest {
 
     // TODO Make the DateTimeTools reply in German, given that the test Locale is GERMANY!
 
@@ -52,7 +52,7 @@ public class DateTimeToolsTest {
     DateTimeTools dateTimeTools = new DateTimeTools(instantSource);
 
     @Test
-    public void unit() {
+    void unit() {
         try (var ctx =
                 TLC.open()
                         .push(ZoneId.class, ZoneId.of("Europe/Zurich"))
@@ -74,7 +74,7 @@ public class DateTimeToolsTest {
     }
 
     @Test
-    public void geminiFlash() throws IOException {
+    void geminiFlash() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var model = llm.get(ModelConfig.temperature(FLASH, 0));
 

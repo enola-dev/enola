@@ -28,14 +28,14 @@ import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class TikaMediaTypesThingConverterTest {
+class TikaMediaTypesThingConverterTest {
 
     @Test
-    public void proxy() {
+    void proxy() {
         ProxyTBF proxy = new ProxyTBF(MutableThing.FACTORY);
         MediaType.Builder builder = proxy.create(MediaType.Builder.class, MediaType.class);
         builder.label("yo").iri("http://example.com");

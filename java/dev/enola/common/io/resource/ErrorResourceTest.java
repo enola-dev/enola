@@ -17,15 +17,15 @@
  */
 package dev.enola.common.io.resource;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class ErrorResourceTest {
+class ErrorResourceTest {
     @Test
-    public void testErrors() {
+    void testErrors() {
         var e = ErrorResource.INSTANCE;
         assertThrows(IOException.class, () -> e.byteSink().write(new byte[3]));
         assertThrows(IOException.class, () -> e.byteSource().read());

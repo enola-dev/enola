@@ -19,34 +19,34 @@ package dev.enola.data.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-public class IRITest {
+class IRITest {
 
     @Test
-    public void curie() {
+    void curie() {
         var iri = IRI.from("https://enola.dev/tika/", "author");
         assertThat(iri.toString()).isEqualTo("https://enola.dev/tika/author");
     }
 
     @Test
-    public void equalsOfSameFrom() {
+    void equalsOfSameFrom() {
         var iri1 = IRI.from("https://enola.dev/tika/", "author");
         var iri2 = IRI.from("https://enola.dev/tika/", "author");
         assertThat(iri1).isEqualTo(iri2);
     }
 
     @Test
-    public void equalsOfDifferentFrom() {
+    void equalsOfDifferentFrom() {
         var iri1 = IRI.from("https://schema.org/name");
         var iri2 = IRI.from("https://schema.org/", "name");
         assertThat(iri1).isEqualTo(iri2);
     }
 
     @Test
-    public void mapRemove1() {
+    void mapRemove1() {
         var map = new HashMap<IRI, String>();
         IRI iri = IRI.from("https://enola.dev/tika/", "author");
         map.put(iri, "hi");
@@ -55,7 +55,7 @@ public class IRITest {
     }
 
     @Test
-    public void mapRemove2() {
+    void mapRemove2() {
         var map = new HashMap<IRI, String>();
         IRI iri1 = IRI.from("https://enola.dev/tika/", "author");
         map.put(iri1, "hi");

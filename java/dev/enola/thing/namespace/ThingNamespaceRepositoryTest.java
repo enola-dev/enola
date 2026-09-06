@@ -23,28 +23,28 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.data.iri.namespace.repo.ImmutableNamespace;
 import dev.enola.rdf.io.RdfLoader;
 import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class ThingNamespaceRepositoryTest {
+class ThingNamespaceRepositoryTest {
 
     // TODO Cover CachingNamespaceRepository, here and/or in other tests?
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.BASIC;
 
     @Test
-    public void empty() {
+    void empty() {
         ThingNamespaceRepository ns = new ThingNamespaceRepository();
         assertThat(ns.getIRI("enola")).isEmpty();
         assertThat(ns.listIRI()).isEmpty();
@@ -53,7 +53,7 @@ public class ThingNamespaceRepositoryTest {
     }
 
     @Test
-    public void namespacesTTL() throws IOException {
+    void namespacesTTL() throws IOException {
         var store = new ThingMemoryRepositoryROBuilder();
         assertThat(new RdfLoader().load("classpath:/enola.dev/namespaces.ttl", store)).isTrue();
         ThingNamespaceRepository ns = new ThingNamespaceRepository(store.build());

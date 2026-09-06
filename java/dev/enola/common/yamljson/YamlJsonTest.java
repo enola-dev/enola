@@ -22,19 +22,19 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.common.yamljson.YamlJson.jsonToYaml;
 import static dev.enola.common.yamljson.YamlJson.yamlToJson;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class YamlJsonTest {
+class YamlJsonTest {
 
     @Test
-    public void testYAMLToJSON() {
+    void testYAMLToJSON() {
         assertThat(yamlToJson("value: 123")).isEqualTo("{\"value\":123}");
         assertThat(yamlToJson("value: 123\n---\nhello: world"))
                 .isEqualTo("[{\"value\":123},{\"hello\":\"world\"}]");
     }
 
     @Test
-    public void testJSONToYaml() {
+    void testJSONToYaml() {
         // Maps
         assertThat(jsonToYaml("{\"value\":123}")).isEqualTo("{value: 123.0}\n");
         assertThat(jsonToYaml("{\"number\":123, \"text\":\"hello\"}"))
@@ -46,7 +46,7 @@ public class YamlJsonTest {
     }
 
     @Test
-    public void testEmpty() {
+    void testEmpty() {
         assertThat(jsonToYaml("")).isEmpty();
         assertThat(jsonToYaml("{}")).isEmpty();
         assertThat(jsonToYaml("[]")).isEqualTo("[]\n");
@@ -55,7 +55,7 @@ public class YamlJsonTest {
     }
 
     @Test
-    public void canonicalizeJSON() {
+    void canonicalizeJSON() {
         assertThat(JSON.canonicalize(" {  'a':\n37}", false)).isEqualTo("{\"a\":37.0}");
         assertThat(JSON.canonicalize(" {\"b\":\"hi\", \"a\":37.0}", false))
                 .isEqualTo("{\"a\":37.0,\"b\":\"hi\"}");

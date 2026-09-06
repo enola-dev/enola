@@ -19,11 +19,11 @@ package dev.enola.common.convert;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class ObjectConverterTest {
+class ObjectConverterTest {
 
     private static record TestRecord(String name) {}
 
@@ -31,20 +31,20 @@ public class ObjectConverterTest {
             new ObjectConverter<>(TestRecord.class, String.class, input -> input.name);
 
     @Test
-    public void name() throws IOException {
+    void name() throws IOException {
         var testRecord = new TestRecord("dodo");
         var result = converter.convertToType(testRecord, String.class);
         assertThat(result).hasValue("dodo");
     }
 
     @Test
-    public void isNull() throws IOException {
+    void isNull() throws IOException {
         var result = converter.convertToType(null, String.class);
         assertThat(result).isEmpty();
     }
 
     @Test
-    public void other() throws IOException {
+    void other() throws IOException {
         var result = converter.convertToType(123L, String.class);
         assertThat(result).isEmpty();
     }

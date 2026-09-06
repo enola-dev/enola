@@ -27,17 +27,17 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.ReadableResource;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 
-public class GraphvizTest {
+class GraphvizTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new GraphvizMediaType()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new GraphvizMediaType()));
 
     @Test
-    public void mediaType() {
+    void mediaType() {
         ReadableResource r = new ClasspathResource(URI.create("classpath:/graph.expected-full.gv"));
         assertThat(r.mediaType()).isEqualTo(GraphvizMediaType.GV);
 

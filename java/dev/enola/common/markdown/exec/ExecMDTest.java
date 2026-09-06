@@ -19,47 +19,47 @@ package dev.enola.common.markdown.exec;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class ExecMDTest {
+class ExecMDTest {
 
     private static final Path CWD = Path.of(".");
 
     @Test
-    public void echo() throws MarkdownProcessingException, IOException {
+    void echo() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash\n$ echo hi\nIGNORED\n```");
         assertEquals("# Test\n```bash\n$ echo hi\nhi\n```\n", r.markdown);
         assertThat(r.script).contains("echo hi");
     }
 
     @Test
-    public void isFalse() throws MarkdownProcessingException, IOException {
+    void isFalse() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash $?\n$ false\n```");
         assertEquals("# Test\n```bash\n$ false\n```\n", r.markdown);
         assertThat(r.script).contains("false");
     }
 
     @Test
-    public void preambleInit() throws MarkdownProcessingException, IOException {
+    void preambleInit() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "# Test\n```bash MSG=hi\n$ echo $MSG\n```");
         assertEquals("# Test\n```bash\n$ echo $MSG\nhi\n```\n", r.markdown);
         assertThat(r.script).contains(":MSG=hi\necho $MSG");
     }
 
     @Test
-    public void multiline() throws MarkdownProcessingException, IOException {
+    void multiline() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "```bash\n$ echo \\\n  Hi\n```");
         assertEquals("```bash\n$ echo \\\n  Hi\nHi\n```\n", r.markdown);
         assertThat(r.script).contains("echo \\\n  Hi");
     }
 
     @Test
-    public void eof_eol() throws MarkdownProcessingException, IOException {
+    void eof_eol() throws MarkdownProcessingException, IOException {
         var r = new ExecMD().process(CWD, "```bash\n$ echo -n \"hello, \" && echo -n world\n```");
         assertEquals(
                 "```bash\n$ echo -n \"hello, \" && echo -n world\nhello, world\n```\n", r.markdown);

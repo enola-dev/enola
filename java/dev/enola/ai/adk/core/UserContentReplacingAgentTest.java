@@ -22,13 +22,13 @@ import com.google.adk.agents.LlmAgent;
 import dev.enola.ai.adk.test.AgentTester;
 import dev.enola.ai.adk.test.EchoModel;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class UserContentReplacingAgentTest {
+class UserContentReplacingAgentTest {
 
     @Test
-    @Ignore // TODO https://github.com/google/adk-java/issues/288
+    @Disabled // TODO https://github.com/google/adk-java/issues/288
     public void replace() {
         var model = new EchoModel();
         var agent1 = new LlmAgent.Builder().name("LLM").model(model).build();

@@ -21,9 +21,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.protobuf.Timestamp;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MessageValidatorTest {
+class MessageValidatorTest {
 
     MessageValidator<Void, Timestamp> testValidator =
             (ctx, ts, r) -> {
@@ -41,7 +41,7 @@ public class MessageValidatorTest {
             };
 
     @Test
-    public void testValidate() {
+    void testValidate() {
         var v = new MessageValidators();
         v.register(testValidator, Timestamp.getDescriptor());
         assertThat(v.validate(Timestamp.getDefaultInstance()).toMessage().getValidationsCount())

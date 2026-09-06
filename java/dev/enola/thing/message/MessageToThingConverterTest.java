@@ -37,12 +37,12 @@ import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Thing.Builder;
 import dev.enola.thing.proto.Value;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
 /** Tests for {@link MessageToThingConverter}. */
-public class MessageToThingConverterTest {
+class MessageToThingConverterTest {
 
     private static final String TEST_THING_IRI = "http://test/thing";
 
@@ -96,12 +96,12 @@ public class MessageToThingConverterTest {
     }
 
     @Test
-    public void testSimple() throws ConversionException {
+    void testSimple() throws ConversionException {
         check(simple, simpleThingWithProto);
     }
 
     @Test
-    public void testRepeated() throws ConversionException {
+    void testRepeated() throws ConversionException {
         var repeated = TestRepeated.newBuilder().addLines("one").addLines("two");
         var repeatedThing =
                 Thing.newBuilder()
@@ -113,7 +113,7 @@ public class MessageToThingConverterTest {
     }
 
     @Test
-    public void testComplex() throws ConversionException {
+    void testComplex() throws ConversionException {
         var complex =
                 TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);
         var complexThing =

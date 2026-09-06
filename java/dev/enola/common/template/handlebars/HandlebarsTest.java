@@ -25,18 +25,18 @@ import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.template.TemplateProvider;
 import dev.enola.common.template.TemplateProviderChain;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class HandlebarsTest {
+class HandlebarsTest {
 
     // TODO Test Partials. Needs to load referenced partials with the same ResourceProvider!
 
     TemplateProvider tp = new TemplateProviderChain(new HandlebarsTemplateProvider());
 
     @Test
-    public void simple() throws IOException {
+    void simple() throws IOException {
         var r = DataResource.of("hello, {{this}}", HANDLEBARS);
         var t = tp.get(r);
         assertThat(t.origin()).isEqualTo(r.uri());

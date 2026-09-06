@@ -23,16 +23,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public class MockProcessLauncherTest {
+class MockProcessLauncherTest {
 
     @Test
-    public void success() {
+    void success() {
         var env = ImmutableMap.<String, String>of();
         var launcher = new MockProcessLauncher(0, "hello".getBytes(UTF_8), new byte[0]);
         var baos = new ByteArrayOutputStream();

@@ -28,17 +28,17 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 
-public class XmlMediaTypeTest {
+class XmlMediaTypeTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new XmlMediaType()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new XmlMediaType()));
 
     @Test
-    public void xmlMediaType() {
+    void xmlMediaType() {
         var rp = new ClasspathResource.Provider();
         var resource = rp.get("classpath:/greeting1-attribute.xml");
         var mediaType = resource.mediaType();
@@ -46,7 +46,7 @@ public class XmlMediaTypeTest {
     }
 
     @Test
-    public void testStrangeBug() {
+    void testStrangeBug() {
         var rp = new ClasspathResource.Provider();
         var ok = rp.getReadableResource(URI.create("classpath:/greeting1-nested.xml"));
         assertThat(normalizedNoParamsEquals(ok.mediaType(), MediaType.XML_UTF_8)).isTrue();

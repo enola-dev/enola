@@ -19,12 +19,12 @@ package dev.enola.common.time;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class IntervalTest {
+class IntervalTest {
 
     @Test
-    public void toStringALL() {
+    void toStringALL() {
         assertThat(Interval.ALL.toString())
                 .isEqualTo("-1000000000-01-01T00:00:00Z/+1000000000-12-31T23:59:59.999999999Z");
     }

@@ -39,16 +39,16 @@ import dev.enola.thing.proto.Thing;
 
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.util.Values;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class RdfThingConverterTest {
+class RdfThingConverterTest {
 
-    public @Rule SingletonRule r =
-            $(MediaTypeProviders.set(new RdfMediaTypes(), new ThingMediaTypes()));
+    @RegisterExtension
+    SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new ThingMediaTypes()));
 
     private final ReadableResource turtle = new ClasspathResource("picasso.ttl");
 
@@ -65,29 +65,29 @@ public class RdfThingConverterTest {
     private Thing picassoThing;
     private Thing daliThing;
 
-    @Before
-    public void before() throws ConversionException, IOException {
+    @BeforeEach
+    void before() throws ConversionException, IOException {
         rdf = rdfReader.convert(turtle).get();
         picassoThing = protoReader.read(picassoYaml, Thing.newBuilder(), Thing.class);
         daliThing = protoReader.read(daliYaml, Thing.newBuilder(), Thing.class);
     }
 
     @Test
-    public void rdfToPicassoThing() throws ConversionException, IOException {
+    void rdfToPicassoThing() throws ConversionException, IOException {
         var actualThings = rdfToThingConverter.convertToList(rdf);
         var expectedThing = picassoThing;
         ProtoTruth.assertThat(actualThings.get(1).build()).isEqualTo(expectedThing);
     }
 
     @Test
-    public void rdfToDaliThing() throws ConversionException, IOException {
+    void rdfToDaliThing() throws ConversionException, IOException {
         var actualThings = rdfToThingConverter.convertToList(rdf);
         var expectedThing = daliThing;
         ProtoTruth.assertThat(actualThings.get(0).build()).isEqualTo(expectedThing);
     }
 
     @Test
-    public void picassoThingToRDF() throws ConversionException {
+    void picassoThingToRDF() throws ConversionException {
         var actualRDF = thingToRdfConverter.convert(picassoThing);
         Truth.assertThat(rdf.remove(Values.iri("http://example.enola.dev/Dalí"), null, null))
                 .isTrue();
@@ -96,14 +96,14 @@ public class RdfThingConverterTest {
     }
 
     @Test
-    public void daliThingToRDF() throws ConversionException {
+    void daliThingToRDF() throws ConversionException {
         var actualRDF = thingToRdfConverter.convert(daliThing);
         var expectedRDF = rdf.filter(Values.iri("http://example.enola.dev/Dalí"), null, null);
         ModelSubject.assertThat(actualRDF).isEqualTo(expectedRDF);
     }
 
     @Test
-    public void protoMessageToRDF() throws ConversionException {
+    void protoMessageToRDF() throws ConversionException {
         var simple = TestSimple.newBuilder().setText("hello").setNumber(123);
         var complex =
                 TestComplex.newBuilder().setSimple(simple).addSimples(simple).addSimples(simple);

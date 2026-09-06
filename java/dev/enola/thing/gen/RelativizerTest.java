@@ -19,14 +19,14 @@ package dev.enola.thing.gen;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-public class RelativizerTest {
+class RelativizerTest {
 
     @Test
-    public void relativize() {
+    void relativize() {
         assertThat(
                         Relativizer.relativize(
                                 URI.create("file:/docs/models/enola.dev/yaml/shorthand.md"),
@@ -35,7 +35,7 @@ public class RelativizerTest {
     }
 
     @Test
-    public void relativizeWithQuery() {
+    void relativizeWithQuery() {
         assertThat(
                         Relativizer.relativize(
                                 URI.create("file:/docs/models/enola.dev/yaml/shorthand.md"),
@@ -45,7 +45,7 @@ public class RelativizerTest {
     }
 
     @Test
-    public void relativizeSame() {
+    void relativizeSame() {
         assertThat(
                         Relativizer.relativize(
                                 URI.create("file:///foo/bar.md"), URI.create("file:///foo/bar.md")))
@@ -53,7 +53,7 @@ public class RelativizerTest {
     }
 
     @Test
-    public void relativizeCannot() {
+    void relativizeCannot() {
         assertThat(
                         Relativizer.relativize(
                                 URI.create("file:///foo/bar.md"),
@@ -62,7 +62,7 @@ public class RelativizerTest {
     }
 
     @Test
-    public void dropSchemeAddExtension() {
+    void dropSchemeAddExtension() {
         check("https://enola.dev/ett", "enola.dev/ett.md");
         check("https://enola.dev/some/thing", "enola.dev/some/thing.md");
         check("https://enola.dev", "enola.dev.md");

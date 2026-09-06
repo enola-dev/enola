@@ -19,14 +19,14 @@ package dev.enola.common;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-public class ByteSeqTest {
+class ByteSeqTest {
 
     @Test
-    public void byteArray() {
+    void byteArray() {
         var array = new byte[] {1, 2, 3};
         var id = ByteSeq.from(array);
 
@@ -41,7 +41,7 @@ public class ByteSeqTest {
     }
 
     @Test
-    public void uuid() {
+    void uuid() {
         var uuid = UUID.randomUUID();
         var id = ByteSeq.from(uuid);
 
@@ -51,14 +51,14 @@ public class ByteSeqTest {
     }
 
     @Test
-    public void random() {
+    void random() {
         var r = ByteSeq.random(17);
         assertThat(r.size()).isEqualTo(17);
     }
 
     /*
         @Test
-        public void protobufByteString() {
+        void protobufByteString() {
             var byteString = ByteString.copyFromUtf8("hello, world 😃");
             var id = ByteSeq.from(byteString);
 
@@ -69,7 +69,7 @@ public class ByteSeqTest {
     */
 
     @Test
-    public void compare() {
+    void compare() {
         var id1 = ByteSeq.from(new byte[] {1});
         var id2 = ByteSeq.from(new byte[] {1, 2});
 
@@ -77,7 +77,7 @@ public class ByteSeqTest {
     }
 
     @Test
-    public void empty() {
+    void empty() {
         assertThat(ByteSeq.EMPTY.size()).isEqualTo(0);
         assertThat(ByteSeq.EMPTY.toBytes()).isEqualTo(new byte[0]);
         assertThat(ByteSeq.EMPTY.hashCode()).isEqualTo(1);

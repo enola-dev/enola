@@ -24,7 +24,7 @@ import dev.enola.common.context.TestContext;
 /**
  * JUnit rule to set {@link TestContext}.
  *
- * <p>Usage: <code>@Rule public TestContextRule rule = new TestContextRule();</code>
+ * <p>Usage: <code>@RegisterExtension TestContextRule rule = new TestContextRule();</code>
  *
  * @see TestContext
  */

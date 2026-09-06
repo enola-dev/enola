@@ -33,7 +33,7 @@ import dev.enola.common.yamljson.JSON;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import org.junit.ComparisonFailure;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.List;
 import java.util.Map;
@@ -106,7 +106,7 @@ public class AgentTester {
         }
 
         if (!actualCanonicalFormattedJSON.equals(expectedCanonicalFormattedJSON))
-            throw new ComparisonFailure(
+            throw new AssertionFailedError(
                     "JSON is not equal",
                     expectedCanonicalFormattedJSON,
                     actualCanonicalFormattedJSON);
@@ -118,7 +118,7 @@ public class AgentTester {
         var expectedCanonicalFormattedMarkdown = Markdown.canonicalize(expectedMarkdown);
 
         if (!actualCanonicalFormattedMarkdown.equalsIgnoreCase(expectedCanonicalFormattedMarkdown))
-            throw new ComparisonFailure(
+            throw new AssertionFailedError(
                     "Markdown is not equal",
                     expectedCanonicalFormattedMarkdown,
                     actualCanonicalFormattedMarkdown);

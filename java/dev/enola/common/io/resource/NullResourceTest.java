@@ -19,12 +19,12 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class NullResourceTest {
+class NullResourceTest {
     @Test
     public <is> void testNullResource() throws IOException {
         var e = NullResource.INSTANCE;

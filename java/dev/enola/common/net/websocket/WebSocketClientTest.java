@@ -19,14 +19,14 @@ package dev.enola.common.net.websocket;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 
-public class WebSocketClientTest {
+class WebSocketClientTest {
 
     @Test
-    public void multiple() throws Exception {
+    void multiple() throws Exception {
         var sock = new InetSocketAddress(0);
         try (var server = new EchoWebSocketServer(sock)) {
             try (var ws = new WebSocketClient(server.awaitPort())) {

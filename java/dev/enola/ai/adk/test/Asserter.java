@@ -17,7 +17,7 @@
  */
 package dev.enola.ai.adk.test;
 
-import org.junit.ComparisonFailure;
+import org.opentest4j.AssertionFailedError;
 
 import java.util.Arrays;
 
@@ -48,7 +48,7 @@ final class Asserter {
 
     static void assertTextResponseEquals(String response, String responseMustBeEqualTo) {
         if (!response.equals(responseMustBeEqualTo))
-            throw new ComparisonFailure("!equals()", responseMustBeEqualTo, response);
+            throw new AssertionFailedError("!equals()", responseMustBeEqualTo, response);
     }
 
     private Asserter() {}

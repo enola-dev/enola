@@ -21,14 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class AppendableOutputStreamTest {
+class AppendableOutputStreamTest {
 
     @Test
-    public void euroSignWithSingleWrite() throws IOException {
+    void euroSignWithSingleWrite() throws IOException {
         var sb = new StringBuilder();
         try (var aos = new AppendableOutputStream(sb, UTF_8)) {
             aos.write(new byte[] {(byte) 0xE2, (byte) 0x82, (byte) 0xAC});
@@ -37,7 +37,7 @@ public class AppendableOutputStreamTest {
     }
 
     @Test
-    public void euroSignWithThreeByteWrites() throws IOException {
+    void euroSignWithThreeByteWrites() throws IOException {
         var sb = new StringBuilder();
         try (var aos = new AppendableOutputStream(sb, UTF_8)) {
             aos.write(0xE2);

@@ -23,12 +23,12 @@ import dev.enola.common.context.TestContext;
 import dev.enola.common.context.testlib.TestContextRule;
 
 import org.java_websocket.WebSocket;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.InetSocketAddress;
 
-public class TestContextAwareWebSocketServerTest {
+class TestContextAwareWebSocketServerTest {
 
     private static class TestWebSocketServer extends EchoWebSocketServer {
 
@@ -43,10 +43,10 @@ public class TestContextAwareWebSocketServerTest {
         }
     }
 
-    @Rule public TestContextRule rule = new TestContextRule();
+    @RegisterExtension TestContextRule rule = new TestContextRule();
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         var sock = new InetSocketAddress(0);
         try (var server = new TestWebSocketServer(sock)) {
             try (var ws = new WebSocketClient(server.awaitPort())) {

@@ -23,15 +23,15 @@ import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.mime.MediaType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 /** Test (and learn using) Tika itself - not its integration with Enola. */
-public class TikaTest {
+class TikaTest {
 
     @Test
-    public void detectLongerExtension() throws IOException {
+    void detectLongerExtension() throws IOException {
         var metadata = new Metadata();
         var tika = new DefaultDetector();
         metadata.set(TikaCoreProperties.RESOURCE_NAME_KEY, "file:///test.warc.gz");

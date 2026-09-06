@@ -32,43 +32,43 @@ import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.FileResource;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 
-public class TikaMediaTypeProviderTest {
+class TikaMediaTypeProviderTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new TikaMediaTypeProvider()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new TikaMediaTypeProvider()));
 
     @Test
-    public void detectHtml() {
+    void detectHtml() {
         var r = new ClasspathResource("test.html");
         assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 
     @Test
-    public void detectCBL() {
+    void detectCBL() {
         var r = new FileResource(URI.create("file:///test.CBL"));
         assertThat(r.mediaType()).isEqualTo(MediaType.parse("text/x-cobol").withCharset(UTF_8));
     }
 
     @Test
-    @Ignore // TODO FIXME Debug and fix why this still doesn't work
+    @Disabled // TODO FIXME Debug and fix why this still doesn't work
     public void detectWarcGz() {
         var r = new FileResource(URI.create("file:///test.warc.gz"));
         assertThat(r.mediaType()).isEqualTo(MediaType.parse("application/warc+gz"));
     }
 
     @Test
-    public void knownTypesWithAlternatives() {
+    void knownTypesWithAlternatives() {
         assertThat(MediaTypeProviders.SINGLETON.get().knownTypesWithAlternatives().keySet())
                 .isNotEmpty();
     }
 
     @Test
-    public void extensionsToTypes() {
+    void extensionsToTypes() {
         var mediaTypeProviders = MediaTypeProviders.SINGLETON.get();
         assertThat(mediaTypeProviders.extensionsToTypes()).isNotEmpty();
         assertThat(
@@ -82,7 +82,7 @@ public class TikaMediaTypeProviderTest {
     }
 
     @Test
-    public void exclusions() {
+    void exclusions() {
         isExcluded(".gv");
     }
 

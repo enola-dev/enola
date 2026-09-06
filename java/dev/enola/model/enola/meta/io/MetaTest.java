@@ -33,19 +33,20 @@ import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class MetaTest {
+class MetaTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     private final ThingMemoryRepositoryRW thingMemoryRepository = new ThingMemoryRepositoryRW();
 
-    public @Rule TestTLCRule rule =
+    @RegisterExtension
+    TestTLCRule rule =
             new TestTLCRule(
                     ImmutableMap.of(
                             ThingProvider.class,
@@ -64,17 +65,17 @@ public class MetaTest {
     }
 
     @Test
-    public void readCommonYAML() throws IOException {
+    void readCommonYAML() throws IOException {
         read("enola.dev/common");
     }
 
     @Test
-    public void readMetaSchemaYAML() throws IOException {
+    void readMetaSchemaYAML() throws IOException {
         read("enola.dev/meta");
     }
 
     @Test
-    @Ignore // TODO Make this work (again)... it doesn't work anymore since switching to ProxyTBL
+    @Disabled // TODO Make this work (again)... it doesn't work anymore since switching to ProxyTBL
     public void testSchemaYAML() throws IOException {
         var test = expected("test.esch");
         assertThat(test.name()).isEqualTo("Test");

@@ -24,17 +24,17 @@ import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.tool.todo.ToDo;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 
-public class ToDoYamlFileRepositoryTest {
+class ToDoYamlFileRepositoryTest {
 
     @Test
-    public void testSaveAndFind() throws IOException {
+    void testSaveAndFind() throws IOException {
         var resource = new MemoryResource(YamlMediaType.YAML_UTF_8);
         var repo1 = new ToDoYamlFileRepository(resource);
 
@@ -49,7 +49,7 @@ public class ToDoYamlFileRepositoryTest {
     }
 
     @Test
-    public void noSuchFileException() throws IOException {
+    void noSuchFileException() throws IOException {
         var file = new File("non_existent_file.yaml");
         if (file.exists()) Files.delete(file.toPath());
         var resource = new FileResource(file.toURI());

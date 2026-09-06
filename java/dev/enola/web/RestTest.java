@@ -39,15 +39,15 @@ import dev.enola.core.proto.*;
 import dev.enola.thing.proto.Thing;
 import dev.enola.web.netty.NettyHttpServer;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class RestTest {
+class RestTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     @Test
-    public void getAndList() throws Exception {
+    void getAndList() throws Exception {
         // Setup
         var rp =
                 new ResourceProviders(

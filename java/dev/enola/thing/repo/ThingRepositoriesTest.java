@@ -24,19 +24,12 @@ import dev.enola.thing.*;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.template.TemplateThingRepository;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ThingRepositoriesTest {
+class ThingRepositoriesTest {
 
     public static final Thing testThing(Thing.Builder<?> builder) {
-        return builder.iri("http://example.com")
-                .set("http://example.com/message", "hello")
-                .set("http://example.com/link", new Link("http://example.com"))
-                .set("http://example.com/mls", new LangString("Saluton", "eo"))
-                .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
-                .add("http://example.com/list", new Link("http://example.com"))
-                .add("http://example.com/list", new Literal("k&ç#'", "test:type"))
-                .build();
+        return ThingTester.testThing(builder);
     }
 
     private static final Thing TEST_THING = testThing(ImmutableThing.builder());
@@ -54,7 +47,7 @@ public class ThingRepositoriesTest {
     }
 
     @Test
-    public void memoryRepositoryRO() {
+    void memoryRepositoryRO() {
         var store = new ThingMemoryRepositoryROBuilder();
         checkStore(store);
         var readOnlyRepo = store.build();
@@ -63,7 +56,7 @@ public class ThingRepositoriesTest {
     }
 
     @Test
-    public void memoryRepositoryRW() {
+    void memoryRepositoryRW() {
         var readWriteRepoStore = new ThingMemoryRepositoryRW();
         checkStore(readWriteRepoStore);
         checkThingRepository(readWriteRepoStore);

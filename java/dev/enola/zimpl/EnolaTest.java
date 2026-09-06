@@ -28,34 +28,34 @@ import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.model.enola.action.Actions;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class EnolaTest {
+class EnolaTest {
 
     // TODO Replace this with //test/test.enola scripting...
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     Enola e = new EnolaProvider().get();
 
     @Test
-    public void emptyGet() {
+    void emptyGet() {
         var r = e.act(EmptyResource.EMPTY_URI, Actions.GET);
         assertThat(r).isInstanceOf(EmptyResource.class);
         // TODO Test convert, assert empty String
     }
 
     @Test
-    public void stringGet() {
+    void stringGet() {
         var r = e.act(DataResource.of("hello, world").uri(), Actions.GET);
         assertThat(r).isInstanceOf(DataResource.class);
         // TODO Test convert to String, assert "hello, world"
     }
 
     @Test
-    @Ignore // TODO FIXME
+    @Disabled // TODO FIXME
     public void getList() {
         // TODO Constant for "enola:/" from where? It's also a Model...
         var r = e.act("enola:/", Actions.GET);

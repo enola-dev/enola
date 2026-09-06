@@ -20,22 +20,22 @@ package dev.enola.cli;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ClasspathHellDuplicatesCheckerTest {
+class ClasspathHellDuplicatesCheckerTest {
 
     @Test
-    public void NOOP() {}
+    void NOOP() {}
 
     @Test
-    @Ignore // TODO Fix why Netty from grpc-java maven@ CP on *OUR* maven@ ?!
+    @Disabled // TODO Fix why Netty from grpc-java maven@ CP on *OUR* maven@ ?!
     public void testIfThereAreAnyDuplicateJARsOnTheClasspath() throws Exception {
         var problems = new HashMap<String, List<String>>();
         try (ScanResult scanResult = new ClassGraph().scan()) {
@@ -72,7 +72,7 @@ public class ClasspathHellDuplicatesCheckerTest {
                     sb.append('\n');
                 }
             }
-            Assert.fail(sb.toString());
+            Assertions.fail(sb.toString());
         }
     }
 

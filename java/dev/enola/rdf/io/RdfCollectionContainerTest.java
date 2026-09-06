@@ -35,8 +35,8 @@ import dev.enola.thing.message.ThingAdapter;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Value;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 
@@ -52,11 +52,11 @@ import java.util.List;
  *   <li><a href="https://www.w3.org/TR/turtle/#collections">Turtle Spec</a>
  * </ol>
  */
-public class RdfCollectionContainerTest {
+class RdfCollectionContainerTest {
 
     // TODO When ThingsRdfConverter is implemented, also test that here, with RdfWriterConverter
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     String rdf = "@prefix : <http://example.org/>. :thing :property ( :thing1 :thing2 ).";
 
@@ -73,7 +73,7 @@ public class RdfCollectionContainerTest {
     //                                    http://www.w3.org/1999/02/22-rdf-syntax-ns#nil
 
     @Test
-    public void npeRdfListProtoPredicatesObjectsAdapter() {
+    void npeRdfListProtoPredicatesObjectsAdapter() {
         DatatypeRepository dtr = DatatypeRepository.EMPTY;
         ResourceProvider rp = iri -> null;
 

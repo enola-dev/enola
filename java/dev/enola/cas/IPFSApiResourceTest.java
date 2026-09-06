@@ -24,7 +24,7 @@ import io.ipfs.api.IPFS;
 
 import org.jspecify.annotations.Nullable;
 
-public class IPFSApiResourceTest extends IPFSResourceTestAbstract {
+class IPFSApiResourceTest extends IPFSResourceTestAbstract {
 
     @Override
     protected @Nullable ResourceProvider getResourceProvider() {

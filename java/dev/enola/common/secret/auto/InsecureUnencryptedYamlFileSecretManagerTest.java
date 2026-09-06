@@ -21,22 +21,22 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.secret.SecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class InsecureUnencryptedYamlFileSecretManagerTest {
+class InsecureUnencryptedYamlFileSecretManagerTest {
 
     @Test
-    public void newEmptyFile() throws IOException {
+    void newEmptyFile() throws IOException {
         var newFile = Files.createTempFile("InsecureUnencryptedYamlFileSecretManagerTest", ".yaml");
         SecretManager sm = new InsecureUnencryptedYamlFileSecretManager(newFile);
         assertThat(sm.getOptional("TEST")).isEmpty();
     }
 
     @Test
-    public void newNonExistingFile() throws IOException {
+    void newNonExistingFile() throws IOException {
         var newFile = Files.createTempFile("InsecureUnencryptedYamlFileSecretManagerTest", ".yaml");
         assertThat(newFile.toFile().delete()).isTrue();
 

@@ -19,15 +19,17 @@ package dev.enola.connect.maven;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.eclipse.aether.RepositoryException;
 import org.eclipse.aether.resolution.ArtifactResolutionException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URI;
 import java.util.List;
 
-public class MimaTest {
+class MimaTest {
 
     // TODO Allow explicit repo in get(), see https://github.com/maveniverse/mima/issues/166
 
@@ -36,7 +38,7 @@ public class MimaTest {
     // TODO Improve test coverage with a local repo server - is that worth it?!
 
     @Test
-    public void mariaDB4j() throws RepositoryException {
+    void mariaDB4j() throws RepositoryException {
         try (var mima = new Mima()) {
             var gav = GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
             var response = mima.get(gav);
@@ -61,7 +63,7 @@ public class MimaTest {
     }
 
     @Test
-    public void jitpack() throws RepositoryException {
+    void jitpack() throws RepositoryException {
         var gav = GAVR.parseGAV("com.github.vorburger:java-multihash:ed14893c86");
         try (var mima = new Mima(List.of(Mima.JITPACK))) {
             assertThat(mima.get(gav)).isNotNull();
@@ -72,17 +74,25 @@ public class MimaTest {
         // }
     }
 
-    @Test(expected = ArtifactResolutionException.class)
-    public void nonExistingVersion() throws RepositoryException {
-        try (var mima = new Mima()) {
-            mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:1.0.0"));
-        }
+    @Test
+    void nonExistingVersion() {
+        assertThrows(
+                ArtifactResolutionException.class,
+                () -> {
+                    try (var mima = new Mima()) {
+                        mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:1.0.0"));
+                    }
+                });
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void gavWithoutVersion() throws RepositoryException {
-        try (var mima = new Mima()) {
-            mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core"));
-        }
+    @Test
+    void gavWithoutVersion() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    try (var mima = new Mima()) {
+                        mima.get(GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core"));
+                    }
+                });
     }
 }

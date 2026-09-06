@@ -23,9 +23,9 @@ import dev.enola.common.context.TestContext;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SignatureValidatorTest {
+class SignatureValidatorTest {
 
     // This secret token is just for testing, it was long ago invalidated on the Twilio Console
     String token = "c0e4d9d4fff66d194f3101ccd7c3a38c";
@@ -38,24 +38,24 @@ public class SignatureValidatorTest {
     String BAD_URL = "wss://70cd1a93aa44.ngrok-free.app";
 
     @Test
-    public void noTestContext() {
+    void noTestContext() {
         assertThat(TestContext.isUnderTest()).isFalse();
     }
 
     @Test
-    public void validSignature() throws Exception {
+    void validSignature() throws Exception {
         var validator = new SignatureValidator(sm);
         assertThat(validator.validate(GOOD_URL, signature)).isTrue();
     }
 
     @Test
-    public void invalidSignature() throws Exception {
+    void invalidSignature() throws Exception {
         var validator = new SignatureValidator(sm);
         assertThat(validator.validate(BAD_URL, signature)).isFalse();
     }
 
     @Test
-    public void validSignatureWithHostHeader() throws Exception {
+    void validSignatureWithHostHeader() throws Exception {
         var validator = new SignatureValidator(sm);
         assertThat(validator.validate("70cd1a93aa44.ngrok-free.app", null, "/", signature))
                 .isTrue();

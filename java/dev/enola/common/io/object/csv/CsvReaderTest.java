@@ -24,25 +24,25 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.StringResource2;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CsvReaderTest {
+class CsvReaderTest {
 
     CsvReader csvReader = new CsvReader();
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var result = csvReader.readStream(new EmptyResource(MediaType.CSV_UTF_8), Map.class);
         assertThat(result).isEmpty();
     }
 
     @Test
-    public void csv1() throws IOException {
+    void csv1() throws IOException {
         var csv = "name,age\nAlice,30\nBob,25\n";
         var resource =
                 StringResource2.of(csv, MediaType.CSV_UTF_8, URI.create("string://test.csv"));

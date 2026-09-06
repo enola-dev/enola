@@ -21,11 +21,11 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.core.meta.docgen.StringUtil.capitalize;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class StringUtilTest {
+class StringUtilTest {
     @Test
-    public void testCapitalize() {
+    void testCapitalize() {
         assertThat(capitalize(null)).isNull();
         assertThat(capitalize("")).isEmpty();
         assertThat(capitalize("a")).isEqualTo("A");

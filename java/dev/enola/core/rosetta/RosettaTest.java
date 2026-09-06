@@ -30,6 +30,7 @@ import static dev.enola.thing.gen.graphviz.GraphvizResourceConverter.OUT_URI_QUE
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.*;
@@ -50,23 +51,22 @@ import dev.enola.thing.io.ThingMediaTypes;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingProvider;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class RosettaTest {
+class RosettaTest {
 
     // These intentionally only test some cases; more detailed tests
     // are done e.g. in YamlJsonTest and in ProtoIOTest.
 
     private static final ResourceProvider rp = new ClasspathResource.Provider();
 
-    @Rule
-    public SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new RdfMediaTypes(),
@@ -76,17 +76,17 @@ public class RosettaTest {
                             new YamlMediaType(),
                             new XmlMediaType()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.BASIC;
 
     private Rosetta rosetta;
 
-    @Before
-    public void before() {
+    @BeforeEach
+    void before() {
         rosetta = new Rosetta(rp, new RdfLoader());
     }
 
     @Test
-    public void testJsonToYaml() throws Exception {
+    void testJsonToYaml() throws Exception {
         var in = StringResource.of("{\"value\":123}", JSON_UTF_8);
         var out = new MemoryResource(YAML_UTF_8);
         rosetta.convertInto(in, out);
@@ -94,7 +94,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testYamlToJson() throws Exception {
+    void testYamlToJson() throws Exception {
         var in = StringResource.of("value: 123", YAML_UTF_8);
         var out = new MemoryResource(JSON_UTF_8);
         rosetta.convertInto(in, out);
@@ -102,7 +102,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testChangeTextEncodingFromUtf8ToIso8859() throws Exception {
+    void testChangeTextEncodingFromUtf8ToIso8859() throws Exception {
         var in = StringResource.of("hello, wörld", PLAIN_TEXT_UTF_8); // Note the umlaut!
         var out = new MemoryResource(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.ISO_8859_1));
         rosetta.convertInto(in, out);
@@ -114,7 +114,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testChangeTextEncodingFromUtf8ToUtf16() throws Exception {
+    void testChangeTextEncodingFromUtf8ToUtf16() throws Exception {
         var in = StringResource.of("hello, wörld", PLAIN_TEXT_UTF_8); // Note the umlaut!
         var out = new MemoryResource(PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.UTF_16BE));
         rosetta.convertInto(in, out);
@@ -126,7 +126,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testTurtleToThings() throws Exception {
+    void testTurtleToThings() throws Exception {
         var in = new ClasspathResource("picasso.ttl");
         var out = new MemoryResource(ThingMediaTypes.THING_YAML_UTF_8);
         rosetta.convertInto(in, out);
@@ -135,7 +135,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testTurtleToJsonLd() throws Exception {
+    void testTurtleToJsonLd() throws Exception {
         var in = new ClasspathResource("picasso.ttl");
         var out = new MemoryResource(RdfMediaTypes.JSON_LD);
         rosetta.convertInto(in, out);
@@ -144,7 +144,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testJsonToTurtle() throws Exception {
+    void testJsonToTurtle() throws Exception {
         var in = rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
         var out = new MemoryResource(RdfMediaTypes.TURTLE);
         rosetta.convertInto(in, out);
@@ -154,7 +154,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testJsonToJsonld() throws Exception {
+    void testJsonToJsonld() throws Exception {
         var in = rp.get("classpath:/picasso.json?context=classpath:/picasso-context.jsonld");
         var out = new MemoryResource(RdfMediaTypes.JSON_LD);
         rosetta.convertInto(in, out);
@@ -164,7 +164,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testYamlToTurtle() throws Exception {
+    void testYamlToTurtle() throws Exception {
         var in = rp.get("classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld");
         var out = new MemoryResource(RdfMediaTypes.TURTLE);
         rosetta.convertInto(in, out);
@@ -174,7 +174,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testXMLToTurtle() throws Exception {
+    void testXMLToTurtle() throws Exception {
         // TODO Make this test all "classpath:/**.xml"...
         var in = rp.get("classpath:/greeting1-nested.xml");
         var out = new MemoryResource(RdfMediaTypes.TURTLE);
@@ -186,7 +186,7 @@ public class RosettaTest {
     }
 
     @Test
-    public void testGexfAndGraphvizAndGraphCommons() throws Exception {
+    void testGexfAndGraphvizAndGraphCommons() throws Exception {
         var in = rp.get("classpath:/graph.ttl");
         try (var ctx = TLC.open()) {
             // This tests that StackedThingProvider in GraphvizGenerator works;

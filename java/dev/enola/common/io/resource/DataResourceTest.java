@@ -21,16 +21,18 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 import static com.google.common.net.MediaType.PLAIN_TEXT_UTF_8;
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import com.google.common.net.MediaType;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class DataResourceTest {
+class DataResourceTest {
 
     MediaType PLAIN_TEXT_ASCII = PLAIN_TEXT_UTF_8.withCharset(US_ASCII);
 
@@ -44,7 +46,7 @@ public class DataResourceTest {
     }
 
     @Test
-    public void valid() throws IOException {
+    void valid() throws IOException {
         check(",", PLAIN_TEXT_ASCII, "".getBytes(US_ASCII));
         check(",hello", PLAIN_TEXT_ASCII, "hello".getBytes(US_ASCII));
         check(",hello%20world", PLAIN_TEXT_ASCII, "hello world".getBytes(US_ASCII));
@@ -65,7 +67,7 @@ public class DataResourceTest {
     }
 
     @Test
-    public void ofString() throws IOException {
+    void ofString() throws IOException {
         check(DataResource.of(null), PLAIN_TEXT_ASCII, new byte[] {});
         check(DataResource.of(""), PLAIN_TEXT_ASCII, new byte[] {});
         check(DataResource.of("hello"), PLAIN_TEXT_ASCII, "hello".getBytes(US_ASCII));
@@ -78,18 +80,20 @@ public class DataResourceTest {
         check(DataResource.of("{ }", mt2), mt2, "{ }".getBytes(US_ASCII));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void empty() {
-        new DataResource(URI.create(""));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void spaceIsInvalid() {
-        new DataResource(URI.create("data:hello world"));
+    @Test
+    void empty() {
+        assertThrows(IllegalArgumentException.class, () -> new DataResource(URI.create("")));
     }
 
     @Test
-    public void dataURIWithEmptyMediaTypePartDefaultsToTextPlain() throws IOException {
+    void spaceIsInvalid() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new DataResource(URI.create("data:hello world")));
+    }
+
+    @Test
+    void dataURIWithEmptyMediaTypePartDefaultsToTextPlain() throws IOException {
         var resource1 = DataResource.of("hello, world");
         var uri = resource1.uri();
         var resource2 = new DataResource(uri);
@@ -98,7 +102,7 @@ public class DataResourceTest {
     }
 
     @Test
-    public void dataURIWithMediaTypeAndNoParameters() throws IOException {
+    void dataURIWithMediaTypeAndNoParameters() throws IOException {
         var uri = URI.create("data:text/plain,hi");
         var resource = new DataResource(uri);
         assertThat(resource.byteSource().read()).isEqualTo("hi".getBytes(US_ASCII));

@@ -23,11 +23,11 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-public class DatatypesTest {
+class DatatypesTest {
 
     public @Test void testImplementationWithOnlyIRI() throws ConversionException {
         checkInvariants(new ImmutableDatatype<>("http://test/"));

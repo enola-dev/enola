@@ -28,14 +28,14 @@ import io.ipfs.api.IPFS;
 import io.ipfs.cid.Cid;
 
 import org.jspecify.annotations.Nullable;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.Random;
 
-public class IPFSBlobStoreTest {
+class IPFSBlobStoreTest {
 
     // https://cid.ipfs.tech (https://github.com/multiformats/cid-utils-website)
     String HELLO_CIDv0 = "QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu";
@@ -44,34 +44,34 @@ public class IPFSBlobStoreTest {
 
     static @Nullable IPFSBlobStore ipfs;
 
-    @BeforeClass
-    public static void setUp() {
+    @BeforeAll
+    static void setUp() {
         if (Net.portAvailable(5001)) ipfs = new IPFSBlobStore(new IPFS("/ip4/127.0.0.1/tcp/5001"));
     }
 
     @Test
-    public void loadHelloCIDv0() throws IOException {
+    void loadHelloCIDv0() throws IOException {
         if (ipfs == null) return;
         var bytes = ignoreSocketTimeoutException(() -> ipfs.load(Cid.decode(HELLO_CIDv0)));
         if (bytes != null) assertThat(new String(bytes.read())).isEqualTo("hello, world\n");
     }
 
     @Test
-    public void loadHelloCIDv1() throws IOException {
+    void loadHelloCIDv1() throws IOException {
         if (ipfs == null) return;
         var bytes = ignoreSocketTimeoutException(() -> ipfs.load(Cid.decode(HELLO_CIDv1_RAW)));
         if (bytes != null) assertThat(new String(bytes.read())).isEqualTo("hello, world\n");
     }
 
     @Test
-    public void loadHelloCIDv1Identity() throws IOException {
+    void loadHelloCIDv1Identity() throws IOException {
         if (ipfs == null) return;
         var bytes = ipfs.load(Cid.decode(HELLO_CID_IDENTITY));
         assertThat(new String(bytes.read())).isEqualTo("hello, world\n");
     }
 
     @Test
-    public void storeHello() throws IOException {
+    void storeHello() throws IOException {
         if (ipfs == null) return;
         var cid = ipfs.store(ByteSource.wrap("hello, world\n".getBytes()));
         assertThat(cid.toString()).isEqualTo(HELLO_CIDv1_RAW);
@@ -80,7 +80,7 @@ public class IPFSBlobStoreTest {
     }
 
     @Test
-    public void storeLoadRandom() throws IOException {
+    void storeLoadRandom() throws IOException {
         if (ipfs == null) return;
         var bytes = generateRandomBytes(1024);
         var cid = ipfs.store(ByteSource.wrap(bytes));

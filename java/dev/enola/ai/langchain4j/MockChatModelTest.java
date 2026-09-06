@@ -19,12 +19,12 @@ package dev.enola.ai.langchain4j;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MockChatModelTest {
+class MockChatModelTest {
 
     @Test
-    public void mock() {
+    void mock() {
         var model = new MockChatModel("Zurich");
         var answer = new TestStreamingChatResponseHandler();
         model.chat("List top 3 cities in Switzerland", answer);

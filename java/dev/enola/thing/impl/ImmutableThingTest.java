@@ -20,7 +20,7 @@ package dev.enola.thing.impl;
 import dev.enola.thing.ThingTester;
 import dev.enola.thing.java.TBF;
 
-public class ImmutableThingTest extends ThingTester {
+class ImmutableThingTest extends ThingTester {
 
     @Override
     protected TBF getThingBuilderFactory() {

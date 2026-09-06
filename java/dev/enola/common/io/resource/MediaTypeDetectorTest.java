@@ -33,17 +33,18 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.*;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class MediaTypeDetectorTest {
+class MediaTypeDetectorTest {
 
-    public @Rule SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new YamlMediaType(),
@@ -52,7 +53,7 @@ public class MediaTypeDetectorTest {
                             new StandardMediaTypes()));
 
     @Test
-    public void testOverwrite() {
+    void testOverwrite() {
         var md = new MediaTypeDetector();
         var NADA = URI.create("nada:it");
         var UNKNOWN = parse("content/unknown");
@@ -71,56 +72,56 @@ public class MediaTypeDetectorTest {
     // TODO Rewrite all of above in this new style (to test the public API, instead implementation)
 
     @Test
-    public void emptyOctetStream() {
+    void emptyOctetStream() {
         assertThat(EmptyResource.INSTANCE.mediaType()).isEqualTo(OCTET_STREAM);
     }
 
     @Test
-    public void testTXT() {
+    void testTXT() {
         var r = new EmptyResource(create("whatever:hello.txt"));
         assertThat(r.mediaType()).isEqualTo(PLAIN_TEXT_UTF_8);
     }
 
     @Test
-    public void testJSON() {
+    void testJSON() {
         var r = new EmptyResource(create("whatever:hello.json"));
         assertThat(r.mediaType()).isEqualTo(JSON_UTF_8);
     }
 
     @Test // Test that TestMediaTypes was correctly registered
-    public void testTest() {
+    void testTest() {
         var r = new EmptyResource(create("whatever:something.test")); // drop charset!
-        assertThat(r.mediaType()).isEqualTo(MediaTypesTest.TEST);
+        assertThat(r.mediaType()).isEqualTo(TestMediaType.TEST);
     }
 
     @Test
-    @Ignore // Intentionally not implemented; it's up to the caller to normalize()
-    public void testTestAlternative() {
+    @Disabled // Intentionally not implemented; it's up to the caller to normalize()
+    void testTestAlternative() {
         MediaType TEST_ALT = parse("application/test-alternative");
         var r = new EmptyResource(create("whatever:something.test"), TEST_ALT);
-        assertThat(r.mediaType()).isEqualTo(MediaTypesTest.TEST);
+        assertThat(r.mediaType()).isEqualTo(TestMediaType.TEST);
     }
 
     @Test
-    public void testProto() {
+    void testProto() {
         var r = new EmptyResource(new File("hello.proto").toURI()); // drop charset!
         assertThat(r.mediaType()).isEqualTo(PROTO_UTF_8);
     }
 
     @Test
-    public void testTextproto() {
+    void testTextproto() {
         var r = new EmptyResource(new File("hello.textproto").toURI()); // drop charset!
         assertThat(r.mediaType()).isEqualTo(PROTOBUF_TEXTPROTO_UTF_8);
     }
 
     @Test
-    public void testYAML() {
+    void testYAML() {
         var r = new EmptyResource(create("http://server/hello.yaml"));
         assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);
     }
 
     @Test
-    @Ignore // TODO This is an invalid test... rewrite it elsewhere.
+    @Disabled // TODO This is an invalid test... rewrite it elsewhere.
     // If a caller of an EmptyResource constructor says its TEXT, then it is that!
     // What this meant to test is that if a HTTP server says something is TEXT, then
     // that may be wrong, and we should detect if it may be YAML; but that goes elsewhere.
@@ -131,7 +132,7 @@ public class MediaTypeDetectorTest {
     }
 
     @Test
-    public void testURI() {
+    void testURI() {
         var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
         var r = new EmptyResource(uri);
         assertThat(r.mediaType()).isEqualTo(YAML_UTF_8);

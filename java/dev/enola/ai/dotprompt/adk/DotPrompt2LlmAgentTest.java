@@ -32,13 +32,13 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class DotPrompt2LlmAgentTest {
+class DotPrompt2LlmAgentTest {
 
     // TODO Use TestsLlmProvider ? Or why not just directly MockChatModel.Provider?
     URI defaultLLM = URI.create("mocklm:hello");
@@ -50,7 +50,7 @@ public class DotPrompt2LlmAgentTest {
     DotPrompt2LlmAgent loader = new DotPrompt2LlmAgent(rp, defaultLLM, llmProvider);
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var agent = loader.load(EmptyResource.EMPTY_TEXT_URI);
         var tester = new AgentTester(agent);
 
@@ -58,7 +58,7 @@ public class DotPrompt2LlmAgentTest {
     }
 
     @Test
-    @Ignore // TODO https://github.com/google/adk-java/issues/288
+    @Disabled // TODO https://github.com/google/adk-java/issues/288
     public void template() throws IOException {
         var dotPromptLoader = new DotPromptLoader(rp, defaultLLM);
         var dotPrompt = dotPromptLoader.load(URI.create("classpath:/prompts/person.prompt.md"));

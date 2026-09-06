@@ -19,22 +19,22 @@ package dev.enola.common.time;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-public class TimesTest {
+class TimesTest {
 
     @Test
-    public void beginningOfTimeInstantToString() {
+    void beginningOfTimeInstantToString() {
         var instant = Instant.MIN.plus(1, ChronoUnit.DAYS);
         var text = "-1000000000-01-02T00:00:00Z";
         assertThat(instant.toString()).isEqualTo(text);
     }
 
     @Test
-    public void endOfTimeWithInstantParse() {
+    void endOfTimeWithInstantParse() {
         // NB: The + prefix is mandatory if it's not 4 YYYY digits
         Instant.parse("+300000-12-30T23:59:59Z");
     }

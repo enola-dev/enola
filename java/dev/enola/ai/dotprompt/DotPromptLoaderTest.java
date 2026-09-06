@@ -22,16 +22,16 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.markdown.Markdown;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 
-public class DotPromptLoaderTest {
+class DotPromptLoaderTest {
 
     @Test
-    public void testExample1() throws IOException {
+    void testExample1() throws IOException {
         var llmURI = URI.create("TheLLM");
         var loader = new DotPromptLoader(new ClasspathResource.Provider(), llmURI);
         var dotPrompt = loader.load(URI.create("classpath:/prompts/summarize.prompt.md"));

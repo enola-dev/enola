@@ -24,7 +24,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_TEXTPROTO_UTF_8;
 import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTO_UTF_8;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -36,17 +36,18 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Optional;
 
-public class ClasspathResourceTest {
+class ClasspathResourceTest {
 
-    public @Rule SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             $(
                     MediaTypeProviders.SINGLETON.set(
                             new MediaTypeProviders(new YamlMediaType(), new ProtobufMediaTypes())));
@@ -88,7 +89,7 @@ public class ClasspathResourceTest {
     }
 
     @Test
-    public void testResources() throws IOException {
+    void testResources() throws IOException {
         checkBinary("empty", OCTET_STREAM, 0);
         checkBinary("test-random-binary", OCTET_STREAM, 7);
 
@@ -126,7 +127,7 @@ public class ClasspathResourceTest {
     }
 
     @Test
-    public void testQueryParameters() throws IOException {
+    void testQueryParameters() throws IOException {
         var iri = "classpath:/test-french.txt?arg=val";
         var uri = URI.create(iri);
         var rp = new ClasspathResource.Provider();
@@ -138,14 +139,14 @@ public class ClasspathResourceTest {
     }
 
     @Test
-    public void viaProvider() throws IOException {
+    void viaProvider() throws IOException {
         var r = new ClasspathResource("test.json");
         var rp = new ClasspathResource.Provider();
         assertThat(rp.getResource(r.uri()).charSource().read()).isEqualTo("{}\n");
     }
 
     @Test
-    public void uriWithParameterMediaType() throws IOException {
+    void uriWithParameterMediaType() throws IOException {
         // JSON always works (because it's "standard"), it's YAML (which is "custom") which did not
         var uri = URI.create("classpath:/picasso.yaml?context=classpath:/picasso-context.jsonld");
         var r = new ClasspathResource(uri);

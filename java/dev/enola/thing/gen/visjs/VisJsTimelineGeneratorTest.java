@@ -36,22 +36,22 @@ import dev.enola.rdf.io.RdfMediaTypes;
 import dev.enola.thing.gen.LinkTransformer;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class VisJsTimelineGeneratorTest {
+class VisJsTimelineGeneratorTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
-    @Rule public TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
+    @RegisterExtension TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
 
-    // TODO @Test public void groupsAndItems() {}
+    // TODO @Test void groupsAndItems() {}
 
     @Test
-    public void html() throws IOException {
+    void html() throws IOException {
         var things = new RdfLoader().loadAtLeastOneThing(URI.create("classpath:/graph.ttl"));
         assertThat(things).isNotEmpty();
         var actual = new MemoryResource(MediaType.HTML_UTF_8);

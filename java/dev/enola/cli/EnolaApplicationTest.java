@@ -32,21 +32,21 @@ import dev.enola.common.io.resource.FileResource;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.protobuf.ProtobufMediaTypes;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 // See also //test-cli.bash
-public class EnolaApplicationTest {
+class EnolaApplicationTest {
 
     private static final String MODEL = "classpath:/enola.dev/enola.ttl";
     private static CLI cli;
 
-    public @Rule SingletonRule rule = onlyReset(Configuration.singletons());
+    @RegisterExtension SingletonRule rule = onlyReset(Configuration.singletons());
 
     private static CLI cli(String... args) {
         // This was intended to make initialization one time and faster, but it doesn't help.
@@ -57,39 +57,39 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void noArguments() {
+    void noArguments() {
         assertThat(cli()).hasExitCode(1).err().startsWith("Missing required subcommand");
     }
 
     @Test
-    public void badArgument() {
+    void badArgument() {
         assertThat(cli("--bad")).hasExitCode(1).err().startsWith("Unknown option: '--bad'");
         rule.doNotReset();
     }
 
     @Test
-    public void help() {
+    void help() {
         assertThat(cli("--help")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
     }
 
     @Test
-    public void h() {
+    void h() {
         assertThat(cli("-h")).hasExitCode(0).out().startsWith("Usage: enola [-hVv]");
     }
 
     @Test
-    public void version() {
+    void version() {
         assertThat(cli("--version")).hasExitCode(0).out().contains("Copyright");
         // TODO assertThat(cli("version")).hasExitCode(0).err().contains("Copyright");
     }
 
     @Test
-    public void v() {
+    void v() {
         assertThat(cli("-V")).hasExitCode(0).out().contains("Copyright");
     }
 
     @Test
-    public void docGenEmojiThing() throws IOException {
+    void docGenEmojiThing() throws IOException {
         Path dir = Files.createTempDirectory("EnolaTest");
 
         var exec = cli("-vvv", "docgen", "--load", MODEL, "--output", dir.toUri().toString());
@@ -137,7 +137,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getThing() {
+    void getThing() {
         var exec =
                 cli(
                         "-v",
@@ -161,7 +161,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getBinaryEntity() throws IOException {
+    void getBinaryEntity() throws IOException {
         try (var r = TestResource.create(ProtobufMediaTypes.PROTOBUF_BINARY)) {
             var exec =
                     cli(
@@ -185,7 +185,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getLoadedThing() {
+    void getLoadedThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/emoji");
         var subject = assertThat(exec);
         subject.err().isEmpty();
@@ -194,7 +194,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getLoadedClassAssertPropertiesDomainInverse() {
+    void getLoadedClassAssertPropertiesDomainInverse() {
         // This ensures that the RDFSPropertyTrigger did its job
         var exec = cli("-vvv", "get", "--load", MODEL, "https://enola.dev/Event");
         var subject = assertThat(exec);
@@ -204,7 +204,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getNonExistentThing() {
+    void getNonExistentThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent");
         var run = assertThat(exec);
         run.err().isEqualTo("https://docs.enola.dev/non-existent has nothing!\n");
@@ -213,7 +213,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getNonExistentTemplateIRIThing() {
+    void getNonExistentTemplateIRIThing() {
         var exec = cli("-vvv", "get", "--load", MODEL, "https://docs.enola.dev/non-existent/{ID}");
         var run = assertThat(exec);
         run.err().isEqualTo("https://docs.enola.dev/non-existent/{ID} has nothing!\n");
@@ -222,7 +222,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getList() {
+    void getList() {
         var exec = cli("-vvv", "get", "--load", MODEL, "enola:/");
         var run = assertThat(exec);
         run.err().isEmpty();
@@ -230,7 +230,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void serveBothHttpAndGRPC() {
+    void serveBothHttpAndGRPC() {
         var exec =
                 cli(
                         "-v",
@@ -248,7 +248,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void serveOnlyHttp() {
+    void serveOnlyHttp() {
         var exec =
                 cli(
                         "-v",
@@ -265,7 +265,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void serveOnlyGrpc() {
+    void serveOnlyGrpc() {
         var exec =
                 cli(
                         "-v",
@@ -282,7 +282,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void serveOnlyChat() {
+    void serveOnlyChat() {
         var exec = cli("-v", "server", "--chatPort=0", "--immediateExitOnlyForTest=true");
         var run = assertThat(exec);
         run.err().isEmpty();
@@ -312,7 +312,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void noStacktraceWithoutVerbose() {
+    void noStacktraceWithoutVerbose() {
         var exec = cli("docgen", "--load", "file:/nonexistant.yaml");
         var run = assertThat(exec);
         run.out().isEmpty();
@@ -320,7 +320,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void stacktraceWithGlobalVerbose() {
+    void stacktraceWithGlobalVerbose() {
         var exec = cli("-v", "docgen", "--load", "file:/nonexistant.yaml");
         var run = assertThat(exec);
         run.out().isEmpty();
@@ -330,7 +330,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void stacktraceWithSubcommandVerbose() {
+    void stacktraceWithSubcommandVerbose() {
         var exec = cli("docgen", "-v", "--load", "file:/nonexistant.yaml");
         var run = assertThat(exec);
         run.out().isEmpty();
@@ -340,7 +340,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    @Ignore // JUST for debugging
+    @Disabled // JUST for debugging
     public void modelsDocGen() {
         var exec =
                 assertThat(
@@ -356,7 +356,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    public void getLoadTikaMediaTypes() {
+    void getLoadTikaMediaTypes() {
         var exec =
                 assertThat(cli("-vvv", "get", "--load", "enola:TikaMediaTypes", "enola:/inline"));
         exec.err().isEmpty();
@@ -364,7 +364,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    @Ignore // TODO This causes serveOnlyChat(), which also uses ADK, to fail.
+    @Disabled // TODO This causes serveOnlyChat(), which also uses ADK, to fail.
     public void aiEcho() {
         var exec = assertThat(cli("-vvv", "ai", "--llm=echo:/", "--in=hello, world"));
         exec.err().isEmpty();
@@ -373,7 +373,8 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    @Ignore // TODO Make CLI tests isolated so that this test does not break because -vvv elsewhere
+    @Disabled // TODO Make CLI tests isolated so that this test does not break because -vvv
+    // elsewhere
     public void exception() {
         var exec = assertThat(cli("test-exception"));
         exec.err()
@@ -386,7 +387,7 @@ public class EnolaApplicationTest {
     }
 
     @Test
-    @Ignore // TODO Make CLI stateless so that enabling this does not break the exception() test
+    @Disabled // TODO Make CLI stateless so that enabling this does not break the exception() test
     public void exceptionWithLogging() {
         var exec = assertThat(cli("-v", "test-exception"));
         exec.err().contains("java.lang.RuntimeException: Test Exception");

@@ -25,14 +25,14 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class GraphCommonsMediaTypeTest {
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new GraphCommonsMediaType()));
+class GraphCommonsMediaTypeTest {
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new GraphCommonsMediaType()));
 
     @Test
-    public void graphCommonsMediaType() {
+    void graphCommonsMediaType() {
         var r = new ClasspathResource.Provider().get("classpath:/graph.expected.graphcommons.json");
         assertThat(r.mediaType()).isEqualTo(GraphCommonsMediaType.GCJSON);
     }

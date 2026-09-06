@@ -25,15 +25,15 @@ import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class RdfMediaTypeTest {
+class RdfMediaTypeTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Test
-    public void mediaTypes() {
+    void mediaTypes() {
         assertThat(new ClasspathResource("picasso.ttl").mediaType())
                 .isEqualTo(RdfMediaTypes.TURTLE);
     }

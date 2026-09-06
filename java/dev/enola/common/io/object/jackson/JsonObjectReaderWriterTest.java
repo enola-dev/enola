@@ -29,7 +29,7 @@ import dev.enola.common.io.object.ObjectWriter;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -37,12 +37,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class JsonObjectReaderWriterTest {
+class JsonObjectReaderWriterTest {
 
     // NB: Keep the very similar YamlObjectReaderWriterTest in sync with this!
 
     @Test
-    public void readEmpty_toMap() throws IOException {
+    void readEmpty_toMap() throws IOException {
         var resource = DataResource.of("", JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
 
@@ -51,7 +51,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readSimplestJSON_toMap() throws IOException {
+    void readSimplestJSON_toMap() throws IOException {
         var json = "{ \"string\": \"hello, world\" }";
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
@@ -61,7 +61,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readSimplestJSON_toExampleClass() throws IOException {
+    void readSimplestJSON_toExampleClass() throws IOException {
         var json = "{ \"string\": \"hello, world\" }";
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
@@ -74,7 +74,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJsonArray_toExampleRecordList() throws IOException {
+    void readJsonArray_toExampleRecordList() throws IOException {
         var json = "[ { \"string\": \"hello, world\" }, { \"string\": \"saluton\" } ]";
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
@@ -87,7 +87,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readArray_empty() throws IOException {
+    void readArray_empty() throws IOException {
         var json = "";
         var resource = DataResource.of(json, JSON_UTF_8);
         ObjectReader or = new JsonObjectReaderWriter();
@@ -97,7 +97,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readComplexJSON_toExampleRecord() throws IOException {
+    void readComplexJSON_toExampleRecord() throws IOException {
         var example = readComplexJSON_toExample(ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
         assertThat(example.stringSet()).containsExactly("hello", "world");
@@ -109,7 +109,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readComplexJSON_toExamplePlainClass() throws IOException {
+    void readComplexJSON_toExamplePlainClass() throws IOException {
         var example = readComplexJSON_toExample(ExamplePlainClass.class);
         assertThat(example.string).isEqualTo("hello, world");
         assertThat(example.stringSet).containsExactly("hello", "world");
@@ -138,7 +138,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void writeJSON_fromExampleRecord() throws IOException {
+    void writeJSON_fromExampleRecord() throws IOException {
         ObjectWriter ow = new JsonObjectReaderWriter();
 
         var sr = new MemoryResource(JSON_UTF_8);
@@ -175,7 +175,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void writeJSON_fromMap() throws IOException {
+    void writeJSON_fromMap() throws IOException {
         ObjectWriter ow = new JsonObjectReaderWriter();
         var sr = new MemoryResource(JSON_UTF_8);
         var map = ImmutableMap.of("string", "hello, world");
@@ -186,7 +186,7 @@ public class JsonObjectReaderWriterTest {
     // Tests for JSONc support: https://github.com/enola-dev/enola/issues/1847
 
     @Test
-    public void readJSON_withSingleLineComments() throws IOException {
+    void readJSON_withSingleLineComments() throws IOException {
         var json =
                 """
                 {
@@ -202,7 +202,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJSON_withMultiLineComments() throws IOException {
+    void readJSON_withMultiLineComments() throws IOException {
         var json =
                 """
                 {
@@ -219,7 +219,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJSON_withTrailingCommaInObject() throws IOException {
+    void readJSON_withTrailingCommaInObject() throws IOException {
         var json =
                 """
                 {
@@ -235,7 +235,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJSON_withTrailingCommaInArray() throws IOException {
+    void readJSON_withTrailingCommaInArray() throws IOException {
         var json =
                 """
                 {
@@ -250,7 +250,7 @@ public class JsonObjectReaderWriterTest {
     }
 
     @Test
-    public void readJSON_withCommentsAndTrailingCommas() throws IOException {
+    void readJSON_withCommentsAndTrailingCommas() throws IOException {
         var json =
                 """
                 {

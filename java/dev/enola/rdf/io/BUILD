@@ -68,7 +68,10 @@ java_library(
 junit_tests(
     name = "tests",
     srcs = glob(["*Test.java"]),
-    srcs_utils = glob(["*Subject.java"]),
+    srcs_utils = glob([
+        "*Subject.java",
+        "*Helper.java",
+    ]),
     deps = [
         ":io",
         "//generated/protoc/java",

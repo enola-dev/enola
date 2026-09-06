@@ -19,16 +19,16 @@ package dev.enola.common.yamljson;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-public class JSONTest {
+class JSONTest {
 
     // See YamlJsonTest for more tests.
 
     @Test
-    public void instant() {
+    void instant() {
         assertThat(JSON.write(Instant.now(), false)).isNotEmpty();
     }
 }

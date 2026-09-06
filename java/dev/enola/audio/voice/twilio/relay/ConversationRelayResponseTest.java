@@ -19,14 +19,14 @@ package dev.enola.audio.voice.twilio.relay;
 
 import dev.enola.common.jackson.testlib.JsonTester;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-public class ConversationRelayResponseTest {
+class ConversationRelayResponseTest {
 
     @Test
-    public void textMessage() throws Exception {
+    void textMessage() throws Exception {
         JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.Text(
                         "hello, world!", Locale.of("en"), false, true, true),
@@ -43,7 +43,7 @@ public class ConversationRelayResponseTest {
     }
 
     @Test
-    public void playMessage() throws Exception {
+    void playMessage() throws Exception {
         JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.Play(
                         java.net.URI.create("http://example.com/audio.mp3"), true, true),
@@ -58,7 +58,7 @@ public class ConversationRelayResponseTest {
     }
 
     @Test
-    public void dtmfMessage() throws Exception {
+    void dtmfMessage() throws Exception {
         JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.DTMF("1234"),
                 """
@@ -70,7 +70,7 @@ public class ConversationRelayResponseTest {
     }
 
     @Test
-    public void languageMessage() throws Exception {
+    void languageMessage() throws Exception {
         var lang = Locale.of("en", "US");
         JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.Language(lang, lang),
@@ -84,7 +84,7 @@ public class ConversationRelayResponseTest {
     }
 
     @Test
-    public void endMessage() throws Exception {
+    void endMessage() throws Exception {
         JsonTester.assertEqualsTo(
                 new ConversationRelayResponse.End("some-handoff-data"),
                 """

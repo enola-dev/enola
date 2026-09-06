@@ -23,18 +23,18 @@ import dev.enola.common.jackson.testlib.JsonTester;
 import dev.enola.common.net.websocket.WebSocketClient;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
 
-public class EchoConversationTest {
+class EchoConversationTest {
 
-    @Rule public TestContextRule rule = new TestContextRule();
+    @RegisterExtension TestContextRule rule = new TestContextRule();
 
     @Test
-    public void echo() throws Exception {
+    void echo() throws Exception {
         var sock = new InetSocketAddress(0);
         try (var server =
                 new ConversationRelayServer(

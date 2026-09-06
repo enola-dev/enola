@@ -24,6 +24,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
@@ -34,23 +35,22 @@ import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.repo.ThingRepositoryStore;
 import dev.enola.thing.testlib.ThingsSubject;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class XMLToThingsHandlerTest {
+class XMLToThingsHandlerTest {
 
-    @Rule
-    public final SingletonRule r =
+    @RegisterExtension
+    final SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new MediaTypeProviders(new RdfMediaTypes(), new XmlMediaType())));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.TBF;
 
     ThingRepositoryStore store = new ThingMemoryRepositoryROBuilder();
     XmlThingConverter loader =
@@ -59,26 +59,26 @@ public class XMLToThingsHandlerTest {
                             new ClasspathResource.Provider(), new EmptyResource.Provider()));
 
     @Test
-    public void nonXML() throws IOException {
+    void nonXML() throws IOException {
         assertThat(loader.convertInto(EmptyResource.EMPTY_URI, store)).isFalse();
         ThingsSubject.assertThat(store).hasOnlyEmptyThings();
     }
 
     @Test
-    public void emptyXML() throws IOException {
+    void emptyXML() throws IOException {
         var emptyXmlURI = URI.create(EmptyResource.EMPTY_URI + "mediaType=text/xml");
         assertThat(loader.convertInto(emptyXmlURI, store)).isTrue();
         ThingsSubject.assertThat(store).hasOnlyEmptyThings();
     }
 
     @Test
-    public void rootOnly() throws IOException {
+    void rootOnly() throws IOException {
         assertThat(loader.convertInto(URI.create("classpath:/root-only.xml"), store)).isTrue();
         ThingsSubject.assertThat(store).hasOnlyEmptyThings();
     }
 
     @Test
-    public void greeting1attributeWithXmlNS() throws IOException {
+    void greeting1attributeWithXmlNS() throws IOException {
         var from = URI.create("classpath:/greeting1-attribute-with-xmlns.xml");
         try (var ctx = TLC.open().push(XmlThingContext.ID, "classpath:/greeting1.xml")) {
             assertThat(loader.convertInto(from, store)).isTrue();
@@ -87,7 +87,7 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
-    public void greeting1attribute() throws IOException {
+    void greeting1attribute() throws IOException {
         var from = URI.create("classpath:/greeting1-attribute.xml");
         try (var ctx =
                 TLC.open()
@@ -99,7 +99,7 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
-    public void greeting1nested() throws IOException {
+    void greeting1nested() throws IOException {
         try (var ctx = TLC.open().push(XmlThingContext.ID, "classpath:/greeting1.xml")) {
             var from = URI.create("classpath:/greeting1-nested.xml");
             assertThat(loader.convertInto(from, store)).isTrue();
@@ -108,7 +108,7 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
-    public void greeting1nesteds() throws IOException {
+    void greeting1nesteds() throws IOException {
         try (var ctx = TLC.open().push(XmlThingContext.NS, "https://example.org")) {
             var from = URI.create("classpath:/greeting1-nesteds.xml");
             assertThat(loader.convertInto(from, store)).isTrue();
@@ -117,7 +117,7 @@ public class XMLToThingsHandlerTest {
     }
 
     @Test
-    @Ignore // TODO FIXME
+    @Disabled // TODO FIXME
     public void xhtml() throws IOException {
         assertThat(loader.convertInto(URI.create("classpath:/test.html.xml"), store)).isTrue();
         throw new IllegalStateException(store.toString());

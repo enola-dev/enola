@@ -29,19 +29,19 @@ import static java.nio.charset.StandardCharsets.UTF_16BE;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 
-public class FileDescriptorResourceTest {
+class FileDescriptorResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     @Test
-    public void testSTDOUTwithoutCharsetNorMediaType() throws IOException {
+    void testSTDOUTwithoutCharsetNorMediaType() throws IOException {
         var FD1 = new FileDescriptorResource(URI.create("fd:1"));
         FD1.byteSink().write(new byte[] {1, 2, 3});
         assertThat(FD1.mediaType().charset()).hasValue(Charset.defaultCharset());
@@ -50,7 +50,7 @@ public class FileDescriptorResourceTest {
     }
 
     @Test
-    public void testSTDOUTwithCharsetWithoutMediaType() throws IOException {
+    void testSTDOUTwithCharsetWithoutMediaType() throws IOException {
         var FD1 = new FileDescriptorResource(URI.create("fd:1?charset=ASCII"));
         FD1.byteSink().write(new byte[] {1, 2, 3});
         FD1.charSink().write("hello");
@@ -58,13 +58,13 @@ public class FileDescriptorResourceTest {
     }
 
     @Test
-    public void testSTDOUTwithMediaTypeWithoutCharset() throws IOException {
+    void testSTDOUTwithMediaTypeWithoutCharset() throws IOException {
         var FD1 = new FileDescriptorResource(URI.create("fd:1?mediaType=application/yaml"));
         assertThat(FD1.mediaType()).isEqualTo(YAML_UTF_8);
     }
 
     @Test
-    public void testSTDOUTwithMediaTypeWithCharsetInMediaType() throws IOException {
+    void testSTDOUTwithMediaTypeWithCharsetInMediaType() throws IOException {
         var FD1 =
                 new FileDescriptorResource(
                         URI.create("fd:1?mediaType=application/yaml;charset=utf-16be"));
@@ -72,7 +72,7 @@ public class FileDescriptorResourceTest {
     }
 
     @Test
-    public void testSTDOUTwithMediaTypeWithCharsetInSeparateQueryParameter() throws IOException {
+    void testSTDOUTwithMediaTypeWithCharsetInSeparateQueryParameter() throws IOException {
         var FD1 =
                 new FileDescriptorResource(
                         URI.create("fd:1?charset=ASCII&mediaType=application/yaml"));
@@ -80,7 +80,7 @@ public class FileDescriptorResourceTest {
     }
 
     @Test
-    public void testSTDOUTwithMediaTypeWithCharsetInBoth() throws IOException {
+    void testSTDOUTwithMediaTypeWithCharsetInBoth() throws IOException {
         var FD1 =
                 new FileDescriptorResource(
                         URI.create(

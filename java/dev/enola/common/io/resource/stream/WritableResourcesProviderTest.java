@@ -27,26 +27,26 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.io.resource.ResourceProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.net.URI;
 
-public class WritableResourcesProviderTest {
+class WritableResourcesProviderTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     private final ResourceProvider rp = new ResourceProviders();
     private final WritableResourcesProvider wrp = new WritableResourcesProvider(rp);
 
     @Test
-    public void stdout() {
+    void stdout() {
         assertThat(wrp.getWritableResource(STDOUT_URI, URI.create("file:/hello.txt")).uri())
                 .isEqualTo(STDOUT_URI);
     }
 
     @Test
-    public void directory() {
+    void directory() {
         assertThat(
                         wrp.getWritableResource(
                                         URI.create("file:/tmp/test/"),
@@ -56,7 +56,7 @@ public class WritableResourcesProviderTest {
     }
 
     @Test
-    public void file() {
+    void file() {
         assertThat(
                         wrp.getWritableResource(
                                         URI.create("file:/tmp/hello.txt"),

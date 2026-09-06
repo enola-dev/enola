@@ -17,19 +17,22 @@
  */
 package dev.enola.common.jackson.testlib;
 
-import org.junit.ComparisonFailure;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JsonTesterTest {
+import org.junit.jupiter.api.Test;
+
+class JsonTesterTest {
 
     @Test
-    public void assertEqualsTo() throws Exception {
+    void assertEqualsTo() throws Exception {
         JsonTester.assertEqualsTo("{ }", "{}\n");
         JsonTester.assertEqualsTo("{ \"a\" : 1 }", "{\"a\":1}\n");
     }
 
-    @Test(expected = ComparisonFailure.class)
-    public void assertNotEqualsTo() throws Exception {
-        JsonTester.assertEqualsTo("{ \"a\" : 1 }", "{\"a\":2}\n");
+    @Test
+    void assertNotEqualsTo() {
+        assertThrows(
+                AssertionError.class,
+                () -> JsonTester.assertEqualsTo("{ \"a\" : 1 }", "{\"a\":2}\n"));
     }
 }

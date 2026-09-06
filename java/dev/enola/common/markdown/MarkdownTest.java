@@ -19,14 +19,14 @@ package dev.enola.common.markdown;
 
 import com.google.common.truth.Truth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MarkdownTest {
+class MarkdownTest {
 
     // TODO Remove all non-double line breaks to avoid discrepancies
 
     @Test
-    public void canonicalize() {
+    void canonicalize() {
         var messy =
                 """
                 # Heading One
