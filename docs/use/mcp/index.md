@@ -38,6 +38,6 @@ $ ./enola mcp list-tools
 
 ## Screencast
 
-![Demo](script.svg)
+<asciinema-player src="script.cast" cols="80" rows="25"></asciinema-player>
 
 <!-- PS: This is also exercised in the test-cli.bash script. -->

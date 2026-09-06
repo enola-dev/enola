@@ -26,7 +26,7 @@ This is the text-based Console UI ("TUI"); for the Web UI, see [`server`](../ser
 
 ## Screencast
 
-![Demo](script.svg)
+<asciinema-player src="script.cast" cols="80" rows="25"></asciinema-player>
 
 ## Usage
 

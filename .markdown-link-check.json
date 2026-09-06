@@ -4,6 +4,7 @@
     { "pattern": "^#.*" },
     { "pattern": ".*dev/proto/core.*" },
     { "pattern": "script.svg" },
+    { "pattern": "script.cast" },
     { "pattern": "^http://example.org" },
     { "pattern": "^https://example.org" },
     { "pattern": "^https://vscode.dev" },

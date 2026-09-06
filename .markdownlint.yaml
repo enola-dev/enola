@@ -70,6 +70,7 @@ MD033:
     - "sub"
     - "script"
     - "iframe"
+    - "asciinema-player"
 
 # Bare URL are OK
 MD034: false

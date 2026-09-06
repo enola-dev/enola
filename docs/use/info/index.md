@@ -165,4 +165,4 @@ $ ./enola info change /tmp/hello.txt $(cat /tmp/helloChangeToken.txt)
 
 ## Screencast
 
-![Demo](script.svg)
+<asciinema-player src="script.cast" cols="80" rows="25"></asciinema-player>
