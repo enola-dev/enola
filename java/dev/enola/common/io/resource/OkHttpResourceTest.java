@@ -18,6 +18,7 @@
 package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.util.concurrent.Futures.immediateFailedFuture;
 import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
@@ -51,6 +52,9 @@ class OkHttpResourceTest {
         var handlers = new WebHandlers();
         var html = StringResource.of("<!DOCTYPE html><html><body>hello", MediaType.HTML_UTF_8);
         handlers.register("/test.html", uri -> immediateFuture(html));
+        handlers.register(
+                "/bad",
+                uri -> immediateFailedFuture(new IllegalArgumentException("intentional error")));
         server = new NettyHttpServer(0, handlers);
         server.start();
         prefix = "http://localhost:" + server.getInetAddress().getPort();
@@ -74,7 +78,7 @@ class OkHttpResourceTest {
     }
 
     @Test
-    void http404() {
+    void httpError() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new OkHttpResource(prefix + "/bad").charSource().read());
