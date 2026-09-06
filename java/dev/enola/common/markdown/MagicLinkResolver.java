@@ -223,10 +223,9 @@ class MagicLinkResolver {
         return sb.toString();
     }
 
-    private String resolveLink(
-            Path currentFilePath,
-            String raw,
-            Function<Path, CompletableFuture<String>> titleProvider) {
+    private record ParsedLink(String target, @Nullable String explicitLabel) {}
+
+    private static ParsedLink parseTargetAndLabel(String raw) {
         int escapedPipeIdx = raw.indexOf("\\|");
         String rawTarget;
         String rawLabel;
@@ -239,30 +238,142 @@ class MagicLinkResolver {
             rawLabel = pipeIdx >= 0 ? raw.substring(pipeIdx + 1).trim() : null;
         }
         String explicitLabel = (rawLabel != null && !rawLabel.isEmpty()) ? rawLabel : null;
+        return new ParsedLink(rawTarget, explicitLabel);
+    }
 
-        if (rawTarget.startsWith("http://") || rawTarget.startsWith("https://")) {
-            String href = rawTarget;
-            String label = explicitLabel != null ? explicitLabel : fetchRemoteTitle(href);
-            return "[" + label + "](" + href + ")";
-        } else if (rawTarget.startsWith("#")) {
-            String href = rawTarget;
-            String label = explicitLabel != null ? explicitLabel : rawTarget;
-            return "[" + label + "](" + href + ")";
-        } else {
-            int hashIdx = rawTarget.indexOf('#');
-            String baseTarget = hashIdx >= 0 ? rawTarget.substring(0, hashIdx) : rawTarget;
-            String anchor = hashIdx >= 0 ? rawTarget.substring(hashIdx) : "";
-            String hrefBase = isMarkdown(baseTarget) ? baseTarget : baseTarget + ".md";
-            String href = hrefBase + anchor;
-            Path currentDir =
-                    currentFilePath.getParent() != null ? currentFilePath.getParent() : Path.of("");
-            Path targetRelPath = currentDir.resolve(hrefBase).normalize();
-            String label =
-                    explicitLabel != null
-                            ? explicitLabel
-                            : titleProvider.apply(targetRelPath).join();
-            return "[" + label + "](" + href + ")";
+    private String resolveRelativeLink(
+            Path currentFilePath,
+            String rawTarget,
+            @Nullable String explicitLabel,
+            Function<Path, CompletableFuture<String>> titleProvider) {
+        int hashIdx = rawTarget.indexOf('#');
+        String baseTarget = hashIdx >= 0 ? rawTarget.substring(0, hashIdx) : rawTarget;
+        String anchor = hashIdx >= 0 ? rawTarget.substring(hashIdx) : "";
+        String hrefBase = isMarkdown(baseTarget) ? baseTarget : baseTarget + ".md";
+        String href = hrefBase + anchor;
+        Path currentDir =
+                currentFilePath.getParent() != null ? currentFilePath.getParent() : Path.of("");
+        Path targetRelPath = currentDir.resolve(hrefBase).normalize();
+        String label =
+                explicitLabel != null ? explicitLabel : titleProvider.apply(targetRelPath).join();
+        return "[" + label + "](" + href + ")";
+    }
+
+    private String resolveLink(
+            Path currentFilePath,
+            String raw,
+            Function<Path, CompletableFuture<String>> titleProvider) {
+        var parsed = parseTargetAndLabel(raw);
+        String target = parsed.target();
+        String explicitLabel = parsed.explicitLabel();
+
+        if (target.startsWith("http://") || target.startsWith("https://")) {
+            String label = explicitLabel != null ? explicitLabel : fetchRemoteTitle(target);
+            return "[" + label + "](" + target + ")";
         }
+        if (target.startsWith("#")) {
+            String label = explicitLabel != null ? explicitLabel : target;
+            return "[" + label + "](" + target + ")";
+        }
+        return resolveRelativeLink(currentFilePath, target, explicitLabel, titleProvider);
+    }
+
+    private static @Nullable String parseHeading(String line) {
+        if (!line.startsWith("#")) {
+            return null;
+        }
+        int hashCount = 0;
+        while (hashCount < line.length() && line.charAt(hashCount) == '#') {
+            hashCount++;
+        }
+        if (hashCount < line.length() && Character.isWhitespace(line.charAt(hashCount))) {
+            String heading = line.substring(hashCount).trim();
+            if (!heading.isEmpty()) {
+                return heading;
+            }
+        }
+        return null;
+    }
+
+    private static @Nullable String extractMarkdownTitleFromStream(Stream<String> stream) {
+        boolean inFrontMatter = false;
+        boolean firstNonEmptyLine = true;
+        for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
+            String rawLine = it.next();
+            String line = rawLine.trim();
+            if (firstNonEmptyLine && !line.isEmpty()) {
+                firstNonEmptyLine = false;
+                if ("---".equals(line)) {
+                    inFrontMatter = true;
+                    continue;
+                }
+            }
+            if (inFrontMatter) {
+                if ("---".equals(line) || "...".equals(line)) {
+                    inFrontMatter = false;
+                }
+                continue;
+            }
+            String heading = parseHeading(line);
+            if (heading != null) {
+                return heading;
+            }
+        }
+        return null;
+    }
+
+    private static @Nullable String extractHtmlTitleFromStream(Stream<String> stream) {
+        StringBuilder headBuffer = new StringBuilder();
+        for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
+            String line = it.next();
+            headBuffer.append(line).append('\n');
+            if (line.toLowerCase(Locale.ROOT).contains("</head>")
+                    || line.toLowerCase(Locale.ROOT).contains("</title>")
+                    || headBuffer.length() > 65536) {
+                break;
+            }
+        }
+        Matcher m = HTML_TITLE_PATTERN.matcher(headBuffer);
+        if (m.find()) {
+            return m.group(1).trim();
+        }
+        return null;
+    }
+
+    private static @Nullable String extractUnknownTitleFromStream(Stream<String> stream) {
+        StringBuilder buffer = new StringBuilder();
+        String firstHeading = null;
+        boolean inFrontMatter = false;
+        boolean firstNonEmptyLine = true;
+        for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
+            String line = it.next();
+            String trimmed = line.trim();
+            if (firstNonEmptyLine && !trimmed.isEmpty()) {
+                firstNonEmptyLine = false;
+                if ("---".equals(trimmed)) {
+                    inFrontMatter = true;
+                    continue;
+                }
+            }
+            if (inFrontMatter) {
+                if ("---".equals(trimmed) || "...".equals(trimmed)) {
+                    inFrontMatter = false;
+                }
+                continue;
+            }
+            if (firstHeading == null) {
+                firstHeading = parseHeading(trimmed);
+            }
+            buffer.append(line).append('\n');
+            if (buffer.length() > 65536) {
+                break;
+            }
+        }
+        Matcher m = HTML_TITLE_PATTERN.matcher(buffer);
+        if (m.find()) {
+            return m.group(1).trim();
+        }
+        return firstHeading;
     }
 
     private String fetchRemoteTitle(String url) {
@@ -273,104 +384,19 @@ class MagicLinkResolver {
                 return url;
             }
 
+            String title;
             if (MediaTypes.isMarkdown(mediaType)) {
-                boolean inFrontMatter = false;
-                boolean firstNonEmptyLine = true;
-                for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
-                    String rawLine = it.next();
-                    String line = rawLine.trim();
-                    if (firstNonEmptyLine && !line.isEmpty()) {
-                        firstNonEmptyLine = false;
-                        if ("---".equals(line)) {
-                            inFrontMatter = true;
-                            continue;
-                        }
-                    }
-                    if (inFrontMatter) {
-                        if ("---".equals(line) || "...".equals(line)) {
-                            inFrontMatter = false;
-                        }
-                        continue;
-                    }
-                    if (line.startsWith("#")) {
-                        int hashCount = 0;
-                        while (hashCount < line.length() && line.charAt(hashCount) == '#') {
-                            hashCount++;
-                        }
-                        if (hashCount < line.length()
-                                && Character.isWhitespace(line.charAt(hashCount))) {
-                            String heading = line.substring(hashCount).trim();
-                            if (!heading.isEmpty()) {
-                                return heading;
-                            }
-                        }
-                    }
-                }
+                title = extractMarkdownTitleFromStream(stream);
             } else if (MediaTypes.isHtml(mediaType)) {
-                StringBuilder headBuffer = new StringBuilder();
-                for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
-                    String line = it.next();
-                    headBuffer.append(line).append('\n');
-                    if (line.toLowerCase(Locale.ROOT).contains("</head>")
-                            || line.toLowerCase(Locale.ROOT).contains("</title>")
-                            || headBuffer.length() > 65536) {
-                        break;
-                    }
-                }
-                Matcher m = HTML_TITLE_PATTERN.matcher(headBuffer);
-                if (m.find()) {
-                    return m.group(1).trim();
-                }
+                title = extractHtmlTitleFromStream(stream);
             } else {
-                StringBuilder buffer = new StringBuilder();
-                String firstHeading = null;
-                boolean inFrontMatter = false;
-                boolean firstNonEmptyLine = true;
-                for (Iterator<String> it = stream.iterator(); it.hasNext(); ) {
-                    String line = it.next();
-                    String trimmed = line.trim();
-                    if (firstNonEmptyLine && !trimmed.isEmpty()) {
-                        firstNonEmptyLine = false;
-                        if ("---".equals(trimmed)) {
-                            inFrontMatter = true;
-                            continue;
-                        }
-                    }
-                    if (inFrontMatter) {
-                        if ("---".equals(trimmed) || "...".equals(trimmed)) {
-                            inFrontMatter = false;
-                        }
-                        continue;
-                    }
-                    if (firstHeading == null && trimmed.startsWith("#")) {
-                        int hashCount = 0;
-                        while (hashCount < trimmed.length()
-                                && hashCount < line.length()
-                                && line.charAt(hashCount) == '#') {
-                            hashCount++;
-                        }
-                        if (hashCount < trimmed.length()
-                                && Character.isWhitespace(trimmed.charAt(hashCount))) {
-                            firstHeading = trimmed.substring(hashCount).trim();
-                        }
-                    }
-                    buffer.append(line).append('\n');
-                    if (buffer.length() > 65536) {
-                        break;
-                    }
-                }
-                Matcher m = HTML_TITLE_PATTERN.matcher(buffer);
-                if (m.find()) {
-                    return m.group(1).trim();
-                }
-                if (firstHeading != null && !firstHeading.isEmpty()) {
-                    return firstHeading;
-                }
+                title = extractUnknownTitleFromStream(stream);
             }
+            return (title != null && !title.isEmpty()) ? title : url;
         } catch (Exception e) {
             // Fall back to url
+            return url;
         }
-        return url;
     }
 
     private static String extractTitle(Path path, @Nullable String markdown) {

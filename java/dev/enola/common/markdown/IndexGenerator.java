@@ -101,17 +101,13 @@ class IndexGenerator {
     }
 
     /**
-     * Generates or updates {@code index.md} files in memory for {@code rootDirectory} based on the
-     * provided map of relative Markdown files.
+     * Generates or updates {@code index.md} files in memory for {@code rootDirectory}.
      *
      * @param rootDirectory the root directory for category naming and directory hierarchy
-     * @param inputMarkdown map of relative paths to Markdown content
-     * @return a new map containing all original Markdown files plus all generated/updated {@code
-     *     index.md} files
+     * @param markdownPaths relative paths to Markdown content
+     * @return all original Markdown files plus all generated/updated {@code index.md} files
      */
-    public Map<Path, String> generate(Path rootDirectory, Map<Path, String> inputMarkdown) {
-        Map<Path, String> result = new LinkedHashMap<>(inputMarkdown);
-
+    private static Set<Path> collectAllDirectories(Path rootDirectory, Set<Path> markdownPaths) {
         Set<Path> allDirs = new LinkedHashSet<>();
         allDirs.add(Path.of(""));
 
@@ -126,14 +122,17 @@ class IndexGenerator {
             }
         }
 
-        for (Path mdPath : inputMarkdown.keySet()) {
+        for (Path mdPath : markdownPaths) {
             Path parent = mdPath.getParent();
             while (parent != null) {
                 allDirs.add(parent);
                 parent = parent.getParent();
             }
         }
+        return allDirs;
+    }
 
+    private static List<Path> sortDirectoriesByDepthDescending(Set<Path> allDirs) {
         List<Path> sortedDirs = new ArrayList<>(allDirs);
         sortedDirs.sort(
                 (a, b) -> {
@@ -144,60 +143,81 @@ class IndexGenerator {
                     }
                     return a.compareTo(b);
                 });
+        return sortedDirs;
+    }
 
+    private Function<Path, @Nullable String> createDescriptionProvider(
+            Path rootDirectory, Map<Path, String> result) {
+        return relPath -> {
+            String content = result.get(relPath);
+            if (content != null) {
+                return extractDescription(content);
+            }
+            if (Files.isDirectory(rootDirectory)) {
+                Path full = rootDirectory.resolve(relPath);
+                return extractDescription(full);
+            }
+            return null;
+        };
+    }
+
+    private void processDirectory(
+            Path relDir,
+            Path rootDirectory,
+            Set<Path> allDirs,
+            Map<Path, String> inputMarkdown,
+            Map<Path, String> result,
+            Function<Path, @Nullable String> descriptionProvider) {
+        Path indexPath = findFile(relDir, "index.md", inputMarkdown.keySet());
+        Path readmePath = findFile(relDir, "README.md", inputMarkdown.keySet());
+
+        if (indexPath != null && readmePath != null) {
+            String dirDisplay = relDir.toString().isEmpty() ? "<root>" : relDir.toString();
+            throw new IllegalArgumentException(
+                    "Directory cannot contain both index.md and README.md: " + dirDisplay);
+        }
+
+        Path sourceIndexPath = indexPath != null ? indexPath : readmePath;
+        String existingIndex = sourceIndexPath != null ? inputMarkdown.get(sourceIndexPath) : null;
+
+        if (readmePath != null) {
+            result.remove(readmePath);
+        }
+
+        List<String> childDirs = findChildDirs(relDir, allDirs);
+        List<String> mdFileSlugs = findMdFileSlugs(relDir, inputMarkdown.keySet());
+
+        Path relDestIndexPath =
+                relDir.toString().isEmpty() ? Path.of("index.md") : relDir.resolve("index.md");
+
+        if (existingIndex != null) {
+            String updated =
+                    updateIndex(
+                            relDir,
+                            rootDirectory,
+                            existingIndex,
+                            childDirs,
+                            mdFileSlugs,
+                            descriptionProvider);
+            result.put(relDestIndexPath, updated);
+        } else {
+            String created =
+                    createNewIndex(
+                            relDir, rootDirectory, childDirs, mdFileSlugs, descriptionProvider);
+            result.put(relDestIndexPath, created);
+        }
+    }
+
+    public Map<Path, String> generate(Path rootDirectory, Map<Path, String> inputMarkdown) {
+        Map<Path, String> result = new LinkedHashMap<>(inputMarkdown);
+        Set<Path> allDirs = collectAllDirectories(rootDirectory, inputMarkdown.keySet());
+        List<Path> sortedDirs = sortDirectoriesByDepthDescending(allDirs);
         Function<Path, @Nullable String> descriptionProvider =
-                relPath -> {
-                    String content = result.get(relPath);
-                    if (content != null) {
-                        return extractDescription(content);
-                    }
-                    if (Files.isDirectory(rootDirectory)) {
-                        Path full = rootDirectory.resolve(relPath);
-                        return extractDescription(full);
-                    }
-                    return null;
-                };
+                createDescriptionProvider(rootDirectory, result);
 
         for (Path relDir : sortedDirs) {
-            Path indexPath = findFile(relDir, "index.md", inputMarkdown.keySet());
-            Path readmePath = findFile(relDir, "README.md", inputMarkdown.keySet());
-
-            if (indexPath != null && readmePath != null) {
-                String dirDisplay = relDir.toString().isEmpty() ? "<root>" : relDir.toString();
-                throw new IllegalArgumentException(
-                        "Directory cannot contain both index.md and README.md: " + dirDisplay);
-            }
-
-            Path sourceIndexPath = indexPath != null ? indexPath : readmePath;
-            String existingIndex =
-                    sourceIndexPath != null ? inputMarkdown.get(sourceIndexPath) : null;
-
-            if (readmePath != null) {
-                result.remove(readmePath);
-            }
-
-            List<String> childDirs = findChildDirs(relDir, allDirs);
-            List<String> mdFileSlugs = findMdFileSlugs(relDir, inputMarkdown.keySet());
-
-            Path relDestIndexPath =
-                    relDir.toString().isEmpty() ? Path.of("index.md") : relDir.resolve("index.md");
-
-            if (existingIndex != null) {
-                String updated =
-                        updateIndex(
-                                relDir,
-                                rootDirectory,
-                                existingIndex,
-                                childDirs,
-                                mdFileSlugs,
-                                descriptionProvider);
-                result.put(relDestIndexPath, updated);
-            } else {
-                String created =
-                        createNewIndex(
-                                relDir, rootDirectory, childDirs, mdFileSlugs, descriptionProvider);
-                result.put(relDestIndexPath, created);
-            }
+            processDirectory(
+                    relDir, rootDirectory, allDirs, inputMarkdown, result, descriptionProvider);
         }
 
         return result;
@@ -295,36 +315,46 @@ class IndexGenerator {
         return sb.toString().stripTrailing() + "\n";
     }
 
-    private String updateIndex(
+    private record SubcategoriesUpdate(String content, List<String> missing) {}
+
+    private record ArticlesUpdate(String content, List<String> missing) {}
+
+    private static String removeLeadAndPreamble(
             Path relDir,
-            Path rootDirectory,
-            String existingContent,
-            List<String> childDirs,
-            List<String> mdFileSlugs,
+            String content,
+            String leadSlug,
             Function<Path, @Nullable String> descriptionProvider) {
-        String updated = existingContent;
-        String leadSlug = findLeadSlug(relDir, rootDirectory, mdFileSlugs);
+        Pattern articleLeadPattern =
+                Pattern.compile(
+                        "(?m)^[ \\t]*[-*][ \\t]+\\[\\["
+                                + Pattern.quote(leadSlug)
+                                + "\\]\\](?:[ \\t]*-[ \\t]*[^\\r\\n]*)?[ \\t]*\\r?\\n?");
+        String updated = articleLeadPattern.matcher(content).replaceAll("");
+        return updateLeadInPreamble(relDir, updated, leadSlug, descriptionProvider);
+    }
 
-        if (leadSlug != null) {
-            Pattern articleLeadPattern =
-                    Pattern.compile(
-                            "(?m)^[ \\t]*[-*][ \\t]+\\[\\["
-                                    + Pattern.quote(leadSlug)
-                                    + "\\]\\](?:[ \\t]*-[ \\t]*[^\\r\\n]*)?[ \\t]*\\r?\\n?");
-            updated = articleLeadPattern.matcher(updated).replaceAll("");
-            updated = updateLeadInPreamble(relDir, updated, leadSlug, descriptionProvider);
+    private static @Nullable String resolveSubcategoryDescription(
+            Path relDir, String d, Function<Path, @Nullable String> descriptionProvider) {
+        Path childDirRel = relDir.toString().isEmpty() ? Path.of(d) : relDir.resolve(d);
+        String desc = descriptionProvider.apply(childDirRel.resolve(d + ".md"));
+        if (desc == null || desc.isEmpty()) {
+            desc = descriptionProvider.apply(childDirRel.resolve("index.md"));
         }
+        if (desc == null || desc.isEmpty()) {
+            desc = descriptionProvider.apply(childDirRel.resolve("README.md"));
+        }
+        return desc;
+    }
 
-        List<String> missingSubcategories = new ArrayList<>();
+    private SubcategoriesUpdate updateSubcategories(
+            Path relDir,
+            String content,
+            List<String> childDirs,
+            Function<Path, @Nullable String> descriptionProvider) {
+        String updated = content;
+        List<String> missing = new ArrayList<>();
         for (var d : childDirs) {
-            Path childDirRel = relDir.toString().isEmpty() ? Path.of(d) : relDir.resolve(d);
-            String desc = descriptionProvider.apply(childDirRel.resolve(d + ".md"));
-            if (desc == null || desc.isEmpty()) {
-                desc = descriptionProvider.apply(childDirRel.resolve("index.md"));
-            }
-            if (desc == null || desc.isEmpty()) {
-                desc = descriptionProvider.apply(childDirRel.resolve("README.md"));
-            }
+            String desc = resolveSubcategoryDescription(relDir, d, descriptionProvider);
             Pattern subcatPattern =
                     Pattern.compile(
                             "(?m)^([ \\t]*[-*][ \\t]+\\[\\["
@@ -338,16 +368,19 @@ class IndexGenerator {
                                 : "$1";
                 updated = matcher.replaceAll(replacement);
             } else if (!isSubcategoryLinked(updated, d)) {
-                missingSubcategories.add(d);
+                missing.add(d);
             }
         }
+        return new SubcategoriesUpdate(updated, missing);
+    }
 
-        List<String> articleSlugs =
-                leadSlug != null
-                        ? mdFileSlugs.stream().filter(s -> !s.equals(leadSlug)).toList()
-                        : mdFileSlugs;
-
-        List<String> missingArticles = new ArrayList<>();
+    private ArticlesUpdate updateArticles(
+            Path relDir,
+            String content,
+            List<String> articleSlugs,
+            Function<Path, @Nullable String> descriptionProvider) {
+        String updated = content;
+        List<String> missing = new ArrayList<>();
         for (var slug : articleSlugs) {
             Path article =
                     relDir.toString().isEmpty()
@@ -367,16 +400,45 @@ class IndexGenerator {
                                 : "$1";
                 updated = matcher.replaceAll(replacement);
             } else if (!isArticleLinked(updated, slug)) {
-                missingArticles.add(slug);
+                missing.add(slug);
             }
         }
+        return new ArticlesUpdate(updated, missing);
+    }
 
-        if (!missingSubcategories.isEmpty()) {
-            updated =
-                    insertSubcategories(relDir, updated, missingSubcategories, descriptionProvider);
+    private String updateIndex(
+            Path relDir,
+            Path rootDirectory,
+            String existingContent,
+            List<String> childDirs,
+            List<String> mdFileSlugs,
+            Function<Path, @Nullable String> descriptionProvider) {
+        String updated = existingContent;
+        String leadSlug = findLeadSlug(relDir, rootDirectory, mdFileSlugs);
+
+        if (leadSlug != null) {
+            updated = removeLeadAndPreamble(relDir, updated, leadSlug, descriptionProvider);
         }
-        if (!missingArticles.isEmpty()) {
-            updated = insertArticles(relDir, updated, missingArticles, descriptionProvider);
+
+        var subcatUpdate = updateSubcategories(relDir, updated, childDirs, descriptionProvider);
+        updated = subcatUpdate.content();
+
+        List<String> articleSlugs =
+                leadSlug != null
+                        ? mdFileSlugs.stream().filter(s -> !s.equals(leadSlug)).toList()
+                        : mdFileSlugs;
+
+        var articlesUpdate = updateArticles(relDir, updated, articleSlugs, descriptionProvider);
+        updated = articlesUpdate.content();
+
+        if (!subcatUpdate.missing().isEmpty()) {
+            updated =
+                    insertSubcategories(
+                            relDir, updated, subcatUpdate.missing(), descriptionProvider);
+        }
+        if (!articlesUpdate.missing().isEmpty()) {
+            updated =
+                    insertArticles(relDir, updated, articlesUpdate.missing(), descriptionProvider);
         }
 
         return updated.stripTrailing() + "\n";
@@ -406,7 +468,7 @@ class IndexGenerator {
         return null;
     }
 
-    private String updateLeadInPreamble(
+    private static String updateLeadInPreamble(
             Path relDir,
             String content,
             String leadSlug,
@@ -447,7 +509,7 @@ class IndexGenerator {
         }
     }
 
-    private String formatLeadItem(
+    private static String formatLeadItem(
             Path relDir, String leadSlug, Function<Path, @Nullable String> descriptionProvider) {
         Path article =
                 relDir.toString().isEmpty()
@@ -545,7 +607,7 @@ class IndexGenerator {
         return "- [[" + slug + "]]\n";
     }
 
-    private int findSectionEnd(String content, int fromIndex) {
+    private static int findSectionEnd(String content, int fromIndex) {
         var headingMatcher = ANY_HEADING_PATTERN.matcher(content);
         if (headingMatcher.find(fromIndex)) {
             return headingMatcher.start();
@@ -553,7 +615,7 @@ class IndexGenerator {
         return content.length();
     }
 
-    private String insertIntoSection(
+    private static String insertIntoSection(
             String content, int headingEnd, int sectionEnd, String itemsToInsert) {
         String sectionBody = content.substring(headingEnd, sectionEnd);
         int lastNonWs = -1;

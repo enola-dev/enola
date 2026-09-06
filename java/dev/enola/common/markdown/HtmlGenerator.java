@@ -51,6 +51,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -106,7 +107,7 @@ class HtmlGenerator {
                 String info = fencedCodeBlock.getInfo();
                 String language = "";
                 if (info != null && !info.isEmpty()) {
-                    int space = info.indexOf(" ");
+                    int space = info.indexOf(' ');
                     language = space == -1 ? info : info.substring(0, space);
                 }
                 if ("mermaid".equalsIgnoreCase(language)) {
@@ -364,6 +365,71 @@ class HtmlGenerator {
         return buildPageHtml(bodyHtml, title, cssHref, jsHref, editUrl, breadcrumbsHtml, mdHref);
     }
 
+    private static boolean hasText(@Nullable String str) {
+        return str != null && !str.isEmpty();
+    }
+
+    private static void appendJsScripts(StringBuilder sb, String jsHref) {
+        sb.append("<script type=\"module\" src=\"")
+                .append(HtmlEscapers.htmlEscaper().escape(jsHref))
+                .append("\"></script>\n");
+        sb.append("<script>\n");
+        sb.append("  if (location.protocol === 'file:') {\n");
+        sb.append("    window.addEventListener('DOMContentLoaded', () => {\n");
+        sb.append("      document.querySelectorAll('pre.mermaid').forEach(el => {\n");
+        sb.append("        const msg = document.createElement('p');\n");
+        sb.append("        msg.className = 'mermaid-file-warning';\n");
+        sb.append(
+                "        msg.textContent = 'Please serve this page over HTTP instead of"
+                        + " file://';\n");
+        sb.append("        el.replaceWith(msg);\n");
+        sb.append("      });\n");
+        sb.append("    });\n");
+        sb.append("  }\n");
+        sb.append("</script>\n");
+    }
+
+    private static void appendHeadLinksAndScripts(
+            StringBuilder sb,
+            @Nullable String mdHref,
+            @Nullable String cssHref,
+            @Nullable String jsHref) {
+        if (hasText(mdHref)) {
+            sb.append("<link rel=\"alternate\" type=\"text/markdown\" href=\"")
+                    .append(HtmlEscapers.htmlEscaper().escape(mdHref))
+                    .append("\">\n");
+        }
+        if (hasText(cssHref)) {
+            sb.append("<link rel=\"stylesheet\" href=\"")
+                    .append(HtmlEscapers.htmlEscaper().escape(cssHref))
+                    .append("\">\n");
+        }
+        if (hasText(jsHref)) {
+            appendJsScripts(sb, jsHref);
+        }
+    }
+
+    private static void appendHeaderActions(
+            StringBuilder sb, @Nullable String mdHref, @Nullable String editUrl) {
+        boolean hasEdit = hasText(editUrl);
+        boolean hasMd = hasText(mdHref);
+        if (!hasEdit && !hasMd) {
+            return;
+        }
+        sb.append("<div class=\"header-actions\">\n");
+        if (hasMd) {
+            sb.append("  <a class=\"action-button md-button\" href=\"")
+                    .append(HtmlEscapers.htmlEscaper().escape(mdHref))
+                    .append("\">Markdown</a>\n");
+        }
+        if (hasEdit) {
+            sb.append("  <a class=\"action-button edit-button\" href=\"")
+                    .append(HtmlEscapers.htmlEscaper().escape(editUrl))
+                    .append("\" target=\"_blank\">Edit</a>\n");
+        }
+        sb.append("</div>\n");
+    }
+
     private String buildPageHtml(
             String bodyHtml,
             String title,
@@ -380,52 +446,11 @@ class HtmlGenerator {
         sb.append("<meta charset=\"utf-8\">\n");
         sb.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
         sb.append("<title>").append(escapedTitle).append("</title>\n");
-        if (mdHref != null && !mdHref.isEmpty()) {
-            sb.append("<link rel=\"alternate\" type=\"text/markdown\" href=\"")
-                    .append(HtmlEscapers.htmlEscaper().escape(mdHref))
-                    .append("\">\n");
-        }
-        if (cssHref != null && !cssHref.isEmpty()) {
-            sb.append("<link rel=\"stylesheet\" href=\"")
-                    .append(HtmlEscapers.htmlEscaper().escape(cssHref))
-                    .append("\">\n");
-        }
-        if (jsHref != null && !jsHref.isEmpty()) {
-            sb.append("<script type=\"module\" src=\"")
-                    .append(HtmlEscapers.htmlEscaper().escape(jsHref))
-                    .append("\"></script>\n");
-            sb.append("<script>\n");
-            sb.append("  if (location.protocol === 'file:') {\n");
-            sb.append("    window.addEventListener('DOMContentLoaded', () => {\n");
-            sb.append("      document.querySelectorAll('pre.mermaid').forEach(el => {\n");
-            sb.append("        const msg = document.createElement('p');\n");
-            sb.append("        msg.className = 'mermaid-file-warning';\n");
-            sb.append(
-                    "        msg.textContent = 'Please serve this page over HTTP instead of"
-                            + " file://';\n");
-            sb.append("        el.replaceWith(msg);\n");
-            sb.append("      });\n");
-            sb.append("    });\n");
-            sb.append("  }\n");
-            sb.append("</script>\n");
-        }
+        appendHeadLinksAndScripts(sb, mdHref, cssHref, jsHref);
         sb.append("</head>\n");
         sb.append("<body>\n");
-        if ((editUrl != null && !editUrl.isEmpty()) || (mdHref != null && !mdHref.isEmpty())) {
-            sb.append("<div class=\"header-actions\">\n");
-            if (mdHref != null && !mdHref.isEmpty()) {
-                sb.append("  <a class=\"action-button md-button\" href=\"")
-                        .append(HtmlEscapers.htmlEscaper().escape(mdHref))
-                        .append("\">Markdown</a>\n");
-            }
-            if (editUrl != null && !editUrl.isEmpty()) {
-                sb.append("  <a class=\"action-button edit-button\" href=\"")
-                        .append(HtmlEscapers.htmlEscaper().escape(editUrl))
-                        .append("\" target=\"_blank\">Edit</a>\n");
-            }
-            sb.append("</div>\n");
-        }
-        if (breadcrumbsHtml != null && !breadcrumbsHtml.isEmpty()) {
+        appendHeaderActions(sb, mdHref, editUrl);
+        if (hasText(breadcrumbsHtml)) {
             sb.append(breadcrumbsHtml).append("\n");
         }
         sb.append(bodyHtml);
@@ -477,15 +502,33 @@ class HtmlGenerator {
         return url.substring(0, i);
     }
 
+    private static final Set<String> EXTERNAL_SCHEMES =
+            Set.of("http", "https", "mailto", "data", "javascript");
+
+    private static boolean shouldSkipLinkRewriting(String destination) {
+        if (destination.isEmpty() || destination.startsWith("#") || destination.startsWith("//")) {
+            return true;
+        }
+        int colon = destination.indexOf(':');
+        if (colon > 0) {
+            String scheme = destination.substring(0, colon).toLowerCase(Locale.ROOT);
+            return EXTERNAL_SCHEMES.contains(scheme);
+        }
+        return false;
+    }
+
+    private static @Nullable String rewriteMarkdownExtension(String path) {
+        if (path.endsWith(".md")) {
+            return path.substring(0, path.length() - 3) + ".html";
+        }
+        if (path.endsWith(".markdown")) {
+            return path.substring(0, path.length() - 9) + ".html";
+        }
+        return null;
+    }
+
     static String rewriteLinkDestination(String destination) {
-        if (destination.isEmpty()
-                || destination.startsWith("http://")
-                || destination.startsWith("https://")
-                || destination.startsWith("mailto:")
-                || destination.startsWith("data:")
-                || destination.startsWith("javascript:")
-                || destination.startsWith("#")
-                || destination.startsWith("//")) {
+        if (shouldSkipLinkRewriting(destination)) {
             return destination;
         }
         int hashIndex = destination.indexOf('#');
@@ -496,10 +539,9 @@ class HtmlGenerator {
         String path = queryIndex >= 0 ? base.substring(0, queryIndex) : base;
         String query = queryIndex >= 0 ? base.substring(queryIndex) : "";
 
-        if (path.endsWith(".md")) {
-            return path.substring(0, path.length() - 3) + ".html" + query + anchor;
-        } else if (path.endsWith(".markdown")) {
-            return path.substring(0, path.length() - 9) + ".html" + query + anchor;
+        String rewritten = rewriteMarkdownExtension(path);
+        if (rewritten != null) {
+            return rewritten + query + anchor;
         }
         return destination;
     }
