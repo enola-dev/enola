@@ -70,6 +70,8 @@ junit_tests(
         "//java/dev/enola/common/context/testlib",
         "//java/dev/enola/common/io/iri",
         "//java/dev/enola/common/protobuf",
+        "//java/dev/enola/web",
+        "//java/dev/enola/web/netty",
         "//test",
         "@maven//:com_github_ipld_java_cid",
         "@maven//:com_github_java_json_tools_uri_template",
