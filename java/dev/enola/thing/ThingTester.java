@@ -40,11 +40,13 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.List;
 
+// skipcq: JAVA-W1058
 public abstract class ThingTester {
 
     private static final String THING_IRI = "https://example.org/thing";
     private static final String PREDICATE_IRI = "https://example.org/predicate";
 
+    // skipcq: JAVA-E1065, JAVA-E1066
     private Thing.Builder<IImmutableThing> thingBuilder = null;
 
     protected abstract TBF getThingBuilderFactory();
