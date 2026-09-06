@@ -125,6 +125,15 @@ $ ./enola help canonicalize
 ...
 ```
 
+## Markdown
+
+[Markdown](../markdown/index.md) has the following options:
+
+```bash cd ../.././..
+$ ./enola help markdown
+...
+```
+
 ## Validate
 
 ```bash cd ../.././..

@@ -17,11 +17,13 @@
 
 # Build the end-user distributed executable fat über JAR
 
+set -euox pipefail
+
 THIS="$(dirname "$(realpath "$0")")"
 ROOT="$THIS"/../..
+cd "$ROOT"
 
 mkdir -p "$ROOT"/site/download/latest/
-set -euox pipefail
 
 BZL=bazel
 

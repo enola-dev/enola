@@ -1,6 +1,7 @@
 # Generated Code is ignored
 # Keep in sync with .editorconfig
 /maven_install.json
+/java/dev/enola/common/markdown/resources/web/**
 
 # Markdown is formatted by markdownlint not Prettier (see docs/dev/style.md)
 # (If ever this is removed after all, note https://github.com/DavidAnson/markdownlint/blob/main/doc/Prettier.md)

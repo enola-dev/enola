@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
@@ -71,6 +72,14 @@ public final class ObjectMappers {
     }
 
     public static final ObjectMapper YAML = newYamlObjectMapper();
+
+    public static final ObjectMapper YAML_LENIENT = newLenientYamlObjectMapper();
+
+    private static ObjectMapper newLenientYamlObjectMapper() {
+        var mapper = newYamlObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper;
+    }
 
     private static ObjectMapper newYamlObjectMapper() {
         // NB: Keep in-sync with the similar (but not the same, different API!) in

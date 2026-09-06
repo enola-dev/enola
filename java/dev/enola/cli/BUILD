@@ -65,6 +65,7 @@ java_library(
         "//java/dev/enola/common/linereader/jline",
         "//java/dev/enola/common/locale",
         "//java/dev/enola/common/logging",
+        "//java/dev/enola/common/markdown",
         "//java/dev/enola/common/markdown/exec:markdown",
         "//java/dev/enola/common/protobuf",
         "//java/dev/enola/common/secret",

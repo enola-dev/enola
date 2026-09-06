@@ -35,6 +35,7 @@ import dev.enola.common.protobuf.ProtobufMediaTypes;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -396,5 +397,49 @@ class EnolaApplicationTest {
         exec.out().contains("\uD83D\uDC7D Resistance \uD83D\uDC7E is futile. We are ONE.");
         exec.out().isEmpty();
         exec.hasExitCode(1);
+    }
+
+    @Test
+    void markdownGenerateMd(@TempDir Path tempDir) throws Exception {
+        var input = Files.createDirectory(tempDir.resolve("in"));
+        var output = tempDir.resolve("out");
+        Files.writeString(input.resolve("test.md"), "# Hello\n\nWorld\n");
+        assertThat(cli("markdown", "generate-md", input.toString(), output.toString()))
+                .hasExitCode(0);
+        assertThat(Files.readString(output.resolve("test.md"))).contains("Hello");
+        assertThat(Files.exists(output.resolve("index.md"))).isTrue();
+    }
+
+    @Test
+    void markdownGenerateHtml(@TempDir Path tempDir) throws Exception {
+        var input = Files.createDirectory(tempDir.resolve("in"));
+        var output = tempDir.resolve("out");
+        var editBaseUrl = "https://github.com/enola-dev/wiki/edit/main/docs/";
+        Files.writeString(input.resolve("test.md"), "# Hello\n\nWorld\n");
+        assertThat(
+                        cli(
+                                "markdown",
+                                "generate-html",
+                                input.toString(),
+                                output.toString(),
+                                editBaseUrl))
+                .hasExitCode(0);
+        assertThat(Files.readString(output.resolve("test.html"))).contains("<title>Hello</title>");
+        assertThat(Files.exists(output.resolve("wiki.css"))).isTrue();
+        assertThat(Files.exists(output.resolve("wiki.js"))).isTrue();
+    }
+
+    @Test
+    void markdownFormat(@TempDir Path tempDir) throws Exception {
+        var input = Files.createDirectory(tempDir.resolve("in"));
+        var file = input.resolve("test.md");
+        Files.writeString(file, "# Hello\n\n1. one\n1. two\n");
+        assertThat(cli("markdown", "format", input.toString())).hasExitCode(0);
+        assertThat(Files.readString(file)).isEqualTo("# Hello\n\n1. one\n2. two\n");
+
+        // Also test "fmt" alias
+        Files.writeString(file, "# Hello\n\n1. one\n1. two\n");
+        assertThat(cli("markdown", "fmt", input.toString())).hasExitCode(0);
+        assertThat(Files.readString(file)).isEqualTo("# Hello\n\n1. one\n2. two\n");
     }
 }

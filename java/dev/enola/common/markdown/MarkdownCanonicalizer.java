@@ -18,8 +18,12 @@
 package dev.enola.common.markdown;
 
 import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
+import org.commonmark.renderer.NodeRenderer;
+import org.commonmark.renderer.markdown.MarkdownNodeRendererContext;
+import org.commonmark.renderer.markdown.MarkdownNodeRendererFactory;
 import org.commonmark.renderer.markdown.MarkdownRenderer;
+
+import java.util.Set;
 
 /**
  * A utility class for canonicalizing Markdown content. Canonicalization involves standardizing
@@ -29,16 +33,56 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
  */
 class MarkdownCanonicalizer {
 
-    private final Parser parser;
     private final MarkdownRenderer renderer;
 
     MarkdownCanonicalizer() {
-        // Initialize the CommonMark parser and Markdown renderer.
+        // Initialize the CommonMark Markdown renderer.
         // The parser converts Markdown text into an Abstract Syntax Tree (AST).
         // The renderer converts the AST back into Markdown text, applying
         // CommonMark's standard formatting, which inherently canonicalizes many aspects.
-        this.parser = Parser.builder().build();
-        this.renderer = MarkdownRenderer.builder().build();
+        this.renderer =
+                MarkdownRenderer.builder()
+                        .extensions(Markdown.RENDERER_EXTENSIONS)
+                        .nodeRendererFactory(
+                                new MarkdownNodeRendererFactory() {
+                                    @Override
+                                    public NodeRenderer create(
+                                            MarkdownNodeRendererContext context) {
+                                        return new CanonicalTextNodeRenderer(context);
+                                    }
+
+                                    @Override
+                                    public Set<Character> getSpecialCharacters() {
+                                        return Set.of();
+                                    }
+                                })
+                        .nodeRendererFactory(
+                                new MarkdownNodeRendererFactory() {
+                                    @Override
+                                    public NodeRenderer create(
+                                            MarkdownNodeRendererContext context) {
+                                        return new CanonicalTableNodeRenderer(context);
+                                    }
+
+                                    @Override
+                                    public Set<Character> getSpecialCharacters() {
+                                        return Set.of();
+                                    }
+                                })
+                        .nodeRendererFactory(
+                                new MarkdownNodeRendererFactory() {
+                                    @Override
+                                    public NodeRenderer create(
+                                            MarkdownNodeRendererContext context) {
+                                        return new CanonicalMagicLinkNodeRenderer(context);
+                                    }
+
+                                    @Override
+                                    public Set<Character> getSpecialCharacters() {
+                                        return Set.of();
+                                    }
+                                })
+                        .build();
     }
 
     /**
@@ -57,7 +101,7 @@ class MarkdownCanonicalizer {
         }
 
         // 1. Parse the Markdown content into an Abstract Syntax Tree (AST).
-        Node document = parser.parse(markdownContent);
+        Node document = Markdown.PARSER.parse(markdownContent);
 
         // 2. Render the AST back to Markdown. The CommonMark renderer
         // will automatically normalize many aspects, such as:

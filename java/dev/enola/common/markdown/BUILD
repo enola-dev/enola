@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright 2023 The Enola <https://enola.dev> Authors
+# Copyright 2023-2026 The Enola <https://enola.dev> Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,10 +25,23 @@ java_library(
             "*Test.java",
         ],
     ),
+    resource_strip_prefix = "java/dev/enola/common/markdown/resources/",
+    resources = glob(["resources/**/*"]),
     visibility = ["//:__subpackages__"],
     deps = [
+        "//java/dev/enola/common",
+        "//java/dev/enola/common/io",
+        "//java/dev/enola/common/jackson",
+        "@maven//:com_fasterxml_jackson_core_jackson_annotations",
+        "@maven//:com_google_guava_guava",
         "@maven//:org_commonmark_commonmark",
+        "@maven//:org_commonmark_commonmark_ext_autolink",
+        "@maven//:org_commonmark_commonmark_ext_gfm_tables",
+        "@maven//:org_commonmark_commonmark_ext_heading_anchor",
+        "@maven//:org_commonmark_commonmark_ext_task_list_items",
+        "@maven//:org_commonmark_commonmark_ext_yaml_front_matter",
         "@maven//:org_jspecify_jspecify",
+        "@maven//:org_slf4j_slf4j_api",
     ],
 )
 
@@ -40,5 +53,9 @@ junit_tests(
     deps = [
         ":markdown",
         "//java/dev/enola/common/diff/testlib",
+        "//java/dev/enola/common/io",
+        "@maven//:com_google_guava_guava",
+        "@maven//:org_commonmark_commonmark",
+        "@maven//:org_commonmark_commonmark_ext_yaml_front_matter",
     ],
 )

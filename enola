@@ -42,8 +42,12 @@ diff "$ROOT"/.cache/java.hash "$ROOT"/.cache/java.hash.previous >/dev/null 2>/de
 DIFF="$?"
 set -e
 
+is_jar() {
+  [ -f "$1" ] && [ "$(head -c 2 "$1" 2>/dev/null)" = "PK" ]
+}
+
 LOG=$(mktemp)
-if [ "$DIFF" -ne 0 ] || [ ! -f "$ROOT"/site/download/latest/enola.jar ]; then
+if [ "$DIFF" -ne 0 ] || ! is_jar "$ROOT"/site/download/latest/enola.jar; then
   set +e
   echo "Input hash changed, re-building enola.jar..." >&2
   "$ROOT"/tools/distro/build-execjar.bash >"$LOG" 2>&1

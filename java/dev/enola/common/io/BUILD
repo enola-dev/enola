@@ -23,6 +23,9 @@ java_library(
         [
             "*.java",
             # TODO Break up into separate modules
+            "classpath/*.java",
+            "file/*.java",
+            "http/**/*.java",
             "mediatype/*.java",
             "hashbrown/*.java",
             "resource/**/*.java",
@@ -58,6 +61,8 @@ java_library(
 junit_tests(
     name = "tests",
     srcs = glob([
+        "classpath/*Test.java",
+        "file/*Test.java",
         "mediatype/*Test.java",
         "resource/**/*Test.java",
         "hashbrown/**/*Test.java",

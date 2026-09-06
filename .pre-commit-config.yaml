@@ -26,6 +26,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        args: ['--maxkb=4000']
       - id: check-case-conflict
       - id: check-executables-have-shebangs
         # TODO - id: check-json
@@ -43,7 +44,7 @@ repos:
         # https://github.com/Lucas-C/pre-commit-hooks/issues/70
         exclude: ^(LICENSE-header.txt|.*test-random-binary|.*.svg|.*.expected|third_party/.*|.flox/env/manifest.lock)$
       - id: trailing-whitespace
-        exclude: \.patch$
+        exclude: (\.patch$|^java/dev/enola/common/markdown/resources/web/)
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5
@@ -59,7 +60,7 @@ repos:
           - --use-current-year
       - id: insert-license
         files: \.(java|js|ts)$
-        exclude: ^(third_party/.*)$
+        exclude: ^(third_party/.*|java/dev/enola/common/markdown/resources/web/.*)$
         args:
           - --no-extra-eol
           - --comment-style
@@ -159,7 +160,7 @@ repos:
         # NOT markdown, because we use markdownlint for that
         # NOT YAML, because ... it suddenly, and without version change (?!) wanted to change them all
         types_or: [css, html, javascript, json, json5, scss, ts, tsx]
-        exclude: ^docs/use|test/|.devcontainer/devcontainer.json|third_party/
+        exclude: ^docs/use|test/|.devcontainer/devcontainer.json|third_party/|java/dev/enola/common/markdown/resources/web/
         additional_dependencies:
           # TODO Avoid duplicating the Prettier version here and in web/package.json
           - prettier@3.2.4
@@ -168,6 +169,7 @@ repos:
     rev: v1.0.5
     hooks:
       - id: csslint
+        exclude: ^java/dev/enola/common/markdown/resources/web/
 
   # https://yamllint.readthedocs.io/en/stable/integration.html#integration-with-pre-commit
   - repo: https://github.com/adrienverge/yamllint.git

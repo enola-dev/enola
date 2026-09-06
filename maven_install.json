@@ -92,7 +92,12 @@
     "org.apache.tika:tika-parsers-standard-package": -770274005,
     "org.apache.tomcat:annotations-api": 1366882333,
     "org.codehaus.plexus:plexus-xml": -1160688605,
-    "org.commonmark:commonmark": 1830608318,
+    "org.commonmark:commonmark": -143502697,
+    "org.commonmark:commonmark-ext-autolink": 1168178739,
+    "org.commonmark:commonmark-ext-gfm-tables": 608536494,
+    "org.commonmark:commonmark-ext-heading-anchor": -525932054,
+    "org.commonmark:commonmark-ext-task-list-items": 819431735,
+    "org.commonmark:commonmark-ext-yaml-front-matter": 1502269673,
     "org.eclipse.jdt:ecj": 2022746549,
     "org.eclipse.rdf4j:rdf4j-common-iterator": -188981420,
     "org.eclipse.rdf4j:rdf4j-common-transaction": 1345099484,
@@ -434,7 +439,12 @@
     "org.codehaus.plexus:plexus-xml": 1349435202,
     "org.codehaus.woodstox:stax2-api": 423811002,
     "org.codelibs:jhighlight": 1426529189,
-    "org.commonmark:commonmark": -1518808232,
+    "org.commonmark:commonmark": -1191076310,
+    "org.commonmark:commonmark-ext-autolink": 1140807658,
+    "org.commonmark:commonmark-ext-gfm-tables": -948342305,
+    "org.commonmark:commonmark-ext-heading-anchor": -1608690891,
+    "org.commonmark:commonmark-ext-task-list-items": -1195207113,
+    "org.commonmark:commonmark-ext-yaml-front-matter": 1330217322,
     "org.conscrypt:conscrypt-openjdk-uber": -754199722,
     "org.eclipse.angus:angus-activation": -904889138,
     "org.eclipse.collections:eclipse-collections": 1523128029,
@@ -508,6 +518,7 @@
     "org.mapdb:elsa": 1119269896,
     "org.mapdb:mapdb": 139050213,
     "org.netpreserve:jwarc": -1060889990,
+    "org.nibor.autolink:autolink": -453431412,
     "org.opentest4j:opentest4j": 793813175,
     "org.ow2.asm:asm": 1177470613,
     "org.reactivestreams:reactive-streams": -1996658890,
@@ -2397,9 +2408,39 @@
     },
     "org.commonmark:commonmark": {
       "shasums": {
-        "jar": "0fbd037c4c4df783aae17cf8ca988c92dc4d171c735ab04c1b33d13b4a6c96c6"
+        "jar": "090f0a758ac2f4f51aa86dff9dff0fdf7403666d0efd29f59886dc8e8b1eac53"
       },
-      "version": "0.26.0"
+      "version": "0.30.0"
+    },
+    "org.commonmark:commonmark-ext-autolink": {
+      "shasums": {
+        "jar": "53831722545ef200579f3715a5628cdf3b63c702faa05aac12602bffe9e300f7"
+      },
+      "version": "0.30.0"
+    },
+    "org.commonmark:commonmark-ext-gfm-tables": {
+      "shasums": {
+        "jar": "5e28b48e66f7697bee4dfeb4c8f8f08a84a2827d91b53bbd9bd5445e82d14bda"
+      },
+      "version": "0.30.0"
+    },
+    "org.commonmark:commonmark-ext-heading-anchor": {
+      "shasums": {
+        "jar": "3dd94c58e88b0b836d05c49c0696abd9e197c465fc641c2275dfd7dd2dfb66d8"
+      },
+      "version": "0.30.0"
+    },
+    "org.commonmark:commonmark-ext-task-list-items": {
+      "shasums": {
+        "jar": "fc3a2147bc751d8bc9ad814af8359547b60c8757be04be7153edefa64dd15cca"
+      },
+      "version": "0.30.0"
+    },
+    "org.commonmark:commonmark-ext-yaml-front-matter": {
+      "shasums": {
+        "jar": "e6dfa077080ac3ce6446ee3f4e24482eca0ed689197040a953efb9b1c1b9dffe"
+      },
+      "version": "0.30.0"
     },
     "org.conscrypt:conscrypt-openjdk-uber": {
       "shasums": {
@@ -2833,6 +2874,12 @@
         "jar": "5750789c900dee69744f0d5d72204e4e6414e1d9c36a22f19c7652a550d8c237"
       },
       "version": "0.32.0"
+    },
+    "org.nibor.autolink:autolink": {
+      "shasums": {
+        "jar": "04647ef989bd8096cfc253a8b5b8c36760918e3f163c1d918df6dfbfb79aa8c6"
+      },
+      "version": "0.12.0"
     },
     "org.opentest4j:opentest4j": {
       "shasums": {
@@ -4289,6 +4336,22 @@
     ],
     "org.codelibs:jhighlight": [
       "commons-io:commons-io"
+    ],
+    "org.commonmark:commonmark-ext-autolink": [
+      "org.commonmark:commonmark",
+      "org.nibor.autolink:autolink"
+    ],
+    "org.commonmark:commonmark-ext-gfm-tables": [
+      "org.commonmark:commonmark"
+    ],
+    "org.commonmark:commonmark-ext-heading-anchor": [
+      "org.commonmark:commonmark"
+    ],
+    "org.commonmark:commonmark-ext-task-list-items": [
+      "org.commonmark:commonmark"
+    ],
+    "org.commonmark:commonmark-ext-yaml-front-matter": [
+      "org.commonmark:commonmark"
     ],
     "org.eclipse.angus:angus-activation": [
       "jakarta.activation:jakarta.activation-api"
@@ -8503,7 +8566,6 @@
       "org.commonmark.internal",
       "org.commonmark.internal.inline",
       "org.commonmark.internal.renderer",
-      "org.commonmark.internal.renderer.text",
       "org.commonmark.internal.util",
       "org.commonmark.node",
       "org.commonmark.parser",
@@ -8515,6 +8577,27 @@
       "org.commonmark.renderer.markdown",
       "org.commonmark.renderer.text",
       "org.commonmark.text"
+    ],
+    "org.commonmark:commonmark-ext-autolink": [
+      "org.commonmark.ext.autolink",
+      "org.commonmark.ext.autolink.internal"
+    ],
+    "org.commonmark:commonmark-ext-gfm-tables": [
+      "org.commonmark.ext.gfm.tables",
+      "org.commonmark.ext.gfm.tables.internal"
+    ],
+    "org.commonmark:commonmark-ext-heading-anchor": [
+      "org.commonmark.ext.heading.anchor",
+      "org.commonmark.ext.heading.anchor.internal"
+    ],
+    "org.commonmark:commonmark-ext-task-list-items": [
+      "org.commonmark.ext.task.list.items",
+      "org.commonmark.ext.task.list.items.internal"
+    ],
+    "org.commonmark:commonmark-ext-yaml-front-matter": [
+      "org.commonmark.ext.front.matter",
+      "org.commonmark.ext.front.matter.internal",
+      "org.commonmark.ext.front.matter.parser"
     ],
     "org.conscrypt:conscrypt-openjdk-uber": [
       "org.conscrypt",
@@ -9267,6 +9350,10 @@
       "org.netpreserve.jwarc.cdx",
       "org.netpreserve.jwarc.net",
       "org.netpreserve.jwarc.tools"
+    ],
+    "org.nibor.autolink:autolink": [
+      "org.nibor.autolink",
+      "org.nibor.autolink.internal"
     ],
     "org.opentest4j:opentest4j": [
       "org.opentest4j"
@@ -10183,6 +10270,11 @@
       "org.codehaus.woodstox:stax2-api",
       "org.codelibs:jhighlight",
       "org.commonmark:commonmark",
+      "org.commonmark:commonmark-ext-autolink",
+      "org.commonmark:commonmark-ext-gfm-tables",
+      "org.commonmark:commonmark-ext-heading-anchor",
+      "org.commonmark:commonmark-ext-task-list-items",
+      "org.commonmark:commonmark-ext-yaml-front-matter",
       "org.conscrypt:conscrypt-openjdk-uber",
       "org.eclipse.angus:angus-activation",
       "org.eclipse.collections:eclipse-collections",
@@ -10256,6 +10348,7 @@
       "org.mapdb:elsa",
       "org.mapdb:mapdb",
       "org.netpreserve:jwarc",
+      "org.nibor.autolink:autolink",
       "org.opentest4j:opentest4j",
       "org.ow2.asm:asm",
       "org.reactivestreams:reactive-streams",
