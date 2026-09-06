@@ -26,8 +26,7 @@ rm -rf "$demo"
 mkdir -p "$demo"
 
 if [[ ! -d "$dist" || ! "$(ls -A "$dist")" ]]; then
-  echo "Error: '$dist' does not exist, or is empty? Run web/build!" >&2
-  exit 1
+  (cd "$(dirname "$0")" && ./build)
 fi
 
 cp -vr "$dist"/* "$demo"
