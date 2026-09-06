@@ -9,7 +9,7 @@
   // from https://github.com/devcontainers/images/tree/main/src/universal
   // TODO This image is (too!) huge... try switching to https://github.com/devcontainers/images/tree/main/src/base-debian?
   // Make sure https://github.com/vorburger/vorburger-dotfiles-bin-etc still work... ;-)
-  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
 
   // TODO https://containers.dev/guide/dockerfile
   // "build": {

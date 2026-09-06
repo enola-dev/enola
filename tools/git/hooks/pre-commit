@@ -21,5 +21,4 @@ if ! command -v nix &> /dev/null; then
     exit 1
 fi
 
-echo ".git/hooks/pre-commit now runs ./test.bash inside a 'nix develop' environment..."
-nix develop --ignore-env --keep-env-var HOME --keep-env-var TERM --command ./test.bash
+nix develop --ignore-environment -k HOME -k TERM --command ./test.bash
