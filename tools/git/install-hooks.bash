@@ -17,11 +17,9 @@
 
 set -euo pipefail
 
-DIR=$(realpath "$(dirname "$0")")
+HOOKS_DIR=$(git rev-parse --git-path hooks)
+COMMON_GIT_DIR=$(git rev-parse --git-common-dir)
+TARGET_HOOKS_DIR=$(realpath "$COMMON_GIT_DIR/../tools/git/hooks")
 
-if [ -f "$DIR/../../.git" ]; then
-  # In a git worktree, .git is a file. Avoid touching shared hooks from a worktree.
-  exit 0
-fi
-
-ln --force --symbolic --relative "$DIR/hooks/"* "$DIR/../../.git/hooks/"
+mkdir -p "$HOOKS_DIR"
+ln --force --symbolic --relative "$TARGET_HOOKS_DIR/"* "$HOOKS_DIR/"

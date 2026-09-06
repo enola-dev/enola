@@ -30,7 +30,7 @@ elif [ -d "${JAVA_HOME:-}/lib/openjdk/jmods" ]; then
 elif [ -d "/usr/lib/jvm/java-21-openjdk/jmods" ]; then
   JMODS_DIR="/usr/lib/jvm/java-21-openjdk/jmods"
 else
-  echo "Could not find OpenJDK jmods directory in JAVA_HOME" >&2
+  echo "Could not find OpenJDK jmods directory (checked \${JAVA_HOME}/jmods, \${JAVA_HOME}/lib/openjdk/jmods with JAVA_HOME='${JAVA_HOME:-}', and /usr/lib/jvm/java-21-openjdk/jmods)" >&2
   exit 1
 fi
 

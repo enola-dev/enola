@@ -40,7 +40,7 @@ rm -f docs/BUILT/third_party/{BUILD*,*.bash}
 find docs/ -type f -name "*.md" -print0 \
   | xargs -n 1 -0 sed -i 's|(//|(https://github.com/enola-dev/enola/blob/main/|g'
 
-bunx @okhsunrog/svg-term-cli --version
+bunx @okhsunrog/svg-term-cli@2.1.1 --version
 
 # This is very slow (so the svg-term-cli check is before; but its use has to be after this)
 # Keep 'docs/use/**/*.md' in sync with tools/demo/test.bash & below

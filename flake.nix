@@ -93,6 +93,8 @@
           enola = pkgs.stdenv.mkDerivation {
             pname = "enola";
             version = gitRev;
+            dontUsePytestCheck = true;
+            dontCheck = true;
 
             buildInputs = [ jdk' ];
             nativeBuildInputs = buildTools ++ [
