@@ -23,7 +23,7 @@ echo "tools/javac/classpath.bash now running..."
 tools/javac/dependencies.bash
 
 mkdir -p generated/classpath
-mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout >generated/classpath/enola.classpath
+mvn eu.maveniverse.maven.plugins:toolbox:gav-classpath -Daether.dependencyCollector.bf.threads=1 -Dgav=docs/dev/dependencies.txt -DextraRepositories=jitpack::https://jitpack.io -q -DforceStdout >generated/classpath/enola.classpath
 
 ENOLA_CLASSPATH_DIR=generated/classpath/enola
 rm -rf "${ENOLA_CLASSPATH_DIR:?}"/*
