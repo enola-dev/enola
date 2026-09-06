@@ -18,18 +18,21 @@
 package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.util.concurrent.Futures.immediateFuture;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static java.nio.charset.StandardCharsets.ISO_8859_1;
-
 import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
+import dev.enola.web.WebHandlers;
+import dev.enola.web.netty.NettyHttpServer;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -40,24 +43,41 @@ class OkHttpResourceTest {
 
     @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
-    // TODO Use https://square.github.io/okhttp/#mockwebserver
+    private static NettyHttpServer server;
+    private static String prefix;
+
+    @BeforeAll
+    static void beforeAll() throws Exception {
+        var handlers = new WebHandlers();
+        var html = StringResource.of("<!DOCTYPE html><html><body>hello", MediaType.HTML_UTF_8);
+        handlers.register("/test.html", uri -> immediateFuture(html));
+        server = new NettyHttpServer(0, handlers);
+        server.start();
+        prefix = "http://localhost:" + server.getInetAddress().getPort();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (server != null) {
+            server.close();
+        }
+    }
 
     // TODO Add test coverage to ensure that simply constructing an OkHttpResource object
     //   does not cause any network activity, as the mediaType must be obtained lazily, on demand!
 
     @Test
-    void google() throws IOException {
-        var r = new OkHttpResource("http://www.google.com");
+    void http() throws IOException {
+        var r = new OkHttpResource(prefix + "/test.html");
         assertThat(r.charSource().read()).ignoringCase().contains("<!doctype html>");
-        // TODO Debug where the "iso-8859-1" here came from... it probably really should be UTF-8?!
-        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8.withCharset(ISO_8859_1));
+        assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8);
     }
 
     @Test
-    void google404() {
+    void http404() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new OkHttpResource("http://www.google.com/bad").charSource().read());
+                () -> new OkHttpResource(prefix + "/bad").charSource().read());
     }
 
     @Test
