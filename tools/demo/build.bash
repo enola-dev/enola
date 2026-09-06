@@ -23,6 +23,10 @@ TOOLS_DIR=$(realpath "$(dirname "$0")")
 CWD=$(pwd)
 cd "$SCRIPT_DIR"
 
+if [ ! -f "$SCRIPT" ] || ! grep -q "asciinema-player" "$SCRIPT_DIR/index.md" 2>/dev/null; then
+  exit 0
+fi
+
 # This script produces https://asciinema.org-like documentation from demo scripts!
 # It uses the great https://github.com/zechris/asciinema-rec_script to achieve this.
 # Possible alternatives, should we ever want any, include:
@@ -47,14 +51,16 @@ chmod +x "$BIN"/asciinema-rec_script
 CWD=$(pwd)
 cd "$SCRIPT_DIR"
 
-# TODO How-to e.g. --cols=60 --rows=50 but still make it save instead of prompt if upload? (No, thanks.)
+# Faster demo recording: minimize typing delays and countdown sleep
+export SLEEP=${SLEEP:-1}
+export PROMPT_PAUSE=${PROMPT_PAUSE:-0.2}
+export TYPING_PAUSE=${TYPING_PAUSE:-0.001}
+
 PATH="$TOOLS_DIR/../../bazel-bin/cli/:$PATH" \
   BEGIN_RECORDING="🎥 " END_RECORDING="🎬 " \
   "$BIN"/asciinema-rec_script "$SCRIPT"
 
-# SVG with https://github.com/marionebl/svg-term-cli
-# is better than GIF with https://github.com/asciinema/agg
-bunx @okhsunrog/svg-term-cli@2.1.1 --window --width 80 --height 25 --in "$SCRIPT_DIR"/script.cast --out "$SCRIPT_DIR"/script.svg
+# script.cast is directly played in docs via asciinema-player
 
 # TODO Replace this, see https://github.com/zechris/asciinema-rec_script/issues/63
 # NB: asciinema cat fails with "OSError: [Errno 6] No such device or address: '/dev/tty'"
