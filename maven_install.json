@@ -115,7 +115,6 @@
     "org.junit.platform:junit-platform-reporting": 1896713402,
     "org.junit:junit-bom": 780627780,
     "org.openjdk.nashorn:nashorn-core": 1548346233,
-    "org.opentest4j:opentest4j": 1345016098,
     "org.slf4j:jul-to-slf4j": 784239112,
     "org.slf4j:slf4j-bom": 997924141,
     "org.slf4j:slf4j-jdk14": 403121809,
