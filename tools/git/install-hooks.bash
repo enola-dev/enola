@@ -19,7 +19,14 @@ set -euo pipefail
 
 HOOKS_DIR=$(git rev-parse --git-path hooks)
 COMMON_GIT_DIR=$(git rev-parse --git-common-dir)
-TARGET_HOOKS_DIR=$(realpath "$COMMON_GIT_DIR/../tools/git/hooks")
+
+# Prefer hooks from the main repo checkout if present so worktrees don't leave dangling symlinks when deleted.
+# Fall back to current worktree hooks for bare clones.
+if [ -d "$COMMON_GIT_DIR/../tools/git/hooks" ]; then
+  SRC_HOOKS_DIR=$(realpath "$COMMON_GIT_DIR/../tools/git/hooks")
+else
+  SRC_HOOKS_DIR=$(realpath "$(dirname "$0")/hooks")
+fi
 
 mkdir -p "$HOOKS_DIR"
-ln --force --symbolic --relative "$TARGET_HOOKS_DIR/"* "$HOOKS_DIR/"
+ln --force --symbolic --relative "$SRC_HOOKS_DIR/"* "$HOOKS_DIR/"
