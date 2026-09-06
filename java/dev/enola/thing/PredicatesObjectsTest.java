@@ -19,20 +19,20 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import dev.enola.common.context.TLC;
 import dev.enola.thing.impl.OnlyIRIThing;
 import dev.enola.thing.repo.ThingProvider;
 
 import org.jspecify.annotations.Nullable;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PredicatesObjectsTest {
+class PredicatesObjectsTest {
 
     @SuppressWarnings({"DataFlowIssue", "unchecked"})
     static class TestPredicatesObjects implements PredicatesObjects {
@@ -78,7 +78,7 @@ public class PredicatesObjectsTest {
     }
 
     @Test
-    public void links() {
+    void links() {
         var list = List.of(new Link("test:one"), new Link("test:two"));
         var predicatesObjects = new TestPredicatesObjects("test:list", list);
         assertThat(predicatesObjects.getLinks("test:list")).isEqualTo(list);
@@ -90,7 +90,7 @@ public class PredicatesObjectsTest {
     }
 
     @Test
-    public void single2iterable() {
+    void single2iterable() {
         try (var ctx = TLC.open()) {
             ctx.push(ThingProvider.class, OnlyIRIThing::new);
             var predicatesObjects = new TestPredicatesObjects("test:one", new Link("test:world"));

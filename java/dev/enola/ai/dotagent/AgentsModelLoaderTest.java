@@ -26,23 +26,24 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.ResourceProvider;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class AgentsModelLoaderTest {
+class AgentsModelLoaderTest {
 
-    public @Rule SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     final ResourceProvider rp = new ClasspathResource.Provider("agents");
     final AgentsModelLoader aml = new AgentsModelLoader(rp);
 
     @Test
-    public void clock() throws IOException {
+    void clock() throws IOException {
         var clockAgentModel = aml.load(URI.create("clock.agent.yaml"));
         var aClockAgent = clockAgentModel.agents.iterator().next();
         assertThat(aClockAgent.description)
@@ -51,17 +52,17 @@ public class AgentsModelLoaderTest {
     }
 
     @Test
-    public void optimisticChefYAML() throws IOException {
+    void optimisticChefYAML() throws IOException {
         checkOptimisticChef(aml.load(URI.create("chef-optimist.agent.yaml")));
     }
 
     @Test
-    public void optimisticChefJSON() throws IOException {
+    void optimisticChefJSON() throws IOException {
         checkOptimisticChef(aml.load(URI.create("chef-optimist.agent.json")));
     }
 
     @Test // The goal of this is to make sure newline processing works as intended
-    public void optimisticChefJSONYAML() throws IOException {
+    void optimisticChefJSONYAML() throws IOException {
         var fromJSON = aml.load(URI.create("chef-optimist.agent.json"));
         var instructionJSON = fromJSON.agents.iterator().next().instruction;
 
@@ -72,13 +73,13 @@ public class AgentsModelLoaderTest {
     }
 
     @Test
-    public void oppositeChefsStream() throws IOException {
+    void oppositeChefsStream() throws IOException {
         checkOppositeChefs(aml.load(URI.create("chefs-opposites-stream.agent.yaml")));
     }
 
     @Test
-    @Ignore // TODO
-    public void oppositeChefsMap() throws IOException {
+    @Disabled // TODO
+    void oppositeChefsMap() throws IOException {
         checkOppositeChefs(aml.load(URI.create("chefs-opposites-map.agent.yaml")));
     }
 
@@ -111,7 +112,7 @@ public class AgentsModelLoaderTest {
     }
 
     @Test
-    public void confirmValidEmptyURI() {
+    void confirmValidEmptyURI() {
         assertThat(URI.create("").toString()).isEmpty();
     }
 }

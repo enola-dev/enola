@@ -19,33 +19,33 @@ package dev.enola.common.function;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-public final class MoreStreamsTest {
+class MoreStreamsTest {
 
     @Test
-    public void testForEachSeq() throws Exception {
+    void testForEachSeq() throws Exception {
         var list = new ArrayList<String>();
         MoreStreams.forEach(Stream.of("a", "b"), e -> list.add(e));
         assertThat(list).containsExactly("a", "b");
     }
 
     @Test
-    public void testForEachParallel() throws Exception {
+    void testForEachParallel() throws Exception {
         var list = new CopyOnWriteArrayList<String>();
         MoreStreams.forEach(Stream.of("a", "b").parallel(), list::add);
         assertThat(list).containsExactly("a", "b");
     }
 
     @Test
-    public void testForEachException() {
+    void testForEachException() {
         assertThrows(
                 MyCheckedException.class,
                 () -> {
@@ -58,19 +58,19 @@ public final class MoreStreamsTest {
     }
 
     @Test
-    public void testMap() throws Exception {
+    void testMap() throws Exception {
         var list = MoreStreams.map(Stream.of("a", "b"), e -> e.toUpperCase()).toList();
         assertThat(list).containsExactly("A", "B");
     }
 
     @Test
-    public void testMapParallel() throws Exception {
+    void testMapParallel() throws Exception {
         var list = MoreStreams.map(Stream.of("a", "b").parallel(), String::toUpperCase).toList();
         assertThat(list).containsExactly("A", "B");
     }
 
     @Test
-    public void testMapException() {
+    void testMapException() {
         assertThrows(
                 MyCheckedException.class,
                 () -> {
@@ -84,7 +84,7 @@ public final class MoreStreamsTest {
     }
 
     @Test
-    public void testMapParallelException() {
+    void testMapParallelException() {
         assertThrows(
                 MyCheckedException.class,
                 () ->
@@ -97,20 +97,20 @@ public final class MoreStreamsTest {
     }
 
     @Test
-    public void testToIterable() {
+    void testToIterable() {
         Iterable<String> iterable = MoreStreams.toIterable(Stream.of("a", "b"));
         assertThat(iterable).containsExactly("a", "b").inOrder();
     }
 
     @Test
-    public void testToIterableSingleUse() {
+    void testToIterableSingleUse() {
         Iterable<String> iterable = MoreStreams.toIterable(Stream.of("a", "b"));
         assertThat(iterable).containsExactly("a", "b");
         assertThrows(IllegalStateException.class, iterable::iterator);
     }
 
     @Test
-    public void testToIterableIsClosed() throws IOException {
+    void testToIterableIsClosed() throws IOException {
         var closed = new java.util.concurrent.atomic.AtomicBoolean(false);
         Stream<String> stream = Stream.of("a", "b").onClose(() -> closed.set(true));
         try (var ignored = MoreStreams.toIterable(stream)) {}

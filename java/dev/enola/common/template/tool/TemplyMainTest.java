@@ -29,12 +29,12 @@ import dev.enola.common.io.resource.ResourceProviders;
 import dev.enola.common.io.resource.TestResource;
 import dev.enola.common.template.handlebars.HandlebarsTemplateProvider;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-public class TemplyMainTest {
+class TemplyMainTest {
 
     TemplyMain temply =
             new TemplyMain(
@@ -42,7 +42,7 @@ public class TemplyMainTest {
                     new HandlebarsTemplateProvider());
 
     @Test
-    public void selfReferential() throws IOException {
+    void selfReferential() throws IOException {
         var template = "world: Enola\nhello: \"{{world}}\"";
         var in = DataResource.of(template, YAML_UTF_8);
         try (var out = TestResource.create(YAML_UTF_8)) {
@@ -52,7 +52,7 @@ public class TemplyMainTest {
     }
 
     @Test
-    public void simpleTemplate() throws IOException {
+    void simpleTemplate() throws IOException {
         var data = DataResource.of("hello: world", YAML_UTF_8);
         var template = DataResource.of("Not YAML... hello, {{hello}}", HANDLEBARS);
         try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
@@ -62,7 +62,7 @@ public class TemplyMainTest {
     }
 
     @Test
-    public void selfReferentialAndTemplate() throws IOException {
+    void selfReferentialAndTemplate() throws IOException {
         var data = DataResource.of("world: Enola\nhello: \"{{world}}\"", YAML_UTF_8);
         var template = DataResource.of("Not YAML... {{world}} {{hello}}", HANDLEBARS);
         try (var out = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
@@ -72,7 +72,7 @@ public class TemplyMainTest {
     }
 
     @Test
-    public void csv() throws IOException {
+    void csv() throws IOException {
         var csv = DataResource.of("name,age\nAlice,30\nBob,25\n", MediaType.CSV_UTF_8);
         var template =
                 DataResource.of("Not YAML...{{#each row}} {{name}} {{age}}{{/each}}", HANDLEBARS);

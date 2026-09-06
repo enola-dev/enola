@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -28,7 +30,7 @@ import dev.enola.common.io.object.*;
 import dev.enola.common.io.resource.DataResource;
 import dev.enola.common.io.resource.MemoryResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.*;
@@ -36,12 +38,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class YamlObjectReaderWriterTest {
+class YamlObjectReaderWriterTest {
 
     // NB: Keep the very similar JsonObjectReaderWriterTest in sync with this!
 
     @Test
-    public void readEmpty_toMap() throws IOException {
+    void readEmpty_toMap() throws IOException {
         var resource = DataResource.of("", YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
 
@@ -50,7 +52,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readSimplestYAML_toMap() throws IOException {
+    void readSimplestYAML_toMap() throws IOException {
         var yaml = "string: hello, world";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
@@ -60,7 +62,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readSimplestYAML_toExampleClass() throws IOException {
+    void readSimplestYAML_toExampleClass() throws IOException {
         var yaml = "string: hello, world";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
@@ -73,7 +75,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readStreamOfYAML_toExampleClassList() throws IOException {
+    void readStreamOfYAML_toExampleClassList() throws IOException {
         var yaml = "string: hello, world\n---\nstring: saluton\n";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
@@ -86,7 +88,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readComplexYAML_toExampleRecord() throws IOException {
+    void readComplexYAML_toExampleRecord() throws IOException {
         var example = readComplexYAML_toExample(ExampleRecord.class);
         assertThat(example.string()).isEqualTo("hello, world");
         assertThat(example.stringSet()).containsExactly("hello", "world");
@@ -98,7 +100,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readComplexYAML_toExamplePlainClass() throws IOException {
+    void readComplexYAML_toExamplePlainClass() throws IOException {
         var example = readComplexYAML_toExample(ExamplePlainClass.class);
         assertThat(example.string).isEqualTo("hello, world");
         assertThat(example.stringSet).containsExactly("hello", "world");
@@ -109,16 +111,16 @@ public class YamlObjectReaderWriterTest {
         // TODO assertThat(example.isPrivate).isTrue();
     }
 
-    @Test(expected = IOException.class)
-    public void readComplexYAML_fail_on_unknown_field() throws IOException {
+    @Test
+    void readComplexYAML_fail_on_unknown_field() throws IOException {
         var yaml = "bad:";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
-        or.read(resource, ExamplePlainClass.class);
+        assertThrows(IOException.class, () -> or.read(resource, ExamplePlainClass.class));
     }
 
     @Test
-    public void readComplexYAML_with_empty_map_which_used_to_cause_an_error() throws IOException {
+    void readComplexYAML_with_empty_map_which_used_to_cause_an_error() throws IOException {
         var yaml = "example:";
         var resource = DataResource.of(yaml, YAML_UTF_8);
         ObjectReader or = new YamlObjectReaderWriter();
@@ -143,7 +145,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void writeYAML_fromExampleRecord() throws IOException {
+    void writeYAML_fromExampleRecord() throws IOException {
         ObjectWriter ow = new YamlObjectReaderWriter();
 
         var sr = new MemoryResource(YAML_UTF_8);
@@ -180,7 +182,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void writeYAML_fromMap() throws IOException {
+    void writeYAML_fromMap() throws IOException {
         ObjectWriter ow = new YamlObjectReaderWriter();
         var sr = new MemoryResource(YAML_UTF_8);
         var map = ImmutableMap.of("string", "hello, world");
@@ -189,7 +191,7 @@ public class YamlObjectReaderWriterTest {
     }
 
     @Test
-    public void readExampleRecordWithExampleIdentifiableRecord() throws IOException {
+    void readExampleRecordWithExampleIdentifiableRecord() throws IOException {
         var yaml =
                 """
                 string: "hello, world"
@@ -212,7 +214,7 @@ public class YamlObjectReaderWriterTest {
 
     @Test
     // TODO Make this also write out the exampleIdentifiableRecord - but only once!
-    public void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
+    void writeExampleRecordWithExampleIdentifiableRecord() throws IOException {
         var exampleIdentifiableRecord = new ExampleIdentifiableRecord("id123", 43.0);
         var example =
                 new ExampleRecord(

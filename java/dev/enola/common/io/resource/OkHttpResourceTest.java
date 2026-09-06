@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 
 import com.google.common.net.MediaType;
@@ -28,15 +30,15 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-public class OkHttpResourceTest {
+class OkHttpResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
     // TODO Use https://square.github.io/okhttp/#mockwebserver
 
@@ -44,21 +46,25 @@ public class OkHttpResourceTest {
     //   does not cause any network activity, as the mediaType must be obtained lazily, on demand!
 
     @Test
-    public void google() throws IOException {
+    void google() throws IOException {
         var r = new OkHttpResource("http://www.google.com");
         assertThat(r.charSource().read()).ignoringCase().contains("<!doctype html>");
         // TODO Debug where the "iso-8859-1" here came from... it probably really should be UTF-8?!
         assertThat(r.mediaType()).isEqualTo(MediaType.HTML_UTF_8.withCharset(ISO_8859_1));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void google404() throws IOException {
-        new OkHttpResource("http://www.google.com/bad").charSource().read();
+    @Test
+    void google404() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new OkHttpResource("http://www.google.com/bad").charSource().read());
     }
 
-    @Test(expected = UncheckedIOException.class)
-    public void connectTimeout() throws IOException {
+    @Test
+    void connectTimeout() {
         // NB: 203.0.113.1 is a non-routable IPv4 address; the cause includes Timeout
-        new OkHttpResource("http://203.0.113.1").charSource().read();
+        assertThrows(
+                UncheckedIOException.class,
+                () -> new OkHttpResource("http://203.0.113.1").charSource().read());
     }
 }

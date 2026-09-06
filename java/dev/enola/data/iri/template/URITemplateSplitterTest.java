@@ -20,12 +20,12 @@ package dev.enola.data.iri.template;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class URITemplateSplitterTest {
+class URITemplateSplitterTest {
 
     @Test
-    public void example() throws Exception {
+    void example() throws Exception {
         check(
                 "http://example.com/people/{firstName}-{lastName}/SSN",
                 "^http://example.com/people/(?<firstName>[^-]+)-(?<lastName>[^/]+)/SSN$",
@@ -46,7 +46,7 @@ public class URITemplateSplitterTest {
     }
 
     @Test
-    public void length() throws Exception {
+    void length() throws Exception {
         assertThat(new URITemplateSplitter("").getLength()).isEqualTo(0);
         assertThat(new URITemplateSplitter("/hello").getLength()).isEqualTo(6);
         assertThat(new URITemplateSplitter("/hello/{msg}").getLength()).isEqualTo(8);

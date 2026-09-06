@@ -27,7 +27,10 @@ java_library(
             "hashbrown/*.java",
             "resource/**/*.java",
         ],
-        exclude = ["**/*Test.java"],
+        exclude = [
+            "**/*Test.java",
+            "**/FileGlobResolverTestAbstract.java",
+        ],
     ),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
     visibility = ["//:__subpackages__"],
@@ -60,6 +63,7 @@ junit_tests(
         "hashbrown/**/*Test.java",
     ]),
     plugins = ["//tools/bazel/java_plugin:autoservice"],
+    srcs_utils = glob(["resource/**/*Abstract.java"]),
     deps = [
         ":io",
         "//java/dev/enola/common/context",

@@ -34,15 +34,15 @@ import dev.enola.thing.message.ProtoTypes;
 import dev.enola.thing.metadata.ThingMetadataProvider;
 import dev.enola.thing.repo.ThingProvider;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class ProtoEnumValueToThingConnectorTest {
+class ProtoEnumValueToThingConnectorTest {
 
     @Test
-    // @Ignore // TODO Implement this test and make ProtoEnumValueToThingConnector work..
-    public void label() throws IOException, ConversionException {
+    // @Disabled // TODO Implement this test and make ProtoEnumValueToThingConnector work..
+    void label() throws IOException, ConversionException {
         ProtocolMessageEnum enumValue = DescriptorProtos.FileOptions.OptimizeMode.SPEED;
 
         EnumValueDescriptor enumValueDescriptor = enumValue.getValueDescriptor();

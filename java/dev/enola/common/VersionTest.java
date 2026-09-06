@@ -19,19 +19,19 @@ package dev.enola.common;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class VersionTest {
+class VersionTest {
 
     @Test
-    public void get() {
+    void get() {
         assertThat(Version.get()).isNotEmpty();
     }
 
     @Test
-    @Ignore // This could fail on a CI due to shallow Git clone
-    public void isKnown() {
+    @Disabled // This could fail on a CI due to shallow Git clone
+    void isKnown() {
         assertThat(Version.isKnown()).isTrue();
     }
 }

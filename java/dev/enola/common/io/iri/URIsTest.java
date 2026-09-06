@@ -19,7 +19,7 @@ package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static java.net.URI.create;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -33,8 +33,8 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.TLC;
 import dev.enola.common.io.iri.URIs.MediaTypeAndOrCharset;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +43,10 @@ import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
-public class URIsTest {
+class URIsTest {
 
     @Test
-    public void testGetQueryMap() throws URISyntaxException {
+    void testGetQueryMap() throws URISyntaxException {
         assertThat(URIs.getQueryMap((URI) null)).isEmpty();
         assertThat(URIs.getQueryMap(URI.create(""))).isEmpty();
         assertThat(URIs.getQueryMap(URI.create("http://www.vorburger.ch"))).isEmpty();
@@ -72,13 +72,13 @@ public class URIsTest {
     }
 
     @Test
-    public void testHasNoMediaType() throws URISyntaxException {
+    void testHasNoMediaType() throws URISyntaxException {
         assertThat(URIs.getMediaTypeAndCharset(URI.create("scheme:something")))
                 .isEqualTo(new MediaTypeAndOrCharset(null, null));
     }
 
     @Test
-    public void testGetMediaType() throws URISyntaxException {
+    void testGetMediaType() throws URISyntaxException {
         var uri = URI.create("fd:1?something=else&mediaType=application/yaml;charset=utf-16be");
         assertThat(URIs.getQueryMap(uri))
                 .containsExactly(
@@ -88,7 +88,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testAddMediaType() throws URISyntaxException {
+    void testAddMediaType() throws URISyntaxException {
         var mt1 = MediaType.GIF;
         var uri1 = URIs.addMediaType(URI.create("scheme:something"), mt1);
         var uri1expected = URI.create("scheme:something?mediaType=image%2Fgif");
@@ -109,7 +109,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testAddQuery() {
+    void testAddQuery() {
         assertThat(
                         URIs.addQuery(
                                 "http://host/path?arg1=a",
@@ -118,13 +118,13 @@ public class URIsTest {
     }
 
     @Test
-    public void testAddCharsetQueryParameter() {
+    void testAddCharsetQueryParameter() {
         assertThat(URIs.addCharset(URI.create("fd:1?mediaType=application/yaml"), UTF_8))
                 .isEqualTo(URI.create("fd:1?mediaType=application/yaml&charset=UTF-8"));
     }
 
     @Test
-    public void testGetCharsetFromMediaTypeOrCharsetQueryParameter() {
+    void testGetCharsetFromMediaTypeOrCharsetQueryParameter() {
         assertThat(URIs.getCharset(URI.create("fd:1?mediaType=application/yaml&charset=UTF-8")))
                 .isEqualTo("UTF-8");
         assertThat(URIs.getCharset(URI.create("fd:1?mediaType=application/yaml;charset=UTF-8")))
@@ -132,7 +132,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testAddQueryGivenOriginalUriWithQuery() {
+    void testAddQueryGivenOriginalUriWithQuery() {
         var uri1 = URI.create("http://host/pathX");
         var uri2 = URI.create("http://host/pathY?arg1=a");
         var uri3 = URI.create("http://host/pathZ?arg2=b");
@@ -145,7 +145,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetFilename() throws URISyntaxException {
+    void testGetFilename() throws URISyntaxException {
         // Files
         assertName(URI.create(""), "");
         assertName(new File("test.txt").toURI(), "test.txt");
@@ -195,7 +195,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetFilenameOrLastPathSegment() {
+    void testGetFilenameOrLastPathSegment() {
         assertThat(URIs.getFilenameOrLastPathSegmentOrHost(URI.create("file:///tmp/")))
                 .isEqualTo("tmp");
 
@@ -218,7 +218,7 @@ public class URIsTest {
 
     /** See {@link URIs#getPath(URI)} */
     @Test
-    public void testGetPath() {
+    void testGetPath() {
         var f = new File("/absolute/file?param=abc#anchor");
         // NOK! assertThat(f.toURI().getPath()).isEqualTo("/absolute/file");
         assertThat(URIs.getPath(f.toURI())).isEqualTo("/absolute/file");
@@ -239,7 +239,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetFilePathFromURI() {
+    void testGetFilePathFromURI() {
         assertThat(URIs.getFilePath(URI.create("file:/tmp/"))).isEqualTo(Path.of("/tmp"));
         assertThat(URIs.getFilePath(URI.create("file:/tmp/file"))).isEqualTo(Path.of("/tmp/file"));
 
@@ -251,7 +251,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetFilePathFromString() {
+    void testGetFilePathFromString() {
         assertThat(URIs.getFilePath("file:/tmp/")).isEqualTo(Path.of("/tmp"));
 
         // Glob URIs
@@ -260,7 +260,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetScheme() {
+    void testGetScheme() {
         assertThat(URIs.getScheme("test:something")).isEqualTo("test");
         assertThat(URIs.getScheme("rela/tive")).isEqualTo("");
         assertThat(URIs.getScheme("/absolute/rela/tive")).isEqualTo("");
@@ -268,7 +268,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testGetSchemeSpecificPart() {
+    void testGetSchemeSpecificPart() {
         assertThat(URIs.getSchemeSpecificPart("test:something")).isEqualTo("something");
         assertThat(URIs.getSchemeSpecificPart("rela/tive")).isEqualTo("");
         assertThat(URIs.getSchemeSpecificPart("/absolute/rela/tive")).isEqualTo("");
@@ -276,7 +276,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         // Nota bene: The / is important! At least in Java. Without it, everything that follows
         // is just one single "schemeSpecificPart"; only with it does it get broken up (in Java).
         var text = "scheme:/thing?ping=pong=pang#fragment";
@@ -289,7 +289,7 @@ public class URIsTest {
     }
 
     @Test
-    public void testPreserveEmptyFragment() {
+    void testPreserveEmptyFragment() {
         var text = "http://www.w3.org/2001/XMLSchema#";
         var uri = URI.create(text);
         assertThat(uri.getFragment()).isEqualTo("");
@@ -297,13 +297,13 @@ public class URIsTest {
     }
 
     @Test
-    public void testDropQuery() {
+    void testDropQuery() {
         var uri = create("file:/tmp/test/picasso.yaml?context=file:test/picasso-context.jsonld");
         assertThat(URIs.dropQueryAndFragment(uri)).isEqualTo(create("file:/tmp/test/picasso.yaml"));
     }
 
     @Test
-    public void jimURI() throws IOException {
+    void jimURI() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path path1 = fs.getPath("/directory/file");
             URI uri = path1.toUri();
@@ -313,7 +313,7 @@ public class URIsTest {
     }
 
     @Test
-    public void absolutifyURIs() {
+    void absolutifyURIs() {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme:///root/"))) {
             assertThat(URIs.absolutify("test")).isEqualTo("ascheme:///root/test");
             assertThat(URIs.absolutify("/test")).isEqualTo("ascheme:///test");
@@ -329,7 +329,7 @@ public class URIsTest {
     }
 
     @Test
-    public void absolutifyStringURIs() {
+    void absolutifyStringURIs() {
         try (var ctx = TLC.open().push(URIs.ContextKeys.BASE, URI.create("ascheme:///root/"))) {
             assertThat(URIs.absolutify("test")).isEqualTo("ascheme:///root/test");
             assertThat(URIs.absolutify("/test")).isEqualTo("ascheme:///test");
@@ -343,7 +343,7 @@ public class URIsTest {
     }
 
     @Test
-    public void baseOfURI() throws IOException {
+    void baseOfURI() throws IOException {
         assertThat(
                         URIs.getBase(
                                 URI.create(
@@ -358,8 +358,8 @@ public class URIsTest {
     }
 
     @Test
-    @Ignore // TODO FIXME, see class IRIs
-    public void baseOfIRI() throws IOException {
+    @Disabled // TODO FIXME, see class IRIs
+    void baseOfIRI() throws IOException {
         assertThat(URIs.getBase(URI.create("https://dév.dev/projects/alt/index.html?q=abc#f")))
                 .isEqualTo(URI.create("https://dév.dev/projects/alt"));
 
@@ -371,8 +371,8 @@ public class URIsTest {
     }
 
     @Test
-    @Ignore // TODO FIXME, see class IRIs
-    public void baseOfIRIwithPort() throws IOException {
+    @Disabled // TODO FIXME, see class IRIs
+    void baseOfIRIwithPort() throws IOException {
         assertThat(URIs.getBase(URI.create("https://dév.dev:8080/projects/alt/index.html?q=abc#f")))
                 .isEqualTo(URI.create("https://dév.dev:8080/projects/alt"));
 
@@ -384,7 +384,7 @@ public class URIsTest {
     }
 
     @Test
-    public void addFragment() {
+    void addFragment() {
         assertThat(URIs.addFragment(URI.create("http://example.org"), "fragment"))
                 .isEqualTo(URI.create("http://example.org#fragment"));
 

@@ -19,14 +19,14 @@ package dev.enola.common.context;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ContextAwareThreadFactoryTest {
+class ContextAwareThreadFactoryTest {
 
     @Test
-    public void wrap() throws InterruptedException {
+    void wrap() throws InterruptedException {
         var tf = new ContextAwareThreadFactory();
         try (var ctx = TLC.open()) {
             ctx.push(TestCtxKey.MAGIC, 123);

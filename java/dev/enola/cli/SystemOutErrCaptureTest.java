@@ -19,11 +19,11 @@ package dev.enola.cli;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SystemOutErrCaptureTest {
+class SystemOutErrCaptureTest {
     @Test
-    public void check() throws Exception {
+    void check() throws Exception {
         try (var capture = new SystemOutErrCapture()) {
             assertThat(capture.getSystemOut()).isEmpty();
             assertThat(capture.getSystemErr()).isEmpty();

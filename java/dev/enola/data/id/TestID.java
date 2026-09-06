@@ -42,6 +42,9 @@ public record TestID(long kind, String data) implements Comparable<TestID> {
 
     public static final Pattern PATTERN = Pattern.compile("([0-9a-z]+)-(.+)");
 
+    public static final TestID TEST_ID = new TestID(-1L, "test");
+    public static final String TEST_ID_STRING = "3w5e11264sgsf-test";
+
     public static final IdConverter<TestID> CONVERTER = new Converter();
 
     // TODO @AutoService(IdConverter.class)

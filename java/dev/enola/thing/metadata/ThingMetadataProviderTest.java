@@ -36,16 +36,16 @@ import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 
 import org.jspecify.annotations.Nullable;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class ThingMetadataProviderTest {
+class ThingMetadataProviderTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
-    @Rule public TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
+    @RegisterExtension TestTLCRule rlcRule = EnolaTestTLCRules.BASIC;
 
     private static final NamespaceConverter NONS = new NamespaceConverterIdentity();
 
@@ -73,7 +73,7 @@ public class ThingMetadataProviderTest {
             };
 
     @Test
-    public void label() {
+    void label() {
         assertThat(
                         new ThingMetadataProvider(NO_THING_PROVIDER, NONS)
                                 .get("http://enola.dev/")
@@ -97,7 +97,7 @@ public class ThingMetadataProviderTest {
     }
 
     @Test
-    public void labelViaAlternativeLabelProperty() throws IOException {
+    void labelViaAlternativeLabelProperty() throws IOException {
         var uri = java.net.URI.create("classpath:/metadata-label-property.ttl");
         var repo = new ThingMemoryRepositoryRW();
         var things = new RdfLoader().load(uri, repo);
@@ -107,13 +107,13 @@ public class ThingMetadataProviderTest {
     }
 
     @Test
-    public void description() {
+    void description() {
         assertThat(new ThingMetadataProvider(test, NONS).get(THING_IRI).descriptionHTML())
                 .isEqualTo("...");
     }
 
     @Test
-    public void error() {
+    void error() {
         var meta = new ThingMetadataProvider(error, NONS).get(THING_IRI);
         assertThat(meta.label()).isNotEmpty();
         assertThat(meta.descriptionHTML()).isEmpty();
@@ -121,7 +121,7 @@ public class ThingMetadataProviderTest {
     }
 
     @Test
-    public void labelOfFileDirectory() {
+    void labelOfFileDirectory() {
         var meta = new ThingMetadataProvider(NO_THING_PROVIDER, NONS).get("file:///tmp/");
         assertThat(meta.label()).isEqualTo("tmp");
         assertThat(meta.descriptionHTML()).isEmpty();

@@ -26,34 +26,34 @@ import com.google.genai.types.Part;
 
 import dev.enola.common.function.CheckedFunction;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class ContentsTest {
+class ContentsTest {
 
     CheckedFunction<String, String, IOException> R = s -> s + "bar";
 
     @Test
-    public void emptyOptional() throws IOException {
+    void emptyOptional() throws IOException {
         assertThat(replaceText(Optional.empty(), R)).isEmpty();
     }
 
     @Test
-    public void emptyContent() throws IOException {
+    void emptyContent() throws IOException {
         var emptyContent = Content.fromParts();
         assertThat(Contents.replaceText(emptyContent, R)).isEqualTo(emptyContent);
     }
 
     @Test
-    public void text1() throws IOException {
+    void text1() throws IOException {
         assertThat(Contents.replaceText(Content.fromParts(Part.fromText("foo")), R))
                 .isEqualTo(Content.fromParts(Part.fromText("foobar")));
     }
 
     @Test
-    public void text2() throws IOException {
+    void text2() throws IOException {
         assertThat(
                         Contents.replaceText(
                                 Content.fromParts(Part.fromText("foo"), Part.fromText("xyz")), R))
@@ -61,13 +61,13 @@ public class ContentsTest {
     }
 
     @Test
-    public void uri() throws IOException {
+    void uri() throws IOException {
         var uriContent = Content.fromParts(Part.fromUri("http://example.org", "text.html"));
         assertThat(Contents.replaceText(uriContent, R)).isEqualTo(uriContent);
     }
 
     @Test
-    public void uriAndText() throws IOException {
+    void uriAndText() throws IOException {
         var uriPart = Part.fromUri("http://example.org", "text.html");
         assertThat(Contents.replaceText(Content.fromParts(uriPart, Part.fromText("foo")), R))
                 .isEqualTo(Content.fromParts(uriPart, Part.fromText("foobar")));

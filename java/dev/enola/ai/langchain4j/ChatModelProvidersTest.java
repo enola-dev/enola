@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 import static dev.enola.ai.iri.AnthropicModelProvider.ANTHROPIC_API_KEY_SECRET_NAME;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import dev.enola.ai.iri.AnthropicModelProvider;
 import dev.enola.ai.iri.GoogleModelProvider;
 import dev.enola.ai.iri.OllamaModelProvider;
@@ -31,12 +33,12 @@ import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 import dev.langchain4j.model.chat.StreamingChatModel;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class ChatModelProvidersTest {
+class ChatModelProvidersTest {
     // See also the similarly structured LlmProvidersTest
 
     SecretManager secretManager = new TestSecretManager();
@@ -48,35 +50,36 @@ public class ChatModelProvidersTest {
         assertThat(answer.awaitChatResponse().aiMessage().text()).containsMatch("Zurich|Zürich");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void bad() {
-        p.get(URI.create("http://www.google.com"));
+    @Test
+    void bad() {
+        assertThrows(
+                IllegalArgumentException.class, () -> p.get(URI.create("http://www.google.com")));
     }
 
     @Test
-    public void mock() {
+    void mock() {
         check(p.get(URI.create("mocklm:Zurich")));
     }
 
     @Test
-    public void gemmaOnOllama() {
+    void gemmaOnOllama() {
         if (Net.portAvailable(11434)) check(p.get(OllamaModelProvider.GEMMA3_1B));
     }
 
     @Test
-    public void gemmaOnGCP() throws IOException {
+    void gemmaOnGCP() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(GoogleModelProvider.GEMMA3_1B));
     }
 
     @Test
-    public void gemini() throws IOException {
+    void gemini() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(GoogleModelProvider.FLASH));
     }
 
     @Test
-    public void claude() throws IOException {
+    void claude() throws IOException {
         if (secretManager.getOptional(ANTHROPIC_API_KEY_SECRET_NAME).isPresent())
             check(p.get(AnthropicModelProvider.CLAUDE_HAIKU_3));
     }

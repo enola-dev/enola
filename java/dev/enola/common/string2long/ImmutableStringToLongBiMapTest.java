@@ -17,7 +17,7 @@
  */
 package dev.enola.common.string2long;
 
-public class ImmutableStringToLongBiMapTest extends AbstractStringToLongBiMapTest {
+class ImmutableStringToLongBiMapTest extends AbstractStringToLongBiMapTest {
 
     @Override
     StringToLongBiMap.Builder create() {

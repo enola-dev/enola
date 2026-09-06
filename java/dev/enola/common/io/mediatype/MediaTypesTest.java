@@ -27,33 +27,33 @@ import com.google.common.net.MediaType;
 
 import dev.enola.common.context.testlib.SingletonRule;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.nio.charset.StandardCharsets;
 
-public class MediaTypesTest {
+class MediaTypesTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new TestMediaType()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new TestMediaType()));
 
     @Test
-    public void testParse() {
+    void testParse() {
         assertThat(MediaTypes.parse("application/test")).isEqualTo(TEST);
     }
 
     @Test
-    public void testNormalizeMediaTypesParse() {
+    void testNormalizeMediaTypesParse() {
         assertThat(MediaTypes.parse("application/test-alternative")).isEqualTo(TEST);
     }
 
     @Test
-    public void testNormalizeMediaTypeParse() {
+    void testNormalizeMediaTypeParse() {
         assertThat(MediaTypes.normalize(MediaType.parse("application/test-alternative")))
                 .isEqualTo(TEST);
     }
 
     @Test
-    public void testNormalizeMediaTypesParseWithCharsetParameter() {
+    void testNormalizeMediaTypesParseWithCharsetParameter() {
         var alternative = MediaTypes.parse("application/test-alternative");
         var alternativeWithCharset =
                 MediaTypes.normalize(alternative.withCharset(StandardCharsets.UTF_16BE));
@@ -61,7 +61,7 @@ public class MediaTypesTest {
     }
 
     @Test
-    public void testNormalizeMediaTypeParseWithCharsetParameter() {
+    void testNormalizeMediaTypeParseWithCharsetParameter() {
         var alternative = MediaType.parse("application/test-alternative");
         assertThat(MediaTypes.normalize(alternative)).isEqualTo(TEST);
         assertThat(MediaTypes.normalize(alternative.withCharset(StandardCharsets.UTF_16BE)))
@@ -69,13 +69,13 @@ public class MediaTypesTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         var mediaType = TEST.withCharset(StandardCharsets.UTF_16BE);
         assertThat(mediaType.toString()).isEqualTo("application/test; charset=utf-16be");
     }
 
     @Test
-    public void testParseWithCharset() {
+    void testParseWithCharset() {
         var expected = TEST.withCharset(StandardCharsets.UTF_16BE);
 
         // https://www.ietf.org/rfc/rfc2045.txt format:
@@ -88,7 +88,7 @@ public class MediaTypesTest {
     }
 
     @Test
-    public void toIRI() {
+    void toIRI() {
         assertThat(MediaTypes.toIRI(MediaType.PLAIN_TEXT_UTF_8.withoutParameters()))
                 .isEqualTo("https://enola.dev/mediaType/text/plain");
         assertThat(MediaTypes.toIRI(MediaType.PLAIN_TEXT_UTF_8))
@@ -100,7 +100,7 @@ public class MediaTypesTest {
     }
 
     @Test
-    public void toStringWithoutSpaces() {
+    void toStringWithoutSpaces() {
         assertThat(MediaTypes.toStringWithoutSpaces(MediaType.PLAIN_TEXT_UTF_8))
                 .isEqualTo("text/plain;charset=utf-8");
 

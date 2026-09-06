@@ -36,8 +36,8 @@ import dev.enola.rdf.proto.RdfProtoThingsConverter;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.proto.Thing;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -46,15 +46,15 @@ import java.time.LocalDate;
  * Tests for {@link JavaThingToProtoThingConverter} and {@link ThingAdapter} and {@link
  * ProtoThingIntoJavaThingBuilderConverter}.
  */
-public class ThingConvertersTest {
+class ThingConvertersTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     private final DatatypeRepository datatypeRepo =
             new DatatypeRepositoryBuilder().store(Datatypes.DATE).build();
 
     @Test
-    public void picasso() throws IOException {
+    void picasso() throws IOException {
         var cpr = new ClasspathResource("picasso.ttl");
         var rdf4jModel = new RdfReaderConverter(iri -> null).convert(cpr).get();
         var inProtoThingStream = new RdfProtoThingsConverter().convert(rdf4jModel);

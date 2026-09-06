@@ -35,25 +35,25 @@ import dev.enola.common.io.resource.EmptyResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.common.io.resource.StringResource;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class CanonicalizerTest {
+class CanonicalizerTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
-    @Rule
-    public TestTLCRule rule =
+    @RegisterExtension
+    TestTLCRule rule =
             TestTLCRule.of(
                     MediaTypeProviders.class, new MediaTypeProviders(new StandardMediaTypes()));
 
     private final Canonicalizer canonicalizer = new Canonicalizer(new ClasspathResource.Provider());
 
     @Test
-    public void unknown() throws IOException {
+    void unknown() throws IOException {
         var in = new EmptyResource(MediaType.MICROSOFT_WORD);
         var out = new MemoryResource(MediaType.MICROSOFT_WORD);
         canonicalizer.canonicalize(in, out, false);
@@ -61,7 +61,7 @@ public class CanonicalizerTest {
     }
 
     @Test
-    public void emptyJSON() throws IOException {
+    void emptyJSON() throws IOException {
         var in = new EmptyResource(MediaType.JSON_UTF_8.withoutParameters());
         var out = new MemoryResource(MediaType.ANY_TYPE);
         canonicalizer.canonicalize(in, out, false);
@@ -69,7 +69,7 @@ public class CanonicalizerTest {
     }
 
     @Test
-    public void simpleJSON() throws IOException {
+    void simpleJSON() throws IOException {
         var in = StringResource.of(" {\"b\":\"hi\", \"a\":37.0}", MediaType.JSON_UTF_8);
         var out = new MemoryResource(MediaType.ANY_TYPE);
         canonicalizer.canonicalize(in, out, false);
@@ -77,7 +77,7 @@ public class CanonicalizerTest {
     }
 
     @Test
-    public void canonicalJSON_is_UTF8() throws IOException {
+    void canonicalJSON_is_UTF8() throws IOException {
         var in =
                 StringResource.of(
                         "{\"b\":\"hi\"}",
@@ -91,7 +91,7 @@ public class CanonicalizerTest {
     }
 
     @Test
-    public void rfc8785() throws IOException {
+    void rfc8785() throws IOException {
         var in = new ClasspathResource("canonicalize.json");
         var out = new MemoryResource(MediaType.JSON_UTF_8);
         canonicalizer.canonicalize(in, out, false);
@@ -101,7 +101,7 @@ public class CanonicalizerTest {
     }
 
     @Test
-    public void jsonld() throws IOException {
+    void jsonld() throws IOException {
         var md = MediaType.parse("application/ld+json").withCharset(UTF_8);
         var in = new ClasspathResource("canonicalize.jsonld", md);
         var out = new MemoryResource(MediaType.JSON_UTF_8);

@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.data.iri.IRI;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class NamespaceConverterTest {
+class NamespaceConverterTest {
 
     @Test
-    public void schemaOrgName() {
+    void schemaOrgName() {
         var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
         var convert = new NamespaceConverterWithRepository(standard);
         assertThat(convert.toIRI("schema:name")).isEqualTo(IRI.from("https://schema.org/name"));
@@ -34,7 +34,7 @@ public class NamespaceConverterTest {
     }
 
     @Test
-    public void empty() {
+    void empty() {
         var empty = new NamespaceRepositoryBuilder().store("", "https://schema.org/").build();
         var convert = new NamespaceConverterWithRepository(empty);
         assertThat(convert.toIRI(":name")).isEqualTo(IRI.from("https://schema.org/name"));
@@ -42,7 +42,7 @@ public class NamespaceConverterTest {
     }
 
     @Test
-    public void unknown() {
+    void unknown() {
         var emptyRepository = new NamespaceRepositoryBuilder().build();
         var convert = new NamespaceConverterWithRepository(emptyRepository);
         assertThat(convert.toIRI(":name")).isEqualTo(IRI.from(":name"));
@@ -50,14 +50,14 @@ public class NamespaceConverterTest {
     }
 
     @Test
-    public void match() {
+    void match() {
         var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
         assertThat(standard.match("https://schema.org/name"))
                 .hasValue(standard.get("https://schema.org/"));
     }
 
     @Test
-    public void noMatch() {
+    void noMatch() {
         var standard = NamespaceRepositoryEnolaDefaults.INSTANCE;
         assertThat(standard.match("http://example.org/note-its-without-https")).isEmpty();
     }

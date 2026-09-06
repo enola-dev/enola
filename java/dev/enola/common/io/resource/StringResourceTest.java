@@ -26,19 +26,19 @@ import com.google.common.net.MediaType;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class StringResourceTest {
+class StringResourceTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     @Test
-    public void testStringResource() throws IOException, URISyntaxException {
+    void testStringResource() throws IOException, URISyntaxException {
         var r1 = StringResource.of("hello, world");
         assertThat(r1.charSource().read()).isEqualTo("hello, world");
 

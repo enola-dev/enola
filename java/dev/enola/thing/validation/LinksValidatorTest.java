@@ -25,11 +25,11 @@ import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class LinksValidatorTest {
+class LinksValidatorTest {
 
     // TODO Add missing test coverage for (working) blank nodes, Iterables, URI instead Link
 
@@ -55,21 +55,21 @@ public class LinksValidatorTest {
     Validators v = new Validators(new LinksValidator(repo));
 
     @Test
-    public void empty() {
+    void empty() {
         v.validate(repo, collector);
         repo.store(one);
         assertThat(collector.getDiagnostics()).isEmpty();
     }
 
     @Test
-    public void aok() {
+    void aok() {
         repo.storeAll(List.of(one, two));
         v.validate(repo, collector);
         assertThat(collector.getDiagnostics()).isEmpty();
     }
 
     @Test
-    public void bad() {
+    void bad() {
         repo.storeAll(List.of(one, two, bad1, bad2));
         v.validate(repo, collector);
         assertThat(collector.getDiagnostics()).hasSize(2);

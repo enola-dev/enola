@@ -24,15 +24,16 @@ import dev.enola.common.exec.vorburger.TestRunner;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.util.Map;
 
-public class ExecAgentTest {
+class ExecAgentTest {
 
-    @Rule public TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
+    @RegisterExtension
+    TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
 
     Room testRoom = new Room("test");
     TestSwitchboard pbx = new TestSwitchboard();
@@ -45,37 +46,37 @@ public class ExecAgentTest {
                     "$ ");
 
     @Test
-    public void ls() {
+    void ls() {
         check("ls -l", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
-    public void spaceLs() {
+    void spaceLs() {
         check(" ls -l", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
-    public void spaceLsSpace() {
+    void spaceLsSpace() {
         check(" ls -l ", "/usr/bin/env", "bash", "-c", "ls -l");
     }
 
     @Test
-    public void spaceLsSpacesArgSpace() {
+    void spaceLsSpacesArgSpace() {
         check(" ls  -lh", "/usr/bin/env", "bash", "-c", "ls  -lh");
     }
 
     @Test
-    public void who() {
+    void who() {
         check("who are you");
     }
 
     @Test
-    public void whoWithExclamationMarkPrefix() {
+    void whoWithExclamationMarkPrefix() {
         check("$ who am i", "/usr/bin/env", "bash", "-c", "who am i");
     }
 
     @Test
-    public void sosNotOnPathButOnExclusionList() {
+    void sosNotOnPathButOnExclusionList() {
         // The word "sos" IS in command-words.txt (because of https://github.com/sosreport/sos),
         // but if it's not installed (actually available on the PATH) then it should obviously just
         // be ignored as a command:

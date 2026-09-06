@@ -17,13 +17,14 @@
  */
 package dev.enola.ai.adk.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AgentTesterTest {
+import org.junit.jupiter.api.Test;
+
+class AgentTesterTest {
 
     @Test
-    public void mockAgent() {
+    void mockAgent() {
         var agent = new MockAgent("foo");
         var tester = new AgentTester(agent);
         tester.assertTextResponseEquals("...", "foo");
@@ -33,7 +34,7 @@ public class AgentTesterTest {
     }
 
     @Test
-    public void contains() {
+    void contains() {
         var agent = new MockAgent("foo");
         final var tester = new AgentTester(agent);
         tester.assertTextResponseContainsAny("...", "foo", "bar");
@@ -41,7 +42,7 @@ public class AgentTesterTest {
         agent.replyWith("bar");
         tester.assertTextResponseContainsAny("...", "foo", "bar");
 
-        Assert.assertThrows(
+        assertThrows(
                 AssertionError.class, () -> tester.assertTextResponseContainsAny("...", "baz"));
     }
 

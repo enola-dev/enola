@@ -19,18 +19,18 @@ package dev.enola.common.secret.yaml;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class YamlSecretManagerTest {
+class YamlSecretManagerTest {
 
     // TODO @Test empty()
 
     // TODO @Test store()
 
     @Test
-    public void load() throws IOException {
+    void load() throws IOException {
         var yaml = "secret1: do-not-tell";
         var secretManager = new YamlSecretManager(input -> {}, () -> yaml);
         try (var secret = secretManager.get("secret1")) {

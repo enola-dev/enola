@@ -20,14 +20,16 @@ package dev.enola.common.jackson;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-public class ObjectMappersTest {
+class ObjectMappersTest {
 
     static record Something(String name, Locale lang) {}
 
@@ -36,7 +38,7 @@ public class ObjectMappersTest {
     String jsonWithUnknown = "{\"name\":\"test\",\"unknown\":\"property\"}";
 
     @Test
-    public void testSomethingWithJSON() throws Exception {
+    void testSomethingWithJSON() throws Exception {
         Something something = new Something("test", Locale.of("en", "US"));
         ObjectMapper objectMapper = ObjectMappers.JSON;
         String json = objectMapper.writeValueAsString(something);
@@ -47,7 +49,7 @@ public class ObjectMappersTest {
     }
 
     @Test
-    public void testSomethingWithYAML() throws Exception {
+    void testSomethingWithYAML() throws Exception {
         Something something = new Something("test", Locale.of("en", "US"));
         ObjectMapper objectMapper = ObjectMappers.YAML;
         String yaml = objectMapper.writeValueAsString(something);
@@ -57,13 +59,15 @@ public class ObjectMappersTest {
         assertThat(something).isEqualTo(something2);
     }
 
-    @Test(expected = UnrecognizedPropertyException.class)
-    public void testSomethingWithUnknownProperty() throws Exception {
-        ObjectMappers.JSON.readValue(jsonWithUnknown, Something.class);
+    @Test
+    void testSomethingWithUnknownProperty() throws Exception {
+        assertThrows(
+                UnrecognizedPropertyException.class,
+                () -> ObjectMappers.JSON.readValue(jsonWithUnknown, Something.class));
     }
 
     @Test
-    public void newObjectMapperIsIndependent() throws Exception {
+    void newObjectMapperIsIndependent() throws Exception {
         ObjectMapper newMapper = ObjectMappers.newJsonObjectMapper();
         newMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 

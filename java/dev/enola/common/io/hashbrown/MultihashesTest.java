@@ -23,16 +23,16 @@ import com.google.common.io.ByteSource;
 
 import io.ipfs.multihash.Multihash;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class MultihashesTest {
+class MultihashesTest {
 
     // See also dev.enola.common.io.resource.MemoryByteSourceTest
 
     @Test
-    public void hashEmpty() throws IOException {
+    void hashEmpty() throws IOException {
         var emptyByteSource = ByteSource.empty();
         var multihash1 = Multihashes.hash(emptyByteSource, Multihash.Type.sha2_512);
         var multihash2 = Multihashes.hash(emptyByteSource, Multihash.Type.sha2_512);
@@ -40,7 +40,7 @@ public class MultihashesTest {
     }
 
     @Test
-    public void hashWrap() throws IOException {
+    void hashWrap() throws IOException {
         var hello1 = ByteSource.wrap("hello, world".getBytes());
         var multihash1 = Multihashes.hash(hello1, Multihash.Type.sha2_512);
 

@@ -21,22 +21,23 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import dev.enola.common.context.testlib.SingletonRule;
 
-import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class SingletonTest {
+class SingletonTest {
 
     // The Singleton(s) would IRL be defined somewhere else than inside the *Test.
     static Singleton<String> HELLO_SINGLETON = new Singleton<>() {};
 
     static Singleton<Integer> THE_NUMBER = new Singleton<>() {};
-    @ClassRule public static final SingletonRule r = $(THE_NUMBER.set(43));
+    @RegisterExtension static final SingletonRule r = $(THE_NUMBER.set(43));
 
     @Test
-    public void staticSingleton() {
+    void staticSingleton() {
         HELLO_SINGLETON.set("hello, world");
         assertThat(HELLO_SINGLETON.get()).isEqualTo("hello, world");
 
@@ -47,16 +48,16 @@ public class SingletonTest {
         // Setting it again to the same value is acceptable (and a NOOP)
         HELLO_SINGLETON.set("hi");
         // But setting it to another value (without reset()) causes an IllegalStateException
-        Assert.assertThrows(IllegalStateException.class, () -> HELLO_SINGLETON.set("bye"));
+        assertThrows(IllegalStateException.class, () -> HELLO_SINGLETON.set("bye"));
     }
 
     @Test
-    public void singletonViaRule1() {
+    void singletonViaRule1() {
         assertThat(THE_NUMBER.get()).isEqualTo(43);
     }
 
     @Test
-    public void singletonViaRule2() {
+    void singletonViaRule2() {
         assertThat(THE_NUMBER.get()).isEqualTo(43);
     }
 }

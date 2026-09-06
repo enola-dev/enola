@@ -21,14 +21,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.thing.KIRI;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.stream.StreamSupport;
 
-public class RdfModelTest {
+class RdfModelTest {
 
     @Test
-    public void propertyBuilderUnchained() {
+    void propertyBuilderUnchained() {
         var builder = Property.builder();
         builder.iri("https://example.org/property1");
         builder.label("Property #1");
@@ -37,7 +37,7 @@ public class RdfModelTest {
     }
 
     @Test
-    public void propertyBuilderChainWithoutIRI() {
+    void propertyBuilderChainWithoutIRI() {
         var builder = Property.builder().label("Property #1");
         builder.iri("https://example.org/property1");
         Property property1 = builder.build();
@@ -45,14 +45,14 @@ public class RdfModelTest {
     }
 
     @Test
-    public void propertyBuilderChainLastIRI() {
+    void propertyBuilderChainLastIRI() {
         var builder = Property.builder().label("Property #1").iri("https://example.org/property1");
         Property property1 = builder.build();
         check(property1);
     }
 
     @Test
-    public void propertyBuilderChainFirstIRI() {
+    void propertyBuilderChainFirstIRI() {
         var builder = Property.builder().iri("https://example.org/property1").label("Property #1");
         Property property1 = builder.build();
         check(property1);
@@ -69,7 +69,7 @@ public class RdfModelTest {
     }
 
     @Test
-    public void copyProperty() {
+    void copyProperty() {
         Property property1 =
                 Property.builder()
                         .iri("https://example.org/property1")

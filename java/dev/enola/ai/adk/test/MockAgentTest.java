@@ -17,12 +17,12 @@
  */
 package dev.enola.ai.adk.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MockAgentTest {
+class MockAgentTest {
 
     @Test
-    public void mock() {
+    void mock() {
         var agent = new MockAgent("bar");
         new AgentTester(agent).assertTextResponseEquals("foo", "bar");
         // TODO assertThat(agent).prompt("foo").responseContains("bar");

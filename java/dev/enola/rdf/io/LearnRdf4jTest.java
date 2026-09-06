@@ -19,24 +19,18 @@ package dev.enola.rdf.io;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.eclipse.rdf4j.model.BNode;
 import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Model;
 import org.eclipse.rdf4j.model.Namespace;
-import org.eclipse.rdf4j.model.impl.TreeModel;
-import org.eclipse.rdf4j.model.util.ModelBuilder;
 import org.eclipse.rdf4j.model.util.Values;
-import org.eclipse.rdf4j.model.vocabulary.FOAF;
-import org.eclipse.rdf4j.model.vocabulary.LOCN;
-import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.query.QueryResults;
 import org.eclipse.rdf4j.repository.Repository;
 import org.eclipse.rdf4j.repository.sail.SailRepository;
 import org.eclipse.rdf4j.repository.util.Repositories;
 import org.eclipse.rdf4j.sail.memory.MemoryStore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LearnRdf4jTest {
+class LearnRdf4jTest {
 
     // TODO Ontology to define what's "valid" for http://www.w3.org/ns/locn#location?
 
@@ -48,88 +42,30 @@ public class LearnRdf4jTest {
     IRI artist = Values.iri(ex, "Artist");
 
     Model picasso1() {
-        // Create IRIs for the resources we want to add.
-        IRI picasso = Values.iri(ex, "Picasso");
-
-        // Create a new, empty Model object.
-        Model model = new TreeModel();
-
-        // Add our first statement: Picasso is an Artist
-        model.add(picasso, RDF.TYPE, artist);
-
-        // Second statement: Picasso's first name is "Pablo".
-        model.add(picasso, FOAF.FIRST_NAME, Values.literal("Pablo"));
-
-        // Terzo
-        model.add(picasso, LOCN.LOCATION, Values.literal("Spain", "en"));
-        // TODO model.add(picasso1, LOCN.LOCATION, Values.literal("España", "es"));
-
-        BNode address = Values.bnode("b0");
-        model.add(picasso, Values.iri(ex, "homeAddress"), address);
-        model.add(address, Values.iri(ex, "street"), Values.literal("31 Art Gallery"));
-        model.add(address, Values.iri(ex, "city"), Values.literal("Barcelona"));
-
-        return model;
+        return LearnRdf4jHelper.picasso1();
     }
 
     Model dali1() {
-        Model model = new TreeModel();
-        IRI dali = Values.iri(ex, "Dalí");
-        model.add(dali, RDF.TYPE, artist);
-        // The spanish really do make sure that their names are UUIDs... ;-)
-        model.add(dali, FOAF.FIRST_NAME, Values.literal("Salvador"));
-        model.add(dali, FOAF.FIRST_NAME, Values.literal("Domingo"));
-        model.add(dali, FOAF.FIRST_NAME, Values.literal("Felipe"));
-        model.add(dali, FOAF.FIRST_NAME, Values.literal("Jacinto"));
-        model.add(
-                dali,
-                Values.iri("https://schema.org/birthDate"),
-                Values.literal("1904-05-11", Values.iri("https://schema.org/Date")));
-        return model;
+        return LearnRdf4jHelper.dali1();
     }
 
     Model picassoAndDali1() {
-        var model = picasso1();
-        model.addAll(dali1());
-        return model;
+        return LearnRdf4jHelper.picassoAndDali1();
     }
 
     Model picassoAndDali2() {
-        BNode address = Values.bnode("b0");
-        return new ModelBuilder()
-                .setNamespace("ex", "http://example.enola.dev/")
-                .setNamespace(FOAF.NS)
-                .subject("ex:Picasso")
-                .add(RDF.TYPE, "ex:Artist")
-                .add(FOAF.FIRST_NAME, "Pablo")
-                .add(LOCN.LOCATION, Values.literal("Spain", "en"))
-                // TODO .add(LOCN.LOCATION, Values.literal("España", "es"))
-                .add("ex:homeAddress", address) // link the blank node
-                .subject(address) // switch the subject
-                .add("ex:street", "31 Art Gallery")
-                .add("ex:city", "Barcelona")
-                .subject("ex:Dalí")
-                .add(RDF.TYPE, "ex:Artist")
-                // The spanish really do make sure that their names are UUIDs... ;-)
-                .add(FOAF.FIRST_NAME, "Salvador")
-                .add(FOAF.FIRST_NAME, "Domingo")
-                .add(FOAF.FIRST_NAME, "Felipe")
-                .add(FOAF.FIRST_NAME, "Jacinto")
-                .add(
-                        "https://schema.org/birthDate",
-                        Values.literal("1904-05-11", Values.iri("https://schema.org/Date")))
-                .build();
+        return LearnRdf4jHelper.picassoAndDali2();
     }
 
     @Test
-    public void testRDF() {
+    void testRDF() {
         var picassoAndDali1 = picassoAndDali1();
         var picassoAndDali2 = picassoAndDali2();
         assertThat(picassoAndDali1).isEqualTo(picassoAndDali2);
     }
 
     @Test
-    public void testRepository() {
+    void testRepository() {
         Repository repo = new SailRepository(new MemoryStore());
         var vf = repo.getValueFactory();
 

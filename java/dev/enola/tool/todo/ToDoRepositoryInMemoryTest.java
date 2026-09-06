@@ -19,21 +19,21 @@ package dev.enola.tool.todo;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 
-public class ToDoRepositoryInMemoryTest {
+class ToDoRepositoryInMemoryTest {
 
     @Test
-    public void basics() {
+    void basics() {
         var repo = new ToDoRepositoryInMemory();
 
         var todo1 =
@@ -64,7 +64,7 @@ public class ToDoRepositoryInMemoryTest {
     }
 
     @Test
-    public void timestamps() {
+    void timestamps() {
         var repo = new ToDoRepositoryInMemory();
         var todo = ToDo.builder().title("Test").build();
 

@@ -35,8 +35,8 @@ import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
@@ -46,14 +46,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 
-public class FileThingConverterTest {
+class FileThingConverterTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     private final ResourceProvider rp = new ClasspathResource.Provider();
 
     @Test
-    public void jimFS() throws IOException {
+    void jimFS() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             var root = fs.getPath("/root");
             check(root);
@@ -61,13 +61,13 @@ public class FileThingConverterTest {
     }
 
     @Test
-    public void realTemp() throws IOException {
+    void realTemp() throws IOException {
         var root = Files.createTempDirectory("FileThingConverterTest");
         check(root);
     }
 
     @Test // classpath:
-    public void skipClasspath() throws IOException {
+    void skipClasspath() throws IOException {
         var resource = rp.getResource(URI.create("classpath:/test.png"));
         var converter = new FileThingConverter();
         var store = new ThingMemoryRepositoryROBuilder();
@@ -76,7 +76,7 @@ public class FileThingConverterTest {
     }
 
     @Test // jar:file:
-    public void skipJarFile() throws IOException {
+    void skipJarFile() throws IOException {
         var converter = new FileThingConverter();
         var store = new ThingMemoryRepositoryROBuilder();
         assertThat(converter.convertInto(new ClasspathResource("test.png").uri(), store)).isFalse();

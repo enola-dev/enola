@@ -19,15 +19,15 @@ package dev.enola.common.io.iri;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class URLTest {
+class URLTest {
 
     record TestURL(
             boolean validIRI,
@@ -64,11 +64,11 @@ public class URLTest {
     // TODO Test normalizing [0:0:0:0:0:0:0:1] to [::1]
 
     @Test
-    public void empty() {} // TODO Remove once @Test iri() is no longer @Ignore
+    void empty() {} // TODO Remove once @Test iri() is no longer @Disabled
 
     @Test
-    @Ignore // TODO
-    public void iri() throws URISyntaxException, URL.ValidationException {
+    @Disabled // TODO
+    void iri() throws URISyntaxException, URL.ValidationException {
         for (var test : tests) {
             var iri = URL.parseUnencoded(test.text);
             check2(iri, test);

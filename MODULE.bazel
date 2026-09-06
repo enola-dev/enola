@@ -40,6 +40,9 @@ bazel_dep(name = "rules_jvm_external", version = "7.1")
 # https://github.com/bazel-contrib/rules_jvm_external/issues/1426
 bazel_dep(name = "bazel_skylib", version = "1.9.2")
 
+# https://registry.bazel.build/modules/contrib_rules_jvm
+bazel_dep(name = "contrib_rules_jvm", version = "0.34.0")
+
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "maven",
@@ -50,7 +53,11 @@ maven.install(
         "org.apache.commons:commons-lang3:3.20.0",
         "com.google.code.findbugs:jsr305:3.0.2",
         "com.google.code.gson:gson:2.13.2",
-        "junit:junit:4.13.2",
+        "org.junit.jupiter:junit-jupiter-api",
+        "org.junit.jupiter:junit-jupiter-params",
+        "org.junit.jupiter:junit-jupiter-engine",
+        "org.junit.platform:junit-platform-launcher",
+        "org.junit.platform:junit-platform-reporting",
         "com.google.api.grpc:grpc-google-cloud-pubsub-v1:1.123.2",
         "com.google.api.grpc:proto-google-cloud-pubsub-v1:1.123.2",
         "com.google.auto.value:auto-value:1.11.1",
@@ -143,6 +150,7 @@ maven.install(
         "dev.langchain4j:langchain4j-bom:1.10.0",
         "io.modelcontextprotocol.sdk:mcp-bom:0.15.0",
         "org.slf4j:slf4j-bom:2.0.17",
+        "org.junit:junit-bom:5.11.4",
         "com.google.protobuf:protobuf-bom:4.32.1",
         "com.squareup.okhttp3:okhttp-bom:4.12.0",
     ],

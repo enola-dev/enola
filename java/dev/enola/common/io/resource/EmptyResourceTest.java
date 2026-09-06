@@ -24,18 +24,18 @@ import com.google.common.net.MediaType;
 import dev.enola.common.io.iri.URIs;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class EmptyResourceTest {
+class EmptyResourceTest {
 
-    // public @Rule SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
+    // @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType()));
 
     @Test
-    public void testEmptyResource() throws IOException {
+    void testEmptyResource() throws IOException {
         var r = new EmptyResource(YamlMediaType.YAML_UTF_8);
         assertThat(r.byteSource().isEmpty()).isTrue();
         assertThat(r.charSource().isEmpty()).isTrue();
@@ -45,7 +45,7 @@ public class EmptyResourceTest {
     }
 
     @Test
-    public void testEmptyResourceURL() throws IOException {
+    void testEmptyResourceURL() throws IOException {
         var r = new EmptyResource.Provider().getResource(EmptyResource.EMPTY_URI);
         assertThat(r.byteSource().isEmpty()).isTrue();
         assertThat(r.charSource().isEmpty()).isTrue();
@@ -55,7 +55,7 @@ public class EmptyResourceTest {
     }
 
     @Test
-    public void testEmptyUtf8TextResourceURL() throws IOException {
+    void testEmptyUtf8TextResourceURL() throws IOException {
         var r = new EmptyResource.Provider().getResource(EmptyResource.EMPTY_TEXT_URI);
         assertThat(r.byteSource().isEmpty()).isTrue();
         assertThat(r.charSource().isEmpty()).isTrue();

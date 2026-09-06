@@ -22,11 +22,17 @@ import com.google.common.collect.ImmutableMap;
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class TestTLCRule implements TestRule {
+public class TestTLCRule
+        implements BeforeEachCallback, AfterEachCallback, BeforeAllCallback, AfterAllCallback {
+
+    private static final ExtensionContext.Namespace NAMESPACE =
+            ExtensionContext.Namespace.create(TestTLCRule.class);
 
     // TODO Use https://github.com/google/guava/wiki/NewCollectionTypesExplained#classtoinstancemap
 
@@ -53,33 +59,51 @@ public class TestTLCRule implements TestRule {
     }
 
     @Override
-    public final Statement apply(Statement base, Description description) {
-        return statement(base);
+    public void beforeEach(ExtensionContext context) {
+        start(context);
+    }
+
+    @Override
+    public void afterEach(ExtensionContext context) {
+        end(context);
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) {
+        start(context);
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) {
+        end(context);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Statement statement(Statement base) {
-        return new Statement() {
-            @Override
-            public void evaluate() throws Throwable {
-                before();
-                try (var ctx = TLC.open()) {
-                    for (var push : pushedClasses.entrySet()) {
-                        Class<T> clazz = (Class<T>) push.getKey();
-                        T instance = (T) push.getValue();
-                        ctx.push(clazz, instance);
-                    }
-                    for (var push : pushedKeys.entrySet()) {
-                        Context.Key<T> key = (Context.Key<T>) push.getKey();
-                        T instance = (T) push.getValue();
-                        ctx.push(key, instance);
-                    }
-                    base.evaluate();
-                } finally {
-                    after();
-                }
+    private <T> void start(ExtensionContext context) {
+        before();
+        var ctx = TLC.open();
+        for (var push : pushedClasses.entrySet()) {
+            Class<T> clazz = (Class<T>) push.getKey();
+            T instance = (T) push.getValue();
+            ctx.push(clazz, instance);
+        }
+        for (var push : pushedKeys.entrySet()) {
+            Context.Key<T> key = (Context.Key<T>) push.getKey();
+            T instance = (T) push.getValue();
+            ctx.push(key, instance);
+        }
+        context.getStore(NAMESPACE).put(context.getUniqueId(), ctx);
+    }
+
+    private void end(ExtensionContext context) {
+        try {
+            var ctx = (Context) context.getStore(NAMESPACE).remove(context.getUniqueId());
+            if (ctx != null) {
+                ctx.close();
             }
-        };
+        } finally {
+            after();
+        }
     }
 
     protected void before() {}

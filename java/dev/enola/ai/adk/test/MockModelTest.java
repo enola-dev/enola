@@ -17,12 +17,12 @@
  */
 package dev.enola.ai.adk.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class MockModelTest {
+class MockModelTest {
 
     @Test
-    public void mock() {
+    void mock() {
         var model = new MockModel("bar");
         var modelTester = new ModelTester(model);
 

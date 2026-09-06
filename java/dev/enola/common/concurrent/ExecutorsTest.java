@@ -22,19 +22,19 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.context.Context;
 import dev.enola.common.context.TLC;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ExecutorsTest {
+class ExecutorsTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecutorsTest.class);
 
     @Test
-    public void tlc() throws ExecutionException, InterruptedException {
+    void tlc() throws ExecutionException, InterruptedException {
         try (var executor = Executors.newListeningSingleThreadExecutor("ExecutorsTest", LOG)) {
             try (var ctx = TLC.open()) {
                 ctx.push(TestCtxKey.MAGIC, 123);

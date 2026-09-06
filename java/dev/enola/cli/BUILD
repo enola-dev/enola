@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_library", "java_test")
+load("@contrib_rules_jvm//java:defs.bzl", "java_junit5_test")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
@@ -149,7 +150,7 @@ junit_tests(
     ],
 )
 
-java_test(
+java_junit5_test(
     name = "EnolaLoggingTest",
     srcs = [
         "EnolaLoggingTest.java",
@@ -173,6 +174,9 @@ java_test(
         "//java/dev/enola/thing:thing_java",
         "@maven//:com_google_truth_truth",
         "@maven//:info_picocli_picocli",
-        "@maven//:junit_junit",
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
+        "@maven//:org_junit_jupiter_junit_jupiter_engine",
+        "@maven//:org_junit_platform_junit_platform_launcher",
+        "@maven//:org_junit_platform_junit_platform_reporting",
     ],
 )

@@ -24,12 +24,12 @@ import static dev.enola.common.io.mediatype.YamlMediaType.YAML_UTF_8;
 import static dev.enola.common.io.resource.MarkdownResource.FRONT;
 import static dev.enola.common.io.resource.MarkdownResource.MARKDOWN;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class MarkdownResourceTest {
+class MarkdownResourceTest {
 
     String COMMENT =
             """
@@ -59,7 +59,7 @@ public class MarkdownResourceTest {
             """;
 
     @Test
-    public void commentFrontmatterMarkdown() throws IOException {
+    void commentFrontmatterMarkdown() throws IOException {
         var r = new MarkdownResource(StringResource.of(COMMENT + FRONTMATTER + MD, MARKDOWN_UTF_8));
         var f = r.part(FRONT);
         var b = r.part(MARKDOWN);
@@ -82,7 +82,7 @@ public class MarkdownResourceTest {
     }
 
     @Test
-    public void frontmatterAndMarkdownButNoComment() throws IOException {
+    void frontmatterAndMarkdownButNoComment() throws IOException {
         var r = new MarkdownResource(StringResource.of(FRONTMATTER + MD, MARKDOWN_UTF_8));
         var f = r.part(FRONT);
         var b = r.part(MARKDOWN);
@@ -92,7 +92,7 @@ public class MarkdownResourceTest {
     }
 
     @Test
-    public void onlyMarkdown() throws IOException {
+    void onlyMarkdown() throws IOException {
         var r = new MarkdownResource(StringResource.of(MD, MARKDOWN_UTF_8));
         assertThat(r.part(MARKDOWN).charSource().read())
                 .isEqualTo("# Thaw Blough!\n\n**It rocks...**\n");
@@ -100,14 +100,14 @@ public class MarkdownResourceTest {
     }
 
     @Test
-    public void onlyFrontmatter() throws IOException {
+    void onlyFrontmatter() throws IOException {
         var r = new MarkdownResource(StringResource.of(FRONTMATTER, MARKDOWN_UTF_8));
         assertThat(r.part(MARKDOWN).charSource().read()).isEmpty();
         assertThat(r.part(FRONT).charSource().read()).isEqualTo("title: First Blog post!\n");
     }
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var r = new MarkdownResource(new EmptyResource(MARKDOWN_UTF_8));
         assertThat(r.part(MARKDOWN).charSource().read()).isEmpty();
         assertThat(r.part(FRONT).charSource().read()).isEmpty();

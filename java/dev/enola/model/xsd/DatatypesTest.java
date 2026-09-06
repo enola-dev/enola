@@ -23,17 +23,19 @@ import dev.enola.common.convert.ConversionException;
 import dev.enola.datatype.Datatype;
 import dev.enola.datatype.ImmutableDatatype;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-public class DatatypesTest {
+class DatatypesTest {
 
-    public @Test void testImplementationWithOnlyIRI() throws ConversionException {
+    @Test
+    void testImplementationWithOnlyIRI() throws ConversionException {
         checkInvariants(new ImmutableDatatype<>("http://test/"));
     }
 
-    public @Test void string() throws ConversionException {
+    @Test
+    void string() throws ConversionException {
         var datatype = Datatypes.STRING;
         checkInvariants(datatype);
         assertThat(datatype.pattern()).isPresent();
@@ -41,7 +43,8 @@ public class DatatypesTest {
         assertThat(datatype.stringConverter().convertFrom("hello")).isEqualTo("hello");
     }
 
-    public @Test void bool() throws ConversionException {
+    @Test
+    void bool() throws ConversionException {
         var datatype = Datatypes.BOOLEAN;
         checkInvariants(datatype);
         assertThat(datatype.pattern()).isPresent();
@@ -49,7 +52,8 @@ public class DatatypesTest {
         assertThat(datatype.stringConverter().convertFrom("TrUE")).isEqualTo(true);
     }
 
-    public @Test void iri() throws ConversionException {
+    @Test
+    void iri() throws ConversionException {
         var datatype = Datatypes.IRI;
         checkInvariants(datatype);
         assertThat(datatype.pattern()).isPresent();

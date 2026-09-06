@@ -26,18 +26,18 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.xml.XmlMediaType;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class GexfMediaTypeTest {
+class GexfMediaTypeTest {
 
     // XmlMediaType is required because this tests non-regression for a past bug
 
-    @Rule
-    public SingletonRule r = $(MediaTypeProviders.set(new GexfMediaType(), new XmlMediaType()));
+    @RegisterExtension
+    SingletonRule r = $(MediaTypeProviders.set(new GexfMediaType(), new XmlMediaType()));
 
     @Test
-    public void gexfMediaType() {
+    void gexfMediaType() {
         var r = new ClasspathResource.Provider().get("classpath:/graph.expected.gexf");
         assertThat(r.mediaType()).isEqualTo(GexfMediaType.GEXF);
     }

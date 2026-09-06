@@ -19,11 +19,11 @@ package dev.enola.common.string2long;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public abstract class AbstractStringToLongBiMapTest {
+abstract class AbstractStringToLongBiMapTest {
 
     abstract StringToLongBiMap.Builder create();
 
@@ -43,23 +43,23 @@ public abstract class AbstractStringToLongBiMapTest {
     }
 
     @Test
-    public void size() {
+    void size() {
         assertThat(fill().size()).isEqualTo(2); // NOT 3!
     }
 
     @Test
-    public void symbols() {
+    void symbols() {
         assertThat(fill().symbols()).containsExactly("hello", "world").inOrder();
     }
 
     @Test
-    public void getUnknownID() {
+    void getUnknownID() {
         var e = assertThrows(IllegalArgumentException.class, () -> fill().get(2));
         assertThat(e).hasMessageThat().contains("2");
     }
 
     @Test
-    public void longOrStringConsumerOK() {
+    void longOrStringConsumerOK() {
         final boolean[] ok = new boolean[1];
         var map = fill();
         map.get(
@@ -80,7 +80,7 @@ public abstract class AbstractStringToLongBiMapTest {
     }
 
     @Test
-    public void longOrStringConsumerNOPE() {
+    void longOrStringConsumerNOPE() {
         final boolean[] ok = new boolean[1];
         var map = fill();
         map.get(

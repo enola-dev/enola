@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MarkdownMediaTypes;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
@@ -54,9 +55,8 @@ import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.TemplateThingRepository;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
@@ -66,10 +66,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class MarkdownSiteGeneratorTest {
+class MarkdownSiteGeneratorTest {
 
-    @Rule
-    public SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new RdfMediaTypes(),
@@ -78,7 +78,7 @@ public class MarkdownSiteGeneratorTest {
                             new MarkdownMediaTypes(),
                             new StandardMediaTypes()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.BASIC;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.BASIC;
 
     ThingProvider NO_THING_PROVIDER = iri -> null;
 
@@ -94,7 +94,7 @@ public class MarkdownSiteGeneratorTest {
     ResourceProvider rp = new ResourceProviders();
 
     @Test
-    public void picasso() throws Exception {
+    void picasso() throws Exception {
         var protoThings = load(new ClasspathResource("picasso.ttl"));
 
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-Picasso");
@@ -118,7 +118,7 @@ public class MarkdownSiteGeneratorTest {
     }
 
     @Test
-    public void directory() throws Exception {
+    void directory() throws Exception {
         var c = new FileThingConverter();
         var b = new ThingMemoryRepositoryROBuilder();
         c.convertIntoOrThrow(URI.create("file:/tmp/"), b);
@@ -141,7 +141,7 @@ public class MarkdownSiteGeneratorTest {
 
     @Test // ~same (as integration instead of unit test) also in
     // EnolaCLITest#docGenTemplatedGreetingN()
-    public void templatedGreetingN() throws Exception {
+    void templatedGreetingN() throws Exception {
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
         generate(dir, "example.org/greetingN.ttl");
         check(dir, "example.org/greeting.md", "greeting.md");
@@ -149,13 +149,13 @@ public class MarkdownSiteGeneratorTest {
     }
 
     @Test
-    public void templateNameClash() throws IOException {
+    void templateNameClash() throws IOException {
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-GreetingN");
         generate(dir, "template-name-clash.ttl");
     }
 
     @Test
-    public void listOfList() throws IOException {
+    void listOfList() throws IOException {
         Path dir = Files.createTempDirectory("MarkdownSiteGeneratorTest-listOfList");
         generate(dir, "list-of-list.ttl");
         check(dir, "example.org/list-of-list.md", "list-of-list.md");

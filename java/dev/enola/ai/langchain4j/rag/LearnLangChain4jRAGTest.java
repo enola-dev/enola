@@ -36,9 +36,9 @@ import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LearnLangChain4jRAGTest {
+class LearnLangChain4jRAGTest {
 
     SecretManager secretManager = new UnavailableSecretManager();
     Provider<StreamingChatModel> p = new ChatModelProviders(secretManager);
@@ -48,7 +48,7 @@ public class LearnLangChain4jRAGTest {
     }
 
     @Test
-    public void tony() {
+    void tony() {
         if (!Net.portAvailable(11434)) return;
 
         // TODO Use io.Resource framework; support Globs etc.
@@ -70,7 +70,6 @@ public class LearnLangChain4jRAGTest {
 
         // TODO var answer = new TestStreamingChatResponseHandler();
         var answer = assistant.chat("Which country is Tony from?");
-        assertThat(TokenStreams.get(answer).aiMessage().text())
-                .containsMatch("Swiss|Switzerland");
+        assertThat(TokenStreams.get(answer).aiMessage().text()).containsMatch("Swiss|Switzerland");
     }
 }

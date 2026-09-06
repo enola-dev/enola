@@ -19,15 +19,15 @@ package dev.enola.common.context;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SingletonWithTLCTest {
+class SingletonWithTLCTest {
 
     static SingletonWithTLC<String> HELLO_SINGLETON = new SingletonWithTLC<>(String.class) {};
     static SingletonWithTLC<Integer> THE_NUMBER = new SingletonWithTLC<>(Integer.class) {};
 
     @Test
-    public void staticSingleton() {
+    void staticSingleton() {
         HELLO_SINGLETON.set("hello, world");
         assertThat(HELLO_SINGLETON.get()).isEqualTo("hello, world");
 
@@ -39,7 +39,7 @@ public class SingletonWithTLCTest {
     }
 
     @Test
-    public void singletonViaTLC() {
+    void singletonViaTLC() {
         try (var ctx = TLC.open().push(Integer.class, 43)) {
             assertThat(THE_NUMBER.get()).isEqualTo(43);
         }

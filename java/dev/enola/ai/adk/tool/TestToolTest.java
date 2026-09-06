@@ -20,7 +20,7 @@ package dev.enola.ai.adk.tool;
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.google.adk.models.BaseLlm;
 
@@ -31,20 +31,20 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class TestToolTest {
+class TestToolTest {
 
     SecretManager sm = new TestSecretManager();
     Provider<BaseLlm> llm = new LlmProviders(sm);
 
     @Test
-    public void noArgumentReturnObject() throws IOException {
+    void noArgumentReturnObject() throws IOException {
         assumeTrue(
-                "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set",
-                sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent());
+                sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent(),
+                "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set");
         var model = llm.get(ModelConfig.temperature(FLASH, 0));
         var agentTester = new AgentTester(model, new TestTool().createTool());
 

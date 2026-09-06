@@ -32,16 +32,16 @@ import dev.enola.common.io.resource.StringResource;
 import dev.enola.common.io.resource.cache.ClasspathCacheResourceProvider.ClasspathLocationWithMediaType;
 
 import org.jspecify.annotations.Nullable;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-public class CachingResourceProviderTest {
+class CachingResourceProviderTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set());
 
     private final URI TEST_URI = URI.create("test:it");
 
@@ -60,7 +60,7 @@ public class CachingResourceProviderTest {
     private final TestResourceProvider trp = new TestResourceProvider();
 
     @Test
-    public void cache() throws IOException {
+    void cache() throws IOException {
         var rp = new AlwaysCachingResourceProvider(trp);
         assertThat(trp.wasCalled).isFalse();
 
@@ -75,7 +75,7 @@ public class CachingResourceProviderTest {
     }
 
     @Test
-    public void classpath() throws IOException {
+    void classpath() throws IOException {
         var uri = "http://some.where/testX"; // /test uses MediaTypesTest's application/test!
         var mt = MediaType.PLAIN_TEXT_UTF_8.withCharset(StandardCharsets.US_ASCII);
         var rp =

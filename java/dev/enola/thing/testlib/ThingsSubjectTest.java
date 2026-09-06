@@ -21,6 +21,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.rdf.io.RdfMediaTypes;
@@ -29,28 +30,26 @@ import dev.enola.thing.Link;
 import dev.enola.thing.repo.EmptyThingsRepository;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class ThingsSubjectTest {
+class ThingsSubjectTest {
 
-    @Rule
-    public final SingletonRule r =
-            $(MediaTypeProviders.set(new RdfMediaTypes(), new YamlMediaType()));
+    @RegisterExtension
+    final SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes(), new YamlMediaType()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var r = new EmptyThingsRepository();
         ThingsSubject.assertThat(r).isEqualTo("classpath:/empty.yaml");
     }
 
     @Test
-    public void greeting1ttl() throws IOException {
+    void greeting1ttl() throws IOException {
         var repo = new ThingMemoryRepositoryRW();
         var builder =
                 repo.getBuilder("https://example.org/greeting1")
@@ -60,7 +59,7 @@ public class ThingsSubjectTest {
     }
 
     @Test
-    public void greetingNttl() throws IOException {
+    void greetingNttl() throws IOException {
         var repo = new ThingMemoryRepositoryRW();
         var builder =
                 repo.getBuilder("https://example.org/greeting")

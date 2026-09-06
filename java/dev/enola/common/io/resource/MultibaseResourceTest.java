@@ -19,26 +19,30 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class MultibaseResourceTest {
+class MultibaseResourceTest {
 
     @Test
-    public void hex() throws IOException {
+    void hex() throws IOException {
         assertThat(new MultibaseResource(URI.create("multibase:f0a3f")).byteSource().read())
                 .isEqualTo(new byte[] {0x0a, 0x3f});
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void spaceIsInvalid() {
-        new DataResource(URI.create("multibase:f0 a3f"));
+    @Test
+    void spaceIsInvalid() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new DataResource(URI.create("multibase:f0 a3f")));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void empty() {
-        new MultibaseResource(URI.create(""));
+    @Test
+    void empty() {
+        assertThrows(IllegalArgumentException.class, () -> new MultibaseResource(URI.create("")));
     }
 }

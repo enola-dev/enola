@@ -21,16 +21,16 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static java.net.URI.create;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AITest {
+class AITest {
 
     @Test
-    public void replaceShortAgentNames() {
+    void replaceShortAgentNames() {
         List<URI> original = List.of(create("http://example.org/agent"), create("weather"));
         List<URI> agents = new ArrayList<>(original);
         AI.replaceShortAgentNames(agents);

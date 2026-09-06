@@ -21,6 +21,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import dev.enola.common.context.testlib.SingletonRule;
@@ -30,30 +32,32 @@ import dev.enola.common.io.resource.ResourceProvider;
 import io.ipfs.cid.Cid.CidEncodingException;
 
 import org.jspecify.annotations.Nullable;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public abstract class IPFSResourceTestAbstract {
+abstract class IPFSResourceTestAbstract {
 
     abstract @Nullable ResourceProvider getResourceProvider();
 
-    public @Rule SingletonRule r1 = $(MediaTypeProviders.set());
+    @RegisterExtension SingletonRule r1 = $(MediaTypeProviders.set());
 
     @Test
-    @Ignore // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail CI?
-    public void hello() throws IOException {
+    @Disabled // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail
+    // CI?
+    void hello() throws IOException {
         if (getResourceProvider() == null) return;
         assertThat(bytesFromIPFS("ipfs://QmXV7pL1CB7A8Tzk7jP2XE9kRyk8HZd145KDptdxzmNLfu"))
                 .isEqualTo("hello, world\n".getBytes(UTF_8));
     }
 
     @Test
-    @Ignore // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail CI?
-    public void vanGogh() throws IOException {
+    @Disabled // TODO How to increase timeout in IPFS Kubo, so that this does not frequently fail
+    // CI?
+    void vanGogh() throws IOException {
         var rp = getResourceProvider();
         if (rp == null) return;
 
@@ -71,22 +75,30 @@ public abstract class IPFSResourceTestAbstract {
         return getResourceProvider().get(url).byteSource().read();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void notIFPS() {
-        var rp = getResourceProvider();
-        if (rp == null) throw new IllegalArgumentException();
+    @Test
+    void notIFPS() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    var rp = getResourceProvider();
+                    if (rp == null) throw new IllegalArgumentException();
 
-        var url = "http://www.google.com";
-        new IPFSGatewayResource(URI.create(url), null, null);
+                    var url = "http://www.google.com";
+                    new IPFSGatewayResource(URI.create(url), null, null);
+                });
     }
 
     @SuppressWarnings("unused")
-    @Test(expected = CidEncodingException.class)
-    public void badCID() throws IOException {
-        var rp = getResourceProvider();
-        if (rp == null) throw new CidEncodingException("");
+    @Test
+    void badCID() throws IOException {
+        assertThrows(
+                CidEncodingException.class,
+                () -> {
+                    var rp = getResourceProvider();
+                    if (rp == null) throw new CidEncodingException("");
 
-        var url = "ipfs://bad";
-        var unused = getResourceProvider().get(url).byteSource().read();
+                    var url = "ipfs://bad";
+                    var unused = getResourceProvider().get(url).byteSource().read();
+                });
     }
 }

@@ -19,19 +19,19 @@ package dev.enola.ai.adk.test;
 
 import com.google.adk.agents.LlmAgent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class EchoModelTest {
+class EchoModelTest {
 
     @Test
-    public void echo1() {
+    void echo1() {
         var model = new EchoModel();
         var tester = new ModelTester(model);
         tester.assertTextResponseEquals("hello", "hello");
     }
 
     @Test
-    public void echo2() {
+    void echo2() {
         var model = new EchoModel();
         var tester = new ModelTester(model);
         tester.assertTextResponseEquals("hello", "hello");
@@ -39,7 +39,7 @@ public class EchoModelTest {
     }
 
     @Test
-    public void echo2agent() {
+    void echo2agent() {
         var model = new EchoModel();
         var agent = new LlmAgent.Builder().name("tester").model(model).build();
         var tester = new AgentTester(agent);

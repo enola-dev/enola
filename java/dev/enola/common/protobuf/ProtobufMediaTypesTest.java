@@ -27,15 +27,15 @@ import static dev.enola.common.protobuf.ProtobufMediaTypes.PROTOBUF_BINARY;
 import dev.enola.common.context.testlib.SingletonRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class ProtobufMediaTypesTest {
+class ProtobufMediaTypesTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new ProtobufMediaTypes()));
 
     @Test
-    public void testProtobufMediaTypesAlternatives() {
+    void testProtobufMediaTypesAlternatives() {
         assertThat(normalize(create("application", "vnd.google.protobuf")))
                 .isEqualTo(PROTOBUF_BINARY);
         assertThat(normalize(create("application", "x-protobuf"))).isEqualTo(PROTOBUF_BINARY);

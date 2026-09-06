@@ -45,14 +45,14 @@ import dev.enola.thing.message.ThingExt;
 import dev.enola.thing.proto.Thing;
 import dev.enola.thing.proto.Things;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class EnolaGrpcServerTest {
+class EnolaGrpcServerTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     private final ResourceProvider rp = new ResourceProviders(new ClasspathResource.Provider());
     private final EnolaServiceProvider esp = new EnolaServiceProvider(rp);
@@ -63,7 +63,7 @@ public class EnolaGrpcServerTest {
     }
 
     @Test
-    public void remoting() throws Exception {
+    void remoting() throws Exception {
         try (var enolaServer = new EnolaGrpcServer(esp, service)) {
             // similarly in dev.enola.demo.ServerTest
             enolaServer.start(0);
@@ -76,7 +76,7 @@ public class EnolaGrpcServerTest {
     }
 
     @Test
-    public void inProcess() throws Exception {
+    void inProcess() throws Exception {
         try (var enolaServer = new EnolaGrpcInProcess(esp, service, false)) {
             check(enolaServer.get());
         }

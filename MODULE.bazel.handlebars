@@ -40,6 +40,9 @@ bazel_dep(name = "rules_jvm_external", version = "7.1")
 # https://github.com/bazel-contrib/rules_jvm_external/issues/1426
 bazel_dep(name = "bazel_skylib", version = "1.9.2")
 
+# https://registry.bazel.build/modules/contrib_rules_jvm
+bazel_dep(name = "contrib_rules_jvm", version = "0.34.0")
+
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "maven",

@@ -22,13 +22,13 @@ import static com.google.common.truth.Truth.assertThat;
 import org.eclipse.rdf4j.model.base.CoreDatatype.RDF;
 import org.eclipse.rdf4j.model.vocabulary.RDFS;
 import org.eclipse.rdf4j.model.vocabulary.XSD;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Tests IRIs defined in {@link KIRI}, by comparing them against their RDF4j equivalents. */
-public class KIRITest {
+class KIRITest {
 
     @Test
-    public void XSD() {
+    void XSD() {
         assertThat(KIRI.XSD.IRI).isEqualTo(XSD.ANYURI.stringValue());
         assertThat(KIRI.XSD.STRING).isEqualTo(XSD.STRING.stringValue());
         assertThat(KIRI.XSD.BIN64).isEqualTo(XSD.BASE64BINARY.stringValue());
@@ -43,12 +43,12 @@ public class KIRITest {
     }
 
     @Test
-    public void RDF() {
+    void RDF() {
         assertThat(KIRI.RDF.HTML).isEqualTo(RDF.HTML.getIri().stringValue());
     }
 
     @Test
-    public void RDFS() {
+    void RDFS() {
         assertThat(KIRI.RDFS.CLASS).isEqualTo(RDFS.CLASS.stringValue());
         assertThat(KIRI.RDFS.LABEL).isEqualTo(RDFS.LABEL.stringValue());
     }

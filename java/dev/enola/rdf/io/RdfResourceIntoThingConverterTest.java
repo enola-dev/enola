@@ -34,15 +34,15 @@ import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.test.TestSomething;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class RdfResourceIntoThingConverterTest {
+class RdfResourceIntoThingConverterTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     DatatypeRepository datatypeRepository = new DatatypeRepositoryBuilder().build();
     ResourceProvider resourceProvider =
@@ -51,23 +51,23 @@ public class RdfResourceIntoThingConverterTest {
             new RdfResourceIntoThingConverter<>(resourceProvider, datatypeRepository);
 
     @Test
-    public void picasso() throws IOException {
+    void picasso() throws IOException {
         var thing = convert(new ClasspathResource("picasso.ttl").uri()).iterator().next();
         assertThat(thing.iri()).isEqualTo("http://example.enola.dev/Dalí");
     }
 
     @Test
-    public void emptyYAML() throws IOException {
+    void emptyYAML() throws IOException {
         assertThat(convert(new ClasspathResource("empty.yaml").uri())).isEmpty();
     }
 
     @Test
-    public void directory() throws IOException {
+    void directory() throws IOException {
         assertThat(convert(URI.create("file:/tmp/"))).isEmpty();
     }
 
     @Test // Load testSomething.ttl and ensure it's an instance of TestSomething and not just Thing
-    public void testSomething() throws IOException {
+    void testSomething() throws IOException {
         var things = convert(new ClasspathResource("testSomething.ttl").uri());
         Thing thing = things.iterator().next();
         TestSomething testSomething = (TestSomething) thing;

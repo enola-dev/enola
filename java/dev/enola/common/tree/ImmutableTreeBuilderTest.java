@@ -19,17 +19,17 @@ package dev.enola.common.tree;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.common.graph.Traverser;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("UnstableApiUsage")
-public class ImmutableTreeBuilderTest {
+class ImmutableTreeBuilderTest {
 
     @Test
-    public void root() {
+    void root() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("🌳");
         assertThat(treeBuilder.root()).isEqualTo("🌳");
         assertThat(treeBuilder.successors("🌳")).isEmpty();
@@ -55,7 +55,7 @@ public class ImmutableTreeBuilderTest {
      * </pre>
      */
     @Test
-    public void addChild() {
+    void addChild() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
         treeBuilder.addChild("A", "B").addChild("B", "C").addChild("A", "D");
         treeBuilder.addChild("A", "E").addChild("E", "F").addChild("F", "G");
@@ -75,33 +75,33 @@ public class ImmutableTreeBuilderTest {
     }
 
     @Test
-    public void cycle() {
+    void cycle() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
         treeBuilder.addChild("A", "B");
         assertThrows(IllegalStateException.class, () -> treeBuilder.addChild("B", "A"));
     }
 
     @Test
-    public void selfLink() {
+    void selfLink() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
         treeBuilder.addChild("A", "B");
         assertThrows(IllegalStateException.class, () -> treeBuilder.addChild("B", "B"));
     }
 
     @Test
-    public void noParent() {
+    void noParent() {
         var treeBuilder = new ImmutableTreeBuilder<String>().root("A");
         assertThrows(IllegalStateException.class, () -> treeBuilder.addChild("X", "B"));
     }
 
     @Test
-    public void root2() {
+    void root2() {
         var tree = new ImmutableTreeBuilder<String>().root("🌳");
         assertThrows(IllegalStateException.class, () -> tree.root("X"));
     }
 
     @Test
-    public void root0() {
+    void root0() {
         assertThrows(IllegalStateException.class, () -> new ImmutableTreeBuilder<String>().build());
     }
 }

@@ -19,12 +19,12 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ChangeTokenTest {
+class ChangeTokenTest {
 
     @Test
-    public void emptyResource() {
+    void emptyResource() {
         var resource = EmptyResource.INSTANCE;
         var changeToken = resource.changeToken();
         var changeTokenAsString = changeToken.toString();
@@ -38,7 +38,7 @@ public class ChangeTokenTest {
     }
 
     @Test
-    public void dataResource1() {
+    void dataResource1() {
         var resource = DataResource.of("hello, world");
         var changeToken = resource.changeToken();
         var changeTokenAsString = changeToken.toString();
@@ -53,7 +53,7 @@ public class ChangeTokenTest {
     }
 
     @Test
-    public void dataResource2() {
+    void dataResource2() {
         var resource1 = DataResource.of("hello, world");
         var changeToken1 = resource1.changeToken();
         var changeToken1AsString = changeToken1.toString();
@@ -67,7 +67,7 @@ public class ChangeTokenTest {
     }
 
     @Test
-    public void dataResourceBytes() {
+    void dataResourceBytes() {
         var resource1 = DataResource.of("hello, world");
         var changeToken1Bytes = resource1.changeToken().toBytes();
         assertThat(resource1.isDifferent(changeToken1Bytes)).isFalse();
@@ -77,7 +77,7 @@ public class ChangeTokenTest {
     }
 
     @Test
-    public void invalidMultibase() {
+    void invalidMultibase() {
         assertThat(EmptyResource.INSTANCE.isDifferent("invalid-multibase")).isTrue();
     }
 }

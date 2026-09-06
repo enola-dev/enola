@@ -22,20 +22,20 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.common.context.TLC;
 import dev.enola.common.context.TestContext;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class TestContextRuleTest {
+class TestContextRuleTest {
 
-    @Rule public TestContextRule rule = new TestContextRule();
+    @RegisterExtension TestContextRule rule = new TestContextRule();
 
     @Test
-    public void isUnderTest() {
+    void isUnderTest() {
         assertThat(TestContext.isUnderTest()).isTrue();
     }
 
     @Test
-    public void notUnderTest() {
+    void notUnderTest() {
         try (var ctx = TLC.open().push(TestContext.Keys.UNDER_TEST, false)) {
             assertThat(TestContext.isUnderTest()).isFalse();
         }

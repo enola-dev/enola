@@ -19,30 +19,30 @@ package dev.enola.data.id;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-public class IdConverterChainTest {
+class IdConverterChainTest {
 
     IdConverterChain chain =
             new IdConverterChain(TestID.CONVERTER, IdConverters.URI, IdConverters.STRING);
 
     @Test
-    public void testID() {
-        assertThat(chain.convert(TestIDTest.testIdString)).hasValue(TestIDTest.testId);
-        assertThat(chain.convertTo(TestIDTest.testId)).isEqualTo(TestIDTest.testIdString);
+    void testID() {
+        assertThat(chain.convert(TestID.TEST_ID_STRING)).hasValue(TestID.TEST_ID);
+        assertThat(chain.convertTo(TestID.TEST_ID)).isEqualTo(TestID.TEST_ID_STRING);
     }
 
     @Test
-    public void uri() {
+    void uri() {
         var uri = URI.create("https://docs.enola.dev/");
         assertThat(chain.convert(uri.toString())).hasValue(uri);
         assertThat(chain.convertTo(uri)).isEqualTo(uri.toString());
     }
 
     @Test
-    public void string() {
+    void string() {
         var string = "hello, world";
         assertThat(chain.convert(string)).hasValue(string);
         assertThat(chain.convertTo(string)).isEqualTo(string);

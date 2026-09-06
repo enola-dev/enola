@@ -20,7 +20,7 @@ package dev.enola.tool.todo.adk;
 import static dev.enola.ai.iri.GoogleModelProvider.FLASH;
 import static dev.enola.ai.iri.GoogleModelProvider.GOOGLE_AI_API_KEY_SECRET_NAME;
 
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.google.adk.models.BaseLlm;
 import com.google.adk.tools.BaseTool;
@@ -34,23 +34,23 @@ import dev.enola.common.secret.auto.TestSecretManager;
 import dev.enola.tool.todo.ToDoRepository;
 import dev.enola.tool.todo.ToDoRepositoryInMemory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class ToDoToolTest {
+class ToDoToolTest {
 
     AgentTester agentTester;
 
-    @Before
-    public void setup() throws IOException {
+    @BeforeEach
+    void setup() throws IOException {
         // TODO Move this into a re-usable test harness utility class?
         SecretManager sm = new TestSecretManager();
         assumeTrue(
-                "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set",
-                sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent());
+                sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent(),
+                "Skipping test, GOOGLE_AI_API_KEY_SECRET_NAME is not set");
 
         Provider<BaseLlm> llm = new LlmProviders(sm);
 
@@ -62,7 +62,7 @@ public class ToDoToolTest {
     }
 
     @Test
-    public void noToDos() throws IOException {
+    void noToDos() throws IOException {
         agentTester.assertTextResponseContainsAny(
                 "List all of my ToDo Task items.",
                 "I don't have any ToDo items",
@@ -70,7 +70,7 @@ public class ToDoToolTest {
     }
 
     @Test
-    public void createAndList() throws IOException {
+    void createAndList() throws IOException {
         agentTester.assertTextResponseContainsAll(
                 "Add a new ToDo Task item to remind me to add task completion to Enola",
                 "OK. I've added",

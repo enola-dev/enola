@@ -24,29 +24,29 @@ import dev.enola.common.io.object.ObjectReader;
 import dev.enola.common.io.object.jackson.YamlObjectReaderWriter;
 import dev.enola.common.io.resource.DataResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class TemplatedObjectReaderTest {
+class TemplatedObjectReaderTest {
 
     ObjectReader reader = new TemplatedObjectReader(new YamlObjectReaderWriter());
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var map = reader.read(DataResource.of("", YamlMediaType.YAML_UTF_8), Map.class);
         assertThat(map).isEmpty();
     }
 
     @Test
-    public void justPassThroughAsNoTemplatingNeeded() throws IOException {
+    void justPassThroughAsNoTemplatingNeeded() throws IOException {
         var map = reader.read(DataResource.of("hello: world", YamlMediaType.YAML_UTF_8), Map.class);
         assertThat(map).containsExactlyEntriesIn(Map.of("hello", "world"));
     }
 
     @Test
-    public void selfReferential() throws IOException {
+    void selfReferential() throws IOException {
         // NOT var template = "world: Enola\nhello: {{world}}";
         var template = "world: Enola\nhello: \"{{world}}\"";
         var resource = DataResource.of(template, YamlMediaType.YAML_UTF_8);

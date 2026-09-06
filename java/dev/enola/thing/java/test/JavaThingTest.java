@@ -27,30 +27,30 @@ import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.java.TBFChain;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Proxy;
 import java.time.Instant;
 
-public class JavaThingTest {
+class JavaThingTest {
 
     @Test
-    public void mutableProxyTBF() {
+    void mutableProxyTBF() {
         checkTBF(new ProxyTBF(MutableThing.FACTORY));
     }
 
     @Test
-    public void immutableProxyTBF() {
+    void immutableProxyTBF() {
         checkTBF(new ProxyTBF(ImmutableThing.FACTORY));
     }
 
     @Test
-    public void testSomethingTBF() {
+    void testSomethingTBF() {
         checkTBF(new TestSomethingTBF());
     }
 
     @Test
-    public void testSomethingBuilder() {
+    void testSomethingBuilder() {
         // TestSomething.builder() === new TestSomethingTBF(), as above
         var builder = TestSomething.builder();
         builder.iri("https://example.org/thing");
@@ -58,12 +58,12 @@ public class JavaThingTest {
     }
 
     @Test
-    public void chainTBF1() {
+    void chainTBF1() {
         checkTBF(new TBFChain(ImmutableList.of(new TestSomethingTBF())));
     }
 
     @Test
-    public void chainTBF2() {
+    void chainTBF2() {
         var tbf =
                 new TBFChain(
                         ImmutableList.of(

@@ -19,15 +19,15 @@ package dev.enola.common.io.resource;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class TeapotResourceTest {
+class TeapotResourceTest {
 
     @Test
-    public void read() throws IOException {
+    void read() throws IOException {
         check("coffee:/");
         check("kafo://demo.enola.dev/pot-7?#syrup-type=Vanilla");
         check("Kaffee://demo.dév.dev/pot-7?#syrup-type=Vanilla");
@@ -40,7 +40,7 @@ public class TeapotResourceTest {
     }
 
     @Test
-    public void write() throws IOException {
+    void write() throws IOException {
         var pot = new TeapotResource.Provider();
         pot.getResource(URI.create("coffee:/")).charSink().write("ignore");
     }

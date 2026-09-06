@@ -19,14 +19,15 @@ package dev.enola.common.exec.pty;
 
 import static com.google.common.truth.Truth.*;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import com.github.valfirst.slf4jtest.TestLogger;
 import com.github.valfirst.slf4jtest.TestLoggerFactory;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
 
 import java.io.*;
@@ -35,7 +36,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 
-public class PtyRunnerTest {
+class PtyRunnerTest {
 
     // TODO Adapt this to use Exec with PtyProcessLauncher instead of PtyRunner
 
@@ -46,8 +47,8 @@ public class PtyRunnerTest {
     TestLogger ptyRunnerLogger = TestLoggerFactory.getTestLogger(PtyRunner.class);
     TestLogger streamPumperLogger = TestLoggerFactory.getTestLogger(StreamPumper.class);
 
-    @Rule
-    public TestRule resetLoggingEvents =
+    @RegisterExtension
+    TestLoggerRule resetLoggingEvents =
             new TestLoggerRule(Level.TRACE, Level.TRACE, ptyRunnerLogger, streamPumperLogger);
 
     Map<String, String> env = Collections.emptyMap();
@@ -64,7 +65,7 @@ public class PtyRunnerTest {
     }
 
     @Test
-    public void echo() throws IOException {
+    void echo() throws IOException {
         try (var r = run(new String[] {"echo", "hello,", "world"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
@@ -73,7 +74,7 @@ public class PtyRunnerTest {
     }
 
     @Test
-    public void cat() throws IOException {
+    void cat() throws IOException {
         var in = new ByteArrayInputStream("hello, world\r\n".getBytes(US_ASCII));
         try (var r = run(new String[] {"cat"}, in)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
@@ -84,7 +85,7 @@ public class PtyRunnerTest {
     }
 
     @Test
-    public void head() throws IOException {
+    void head() throws IOException {
         var in = new ByteArrayInputStream("line 1\nline 2\nline 3\n".getBytes(US_ASCII));
         // NB: The "head -n 1" command reads only the first line, ignored lines 2 & 3, and exits.
         try (var r = run(new String[] {"head", "-n", "1"}, in)) {
@@ -98,7 +99,7 @@ public class PtyRunnerTest {
     }
 
     @Test
-    public void tty() throws IOException {
+    void tty() throws IOException {
         try (var r = run(new String[] {"tty"}, noInput)) {
             assertThat(r.waitFor(Duration.ofSeconds(7))).isEqualTo(0);
         }
@@ -107,7 +108,7 @@ public class PtyRunnerTest {
     }
 
     @Test
-    public void teeTty() throws IOException {
+    void teeTty() throws IOException {
         Appendable appendable = new StringBuilder();
         try (var aos = new AppendableOutputStream(appendable, US_ASCII)) {
             // TODO Test System.out with SystemStdinStdoutTester ?
@@ -121,8 +122,12 @@ public class PtyRunnerTest {
         assertThat(appendable.toString()).startsWith("/dev/pts/");
     }
 
-    @Test(expected = IOException.class)
-    public void failNotFound() throws IOException {
-        try (var r = run(new String[] {"does-not-exist"}, noInput)) {}
+    @Test
+    void failNotFound() {
+        assertThrows(
+                IOException.class,
+                () -> {
+                    try (var r = run(new String[] {"does-not-exist"}, noInput)) {}
+                });
     }
 }

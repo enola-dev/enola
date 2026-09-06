@@ -19,21 +19,22 @@ package dev.enola.common.exec.pty;
 
 import com.github.valfirst.slf4jtest.TestLogger;
 import com.github.valfirst.slf4jtest.TestLoggerFactory;
-import com.github.valfirst.slf4jtest.TestLoggerFactoryResetRule;
 
-import junit.framework.AssertionFailedError;
-
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.opentest4j.AssertionFailedError;
 import org.slf4j.event.Level;
 
-public class TestLoggerRule extends TestLoggerFactoryResetRule {
+public class TestLoggerRule implements BeforeEachCallback, AfterEachCallback {
 
     // TODO Upstream this? See https://github.com/valfirst/slf4j-test/issues/580.
 
     private final Level captureLevel;
     private final Level printLevel;
     private final TestLogger[] testLoggers;
+    private Level originalCaptureLevel;
+    private Level originalPrintLevel;
 
     public TestLoggerRule(Level captureLevel, Level printLevel, TestLogger... testLoggers) {
         this.captureLevel = captureLevel;
@@ -42,38 +43,25 @@ public class TestLoggerRule extends TestLoggerFactoryResetRule {
     }
 
     @Override
-    public Statement apply(final Statement base, final Description description) {
-        return new TestLoggerRuleStatement(base);
+    public void beforeEach(ExtensionContext context) {
+        var testLoggerFactory = TestLoggerFactory.getInstance();
+        originalCaptureLevel = testLoggerFactory.getCaptureLevel();
+        originalPrintLevel = testLoggerFactory.getPrintLevel();
+        testLoggerFactory.setCaptureLevel(captureLevel);
+        testLoggerFactory.setPrintLevel(printLevel);
+        TestLoggerFactory.clear();
     }
 
-    private class TestLoggerRuleStatement extends Statement {
-        private final Statement base;
+    @Override
+    public void afterEach(ExtensionContext context) {
+        var testLoggerFactory = TestLoggerFactory.getInstance();
+        TestLoggerFactory.clear();
+        if (originalCaptureLevel != null) testLoggerFactory.setCaptureLevel(originalCaptureLevel);
+        if (originalPrintLevel != null) testLoggerFactory.setPrintLevel(originalPrintLevel);
 
-        public TestLoggerRuleStatement(Statement base) {
-            super();
-            this.base = base;
-        }
-
-        @Override
-        public void evaluate() throws Throwable {
-            var testLoggerFactory = TestLoggerFactory.getInstance();
-            var originalCaptureLevel = testLoggerFactory.getCaptureLevel();
-            var originalPrintLevel = testLoggerFactory.getPrintLevel();
-            testLoggerFactory.setCaptureLevel(TestLoggerRule.this.captureLevel);
-            testLoggerFactory.setPrintLevel(TestLoggerRule.this.printLevel);
-            TestLoggerFactory.clear();
-            try {
-                base.evaluate();
-            } finally {
-                TestLoggerFactory.clear();
-                testLoggerFactory.setCaptureLevel(originalCaptureLevel);
-                testLoggerFactory.setPrintLevel(originalPrintLevel);
-
-                for (var testLogger : TestLoggerRule.this.testLoggers) {
-                    var logs = testLogger.getAllLoggingEvents();
-                    if (!logs.isEmpty()) throw new AssertionFailedError(logs.toString());
-                }
-            }
+        for (var testLogger : testLoggers) {
+            var logs = testLogger.getAllLoggingEvents();
+            if (!logs.isEmpty()) throw new AssertionFailedError(logs.toString());
         }
     }
 }

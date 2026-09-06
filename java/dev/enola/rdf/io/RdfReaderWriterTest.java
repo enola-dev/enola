@@ -32,19 +32,19 @@ import dev.enola.common.io.mediatype.YamlMediaType;
 import dev.enola.common.io.resource.*;
 
 import org.eclipse.rdf4j.model.Model;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class RdfReaderWriterTest {
+class RdfReaderWriterTest {
 
-    public static final @ClassRule SingletonRule r =
+    public static final @RegisterExtension SingletonRule r =
             $(
                     MediaTypeProviders.set(
                             new RdfMediaTypes(), new RdfMediaTypeYamlLd(), new YamlMediaType()));
 
-    private static final Model PICASSO_MODEL = new LearnRdf4jTest().picassoAndDali2();
+    private static final Model PICASSO_MODEL = LearnRdf4jHelper.picassoAndDali2();
 
     private static final ResourceProvider rp = new ClasspathResource.Provider();
 
@@ -65,7 +65,7 @@ public class RdfReaderWriterTest {
 
     @Test
     // 🎨 as 🐢 https://www.w3.org/TR/turtle
-    public void writeTurtle() throws ConversionException, IOException {
+    void writeTurtle() throws ConversionException, IOException {
         Resource actual =
                 new MemoryResource(PICASSO_TURTLE_WRITTEN_RESOURCE.uri(), RdfMediaTypes.TURTLE);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
@@ -75,14 +75,14 @@ public class RdfReaderWriterTest {
     }
 
     @Test
-    public void readTurtle() throws ConversionException {
+    void readTurtle() throws ConversionException {
         var model = new RdfReaderConverter(rp).convert(PICASSO_TURTLE_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
     // 🎨 as https://json-ld.org
-    public void writeJsonLD() throws ConversionException, IOException {
+    void writeJsonLD() throws ConversionException, IOException {
         var actual = new MemoryResource(RdfMediaTypes.JSON_LD);
         new RdfWriterConverter().convertInto(PICASSO_MODEL, actual);
 
@@ -91,20 +91,20 @@ public class RdfReaderWriterTest {
     }
 
     @Test
-    public void readJsonLD() throws ConversionException {
+    void readJsonLD() throws ConversionException {
         var model = new RdfReaderConverter(rp).convert(PICASSO_JSONLD_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
-    public void readJsonWithContext() throws ConversionException {
+    void readJsonWithContext() throws ConversionException {
         assertThat(PICASSO_JSON_RESOURCE.uri().getQuery()).isNotEmpty();
         var model = new RdfReaderConverter(rp).convert(PICASSO_JSON_RESOURCE).get();
         assertThat(model).isEqualTo(PICASSO_MODEL);
     }
 
     @Test
-    public void readYamlWithContext() throws ConversionException {
+    void readYamlWithContext() throws ConversionException {
         var mediaType = PICASSO_YAML_RESOURCE.mediaType();
         assertThat(mediaType).isEqualTo(YamlMediaType.YAML_UTF_8);
         var model = new RdfReaderConverter(rp).convert(PICASSO_YAML_RESOURCE).get();
@@ -112,7 +112,7 @@ public class RdfReaderWriterTest {
     }
 
     @Test
-    public void readYamlLD() throws ConversionException {
+    void readYamlLD() throws ConversionException {
         var mediaType = PICASSO_YAMLLD_RESOURCE.mediaType();
         assertThat(mediaType).isEqualTo(RdfMediaTypeYamlLd.YAML_LD);
         assertThat(MediaTypes.normalizedNoParamsEquals(mediaType, YAML_LD)).isTrue();

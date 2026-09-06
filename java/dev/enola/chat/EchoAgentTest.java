@@ -23,20 +23,21 @@ import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class EchoAgentTest {
+class EchoAgentTest {
 
-    @Rule public TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
+    @RegisterExtension
+    TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
 
     TestSwitchboard pbx;
     Agent agent;
     Room testRoom;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         pbx = new TestSwitchboard();
         agent = new EchoAgent(pbx);
         testRoom = new Room("test");
@@ -44,7 +45,7 @@ public class EchoAgentTest {
     }
 
     @Test
-    public void echo() {
+    void echo() {
         pbx.post(new MessageImpl.Builder().content("@echo Hello").to(testRoom));
         assertThat(pbx.messages).hasSize(2);
         var echo = pbx.messages().get(1);
@@ -53,13 +54,13 @@ public class EchoAgentTest {
     }
 
     @Test
-    public void echoWithoutText1() {
+    void echoWithoutText1() {
         pbx.post(new MessageImpl.Builder().content("@echo ").to(testRoom));
         assertThat(pbx.messages).hasSize(1);
     }
 
     @Test
-    public void echoWithoutText2() {
+    void echoWithoutText2() {
         pbx.post(new MessageImpl.Builder().content("@echo").to(testRoom));
         assertThat(pbx.messages).hasSize(1);
     }

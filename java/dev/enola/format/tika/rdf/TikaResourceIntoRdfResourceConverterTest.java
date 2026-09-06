@@ -23,26 +23,26 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.MemoryResource;
 import dev.enola.rdf.io.RdfMediaTypes;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class TikaResourceIntoRdfResourceConverterTest {
+class TikaResourceIntoRdfResourceConverterTest {
 
-    @Rule public final SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
+    @RegisterExtension final SingletonRule r = $(MediaTypeProviders.set(new MediaTypeProviders()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
-    public void html() throws IOException {
+    void html() throws IOException {
         var rp = new ClasspathResource.Provider();
         var m = new MemoryResource(RdfMediaTypes.TURTLE);
         var c = new TikaResourceIntoRdfResourceConverter(rp);

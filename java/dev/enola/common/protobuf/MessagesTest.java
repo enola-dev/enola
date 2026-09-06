@@ -25,11 +25,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Timestamp;
 import com.google.protobuf.TypeRegistry;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 
-public class MessagesTest {
+class MessagesTest {
 
     private ExtensionRegistry extensionRegistry = ExtensionRegistry.getEmptyRegistry();
 
@@ -42,7 +42,7 @@ public class MessagesTest {
     private Messages messages = new Messages(descriptorProvider, extensionRegistry);
 
     @Test
-    public void testTimestamp() throws InvalidProtocolBufferException {
+    void testTimestamp() throws InvalidProtocolBufferException {
         Timestamp ts = Timestamps2.fromInstant(Instant.now());
 
         var any = Any.pack(ts);

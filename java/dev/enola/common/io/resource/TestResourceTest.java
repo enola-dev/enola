@@ -21,17 +21,17 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.net.MediaType;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class TestResourceTest {
+class TestResourceTest {
 
     ResourceProviders rp = new ResourceProviders(new TestResource.Provider());
 
     @Test
-    public void testMemory() throws IOException {
+    void testMemory() throws IOException {
         // Direct
         try (var r = TestResource.create(MediaType.PLAIN_TEXT_UTF_8)) {
             checkMemory(r);

@@ -29,19 +29,19 @@ import dev.enola.datatype.DatatypeRepository;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.TBF;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class JavaThingIntoRdfAppendableConverterTest {
+class JavaThingIntoRdfAppendableConverterTest {
 
-    public @Rule SingletonRule sr = $(MediaTypeProviders.set(new RdfMediaTypes()));
-    public @Rule TestTLCRule tr = TestTLCRule.of(TBF.class, ImmutableThing.FACTORY);
+    @RegisterExtension SingletonRule sr = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension TestTLCRule tr = TestTLCRule.of(TBF.class, ImmutableThing.FACTORY);
 
     @Test
-    public void turtleTTL() throws IOException {
+    void turtleTTL() throws IOException {
         var uri = URI.create("classpath:/picasso.ttl");
         var loader = new RdfLoader(new ClasspathResource.Provider(), DatatypeRepository.EMPTY);
         var thing1 = loader.loadAtLeastOneThing(uri).iterator().next();

@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.data.iri.IRI;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class UUID_IRI_Test {
+class UUID_IRI_Test {
 
     @Test
-    public void uuid() {
+    void uuid() {
         var uuidIRI = new UUID_IRI(); // TODO IRI.newUUID();
         assertThat(uuidIRI.toString()).startsWith("urn:uuid:");
         assertThat(uuidIRI.toString().length()).isEqualTo(45);

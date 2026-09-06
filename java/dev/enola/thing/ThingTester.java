@@ -19,6 +19,8 @@ package dev.enola.thing;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.common.collect.ImmutableSet;
 
 import dev.enola.common.context.TLC;
@@ -28,38 +30,39 @@ import dev.enola.model.Datatypes;
 import dev.enola.thing.impl.IImmutableThing;
 import dev.enola.thing.impl.ImmutableThing;
 import dev.enola.thing.java.TBF;
-import dev.enola.thing.repo.ThingRepositoriesTest;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.List;
 
+// skipcq: JAVA-W1058
 public abstract class ThingTester {
 
     private static final String THING_IRI = "https://example.org/thing";
     private static final String PREDICATE_IRI = "https://example.org/predicate";
 
-    private Thing.Builder<IImmutableThing> thingBuilder;
+    // skipcq: JAVA-E1065, JAVA-E1066
+    private Thing.Builder<IImmutableThing> thingBuilder = null;
 
     protected abstract TBF getThingBuilderFactory();
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         thingBuilder = getThingBuilderFactory().create();
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void noIRI() {
-        thingBuilder.build();
+    @Test
+    void noIRI() {
+        assertThrows(IllegalStateException.class, () -> thingBuilder.build());
     }
 
     @Test
-    public void empty() {
+    void empty() {
         thingBuilder.iri(THING_IRI);
         var thing = thingBuilder.build();
         assertThat(thing.getString(PREDICATE_IRI)).isNull();
@@ -68,7 +71,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void insertion() {
+    void insertion() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set("b", "B");
         thingBuilder.set("a", "A");
@@ -77,7 +80,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void datatype1() {
+    void datatype1() {
         thingBuilder.iri(THING_IRI);
         var value = "http://example.org/hi/{NUMBER}";
         var datatypeIRI = "https://enola.dev/enola:IRITemplate";
@@ -88,7 +91,7 @@ public abstract class ThingTester {
     }
 
     @Test // TODO This is a mess - Literal should be removed!
-    public void literal() {
+    void literal() {
         thingBuilder.iri(THING_IRI);
         var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
         thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI));
@@ -97,17 +100,23 @@ public abstract class ThingTester {
         assertThat(thing.datatype(PREDICATE_IRI)).isEqualTo(datatypeIRI);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     // TODO This is a mess - Literal should be removed!
-    public void literalAndDatatype() {
+    void literalAndDatatype() {
         thingBuilder.iri(THING_IRI);
         var datatypeIRI = "http://www.w3.org/2001/XMLSchema#date";
-        thingBuilder.set(PREDICATE_IRI, new Literal("2024-10-06", datatypeIRI), datatypeIRI);
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        thingBuilder.set(
+                                PREDICATE_IRI,
+                                new Literal("2024-10-06", datatypeIRI),
+                                datatypeIRI));
     }
 
     @Test
     // TODO Test if we can CLEAR a previously set value!
-    public void setNullIsIgnored() {
+    void setNullIsIgnored() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, null);
         var thing = thingBuilder.build();
@@ -115,7 +124,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void setEmptyStringIsIgnored() {
+    void setEmptyStringIsIgnored() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, "");
         var thing = thingBuilder.build();
@@ -123,8 +132,8 @@ public abstract class ThingTester {
     }
 
     @Test
-    @Ignore // No need (anymore), we're (now) preventing this using EP's @ImmutableTypeParameter
-    public void setEmptyCollectionIsIgnored() {
+    @Disabled // No need (anymore), we're (now) preventing this using EP's @ImmutableTypeParameter
+    void setEmptyCollectionIsIgnored() {
         thingBuilder.iri(THING_IRI);
         // CANNOT: thingBuilder.set(PREDICATE_IRI, Set.of());
         // CANNOT: thingBuilder.addAll(PREDICATE_IRI, Set.of());
@@ -134,7 +143,7 @@ public abstract class ThingTester {
 
     @Test
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void add() {
+    void add() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.add(PREDICATE_IRI, "a");
         thingBuilder.add(PREDICATE_IRI, "b");
@@ -146,7 +155,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addBuildAdd() {
+    void addBuildAdd() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.add(PREDICATE_IRI, "a");
         var thing1 = thingBuilder.build();
@@ -160,7 +169,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAll() {
+    void addAll() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAll(PREDICATE_IRI, List.of("a", "b"));
         var thing = thingBuilder.build();
@@ -168,7 +177,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllBuildAddAll() {
+    void addAllBuildAddAll() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAll(PREDICATE_IRI, List.of("a", "b"));
         var thing1 = thingBuilder.build();
@@ -180,7 +189,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllEmpty() {
+    void addAllEmpty() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAll(PREDICATE_IRI, List.<String>of());
         var thing = thingBuilder.build();
@@ -188,7 +197,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllWithDatatype() {
+    void addAllWithDatatype() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAll(
                 PREDICATE_IRI, List.of("https://vorburger.ch"), KIRI.SCHEMA.URL_DATATYPE);
@@ -199,7 +208,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addToSingle() {
+    void addToSingle() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, "a");
         thingBuilder.add(PREDICATE_IRI, "b");
@@ -208,7 +217,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllToSingle() {
+    void addAllToSingle() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, "a");
         thingBuilder.addAll(PREDICATE_IRI, List.of("b", "c"));
@@ -217,7 +226,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addOrderedToSingle() {
+    void addOrderedToSingle() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.set(PREDICATE_IRI, "x");
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
@@ -226,7 +235,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addThenAddOrdered() {
+    void addThenAddOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.add(PREDICATE_IRI, "x");
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
@@ -235,7 +244,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addToOrdered() {
+    void addToOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addOrdered(PREDICATE_IRI, "c");
         thingBuilder.addOrdered(PREDICATE_IRI, "b");
@@ -247,7 +256,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addOrderedAddAll() {
+    void addOrderedAddAll() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addOrdered(PREDICATE_IRI, "b");
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
@@ -259,7 +268,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addOrderedBuildAddOrdered() {
+    void addOrderedBuildAddOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addOrdered(PREDICATE_IRI, "a");
         thingBuilder.addOrdered(PREDICATE_IRI, "b");
@@ -274,7 +283,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllOrdered() {
+    void addAllOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing = thingBuilder.build();
@@ -282,7 +291,7 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllOrderedBuildAddAllOrdered() {
+    void addAllOrderedBuildAddAllOrdered() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.of("b", "a"));
         var thing1 = thingBuilder.build();
@@ -295,16 +304,27 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void addAllOrderedEmpty() {
+    void addAllOrderedEmpty() {
         thingBuilder.iri(THING_IRI);
         thingBuilder.addAllOrdered(PREDICATE_IRI, List.<String>of());
         var thing = thingBuilder.build();
         assertThat(thing.getOptional(PREDICATE_IRI, Iterable.class)).isEmpty();
     }
 
+    public static Thing testThing(Thing.Builder<?> builder) {
+        return builder.iri("http://example.com")
+                .set("http://example.com/message", "hello")
+                .set("http://example.com/link", new Link("http://example.com"))
+                .set("http://example.com/mls", new LangString("Saluton", "eo"))
+                .set("http://example.com/lit", new Literal("k&ç#'", "test:type"))
+                .add("http://example.com/list", new Link("http://example.com"))
+                .add("http://example.com/list", new Literal("k&ç#'", "test:type"))
+                .build();
+    }
+
     @Test
-    public void hashCodeEquals() throws ConversionException, IOException {
-        var testThing1 = ThingRepositoriesTest.testThing(thingBuilder);
+    void hashCodeEquals() throws ConversionException, IOException {
+        var testThing1 = testThing(thingBuilder);
 
         var testThing2Builder = ImmutableThing.builder();
         new ThingConverterInto().convertInto(testThing1, testThing2Builder);
@@ -315,8 +335,8 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void testToString() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void testToString() {
+        var testThing = testThing(thingBuilder);
         var testThingToString = testThing.toString();
 
         assertThat(testThingToString).doesNotContain("@");
@@ -325,8 +345,8 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void getAllAsString() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void getAllAsString() {
+        var testThing = testThing(thingBuilder);
         for (var predicateIRI : testThing.predicateIRIs()) {
             if (predicateIRI.equals("http://example.com/list")) continue;
             assertThat(testThing.get(predicateIRI, String.class)).isNotEmpty();
@@ -334,32 +354,32 @@ public abstract class ThingTester {
     }
 
     @Test
-    public void message() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void message() {
+        var testThing = testThing(thingBuilder);
         assertThat(testThing.getString("http://example.com/message")).isEqualTo("hello");
     }
 
     @Test
-    public void link() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void link() {
+        var testThing = testThing(thingBuilder);
         assertThat(testThing.getString("http://example.com/link")).isEqualTo("http://example.com");
     }
 
     @Test
-    public void langString() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void langString() {
+        var testThing = testThing(thingBuilder);
         assertThat(testThing.getString("http://example.com/mls")).isEqualTo("Saluton");
     }
 
     @Test
-    public void literal2() {
-        var testThing = ThingRepositoriesTest.testThing(thingBuilder);
+    void literal2() {
+        var testThing = testThing(thingBuilder);
         assertThat(testThing.datatype("http://example.com/lit")).isEqualTo("test:type");
         assertThat(testThing.getString("http://example.com/lit")).isEqualTo("k&ç#'");
     }
 
     @Test
-    public void fileTimeAsInstant() {
+    void fileTimeAsInstant() {
         var instant = Instant.now();
         var p = "https://enola.dev/files/Node/createdAt";
         var thing =

@@ -30,7 +30,7 @@ java_library(
         "//java/dev/enola/web",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
         "@maven//:org_jspecify_jspecify",
+        "@maven//:org_junit_jupiter_junit_jupiter_api",
     ],
 )

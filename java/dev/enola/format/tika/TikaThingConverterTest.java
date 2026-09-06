@@ -23,6 +23,7 @@ import static dev.enola.common.context.testlib.SingletonRule.$;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.common.io.resource.EmptyResource;
@@ -31,21 +32,20 @@ import dev.enola.thing.Thing;
 import dev.enola.thing.repo.ThingMemoryRepositoryROBuilder;
 import dev.enola.thing.testlib.ThingsSubject;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
 
-public class TikaThingConverterTest {
+class TikaThingConverterTest {
 
-    @Rule public final SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension final SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         var store = new ThingMemoryRepositoryROBuilder();
         var c = new TikaThingConverter(new EmptyResource.Provider());
 
@@ -55,20 +55,20 @@ public class TikaThingConverterTest {
     }
 
     @Test
-    public void html() throws IOException {
+    void html() throws IOException {
         check("test.html");
     }
 
     @Test
-    public void png() throws IOException {
+    void png() throws IOException {
         check("test.png");
     }
 
-    // TODO @Test public void jpeg() throws IOException {
+    // TODO @Test void jpeg() throws IOException {
 
-    // TODO @Test public void tiff() throws IOException {
+    // TODO @Test void tiff() throws IOException {
 
-    // TODO @Test public void epubEBook() throws IOException {
+    // TODO @Test void epubEBook() throws IOException {
 
     private void check(String classpath) throws IOException {
         var name = "classpath:/" + classpath;

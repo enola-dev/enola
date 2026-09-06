@@ -21,10 +21,13 @@ import static com.google.common.truth.Truth.*;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.common.collect.ImmutableMap;
 
 import dev.enola.common.context.testlib.EnolaTestTLCRules;
 import dev.enola.common.context.testlib.SingletonRule;
+import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.resource.ClasspathResource;
 import dev.enola.datatype.DatatypeRepositoryBuilder;
@@ -35,12 +38,9 @@ import dev.enola.thing.Link;
 import dev.enola.thing.io.Loader;
 import dev.enola.thing.io.UriIntoThingConverters;
 import dev.enola.thing.repo.ThingMemoryRepositoryRW;
-import dev.enola.thing.repo.ThingRepositoriesTest;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.stream.Stream;
 
@@ -48,16 +48,16 @@ import java.util.stream.Stream;
  * {@link TemplateThingRepository} Test.
  *
  * <p>This only tests template functionality; as non-regression testing of the wrapping delegation
- * is covered in the {@link ThingRepositoriesTest}.
+ * is covered in the {@code ThingRepositoriesTest}.
  */
-public class TemplateThingRepositoryTest {
+class TemplateThingRepositoryTest {
 
-    public @Rule SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
-    @Rule public final TestRule tlcRule = EnolaTestTLCRules.TBF;
+    @RegisterExtension final TestTLCRule tlcRule = EnolaTestTLCRules.TBF;
 
     @Test
-    public void greetingN() {
+    void greetingN() {
         var rp = new ClasspathResource.Provider();
         var dtr = new DatatypeRepositoryBuilder().build();
         var ritc = new UriIntoThingConverters(new RdfResourceIntoThingConverter<>(rp, dtr));
@@ -103,7 +103,7 @@ public class TemplateThingRepositoryTest {
         // TemplateService testing
         assertThat(repo.breakdown(yoPropertyIRI)).isEmpty();
         assertThat(repo.breakdown(classIRI)).isEmpty();
-        Assert.assertThrows(IllegalArgumentException.class, () -> repo.breakdown(templateIRI));
+        assertThrows(IllegalArgumentException.class, () -> repo.breakdown(templateIRI));
 
         var breakdown = repo.breakdown(exampleIRI).get();
         assertThat(breakdown.variables()).containsExactly("NUMBER", "42");

@@ -25,32 +25,32 @@ import dev.enola.common.linereader.TestIO;
 import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.identity.Subjects;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class DemoTest {
+class DemoTest {
 
     // TODO This test behaves differently depending on whether or not Ollama is running, because
     // Prompter enables LangChain4jAgent if port 11434 is available... which is not so great, for
     // a reliable reproducible test! Rework Prompter to avoid this.
 
     @Test
-    public void eof() {
+    void eof() {
         var io = new TestIO(List.of());
         new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).isEqualTo(MOTD + "Alice in #Lobby> ");
     }
 
     @Test
-    public void hello() {
+    void hello() {
         var io = new TestIO(List.of("Hello"));
         new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).startsWith(MOTD + "Alice in #Lobby> ");
     }
 
     @Test
-    public void echo() {
+    void echo() {
         var io = new TestIO(List.of("@echo yolo"));
         new Prompter(new InMemorySecretManager()).chatLoop(io, new Subjects().alice(), false);
         assertThat(io.getOutput()).startsWith(MOTD + "Alice in #Lobby> Echoer> yolo\n");

@@ -22,7 +22,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static dev.enola.common.context.testlib.SingletonRule.$;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.google.common.io.Resources;
 import com.google.common.jimfs.Configuration;
@@ -34,9 +34,9 @@ import dev.enola.common.io.mediatype.MediaTypeProviders;
 import dev.enola.common.io.mediatype.StandardMediaTypes;
 import dev.enola.common.io.mediatype.YamlMediaType;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,21 +48,21 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
-public class FileResourceTest {
+class FileResourceTest {
 
-    public @Rule SingletonRule r =
-            $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
+    @RegisterExtension
+    SingletonRule r = $(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     // ResourceProvidersTest has more, notably coverage for relative file URIs
 
     @Test
-    public void testYamlMediaType() {
+    void testYamlMediaType() {
         var r = new FileResource(URI.create("file:/test.yaml"));
         assertThat(r.mediaType()).isEqualTo(YamlMediaType.YAML_UTF_8);
     }
 
     @Test
-    public void testWriteRead() throws IOException {
+    void testWriteRead() throws IOException {
         var t = Files.createTempFile("FileResourceTest", ".json").toAbsolutePath();
         var r = new FileResource(t.toUri());
         assertThat(r.uri().toString()).endsWith(".json");
@@ -71,7 +71,7 @@ public class FileResourceTest {
     }
 
     @Test
-    public void testWriteFileInNonExistingDirectory() throws IOException {
+    void testWriteFileInNonExistingDirectory() throws IOException {
         var tmp = System.getProperty("java.io.tmpdir");
         var dir = new File(tmp, "FileResourceTest-" + System.nanoTime());
         assertThat(dir.exists()).isFalse();
@@ -82,17 +82,16 @@ public class FileResourceTest {
         assertThat(dir.delete()).isTrue();
     }
 
-    @SuppressWarnings("unused")
-    @Test(expected = NoSuchFileException.class)
-    public void readNonExisting() throws IOException {
+    @Test
+    void readNonExisting() {
         var r = new FileResource(URI.create("file:/does-not-exist.txt"), PLAIN_TEXT_UTF_8);
-        var unused = r.charSource().read();
+        assertThrows(NoSuchFileException.class, () -> r.charSource().read());
     }
 
     @Test
-    @Ignore // TODO Support jar: scheme in FileResource, for writeable ZIPs!
+    @Disabled // TODO Support jar: scheme in FileResource, for writeable ZIPs!
     // For now, ResourceProvidersTest#testJarScheme() makes sure it works via ClasspathResource
-    public void jarScheme() throws IOException, URISyntaxException {
+    void jarScheme() throws IOException, URISyntaxException {
         var uri = Resources.getResource("test-hello-ascii.txt").toURI();
         var r = new FileResource.Provider().getResource(uri);
         assertThat(r).isNotNull();
@@ -100,7 +99,7 @@ public class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testBasicJimFS() throws IOException {
+    void testBasicJimFS() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path foo = fs.getPath("/testBasicJimFS");
             Path hello = foo.resolve("hello.txt"); // /foo/hello.txt
@@ -111,7 +110,7 @@ public class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testPathToURIonJimFSwithNewName() throws IOException {
+    void testPathToURIonJimFSwithNewName() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path foo = fs.getPath("/testPathToURIonJimFSwithNewName");
 
@@ -138,7 +137,7 @@ public class FileResourceTest {
     }
 
     @Test // https://github.com/google/jimfs
-    public void testSeparatePathJimFS() throws IOException {
+    void testSeparatePathJimFS() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path folder = fs.getPath("/testSeparatePathJimFS");
             Files.createDirectories(folder);
@@ -151,7 +150,7 @@ public class FileResourceTest {
     }
 
     @Test
-    public void testDirectoriesAreNotFileResources() throws IOException {
+    void testDirectoriesAreNotFileResources() throws IOException {
         try (FileSystem fs = Jimfs.newFileSystem(Configuration.unix())) {
             Path folder = fs.getPath("/testSeparatePathJimFS");
             Files.createDirectories(folder);

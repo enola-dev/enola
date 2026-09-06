@@ -19,12 +19,12 @@ package dev.enola.common.linereader;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SystemInOutIOTest {
+class SystemInOutIOTest {
 
     @Test
-    public void stdin() {
+    void stdin() {
         SystemStdinStdoutTester.pipeIn(
                 "hello\nworld\nend", // Intentionally no last \n at the end!
                 () -> {
@@ -36,7 +36,7 @@ public class SystemInOutIOTest {
     }
 
     @Test
-    public void stdout() {
+    void stdout() {
         var out =
                 SystemStdinStdoutTester.captureOut(
                         () -> {

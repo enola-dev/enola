@@ -19,14 +19,14 @@ package dev.enola.chat.sshd;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-public class EnolaSshServerTest {
+class EnolaSshServerTest {
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
         var path = File.createTempFile("HostKeyPairProviderTest-create", ".pk").toPath();
         try (var sshd = new EnolaSshServer(0, path)) {
             assertThat(path.toFile().exists()).isTrue();

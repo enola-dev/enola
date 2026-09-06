@@ -29,17 +29,17 @@ import dev.enola.ai.iri.Provider;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class QuickstartDemoTest {
+class QuickstartDemoTest {
 
     SecretManager sm = new TestSecretManager();
     Provider<BaseLlm> p = new LlmProviders(sm);
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var model = p.get(ModelConfig.temperature(GoogleModelProvider.FLASH_LITE, 0.1));
 

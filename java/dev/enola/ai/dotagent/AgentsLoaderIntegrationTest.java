@@ -38,8 +38,8 @@ import dev.enola.common.io.resource.ResourceProvider;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.net.URI;
@@ -47,16 +47,17 @@ import java.time.Instant;
 import java.time.InstantSource;
 import java.util.stream.Stream;
 
-public class AgentsLoaderIntegrationTest {
+class AgentsLoaderIntegrationTest {
 
-    public @Rule SingletonRule r =
+    @RegisterExtension
+    SingletonRule r =
             SingletonRule.$(MediaTypeProviders.set(new YamlMediaType(), new StandardMediaTypes()));
 
     final SecretManager secretManager = new TestSecretManager();
     final ResourceProvider rp = new ClasspathResource.Provider("agents");
 
     @Test
-    public void optimisticChefYAML() throws IOException {
+    void optimisticChefYAML() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         // We must create the AgentsLoader AFTER we know that the API secret is available:
         var loader =
@@ -78,7 +79,7 @@ public class AgentsLoaderIntegrationTest {
     }
 
     @Test
-    public void clock() throws IOException {
+    void clock() throws IOException {
         Instant testInstant = Instant.parse("2025-08-14T21:05:00.00Z");
         InstantSource testInstantSource = InstantSource.fixed(testInstant);
         var tools = BuiltinTools.builtin(testInstantSource);
@@ -97,7 +98,7 @@ public class AgentsLoaderIntegrationTest {
     }
 
     @Test
-    public void person() throws IOException {
+    void person() throws IOException {
         if (secretManager.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isEmpty()) return;
         var loader =
                 new AgentsLoader(rp, FLASH, new GoogleLlmProvider(secretManager), Tools.none());

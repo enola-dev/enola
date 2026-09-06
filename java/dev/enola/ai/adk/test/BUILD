@@ -38,8 +38,8 @@ java_library(
         "@maven//:com_google_genai_google_genai",
         "@maven//:com_google_guava_guava",
         "@maven//:io_reactivex_rxjava3_rxjava",
-        "@maven//:junit_junit",
         "@maven//:org_jspecify_jspecify",
+        "@maven//:org_opentest4j_opentest4j",
         "@maven//:org_slf4j_slf4j_api",
     ],
 )

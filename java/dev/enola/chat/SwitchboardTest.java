@@ -23,17 +23,18 @@ import dev.enola.common.context.testlib.TestTLCRule;
 import dev.enola.identity.SubjectContextKey;
 import dev.enola.identity.Subjects;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
 
-public class SwitchboardTest {
+class SwitchboardTest {
 
-    @Rule public TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
+    @RegisterExtension
+    TestTLCRule rule = TestTLCRule.of(SubjectContextKey.USER, new Subjects().alice());
 
     @Test
-    public void chit() {
+    void chit() {
         var s = new TestSwitchboard();
 
         var m1 = new MessageImpl.Builder();

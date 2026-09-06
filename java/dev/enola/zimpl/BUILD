@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@rules_java//java:defs.bzl", "java_binary", "java_test")
+load("@rules_java//java:defs.bzl", "java_binary")
+load("//tools/bazel:junit.bzl", "junit_tests")
 
 java_binary(
     name = "zimpl",
@@ -40,10 +41,8 @@ java_binary(
     ],
 )
 
-# TODO Use load("//tools/bazel:junit.bzl", "junit_tests")
-java_test(
-    name = "EnolaTest",
-    size = "small",
+junit_tests(
+    name = "tests",
     srcs = ["EnolaTest.java"],
     runtime_deps = [
         "@maven//:org_slf4j_slf4j_simple",
@@ -57,7 +56,6 @@ java_test(
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_truth_extensions_truth_java8_extension",
         "@maven//:com_google_truth_truth",
-        "@maven//:junit_junit",
         "@maven//:org_slf4j_slf4j_jdk14",
     ],
 )

@@ -17,10 +17,10 @@
  */
 package dev.enola.common.io.resource.stream;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-public class GlobResolversTest extends FileGlobResolverTest {
+class GlobResolversTest extends FileGlobResolverTestAbstract {
 
     @Override
     protected GlobResolver newGlobResolver() {
@@ -28,13 +28,13 @@ public class GlobResolversTest extends FileGlobResolverTest {
     }
 
     @Test
-    public void nonGlobClasspath() {
+    void nonGlobClasspath() {
         checkGlobIRI("classpath:/test.md", 1);
     }
 
     @Test
-    @Ignore // TODO Write a test, and fix the code, to glob over a JAR file...
-    public void globOnZIP() {
+    @Disabled // TODO Write a test, and fix the code, to glob over a JAR file...
+    void globOnZIP() {
         // ...
     }
 }

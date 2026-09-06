@@ -21,16 +21,16 @@ import static com.google.common.truth.Truth.assertThat;
 
 import dev.enola.common.io.resource.ClasspathResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
-public class DeliciousTest {
+class DeliciousTest {
 
     @Test
-    public void readJSON() throws IOException {
+    void readJSON() throws IOException {
         var EXPECTED =
                 new Delicious(
                         "Pandoc",

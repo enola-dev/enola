@@ -19,30 +19,33 @@ package dev.enola.data.id;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import com.google.common.primitives.UnsignedLong;
 
 import dev.enola.common.convert.ConversionException;
 import dev.enola.data.iri.IRIConverter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TestIRITest {
+class TestIRITest {
 
     IRIConverter<TestIRI> c = TestIRI.CONVERTER;
     TestID testId = new TestID(UnsignedLong.MAX_VALUE.longValue(), "test");
     String testIriString = "https://example.org/thing/3w5e11264sgsf-test";
 
     @Test
-    public void convertToFrom() {
+    void convertToFrom() {
         var testIRI = c.convertFrom(testIriString);
         assertThat(c.convertTo(testIRI)).isEqualTo(testIriString);
         assertThat(testIRI.toString()).isEqualTo(testIriString);
         assertThat(testIRI.id()).isEqualTo(testId);
     }
 
-    @Test(expected = ConversionException.class)
-    public void convertMismatch() {
-        c.convertFrom("https://example.org/other/xyz");
+    @Test
+    void convertMismatch() {
+        assertThrows(
+                ConversionException.class, () -> c.convertFrom("https://example.org/other/xyz"));
     }
 
     // TODO equals(), compareTo(), hashCode(), toString()

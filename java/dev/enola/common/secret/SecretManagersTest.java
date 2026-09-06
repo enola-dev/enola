@@ -19,22 +19,22 @@ package dev.enola.common.secret;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SecretManagersTest {
+class SecretManagersTest {
 
     SecretManager secretManager = new InMemorySecretManager();
 
     @Test
-    public void empty() throws IOException {
+    void empty() throws IOException {
         assertThat(secretManager.getOptional("foo")).isEmpty();
     }
 
     @Test
-    public void store() throws IOException {
+    void store() throws IOException {
         var bar = "bar".toCharArray();
         secretManager.store("foo", bar);
         assertThat(bar).isEqualTo(new char[] {0, 0, 0});

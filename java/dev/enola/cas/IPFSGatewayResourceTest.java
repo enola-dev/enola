@@ -22,7 +22,7 @@ import dev.enola.common.io.resource.ResourceProvider;
 
 import org.jspecify.annotations.Nullable;
 
-public class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
+class IPFSGatewayResourceTest extends IPFSResourceTestAbstract {
 
     // See https://docs.enola.dev/use/fetch/#ipfs
     private static final String IPFS_GATEWAY = "https://dweb.link/ipfs/";

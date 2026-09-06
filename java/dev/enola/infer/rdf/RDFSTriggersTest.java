@@ -31,20 +31,19 @@ import dev.enola.thing.java.ProxyTBF;
 import dev.enola.thing.java.TBF;
 import dev.enola.thing.repo.*;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class RDFSTriggersTest {
+class RDFSTriggersTest {
 
-    @Rule
-    public final TestRule tlcRule = TestTLCRule.of(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
+    @RegisterExtension
+    final TestTLCRule tlcRule = TestTLCRule.of(TBF.class, new ProxyTBF(ImmutableThing.FACTORY));
 
     @Test
-    public void thingMemoryRepositoryRW() {
+    void thingMemoryRepositoryRW() {
         var trigger = new RDFSPropertyTrigger();
         Supplier<ThingRepositoryStore> repoSupplier =
                 () -> {
@@ -58,7 +57,7 @@ public class RDFSTriggersTest {
     }
 
     @Test
-    public void thingMemoryRepositoryROBuilder() {
+    void thingMemoryRepositoryROBuilder() {
         var trigger = new RDFSPropertyTrigger();
         Supplier<ThingRepositoryStore> repoSupplier =
                 () -> {

@@ -21,12 +21,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.io.Resources;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class UrlResourceTest {
+class UrlResourceTest {
 
     // NB: ClasspathResourceTest (for ClasspathResource, which extends UrlResource) covers basics.
 
@@ -36,7 +36,7 @@ public class UrlResourceTest {
     // TODO Test that an URL can return MediaType HTML without have a .htm file extension
 
     @Test
-    public void testJarScheme() throws IOException, URISyntaxException {
+    void testJarScheme() throws IOException, URISyntaxException {
         var url = Resources.getResource("test-emoji.txt").toURI();
         var rp = new ResourceProviders(new UrlResource.Provider(UrlResource.Scheme.jar));
         var emoji = rp.getReadableResource(url).charSource().read();

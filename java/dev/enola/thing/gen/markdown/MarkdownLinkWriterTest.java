@@ -25,16 +25,16 @@ import dev.enola.common.io.metadata.Metadata;
 import dev.enola.thing.template.TemplateService;
 import dev.enola.thing.template.Templates;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-public class MarkdownLinkWriterTest {
+class MarkdownLinkWriterTest {
 
     @Test
-    public void writeMarkdownLink() throws IOException {
+    void writeMarkdownLink() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
@@ -49,7 +49,7 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
-    public void writeMarkdownLinkWithCurieAndSameLabel() throws IOException {
+    void writeMarkdownLinkWithCurieAndSameLabel() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
@@ -70,7 +70,7 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
-    public void writeMarkdownLinkWithCurieAndBetterLabel() throws IOException {
+    void writeMarkdownLinkWithCurieAndBetterLabel() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
@@ -92,7 +92,7 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
-    public void unknownIRIs() throws IOException {
+    void unknownIRIs() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
@@ -107,7 +107,7 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
-    public void knownIRIs() throws IOException {
+    void knownIRIs() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(
@@ -122,7 +122,7 @@ public class MarkdownLinkWriterTest {
     }
 
     @Test
-    public void writeTemplateMarkdownLink() throws IOException {
+    void writeTemplateMarkdownLink() throws IOException {
         var sb = new StringBuilder();
         new MarkdownLinkWriter(Templates.Format.Mustache)
                 .writeMarkdownLink(

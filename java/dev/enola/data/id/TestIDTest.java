@@ -19,34 +19,34 @@ package dev.enola.data.id;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.primitives.UnsignedLong;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TestIDTest {
+class TestIDTest {
 
     static IdConverter<TestID> c = TestID.CONVERTER;
-    static TestID testId = new TestID(UnsignedLong.MAX_VALUE.longValue(), "test");
-    static String testIdString = "3w5e11264sgsf-test";
+    static TestID testId = TestID.TEST_ID;
+    static String testIdString = TestID.TEST_ID_STRING;
 
     @Test
-    public void convertToFrom() {
+    void convertToFrom() {
         assertThat(c.convertTo(testId)).isEqualTo(testIdString);
         assertThat(c.convertFrom(testIdString)).isEqualTo(testId);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void convertFromNull() {
-        c.convertFrom(null);
+    @Test
+    void convertFromNull() {
+        assertThrows(NullPointerException.class, () -> c.convertFrom(null));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void convertNull() {
-        c.convert(null);
+    @Test
+    void convertNull() {
+        assertThrows(NullPointerException.class, () -> c.convert(null));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void convertToNull() {
-        c.convertTo(null);
+    @Test
+    void convertToNull() {
+        assertThrows(NullPointerException.class, () -> c.convertTo(null));
     }
 }

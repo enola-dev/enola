@@ -36,15 +36,15 @@ import dev.enola.common.secret.InMemorySecretManager;
 import dev.enola.common.secret.SecretManager;
 import dev.enola.common.secret.auto.TestSecretManager;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class LlmProvidersTest {
+class LlmProvidersTest {
     // See also the similarly structured ChatModelProviderTest
 
     @Test
-    public void geminiUnitTest() {
+    void geminiUnitTest() {
         var secretManager = new InMemorySecretManager(GOOGLE_AI_API_KEY_SECRET_NAME, "...");
         var provider = new LlmProviders(secretManager);
         var uri = provider.uriExamples().iterator().next();
@@ -55,30 +55,30 @@ public class LlmProvidersTest {
     Provider<BaseLlm> p = new LlmProviders(sm);
 
     @Test
-    public void mock() {
+    void mock() {
         var model = p.get(MockModelProvider.EXAMPLE_URI);
         new ModelTester(model).assertTextResponseContains("What up?", "hello");
     }
 
     @Test
-    public void echo() {
+    void echo() {
         var model = p.get(EchoModelProvider.ECHO_URI);
         new ModelTester(model).assertTextResponseContains("What up?", "What up?");
     }
 
     @Test
-    public void geminiFlashLiteIntegrationTest() throws IOException {
+    void geminiFlashLiteIntegrationTest() throws IOException {
         if (sm.getOptional(GOOGLE_AI_API_KEY_SECRET_NAME).isPresent())
             check(p.get(GoogleModelProvider.FLASH_LITE));
     }
 
     @Test
-    public void ollamaGemma31bIntegrationTest() {
+    void ollamaGemma31bIntegrationTest() {
         if (Net.portAvailable(11434)) check(p.get(OllamaLlmProvider.GEMMA3_1B));
     }
 
     @Test
-    public void claudeIntegrationTest() throws IOException {
+    void claudeIntegrationTest() throws IOException {
         if (sm.getOptional(ANTHROPIC_API_KEY_SECRET_NAME).isPresent())
             check(p.get(AnthropicModelProvider.CLAUDE_HAIKU_3));
     }

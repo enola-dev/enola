@@ -19,17 +19,21 @@ package dev.enola.connect.maven;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GAVRTest {
+import org.junit.jupiter.api.Test;
 
-    @Test(expected = IllegalArgumentException.class)
-    public void parseGavWithoutVersion() {
-        GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core");
+class GAVRTest {
+
+    @Test
+    void parseGavWithoutVersion() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> GAVR.parseGAV("ch.vorburger.mariaDB4j:mariaDB4j-core"));
     }
 
     @Test
-    public void toArtifactString() {
+    void toArtifactString() {
         checkFromAndToGAV("ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0");
         checkFromAndToGAV(
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:jar:3.1.0",
@@ -39,7 +43,7 @@ public class GAVRTest {
     }
 
     @Test
-    public void parseGavAndPkg() {
+    void parseGavAndPkg() {
         check(
                 "ch.vorburger.mariaDB4j:mariaDB4j-core:3.1.0",
                 "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0");
@@ -55,7 +59,7 @@ public class GAVRTest {
     }
 
     @Test
-    public void parsePkg() {
+    void parsePkg() {
         var purl =
                 "pkg:maven/ch.vorburger.mariaDB4j/mariaDB4j-core@3.1.0?repository_url=https%3A%2F%2Fmaven.google.com&type=pom";
         var gavr = GAVR.parsePkgURL(purl);
@@ -89,5 +93,5 @@ public class GAVRTest {
     }
 
     @Test
-    public void parsePkgURL() {}
+    void parsePkgURL() {}
 }

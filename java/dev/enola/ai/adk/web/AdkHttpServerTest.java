@@ -22,14 +22,14 @@ import static com.google.common.truth.Truth.assertThat;
 import dev.enola.ai.adk.test.MockAgent;
 import dev.enola.common.io.resource.OkHttpResource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AdkHttpServerTest {
+class AdkHttpServerTest {
 
     // TODO Upstream (something like) this, because ADK has no test coverage for dev/
 
     @Test
-    public void startStop() throws Exception {
+    void startStop() throws Exception {
         try (var server = AdkHttpServer.start(new MockAgent("hello, world"), 0)) {
             var tester = new OkHttpResource("http://localhost:" + server.httpPort());
             var html = tester.charSource().read();

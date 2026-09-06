@@ -19,24 +19,25 @@ package dev.enola.common.name;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-public class NamedObjectProvidersTest {
+class NamedObjectProvidersTest {
 
-    // TODO @Test public void newSingleThreaded() & newConcurrent()
+    // TODO @Test void newSingleThreaded() & newConcurrent()
 
     @Test
-    public void newImmutable() {
+    void newImmutable() {
         var nop = NamedObjectProviders.newImmutable(Map.of("foo", 1, "bar", 2L));
         assertThat(nop.get("foo", Integer.class, "Test")).isEqualTo(1);
         assertThat(nop.get("bar", Long.class, "Test")).isEqualTo(2L);
     }
 
     @Test
-    public void implementationVsInterfaceClass() {
+    void implementationVsInterfaceClass() {
         var nop = NamedObjectProviders.newImmutable(Map.of("list", new ArrayList<String>()));
         assertThat(nop.get("list", List.class, "Test")).isInstanceOf(ArrayList.class);
         assertThat(nop.get("list", Collection.class, "Test")).isInstanceOf(ArrayList.class);
@@ -44,12 +45,11 @@ public class NamedObjectProvidersTest {
     }
 
     @Test
-    public void implementationVsInterfaceClassConflict() {
+    void implementationVsInterfaceClassConflict() {
         var nop =
                 NamedObjectProviders.newSingleThreaded()
                         .store("list", new ArrayList<String>())
                         .store("list", new LinkedList<>());
-        Assert.assertThrows(
-                IllegalArgumentException.class, () -> nop.get("list", List.class, "Test"));
+        assertThrows(IllegalArgumentException.class, () -> nop.get("list", List.class, "Test"));
     }
 }

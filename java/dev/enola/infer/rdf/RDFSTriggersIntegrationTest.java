@@ -44,17 +44,17 @@ import dev.enola.thing.repo.ThingMemoryRepositoryRW;
 import dev.enola.thing.repo.ThingProvider;
 import dev.enola.thing.repo.ThingRepositoryStore;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 
-public class RDFSTriggersIntegrationTest {
+class RDFSTriggersIntegrationTest {
 
-    @Rule public SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
+    @RegisterExtension SingletonRule r = $(MediaTypeProviders.set(new RdfMediaTypes()));
 
     @Test
-    public void rdfs() throws IOException {
+    void rdfs() throws IOException {
         var trigger = new RDFSPropertyTrigger();
         ThingRepositoryStore repo = new ThingMemoryRepositoryRW(ImmutableList.of(trigger));
         repo = new AlwaysThingRepositoryStore(repo);
@@ -84,7 +84,7 @@ public class RDFSTriggersIntegrationTest {
     }
 
     @Test
-    public void testSomethingBuilder() {
+    void testSomethingBuilder() {
         var pair = TypeToBuilder.typeToBuilder(KIRI.RDF.PROPERTY);
         assertThat(pair.builderClass()).isEqualTo(Property.Builder.class);
         assertThat(pair.thingClass()).isEqualTo(Property.class);
