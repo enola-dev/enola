@@ -252,7 +252,7 @@ maven.artifact(
         "org.openjdk.nashorn:nashorn-core",
     ],
     group = "com.github.jknack",
-    version = "4.5.0",
+    version = "4.5.5",
 )
 maven.artifact(
     artifact = "google-genai",
