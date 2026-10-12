@@ -105,16 +105,9 @@ jobs:
       - name: Print Disk Usage
         run: tools/disk-use/du.bash
 
-      - name: Install IPFS Node daemon
-        uses: oduwsdl/setup-ipfs@678755ac20f92d2dfca7e16138e40ae75f7a0f6f
-        with:
-          ipfs_version: ^0.33
-          run_daemon: true
-
       - uses: cachix/install-nix-action@v31
       - uses: nicknovitski/nix-develop@v1
         # TODO: remove non-nix paths from PATH
-
 
       - name: Check which package versions we are using
         run: |
@@ -124,6 +117,9 @@ jobs:
           java --version
           which uvx
           uvx --version
+          ipfs version --all
+
+      - uses: ipfs/start-ipfs-daemon-action@1c14ea60ff41d91fbcc92649fa08c4ccafc41356
 
       - name: Install Web dependencies
         working-directory: web
