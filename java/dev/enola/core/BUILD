@@ -50,7 +50,7 @@ java_library(
         "//java/dev/enola/thing:thing_java",
         "//java/dev/enola/thing/gen",
         "//models",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_damnhandy_handy_uri_templates",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:com_google_protobuf_protobuf_java",

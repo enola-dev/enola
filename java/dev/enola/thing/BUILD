@@ -49,7 +49,7 @@ java_library(
         "//java/dev/enola/data/iri/namespace/repo",
         "//java/dev/enola/data/iri/template",
         "//java/dev/enola/datatype",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_damnhandy_handy_uri_templates",
         "@maven//:com_github_spotbugs_spotbugs_annotations",
         "@maven//:com_google_auto_service_auto_service_annotations",
         "@maven//:com_google_errorprone_error_prone_annotations",

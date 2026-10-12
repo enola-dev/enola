@@ -4,6 +4,7 @@
     "ch.qos.logback:logback-classic": 645414475,
     "ch.qos.logback:logback-core": -481033134,
     "ch.vorburger.exec:exec": -1009677555,
+    "com.damnhandy:handy-uri-templates": 1702608899,
     "com.fasterxml.jackson.core:jackson-annotations": -921857167,
     "com.fasterxml.jackson.core:jackson-core": 1977162006,
     "com.fasterxml.jackson.core:jackson-databind": 1925127134,
@@ -18,7 +19,6 @@
     "com.fasterxml.woodstox:woodstox-core": 1620189890,
     "com.github.ipfs:java-ipfs-http-client": 120387282,
     "com.github.ipld:java-cid": 1928280997,
-    "com.github.java-json-tools:uri-template": -1598006983,
     "com.github.jknack:handlebars": -1209364279,
     "com.github.multiformats:java-multibase": -672504918,
     "com.github.multiformats:java-multihash": 707983554,
@@ -139,6 +139,7 @@
     "com.anthropic:anthropic-java-client-okhttp": -411304057,
     "com.anthropic:anthropic-java-core": 460567945,
     "com.anthropic:anthropic-java-vertex": 480471166,
+    "com.damnhandy:handy-uri-templates": 101318975,
     "com.drewnoakes:metadata-extractor": -1634911408,
     "com.epam:parso": 415524000,
     "com.ethlo.time:itu": 1024951720,
@@ -162,9 +163,6 @@
     "com.github.ipfs:java-ipfs-http-client": 1296121601,
     "com.github.ipld:java-cid": 210092595,
     "com.github.jai-imageio:jai-imageio-core": -271537016,
-    "com.github.java-json-tools:btf": 204024567,
-    "com.github.java-json-tools:msg-simple": -285204120,
-    "com.github.java-json-tools:uri-template": 384652649,
     "com.github.jknack:handlebars": -1402733997,
     "com.github.jsonld-java:jsonld-java": 741482888,
     "com.github.junrar:junrar": 2034816699,
@@ -339,6 +337,7 @@
     "jakarta.xml.bind:jakarta.xml.bind-api": 1812986702,
     "javax.annotation:javax.annotation-api": 193132517,
     "javax.xml.bind:jaxb-api": 2098701675,
+    "joda-time:joda-time": -1038035367,
     "junit:junit": 712711302,
     "net.arnx:nashorn-promise": -1124501121,
     "net.java.dev.jna:jna": -1543872376,
@@ -606,6 +605,12 @@
       },
       "version": "1.4.0"
     },
+    "com.damnhandy:handy-uri-templates": {
+      "shasums": {
+        "jar": "6b83846f2ff61d0aaa66997b64b883ec7b65cf13b50a4d7f58250996d429be2e"
+      },
+      "version": "2.1.8"
+    },
     "com.drewnoakes:metadata-extractor": {
       "shasums": {
         "jar": "e51bb454ed08ea2bfcc3ad147d088ad1aa73a999e0072563f8ae50021a2fcadb"
@@ -743,24 +748,6 @@
         "jar": "8ad3c68e9efffb10ac87ff8bc589adf64b04a729c5194c079efd0643607fd72a"
       },
       "version": "1.4.0"
-    },
-    "com.github.java-json-tools:btf": {
-      "shasums": {
-        "jar": "67c3e462eb50807f4e0a5f4dee304bbf17cd986a42ee5eb0b2f4c9bf64d130d9"
-      },
-      "version": "1.3"
-    },
-    "com.github.java-json-tools:msg-simple": {
-      "shasums": {
-        "jar": "bef4111b993a5b3e6148d8f585621cceac2a1889cdbc34448b11632e0d8a9a8f"
-      },
-      "version": "1.2"
-    },
-    "com.github.java-json-tools:uri-template": {
-      "shasums": {
-        "jar": "3936f67d8e7dfa3eedefe450ff58871749308982c6b8b706535a884391df4fb0"
-      },
-      "version": "0.10"
     },
     "com.github.jknack:handlebars": {
       "shasums": {
@@ -1805,6 +1792,12 @@
         "jar": "68a621ec18485f951d09ac76f43e57eee394dbe42cb8f2a4c59c93296fa9dcc6"
       },
       "version": "2.2.12"
+    },
+    "joda-time:joda-time": {
+      "shasums": {
+        "jar": "d3d9f78f66ad8e8fbdcb4b4a43481eac95f3cdbcc0fe064542dfbe336c3a0e10"
+      },
+      "version": "2.10.2"
     },
     "junit:junit": {
       "shasums": {
@@ -3141,6 +3134,9 @@
       "com.google.auth:google-auth-library-oauth2-http",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     ],
+    "com.damnhandy:handy-uri-templates": [
+      "joda-time:joda-time"
+    ],
     "com.drewnoakes:metadata-extractor": [
       "com.adobe.xmp:xmpcore"
     ],
@@ -3213,18 +3209,6 @@
     ],
     "com.github.ipld:java-cid": [
       "com.github.multiformats:java-multihash"
-    ],
-    "com.github.java-json-tools:btf": [
-      "com.google.code.findbugs:jsr305"
-    ],
-    "com.github.java-json-tools:msg-simple": [
-      "com.github.java-json-tools:btf",
-      "com.google.code.findbugs:jsr305"
-    ],
-    "com.github.java-json-tools:uri-template": [
-      "com.github.java-json-tools:msg-simple",
-      "com.google.code.findbugs:jsr305",
-      "com.google.guava:guava"
     ],
     "com.github.jknack:handlebars": [
       "org.apache.commons:commons-lang3",
@@ -4887,6 +4871,11 @@
     "com.anthropic:anthropic-java-vertex": [
       "com.anthropic.vertex.backends"
     ],
+    "com.damnhandy:handy-uri-templates": [
+      "com.damnhandy.uri.template",
+      "com.damnhandy.uri.template.impl",
+      "com.damnhandy.uri.template.jackson.datatype"
+    ],
     "com.drewnoakes:metadata-extractor": [
       "com.drew.imaging",
       "com.drew.imaging.avi",
@@ -5193,26 +5182,6 @@
       "com.github.jaiimageio.plugins.pnm",
       "com.github.jaiimageio.plugins.tiff",
       "com.github.jaiimageio.stream"
-    ],
-    "com.github.java-json-tools:btf": [
-      "com.github.fge"
-    ],
-    "com.github.java-json-tools:msg-simple": [
-      "com.github.fge.msgsimple",
-      "com.github.fge.msgsimple.bundle",
-      "com.github.fge.msgsimple.load",
-      "com.github.fge.msgsimple.locale",
-      "com.github.fge.msgsimple.provider",
-      "com.github.fge.msgsimple.source"
-    ],
-    "com.github.java-json-tools:uri-template": [
-      "com.github.fge.uritemplate",
-      "com.github.fge.uritemplate.expression",
-      "com.github.fge.uritemplate.parse",
-      "com.github.fge.uritemplate.render",
-      "com.github.fge.uritemplate.vars",
-      "com.github.fge.uritemplate.vars.specs",
-      "com.github.fge.uritemplate.vars.values"
     ],
     "com.github.jknack:handlebars": [
       "com.github.jknack.handlebars",
@@ -6737,6 +6706,15 @@
       "javax.xml.bind.attachment",
       "javax.xml.bind.helpers",
       "javax.xml.bind.util"
+    ],
+    "joda-time:joda-time": [
+      "org.joda.time",
+      "org.joda.time.base",
+      "org.joda.time.chrono",
+      "org.joda.time.convert",
+      "org.joda.time.field",
+      "org.joda.time.format",
+      "org.joda.time.tz"
     ],
     "junit:junit": [
       "junit.extensions",
@@ -9974,6 +9952,7 @@
       "com.anthropic:anthropic-java-client-okhttp",
       "com.anthropic:anthropic-java-core",
       "com.anthropic:anthropic-java-vertex",
+      "com.damnhandy:handy-uri-templates",
       "com.drewnoakes:metadata-extractor",
       "com.epam:parso",
       "com.ethlo.time:itu",
@@ -9995,9 +9974,6 @@
       "com.github.hypfvieh:dbus-java-core",
       "com.github.hypfvieh:dbus-java-transport-native-unixsocket",
       "com.github.jai-imageio:jai-imageio-core",
-      "com.github.java-json-tools:btf",
-      "com.github.java-json-tools:msg-simple",
-      "com.github.java-json-tools:uri-template",
       "com.github.jknack:handlebars",
       "com.github.jsonld-java:jsonld-java",
       "com.github.junrar:junrar",
@@ -10169,6 +10145,7 @@
       "jakarta.xml.bind:jakarta.xml.bind-api",
       "javax.annotation:javax.annotation-api",
       "javax.xml.bind:jaxb-api",
+      "joda-time:joda-time",
       "junit:junit",
       "net.arnx:nashorn-promise",
       "net.java.dev.jna:jna",

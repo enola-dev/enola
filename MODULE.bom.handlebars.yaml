@@ -100,7 +100,7 @@ bom:
 
   # Other
   - "ch.vorburger.exec:exec:3.3.2"
-  - "com.github.java-json-tools:uri-template:0.10"
+  - "com.damnhandy:handy-uri-templates:2.1.8"
   - "info.picocli:picocli:4.7.7"
   - "info.picocli:picocli-shell-jline3:4.7.7"
   - "info.picocli:picocli-codegen:4.7.6"

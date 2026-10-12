@@ -29,7 +29,7 @@ java_library(
     deps = [
         "//java/dev/enola/common",
         "//java/dev/enola/data/iri",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_damnhandy_handy_uri_templates",
         "@maven//:com_google_errorprone_error_prone_annotations",
         "@maven//:com_google_guava_guava",
         "@maven//:org_jspecify_jspecify",
@@ -42,7 +42,7 @@ junit_tests(
     deps = [
         ":template",
         "//java/dev/enola/common",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_damnhandy_handy_uri_templates",
         "@maven//:com_google_errorprone_error_prone_annotations",
     ],
 )

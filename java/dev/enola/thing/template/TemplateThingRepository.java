@@ -17,9 +17,9 @@
  */
 package dev.enola.thing.template;
 
-import com.github.fge.uritemplate.URITemplate;
-import com.github.fge.uritemplate.URITemplateException;
-import com.github.fge.uritemplate.URITemplateParseException;
+import com.damnhandy.uri.template.MalformedUriTemplateException;
+import com.damnhandy.uri.template.UriTemplate;
+import com.damnhandy.uri.template.VariableExpansionException;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 
@@ -60,11 +60,11 @@ public class TemplateThingRepository implements ThingRepository, TemplateService
     }
 
     private Match gen(String classIRITemplate, Thing rdfClass) {
-        Set<SimpleImmutableEntry<String, URITemplate>> set = new HashSet<>();
+        Set<SimpleImmutableEntry<String, UriTemplate>> set = new HashSet<>();
         for (String predicateIRI : rdfClass.predicateIRIs()) {
             if (KIRI.E.IRI_TEMPLATE_DATATYPE.equals(rdfClass.datatype(predicateIRI))) {
                 var uriTemplate = newURITemplate(rdfClass.getString(predicateIRI));
-                set.add(new SimpleImmutableEntry<String, URITemplate>(predicateIRI, uriTemplate));
+                set.add(new SimpleImmutableEntry<String, UriTemplate>(predicateIRI, uriTemplate));
             }
         }
         var templatePredicates = Collections.unmodifiableSet(set);
@@ -76,27 +76,27 @@ public class TemplateThingRepository implements ThingRepository, TemplateService
                     try {
                         var varMap = VariableMaps.from(params);
                         var builder = ImmutableThing.builder();
-                        var newIRI = Templates.unescapeURL(classURITemplate.toString(varMap));
+                        var newIRI = Templates.unescapeURL(classURITemplate.expand(varMap));
                         builder.iri(newIRI);
                         builder.set(KIRI.RDF.TYPE, new Link(rdfClass.iri()));
                         for (var templatePredicate : templatePredicates) {
                             var predicateIRI = templatePredicate.getKey();
                             var predicateURITemplate = templatePredicate.getValue();
-                            var link = Templates.unescapeURL(predicateURITemplate.toString(varMap));
+                            var link = Templates.unescapeURL(predicateURITemplate.expand(varMap));
                             builder.set(predicateIRI, new Link(link));
                         }
 
                         return builder.build();
-                    } catch (URITemplateException e) {
+                    } catch (VariableExpansionException e) {
                         throw new IllegalArgumentException(rdfClass.iri(), e);
                     }
                 });
     }
 
-    private URITemplate newURITemplate(String template) {
+    private UriTemplate newURITemplate(String template) {
         try {
-            return new URITemplate(template);
-        } catch (URITemplateParseException e) {
+            return UriTemplate.fromTemplate(template);
+        } catch (MalformedUriTemplateException e) {
             throw new IllegalArgumentException(template + " invalid IRI Template", e);
         }
     }
