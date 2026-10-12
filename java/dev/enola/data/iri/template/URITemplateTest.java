@@ -19,7 +19,7 @@ package dev.enola.data.iri.template;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.github.fge.uritemplate.URITemplate;
+import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.collect.ImmutableMap;
 
 import org.junit.jupiter.api.Test;
@@ -51,8 +51,8 @@ class URITemplateTest {
 
     private void check(String template, String expected, Map<String, Object> map) throws Exception {
         // Test generating an URI from a Template
-        var uriTemplate = new URITemplate(template);
-        var uri = uriTemplate.toString(VariableMaps.from(map));
+        var uriTemplate = UriTemplate.fromTemplate(template);
+        var uri = uriTemplate.expand(VariableMaps.from(map));
         assertThat(uri).isEqualTo(expected);
 
         // Test decomposing an URI

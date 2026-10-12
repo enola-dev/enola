@@ -17,7 +17,7 @@
  */
 package dev.enola.data.iri.template;
 
-import com.github.fge.uritemplate.URITemplate;
+import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Splits an URI based on an RFC 6570 Template. This is the "inverse" of {@link URITemplate}.
+ * Splits an URI based on an RFC 6570 Template. This is the "inverse" of {@link UriTemplate}.
  * Reliably parsing URIs correctly is hard, see <a href="https://urlpattern.spec.whatwg.org">WHATWG
  * URL Pattern</a>. This class is intentionally limited, and only fulfills the current needs of this
  * project. It still has a lot of gaps. If you read this and need it to do more and better, please

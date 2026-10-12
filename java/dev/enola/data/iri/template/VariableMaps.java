@@ -17,24 +17,22 @@
  */
 package dev.enola.data.iri.template;
 
-import com.github.fge.uritemplate.vars.VariableMap;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.Map;
 
 public final class VariableMaps {
 
-    public static VariableMap from(Map<String, ?> map) {
-        var builder = VariableMap.newBuilder();
-        map.entrySet().forEach(entry -> builder.addScalarValue(entry.getKey(), entry.getValue()));
-        return builder.freeze();
+    public static Map<String, Object> from(Map<String, ?> map) {
+        var builder = ImmutableMap.<String, Object>builderWithExpectedSize(map.size());
+        map.forEach(builder::put);
+        return builder.build();
     }
 
-    public static VariableMap from(Map<String, String> map, String prefix) {
-        var builder = VariableMap.newBuilder();
-        map.entrySet()
-                .forEach(
-                        entry -> builder.addScalarValue(prefix + entry.getKey(), entry.getValue()));
-        return builder.freeze();
+    public static Map<String, Object> from(Map<String, String> map, String prefix) {
+        var builder = ImmutableMap.<String, Object>builderWithExpectedSize(map.size());
+        map.forEach((key, value) -> builder.put(prefix + key, value));
+        return builder.build();
     }
 
     private VariableMaps() {}

@@ -49,7 +49,7 @@ junit_tests(
         ":iri",
         "//java/dev/enola/common/context",
         "//test",
-        "@maven//:com_github_java_json_tools_uri_template",
+        "@maven//:com_damnhandy_handy_uri_templates",
         "@maven//:org_jspecify_jspecify",
     ],
 )
