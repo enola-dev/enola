@@ -28,13 +28,13 @@ com.fasterxml.woodstox:woodstox-core:7.1.1
 com.github.albfernandez:juniversalchardet:2.5.0
 com.github.hypfvieh:dbus-java-core:4.3.1
 com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.3.1
-com.github.ipfs:java-ipfs-http-client:d982fc0fa1
+com.github.ipfs:java-ipfs-http-client:1.5.1
 com.github.ipld:java-cid:1.3.10
 com.github.jai-imageio:jai-imageio-core:1.4.0
 com.github.jknack:handlebars:4.5.0
 com.github.jsonld-java:jsonld-java:0.13.4
 com.github.junrar:junrar:7.5.5
-com.github.multiformats:java-multiaddr:v1.4.12
+com.github.multiformats:java-multiaddr:1.5.0
 com.github.multiformats:java-multibase:03702505e959cafbebfcf7990848ee124017c27d
 com.github.multiformats:java-multihash:d238c77f11a0ff33970ad43578ae11f049324848
 com.github.package-url:packageurl-java:1.5.0
