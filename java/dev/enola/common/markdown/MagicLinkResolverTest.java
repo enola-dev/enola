@@ -532,4 +532,46 @@ class MagicLinkResolverTest {
         var actual = new MagicLinkResolver(EMPTY_HTTP).resolve(input);
         assertThat(actual).isEqualTo(expected);
     }
+
+    @Test
+    void resolveMagicalLinksWithCustomHeadingId() {
+        var input =
+                Map.of(
+                        Path.of("index.md"),
+                        """
+                        # Index
+
+                        Link to [[target]].
+                        Link to [[target#custom-section]].
+                        """,
+                        Path.of("target.md"),
+                        """
+                        # Target Document {#target-doc}
+
+                        ## Section {#custom-section}
+
+                        Content.
+                        """);
+
+        var expected =
+                Map.of(
+                        Path.of("index.md"),
+                        """
+                        # Index
+
+                        Link to [Target Document](target.md).
+                        Link to [Target Document](target.md#custom-section).
+                        """,
+                        Path.of("target.md"),
+                        """
+                        # Target Document {#target-doc}
+
+                        ## Section {#custom-section}
+
+                        Content.
+                        """);
+
+        var actual = new MagicLinkResolver(EMPTY_HTTP).resolve(input);
+        assertThat(actual).isEqualTo(expected);
+    }
 }

@@ -32,7 +32,6 @@ import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 import org.commonmark.ext.front.matter.parser.RawContentParser;
 import org.commonmark.ext.gfm.tables.TablesExtension;
-import org.commonmark.ext.heading.anchor.HeadingAnchorExtension;
 import org.commonmark.ext.task.list.items.TaskListItemsExtension;
 import org.commonmark.parser.IncludeSourceSpans;
 import org.commonmark.parser.Parser;
@@ -54,7 +53,7 @@ public final class Markdown {
             List.of(
                     YamlFrontMatterExtension.create(new RawContentParser.Factory()),
                     TablesExtension.create(),
-                    HeadingAnchorExtension.create(),
+                    HeadingIdExtension.create(),
                     AutolinkExtension.create(),
                     TaskListItemsExtension.create());
 

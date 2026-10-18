@@ -288,6 +288,10 @@ class MagicLinkResolver {
         }
         if (hashCount < line.length() && Character.isWhitespace(line.charAt(hashCount))) {
             String heading = line.substring(hashCount).trim();
+            Matcher matcher = HeadingIdPostProcessor.HEADING_ID_PATTERN.matcher(heading);
+            if (matcher.find()) {
+                heading = heading.substring(0, matcher.start()).trim();
+            }
             if (!heading.isEmpty()) {
                 return heading;
             }
