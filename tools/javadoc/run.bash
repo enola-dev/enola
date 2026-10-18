@@ -46,6 +46,7 @@ trap 'rm -f "$OPTIONS_FILE"' EXIT
   echo "-link"
   echo "https://guava.dev/releases/33.4.8-jre/api/docs/"
   echo "-Werror"
+  echo "-package"
   echo "-Xdoclint:all,-missing"
   echo "-quiet"
   for f in "${source_files[@]}"; do

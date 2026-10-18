@@ -23,12 +23,14 @@ import org.commonmark.node.Node;
 import org.commonmark.node.Text;
 import org.commonmark.parser.PostProcessor;
 
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class HeadingIdPostProcessor implements PostProcessor {
 
-    static final Pattern HEADING_ID_PATTERN = Pattern.compile("(?:\s+|^)\\{#([^\s}]+)\\}\\s*$");
+    static final Pattern HEADING_ID_PATTERN =
+            Pattern.compile("(?:\\s+|^)\\{#([a-zA-Z0-9_.:-]+)\\}\\s*$");
 
     @Override
     public Node process(Node node) {
@@ -41,7 +43,7 @@ class HeadingIdPostProcessor implements PostProcessor {
                             String literal = textNode.getLiteral();
                             Matcher matcher = HEADING_ID_PATTERN.matcher(literal);
                             if (matcher.find()) {
-                                String id = matcher.group(1);
+                                String id = matcher.group(1).toLowerCase(Locale.ROOT);
                                 String newLiteral =
                                         literal.substring(0, matcher.start()).stripTrailing();
                                 if (newLiteral.isEmpty()) {

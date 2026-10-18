@@ -54,6 +54,19 @@ class HtmlGeneratorTest {
     }
 
     @Test
+    void toHtmlWithCustomHeadingIdSeparatedByTab() {
+        var html = generator.toHtml("## Tab Separated\t{#tab-id}\n");
+        assertThat(html).isEqualTo("<h2 id=\"tab-id\">Tab Separated</h2>\n");
+    }
+
+    @Test
+    void toHtmlWithInvalidCustomHeadingIdLeftAsText() {
+        var html = generator.toHtml("## Invalid Space {#not an id}\n");
+        assertThat(html)
+                .isEqualTo("<h2 id=\"invalid-space-not-an-id\">Invalid Space {#not an id}</h2>\n");
+    }
+
+    @Test
     void toHtmlWithCustomHeadingIdAndFormatting() {
         var html = generator.toHtml("### Formatted *Emphasis* and `code` {#fmt-id}\n");
         assertThat(html)
