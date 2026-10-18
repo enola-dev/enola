@@ -358,6 +358,13 @@ class MarkdownCanonicalizerTest {
     }
 
     @Test
+    void headingWithCustomIdSeparatedByTab() {
+        var messy = "## Heading\t{#my-id}\n\nSome text.\n";
+        var clean = new MarkdownCanonicalizer().canonicalize(messy);
+        assertThat(clean).isEqualTo("## Heading {#my-id}\n\nSome text.\n");
+    }
+
+    @Test
     void headingWithFormattingAndCustomId() {
         var markdown =
                 """
