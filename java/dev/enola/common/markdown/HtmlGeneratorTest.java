@@ -41,6 +41,59 @@ class HtmlGeneratorTest {
     }
 
     @Test
+    void toHtmlWithCustomHeadingId() {
+        var html = generator.toHtml("## Hello World {#my-id}\n\nThis is a paragraph.\n");
+        assertThat(html)
+                .isEqualTo("<h2 id=\"my-id\">Hello World</h2>\n<p>This is a paragraph.</p>\n");
+    }
+
+    @Test
+    void toHtmlWithCustomHeadingIdLowercased() {
+        var html = generator.toHtml("## Hello World {#My-CUSTOM-ID}\n");
+        assertThat(html).isEqualTo("<h2 id=\"my-custom-id\">Hello World</h2>\n");
+    }
+
+    @Test
+    void toHtmlWithCustomHeadingIdAndFormatting() {
+        var html = generator.toHtml("### Formatted *Emphasis* and `code` {#fmt-id}\n");
+        assertThat(html)
+                .isEqualTo(
+                        "<h3 id=\"fmt-id\">Formatted <em>Emphasis</em> and"
+                                + " <code>code</code></h3>\n");
+    }
+
+    @Test
+    void toHtmlCustomHeadingIdOverridesAutomaticSlugification() {
+        var html = generator.toHtml("## Automatic Slugification {#custom-anchor}\n");
+        assertThat(html).isEqualTo("<h2 id=\"custom-anchor\">Automatic Slugification</h2>\n");
+    }
+
+    @Test
+    void toHtmlCustomHeadingIdDuplicateHandling() {
+        var md =
+                """
+                # First {#shared-id}
+                # Second {#shared-id}
+                # Shared Id
+                """;
+        var html = generator.toHtml(md);
+        assertThat(html)
+                .isEqualTo(
+                        """
+                        <h1 id="shared-id">First</h1>
+                        <h1 id="shared-id-1">Second</h1>
+                        <h1 id="shared-id-2">Shared Id</h1>
+                        """);
+    }
+
+    @Test
+    void toHtmlCustomHeadingIdExtractsCleanTitle() {
+        var html = generator.toHtmlPage("# Page Title {#page-id}\n\nBody content\n");
+        assertThat(html).contains("<title>Page Title</title>");
+        assertThat(html).doesNotContain("{#page-id}");
+    }
+
+    @Test
     void toHtmlWithFrontMatter() {
         var md =
                 """

@@ -319,4 +319,53 @@ class MarkdownCanonicalizerTest {
                         | Search | [[search\\|Custom Search]] |
                         """);
     }
+
+    @Test
+    void headingWithCustomId() {
+        var markdown =
+                """
+                ## Heading {#my-id}
+
+                Some text.
+                """;
+        var clean = new MarkdownCanonicalizer().canonicalize(markdown);
+        assertThat(clean).isEqualTo(markdown);
+    }
+
+    @Test
+    void headingWithCustomIdLowercased() {
+        var messy =
+                """
+                ## Heading {#My-ID}
+
+                Some text.
+                """;
+        var clean = new MarkdownCanonicalizer().canonicalize(messy);
+        assertThat(clean)
+                .isEqualTo(
+                        """
+                        ## Heading {#my-id}
+
+                        Some text.
+                        """);
+    }
+
+    @Test
+    void headingWithCustomIdNormalizesSpaces() {
+        var messy = "## Heading    {#my-id}   \nSome text.";
+        var clean = new MarkdownCanonicalizer().canonicalize(messy);
+        assertThat(clean).isEqualTo("## Heading {#my-id}\n\nSome text.\n");
+    }
+
+    @Test
+    void headingWithFormattingAndCustomId() {
+        var markdown =
+                """
+                ## Heading with *emphasis* and `code` {#formatted-id}
+
+                Some text.
+                """;
+        var clean = new MarkdownCanonicalizer().canonicalize(markdown);
+        assertThat(clean).isEqualTo(markdown);
+    }
 }
