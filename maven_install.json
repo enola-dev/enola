@@ -17,7 +17,7 @@
     "com.fasterxml.jackson.module:jackson-module-jaxb-annotations": 1548616537,
     "com.fasterxml.jackson:jackson-bom": -375013874,
     "com.fasterxml.woodstox:woodstox-core": 1620189890,
-    "com.github.ipfs:java-ipfs-http-client": 120387282,
+    "com.github.ipfs:java-ipfs-http-client": 1410220607,
     "com.github.ipld:java-cid": 1928280997,
     "com.github.jknack:handlebars": -1209364279,
     "com.github.multiformats:java-multibase": -672504918,
@@ -160,13 +160,13 @@
     "com.github.albfernandez:juniversalchardet": -2131241563,
     "com.github.hypfvieh:dbus-java-core": 1182471851,
     "com.github.hypfvieh:dbus-java-transport-native-unixsocket": -1378128725,
-    "com.github.ipfs:java-ipfs-http-client": 1296121601,
+    "com.github.ipfs:java-ipfs-http-client": 1175655742,
     "com.github.ipld:java-cid": 210092595,
     "com.github.jai-imageio:jai-imageio-core": -271537016,
     "com.github.jknack:handlebars": -1402733997,
     "com.github.jsonld-java:jsonld-java": 741482888,
     "com.github.junrar:junrar": 2034816699,
-    "com.github.multiformats:java-multiaddr": -436605932,
+    "com.github.multiformats:java-multiaddr": -1437703500,
     "com.github.multiformats:java-multibase": 421687347,
     "com.github.multiformats:java-multihash": 1413598197,
     "com.github.package-url:packageurl-java": -1554128924,
@@ -733,9 +733,9 @@
     },
     "com.github.ipfs:java-ipfs-http-client": {
       "shasums": {
-        "jar": "8f2148736867cfbd31c4d1eeca5b082b5378896c5fbeeabb06c572675b9a3b87"
+        "jar": "836f8df1ac8a34b3abd31881dca7a6c754dc7a064774fceebc0d55063af39c8d"
       },
-      "version": "d982fc0fa1"
+      "version": "1.5.1"
     },
     "com.github.ipld:java-cid": {
       "shasums": {
@@ -769,9 +769,9 @@
     },
     "com.github.multiformats:java-multiaddr": {
       "shasums": {
-        "jar": "9944cb0083c1f3a2ffca2b5c7c1c67d746f8dc5e2e9b8781083146b7d936e6c7"
+        "jar": "7baaf62e0432b89ed187e0e715f7d9218a5a3abacacf5ebf132924f5e16c747d"
       },
-      "version": "v1.4.12"
+      "version": "1.5.0"
     },
     "com.github.multiformats:java-multibase": {
       "shasums": {
